@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigquery.job &#8212; google-cloud 2a716b9a44 documentation</title>
+    <title>google.cloud.bigquery.job &#8212; google-cloud 85b0b7b documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -816,6 +816,27 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">_helpers</span><span class="o">.</span><span class="n">_set_sub_prop</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">,</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_job_type</span><span class="p">,</span> <span class="n">key</span><span class="p">],</span> <span class="n">value</span><span class="p">)</span>
 
+    <span class="k">def</span> <span class="nf">_del_sub_prop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Reove ``key`` from the ``self._properties[self._job_type]`` dict.</span>
+
+<span class="sd">        Most job properties are inside the dictionary related to the job type</span>
+<span class="sd">        (e.g. &#39;copy&#39;, &#39;extract&#39;, &#39;load&#39;, &#39;query&#39;). Use this method to clear</span>
+<span class="sd">        those properties::</span>
+
+<span class="sd">            self._del_sub_prop(&#39;useLegacySql&#39;)</span>
+
+<span class="sd">        This is equivalent to using the ``_helper._del_sub_prop`` function::</span>
+
+<span class="sd">            _helper._del_sub_prop(</span>
+<span class="sd">                self._properties, [&#39;query&#39;, &#39;useLegacySql&#39;])</span>
+
+<span class="sd">        Arguments:</span>
+<span class="sd">            key (str):</span>
+<span class="sd">                 Key to remove in the ``self._properties[self._job_type]``</span>
+<span class="sd">                 dictionary.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">_helpers</span><span class="o">.</span><span class="n">_del_sub_prop</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">,</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_job_type</span><span class="p">,</span> <span class="n">key</span><span class="p">])</span>
+
     <span class="k">def</span> <span class="nf">to_api_repr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Build an API representation of the job config.</span>
 
@@ -1087,6 +1108,34 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_set_sub_prop</span><span class="p">(</span><span class="s1">&#39;timePartitioning&#39;</span><span class="p">,</span> <span class="n">api_repr</span><span class="p">)</span>
 
     <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">clustering_fields</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Union[List[str], None]: Fields defining clustering for the table</span>
+
+<span class="sd">        (Defaults to :data:`None`).</span>
+
+<span class="sd">        Clustering fields are immutable after table creation.</span>
+
+<span class="sd">        .. note::</span>
+
+<span class="sd">           As of 2018-06-29, clustering fields cannot be set on a table</span>
+<span class="sd">           which does not also have time partioning defined.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">prop</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_sub_prop</span><span class="p">(</span><span class="s1">&#39;clustering&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">prop</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">prop</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;fields&#39;</span><span class="p">,</span> <span class="p">()))</span>
+
+    <span class="nd">@clustering_fields</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">clustering_fields</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Union[List[str], None]: Fields defining clustering for the table</span>
+
+<span class="sd">        (Defaults to :data:`None`).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_set_sub_prop</span><span class="p">(</span><span class="s1">&#39;clustering&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;fields&#39;</span><span class="p">:</span> <span class="n">value</span><span class="p">})</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_del_sub_prop</span><span class="p">(</span><span class="s1">&#39;clustering&#39;</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">schema_update_options</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;List[google.cloud.bigquery.job.SchemaUpdateOption]: Specifies</span>
 <span class="sd">        updates to the destination table schema to allow as a side effect of</span>
@@ -1251,6 +1300,13 @@
 <span class="sd">        :attr:`google.cloud.bigquery.job.LoadJobConfig.time_partitioning`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_configuration</span><span class="o">.</span><span class="n">time_partitioning</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">clustering_fields</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;See</span>
+<span class="sd">        :attr:`google.cloud.bigquery.job.LoadJobConfig.clustering_fields`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_configuration</span><span class="o">.</span><span class="n">clustering_fields</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">schema_update_options</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -2073,6 +2129,34 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_set_sub_prop</span><span class="p">(</span><span class="s1">&#39;timePartitioning&#39;</span><span class="p">,</span> <span class="n">api_repr</span><span class="p">)</span>
 
     <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">clustering_fields</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Union[List[str], None]: Fields defining clustering for the table</span>
+
+<span class="sd">        (Defaults to :data:`None`).</span>
+
+<span class="sd">        Clustering fields are immutable after table creation.</span>
+
+<span class="sd">        .. note::</span>
+
+<span class="sd">           As of 2018-06-29, clustering fields cannot be set on a table</span>
+<span class="sd">           which does not also have time partioning defined.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">prop</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_sub_prop</span><span class="p">(</span><span class="s1">&#39;clustering&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">prop</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">prop</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;fields&#39;</span><span class="p">,</span> <span class="p">()))</span>
+
+    <span class="nd">@clustering_fields</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">clustering_fields</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Union[List[str], None]: Fields defining clustering for the table</span>
+
+<span class="sd">        (Defaults to :data:`None`).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_set_sub_prop</span><span class="p">(</span><span class="s1">&#39;clustering&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;fields&#39;</span><span class="p">:</span> <span class="n">value</span><span class="p">})</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_del_sub_prop</span><span class="p">(</span><span class="s1">&#39;clustering&#39;</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">schema_update_options</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;List[google.cloud.bigquery.job.SchemaUpdateOption]: Specifies</span>
 <span class="sd">        updates to the destination table schema to allow as a side effect of</span>
@@ -2261,6 +2345,13 @@
 <span class="sd">        :attr:`google.cloud.bigquery.job.QueryJobConfig.time_partitioning`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_configuration</span><span class="o">.</span><span class="n">time_partitioning</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">clustering_fields</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;See</span>
+<span class="sd">        :attr:`google.cloud.bigquery.job.QueryJobConfig.clustering_fields`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_configuration</span><span class="o">.</span><span class="n">clustering_fields</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">schema_update_options</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>

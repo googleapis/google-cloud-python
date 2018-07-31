@@ -33,6 +33,7 @@ google.cloud.bigquery.job.QueryJobConfig
       :toctree: .
    
       ~QueryJobConfig.allow_large_results
+      ~QueryJobConfig.clustering_fields
       ~QueryJobConfig.create_disposition
       ~QueryJobConfig.default_dataset
       ~QueryJobConfig.destination

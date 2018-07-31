@@ -35,6 +35,7 @@ google.cloud.bigquery.job.LoadJobConfig
       ~LoadJobConfig.allow_jagged_rows
       ~LoadJobConfig.allow_quoted_newlines
       ~LoadJobConfig.autodetect
+      ~LoadJobConfig.clustering_fields
       ~LoadJobConfig.create_disposition
       ~LoadJobConfig.destination_encryption_configuration
       ~LoadJobConfig.encoding

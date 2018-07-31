@@ -35,6 +35,7 @@ google.cloud.bigquery.table.Table
    .. autosummary::
       :toctree: .
    
+      ~Table.clustering_fields
       ~Table.created
       ~Table.dataset_id
       ~Table.description

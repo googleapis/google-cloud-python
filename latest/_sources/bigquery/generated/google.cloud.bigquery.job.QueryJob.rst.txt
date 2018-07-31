@@ -68,6 +68,7 @@ google.cloud.bigquery.job.QueryJob
       ~QueryJob.allow_large_results
       ~QueryJob.billing_tier
       ~QueryJob.cache_hit
+      ~QueryJob.clustering_fields
       ~QueryJob.create_disposition
       ~QueryJob.created
       ~QueryJob.ddl_operation_performed
