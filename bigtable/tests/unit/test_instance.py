@@ -163,7 +163,7 @@ class TestInstance(unittest.TestCase):
 
         failed_location = 'FAILED'
         cluster_id1 = 'cluster-id1'
-        cluster_id2 = 'ckuster-id2'
+        cluster_id2 = 'cluster-id2'
         cluster_name1 = (client.instance_admin_client.cluster_path(
                          self.PROJECT, self.INSTANCE_ID, cluster_id1))
         cluster_name2 = (client.instance_admin_client.cluster_path(
