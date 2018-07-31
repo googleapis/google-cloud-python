@@ -168,7 +168,8 @@ def test_list_datasets_by_label(client, to_delete):
     else:
         print('No datasets found with this filter.')
     # [END bigquery_list_datasets_by_label]
-    assert len(datasets) == 1
+    found = set([dataset.dataset_id for dataset in datasets])
+    assert dataset_id in found
 
 
 def test_create_dataset(client, to_delete):

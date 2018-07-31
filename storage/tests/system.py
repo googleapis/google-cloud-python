@@ -76,7 +76,7 @@ def setUpModule():
 
 
 def tearDownModule():
-    retry = RetryErrors(exceptions.Conflict)
+    retry = RetryErrors(exceptions.Conflict, exceptions.TooManyRequests)
     retry(Config.TEST_BUCKET.delete)(force=True)
 
 
