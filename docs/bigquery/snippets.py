@@ -2151,6 +2151,13 @@ def test_undelete_table(client, to_delete):
     # time for recovering the table.
     snapshot_time = int(time.time() * 1000)
 
+    # Because local system time may have some drift, we ensure the snapshot
+    # time is at least within the creation lifespan of the table.  Trying
+    # to snapshot a table prior to its creation time is an error.
+    table = client.get_table(table_ref)
+    if table.created_time > snapshot time:
+      snapshot_time = table.created_time
+
     # "Accidentally" delete the table.
     client.delete_table(table_ref)  # API request
 
