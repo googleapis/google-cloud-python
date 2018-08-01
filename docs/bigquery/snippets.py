@@ -2134,8 +2134,6 @@ def test_delete_table(client, to_delete):
 
 
 def test_undelete_table(client, to_delete):
-    from datetime import datetime
-    from pytz import UTC
     dataset_id = 'undelete_table_dataset_{}'.format(_millis())
     table_id = 'undelete_table_table_{}'.format(_millis())
     dataset = bigquery.Dataset(client.dataset(dataset_id))
@@ -2155,24 +2153,28 @@ def test_undelete_table(client, to_delete):
 
     table_ref = client.dataset(dataset_id).table(table_id)
 
-    # Record the current time in milliseconds. We'll use this as the snapshot
-    # time for recovering the table.
-    snapshot_time = int(time.time() * 1000)
+    # TODO(Developer):  Choose an appropriate snapshot point as epoch
+    # milliseconds.
+    #
+    # For this example, we choose the current time as we're about to delete
+    # the table immediately afterwards.
+    snapshot_epoch = int(time.time() * 1000)
+    # [END bigquery_undelete_table]
 
-    # Because local system time may have some drift, we ensure the snapshot
-    # time is at least within the creation lifespan of the table.  Trying
-    # to snapshot a table prior to its creation time is an error.
+    # Due to very short lifecycle of the table, ensure we're not picking a time
+    # prior to the table creation due to time drift between backend and client.
     table = client.get_table(table_ref)
-    created_ms = (table.created - datetime.utcfromtimestamp(0).replace(tzinfo=UTC)).total_seconds() * 1000
+    created_epoch = table._properties['creationTime']
+    if created_epoch > snapshot_epoch:
+        snapshot_time = created_epoch
 
-    if created_ms > snapshot_time:
-      snapshot_time = created_ms
+    # [START bigquery_undelete_table]
 
     # "Accidentally" delete the table.
     client.delete_table(table_ref)  # API request
 
     # Construct the restore-from table ID using a snapshot decorator.
-    snapshot_table_id = '{}@{}'.format(table_id, snapshot_time)
+    snapshot_table_id = '{}@{}'.format(table_id, snapshot_epoch)
     source_table_ref = client.dataset(dataset_id).table(snapshot_table_id)
 
     # Choose a new table ID for the recovered table data.
