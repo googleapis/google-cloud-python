@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>BigQuery &#8212; google-cloud 85b0b7b documentation</title>
+    <title>BigQuery &#8212; google-cloud 9fa614bde7 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -370,8 +370,14 @@ on <a class="reference external" href="https://cloud.google.com/bigquery/docs/ta
 </pre></div>
 </div>
 <p>Insert rows into a table’s data:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># from google.cloud import bigquery</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># TODO(developer): Uncomment the lines below and replace with your values.</span>
+<span class="c1"># from google.cloud import bigquery</span>
 <span class="c1"># client = bigquery.Client()</span>
+<span class="c1"># dataset_id = &#39;my_dataset&#39;  # replace with your dataset ID</span>
+<span class="c1"># For this sample, the table must already exist and have a defined schema</span>
+<span class="c1"># table_id = &#39;my_table&#39;  # replace with your table ID</span>
+<span class="c1"># table_ref = client.dataset(dataset_id).table(table_id)</span>
+<span class="c1"># table = client.get_table(table_ref)  # API request</span>
 
 <span class="n">rows_to_insert</span> <span class="o">=</span> <span class="p">[</span>
     <span class="p">(</span><span class="sa">u</span><span class="s1">&#39;Phred Phlyntstone&#39;</span><span class="p">,</span> <span class="mi">32</span><span class="p">),</span>
