@@ -42,7 +42,7 @@ setup(
     install_requires=DEPENDENCIES,
     license='Apache 2.0',
     keywords='google auth oauth client',
-    classifiers=(
+    classifiers=[
         'Programming Language :: Python :: 2',
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
@@ -57,5 +57,5 @@ setup(
         'Operating System :: MacOS :: MacOS X',
         'Operating System :: OS Independent',
         'Topic :: Internet :: WWW/HTTP',
-    ),
+    ],
 )
