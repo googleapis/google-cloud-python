@@ -74,10 +74,10 @@ Configuration
   Engine or Google Compute Engine the project will be detected automatically.
   (Setting this environment variable is not required, you may instead pass the
   ``project`` explicitly when constructing a
-  :class:`~google.cloud.storage.client.Client`).
+  :class:`~google.cloud.spanner.client.Client`).
 
 - After configuring your environment, create a
-  :class:`~google.cloud.storage.client.Client`
+  :class:`~google.cloud.spanner.client.Client`
 
   .. code::
 
