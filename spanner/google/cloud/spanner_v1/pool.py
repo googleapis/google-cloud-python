@@ -80,6 +80,14 @@ class AbstractSessionPool(object):
         """
         raise NotImplementedError()
 
+    def _new_session(self):
+        """Helper for concrete methods creating session instances.
+
+        :rtype: :class:`~google.cloud.spanner_v1.session.Session`
+        :returns: new session instance.
+        """
+        return self._database.session()
+
     def session(self, **kwargs):
         """Check out a session from the pool.
 
@@ -134,7 +142,7 @@ class FixedSizePool(AbstractSessionPool):
         self._database = database
 
         while not self._sessions.full():
-            session = database.session()
+            session = self._new_session()
             session.create()
             self._sessions.put(session)
 
@@ -224,11 +232,11 @@ class BurstyPool(AbstractSessionPool):
         try:
             session = self._sessions.get_nowait()
         except queue.Empty:
-            session = self._database.session()
+            session = self._new_session()
             session.create()
         else:
             if not session.exists():
-                session = self._database.session()
+                session = self._new_session()
                 session.create()
         return session
 
@@ -308,7 +316,7 @@ class PingingPool(AbstractSessionPool):
         self._database = database
 
         for _ in xrange(self.size):
-            session = database.session()
+            session = self._new_session()
             session.create()
             self.put(session)
 
@@ -330,7 +338,7 @@ class PingingPool(AbstractSessionPool):
 
         if _NOW() > ping_after:
             if not session.exists():
-                session = self._database.session()
+                session = self._new_session()
                 session.create()
 
         return session
@@ -373,7 +381,7 @@ class PingingPool(AbstractSessionPool):
                 self._sessions.put((ping_after, session))
                 break
             if not session.exists():  # stale
-                session = self._database.session()
+                session = self._new_session()
                 session.create()
             # Re-add to queue with new expiration
             self.put(session)

@@ -53,6 +53,14 @@ class TestAbstractSessionPool(unittest.TestCase):
         with self.assertRaises(NotImplementedError):
             pool.clear()
 
+    def test__new_session(self):
+        pool = self._make_one()
+        database = pool._database = _Database('name')
+        sessions = [_Session(database)]
+        database._sessions.extend(sessions)
+        session = pool._new_session()
+        self.assertIsInstance(session, _Session)
+
     def test_session_wo_kwargs(self):
         from google.cloud.spanner_v1.pool import SessionCheckout
 
