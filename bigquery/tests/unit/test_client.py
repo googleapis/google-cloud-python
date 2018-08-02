@@ -16,6 +16,7 @@ import copy
 import datetime
 import decimal
 import email
+import gzip
 import io
 import json
 import unittest
@@ -3712,6 +3713,12 @@ class TestClientUpload(object):
     def _make_file_obj():
         return io.BytesIO(b'hello, is it me you\'re looking for?')
 
+    def _make_gzip_file_obj(self, writable):
+        if writable:
+            return gzip.GzipFile(mode='w', fileobj=io.BytesIO())
+        else:
+            return gzip.GzipFile(mode='r', fileobj=self._make_file_obj())
+
     @staticmethod
     def _make_config():
         from google.cloud.bigquery.job import LoadJobConfig
@@ -3891,6 +3898,33 @@ class TestClientUpload(object):
                 file_obj, self.TABLE_REF, rewind=True)
 
         assert file_obj.tell() == 0
+
+    def test_load_table_from_file_with_readable_gzip(self):
+        from google.cloud.bigquery.client import _DEFAULT_NUM_RETRIES
+
+        client = self._make_client()
+        gzip_file = self._make_gzip_file_obj(writable=False)
+
+        do_upload_patch = self._make_do_upload_patch(
+            client, '_do_resumable_upload', self.EXPECTED_CONFIGURATION)
+        with do_upload_patch as do_upload:
+            client.load_table_from_file(
+                gzip_file, self.TABLE_REF, job_id='job_id',
+                job_config=self._make_config())
+
+        do_upload.assert_called_once_with(
+            gzip_file,
+            self.EXPECTED_CONFIGURATION,
+            _DEFAULT_NUM_RETRIES)
+
+    def test_load_table_from_file_with_writable_gzip(self):
+        client = self._make_client()
+        gzip_file = self._make_gzip_file_obj(writable=True)
+
+        with pytest.raises(ValueError):
+            client.load_table_from_file(
+                gzip_file, self.TABLE_REF, job_id='job_id',
+                job_config=self._make_config())
 
     def test_load_table_from_file_failure(self):
         from google.resumable_media import InvalidResponse
