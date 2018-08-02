@@ -23,7 +23,7 @@ def _make_rpc_error(error_cls, trailing_metadata=None):
 
     grpc_error = mock.create_autospec(grpc.Call, instance=True)
     grpc_error.trailing_metadata.return_value = trailing_metadata
-    raise error_cls('error', errors=(grpc_error,))
+    return error_cls('error', errors=(grpc_error,))
 
 
 class TestSession(unittest.TestCase):
