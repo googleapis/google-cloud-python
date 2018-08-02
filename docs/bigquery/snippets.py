@@ -38,6 +38,7 @@ try:
 except (ImportError, AttributeError):
     pyarrow = None
 
+from google.api_core import datetime_helpers
 from google.cloud import bigquery
 
 ORIGINAL_FRIENDLY_NAME = 'Original friendly name'
@@ -2145,28 +2146,27 @@ def test_undelete_table(client, to_delete):
     client.create_table(table)
 
     # [START bigquery_undelete_table]
+    # TODO(developer): Uncomment the lines below and replace with your values.
     # import time
     # from google.cloud import bigquery
     # client = bigquery.Client()
-    # dataset_id = 'my_dataset'
-    # table_id = 'my_table'
+    # dataset_id = 'my_dataset'  # Replace with your dataset ID.
+    # table_id = 'my_table'      # Replace with your table ID.
 
     table_ref = client.dataset(dataset_id).table(table_id)
 
-    # TODO(Developer):  Choose an appropriate snapshot point as epoch
-    # milliseconds.
-    #
-    # For this example, we choose the current time as we're about to delete
-    # the table immediately afterwards.
+    # TODO(developer): Choose an appropriate snapshot point as epoch
+    # milliseconds. For this example, we choose the current time as we're about
+    # to delete the table immediately afterwards.
     snapshot_epoch = int(time.time() * 1000)
     # [END bigquery_undelete_table]
 
     # Due to very short lifecycle of the table, ensure we're not picking a time
     # prior to the table creation due to time drift between backend and client.
     table = client.get_table(table_ref)
-    created_epoch = table._properties['creationTime']
+    created_epoch = datetime_helpers.to_microseconds(table.created)
     if created_epoch > snapshot_epoch:
-        snapshot_time = created_epoch
+        snapshot_epoch = created_epoch
 
     # [START bigquery_undelete_table]
 
