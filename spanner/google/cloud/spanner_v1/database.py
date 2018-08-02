@@ -272,13 +272,16 @@ class Database(object):
         metadata = _metadata_with_prefix(self.name)
         api.drop_database(self.name, metadata=metadata)
 
-    def session(self):
+    def session(self, labels=None):
         """Factory to create a session for this database.
+
+        :type labels: dict (str -> str) or None
+        :param labels: (Optional) user-assigned labels for the session.
 
         :rtype: :class:`~google.cloud.spanner_v1.session.Session`
         :returns: a session bound to this database.
         """
-        return Session(self)
+        return Session(self, labels=labels)
 
     def snapshot(self, **kw):
         """Return an object which wraps a snapshot.

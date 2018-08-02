@@ -596,7 +596,7 @@ class TestDatabase(_BaseTest):
         self.assertEqual(
             metadata, [('google-cloud-resource-prefix', database.name)])
 
-    def test_session_factory(self):
+    def test_session_factory_defaults(self):
         from google.cloud.spanner_v1.session import Session
 
         client = _Client()
@@ -609,6 +609,23 @@ class TestDatabase(_BaseTest):
         self.assertTrue(isinstance(session, Session))
         self.assertIs(session.session_id, None)
         self.assertIs(session._database, database)
+        self.assertEqual(session.labels, {})
+
+    def test_session_factory_w_labels(self):
+        from google.cloud.spanner_v1.session import Session
+
+        client = _Client()
+        instance = _Instance(self.INSTANCE_NAME, client=client)
+        pool = _Pool()
+        labels = {'foo': 'bar'}
+        database = self._make_one(self.DATABASE_ID, instance, pool=pool)
+
+        session = database.session(labels=labels)
+
+        self.assertTrue(isinstance(session, Session))
+        self.assertIs(session.session_id, None)
+        self.assertIs(session._database, database)
+        self.assertEqual(session.labels, labels)
 
     def test_snapshot_defaults(self):
         from google.cloud.spanner_v1.database import SnapshotCheckout
