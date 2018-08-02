@@ -165,16 +165,17 @@ class BigtableColumn(object):
 
     @classmethod
     def from_api_repr(cls, resource):
-        """Factory: construct a :class:`BigtableColumn` instance given its API
-        representation
+        """Factory: construct a :class:`~.external_config.BigtableColumn`
+        instance given its API representation.
 
         Args:
             resource (Dict[str, Any]):
-                Definition of a :class:`BigtableColumn` instance in the same
-                representation as is returned from the API.
+                Definition of a :class:`~.external_config.BigtableColumn`
+                instance in the same representation as is returned from the
+                API.
 
         Returns:
-            :class:`~google.cloud.bigquery.BigtableColumn`:
+            :class:`~.external_config.BigtableColumn`:
                 Configuration parsed from ``resource``.
         """
         config = cls()
@@ -247,8 +248,8 @@ class BigtableColumnFamily(object):
 
     @property
     def columns(self):
-        """List[:class:`BigtableColumn`]: Lists of columns that should be
-        exposed as individual fields
+        """List[:class:`~.external_config.BigtableColumn`]: Lists of columns
+        that should be exposed as individual fields.
 
         See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).bigtableOptions.columnFamilies.columns
@@ -272,16 +273,17 @@ class BigtableColumnFamily(object):
 
     @classmethod
     def from_api_repr(cls, resource):
-        """Factory: construct a :class:`BigtableColumnFamily` instance given
-        its API representation
+        """Factory: construct a :class:`~.external_config.BigtableColumnFamily`
+        instance given its API representation.
 
         Args:
             resource (Dict[str, Any]):
-                Definition of a :class:`BigtableColumnFamily` instance in the
-                same representation as is returned from the API.
+                Definition of a :class:`~.external_config.BigtableColumnFamily`
+                instance in the same representation as is returned from the
+                API.
 
         Returns:
-            :class:`BigtableColumnFamily`:
+            :class:`~.external_config.BigtableColumnFamily`:
                 Configuration parsed from ``resource``.
         """
         config = cls()
@@ -331,8 +333,8 @@ class BigtableOptions(object):
 
     @property
     def column_families(self):
-        """List[:class:`BigtableColumnFamily`]: List of column families to
-        expose in the table schema along with their types.
+        """List[:class:`~.external_config.BigtableColumnFamily`]: List of
+        column families to expose in the table schema along with their types.
 
         See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).bigtableOptions.columnFamilies
@@ -356,16 +358,18 @@ class BigtableOptions(object):
 
     @classmethod
     def from_api_repr(cls, resource):
-        """Factory: construct a :class:`BigtableOptions` instance given its API
-        representation
+        """Factory: construct a :class:`~.external_config.BigtableOptions`
+        instance given its API representation.
 
         Args:
             resource (Dict[str, Any]):
-                Definition of a :class:`BigtableOptions` instance in the
-                same representation as is returned from the API.
+                Definition of a :class:`~.external_config.BigtableOptions`
+                instance in the same representation as is returned from the
+                API.
 
         Returns:
-            :class:`BigtableOptions`: Configuration parsed from ``resource``.
+            :class:`~.external_config.BigtableOptions`:
+                Configuration parsed from ``resource``.
         """
         config = cls()
         config._properties = copy.deepcopy(resource)
@@ -478,16 +482,18 @@ class CSVOptions(object):
 
     @classmethod
     def from_api_repr(cls, resource):
-        """Factory: construct a :class:`CSVOptions` instance given its API
-        representation
+        """Factory: construct a :class:`~.external_config.CSVOptions` instance
+        given its API representation.
 
         Args:
             resource (Dict[str, Any]):
-                Definition of a :class:`CSVOptions` instance in the same
-                representation as is returned from the API.
+                Definition of a :class:`~.external_config.CSVOptions`
+                instance in the same representation as is returned from the
+                API.
 
         Returns:
-            :class:`CSVOptions`: Configuration parsed from ``resource``.
+            :class:`~.external_config.CSVOptions`:
+                Configuration parsed from ``resource``.
         """
         config = cls()
         config._properties = copy.deepcopy(resource)
@@ -529,16 +535,17 @@ class GoogleSheetsOptions(object):
 
     @classmethod
     def from_api_repr(cls, resource):
-        """Factory: construct a :class:`GoogleSheetsOptions` instance given its
-        API representation
+        """Factory: construct a :class:`~.external_config.GoogleSheetsOptions`
+        instance given its API representation.
 
         Args:
             resource (Dict[str, Any]):
-                Definition of a :class:`GoogleSheetsOptions` instance in the
-                same representation as is returned from the API.
+                Definition of a :class:`~.external_config.GoogleSheetsOptions`
+                instance in the same representation as is returned from the
+                API.
 
         Returns:
-            :class:`GoogleSheetsOptions`:
+            :class:`~.external_config.GoogleSheetsOptions`:
                 Configuration parsed from ``resource``.
         """
         config = cls()
@@ -553,7 +560,7 @@ class ExternalConfig(object):
     """Description of an external data source.
 
     Args:
-        source_format (:class:`ExternalSourceFormat`):
+        source_format (:class:`~.external_config.ExternalSourceFormat`):
             See :attr:`source_format`.
     """
 
@@ -567,7 +574,8 @@ class ExternalConfig(object):
 
     @property
     def source_format(self):
-        """:class:`ExternalSourceFormat`: Format of external source.
+        """:class:`~.external_config.ExternalSourceFormat`:
+        Format of external source.
 
         See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.sourceFormat
@@ -688,16 +696,18 @@ class ExternalConfig(object):
 
     @classmethod
     def from_api_repr(cls, resource):
-        """Factory: construct an :class:`ExternalConfig` instance given its API
-        representation
+        """Factory: construct an :class:`~.external_config.ExternalConfig`
+        instance given its API representation.
 
         Args:
             resource (Dict[str, Any]):
-                Definition of an :class:`ExternalConfig` instance in the same
-                representation as is returned from the API.
+                Definition of an :class:`~.external_config.ExternalConfig`
+                instance in the same representation as is returned from the
+                API.
 
         Returns:
-            :class:`ExternalConfig`: Configuration parsed from ``resource``.
+            :class:`~.external_config.ExternalConfig`:
+                Configuration parsed from ``resource``.
         """
         config = cls(resource['sourceFormat'])
         for optcls in _OPTION_CLASSES:
