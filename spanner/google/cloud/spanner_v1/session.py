@@ -114,7 +114,7 @@ class Session(object):
         session_pb = api.create_session(
             self._database.name,
             metadata=metadata,
-            **kw,
+            **kw
         )
         self._session_id = session_pb.name.split('/')[-1]
 
