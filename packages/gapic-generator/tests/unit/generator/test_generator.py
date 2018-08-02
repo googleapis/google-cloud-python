@@ -41,6 +41,14 @@ def test_constructor():
     assert 'wrap' in g._env.filters
 
 
+def test_custom_template_directory():
+    # Create a generator.
+    g = generator.Generator(api_schema=make_api(), templates='/templates/')
+
+    # Assert that the Jinja loader will pull from the correct location.
+    assert g._env.loader.searchpath == ['/templates/']
+
+
 def test_get_response():
     # Create a generator with mock data.
     #

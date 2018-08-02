@@ -32,9 +32,14 @@ from gapic.schema import api
 @click.option('--output', type=click.File('wb'), default=sys.stdout.buffer,
               help='Where to output the `CodeGeneratorResponse`. '
                    'Defaults to stdout.')
+@click.option('--templates', type=click.Path(exists=True), default=None,
+              help='Which templates to use to generate a library. '
+                   'Defaults to the templates included in gapic-generator, '
+                   'which generate client libraries for Python 3.4 and up.')
 def generate(
         request: typing.BinaryIO,
-        output: typing.BinaryIO) -> None:
+        output: typing.BinaryIO,
+        templates: str = None) -> None:
     """Generate a full API client description."""
 
     # Load the protobuf CodeGeneratorRequest.
@@ -57,7 +62,7 @@ def generate(
     # Translate into a protobuf CodeGeneratorResponse; this reads the
     # individual templates and renders them.
     # If there are issues, error out appropriately.
-    res = generator.Generator(api_schema=api_schema).get_response()
+    res = generator.Generator(api_schema, templates=templates).get_response()
 
     # Output the serialized response.
     output.write(res.SerializeToString())

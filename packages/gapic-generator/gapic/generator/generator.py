@@ -12,13 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import io
 import os
 from typing import Any, Iterable, Mapping, Sequence
 
 import jinja2
 
-from google.protobuf.compiler.plugin_pb2 import CodeGeneratorRequest
 from google.protobuf.compiler.plugin_pb2 import CodeGeneratorResponse
 
 from gapic import utils
@@ -30,25 +28,32 @@ from gapic.schema import api
 class Generator:
     """A protoc code generator for client libraries.
 
-    This class receives a :class:`~.plugin_pb2.CodeGeneratorRequest` (as per
-    the protoc plugin contract), and provides an interface for getting
-    a :class:`~.plugin_pb2.CodeGeneratorResponse`.
-
-    That request with one or more protocol buffers which collectively
-    describe an API.
+    This class receives a :class:`~.api.API`, a representation of the API
+    schema, and provides an interface for getting a
+    :class:`~.plugin_pb2.CodeGeneratorResponse` (which it does through
+    rendering templates).
 
     Args:
-        request (CodeGeneratorRequest): A request protocol buffer as provided
-            by protoc. See ``plugin.proto``.
+        api_schema (~.API): An API schema object, which is sent to every
+            template as the ``api`` variable.
+        templates (str): Optional. Path to the templates to be
+            rendered. If this is not provided, the templates included with
+            this application are used.
     """
-    def __init__(self, api_schema: api.API) -> None:
+    def __init__(self, api_schema: api.API, *,
+                 templates: str = None) -> None:
         self._api = api_schema
+
+        # If explicit templates were not provided, use our default.
+        if not templates:
+            templates = os.path.join(
+                os.path.realpath(os.path.dirname(__file__)),
+                '..', 'templates',
+            )
 
         # Create the jinja environment with which to render templates.
         self._env = jinja2.Environment(
-            loader=loader.TemplateLoader(
-                searchpath=os.path.join(_dirname, '..', 'templates'),
-            ),
+            loader=loader.TemplateLoader(searchpath=templates),
             undefined=jinja2.StrictUndefined,
         )
 
@@ -171,9 +176,6 @@ class Generator:
 
         # Done, return the filename.
         return filename
-
-
-_dirname = os.path.realpath(os.path.dirname(__file__))
 
 
 __all__ = (
