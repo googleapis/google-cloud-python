@@ -16,6 +16,20 @@
 from functools import total_ordering
 import unittest
 
+import mock
+
+
+def _make_database(name='name'):
+    from google.cloud.spanner_v1.database import Database
+
+    return mock.create_autospec(Database, instance=True)
+
+
+def _make_session():
+    from google.cloud.spanner_v1.database import Session
+
+    return mock.create_autospec(Session, instance=True)
+
 
 class TestAbstractSessionPool(unittest.TestCase):
 
@@ -40,7 +54,7 @@ class TestAbstractSessionPool(unittest.TestCase):
 
     def test_bind_abstract(self):
         pool = self._make_one()
-        database = _Database('name')
+        database = _make_database('name')
         with self.assertRaises(NotImplementedError):
             pool.bind(database)
 
@@ -60,13 +74,30 @@ class TestAbstractSessionPool(unittest.TestCase):
         with self.assertRaises(NotImplementedError):
             pool.clear()
 
-    def test__new_session(self):
+    def test__new_session_wo_labels(self):
         pool = self._make_one()
-        database = pool._database = _Database('name')
-        sessions = [_Session(database)]
-        database._sessions.extend(sessions)
-        session = pool._new_session()
-        self.assertIsInstance(session, _Session)
+        database = pool._database = _make_database('name')
+        session = _make_session()
+        database.session.return_value = session
+
+        new_session = pool._new_session()
+
+        self.assertIs(new_session, session)
+        database.session.assert_called_once_with()
+
+    def test__new_session_w_labels(self):
+        labels = {'foo': 'bar'}
+        pool = self._make_one(labels=labels)
+        database = pool._database = _make_database('name')
+        session = _make_session()
+        database.session.return_value = session
+
+        new_session = pool._new_session()
+
+        self.assertIs(new_session, session)
+        database.session.assert_called_once_with(
+            labels=labels,
+        )
 
     def test_session_wo_kwargs(self):
         from google.cloud.spanner_v1.pool import SessionCheckout

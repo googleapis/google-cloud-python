@@ -104,6 +104,8 @@ class AbstractSessionPool(object):
         :rtype: :class:`~google.cloud.spanner_v1.session.Session`
         :returns: new session instance.
         """
+        if self.labels:
+            return self._database.session(labels=self.labels)
         return self._database.session()
 
     def session(self, **kwargs):
