@@ -44,11 +44,20 @@ class TestSession(unittest.TestCase):
     def _make_one(self, *args, **kwargs):
         return self._getTargetClass()(*args, **kwargs)
 
-    def test_constructor(self):
+    def test_constructor_wo_labels(self):
         database = _Database(self.DATABASE_NAME)
         session = self._make_one(database)
         self.assertIs(session.session_id, None)
         self.assertIs(session._database, database)
+        self.assertEqual(session.labels, {})
+
+    def test_constructor_w_labels(self):
+        database = _Database(self.DATABASE_NAME)
+        labels = {'foo': 'bar'}
+        session = self._make_one(database, labels=labels)
+        self.assertIs(session.session_id, None)
+        self.assertIs(session._database, database)
+        self.assertEqual(session.labels, labels)
 
     def test___lt___(self):
         database = _Database(self.DATABASE_NAME)
