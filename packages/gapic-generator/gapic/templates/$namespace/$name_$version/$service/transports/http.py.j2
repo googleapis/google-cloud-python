@@ -76,7 +76,7 @@ class {{ service.name }}HttpTransport({{ service.name }}Transport):
         Args:
             request (~.{{ method.input.python_ident }}):
                 The request object. {{- ' ' -}}
-                {{ method.input.meta.doc|wrap(width=72, offset=36 indent=16) }}
+                {{ method.input.meta.doc|wrap(width=72, offset=36, indent=16) }}
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent alont with the request as metadata.
 
