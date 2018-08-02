@@ -119,9 +119,8 @@ class Instance(object):
             raise ValueError('Project ID on instance does not match the '
                              'project ID on the client')
         instance_id = match.group('instance_id')
-
-        result = cls(instance_id, client, instance_pb.display_name,
-                     instance_pb.type, instance_pb.labels)
+        result = cls(instance_id, client)
+        result._update_from_pb(instance_pb)
         return result
 
     def _update_from_pb(self, instance_pb):
@@ -132,7 +131,7 @@ class Instance(object):
             raise ValueError('Instance protobuf does not contain display_name')
         self.display_name = instance_pb.display_name
         self.type_ = instance_pb.type
-        self.labels = instance_pb.labels
+        self.labels = dict(instance_pb.labels)
 
     @property
     def name(self):

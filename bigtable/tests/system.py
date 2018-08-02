@@ -197,6 +197,7 @@ class TestInstanceAdminAPI(unittest.TestCase):
         self.assertEqual(instance, instance_alt)
         self.assertEqual(instance.display_name, instance_alt.display_name)
         self.assertEqual(instance.type_, instance_alt.type_)
+        self.assertIsInstance(instance_alt.labels, dict)
         self.assertEqual(instance.labels, instance_alt.labels)
 
     def test_cluster_exists(self):
