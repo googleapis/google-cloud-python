@@ -4,6 +4,30 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
+## 1.5.0
+
+### Implementation Changes
+
+- Make 'Table.location' read-only. (#5687)
+
+### New Features
+
+- Add 'clustering_fields' properties. (#5630)
+- Add support for job labels (#5654)
+- Add 'QueryJob.estimated_bytes_processed' property (#5655)
+- Add support/tests for loading tables from 'gzip.GzipFile'. (#5711)
+- Add 'ExternalSourceFormat' enum. (#5674)
+- Add default location to client (#5678)
+
+### Documentation
+
+- Fix typo in CopyJob sources docstring (#5690)
+
+### Internal / Testing Changes
+
+- Add/refactor snippets for managing BigQuery jobs (#5631)
+- Reenable systests for 'dataset.update'/'table.update'. (#5732)
+
 ## 1.4.0
 
 ### Implementation Changes
