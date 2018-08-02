@@ -108,7 +108,14 @@ class Session(object):
             raise ValueError('Session ID already set by back-end')
         api = self._database.spanner_api
         metadata = _metadata_with_prefix(self._database.name)
-        session_pb = api.create_session(self._database.name, metadata=metadata)
+        kw = {}
+        if self._labels:
+            kw = {'session': {'labels': self._labels}}
+        session_pb = api.create_session(
+            self._database.name,
+            metadata=metadata,
+            **kw,
+        )
         self._session_id = session_pb.name.split('/')[-1]
 
     def exists(self):

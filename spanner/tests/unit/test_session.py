@@ -44,6 +44,16 @@ class TestSession(unittest.TestCase):
     def _make_one(self, *args, **kwargs):
         return self._getTargetClass()(*args, **kwargs)
 
+    def _make_session_pb(self, name, labels=None):
+        from google.cloud.spanner_v1.proto.spanner_pb2 import Session
+
+        return Session(name=name, labels=labels)
+
+    def _make_spanner_api(self):
+        from google.cloud.spanner_v1.gapic.spanner_client import SpannerClient
+
+        return mock.Mock(autospec=SpannerClient, instance=True)
+
     def test_constructor_wo_labels(self):
         database = _Database(self.DATABASE_NAME)
         session = self._make_one(database)
@@ -70,6 +80,7 @@ class TestSession(unittest.TestCase):
     def test_name_property_wo_session_id(self):
         database = _Database(self.DATABASE_NAME)
         session = self._make_one(database)
+
         with self.assertRaises(ValueError):
             (session.name)
 
@@ -83,12 +94,14 @@ class TestSession(unittest.TestCase):
         database = _Database(self.DATABASE_NAME)
         session = self._make_one(database)
         session._session_id = self.SESSION_ID
+
         with self.assertRaises(ValueError):
             session.create()
 
     def test_create_ok(self):
-        session_pb = _SessionPB(self.SESSION_NAME)
-        gax_api = _SpannerApi(_create_session_response=session_pb)
+        session_pb = self._make_session_pb(self.SESSION_NAME)
+        gax_api = self._make_spanner_api()
+        gax_api.create_session.return_value = session_pb
         database = _Database(self.DATABASE_NAME)
         database.spanner_api = gax_api
         session = self._make_one(database)
@@ -97,15 +110,35 @@ class TestSession(unittest.TestCase):
 
         self.assertEqual(session.session_id, self.SESSION_ID)
 
-        database_name, metadata = gax_api._create_session_called_with
-        self.assertEqual(database_name, self.DATABASE_NAME)
-        self.assertEqual(
-            metadata, [('google-cloud-resource-prefix', database.name)])
+        gax_api.create_session.assert_called_once_with(
+            self.DATABASE_NAME,
+            metadata=[('google-cloud-resource-prefix', database.name)],
+        )
+
+    def test_create_w_labels(self):
+        labels = {'foo': 'bar'}
+        session_pb = self._make_session_pb(self.SESSION_NAME, labels=labels)
+        gax_api = self._make_spanner_api()
+        gax_api.create_session.return_value = session_pb
+        database = _Database(self.DATABASE_NAME)
+        database.spanner_api = gax_api
+        session = self._make_one(database, labels=labels)
+
+        session.create()
+
+        self.assertEqual(session.session_id, self.SESSION_ID)
+
+        gax_api.create_session.assert_called_once_with(
+            self.DATABASE_NAME,
+            session={'labels': labels},
+            metadata=[('google-cloud-resource-prefix', database.name)],
+        )
 
     def test_create_error(self):
         from google.api_core.exceptions import Unknown
 
-        gax_api = _SpannerApi(_rpc_error=Unknown('error'))
+        gax_api = self._make_spanner_api()
+        gax_api.create_session.side_effect = Unknown('error')
         database = _Database(self.DATABASE_NAME)
         database.spanner_api = gax_api
         session = self._make_one(database)
@@ -119,8 +152,9 @@ class TestSession(unittest.TestCase):
         self.assertFalse(session.exists())
 
     def test_exists_hit(self):
-        session_pb = _SessionPB(self.SESSION_NAME)
-        gax_api = _SpannerApi(_get_session_response=session_pb)
+        session_pb = self._make_session_pb(self.SESSION_NAME)
+        gax_api = self._make_spanner_api()
+        gax_api.get_session.return_value = session_pb
         database = _Database(self.DATABASE_NAME)
         database.spanner_api = gax_api
         session = self._make_one(database)
@@ -128,13 +162,16 @@ class TestSession(unittest.TestCase):
 
         self.assertTrue(session.exists())
 
-        session_name, metadata = gax_api._get_session_called_with
-        self.assertEqual(session_name, self.SESSION_NAME)
-        self.assertEqual(
-            metadata, [('google-cloud-resource-prefix', database.name)])
+        gax_api.get_session.assert_called_once_with(
+            self.SESSION_NAME,
+            metadata=[('google-cloud-resource-prefix', database.name)],
+        )
 
     def test_exists_miss(self):
-        gax_api = _SpannerApi()
+        from google.api_core.exceptions import NotFound
+
+        gax_api = self._make_spanner_api()
+        gax_api.get_session.side_effect = NotFound('testing')
         database = _Database(self.DATABASE_NAME)
         database.spanner_api = gax_api
         session = self._make_one(database)
@@ -142,15 +179,16 @@ class TestSession(unittest.TestCase):
 
         self.assertFalse(session.exists())
 
-        session_name, metadata = gax_api._get_session_called_with
-        self.assertEqual(session_name, self.SESSION_NAME)
-        self.assertEqual(
-            metadata, [('google-cloud-resource-prefix', database.name)])
+        gax_api.get_session.assert_called_once_with(
+            self.SESSION_NAME,
+            metadata=[('google-cloud-resource-prefix', database.name)],
+        )
 
     def test_exists_error(self):
         from google.api_core.exceptions import Unknown
 
-        gax_api = _SpannerApi(_rpc_error=Unknown('error'))
+        gax_api = self._make_spanner_api()
+        gax_api.get_session.side_effect = Unknown('testing')
         database = _Database(self.DATABASE_NAME)
         database.spanner_api = gax_api
         session = self._make_one(database)
@@ -159,14 +197,21 @@ class TestSession(unittest.TestCase):
         with self.assertRaises(Unknown):
             session.exists()
 
+        gax_api.get_session.assert_called_once_with(
+            self.SESSION_NAME,
+            metadata=[('google-cloud-resource-prefix', database.name)],
+        )
+
     def test_delete_wo_session_id(self):
         database = _Database(self.DATABASE_NAME)
         session = self._make_one(database)
+
         with self.assertRaises(ValueError):
             session.delete()
 
     def test_delete_hit(self):
-        gax_api = _SpannerApi(_delete_session_ok=True)
+        gax_api = self._make_spanner_api()
+        gax_api.delete_session.return_value = None
         database = _Database(self.DATABASE_NAME)
         database.spanner_api = gax_api
         session = self._make_one(database)
@@ -174,15 +219,16 @@ class TestSession(unittest.TestCase):
 
         session.delete()
 
-        session_name, metadata = gax_api._delete_session_called_with
-        self.assertEqual(session_name, self.SESSION_NAME)
-        self.assertEqual(
-            metadata, [('google-cloud-resource-prefix', database.name)])
+        gax_api.delete_session.assert_called_once_with(
+            self.SESSION_NAME,
+            metadata=[('google-cloud-resource-prefix', database.name)],
+        )
 
     def test_delete_miss(self):
         from google.cloud.exceptions import NotFound
 
-        gax_api = _SpannerApi(_delete_session_ok=False)
+        gax_api = self._make_spanner_api()
+        gax_api.delete_session.side_effect = NotFound('testing')
         database = _Database(self.DATABASE_NAME)
         database.spanner_api = gax_api
         session = self._make_one(database)
@@ -191,15 +237,16 @@ class TestSession(unittest.TestCase):
         with self.assertRaises(NotFound):
             session.delete()
 
-        session_name, metadata = gax_api._delete_session_called_with
-        self.assertEqual(session_name, self.SESSION_NAME)
-        self.assertEqual(
-            metadata, [('google-cloud-resource-prefix', database.name)])
+        gax_api.delete_session.assert_called_once_with(
+            self.SESSION_NAME,
+            metadata=[('google-cloud-resource-prefix', database.name)],
+        )
 
     def test_delete_error(self):
         from google.api_core.exceptions import Unknown
 
-        gax_api = _SpannerApi(_rpc_error=Unknown('error'))
+        gax_api = self._make_spanner_api()
+        gax_api.delete_session.side_effect = Unknown('testing')
         database = _Database(self.DATABASE_NAME)
         database.spanner_api = gax_api
         session = self._make_one(database)
@@ -207,6 +254,11 @@ class TestSession(unittest.TestCase):
 
         with self.assertRaises(Unknown):
             session.delete()
+
+        gax_api.delete_session.assert_called_once_with(
+            self.SESSION_NAME,
+            metadata=[('google-cloud-resource-prefix', database.name)],
+        )
 
     def test_snapshot_not_created(self):
         database = _Database(self.DATABASE_NAME)
@@ -852,11 +904,11 @@ class _SpannerApi(object):
     def __init__(self, **kwargs):
         self.__dict__.update(**kwargs)
 
-    def create_session(self, database, metadata=None):
+    def create_session(self, database, session=None, metadata=None):
         if self._rpc_error is not None:
             raise self._rpc_error
 
-        self._create_session_called_with = database, metadata
+        self._create_session_called_with = database, session, metadata
         return self._create_session_response
 
     def get_session(self, name, metadata=None):
@@ -917,12 +969,6 @@ class _SpannerApi(object):
     def rollback(self, session, transaction_id, metadata=None):
         self._rolled_back = (session, transaction_id, metadata)
         return self._rollback_response
-
-
-class _SessionPB(object):
-
-    def __init__(self, name):
-        self.name = name
 
 
 class _FauxTimeModule(object):
