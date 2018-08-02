@@ -39,7 +39,6 @@ from test_utils.system import unique_resource_id
 
 LOCATION_ID = 'us-central1-c'
 INSTANCE_ID = 'g-c-p' + unique_resource_id('-')
-LABELS = {u'foo': u'bar'}
 TABLE_ID = 'google-cloud-python-test-table'
 CLUSTER_ID = INSTANCE_ID+'-cluster'
 SERVE_NODES = 3
@@ -57,6 +56,10 @@ ROW_KEY_ALT = b'row-key-alt'
 ROUTING_POLICY_TYPE_ANY = 1
 ROUTING_POLICY_TYPE_SINGLE = 2
 EXISTING_INSTANCES = []
+LABEL_KEY = u'python-system'
+label_stamp = datetime.datetime.utcnow().replace(tzinfo=UTC)
+label_stamp_micros = _microseconds_from_datetime(label_stamp)
+LABELS = {LABEL_KEY: str(label_stamp_micros)}
 
 
 class Config(object):
@@ -101,6 +104,18 @@ def setUpModule():
             raise ValueError('List instances failed in module set up.')
 
         EXISTING_INSTANCES[:] = instances
+
+        # Clean up undeleted instances from prior systest run if any
+        def age_in_hours(micros):
+            return (datetime.datetime.utcnow().replace(tzinfo=UTC) - (
+                _datetime_from_microseconds(micros))).total_seconds() // 3600
+        INSTANCE_TO_CLEAN = [
+            instance for instance in EXISTING_INSTANCES if (
+                LABEL_KEY in instance.labels.keys() and
+                age_in_hours(int(instance.labels[LABEL_KEY]))) >= 2]
+        if INSTANCE_TO_CLEAN:
+            for instance in INSTANCE_TO_CLEAN:
+                instance.delete()
 
         # After listing, create the test instance.
         created_op = Config.INSTANCE.create(clusters=[Config.CLUSTER])
@@ -212,7 +227,8 @@ class TestInstanceAdminAPI(unittest.TestCase):
         _PRODUCTION = enums.Instance.Type.PRODUCTION
         ALT_INSTANCE_ID = 'dif' + unique_resource_id('-')
         instance = Config.CLIENT.instance(ALT_INSTANCE_ID,
-                                          instance_type=_PRODUCTION)
+                                          instance_type=_PRODUCTION,
+                                          labels=LABELS)
 
         ALT_CLUSTER_ID_1 = ALT_INSTANCE_ID+'-c1'
         ALT_CLUSTER_ID_2 = ALT_INSTANCE_ID+'-c2'
@@ -259,7 +275,10 @@ class TestInstanceAdminAPI(unittest.TestCase):
     def test_update_display_name_and_labels(self):
         OLD_DISPLAY_NAME = Config.INSTANCE.display_name
         NEW_DISPLAY_NAME = 'Foo Bar Baz'
-        NEW_LABELS = {'foo_bar': 'foo_bar'}
+        new_label_stamp = datetime.datetime.utcnow().replace(tzinfo=UTC)
+        new_label_stamp_micros = _microseconds_from_datetime(new_label_stamp)
+
+        NEW_LABELS = {LABEL_KEY: str(new_label_stamp_micros)}
         Config.INSTANCE.display_name = NEW_DISPLAY_NAME
         Config.INSTANCE.labels = NEW_LABELS
         operation = Config.INSTANCE.update()
@@ -289,9 +308,10 @@ class TestInstanceAdminAPI(unittest.TestCase):
 
         _DEVELOPMENT = Instance.Type.DEVELOPMENT
         _PRODUCTION = Instance.Type.PRODUCTION
-        ALT_INSTANCE_ID = 'new' + unique_resource_id('-')
+        ALT_INSTANCE_ID = 'ndif' + unique_resource_id('-')
         instance = Config.CLIENT.instance(ALT_INSTANCE_ID,
-                                          instance_type=_DEVELOPMENT)
+                                          instance_type=_DEVELOPMENT,
+                                          labels=LABELS)
         operation = instance.create(location_id=LOCATION_ID, serve_nodes=None)
         # Make sure this instance gets deleted after the test case.
         self.instances_to_delete.append(instance)
