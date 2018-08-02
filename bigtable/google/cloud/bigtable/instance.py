@@ -79,6 +79,13 @@ class Instance(object):
                    be associated with a given resource. Label values must
                    be between 0 and 63 characters long. Keys and values
                    must both be under 128 bytes.
+
+    :type _state: int
+    :param _state: The current state of the instance.
+                  Possible values are represented by the following constants:
+                  :data:`google.cloud.bigtable.enums.Instance.State.STATE_NOT_KNOWN`.
+                  :data:`google.cloud.bigtable.enums.Instance.State.READY`.
+                  :data:`google.cloud.bigtable.enums.Instance.State.CREATING`.
     """
 
     def __init__(self,
@@ -86,12 +93,14 @@ class Instance(object):
                  client,
                  display_name=None,
                  instance_type=None,
-                 labels=None):
+                 labels=None,
+                 _state=None):
         self.instance_id = instance_id
         self._client = client
         self.display_name = display_name or instance_id
         self.type_ = instance_type
         self.labels = labels
+        self._state = _state
 
     @classmethod
     def from_pb(cls, instance_pb, client):
@@ -120,8 +129,11 @@ class Instance(object):
                              'project ID on the client')
         instance_id = match.group('instance_id')
 
-        result = cls(instance_id, client, instance_pb.display_name,
-                     instance_pb.type, instance_pb.labels)
+        result = cls(instance_id, client,
+                     display_name=instance_pb.display_name,
+                     instance_type=instance_pb.type,
+                     labels=instance_pb.labels,
+                     _state=instance_pb.state)
         return result
 
     def _update_from_pb(self, instance_pb):
@@ -133,6 +145,7 @@ class Instance(object):
         self.display_name = instance_pb.display_name
         self.type_ = instance_pb.type
         self.labels = instance_pb.labels
+        self._state = instance_pb.state
 
     @property
     def name(self):
@@ -151,6 +164,11 @@ class Instance(object):
         """
         return self._client.instance_admin_client.instance_path(
             project=self._client.project, instance=self.instance_id)
+
+    @property
+    def state(self):
+        """google.cloud.bigtable.enums.Instance.State: state of Instance."""
+        return self._state
 
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
