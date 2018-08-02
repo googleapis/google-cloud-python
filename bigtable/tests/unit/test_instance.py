@@ -93,7 +93,7 @@ class TestInstance(unittest.TestCase):
         self.assertIsNone(instance.type_)
         self.assertIsNone(instance.labels)
         self.assertIs(instance._client, client)
-        self.assertIsNone(instance._state)
+        self.assertIsNone(instance.state)
 
     def test_constructor_non_default(self):
         from google.cloud.bigtable import enums
@@ -112,7 +112,7 @@ class TestInstance(unittest.TestCase):
         self.assertEqual(instance.type_, instance_type)
         self.assertEqual(instance.labels, labels)
         self.assertIs(instance._client, client)
-        self.assertEqual(instance._state, state)
+        self.assertEqual(instance.state, state)
 
     def test_table_factory(self):
         from google.cloud.bigtable.table import Table
