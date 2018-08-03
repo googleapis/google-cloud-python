@@ -1309,12 +1309,9 @@ ManagedCluster = _reflection.GeneratedProtocolMessageType('ManagedCluster', (_me
       labels:
           Optional. The labels to associate with this cluster.  Label
           keys must be between 1 and 63 characters long, and must
-          conform to the following PCRE regular expression: [:raw-
-          latex:`\p{Ll}`:raw-latex:`\p{Lo}`][:raw-latex:`\p{Ll}`:raw-
-          latex:`\p{Lo}`:raw-latex:`\p{N}`\_-]{0,62}  Label values must
+          conform to the following PCRE regular expression: [STRIPPED] Label values must
           be between 1 and 63 characters long, and must conform to the
-          following PCRE regular expression: [:raw-latex:`\p{Ll}`:raw-
-          latex:`\p{Lo}`:raw-latex:`\p{N}`\_-]{0,63}  No more than 32
+          following PCRE regular expression: [STRIPPED]  No more than 32
           labels can be associated with a given cluster.
   """,
   # @@protoc_insertion_point(class_scope:google.cloud.dataproc.v1beta2.ManagedCluster)
@@ -1392,12 +1389,9 @@ OrderedJob = _reflection.GeneratedProtocolMessageType('OrderedJob', (_message.Me
       labels:
           Optional. The labels to associate with this job.  Label keys
           must be between 1 and 63 characters long, and must conform to
-          the following regular expression: [:raw-latex:`\p{Ll}`:raw-
-          latex:`\p{Lo}`][:raw-latex:`\p{Ll}`:raw-latex:`\p{Lo}`:raw-
-          latex:`\p{N}`\_-]{0,62}  Label values must be between 1 and 63
+          the following regular expression: [STRIPPED]  Label values must be between 1 and 63
           characters long, and must conform to the following regular
-          expression: [:raw-latex:`\p{Ll}`:raw-latex:`\p{Lo}`:raw-
-          latex:`\p{N}`\_-]{0,63}  No more than 32 labels can be
+          expression: [STRIPPED] No more than 32 labels can be
           associated with a given job.
       scheduling:
           Optional. Job scheduling configuration.

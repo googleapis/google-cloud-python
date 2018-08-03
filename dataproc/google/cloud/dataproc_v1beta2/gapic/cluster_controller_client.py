@@ -345,6 +345,7 @@ class ClusterControllerClient(object):
                         }
                       }
                     }
+
                 <strong>Note:</strong> currently only the following fields can be updated:
 
                 <table>
