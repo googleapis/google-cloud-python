@@ -286,6 +286,15 @@ class DirectRow(_SetDeleteRow):
         """
         return self._pb_mutations
 
+    def get_mutations_size(self):
+        """ Gets the total mutations size for current row """
+
+        mutation_size = 0
+        for mutation in self._get_mutations():
+            mutation_size += mutation.ByteSize()
+
+        return mutation_size
+
     def set_cell(self, column_family_id, column, value, timestamp=None):
         """Sets a value in this row.
 
