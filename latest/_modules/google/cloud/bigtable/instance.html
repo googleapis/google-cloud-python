@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigtable.instance &#8212; google-cloud fa2a5f1 documentation</title>
+    <title>google.cloud.bigtable.instance &#8212; google-cloud 893e241 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -114,6 +114,14 @@
 <span class="sd">                   be associated with a given resource. Label values must</span>
 <span class="sd">                   be between 0 and 63 characters long. Keys and values</span>
 <span class="sd">                   must both be under 128 bytes.</span>
+
+<span class="sd">    :type _state: int</span>
+<span class="sd">    :param _state: (`OutputOnly`)</span>
+<span class="sd">                   The current state of the instance.</span>
+<span class="sd">                   Possible values are represented by the following constants:</span>
+<span class="sd">                   :data:`google.cloud.bigtable.enums.Instance.State.STATE_NOT_KNOWN`.</span>
+<span class="sd">                   :data:`google.cloud.bigtable.enums.Instance.State.READY`.</span>
+<span class="sd">                   :data:`google.cloud.bigtable.enums.Instance.State.CREATING`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
@@ -121,12 +129,14 @@
                  <span class="n">client</span><span class="p">,</span>
                  <span class="n">display_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">instance_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">labels</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+                 <span class="n">labels</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">_state</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">instance_id</span> <span class="o">=</span> <span class="n">instance_id</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_client</span> <span class="o">=</span> <span class="n">client</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">display_name</span> <span class="o">=</span> <span class="n">display_name</span> <span class="ow">or</span> <span class="n">instance_id</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">type_</span> <span class="o">=</span> <span class="n">instance_type</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">labels</span> <span class="o">=</span> <span class="n">labels</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_state</span> <span class="o">=</span> <span class="n">_state</span>
 
 <div class="viewcode-block" id="Instance.from_pb"><a class="viewcode-back" href="../../../../bigtable/instance.html#google.cloud.bigtable.instance.Instance.from_pb">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_pb</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">instance_pb</span><span class="p">,</span> <span class="n">client</span><span class="p">):</span>
@@ -154,6 +164,7 @@
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Project ID on instance does not match the &#39;</span>
                              <span class="s1">&#39;project ID on the client&#39;</span><span class="p">)</span>
         <span class="n">instance_id</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s1">&#39;instance_id&#39;</span><span class="p">)</span>
+
         <span class="n">result</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="n">instance_id</span><span class="p">,</span> <span class="n">client</span><span class="p">)</span>
         <span class="n">result</span><span class="o">.</span><span class="n">_update_from_pb</span><span class="p">(</span><span class="n">instance_pb</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">result</span></div>
@@ -167,6 +178,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">display_name</span> <span class="o">=</span> <span class="n">instance_pb</span><span class="o">.</span><span class="n">display_name</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">type_</span> <span class="o">=</span> <span class="n">instance_pb</span><span class="o">.</span><span class="n">type</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">labels</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">instance_pb</span><span class="o">.</span><span class="n">labels</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_state</span> <span class="o">=</span> <span class="n">instance_pb</span><span class="o">.</span><span class="n">state</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -185,6 +197,11 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">instance_admin_client</span><span class="o">.</span><span class="n">instance_path</span><span class="p">(</span>
             <span class="n">project</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">project</span><span class="p">,</span> <span class="n">instance</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">instance_id</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">state</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;google.cloud.bigtable.enums.Instance.State: state of Instance.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state</span>
 
     <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">):</span>

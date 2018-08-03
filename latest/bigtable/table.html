@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Table &#8212; google-cloud fa2a5f1 documentation</title>
+    <title>Table &#8212; google-cloud 893e241 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -231,6 +231,31 @@ the <a class="reference internal" href="../core/retry.html#google.api_core.retry
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A list of response statuses (<cite>google.rpc.status_pb2.Status</cite>)
 corresponding to success or failure of each row mutation
 sent. These will be in the same order as the <cite>rows</cite>.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.bigtable.table.Table.mutations_batcher">
+<code class="descname">mutations_batcher</code><span class="sig-paren">(</span><em>flush_count=1000</em>, <em>max_row_bytes=5242880</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/table.html#Table.mutations_batcher"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.table.Table.mutations_batcher" title="Permalink to this definition">#</a></dt>
+<dd><p>Factory to create a mutation batcher associated with this instance.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>table</strong> (<em>class</em>) – class:<cite>~google.cloud.bigtable.table.Table</cite>.</li>
+<li><strong>flush_count</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – (Optional) Maximum number of rows per batch. If it
+reaches the max number of rows it calls finish_batch() to
+mutate the current row batch. Default is FLUSH_COUNT (1000
+rows).</li>
+<li><strong>max_row_bytes</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – (Optional) Max number of row mutations size to
+flush. If it reaches the max number of row mutations size it
+calls finish_batch() to mutate the current row batch.
+Default is MAX_ROW_BYTES (5 MB).</li>
+</ul>
 </td>
 </tr>
 </tbody>

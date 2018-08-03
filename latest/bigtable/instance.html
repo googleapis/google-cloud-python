@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Instance &#8212; google-cloud fa2a5f1 documentation</title>
+    <title>Instance &#8212; google-cloud 893e241 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -39,7 +39,7 @@
 <p>User-friendly container for Google Cloud Bigtable Instance.</p>
 <dl class="class">
 <dt id="google.cloud.bigtable.instance.Instance">
-<em class="property">class </em><code class="descclassname">google.cloud.bigtable.instance.</code><code class="descname">Instance</code><span class="sig-paren">(</span><em>instance_id</em>, <em>client</em>, <em>display_name=None</em>, <em>instance_type=None</em>, <em>labels=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/instance.html#Instance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.instance.Instance" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="descclassname">google.cloud.bigtable.instance.</code><code class="descname">Instance</code><span class="sig-paren">(</span><em>instance_id</em>, <em>client</em>, <em>display_name=None</em>, <em>instance_type=None</em>, <em>labels=None</em>, <em>_state=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/instance.html#Instance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.instance.Instance" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Representation of a Google Cloud Bigtable Instance.</p>
 <p>We can use an <a class="reference internal" href="#google.cloud.bigtable.instance.Instance" title="google.cloud.bigtable.instance.Instance"><code class="xref py py-class docutils literal notranslate"><span class="pre">Instance</span></code></a> to:</p>
@@ -82,6 +82,12 @@ between 1 and 63 characters long. Maximum 64 labels can
 be associated with a given resource. Label values must
 be between 0 and 63 characters long. Keys and values
 must both be under 128 bytes.</li>
+<li><strong>_state</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – (<cite>OutputOnly</cite>)
+The current state of the instance.
+Possible values are represented by the following constants:
+<code class="xref py py-data docutils literal notranslate"><span class="pre">google.cloud.bigtable.enums.Instance.State.STATE_NOT_KNOWN</span></code>.
+<code class="xref py py-data docutils literal notranslate"><span class="pre">google.cloud.bigtable.enums.Instance.State.READY</span></code>.
+<code class="xref py py-data docutils literal notranslate"><span class="pre">google.cloud.bigtable.enums.Instance.State.CREATING</span></code>.</li>
 </ul>
 </td>
 </tr>
@@ -415,6 +421,12 @@ but the return value is not cached.</p>
 <dt id="google.cloud.bigtable.instance.Instance.reload">
 <code class="descname">reload</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/instance.html#Instance.reload"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.instance.Instance.reload" title="Permalink to this definition">#</a></dt>
 <dd><p>Reload the metadata for this instance.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigtable.instance.Instance.state">
+<code class="descname">state</code><a class="headerlink" href="#google.cloud.bigtable.instance.Instance.state" title="Permalink to this definition">#</a></dt>
+<dd><p><em>google.cloud.bigtable.enums.Instance.State</em> – state of Instance.</p>
 </dd></dl>
 
 <dl class="method">
