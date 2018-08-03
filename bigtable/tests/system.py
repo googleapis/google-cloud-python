@@ -57,9 +57,10 @@ ROUTING_POLICY_TYPE_ANY = 1
 ROUTING_POLICY_TYPE_SINGLE = 2
 EXISTING_INSTANCES = []
 LABEL_KEY = u'python-system'
-label_stamp = datetime.datetime.utcnow().replace(tzinfo=UTC)
-label_stamp_micros = _microseconds_from_datetime(label_stamp)
-LABELS = {LABEL_KEY: str(label_stamp_micros)}
+label_stamp = datetime.datetime.utcnow() \
+                               .replace(microsecond=0, tzinfo=UTC,) \
+                               .strftime("%Y-%m-%dt%H-%M-%S")
+LABELS = {LABEL_KEY: str(label_stamp)}
 
 
 class Config(object):
@@ -104,18 +105,6 @@ def setUpModule():
             raise ValueError('List instances failed in module set up.')
 
         EXISTING_INSTANCES[:] = instances
-
-        # Clean up undeleted instances from prior systest run if any
-        def age_in_hours(micros):
-            return (datetime.datetime.utcnow().replace(tzinfo=UTC) - (
-                _datetime_from_microseconds(micros))).total_seconds() // 3600
-        INSTANCE_TO_CLEAN = [
-            instance for instance in EXISTING_INSTANCES if (
-                LABEL_KEY in instance.labels.keys() and
-                age_in_hours(int(instance.labels[LABEL_KEY]))) >= 2]
-        if INSTANCE_TO_CLEAN:
-            for instance in INSTANCE_TO_CLEAN:
-                instance.delete()
 
         # After listing, create the test instance.
         created_op = Config.INSTANCE.create(clusters=[Config.CLUSTER])
@@ -165,7 +154,7 @@ class TestInstanceAdminAPI(unittest.TestCase):
         from google.cloud.bigtable import enums
 
         ALT_INSTANCE_ID = 'ndef' + unique_resource_id('-')
-        instance = Config.CLIENT.instance(ALT_INSTANCE_ID)
+        instance = Config.CLIENT.instance(ALT_INSTANCE_ID, labels=LABELS)
         ALT_CLUSTER_ID = ALT_INSTANCE_ID+'-cluster'
         cluster = instance.cluster(
             ALT_CLUSTER_ID, location_id=LOCATION_ID, serve_nodes=SERVE_NODES)
@@ -185,8 +174,6 @@ class TestInstanceAdminAPI(unittest.TestCase):
         # Make sure that by default a PRODUCTION type instance is created
         self.assertIsNone(instance.type_)
         self.assertEqual(instance_alt.type_, enums.Instance.Type.PRODUCTION)
-        self.assertIsNone(instance.labels)
-        self.assertFalse(instance_alt.labels)
 
     def test_create_instance(self):
         from google.cloud.bigtable import enums
@@ -275,10 +262,11 @@ class TestInstanceAdminAPI(unittest.TestCase):
     def test_update_display_name_and_labels(self):
         OLD_DISPLAY_NAME = Config.INSTANCE.display_name
         NEW_DISPLAY_NAME = 'Foo Bar Baz'
-        new_label_stamp = datetime.datetime.utcnow().replace(tzinfo=UTC)
-        new_label_stamp_micros = _microseconds_from_datetime(new_label_stamp)
+        n_label_stamp = datetime.datetime.utcnow() \
+                                         .replace(microsecond=0, tzinfo=UTC) \
+                                         .strftime("%Y-%m-%dt%H-%M-%S")
 
-        NEW_LABELS = {LABEL_KEY: str(new_label_stamp_micros)}
+        NEW_LABELS = {LABEL_KEY: str(n_label_stamp)}
         Config.INSTANCE.display_name = NEW_DISPLAY_NAME
         Config.INSTANCE.labels = NEW_LABELS
         operation = Config.INSTANCE.update()
