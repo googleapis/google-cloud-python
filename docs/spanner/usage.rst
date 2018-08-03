@@ -98,8 +98,8 @@ Configuration
 Warnings about Multiprocessing
 -------------------------------------------------
 - When using multiprocessing, the application may hang if a
-  :class:~google.cloud.spanner_v1.client.Client instance is created before
-  :class:multiprocessing.Pool or :class:multiprocessing.Process invokes :func:os.fork.
+  :class:`Client <google.cloud.spanner_v1.client.Client>` instance is created before
+  :class:`multiprocessing.Pool` or :class:`multiprocessing.Process` invokes :func:`os.fork`.
   The issue is under investigation, but may be only happening on Macintosh and not Linux.
   See `GRPC/GRPC#12455 <https://github.com/grpc/grpc/issues/12455#issuecomment-348578950>`_ for more information.
 
