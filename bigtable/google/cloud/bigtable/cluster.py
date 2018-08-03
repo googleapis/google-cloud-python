@@ -117,12 +117,9 @@ class Cluster(object):
             raise ValueError('Project ID on cluster does not match the '
                              'project ID on the client')
         cluster_id = match_cluster_name.group('cluster_id')
-        location_id = cluster_pb.location.split('/')[-1]
 
-        result = cls(cluster_id, instance, location_id=location_id,
-                     serve_nodes=cluster_pb.serve_nodes,
-                     default_storage_type=cluster_pb.default_storage_type,
-                     _state=cluster_pb.state)
+        result = cls(cluster_id, instance)
+        result._update_from_pb(cluster_pb)
         return result
 
     def _update_from_pb(self, cluster_pb):
