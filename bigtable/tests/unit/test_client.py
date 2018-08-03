@@ -251,11 +251,11 @@ class TestClient(unittest.TestCase):
         cluster_id2 = '{}-cluster-1'.format(INSTANCE_ID2)
         cluster_id3 = '{}-cluster-2'.format(INSTANCE_ID2)
         cluster_name1 = (client.instance_admin_client.cluster_path(
-                         self.PROJECT, self.INSTANCE_ID, cluster_id1))
+                         self.PROJECT, INSTANCE_ID1, cluster_id1))
         cluster_name2 = (client.instance_admin_client.cluster_path(
-                         self.PROJECT, self.INSTANCE_ID, cluster_id2))
+                         self.PROJECT, INSTANCE_ID2, cluster_id2))
         cluster_name3 = (client.instance_admin_client.cluster_path(
-                         self.PROJECT, self.INSTANCE_ID, cluster_id3))
+                         self.PROJECT, INSTANCE_ID2, cluster_id3))
 
         # Create response_pb
         response_pb = messages_v2_pb2.ListClustersResponse(
@@ -289,11 +289,17 @@ class TestClient(unittest.TestCase):
 
         self.assertIsInstance(cluster_1, Cluster)
         self.assertEqual(cluster_1.name, cluster_name1)
+        self.assertEqual(cluster_1._instance.instance_id,
+                         INSTANCE_ID1)
 
         self.assertIsInstance(cluster_2, Cluster)
         self.assertEqual(cluster_2.name, cluster_name2)
+        self.assertEqual(cluster_2._instance.instance_id,
+                         INSTANCE_ID2)
 
         self.assertIsInstance(cluster_3, Cluster)
         self.assertEqual(cluster_3.name, cluster_name3)
+        self.assertEqual(cluster_3._instance.instance_id,
+                         INSTANCE_ID2)
 
         self.assertEqual(failed_locations, [failed_location])
