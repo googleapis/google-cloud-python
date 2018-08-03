@@ -81,11 +81,12 @@ class Instance(object):
                    must both be under 128 bytes.
 
     :type _state: int
-    :param _state: The current state of the instance.
-                  Possible values are represented by the following constants:
-                  :data:`google.cloud.bigtable.enums.Instance.State.STATE_NOT_KNOWN`.
-                  :data:`google.cloud.bigtable.enums.Instance.State.READY`.
-                  :data:`google.cloud.bigtable.enums.Instance.State.CREATING`.
+    :param _state: (`OutputOnly`)
+                   The current state of the instance.
+                   Possible values are represented by the following constants:
+                   :data:`google.cloud.bigtable.enums.Instance.State.STATE_NOT_KNOWN`.
+                   :data:`google.cloud.bigtable.enums.Instance.State.READY`.
+                   :data:`google.cloud.bigtable.enums.Instance.State.CREATING`.
     """
 
     def __init__(self,
