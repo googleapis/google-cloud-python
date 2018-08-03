@@ -831,6 +831,17 @@ class TestTable(unittest.TestCase):
 
         self.assertEqual(result, expected_result)
 
+    def test_mutations_batcher_factory(self):
+        flush_count = 100
+        max_row_bytes = 1000
+        table = self._make_one(self.TABLE_ID, None)
+        mutation_batcher = table.mutations_batcher(
+            flush_count=flush_count, max_row_bytes=max_row_bytes)
+
+        self.assertEqual(mutation_batcher.table.table_id, self.TABLE_ID)
+        self.assertEqual(mutation_batcher.flush_count, flush_count)
+        self.assertEqual(mutation_batcher.max_row_bytes, max_row_bytes)
+
 
 class Test__RetryableMutateRowsWorker(unittest.TestCase):
     from grpc import StatusCode
