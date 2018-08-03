@@ -176,6 +176,7 @@ class TestInstanceAdminAPI(unittest.TestCase):
     def test_create_instance(self):
         from google.cloud.bigtable import enums
         _DEVELOPMENT = enums.Instance.Type.DEVELOPMENT
+        _STATE = enums.Instance.State.READY
 
         ALT_INSTANCE_ID = 'new' + unique_resource_id('-')
         instance = Config.CLIENT.instance(ALT_INSTANCE_ID,
@@ -198,6 +199,7 @@ class TestInstanceAdminAPI(unittest.TestCase):
         self.assertEqual(instance.display_name, instance_alt.display_name)
         self.assertEqual(instance.type_, instance_alt.type_)
         self.assertEqual(instance_alt.labels, LABELS)
+        self.assertEqual(_STATE, instance_alt.state)
 
     def test_cluster_exists(self):
         NONEXISTING_CLUSTER_ID = 'cluster-id'
