@@ -39,7 +39,6 @@ from test_utils.system import unique_resource_id
 
 LOCATION_ID = 'us-central1-c'
 INSTANCE_ID = 'g-c-p' + unique_resource_id('-')
-LABELS = {u'foo': u'bar'}
 TABLE_ID = 'google-cloud-python-test-table'
 CLUSTER_ID = INSTANCE_ID+'-cluster'
 SERVE_NODES = 3
@@ -57,6 +56,11 @@ ROW_KEY_ALT = b'row-key-alt'
 ROUTING_POLICY_TYPE_ANY = 1
 ROUTING_POLICY_TYPE_SINGLE = 2
 EXISTING_INSTANCES = []
+LABEL_KEY = u'python-system'
+label_stamp = datetime.datetime.utcnow() \
+                               .replace(microsecond=0, tzinfo=UTC,) \
+                               .strftime("%Y-%m-%dt%H-%M-%S")
+LABELS = {LABEL_KEY: str(label_stamp)}
 
 
 class Config(object):
@@ -150,7 +154,7 @@ class TestInstanceAdminAPI(unittest.TestCase):
         from google.cloud.bigtable import enums
 
         ALT_INSTANCE_ID = 'ndef' + unique_resource_id('-')
-        instance = Config.CLIENT.instance(ALT_INSTANCE_ID)
+        instance = Config.CLIENT.instance(ALT_INSTANCE_ID, labels=LABELS)
         ALT_CLUSTER_ID = ALT_INSTANCE_ID+'-cluster'
         cluster = instance.cluster(
             ALT_CLUSTER_ID, location_id=LOCATION_ID, serve_nodes=SERVE_NODES)
@@ -170,8 +174,6 @@ class TestInstanceAdminAPI(unittest.TestCase):
         # Make sure that by default a PRODUCTION type instance is created
         self.assertIsNone(instance.type_)
         self.assertEqual(instance_alt.type_, enums.Instance.Type.PRODUCTION)
-        self.assertIsNone(instance.labels)
-        self.assertFalse(instance_alt.labels)
 
     def test_create_instance(self):
         from google.cloud.bigtable import enums
@@ -214,7 +216,8 @@ class TestInstanceAdminAPI(unittest.TestCase):
         _PRODUCTION = enums.Instance.Type.PRODUCTION
         ALT_INSTANCE_ID = 'dif' + unique_resource_id('-')
         instance = Config.CLIENT.instance(ALT_INSTANCE_ID,
-                                          instance_type=_PRODUCTION)
+                                          instance_type=_PRODUCTION,
+                                          labels=LABELS)
 
         ALT_CLUSTER_ID_1 = ALT_INSTANCE_ID+'-c1'
         ALT_CLUSTER_ID_2 = ALT_INSTANCE_ID+'-c2'
@@ -261,7 +264,11 @@ class TestInstanceAdminAPI(unittest.TestCase):
     def test_update_display_name_and_labels(self):
         OLD_DISPLAY_NAME = Config.INSTANCE.display_name
         NEW_DISPLAY_NAME = 'Foo Bar Baz'
-        NEW_LABELS = {'foo_bar': 'foo_bar'}
+        n_label_stamp = datetime.datetime.utcnow() \
+                                         .replace(microsecond=0, tzinfo=UTC) \
+                                         .strftime("%Y-%m-%dt%H-%M-%S")
+
+        NEW_LABELS = {LABEL_KEY: str(n_label_stamp)}
         Config.INSTANCE.display_name = NEW_DISPLAY_NAME
         Config.INSTANCE.labels = NEW_LABELS
         operation = Config.INSTANCE.update()
@@ -291,9 +298,10 @@ class TestInstanceAdminAPI(unittest.TestCase):
 
         _DEVELOPMENT = Instance.Type.DEVELOPMENT
         _PRODUCTION = Instance.Type.PRODUCTION
-        ALT_INSTANCE_ID = 'new' + unique_resource_id('-')
+        ALT_INSTANCE_ID = 'ndif' + unique_resource_id('-')
         instance = Config.CLIENT.instance(ALT_INSTANCE_ID,
-                                          instance_type=_DEVELOPMENT)
+                                          instance_type=_DEVELOPMENT,
+                                          labels=LABELS)
         operation = instance.create(location_id=LOCATION_ID, serve_nodes=None)
         # Make sure this instance gets deleted after the test case.
         self.instances_to_delete.append(instance)
