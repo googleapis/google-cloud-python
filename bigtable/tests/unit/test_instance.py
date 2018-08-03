@@ -93,23 +93,26 @@ class TestInstance(unittest.TestCase):
         self.assertIsNone(instance.type_)
         self.assertIsNone(instance.labels)
         self.assertIs(instance._client, client)
+        self.assertIsNone(instance.state)
 
     def test_constructor_non_default(self):
         from google.cloud.bigtable import enums
 
         instance_type = enums.Instance.Type.DEVELOPMENT
+        state = enums.Instance.State.READY
         labels = {'test': 'test'}
         client = object()
 
         instance = self._make_one(self.INSTANCE_ID, client,
                                   display_name=self.DISPLAY_NAME,
                                   instance_type=instance_type,
-                                  labels=labels)
+                                  labels=labels, _state=state)
         self.assertEqual(instance.instance_id, self.INSTANCE_ID)
         self.assertEqual(instance.display_name, self.DISPLAY_NAME)
         self.assertEqual(instance.type_, instance_type)
         self.assertEqual(instance.labels, labels)
         self.assertIs(instance._client, client)
+        self.assertEqual(instance.state, state)
 
     def test_table_factory(self):
         from google.cloud.bigtable.table import Table
@@ -209,10 +212,12 @@ class TestInstance(unittest.TestCase):
         from google.cloud.bigtable import enums
 
         instance_type = enums.Instance.Type.PRODUCTION
+        state = enums.Instance.State.READY
         instance_pb = data_v2_pb2.Instance(
             display_name=self.DISPLAY_NAME,
             type=instance_type,
-            labels=self.LABELS
+            labels=self.LABELS,
+            state=state
         )
 
         instance = self._make_one(None, None)
@@ -223,6 +228,7 @@ class TestInstance(unittest.TestCase):
         self.assertEqual(instance.display_name, self.DISPLAY_NAME)
         self.assertEqual(instance.type_, instance_type)
         self.assertEqual(instance.labels, self.LABELS)
+        self.assertEqual(instance._state, state)
 
     def test__update_from_pb_success_defaults(self):
         from google.cloud.bigtable_admin_v2.proto import (
@@ -261,11 +267,13 @@ class TestInstance(unittest.TestCase):
         client = _Client(project=self.PROJECT)
 
         instance_type = enums.Instance.Type.PRODUCTION
+        state = enums.Instance.State.READY
         instance_pb = data_v2_pb2.Instance(
             name=self.INSTANCE_NAME,
             display_name=self.INSTANCE_ID,
             type=instance_type,
-            labels=self.LABELS
+            labels=self.LABELS,
+            state=state
         )
 
         klass = self._get_target_class()
@@ -276,6 +284,7 @@ class TestInstance(unittest.TestCase):
         self.assertEqual(instance.display_name, self.INSTANCE_ID)
         self.assertEqual(instance.type_, instance_type)
         self.assertEqual(instance.labels, self.LABELS)
+        self.assertEqual(instance._state, state)
 
     def test_from_pb_bad_instance_name(self):
         from google.cloud.bigtable_admin_v2.proto import (
