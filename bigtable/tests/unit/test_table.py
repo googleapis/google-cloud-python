@@ -331,7 +331,8 @@ class TestTable(unittest.TestCase):
         client._instance_admin_client = instance_api
         bigtable_table_stub = (
             client._table_admin_client.bigtable_table_admin_stub)
-        bigtable_table_stub.ListTables.side_effect = [response_pb]
+        bigtable_table_stub.ListTables.side_effect = [response_pb,
+                                                      response_pb]
 
         # Perform the method and check the result.
         table1 = instance.table(self.TABLE_ID)
