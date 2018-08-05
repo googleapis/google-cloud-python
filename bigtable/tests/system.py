@@ -531,6 +531,15 @@ class TestTableAdminAPI(unittest.TestCase):
         tables = Config.INSTANCE.list_tables()
         self.assertEqual(tables, [self._table])
 
+    def test_exists(self):
+        temp_table_id = 'test-table_existence'
+        temp_table = Config.INSTANCE.table(temp_table_id)
+        self.assertFalse(temp_table.exists())
+        temp_table.create()
+        self.assertTrue(temp_table.exists())
+        temp_table.delete()
+        self.assertFalse(temp_table.exists())
+
     def test_create_table(self):
         temp_table_id = 'test-create-table'
         temp_table = Config.INSTANCE.table(temp_table_id)

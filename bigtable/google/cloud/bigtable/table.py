@@ -18,7 +18,6 @@
 from grpc import StatusCode
 
 from google.api_core.exceptions import RetryError
-from google.api_core.exceptions import NotFound
 from google.api_core.retry import if_exception_type
 from google.api_core.retry import Retry
 from google.cloud._helpers import _to_bytes
@@ -222,12 +221,10 @@ class Table(object):
         :returns: True if the table exists, else False.
         """
         table_client = self._instance._client.table_admin_client
-        try:
-            table_client.get_table(name=self.name)
-        except NotFound:
-            return False
-        else:
-            return True
+        for table_pb in table_client.list_tables(self._instance.name):
+            if self.name == table_pb.name:
+                return True
+        return False
 
     def delete(self):
         """Delete this table."""
