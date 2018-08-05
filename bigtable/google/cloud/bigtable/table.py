@@ -14,7 +14,6 @@
 
 """User-friendly container for Google Cloud Bigtable Table."""
 
-
 from grpc import StatusCode
 
 from google.api_core.exceptions import RetryError
@@ -37,7 +36,6 @@ from google.cloud.bigtable_admin_v2.proto import (
     table_pb2 as admin_messages_v2_pb2)
 from google.cloud.bigtable_admin_v2.proto import (
     bigtable_table_admin_pb2 as table_admin_messages_v2_pb2)
-
 
 # Maximum number of mutations in bulk (MutateRowsRequest message):
 # (https://cloud.google.com/bigtable/docs/reference/data/rpc/
@@ -252,6 +250,62 @@ class Table(object):
             column_family = self.column_family(column_family_id,
                                                gc_rule=gc_rule)
             result[column_family_id] = column_family
+        return result
+
+    class _ClusterState(object):
+
+        def __init__(self, replication_state):
+            self.replication_state = replication_state
+
+        def __repr__(self):
+            replication_state_value_to_name = {
+                0: 'STATE_NOT_KNOWN',
+                1: 'INITIALIZING',
+                2: 'PLANNED_MAINTENANCE',
+                3: 'UNPLANNED_MAINTENANCE',
+                4: 'READY'
+            }
+            return replication_state_value_to_name[self.replication_state]
+
+    def list_cluster_states(self):
+        """List the cluster states owned by this table.
+        :rtype: dict
+        :returns: Dictionary from cluster ID to
+                  per-cluster table replication_state.
+                  If it could not be determined whether or not the table has
+                  data in a particular cluster (for example, if its zone is
+                  unavailable), then there will be an entry for the cluster
+                  with STATE_NOT_KNOWN `replication_state`.
+                  Possible replications_state values
+                  STATE_NOT_KNOWN (int): The replication state of the table is
+                  unknown in this cluster.
+                  INITIALIZING (int): The cluster was recently created, and the
+                  table must finish copying
+                  over pre-existing data from other clusters before it can
+                  begin receiving live replication updates and serving
+                  ``Data API`` requests.
+                  PLANNED_MAINTENANCE (int): The table is temporarily unable to
+                  serve
+                  ``Data API`` requests from this
+                  cluster due to planned internal maintenance.
+                  UNPLANNED_MAINTENANCE (int): The table is temporarily unable
+                  to serve
+                  ``Data API`` requests from this
+                  cluster due to unplanned or emergency maintenance.
+                  READY (int): The table can serve
+                  ``Data API`` requests from this
+                  cluster. Depending on replication delay, reads may not
+                  immediately reflect the state of the table in other clusters.
+        :raises: :class:`ValueError <exceptions.ValueError>` if the cluster
+                  state does not present in predefined states.
+        """
+        table_client = self._instance._client.table_admin_client
+        table_pb = table_client.get_table(self.name)
+
+        result = {}
+        for cluster_id, value_pb in table_pb.cluster_states.items():
+            result[cluster_id] = self._ClusterState(
+                value_pb.replication_state)
         return result
 
     def read_row(self, row_key, filter_=None):
@@ -498,6 +552,7 @@ class _RetryableMutateRowsWorker(object):
         StatusCode.ABORTED.value[0],
         StatusCode.UNAVAILABLE.value[0],
     )
+
     # pylint: enable=unsubscriptable-object
 
     def __init__(self, client, table_name, rows, app_profile_id=None):
@@ -651,7 +706,7 @@ def _create_row_request(table_name, row_key=None, start_key=None, end_key=None,
                          'set simultaneously')
 
     if ((start_key is not None or end_key is not None) and
-            row_set is not None):
+                row_set is not None):
         raise ValueError('Row range and row set cannot be '
                          'set simultaneously')
 
