@@ -22,7 +22,6 @@ from ._testing import _make_credentials
 
 
 class Test___mutate_rows_request(unittest.TestCase):
-
     def _call_fut(self, table_name, rows):
         from google.cloud.bigtable.table import _mutate_rows_request
 
@@ -75,7 +74,6 @@ class Test___mutate_rows_request(unittest.TestCase):
 
 
 class Test__check_row_table_name(unittest.TestCase):
-
     def _call_fut(self, table_name, row):
         from google.cloud.bigtable.table import _check_row_table_name
 
@@ -123,7 +121,6 @@ class Test__check_row_type(unittest.TestCase):
 
 
 class TestTable(unittest.TestCase):
-
     PROJECT_ID = 'project-id'
     INSTANCE_ID = 'instance-id'
     INSTANCE_NAME = ('projects/' + PROJECT_ID + '/instances/' + INSTANCE_ID)
@@ -398,7 +395,6 @@ class TestTable(unittest.TestCase):
         bigtable_table_stub = (
             client._table_admin_client.bigtable_table_admin_stub)
         bigtable_table_stub.GetTable.side_effect = [response_pb]
-
         # Create expected_result.
         expected_result = {
             COLUMN_FAMILY_ID: table.column_family(COLUMN_FAMILY_ID),
@@ -410,6 +406,38 @@ class TestTable(unittest.TestCase):
 
     def test_list_column_families(self):
         self._list_column_families_helper()
+
+    def test_list_cluster_states(self):
+        from google.cloud.bigtable_admin_v2.gapic import (
+            bigtable_table_admin_client)
+
+        table_api = bigtable_table_admin_client.BigtableTableAdminClient(
+            mock.Mock())
+        credentials = _make_credentials()
+        client = self._make_client(project='project-id',
+                                   credentials=credentials, admin=True)
+        instance = client.instance(instance_id=self.INSTANCE_ID)
+        table = self._make_one(self.TABLE_ID, instance)
+
+        response_pb = _TablePB(
+            cluster_states={'cluster-id1': _ClusterStatePB(2),
+                            'cluster-id2': _ClusterStatePB(1),
+                            'cluster-id3': _ClusterStatePB(4),
+                            },
+        )
+        
+        # Patch the stub used by the API method.
+        client._table_admin_client = table_api
+        bigtable_table_stub = (
+            client._table_admin_client.bigtable_table_admin_stub)
+        bigtable_table_stub.GetTable.side_effect = [response_pb]
+
+        # Create expected_result.
+        expected_result = table.cluster_states
+
+        # Perform the method and check the result.
+        result = table.list_cluster_states()
+        self.assertEqual(result, expected_result)
 
     def _read_row_helper(self, chunks, expected_result, app_profile_id=None):
         from google.cloud._testing import _Monkey
@@ -749,7 +777,7 @@ class TestTable(unittest.TestCase):
         instance = client.instance(instance_id=self.INSTANCE_ID)
         table = self._make_one(self.TABLE_ID, instance)
         table.name.return_value = client._table_data_client.table_path(
-            self.PROJECT_ID,  self.INSTANCE_ID, self.TABLE_ID)
+            self.PROJECT_ID, self.INSTANCE_ID, self.TABLE_ID)
 
         expected_result = None  # truncate() has no return value.
         with mock.patch('google.cloud.bigtable.table.Table.name',
@@ -1077,7 +1105,7 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         bigtable_stub.MutateRows.return_value = [response]
 
         retry = DEFAULT_RETRY.with_delay(
-                initial=0.1, maximum=0.2, multiplier=2.0).with_deadline(0.5)
+            initial=0.1, maximum=0.2, multiplier=2.0).with_deadline(0.5)
         worker = self._make_worker(client, table.name, [row_1, row_2])
         statuses = worker(retry=retry)
 
@@ -1402,7 +1430,6 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
 
 
 class Test__create_row_request(unittest.TestCase):
-
     def _call_fut(self, table_name, row_key=None, start_key=None, end_key=None,
                   filter_=None, limit=None, end_inclusive=False,
                   app_profile_id=None, row_set=None):
@@ -1568,7 +1595,6 @@ class _MockReadRowsIterator(object):
 
 
 class _MockFailureIterator_1(object):
-
     def next(self):
         class DeadlineExceeded(grpc.RpcError, grpc.Call):
             """ErrorDeadlineExceeded exception"""
@@ -1585,7 +1611,6 @@ class _MockFailureIterator_1(object):
 
 
 class _MockFailureIterator_2(object):
-
     def __init__(self, *values):
         self.iter_values = values[0]
         self.calls = 0
@@ -1610,7 +1635,6 @@ class _MockFailureIterator_2(object):
 
 
 class _ReadRowsResponseV2(object):
-
     def __init__(self, chunks, last_scanned_row_key=''):
         self.chunks = chunks
         self.last_scanned_row_key = last_scanned_row_key
@@ -1628,3 +1652,12 @@ def _ColumnFamilyPB(*args, **kw):
         table_pb2 as table_v2_pb2)
 
     return table_v2_pb2.ColumnFamily(*args, **kw)
+
+
+def _ClusterStatePB(replication_state):
+    from google.cloud.bigtable_admin_v2.proto import (
+        table_pb2 as table_v2_pb2)
+
+    return table_v2_pb2.Table.ClusterState(
+        replication_state=replication_state
+    )
