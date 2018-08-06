@@ -369,6 +369,14 @@ class Method:
             return tuple(re.findall(r'\{([a-z][\w\d_.]+)=', http.get))
         return ()
 
+    @property
+    def grpc_stub_type(self) -> str:
+        """Return the type of gRPC stub to use."""
+        return '{client}_{server}'.format(
+            client='stream' if self.client_streaming else 'unary',
+            server='stream' if self.server_streaming else 'unary',
+        )
+
     @utils.cached_property
     def signatures(self) -> Tuple[signature_pb2.MethodSignature]:
         """Return the signature defined for this method."""

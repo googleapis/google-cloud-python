@@ -67,6 +67,26 @@ def test_method_field_headers():
     assert isinstance(method.field_headers, collections.Sequence)
 
 
+def test_method_unary_unary():
+    method = make_method('F', client_streaming=False, server_streaming=False)
+    assert method.grpc_stub_type == 'unary_unary'
+
+
+def test_method_unary_stream():
+    method = make_method('F', client_streaming=False, server_streaming=True)
+    assert method.grpc_stub_type == 'unary_stream'
+
+
+def test_method_stream_unary():
+    method = make_method('F', client_streaming=True, server_streaming=False)
+    assert method.grpc_stub_type == 'stream_unary'
+
+
+def test_method_stream_stream():
+    method = make_method('F', client_streaming=True, server_streaming=True)
+    assert method.grpc_stub_type == 'stream_stream'
+
+
 def make_method(
         name: str, input_message: wrappers.MessageType = None,
         output_message: wrappers.MessageType = None,
@@ -81,6 +101,7 @@ def make_method(
         name=name,
         input_type=str(input_message.meta.address),
         output_type=str(output_message.meta.address),
+        **kwargs
     )
 
     # Instantiate the wrapper class.

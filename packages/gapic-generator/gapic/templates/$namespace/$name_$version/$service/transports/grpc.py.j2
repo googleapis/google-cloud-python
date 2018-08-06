@@ -101,7 +101,7 @@ class {{ service.name }}GrpcTransport({{ service.name }}Transport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if '{{ method.name|snake_case }}' not in self._stubs:
-            self._stubs['{{ method.name|snake_case }}'] = self.grpc_channel.unary_unary(
+            self._stubs['{{ method.name|snake_case }}'] = self.grpc_channel.{{ method.grpc_stub_type }}(
                 '/{{ '.'.join(method.meta.address.package) }}.{{ service.name }}/{{ method.name }}',
                 request_serializer={{ method.input.python_module }}.{{ method.input.name }}.SerializeToString,
                 response_deserializer={{ method.output.python_module }}.{{ method.output.name }}.FromString,
