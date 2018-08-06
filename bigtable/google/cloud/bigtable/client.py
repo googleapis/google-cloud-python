@@ -262,8 +262,8 @@ class Client(ClientWithProject):
         :returns:
             (clusters, failed_locations), where 'clusters' is list of
             :class:`google.cloud.bigtable.instance.Cluster`, and
-            'failed_locations' is a list of locations which could not
-            be resolved.
+            'failed_locations' is a list of strings representing
+            locations which could not be resolved.
         """
         resp = (self.instance_admin_client.list_clusters(
             self.instance_admin_client.instance_path(self.project, '-')))
