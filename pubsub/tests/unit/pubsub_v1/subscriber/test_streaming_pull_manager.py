@@ -111,6 +111,17 @@ def test_ack_deadline():
     assert manager.ack_deadline == 20
 
 
+def test_maybe_pause_consumer_wo_consumer_set():
+    manager = make_manager(
+        flow_control=types.FlowControl(max_messages=10, max_bytes=1000))
+    manager.maybe_pause_consumer()  # no raise
+    # Ensure load > 1
+    _leaser = manager._leaser = mock.create_autospec(leaser.Leaser)
+    _leaser.message_count = 100
+    _leaser.bytes = 10000
+    manager.maybe_pause_consumer()  # no raise
+
+
 def test_lease_load_and_pause():
     manager = make_manager(
         flow_control=types.FlowControl(max_messages=10, max_bytes=1000))
@@ -175,6 +186,12 @@ def test_resume_not_paused():
     # Resuming should have no effect is the consumer is not actually paused.
     manager.maybe_resume_consumer()
     manager._consumer.resume.assert_not_called()
+
+
+def test_maybe_resume_consumer_wo_consumer_set():
+    manager = make_manager(
+        flow_control=types.FlowControl(max_messages=10, max_bytes=1000))
+    manager.maybe_resume_consumer()  # no raise
 
 
 def test_send_unary():
