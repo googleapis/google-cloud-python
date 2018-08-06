@@ -39,6 +39,8 @@ def _bad_copy(bad_request):
 
 
 retry_429 = RetryErrors(exceptions.TooManyRequests)
+retry_429_503 = RetryErrors([
+    exceptions.TooManyRequests, exceptions.ServiceUnavailable])
 retry_bad_copy = RetryErrors(exceptions.BadRequest,
                              error_predicate=_bad_copy)
 
@@ -938,7 +940,7 @@ class TestStorageNotificationCRUD(unittest.TestCase):
         self.case_buckets_to_delete.append(new_bucket_name)
         self.assertEqual(list(bucket.list_notifications()), [])
         notification = bucket.notification(self.TOPIC_NAME)
-        retry_429(notification.create)()
+        retry_429_503(notification.create)()
         try:
             self.assertTrue(notification.exists())
             self.assertIsNotNone(notification.notification_id)
@@ -959,7 +961,7 @@ class TestStorageNotificationCRUD(unittest.TestCase):
             blob_name_prefix=self.BLOB_NAME_PREFIX,
             payload_format=self.payload_format(),
         )
-        retry_429(notification.create)()
+        retry_429_503(notification.create)()
         try:
             self.assertTrue(notification.exists())
             self.assertIsNotNone(notification.notification_id)
