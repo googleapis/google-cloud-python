@@ -12,9 +12,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-try:
-    import pkg_resources
-    pkg_resources.declare_namespace(__name__)
-except ImportError:
-    import pkgutil
-    __path__ = pkgutil.extend_path(__path__, __name__)
+import os
+import time
+
+from google.cloud import dataproc_v1beta2
+from google.cloud.dataproc_v1beta2.proto import clusters_pb2
+
+
+class TestSystemClusterController(object):
+    def test_list_clusters(self):
+        project_id = os.environ['PROJECT_ID']
+
+        client = dataproc_v1beta2.ClusterControllerClient()
+        project_id_2 = project_id
+        region = 'global'
+        response = client.list_clusters(project_id_2, region)

@@ -55,8 +55,10 @@ class ClusterStatus(object):
 
     class Substate(enum.IntEnum):
         """
+        The cluster substate.
+
         Attributes:
-          UNSPECIFIED (int)
+          UNSPECIFIED (int): The cluster substate is unknown.
           UNHEALTHY (int): The cluster is known to be in an unhealthy state
           (for example, critical daemons are not running or HDFS capacity is
           exhausted).
@@ -136,8 +138,10 @@ class JobStatus(object):
 
     class Substate(enum.IntEnum):
         """
+        The job substate.
+
         Attributes:
-          UNSPECIFIED (int)
+          UNSPECIFIED (int): The job substate is unknown.
           SUBMITTED (int): The Job is submitted to the agent.
 
           Applies to RUNNING state.
@@ -200,3 +204,42 @@ class ListJobsRequest(object):
         ALL = 0
         ACTIVE = 1
         NON_ACTIVE = 2
+
+
+class WorkflowMetadata(object):
+    class State(enum.IntEnum):
+        """
+        The operation state.
+
+        Attributes:
+          UNKNOWN (int): Unused.
+          PENDING (int): The operation has been created.
+          RUNNING (int): The operation is running.
+          DONE (int): The operation is done; either cancelled or completed.
+        """
+        UNKNOWN = 0
+        PENDING = 1
+        RUNNING = 2
+        DONE = 3
+
+
+class WorkflowNode(object):
+    class NodeState(enum.IntEnum):
+        """
+        The workflow node state.
+
+        Attributes:
+          NODE_STATUS_UNSPECIFIED (int): State is unspecified.
+          BLOCKED (int): The node is awaiting prerequisite node to finish.
+          RUNNABLE (int): The node is runnable but not running.
+          RUNNING (int): The node is running.
+          COMPLETED (int): The node completed successfully.
+          FAILED (int): The node failed. A node can be marked FAILED because
+          its ancestor or peer failed.
+        """
+        NODE_STATUS_UNSPECIFIED = 0
+        BLOCKED = 1
+        RUNNABLE = 2
+        RUNNING = 3
+        COMPLETED = 4
+        FAILED = 5

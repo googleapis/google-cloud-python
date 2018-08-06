@@ -14,10 +14,11 @@
 
 from __future__ import absolute_import
 
-from google.cloud.dataproc_v1 import types
-from google.cloud.dataproc_v1.gapic import cluster_controller_client
-from google.cloud.dataproc_v1.gapic import enums
-from google.cloud.dataproc_v1.gapic import job_controller_client
+from google.cloud.dataproc_v1beta2 import types
+from google.cloud.dataproc_v1beta2.gapic import cluster_controller_client
+from google.cloud.dataproc_v1beta2.gapic import enums
+from google.cloud.dataproc_v1beta2.gapic import job_controller_client
+from google.cloud.dataproc_v1beta2.gapic import workflow_template_service_client
 
 
 class ClusterControllerClient(
@@ -31,9 +32,16 @@ class JobControllerClient(job_controller_client.JobControllerClient):
     enums = enums
 
 
+class WorkflowTemplateServiceClient(
+        workflow_template_service_client.WorkflowTemplateServiceClient):
+    __doc__ = workflow_template_service_client.WorkflowTemplateServiceClient.__doc__
+    enums = enums
+
+
 __all__ = (
     'enums',
     'types',
     'ClusterControllerClient',
     'JobControllerClient',
+    'WorkflowTemplateServiceClient',
 )
