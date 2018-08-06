@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigquery.external_config &#8212; google-cloud cac541c09c documentation</title>
+    <title>google.cloud.bigquery.external_config &#8212; google-cloud 38080c8 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -65,7 +65,7 @@
 
 
 <div class="viewcode-block" id="ExternalSourceFormat"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.external_config.ExternalSourceFormat.html#google.cloud.bigquery.external_config.ExternalSourceFormat">[docs]</a><span class="k">class</span> <span class="nc">ExternalSourceFormat</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;The format for external data files..</span>
+    <span class="sd">&quot;&quot;&quot;The format for external data files.</span>
 
 <span class="sd">    Note that the set of allowed values for external data sources is different</span>
 <span class="sd">    than the set used for loading data (see</span>
@@ -192,21 +192,26 @@
 <div class="viewcode-block" id="BigtableColumn.to_api_repr"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.external_config.BigtableColumn.to_api_repr.html#google.cloud.bigquery.external_config.BigtableColumn.to_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">to_api_repr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Build an API representation of this object.</span>
 
-<span class="sd">        :rtype: dict</span>
-<span class="sd">        :returns: A dictionary in the format used by the BigQuery API.</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            Dict[str, Any]:</span>
+<span class="sd">                A dictionary in the format used by the BigQuery API.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="BigtableColumn.from_api_repr"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.external_config.BigtableColumn.from_api_repr.html#google.cloud.bigquery.external_config.BigtableColumn.from_api_repr">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">resource</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Factory: construct a BigtableColumn given its API representation</span>
+        <span class="sd">&quot;&quot;&quot;Factory: construct a :class:`~.external_config.BigtableColumn`</span>
+<span class="sd">        instance given its API representation.</span>
 
-<span class="sd">        :type resource: dict</span>
-<span class="sd">        :param resource:</span>
-<span class="sd">            A column in the same representation as is returned from the API.</span>
+<span class="sd">        Args:</span>
+<span class="sd">            resource (Dict[str, Any]):</span>
+<span class="sd">                Definition of a :class:`~.external_config.BigtableColumn`</span>
+<span class="sd">                instance in the same representation as is returned from the</span>
+<span class="sd">                API.</span>
 
-<span class="sd">        :rtype: :class:`~google.cloud.bigquery.BigtableColumn`</span>
-<span class="sd">        :returns: Configuration parsed from ``resource``.</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            :class:`~.external_config.BigtableColumn`:</span>
+<span class="sd">                Configuration parsed from ``resource``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">config</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">()</span>
         <span class="n">config</span><span class="o">.</span><span class="n">_properties</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">resource</span><span class="p">)</span>
@@ -278,8 +283,8 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">columns</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;List[google.cloud.bigquery.external_config.BigtableColumn]: Lists of</span>
-<span class="sd">        columns that should be exposed as individual fields</span>
+        <span class="sd">&quot;&quot;&quot;List[:class:`~.external_config.BigtableColumn`]: Lists of columns</span>
+<span class="sd">        that should be exposed as individual fields.</span>
 
 <span class="sd">        See</span>
 <span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).bigtableOptions.columnFamilies.columns</span>
@@ -295,24 +300,26 @@
 <div class="viewcode-block" id="BigtableColumnFamily.to_api_repr"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.external_config.BigtableColumnFamily.to_api_repr.html#google.cloud.bigquery.external_config.BigtableColumnFamily.to_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">to_api_repr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Build an API representation of this object.</span>
 
-<span class="sd">        :rtype: dict</span>
-<span class="sd">        :returns: A dictionary in the format used by the BigQuery API.</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            Dict[str, Any]:</span>
+<span class="sd">                A dictionary in the format used by the BigQuery API.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="BigtableColumnFamily.from_api_repr"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.external_config.BigtableColumnFamily.from_api_repr.html#google.cloud.bigquery.external_config.BigtableColumnFamily.from_api_repr">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">resource</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Factory: construct a BigtableColumnFamily given its</span>
-<span class="sd">           API representation</span>
+        <span class="sd">&quot;&quot;&quot;Factory: construct a :class:`~.external_config.BigtableColumnFamily`</span>
+<span class="sd">        instance given its API representation.</span>
 
-<span class="sd">        :type resource: dict</span>
-<span class="sd">        :param resource:</span>
-<span class="sd">            A column family in the same representation as is returned</span>
-<span class="sd">            from the API.</span>
+<span class="sd">        Args:</span>
+<span class="sd">            resource (Dict[str, Any]):</span>
+<span class="sd">                Definition of a :class:`~.external_config.BigtableColumnFamily`</span>
+<span class="sd">                instance in the same representation as is returned from the</span>
+<span class="sd">                API.</span>
 
-<span class="sd">        :rtype:</span>
-<span class="sd">            :class:`~google.cloud.bigquery.external_config.BigtableColumnFamily`</span>
-<span class="sd">        :returns: Configuration parsed from ``resource``.</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            :class:`~.external_config.BigtableColumnFamily`:</span>
+<span class="sd">                Configuration parsed from ``resource``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">config</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">()</span>
         <span class="n">config</span><span class="o">.</span><span class="n">_properties</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">resource</span><span class="p">)</span>
@@ -320,8 +327,8 @@
 
 
 <div class="viewcode-block" id="BigtableOptions"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.external_config.BigtableOptions.html#google.cloud.bigquery.external_config.BigtableOptions">[docs]</a><span class="k">class</span> <span class="nc">BigtableOptions</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Options that describe how to treat Bigtable tables</span>
-<span class="sd">       as BigQuery tables.&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Options that describe how to treat Bigtable tables as BigQuery tables.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">_SOURCE_FORMAT</span> <span class="o">=</span> <span class="s1">&#39;BIGTABLE&#39;</span>
     <span class="n">_RESOURCE_NAME</span> <span class="o">=</span> <span class="s1">&#39;bigtableOptions&#39;</span>
@@ -331,8 +338,8 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">ignore_unspecified_column_families</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;bool: If `True`, ignore columns not specified in columnFamilies</span>
-<span class="sd">        list. Defaults to `False`.</span>
+        <span class="sd">&quot;&quot;&quot;bool: If :data:`True`, ignore columns not specified in</span>
+<span class="sd">        :attr:`column_families` list. Defaults to :data:`False`.</span>
 
 <span class="sd">        See</span>
 <span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).bigtableOptions.ignoreUnspecifiedColumnFamilies</span>
@@ -346,8 +353,8 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">read_rowkey_as_string</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;bool: If `True`, rowkey column families will be read and converted</span>
-<span class="sd">        to string. Defaults to `False`.</span>
+        <span class="sd">&quot;&quot;&quot;bool: If :data:`True`, rowkey column families will be read and</span>
+<span class="sd">        converted to string. Defaults to :data:`False`.</span>
 
 <span class="sd">        See</span>
 <span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).bigtableOptions.readRowkeyAsString</span>
@@ -361,9 +368,8 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">column_families</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;List[google.cloud.bigquery.external_config.BigtableColumnFamily]:</span>
-<span class="sd">        List of column families to expose in the table schema along with their</span>
-<span class="sd">        types.</span>
+        <span class="sd">&quot;&quot;&quot;List[:class:`~.external_config.BigtableColumnFamily`]: List of</span>
+<span class="sd">        column families to expose in the table schema along with their types.</span>
 
 <span class="sd">        See</span>
 <span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).bigtableOptions.columnFamilies</span>
@@ -379,23 +385,26 @@
 <div class="viewcode-block" id="BigtableOptions.to_api_repr"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.external_config.BigtableOptions.to_api_repr.html#google.cloud.bigquery.external_config.BigtableOptions.to_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">to_api_repr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Build an API representation of this object.</span>
 
-<span class="sd">        :rtype: dict</span>
-<span class="sd">        :returns: A dictionary in the format used by the BigQuery API.</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            Dict[str, Any]:</span>
+<span class="sd">                A dictionary in the format used by the BigQuery API.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="BigtableOptions.from_api_repr"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.external_config.BigtableOptions.from_api_repr.html#google.cloud.bigquery.external_config.BigtableOptions.from_api_repr">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">resource</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Factory: construct a BigtableOptions given its API representation</span>
+        <span class="sd">&quot;&quot;&quot;Factory: construct a :class:`~.external_config.BigtableOptions`</span>
+<span class="sd">        instance given its API representation.</span>
 
-<span class="sd">        :type resource: dict</span>
-<span class="sd">        :param resource:</span>
-<span class="sd">            A BigtableOptions in the same representation as is returned</span>
-<span class="sd">            from the API.</span>
+<span class="sd">        Args:</span>
+<span class="sd">            resource (Dict[str, Any]):</span>
+<span class="sd">                Definition of a :class:`~.external_config.BigtableOptions`</span>
+<span class="sd">                instance in the same representation as is returned from the</span>
+<span class="sd">                API.</span>
 
-<span class="sd">        :rtype:</span>
-<span class="sd">            :class:`~google.cloud.bigquery.external_config.BigtableOptions`</span>
-<span class="sd">        :returns: Configuration parsed from ``resource``.</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            :class:`~.external_config.BigtableOptions`:</span>
+<span class="sd">                Configuration parsed from ``resource``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">config</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">()</span>
         <span class="n">config</span><span class="o">.</span><span class="n">_properties</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">resource</span><span class="p">)</span>
@@ -413,8 +422,8 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">allow_jagged_rows</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;bool: If `True`, BigQuery treats missing trailing columns as null</span>
-<span class="sd">        values. Defaults to `False`.</span>
+        <span class="sd">&quot;&quot;&quot;bool: If :data:`True`, BigQuery treats missing trailing columns as</span>
+<span class="sd">        null values. Defaults to :data:`False`.</span>
 
 <span class="sd">        See</span>
 <span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).csvOptions.allowJaggedRows</span>
@@ -428,8 +437,8 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">allow_quoted_newlines</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;bool: If `True`, quoted data sections that contain newline</span>
-<span class="sd">        characters in a CSV file are allowed. Defaults to `False`.</span>
+        <span class="sd">&quot;&quot;&quot;bool: If :data:`True`, quoted data sections that contain newline</span>
+<span class="sd">        characters in a CSV file are allowed. Defaults to :data:`False`.</span>
 
 <span class="sd">        See</span>
 <span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).csvOptions.allowQuotedNewlines</span>
@@ -457,7 +466,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">field_delimiter</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;str: The separator for fields in a CSV file. Defaults a comma (&#39;,&#39;).</span>
+        <span class="sd">&quot;&quot;&quot;str: The separator for fields in a CSV file. Defaults to comma (&#39;,&#39;).</span>
 
 <span class="sd">        See</span>
 <span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).csvOptions.fieldDelimiter</span>
@@ -500,22 +509,26 @@
 <div class="viewcode-block" id="CSVOptions.to_api_repr"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.external_config.CSVOptions.to_api_repr.html#google.cloud.bigquery.external_config.CSVOptions.to_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">to_api_repr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Build an API representation of this object.</span>
 
-<span class="sd">        :rtype: dict</span>
-<span class="sd">        :returns: A dictionary in the format used by the BigQuery API.</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            Dict[str, Any]:</span>
+<span class="sd">                A dictionary in the format used by the BigQuery API.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="CSVOptions.from_api_repr"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.external_config.CSVOptions.from_api_repr.html#google.cloud.bigquery.external_config.CSVOptions.from_api_repr">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">resource</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Factory: construct a CSVOptions given its API representation</span>
+        <span class="sd">&quot;&quot;&quot;Factory: construct a :class:`~.external_config.CSVOptions` instance</span>
+<span class="sd">        given its API representation.</span>
 
-<span class="sd">        :type resource: dict</span>
-<span class="sd">        :param resource:</span>
-<span class="sd">            A CSVOptions in the same representation as is</span>
-<span class="sd">            returned from the API.</span>
+<span class="sd">        Args:</span>
+<span class="sd">            resource (Dict[str, Any]):</span>
+<span class="sd">                Definition of a :class:`~.external_config.CSVOptions`</span>
+<span class="sd">                instance in the same representation as is returned from the</span>
+<span class="sd">                API.</span>
 
-<span class="sd">        :rtype: :class:`~google.cloud.bigquery.external_config.CSVOptions`</span>
-<span class="sd">        :returns: Configuration parsed from ``resource``.</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            :class:`~.external_config.CSVOptions`:</span>
+<span class="sd">                Configuration parsed from ``resource``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">config</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">()</span>
         <span class="n">config</span><span class="o">.</span><span class="n">_properties</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">resource</span><span class="p">)</span>
@@ -549,23 +562,26 @@
 <div class="viewcode-block" id="GoogleSheetsOptions.to_api_repr"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.external_config.GoogleSheetsOptions.to_api_repr.html#google.cloud.bigquery.external_config.GoogleSheetsOptions.to_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">to_api_repr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Build an API representation of this object.</span>
 
-<span class="sd">        :rtype: dict</span>
-<span class="sd">        :returns: A dictionary in the format used by the BigQuery API.</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            Dict[str, Any]:</span>
+<span class="sd">                A dictionary in the format used by the BigQuery API.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="GoogleSheetsOptions.from_api_repr"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.external_config.GoogleSheetsOptions.from_api_repr.html#google.cloud.bigquery.external_config.GoogleSheetsOptions.from_api_repr">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">resource</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Factory: construct a GoogleSheetsOptions given its API representation</span>
+        <span class="sd">&quot;&quot;&quot;Factory: construct a :class:`~.external_config.GoogleSheetsOptions`</span>
+<span class="sd">        instance given its API representation.</span>
 
-<span class="sd">        :type resource: dict</span>
-<span class="sd">        :param resource:</span>
-<span class="sd">            An GoogleSheetsOptions in the same representation as is</span>
-<span class="sd">            returned from the API.</span>
+<span class="sd">        Args:</span>
+<span class="sd">            resource (Dict[str, Any]):</span>
+<span class="sd">                Definition of a :class:`~.external_config.GoogleSheetsOptions`</span>
+<span class="sd">                instance in the same representation as is returned from the</span>
+<span class="sd">                API.</span>
 
-<span class="sd">        :rtype:</span>
-<span class="sd">            :class:`~google.cloud.bigquery.external_config.GoogleSheetsOptions`</span>
-<span class="sd">        :returns: Configuration parsed from ``resource``.</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            :class:`~.external_config.GoogleSheetsOptions`:</span>
+<span class="sd">                Configuration parsed from ``resource``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">config</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">()</span>
         <span class="n">config</span><span class="o">.</span><span class="n">_properties</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">resource</span><span class="p">)</span>
@@ -579,7 +595,7 @@
     <span class="sd">&quot;&quot;&quot;Description of an external data source.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        source_format :class:`ExternalSourceFormat`:</span>
+<span class="sd">        source_format (:class:`~.external_config.ExternalSourceFormat`):</span>
 <span class="sd">            See :attr:`source_format`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -593,7 +609,8 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">source_format</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;:class:`ExternalSourceFormat`: Format of external source.</span>
+        <span class="sd">&quot;&quot;&quot;:class:`~.external_config.ExternalSourceFormat`:</span>
+<span class="sd">        Format of external source.</span>
 
 <span class="sd">        See</span>
 <span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.sourceFormat</span>
@@ -602,12 +619,12 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">options</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Source-specific options.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Dict[str, Any]: Source-specific options.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_options</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">autodetect</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;bool: If `True`, try to detect schema and format options</span>
+        <span class="sd">&quot;&quot;&quot;bool: If :data:`True`, try to detect schema and format options</span>
 <span class="sd">        automatically.</span>
 
 <span class="sd">        See</span>
@@ -636,8 +653,8 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">ignore_unknown_values</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;bool: If `True`, extra values that are not represented in the table</span>
-<span class="sd">        schema are ignored. Defaults to `False`.</span>
+        <span class="sd">&quot;&quot;&quot;bool: If :data:`True`, extra values that are not represented in the</span>
+<span class="sd">        table schema are ignored. Defaults to :data:`False`.</span>
 
 <span class="sd">        See</span>
 <span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).ignoreUnknownValues</span>
@@ -680,8 +697,8 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">schema</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;List[google.cloud.bigquery.schema.SchemaField]: The schema for the</span>
-<span class="sd">        data.</span>
+        <span class="sd">&quot;&quot;&quot;List[:class:`~google.cloud.bigquery.schema.SchemaField`]: The schema</span>
+<span class="sd">        for the data.</span>
 
 <span class="sd">        See</span>
 <span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).schema</span>
@@ -701,8 +718,9 @@
 <div class="viewcode-block" id="ExternalConfig.to_api_repr"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.external_config.ExternalConfig.to_api_repr.html#google.cloud.bigquery.external_config.ExternalConfig.to_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">to_api_repr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Build an API representation of this object.</span>
 
-<span class="sd">        :rtype: dict</span>
-<span class="sd">        :returns: A dictionary in the format used by the BigQuery API.</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            Dict[str, Any]:</span>
+<span class="sd">                A dictionary in the format used by the BigQuery API.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">config</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -713,15 +731,18 @@
 
 <div class="viewcode-block" id="ExternalConfig.from_api_repr"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.external_config.ExternalConfig.from_api_repr.html#google.cloud.bigquery.external_config.ExternalConfig.from_api_repr">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">resource</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Factory: construct a CSVOptions given its API representation</span>
+        <span class="sd">&quot;&quot;&quot;Factory: construct an :class:`~.external_config.ExternalConfig`</span>
+<span class="sd">        instance given its API representation.</span>
 
-<span class="sd">        :type resource: dict</span>
-<span class="sd">        :param resource:</span>
-<span class="sd">            An extract job configuration in the same representation as is</span>
-<span class="sd">            returned from the API.</span>
+<span class="sd">        Args:</span>
+<span class="sd">            resource (Dict[str, Any]):</span>
+<span class="sd">                Definition of an :class:`~.external_config.ExternalConfig`</span>
+<span class="sd">                instance in the same representation as is returned from the</span>
+<span class="sd">                API.</span>
 
-<span class="sd">        :rtype: :class:`~google.cloud.bigquery.external_config.CSVOptions`</span>
-<span class="sd">        :returns: Configuration parsed from ``resource``.</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            :class:`~.external_config.ExternalConfig`:</span>
+<span class="sd">                Configuration parsed from ``resource``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">config</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="n">resource</span><span class="p">[</span><span class="s1">&#39;sourceFormat&#39;</span><span class="p">])</span>
         <span class="k">for</span> <span class="n">optcls</span> <span class="ow">in</span> <span class="n">_OPTION_CLASSES</span><span class="p">:</span>
