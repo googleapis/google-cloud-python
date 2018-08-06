@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.spanner_v1.pool &#8212; google-cloud 0f54a97 documentation</title>
+    <title>google.cloud.spanner_v1.pool &#8212; google-cloud 76de334 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -61,9 +61,27 @@
 
 
 <div class="viewcode-block" id="AbstractSessionPool"><a class="viewcode-back" href="../../../../spanner/session-api.html#google.cloud.spanner_v1.AbstractSessionPool">[docs]</a><span class="k">class</span> <span class="nc">AbstractSessionPool</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Specifies required API for concrete session pool implementations.&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Specifies required API for concrete session pool implementations.</span>
 
+<span class="sd">    :type labels: dict (str -&gt; str) or None</span>
+<span class="sd">    :param labels: (Optional) user-assigned labels for sessions created</span>
+<span class="sd">                    by the pool.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">_database</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">labels</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">labels</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_labels</span> <span class="o">=</span> <span class="n">labels</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">labels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;User-assigned labels for sesions created by the pool.</span>
+
+<span class="sd">        :rtype: dict (str -&gt; str)</span>
+<span class="sd">        :returns: labels assigned by the user</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_labels</span>
 
 <div class="viewcode-block" id="AbstractSessionPool.bind"><a class="viewcode-back" href="../../../../spanner/session-api.html#google.cloud.spanner_v1.AbstractSessionPool.bind">[docs]</a>    <span class="k">def</span> <span class="nf">bind</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">database</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Associate the pool with a database.</span>
@@ -115,6 +133,16 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
 
+    <span class="k">def</span> <span class="nf">_new_session</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Helper for concrete methods creating session instances.</span>
+
+<span class="sd">        :rtype: :class:`~google.cloud.spanner_v1.session.Session`</span>
+<span class="sd">        :returns: new session instance.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">labels</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_database</span><span class="o">.</span><span class="n">session</span><span class="p">(</span><span class="n">labels</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">labels</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_database</span><span class="o">.</span><span class="n">session</span><span class="p">()</span>
+
 <div class="viewcode-block" id="AbstractSessionPool.session"><a class="viewcode-back" href="../../../../spanner/session-api.html#google.cloud.spanner_v1.AbstractSessionPool.session">[docs]</a>    <span class="k">def</span> <span class="nf">session</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Check out a session from the pool.</span>
 
@@ -150,11 +178,17 @@
 <span class="sd">    :type default_timeout: int</span>
 <span class="sd">    :param default_timeout: default timeout, in seconds, to wait for</span>
 <span class="sd">                                 a returned session.</span>
+
+<span class="sd">    :type labels: dict (str -&gt; str) or None</span>
+<span class="sd">    :param labels: (Optional) user-assigned labels for sessions created</span>
+<span class="sd">                    by the pool.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">DEFAULT_SIZE</span> <span class="o">=</span> <span class="mi">10</span>
     <span class="n">DEFAULT_TIMEOUT</span> <span class="o">=</span> <span class="mi">10</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">DEFAULT_SIZE</span><span class="p">,</span> <span class="n">default_timeout</span><span class="o">=</span><span class="n">DEFAULT_TIMEOUT</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">DEFAULT_SIZE</span><span class="p">,</span> <span class="n">default_timeout</span><span class="o">=</span><span class="n">DEFAULT_TIMEOUT</span><span class="p">,</span>
+                 <span class="n">labels</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">FixedSizePool</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">size</span> <span class="o">=</span> <span class="n">size</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">default_timeout</span> <span class="o">=</span> <span class="n">default_timeout</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_sessions</span> <span class="o">=</span> <span class="n">queue</span><span class="o">.</span><span class="n">Queue</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
@@ -169,7 +203,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_database</span> <span class="o">=</span> <span class="n">database</span>
 
         <span class="k">while</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sessions</span><span class="o">.</span><span class="n">full</span><span class="p">():</span>
-            <span class="n">session</span> <span class="o">=</span> <span class="n">database</span><span class="o">.</span><span class="n">session</span><span class="p">()</span>
+            <span class="n">session</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_new_session</span><span class="p">()</span>
             <span class="n">session</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_sessions</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">session</span><span class="p">)</span></div>
 
@@ -233,9 +267,14 @@
 
 <span class="sd">    :type target_size: int</span>
 <span class="sd">    :param target_size: max pool size</span>
+
+<span class="sd">    :type labels: dict (str -&gt; str) or None</span>
+<span class="sd">    :param labels: (Optional) user-assigned labels for sessions created</span>
+<span class="sd">                    by the pool.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target_size</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target_size</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">BurstyPool</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">target_size</span> <span class="o">=</span> <span class="n">target_size</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_database</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_sessions</span> <span class="o">=</span> <span class="n">queue</span><span class="o">.</span><span class="n">Queue</span><span class="p">(</span><span class="n">target_size</span><span class="p">)</span>
@@ -259,11 +298,11 @@
         <span class="k">try</span><span class="p">:</span>
             <span class="n">session</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sessions</span><span class="o">.</span><span class="n">get_nowait</span><span class="p">()</span>
         <span class="k">except</span> <span class="n">queue</span><span class="o">.</span><span class="n">Empty</span><span class="p">:</span>
-            <span class="n">session</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_database</span><span class="o">.</span><span class="n">session</span><span class="p">()</span>
+            <span class="n">session</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_new_session</span><span class="p">()</span>
             <span class="n">session</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">session</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
-                <span class="n">session</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_database</span><span class="o">.</span><span class="n">session</span><span class="p">()</span>
+                <span class="n">session</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_new_session</span><span class="p">()</span>
                 <span class="n">session</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">session</span></div>
 
@@ -325,9 +364,15 @@
 
 <span class="sd">    :type ping_interval: int</span>
 <span class="sd">    :param ping_interval: interval at which to ping sessions.</span>
+
+<span class="sd">    :type labels: dict (str -&gt; str) or None</span>
+<span class="sd">    :param labels: (Optional) user-assigned labels for sessions created</span>
+<span class="sd">                    by the pool.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">default_timeout</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">ping_interval</span><span class="o">=</span><span class="mi">3000</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">default_timeout</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">ping_interval</span><span class="o">=</span><span class="mi">3000</span><span class="p">,</span>
+                 <span class="n">labels</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">PingingPool</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">size</span> <span class="o">=</span> <span class="n">size</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">default_timeout</span> <span class="o">=</span> <span class="n">default_timeout</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_delta</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="n">ping_interval</span><span class="p">)</span>
@@ -343,7 +388,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_database</span> <span class="o">=</span> <span class="n">database</span>
 
         <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">xrange</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">):</span>
-            <span class="n">session</span> <span class="o">=</span> <span class="n">database</span><span class="o">.</span><span class="n">session</span><span class="p">()</span>
+            <span class="n">session</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_new_session</span><span class="p">()</span>
             <span class="n">session</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">session</span><span class="p">)</span></div>
 
@@ -365,7 +410,7 @@
 
         <span class="k">if</span> <span class="n">_NOW</span><span class="p">()</span> <span class="o">&gt;</span> <span class="n">ping_after</span><span class="p">:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">session</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
-                <span class="n">session</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_database</span><span class="o">.</span><span class="n">session</span><span class="p">()</span>
+                <span class="n">session</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_new_session</span><span class="p">()</span>
                 <span class="n">session</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>
 
         <span class="k">return</span> <span class="n">session</span></div>
@@ -408,7 +453,7 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">_sessions</span><span class="o">.</span><span class="n">put</span><span class="p">((</span><span class="n">ping_after</span><span class="p">,</span> <span class="n">session</span><span class="p">))</span>
                 <span class="k">break</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">session</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>  <span class="c1"># stale</span>
-                <span class="n">session</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_database</span><span class="o">.</span><span class="n">session</span><span class="p">()</span>
+                <span class="n">session</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_new_session</span><span class="p">()</span>
                 <span class="n">session</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>
             <span class="c1"># Re-add to queue with new expiration</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">session</span><span class="p">)</span></div></div>
@@ -435,13 +480,18 @@
 
 <span class="sd">    :type ping_interval: int</span>
 <span class="sd">    :param ping_interval: interval at which to ping sessions.</span>
+
+<span class="sd">    :type labels: dict (str -&gt; str) or None</span>
+<span class="sd">    :param labels: (Optional) user-assigned labels for sessions created</span>
+<span class="sd">                    by the pool.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">default_timeout</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">ping_interval</span><span class="o">=</span><span class="mi">3000</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">default_timeout</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">ping_interval</span><span class="o">=</span><span class="mi">3000</span><span class="p">,</span>
+                 <span class="n">labels</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_pending_sessions</span> <span class="o">=</span> <span class="n">queue</span><span class="o">.</span><span class="n">Queue</span><span class="p">()</span>
 
         <span class="nb">super</span><span class="p">(</span><span class="n">TransactionPingingPool</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
-            <span class="n">size</span><span class="p">,</span> <span class="n">default_timeout</span><span class="p">,</span> <span class="n">ping_interval</span><span class="p">)</span>
+            <span class="n">size</span><span class="p">,</span> <span class="n">default_timeout</span><span class="p">,</span> <span class="n">ping_interval</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">begin_pending_transactions</span><span class="p">()</span>
 
