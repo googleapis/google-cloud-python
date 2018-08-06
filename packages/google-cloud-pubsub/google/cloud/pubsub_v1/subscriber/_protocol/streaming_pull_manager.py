@@ -208,10 +208,11 @@ class StreamingPullManager(object):
 
     def maybe_pause_consumer(self):
         """Check the current load and pause the consumer if needed."""
-        if self.load >= 1.0 and not self._consumer.is_paused:
-            _LOGGER.debug(
-                'Message backlog over load at %.2f, pausing.', self.load)
-            self._consumer.pause()
+        if self.load >= 1.0:
+            if self._consumer is not None and not self._consumer.is_paused:
+                _LOGGER.debug(
+                    'Message backlog over load at %.2f, pausing.', self.load)
+                self._consumer.pause()
 
     def maybe_resume_consumer(self):
         """Check the current load and resume the consumer if needed."""
@@ -221,7 +222,7 @@ class StreamingPullManager(object):
         # In order to not thrash too much, require us to have passed below
         # the resume threshold (80% by default) of each flow control setting
         # before restarting.
-        if not self._consumer.is_paused:
+        if self._consumer is None or not self._consumer.is_paused:
             return
 
         if self.load < self.flow_control.resume_threshold:
