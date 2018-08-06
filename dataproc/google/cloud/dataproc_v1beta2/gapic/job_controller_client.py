@@ -11,7 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-"""Accesses the google.cloud.dataproc.v1 JobController API."""
+"""Accesses the google.cloud.dataproc.v1beta2 JobController API."""
 
 import functools
 import pkg_resources
@@ -25,15 +25,16 @@ import google.api_core.grpc_helpers
 import google.api_core.page_iterator
 import grpc
 
-from google.cloud.dataproc_v1.gapic import enums
-from google.cloud.dataproc_v1.gapic import job_controller_client_config
-from google.cloud.dataproc_v1.gapic.transports import job_controller_grpc_transport
-from google.cloud.dataproc_v1.proto import clusters_pb2
-from google.cloud.dataproc_v1.proto import clusters_pb2_grpc
-from google.cloud.dataproc_v1.proto import jobs_pb2
-from google.cloud.dataproc_v1.proto import jobs_pb2_grpc
-from google.cloud.dataproc_v1.proto import operations_pb2 as proto_operations_pb2
+from google.cloud.dataproc_v1beta2.gapic import enums
+from google.cloud.dataproc_v1beta2.gapic import job_controller_client_config
+from google.cloud.dataproc_v1beta2.gapic.transports import job_controller_grpc_transport
+from google.cloud.dataproc_v1beta2.proto import clusters_pb2
+from google.cloud.dataproc_v1beta2.proto import clusters_pb2_grpc
+from google.cloud.dataproc_v1beta2.proto import jobs_pb2
+from google.cloud.dataproc_v1beta2.proto import jobs_pb2_grpc
+from google.cloud.dataproc_v1beta2.proto import operations_pb2 as proto_operations_pb2
 from google.longrunning import operations_pb2 as longrunning_operations_pb2
+from google.protobuf import duration_pb2
 from google.protobuf import empty_pb2
 from google.protobuf import field_mask_pb2
 
@@ -49,7 +50,7 @@ class JobControllerClient(object):
 
     # The name of the interface for this client. This is the key used to
     # find the method configuration in the client_config dictionary.
-    _INTERFACE_NAME = 'google.cloud.dataproc.v1.JobController'
+    _INTERFACE_NAME = 'google.cloud.dataproc.v1beta2.JobController'
 
     @classmethod
     def from_service_account_file(cls, filename, *args, **kwargs):
@@ -164,6 +165,7 @@ class JobControllerClient(object):
                    project_id,
                    region,
                    job,
+                   request_id=None,
                    retry=google.api_core.gapic_v1.method.DEFAULT,
                    timeout=google.api_core.gapic_v1.method.DEFAULT,
                    metadata=None):
@@ -171,9 +173,9 @@ class JobControllerClient(object):
         Submits a job to a cluster.
 
         Example:
-            >>> from google.cloud import dataproc_v1
+            >>> from google.cloud import dataproc_v1beta2
             >>>
-            >>> client = dataproc_v1.JobControllerClient()
+            >>> client = dataproc_v1beta2.JobControllerClient()
             >>>
             >>> # TODO: Initialize ``project_id``:
             >>> project_id = ''
@@ -190,9 +192,20 @@ class JobControllerClient(object):
             project_id (str): Required. The ID of the Google Cloud Platform project that the job
                 belongs to.
             region (str): Required. The Cloud Dataproc region in which to handle the request.
-            job (Union[dict, ~google.cloud.dataproc_v1.types.Job]): Required. The job resource.
+            job (Union[dict, ~google.cloud.dataproc_v1beta2.types.Job]): Required. The job resource.
                 If a dict is provided, it must be of the same form as the protobuf
-                message :class:`~google.cloud.dataproc_v1.types.Job`
+                message :class:`~google.cloud.dataproc_v1beta2.types.Job`
+            request_id (str): Optional. A unique id used to identify the request. If the server
+                receives two ``SubmitJobRequest`` requests  with the same
+                id, then the second request will be ignored and the
+                first ``Job`` created and stored in the backend
+                is returned.
+
+                It is recommended to always set this value to a
+                `UUID <https://en.wikipedia.org/wiki/Universally_unique_identifier>`_.
+
+                The id must contain only letters (a-z, A-Z), numbers (0-9),
+                underscores (_), and hyphens (-). The maximum length is 40 characters.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -203,7 +216,7 @@ class JobControllerClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.cloud.dataproc_v1.types.Job` instance.
+            A :class:`~google.cloud.dataproc_v1beta2.types.Job` instance.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -226,6 +239,7 @@ class JobControllerClient(object):
             project_id=project_id,
             region=region,
             job=job,
+            request_id=request_id,
         )
         return self._inner_api_calls['submit_job'](
             request, retry=retry, timeout=timeout, metadata=metadata)
@@ -241,9 +255,9 @@ class JobControllerClient(object):
         Gets the resource representation for a job in a project.
 
         Example:
-            >>> from google.cloud import dataproc_v1
+            >>> from google.cloud import dataproc_v1beta2
             >>>
-            >>> client = dataproc_v1.JobControllerClient()
+            >>> client = dataproc_v1beta2.JobControllerClient()
             >>>
             >>> # TODO: Initialize ``project_id``:
             >>> project_id = ''
@@ -271,7 +285,7 @@ class JobControllerClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.cloud.dataproc_v1.types.Job` instance.
+            A :class:`~google.cloud.dataproc_v1beta2.types.Job` instance.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -312,9 +326,9 @@ class JobControllerClient(object):
         Lists regions/{region}/jobs in a project.
 
         Example:
-            >>> from google.cloud import dataproc_v1
+            >>> from google.cloud import dataproc_v1beta2
             >>>
-            >>> client = dataproc_v1.JobControllerClient()
+            >>> client = dataproc_v1beta2.JobControllerClient()
             >>>
             >>> # TODO: Initialize ``project_id``:
             >>> project_id = ''
@@ -347,7 +361,7 @@ class JobControllerClient(object):
                 of resources in a page.
             cluster_name (str): Optional. If set, the returned jobs list includes only jobs that were
                 submitted to the named cluster.
-            job_state_matcher (~google.cloud.dataproc_v1.types.JobStateMatcher): Optional. Specifies enumerated categories of jobs to list.
+            job_state_matcher (~google.cloud.dataproc_v1beta2.types.JobStateMatcher): Optional. Specifies enumerated categories of jobs to list.
                 (default = match ALL jobs).
 
                 If ``filter`` is provided, ``jobStateMatcher`` will be ignored.
@@ -376,7 +390,7 @@ class JobControllerClient(object):
 
         Returns:
             A :class:`~google.gax.PageIterator` instance. By default, this
-            is an iterable of :class:`~google.cloud.dataproc_v1.types.Job` instances.
+            is an iterable of :class:`~google.cloud.dataproc_v1beta2.types.Job` instances.
             This object can also be configured to iterate over the pages
             of the response through the `options` parameter.
 
@@ -432,9 +446,9 @@ class JobControllerClient(object):
         Updates a job in a project.
 
         Example:
-            >>> from google.cloud import dataproc_v1
+            >>> from google.cloud import dataproc_v1beta2
             >>>
-            >>> client = dataproc_v1.JobControllerClient()
+            >>> client = dataproc_v1beta2.JobControllerClient()
             >>>
             >>> # TODO: Initialize ``project_id``:
             >>> project_id = ''
@@ -458,17 +472,17 @@ class JobControllerClient(object):
                 belongs to.
             region (str): Required. The Cloud Dataproc region in which to handle the request.
             job_id (str): Required. The job ID.
-            job (Union[dict, ~google.cloud.dataproc_v1.types.Job]): Required. The changes to the job.
+            job (Union[dict, ~google.cloud.dataproc_v1beta2.types.Job]): Required. The changes to the job.
                 If a dict is provided, it must be of the same form as the protobuf
-                message :class:`~google.cloud.dataproc_v1.types.Job`
-            update_mask (Union[dict, ~google.cloud.dataproc_v1.types.FieldMask]): Required. Specifies the path, relative to <code>Job</code>, of
+                message :class:`~google.cloud.dataproc_v1beta2.types.Job`
+            update_mask (Union[dict, ~google.cloud.dataproc_v1beta2.types.FieldMask]): Required. Specifies the path, relative to <code>Job</code>, of
                 the field to update. For example, to update the labels of a Job the
                 <code>update_mask</code> parameter would be specified as
                 <code>labels</code>, and the ``PATCH`` request body would specify the new
                 value. <strong>Note:</strong> Currently, <code>labels</code> is the only
                 field that can be updated.
                 If a dict is provided, it must be of the same form as the protobuf
-                message :class:`~google.cloud.dataproc_v1.types.FieldMask`
+                message :class:`~google.cloud.dataproc_v1beta2.types.FieldMask`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -479,7 +493,7 @@ class JobControllerClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.cloud.dataproc_v1.types.Job` instance.
+            A :class:`~google.cloud.dataproc_v1beta2.types.Job` instance.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -518,13 +532,13 @@ class JobControllerClient(object):
         """
         Starts a job cancellation request. To access the job resource
         after cancellation, call
-        `regions/{region}/jobs.list <https://cloud.google.com/dataproc/docs/reference/rest/v1/projects.regions.jobs/list>`_ or
-        `regions/{region}/jobs.get <https://cloud.google.com/dataproc/docs/reference/rest/v1/projects.regions.jobs/get>`_.
+        `regions/{region}/jobs.list <https://cloud.google.com/dataproc/docs/reference/rest/v1beta2/projects.regions.jobs/list>`_ or
+        `regions/{region}/jobs.get <https://cloud.google.com/dataproc/docs/reference/rest/v1beta2/projects.regions.jobs/get>`_.
 
         Example:
-            >>> from google.cloud import dataproc_v1
+            >>> from google.cloud import dataproc_v1beta2
             >>>
-            >>> client = dataproc_v1.JobControllerClient()
+            >>> client = dataproc_v1beta2.JobControllerClient()
             >>>
             >>> # TODO: Initialize ``project_id``:
             >>> project_id = ''
@@ -552,7 +566,7 @@ class JobControllerClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.cloud.dataproc_v1.types.Job` instance.
+            A :class:`~google.cloud.dataproc_v1beta2.types.Job` instance.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -591,9 +605,9 @@ class JobControllerClient(object):
         and the response returns ``FAILED_PRECONDITION``.
 
         Example:
-            >>> from google.cloud import dataproc_v1
+            >>> from google.cloud import dataproc_v1beta2
             >>>
-            >>> client = dataproc_v1.JobControllerClient()
+            >>> client = dataproc_v1beta2.JobControllerClient()
             >>>
             >>> # TODO: Initialize ``project_id``:
             >>> project_id = ''

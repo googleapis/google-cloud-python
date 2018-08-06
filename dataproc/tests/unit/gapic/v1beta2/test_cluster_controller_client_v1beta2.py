@@ -17,8 +17,8 @@ import pytest
 
 from google.rpc import status_pb2
 
-from google.cloud import dataproc_v1
-from google.cloud.dataproc_v1.proto import clusters_pb2
+from google.cloud import dataproc_v1beta2
+from google.cloud.dataproc_v1beta2.proto import clusters_pb2
 from google.longrunning import operations_pb2
 from google.protobuf import empty_pb2
 from google.protobuf import field_mask_pb2
@@ -81,7 +81,7 @@ class TestClusterControllerClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[operation])
-        client = dataproc_v1.ClusterControllerClient(channel=channel)
+        client = dataproc_v1beta2.ClusterControllerClient(channel=channel)
 
         # Setup Request
         project_id = 'projectId-1969970175'
@@ -107,7 +107,7 @@ class TestClusterControllerClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[operation])
-        client = dataproc_v1.ClusterControllerClient(channel=channel)
+        client = dataproc_v1beta2.ClusterControllerClient(channel=channel)
 
         # Setup Request
         project_id = 'projectId-1969970175'
@@ -135,7 +135,7 @@ class TestClusterControllerClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[operation])
-        client = dataproc_v1.ClusterControllerClient(channel=channel)
+        client = dataproc_v1beta2.ClusterControllerClient(channel=channel)
 
         # Setup Request
         project_id = 'projectId-1969970175'
@@ -168,7 +168,7 @@ class TestClusterControllerClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[operation])
-        client = dataproc_v1.ClusterControllerClient(channel=channel)
+        client = dataproc_v1beta2.ClusterControllerClient(channel=channel)
 
         # Setup Request
         project_id = 'projectId-1969970175'
@@ -192,7 +192,7 @@ class TestClusterControllerClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[operation])
-        client = dataproc_v1.ClusterControllerClient(channel=channel)
+        client = dataproc_v1beta2.ClusterControllerClient(channel=channel)
 
         # Setup Request
         project_id = 'projectId-1969970175'
@@ -218,7 +218,7 @@ class TestClusterControllerClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[operation])
-        client = dataproc_v1.ClusterControllerClient(channel=channel)
+        client = dataproc_v1beta2.ClusterControllerClient(channel=channel)
 
         # Setup Request
         project_id = 'projectId-1969970175'
@@ -243,7 +243,7 @@ class TestClusterControllerClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = dataproc_v1.ClusterControllerClient(channel=channel)
+        client = dataproc_v1beta2.ClusterControllerClient(channel=channel)
 
         # Setup Request
         project_id = 'projectId-1969970175'
@@ -262,7 +262,7 @@ class TestClusterControllerClient(object):
     def test_get_cluster_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = dataproc_v1.ClusterControllerClient(channel=channel)
+        client = dataproc_v1beta2.ClusterControllerClient(channel=channel)
 
         # Setup request
         project_id = 'projectId-1969970175'
@@ -286,7 +286,7 @@ class TestClusterControllerClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = dataproc_v1.ClusterControllerClient(channel=channel)
+        client = dataproc_v1beta2.ClusterControllerClient(channel=channel)
 
         # Setup Request
         project_id = 'projectId-1969970175'
@@ -306,7 +306,7 @@ class TestClusterControllerClient(object):
 
     def test_list_clusters_exception(self):
         channel = ChannelStub(responses=[CustomException()])
-        client = dataproc_v1.ClusterControllerClient(channel=channel)
+        client = dataproc_v1beta2.ClusterControllerClient(channel=channel)
 
         # Setup request
         project_id = 'projectId-1969970175'
@@ -326,7 +326,7 @@ class TestClusterControllerClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[operation])
-        client = dataproc_v1.ClusterControllerClient(channel=channel)
+        client = dataproc_v1beta2.ClusterControllerClient(channel=channel)
 
         # Setup Request
         project_id = 'projectId-1969970175'
@@ -352,7 +352,7 @@ class TestClusterControllerClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[operation])
-        client = dataproc_v1.ClusterControllerClient(channel=channel)
+        client = dataproc_v1beta2.ClusterControllerClient(channel=channel)
 
         # Setup Request
         project_id = 'projectId-1969970175'

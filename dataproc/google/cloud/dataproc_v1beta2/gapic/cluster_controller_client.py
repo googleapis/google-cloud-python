@@ -11,7 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-"""Accesses the google.cloud.dataproc.v1 ClusterController API."""
+"""Accesses the google.cloud.dataproc.v1beta2 ClusterController API."""
 
 import functools
 import pkg_resources
@@ -27,13 +27,14 @@ import google.api_core.operations_v1
 import google.api_core.page_iterator
 import grpc
 
-from google.cloud.dataproc_v1.gapic import cluster_controller_client_config
-from google.cloud.dataproc_v1.gapic import enums
-from google.cloud.dataproc_v1.gapic.transports import cluster_controller_grpc_transport
-from google.cloud.dataproc_v1.proto import clusters_pb2
-from google.cloud.dataproc_v1.proto import clusters_pb2_grpc
-from google.cloud.dataproc_v1.proto import operations_pb2 as proto_operations_pb2
+from google.cloud.dataproc_v1beta2.gapic import cluster_controller_client_config
+from google.cloud.dataproc_v1beta2.gapic import enums
+from google.cloud.dataproc_v1beta2.gapic.transports import cluster_controller_grpc_transport
+from google.cloud.dataproc_v1beta2.proto import clusters_pb2
+from google.cloud.dataproc_v1beta2.proto import clusters_pb2_grpc
+from google.cloud.dataproc_v1beta2.proto import operations_pb2 as proto_operations_pb2
 from google.longrunning import operations_pb2 as longrunning_operations_pb2
+from google.protobuf import duration_pb2
 from google.protobuf import empty_pb2
 from google.protobuf import field_mask_pb2
 
@@ -44,7 +45,7 @@ _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
 class ClusterControllerClient(object):
     """
     The ClusterControllerService provides methods to manage clusters
-    of Google Compute Engine instances.
+    of Compute Engine instances.
     """
 
     SERVICE_ADDRESS = 'dataproc.googleapis.com:443'
@@ -52,7 +53,7 @@ class ClusterControllerClient(object):
 
     # The name of the interface for this client. This is the key used to
     # find the method configuration in the client_config dictionary.
-    _INTERFACE_NAME = 'google.cloud.dataproc.v1.ClusterController'
+    _INTERFACE_NAME = 'google.cloud.dataproc.v1beta2.ClusterController'
 
     @classmethod
     def from_service_account_file(cls, filename, *args, **kwargs):
@@ -167,6 +168,7 @@ class ClusterControllerClient(object):
                        project_id,
                        region,
                        cluster,
+                       request_id=None,
                        retry=google.api_core.gapic_v1.method.DEFAULT,
                        timeout=google.api_core.gapic_v1.method.DEFAULT,
                        metadata=None):
@@ -174,9 +176,9 @@ class ClusterControllerClient(object):
         Creates a cluster in a project.
 
         Example:
-            >>> from google.cloud import dataproc_v1
+            >>> from google.cloud import dataproc_v1beta2
             >>>
-            >>> client = dataproc_v1.ClusterControllerClient()
+            >>> client = dataproc_v1beta2.ClusterControllerClient()
             >>>
             >>> # TODO: Initialize ``project_id``:
             >>> project_id = ''
@@ -202,9 +204,20 @@ class ClusterControllerClient(object):
             project_id (str): Required. The ID of the Google Cloud Platform project that the cluster
                 belongs to.
             region (str): Required. The Cloud Dataproc region in which to handle the request.
-            cluster (Union[dict, ~google.cloud.dataproc_v1.types.Cluster]): Required. The cluster to create.
+            cluster (Union[dict, ~google.cloud.dataproc_v1beta2.types.Cluster]): Required. The cluster to create.
                 If a dict is provided, it must be of the same form as the protobuf
-                message :class:`~google.cloud.dataproc_v1.types.Cluster`
+                message :class:`~google.cloud.dataproc_v1beta2.types.Cluster`
+            request_id (str): Optional. A unique id used to identify the request. If the server
+                receives two ``CreateClusterRequest`` requests  with the same
+                id, then the second request will be ignored and the
+                first ``google.longrunning.Operation`` created and stored in the backend
+                is returned.
+
+                It is recommended to always set this value to a
+                `UUID <https://en.wikipedia.org/wiki/Universally_unique_identifier>`_.
+
+                The id must contain only letters (a-z, A-Z), numbers (0-9),
+                underscores (_), and hyphens (-). The maximum length is 40 characters.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -215,7 +228,7 @@ class ClusterControllerClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.cloud.dataproc_v1.types._OperationFuture` instance.
+            A :class:`~google.cloud.dataproc_v1beta2.types._OperationFuture` instance.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -239,6 +252,7 @@ class ClusterControllerClient(object):
             project_id=project_id,
             region=region,
             cluster=cluster,
+            request_id=request_id,
         )
         operation = self._inner_api_calls['create_cluster'](
             request, retry=retry, timeout=timeout, metadata=metadata)
@@ -255,6 +269,8 @@ class ClusterControllerClient(object):
                        cluster_name,
                        cluster,
                        update_mask,
+                       graceful_decommission_timeout=None,
+                       request_id=None,
                        retry=google.api_core.gapic_v1.method.DEFAULT,
                        timeout=google.api_core.gapic_v1.method.DEFAULT,
                        metadata=None):
@@ -262,9 +278,9 @@ class ClusterControllerClient(object):
         Updates a cluster in a project.
 
         Example:
-            >>> from google.cloud import dataproc_v1
+            >>> from google.cloud import dataproc_v1beta2
             >>>
-            >>> client = dataproc_v1.ClusterControllerClient()
+            >>> client = dataproc_v1beta2.ClusterControllerClient()
             >>>
             >>> # TODO: Initialize ``project_id``:
             >>> project_id = ''
@@ -297,10 +313,10 @@ class ClusterControllerClient(object):
                 cluster belongs to.
             region (str): Required. The Cloud Dataproc region in which to handle the request.
             cluster_name (str): Required. The cluster name.
-            cluster (Union[dict, ~google.cloud.dataproc_v1.types.Cluster]): Required. The changes to the cluster.
+            cluster (Union[dict, ~google.cloud.dataproc_v1beta2.types.Cluster]): Required. The changes to the cluster.
                 If a dict is provided, it must be of the same form as the protobuf
-                message :class:`~google.cloud.dataproc_v1.types.Cluster`
-            update_mask (Union[dict, ~google.cloud.dataproc_v1.types.FieldMask]): Required. Specifies the path, relative to ``Cluster``, of
+                message :class:`~google.cloud.dataproc_v1beta2.types.Cluster`
+            update_mask (Union[dict, ~google.cloud.dataproc_v1beta2.types.FieldMask]): Required. Specifies the path, relative to ``Cluster``, of
                 the field to update. For example, to change the number of workers
                 in a cluster to 5, the ``update_mask`` parameter would be
                 specified as ``config.worker_config.num_instances``,
@@ -316,10 +332,9 @@ class ClusterControllerClient(object):
                       }
                     }
 
-                Similarly, to change the number of preemptible workers in a cluster to 5,
-                the ``update_mask`` parameter would be
-                ``config.secondary_worker_config.num_instances``, and the ``PATCH`` request
-                body would be set as follows:
+                Similarly, to change the number of preemptible workers in a cluster to 5, the
+                ``update_mask`` parameter would be ``config.secondary_worker_config.num_instances``,
+                and the ``PATCH`` request body would be set as follows:
 
                 ::
 
@@ -342,7 +357,28 @@ class ClusterControllerClient(object):
                       secondary worker group
 
                     If a dict is provided, it must be of the same form as the protobuf
-                    message :class:`~google.cloud.dataproc_v1.types.FieldMask`
+                    message :class:`~google.cloud.dataproc_v1beta2.types.FieldMask`
+            graceful_decommission_timeout (Union[dict, ~google.cloud.dataproc_v1beta2.types.Duration]): Optional. Timeout for graceful YARN decomissioning. Graceful
+                decommissioning allows removing nodes from the cluster without
+                interrupting jobs in progress. Timeout specifies how long to wait for jobs
+                in progress to finish before forcefully removing nodes (and potentially
+                interrupting jobs). Default timeout is 0 (for forceful decommission), and
+                the maximum allowed timeout is 1 day.
+
+                Only supported on Dataproc image versions 1.2 and higher.
+                If a dict is provided, it must be of the same form as the protobuf
+                message :class:`~google.cloud.dataproc_v1beta2.types.Duration`
+            request_id (str): Optional. A unique id used to identify the request. If the server
+                receives two ``UpdateClusterRequest`` requests  with the same
+                id, then the second request will be ignored and the
+                first ``google.longrunning.Operation`` created and stored in the
+                backend is returned.
+
+                It is recommended to always set this value to a
+                `UUID <https://en.wikipedia.org/wiki/Universally_unique_identifier>`_.
+
+                The id must contain only letters (a-z, A-Z), numbers (0-9),
+                underscores (_), and hyphens (-). The maximum length is 40 characters.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -353,7 +389,7 @@ class ClusterControllerClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.cloud.dataproc_v1.types._OperationFuture` instance.
+            A :class:`~google.cloud.dataproc_v1beta2.types._OperationFuture` instance.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -379,6 +415,8 @@ class ClusterControllerClient(object):
             cluster_name=cluster_name,
             cluster=cluster,
             update_mask=update_mask,
+            graceful_decommission_timeout=graceful_decommission_timeout,
+            request_id=request_id,
         )
         operation = self._inner_api_calls['update_cluster'](
             request, retry=retry, timeout=timeout, metadata=metadata)
@@ -393,6 +431,8 @@ class ClusterControllerClient(object):
                        project_id,
                        region,
                        cluster_name,
+                       cluster_uuid=None,
+                       request_id=None,
                        retry=google.api_core.gapic_v1.method.DEFAULT,
                        timeout=google.api_core.gapic_v1.method.DEFAULT,
                        metadata=None):
@@ -400,9 +440,9 @@ class ClusterControllerClient(object):
         Deletes a cluster in a project.
 
         Example:
-            >>> from google.cloud import dataproc_v1
+            >>> from google.cloud import dataproc_v1beta2
             >>>
-            >>> client = dataproc_v1.ClusterControllerClient()
+            >>> client = dataproc_v1beta2.ClusterControllerClient()
             >>>
             >>> # TODO: Initialize ``project_id``:
             >>> project_id = ''
@@ -429,6 +469,19 @@ class ClusterControllerClient(object):
                 belongs to.
             region (str): Required. The Cloud Dataproc region in which to handle the request.
             cluster_name (str): Required. The cluster name.
+            cluster_uuid (str): Optional. Specifying the ``cluster_uuid`` means the RPC should fail
+                (with error NOT_FOUND) if cluster with specified UUID does not exist.
+            request_id (str): Optional. A unique id used to identify the request. If the server
+                receives two ``DeleteClusterRequest`` requests  with the same
+                id, then the second request will be ignored and the
+                first ``google.longrunning.Operation`` created and stored in the
+                backend is returned.
+
+                It is recommended to always set this value to a
+                `UUID <https://en.wikipedia.org/wiki/Universally_unique_identifier>`_.
+
+                The id must contain only letters (a-z, A-Z), numbers (0-9),
+                underscores (_), and hyphens (-). The maximum length is 40 characters.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -439,7 +492,7 @@ class ClusterControllerClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.cloud.dataproc_v1.types._OperationFuture` instance.
+            A :class:`~google.cloud.dataproc_v1beta2.types._OperationFuture` instance.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -463,6 +516,8 @@ class ClusterControllerClient(object):
             project_id=project_id,
             region=region,
             cluster_name=cluster_name,
+            cluster_uuid=cluster_uuid,
+            request_id=request_id,
         )
         operation = self._inner_api_calls['delete_cluster'](
             request, retry=retry, timeout=timeout, metadata=metadata)
@@ -484,9 +539,9 @@ class ClusterControllerClient(object):
         Gets the resource representation for a cluster in a project.
 
         Example:
-            >>> from google.cloud import dataproc_v1
+            >>> from google.cloud import dataproc_v1beta2
             >>>
-            >>> client = dataproc_v1.ClusterControllerClient()
+            >>> client = dataproc_v1beta2.ClusterControllerClient()
             >>>
             >>> # TODO: Initialize ``project_id``:
             >>> project_id = ''
@@ -514,7 +569,7 @@ class ClusterControllerClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.cloud.dataproc_v1.types.Cluster` instance.
+            A :class:`~google.cloud.dataproc_v1beta2.types.Cluster` instance.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -553,9 +608,9 @@ class ClusterControllerClient(object):
         Lists all regions/{region}/clusters in a project.
 
         Example:
-            >>> from google.cloud import dataproc_v1
+            >>> from google.cloud import dataproc_v1beta2
             >>>
-            >>> client = dataproc_v1.ClusterControllerClient()
+            >>> client = dataproc_v1beta2.ClusterControllerClient()
             >>>
             >>> # TODO: Initialize ``project_id``:
             >>> project_id = ''
@@ -616,7 +671,7 @@ class ClusterControllerClient(object):
 
         Returns:
             A :class:`~google.gax.PageIterator` instance. By default, this
-            is an iterable of :class:`~google.cloud.dataproc_v1.types.Cluster` instances.
+            is an iterable of :class:`~google.cloud.dataproc_v1beta2.types.Cluster` instances.
             This object can also be configured to iterate over the pages
             of the response through the `options` parameter.
 
@@ -671,9 +726,9 @@ class ClusterControllerClient(object):
         contains ``DiagnoseClusterOutputLocation``.
 
         Example:
-            >>> from google.cloud import dataproc_v1
+            >>> from google.cloud import dataproc_v1beta2
             >>>
-            >>> client = dataproc_v1.ClusterControllerClient()
+            >>> client = dataproc_v1beta2.ClusterControllerClient()
             >>>
             >>> # TODO: Initialize ``project_id``:
             >>> project_id = ''
@@ -710,7 +765,7 @@ class ClusterControllerClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.cloud.dataproc_v1.types._OperationFuture` instance.
+            A :class:`~google.cloud.dataproc_v1beta2.types._OperationFuture` instance.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
