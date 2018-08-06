@@ -33,6 +33,7 @@ from google.cloud.bigtable.row_data import PartialRowsData
 from google.cloud.bigtable.row_data import YieldRowsData
 from google.cloud.bigtable.row_set import RowSet
 from google.cloud.bigtable.row_set import RowRange
+from google.cloud.bigtable_admin_v2 import enums
 from google.cloud.bigtable_v2.proto import (
     bigtable_pb2 as data_messages_v2_pb2)
 from google.cloud.bigtable_admin_v2.proto import (
@@ -45,6 +46,7 @@ from google.cloud.bigtable_admin_v2.proto import (
 # (https://cloud.google.com/bigtable/docs/reference/data/rpc/
 #  google.bigtable.v2#google.bigtable.v2.MutateRowRequest)
 _MAX_BULK_MUTATIONS = 100000
+VIEW_NAME_ONLY = enums.Table.View.NAME_ONLY
 
 
 class _BigtableRetryableError(Exception):
@@ -223,11 +225,10 @@ class Table(object):
         """
         table_client = self._instance._client.table_admin_client
         try:
-            table_client.get_table(name=self.name)
+            table_client.get_table(name=self.name, view=VIEW_NAME_ONLY)
+            return True
         except NotFound:
             return False
-        else:
-            return True
 
     def delete(self):
         """Delete this table."""
