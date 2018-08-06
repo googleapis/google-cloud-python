@@ -149,3 +149,30 @@ class Table(object):
         SCHEMA_VIEW = enums.Table.View.SCHEMA_VIEW
         REPLICATION_VIEW = enums.Table.View.REPLICATION_VIEW
         FULL = enums.Table.View.FULL
+
+    class ReplicationState(object):
+        """
+        Table replication states.
+
+        Attributes:
+          STATE_NOT_KNOWN (int): The replication state of the table is unknown in this cluster.
+          INITIALIZING (int): The cluster was recently created, and the table must finish copying
+          over pre-existing data from other clusters before it can begin
+          receiving live replication updates and serving
+          ``Data API`` requests.
+          PLANNED_MAINTENANCE (int): The table is temporarily unable to serve
+          ``Data API`` requests from this
+          cluster due to planned internal maintenance.
+          UNPLANNED_MAINTENANCE (int): The table is temporarily unable to serve
+          ``Data API`` requests from this
+          cluster due to unplanned or emergency maintenance.
+          READY (int): The table can serve
+          ``Data API`` requests from this
+          cluster. Depending on replication delay, reads may not immediately
+          reflect the state of the table in other clusters.
+        """
+        STATE_NOT_KNOWN = enums.Table.ClusterState.ReplicationState.STATE_NOT_KNOWN
+        INITIALIZING = enums.Table.ClusterState.ReplicationState.INITIALIZING
+        PLANNED_MAINTENANCE = enums.Table.ClusterState.ReplicationState.PLANNED_MAINTENANCE
+        UNPLANNED_MAINTENANCE = enums.Table.ClusterState.ReplicationState.UNPLANNED_MAINTENANCE
+        READY = enums.Table.ClusterState.ReplicationState.READY
