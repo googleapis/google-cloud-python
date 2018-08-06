@@ -121,3 +121,31 @@ class RoutingPolicyType(object):
     """
     ANY = enums.RoutingPolicyType.ANY
     SINGLE = enums.RoutingPolicyType.SINGLE
+
+
+class Table(object):
+    class View(object):
+        """
+        Defines a view over a table's fields.
+
+        Attributes:
+          VIEW_UNSPECIFIED (int): Uses the default view for each method
+          as documented in its request.
+          NAME_ONLY (int): Only populates ``name``.
+          SCHEMA_VIEW (int): Only populates ``name`` and fields related
+          to the table's schema.
+          REPLICATION_VIEW (int): This is a private alpha release of
+          Cloud Bigtable replication. This feature is not currently available
+          to most Cloud Bigtable customers. This feature might be changed in
+          backward-incompatible ways and is not recommended for production use.
+          It is not subject to any SLA or deprecation policy.
+
+          Only populates ``name`` and fields related to the table's
+          replication state.
+          FULL (int): Populates all fields.
+        """
+        VIEW_UNSPECIFIED = enums.Table.View.VIEW_UNSPECIFIED
+        NAME_ONLY = enums.Table.View.NAME_ONLY
+        SCHEMA_VIEW = enums.Table.View.SCHEMA_VIEW
+        REPLICATION_VIEW = enums.Table.View.REPLICATION_VIEW
+        FULL = enums.Table.View.FULL

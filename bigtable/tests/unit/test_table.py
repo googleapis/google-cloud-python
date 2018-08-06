@@ -310,6 +310,7 @@ class TestTable(unittest.TestCase):
         from google.cloud.bigtable_admin_v2.gapic import (
             bigtable_instance_admin_client, bigtable_table_admin_client)
         from google.api_core.exceptions import NotFound
+        from google.api_core.exceptions import BadRequest
 
         table_api = bigtable_table_admin_client.BigtableTableAdminClient(
             mock.Mock())
@@ -332,9 +333,10 @@ class TestTable(unittest.TestCase):
         client._instance_admin_client = instance_api
         bigtable_table_stub = (
             client._table_admin_client.bigtable_table_admin_stub)
-        bigtable_table_stub.ListTables.side_effect = [
+        bigtable_table_stub.GetTable.side_effect = [
             response_pb,
             NotFound('testing'),
+            BadRequest('testing')
         ]
 
         # Perform the method and check the result.
@@ -346,6 +348,9 @@ class TestTable(unittest.TestCase):
 
         result = table2.exists()
         self.assertEqual(False, result)
+
+        with self.assertRaises(BadRequest):
+            table2.exists()
 
     def test_delete(self):
         from google.cloud.bigtable_admin_v2.gapic import (
