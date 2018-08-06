@@ -1308,10 +1308,8 @@ ManagedCluster = _reflection.GeneratedProtocolMessageType('ManagedCluster', (_me
           Required. The cluster configuration.
       labels:
           Optional. The labels to associate with this cluster.  Label
-          keys must be between 1 and 63 characters long, and must
-          conform to the following PCRE regular expression: [STRIPPED] Label values must
-          be between 1 and 63 characters long, and must conform to the
-          following PCRE regular expression: [STRIPPED]  No more than 32
+          keys must be between 1 and 63 characters long. Label values must be between
+          1 and 63 characters long. No more than 32
           labels can be associated with a given cluster.
   """,
   # @@protoc_insertion_point(class_scope:google.cloud.dataproc.v1beta2.ManagedCluster)
@@ -1388,10 +1386,8 @@ OrderedJob = _reflection.GeneratedProtocolMessageType('OrderedJob', (_message.Me
           Job is a SparkSql job.
       labels:
           Optional. The labels to associate with this job.  Label keys
-          must be between 1 and 63 characters long, and must conform to
-          the following regular expression: [STRIPPED]  Label values must be between 1 and 63
-          characters long, and must conform to the following regular
-          expression: [STRIPPED] No more than 32 labels can be
+          must be between 1 and 63 characters long. Label values must be between
+          1 and 63 characters long. No more than 32 labels can be
           associated with a given job.
       scheduling:
           Optional. Job scheduling configuration.

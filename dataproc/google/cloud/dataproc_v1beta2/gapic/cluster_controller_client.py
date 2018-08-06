@@ -346,33 +346,18 @@ class ClusterControllerClient(object):
                       }
                     }
 
-                <strong>Note:</strong> currently only the following fields can be updated:
+                .. note::
 
-                <table>
-                <tr>
-                <td><strong>Mask</strong></td><td><strong>Purpose</strong></td>
-                </tr>
-                <tr>
-                <td>labels</td><td>Updates labels</td>
-                </tr>
-                <tr>
-                <td>config.worker_config.num_instances</td><td>Resize primary worker group</td>
-                </tr>
-                <tr>
-                <td>config.secondary_worker_config.num_instances</td><td>Resize secondary worker group</td>
-                </tr>
-                <tr>
-                <td>config.lifecycle_config.auto_delete_ttl</td><td>Reset MAX TTL duration</td>
-                </tr>
-                <tr>
-                <td>config.lifecycle_config.auto_delete_time</td><td>Update MAX TTL deletion timestamp</td>
-                </tr>
-                <tr>
-                <td>config.lifecycle_config.idle_delete_ttl</td><td>Update Idle TTL duration</td>
-                </tr>
-                </table>
-                If a dict is provided, it must be of the same form as the protobuf
-                message :class:`~google.cloud.dataproc_v1beta2.types.FieldMask`
+                    Currently, only the following fields can be updated:
+
+                    * ``labels``: Update labels
+                    * ``config.worker_config.num_instances``: Resize primary
+                      worker group
+                    * ``config.secondary_worker_config.num_instances``: Resize
+                      secondary worker group
+
+                    If a dict is provided, it must be of the same form as the protobuf
+                    message :class:`~google.cloud.dataproc_v1beta2.types.FieldMask`
             graceful_decommission_timeout (Union[dict, ~google.cloud.dataproc_v1beta2.types.Duration]): Optional. Timeout for graceful YARN decomissioning. Graceful
                 decommissioning allows removing nodes from the cluster without
                 interrupting jobs in progress. Timeout specifies how long to wait for jobs

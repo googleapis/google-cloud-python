@@ -266,10 +266,19 @@ class ClusterControllerClient(object):
             >>>
             >>> client = dataproc_v1.ClusterControllerClient()
             >>>
+            >>> # TODO: Initialize ``project_id``:
             >>> project_id = ''
+            >>>
+            >>> # TODO: Initialize ``region``:
             >>> region = ''
+            >>>
+            >>> # TODO: Initialize ``cluster_name``:
             >>> cluster_name = ''
+            >>>
+            >>> # TODO: Initialize ``cluster``:
             >>> cluster = {}
+            >>>
+            >>> # TODO: Initialize ``update_mask``:
             >>> update_mask = {}
             >>>
             >>> response = client.update_cluster(project_id, region, cluster_name, cluster, update_mask)
@@ -340,10 +349,12 @@ class ClusterControllerClient(object):
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
 
         Returns:
             A :class:`~google.cloud.dataproc_v1.types._OperationFuture` instance.
-        
+
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
                     failed for any reason.
