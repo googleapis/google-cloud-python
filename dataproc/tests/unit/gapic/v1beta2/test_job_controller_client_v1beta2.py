@@ -15,8 +15,8 @@
 
 import pytest
 
-from google.cloud import dataproc_v1
-from google.cloud.dataproc_v1.proto import jobs_pb2
+from google.cloud import dataproc_v1beta2
+from google.cloud.dataproc_v1beta2.proto import jobs_pb2
 from google.protobuf import empty_pb2
 from google.protobuf import field_mask_pb2
 
@@ -73,7 +73,7 @@ class TestJobControllerClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = dataproc_v1.JobControllerClient(channel=channel)
+        client = dataproc_v1beta2.JobControllerClient(channel=channel)
 
         # Setup Request
         project_id = 'projectId-1969970175'
@@ -92,7 +92,7 @@ class TestJobControllerClient(object):
     def test_submit_job_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = dataproc_v1.JobControllerClient(channel=channel)
+        client = dataproc_v1beta2.JobControllerClient(channel=channel)
 
         # Setup request
         project_id = 'projectId-1969970175'
@@ -114,7 +114,7 @@ class TestJobControllerClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = dataproc_v1.JobControllerClient(channel=channel)
+        client = dataproc_v1beta2.JobControllerClient(channel=channel)
 
         # Setup Request
         project_id = 'projectId-1969970175'
@@ -133,7 +133,7 @@ class TestJobControllerClient(object):
     def test_get_job_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = dataproc_v1.JobControllerClient(channel=channel)
+        client = dataproc_v1beta2.JobControllerClient(channel=channel)
 
         # Setup request
         project_id = 'projectId-1969970175'
@@ -153,7 +153,7 @@ class TestJobControllerClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = dataproc_v1.JobControllerClient(channel=channel)
+        client = dataproc_v1beta2.JobControllerClient(channel=channel)
 
         # Setup Request
         project_id = 'projectId-1969970175'
@@ -173,7 +173,7 @@ class TestJobControllerClient(object):
 
     def test_list_jobs_exception(self):
         channel = ChannelStub(responses=[CustomException()])
-        client = dataproc_v1.JobControllerClient(channel=channel)
+        client = dataproc_v1beta2.JobControllerClient(channel=channel)
 
         # Setup request
         project_id = 'projectId-1969970175'
@@ -195,7 +195,7 @@ class TestJobControllerClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = dataproc_v1.JobControllerClient(channel=channel)
+        client = dataproc_v1beta2.JobControllerClient(channel=channel)
 
         # Setup Request
         project_id = 'projectId-1969970175'
@@ -221,7 +221,7 @@ class TestJobControllerClient(object):
     def test_update_job_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = dataproc_v1.JobControllerClient(channel=channel)
+        client = dataproc_v1beta2.JobControllerClient(channel=channel)
 
         # Setup request
         project_id = 'projectId-1969970175'
@@ -245,7 +245,7 @@ class TestJobControllerClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = dataproc_v1.JobControllerClient(channel=channel)
+        client = dataproc_v1beta2.JobControllerClient(channel=channel)
 
         # Setup Request
         project_id = 'projectId-1969970175'
@@ -264,7 +264,7 @@ class TestJobControllerClient(object):
     def test_cancel_job_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = dataproc_v1.JobControllerClient(channel=channel)
+        client = dataproc_v1beta2.JobControllerClient(channel=channel)
 
         # Setup request
         project_id = 'projectId-1969970175'
@@ -276,7 +276,7 @@ class TestJobControllerClient(object):
 
     def test_delete_job(self):
         channel = ChannelStub()
-        client = dataproc_v1.JobControllerClient(channel=channel)
+        client = dataproc_v1beta2.JobControllerClient(channel=channel)
 
         # Setup Request
         project_id = 'projectId-1969970175'
@@ -294,7 +294,7 @@ class TestJobControllerClient(object):
     def test_delete_job_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = dataproc_v1.JobControllerClient(channel=channel)
+        client = dataproc_v1beta2.JobControllerClient(channel=channel)
 
         # Setup request
         project_id = 'projectId-1969970175'
