@@ -876,17 +876,17 @@ Cloud KMS for the destination table.</p>
 <h3><a class="toc-backref" href="#id20">Retrieve BigQuery data as a Pandas DataFrame</a><a class="headerlink" href="#retrieve-bigquery-data-as-a-pandas-dataframe" title="Permalink to this headline">#</a></h3>
 <p>As of version 0.29.0, you can use the
 <a class="reference internal" href="generated/google.cloud.bigquery.table.RowIterator.to_dataframe.html#google.cloud.bigquery.table.RowIterator.to_dataframe" title="google.cloud.bigquery.table.RowIterator.to_dataframe"><code class="xref py py-func docutils literal notranslate"><span class="pre">to_dataframe()</span></code></a> function to
-retrieve query results or table rows as a <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.23.3+8.g4aa80b6d6)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a>.</p>
-<p>First, ensure that the <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/index.html#module-pandas" title="(in pandas v0.23.3+8.g4aa80b6d6)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pandas</span></code></a> library is installed by running:</p>
+retrieve query results or table rows as a <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.23.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a>.</p>
+<p>First, ensure that the <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/index.html#module-pandas" title="(in pandas v0.23.4)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pandas</span></code></a> library is installed by running:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip install --upgrade pandas
 </pre></div>
 </div>
 <p>Alternatively, you can install the BigQuery python client library with
-<a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/index.html#module-pandas" title="(in pandas v0.23.3+8.g4aa80b6d6)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pandas</span></code></a> by running:</p>
+<a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/index.html#module-pandas" title="(in pandas v0.23.4)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pandas</span></code></a> by running:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip install --upgrade google-cloud-bigquery<span class="o">[</span>pandas<span class="o">]</span>
 </pre></div>
 </div>
-<p>To retrieve query results as a <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.23.3+8.g4aa80b6d6)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a>:</p>
+<p>To retrieve query results as a <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.23.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a>:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># from google.cloud import bigquery</span>
 <span class="c1"># client = bigquery.Client()</span>
 
@@ -901,7 +901,7 @@ retrieve query results or table rows as a <a class="reference external" href="ht
 <span class="n">df</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">sql</span><span class="p">)</span><span class="o">.</span><span class="n">to_dataframe</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>To retrieve table rows as a <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.23.3+8.g4aa80b6d6)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a>:</p>
+<p>To retrieve table rows as a <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.23.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a>:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># from google.cloud import bigquery</span>
 <span class="c1"># client = bigquery.Client()</span>
 
@@ -917,15 +917,15 @@ retrieve query results or table rows as a <a class="reference external" href="ht
 <h3><a class="toc-backref" href="#id21">Load a Pandas DataFrame to a BigQuery Table</a><a class="headerlink" href="#load-a-pandas-dataframe-to-a-bigquery-table" title="Permalink to this headline">#</a></h3>
 <p>As of version 1.3.0, you can use the
 <a class="reference internal" href="generated/google.cloud.bigquery.client.Client.load_table_from_dataframe.html#google.cloud.bigquery.client.Client.load_table_from_dataframe" title="google.cloud.bigquery.client.Client.load_table_from_dataframe"><code class="xref py py-func docutils literal notranslate"><span class="pre">load_table_from_dataframe()</span></code></a> function
-to load data from a <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.23.3+8.g4aa80b6d6)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a> to a
+to load data from a <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.23.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a> to a
 <a class="reference internal" href="generated/google.cloud.bigquery.table.Table.html#google.cloud.bigquery.table.Table" title="google.cloud.bigquery.table.Table"><code class="xref py py-class docutils literal notranslate"><span class="pre">Table</span></code></a>. To use this function, in addition
-to <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/index.html#module-pandas" title="(in pandas v0.23.3+8.g4aa80b6d6)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pandas</span></code></a>, you will need to install the <code class="xref py py-mod docutils literal notranslate"><span class="pre">pyarrow</span></code> library. You can
-install the BigQuery python client library with <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/index.html#module-pandas" title="(in pandas v0.23.3+8.g4aa80b6d6)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pandas</span></code></a> and
+to <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/index.html#module-pandas" title="(in pandas v0.23.4)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pandas</span></code></a>, you will need to install the <code class="xref py py-mod docutils literal notranslate"><span class="pre">pyarrow</span></code> library. You can
+install the BigQuery python client library with <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/index.html#module-pandas" title="(in pandas v0.23.4)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pandas</span></code></a> and
 <code class="xref py py-mod docutils literal notranslate"><span class="pre">pyarrow</span></code> by running:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip install --upgrade google-cloud-bigquery<span class="o">[</span>pandas,pyarrow<span class="o">]</span>
 </pre></div>
 </div>
-<p>The following example demonstrates how to create a <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.23.3+8.g4aa80b6d6)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a>
+<p>The following example demonstrates how to create a <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.23.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a>
 and load it into a new table:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># from google.cloud import bigquery</span>
 <span class="c1"># import pandas</span>
