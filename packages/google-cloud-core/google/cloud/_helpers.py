@@ -43,6 +43,8 @@ except ImportError:  # pragma: NO COVER
 _NOW = datetime.datetime.utcnow  # To be replaced by tests.
 _RFC3339_MICROS = '%Y-%m-%dT%H:%M:%S.%fZ'
 _RFC3339_NO_FRACTION = '%Y-%m-%dT%H:%M:%S'
+_TIMEONLY_W_MICROS = '%H:%M:%S.%f'
+_TIMEONLY_NO_FRACTION = '%H:%M:%S'
 # datetime.strptime cannot handle nanosecond precision:  parse w/ regex
 _RFC3339_NANOS = re.compile(r"""
     (?P<no_fraction>
@@ -256,9 +258,15 @@ def _time_from_iso8601_time_naive(value):
 
     :rtype: :class:`datetime.time`
     :returns: A datetime time object created from the string
-
+    :raises ValueError: if the value does not match a known format.
     """
-    return datetime.datetime.strptime(value, '%H:%M:%S').time()
+    if len(value) == 8:  # HH:MM:SS
+        fmt = _TIMEONLY_NO_FRACTION
+    elif len(value) == 15:  # HH:MM:SS.micros
+        fmt = _TIMEONLY_W_MICROS
+    else:
+        raise ValueError("Unknown time format: {}".format(value))
+    return datetime.datetime.strptime(value, fmt).time()
 
 
 def _rfc3339_to_datetime(dt_str):

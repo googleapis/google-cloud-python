@@ -298,6 +298,16 @@ class Test___time_from_iso8601_time_naive(unittest.TestCase):
         WHEN = datetime.time(12, 9, 42)
         self.assertEqual(self._call_fut(("12:09:42")), WHEN)
 
+    def test_w_microseconds(self):
+        import datetime
+
+        WHEN = datetime.time(12, 9, 42, 123456)
+        self.assertEqual(self._call_fut(("12:09:42.123456")), WHEN)
+
+    def test_w_millis_fail(self):
+        with self.assertRaises(ValueError):
+            self._call_fut("12:09:42.123")
+
 
 class Test__rfc3339_to_datetime(unittest.TestCase):
 
