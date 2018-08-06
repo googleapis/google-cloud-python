@@ -23,10 +23,11 @@ from google.cloud._helpers import _date_from_iso8601_date
 from google.cloud._helpers import _datetime_from_microseconds
 from google.cloud._helpers import _microseconds_from_datetime
 from google.cloud._helpers import _RFC3339_NO_FRACTION
-from google.cloud._helpers import _time_from_iso8601_time_naive
 from google.cloud._helpers import _to_bytes
 
 _RFC3339_MICROS_NO_ZULU = '%Y-%m-%dT%H:%M:%S.%f'
+_TIMEONLY_WO_MICROS = '%H:%M:%S'
+_TIMEONLY_W_MICROS = '%H:%M:%S.%f'
 
 
 def _not_null(value, field):
@@ -142,8 +143,13 @@ def _date_from_json(value, field):
 def _time_from_json(value, field):
     """Coerce 'value' to a datetime date, if set or not nullable"""
     if _not_null(value, field):
-        # value will be a string, in HH:MM:SS form.
-        return _time_from_iso8601_time_naive(value)
+        if len(value) == 8:  # HH:MM:SS
+            fmt = _TIMEONLY_WO_MICROS
+        elif len(value) == 15:  # HH:MM:SS.micros
+            fmt = _TIMEONLY_W_MICROS
+        else:
+            raise ValueError("Unknown time format: {}".format(value))
+        return datetime.datetime.strptime(value, fmt).time()
 
 
 def _record_from_json(value, field):

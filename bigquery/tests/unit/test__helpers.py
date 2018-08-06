@@ -337,6 +337,16 @@ class Test_time_from_json(unittest.TestCase):
             coerced,
             datetime.time(12, 12, 27))
 
+    def test_w_subsecond_string_value(self):
+        coerced = self._call_fut('12:12:27.123456', object())
+        self.assertEqual(
+            coerced,
+            datetime.time(12, 12, 27, 123456))
+
+    def test_w_bogus_string_value(self):
+        with self.assertRaises(ValueError):
+            self._call_fut('12:12:27.123', object())
+
 
 class Test_record_from_json(unittest.TestCase):
 
