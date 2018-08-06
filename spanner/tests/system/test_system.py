@@ -549,6 +549,7 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         self.assertFalse(deleted)
 
     @RetryErrors(exception=exceptions.ServerError)
+    @RetryErrors(exception=exceptions.Aborted)
     def test_transaction_read_and_insert_then_rollback(self):
         retry = RetryInstanceState(_has_all_ddl)
         retry(self._db.reload)()
