@@ -34,7 +34,6 @@ from google.cloud.kms_v1.proto import resources_pb2
 from google.cloud.kms_v1.proto import service_pb2
 from google.cloud.kms_v1.proto import service_pb2_grpc
 from google.iam.v1 import iam_policy_pb2
-from google.iam.v1 import iam_policy_pb2
 from google.iam.v1 import policy_pb2
 from google.protobuf import field_mask_pb2
 
