@@ -239,7 +239,7 @@ class TestDatabaseAPI(unittest.TestCase, _TestData):
 
     @classmethod
     def setUpClass(cls):
-        pool = BurstyPool()
+        pool = BurstyPool(labels={'testcase': 'database_api'})
         cls._db = Config.INSTANCE.database(
             cls.DATABASE_NAME, ddl_statements=DDL_STATEMENTS, pool=pool)
         operation = cls._db.create()
@@ -264,7 +264,7 @@ class TestDatabaseAPI(unittest.TestCase, _TestData):
         self.assertTrue(self._db.name in database_names)
 
     def test_create_database(self):
-        pool = BurstyPool()
+        pool = BurstyPool(labels={'testcase': 'create_database'})
         temp_db_id = 'temp_db' + unique_resource_id('_')
         temp_db = Config.INSTANCE.database(temp_db_id, pool=pool)
         operation = temp_db.create()
@@ -311,7 +311,7 @@ class TestDatabaseAPI(unittest.TestCase, _TestData):
         'https://github.com/GoogleCloudPlatform/google-cloud-python/issues/'
         '5629'))
     def test_update_database_ddl(self):
-        pool = BurstyPool()
+        pool = BurstyPool(labels={'testcase': 'update_database_ddl'})
         temp_db_id = 'temp_db' + unique_resource_id('_')
         temp_db = Config.INSTANCE.database(temp_db_id, pool=pool)
         create_op = temp_db.create()
@@ -434,7 +434,7 @@ class TestSessionAPI(unittest.TestCase, _TestData):
 
     @classmethod
     def setUpClass(cls):
-        pool = BurstyPool()
+        pool = BurstyPool(labels={'testcase': 'session_api'})
         cls._db = Config.INSTANCE.database(
             cls.DATABASE_NAME, ddl_statements=DDL_STATEMENTS, pool=pool)
         operation = cls._db.create()
@@ -902,7 +902,7 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         EXTRA_DDL = [
             'CREATE INDEX contacts_by_last_name ON contacts(last_name)',
         ]
-        pool = BurstyPool()
+        pool = BurstyPool(labels={'testcase': 'read_w_index'})
         temp_db = Config.INSTANCE.database(
             'test_read' + unique_resource_id('_'),
             ddl_statements=DDL_STATEMENTS + EXTRA_DDL,

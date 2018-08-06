@@ -44,13 +44,19 @@ class Session(object):
 
     :type database: :class:`~google.cloud.spanner_v1.database.Database`
     :param database: The database to which the session is bound.
+
+    :type labels: dict (str -> str)
+    :param labels: (Optional) User-assigned labels for the session.
     """
 
     _session_id = None
     _transaction = None
 
-    def __init__(self, database):
+    def __init__(self, database, labels=None):
         self._database = database
+        if labels is None:
+            labels = {}
+        self._labels = labels
 
     def __lt__(self, other):
         return self._session_id < other._session_id
@@ -59,6 +65,15 @@ class Session(object):
     def session_id(self):
         """Read-only ID, set by the back-end during :meth:`create`."""
         return self._session_id
+
+    @property
+    def labels(self):
+        """User-assigned labels for the session.
+
+        :rtype: dict (str -> str)
+        :returns: the labels dict (empty if no labels were assigned.
+        """
+        return self._labels
 
     @property
     def name(self):
@@ -93,7 +108,14 @@ class Session(object):
             raise ValueError('Session ID already set by back-end')
         api = self._database.spanner_api
         metadata = _metadata_with_prefix(self._database.name)
-        session_pb = api.create_session(self._database.name, metadata=metadata)
+        kw = {}
+        if self._labels:
+            kw = {'session': {'labels': self._labels}}
+        session_pb = api.create_session(
+            self._database.name,
+            metadata=metadata,
+            **kw
+        )
         self._session_id = session_pb.name.split('/')[-1]
 
     def exists(self):
