@@ -512,30 +512,6 @@ def test_create_table(client, to_delete):
     # [END bigquery_create_table]
 
 
-@pytest.mark.skip(reason=(
-    'update_table() is flaky '
-    'https://github.com/GoogleCloudPlatform/google-cloud-python/issues/5589'))
-def test_create_table_then_add_schema(client, to_delete):
-    """Create a table without specifying a schema"""
-    dataset_id = 'create_table_without_schema_dataset_{}'.format(_millis())
-    dataset_ref = client.dataset(dataset_id)
-    dataset = bigquery.Dataset(dataset_ref)
-    client.create_dataset(dataset)
-    to_delete.append(dataset)
-
-    # [START bigquery_create_table_without_schema]
-    # from google.cloud import bigquery
-    # client = bigquery.Client()
-    # dataset_ref = client.dataset('my_dataset')
-
-    table_ref = dataset_ref.table('my_table')
-    table = bigquery.Table(table_ref)
-    table = client.create_table(table)
-
-    assert table.table_id == 'my_table'
-    # [END bigquery_create_table_without_schema]
-
-
 def test_create_table_nested_repeated_schema(client, to_delete):
     dataset_id = 'create_table_nested_repeated_{}'.format(_millis())
     dataset_ref = client.dataset(dataset_id)
