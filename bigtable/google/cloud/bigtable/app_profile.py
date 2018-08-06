@@ -1,0 +1,101 @@
+# Copyright 2018 Google Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+"""User firendly container for Google Cloud Bigtable App Profile."""
+
+
+class AppProfile(object):
+    """Representation of a Google Cloud Bigtable App Profile.
+
+    We can use a :class:`AppProfile` to:
+
+    * :meth:`create` itself
+    * :meth:`update` itself
+    * :meth:`delete` itself
+
+    :type app_profile_id: str
+    :param app_profile_id: The ID of the app profile. Must be of the form
+                          ``[a-zA-Zo-9_][_.-a-zA-Z0-9]*``.
+
+    :type: routing_policy_type: int
+        :param: routing_policy_type: The type of the routing policy.
+                                     Possible values are represented
+                                     by the following constants:
+                                     :data:`google.cloud.bigtable.enums.RoutingPolicyType.ANY`
+                                     :data:`google.cloud.bigtable.enums.RoutingPolicyType.SINGLE`
+
+    :type: description: str
+    :param: description: (Optional) Long form description of the use
+                            case for this AppProfile.
+
+    :type: ignore_warnings: bool
+    :param: ignore_warnings: (Optional) If true, ignore safety checks when
+                                creating the app profile.
+
+    :type: cluster_id: str
+    :param: cluster_id: (Optional) Unique cluster_id which is only required
+                        when routing_policy_type is
+                        ROUTING_POLICY_TYPE_SINGLE.
+
+    :type: allow_transactional_writes: bool
+    :param: allow_transactional_writes: (Optional) If true, allow
+                                        transactional writes for
+                                        ROUTING_POLICY_TYPE_SINGLE.
+
+    :rtype: :class:`~google.cloud.bigtable_admin_v2.types.AppProfile`
+    :return: The AppProfile instance.
+    :raises: :class:`ValueError <exceptions.ValueError>` If routing
+            policy is not set.
+    """
+
+    def __init__(self, app_profile_id, instance, routing_policy_type,
+                 description=None, cluster_id=None,
+                 allow_transactional_writes=False):
+        self.app_profile_id = app_profile_id
+        self._instance = instance
+        self.routing_policy_type = routing_policy_type
+        self.allow_transactional_writes = allow_transactional_writes
+
+    @property
+    def name(self):
+        """App Profile name used in requests.
+
+        .. note::
+
+          This property will not change if ``app_profile_id`` does not, but
+          the return value is not cached.
+
+        The app profile name is of the form
+            ``"projects/../instances/../app_profile/{app_profile_id}"``
+
+        :rtype: str
+        :returns: The app profile name.
+        """
+        return self._instance._client.instance_admin_client.app_profile_path(
+            self._instance._client.project, self._instance.instance_id,
+            self.app_profile_id)
+
+    def __eq__(self, other):
+        if not isinstance(other, self.__class__):
+            return NotImplemented
+        # NOTE: This does not compare the configuration values, such as
+        #       the routing_policy_type. Instead, it only compares
+        #       identifying values instance, app profile ID and client. This is
+        #       intentional, since the same app profile can be in different
+        #       states if not synchronized.
+        return (other.app_profile_id == self.app_profile_id and
+                other._instance == self._instance)
+
+    def __ne__(self, other):
+        return not self == other
