@@ -227,7 +227,7 @@ class TestClient(unittest.TestCase):
 
         self.assertEqual(failed_locations, [FAILED_LOCATION])
 
-    def test_lsit_clusters(self):
+    def test_list_clusters(self):
         from google.cloud.bigtable_admin_v2.gapic import (
             bigtable_instance_admin_client)
         from google.cloud.bigtable_admin_v2.proto import (
@@ -278,8 +278,8 @@ class TestClient(unittest.TestCase):
 
         # Patch the stub used by the API method.
         client._instance_admin_client = instance_api
-        instance_admin_client = client._instance_admin_client
-        instance_stub = instance_admin_client.bigtable_instance_admin_stub
+        instance_stub = (
+            client._instance_admin_client.bigtable_instance_admin_stub)
         instance_stub.ListClusters.side_effect = [response_pb]
 
         # Perform the method and check the result.
