@@ -39,7 +39,9 @@ except (ImportError, AttributeError):
     pyarrow = None
 
 from google.api_core import datetime_helpers
+from google.api_core.exceptions import TooManyRequests
 from google.cloud import bigquery
+from test_utils.retry import RetryErrors
 
 ORIGINAL_FRIENDLY_NAME = 'Original friendly name'
 ORIGINAL_DESCRIPTION = 'Original description'
@@ -65,6 +67,9 @@ QUERY = (
     'WHERE state = "TX"')
 
 
+retry_429 = RetryErrors(TooManyRequests)
+
+
 @pytest.fixture(scope='module')
 def client():
     return bigquery.Client()
@@ -76,9 +81,9 @@ def to_delete(client):
     yield doomed
     for item in doomed:
         if isinstance(item, (bigquery.Dataset, bigquery.DatasetReference)):
-            client.delete_dataset(item, delete_contents=True)
+            retry_429(client.delete_dataset)(item, delete_contents=True)
         else:
-            item.delete()
+            retry_429(item.delete)()
 
 
 def _millis():
