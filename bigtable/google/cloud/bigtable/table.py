@@ -14,28 +14,28 @@
 
 """User-friendly container for Google Cloud Bigtable Table."""
 
-from grpc import StatusCode
-
-from google.api_core.exceptions import RetryError
 from google.api_core.exceptions import NotFound
-from google.api_core.retry import if_exception_type
+from google.api_core.exceptions import RetryError
 from google.api_core.retry import Retry
+from google.api_core.retry import if_exception_type
 from google.cloud._helpers import _to_bytes
-from google.cloud.bigtable.column_family import _gc_rule_from_pb
+from google.cloud.bigtable import enums
 from google.cloud.bigtable.column_family import ColumnFamily
+from google.cloud.bigtable.column_family import _gc_rule_from_pb
 from google.cloud.bigtable.row import AppendRow
 from google.cloud.bigtable.row import ConditionalRow
 from google.cloud.bigtable.row import DirectRow
 from google.cloud.bigtable.row_data import PartialRowsData
 from google.cloud.bigtable.row_data import YieldRowsData
-from google.cloud.bigtable.row_set import RowSet
 from google.cloud.bigtable.row_set import RowRange
-from google.cloud.bigtable_v2.proto import (
-    bigtable_pb2 as data_messages_v2_pb2)
-from google.cloud.bigtable_admin_v2.proto import (
-    table_pb2 as admin_messages_v2_pb2)
+from google.cloud.bigtable.row_set import RowSet
 from google.cloud.bigtable_admin_v2.proto import (
     bigtable_table_admin_pb2 as table_admin_messages_v2_pb2)
+from google.cloud.bigtable_admin_v2.proto import (
+    table_pb2 as admin_messages_v2_pb2)
+from google.cloud.bigtable_v2.proto import (
+    bigtable_pb2 as data_messages_v2_pb2)
+from grpc import StatusCode
 
 # Maximum number of mutations in bulk (MutateRowsRequest message):
 # (https://cloud.google.com/bigtable/docs/reference/data/rpc/
@@ -252,22 +252,7 @@ class Table(object):
             result[column_family_id] = column_family
         return result
 
-    class _ClusterState(object):
-
-        def __init__(self, replication_state):
-            self.replication_state = replication_state
-
-        def __repr__(self):
-            replication_state_value_to_name = {
-                0: 'STATE_NOT_KNOWN',
-                1: 'INITIALIZING',
-                2: 'PLANNED_MAINTENANCE',
-                3: 'UNPLANNED_MAINTENANCE',
-                4: 'READY'
-            }
-            return replication_state_value_to_name[self.replication_state]
-
-    def list_cluster_states(self):
+    def get_cluster_states(self):
         """List the cluster states owned by this table.
         :rtype: dict
         :returns: Dictionary from cluster ID to
@@ -300,12 +285,12 @@ class Table(object):
                   state does not present in predefined states.
         """
         table_client = self._instance._client.table_admin_client
-        table_pb = table_client.get_table(self.name)
+        table_pb = table_client.get_table(self.name, view=enums.Table.View.REPLICATION_VIEW)
 
         result = {}
         for cluster_id, value_pb in table_pb.cluster_states.items():
-            result[cluster_id] = self._ClusterState(
-                value_pb.replication_state)
+            result[str(cluster_id)] = _ClusterState(
+                value_pb.replication_state).state
         return result
 
     def read_row(self, row_key, filter_=None):
@@ -647,6 +632,28 @@ class _RetryableMutateRowsWorker(object):
             raise _BigtableRetryableError
 
         return self.responses_statuses
+
+
+class _ClusterState(object):
+    def __init__(self, replication_state):
+        self.replication_state = replication_state
+
+    """Returns cluster state based on mappings defined
+       in  bigtable.enums.Table.ReplicationState.
+       :rtype: str
+    """
+
+    @property
+    def state(self):
+        enum_state = enums.Table.ReplicationState
+        replication_state_value_to_name = {
+            enum_state.STATE_NOT_KNOWN: 'STATE_NOT_KNOWN',
+            enum_state.INITIALIZING: 'INITIALIZING',
+            enum_state.PLANNED_MAINTENANCE: 'PLANNED_MAINTENANCE',
+            enum_state.UNPLANNED_MAINTENANCE: 'UNPLANNED_MAINTENANCE',
+            enum_state.READY: 'READY'
+        }
+        return replication_state_value_to_name[self.replication_state]
 
 
 def _create_row_request(table_name, row_key=None, start_key=None, end_key=None,

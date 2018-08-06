@@ -402,7 +402,7 @@ class TestTable(unittest.TestCase):
     def test_list_column_families(self):
         self._list_column_families_helper()
 
-    def test_list_cluster_states(self):
+    def test_get_cluster_states(self):
         from google.cloud.bigtable_admin_v2.gapic import (
             bigtable_table_admin_client)
 
@@ -420,18 +420,22 @@ class TestTable(unittest.TestCase):
                             'cluster-id3': _ClusterStatePB(4),
                             },
         )
-        
+
         # Patch the stub used by the API method.
         client._table_admin_client = table_api
         bigtable_table_stub = (
             client._table_admin_client.bigtable_table_admin_stub)
         bigtable_table_stub.GetTable.side_effect = [response_pb]
 
-        # Create expected_result.
-        expected_result = table.cluster_states
+        # build expected result
+        expected_result = {
+            'cluster-id1': 'PLANNED_MAINTENANCE',
+            'cluster-id2': 'INITIALIZING',
+            'cluster-id3': 'READY'
+        }
 
         # Perform the method and check the result.
-        result = table.list_cluster_states()
+        result = table.get_cluster_states()
         self.assertEqual(result, expected_result)
 
     def _read_row_helper(self, chunks, expected_result, app_profile_id=None):
