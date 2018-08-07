@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Client &#8212; google-cloud 76de334 documentation</title>
+    <title>Client &#8212; google-cloud fad1b1e documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -153,6 +153,25 @@ must both be under 128 bytes.</li>
 <tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">ValueError</span></code> if the current
 client is not an admin client or if it has not been
 <code class="xref py py-meth docutils literal notranslate"><span class="pre">start()</span></code>-ed.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.bigtable.client.Client.list_clusters">
+<code class="descname">list_clusters</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/client.html#Client.list_clusters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.client.Client.list_clusters" title="Permalink to this definition">#</a></dt>
+<dd><p>List the clusters in the project.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.7)">tuple</a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">(clusters, failed_locations), where ‘clusters’ is list of
+<code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.bigtable.instance.Cluster</span></code>, and
+‘failed_locations’ is a list of strings representing
+locations which could not be resolved.</td>
 </tr>
 </tbody>
 </table>
