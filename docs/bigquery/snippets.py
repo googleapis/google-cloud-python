@@ -39,7 +39,9 @@ except (ImportError, AttributeError):
     pyarrow = None
 
 from google.api_core import datetime_helpers
+from google.api_core.exceptions import TooManyRequests
 from google.cloud import bigquery
+from test_utils.retry import RetryErrors
 
 ORIGINAL_FRIENDLY_NAME = 'Original friendly name'
 ORIGINAL_DESCRIPTION = 'Original description'
@@ -65,6 +67,9 @@ QUERY = (
     'WHERE state = "TX"')
 
 
+retry_429 = RetryErrors(TooManyRequests)
+
+
 @pytest.fixture(scope='module')
 def client():
     return bigquery.Client()
@@ -76,9 +81,9 @@ def to_delete(client):
     yield doomed
     for item in doomed:
         if isinstance(item, (bigquery.Dataset, bigquery.DatasetReference)):
-            client.delete_dataset(item, delete_contents=True)
+            retry_429(client.delete_dataset)(item, delete_contents=True)
         else:
-            item.delete()
+            retry_429(item.delete)()
 
 
 def _millis():
@@ -1978,7 +1983,7 @@ def test_extract_table(client, to_delete):
 
     bucket_name = 'extract_shakespeare_{}'.format(_millis())
     storage_client = storage.Client()
-    bucket = storage_client.create_bucket(bucket_name)  # API request
+    bucket = retry_429(storage_client.create_bucket)(bucket_name)  # API request
     to_delete.append(bucket)
 
     # [START bigquery_extract_table]
@@ -2015,7 +2020,7 @@ def test_extract_table_json(client, to_delete):
 
     bucket_name = 'extract_shakespeare_json_{}'.format(_millis())
     storage_client = storage.Client()
-    bucket = storage_client.create_bucket(bucket_name)  # API request
+    bucket = retry_429(storage_client.create_bucket)(bucket_name)  # API request
     to_delete.append(bucket)
 
     # [START bigquery_extract_table_json]
@@ -2050,7 +2055,7 @@ def test_extract_table_compressed(client, to_delete):
 
     bucket_name = 'extract_shakespeare_compress_{}'.format(_millis())
     storage_client = storage.Client()
-    bucket = storage_client.create_bucket(bucket_name)  # API request
+    bucket = retry_429(storage_client.create_bucket)(bucket_name)  # API request
     to_delete.append(bucket)
 
     # [START bigquery_extract_table_compressed]
