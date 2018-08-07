@@ -1285,11 +1285,7 @@ class Bucket(_PropertyMixin):
         return resp.get('permissions', [])
 
     def make_public(self, recursive=False, future=False, client=None):
-        """Make a bucket public.
-
-        If ``recursive=True`` and the bucket contains more than 256
-        objects / blobs this will cowardly refuse to make the objects public.
-        This is to prevent extremely long runtime of this method.
+        """Update bucket's ACL, granting read access to anonymous users.
 
         :type recursive: bool
         :param recursive: If True, this will make all blobs inside the bucket
@@ -1303,6 +1299,11 @@ class Bucket(_PropertyMixin):
                       ``NoneType``
         :param client: Optional. The client to use.  If not passed, falls back
                        to the ``client`` stored on the current bucket.
+
+        :raises ValueError:
+            If ``recursive`` is True, and the bucket contains more than 256
+            blobs.  This is to prevent extremely long runtime of this
+            method.
         """
         self.acl.all().grant_read()
         self.acl.save(client=client)
@@ -1333,11 +1334,7 @@ class Bucket(_PropertyMixin):
                 blob.acl.save(client=client)
 
     def make_private(self, recursive=False, future=False, client=None):
-        """Undo the `make_public` method and make the bucket private.
-
-        If ``recursive=True`` and the bucket contains more than 256
-        objects / blobs this will cowardly refuse to make the objects private.
-        This is to prevent extremely long runtime of this method.
+        """Update bucket's ACL, revoking read access for anonymous users.
 
         :type recursive: bool
         :param recursive: If True, this will make all blobs inside the bucket
@@ -1351,6 +1348,11 @@ class Bucket(_PropertyMixin):
                       ``NoneType``
         :param client: Optional. The client to use.  If not passed, falls back
                        to the ``client`` stored on the current bucket.
+
+        :raises ValueError:
+            If ``recursive`` is True, and the bucket contains more than 256
+            blobs.  This is to prevent extremely long runtime of this
+            method.
         """
         self.acl.all().revoke_read()
         self.acl.save(client=client)
