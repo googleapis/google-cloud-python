@@ -21,6 +21,7 @@ from google.oauth2 import service_account
 import google.api_core.gapic_v1.client_info
 import google.api_core.gapic_v1.config
 import google.api_core.gapic_v1.method
+import google.api_core.path_template
 import google.api_core.grpc_helpers
 import google.api_core.page_iterator
 import grpc
@@ -162,6 +163,9 @@ class PublisherClient(object):
                 channel=channel,
                 credentials=credentials,
             )
+
+        self.iam_policy_stub = (iam_policy_pb2.IAMPolicyStub(channel))
+        self.publisher_stub = (pubsub_pb2_grpc.PublisherStub(channel))
 
         if client_info is None:
             client_info = (

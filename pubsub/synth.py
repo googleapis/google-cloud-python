@@ -30,7 +30,7 @@ s.move(
     library,
     excludes=[
         'docs/**/*', 'nox.py', 'README.rst', 'setup.py',
-        'google/cloud/pubsub_v1/init.py', 'google/cloud/pubsub_v1/types.py'])
+        'google/cloud/pubsub_v1/__init__.py', 'google/cloud/pubsub_v1/types.py'])
 
 # Adjust tests to import the clients directly.
 s.replace(
@@ -84,4 +84,28 @@ s.replace(
         'https://www.googleapis.com/auth/pubsub', )
 
     \g<0>'''
+)
+
+
+# Stubs are missing
+s.replace(
+    'google/cloud/pubsub_v1/gapic/subscriber_client.py',
+    '^(\s+)if client_info is None:\n',
+    '\g<1>self.iam_policy_stub = (iam_policy_pb2.IAMPolicyStub(channel))'
+    '\g<1>self.subscriber_stub = (pubsub_pb2_grpc.SubscriberStub(channel))\n'
+    '\g<0>'
+)
+
+s.replace(
+    'google/cloud/pubsub_v1/gapic/publisher_client.py',
+    '^(\s+)if client_info is None:\n',
+    '\g<1>self.iam_policy_stub = (iam_policy_pb2.IAMPolicyStub(channel))'
+    '\g<1>self.publisher_stub = (pubsub_pb2_grpc.PublisherStub(channel))\n'
+    '\g<0>'
+)
+
+s.replace(
+    'google/cloud/pubsub_v1/gapic/publisher_client.py',
+    'import google.api_core.gapic_v1.method\n',
+    '\g<0>import google.api_core.path_template\n'
 )

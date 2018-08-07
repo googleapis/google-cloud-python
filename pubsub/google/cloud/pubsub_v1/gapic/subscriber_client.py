@@ -185,6 +185,9 @@ class SubscriberClient(object):
                 credentials=credentials,
             )
 
+        self.iam_policy_stub = (iam_policy_pb2.IAMPolicyStub(channel))
+        self.subscriber_stub = (pubsub_pb2_grpc.SubscriberStub(channel))
+
         if client_info is None:
             client_info = (
                 google.api_core.gapic_v1.client_info.DEFAULT_CLIENT_INFO)
