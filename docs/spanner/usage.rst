@@ -42,23 +42,23 @@ Spanner Client
 Instantiating a Client
 ----------------------
 
-To use the API, the :class:`~google.cloud.spanner.client.Client`
+To use the API, the :class:`~google.cloud.spanner_v1.client.Client`
 class defines a high-level interface which handles authorization
 and creating other objects:
 
 .. code:: python
 
-    from google.cloud import spanner
-    client = spanner.Client()
+    from google.cloud import spanner_v1
+    client = spanner_v1.Client()
 
 Long-lived Defaults
 -------------------
 
-When creating a :class:`~google.cloud.spanner.client.Client`, the
+When creating a :class:`~google.cloud.spanner_v1.client.Client`, the
 ``user_agent`` and ``timeout_seconds`` arguments have sensible
 defaults
-(:data:`~google.cloud.spanner.client.DEFAULT_USER_AGENT` and
-:data:`~google.cloud.spanner.client.DEFAULT_TIMEOUT_SECONDS`).
+(:data:`~google.cloud.spanner_v1.client.DEFAULT_USER_AGENT` and
+:data:`~google.cloud.spanner_v1.client.DEFAULT_TIMEOUT_SECONDS`).
 However, you may over-ride them and these will be used throughout all API
 requests made with the ``client`` you create.
 
@@ -74,22 +74,22 @@ Configuration
   Engine or Google Compute Engine the project will be detected automatically.
   (Setting this environment variable is not required, you may instead pass the
   ``project`` explicitly when constructing a
-  :class:`~google.cloud.spanner.client.Client`).
+  :class:`~google.cloud.spanner_v1.client.Client`).
 
 - After configuring your environment, create a
-  :class:`~google.cloud.spanner.client.Client`
+  :class:`~google.cloud.spanner_v1.client.Client`
 
   .. code::
 
-     >>> from google.cloud import spanner
-     >>> client = spanner.Client()
+     >>> from google.cloud import spanner_v1
+     >>> client = spanner_v1.Client()
 
   or pass in ``credentials`` and ``project`` explicitly
 
   .. code::
 
-     >>> from google.cloud import spanner
-     >>> client = spanner.Client(project='my-project', credentials=creds)
+     >>> from google.cloud import spanner_v1
+     >>> client = spanner_v1.Client(project='my-project', credentials=creds)
 
 .. tip::
 
@@ -106,8 +106,8 @@ Warnings about Multiprocessing
 Next Step
 ---------
 
-After a :class:`~google.cloud.spanner.client.Client`, the next
-highest-level object is an :class:`~google.cloud.spanner.instance.Instance`.
+After a :class:`~google.cloud.spanner_v1.client.Client`, the next
+highest-level object is an :class:`~google.cloud.spanner_v1.instance.Instance`.
 You'll need one before you can interact with databases.
 
 Next, learn about the :doc:`instance-usage`.
