@@ -1983,7 +1983,7 @@ def test_extract_table(client, to_delete):
 
     bucket_name = 'extract_shakespeare_{}'.format(_millis())
     storage_client = storage.Client()
-    bucket = retry_429(storage_client.create_bucket)(bucket_name)  # API request
+    bucket = retry_429(storage_client.create_bucket)(bucket_name)
     to_delete.append(bucket)
 
     # [START bigquery_extract_table]
@@ -2020,7 +2020,7 @@ def test_extract_table_json(client, to_delete):
 
     bucket_name = 'extract_shakespeare_json_{}'.format(_millis())
     storage_client = storage.Client()
-    bucket = retry_429(storage_client.create_bucket)(bucket_name)  # API request
+    bucket = retry_429(storage_client.create_bucket)(bucket_name)
     to_delete.append(bucket)
 
     # [START bigquery_extract_table_json]
@@ -2055,7 +2055,7 @@ def test_extract_table_compressed(client, to_delete):
 
     bucket_name = 'extract_shakespeare_compress_{}'.format(_millis())
     storage_client = storage.Client()
-    bucket = retry_429(storage_client.create_bucket)(bucket_name)  # API request
+    bucket = retry_429(storage_client.create_bucket)(bucket_name)
     to_delete.append(bucket)
 
     # [START bigquery_extract_table_compressed]
