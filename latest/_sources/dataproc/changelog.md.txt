@@ -4,6 +4,11 @@
 
 [1]: https://pypi.org/project/google-cloud-dataproc/#history
 
+## 0.2.0
+
+### New Features
+- Regenerate v1 endpoint. Add v1beta2 endpoint (#5717)
+
 ## 0.1.2
 
 ### Implementation Changes
