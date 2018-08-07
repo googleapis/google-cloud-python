@@ -12,23 +12,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from __future__ import absolute_import
+import os
+import time
 
-from google.cloud.pubsub_v1 import types
-from google.cloud.pubsub_v1.gapic import publisher_client
-from google.cloud.pubsub_v1.gapic import subscriber_client
-
-
-class PublisherClient(publisher_client.PublisherClient):
-    __doc__ = publisher_client.PublisherClient.__doc__
+from google.cloud import pubsub_v1
+from google.cloud.pubsub_v1.proto import pubsub_pb2
 
 
-class SubscriberClient(subscriber_client.SubscriberClient):
-    __doc__ = subscriber_client.SubscriberClient.__doc__
+class TestSystemPublisher(object):
+    def test_list_topics(self):
+        project_id = os.environ['PROJECT_ID']
 
-
-__all__ = (
-    'types',
-    'PublisherClient',
-    'SubscriberClient',
-)
+        client = pubsub_v1.PublisherClient()
+        project = client.project_path(project_id)
+        response = client.list_topics(project)
