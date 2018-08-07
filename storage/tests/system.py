@@ -82,6 +82,15 @@ def tearDownModule():
     retry(Config.TEST_BUCKET.delete)(force=True)
 
 
+class TestClient(unittest.TestCase):
+
+    def test_get_service_account_email(self):
+        expected = '{}@gs-project-accounts.iam.gserviceaccount.com'.format(
+            Config.CLIENT.project)
+        self.assertEqual(
+            Config.CLIENT.get_service_account_email(), expected)
+
+
 class TestStorageBuckets(unittest.TestCase):
 
     def setUp(self):
