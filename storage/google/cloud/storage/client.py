@@ -156,8 +156,8 @@ class Client(ClientWithProject):
 
         :type project: str
         :param project:
-            (Optional) Project ID to use for retreiving service account email.
-            Defaults to the client's project.
+            (Optional) Project ID to use for retreiving GCS service account
+            email address.  Defaults to the client's project.
 
         :rtype: str
         :returns: service account email address
