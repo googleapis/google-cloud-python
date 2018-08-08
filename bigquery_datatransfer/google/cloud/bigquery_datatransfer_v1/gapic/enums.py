@@ -1,10 +1,10 @@
-# Copyright 2017, Google LLC All rights reserved.
+# Copyright 2018 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#     http://www.apache.org/licenses/LICENSE-2.0
+#     https://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,8 +13,10 @@
 # limitations under the License.
 """Wrappers for protocol buffer enum types."""
 
+import enum
 
-class NullValue(object):
+
+class NullValue(enum.IntEnum):
     """
     ``NullValue`` is a singleton enumeration to represent the null value for the
     ``Value`` type union.
@@ -27,9 +29,9 @@ class NullValue(object):
     NULL_VALUE = 0
 
 
-class TransferType(object):
+class TransferType(enum.IntEnum):
     """
-    Represents data transfer type.
+    DEPRECATED. Represents data transfer type.
 
     Attributes:
       TRANSFER_TYPE_UNSPECIFIED (int): Invalid or Unknown transfer type placeholder.
@@ -42,13 +44,12 @@ class TransferType(object):
     STREAMING = 2
 
 
-class TransferState(object):
+class TransferState(enum.IntEnum):
     """
     Represents data transfer run state.
 
     Attributes:
       TRANSFER_STATE_UNSPECIFIED (int): State placeholder.
-      INACTIVE (int): Data transfer is inactive.
       PENDING (int): Data transfer is scheduled and is waiting to be picked up by
       data transfer backend.
       RUNNING (int): Data transfer is in progress.
@@ -57,7 +58,6 @@ class TransferState(object):
       CANCELLED (int): Data transfer is cancelled.
     """
     TRANSFER_STATE_UNSPECIFIED = 0
-    INACTIVE = 1
     PENDING = 2
     RUNNING = 3
     SUCCEEDED = 4
@@ -66,7 +66,7 @@ class TransferState(object):
 
 
 class TransferMessage(object):
-    class MessageSeverity(object):
+    class MessageSeverity(enum.IntEnum):
         """
         Represents data transfer user facing message severity.
 
@@ -83,7 +83,7 @@ class TransferMessage(object):
 
 
 class DataSourceParameter(object):
-    class Type(object):
+    class Type(enum.IntEnum):
         """
         Parameter type.
 
@@ -107,7 +107,7 @@ class DataSourceParameter(object):
 
 
 class DataSource(object):
-    class AuthorizationType(object):
+    class AuthorizationType(enum.IntEnum):
         """
         The type of authorization needed for this data source.
 
@@ -122,7 +122,7 @@ class DataSource(object):
         AUTHORIZATION_CODE = 1
         GOOGLE_PLUS_AUTHORIZATION_CODE = 2
 
-    class DataRefreshType(object):
+    class DataRefreshType(enum.IntEnum):
         """
         Represents how the data source supports data auto refresh.
 
@@ -141,7 +141,7 @@ class DataSource(object):
 
 
 class ListTransferRunsRequest(object):
-    class RunAttempt(object):
+    class RunAttempt(enum.IntEnum):
         """
         Represents which runs should be pulled.
 

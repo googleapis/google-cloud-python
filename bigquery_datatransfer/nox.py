@@ -1,10 +1,10 @@
-# Copyright 2017, Google LLC All rights reserved.
+# Copyright 2018 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#     http://www.apache.org/licenses/LICENSE-2.0
+#     https://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,43 +13,14 @@
 # limitations under the License.
 
 from __future__ import absolute_import
-
 import os
 
 import nox
 
 
-LOCAL_DEPS = (
-    os.path.join('..', 'api_core'),
-)
-
-
 @nox.session
 def default(session):
-    """Default unit test session.
-
-    This is intended to be run **without** an interpreter set, so
-    that the current ``python`` (on the ``PATH``) or the version of
-    Python corresponding to the ``nox`` binary on the ``PATH`` can
-    run the tests.
-    """
-    # Install all test dependencies, then install this package in-place.
-    session.install('mock', 'pytest', 'pytest-cov', *LOCAL_DEPS)
-    session.install('-e', '.')
-
-    # Run py.test against the unit tests.
-    session.run(
-        'py.test',
-        '--quiet',
-        '--cov=google.cloud.bigquery_datatransfer',
-        '--cov=google.cloud.bigquery_datatransfer_v1',
-        '--cov=tests.unit',
-        '--cov-append',
-        '--cov-config=.coveragerc',
-        '--cov-report=',
-        os.path.join('tests', 'unit', 'gapic', 'v1'),
-        *session.posargs
-    )
+    return unit(session, 'default')
 
 
 @nox.session
@@ -57,9 +28,43 @@ def default(session):
 def unit(session, py):
     """Run the unit test suite."""
 
-    session.interpreter = 'python{}'.format(py)
+    # Run unit tests against all supported versions of Python.
+    if py != 'default':
+        session.interpreter = 'python{}'.format(py)
+
+    # Set the virtualenv directory name.
     session.virtualenv_dirname = 'unit-' + py
-    default(session)
+
+    # Install all test dependencies, then install this package in-place.
+    session.install('pytest')
+    session.install('-e', '.')
+
+    # Run py.test against the unit tests.
+    session.run('py.test', '--quiet', os.path.join('tests', 'unit'))
+
+
+@nox.session
+@nox.parametrize('py', ['2.7', '3.7'])
+def system(session, py):
+    """Run the system test suite."""
+
+    # Sanity check: Only run system tests if the environment variable is set.
+    if not os.environ.get('GOOGLE_APPLICATION_CREDENTIALS', ''):
+        session.skip('Credentials must be set via environment variable.')
+
+    # Run unit tests against all supported versions of Python.
+    session.interpreter = 'python{}'.format(py)
+
+    # Set the virtualenv dirname.
+    session.virtualenv_dirname = 'sys-' + py
+
+    # Install all test dependencies, then install this package in-place.
+    session.install('pytest')
+    session.install('-e', '.')
+
+    # Run py.test against the unit tests.
+    session.run('py.test', '--quiet', os.path.join('tests', 'system'),
+                *session.posargs)
 
 
 @nox.session
@@ -69,31 +74,3 @@ def lint_setup_py(session):
     session.install('docutils', 'pygments')
     session.run('python', 'setup.py', 'check', '--restructuredtext',
                 '--strict')
-
-
-@nox.session
-@nox.parametrize('py', ['2.7', '3.6'])
-def system(session, py):
-    """Run the system test suite."""
-
-    # Sanity check: Only run system tests if the environment variable is set.
-    if not os.environ.get('GOOGLE_APPLICATION_CREDENTIALS', ''):
-        session.skip('Credentials must be set via environment variable.')
-
-    # Run the system tests against latest Python 2 and Python 3 only.
-    session.interpreter = 'python{}'.format(py)
-
-    # Set the virtualenv dirname.
-    session.virtualenv_dirname = 'sys-' + py
-
-    # Use pre-release gRPC for system tests.
-    session.install('--pre', 'grpcio')
-
-    # Install all test dependencies, then install this package into the
-    # virtualenv's dist-packages.
-    session.install('mock', 'pytest')
-    session.install('../test_utils/')
-    session.install('.')
-
-    # Run py.test against the system tests.
-    session.run('py.test', '--quiet', 'tests/system/')
