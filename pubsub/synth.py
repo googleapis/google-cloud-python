@@ -109,3 +109,33 @@ s.replace(
     'import google.api_core.gapic_v1.method\n',
     '\g<0>import google.api_core.path_template\n'
 )
+
+# Generator is removing ending line of __init__.py
+s.replace(
+    ['google/cloud/__init__.py', 'google/__init__.py'],
+    '__path__ = pkgutil.extend_path\(__path__, __name__\)',
+    '\g<0>\n'
+)
+
+# Doc strings are formatted poorly
+s.replace(
+    'google/cloud/pubsub_v1/proto/pubsub_pb2.py',
+    'DESCRIPTOR = _MESSAGESTORAGEPOLICY,\n\s+__module__.*\n\s+,\n\s+__doc__ = """',
+    '\g<0>A message storage policy.\n\n\n    '
+)
+
+s.replace(
+    'google/cloud/pubsub_v1/gapic/subscriber_client.py',
+    'subscription \(str\): The subscription whose backlog .*\n(.*\n)+?'
+    '\s+Format is .*',
+    '''subscription (str): The subscription whose backlog the snapshot retains.
+                Specifically, the created snapshot is guaranteed to retain: \\
+                 (a) The existing backlog on the subscription. More precisely, this is \\
+                     defined as the messages in the subscription's backlog that are \\
+                     unacknowledged upon the successful completion of the \\
+                     `CreateSnapshot` request; as well as: \\
+                 (b) Any messages published to the subscription's topic following the \\
+                     successful completion of the CreateSnapshot request. \\
+
+                Format is ``projects/{project}/subscriptions/{sub}``.'''
+)
