@@ -14,6 +14,7 @@
 
 import os
 import tempfile
+import re
 import time
 import unittest
 
@@ -85,10 +86,20 @@ def tearDownModule():
 class TestClient(unittest.TestCase):
 
     def test_get_service_account_email(self):
-        expected = '{}@gs-project-accounts.iam.gserviceaccount.com'.format(
-            Config.CLIENT.project)
-        self.assertEqual(
-            Config.CLIENT.get_service_account_email(), expected)
+        domain = 'gs-project-accounts.iam.gserviceaccount.com'
+
+        email = Config.CLIENT.get_service_account_email()
+
+        new_style = re.compile(
+            r'service-(?P<projnum>[^@]+)@' + domain)
+        old_style = re.compile(
+            r'{}@{}'.format(Config.CLIENT.project, domain))
+        patterns = [new_style, old_style]
+        matches = [pattern.match(email) for pattern in patterns]
+
+        self.assertTrue(any(
+            match for match in matches if match is not None
+        ))
 
 
 class TestStorageBuckets(unittest.TestCase):
