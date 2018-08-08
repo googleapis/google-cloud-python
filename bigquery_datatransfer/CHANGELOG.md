@@ -2,7 +2,7 @@
 
 [PyPI History][1]
 
-[1]: https://pypi.org/project/google-cloud-bigquery-datatransfer/#history
+[1]: https://pypi.org/project/google-cloud-bigquerydatatransfer/#history
 
 ## 0.1.1
 
@@ -34,4 +34,4 @@ of code. BigQuery Data Transfer Service initially supports Google application
 sources like Adwords, DoubleClick Campaign Manager, DoubleClick for Publishers
 and YouTube.
 
-PyPI: https://pypi.org/project/google-cloud-bigquery-datatransfer/0.1.0/
+PyPI: https://pypi.org/project/google-cloud-bigquerydatatransfer/0.1.0/
