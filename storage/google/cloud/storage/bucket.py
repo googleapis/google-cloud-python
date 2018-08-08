@@ -1304,7 +1304,8 @@ class Bucket(_PropertyMixin):
             If ``recursive`` is True, and the bucket contains more than 256
             blobs.  This is to prevent extremely long runtime of this
             method.  For such buckets, iterate over the blobs returned by
-            :meth:`Bucket.list_blobs` and call :meth:`Blob.make_public`
+            :meth:`list_blobs` and call
+            :meth:`~google.cloud.storage.blob.Blob.make_public`
             for each blob.
         """
         self.acl.all().grant_read()
@@ -1356,7 +1357,8 @@ class Bucket(_PropertyMixin):
             If ``recursive`` is True, and the bucket contains more than 256
             blobs.  This is to prevent extremely long runtime of this
             method.  For such buckets, iterate over the blobs returned by
-            :meth:`Bucket.list_blobs` and call :meth:`Blob.make_private`
+            :meth:`list_blobs` and call
+            :meth:`~google.cloud.storage.blob.Blob.make_private`
             for each blob.
         """
         self.acl.all().revoke_read()
