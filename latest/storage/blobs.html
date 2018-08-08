@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Blobs / Objects &#8212; google-cloud d3d70ef documentation</title>
+    <title>Blobs / Objects &#8212; google-cloud 4256b47 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -611,8 +611,7 @@ or the blob’s resource has not been loaded from the server.</td>
 <dl class="method">
 <dt id="google.cloud.storage.blob.Blob.make_private">
 <code class="descname">make_private</code><span class="sig-paren">(</span><em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/storage/blob.html#Blob.make_private"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.storage.blob.Blob.make_private" title="Permalink to this definition">#</a></dt>
-<dd><p>Make this blob private by removing <cite>allusers</cite> read access.
-Does not revoke access for anything other than the <cite>allusers</cite> group.</p>
+<dd><p>Update blob’s ACL, revoking read access for anonymous users.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -628,7 +627,7 @@ to the <code class="docutils literal notranslate"><span class="pre">client</span
 <dl class="method">
 <dt id="google.cloud.storage.blob.Blob.make_public">
 <code class="descname">make_public</code><span class="sig-paren">(</span><em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/storage/blob.html#Blob.make_public"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.storage.blob.Blob.make_public" title="Permalink to this definition">#</a></dt>
-<dd><p>Make this blob public giving all users read access.</p>
+<dd><p>Update blob’s ACL, granting read access to anonymous users.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -796,7 +795,9 @@ resource has not been loaded from the server.</td>
 <dl class="attribute">
 <dt id="google.cloud.storage.blob.Blob.public_url">
 <code class="descname">public_url</code><a class="headerlink" href="#google.cloud.storage.blob.Blob.public_url" title="Permalink to this definition">#</a></dt>
-<dd><p>The public URL for this blob’s object.</p>
+<dd><p>The public URL for this blob.</p>
+<p>Use <a class="reference internal" href="#google.cloud.storage.blob.Blob.make_public" title="google.cloud.storage.blob.Blob.make_public"><code class="xref py py-meth docutils literal notranslate"><span class="pre">make_public()</span></code></a> to enable anonymous access via the returned
+URL.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />

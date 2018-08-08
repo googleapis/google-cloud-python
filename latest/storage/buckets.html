@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Buckets &#8212; google-cloud d3d70ef documentation</title>
+    <title>Buckets &#8212; google-cloud 4256b47 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -789,15 +789,12 @@ or if the bucket’s resource has not been loaded from the server.</p>
 <dl class="method">
 <dt id="google.cloud.storage.bucket.Bucket.make_private">
 <code class="descname">make_private</code><span class="sig-paren">(</span><em>recursive=False</em>, <em>future=False</em>, <em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/storage/bucket.html#Bucket.make_private"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.storage.bucket.Bucket.make_private" title="Permalink to this definition">#</a></dt>
-<dd><p>Undo the <cite>make_public</cite> method and make the bucket private.</p>
-<p>If <code class="docutils literal notranslate"><span class="pre">recursive=True</span></code> and the bucket contains more than 256
-objects / blobs this will cowardly refuse to make the objects private.
-This is to prevent extremely long runtime of this method.</p>
+<dd><p>Update bucket’s ACL, revoking read access for anonymous users.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>recursive</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – If True, this will make all blobs inside the bucket
 private as well.</li>
 <li><strong>future</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – If True, this will make all objects created in the
@@ -808,6 +805,14 @@ to the <code class="docutils literal notranslate"><span class="pre">client</span
 </ul>
 </td>
 </tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><strong>ValueError</strong></a> – If <code class="docutils literal notranslate"><span class="pre">recursive</span></code> is True, and the bucket contains more than 256
+blobs.  This is to prevent extremely long runtime of this
+method.  For such buckets, iterate over the blobs returned by
+<a class="reference internal" href="#google.cloud.storage.bucket.Bucket.list_blobs" title="google.cloud.storage.bucket.Bucket.list_blobs"><code class="xref py py-meth docutils literal notranslate"><span class="pre">list_blobs()</span></code></a> and call
+<a class="reference internal" href="blobs.html#google.cloud.storage.blob.Blob.make_private" title="google.cloud.storage.blob.Blob.make_private"><code class="xref py py-meth docutils literal notranslate"><span class="pre">make_private()</span></code></a>
+for each blob.</p>
+</td>
+</tr>
 </tbody>
 </table>
 </dd></dl>
@@ -815,15 +820,12 @@ to the <code class="docutils literal notranslate"><span class="pre">client</span
 <dl class="method">
 <dt id="google.cloud.storage.bucket.Bucket.make_public">
 <code class="descname">make_public</code><span class="sig-paren">(</span><em>recursive=False</em>, <em>future=False</em>, <em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/storage/bucket.html#Bucket.make_public"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.storage.bucket.Bucket.make_public" title="Permalink to this definition">#</a></dt>
-<dd><p>Make a bucket public.</p>
-<p>If <code class="docutils literal notranslate"><span class="pre">recursive=True</span></code> and the bucket contains more than 256
-objects / blobs this will cowardly refuse to make the objects public.
-This is to prevent extremely long runtime of this method.</p>
+<dd><p>Update bucket’s ACL, granting read access to anonymous users.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>recursive</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – If True, this will make all blobs inside the bucket
 public as well.</li>
 <li><strong>future</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – If True, this will make all objects created in the
@@ -832,6 +834,14 @@ future public as well.</li>
 <code class="docutils literal notranslate"><span class="pre">NoneType</span></code>) – Optional. The client to use.  If not passed, falls back
 to the <code class="docutils literal notranslate"><span class="pre">client</span></code> stored on the current bucket.</li>
 </ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><strong>ValueError</strong></a> – If <code class="docutils literal notranslate"><span class="pre">recursive</span></code> is True, and the bucket contains more than 256
+blobs.  This is to prevent extremely long runtime of this
+method.  For such buckets, iterate over the blobs returned by
+<a class="reference internal" href="#google.cloud.storage.bucket.Bucket.list_blobs" title="google.cloud.storage.bucket.Bucket.list_blobs"><code class="xref py py-meth docutils literal notranslate"><span class="pre">list_blobs()</span></code></a> and call
+<a class="reference internal" href="blobs.html#google.cloud.storage.blob.Blob.make_public" title="google.cloud.storage.blob.Blob.make_public"><code class="xref py py-meth docutils literal notranslate"><span class="pre">make_public()</span></code></a>
+for each blob.</p>
 </td>
 </tr>
 </tbody>

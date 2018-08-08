@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.storage.blob &#8212; google-cloud d3d70ef documentation</title>
+    <title>google.cloud.storage.blob &#8212; google-cloud 4256b47 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -291,7 +291,10 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">public_url</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;The public URL for this blob&#39;s object.</span>
+        <span class="sd">&quot;&quot;&quot;The public URL for this blob.</span>
+
+<span class="sd">        Use :meth:`make_public` to enable anonymous access via the returned</span>
+<span class="sd">        URL.</span>
 
 <span class="sd">        :rtype: `string`</span>
 <span class="sd">        :returns: The public URL for this blob.</span>
@@ -1371,7 +1374,7 @@
         <span class="k">return</span> <span class="n">resp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;permissions&#39;</span><span class="p">,</span> <span class="p">[])</span></div>
 
 <div class="viewcode-block" id="Blob.make_public"><a class="viewcode-back" href="../../../../storage/blobs.html#google.cloud.storage.blob.Blob.make_public">[docs]</a>    <span class="k">def</span> <span class="nf">make_public</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Make this blob public giving all users read access.</span>
+        <span class="sd">&quot;&quot;&quot;Update blob&#39;s ACL, granting read access to anonymous users.</span>
 
 <span class="sd">        :type client: :class:`~google.cloud.storage.client.Client` or</span>
 <span class="sd">                      ``NoneType``</span>
@@ -1382,8 +1385,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">acl</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Blob.make_private"><a class="viewcode-back" href="../../../../storage/blobs.html#google.cloud.storage.blob.Blob.make_private">[docs]</a>    <span class="k">def</span> <span class="nf">make_private</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Make this blob private by removing `allusers` read access.</span>
-<span class="sd">        Does not revoke access for anything other than the `allusers` group.</span>
+        <span class="sd">&quot;&quot;&quot;Update blob&#39;s ACL, revoking read access for anonymous users.</span>
 
 <span class="sd">        :type client: :class:`~google.cloud.storage.client.Client` or</span>
 <span class="sd">                      ``NoneType``</span>
