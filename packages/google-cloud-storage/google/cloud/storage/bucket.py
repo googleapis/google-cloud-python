@@ -1285,11 +1285,7 @@ class Bucket(_PropertyMixin):
         return resp.get('permissions', [])
 
     def make_public(self, recursive=False, future=False, client=None):
-        """Make a bucket public.
-
-        If ``recursive=True`` and the bucket contains more than 256
-        objects / blobs this will cowardly refuse to make the objects public.
-        This is to prevent extremely long runtime of this method.
+        """Update bucket's ACL, granting read access to anonymous users.
 
         :type recursive: bool
         :param recursive: If True, this will make all blobs inside the bucket
@@ -1303,6 +1299,14 @@ class Bucket(_PropertyMixin):
                       ``NoneType``
         :param client: Optional. The client to use.  If not passed, falls back
                        to the ``client`` stored on the current bucket.
+
+        :raises ValueError:
+            If ``recursive`` is True, and the bucket contains more than 256
+            blobs.  This is to prevent extremely long runtime of this
+            method.  For such buckets, iterate over the blobs returned by
+            :meth:`list_blobs` and call
+            :meth:`~google.cloud.storage.blob.Blob.make_public`
+            for each blob.
         """
         self.acl.all().grant_read()
         self.acl.save(client=client)
@@ -1321,10 +1325,11 @@ class Bucket(_PropertyMixin):
                 client=client))
             if len(blobs) > self._MAX_OBJECTS_FOR_ITERATION:
                 message = (
-                    'Refusing to make public recursively with more than '
-                    '%d objects. If you actually want to make every object '
-                    'in this bucket public, please do it on the objects '
-                    'yourself.'
+                    "Refusing to make public recursively with more than "
+                    "%d objects. If you actually want to make every object "
+                    "in this bucket public, iterate through the blobs "
+                    "returned by 'Bucket.list_blobs()' and call "
+                    "'make_public' on each one."
                 ) % (self._MAX_OBJECTS_FOR_ITERATION,)
                 raise ValueError(message)
 
@@ -1333,11 +1338,7 @@ class Bucket(_PropertyMixin):
                 blob.acl.save(client=client)
 
     def make_private(self, recursive=False, future=False, client=None):
-        """Undo the `make_public` method and make the bucket private.
-
-        If ``recursive=True`` and the bucket contains more than 256
-        objects / blobs this will cowardly refuse to make the objects private.
-        This is to prevent extremely long runtime of this method.
+        """Update bucket's ACL, revoking read access for anonymous users.
 
         :type recursive: bool
         :param recursive: If True, this will make all blobs inside the bucket
@@ -1351,6 +1352,14 @@ class Bucket(_PropertyMixin):
                       ``NoneType``
         :param client: Optional. The client to use.  If not passed, falls back
                        to the ``client`` stored on the current bucket.
+
+        :raises ValueError:
+            If ``recursive`` is True, and the bucket contains more than 256
+            blobs.  This is to prevent extremely long runtime of this
+            method.  For such buckets, iterate over the blobs returned by
+            :meth:`list_blobs` and call
+            :meth:`~google.cloud.storage.blob.Blob.make_private`
+            for each blob.
         """
         self.acl.all().revoke_read()
         self.acl.save(client=client)
@@ -1371,8 +1380,9 @@ class Bucket(_PropertyMixin):
                 message = (
                     'Refusing to make private recursively with more than '
                     '%d objects. If you actually want to make every object '
-                    'in this bucket private, please do it on the objects '
-                    'yourself.'
+                    "in this bucket private, iterate through the blobs "
+                    "returned by 'Bucket.list_blobs()' and call "
+                    "'make_private' on each one."
                 ) % (self._MAX_OBJECTS_FOR_ITERATION,)
                 raise ValueError(message)
 

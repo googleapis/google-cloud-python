@@ -256,7 +256,10 @@ class Blob(_PropertyMixin):
 
     @property
     def public_url(self):
-        """The public URL for this blob's object.
+        """The public URL for this blob.
+
+        Use :meth:`make_public` to enable anonymous access via the returned
+        URL.
 
         :rtype: `string`
         :returns: The public URL for this blob.
@@ -1336,7 +1339,7 @@ class Blob(_PropertyMixin):
         return resp.get('permissions', [])
 
     def make_public(self, client=None):
-        """Make this blob public giving all users read access.
+        """Update blob's ACL, granting read access to anonymous users.
 
         :type client: :class:`~google.cloud.storage.client.Client` or
                       ``NoneType``
@@ -1347,8 +1350,7 @@ class Blob(_PropertyMixin):
         self.acl.save(client=client)
 
     def make_private(self, client=None):
-        """Make this blob private by removing `allusers` read access.
-        Does not revoke access for anything other than the `allusers` group.
+        """Update blob's ACL, revoking read access for anonymous users.
 
         :type client: :class:`~google.cloud.storage.client.Client` or
                       ``NoneType``
