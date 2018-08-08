@@ -176,3 +176,4 @@ class Table(object):
         PLANNED_MAINTENANCE = enums.Table.ClusterState.ReplicationState.PLANNED_MAINTENANCE
         UNPLANNED_MAINTENANCE = enums.Table.ClusterState.ReplicationState.UNPLANNED_MAINTENANCE
         READY = enums.Table.ClusterState.ReplicationState.READY
+

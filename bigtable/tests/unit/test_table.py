@@ -442,6 +442,7 @@ class TestTable(unittest.TestCase):
             'cluster-id2': PLANNED_MAINTENANCE,
             'cluster-id3': READY
         }
+
         # Perform the method and check the result.
         result = table.get_cluster_states()
         self.assertEqual(result, expected_result)
