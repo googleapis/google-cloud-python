@@ -173,6 +173,60 @@ class TestClient(unittest.TestCase):
         self.assertIs(client._connection, batch)
         self.assertIs(client.current_batch, batch)
 
+    def test_get_service_account_email_wo_project(self):
+        PROJECT = 'PROJECT'
+        CREDENTIALS = _make_credentials()
+        EMAIL = 'storage-user-123@example.com'
+        RESOURCE = {
+            'kind': 'storage#serviceAccount',
+            'email_address': EMAIL,
+        }
+
+        client = self._make_one(project=PROJECT, credentials=CREDENTIALS)
+        http = _make_requests_session([
+            _make_json_response(RESOURCE)])
+        client._http_internal = http
+
+        service_account_email = client.get_service_account_email()
+
+        self.assertEqual(service_account_email, EMAIL)
+        URI = '/'.join([
+            client._connection.API_BASE_URL,
+            'storage',
+            client._connection.API_VERSION,
+            'projects/%s/serviceAccount' % (PROJECT,)
+        ])
+        http.request.assert_called_once_with(
+            method='GET', url=URI, data=None, headers=mock.ANY)
+
+    def test_get_service_account_email_w_project(self):
+        PROJECT = 'PROJECT'
+        OTHER_PROJECT = 'OTHER_PROJECT'
+        CREDENTIALS = _make_credentials()
+        EMAIL = 'storage-user-123@example.com'
+        RESOURCE = {
+            'kind': 'storage#serviceAccount',
+            'email_address': EMAIL,
+        }
+
+        client = self._make_one(project=PROJECT, credentials=CREDENTIALS)
+        http = _make_requests_session([
+            _make_json_response(RESOURCE)])
+        client._http_internal = http
+
+        service_account_email = client.get_service_account_email(
+            project=OTHER_PROJECT)
+
+        self.assertEqual(service_account_email, EMAIL)
+        URI = '/'.join([
+            client._connection.API_BASE_URL,
+            'storage',
+            client._connection.API_VERSION,
+            'projects/%s/serviceAccount' % (OTHER_PROJECT,)
+        ])
+        http.request.assert_called_once_with(
+            method='GET', url=URI, data=None, headers=mock.ANY)
+
     def test_bucket(self):
         from google.cloud.storage.bucket import Bucket
 
