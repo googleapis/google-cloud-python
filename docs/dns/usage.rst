@@ -5,11 +5,19 @@ DNS
   :maxdepth: 2
   :hidden:
 
-  releases
   client
   zone
   resource-record-set
   changes
+
+Installation
+------------
+
+Install the ``google-cloud-dns`` library using ``pip``:
+
+.. code-block:: console
+
+    $ pip install google-cloud-dns
 
 Client
 ------
@@ -185,3 +193,14 @@ List changes made to the resource record set for a given zone:
       ...     next_batch, page_token = zone.list_changes(
       ...         page_token=page_token)  # API request
       ...     changes.extend(next_batch)
+
+Changelog
+---------
+
+For a list of all ``google-cloud-dns`` releases:
+
+.. toctree::
+  :maxdepth: 2
+
+  changelog
+

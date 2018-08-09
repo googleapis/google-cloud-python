@@ -18,7 +18,6 @@
 from google.cloud.firestore_v1beta1 import __version__
 from google.cloud.firestore_v1beta1 import Client
 from google.cloud.firestore_v1beta1 import CollectionReference
-from google.cloud.firestore_v1beta1 import CreateIfMissingOption
 from google.cloud.firestore_v1beta1 import DELETE_FIELD
 from google.cloud.firestore_v1beta1 import DocumentReference
 from google.cloud.firestore_v1beta1 import DocumentSnapshot
@@ -40,7 +39,6 @@ __all__ = [
     '__version__',
     'Client',
     'CollectionReference',
-    'CreateIfMissingOption',
     'DELETE_FIELD',
     'DocumentReference',
     'DocumentSnapshot',

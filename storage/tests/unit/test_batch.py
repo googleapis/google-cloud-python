@@ -340,7 +340,7 @@ class TestBatch(unittest.TestCase):
         self.assertEqual(response3.headers, {'Content-Length': '0'})
         self.assertEqual(response3.status_code, http_client.NO_CONTENT)
 
-        expected_url = '{}/batch'.format(batch.API_BASE_URL)
+        expected_url = '{}/batch/storage/v1'.format(batch.API_BASE_URL)
         http.request.assert_called_once_with(
             method='POST', url=expected_url, headers=mock.ANY, data=mock.ANY)
 
@@ -403,7 +403,7 @@ class TestBatch(unittest.TestCase):
                          {'foo': 1, 'bar': 2})
         self.assertIs(target2._properties, target2_future_before)
 
-        expected_url = '{}/batch'.format(batch.API_BASE_URL)
+        expected_url = '{}/batch/storage/v1'.format(batch.API_BASE_URL)
         http.request.assert_called_once_with(
             method='POST', url=expected_url, headers=mock.ANY, data=mock.ANY)
 

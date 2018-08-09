@@ -217,12 +217,13 @@ class TestClient(unittest.TestCase):
         self.assertEqual(project.status, STATUS)
 
         # Check that the filter made it in the request.
+        FLATTENED_FILTER_PARAMS = ['id:project-id']
         request, = client._connection._requested
         self.assertEqual(request, {
             'path': '/projects',
             'method': 'GET',
             'query_params': {
-                'filter': FILTER_PARAMS,
+                'filter': FLATTENED_FILTER_PARAMS,
             },
         })
 

@@ -13,9 +13,11 @@
 # limitations under the License.
 """Wrappers for protocol buffer enum types."""
 
+import enum
+
 
 class RecognitionConfig(object):
-    class AudioEncoding(object):
+    class AudioEncoding(enum.IntEnum):
         """
         Audio encoding of the data sent in the audio message. All encodings support
         only 1 channel (mono) audio. Only ``FLAC`` and ``WAV`` include a header that
@@ -68,7 +70,7 @@ class RecognitionConfig(object):
 
 
 class StreamingRecognizeResponse(object):
-    class SpeechEventType(object):
+    class SpeechEventType(enum.IntEnum):
         """
         Indicates the type of speech event.
 

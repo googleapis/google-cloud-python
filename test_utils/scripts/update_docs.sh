@@ -24,6 +24,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 # Function to build the docs.
 function build_docs {
     rm -rf docs/_build/
+    rm -rf docs/bigquery/generated
     sphinx-build -W -b html -d docs/_build/doctrees docs/ docs/_build/html/
     return $?
 }
@@ -31,6 +32,8 @@ function build_docs {
 # Only update docs if we are on CircleCI.
 if [[ "${CIRCLE_BRANCH}" == "master" ]] && [[ -z "${CIRCLE_PR_NUMBER}" ]]; then
     echo "Building new docs on a merged commit."
+elif [[ "$1" == "kokoro" ]]; then
+    echo "Building and publishing docs on Kokoro."
 elif [[ -n "${CIRCLE_TAG}" ]]; then
     echo "Building new docs on a tag (but will not deploy)."
     build_docs
@@ -78,8 +81,8 @@ if [[ -z "$(git status --porcelain)" ]]; then
 fi
 
 # Commit to gh-pages branch to apply changes.
-git config --global user.email "googleapis-publisher@google.com"
-git config --global user.name "Google APIs Publisher"
+git config --global user.email "dpebot@google.com"
+git config --global user.name "dpebot"
 git commit -m "Update docs after merge to master."
 
 # NOTE: This may fail if two docs updates (on merges to master)

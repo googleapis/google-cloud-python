@@ -5,7 +5,6 @@ Resource Manager
   :maxdepth: 2
   :hidden:
 
-  releases
   client
   project
 
@@ -35,6 +34,18 @@ With this API, you can do the following:
     https://cloud.google.com/contact.
 
 .. _projects.create() API method: https://cloud.google.com/resource-manager/docs/creating-project
+
+Installation
+------------
+
+Install the ``google-cloud-resource-manager`` library using ``pip``:
+
+.. code-block:: console
+
+    $ pip install google-cloud-resource-manager
+
+Usage
+-----
 
 Here's a quick example of the full life-cycle:
 
@@ -104,3 +115,13 @@ And then simply create a client:
 
     >>> from google.cloud import resource_manager
     >>> client = resource_manager.Client()
+
+Changelog
+~~~~~~~~~
+
+For a list of all ``google-cloud-resource-manager`` releases:
+
+.. toctree::
+  :maxdepth: 2
+
+  changelog

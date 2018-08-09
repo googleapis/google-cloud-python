@@ -16,6 +16,7 @@
 
 import re
 import threading
+import copy
 
 from google.api_core.gapic_v1 import client_info
 import google.auth.credentials
@@ -271,13 +272,16 @@ class Database(object):
         metadata = _metadata_with_prefix(self.name)
         api.drop_database(self.name, metadata=metadata)
 
-    def session(self):
+    def session(self, labels=None):
         """Factory to create a session for this database.
+
+        :type labels: dict (str -> str) or None
+        :param labels: (Optional) user-assigned labels for the session.
 
         :rtype: :class:`~google.cloud.spanner_v1.session.Session`
         :returns: a session bound to this database.
         """
-        return Session(self)
+        return Session(self, labels=labels)
 
     def snapshot(self, **kw):
         """Return an object which wraps a snapshot.
@@ -580,7 +584,7 @@ class BatchSnapshot(object):
         :rtype: :class:`~google.cloud.spanner_v1.streamed.StreamedResultSet`
         :returns: a result set instance which can be used to consume rows.
         """
-        kwargs = batch['read']
+        kwargs = copy.deepcopy(batch['read'])
         keyset_dict = kwargs.pop('keyset')
         kwargs['keyset'] = KeySet._from_dict(keyset_dict)
         return self._get_snapshot().read(

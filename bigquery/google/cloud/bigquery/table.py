@@ -19,6 +19,7 @@ from __future__ import absolute_import
 import copy
 import datetime
 import operator
+import warnings
 
 import six
 try:
@@ -28,19 +29,19 @@ except ImportError:  # pragma: NO COVER
 
 from google.api_core.page_iterator import HTTPIterator
 
-from google.cloud._helpers import _datetime_from_microseconds
-from google.cloud._helpers import _millis_from_datetime
-from google.cloud.bigquery._helpers import _item_to_row
-from google.cloud.bigquery._helpers import _rows_page_start
-from google.cloud.bigquery._helpers import _snake_to_camel_case
-from google.cloud.bigquery._helpers import _field_to_index_mapping
+import google.cloud._helpers
+from google.cloud.bigquery import _helpers
 from google.cloud.bigquery.schema import SchemaField
 from google.cloud.bigquery.schema import _build_schema_resource
 from google.cloud.bigquery.schema import _parse_schema_resource
 from google.cloud.bigquery.external_config import ExternalConfig
 
 
-_TABLE_HAS_NO_SCHEMA = "Table has no schema:  call 'client.get_table()'"
+_NO_PANDAS_ERROR = (
+    'The pandas library is not installed, please install '
+    'pandas to use the to_dataframe() function.'
+)
+_TABLE_HAS_NO_SCHEMA = 'Table has no schema:  call "client.get_table()"'
 _MARKER = object()
 
 
@@ -58,12 +59,15 @@ def _reference_getter(table):
 
 
 def _view_use_legacy_sql_getter(table):
-    """Specifies whether to execute the view with Legacy or Standard SQL.
+    """bool: Specifies whether to execute the view with Legacy or Standard SQL.
 
-    If this table is not a view, None is returned.
+    This boolean specifies whether to execute the view with Legacy SQL
+    (:data:`True`) or Standard SQL (:data:`False`). The client side default is
+    :data:`False`. The server-side default is :data:`True`. If this table is
+    not a view, :data:`None` is returned.
 
-    Returns:
-        bool: True if the view is using legacy SQL, or None if not a view
+    Raises:
+        ValueError: For invalid value types.
     """
     view = table._properties.get('view')
     if view is not None:
@@ -92,7 +96,8 @@ class EncryptionConfiguration(object):
     def kms_key_name(self):
         """str: Resource ID of Cloud KMS key
 
-        Resource ID of Cloud KMS key or ``None`` if using default encryption.
+        Resource ID of Cloud KMS key or :data:`None` if using default
+        encryption.
         """
         return self._properties.get('kmsKeyName')
 
@@ -105,7 +110,7 @@ class EncryptionConfiguration(object):
         """Construct an encryption configuration from its API representation
 
         Args:
-            resource (dict):
+            resource (Dict[str, object]):
                 An encryption configuration representation as returned from
                 the API.
 
@@ -118,10 +123,12 @@ class EncryptionConfiguration(object):
         return config
 
     def to_api_repr(self):
-        """Construct the API resource representation of this
+        """Construct the API resource representation of this encryption
+        configuration.
 
         Returns:
-            dict: Encryption configuration as represented as an API resource
+            Dict[str, object]:
+                Encryption configuration as represented as an API resource
         """
         return copy.deepcopy(self._properties)
 
@@ -132,11 +139,10 @@ class TableReference(object):
     See
     https://cloud.google.com/bigquery/docs/reference/rest/v2/tables
 
-    :type dataset_ref: :class:`google.cloud.bigquery.dataset.DatasetReference`
-    :param dataset_ref: a pointer to the dataset
-
-    :type table_id: str
-    :param table_id: the ID of the table
+    Args:
+        dataset_ref (google.cloud.bigquery.dataset.DatasetReference):
+            A pointer to the dataset
+        table_id (str): The ID of the table
     """
 
     def __init__(self, dataset_ref, table_id):
@@ -146,50 +152,69 @@ class TableReference(object):
 
     @property
     def project(self):
-        """Project bound to the table.
-
-        :rtype: str
-        :returns: the project (derived from the dataset reference).
-        """
+        """str: Project bound to the table"""
         return self._project
 
     @property
     def dataset_id(self):
-        """ID of dataset containing the table.
-
-        :rtype: str
-        :returns: the ID (derived from the dataset reference).
-        """
+        """str: ID of dataset containing the table."""
         return self._dataset_id
 
     @property
     def table_id(self):
-        """Table ID.
-
-        :rtype: str
-        :returns: the table ID.
-        """
+        """str: The table ID."""
         return self._table_id
 
     @property
     def path(self):
-        """URL path for the table's APIs.
-
-        :rtype: str
-        :returns: the path based on project, dataset and table IDs.
-        """
+        """str: URL path for the table's APIs."""
         return '/projects/%s/datasets/%s/tables/%s' % (
             self._project, self._dataset_id, self._table_id)
+
+    @classmethod
+    def from_string(cls, full_table_id):
+        """Construct a table reference from fully-qualified table ID.
+
+        Args:
+            full_table_id (str):
+                A fully-qualified table ID in standard SQL format. Must
+                included a project ID, dataset ID, and table ID, each
+                separated by ``.``.
+
+        Returns:
+            TableReference: Table reference parsed from ``full_table_id``.
+
+        Examples:
+            >>> TableReference.from_string('my-project.mydataset.mytable')
+            TableRef...(DatasetRef...('my-project', 'mydataset'), 'mytable')
+
+        Raises:
+            ValueError:
+                If ``full_table_id`` is not a fully-qualified table ID in
+                standard SQL format.
+        """
+        from google.cloud.bigquery.dataset import DatasetReference
+
+        parts = full_table_id.split('.')
+        if len(parts) != 3:
+            raise ValueError(
+                'full_table_id must be a fully-qualified table ID in '
+                'standard SQL format. e.g. "project.dataset.table", got '
+                '{}'.format(full_table_id))
+
+        return cls(DatasetReference(parts[0], parts[1]), parts[2])
 
     @classmethod
     def from_api_repr(cls, resource):
         """Factory:  construct a table reference given its API representation
 
-        :type resource: dict
-        :param resource: table reference representation returned from the API
+        Args:
+            resource (Dict[str, object]):
+                Table reference representation returned from the API
 
-        :rtype: :class:`google.cloud.bigquery.table.TableReference`
-        :returns: Table reference parsed from ``resource``.
+        Returns:
+            google.cloud.bigquery.table.TableReference:
+                Table reference parsed from ``resource``.
         """
         from google.cloud.bigquery.dataset import DatasetReference
 
@@ -201,8 +226,8 @@ class TableReference(object):
     def to_api_repr(self):
         """Construct the API resource representation of this table reference.
 
-        :rtype: dict
-        :returns: Table reference as represented as an API resource
+        Returns:
+            Dict[str, object]: Table reference represented as an API resource
         """
         return {
             'projectId': self._project,
@@ -216,7 +241,7 @@ class TableReference(object):
         Used to compute this instance's hashcode and evaluate equality.
 
         Returns:
-            tuple: The contents of this :class:`DatasetReference`.
+            Tuple[str]: The contents of this :class:`DatasetReference`.
         """
         return (
             self._project,
@@ -236,7 +261,10 @@ class TableReference(object):
         return hash(self._key())
 
     def __repr__(self):
-        return 'TableReference{}'.format(self._key())
+        from google.cloud.bigquery.dataset import DatasetReference
+        dataset_ref = DatasetReference(self._project, self._dataset_id)
+        return "TableReference({}, '{}')".format(
+            repr(dataset_ref), self._table_id)
 
 
 class Table(object):
@@ -245,117 +273,99 @@ class Table(object):
     See
     https://cloud.google.com/bigquery/docs/reference/rest/v2/tables
 
-    :type table_ref: :class:`google.cloud.bigquery.table.TableReference`
-    :param table_ref: a pointer to a table
-
-    :type schema: list of :class:`~google.cloud.bigquery.schema.SchemaField`
-    :param schema: The table's schema
+    Args:
+        table_ref (google.cloud.bigquery.table.TableReference):
+            A pointer to a table
+        schema (List[google.cloud.bigquery.schema.SchemaField]):
+            The table's schema
     """
 
-    _schema = None
+    _PROPERTY_TO_API_FIELD = {
+        'friendly_name': 'friendlyName',
+        'expires': 'expirationTime',
+        'time_partitioning': 'timePartitioning',
+        'partitioning_type': 'timePartitioning',
+        'partition_expiration': 'timePartitioning',
+        'view_use_legacy_sql': 'view',
+        'view_query': 'view',
+        'external_data_configuration': 'externalDataConfiguration',
+        'encryption_configuration': 'encryptionConfiguration',
+    }
 
-    all_fields = [
-        'description', 'friendly_name', 'expires', 'location',
-        'partitioning_type', 'view_use_legacy_sql', 'view_query', 'schema',
-        'external_data_configuration', 'labels', 'encryption_configuration'
-    ]
-
-    def __init__(self, table_ref, schema=()):
-        self._project = table_ref.project
-        self._table_id = table_ref.table_id
-        self._dataset_id = table_ref.dataset_id
-        self._external_config = None
-        self._properties = {'labels': {}}
+    def __init__(self, table_ref, schema=None):
+        self._properties = {
+            'tableReference': table_ref.to_api_repr(),
+            'labels': {},
+        }
         # Let the @property do validation.
-        self.schema = schema
+        if schema is not None:
+            self.schema = schema
 
     @property
     def project(self):
-        """Project bound to the table.
-
-        :rtype: str
-        :returns: the project (derived from the dataset).
-        """
-        return self._project
+        """str: Project bound to the table."""
+        return self._properties['tableReference']['projectId']
 
     @property
     def dataset_id(self):
-        """ID of dataset containing the table.
-
-        :rtype: str
-        :returns: the ID (derived from the dataset).
-        """
-        return self._dataset_id
+        """str: ID of dataset containing the table."""
+        return self._properties['tableReference']['datasetId']
 
     @property
     def table_id(self):
-        """ID of the table.
-
-        :rtype: str
-        :returns: the table ID.
-        """
-        return self._table_id
+        """str: ID of the table."""
+        return self._properties['tableReference']['tableId']
 
     reference = property(_reference_getter)
 
     @property
     def path(self):
-        """URL path for the table's APIs.
-
-        :rtype: str
-        :returns: the path based on project, dataset and table IDs.
-        """
+        """str: URL path for the table's APIs."""
         return '/projects/%s/datasets/%s/tables/%s' % (
-            self._project, self._dataset_id, self._table_id)
+            self.project, self.dataset_id, self.table_id)
 
     @property
     def schema(self):
-        """Table's schema.
+        """List[google.cloud.bigquery.schema.SchemaField]: Table's schema.
 
-        :rtype: list of :class:`~google.cloud.bigquery.schema.SchemaField`
-        :returns: fields describing the schema
+        Raises:
+            TypeError: If 'value' is not a sequence
+            ValueError:
+                If any item in the sequence is not a
+                :class:`~google.cloud.bigquery.schema.SchemaField`
         """
-        return list(self._schema)
+        prop = self._properties.get('schema')
+        if not prop:
+            return []
+        else:
+            return _parse_schema_resource(prop)
 
     @schema.setter
     def schema(self, value):
-        """Update table's schema
-
-        :type value: list of :class:`~google.cloud.bigquery.schema.SchemaField`
-        :param value: fields describing the schema
-
-        :raises: TypeError if 'value' is not a sequence, or ValueError if
-                 any item in the sequence is not a SchemaField
-        """
         if value is None:
-            self._schema = ()
+            self._properties['schema'] = None
         elif not all(isinstance(field, SchemaField) for field in value):
             raise ValueError('Schema items must be fields')
         else:
-            self._schema = tuple(value)
+            self._properties['schema'] = {
+                'fields': _build_schema_resource(value)
+            }
 
     @property
     def labels(self):
-        """Labels for the table.
+        """Dict[str, str]: Labels for the table.
 
         This method always returns a dict. To change a table's labels,
         modify the dict, then call ``Client.update_table``. To delete a
-        label, set its value to ``None`` before updating.
+        label, set its value to :data:`None` before updating.
 
-        :rtype: dict, {str -> str}
-        :returns: A dict of the the table's labels.
+        Raises:
+            ValueError: If ``value`` type is invalid.
         """
-        return self._properties.get('labels', {})
+        return self._properties.setdefault('labels', {})
 
     @labels.setter
     def labels(self, value):
-        """Update labels for the table.
-
-        :type value: dict, {str -> str}
-        :param value: new labels
-
-        :raises: ValueError for invalid value types.
-        """
         if not isinstance(value, dict):
             raise ValueError("Pass a dict")
         self._properties['labels'] = value
@@ -365,7 +375,7 @@ class Table(object):
         """google.cloud.bigquery.table.EncryptionConfiguration: Custom
         encryption configuration for the table.
 
-        Custom encryption configuration (e.g., Cloud KMS keys) or ``None``
+        Custom encryption configuration (e.g., Cloud KMS keys) or :data:`None`
         if using default encryption.
 
         See `protecting data with Cloud KMS keys
@@ -386,239 +396,247 @@ class Table(object):
 
     @property
     def created(self):
-        """Datetime at which the table was created.
-
-        :rtype: ``datetime.datetime``, or ``NoneType``
-        :returns: the creation time (None until set from the server).
+        """Union[datetime.datetime, None]: Datetime at which the table was
+        created (:data:`None` until set from the server).
         """
         creation_time = self._properties.get('creationTime')
         if creation_time is not None:
             # creation_time will be in milliseconds.
-            return _datetime_from_microseconds(1000.0 * creation_time)
+            return google.cloud._helpers._datetime_from_microseconds(
+                1000.0 * float(creation_time))
 
     @property
     def etag(self):
-        """ETag for the table resource.
-
-        :rtype: str, or ``NoneType``
-        :returns: the ETag (None until set from the server).
+        """Union[str, None]: ETag for the table resource (:data:`None` until
+        set from the server).
         """
         return self._properties.get('etag')
 
     @property
     def modified(self):
-        """Datetime at which the table was last modified.
-
-        :rtype: ``datetime.datetime``, or ``NoneType``
-        :returns: the modification time (None until set from the server).
+        """Union[datetime.datetime, None]: Datetime at which the table was last
+        modified (:data:`None` until set from the server).
         """
         modified_time = self._properties.get('lastModifiedTime')
         if modified_time is not None:
             # modified_time will be in milliseconds.
-            return _datetime_from_microseconds(1000.0 * modified_time)
+            return google.cloud._helpers._datetime_from_microseconds(
+                1000.0 * float(modified_time))
 
     @property
     def num_bytes(self):
-        """The size of the table in bytes.
-
-        :rtype: int, or ``NoneType``
-        :returns: the byte count (None until set from the server).
+        """Union[int, None]: The size of the table in bytes (:data:`None` until
+        set from the server).
         """
-        num_bytes_as_str = self._properties.get('numBytes')
-        if num_bytes_as_str is not None:
-            return int(num_bytes_as_str)
+        return _helpers._int_or_none(self._properties.get('numBytes'))
 
     @property
     def num_rows(self):
-        """The number of rows in the table.
-
-        :rtype: int, or ``NoneType``
-        :returns: the row count (None until set from the server).
+        """Union[int, None]: The number of rows in the table (:data:`None`
+        until set from the server).
         """
-        num_rows_as_str = self._properties.get('numRows')
-        if num_rows_as_str is not None:
-            return int(num_rows_as_str)
+        return _helpers._int_or_none(self._properties.get('numRows'))
 
     @property
     def self_link(self):
-        """URL for the table resource.
-
-        :rtype: str, or ``NoneType``
-        :returns: the URL (None until set from the server).
+        """Union[str, None]: URL for the table resource (:data:`None` until set
+        from the server).
         """
         return self._properties.get('selfLink')
 
     @property
     def full_table_id(self):
-        """ID for the table, in the form ``project_id:dataset_id.table_id``.
+        """Union[str, None]: ID for the table (:data:`None` until set from the
+        server).
 
-        :rtype: str, or ``NoneType``
-        :returns: the full ID (None until set from the server).
+        In the format ``project_id:dataset_id.table_id``.
         """
         return self._properties.get('id')
 
     @property
     def table_type(self):
-        """The type of the table.
+        """Union[str, None]: The type of the table (:data:`None` until set from
+        the server).
 
-        Possible values are "TABLE", "VIEW", or "EXTERNAL".
-
-        :rtype: str, or ``NoneType``
-        :returns: the URL (None until set from the server).
+        Possible values are ``'TABLE'``, ``'VIEW'``, or ``'EXTERNAL'``.
         """
         return self._properties.get('type')
 
     @property
-    def partitioning_type(self):
-        """Time partitioning of the table.
-        :rtype: str, or ``NoneType``
-        :returns: Returns type if the table is partitioned, None otherwise.
+    def time_partitioning(self):
+        """google.cloud.bigquery.table.TimePartitioning: Configures time-based
+        partitioning for a table.
+
+        Raises:
+            ValueError:
+                If the value is not :class:`TimePartitioning` or :data:`None`.
         """
-        return self._properties.get('timePartitioning', {}).get('type')
+        prop = self._properties.get('timePartitioning')
+        if prop is not None:
+            return TimePartitioning.from_api_repr(prop)
+
+    @time_partitioning.setter
+    def time_partitioning(self, value):
+        api_repr = value
+        if isinstance(value, TimePartitioning):
+            api_repr = value.to_api_repr()
+        elif value is not None:
+            raise ValueError(
+                "value must be google.cloud.bigquery.table.TimePartitioning "
+                "or None")
+        self._properties['timePartitioning'] = api_repr
+
+    @property
+    def partitioning_type(self):
+        """Union[str, None]: Time partitioning of the table if it is
+        partitioned (Defaults to :data:`None`).
+
+        The only partitioning type that is currently supported is
+        :attr:`~google.cloud.bigquery.table.TimePartitioningType.DAY`.
+        """
+        warnings.warn(
+            "This method will be deprecated in future versions. Please use "
+            "Table.time_partitioning.type_ instead.",
+            UserWarning)
+        if self.time_partitioning is not None:
+            return self.time_partitioning.type_
 
     @partitioning_type.setter
     def partitioning_type(self, value):
-        """Update the partitioning type of the table
-
-        :type value: str
-        :param value: partitioning type only "DAY" is currently supported
-        """
-        if value not in ('DAY', None):
-            raise ValueError("value must be one of ['DAY', None]")
-
-        if value is None:
-            self._properties.pop('timePartitioning', None)
-        else:
-            time_part = self._properties.setdefault('timePartitioning', {})
-            time_part['type'] = value.upper()
+        warnings.warn(
+            "This method will be deprecated in future versions. Please use "
+            "Table.time_partitioning.type_ instead.",
+            UserWarning)
+        if self.time_partitioning is None:
+            self._properties['timePartitioning'] = {}
+        self._properties['timePartitioning']['type'] = value
 
     @property
     def partition_expiration(self):
-        """Expiration time in ms for a partition
-        :rtype: int, or ``NoneType``
-        :returns: Returns the time in ms for partition expiration
+        """Union[int, None]: Expiration time in milliseconds for a partition.
+
+        If :attr:`partition_expiration` is set and :attr:`type_` is
+        not set, :attr:`type_` will default to
+        :attr:`~google.cloud.bigquery.table.TimePartitioningType.DAY`.
         """
-        return self._properties.get('timePartitioning', {}).get('expirationMs')
+        warnings.warn(
+            "This method will be deprecated in future versions. Please use "
+            "Table.time_partitioning.expiration_ms instead.",
+            UserWarning)
+        if self.time_partitioning is not None:
+            return self.time_partitioning.expiration_ms
 
     @partition_expiration.setter
     def partition_expiration(self, value):
-        """Update the experation time in ms for a partition
+        warnings.warn(
+            "This method will be deprecated in future versions. Please use "
+            "Table.time_partitioning.expiration_ms instead.",
+            UserWarning)
+        if self.time_partitioning is None:
+            self._properties['timePartitioning'] = {
+                'type': TimePartitioningType.DAY}
+        self._properties['timePartitioning']['expirationMs'] = str(value)
 
-        :type value: int
-        :param value: partition experiation time in milliseconds
+    @property
+    def clustering_fields(self):
+        """Union[List[str], None]: Fields defining clustering for the table
+
+        (Defaults to :data:`None`).
+
+        Clustering fields are immutable after table creation.
+
+        .. note::
+
+           As of 2018-06-29, clustering fields cannot be set on a table
+           which does not also have time partioning defined.
         """
-        if not isinstance(value, (int, type(None))):
-            raise ValueError(
-                "must be an integer representing millisseconds or None")
+        prop = self._properties.get('clustering')
+        if prop is not None:
+            return list(prop.get('fields', ()))
 
-        if value is None:
-            if 'timePartitioning' in self._properties:
-                self._properties['timePartitioning'].pop('expirationMs')
+    @clustering_fields.setter
+    def clustering_fields(self, value):
+        """Union[List[str], None]: Fields defining clustering for the table
+
+        (Defaults to :data:`None`).
+        """
+        if value is not None:
+            prop = self._properties.setdefault('clustering', {})
+            prop['fields'] = value
         else:
-            try:
-                self._properties['timePartitioning']['expirationMs'] = value
-            except KeyError:
-                self._properties['timePartitioning'] = {'type': 'DAY'}
-                self._properties['timePartitioning']['expirationMs'] = value
+            if 'clustering' in self._properties:
+                del self._properties['clustering']
 
     @property
     def description(self):
-        """Description of the table.
+        """Union[str, None]: Description of the table (defaults to
+        :data:`None`).
 
-        :rtype: str, or ``NoneType``
-        :returns: The description as set by the user, or None (the default).
+        Raises:
+            ValueError: For invalid value types.
         """
         return self._properties.get('description')
 
     @description.setter
     def description(self, value):
-        """Update description of the table.
-
-        :type value: str
-        :param value: (Optional) new description
-
-        :raises: ValueError for invalid value types.
-        """
         if not isinstance(value, six.string_types) and value is not None:
             raise ValueError("Pass a string, or None")
         self._properties['description'] = value
 
     @property
     def expires(self):
-        """Datetime at which the table will be removed.
+        """Union[datetime.datetime, None]: Datetime at which the table will be
+        deleted.
 
-        :rtype: ``datetime.datetime``, or ``NoneType``
-        :returns: the expiration time, or None
+        Raises:
+            ValueError: For invalid value types.
         """
         expiration_time = self._properties.get('expirationTime')
         if expiration_time is not None:
             # expiration_time will be in milliseconds.
-            return _datetime_from_microseconds(1000.0 * expiration_time)
+            return google.cloud._helpers._datetime_from_microseconds(
+                1000.0 * float(expiration_time))
 
     @expires.setter
     def expires(self, value):
-        """Update datetime at which the table will be removed.
-
-        :type value: ``datetime.datetime``
-        :param value: (Optional) the new expiration time, or None
-        """
         if not isinstance(value, datetime.datetime) and value is not None:
             raise ValueError("Pass a datetime, or None")
-        self._properties['expirationTime'] = _millis_from_datetime(value)
+        value_ms = google.cloud._helpers._millis_from_datetime(value)
+        self._properties['expirationTime'] = _helpers._str_or_none(value_ms)
 
     @property
     def friendly_name(self):
-        """Title of the table.
+        """Union[str, None]: Title of the table (defaults to :data:`None`).
 
-        :rtype: str, or ``NoneType``
-        :returns: The name as set by the user, or None (the default).
+        Raises:
+            ValueError: For invalid value types.
         """
         return self._properties.get('friendlyName')
 
     @friendly_name.setter
     def friendly_name(self, value):
-        """Update title of the table.
-
-        :type value: str
-        :param value: (Optional) new title
-
-        :raises: ValueError for invalid value types.
-        """
         if not isinstance(value, six.string_types) and value is not None:
             raise ValueError("Pass a string, or None")
         self._properties['friendlyName'] = value
 
     @property
     def location(self):
-        """Location in which the table is hosted.
+        """Union[str, None]: Location in which the table is hosted
 
-        :rtype: str, or ``NoneType``
-        :returns: The location as set by the user, or None (the default).
+        Defaults to :data:`None`.
         """
         return self._properties.get('location')
 
-    @location.setter
-    def location(self, value):
-        """Update location in which the table is hosted.
-
-        :type value: str
-        :param value: (Optional) new location
-
-        :raises: ValueError for invalid value types.
-        """
-        if not isinstance(value, six.string_types) and value is not None:
-            raise ValueError("Pass a string, or None")
-        self._properties['location'] = value
-
     @property
     def view_query(self):
-        """SQL query defining the table as a view.
+        """Union[str, None]: SQL query defining the table as a view (defaults
+        to :data:`None`).
 
         By default, the query is treated as Standard SQL. To use Legacy
-        SQL, set view_use_legacy_sql to True.
+        SQL, set :attr:`view_use_legacy_sql` to :data:`True`.
 
-        :rtype: str, or ``NoneType``
-        :returns: The query as set by the user, or None (the default).
+        Raises:
+            ValueError: For invalid value types.
         """
         view = self._properties.get('view')
         if view is not None:
@@ -626,13 +644,6 @@ class Table(object):
 
     @view_query.setter
     def view_query(self, value):
-        """Update SQL query defining the table as a view.
-
-        :type value: str
-        :param value: new query
-
-        :raises: ValueError for invalid value types.
-        """
         if not isinstance(value, six.string_types):
             raise ValueError("Pass a string")
         view = self._properties.get('view')
@@ -653,17 +664,6 @@ class Table(object):
 
     @view_use_legacy_sql.setter
     def view_use_legacy_sql(self, value):
-        """Update the view sub-property 'useLegacySql'.
-
-        This boolean specifies whether to execute the view with Legacy SQL
-        (True) or Standard SQL (False). The default, if not specified, is
-        'False'.
-
-        :type value: bool
-        :param value: The boolean for view.useLegacySql
-
-        :raises: ValueError for invalid value types.
-        """
         if not isinstance(value, bool):
             raise ValueError("Pass a boolean")
         if self._properties.get('view') is None:
@@ -672,10 +672,8 @@ class Table(object):
 
     @property
     def streaming_buffer(self):
-        """Information about a table's streaming buffer.
-
-        :rtype: :class:`~google.cloud.bigquery.StreamingBuffer`
-        :returns: Streaming buffer information, returned from get_table.
+        """google.cloud.bigquery.StreamingBuffer: Information about a table's
+        streaming buffer.
         """
         sb = self._properties.get('streamingBuffer')
         if sb is not None:
@@ -683,39 +681,68 @@ class Table(object):
 
     @property
     def external_data_configuration(self):
-        """Configuration for an external data source.
+        """Union[google.cloud.bigquery.ExternalConfig, None]: Configuration for
+        an external data source (defaults to :data:`None`).
 
-        If not set, None is returned.
-
-        :rtype: :class:`~google.cloud.bigquery.ExternalConfig`, or ``NoneType``
-        :returns: The external configuration, or None (the default).
+        Raises:
+            ValueError: For invalid value types.
         """
-        return self._external_config
+        prop = self._properties.get('externalDataConfiguration')
+        if prop is not None:
+            prop = ExternalConfig.from_api_repr(prop)
+        return prop
 
     @external_data_configuration.setter
     def external_data_configuration(self, value):
-        """Sets the configuration for an external data source.
-
-        :type value:
-            :class:`~google.cloud.bigquery.ExternalConfig`, or ``NoneType``
-        :param value: The ExternalConfig, or None to unset.
-        """
         if not (value is None or isinstance(value, ExternalConfig)):
             raise ValueError("Pass an ExternalConfig or None")
-        self._external_config = value
+        api_repr = value
+        if value is not None:
+            api_repr = value.to_api_repr()
+        self._properties['externalDataConfiguration'] = api_repr
+
+    @classmethod
+    def from_string(cls, full_table_id):
+        """Construct a table from fully-qualified table ID.
+
+        Args:
+            full_table_id (str):
+                A fully-qualified table ID in standard SQL format. Must
+                included a project ID, dataset ID, and table ID, each
+                separated by ``.``.
+
+        Returns:
+            Table: Table parsed from ``full_table_id``.
+
+        Examples:
+            >>> Table.from_string('my-project.mydataset.mytable')
+            Table(TableRef...(D...('my-project', 'mydataset'), 'mytable'))
+
+        Raises:
+            ValueError:
+                If ``full_table_id`` is not a fully-qualified table ID in
+                standard SQL format.
+        """
+        return cls(TableReference.from_string(full_table_id))
 
     @classmethod
     def from_api_repr(cls, resource):
-        """Factory:  construct a table given its API representation
+        """Factory: construct a table given its API representation
 
-        :type resource: dict
-        :param resource: table resource representation returned from the API
+        Args:
+            resource (Dict[str, object]):
+                Table resource representation from the API
+            dataset (google.cloud.bigquery.dataset.Dataset):
+                The dataset containing the table.
 
-        :type dataset: :class:`google.cloud.bigquery.dataset.Dataset`
-        :param dataset: The dataset containing the table.
+        Returns:
+            google.cloud.bigquery.table.Table: Table parsed from ``resource``.
 
-        :rtype: :class:`google.cloud.bigquery.table.Table`
-        :returns: Table parsed from ``resource``.
+        Raises:
+            KeyError:
+                If the ``resource`` lacks the key ``'tableReference'``, or if
+                the ``dict`` stored within the key ``'tableReference'`` lacks
+                the keys ``'tableId'``, ``'projectId'``, or ``'datasetId'``.
         """
         from google.cloud.bigquery import dataset
 
@@ -729,100 +756,36 @@ class Table(object):
         dataset_ref = dataset.DatasetReference(project_id, dataset_id)
 
         table = cls(dataset_ref.table(table_id))
-        table._set_properties(resource)
+        table._properties = resource
 
         return table
 
-    def _set_properties(self, api_response):
-        """Update properties from resource in body of ``api_response``
+    def to_api_repr(self):
+        """Constructs the API resource of this table
 
-        :type api_response: dict
-        :param api_response: response returned from an API call
+        Returns:
+            Dict[str, object]: Table represented as an API resource
         """
-        self._properties.clear()
-        cleaned = api_response.copy()
-        schema = cleaned.pop('schema', {'fields': ()})
-        self.schema = _parse_schema_resource(schema)
-        ec = cleaned.pop('externalDataConfiguration', None)
-        if ec:
-            self.external_data_configuration = ExternalConfig.from_api_repr(ec)
-        if 'creationTime' in cleaned:
-            cleaned['creationTime'] = float(cleaned['creationTime'])
-        if 'lastModifiedTime' in cleaned:
-            cleaned['lastModifiedTime'] = float(cleaned['lastModifiedTime'])
-        if 'expirationTime' in cleaned:
-            cleaned['expirationTime'] = float(cleaned['expirationTime'])
-        if 'labels' not in cleaned:
-            cleaned['labels'] = {}
-        self._properties.update(cleaned)
-
-    def _populate_expires_resource(self, resource):
-        resource['expirationTime'] = _millis_from_datetime(self.expires)
-
-    def _populate_partitioning_type_resource(self, resource):
-        resource['timePartitioning'] = self._properties.get('timePartitioning')
-
-    def _populate_view_use_legacy_sql_resource(self, resource):
-        if 'view' not in resource:
-            resource['view'] = {}
-        resource['view']['useLegacySql'] = self.view_use_legacy_sql
-
-    def _populate_view_query_resource(self, resource):
-        if self.view_query is None:
-            resource['view'] = None
-            return
-        if 'view' not in resource:
-            resource['view'] = {}
-        resource['view']['query'] = self.view_query
-
-    def _populate_schema_resource(self, resource):
-        if not self._schema:
-            resource['schema'] = None
-        else:
-            resource['schema'] = {
-                'fields': _build_schema_resource(self._schema),
-            }
-
-    def _populate_external_config(self, resource):
-        if not self.external_data_configuration:
-            resource['externalDataConfiguration'] = None
-        else:
-            resource['externalDataConfiguration'] = ExternalConfig.to_api_repr(
-                self.external_data_configuration)
-
-    def _populate_encryption_configuration(self, resource):
-        if not self.encryption_configuration:
-            resource['encryptionConfiguration'] = None
-        else:
-            encryptionConfig = EncryptionConfiguration.to_api_repr(
-                self.encryption_configuration)
-            resource['encryptionConfiguration'] = encryptionConfig
-
-    custom_resource_fields = {
-        'expires': _populate_expires_resource,
-        'partitioning_type': _populate_partitioning_type_resource,
-        'view_query': _populate_view_query_resource,
-        'view_use_legacy_sql': _populate_view_use_legacy_sql_resource,
-        'schema': _populate_schema_resource,
-        'external_data_configuration': _populate_external_config,
-        'encryption_configuration': _populate_encryption_configuration
-    }
+        return copy.deepcopy(self._properties)
 
     def _build_resource(self, filter_fields):
-        """Generate a resource for ``create`` or ``update``."""
-        resource = {
-            'tableReference': {
-                'projectId': self._project,
-                'datasetId': self._dataset_id,
-                'tableId': self.table_id},
-        }
-        for f in filter_fields:
-            if f in self.custom_resource_fields:
-                self.custom_resource_fields[f](self, resource)
+        """Generate a resource for ``update``."""
+        partial = {}
+        for filter_field in filter_fields:
+            api_field = self._PROPERTY_TO_API_FIELD.get(filter_field)
+            if api_field is None and filter_field not in self._properties:
+                raise ValueError('No Table property %s' % filter_field)
+            elif api_field is not None:
+                partial[api_field] = self._properties.get(api_field)
             else:
-                api_field = _snake_to_camel_case(f)
-                resource[api_field] = getattr(self, f)
-        return resource
+                # allows properties that are not defined in the library
+                # and properties that have the same name as API resource key
+                partial[filter_field] = self._properties[filter_field]
+
+        return partial
+
+    def __repr__(self):
+        return 'Table({})'.format(repr(self.reference))
 
 
 class TableListItem(object):
@@ -839,7 +802,7 @@ class TableListItem(object):
 
 
     Args:
-        resource (dict):
+        resource (Dict[str, object]):
             A table-like resource object from a table list response. A
             ``tableReference`` property is required.
 
@@ -866,96 +829,87 @@ class TableListItem(object):
 
     @property
     def project(self):
-        """The project ID of the project this table belongs to.
-
-        Returns:
-            str: the project ID of the table.
-        """
+        """str: Project bound to the table."""
         return self._properties['tableReference']['projectId']
 
     @property
     def dataset_id(self):
-        """The dataset ID of the dataset this table belongs to.
-
-        Returns:
-            str: the dataset ID of the table.
-        """
+        """str: ID of dataset containing the table."""
         return self._properties['tableReference']['datasetId']
 
     @property
     def table_id(self):
-        """The table ID.
-
-        Returns:
-            str: the table ID.
-        """
+        """str: ID of the table."""
         return self._properties['tableReference']['tableId']
 
     reference = property(_reference_getter)
 
     @property
     def labels(self):
-        """Labels for the table.
+        """Dict[str, str]: Labels for the table.
 
         This method always returns a dict. To change a table's labels,
         modify the dict, then call ``Client.update_table``. To delete a
-        label, set its value to ``None`` before updating.
-
-        Returns:
-            Map[str, str]: A dictionary of the the table's labels
+        label, set its value to :data:`None` before updating.
         """
-        return self._properties.get('labels', {})
+        return self._properties.setdefault('labels', {})
 
     @property
     def full_table_id(self):
-        """ID for the table, in the form ``project_id:dataset_id.table_id``.
+        """Union[str, None]: ID for the table (:data:`None` until set from the
+        server).
 
-        Returns:
-            str: The fully-qualified ID of the table
+        In the format ``project_id:dataset_id.table_id``.
         """
         return self._properties.get('id')
 
     @property
     def table_type(self):
-        """The type of the table.
+        """Union[str, None]: The type of the table (:data:`None` until set from
+        the server).
 
-        Possible values are "TABLE", "VIEW", or "EXTERNAL".
-
-        Returns:
-            str: The kind of table
+        Possible values are ``'TABLE'``, ``'VIEW'``, or ``'EXTERNAL'``.
         """
         return self._properties.get('type')
 
     @property
-    def partitioning_type(self):
-        """Time partitioning of the table.
-
-        Returns:
-            str:
-                Type of partitioning if the table is partitioned, None
-                otherwise.
+    def time_partitioning(self):
+        """google.cloud.bigquery.table.TimePartitioning: Configures time-based
+        partitioning for a table.
         """
-        return self._properties.get('timePartitioning', {}).get('type')
+        prop = self._properties.get('timePartitioning')
+        if prop is not None:
+            return TimePartitioning.from_api_repr(prop)
+
+    @property
+    def partitioning_type(self):
+        """Union[str, None]: Time partitioning of the table if it is
+        partitioned (Defaults to :data:`None`).
+        """
+        warnings.warn(
+            "This method will be deprecated in future versions. Please use "
+            "TableListItem.time_partitioning.type_ instead.",
+            PendingDeprecationWarning)
+        if self.time_partitioning is not None:
+            return self.time_partitioning.type_
 
     @property
     def partition_expiration(self):
-        """Expiration time in ms for a partition
+        """Union[int, None]: Expiration time in milliseconds for a partition.
 
-        Returns:
-            int: The time in ms for partition expiration
+        If this property is set and :attr:`type_` is not set, :attr:`type_`
+        will default to :attr:`TimePartitioningType.DAY`.
         """
-        expiration = self._properties.get(
-            'timePartitioning', {}).get('expirationMs')
-        if expiration is not None:
-            return int(expiration)
+        warnings.warn(
+            "This method will be deprecated in future versions. Please use "
+            "TableListItem.time_partitioning.expiration_ms instead.",
+            PendingDeprecationWarning)
+        if self.time_partitioning is not None:
+            return self.time_partitioning.expiration_ms
 
     @property
     def friendly_name(self):
-        """Title of the table.
-
-        Returns:
-            str: The name as set by the user, or None (the default)
-        """
+        """Union[str, None]: Title of the table (defaults to :data:`None`)."""
         return self._properties.get('friendlyName')
 
     view_use_legacy_sql = property(_view_use_legacy_sql_getter)
@@ -964,17 +918,20 @@ class TableListItem(object):
 def _row_from_mapping(mapping, schema):
     """Convert a mapping to a row tuple using the schema.
 
-    :type mapping: dict
-    :param mapping: Mapping of row data: must contain keys for all
-           required fields in the schema.  Keys which do not correspond
-           to a field in the schema are ignored.
+    Args:
+        mapping (Dict[str, object])
+            Mapping of row data: must contain keys for all required fields in
+            the schema. Keys which do not correspond to a field in the schema
+            are ignored.
+        schema (List[google.cloud.bigquery.schema.SchemaField]):
+            The schema of the table destination for the rows
 
-    :type schema: list of :class:`~google.cloud.bigquery.schema.SchemaField`
-    :param schema: The schema of the table destination for the rows
+    Returns:
+        Tuple[object]:
+            Tuple whose elements are ordered according to the schema.
 
-    :rtype: tuple
-    :returns: Tuple whose elements are ordered according to the schema.
-    :raises: ValueError if schema is empty
+    Raises:
+        ValueError: If schema is empty.
     """
     if len(schema) == 0:
         raise ValueError(_TABLE_HAS_NO_SCHEMA)
@@ -998,16 +955,18 @@ class StreamingBuffer(object):
 
     See https://cloud.google.com/bigquery/streaming-data-into-bigquery.
 
-    :type resource: dict
-    :param resource: streaming buffer representation returned from the API
+    Args:
+        resource (Dict[str, object]):
+            streaming buffer representation returned from the API
     """
 
     def __init__(self, resource):
         self.estimated_bytes = int(resource['estimatedBytes'])
         self.estimated_rows = int(resource['estimatedRows'])
         # time is in milliseconds since the epoch.
-        self.oldest_entry_time = _datetime_from_microseconds(
-            1000.0 * int(resource['oldestEntryTime']))
+        self.oldest_entry_time = (
+            google.cloud._helpers._datetime_from_microseconds(
+                1000.0 * int(resource['oldestEntryTime'])))
 
 
 class Row(object):
@@ -1016,11 +975,10 @@ class Row(object):
     Values can be accessed by position (index), by key like a dict,
     or as properties.
 
-    :type values: tuple
-    :param values:  the row values
-
-    :type field_to_index: dict
-    :param field_to_index:  a mapping from schema field names to indexes
+    Args:
+        values (Sequence[object]): The row values
+        field_to_index (Dict[str, int]):
+            A mapping from schema field names to indexes
     """
 
     # Choose unusual field names to try to avoid conflict with schema fields.
@@ -1042,7 +1000,7 @@ class Row(object):
         """Return the keys for using a row as a dict.
 
         Returns:
-            Sequence[str]: The keys corresponding to the columns of a row
+            Iterable[str]: The keys corresponding to the columns of a row
 
         Examples:
 
@@ -1055,7 +1013,7 @@ class Row(object):
         """Return items as ``(key, value)`` pairs.
 
         Returns:
-            Sequence[Tuple[str, object]]:
+            Iterable[Tuple[str, object]]:
                 The ``(key, value)`` pairs representing this row.
 
         Examples:
@@ -1085,7 +1043,7 @@ class Row(object):
             >>> Row(('a', 'b'), {'x': 0, 'y': 1}).get('x')
             'a'
 
-            The default value is ``None`` when the key does not exist.
+            The default value is :data:`None` when the key does not exist.
 
             >>> Row(('a', 'b'), {'x': 0, 'y': 1}).get('z')
             None
@@ -1148,60 +1106,254 @@ class RowIterator(HTTPIterator):
         path (str): The method path to query for the list of items.
         page_token (str): A token identifying a page in a result set to start
             fetching results from.
-        max_results (int): The maximum number of results to fetch.
-        extra_params (dict): Extra query string parameters for the API call.
-
-    .. autoattribute:: pages
+        max_results (int, optional): The maximum number of results to fetch.
+        page_size (int, optional): The number of items to return per page.
+        extra_params (Dict[str, object]):
+            Extra query string parameters for the API call.
     """
 
     def __init__(self, client, api_request, path, schema, page_token=None,
-                 max_results=None, extra_params=None):
+                 max_results=None, page_size=None, extra_params=None):
         super(RowIterator, self).__init__(
             client, api_request, path, item_to_value=_item_to_row,
             items_key='rows', page_token=page_token, max_results=max_results,
             extra_params=extra_params, page_start=_rows_page_start,
             next_token='pageToken')
         self._schema = schema
-        self._field_to_index = _field_to_index_mapping(schema)
+        self._field_to_index = _helpers._field_to_index_mapping(schema)
         self._total_rows = None
+        self._page_size = page_size
+
+    def _get_next_page_response(self):
+        """Requests the next page from the path provided.
+
+        Returns:
+            Dict[str, object]:
+                The parsed JSON response of the next page's contents.
+        """
+        params = self._get_query_params()
+        if self._page_size is not None:
+            params['maxResults'] = self._page_size
+        return self.api_request(
+            method=self._HTTP_METHOD,
+            path=self.path,
+            query_params=params)
 
     @property
     def schema(self):
-        """Schema for the table containing the rows
-
-        Returns:
-            list of :class:`~google.cloud.bigquery.schema.SchemaField`:
-                fields describing the schema
-        """
+        """List[google.cloud.bigquery.schema.SchemaField]: Table's schema."""
         return list(self._schema)
 
     @property
     def total_rows(self):
-        """The total number of rows in the table.
-
-        Returns:
-            int: the row count.
-        """
+        """int: The total number of rows in the table."""
         return self._total_rows
 
     def to_dataframe(self):
         """Create a pandas DataFrame from the query results.
 
         Returns:
-            A :class:`~pandas.DataFrame` populated with row data and column
-            headers from the query results. The column headers are derived
-            from the destination table's schema.
+            pandas.DataFrame:
+                A :class:`~pandas.DataFrame` populated with row data and column
+                headers from the query results. The column headers are derived
+                from the destination table's schema.
 
         Raises:
-            ValueError: If the `pandas` library cannot be imported.
+            ValueError: If the :mod:`pandas` library cannot be imported.
 
         """
         if pandas is None:
-            raise ValueError('The pandas library is not installed, please '
-                             'install pandas to use the to_dataframe() '
-                             'function.')
+            raise ValueError(_NO_PANDAS_ERROR)
 
         column_headers = [field.name for field in self.schema]
         rows = [row.values() for row in iter(self)]
 
         return pandas.DataFrame(rows, columns=column_headers)
+
+
+class _EmptyRowIterator(object):
+    """An empty row iterator.
+
+    This class prevents API requests when there are no rows to fetch or rows
+    are impossible to fetch, such as with query results for DDL CREATE VIEW
+    statements.
+    """
+    schema = ()
+    pages = ()
+    total_rows = 0
+
+    def to_dataframe(self):
+        if pandas is None:
+            raise ValueError(_NO_PANDAS_ERROR)
+        return pandas.DataFrame()
+
+    def __iter__(self):
+        return iter(())
+
+
+class TimePartitioningType(object):
+    """Specifies the type of time partitioning to perform."""
+
+    DAY = 'DAY'
+    """str: Generates one partition per day."""
+
+
+class TimePartitioning(object):
+    """Configures time-based partitioning for a table.
+
+    Args:
+        type_ (google.cloud.bigquery.table.TimePartitioningType, optional):
+            Specifies the type of time partitioning to perform. Defaults to
+            :attr:`~google.cloud.bigquery.table.TimePartitioningType.DAY`,
+            which is the only currently supported type.
+        field (str, optional):
+            If set, the table is partitioned by this field. If not set, the
+            table is partitioned by pseudo column ``_PARTITIONTIME``. The field
+            must be a top-level ``TIMESTAMP`` or ``DATE`` field. Its mode must
+            be ``NULLABLE`` or ``REQUIRED``.
+        expiration_ms(int, optional):
+            Number of milliseconds for which to keep the storage for a
+            partition.
+        require_partition_filter (bool, optional):
+            If set to true, queries over the partitioned table require a
+            partition filter that can be used for partition elimination to be
+            specified.
+    """
+    def __init__(self, type_=None, field=None, expiration_ms=None,
+                 require_partition_filter=None):
+        self._properties = {}
+        if type_ is None:
+            self.type_ = TimePartitioningType.DAY
+        else:
+            self.type_ = type_
+        if field is not None:
+            self.field = field
+        if expiration_ms is not None:
+            self.expiration_ms = expiration_ms
+        if require_partition_filter is not None:
+            self.require_partition_filter = require_partition_filter
+
+    @property
+    def type_(self):
+        """google.cloud.bigquery.table.TimePartitioningType: The type of time
+        partitioning to use.
+        """
+        return self._properties['type']
+
+    @type_.setter
+    def type_(self, value):
+        self._properties['type'] = value
+
+    @property
+    def field(self):
+        """str: Field in the table to use for partitioning"""
+        return self._properties.get('field')
+
+    @field.setter
+    def field(self, value):
+        self._properties['field'] = value
+
+    @property
+    def expiration_ms(self):
+        """int: Number of milliseconds to keep the storage for a partition."""
+        return _helpers._int_or_none(self._properties.get('expirationMs'))
+
+    @expiration_ms.setter
+    def expiration_ms(self, value):
+        self._properties['expirationMs'] = str(value)
+
+    @property
+    def require_partition_filter(self):
+        """bool: Specifies whether partition filters are required for queries
+        """
+        return self._properties.get('requirePartitionFilter')
+
+    @require_partition_filter.setter
+    def require_partition_filter(self, value):
+        self._properties['requirePartitionFilter'] = value
+
+    @classmethod
+    def from_api_repr(cls, api_repr):
+        """Return a :class:`TimePartitioning` object deserialized from a dict.
+
+        This method creates a new ``TimePartitioning`` instance that points to
+        the ``api_repr`` parameter as its internal properties dict. This means
+        that when a ``TimePartitioning`` instance is stored as a property of
+        another object, any changes made at the higher level will also appear
+        here::
+
+            >>> time_partitioning = TimePartitioning()
+            >>> table.time_partitioning = time_partitioning
+            >>> table.time_partitioning.field = 'timecolumn'
+            >>> time_partitioning.field
+            'timecolumn'
+
+        Args:
+            api_repr (Mapping[str, str]):
+                The serialized representation of the TimePartitioning, such as
+                what is output by :meth:`to_api_repr`.
+
+        Returns:
+            google.cloud.bigquery.table.TimePartitioning:
+                The ``TimePartitioning`` object.
+        """
+        instance = cls(api_repr['type'])
+        instance._properties = api_repr
+        return instance
+
+    def to_api_repr(self):
+        """Return a dictionary representing this object.
+
+        This method returns the properties dict of the ``TimePartitioning``
+        instance rather than making a copy. This means that when a
+        ``TimePartitioning`` instance is stored as a property of another
+        object, any changes made at the higher level will also appear here.
+
+        Returns:
+            dict:
+                A dictionary representing the TimePartitioning object in
+                serialized form.
+        """
+        return self._properties
+
+
+def _item_to_row(iterator, resource):
+    """Convert a JSON row to the native object.
+
+    .. note::
+
+        This assumes that the ``schema`` attribute has been
+        added to the iterator after being created, which
+        should be done by the caller.
+
+    :type iterator: :class:`~google.api_core.page_iterator.Iterator`
+    :param iterator: The iterator that is currently in use.
+
+    :type resource: dict
+    :param resource: An item to be converted to a row.
+
+    :rtype: :class:`~google.cloud.bigquery.table.Row`
+    :returns: The next row in the page.
+    """
+    return Row(_helpers._row_tuple_from_json(resource, iterator.schema),
+               iterator._field_to_index)
+
+
+# pylint: disable=unused-argument
+def _rows_page_start(iterator, page, response):
+    """Grab total rows when :class:`~google.cloud.iterator.Page` starts.
+
+    :type iterator: :class:`~google.api_core.page_iterator.Iterator`
+    :param iterator: The iterator that is currently in use.
+
+    :type page: :class:`~google.api_core.page_iterator.Page`
+    :param page: The page that was just created.
+
+    :type response: dict
+    :param response: The JSON API response for a page of rows in a table.
+    """
+    total_rows = response.get('totalRows')
+    if total_rows is not None:
+        total_rows = int(total_rows)
+    iterator._total_rows = total_rows
+# pylint: enable=unused-argument

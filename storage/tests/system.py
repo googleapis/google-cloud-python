@@ -14,6 +14,7 @@
 
 import os
 import tempfile
+import re
 import time
 import unittest
 
@@ -39,6 +40,8 @@ def _bad_copy(bad_request):
 
 
 retry_429 = RetryErrors(exceptions.TooManyRequests)
+retry_429_503 = RetryErrors([
+    exceptions.TooManyRequests, exceptions.ServiceUnavailable])
 retry_bad_copy = RetryErrors(exceptions.BadRequest,
                              error_predicate=_bad_copy)
 
@@ -76,8 +79,27 @@ def setUpModule():
 
 
 def tearDownModule():
-    retry = RetryErrors(exceptions.Conflict)
+    retry = RetryErrors(exceptions.Conflict, exceptions.TooManyRequests)
     retry(Config.TEST_BUCKET.delete)(force=True)
+
+
+class TestClient(unittest.TestCase):
+
+    def test_get_service_account_email(self):
+        domain = 'gs-project-accounts.iam.gserviceaccount.com'
+
+        email = Config.CLIENT.get_service_account_email()
+
+        new_style = re.compile(
+            r'service-(?P<projnum>[^@]+)@' + domain)
+        old_style = re.compile(
+            r'{}@{}'.format(Config.CLIENT.project, domain))
+        patterns = [new_style, old_style]
+        matches = [pattern.match(email) for pattern in patterns]
+
+        self.assertTrue(any(
+            match for match in matches if match is not None
+        ))
 
 
 class TestStorageBuckets(unittest.TestCase):
@@ -94,7 +116,7 @@ class TestStorageBuckets(unittest.TestCase):
         new_bucket_name = 'a-new-bucket' + unique_resource_id('-')
         self.assertRaises(exceptions.NotFound,
                           Config.CLIENT.get_bucket, new_bucket_name)
-        created = Config.CLIENT.create_bucket(new_bucket_name)
+        created = retry_429(Config.CLIENT.create_bucket)(new_bucket_name)
         self.case_buckets_to_delete.append(new_bucket_name)
         self.assertEqual(created.name, new_bucket_name)
 
@@ -674,6 +696,20 @@ class TestStorageSignURLs(TestStorageFiles):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.content, self.LOCAL_FILE)
 
+    def test_create_signed_read_url_w_non_ascii_name(self):
+        blob = self.bucket.blob(u'Caf\xe9.txt')
+        payload = b'Test signed URL for blob w/ non-ASCII name'
+        blob.upload_from_string(payload)
+        self.case_blobs_to_delete.append(blob)
+
+        expiration = int(time.time() + 10)
+        signed_url = blob.generate_signed_url(expiration, method='GET',
+                                              client=Config.CLIENT)
+
+        response = requests.get(signed_url)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.content, payload)
+
     def test_create_signed_delete_url(self):
         blob = self.bucket.blob('LogoToSign.jpg')
         expiration = int(time.time() + 283473274)
@@ -924,7 +960,7 @@ class TestStorageNotificationCRUD(unittest.TestCase):
         self.case_buckets_to_delete.append(new_bucket_name)
         self.assertEqual(list(bucket.list_notifications()), [])
         notification = bucket.notification(self.TOPIC_NAME)
-        retry_429(notification.create)()
+        retry_429_503(notification.create)()
         try:
             self.assertTrue(notification.exists())
             self.assertIsNotNone(notification.notification_id)
@@ -945,7 +981,7 @@ class TestStorageNotificationCRUD(unittest.TestCase):
             blob_name_prefix=self.BLOB_NAME_PREFIX,
             payload_format=self.payload_format(),
         )
-        retry_429(notification.create)()
+        retry_429_503(notification.create)()
         try:
             self.assertTrue(notification.exists())
             self.assertIsNotNone(notification.notification_id)
@@ -990,3 +1026,134 @@ class TestAnonymousClient(unittest.TestCase):
         blob, = bucket.list_blobs(max_results=1)
         with tempfile.TemporaryFile() as stream:
             blob.download_to_file(stream)
+
+
+class TestKMSIntegration(TestStorageFiles):
+
+    FILENAMES = (
+        'file01.txt',
+    )
+
+    KEYRING_NAME = 'gcs-test'
+    KEY_NAME = 'gcs-test'
+    ALT_KEY_NAME = 'gcs-test-alternate'
+
+    def _kms_key_name(self, key_name=None):
+        if key_name is None:
+            key_name = self.KEY_NAME
+
+        return (
+            "projects/{}/"
+            "locations/{}/"
+            "keyRings/{}/"
+            "cryptoKeys/{}"
+        ).format(
+            Config.CLIENT.project,
+            self.bucket.location.lower(),
+            self.KEYRING_NAME,
+            key_name,
+        )
+
+    def test_blob_w_explicit_kms_key_name(self):
+        BLOB_NAME = 'explicit-kms-key-name'
+        file_data = self.FILES['simple']
+        kms_key_name = self._kms_key_name()
+        blob = self.bucket.blob(BLOB_NAME, kms_key_name=kms_key_name)
+        blob.upload_from_filename(file_data['path'])
+        self.case_blobs_to_delete.append(blob)
+        with open(file_data['path'], 'rb') as _file_data:
+            self.assertEqual(blob.download_as_string(), _file_data.read())
+        # We don't know the current version of the key.
+        self.assertTrue(blob.kms_key_name.startswith(kms_key_name))
+
+        listed, = list(self.bucket.list_blobs())
+        self.assertTrue(listed.kms_key_name.startswith(kms_key_name))
+
+    def test_bucket_w_default_kms_key_name(self):
+        BLOB_NAME = 'default-kms-key-name'
+        OVERRIDE_BLOB_NAME = 'override-default-kms-key-name'
+        ALT_BLOB_NAME = 'alt-default-kms-key-name'
+        CLEARTEXT_BLOB_NAME = 'cleartext'
+
+        file_data = self.FILES['simple']
+
+        with open(file_data['path'], 'rb') as _file_data:
+            contents = _file_data.read()
+
+        kms_key_name = self._kms_key_name()
+        self.bucket.default_kms_key_name = kms_key_name
+        self.bucket.patch()
+        self.assertEqual(self.bucket.default_kms_key_name, kms_key_name)
+
+        defaulted_blob = self.bucket.blob(BLOB_NAME)
+        defaulted_blob.upload_from_filename(file_data['path'])
+        self.case_blobs_to_delete.append(defaulted_blob)
+
+        self.assertEqual(defaulted_blob.download_as_string(), contents)
+        # We don't know the current version of the key.
+        self.assertTrue(defaulted_blob.kms_key_name.startswith(kms_key_name))
+
+        alt_kms_key_name = self._kms_key_name(self.ALT_KEY_NAME)
+
+        override_blob = self.bucket.blob(
+            OVERRIDE_BLOB_NAME, kms_key_name=alt_kms_key_name)
+        override_blob.upload_from_filename(file_data['path'])
+        self.case_blobs_to_delete.append(override_blob)
+
+        self.assertEqual(override_blob.download_as_string(), contents)
+        # We don't know the current version of the key.
+        self.assertTrue(
+            override_blob.kms_key_name.startswith(alt_kms_key_name))
+
+        self.bucket.default_kms_key_name = alt_kms_key_name
+        self.bucket.patch()
+
+        alt_blob = self.bucket.blob(ALT_BLOB_NAME)
+        alt_blob.upload_from_filename(file_data['path'])
+        self.case_blobs_to_delete.append(alt_blob)
+
+        self.assertEqual(alt_blob.download_as_string(), contents)
+        # We don't know the current version of the key.
+        self.assertTrue(alt_blob.kms_key_name.startswith(alt_kms_key_name))
+
+        self.bucket.default_kms_key_name = None
+        self.bucket.patch()
+
+        cleartext_blob = self.bucket.blob(CLEARTEXT_BLOB_NAME)
+        cleartext_blob.upload_from_filename(file_data['path'])
+        self.case_blobs_to_delete.append(cleartext_blob)
+
+        self.assertEqual(cleartext_blob.download_as_string(), contents)
+        self.assertIsNone(cleartext_blob.kms_key_name)
+
+    def test_rewrite_rotate_csek_to_cmek(self):
+        BLOB_NAME = 'rotating-keys'
+        file_data = self.FILES['simple']
+
+        SOURCE_KEY = os.urandom(32)
+        source = self.bucket.blob(BLOB_NAME, encryption_key=SOURCE_KEY)
+        source.upload_from_filename(file_data['path'])
+        self.case_blobs_to_delete.append(source)
+        source_data = source.download_as_string()
+
+        kms_key_name = self._kms_key_name()
+
+        # We can't verify it, but ideally we would check that the following
+        # URL was resolvable with our credentals
+        # KEY_URL = 'https://cloudkms.googleapis.com/v1/{}'.format(
+        #     kms_key_name)
+
+        dest = self.bucket.blob(BLOB_NAME, kms_key_name=kms_key_name)
+        token, rewritten, total = dest.rewrite(source)
+
+        while token is not None:
+            token, rewritten, total = dest.rewrite(source, token=token)
+
+        # Not adding 'dest' to 'self.case_blobs_to_delete':  it is the
+        # same object as 'source'.
+
+        self.assertIsNone(token)
+        self.assertEqual(rewritten, len(source_data))
+        self.assertEqual(total, len(source_data))
+
+        self.assertEqual(dest.download_as_string(), source_data)

@@ -452,10 +452,12 @@ class Iterator(page_iterator.Iterator):
         if self.max_results is not None:
             pb.limit.value = self.max_results - self.num_results
 
-        if self._offset is not None:
-            # NOTE: The offset goes down relative to the location
-            #       because we are updating the cursor each time.
-            pb.offset = self._offset - self._skipped_results
+        if start_cursor is None and self._offset is not None:
+            # NOTE: We don't need to add an offset to the request protobuf
+            #       if we are using an existing cursor, because the offset
+            #       is only relative to the start of the result set, not
+            #       relative to each page (this method is called per-page)
+            pb.offset = self._offset
 
         return pb
 

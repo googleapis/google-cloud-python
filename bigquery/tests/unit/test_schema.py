@@ -94,12 +94,14 @@ class TestSchemaField(unittest.TestCase):
                 'type': 'integer',
             }],
             'mode': 'required',
+            'description': 'test_description',
             'name': 'foo',
             'type': 'record',
         })
         self.assertEqual(field.name, 'foo')
         self.assertEqual(field.field_type, 'RECORD')
         self.assertEqual(field.mode, 'REQUIRED')
+        self.assertEqual(field.description, 'test_description')
         self.assertEqual(len(field.fields), 1)
         self.assertEqual(field.fields[0].name, 'bar')
         self.assertEqual(field.fields[0].field_type, 'INTEGER')
@@ -113,6 +115,7 @@ class TestSchemaField(unittest.TestCase):
         self.assertEqual(field.name, 'foo')
         self.assertEqual(field.field_type, 'RECORD')
         self.assertEqual(field.mode, 'NULLABLE')
+        self.assertEqual(field.description, None)
         self.assertEqual(len(field.fields), 0)
 
     def test_name_property(self):

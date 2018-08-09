@@ -60,17 +60,19 @@ how to activate Cloud Datastore for your project.
 .. code:: python
 
     from google.cloud import datastore
-    # Create, populate and persist an entity
-    entity = datastore.Entity(key=datastore.Key('EntityKind'))
+    # Create, populate and persist an entity with keyID=1234
+    client = datastore.Client()
+    key = client.key('EntityKind', 1234)
+    entity = datastore.Entity(key=key)
     entity.update({
         'foo': u'bar',
         'baz': 1337,
         'qux': False,
     })
-    # Then query for entities
-    query = datastore.Query(kind='EntityKind')
-    for result in query.fetch():
-        print(result)
+    client.put(entity)
+    # Then get by key for this entity
+    result = client.get(key)
+    print result
 
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-datastore.svg
    :target: https://pypi.org/project/google-cloud-datastore/

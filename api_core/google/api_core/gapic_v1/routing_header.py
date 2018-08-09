@@ -22,7 +22,7 @@ Generally, these headers are specified as gRPC metadata.
 
 from six.moves.urllib.parse import urlencode
 
-ROUTING_METADATA_KEY = 'x-goog-header-params'
+ROUTING_METADATA_KEY = 'x-goog-request-params'
 
 
 def to_routing_header(params):

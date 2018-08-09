@@ -21,6 +21,7 @@ import os
 import tempfile
 import unittest
 
+import google.cloud.storage.blob
 import mock
 import six
 from six.moves import http_client
@@ -38,9 +39,9 @@ class Test_Blob(unittest.TestCase):
     def _make_one(*args, **kw):
         from google.cloud.storage.blob import Blob
 
-        properties = kw.pop('properties', None)
+        properties = kw.pop('properties', {})
         blob = Blob(*args, **kw)
-        blob._properties = properties or {}
+        blob._properties.update(properties)
         return blob
 
     def test_ctor_wo_encryption_key(self):
@@ -54,6 +55,7 @@ class Test_Blob(unittest.TestCase):
         self.assertFalse(blob._acl.loaded)
         self.assertIs(blob._acl.blob, blob)
         self.assertEqual(blob._encryption_key, None)
+        self.assertEqual(blob.kms_key_name, None)
 
     def test_ctor_with_encoded_unicode(self):
         blob_name = b'wet \xe2\x9b\xb5'
@@ -69,6 +71,134 @@ class Test_Blob(unittest.TestCase):
         bucket = _Bucket()
         blob = self._make_one(BLOB_NAME, bucket=bucket, encryption_key=KEY)
         self.assertEqual(blob._encryption_key, KEY)
+        self.assertEqual(blob.kms_key_name, None)
+
+    def test_ctor_w_kms_key_name_and_encryption_key(self):
+        KEY = b'01234567890123456789012345678901'  # 32 bytes
+        KMS_RESOURCE = (
+            "projects/test-project-123/"
+            "locations/us/"
+            "keyRings/test-ring/"
+            "cryptoKeys/test-key"
+        )
+        BLOB_NAME = 'blob-name'
+        bucket = _Bucket()
+
+        with self.assertRaises(ValueError):
+            self._make_one(
+                BLOB_NAME, bucket=bucket,
+                encryption_key=KEY,
+                kms_key_name=KMS_RESOURCE)
+
+    def test_ctor_w_kms_key_name(self):
+        KMS_RESOURCE = (
+            "projects/test-project-123/"
+            "locations/us/"
+            "keyRings/test-ring/"
+            "cryptoKeys/test-key"
+        )
+        BLOB_NAME = 'blob-name'
+        bucket = _Bucket()
+        blob = self._make_one(
+            BLOB_NAME, bucket=bucket, kms_key_name=KMS_RESOURCE)
+        self.assertEqual(blob._encryption_key, None)
+        self.assertEqual(blob.kms_key_name, KMS_RESOURCE)
+
+    def _set_properties_helper(self, kms_key_name=None):
+        import datetime
+        from google.cloud._helpers import UTC
+        from google.cloud._helpers import _RFC3339_MICROS
+        now = datetime.datetime.utcnow().replace(tzinfo=UTC)
+        NOW = now.strftime(_RFC3339_MICROS)
+        BLOB_NAME = 'blob-name'
+        GENERATION = 12345
+        BLOB_ID = 'name/{}/{}'.format(BLOB_NAME, GENERATION)
+        SELF_LINK = 'http://example.com/self/'
+        METAGENERATION = 23456
+        SIZE = 12345
+        MD5_HASH = 'DEADBEEF'
+        MEDIA_LINK = 'http://example.com/media/'
+        ENTITY = 'project-owner-12345'
+        ENTITY_ID = '23456'
+        CRC32C = 'FACE0DAC'
+        COMPONENT_COUNT = 2
+        ETAG = 'ETAG'
+        resource = {
+            'id': BLOB_ID,
+            'selfLink': SELF_LINK,
+            'generation': GENERATION,
+            'metageneration': METAGENERATION,
+            'contentType': 'text/plain',
+            'timeCreated': NOW,
+            'updated': NOW,
+            'timeDeleted': NOW,
+            'storageClass': 'NEARLINE',
+            'timeStorageClassUpdated': NOW,
+            'size': SIZE,
+            'md5Hash': MD5_HASH,
+            'mediaLink': MEDIA_LINK,
+            'contentEncoding': 'gzip',
+            'contentDisposition': 'inline',
+            'contentLanguage': 'en-US',
+            'cacheControl': 'private',
+            'metadata': {
+                'foo': 'Foo',
+            },
+            'owner': {
+                'entity': ENTITY,
+                'entityId': ENTITY_ID,
+            },
+            'crc32c': CRC32C,
+            'componentCount': COMPONENT_COUNT,
+            'etag': ETAG,
+        }
+
+        if kms_key_name is not None:
+            resource['kmsKeyName'] = kms_key_name
+
+        bucket = _Bucket()
+        blob = self._make_one(BLOB_NAME, bucket=bucket)
+
+        blob._set_properties(resource)
+
+        self.assertEqual(blob.id, BLOB_ID)
+        self.assertEqual(blob.self_link, SELF_LINK)
+        self.assertEqual(blob.generation, GENERATION)
+        self.assertEqual(blob.metageneration, METAGENERATION)
+        self.assertEqual(blob.content_type, 'text/plain')
+        self.assertEqual(blob.time_created, now)
+        self.assertEqual(blob.updated, now)
+        self.assertEqual(blob.time_deleted, now)
+        self.assertEqual(blob.storage_class, 'NEARLINE')
+        self.assertEqual(blob.size, SIZE)
+        self.assertEqual(blob.md5_hash, MD5_HASH)
+        self.assertEqual(blob.media_link, MEDIA_LINK)
+        self.assertEqual(blob.content_encoding, 'gzip')
+        self.assertEqual(blob.content_disposition, 'inline')
+        self.assertEqual(blob.content_language, 'en-US')
+        self.assertEqual(blob.cache_control, 'private')
+        self.assertEqual(blob.metadata, {'foo': 'Foo'})
+        self.assertEqual(blob.owner, {'entity': ENTITY, 'entityId': ENTITY_ID})
+        self.assertEqual(blob.crc32c, CRC32C)
+        self.assertEqual(blob.component_count, COMPONENT_COUNT)
+        self.assertEqual(blob.etag, ETAG)
+
+        if kms_key_name is not None:
+            self.assertEqual(blob.kms_key_name, kms_key_name)
+        else:
+            self.assertIsNone(blob.kms_key_name)
+
+    def test__set_properties_wo_kms_key_name(self):
+        self._set_properties_helper()
+
+    def test__set_properties_w_kms_key_name(self):
+        kms_resource = (
+            "projects/test-project-123/"
+            "locations/us/"
+            "keyRings/test-ring/"
+            "cryptoKeys/test-key"
+        )
+        self._set_properties_helper(kms_key_name=kms_resource)
 
     def test_chunk_size_ctor(self):
         from google.cloud.storage.blob import Blob
@@ -252,6 +382,35 @@ class Test_Blob(unittest.TestCase):
     def test_generate_signed_url_w_credentials(self):
         credentials = object()
         self._basic_generate_signed_url_helper(credentials=credentials)
+
+    def test_generate_signed_url_non_ascii(self):
+        BLOB_NAME = u'\u0410\u043a\u043a\u043e\u0440\u0434\u044b.txt'
+        EXPIRATION = '2014-10-16T20:34:37.000Z'
+        connection = _Connection()
+        client = _Client(connection)
+        bucket = _Bucket(client)
+        blob = self._make_one(BLOB_NAME, bucket=bucket)
+        URI = (u'http://example.com/abucket/a-blob-name?Signature=DEADBEEF'
+               u'&Expiration=2014-10-16T20:34:37.000Z')
+
+        SIGNER = _Signer()
+        with mock.patch('google.cloud.storage.blob.generate_signed_url',
+                        new=SIGNER):
+            signed_url = blob.generate_signed_url(EXPIRATION)
+            self.assertEqual(signed_url, URI)
+
+        EXPECTED_ARGS = (_Connection.credentials,)
+        EXPECTED_KWARGS = {
+            'api_access_endpoint': 'https://storage.googleapis.com',
+            'expiration': EXPIRATION,
+            'method': 'GET',
+            'resource': '/name/%D0%90%D0%BA%D0%BA%D0%BE%D1%80%D0%B4%D1%8B.txt',
+            'content_type': None,
+            'response_type': None,
+            'response_disposition': None,
+            'generation': None,
+        }
+        self.assertEqual(SIGNER._signed, [(EXPECTED_ARGS, EXPECTED_KWARGS)])
 
     def test_generate_signed_url_w_slash_in_name(self):
         BLOB_NAME = 'parent/child'
@@ -458,6 +617,25 @@ class Test_Blob(unittest.TestCase):
                 user_project))
         self.assertEqual(download_url, expected_url)
 
+    def test__get_download_url_on_the_fly_with_kms_key_name(self):
+        kms_resource = (
+            "projects/test-project-123/"
+            "locations/us/"
+            "keyRings/test-ring/"
+            "cryptoKeys/test-key"
+        )
+        blob_name = 'bzzz-fly.txt'
+        bucket = _Bucket(name='buhkit')
+        blob = self._make_one(
+            blob_name, bucket=bucket, kms_key_name=kms_resource)
+
+        self.assertIsNone(blob.media_link)
+        download_url = blob._get_download_url()
+        expected_url = (
+            'https://www.googleapis.com/download/storage/v1/b/'
+            'buhkit/o/bzzz-fly.txt?alt=media')
+        self.assertEqual(download_url, expected_url)
+
     @staticmethod
     def _mock_requests_response(
             status_code, headers, content=b'', stream=False):
@@ -490,6 +668,20 @@ class Test_Blob(unittest.TestCase):
             http_client.PARTIAL_CONTENT,
             {'content-length': '3', 'content-range': 'bytes 3-5/6'},
             content=b'def')
+        fake_transport.request.side_effect = [chunk1_response, chunk2_response]
+        return fake_transport
+
+    def _mock_download_transport_range(self):
+        fake_transport = mock.Mock(spec=['request'])
+        # Give the transport two fake responses.
+        chunk1_response = self._mock_requests_response(
+            http_client.PARTIAL_CONTENT,
+            {'content-length': '2', 'content-range': 'bytes 1-2/6'},
+            content=b'bc')
+        chunk2_response = self._mock_requests_response(
+            http_client.PARTIAL_CONTENT,
+            {'content-length': '2', 'content-range': 'bytes 3-4/6'},
+            content=b'de')
         fake_transport.request.side_effect = [chunk1_response, chunk2_response]
         return fake_transport
 
@@ -536,6 +728,36 @@ class Test_Blob(unittest.TestCase):
         transport.request.assert_called_once_with(
             'GET', download_url, data=None, headers=headers, stream=True)
 
+    def test__do_download_simple_with_range(self):
+        blob_name = 'blob-name'
+        # Create a fake client/bucket and use them in the Blob() constructor.
+        client = mock.Mock(
+            _credentials=_make_credentials(), spec=['_credentials'])
+        bucket = _Bucket(client)
+        blob = self._make_one(blob_name, bucket=bucket)
+
+        # Make sure this will not be chunked.
+        self.assertIsNone(blob.chunk_size)
+
+        transport = mock.Mock(spec=['request'])
+        transport.request.return_value = self._mock_requests_response(
+            http_client.OK,
+            {'content-length': '3', 'content-range': 'bytes 1-3'},
+            content=b'bcd',
+            stream=True,
+        )
+        file_obj = io.BytesIO()
+        download_url = 'http://test.invalid'
+        headers = {}
+        blob._do_download(
+            transport, file_obj, download_url, headers, start=1, end=3)
+        # Make sure the download was as expected.
+        self.assertEqual(file_obj.getvalue(), b'bcd')
+        self.assertEqual(headers['range'], 'bytes=1-3')
+
+        transport.request.assert_called_once_with(
+            'GET', download_url, data=None, headers=headers, stream=True)
+
     def test__do_download_chunked(self):
         blob_name = 'blob-name'
         # Create a fake client/bucket and use them in the Blob() constructor.
@@ -560,6 +782,35 @@ class Test_Blob(unittest.TestCase):
         self.assertEqual(transport.request.call_count, 2)
         # ``headers`` was modified (in place) once for each API call.
         self.assertEqual(headers, {'range': 'bytes=3-5'})
+        call = mock.call(
+            'GET', download_url, data=None, headers=headers)
+        self.assertEqual(transport.request.mock_calls, [call, call])
+
+    def test__do_download_chunked_with_range(self):
+        blob_name = 'blob-name'
+        # Create a fake client/bucket and use them in the Blob() constructor.
+        client = mock.Mock(
+            _credentials=_make_credentials(), spec=['_credentials'])
+        bucket = _Bucket(client)
+        blob = self._make_one(blob_name, bucket=bucket)
+
+        # Modify the blob so there there will be 2 chunks of size 2.
+        blob._CHUNK_SIZE_MULTIPLE = 1
+        blob.chunk_size = 2
+
+        transport = self._mock_download_transport_range()
+        file_obj = io.BytesIO()
+        download_url = 'http://test.invalid'
+        headers = {}
+        blob._do_download(
+            transport, file_obj, download_url, headers, start=1, end=4)
+        # Make sure the download was as expected.
+        self.assertEqual(file_obj.getvalue(), b'bcde')
+
+        # Check that the transport was called exactly twice.
+        self.assertEqual(transport.request.call_count, 2)
+        # ``headers`` was modified (in place) once for each API call.
+        self.assertEqual(headers, {'range': 'bytes=3-4'})
         call = mock.call(
             'GET', download_url, data=None, headers=headers)
         self.assertEqual(transport.request.mock_calls, [call, call])
@@ -926,9 +1177,11 @@ class Test_Blob(unittest.TestCase):
 
     def _do_multipart_success(self, mock_get_boundary, size=None,
                               num_retries=None, user_project=None,
-                              predefined_acl=None):
+                              predefined_acl=None, kms_key_name=None):
+        from six.moves.urllib.parse import urlencode
         bucket = _Bucket(name='w00t', user_project=user_project)
-        blob = self._make_one(u'blob-name', bucket=bucket)
+        blob = self._make_one(
+            u'blob-name', bucket=bucket, kms_key_name=kms_key_name)
         self.assertIsNone(blob.chunk_size)
 
         # Create mocks to be checked for doing transport.
@@ -955,12 +1208,20 @@ class Test_Blob(unittest.TestCase):
 
         upload_url = (
             'https://www.googleapis.com/upload/storage/v1' +
-            bucket.path +
-            '/o?uploadType=multipart')
+            bucket.path + '/o')
+
+        qs_params = [('uploadType', 'multipart')]
+
         if user_project is not None:
-            upload_url += '&userProject={}'.format(user_project)
+            qs_params.append(('userProject', user_project))
+
         if predefined_acl is not None:
-            upload_url += '&predefinedAcl={}'.format(predefined_acl)
+            qs_params.append(('predefinedAcl', predefined_acl))
+
+        if kms_key_name is not None:
+            qs_params.append(('kmsKeyName', kms_key_name))
+
+        upload_url += '?' + urlencode(qs_params)
 
         payload = (
             b'--==0==\r\n' +
@@ -993,6 +1254,18 @@ class Test_Blob(unittest.TestCase):
 
     @mock.patch(u'google.resumable_media._upload.get_boundary',
                 return_value=b'==0==')
+    def test__do_multipart_upload_with_kms(self, mock_get_boundary):
+        kms_resource = (
+            "projects/test-project-123/"
+            "locations/us/"
+            "keyRings/test-ring/"
+            "cryptoKeys/test-key"
+        )
+        self._do_multipart_success(
+            mock_get_boundary, kms_key_name=kms_resource)
+
+    @mock.patch(u'google.resumable_media._upload.get_boundary',
+                return_value=b'==0==')
     def test__do_multipart_upload_with_retry(self, mock_get_boundary):
         self._do_multipart_success(mock_get_boundary, num_retries=8)
 
@@ -1014,14 +1287,20 @@ class Test_Blob(unittest.TestCase):
 
     def _initiate_resumable_helper(
             self, size=None, extra_headers=None, chunk_size=None,
-            num_retries=None, user_project=None, predefined_acl=None):
+            num_retries=None, user_project=None, predefined_acl=None,
+            blob_chunk_size=786432, kms_key_name=None):
+        from six.moves.urllib.parse import urlencode
         from google.resumable_media.requests import ResumableUpload
 
         bucket = _Bucket(name='whammy', user_project=user_project)
-        blob = self._make_one(u'blob-name', bucket=bucket)
+        blob = self._make_one(
+            u'blob-name', bucket=bucket, kms_key_name=kms_key_name)
         blob.metadata = {'rook': 'takes knight'}
-        blob.chunk_size = 3 * blob._CHUNK_SIZE_MULTIPLE
-        self.assertIsNotNone(blob.chunk_size)
+        blob.chunk_size = blob_chunk_size
+        if blob_chunk_size is not None:
+            self.assertIsNotNone(blob.chunk_size)
+        else:
+            self.assertIsNone(blob.chunk_size)
 
         # Need to make sure **same** dict is used because ``json.dumps()``
         # will depend on the hash order.
@@ -1046,14 +1325,23 @@ class Test_Blob(unittest.TestCase):
 
         # Check the returned values.
         self.assertIsInstance(upload, ResumableUpload)
+
         upload_url = (
             'https://www.googleapis.com/upload/storage/v1' +
-            bucket.path +
-            '/o?uploadType=resumable')
+            bucket.path + '/o')
+        qs_params = [('uploadType', 'resumable')]
+
         if user_project is not None:
-            upload_url += '&userProject={}'.format(user_project)
+            qs_params.append(('userProject', user_project))
+
         if predefined_acl is not None:
-            upload_url += '&predefinedAcl={}'.format(predefined_acl)
+            qs_params.append(('predefinedAcl', predefined_acl))
+
+        if kms_key_name is not None:
+            qs_params.append(('kmsKeyName', kms_key_name))
+
+        upload_url += '?' + urlencode(qs_params)
+
         self.assertEqual(upload.upload_url, upload_url)
         if extra_headers is None:
             self.assertEqual(upload._headers, {})
@@ -1062,7 +1350,11 @@ class Test_Blob(unittest.TestCase):
             self.assertIsNot(upload._headers, extra_headers)
         self.assertFalse(upload.finished)
         if chunk_size is None:
-            self.assertEqual(upload._chunk_size, blob.chunk_size)
+            if blob_chunk_size is None:
+                self.assertEqual(upload._chunk_size,
+                                 google.cloud.storage.blob._DEFAULT_CHUNKSIZE)
+            else:
+                self.assertEqual(upload._chunk_size, blob.chunk_size)
         else:
             self.assertNotEqual(blob.chunk_size, chunk_size)
             self.assertEqual(upload._chunk_size, chunk_size)
@@ -1108,6 +1400,18 @@ class Test_Blob(unittest.TestCase):
     def test__initiate_resumable_upload_with_user_project(self):
         user_project = 'user-project-123'
         self._initiate_resumable_helper(user_project=user_project)
+
+    def test__initiate_resumable_upload_with_kms(self):
+        kms_resource = (
+            "projects/test-project-123/"
+            "locations/us/"
+            "keyRings/test-ring/"
+            "cryptoKeys/test-key"
+        )
+        self._initiate_resumable_helper(kms_key_name=kms_resource)
+
+    def test__initiate_resumable_upload_without_chunk_size(self):
+        self._initiate_resumable_helper(blob_chunk_size=None)
 
     def test__initiate_resumable_upload_with_chunk_size(self):
         one_mb = 1048576
@@ -1254,7 +1558,8 @@ class Test_Blob(unittest.TestCase):
         self._do_resumable_helper(predefined_acl='private')
 
     def _do_upload_helper(
-            self, chunk_size=None, num_retries=None, predefined_acl=None):
+            self, chunk_size=None, num_retries=None, predefined_acl=None,
+            size=None):
         blob = self._make_one(u'blob-name', bucket=None)
 
         # Create a fake response.
@@ -1273,14 +1578,15 @@ class Test_Blob(unittest.TestCase):
         client = mock.sentinel.client
         stream = mock.sentinel.stream
         content_type = u'video/mp4'
-        size = 12345654321
+        if size is None:
+            size = 12345654321
         # Make the request and check the mocks.
         created_json = blob._do_upload(
             client, stream, content_type, size, num_retries, predefined_acl)
         self.assertIs(created_json, mock.sentinel.json)
         response.json.assert_called_once_with()
-        if chunk_size is None:
-
+        if size is not None and \
+                size <= google.cloud.storage.blob._MAX_MULTIPART_SIZE:
             blob._do_multipart_upload.assert_called_once_with(
                 client, stream, content_type, size, num_retries,
                 predefined_acl)
@@ -1291,12 +1597,14 @@ class Test_Blob(unittest.TestCase):
                 client, stream, content_type, size, num_retries,
                 predefined_acl)
 
-    def test__do_upload_without_chunk_size(self):
-        self._do_upload_helper()
+    def test__do_upload_uses_multipart(self):
+        self._do_upload_helper(
+            size=google.cloud.storage.blob._MAX_MULTIPART_SIZE)
 
-    def test__do_upload_with_chunk_size(self):
-        chunk_size = 1024 * 1024 * 1024  # 1GB
-        self._do_upload_helper(chunk_size=chunk_size)
+    def test__do_upload_uses_resumable(self):
+        self._do_upload_helper(
+            chunk_size=256 * 1024,  # 256KB
+            size=google.cloud.storage.blob._MAX_MULTIPART_SIZE + 1)
 
     def test__do_upload_with_retry(self):
         self._do_upload_helper(num_retries=20)
@@ -1358,18 +1666,17 @@ class Test_Blob(unittest.TestCase):
         from google.resumable_media import InvalidResponse
         from google.cloud import exceptions
 
-        message = b'Someone is already in this spot.'
+        message = 'Someone is already in this spot.'
         response = requests.Response()
-        response._content = message
         response.status_code = http_client.CONFLICT
         response.request = requests.Request(
             'POST', 'http://example.com').prepare()
-        side_effect = InvalidResponse(response)
+        side_effect = InvalidResponse(response, message)
 
         with self.assertRaises(exceptions.Conflict) as exc_info:
             self._upload_from_file_helper(side_effect=side_effect)
 
-        self.assertIn(message.decode('utf-8'), exc_info.exception.message)
+        self.assertIn(message, exc_info.exception.message)
         self.assertEqual(exc_info.exception.errors, [])
 
     def _do_upload_mock_call_helper(self, blob, client, content_type, size):
@@ -1505,17 +1812,16 @@ class Test_Blob(unittest.TestCase):
         from google.resumable_media import InvalidResponse
         from google.cloud import exceptions
 
-        message = b'5-oh-3 woe is me.'
+        message = '5-oh-3 woe is me.'
         response = self._mock_requests_response(
-            content=message, status_code=http_client.SERVICE_UNAVAILABLE,
-            headers={})
-        side_effect = InvalidResponse(response)
+            status_code=http_client.SERVICE_UNAVAILABLE, headers={})
+        side_effect = InvalidResponse(response, message)
 
         with self.assertRaises(exceptions.ServiceUnavailable) as exc_info:
             self._create_resumable_upload_session_helper(
                 side_effect=side_effect)
 
-        self.assertIn(message.decode('utf-8'), exc_info.exception.message)
+        self.assertIn(message, exc_info.exception.message)
         self.assertEqual(exc_info.exception.errors, [])
 
     def test_get_iam_policy(self):
@@ -1783,6 +2089,24 @@ class Test_Blob(unittest.TestCase):
         self.assertEqual(kw[0]['data'], {'acl': permissive})
         self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
 
+    def test_make_private(self):
+        BLOB_NAME = 'blob-name'
+        no_permissions = []
+        after = ({'status': http_client.OK}, {'acl': no_permissions})
+        connection = _Connection(after)
+        client = _Client(connection)
+        bucket = _Bucket(client=client)
+        blob = self._make_one(BLOB_NAME, bucket=bucket)
+        blob.acl.loaded = True
+        blob.make_private()
+        self.assertEqual(list(blob.acl), no_permissions)
+        kw = connection._requested
+        self.assertEqual(len(kw), 1)
+        self.assertEqual(kw[0]['method'], 'PATCH')
+        self.assertEqual(kw[0]['path'], '/b/name/o/%s' % BLOB_NAME)
+        self.assertEqual(kw[0]['data'], {'acl': no_permissions})
+        self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
+
     def test_compose_wo_content_type_set(self):
         SOURCE_1 = 'source-1'
         SOURCE_2 = 'source-2'
@@ -1824,7 +2148,7 @@ class Test_Blob(unittest.TestCase):
             'method': 'POST',
             'path': '/b/name/o/%s/compose' % DESTINATION,
             'query_params': {'userProject': USER_PROJECT},
-            'data':  {
+            'data': {
                 'sourceObjects': [
                     {'name': source_1.name},
                     {'name': source_2.name},
@@ -1864,7 +2188,7 @@ class Test_Blob(unittest.TestCase):
             'method': 'POST',
             'path': '/b/name/o/%s/compose' % DESTINATION,
             'query_params': {},
-            'data':  {
+            'data': {
                 'sourceObjects': [
                     {'name': source_1.name},
                     {'name': source_2.name},
@@ -2059,6 +2383,65 @@ class Test_Blob(unittest.TestCase):
             headers['X-Goog-Encryption-Key'], DEST_KEY_B64)
         self.assertEqual(
             headers['X-Goog-Encryption-Key-Sha256'], DEST_KEY_HASH_B64)
+
+    def test_rewrite_same_name_w_old_key_new_kms_key(self):
+        import base64
+        import hashlib
+
+        SOURCE_KEY = b'01234567890123456789012345678901'  # 32 bytes
+        SOURCE_KEY_B64 = base64.b64encode(SOURCE_KEY).rstrip().decode('ascii')
+        SOURCE_KEY_HASH = hashlib.sha256(SOURCE_KEY).digest()
+        SOURCE_KEY_HASH_B64 = base64.b64encode(
+            SOURCE_KEY_HASH).rstrip().decode('ascii')
+        DEST_KMS_RESOURCE = (
+            "projects/test-project-123/"
+            "locations/us/"
+            "keyRings/test-ring/"
+            "cryptoKeys/test-key"
+        )
+        BLOB_NAME = 'blob'
+        RESPONSE = {
+            'totalBytesRewritten': 42,
+            'objectSize': 42,
+            'done': True,
+            'resource': {'etag': 'DEADBEEF'},
+        }
+        response = ({'status': http_client.OK}, RESPONSE)
+        connection = _Connection(response)
+        client = _Client(connection)
+        bucket = _Bucket(client=client)
+        source = self._make_one(
+            BLOB_NAME, bucket=bucket, encryption_key=SOURCE_KEY)
+        dest = self._make_one(BLOB_NAME, bucket=bucket,
+                              kms_key_name=DEST_KMS_RESOURCE)
+
+        token, rewritten, size = dest.rewrite(source)
+
+        self.assertIsNone(token)
+        self.assertEqual(rewritten, 42)
+        self.assertEqual(size, 42)
+
+        kw = connection._requested
+        self.assertEqual(len(kw), 1)
+        self.assertEqual(kw[0]['method'], 'POST')
+        PATH = '/b/name/o/%s/rewriteTo/b/name/o/%s' % (BLOB_NAME, BLOB_NAME)
+        self.assertEqual(kw[0]['path'], PATH)
+        self.assertEqual(kw[0]['query_params'],
+                         {'destinationKmsKeyName': DEST_KMS_RESOURCE})
+        SENT = {
+            'kmsKeyName': DEST_KMS_RESOURCE,
+        }
+        self.assertEqual(kw[0]['data'], SENT)
+
+        headers = {
+            key.title(): str(value) for key, value in kw[0]['headers'].items()}
+        self.assertEqual(
+            headers['X-Goog-Copy-Source-Encryption-Algorithm'], 'AES256')
+        self.assertEqual(
+            headers['X-Goog-Copy-Source-Encryption-Key'], SOURCE_KEY_B64)
+        self.assertEqual(
+            headers['X-Goog-Copy-Source-Encryption-Key-Sha256'],
+            SOURCE_KEY_HASH_B64)
 
     def test_update_storage_class_invalid(self):
         BLOB_NAME = 'blob-name'
@@ -2535,34 +2918,41 @@ class Test__maybe_rewind(unittest.TestCase):
 class Test__raise_from_invalid_response(unittest.TestCase):
 
     @staticmethod
-    def _call_fut(*args, **kwargs):
+    def _call_fut(error):
         from google.cloud.storage.blob import _raise_from_invalid_response
 
-        return _raise_from_invalid_response(*args, **kwargs)
+        return _raise_from_invalid_response(error)
 
-    def _helper(self, message, **kwargs):
+    def _helper(self, message, code=http_client.BAD_REQUEST, args=()):
         import requests
 
         from google.resumable_media import InvalidResponse
-        from google.cloud import exceptions
+        from google.api_core import exceptions
 
         response = requests.Response()
         response.request = requests.Request(
             'GET', 'http://example.com').prepare()
-        response.status_code = http_client.BAD_REQUEST
-        response._content = message
-        error = InvalidResponse(response)
+        response.status_code = code
+        error = InvalidResponse(response, message, *args)
 
-        with self.assertRaises(exceptions.BadRequest) as exc_info:
-            self._call_fut(error, **kwargs)
+        with self.assertRaises(exceptions.GoogleAPICallError) as exc_info:
+            self._call_fut(error)
 
         return exc_info
 
     def test_default(self):
-        message = b'Failure'
+        message = 'Failure'
         exc_info = self._helper(message)
-        message_str = message.decode('utf-8')
-        expected = 'GET http://example.com/: {}'.format(message_str)
+        expected = 'GET http://example.com/: {}'.format(message)
+        self.assertEqual(exc_info.exception.message, expected)
+        self.assertEqual(exc_info.exception.errors, [])
+
+    def test_w_206_and_args(self):
+        message = 'Failure'
+        args = ('one', 'two')
+        exc_info = self._helper(
+            message, code=http_client.PARTIAL_CONTENT, args=args)
+        expected = 'GET http://example.com/: {}'.format((message,) + args)
         self.assertEqual(exc_info.exception.message, expected)
         self.assertEqual(exc_info.exception.errors, [])
 

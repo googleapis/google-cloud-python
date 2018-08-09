@@ -17,6 +17,7 @@ import time
 
 import mock
 
+import google.api_core.exceptions
 from google.auth import credentials
 from google.cloud.pubsub_v1 import publisher
 from google.cloud.pubsub_v1 import types
@@ -201,6 +202,26 @@ def test_blocking__commit_wrong_messageid_length():
         assert isinstance(future.exception(), exceptions.PublishError)
 
 
+def test_block__commmit_api_error():
+    batch = create_batch()
+    futures = (
+        batch.publish({'data': b'blah blah blah'}),
+        batch.publish({'data': b'blah blah blah blah'}),
+    )
+
+    # Make the API throw an error when publishing.
+    error = google.api_core.exceptions.InternalServerError('uh oh')
+    patch = mock.patch.object(
+        type(batch.client.api), 'publish', side_effect=error)
+
+    with patch:
+        batch._commit()
+
+    for future in futures:
+        assert future.done()
+        assert future.exception() == error
+
+
 def test_monitor():
     batch = create_batch(max_latency=5.0)
     with mock.patch.object(time, 'sleep') as sleep:
@@ -283,12 +304,12 @@ def test_publish_exceed_max_messages():
         assert commit.call_count == 0
 
         # When a fourth message is published, commit should be called.
+        # No future will be returned in this case.
         future = batch.publish(types.PubsubMessage(data=b'last one'))
         commit.assert_called_once_with()
 
-        futures.append(future)
+        assert future is None
         assert batch._futures == futures
-        assert len(futures) == max_messages
 
 
 def test_publish_dict():

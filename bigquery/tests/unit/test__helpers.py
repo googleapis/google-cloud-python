@@ -14,6 +14,7 @@
 
 import base64
 import datetime
+import decimal
 import unittest
 
 
@@ -78,6 +79,30 @@ class Test_float_from_json(unittest.TestCase):
     def test_w_float_value(self):
         coerced = self._call_fut(3.1415, object())
         self.assertEqual(coerced, 3.1415)
+
+
+class Test_decimal_from_json(unittest.TestCase):
+
+    def _call_fut(self, value, field):
+        from google.cloud.bigquery._helpers import _decimal_from_json
+
+        return _decimal_from_json(value, field)
+
+    def test_w_none_nullable(self):
+        self.assertIsNone(self._call_fut(None, _Field('NULLABLE')))
+
+    def test_w_none_required(self):
+        with self.assertRaises(TypeError):
+            self._call_fut(None, _Field('REQUIRED'))
+
+    def test_w_string_value(self):
+        coerced = self._call_fut('3.1415', object())
+        self.assertEqual(coerced, decimal.Decimal('3.1415'))
+
+    def test_w_float_value(self):
+        coerced = self._call_fut(3.1415, object())
+        # There is no exact float representation of 3.1415.
+        self.assertEqual(coerced, decimal.Decimal(3.1415))
 
 
 class Test_bool_from_json(unittest.TestCase):
@@ -156,6 +181,37 @@ class Test_bytes_from_json(unittest.TestCase):
         self.assertEqual(coerced, expected)
 
 
+class Test_timestamp_from_json(unittest.TestCase):
+
+    def _call_fut(self, value, field):
+        from google.cloud.bigquery._helpers import _timestamp_from_json
+
+        return _timestamp_from_json(value, field)
+
+    def test_w_none_nullable(self):
+        self.assertIsNone(self._call_fut(None, _Field('NULLABLE')))
+
+    def test_w_none_required(self):
+        with self.assertRaises(TypeError):
+            self._call_fut(None, _Field('REQUIRED'))
+
+    def test_w_string_value(self):
+        from google.cloud._helpers import _EPOCH
+
+        coerced = self._call_fut('1.234567', object())
+        self.assertEqual(
+            coerced,
+            _EPOCH + datetime.timedelta(seconds=1, microseconds=234567))
+
+    def test_w_float_value(self):
+        from google.cloud._helpers import _EPOCH
+
+        coerced = self._call_fut(1.234567, object())
+        self.assertEqual(
+            coerced,
+            _EPOCH + datetime.timedelta(seconds=1, microseconds=234567))
+
+
 class Test_timestamp_query_param_from_json(unittest.TestCase):
 
     def _call_fut(self, value, field):
@@ -211,37 +267,6 @@ class Test_timestamp_query_param_from_json(unittest.TestCase):
     def test_w_timestamp_invalid(self):
         with self.assertRaises(ValueError):
             self._call_fut('definitely-not-a-timestamp', _Field('NULLABLE'))
-
-
-class Test_timestamp_from_json(unittest.TestCase):
-
-    def _call_fut(self, value, field):
-        from google.cloud.bigquery._helpers import _timestamp_from_json
-
-        return _timestamp_from_json(value, field)
-
-    def test_w_none_nullable(self):
-        self.assertIsNone(self._call_fut(None, _Field('NULLABLE')))
-
-    def test_w_none_required(self):
-        with self.assertRaises(TypeError):
-            self._call_fut(None, _Field('REQUIRED'))
-
-    def test_w_string_value(self):
-        from google.cloud._helpers import _EPOCH
-
-        coerced = self._call_fut('1.234567', object())
-        self.assertEqual(
-            coerced,
-            _EPOCH + datetime.timedelta(seconds=1, microseconds=234567))
-
-    def test_w_float_value(self):
-        from google.cloud._helpers import _EPOCH
-
-        coerced = self._call_fut(1.234567, object())
-        self.assertEqual(
-            coerced,
-            _EPOCH + datetime.timedelta(seconds=1, microseconds=234567))
 
 
 class Test_datetime_from_json(unittest.TestCase):
@@ -312,6 +337,16 @@ class Test_time_from_json(unittest.TestCase):
             coerced,
             datetime.time(12, 12, 27))
 
+    def test_w_subsecond_string_value(self):
+        coerced = self._call_fut('12:12:27.123456', object())
+        self.assertEqual(
+            coerced,
+            datetime.time(12, 12, 27, 123456))
+
+    def test_w_bogus_string_value(self):
+        with self.assertRaises(ValueError):
+            self._call_fut('12:12:27.123', object())
+
 
 class Test_record_from_json(unittest.TestCase):
 
@@ -373,6 +408,27 @@ class Test_record_from_json(unittest.TestCase):
         }
         coerced = self._call_fut(value, person)
         self.assertEqual(coerced, expected)
+
+
+class Test_field_to_index_mapping(unittest.TestCase):
+
+    def _call_fut(self, schema):
+        from google.cloud.bigquery._helpers import _field_to_index_mapping
+
+        return _field_to_index_mapping(schema)
+
+    def test_w_empty_schema(self):
+        self.assertEqual(self._call_fut([]), {})
+
+    def test_w_non_empty_schema(self):
+        schema = [
+            _Field('REPEATED', 'first', 'INTEGER'),
+            _Field('REQUIRED', 'second', 'INTEGER'),
+            _Field('REPEATED', 'third', 'INTEGER'),
+        ]
+        self.assertEqual(
+            self._call_fut(schema),
+            {'first': 0, 'second': 1, 'third': 2})
 
 
 class Test_row_tuple_from_json(unittest.TestCase):
@@ -585,6 +641,23 @@ class Test_float_to_json(unittest.TestCase):
         self.assertEqual(self._call_fut(1.23), 1.23)
 
 
+class Test_decimal_to_json(unittest.TestCase):
+
+    def _call_fut(self, value):
+        from google.cloud.bigquery._helpers import _decimal_to_json
+
+        return _decimal_to_json(value)
+
+    def test_w_float(self):
+        self.assertEqual(self._call_fut(1.23), 1.23)
+
+    def test_w_string(self):
+        self.assertEqual(self._call_fut('1.23'), '1.23')
+
+    def test_w_decimal(self):
+        self.assertEqual(self._call_fut(decimal.Decimal('1.23')), '1.23')
+
+
 class Test_bool_to_json(unittest.TestCase):
 
     def _call_fut(self, value):
@@ -744,135 +817,118 @@ class Test_snake_to_camel_case(unittest.TestCase):
         self.assertEqual(self._call_fut('friendlyName'), 'friendlyName')
 
 
-class Test_TypedApiResourceProperty(unittest.TestCase):
+class Test__get_sub_prop(unittest.TestCase):
 
-    @staticmethod
-    def _get_target_class():
-        from google.cloud.bigquery._helpers import _TypedApiResourceProperty
+    def _call_fut(self, container, keys, **kw):
+        from google.cloud.bigquery._helpers import _get_sub_prop
 
-        return _TypedApiResourceProperty
+        return _get_sub_prop(container, keys, **kw)
 
-    def _make_one(self, *args, **kw):
-        return self._get_target_class()(*args, **kw)
+    def test_w_empty_container_default_default(self):
+        self.assertIsNone(self._call_fut({}, ['key1']))
 
-    def test_it(self):
+    def test_w_missing_key_explicit_default(self):
+        self.assertEqual(self._call_fut({'key2': 2}, ['key1'], default=1), 1)
 
-        class Wrapper(object):
-            attr = self._make_one('attr', 'back', int)
+    def test_w_matching_single_key(self):
+        self.assertEqual(self._call_fut({'key1': 1}, ['key1']), 1)
 
-            def __init__(self):
-                self._properties = {}
+    def test_w_matching_first_key_missing_second_key(self):
+        self.assertIsNone(
+            self._call_fut({'key1': {'key3': 3}}, ['key1', 'key2']))
 
-        self.assertIsNotNone(Wrapper.attr)
+    def test_w_matching_first_key_matching_second_key(self):
+        self.assertEqual(
+            self._call_fut({'key1': {'key2': 2}}, ['key1', 'key2']), 2)
 
-        wrapper = Wrapper()
+
+class Test__set_sub_prop(unittest.TestCase):
+
+    def _call_fut(self, container, keys, value):
+        from google.cloud.bigquery._helpers import _set_sub_prop
+
+        return _set_sub_prop(container, keys, value)
+
+    def test_w_empty_container_single_key(self):
+        container = {}
+        self._call_fut(container, ['key1'], 'value')
+        self.assertEqual(container, {'key1': 'value'})
+
+    def test_w_empty_container_nested_keys(self):
+        container = {}
+        self._call_fut(container, ['key1', 'key2', 'key3'], 'value')
+        self.assertEqual(container, {'key1': {'key2': {'key3': 'value'}}})
+
+    def test_w_existing_value(self):
+        container = {'key1': 'before'}
+        self._call_fut(container, ['key1'], 'after')
+        self.assertEqual(container, {'key1': 'after'})
+
+    def test_w_nested_keys_existing_value(self):
+        container = {'key1': {'key2': {'key3': 'before'}}}
+        self._call_fut(container, ['key1', 'key2', 'key3'], 'after')
+        self.assertEqual(container, {'key1': {'key2': {'key3': 'after'}}})
+
+
+class Test__del_sub_prop(unittest.TestCase):
+
+    def _call_fut(self, container, keys):
+        from google.cloud.bigquery._helpers import _del_sub_prop
+
+        return _del_sub_prop(container, keys)
+
+    def test_w_single_key(self):
+        container = {'key1': 'value'}
+        self._call_fut(container, ['key1'])
+        self.assertEqual(container, {})
+
+    def test_w_empty_container_nested_keys(self):
+        container = {}
+        self._call_fut(container, ['key1', 'key2', 'key3'])
+        self.assertEqual(container, {'key1': {'key2': {}}})
+
+    def test_w_existing_value_nested_keys(self):
+        container = {'key1': {'key2': {'key3': 'value'}}}
+        self._call_fut(container, ['key1', 'key2', 'key3'])
+        self.assertEqual(container, {'key1': {'key2': {}}})
+
+
+class Test__int_or_none(unittest.TestCase):
+
+    def _call_fut(self, value):
+        from google.cloud.bigquery._helpers import _int_or_none
+
+        return _int_or_none(value)
+
+    def test_w_num_string(self):
+        self.assertEqual(self._call_fut('123'), 123)
+
+    def test_w_none(self):
+        self.assertIsNone(self._call_fut(None))
+
+    def test_w_int(self):
+        self.assertEqual(self._call_fut(123), 123)
+
+    def test_w_non_num_string(self):
         with self.assertRaises(ValueError):
-            wrapper.attr = 'BOGUS'
-
-        wrapper.attr = 42
-        self.assertEqual(wrapper.attr, 42)
-        self.assertEqual(wrapper._properties['back'], 42)
-
-        wrapper.attr = None
-        self.assertIsNone(wrapper.attr)
-        self.assertIsNone(wrapper._properties['back'])
-
-        wrapper.attr = 23
-        self.assertEqual(wrapper.attr, 23)
-        self.assertEqual(wrapper._properties['back'], 23)
-
-        del wrapper.attr
-        self.assertIsNone(wrapper.attr)
-        with self.assertRaises(KeyError):
-            wrapper._properties['back']
+            self._call_fut('ham')
 
 
-class Test_ListApiResourceProperty(unittest.TestCase):
+class Test__str_or_none(unittest.TestCase):
 
-    @staticmethod
-    def _get_target_class():
-        from google.cloud.bigquery._helpers import _ListApiResourceProperty
+    def _call_fut(self, value):
+        from google.cloud.bigquery._helpers import _str_or_none
 
-        return _ListApiResourceProperty
+        return _str_or_none(value)
 
-    def _make_one(self, *args, **kw):
-        return self._get_target_class()(*args, **kw)
+    def test_w_int(self):
+        self.assertEqual(self._call_fut(123), '123')
 
-    def _descriptor_and_klass(self):
-        from google.cloud.bigquery.query import _AbstractQueryParameter
+    def test_w_none(self):
+        self.assertIsNone(self._call_fut(None))
 
-        descriptor = self._make_one(
-            'query_parameters', 'queryParameters', _AbstractQueryParameter)
-
-        class _Test(object):
-            def __init__(self):
-                self._properties = {}
-
-            query_parameters = descriptor
-
-        return descriptor, _Test
-
-    def test_class_getter(self):
-        descriptor, klass = self._descriptor_and_klass()
-        self.assertIs(klass.query_parameters, descriptor)
-
-    def test_instance_getter_empty(self):
-        _, klass = self._descriptor_and_klass()
-        instance = klass()
-        self.assertEqual(instance.query_parameters, [])
-
-    def test_instance_getter_w_non_empty_list(self):
-        from google.cloud.bigquery.query import ScalarQueryParameter
-
-        query_parameters = [ScalarQueryParameter("foo", 'INT64', 123)]
-        _, klass = self._descriptor_and_klass()
-        instance = klass()
-        instance._properties['queryParameters'] = query_parameters
-
-        self.assertEqual(instance.query_parameters, query_parameters)
-
-    def test_instance_setter_w_empty_list(self):
-        from google.cloud.bigquery.query import ScalarQueryParameter
-
-        query_parameters = [ScalarQueryParameter("foo", 'INT64', 123)]
-        _, klass = self._descriptor_and_klass()
-        instance = klass()
-        instance._query_parameters = query_parameters
-
-        instance.query_parameters = []
-
-        self.assertEqual(instance.query_parameters, [])
-
-    def test_instance_setter_w_none(self):
-        from google.cloud.bigquery.query import ScalarQueryParameter
-
-        query_parameters = [ScalarQueryParameter("foo", 'INT64', 123)]
-        _, klass = self._descriptor_and_klass()
-        instance = klass()
-        instance._query_parameters = query_parameters
-
-        with self.assertRaises(ValueError):
-            instance.query_parameters = None
-
-    def test_instance_setter_w_valid_udf(self):
-        from google.cloud.bigquery.query import ScalarQueryParameter
-
-        query_parameters = [ScalarQueryParameter("foo", 'INT64', 123)]
-        _, klass = self._descriptor_and_klass()
-        instance = klass()
-
-        instance.query_parameters = query_parameters
-
-        self.assertEqual(instance.query_parameters, query_parameters)
-
-    def test_instance_setter_w_bad_udfs(self):
-        _, klass = self._descriptor_and_klass()
-        instance = klass()
-
-        with self.assertRaises(ValueError):
-            instance.query_parameters = ["foo"]
-
-        self.assertEqual(instance.query_parameters, [])
+    def test_w_str(self):
+        self.assertEqual(self._call_fut('ham'), 'ham')
 
 
 class _Field(object):

@@ -169,19 +169,6 @@ class TestClient(unittest.TestCase):
         klass = self._get_target_class()
         self.assertEqual(klass.field_path('a', 'b', 'c'), 'a.b.c')
 
-    def test_write_option_create(self):
-        from google.cloud.firestore_v1beta1.client import CreateIfMissingOption
-
-        klass = self._get_target_class()
-
-        option1 = klass.write_option(create_if_missing=False)
-        self.assertIsInstance(option1, CreateIfMissingOption)
-        self.assertFalse(option1._create_if_missing)
-
-        option2 = klass.write_option(create_if_missing=True)
-        self.assertIsInstance(option2, CreateIfMissingOption)
-        self.assertTrue(option2._create_if_missing)
-
     def test_write_option_last_update(self):
         from google.protobuf import timestamp_pb2
         from google.cloud.firestore_v1beta1.client import LastUpdateOption
@@ -224,7 +211,7 @@ class TestClient(unittest.TestCase):
         klass = self._get_target_class()
         with self.assertRaises(TypeError) as exc_info:
             klass.write_option(
-                create_if_missing=False,
+                exists=False,
                 last_update_time=mock.sentinel.timestamp)
 
         self.assertEqual(exc_info.exception.args, (_BAD_OPTION_ERR,))
@@ -461,59 +448,6 @@ class TestLastUpdateOption(unittest.TestCase):
         self.assertIsNone(ret_val)
         expected_doc = common_pb2.Precondition(update_time=timestamp_pb)
         self.assertEqual(write_pb.current_document, expected_doc)
-
-
-class TestCreateIfMissingOption(unittest.TestCase):
-
-    @staticmethod
-    def _get_target_class():
-        from google.cloud.firestore_v1beta1.client import CreateIfMissingOption
-
-        return CreateIfMissingOption
-
-    def _make_one(self, *args, **kwargs):
-        klass = self._get_target_class()
-        return klass(*args, **kwargs)
-
-    def test_constructor(self):
-        option = self._make_one(mock.sentinel.totes_bool)
-        self.assertIs(option._create_if_missing, mock.sentinel.totes_bool)
-
-    def test_modify_write_dont_create(self):
-        from google.cloud.firestore_v1beta1.proto import common_pb2
-        from google.cloud.firestore_v1beta1.proto import write_pb2
-
-        option = self._make_one(False)
-        write_pb = write_pb2.Write()
-        ret_val = option.modify_write(write_pb)
-
-        self.assertIsNone(ret_val)
-        expected_doc = common_pb2.Precondition(exists=True)
-        self.assertEqual(write_pb.current_document, expected_doc)
-
-    def test_modify_write_do_create(self):
-        from google.cloud.firestore_v1beta1.proto import write_pb2
-
-        option = self._make_one(True)
-        write_pb = write_pb2.Write()
-        ret_val = option.modify_write(write_pb)
-
-        self.assertIsNone(ret_val)
-        # No precondition is set here.
-        self.assertFalse(write_pb.HasField('current_document'))
-
-    def test_modify_write_create_not_allowed(self):
-        no_create_msg = mock.sentinel.message
-        option1 = self._make_one(True)
-        option2 = self._make_one(False)
-
-        with self.assertRaises(ValueError) as exc_info:
-            option1.modify_write(None, no_create_msg=no_create_msg)
-        self.assertEqual(exc_info.exception.args, (no_create_msg,))
-
-        with self.assertRaises(ValueError) as exc_info:
-            option2.modify_write(None, no_create_msg=no_create_msg)
-        self.assertEqual(exc_info.exception.args, (no_create_msg,))
 
 
 class TestExistsOption(unittest.TestCase):

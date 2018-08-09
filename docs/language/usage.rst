@@ -13,6 +13,16 @@ with your document storage on Google Cloud Storage.
 
 .. _Google Natural Language: https://cloud.google.com/natural-language/docs/quickstart-client-libraries
 
+************
+Installation
+************
+
+Install the ``google-cloud-language`` library using ``pip``:
+
+.. code-block:: console
+
+    $ pip install google-cloud-language
+
 
 ********************************
 Authentication and Configuration
@@ -285,5 +295,6 @@ An API and type reference is provided for the v1.1 beta also:
 For a list of all ``google-cloud-language`` releases:
 
 .. toctree::
+  :maxdepth: 2
 
-  releases
+  changelog

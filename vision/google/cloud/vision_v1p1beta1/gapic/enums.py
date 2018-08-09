@@ -1,10 +1,10 @@
-# Copyright 2017, Google LLC All rights reserved.
+# Copyright 2018 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#     http://www.apache.org/licenses/LICENSE-2.0
+#     https://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,8 +13,10 @@
 # limitations under the License.
 """Wrappers for protocol buffer enum types."""
 
+import enum
 
-class Likelihood(object):
+
+class Likelihood(enum.IntEnum):
     """
     A bucketized representation of likelihood, which is intended to give clients
     highly stable results across model upgrades.
@@ -37,7 +39,7 @@ class Likelihood(object):
 
 class TextAnnotation(object):
     class DetectedBreak(object):
-        class BreakType(object):
+        class BreakType(enum.IntEnum):
             """
             Enum to denote the type of break found. New line, space etc.
 
@@ -59,7 +61,7 @@ class TextAnnotation(object):
 
 
 class Block(object):
-    class BlockType(object):
+    class BlockType(enum.IntEnum):
         """
         Type of a block (text, image etc) as identified by OCR.
 
@@ -80,7 +82,7 @@ class Block(object):
 
 
 class Feature(object):
-    class Type(object):
+    class Type(enum.IntEnum):
         """
         Type of image feature.
 
@@ -113,7 +115,7 @@ class Feature(object):
 
 class FaceAnnotation(object):
     class Landmark(object):
-        class Type(object):
+        class Type(enum.IntEnum):
             """
             Face landmark (feature) type.
             Left and right are defined from the vantage of the viewer of the image

@@ -15,21 +15,15 @@
 """User-friendly container for Google Cloud Bigtable Row."""
 
 
-import functools
 import struct
 
-import grpc
 import six
 
-from google.api_core import exceptions
-from google.api_core import retry
 from google.cloud._helpers import _datetime_from_microseconds
 from google.cloud._helpers import _microseconds_from_datetime
 from google.cloud._helpers import _to_bytes
-from google.cloud.bigtable._generated import (
+from google.cloud.bigtable_v2.proto import (
     data_pb2 as data_v2_pb2)
-from google.cloud.bigtable._generated import (
-    bigtable_pb2 as messages_v2_pb2)
 
 
 _PACK_I64 = struct.Struct('>q').pack
@@ -52,10 +46,10 @@ class Row(object):
     :param row_key: The key for the current row.
 
     :type table: :class:`Table <google.cloud.bigtable.table.Table>`
-    :param table: The table that owns the row.
+    :param table: (Optional) The table that owns the row.
     """
 
-    def __init__(self, row_key, table):
+    def __init__(self, row_key, table=None):
         self._row_key = _to_bytes(row_key)
         self._table = table
 
@@ -98,7 +92,7 @@ class _SetDeleteRow(Row):
     ALL_COLUMNS = object()
     """Sentinel value used to indicate all columns in a column family."""
 
-    def _get_mutations(self, state):
+    def _get_mutations(self, state=None):
         """Gets the list of mutations for a given state.
 
         This method intended to be implemented by subclasses.
@@ -240,13 +234,6 @@ class _SetDeleteRow(Row):
             mutations_list.extend(to_append)
 
 
-def _retry_commit_exception(exc):
-    if isinstance(exc, grpc.RpcError):
-        exc = exceptions.from_grpc_error(exc)
-    return isinstance(exc, (exceptions.ServiceUnavailable,
-                            exceptions.DeadlineExceeded))
-
-
 class DirectRow(_SetDeleteRow):
     """Google Cloud Bigtable Row for sending "direct" mutations.
 
@@ -274,14 +261,17 @@ class DirectRow(_SetDeleteRow):
     :param row_key: The key for the current row.
 
     :type table: :class:`Table <google.cloud.bigtable.table.Table>`
-    :param table: The table that owns the row.
+    :param table: (Optional) The table that owns the row. This is
+                  used for the :meth: `commit` only.  Alternatively,
+                  DirectRows can be persisted via
+                  :meth:`~google.cloud.bigtable.table.Table.mutate_rows`.
     """
 
-    def __init__(self, row_key, table):
+    def __init__(self, row_key, table=None):
         super(DirectRow, self).__init__(row_key, table)
         self._pb_mutations = []
 
-    def _get_mutations(self, state):  # pylint: disable=unused-argument
+    def _get_mutations(self, state=None):  # pylint: disable=unused-argument
         """Gets the list of mutations for a given state.
 
         ``state`` is unused by :class:`DirectRow` but is used by
@@ -295,6 +285,15 @@ class DirectRow(_SetDeleteRow):
         :returns: The list to add new mutations to (for the current state).
         """
         return self._pb_mutations
+
+    def get_mutations_size(self):
+        """ Gets the total mutations size for current row """
+
+        mutation_size = 0
+        for mutation in self._get_mutations():
+            mutation_size += mutation.ByteSize()
+
+        return mutation_size
 
     def set_cell(self, column_family_id, column, value, timestamp=None):
         """Sets a value in this row.
@@ -408,30 +407,10 @@ class DirectRow(_SetDeleteRow):
         After committing the accumulated mutations, resets the local
         mutations to an empty list.
 
-        :raises: :class:`ValueError <exceptions.ValueError>` if the number of
-                 mutations exceeds the :data:`MAX_MUTATIONS`.
+        :raises: :exc:`~.table.TooManyMutationsError` if the number of
+                 mutations is greater than 100,000.
         """
-        mutations_list = self._get_mutations(None)
-        num_mutations = len(mutations_list)
-        if num_mutations == 0:
-            return
-        if num_mutations > MAX_MUTATIONS:
-            raise ValueError('%d total mutations exceed the maximum allowable '
-                             '%d.' % (num_mutations, MAX_MUTATIONS))
-        request_pb = messages_v2_pb2.MutateRowRequest(
-            table_name=self._table.name,
-            row_key=self._row_key,
-            mutations=mutations_list,
-        )
-
-        commit = functools.partial(
-            self._table._instance._client._data_stub.MutateRow,
-            request_pb)
-        retry_ = retry.Retry(
-            predicate=_retry_commit_exception,
-            deadline=30)
-        retry_(commit)()
-
+        self._table.mutate_rows([self])
         self.clear()
 
     def clear(self):
@@ -481,7 +460,7 @@ class ConditionalRow(_SetDeleteRow):
         self._true_pb_mutations = []
         self._false_pb_mutations = []
 
-    def _get_mutations(self, state):
+    def _get_mutations(self, state=None):
         """Gets the list of mutations for a given state.
 
         Over-ridden so that the state can be used in:
@@ -539,18 +518,11 @@ class ConditionalRow(_SetDeleteRow):
                 'mutations and %d false mutations.' % (
                     MAX_MUTATIONS, num_true_mutations, num_false_mutations))
 
-        request_pb = messages_v2_pb2.CheckAndMutateRowRequest(
-            table_name=self._table.name,
-            row_key=self._row_key,
-            predicate_filter=self._filter.to_pb(),
-            true_mutations=true_mutations,
-            false_mutations=false_mutations,
-        )
-        # We expect a `.messages_v2_pb2.CheckAndMutateRowResponse`
-        client = self._table._instance._client
-        resp = client._data_stub.CheckAndMutateRow(request_pb)
+        data_client = self._table._instance._client.table_data_client
+        resp = data_client.check_and_mutate_row(
+            table_name=self._table.name, row_key=self._row_key,)
         self.clear()
-        return resp.predicate_matched
+        return resp[0].predicate_matched
 
     # pylint: disable=arguments-differ
     def set_cell(self, column_family_id, column, value, timestamp=None,
@@ -828,14 +800,11 @@ class AppendRow(Row):
         if num_mutations > MAX_MUTATIONS:
             raise ValueError('%d total append mutations exceed the maximum '
                              'allowable %d.' % (num_mutations, MAX_MUTATIONS))
-        request_pb = messages_v2_pb2.ReadModifyWriteRowRequest(
-            table_name=self._table.name,
-            row_key=self._row_key,
-            rules=self._rule_pb_list,
-        )
-        # We expect a `.data_v2_pb2.Row`
-        client = self._table._instance._client
-        row_response = client._data_stub.ReadModifyWriteRow(request_pb)
+
+        data_client = self._table._instance._client.table_data_client
+        row_response = data_client.read_modify_write_row(
+            table_name=self._table.name, row_key=self._row_key,
+            rules=self._rule_pb_list)
 
         # Reset modifications after commit-ing request.
         self.clear()

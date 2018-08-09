@@ -46,4 +46,4 @@ def lint_setup_py(session):
 
     session.install('docutils', 'Pygments')
     session.run(
-        'python', 'setup.py', 'check', '--restructuredtext', '--strict')
+        'python', 'legacy/google-cloud/setup.py', 'check', '--restructuredtext', '--strict')

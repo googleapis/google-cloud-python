@@ -151,6 +151,24 @@ class Client(ClientWithProject):
         """
         return self._batch_stack.top
 
+    def get_service_account_email(self, project=None):
+        """Get the email address of the project's GCS service account
+
+        :type project: str
+        :param project:
+            (Optional) Project ID to use for retreiving GCS service account
+            email address.  Defaults to the client's project.
+
+        :rtype: str
+        :returns: service account email address
+        """
+        if project is None:
+            project = self.project
+        path = '/projects/%s/serviceAccount' % (project,)
+        api_response = self._base_connection.api_request(
+            method='GET', path=path)
+        return api_response['email_address']
+
     def bucket(self, bucket_name, user_project=None):
         """Factory constructor for bucket object.
 
@@ -244,7 +262,7 @@ class Client(ClientWithProject):
 
         To set additional properties when creating a bucket such as
         :attr:`~.Bucket.location`, use :meth:`~.Bucket.create`.
-        
+
         :type bucket_name: str
         :param bucket_name: The bucket name to create.
 

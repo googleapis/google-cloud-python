@@ -190,10 +190,11 @@ class Cursor(object):
 
         if self._query_data is None:
             client = self.connection._client
-            # TODO(tswast): pass in page size to list_rows based on arraysize
             rows_iter = client.list_rows(
                 self._query_job.destination,
-                selected_fields=self._query_job._query_results.schema)
+                selected_fields=self._query_job._query_results.schema,
+                page_size=self.arraysize
+            )
             self._query_data = iter(rows_iter)
 
     def fetchone(self):

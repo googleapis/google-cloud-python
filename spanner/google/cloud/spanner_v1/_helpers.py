@@ -58,7 +58,7 @@ def _make_value_pb(value):
     """
     if value is None:
         return Value(null_value='NULL_VALUE')
-    if isinstance(value, list):
+    if isinstance(value, (list, tuple)):
         return Value(list_value=_make_list_value_pb(value))
     if isinstance(value, bool):
         return Value(bool_value=value)
@@ -84,6 +84,8 @@ def _make_value_pb(value):
         return Value(string_value=value)
     if isinstance(value, six.text_type):
         return Value(string_value=value)
+    if isinstance(value, ListValue):
+        return Value(list_value=value)
     raise ValueError("Unknown type: %s" % (value,))
 # pylint: enable=too-many-return-statements,too-many-branches
 

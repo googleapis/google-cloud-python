@@ -13,8 +13,10 @@
 # limitations under the License.
 """Wrappers for protocol buffer enum types."""
 
+import enum
 
-class Feature(object):
+
+class Feature(enum.IntEnum):
     """
     Video annotation feature.
 
@@ -23,18 +25,16 @@ class Feature(object):
       LABEL_DETECTION (int): Label detection. Detect objects, such as dog or flower.
       SHOT_CHANGE_DETECTION (int): Shot change detection.
       EXPLICIT_CONTENT_DETECTION (int): Explicit content detection.
-      FACE_DETECTION (int): Face detection.
       SPEECH_TRANSCRIPTION (int): Speech transcription.
     """
     FEATURE_UNSPECIFIED = 0
     LABEL_DETECTION = 1
     SHOT_CHANGE_DETECTION = 2
     EXPLICIT_CONTENT_DETECTION = 3
-    FACE_DETECTION = 8
     SPEECH_TRANSCRIPTION = 6
 
 
-class LabelDetectionMode(object):
+class LabelDetectionMode(enum.IntEnum):
     """
     Label detection mode.
 
@@ -50,7 +50,7 @@ class LabelDetectionMode(object):
     SHOT_AND_FRAME_MODE = 3
 
 
-class Likelihood(object):
+class Likelihood(enum.IntEnum):
     """
     Bucketized representation of likelihood.
 
@@ -68,39 +68,3 @@ class Likelihood(object):
     POSSIBLE = 3
     LIKELY = 4
     VERY_LIKELY = 5
-
-
-class Emotion(object):
-    """
-    Emotions.
-
-    Attributes:
-      EMOTION_UNSPECIFIED (int): Unspecified emotion.
-      AMUSEMENT (int): Amusement.
-      ANGER (int): Anger.
-      CONCENTRATION (int): Concentration.
-      CONTENTMENT (int): Contentment.
-      DESIRE (int): Desire.
-      DISAPPOINTMENT (int): Disappointment.
-      DISGUST (int): Disgust.
-      ELATION (int): Elation.
-      EMBARRASSMENT (int): Embarrassment.
-      INTEREST (int): Interest.
-      PRIDE (int): Pride.
-      SADNESS (int): Sadness.
-      SURPRISE (int): Surprise.
-    """
-    EMOTION_UNSPECIFIED = 0
-    AMUSEMENT = 1
-    ANGER = 2
-    CONCENTRATION = 3
-    CONTENTMENT = 4
-    DESIRE = 5
-    DISAPPOINTMENT = 6
-    DISGUST = 7
-    ELATION = 8
-    EMBARRASSMENT = 9
-    INTEREST = 10
-    PRIDE = 11
-    SADNESS = 12
-    SURPRISE = 13

@@ -1,68 +1,147 @@
 API Reference
 ~~~~~~~~~~~~~
 
-.. automodule:: google.cloud.bigquery
-  :no-members:
+.. currentmodule:: google.cloud.bigquery
+
+The main concepts with this API are:
+
+- :class:`~google.cloud.bigquery.client.Client` manages connections to the
+  BigQuery API. Use the client methods to run jobs (such as a
+  :class:`~google.cloud.bigquery.job.QueryJob` via
+  :meth:`~google.cloud.bigquery.client.Client.query`) and manage resources.
+
+- :class:`~google.cloud.bigquery.dataset.Dataset` represents a
+  collection of tables.
+
+- :class:`~google.cloud.bigquery.table.Table` represents a single "relation".
 
 Client
 ======
 
-.. automodule:: google.cloud.bigquery.client
-  :members:
-  :show-inheritance:
+.. autosummary::
+    :toctree: generated
 
+    client.Client
 
 Job
 ===
 
-.. automodule:: google.cloud.bigquery.job
-  :members:
-  :show-inheritance:
+Job Configuration
+-----------------
+
+.. autosummary::
+    :toctree: generated
+
+    job.QueryJobConfig
+    job.CopyJobConfig
+    job.LoadJobConfig
+    job.ExtractJobConfig
+
+Job Classes
+-----------
+
+.. autosummary::
+    :toctree: generated
+
+    job.QueryJob
+    job.CopyJob
+    job.LoadJob
+    job.ExtractJob
+    job.UnknownJob
+
+Job-Related Types
+-----------------
+
+.. autosummary::
+    :toctree: generated
+
+    job.Compression
+    job.CreateDisposition
+    job.DestinationFormat
+    job.Encoding
+    job.QueryPriority
+    job.SourceFormat
+    job.WriteDisposition
+    job.SchemaUpdateOption
 
 
 Dataset
 =======
 
-.. automodule:: google.cloud.bigquery.dataset
-  :members:
-  :show-inheritance:
+.. autosummary::
+    :toctree: generated
+
+    dataset.Dataset
+    dataset.DatasetListItem
+    dataset.DatasetReference
+    dataset.AccessEntry
 
 
 Table
 =====
 
-.. automodule:: google.cloud.bigquery.table
-  :members:
-  :show-inheritance:
+.. autosummary::
+    :toctree: generated
+
+    table.Table
+    table.TableListItem
+    table.TableReference
+    table.Row
+    table.RowIterator
+    table.EncryptionConfiguration
+    table.TimePartitioning
+    table.TimePartitioningType
 
 
 Schema
 ======
 
-.. automodule:: google.cloud.bigquery.schema
-  :members:
-  :show-inheritance:
+.. autosummary::
+    :toctree: generated
+
+    schema.SchemaField
 
 
 Query
 =====
 
-.. automodule:: google.cloud.bigquery.query
-  :members:
-  :show-inheritance:
+.. autosummary::
+    :toctree: generated
+
+    query.ArrayQueryParameter
+    query.ScalarQueryParameter
+    query.StructQueryParameter
+    query.UDFResource
+
+
+Retries
+=======
+
+.. autosummary::
+    :toctree: generated
+
+    retry.DEFAULT_RETRY
 
 
 External Configuration
 ======================
 
-.. automodule:: google.cloud.bigquery.external_config
-  :members:
-  :show-inheritance:
+.. autosummary::
+    :toctree: generated
+
+    external_config.ExternalSourceFormat
+    external_config.ExternalConfig
+    external_config.BigtableOptions
+    external_config.BigtableColumnFamily
+    external_config.BigtableColumn
+    external_config.CSVOptions
+    external_config.GoogleSheetsOptions
 
 
 Magics
 ======================
 
-.. automodule:: google.cloud.bigquery.magics
-  :members:
-  :show-inheritance:
+.. autosummary::
+    :toctree: generated
+
+    magics

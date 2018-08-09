@@ -24,6 +24,10 @@ from google.api_core import exceptions
 from google.api_core import retry
 from google.cloud._helpers import _datetime_from_microseconds
 from google.cloud._helpers import _to_bytes
+from google.cloud.bigtable_v2.proto import (
+    bigtable_pb2 as data_messages_v2_pb2)
+from google.cloud.bigtable_v2.proto import (
+    data_pb2 as data_v2_pb2)
 
 _MISSING_COLUMN_FAMILY = (
     'Column family {} is not among the cells stored in this row.')
@@ -48,10 +52,10 @@ class Cell(object):
     :param labels: (Optional) List of strings. Labels applied to the cell.
     """
 
-    def __init__(self, value, timestamp_micros, labels=()):
+    def __init__(self, value, timestamp_micros, labels=None):
         self.value = value
         self.timestamp_micros = timestamp_micros
-        self.labels = list(labels)
+        self.labels = list(labels) if labels is not None else []
 
     @classmethod
     def from_pb(cls, cell_pb):
@@ -297,7 +301,7 @@ class InvalidChunk(RuntimeError):
 class PartialRowsData(object):
     """Convenience wrapper for consuming a ``ReadRows`` streaming response.
 
-    :type read_method: :class:`client._data_stub.ReadRows`
+    :type read_method: :class:`client._table_data_client.read_rows`
     :param read_method: ``ReadRows`` method.
 
     :type request: :class:`data_messages_v2_pb2.ReadRowsRequest`
@@ -356,7 +360,7 @@ def _retry_read_rows_exception(exc):
 class YieldRowsData(object):
     """Convenience wrapper for consuming a ``ReadRows`` streaming response.
 
-    :type read_method: :class:`client._data_stub.ReadRows`
+    :type read_method: :class:`client._table_data_client.read_rows`
     :param read_method: ``ReadRows`` method.
 
     :type request: :class:`data_messages_v2_pb2.ReadRowsRequest`
@@ -373,6 +377,15 @@ class YieldRowsData(object):
     NEW_ROW = 'New row'  # No cells yet complete for row
     ROW_IN_PROGRESS = 'Row in progress'  # Some cells complete for row
     CELL_IN_PROGRESS = 'Cell in progress'  # Incomplete cell for row
+
+    STATE_START = 0
+    STATE_NEW_ROW = 1
+    STATE_ROW_IN_PROGRESS = 2
+    STATE_CELL_IN_PROGRESS = 3
+
+    read_states = {STATE_START: START, STATE_NEW_ROW: NEW_ROW,
+                   STATE_ROW_IN_PROGRESS: ROW_IN_PROGRESS,
+                   STATE_CELL_IN_PROGRESS: CELL_IN_PROGRESS}
 
     def __init__(self, read_method, request):
         # Counter for responses pulled from iterator
@@ -400,17 +413,24 @@ class YieldRowsData(object):
         :returns:  name of state corresponding to current row / chunk
                    processing.
         """
-        if self.last_scanned_row_key is None:
-            return self.START
-        if self._row is None:
-            assert self._cell is None
-            assert self._previous_cell is None
-            return self.NEW_ROW
-        if self._cell is not None:
-            return self.CELL_IN_PROGRESS
+        return self.read_states[self._state]
+
+    @property
+    def _state(self):
+        """State machine state.
+        :rtype: int
+        :returns:  id of state corresponding to currrent row / chunk
+                   processing.
+        """
         if self._previous_cell is not None:
-            return self.ROW_IN_PROGRESS
-        return self.NEW_ROW  # row added, no chunk yet processed
+            return self.STATE_ROW_IN_PROGRESS
+        if self.last_scanned_row_key is None:
+            return self.STATE_START
+        if self._row is None:
+            return self.STATE_NEW_ROW
+        if self._cell is not None:
+            return self.STATE_CELL_IN_PROGRESS
+        return self.STATE_NEW_ROW  # row added, no chunk yet processed
 
     def cancel(self):
         """Cancels the iterator, closing the stream."""
@@ -418,12 +438,10 @@ class YieldRowsData(object):
 
     def _create_retry_request(self):
         """Helper for :meth:`read_rows`."""
-        row_range = self.request.rows.row_ranges.pop()
-        range_kwargs = {}
-        # start AFTER the row_key of the last successfully read row
-        range_kwargs['start_key_open'] = self.last_scanned_row_key
-        range_kwargs['end_key_open'] = row_range.end_key_open
-        self.request.rows.row_ranges.add(**range_kwargs)
+        req_manager = _ReadRowsRequestManager(self.request,
+                                              self.last_scanned_row_key,
+                                              self._counter)
+        self.request = req_manager.build_updated_request()
 
     def _on_error(self, exc):
         """Helper for :meth:`read_rows`."""
@@ -470,33 +488,37 @@ class YieldRowsData(object):
 
             for chunk in response.chunks:
 
-                self._validate_chunk(chunk)
-
                 if chunk.reset_row:
+                    self._validate_chunk_reset_row(chunk)
                     row = self._row = None
                     cell = self._cell = self._previous_cell = None
                     continue
 
-                if row is None:
-                    row = self._row = PartialRowData(chunk.row_key)
-
                 if cell is None:
-                    qualifier = None
-                    if chunk.HasField('qualifier'):
-                        qualifier = chunk.qualifier.value
+                    qualifier = chunk.qualifier.value
+                    if qualifier == b'' and not chunk.HasField('qualifier'):
+                        qualifier = None
 
-                    cell = self._cell = PartialCellData(
+                    cell = PartialCellData(
                         chunk.row_key,
                         chunk.family_name.value,
                         qualifier,
                         chunk.timestamp_micros,
                         chunk.labels,
                         chunk.value)
+                    self._validate_cell_data(cell)
+                    self._cell = cell
                     self._copy_from_previous(cell)
                 else:
                     cell.append_value(chunk.value)
 
+                if row is None:
+                    row = self._row = PartialRowData(cell.row_key)
+
                 if chunk.commit_row:
+                    if chunk.value_size > 0:
+                        raise InvalidChunk()
+
                     self._save_current_cell()
 
                     yield self._row
@@ -511,94 +533,66 @@ class YieldRowsData(object):
                     self._save_current_cell()
                     cell = None
 
-    @staticmethod
-    def _validate_chunk_status(chunk):
-        """Helper for :meth:`_validate_chunk_row_in_progress`, etc."""
-        # No reseet with other keys
-        if chunk.reset_row:
-            _raise_if(chunk.row_key)
-            _raise_if(chunk.HasField('family_name'))
-            _raise_if(chunk.HasField('qualifier'))
-            _raise_if(chunk.timestamp_micros)
-            _raise_if(chunk.labels)
-            _raise_if(chunk.value_size)
-            _raise_if(chunk.value)
-        # No commit with value size
-        _raise_if(chunk.commit_row and chunk.value_size > 0)
-        # No negative value_size (inferred as a general constraint).
-        _raise_if(chunk.value_size < 0)
+    def _validate_cell_data(self, cell):
+        if self._state == self.STATE_ROW_IN_PROGRESS:
+            self._validate_cell_data_row_in_progress(cell)
+        if self._state == self.STATE_NEW_ROW:
+            self._validate_cell_data_new_row(cell)
+        if self._state == self.STATE_CELL_IN_PROGRESS:
+            self._copy_from_current(cell)
 
-    def _validate_chunk_new_row(self, chunk):
-        """Helper for :meth:`_validate_chunk`."""
-        assert self.state == self.NEW_ROW
-        _raise_if(chunk.reset_row)
-        _raise_if(not chunk.row_key)
-        _raise_if(not chunk.family_name)
-        _raise_if(not chunk.qualifier)
-        # This constraint is not enforced in the Go example.
-        _raise_if(chunk.value_size > 0 and chunk.commit_row is not False)
-        # This constraint is from the Go example, not the spec.
-        _raise_if(self._previous_row is not None and
-                  chunk.row_key <= self._previous_row.row_key)
+    def _validate_cell_data_new_row(self, cell):
+        if (not cell.row_key or
+                not cell.family_name or
+                cell.qualifier is None):
+            raise InvalidChunk()
 
-    def _same_as_previous(self, chunk):
-        """Helper for :meth:`_validate_chunk_row_in_progress`"""
-        previous = self._previous_cell
-        return (chunk.row_key == previous.row_key and
-                chunk.family_name == previous.family_name and
-                chunk.qualifier == previous.qualifier and
-                chunk.labels == previous.labels)
+        if (self._previous_row is not None and
+                cell.row_key <= self._previous_row.row_key):
+            raise InvalidChunk()
 
-    def _validate_chunk_row_in_progress(self, chunk):
-        """Helper for :meth:`_validate_chunk`"""
-        assert self.state == self.ROW_IN_PROGRESS
-        self._validate_chunk_status(chunk)
-        _raise_if(chunk.row_key and
-                  chunk.row_key != self._row.row_key)
-        _raise_if(chunk.HasField('family_name') and
-                  not chunk.HasField('qualifier'))
-        previous = self._previous_cell
-        _raise_if(self._same_as_previous(chunk) and
-                  chunk.timestamp_micros <= previous.timestamp_micros)
+    def _validate_cell_data_row_in_progress(self, cell):
+        if ((cell.row_key and
+             cell.row_key != self._row.row_key) or
+                (cell.family_name and cell.qualifier is None)):
+            raise InvalidChunk()
 
-    def _validate_chunk_cell_in_progress(self, chunk):
-        """Helper for :meth:`_validate_chunk`"""
-        assert self.state == self.CELL_IN_PROGRESS
-        self._validate_chunk_status(chunk)
-        self._copy_from_current(chunk)
+    def _validate_chunk_reset_row(self, chunk):
+        # No reset for new row
+        _raise_if(self._state == self.STATE_NEW_ROW)
 
-    def _validate_chunk(self, chunk):
-        """Helper for :meth:`consume_next`."""
-        if self.state == self.NEW_ROW:
-            self._validate_chunk_new_row(chunk)
-        if self.state == self.ROW_IN_PROGRESS:
-            self._validate_chunk_row_in_progress(chunk)
-        if self.state == self.CELL_IN_PROGRESS:
-            self._validate_chunk_cell_in_progress(chunk)
+        # No reset with other keys
+        _raise_if(chunk.row_key)
+        _raise_if(chunk.HasField('family_name'))
+        _raise_if(chunk.HasField('qualifier'))
+        _raise_if(chunk.timestamp_micros)
+        _raise_if(chunk.labels)
+        _raise_if(chunk.value_size)
+        _raise_if(chunk.value)
 
     def _save_current_cell(self):
         """Helper for :meth:`consume_next`."""
         row, cell = self._row, self._cell
         family = row._cells.setdefault(cell.family_name, {})
         qualified = family.setdefault(cell.qualifier, [])
-        complete = Cell.from_pb(self._cell)
+        complete = Cell.from_pb(cell)
         qualified.append(complete)
         self._cell, self._previous_cell = None, cell
 
-    def _copy_from_current(self, chunk):
-        """Helper for :meth:`consume_next`."""
+    def _copy_from_current(self, cell):
         current = self._cell
         if current is not None:
-            if not chunk.row_key:
-                chunk.row_key = current.row_key
-            if not chunk.HasField('family_name'):
-                chunk.family_name.value = current.family_name
-            if not chunk.HasField('qualifier'):
-                chunk.qualifier.value = current.qualifier
-            if not chunk.timestamp_micros:
-                chunk.timestamp_micros = current.timestamp_micros
-            if not chunk.labels:
-                chunk.labels.extend(current.labels)
+            if not cell.row_key:
+                cell.row_key = current.row_key
+            if not cell.family_name:
+                cell.family_name = current.family_name
+                # NOTE: ``cell.qualifier`` **can** be empty string.
+            if cell.qualifier is None:
+                cell.qualifier = current.qualifier
+            if not cell.timestamp_micros:
+                cell.timestamp_micros = current.timestamp_micros
+            if not cell.labels:
+                cell.labels.extend(current.labels)
 
     def _copy_from_previous(self, cell):
         """Helper for :meth:`consume_next`."""
@@ -611,6 +605,79 @@ class YieldRowsData(object):
             # NOTE: ``cell.qualifier`` **can** be empty string.
             if cell.qualifier is None:
                 cell.qualifier = previous.qualifier
+
+
+class _ReadRowsRequestManager(object):
+    """ Update the ReadRowsRequest message in case of failures by
+        filtering the already read keys.
+
+    :type message: class:`data_messages_v2_pb2.ReadRowsRequest`
+    :param message: Original ReadRowsRequest containing all of the parameters
+                    of API call
+
+    :type last_scanned_key: bytes
+    :param last_scanned_key: last successfully scanned key
+
+    :type rows_read_so_far: int
+    :param rows_read_so_far: total no of rows successfully read so far.
+                            this will be used for updating rows_limit
+
+    """
+
+    def __init__(self, message, last_scanned_key, rows_read_so_far):
+        self.message = message
+        self.last_scanned_key = last_scanned_key
+        self.rows_read_so_far = rows_read_so_far
+
+    def build_updated_request(self):
+        """ Updates the given message request as per last scanned key
+        """
+        r_kwargs = {'table_name': self.message.table_name,
+                    'filter': self.message.filter}
+
+        if self.message.rows_limit != 0:
+            r_kwargs['rows_limit'] = max(1, self.message.rows_limit -
+                                         self.rows_read_so_far)
+
+        row_keys = self._filter_rows_keys()
+        row_ranges = self._filter_row_ranges()
+        r_kwargs['rows'] = data_v2_pb2.RowSet(row_keys=row_keys,
+                                              row_ranges=row_ranges)
+
+        return data_messages_v2_pb2.ReadRowsRequest(**r_kwargs)
+
+    def _filter_rows_keys(self):
+        """ Helper for :meth:`build_updated_request`"""
+        return [row_key for row_key in self.message.rows.row_keys
+                if row_key > self.last_scanned_key]
+
+    def _filter_row_ranges(self):
+        """ Helper for :meth:`build_updated_request`"""
+        new_row_ranges = []
+
+        for row_range in self.message.rows.row_ranges:
+            if((row_range.end_key_open and
+                self._key_already_read(row_range.end_key_open)) or
+                (row_range.end_key_closed and
+                 self._key_already_read(row_range.end_key_closed))):
+                    continue
+
+            if ((row_range.start_key_open and
+                self._key_already_read(row_range.start_key_open)) or
+                (row_range.start_key_closed and
+                 self._key_already_read(row_range.start_key_closed))):
+                row_range.start_key_closed = _to_bytes("")
+                row_range.start_key_open = self.last_scanned_key
+
+                new_row_ranges.append(row_range)
+            else:
+                new_row_ranges.append(row_range)
+
+        return new_row_ranges
+
+    def _key_already_read(self, key):
+        """ Helper for :meth:`_filter_row_ranges`"""
+        return key <= self.last_scanned_key
 
 
 def _raise_if(predicate, *args):

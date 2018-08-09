@@ -21,10 +21,9 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='google/cloud/texttospeech_v1beta1/proto/cloud_tts.proto',
   package='google.cloud.texttospeech.v1beta1',
   syntax='proto3',
-  serialized_pb=_b('\n7google/cloud/texttospeech_v1beta1/proto/cloud_tts.proto\x12!google.cloud.texttospeech.v1beta1\x1a\x1cgoogle/api/annotations.proto\"*\n\x11ListVoicesRequest\x12\x15\n\rlanguage_code\x18\x01 \x01(\t\"N\n\x12ListVoicesResponse\x12\x38\n\x06voices\x18\x01 \x03(\x0b\x32(.google.cloud.texttospeech.v1beta1.Voice\"\x99\x01\n\x05Voice\x12\x16\n\x0elanguage_codes\x18\x01 \x03(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\x12G\n\x0bssml_gender\x18\x03 \x01(\x0e\x32\x32.google.cloud.texttospeech.v1beta1.SsmlVoiceGender\x12!\n\x19natural_sample_rate_hertz\x18\x04 \x01(\x05\"\xe9\x01\n\x17SynthesizeSpeechRequest\x12@\n\x05input\x18\x01 \x01(\x0b\x32\x31.google.cloud.texttospeech.v1beta1.SynthesisInput\x12\x46\n\x05voice\x18\x02 \x01(\x0b\x32\x37.google.cloud.texttospeech.v1beta1.VoiceSelectionParams\x12\x44\n\x0c\x61udio_config\x18\x03 \x01(\x0b\x32..google.cloud.texttospeech.v1beta1.AudioConfig\"@\n\x0eSynthesisInput\x12\x0e\n\x04text\x18\x01 \x01(\tH\x00\x12\x0e\n\x04ssml\x18\x02 \x01(\tH\x00\x42\x0e\n\x0cinput_source\"\x84\x01\n\x14VoiceSelectionParams\x12\x15\n\rlanguage_code\x18\x01 \x01(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\x12G\n\x0bssml_gender\x18\x03 \x01(\x0e\x32\x32.google.cloud.texttospeech.v1beta1.SsmlVoiceGender\"\xb0\x01\n\x0b\x41udioConfig\x12H\n\x0e\x61udio_encoding\x18\x01 \x01(\x0e\x32\x30.google.cloud.texttospeech.v1beta1.AudioEncoding\x12\x15\n\rspeaking_rate\x18\x02 \x01(\x01\x12\r\n\x05pitch\x18\x03 \x01(\x01\x12\x16\n\x0evolume_gain_db\x18\x04 \x01(\x01\x12\x19\n\x11sample_rate_hertz\x18\x05 \x01(\x05\"1\n\x18SynthesizeSpeechResponse\x12\x15\n\raudio_content\x18\x01 \x01(\x0c*W\n\x0fSsmlVoiceGender\x12!\n\x1dSSML_VOICE_GENDER_UNSPECIFIED\x10\x00\x12\x08\n\x04MALE\x10\x01\x12\n\n\x06\x46\x45MALE\x10\x02\x12\x0b\n\x07NEUTRAL\x10\x03*T\n\rAudioEncoding\x12\x1e\n\x1a\x41UDIO_ENCODING_UNSPECIFIED\x10\x00\x12\x0c\n\x08LINEAR16\x10\x01\x12\x07\n\x03MP3\x10\x02\x12\x0c\n\x08OGG_OPUS\x10\x03\x32\xd6\x02\n\x0cTextToSpeech\x12\x92\x01\n\nListVoices\x12\x34.google.cloud.texttospeech.v1beta1.ListVoicesRequest\x1a\x35.google.cloud.texttospeech.v1beta1.ListVoicesResponse\"\x17\x82\xd3\xe4\x93\x02\x11\x12\x0f/v1beta1/voices\x12\xb0\x01\n\x10SynthesizeSpeech\x12:.google.cloud.texttospeech.v1beta1.SynthesizeSpeechRequest\x1a;.google.cloud.texttospeech.v1beta1.SynthesizeSpeechResponse\"#\x82\xd3\xe4\x93\x02\x1d\"\x18/v1beta1/text:synthesize:\x01*B\x8e\x01\n%com.google.cloud.texttospeech.v1beta1B\x11TextToSpeechProtoP\x01ZMgoogle.golang.org/genproto/googleapis/cloud/texttospeech/v1beta1;texttospeech\xf8\x01\x01\x62\x06proto3')
+  serialized_pb=_b('\n7google/cloud/texttospeech_v1beta1/proto/cloud_tts.proto\x12!google.cloud.texttospeech.v1beta1\x1a\x1cgoogle/api/annotations.proto\"*\n\x11ListVoicesRequest\x12\x15\n\rlanguage_code\x18\x01 \x01(\t\"N\n\x12ListVoicesResponse\x12\x38\n\x06voices\x18\x01 \x03(\x0b\x32(.google.cloud.texttospeech.v1beta1.Voice\"\x99\x01\n\x05Voice\x12\x16\n\x0elanguage_codes\x18\x01 \x03(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\x12G\n\x0bssml_gender\x18\x03 \x01(\x0e\x32\x32.google.cloud.texttospeech.v1beta1.SsmlVoiceGender\x12!\n\x19natural_sample_rate_hertz\x18\x04 \x01(\x05\"\xe9\x01\n\x17SynthesizeSpeechRequest\x12@\n\x05input\x18\x01 \x01(\x0b\x32\x31.google.cloud.texttospeech.v1beta1.SynthesisInput\x12\x46\n\x05voice\x18\x02 \x01(\x0b\x32\x37.google.cloud.texttospeech.v1beta1.VoiceSelectionParams\x12\x44\n\x0c\x61udio_config\x18\x03 \x01(\x0b\x32..google.cloud.texttospeech.v1beta1.AudioConfig\"@\n\x0eSynthesisInput\x12\x0e\n\x04text\x18\x01 \x01(\tH\x00\x12\x0e\n\x04ssml\x18\x02 \x01(\tH\x00\x42\x0e\n\x0cinput_source\"\x84\x01\n\x14VoiceSelectionParams\x12\x15\n\rlanguage_code\x18\x01 \x01(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\x12G\n\x0bssml_gender\x18\x03 \x01(\x0e\x32\x32.google.cloud.texttospeech.v1beta1.SsmlVoiceGender\"\xcc\x01\n\x0b\x41udioConfig\x12H\n\x0e\x61udio_encoding\x18\x01 \x01(\x0e\x32\x30.google.cloud.texttospeech.v1beta1.AudioEncoding\x12\x15\n\rspeaking_rate\x18\x02 \x01(\x01\x12\r\n\x05pitch\x18\x03 \x01(\x01\x12\x16\n\x0evolume_gain_db\x18\x04 \x01(\x01\x12\x19\n\x11sample_rate_hertz\x18\x05 \x01(\x05\x12\x1a\n\x12\x65\x66\x66\x65\x63ts_profile_id\x18\x06 \x03(\t\"1\n\x18SynthesizeSpeechResponse\x12\x15\n\raudio_content\x18\x01 \x01(\x0c*W\n\x0fSsmlVoiceGender\x12!\n\x1dSSML_VOICE_GENDER_UNSPECIFIED\x10\x00\x12\x08\n\x04MALE\x10\x01\x12\n\n\x06\x46\x45MALE\x10\x02\x12\x0b\n\x07NEUTRAL\x10\x03*T\n\rAudioEncoding\x12\x1e\n\x1a\x41UDIO_ENCODING_UNSPECIFIED\x10\x00\x12\x0c\n\x08LINEAR16\x10\x01\x12\x07\n\x03MP3\x10\x02\x12\x0c\n\x08OGG_OPUS\x10\x03\x32\xd6\x02\n\x0cTextToSpeech\x12\x92\x01\n\nListVoices\x12\x34.google.cloud.texttospeech.v1beta1.ListVoicesRequest\x1a\x35.google.cloud.texttospeech.v1beta1.ListVoicesResponse\"\x17\x82\xd3\xe4\x93\x02\x11\x12\x0f/v1beta1/voices\x12\xb0\x01\n\x10SynthesizeSpeech\x12:.google.cloud.texttospeech.v1beta1.SynthesizeSpeechRequest\x1a;.google.cloud.texttospeech.v1beta1.SynthesizeSpeechResponse\"#\x82\xd3\xe4\x93\x02\x1d\"\x18/v1beta1/text:synthesize:\x01*B\x8e\x01\n%com.google.cloud.texttospeech.v1beta1B\x11TextToSpeechProtoP\x01ZMgoogle.golang.org/genproto/googleapis/cloud/texttospeech/v1beta1;texttospeech\xf8\x01\x01\x62\x06proto3')
   ,
   dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR,])
-_sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 _SSMLVOICEGENDER = _descriptor.EnumDescriptor(
   name='SsmlVoiceGender',
@@ -51,8 +50,8 @@ _SSMLVOICEGENDER = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=1071,
-  serialized_end=1158,
+  serialized_start=1099,
+  serialized_end=1186,
 )
 _sym_db.RegisterEnumDescriptor(_SSMLVOICEGENDER)
 
@@ -82,8 +81,8 @@ _AUDIOENCODING = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=1160,
-  serialized_end=1244,
+  serialized_start=1188,
+  serialized_end=1272,
 )
 _sym_db.RegisterEnumDescriptor(_AUDIOENCODING)
 
@@ -112,7 +111,7 @@ _LISTVOICESREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -143,7 +142,7 @@ _LISTVOICESRESPONSE = _descriptor.Descriptor(
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -174,28 +173,28 @@ _VOICE = _descriptor.Descriptor(
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='name', full_name='google.cloud.texttospeech.v1beta1.Voice.name', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='ssml_gender', full_name='google.cloud.texttospeech.v1beta1.Voice.ssml_gender', index=2,
       number=3, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='natural_sample_rate_hertz', full_name='google.cloud.texttospeech.v1beta1.Voice.natural_sample_rate_hertz', index=3,
       number=4, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -226,21 +225,21 @@ _SYNTHESIZESPEECHREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='voice', full_name='google.cloud.texttospeech.v1beta1.SynthesizeSpeechRequest.voice', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='audio_config', full_name='google.cloud.texttospeech.v1beta1.SynthesizeSpeechRequest.audio_config', index=2,
       number=3, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -271,14 +270,14 @@ _SYNTHESISINPUT = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='ssml', full_name='google.cloud.texttospeech.v1beta1.SynthesisInput.ssml', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -312,21 +311,21 @@ _VOICESELECTIONPARAMS = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='name', full_name='google.cloud.texttospeech.v1beta1.VoiceSelectionParams.name', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='ssml_gender', full_name='google.cloud.texttospeech.v1beta1.VoiceSelectionParams.ssml_gender', index=2,
       number=3, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -357,35 +356,42 @@ _AUDIOCONFIG = _descriptor.Descriptor(
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='speaking_rate', full_name='google.cloud.texttospeech.v1beta1.AudioConfig.speaking_rate', index=1,
       number=2, type=1, cpp_type=5, label=1,
       has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='pitch', full_name='google.cloud.texttospeech.v1beta1.AudioConfig.pitch', index=2,
       number=3, type=1, cpp_type=5, label=1,
       has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='volume_gain_db', full_name='google.cloud.texttospeech.v1beta1.AudioConfig.volume_gain_db', index=3,
       number=4, type=1, cpp_type=5, label=1,
       has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='sample_rate_hertz', full_name='google.cloud.texttospeech.v1beta1.AudioConfig.sample_rate_hertz', index=4,
       number=5, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='effects_profile_id', full_name='google.cloud.texttospeech.v1beta1.AudioConfig.effects_profile_id', index=5,
+      number=6, type=9, cpp_type=9, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -399,7 +405,7 @@ _AUDIOCONFIG = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=842,
-  serialized_end=1018,
+  serialized_end=1046,
 )
 
 
@@ -416,7 +422,7 @@ _SYNTHESIZESPEECHRESPONSE = _descriptor.Descriptor(
       has_default_value=False, default_value=_b(""),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -429,8 +435,8 @@ _SYNTHESIZESPEECHRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1020,
-  serialized_end=1069,
+  serialized_start=1048,
+  serialized_end=1097,
 )
 
 _LISTVOICESRESPONSE.fields_by_name['voices'].message_type = _VOICE
@@ -456,6 +462,7 @@ DESCRIPTOR.message_types_by_name['AudioConfig'] = _AUDIOCONFIG
 DESCRIPTOR.message_types_by_name['SynthesizeSpeechResponse'] = _SYNTHESIZESPEECHRESPONSE
 DESCRIPTOR.enum_types_by_name['SsmlVoiceGender'] = _SSMLVOICEGENDER
 DESCRIPTOR.enum_types_by_name['AudioEncoding'] = _AUDIOENCODING
+_sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 ListVoicesRequest = _reflection.GeneratedProtocolMessageType('ListVoicesRequest', (_message.Message,), dict(
   DESCRIPTOR = _LISTVOICESREQUEST,
@@ -641,6 +648,10 @@ AudioConfig = _reflection.GeneratedProtocolMessageType('AudioConfig', (_message.
           quality), unless the specified sample rate is not supported
           for the encoding chosen, in which case it will fail the
           request and return [google.rpc.Code.INVALID\_ARGUMENT][].
+      effects_profile_id:
+          An identifier which selects 'audio effects' profiles that are
+          applied on (post synthesized) text to speech. Effects are
+          applied on top of each other in the order they are given.
   """,
   # @@protoc_insertion_point(class_scope:google.cloud.texttospeech.v1beta1.AudioConfig)
   ))
@@ -668,161 +679,37 @@ _sym_db.RegisterMessage(SynthesizeSpeechResponse)
 
 DESCRIPTOR.has_options = True
 DESCRIPTOR._options = _descriptor._ParseOptions(descriptor_pb2.FileOptions(), _b('\n%com.google.cloud.texttospeech.v1beta1B\021TextToSpeechProtoP\001ZMgoogle.golang.org/genproto/googleapis/cloud/texttospeech/v1beta1;texttospeech\370\001\001'))
-try:
-  # THESE ELEMENTS WILL BE DEPRECATED.
-  # Please use the generated *_pb2_grpc.py files instead.
-  import grpc
-  from grpc.beta import implementations as beta_implementations
-  from grpc.beta import interfaces as beta_interfaces
-  from grpc.framework.common import cardinality
-  from grpc.framework.interfaces.face import utilities as face_utilities
 
+_TEXTTOSPEECH = _descriptor.ServiceDescriptor(
+  name='TextToSpeech',
+  full_name='google.cloud.texttospeech.v1beta1.TextToSpeech',
+  file=DESCRIPTOR,
+  index=0,
+  options=None,
+  serialized_start=1275,
+  serialized_end=1617,
+  methods=[
+  _descriptor.MethodDescriptor(
+    name='ListVoices',
+    full_name='google.cloud.texttospeech.v1beta1.TextToSpeech.ListVoices',
+    index=0,
+    containing_service=None,
+    input_type=_LISTVOICESREQUEST,
+    output_type=_LISTVOICESRESPONSE,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002\021\022\017/v1beta1/voices')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='SynthesizeSpeech',
+    full_name='google.cloud.texttospeech.v1beta1.TextToSpeech.SynthesizeSpeech',
+    index=1,
+    containing_service=None,
+    input_type=_SYNTHESIZESPEECHREQUEST,
+    output_type=_SYNTHESIZESPEECHRESPONSE,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002\035\"\030/v1beta1/text:synthesize:\001*')),
+  ),
+])
+_sym_db.RegisterServiceDescriptor(_TEXTTOSPEECH)
 
-  class TextToSpeechStub(object):
-    """Service that implements Google Cloud Text-to-Speech API.
-    """
+DESCRIPTOR.services_by_name['TextToSpeech'] = _TEXTTOSPEECH
 
-    def __init__(self, channel):
-      """Constructor.
-
-      Args:
-        channel: A grpc.Channel.
-      """
-      self.ListVoices = channel.unary_unary(
-          '/google.cloud.texttospeech.v1beta1.TextToSpeech/ListVoices',
-          request_serializer=ListVoicesRequest.SerializeToString,
-          response_deserializer=ListVoicesResponse.FromString,
-          )
-      self.SynthesizeSpeech = channel.unary_unary(
-          '/google.cloud.texttospeech.v1beta1.TextToSpeech/SynthesizeSpeech',
-          request_serializer=SynthesizeSpeechRequest.SerializeToString,
-          response_deserializer=SynthesizeSpeechResponse.FromString,
-          )
-
-
-  class TextToSpeechServicer(object):
-    """Service that implements Google Cloud Text-to-Speech API.
-    """
-
-    def ListVoices(self, request, context):
-      """Returns a list of [Voice][google.cloud.texttospeech.v1beta1.Voice]
-      supported for synthesis.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def SynthesizeSpeech(self, request, context):
-      """Synthesizes speech synchronously: receive results after all text input
-      has been processed.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-
-  def add_TextToSpeechServicer_to_server(servicer, server):
-    rpc_method_handlers = {
-        'ListVoices': grpc.unary_unary_rpc_method_handler(
-            servicer.ListVoices,
-            request_deserializer=ListVoicesRequest.FromString,
-            response_serializer=ListVoicesResponse.SerializeToString,
-        ),
-        'SynthesizeSpeech': grpc.unary_unary_rpc_method_handler(
-            servicer.SynthesizeSpeech,
-            request_deserializer=SynthesizeSpeechRequest.FromString,
-            response_serializer=SynthesizeSpeechResponse.SerializeToString,
-        ),
-    }
-    generic_handler = grpc.method_handlers_generic_handler(
-        'google.cloud.texttospeech.v1beta1.TextToSpeech', rpc_method_handlers)
-    server.add_generic_rpc_handlers((generic_handler,))
-
-
-  class BetaTextToSpeechServicer(object):
-    """The Beta API is deprecated for 0.15.0 and later.
-
-    It is recommended to use the GA API (classes and functions in this
-    file not marked beta) for all further purposes. This class was generated
-    only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0."""
-    """Service that implements Google Cloud Text-to-Speech API.
-    """
-    def ListVoices(self, request, context):
-      """Returns a list of [Voice][google.cloud.texttospeech.v1beta1.Voice]
-      supported for synthesis.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def SynthesizeSpeech(self, request, context):
-      """Synthesizes speech synchronously: receive results after all text input
-      has been processed.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-
-
-  class BetaTextToSpeechStub(object):
-    """The Beta API is deprecated for 0.15.0 and later.
-
-    It is recommended to use the GA API (classes and functions in this
-    file not marked beta) for all further purposes. This class was generated
-    only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0."""
-    """Service that implements Google Cloud Text-to-Speech API.
-    """
-    def ListVoices(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Returns a list of [Voice][google.cloud.texttospeech.v1beta1.Voice]
-      supported for synthesis.
-      """
-      raise NotImplementedError()
-    ListVoices.future = None
-    def SynthesizeSpeech(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Synthesizes speech synchronously: receive results after all text input
-      has been processed.
-      """
-      raise NotImplementedError()
-    SynthesizeSpeech.future = None
-
-
-  def beta_create_TextToSpeech_server(servicer, pool=None, pool_size=None, default_timeout=None, maximum_timeout=None):
-    """The Beta API is deprecated for 0.15.0 and later.
-
-    It is recommended to use the GA API (classes and functions in this
-    file not marked beta) for all further purposes. This function was
-    generated only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0"""
-    request_deserializers = {
-      ('google.cloud.texttospeech.v1beta1.TextToSpeech', 'ListVoices'): ListVoicesRequest.FromString,
-      ('google.cloud.texttospeech.v1beta1.TextToSpeech', 'SynthesizeSpeech'): SynthesizeSpeechRequest.FromString,
-    }
-    response_serializers = {
-      ('google.cloud.texttospeech.v1beta1.TextToSpeech', 'ListVoices'): ListVoicesResponse.SerializeToString,
-      ('google.cloud.texttospeech.v1beta1.TextToSpeech', 'SynthesizeSpeech'): SynthesizeSpeechResponse.SerializeToString,
-    }
-    method_implementations = {
-      ('google.cloud.texttospeech.v1beta1.TextToSpeech', 'ListVoices'): face_utilities.unary_unary_inline(servicer.ListVoices),
-      ('google.cloud.texttospeech.v1beta1.TextToSpeech', 'SynthesizeSpeech'): face_utilities.unary_unary_inline(servicer.SynthesizeSpeech),
-    }
-    server_options = beta_implementations.server_options(request_deserializers=request_deserializers, response_serializers=response_serializers, thread_pool=pool, thread_pool_size=pool_size, default_timeout=default_timeout, maximum_timeout=maximum_timeout)
-    return beta_implementations.server(method_implementations, options=server_options)
-
-
-  def beta_create_TextToSpeech_stub(channel, host=None, metadata_transformer=None, pool=None, pool_size=None):
-    """The Beta API is deprecated for 0.15.0 and later.
-
-    It is recommended to use the GA API (classes and functions in this
-    file not marked beta) for all further purposes. This function was
-    generated only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0"""
-    request_serializers = {
-      ('google.cloud.texttospeech.v1beta1.TextToSpeech', 'ListVoices'): ListVoicesRequest.SerializeToString,
-      ('google.cloud.texttospeech.v1beta1.TextToSpeech', 'SynthesizeSpeech'): SynthesizeSpeechRequest.SerializeToString,
-    }
-    response_deserializers = {
-      ('google.cloud.texttospeech.v1beta1.TextToSpeech', 'ListVoices'): ListVoicesResponse.FromString,
-      ('google.cloud.texttospeech.v1beta1.TextToSpeech', 'SynthesizeSpeech'): SynthesizeSpeechResponse.FromString,
-    }
-    cardinalities = {
-      'ListVoices': cardinality.Cardinality.UNARY_UNARY,
-      'SynthesizeSpeech': cardinality.Cardinality.UNARY_UNARY,
-    }
-    stub_options = beta_implementations.stub_options(host=host, metadata_transformer=metadata_transformer, request_serializers=request_serializers, response_deserializers=response_deserializers, thread_pool=pool, thread_pool_size=pool_size)
-    return beta_implementations.dynamic_stub(channel, 'google.cloud.texttospeech.v1beta1.TextToSpeech', cardinalities, options=stub_options)
-except ImportError:
-  pass
 # @@protoc_insertion_point(module_scope)

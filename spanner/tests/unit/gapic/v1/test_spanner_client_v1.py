@@ -13,6 +13,7 @@
 # limitations under the License.
 """Unit tests."""
 
+import mock
 import pytest
 
 # Manual edit to auto-generated import because we do not expose the
@@ -554,3 +555,24 @@ class TestSpannerClient(object):
 
         with pytest.raises(CustomException):
             client.partition_read(session, table, key_set)
+
+    @pytest.mark.skipif(not spanner_v1.HAS_GRPC_GCP,
+                        reason='grpc_gcp module not available')
+    @mock.patch(
+        'google.auth.default',
+        return_value=(mock.sentinel.credentials, mock.sentinel.projet))
+    @mock.patch('google.protobuf.text_format.Merge')
+    @mock.patch('grpc_gcp.proto.grpc_gcp_pb2.ApiConfig',
+                return_value=mock.sentinel.api_config)
+    @mock.patch('grpc_gcp.secure_channel')
+    def test_client_with_grpc_gcp_channel(self,
+                                          grpc_gcp_secure_channel,
+                                          api_config,
+                                          merge,
+                                          auth_default):
+        spanner_target = 'spanner.googleapis.com:443'
+        client = spanner_v1.SpannerClient()
+        merge.assert_called_once_with(mock.ANY, mock.sentinel.api_config)
+        options = [('grpc_gcp.api_config', mock.sentinel.api_config)]
+        grpc_gcp_secure_channel.assert_called_once_with(
+            spanner_target, mock.ANY, options=options)

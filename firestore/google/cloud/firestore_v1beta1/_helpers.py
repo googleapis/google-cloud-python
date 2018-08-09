@@ -24,10 +24,9 @@ from google.type import latlng_pb2
 import grpc
 import six
 
+from google.cloud import exceptions
 from google.cloud._helpers import _datetime_to_pb_timestamp
 from google.cloud._helpers import _pb_timestamp_to_datetime
-from google.cloud import exceptions
-
 from google.cloud.firestore_v1beta1 import constants
 from google.cloud.firestore_v1beta1.gapic import enums
 from google.cloud.firestore_v1beta1.proto import common_pb2
@@ -43,10 +42,6 @@ FIELD_PATH_WRONG_TYPE = (
     'The data at {!r} is not a dictionary, so it cannot contain the key {!r}')
 FIELD_PATH_DELIMITER = '.'
 DOCUMENT_PATH_DELIMITER = '/'
-_NO_CREATE_TEMPLATE = (
-    'The ``create_if_missing`` option cannot be used '
-    'on ``{}()`` requests.')
-NO_CREATE_ON_DELETE = _NO_CREATE_TEMPLATE.format('delete')
 INACTIVE_TXN = (
     'Transaction not in progress, cannot be used in API requests.')
 READ_AFTER_WRITE_ERROR = 'Attempted read after write in a transaction.'
@@ -131,9 +126,20 @@ class FieldPath(object):
                 raise ValueError(error)
         self.parts = tuple(parts)
 
+    def __repr__(self):
+        paths = ""
+        for part in self.parts:
+            paths += "'" + part + "',"
+        paths = paths[:-1]
+        return 'FieldPath({})'.format(paths)
+
     @staticmethod
     def from_string(string):
         """ Creates a FieldPath from a unicode string representation.
+
+        This method splits on the character `.` and disallows the
+        characters `~*/[]`. To create a FieldPath whose components have
+        those characters, call the constructor.
 
         Args:
             :type string: str
@@ -177,6 +183,22 @@ class FieldPath(object):
         if isinstance(other, FieldPath):
             return self.parts == other.parts
         return NotImplemented
+
+    def __add__(self, other):
+        """Adds `other` field path to end of this field path.
+
+        Args:
+            other (~google.cloud.firestore_v1beta1._helpers.FieldPath, str):
+                The field path to add to the end of this `FieldPath`.
+        """
+        if isinstance(other, FieldPath):
+            parts = self.parts + other.parts
+            return FieldPath(*parts)
+        elif isinstance(other, six.string_types):
+            parts = self.parts + FieldPath.from_string(other).parts
+            return FieldPath(*parts)
+        else:
+            return NotImplemented
 
 
 class FieldPathHelper(object):
@@ -768,7 +790,7 @@ def get_doc_id(document_pb, expected_prefix):
     return document_id
 
 
-def remove_server_timestamp(document_data):
+def process_server_timestamp(document_data, split_on_dots=True):
     """Remove all server timestamp sentinel values from data.
 
     If the data is nested, for example:
@@ -790,7 +812,7 @@ def remove_server_timestamp(document_data):
 
     .. code-block:: python
 
-       >>> field_paths, actual_data = remove_server_timestamp(data)
+       >>> field_paths, actual_data = process_server_timestamp(data)
        >>> field_paths
        ['top1.bottom2', 'top4']
        >>> actual_data
@@ -802,37 +824,52 @@ def remove_server_timestamp(document_data):
        }
 
     Args:
-        document_data (dict): Property names and values to use for
-            sending a change to a document.
+        document_data (dict):
+            Property names and values to use for sending a change to
+            a document.
+
+        split_on_dots (bool):
+            Whether to split the property names on dots at the top level
+            (for updates only).
 
     Returns:
         Tuple[List[str, ...], Dict[str, Any]]: A two-tuple of
 
-        * A list of all field paths that use the server timestamp sentinel
+        * A list of all transform paths that use the server timestamp sentinel
         * The remaining keys in ``document_data`` after removing the
           server timestamp sentinels
     """
     field_paths = []
+    transform_paths = []
     actual_data = {}
     for field_name, value in six.iteritems(document_data):
+        if split_on_dots:
+            top_level_path = FieldPath(*field_name.split("."))
+        else:
+            top_level_path = FieldPath.from_string(field_name)
         if isinstance(value, dict):
-            sub_field_paths, sub_data = remove_server_timestamp(value)
-            field_paths.extend(
-                get_field_path([field_name, sub_path])
-                for sub_path in sub_field_paths
-            )
+            sub_transform_paths, sub_data, sub_field_paths = (
+                process_server_timestamp(value, False))
+            for sub_transform_path in sub_transform_paths:
+                transform_path = FieldPath.from_string(field_name)
+                transform_path.parts = (
+                    transform_path.parts + sub_transform_path.parts)
+                transform_paths.extend([transform_path])
             if sub_data:
                 # Only add a key to ``actual_data`` if there is data.
                 actual_data[field_name] = sub_data
+                for sub_field_path in sub_field_paths:
+                    field_path = FieldPath.from_string(field_name)
+                    field_path.parts = field_path.parts + sub_field_path.parts
+                    field_paths.append(field_path)
         elif value is constants.SERVER_TIMESTAMP:
-            field_paths.append(field_name)
+            transform_paths.append(top_level_path)
         else:
             actual_data[field_name] = value
-
-    if field_paths:
-        return field_paths, actual_data
-    else:
-        return field_paths, document_data
+            field_paths.append(top_level_path)
+    if not transform_paths:
+        actual_data = document_data
+    return transform_paths, actual_data, field_paths
 
 
 def get_transform_pb(document_path, transform_paths):
@@ -849,6 +886,7 @@ def get_transform_pb(document_path, transform_paths):
         google.cloud.firestore_v1beta1.types.Write: A
         ``Write`` protobuf instance for a document transform.
     """
+    transform_paths = canonicalize_field_paths(transform_paths)
     return write_pb2.Write(
         transform=write_pb2.DocumentTransform(
             document=document_path,
@@ -857,44 +895,52 @@ def get_transform_pb(document_path, transform_paths):
                     field_path=field_path,
                     set_to_server_value=REQUEST_TIME_ENUM,
                 )
-                # Sort transform_paths so test comparision works.
-                for field_path in sorted(transform_paths)
+                for field_path in transform_paths
             ],
         ),
     )
 
 
-def pbs_for_set(document_path, document_data, option):
+def pbs_for_set(document_path, document_data, merge=False, exists=None):
     """Make ``Write`` protobufs for ``set()`` methods.
 
     Args:
         document_path (str): A fully-qualified document path.
         document_data (dict): Property names and values to use for
             replacing a document.
-        option (optional[~.firestore_v1beta1.client.WriteOption]): A
-           write option to make assertions / preconditions on the server
-           state of the document before applying changes.
+        merge (bool): Whether to merge the fields or replace them
+        exists (bool): If set, a precondition to indicate whether the
+            document should exist or not. Used for create.
 
     Returns:
         List[google.cloud.firestore_v1beta1.types.Write]: One
         or two ``Write`` protobuf instances for ``set()``.
     """
-    transform_paths, actual_data = remove_server_timestamp(document_data)
-
+    transform_paths, actual_data, field_paths = process_server_timestamp(
+        document_data, False)
     update_pb = write_pb2.Write(
         update=document_pb2.Document(
             name=document_path,
             fields=encode_dict(actual_data),
         ),
     )
-    if option is not None:
-        option.modify_write(update_pb)
+    if exists is not None:
+        update_pb.current_document.CopyFrom(
+            common_pb2.Precondition(exists=exists))
+
+    if merge:
+        field_paths = canonicalize_field_paths(field_paths)
+        mask = common_pb2.DocumentMask(field_paths=sorted(field_paths))
+        update_pb.update_mask.CopyFrom(mask)
 
     write_pbs = [update_pb]
     if transform_paths:
         # NOTE: We **explicitly** don't set any write option on
         #       the ``transform_pb``.
         transform_pb = get_transform_pb(document_path, transform_paths)
+        if not actual_data:
+            write_pbs = [transform_pb]
+            return write_pbs
         write_pbs.append(transform_pb)
 
     return write_pbs
@@ -916,7 +962,8 @@ def canonicalize_field_paths(field_paths):
 
     .. _Document: https://cloud.google.com/firestore/docs/reference/rpc/google.firestore.v1beta1#google.firestore.v1beta1.Document  # NOQA
     """
-    return [path.to_api_repr() for path in field_paths]
+    field_paths = [path.to_api_repr() for path in field_paths]
+    return sorted(field_paths)  # for testing purposes
 
 
 def pbs_for_update(client, document_path, field_updates, option):
@@ -938,9 +985,12 @@ def pbs_for_update(client, document_path, field_updates, option):
     """
     if option is None:
         # Default uses ``exists=True``.
-        option = client.write_option(create_if_missing=False)
+        option = client.write_option(exists=True)
 
-    transform_paths, actual_updates = remove_server_timestamp(field_updates)
+    transform_paths, actual_updates, field_paths = (
+        process_server_timestamp(field_updates))
+    if not (transform_paths or actual_updates):
+        raise ValueError('There are only ServerTimeStamp objects or is empty.')
     update_values, field_paths = FieldPathHelper.to_field_paths(actual_updates)
     field_paths = canonicalize_field_paths(field_paths)
 
@@ -949,11 +999,10 @@ def pbs_for_update(client, document_path, field_updates, option):
             name=document_path,
             fields=encode_dict(update_values),
         ),
-        # Sort field_paths just for comparison in tests.
-        update_mask=common_pb2.DocumentMask(field_paths=sorted(field_paths)),
+        update_mask=common_pb2.DocumentMask(field_paths=field_paths),
     )
     # Due to the default, we don't have to check if ``None``.
-    option.modify_write(update_pb)
+    option.modify_write(update_pb, field_paths=field_paths)
     write_pbs = [update_pb]
 
     if transform_paths:
@@ -980,7 +1029,7 @@ def pb_for_delete(document_path, option):
     """
     write_pb = write_pb2.Write(delete=document_path)
     if option is not None:
-        option.modify_write(write_pb, no_create_msg=NO_CREATE_ON_DELETE)
+        option.modify_write(write_pb)
 
     return write_pb
 

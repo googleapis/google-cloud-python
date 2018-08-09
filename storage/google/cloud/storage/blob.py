@@ -94,6 +94,9 @@ _READ_LESS_THAN_SIZE = (
     'Size {:d} was specified but the file-like object only had '
     '{:d} bytes remaining.')
 
+_DEFAULT_CHUNKSIZE = 104857600  # 1024 * 1024 B * 100 = 100 MB
+_MAX_MULTIPART_SIZE = 8388608  # 8 MB
+
 
 class Blob(_PropertyMixin):
     """A wrapper around Cloud Storage's concept of an ``Object``.
@@ -109,18 +112,23 @@ class Blob(_PropertyMixin):
     :param bucket: The bucket to which this blob belongs.
 
     :type chunk_size: int
-    :param chunk_size: The size of a chunk of data whenever iterating (1 MB).
-                       This must be a multiple of 256 KB per the API
+
+    :param chunk_size: The size of a chunk of data whenever iterating (in
+                       bytes). This must be a multiple of 256 KB per the API
                        specification.
 
     :type encryption_key: bytes
     :param encryption_key:
         Optional 32 byte encryption key for customer-supplied encryption.
         See https://cloud.google.com/storage/docs/encryption#customer-supplied.
+
+    :type kms_key_name: str
+    :param kms_key_name:
+        Optional resource name of Cloud KMS key used to encrypt the blob's
+        contents.
     """
 
     _chunk_size = None  # Default value for each instance.
-
     _CHUNK_SIZE_MULTIPLE = 256 * 1024
     """Number (256 KB, in bytes) that must divide the chunk size."""
 
@@ -147,14 +155,23 @@ class Blob(_PropertyMixin):
        set as their 'storage_class'.
     """
 
-    def __init__(self, name, bucket, chunk_size=None, encryption_key=None):
+    def __init__(self, name, bucket, chunk_size=None,
+                 encryption_key=None, kms_key_name=None):
         name = _bytes_to_unicode(name)
         super(Blob, self).__init__(name=name)
 
         self.chunk_size = chunk_size  # Check that setter accepts value.
         self.bucket = bucket
         self._acl = ObjectACL(self)
+        if encryption_key is not None and kms_key_name is not None:
+            raise ValueError(
+                "Pass at most one of 'encryption_key' "
+                "and 'kms_key_name'")
+
         self._encryption_key = encryption_key
+
+        if kms_key_name is not None:
+            self._properties['kmsKeyName'] = kms_key_name
 
     @property
     def chunk_size(self):
@@ -175,7 +192,9 @@ class Blob(_PropertyMixin):
         :raises: :class:`ValueError` if ``value`` is not ``None`` and is not a
                  multiple of 256 KB.
         """
-        if value is not None and value % self._CHUNK_SIZE_MULTIPLE != 0:
+        if value is not None and \
+                value > 0 and \
+                value % self._CHUNK_SIZE_MULTIPLE != 0:
             raise ValueError('Chunk size must be a multiple of %d.' % (
                 self._CHUNK_SIZE_MULTIPLE,))
         self._chunk_size = value
@@ -237,7 +256,10 @@ class Blob(_PropertyMixin):
 
     @property
     def public_url(self):
-        """The public URL for this blob's object.
+        """The public URL for this blob.
+
+        Use :meth:`make_public` to enable anonymous access via the returned
+        URL.
 
         :rtype: `string`
         :returns: The public URL for this blob.
@@ -316,7 +338,7 @@ class Blob(_PropertyMixin):
         """
         resource = '/{bucket_name}/{quoted_name}'.format(
             bucket_name=self.bucket.name,
-            quoted_name=quote(self.name))
+            quoted_name=quote(self.name.encode('utf-8')))
 
         if credentials is None:
             client = self._require_client(client)
@@ -424,7 +446,8 @@ class Blob(_PropertyMixin):
 
         return _add_query_parameters(base_url, name_value_pairs)
 
-    def _do_download(self, transport, file_obj, download_url, headers):
+    def _do_download(self, transport, file_obj, download_url, headers,
+                     start=None, end=None):
         """Perform a download without any error handling.
 
         This is intended to be called by :meth:`download_to_file` so it can
@@ -443,18 +466,27 @@ class Blob(_PropertyMixin):
 
         :type headers: dict
         :param headers: Optional headers to be sent with the request(s).
+
+        :type start: int
+        :param start: Optional, the first byte in a range to be downloaded.
+
+        :type end: int
+        :param end: Optional, The last byte in a range to be downloaded.
         """
         if self.chunk_size is None:
-            download = Download(download_url, stream=file_obj, headers=headers)
+            download = Download(
+                download_url, stream=file_obj, headers=headers,
+                start=start, end=end)
             download.consume(transport)
         else:
             download = ChunkedDownload(
-                download_url, self.chunk_size, file_obj, headers=headers)
+                download_url, self.chunk_size, file_obj, headers=headers,
+                start=start if start else 0, end=end)
 
             while not download.finished:
                 download.consume_next_chunk(transport)
 
-    def download_to_file(self, file_obj, client=None):
+    def download_to_file(self, file_obj, client=None, start=None, end=None):
         """Download the contents of this blob into a file-like object.
 
         .. note::
@@ -488,6 +520,12 @@ class Blob(_PropertyMixin):
         :param client: Optional. The client to use.  If not passed, falls back
                        to the ``client`` stored on the blob's bucket.
 
+        :type start: int
+        :param start: Optional, the first byte in a range to be downloaded.
+
+        :type end: int
+        :param end: Optional, The last byte in a range to be downloaded.
+
         :raises: :class:`google.cloud.exceptions.NotFound`
         """
         download_url = self._get_download_url()
@@ -496,11 +534,13 @@ class Blob(_PropertyMixin):
 
         transport = self._get_transport(client)
         try:
-            self._do_download(transport, file_obj, download_url, headers)
+            self._do_download(
+                transport, file_obj, download_url, headers, start, end)
         except resumable_media.InvalidResponse as exc:
             _raise_from_invalid_response(exc)
 
-    def download_to_filename(self, filename, client=None):
+    def download_to_filename(self, filename, client=None,
+                             start=None, end=None):
         """Download the contents of this blob into a named file.
 
         If :attr:`user_project` is set on the bucket, bills the API request
@@ -514,12 +554,19 @@ class Blob(_PropertyMixin):
         :param client: Optional. The client to use.  If not passed, falls back
                        to the ``client`` stored on the blob's bucket.
 
+        :type start: int
+        :param start: Optional, the first byte in a range to be downloaded.
+
+        :type end: int
+        :param end: Optional, The last byte in a range to be downloaded.
+
         :raises: :class:`google.cloud.exceptions.NotFound`
         """
         try:
             with open(filename, 'wb') as file_obj:
-                self.download_to_file(file_obj, client=client)
-        except resumable_media.DataCorruption as exc:
+                self.download_to_file(
+                    file_obj, client=client, start=start, end=end)
+        except resumable_media.DataCorruption:
             # Delete the corrupt downloaded file.
             os.remove(filename)
             raise
@@ -529,7 +576,7 @@ class Blob(_PropertyMixin):
             mtime = time.mktime(updated.timetuple())
             os.utime(file_obj.name, (mtime, mtime))
 
-    def download_as_string(self, client=None):
+    def download_as_string(self, client=None, start=None, end=None):
         """Download the contents of this blob as a string.
 
         If :attr:`user_project` is set on the bucket, bills the API request
@@ -540,12 +587,19 @@ class Blob(_PropertyMixin):
         :param client: Optional. The client to use.  If not passed, falls back
                        to the ``client`` stored on the blob's bucket.
 
+        :type start: int
+        :param start: Optional, the first byte in a range to be downloaded.
+
+        :type end: int
+        :param end: Optional, The last byte in a range to be downloaded.
+
         :rtype: bytes
         :returns: The data stored in this blob.
         :raises: :class:`google.cloud.exceptions.NotFound`
         """
         string_buffer = BytesIO()
-        self.download_to_file(string_buffer, client=client)
+        self.download_to_file(
+            string_buffer, client=client, start=start, end=end)
         return string_buffer.getvalue()
 
     def _get_content_type(self, content_type, filename=None):
@@ -637,8 +691,6 @@ class Blob(_PropertyMixin):
                              size, num_retries, predefined_acl):
         """Perform a multipart upload.
 
-        Assumes ``chunk_size`` is :data:`None` on the current blob.
-
         The content type of the upload will be determined in order
         of precedence:
 
@@ -692,6 +744,10 @@ class Blob(_PropertyMixin):
 
         if self.user_project is not None:
             name_value_pairs.append(('userProject', self.user_project))
+
+        if self.kms_key_name is not None:
+            name_value_pairs.append(('kmsKeyName', self.kms_key_name))
+
         if predefined_acl is not None:
             name_value_pairs.append(('predefinedAcl', predefined_acl))
 
@@ -763,6 +819,8 @@ class Blob(_PropertyMixin):
         """
         if chunk_size is None:
             chunk_size = self.chunk_size
+            if chunk_size is None:
+                chunk_size = _DEFAULT_CHUNKSIZE
 
         transport = self._get_transport(client)
         info = self._get_upload_arguments(content_type)
@@ -776,6 +834,10 @@ class Blob(_PropertyMixin):
 
         if self.user_project is not None:
             name_value_pairs.append(('userProject', self.user_project))
+
+        if self.kms_key_name is not None:
+            name_value_pairs.append(('kmsKeyName', self.kms_key_name))
+
         if predefined_acl is not None:
             name_value_pairs.append(('predefinedAcl', predefined_acl))
 
@@ -844,9 +906,9 @@ class Blob(_PropertyMixin):
                    size, num_retries, predefined_acl):
         """Determine an upload strategy and then perform the upload.
 
-        If the current blob has a ``chunk_size`` set, then a resumable upload
-        will be used, otherwise the content and the metadata will be uploaded
-        in a single multipart upload request.
+        If the size of the data to be uploaded exceeds 5 MB a resumable media
+        request will be used, otherwise the content and the metadata will be
+        uploaded in a single multipart upload request.
 
         The content type of the upload will be determined in order
         of precedence:
@@ -882,7 +944,7 @@ class Blob(_PropertyMixin):
                   **only** response in the multipart case and it will be the
                   **final** response in the resumable case.
         """
-        if self.chunk_size is None:
+        if size is not None and size <= _MAX_MULTIPART_SIZE:
             response = self._do_multipart_upload(
                 client, stream, content_type,
                 size, num_retries, predefined_acl)
@@ -1159,8 +1221,13 @@ class Blob(_PropertyMixin):
     def get_iam_policy(self, client=None):
         """Retrieve the IAM policy for the object.
 
-        See
-        https://cloud.google.com/storage/docs/json_api/v1/objects/getIamPolicy
+        .. note:
+
+           Blob- / object-level IAM support does not yet exist and methods
+           currently call an internal ACL backend not providing any utility
+           beyond the blob's :attr:`acl` at this time. The API may be enhanced
+           in the future and is currently undocumented. Use :attr:`acl` for
+           managing object access control.
 
         If :attr:`user_project` is set on the bucket, bills the API request
         to that project.
@@ -1191,8 +1258,13 @@ class Blob(_PropertyMixin):
     def set_iam_policy(self, policy, client=None):
         """Update the IAM policy for the bucket.
 
-        See
-        https://cloud.google.com/storage/docs/json_api/v1/objects/setIamPolicy
+        .. note:
+
+           Blob- / object-level IAM support does not yet exist and methods
+           currently call an internal ACL backend not providing any utility
+           beyond the blob's :attr:`acl` at this time. The API may be enhanced
+           in the future and is currently undocumented. Use :attr:`acl` for
+           managing object access control.
 
         If :attr:`user_project` is set on the bucket, bills the API request
         to that project.
@@ -1229,8 +1301,13 @@ class Blob(_PropertyMixin):
     def test_iam_permissions(self, permissions, client=None):
         """API call:  test permissions
 
-        See
-        https://cloud.google.com/storage/docs/json_api/v1/objects/testIamPermissions
+        .. note:
+
+           Blob- / object-level IAM support does not yet exist and methods
+           currently call an internal ACL backend not providing any utility
+           beyond the blob's :attr:`acl` at this time. The API may be enhanced
+           in the future and is currently undocumented. Use :attr:`acl` for
+           managing object access control.
 
         If :attr:`user_project` is set on the bucket, bills the API request
         to that project.
@@ -1262,7 +1339,7 @@ class Blob(_PropertyMixin):
         return resp.get('permissions', [])
 
     def make_public(self, client=None):
-        """Make this blob public giving all users read access.
+        """Update blob's ACL, granting read access to anonymous users.
 
         :type client: :class:`~google.cloud.storage.client.Client` or
                       ``NoneType``
@@ -1270,6 +1347,17 @@ class Blob(_PropertyMixin):
                        to the ``client`` stored on the blob's bucket.
         """
         self.acl.all().grant_read()
+        self.acl.save(client=client)
+
+    def make_private(self, client=None):
+        """Update blob's ACL, revoking read access for anonymous users.
+
+        :type client: :class:`~google.cloud.storage.client.Client` or
+                      ``NoneType``
+        :param client: Optional. The client to use.  If not passed, falls back
+                       to the ``client`` stored on the blob's bucket.
+        """
+        self.acl.all().revoke_read()
         self.acl.save(client=client)
 
     def compose(self, sources, client=None):
@@ -1349,6 +1437,9 @@ class Blob(_PropertyMixin):
         if self.user_project is not None:
             query_params['userProject'] = self.user_project
 
+        if self.kms_key_name is not None:
+            query_params['destinationKmsKeyName'] = self.kms_key_name
+
         api_response = client._connection.api_request(
             method='POST',
             path=source.path + '/rewriteTo' + self.path,
@@ -1412,8 +1503,6 @@ class Blob(_PropertyMixin):
 
     See `RFC 7234`_ and `API reference docs`_.
 
-    If the property is not set locally, returns :data:`None`.
-
     :rtype: str or ``NoneType``
 
     .. _RFC 7234: https://tools.ietf.org/html/rfc7234#section-5.2
@@ -1423,8 +1512,6 @@ class Blob(_PropertyMixin):
     """HTTP 'Content-Disposition' header for this object.
 
     See `RFC 6266`_ and `API reference docs`_.
-
-    If the property is not set locally, returns :data:`None`.
 
     :rtype: str or ``NoneType``
 
@@ -1436,8 +1523,6 @@ class Blob(_PropertyMixin):
 
     See `RFC 7231`_ and `API reference docs`_.
 
-    If the property is not set locally, returns ``None``.
-
     :rtype: str or ``NoneType``
 
     .. _RFC 7231: https://tools.ietf.org/html/rfc7231#section-3.1.2.2
@@ -1447,8 +1532,6 @@ class Blob(_PropertyMixin):
     """HTTP 'Content-Language' header for this object.
 
     See `BCP47`_ and `API reference docs`_.
-
-    If the property is not set locally, returns :data:`None`.
 
     :rtype: str or ``NoneType``
 
@@ -1460,8 +1543,6 @@ class Blob(_PropertyMixin):
 
     See `RFC 2616`_ and `API reference docs`_.
 
-    If the property is not set locally, returns :data:`None`.
-
     :rtype: str or ``NoneType``
 
     .. _RFC 2616: https://tools.ietf.org/html/rfc2616#section-14.17
@@ -1472,7 +1553,7 @@ class Blob(_PropertyMixin):
 
     See `RFC 4960`_ and `API reference docs`_.
 
-    If the property is not set locally, returns :data:`None`.
+    If not set before upload, the server will compute the hash.
 
     :rtype: str or ``NoneType``
 
@@ -1487,8 +1568,9 @@ class Blob(_PropertyMixin):
 
         :rtype: int or ``NoneType``
         :returns: The component count (in case of a composed object) or
-                  ``None`` if the property is not set locally. This property
-                  will not be set on objects not created via ``compose``.
+                  ``None`` if the blob's resource has not been loaded from
+                  the server.  This property will not be set on objects
+                  not created via ``compose``.
         """
         component_count = self._properties.get('componentCount')
         if component_count is not None:
@@ -1501,7 +1583,8 @@ class Blob(_PropertyMixin):
         See `RFC 2616 (etags)`_ and `API reference docs`_.
 
         :rtype: str or ``NoneType``
-        :returns: The blob etag or ``None`` if the property is not set locally.
+        :returns: The blob etag or ``None`` if the blob's resource has not
+                  been loaded from the server.
 
         .. _RFC 2616 (etags): https://tools.ietf.org/html/rfc2616#section-3.11
         """
@@ -1514,8 +1597,8 @@ class Blob(_PropertyMixin):
         See https://cloud.google.com/storage/docs/json_api/v1/objects
 
         :rtype: int or ``NoneType``
-        :returns: The generation of the blob or ``None`` if the property
-                  is not set locally.
+        :returns: The generation of the blob or ``None`` if the blob's
+                  resource has not been loaded from the server.
         """
         generation = self._properties.get('generation')
         if generation is not None:
@@ -1527,9 +1610,11 @@ class Blob(_PropertyMixin):
 
         See https://cloud.google.com/storage/docs/json_api/v1/objects
 
+        The ID consists of the bucket name, object name, and generation number.
+
         :rtype: str or ``NoneType``
-        :returns: The ID of the blob or ``None`` if the property is not
-                  set locally.
+        :returns: The ID of the blob or ``None`` if the blob's
+                  resource has not been loaded from the server.
         """
         return self._properties.get('id')
 
@@ -1538,7 +1623,7 @@ class Blob(_PropertyMixin):
 
     See `RFC 1321`_ and `API reference docs`_.
 
-    If the property is not set locally, returns ``None``.
+    If not set before upload, the server will compute the hash.
 
     :rtype: str or ``NoneType``
 
@@ -1552,8 +1637,8 @@ class Blob(_PropertyMixin):
         See https://cloud.google.com/storage/docs/json_api/v1/objects
 
         :rtype: str or ``NoneType``
-        :returns: The media link for the blob or ``None`` if the property is
-                  not set locally.
+        :returns: The media link for the blob or ``None`` if the blob's
+                  resource has not been loaded from the server.
         """
         return self._properties.get('mediaLink')
 
@@ -1570,7 +1655,7 @@ class Blob(_PropertyMixin):
 
         :rtype: dict or ``NoneType``
         :returns: The metadata associated with the blob or ``None`` if the
-                  property is not set locally.
+                  property is not set.
         """
         return copy.deepcopy(self._properties.get('metadata'))
 
@@ -1592,8 +1677,8 @@ class Blob(_PropertyMixin):
         See https://cloud.google.com/storage/docs/json_api/v1/objects
 
         :rtype: int or ``NoneType``
-        :returns: The metageneration of the blob or ``None`` if the property
-                  is not set locally.
+        :returns: The metageneration of the blob or ``None`` if the blob's
+                  resource has not been loaded from the server.
         """
         metageneration = self._properties.get('metageneration')
         if metageneration is not None:
@@ -1606,8 +1691,8 @@ class Blob(_PropertyMixin):
         See https://cloud.google.com/storage/docs/json_api/v1/objects
 
         :rtype: dict or ``NoneType``
-        :returns: Mapping of owner's role/ID. If the property is not set
-                  locally, returns ``None``.
+        :returns: Mapping of owner's role/ID, or ``None`` if the blob's
+                  resource has not been loaded from the server.
         """
         return copy.deepcopy(self._properties.get('owner'))
 
@@ -1618,8 +1703,8 @@ class Blob(_PropertyMixin):
         See https://cloud.google.com/storage/docs/json_api/v1/objects
 
         :rtype: str or ``NoneType``
-        :returns: The self link for the blob or ``None`` if the property is
-                  not set locally.
+        :returns: The self link for the blob or ``None`` if the blob's
+                  resource has not been loaded from the server.
         """
         return self._properties.get('selfLink')
 
@@ -1630,12 +1715,23 @@ class Blob(_PropertyMixin):
         See https://cloud.google.com/storage/docs/json_api/v1/objects
 
         :rtype: int or ``NoneType``
-        :returns: The size of the blob or ``None`` if the property
-                  is not set locally.
+        :returns: The size of the blob or ``None`` if the blob's
+                  resource has not been loaded from the server.
         """
         size = self._properties.get('size')
         if size is not None:
             return int(size)
+
+    @property
+    def kms_key_name(self):
+        """Resource name of Cloud KMS key used to encrypt the blob's contents.
+
+        :rtype: str or ``NoneType``
+        :returns:
+            The resource name or ``None`` if no Cloud KMS key was used,
+            or the blob's resource has not been loaded from the server.
+        """
+        return self._properties.get('kmsKeyName')
 
     storage_class = _scalar_property('storageClass')
     """Retrieve the storage class for the object.
@@ -1661,7 +1757,8 @@ class Blob(_PropertyMixin):
 
         :rtype: :class:`datetime.datetime` or ``NoneType``
         :returns: Datetime object parsed from RFC3339 valid timestamp, or
-                  ``None`` if the property is not set locally. If the blob has
+                  ``None`` if the blob's resource has not been loaded from
+                  the server (see :meth:`reload`). If the blob has
                   not been deleted, this will never be set.
         """
         value = self._properties.get('timeDeleted')
@@ -1676,7 +1773,8 @@ class Blob(_PropertyMixin):
 
         :rtype: :class:`datetime.datetime` or ``NoneType``
         :returns: Datetime object parsed from RFC3339 valid timestamp, or
-                  ``None`` if the property is not set locally.
+                  ``None`` if the blob's resource has not been loaded from
+                  the server (see :meth:`reload`).
         """
         value = self._properties.get('timeCreated')
         if value is not None:
@@ -1690,7 +1788,8 @@ class Blob(_PropertyMixin):
 
         :rtype: :class:`datetime.datetime` or ``NoneType``
         :returns: Datetime object parsed from RFC3339 valid timestamp, or
-                  ``None`` if the property is not set locally.
+                  ``None`` if the blob's resource has not been loaded from
+                  the server (see :meth:`reload`).
         """
         value = self._properties.get('updated')
         if value is not None:
@@ -1771,7 +1870,16 @@ def _raise_from_invalid_response(error):
     :raises: :class:`~google.cloud.exceptions.GoogleCloudError` corresponding
              to the failed status code
     """
-    raise exceptions.from_http_response(error.response)
+    response = error.response
+    error_message = str(error)
+
+    message = u'{method} {url}: {error}'.format(
+        method=response.request.method,
+        url=response.request.url,
+        error=error_message)
+
+    raise exceptions.from_http_status(
+        response.status_code, message, response=response)
 
 
 def _add_query_parameters(base_url, name_value_pairs):

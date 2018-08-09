@@ -21,6 +21,7 @@ from __future__ import print_function
 
 import atexit
 import logging
+import sys
 import threading
 import time
 
@@ -195,7 +196,9 @@ class _Worker(object):
             self._queue.put_nowait(_WORKER_TERMINATOR)
 
             if grace_period is not None:
-                print('Waiting up to %d seconds.' % (grace_period,))
+                print(
+                    'Waiting up to %d seconds.' % (grace_period,),
+                    file=sys.stderr)
 
             self._thread.join(timeout=grace_period)
 
@@ -216,12 +219,15 @@ class _Worker(object):
         if not self._queue.empty():
             print(
                 'Program shutting down, attempting to send %d queued log '
-                'entries to Stackdriver Logging...' % (self._queue.qsize(),))
+                'entries to Stackdriver Logging...' % (self._queue.qsize(),),
+                file=sys.stderr)
 
         if self.stop(self._grace_period):
-            print('Sent all pending logs.')
+            print('Sent all pending logs.', file=sys.stderr)
         else:
-            print('Failed to send %d pending logs.' % (self._queue.qsize(),))
+            print(
+                'Failed to send %d pending logs.' % (self._queue.qsize(),),
+                file=sys.stderr)
 
     def enqueue(self, record, message, resource=None, labels=None):
         """Queues a log entry to be written by the background thread.

@@ -122,11 +122,6 @@ class Batch(object):
         if self.status != BatchStatus.ACCEPTING_MESSAGES:
             return False
 
-        # If this message will make the batch exceed the ``max_bytes``
-        # setting, return False.
-        if self.size + message.ByteSize() > self.settings.max_bytes:
-            return False
-
         # If this message will make the batch exceed the ``max_messages``
         # setting, return False.
         if len(self.messages) >= self.settings.max_messages:

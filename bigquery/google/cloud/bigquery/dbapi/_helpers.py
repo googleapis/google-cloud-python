@@ -14,6 +14,7 @@
 
 import collections
 import datetime
+import decimal
 import numbers
 
 import six
@@ -46,6 +47,8 @@ def scalar_to_query_parameter(value, name=None):
         parameter_type = 'INT64'
     elif isinstance(value, numbers.Real):
         parameter_type = 'FLOAT64'
+    elif isinstance(value, decimal.Decimal):
+        parameter_type = 'NUMERIC'
     elif isinstance(value, six.text_type):
         parameter_type = 'STRING'
     elif isinstance(value, six.binary_type):

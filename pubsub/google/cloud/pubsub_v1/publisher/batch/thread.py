@@ -20,6 +20,7 @@ import time
 
 import six
 
+import google.api_core.exceptions
 from google.cloud.pubsub_v1 import types
 from google.cloud.pubsub_v1.publisher import exceptions
 from google.cloud.pubsub_v1.publisher import futures
@@ -199,10 +200,24 @@ class Batch(base.Batch):
             # Begin the request to publish these messages.
             # Log how long the underlying request takes.
             start = time.time()
-            response = self._client.api.publish(
-                self._topic,
-                self._messages,
-            )
+
+            try:
+                response = self._client.api.publish(
+                    self._topic,
+                    self._messages,
+                )
+            except google.api_core.exceptions.GoogleAPICallError as exc:
+                # We failed to publish, set the exception on all futures and
+                # exit.
+                self._status = base.BatchStatus.ERROR
+
+                for future in self._futures:
+                    future.set_exception(exc)
+
+                _LOGGER.exception(
+                    'Failed to publish %s messages.', len(self._futures))
+                return
+
             end = time.time()
             _LOGGER.debug('gRPC Publish took %s seconds.', end - start)
 
@@ -220,8 +235,13 @@ class Batch(base.Batch):
                 self._status = base.BatchStatus.ERROR
                 exception = exceptions.PublishError(
                     'Some messages were not successfully published.')
+
                 for future in self._futures:
                     future.set_exception(exception)
+
+                _LOGGER.error(
+                    'Only %s of %s messages were published.',
+                    len(response.message_ids), len(self._futures))
 
     def monitor(self):
         """Commit this batch after sufficient time has elapsed.
@@ -260,25 +280,33 @@ class Batch(base.Batch):
         if not isinstance(message, types.PubsubMessage):
             message = types.PubsubMessage(**message)
 
+        future = None
+
         with self._state_lock:
             if not self.will_accept(message):
-                return None
+                return future
 
-            # Add the size to the running total of the size, so we know
-            # if future messages need to be rejected.
-            self._size += message.ByteSize()
-            # Store the actual message in the batch's message queue.
-            self._messages.append(message)
-            # Track the future on this batch (so that the result of the
-            # future can be set).
-            future = futures.Future(completed=threading.Event())
-            self._futures.append(future)
-            # Determine the number of messages before releasing the lock.
-            num_messages = len(self._messages)
+            new_size = self._size + message.ByteSize()
+            new_count = len(self._messages) + 1
+            overflow = (
+                new_size > self.settings.max_bytes or
+                new_count >= self._settings.max_messages
+            )
+
+            if not self._messages or not overflow:
+
+                # Store the actual message in the batch's message queue.
+                self._messages.append(message)
+                self._size = new_size
+
+                # Track the future on this batch (so that the result of the
+                # future can be set).
+                future = futures.Future(completed=threading.Event())
+                self._futures.append(future)
 
         # Try to commit, but it must be **without** the lock held, since
         # ``commit()`` will try to obtain the lock.
-        if num_messages >= self._settings.max_messages:
+        if overflow:
             self.commit()
 
         return future

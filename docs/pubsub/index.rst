@@ -12,6 +12,16 @@ messages per second (and beyond).
 
 .. _Google Cloud Pub/Sub: https://cloud.google.com/pubsub/
 
+************
+Installation
+************
+
+Install the ``google-cloud-pubsub`` library using ``pip``:
+
+.. code-block:: console
+
+    $ pip install google-cloud-pubsub
+
 ********************************
 Authentication and Configuration
 ********************************
@@ -90,24 +100,32 @@ the topic, and subscribe to that.
     ...     project_id=os.getenv('GOOGLE_CLOUD_PROJECT'),
     ...     sub='MY_SUBSCRIPTION_NAME',  # Set this to something appropriate.
     ... )
-    >>> subscription = subscriber.create_subscription(subscription_name, topic)
+    >>> subscriber.create_subscription(subscription_name, topic)
 
-The subscription is opened asynchronously, and messages are processed by
-use of a callback.
+To receive messages on the subscription, you *subscribe* to the subscription.
+The client opens a stream in a background process and calls a callback for each
+message received.
 
 .. code-block:: python
 
     >>> def callback(message):
     ...     print(message.data)
     ...     message.ack()
-    >>> future = subscription.open(callback)
+    >>> future = subscriber.subscribe(subscription_name, callback)
 
 You can use the future to block the main thread, and raise any exceptions
-that originate asychronously.
+that originate asynchronously.
 
 .. code-block:: python
 
     >>> future.result()
+
+You can also cancel the future to stop receiving messages.
+
+
+.. code-block:: python
+
+    >>> future.cancel()
 
 To learn more, consult the :doc:`subscriber documentation <subscriber/index>`.
 
@@ -122,4 +140,15 @@ Learn More
   publisher/index
   subscriber/index
   types
-  releases
+
+*********
+Changelog
+*********
+
+For a list of all ``google-cloud-pubsub`` releases:
+
+.. toctree::
+  :maxdepth: 2
+
+  changelog
+

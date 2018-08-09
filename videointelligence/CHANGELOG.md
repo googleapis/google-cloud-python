@@ -4,6 +4,27 @@
 
 [1]: https://pypi.org/project/google-cloud-videointelligence/#history
 
+## 1.3.0
+
+### Implementation Changes
+- Avoid overwriting '__module__' of messages from shared modules. (#5364)
+
+### New Features
+- Regenerate Video Intelligence v1p1beta1 endpoint to add new features (#5617)
+
+### Internal / Testing Changes
+- Add Test runs for Python 3.7 and remove 3.4 (#5295)
+
+## 1.2.0
+
+### New Features
+
+- Add v1p1beta1 version of videointelligence (#5165)
+
+### Internal / Testing Changes
+
+- Fix v1p1beta1 unit tests (#5064)
+
 ## 1.1.0
 
 ### Interface additions

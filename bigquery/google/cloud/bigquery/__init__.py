@@ -31,11 +31,17 @@ The main concepts with this API are:
 from pkg_resources import get_distribution
 __version__ = get_distribution('google-cloud-bigquery').version
 
-from google.cloud.bigquery._helpers import DEFAULT_RETRY
 from google.cloud.bigquery.client import Client
 from google.cloud.bigquery.dataset import AccessEntry
 from google.cloud.bigquery.dataset import Dataset
 from google.cloud.bigquery.dataset import DatasetReference
+from google.cloud.bigquery.external_config import ExternalConfig
+from google.cloud.bigquery.external_config import BigtableOptions
+from google.cloud.bigquery.external_config import BigtableColumnFamily
+from google.cloud.bigquery.external_config import BigtableColumn
+from google.cloud.bigquery.external_config import CSVOptions
+from google.cloud.bigquery.external_config import GoogleSheetsOptions
+from google.cloud.bigquery.external_config import ExternalSourceFormat
 from google.cloud.bigquery.job import Compression
 from google.cloud.bigquery.job import CopyJob
 from google.cloud.bigquery.job import CopyJobConfig
@@ -49,23 +55,22 @@ from google.cloud.bigquery.job import LoadJobConfig
 from google.cloud.bigquery.job import QueryJob
 from google.cloud.bigquery.job import QueryJobConfig
 from google.cloud.bigquery.job import QueryPriority
+from google.cloud.bigquery.job import SchemaUpdateOption
 from google.cloud.bigquery.job import SourceFormat
+from google.cloud.bigquery.job import UnknownJob
 from google.cloud.bigquery.job import WriteDisposition
 from google.cloud.bigquery.query import ArrayQueryParameter
 from google.cloud.bigquery.query import ScalarQueryParameter
 from google.cloud.bigquery.query import StructQueryParameter
 from google.cloud.bigquery.query import UDFResource
+from google.cloud.bigquery.retry import DEFAULT_RETRY
 from google.cloud.bigquery.schema import SchemaField
 from google.cloud.bigquery.table import EncryptionConfiguration
 from google.cloud.bigquery.table import Table
 from google.cloud.bigquery.table import TableReference
 from google.cloud.bigquery.table import Row
-from google.cloud.bigquery.external_config import ExternalConfig
-from google.cloud.bigquery.external_config import BigtableOptions
-from google.cloud.bigquery.external_config import BigtableColumnFamily
-from google.cloud.bigquery.external_config import BigtableColumn
-from google.cloud.bigquery.external_config import CSVOptions
-from google.cloud.bigquery.external_config import GoogleSheetsOptions
+from google.cloud.bigquery.table import TimePartitioningType
+from google.cloud.bigquery.table import TimePartitioning
 
 __all__ = [
     '__version__',
@@ -91,6 +96,9 @@ __all__ = [
     'ExtractJobConfig',
     'LoadJob',
     'LoadJobConfig',
+    'UnknownJob',
+    'TimePartitioningType',
+    'TimePartitioning',
     # Shared helpers
     'SchemaField',
     'UDFResource',
@@ -105,8 +113,10 @@ __all__ = [
     'Compression',
     'CreateDisposition',
     'DestinationFormat',
+    'ExternalSourceFormat',
     'Encoding',
     'QueryPriority',
+    'SchemaUpdateOption',
     'SourceFormat',
     'WriteDisposition'
 ]

@@ -4,6 +4,38 @@
 
 [1]: https://pypi.org/project/google-api-core/#history
 
+## 1.3.0
+
+### New Features
+
+- Add protobuf_helpers.field_mask to calculate a field mask from two messages (#5320)
+
+## 1.2.1
+
+### Implementation Changes
+- Make client_info work without gRPC installed. (#5075)
+- Rename `x-goog-header-params` to `x-goog-request-params` (#5495)
+
+## 1.2.0
+
+### Implementation Changes
+- Add close method to grpc Channel (#5333)
+
+### Internal / Testing Changes
+- Fix tests after grpcio update (#5333)
+- Add Test runs for Python 3.7 and remove 3.4 (#5295)
+
+## 1.1.2
+
+### Packaging
+- Update setuptools before packaging (#5265)
+
+## 1.1.1
+
+### Internal / Testing Changes
+- Use `install_requires` for platform dependencies instead of `extras_require` (#4991)
+- Update trove classifer to '5 - Production/Stable'
+
 ## 1.1.0
 
 ### Interface additions

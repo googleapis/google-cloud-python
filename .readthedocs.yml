@@ -1,5 +1,3 @@
-formats:
-- pdf
 requirements_file: docs/requirements.txt
 build:
   image: latest

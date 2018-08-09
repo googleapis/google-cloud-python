@@ -1,13 +1,15 @@
-Python Client for DLP API (`Alpha`_)
-====================================
+Python Client for Cloud Data Loss Prevention (DLP) API (`Alpha`_)
+=================================================================
 
-`DLP API`_:
+`Cloud Data Loss Prevention (DLP) API`_: Provides methods for detection, risk analysis, and de-identification of
+privacy-sensitive fragments in text, images, and Google Cloud Platform
+storage repositories.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
 
 .. _Alpha: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/README.rst
-.. _DLP API: https://cloud.google.com/dlp
+.. _Cloud Data Loss Prevention (DLP) API: https://cloud.google.com/dlp
 .. _Client Library Documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/dlp/usage.html
 .. _Product Documentation:  https://cloud.google.com/dlp
 
@@ -18,12 +20,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the DLP API.`_
+3. `Enable the Cloud Data Loss Prevention (DLP) API.`_
 4. `Setup Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the DLP API.:  https://cloud.google.com/dlp
+.. _Enable the Cloud Data Loss Prevention (DLP) API.:  https://cloud.google.com/dlp
 .. _Setup Authentication.: https://googlecloudplatform.github.io/google-cloud-python/stable/core/auth.html
 
 Installation
@@ -64,14 +66,14 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for DLP API
+-  Read the `Client Library Documentation`_ for Cloud Data Loss Prevention (DLP) API
    API to see other available methods on the client.
--  Read the `DLP API Product documentation`_ to learn
+-  Read the `Cloud Data Loss Prevention (DLP) API Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `repository’s main README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _DLP API Product documentation:  https://cloud.google.com/dlp
+.. _Cloud Data Loss Prevention (DLP) API Product documentation:  https://cloud.google.com/dlp
 .. _repository’s main README: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/README.rst
 
 Api Reference
@@ -81,5 +83,4 @@ Api Reference
 
     gapic/v2/api
     gapic/v2/types
-    gapic/v2beta1/api
-    gapic/v2beta1/types
+    changelog

@@ -17,7 +17,7 @@ import pytest
 
 from google.rpc import status_pb2
 
-from google.cloud import speech_v1
+from google.cloud.speech_v1.gapic import speech_client as speech_v1
 from google.cloud.speech_v1 import enums
 from google.cloud.speech_v1.proto import cloud_speech_pb2
 from google.longrunning import operations_pb2
@@ -197,7 +197,7 @@ class TestSpeechClient(object):
         request = cloud_speech_pb2.StreamingRecognizeRequest(**request)
         requests = [request]
 
-        response = client._streaming_recognize(requests)
+        response = client.streaming_recognize(requests)
         resources = list(response)
         assert len(resources) == 1
         assert expected_response == resources[0]
@@ -220,4 +220,4 @@ class TestSpeechClient(object):
         requests = [request]
 
         with pytest.raises(CustomException):
-            client._streaming_recognize(requests)
+            client.streaming_recognize(requests)

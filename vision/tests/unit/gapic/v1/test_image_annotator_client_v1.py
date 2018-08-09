@@ -15,8 +15,11 @@
 
 import pytest
 
+from google.rpc import status_pb2
+
 from google.cloud import vision_v1
 from google.cloud.vision_v1.proto import image_annotator_pb2
+from google.longrunning import operations_pb2
 
 
 class MultiCallableStub(object):
@@ -91,3 +94,48 @@ class TestImageAnnotatorClient(object):
 
         with pytest.raises(CustomException):
             client.batch_annotate_images(requests)
+
+    def test_async_batch_annotate_files(self):
+        # Setup Expected Response
+        expected_response = {}
+        expected_response = image_annotator_pb2.AsyncBatchAnnotateFilesResponse(
+            **expected_response)
+        operation = operations_pb2.Operation(
+            name='operations/test_async_batch_annotate_files', done=True)
+        operation.response.Pack(expected_response)
+
+        # Mock the API response
+        channel = ChannelStub(responses=[operation])
+        client = vision_v1.ImageAnnotatorClient(channel=channel)
+
+        # Setup Request
+        requests = []
+
+        response = client.async_batch_annotate_files(requests)
+        result = response.result()
+        assert expected_response == result
+
+        assert len(channel.requests) == 1
+        expected_request = image_annotator_pb2.AsyncBatchAnnotateFilesRequest(
+            requests=requests)
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_async_batch_annotate_files_exception(self):
+        # Setup Response
+        error = status_pb2.Status()
+        operation = operations_pb2.Operation(
+            name='operations/test_async_batch_annotate_files_exception',
+            done=True)
+        operation.error.CopyFrom(error)
+
+        # Mock the API response
+        channel = ChannelStub(responses=[operation])
+        client = vision_v1.ImageAnnotatorClient(channel=channel)
+
+        # Setup Request
+        requests = []
+
+        response = client.async_batch_annotate_files(requests)
+        exception = response.exception()
+        assert exception.errors[0] == error

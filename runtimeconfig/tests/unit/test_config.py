@@ -145,14 +145,14 @@ class TestConfig(unittest.TestCase):
         self.assertEqual(len(conn._requested), 0)
 
     def test_get_variable_w_bound_client(self):
-        from google.cloud._helpers import _rfc3339_to_datetime
+        from google.api_core import datetime_helpers
 
         VARIABLE_NAME = 'my-variable/abcd'
         VARIABLE_PATH = '%s/variables/%s' % (self.CONFIG_PATH, VARIABLE_NAME)
         RESOURCE = {
             'name': VARIABLE_PATH,
             'value': 'bXktdmFyaWFibGUtdmFsdWU=',  # base64 my-variable-value
-            'updateTime': '2016-04-14T21:21:54.5000Z',
+            'updateTime': '2016-04-14T21:21:54.123456789Z',
             'state': 'VARIABLE_STATE_UNSPECIFIED',
         }
         conn = _Connection(RESOURCE)
@@ -163,9 +163,10 @@ class TestConfig(unittest.TestCase):
 
         self.assertEqual(variable.name, VARIABLE_NAME)
         self.assertEqual(variable.full_name, VARIABLE_PATH)
+        DatetimeWithNanoseconds = datetime_helpers.DatetimeWithNanoseconds
         self.assertEqual(
             variable.update_time,
-            _rfc3339_to_datetime(RESOURCE['updateTime']))
+            DatetimeWithNanoseconds.from_rfc3339(RESOURCE['updateTime']))
         self.assertEqual(variable.state, RESOURCE['state'])
 
         self.assertEqual(len(conn._requested), 1)

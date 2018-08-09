@@ -39,7 +39,7 @@ def default(session):
     session.run(
         'py.test',
         '--quiet',
-        '--cov=google.cloud.dlp_v2beta1',
+        '--cov=google.cloud.dlp_v2',
         '--cov-append',
         '--cov-config=.coveragerc',
         '--cov-report=',
@@ -50,7 +50,7 @@ def default(session):
 
 
 @nox.session
-@nox.parametrize('py', ['2.7', '3.4', '3.5', '3.6'])
+@nox.parametrize('py', ['2.7', '3.5', '3.6', '3.7'])
 def unit(session, py):
     """Run the unit test suite."""
 
@@ -74,6 +74,9 @@ def system(session, py):
     session.interpreter = 'python{}'.format(py)
 
     session.virtualenv_dirname = 'sys-' + py
+
+    # Use pre-release gRPC for system tests.
+    session.install('--pre', 'grpcio')
 
     session.install('pytest')
     session.install('-e', '.')
@@ -116,3 +119,4 @@ def cover(session):
     session.install('coverage', 'pytest-cov')
     session.run('coverage', 'report', '--show-missing', '--fail-under=100')
     session.run('coverage', 'erase')
+

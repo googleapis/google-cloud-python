@@ -22,7 +22,6 @@ from google.cloud.firestore_v1beta1._helpers import GeoPoint
 from google.cloud.firestore_v1beta1._helpers import ReadAfterWriteError
 from google.cloud.firestore_v1beta1.batch import WriteBatch
 from google.cloud.firestore_v1beta1.client import Client
-from google.cloud.firestore_v1beta1.client import CreateIfMissingOption
 from google.cloud.firestore_v1beta1.client import ExistsOption
 from google.cloud.firestore_v1beta1.client import LastUpdateOption
 from google.cloud.firestore_v1beta1.client import WriteOption
@@ -41,7 +40,6 @@ __all__ = [
     '__version__',
     'Client',
     'CollectionReference',
-    'CreateIfMissingOption',
     'DELETE_FIELD',
     'DocumentReference',
     'DocumentSnapshot',

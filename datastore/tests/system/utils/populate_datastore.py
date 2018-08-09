@@ -18,6 +18,8 @@
 from __future__ import print_function
 
 import os
+import sys
+import time
 import uuid
 
 import six
@@ -104,7 +106,7 @@ def add_characters(client=None):
                                                    character['family']))
 
 
-def add_uid_keys(client):
+def add_uid_keys(client=None):
     if client is None:
         # Get a client that uses the test dataset.
         client = datastore.Client()
@@ -112,19 +114,59 @@ def add_uid_keys(client):
     num_batches = 2
     batch_size = 500
 
-    keys = []
     for batch_num in range(num_batches):
         with client.batch() as batch:
             for seq_no in range(batch_size):
                 uid = str(uuid.uuid4())
                 key = client.key('uuid_key', uid)
-                keys.append(key)
                 entity = datastore.Entity(key=key)
                 entity['batch_num'] = batch_num
                 entity['seq_no'] = seq_no
                 batch.put(entity)
 
 
+def add_timestamp_keys(client=None):
+    if client is None:
+        # Get a client that uses the test dataset.
+        client = datastore.Client()
+
+    num_batches = 2
+    batch_size = 500
+
+    timestamp_micros = set()
+    for batch_num in range(num_batches):
+        with client.batch() as batch:
+            for seq_no in range(batch_size):
+                print(
+                    "time_time: batch: {}, sequence: {}".format(
+                        batch_num, seq_no))
+                now_micros = int(time.time() * 1e6)
+                while now_micros in timestamp_micros:
+                    now_micros = int(time.time() * 1e6)
+                timestamp_micros.add(now_micros)
+                key = client.key('timestamp_key', now_micros)
+                entity = datastore.Entity(key=key)
+                entity['batch_num'] = batch_num
+                entity['seq_no'] = seq_no
+                batch.put(entity)
+
+
+def main():
+    client = datastore.Client()
+    flags = sys.argv[1:]
+
+    if len(flags) == 0:
+        flags = ['--characters', '--uuid', '--timestamps']
+
+    if '--characters' in flags:
+        add_characters(client)
+
+    if '--uuid' in flags:
+        add_uid_keys(client)
+
+    if '--timestamps' in flags:
+        add_timestamp_keys(client)
+
+
 if __name__ == '__main__':
-    add_characters()
-    add_uid_keys()
+    main()

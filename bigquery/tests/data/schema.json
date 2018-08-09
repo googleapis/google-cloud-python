@@ -78,6 +78,11 @@
          "mode" : "NULLABLE",
          "name" : "FavoriteTime",
          "type" : "DATETIME"
+      },
+      {
+         "mode" : "NULLABLE",
+         "name" : "FavoriteNumber",
+         "type" : "NUMERIC"
       }
    ]
 }

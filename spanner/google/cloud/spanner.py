@@ -20,6 +20,7 @@ from google.cloud.spanner_v1 import __version__
 from google.cloud.spanner_v1 import AbstractSessionPool
 from google.cloud.spanner_v1 import BurstyPool
 from google.cloud.spanner_v1 import Client
+from google.cloud.spanner_v1 import COMMIT_TIMESTAMP
 from google.cloud.spanner_v1 import enums
 from google.cloud.spanner_v1 import FixedSizePool
 from google.cloud.spanner_v1 import KeyRange
@@ -33,6 +34,7 @@ __all__ = (
     'AbstractSessionPool',
     'BurstyPool',
     'Client',
+    'COMMIT_TIMESTAMP',
     'enums',
     'FixedSizePool',
     'KeyRange',

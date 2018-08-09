@@ -1,78 +1,101 @@
-Python Client for Stackdriver Monitoring
-========================================
+Python Client for Stackdriver Monitoring API (`Alpha`_)
+=======================================================
 
-    Python idiomatic client for `Stackdriver Monitoring`_
+`Stackdriver Monitoring API`_: Manages your Stackdriver Monitoring data and configurations. Most projects
+must be associated with a Stackdriver account, with a few exceptions as
+noted on the individual method pages.
 
-.. _Stackdriver Monitoring: https://cloud.google.com/monitoring/
+- `Client Library Documentation`_
+- `Product Documentation`_
 
-|pypi| |versions|
-
--  `Documentation`_
-
-.. _Documentation: https://googlecloudplatform.github.io/google-cloud-python/latest/monitoring/usage.html
+.. _Alpha: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/README.rst
+.. _Stackdriver Monitoring API: https://cloud.google.com/monitoring/api/ref_v3/rest/
+.. _Client Library Documentation: https://google-cloud-python.readthedocs.io/en/latest/monitoring/
+.. _Product Documentation:  https://cloud.google.com/monitoring/docs
 
 Quick Start
 -----------
 
+In order to use this library, you first need to go through the following steps:
+
+1. `Select or create a Cloud Platform project.`_
+2. `Enable billing for your project.`_
+3. `Enable the Stackdriver Monitoring API.`_
+4. `Setup Authentication.`_
+
+.. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
+.. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
+.. _Enable the Stackdriver Monitoring API.:  https://cloud.google.com/monitoring/api/enable-api
+.. _Setup Authentication.: https://googlecloudplatform.github.io/google-cloud-python/latest/core/auth.html
+
+Installation
+~~~~~~~~~~~~
+
+Install this library in a `virtualenv`_ using pip. `virtualenv`_ is a tool to
+create isolated Python environments. The basic problem it addresses is one of
+dependencies and versions, and indirectly permissions.
+
+With `virtualenv`_, it's possible to install this library without needing system
+install permissions, and without clashing with the installed system
+dependencies.
+
+.. _`virtualenv`: https://virtualenv.pypa.io/en/latest/
+
+
+Mac/Linux
+^^^^^^^^^
+
 .. code-block:: console
 
-    $ pip install --upgrade google-cloud-monitoring
+    pip install virtualenv
+    virtualenv <your-env>
+    source <your-env>/bin/activate
+    <your-env>/bin/pip install google-cloud-monitoring
 
-For more information on setting up your Python development environment,
-such as installing ``pip`` and ``virtualenv`` on your system, please refer
-to `Python Development Environment Setup Guide`_ for Google Cloud Platform.
 
-.. _Python Development Environment Setup Guide: https://cloud.google.com/python/setup
+Windows
+^^^^^^^
 
-Authentication
---------------
+.. code-block:: console
 
-With ``google-cloud-python`` we try to make authentication as painless as
-possible. Check out the `Authentication section`_ in our documentation to
-learn more. You may also find the `authentication document`_ shared by all
-the ``google-cloud-*`` libraries to be helpful.
+    pip install virtualenv
+    virtualenv <your-env>
+    <your-env>\Scripts\activate
+    <your-env>\Scripts\pip.exe install google-cloud-monitoring
 
-.. _Authentication section: https://google-cloud-python.readthedocs.io/en/latest/core/auth.html
-.. _authentication document: https://github.com/GoogleCloudPlatform/google-cloud-common/tree/master/authentication
+Preview
+~~~~~~~
 
-Using the API
--------------
+MetricServiceClient
+^^^^^^^^^^^^^^^^^^^
 
-`Stackdriver Monitoring`_ (`Monitoring API docs`_) collects metrics,
-events, and metadata from Google Cloud Platform, Amazon Web Services (AWS),
-hosted uptime probes, application instrumentation, and a variety of common
-application components including Cassandra, Nginx, Apache Web Server,
-Elasticsearch and many others. Stackdriver ingests that data and generates
-insights via dashboards, charts, and alerts.
+.. code:: py
 
-This package currently supports all Monitoring API operations other than
-writing custom metrics.
+    from google.cloud import monitoring_v3
 
-.. _Monitoring API docs: https://cloud.google.com/monitoring/api/ref_v3/rest/
+    client = monitoring_v3.MetricServiceClient()
 
-List available metric types:
+    name = client.project_path('[PROJECT]')
 
-.. code:: python
 
-    from google.cloud import monitoring
-    client = monitoring.Client()
-    for descriptor in client.list_metric_descriptors():
-        print(descriptor.type)
+    # Iterate over all results
+    for element in client.list_monitored_resource_descriptors(name):
+        # process element
+        pass
 
-Display CPU utilization across your GCE instances during the last five minutes:
+    # Or iterate over results one page at a time
+    for page in client.list_monitored_resource_descriptors(name, options=CallOptions(page_token=INITIAL_PAGE)):
+        for element in page:
+            # process element
+            pass
 
-.. code:: python
+Next Steps
+~~~~~~~~~~
 
-    metric = 'compute.googleapis.com/instance/cpu/utilization'
-    query = client.query(metric, minutes=5)
-    print(query.as_dataframe())
+-  Read the `Stackdriver Monitoring API Product documentation`_ to learn
+   more about the product and see How-to Guides.
+-  View this `repository’s main README`_ to see the full list of Cloud
+   APIs that we cover.
 
-See the ``google-cloud-python`` API `monitoring documentation`_ to learn how
-to connect to Stackdriver Monitoring using this Client Library.
-
-.. _monitoring documentation: https://googlecloudplatform.github.io/google-cloud-python/latest/monitoring/usage.html
-
-.. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-monitoring.svg
-   :target: https://pypi.org/project/google-cloud-monitoring/
-.. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-monitoring.svg
-   :target: https://pypi.org/project/google-cloud-monitoring/
+.. _Stackdriver Monitoring API Product documentation:  https://cloud.google.com/monitoring
+.. _repository’s main README: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/README.rst

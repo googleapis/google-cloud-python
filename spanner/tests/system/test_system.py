@@ -21,8 +21,11 @@ import threading
 import time
 import unittest
 
+import pytest
+
 from google.api_core import exceptions
 from google.api_core.datetime_helpers import DatetimeWithNanoseconds
+from google.cloud.spanner_v1 import param_types
 from google.cloud.spanner_v1.proto.type_pb2 import ARRAY
 from google.cloud.spanner_v1.proto.type_pb2 import BOOL
 from google.cloud.spanner_v1.proto.type_pb2 import BYTES
@@ -38,6 +41,7 @@ from google.cloud.spanner import Client
 from google.cloud.spanner import KeyRange
 from google.cloud.spanner import KeySet
 from google.cloud.spanner import BurstyPool
+from google.cloud.spanner import COMMIT_TIMESTAMP
 
 from test_utils.retry import RetryErrors
 from test_utils.retry import RetryInstanceState
@@ -235,7 +239,7 @@ class TestDatabaseAPI(unittest.TestCase, _TestData):
 
     @classmethod
     def setUpClass(cls):
-        pool = BurstyPool()
+        pool = BurstyPool(labels={'testcase': 'database_api'})
         cls._db = Config.INSTANCE.database(
             cls.DATABASE_NAME, ddl_statements=DDL_STATEMENTS, pool=pool)
         operation = cls._db.create()
@@ -260,7 +264,7 @@ class TestDatabaseAPI(unittest.TestCase, _TestData):
         self.assertTrue(self._db.name in database_names)
 
     def test_create_database(self):
-        pool = BurstyPool()
+        pool = BurstyPool(labels={'testcase': 'create_database'})
         temp_db_id = 'temp_db' + unique_resource_id('_')
         temp_db = Config.INSTANCE.database(temp_db_id, pool=pool)
         operation = temp_db.create()
@@ -302,8 +306,12 @@ class TestDatabaseAPI(unittest.TestCase, _TestData):
         expected = 'Table not found: {0}'.format(incorrect_table)
         self.assertEqual(exc_info.exception.args, (expected,))
 
+    @pytest.mark.skip(reason=(
+        'update_dataset_ddl() has a flaky timeout'
+        'https://github.com/GoogleCloudPlatform/google-cloud-python/issues/'
+        '5629'))
     def test_update_database_ddl(self):
-        pool = BurstyPool()
+        pool = BurstyPool(labels={'testcase': 'update_database_ddl'})
         temp_db_id = 'temp_db' + unique_resource_id('_')
         temp_db = Config.INSTANCE.database(temp_db_id, pool=pool)
         create_op = temp_db.create()
@@ -426,7 +434,7 @@ class TestSessionAPI(unittest.TestCase, _TestData):
 
     @classmethod
     def setUpClass(cls):
-        pool = BurstyPool()
+        pool = BurstyPool(labels={'testcase': 'session_api'})
         cls._db = Config.INSTANCE.database(
             cls.DATABASE_NAME, ddl_statements=DDL_STATEMENTS, pool=pool)
         operation = cls._db.create()
@@ -512,7 +520,36 @@ class TestSessionAPI(unittest.TestCase, _TestData):
             rows = list(snapshot.execute_sql(self.SQL))
         self._check_rows_data(rows)
 
+    def test_batch_insert_w_commit_timestamp(self):
+        retry = RetryInstanceState(_has_all_ddl)
+        retry(self._db.reload)()
+
+        table = 'users_history'
+        columns = ['id', 'commit_ts', 'name', 'email', 'deleted']
+        user_id = 1234
+        name = 'phred'
+        email = 'phred@example.com'
+        row_data = [
+            [user_id, COMMIT_TIMESTAMP, name, email, False],
+        ]
+
+        with self._db.batch() as batch:
+            batch.delete(table, self.ALL)
+            batch.insert(table, columns, row_data)
+
+        with self._db.snapshot(read_timestamp=batch.committed) as snapshot:
+            rows = list(snapshot.read(table, columns, self.ALL))
+
+        self.assertEqual(len(rows), 1)
+        r_id, commit_ts, r_name, r_email, deleted = rows[0]
+        self.assertEqual(r_id, user_id)
+        self.assertEqual(commit_ts, batch.committed)
+        self.assertEqual(r_name, name)
+        self.assertEqual(r_email, email)
+        self.assertFalse(deleted)
+
     @RetryErrors(exception=exceptions.ServerError)
+    @RetryErrors(exception=exceptions.Aborted)
     def test_transaction_read_and_insert_then_rollback(self):
         retry = RetryInstanceState(_has_all_ddl)
         retry(self._db.reload)()
@@ -865,7 +902,7 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         EXTRA_DDL = [
             'CREATE INDEX contacts_by_last_name ON contacts(last_name)',
         ]
-        pool = BurstyPool()
+        pool = BurstyPool(labels={'testcase': 'read_w_index'})
         temp_db = Config.INSTANCE.database(
             'test_read' + unique_resource_id('_'),
             ddl_statements=DDL_STATEMENTS + EXTRA_DDL,
@@ -1527,6 +1564,196 @@ class TestSessionAPI(unittest.TestCase, _TestData):
             self.assertEqual(float_array[1], float('+inf'))
             # NaNs cannot be searched for by equality.
             self.assertTrue(math.isnan(float_array[2]))
+
+    def test_execute_sql_w_query_param_struct(self):
+        NAME = 'Phred'
+        COUNT = 123
+        SIZE = 23.456
+        HEIGHT = 188.0
+        WEIGHT = 97.6
+
+        record_type = param_types.Struct([
+            param_types.StructField('name', param_types.STRING),
+            param_types.StructField('count', param_types.INT64),
+            param_types.StructField('size', param_types.FLOAT64),
+            param_types.StructField('nested', param_types.Struct([
+                param_types.StructField('height', param_types.FLOAT64),
+                param_types.StructField('weight', param_types.FLOAT64),
+            ])),
+        ])
+
+        # Query with null struct, explicit type
+        self._check_sql_results(
+            self._db,
+            sql='SELECT @r.name, @r.count, @r.size, @r.nested.weight',
+            params={'r': None},
+            param_types={'r': record_type},
+            expected=[(None, None, None, None)],
+            order=False,
+        )
+
+        # Query with non-null struct, explicit type, NULL values
+        self._check_sql_results(
+            self._db,
+            sql='SELECT @r.name, @r.count, @r.size, @r.nested.weight',
+            params={'r': (None, None, None, None)},
+            param_types={'r': record_type},
+            expected=[(None, None, None, None)],
+            order=False,
+        )
+
+        # Query with non-null struct, explicit type, nested NULL values
+        self._check_sql_results(
+            self._db,
+            sql='SELECT @r.nested.weight',
+            params={'r': (None, None, None, (None, None))},
+            param_types={'r': record_type},
+            expected=[(None,)],
+            order=False,
+        )
+
+        # Query with non-null struct, explicit type
+        self._check_sql_results(
+            self._db,
+            sql='SELECT @r.name, @r.count, @r.size, @r.nested.weight',
+            params={'r': (NAME, COUNT, SIZE, (HEIGHT, WEIGHT))},
+            param_types={'r': record_type},
+            expected=[(NAME, COUNT, SIZE, WEIGHT)],
+            order=False,
+        )
+
+        # Query with empty struct, explicitly empty type
+        empty_type = param_types.Struct([])
+        self._check_sql_results(
+            self._db,
+            sql='SELECT @r IS NULL',
+            params={'r': ()},
+            param_types={'r': empty_type},
+            expected=[(False,)],
+            order=False,
+        )
+
+        # Query with null struct, explicitly empty type
+        self._check_sql_results(
+            self._db,
+            sql='SELECT @r IS NULL',
+            params={'r': None},
+            param_types={'r': empty_type},
+            expected=[(True,)],
+            order=False,
+        )
+
+        # Query with equality check for struct value
+        struct_equality_query = (
+            'SELECT '
+            '@struct_param=STRUCT<threadf INT64, userf STRING>(1,"bob")'
+        )
+        struct_type = param_types.Struct([
+            param_types.StructField('threadf', param_types.INT64),
+            param_types.StructField('userf', param_types.STRING),
+        ])
+        self._check_sql_results(
+            self._db,
+            sql=struct_equality_query,
+            params={'struct_param': (1, 'bob')},
+            param_types={'struct_param': struct_type},
+            expected=[(True,)],
+            order=False,
+        )
+
+        # Query with nullness test for struct
+        self._check_sql_results(
+            self._db,
+            sql='SELECT @struct_param IS NULL',
+            params={'struct_param': None},
+            param_types={'struct_param': struct_type},
+            expected=[(True,)],
+            order=False,
+        )
+
+        # Query with null array-of-struct
+        array_elem_type = param_types.Struct([
+            param_types.StructField('threadid', param_types.INT64),
+        ])
+        array_type = param_types.Array(array_elem_type)
+        self._check_sql_results(
+            self._db,
+            sql='SELECT a.threadid FROM UNNEST(@struct_arr_param) a',
+            params={'struct_arr_param': None},
+            param_types={'struct_arr_param': array_type},
+            expected=[],
+            order=False,
+        )
+
+        # Query with non-null array-of-struct
+        self._check_sql_results(
+            self._db,
+            sql='SELECT a.threadid FROM UNNEST(@struct_arr_param) a',
+            params={'struct_arr_param': [(123,), (456,)]},
+            param_types={'struct_arr_param': array_type},
+            expected=[(123,), (456,)],
+            order=False,
+        )
+
+        # Query with null array-of-struct field
+        struct_type_with_array_field = param_types.Struct([
+            param_types.StructField('intf', param_types.INT64),
+            param_types.StructField('arraysf', array_type),
+        ])
+        self._check_sql_results(
+            self._db,
+            sql='SELECT a.threadid FROM UNNEST(@struct_param.arraysf) a',
+            params={'struct_param': (123, None)},
+            param_types={'struct_param': struct_type_with_array_field},
+            expected=[],
+            order=False,
+        )
+
+        # Query with non-null array-of-struct field
+        self._check_sql_results(
+            self._db,
+            sql='SELECT a.threadid FROM UNNEST(@struct_param.arraysf) a',
+            params={'struct_param': (123, ((456,), (789,)))},
+            param_types={'struct_param': struct_type_with_array_field},
+            expected=[(456,), (789,)],
+            order=False,
+        )
+
+        # Query with anonymous / repeated-name fields
+        anon_repeated_array_elem_type = param_types.Struct([
+            param_types.StructField('', param_types.INT64),
+            param_types.StructField('', param_types.STRING),
+        ])
+        anon_repeated_array_type = param_types.Array(
+            anon_repeated_array_elem_type)
+        self._check_sql_results(
+            self._db,
+            sql='SELECT CAST(t as STRUCT<threadid INT64, userid STRING>).* '
+                'FROM UNNEST(@struct_param) t',
+            params={'struct_param': [(123, 'abcdef')]},
+            param_types={'struct_param': anon_repeated_array_type},
+            expected=[(123, 'abcdef')],
+            order=False,
+        )
+
+        # Query and return a struct parameter
+        value_type = param_types.Struct([
+            param_types.StructField('message', param_types.STRING),
+            param_types.StructField('repeat', param_types.INT64),
+        ])
+        value_query = (
+            'SELECT ARRAY(SELECT AS STRUCT message, repeat '
+            'FROM (SELECT @value.message AS message, '
+            '@value.repeat AS repeat)) AS value'
+        )
+        self._check_sql_results(
+            self._db,
+            sql=value_query,
+            params={'value': ('hello', 1)},
+            param_types={'value': value_type},
+            expected=[([['hello', 1]],)],
+            order=False,
+        )
 
     def test_partition_query(self):
         row_count = 40

@@ -33,7 +33,7 @@ class TestVariable(unittest.TestCase):
 
     def _verifyResourceProperties(self, variable, resource):
         import base64
-        from google.cloud._helpers import _rfc3339_to_datetime
+        from google.api_core import datetime_helpers
 
         if 'name' in resource:
             self.assertEqual(variable.full_name, resource['name'])
@@ -50,7 +50,8 @@ class TestVariable(unittest.TestCase):
         if 'updateTime' in resource:
             self.assertEqual(
                 variable.update_time,
-                _rfc3339_to_datetime(resource['updateTime']))
+                datetime_helpers.DatetimeWithNanoseconds.from_rfc3339(
+                    resource['updateTime']))
         else:
             self.assertIsNone(variable.update_time)
 
@@ -177,6 +178,32 @@ class TestVariable(unittest.TestCase):
         self.assertEqual(req['method'], 'GET')
         self.assertEqual(req['path'], '/%s' % (self.PATH,))
         self._verifyResourceProperties(variable, RESOURCE)
+
+    def test_with_microseconds(self):
+        from google.cloud.runtimeconfig.config import Config
+
+        resource = {
+            'updateTime': '2016-04-14T21:21:54.123456Z',
+        }
+        conn = _Connection(resource)
+        client = _Client(project=self.PROJECT, connection=conn)
+        config = Config(name=self.CONFIG_NAME, client=client)
+        variable = self._make_one(name=self.VARIABLE_NAME, config=config)
+        variable.reload(client=client)
+        self._verifyResourceProperties(variable, resource)
+
+    def test_with_nanoseconds(self):
+        from google.cloud.runtimeconfig.config import Config
+
+        resource = {
+            'updateTime': '2016-04-14T21:21:54.123456789Z',
+        }
+        conn = _Connection(resource)
+        client = _Client(project=self.PROJECT, connection=conn)
+        config = Config(name=self.CONFIG_NAME, client=client)
+        variable = self._make_one(name=self.VARIABLE_NAME, config=config)
+        variable.reload(client=client)
+        self._verifyResourceProperties(variable, resource)
 
 
 class _Client(object):

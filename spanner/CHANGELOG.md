@@ -4,6 +4,26 @@
 
 [1]: https://pypi.org/project/google-cloud-spanner/#history
 
+## 1.4.0
+
+### Implementation Changes
+- Ensure that initial resume token is bytes, not text. (#5450)
+- Prevent process_read_batch from mutating params (#5416)
+- Avoid overwriting '__module__' of messages from shared modules. (#5364)
+
+### New Features
+- Add support for Python 3.7 (#5288)
+- Add support for Spanner struct params. (#5463)
+
+### Internal / Testing Changes
+- Modify system tests to use prerelease versions of grpcio (#5304)
+
+## 1.3.0
+
+### Interface additions
+
+- Added `spanner_v1.COMMIT_TIMESTAMP`. (#5102)
+
 ## 1.2.0
 
 ### New features

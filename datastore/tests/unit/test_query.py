@@ -404,21 +404,27 @@ class TestIterator(unittest.TestCase):
         expected_pb = query_pb2.Query()
         self.assertEqual(pb, expected_pb)
 
-    def test__build_protobuf_all_values(self):
+    def test__build_protobuf_all_values_except_offset(self):
+        # this test and the following (all_values_except_start_and_end_cursor)
+        # test mutually exclusive states; the offset is ignored
+        # if a start_cursor is supplied
         from google.cloud.datastore_v1.proto import query_pb2
         from google.cloud.datastore.query import Query
 
         client = _Client(None)
         query = Query(client)
         limit = 15
-        offset = 9
         start_bytes = b'i\xb7\x1d'
         start_cursor = 'abcd'
         end_bytes = b'\xc3\x1c\xb3'
         end_cursor = 'wxyz'
         iterator = self._make_one(
-            query, client, limit=limit, offset=offset,
-            start_cursor=start_cursor, end_cursor=end_cursor)
+            query,
+            client,
+            limit=limit,
+            start_cursor=start_cursor,
+            end_cursor=end_cursor
+        )
         self.assertEqual(iterator.max_results, limit)
         iterator.num_results = 4
         iterator._skipped_results = 1
@@ -427,6 +433,32 @@ class TestIterator(unittest.TestCase):
         expected_pb = query_pb2.Query(
             start_cursor=start_bytes,
             end_cursor=end_bytes,
+        )
+        expected_pb.limit.value = limit - iterator.num_results
+        self.assertEqual(pb, expected_pb)
+
+    def test__build_protobuf_all_values_except_start_and_end_cursor(self):
+        # this test and the previous (all_values_except_start_offset)
+        # test mutually exclusive states; the offset is ignored
+        # if a start_cursor is supplied
+        from google.cloud.datastore_v1.proto import query_pb2
+        from google.cloud.datastore.query import Query
+
+        client = _Client(None)
+        query = Query(client)
+        limit = 15
+        offset = 9
+        iterator = self._make_one(
+            query,
+            client,
+            limit=limit,
+            offset=offset,
+        )
+        self.assertEqual(iterator.max_results, limit)
+        iterator.num_results = 4
+
+        pb = iterator._build_protobuf()
+        expected_pb = query_pb2.Query(
             offset=offset - iterator._skipped_results,
         )
         expected_pb.limit.value = limit - iterator.num_results

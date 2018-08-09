@@ -23,7 +23,8 @@ class SchemaField(object):
 
     :type field_type: str
     :param field_type: the type of the field (one of 'STRING', 'INTEGER',
-                       'FLOAT', 'BOOLEAN', 'TIMESTAMP' or 'RECORD').
+                       'FLOAT', 'NUMERIC', 'BOOLEAN', 'TIMESTAMP' or
+                       'RECORD').
 
     :type mode: str
     :param mode: the mode of the field (one of 'NULLABLE', 'REQUIRED',
@@ -58,11 +59,13 @@ class SchemaField(object):
         """
         # Handle optional properties with default values
         mode = api_repr.get('mode', 'NULLABLE')
+        description = api_repr.get('description')
         fields = api_repr.get('fields', ())
         return cls(
             field_type=api_repr['type'].upper(),
             fields=[cls.from_api_repr(f) for f in fields],
             mode=mode.upper(),
+            description=description,
             name=api_repr['name'],
         )
 
@@ -75,8 +78,8 @@ class SchemaField(object):
     def field_type(self):
         """str: The type of the field.
 
-        Will be one of 'STRING', 'INTEGER', 'FLOAT', 'BOOLEAN',
-        'TIMESTAMP' or 'RECORD'.
+        Will be one of 'STRING', 'INTEGER', 'FLOAT', 'NUMERIC',
+        'BOOLEAN', 'TIMESTAMP' or 'RECORD'.
         """
         return self._field_type
 

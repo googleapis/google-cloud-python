@@ -13,34 +13,37 @@
 # limitations under the License.
 """Wrappers for protocol buffer enum types."""
 
+import enum
+
 
 class RecognitionConfig(object):
-    class AudioEncoding(object):
+    class AudioEncoding(enum.IntEnum):
         """
         The encoding of the audio data sent in the request.
 
         All encodings support only 1 channel (mono) audio.
 
-        If you send a ``FLAC`` or ``WAV`` audio file format in the request,
-        then if you specify an encoding in ``AudioEncoding``, it must match the
-        encoding described in the audio header. If it does not match, then the
-        request returns an
-        ``google.rpc.Code.INVALID_ARGUMENT`` error code. You can request
-        recognition for ``WAV`` files that contain either ``LINEAR16`` or ``MULAW``
-        encoded audio.
-        For audio file formats other than ``FLAC`` or ``WAV``, you must
-        specify the audio encoding in your ``RecognitionConfig``.
-
         For best results, the audio source should be captured and transmitted using
         a lossless encoding (``FLAC`` or ``LINEAR16``). The accuracy of the speech
-        recognition can be reduced if lossy codecs, which include the other codecs
-        listed in this section, are used to capture or transmit the audio,
-        particularly if background noise is present.
+        recognition can be reduced if lossy codecs are used to capture or transmit
+        audio, particularly if background noise is present. Lossy codecs include
+        ``MULAW``, ``AMR``, ``AMR_WB``, ``OGG_OPUS``, and ``SPEEX_WITH_HEADER_BYTE``.
+
+        The ``FLAC`` and ``WAV`` audio file formats include a header that describes the
+        included audio content. You can request recognition for ``WAV`` files that
+        contain either ``LINEAR16`` or ``MULAW`` encoded audio.
+        If you send ``FLAC`` or ``WAV`` audio file format in
+        your request, you do not need to specify an ``AudioEncoding``; the audio
+        encoding format is determined from the file header. If you specify
+        an ``AudioEncoding`` when you send  send ``FLAC`` or ``WAV`` audio, the
+        encoding configuration must match the encoding described in the audio
+        header; otherwise the request returns an
+        ``google.rpc.Code.INVALID_ARGUMENT`` error code.
 
         Attributes:
           ENCODING_UNSPECIFIED (int): Not specified.
           LINEAR16 (int): Uncompressed 16-bit signed little-endian samples (Linear PCM).
-          FLAC (int): ```FLAC`` <https://xiph.org/flac/documentation.html>`_ (Free Lossless Audio
+          FLAC (int): ``FLAC`` (Free Lossless Audio
           Codec) is the recommended encoding because it is
           lossless--therefore recognition is not compromised--and
           requires only about half the bandwidth of ``LINEAR16``. ``FLAC`` stream
@@ -76,8 +79,94 @@ class RecognitionConfig(object):
         SPEEX_WITH_HEADER_BYTE = 7
 
 
+class RecognitionMetadata(object):
+    class InteractionType(enum.IntEnum):
+        """
+        Use case categories that the audio recognition request can be described
+        by.
+
+        Attributes:
+          INTERACTION_TYPE_UNSPECIFIED (int): Use case is either unknown or is something other than one of the other
+          values below.
+          DISCUSSION (int): Multiple people in a conversation or discussion. For example in a
+          meeting with two or more people actively participating. Typically
+          all the primary people speaking would be in the same room (if not,
+          see PHONE_CALL)
+          PRESENTATION (int): One or more persons lecturing or presenting to others, mostly
+          uninterrupted.
+          PHONE_CALL (int): A phone-call or video-conference in which two or more people, who are
+          not in the same room, are actively participating.
+          VOICEMAIL (int): A recorded message intended for another person to listen to.
+          PROFESSIONALLY_PRODUCED (int): Professionally produced audio (eg. TV Show, Podcast).
+          VOICE_SEARCH (int): Transcribe spoken questions and queries into text.
+          VOICE_COMMAND (int): Transcribe voice commands, such as for controlling a device.
+          DICTATION (int): Transcribe speech to text to create a written document, such as a
+          text-message, email or report.
+        """
+        INTERACTION_TYPE_UNSPECIFIED = 0
+        DISCUSSION = 1
+        PRESENTATION = 2
+        PHONE_CALL = 3
+        VOICEMAIL = 4
+        PROFESSIONALLY_PRODUCED = 5
+        VOICE_SEARCH = 6
+        VOICE_COMMAND = 7
+        DICTATION = 8
+
+    class MicrophoneDistance(enum.IntEnum):
+        """
+        Enumerates the types of capture settings describing an audio file.
+
+        Attributes:
+          MICROPHONE_DISTANCE_UNSPECIFIED (int): Audio type is not known.
+          NEARFIELD (int): The audio was captured from a closely placed microphone. Eg. phone,
+          dictaphone, or handheld microphone. Generally if there speaker is within
+          1 meter of the microphone.
+          MIDFIELD (int): The speaker if within 3 meters of the microphone.
+          FARFIELD (int): The speaker is more than 3 meters away from the microphone.
+        """
+        MICROPHONE_DISTANCE_UNSPECIFIED = 0
+        NEARFIELD = 1
+        MIDFIELD = 2
+        FARFIELD = 3
+
+    class OriginalMediaType(enum.IntEnum):
+        """
+        The original media the speech was recorded on.
+
+        Attributes:
+          ORIGINAL_MEDIA_TYPE_UNSPECIFIED (int): Unknown original media type.
+          AUDIO (int): The speech data is an audio recording.
+          VIDEO (int): The speech data originally recorded on a video.
+        """
+        ORIGINAL_MEDIA_TYPE_UNSPECIFIED = 0
+        AUDIO = 1
+        VIDEO = 2
+
+    class RecordingDeviceType(enum.IntEnum):
+        """
+        The type of device the speech was recorded with.
+
+        Attributes:
+          RECORDING_DEVICE_TYPE_UNSPECIFIED (int): The recording device is unknown.
+          SMARTPHONE (int): Speech was recorded on a smartphone.
+          PC (int): Speech was recorded using a personal computer or tablet.
+          PHONE_LINE (int): Speech was recorded over a phone line.
+          VEHICLE (int): Speech was recorded in a vehicle.
+          OTHER_OUTDOOR_DEVICE (int): Speech was recorded outdoors.
+          OTHER_INDOOR_DEVICE (int): Speech was recorded indoors.
+        """
+        RECORDING_DEVICE_TYPE_UNSPECIFIED = 0
+        SMARTPHONE = 1
+        PC = 2
+        PHONE_LINE = 3
+        VEHICLE = 4
+        OTHER_OUTDOOR_DEVICE = 5
+        OTHER_INDOOR_DEVICE = 6
+
+
 class StreamingRecognizeResponse(object):
-    class SpeechEventType(object):
+    class SpeechEventType(enum.IntEnum):
         """
         Indicates the type of speech event.
 

@@ -15,20 +15,20 @@
 import mock
 from six.moves import queue
 
-from google.cloud.pubsub_v1.subscriber import _helper_threads
+from google.cloud.pubsub_v1.subscriber._protocol import helper_threads
 
 
 def test_queue_callback_worker():
     queue_ = queue.Queue()
     callback = mock.Mock(spec=())
-    qct = _helper_threads.QueueCallbackWorker(queue_, callback)
+    qct = helper_threads.QueueCallbackWorker(queue_, callback)
 
     # Set up an appropriate mock for the queue, and call the queue callback
     # thread.
     with mock.patch.object(queue.Queue, 'get') as get:
         get.side_effect = (
             mock.sentinel.A,
-            _helper_threads.STOP,
+            helper_threads.STOP,
             queue.Empty())
         qct()
 
@@ -40,14 +40,14 @@ def test_queue_callback_worker():
 def test_queue_callback_worker_stop_with_extra_items():
     queue_ = queue.Queue()
     callback = mock.Mock(spec=())
-    qct = _helper_threads.QueueCallbackWorker(queue_, callback)
+    qct = helper_threads.QueueCallbackWorker(queue_, callback)
 
     # Set up an appropriate mock for the queue, and call the queue callback
     # thread.
     with mock.patch.object(queue.Queue, 'get') as get:
         get.side_effect = (
             mock.sentinel.A,
-            _helper_threads.STOP,
+            helper_threads.STOP,
             mock.sentinel.B,
             queue.Empty())
         qct()
@@ -60,7 +60,7 @@ def test_queue_callback_worker_stop_with_extra_items():
 def test_queue_callback_worker_get_many():
     queue_ = queue.Queue()
     callback = mock.Mock(spec=())
-    qct = _helper_threads.QueueCallbackWorker(queue_, callback)
+    qct = helper_threads.QueueCallbackWorker(queue_, callback)
 
     # Set up an appropriate mock for the queue, and call the queue callback
     # thread.
@@ -69,7 +69,7 @@ def test_queue_callback_worker_get_many():
             mock.sentinel.A,
             queue.Empty(),
             mock.sentinel.B,
-            _helper_threads.STOP,
+            helper_threads.STOP,
             queue.Empty())
         qct()
 
@@ -83,7 +83,7 @@ def test_queue_callback_worker_get_many():
 def test_queue_callback_worker_max_items():
     queue_ = queue.Queue()
     callback = mock.Mock(spec=())
-    qct = _helper_threads.QueueCallbackWorker(queue_, callback, max_items=1)
+    qct = helper_threads.QueueCallbackWorker(queue_, callback, max_items=1)
 
     # Set up an appropriate mock for the queue, and call the queue callback
     # thread.
@@ -91,7 +91,7 @@ def test_queue_callback_worker_max_items():
         get.side_effect = (
             mock.sentinel.A,
             mock.sentinel.B,
-            _helper_threads.STOP,
+            helper_threads.STOP,
             queue.Empty())
         qct()
 
@@ -105,14 +105,14 @@ def test_queue_callback_worker_max_items():
 def test_queue_callback_worker_exception():
     queue_ = queue.Queue()
     callback = mock.Mock(spec=(), side_effect=(Exception,))
-    qct = _helper_threads.QueueCallbackWorker(queue_, callback)
+    qct = helper_threads.QueueCallbackWorker(queue_, callback)
 
     # Set up an appropriate mock for the queue, and call the queue callback
     # thread.
     with mock.patch.object(queue.Queue, 'get') as get:
         get.side_effect = (
             mock.sentinel.A,
-            _helper_threads.STOP,
+            helper_threads.STOP,
             queue.Empty())
         qct()
 

@@ -22,17 +22,17 @@ import setuptools
 
 name = 'google-cloud-monitoring'
 description = 'Stackdriver Monitoring API client library'
-version = '0.28.1'
+version = '0.30.1'
 # Should be one of:
 # 'Development Status :: 3 - Alpha'
 # 'Development Status :: 4 - Beta'
 # 'Development Status :: 5 - Production/Stable'
 release_status = 'Development Status :: 3 - Alpha'
 dependencies = [
-    'google-cloud-core<0.29dev,>=0.28.0',
-    'google-api-core<2.0.0dev,>=0.1.1',
+    'google-api-core[grpc]<2.0.0dev,>=0.1.1',
 ]
 extras = {
+    'pandas': 'pandas>=0.17.1',
 }
 
 

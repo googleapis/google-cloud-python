@@ -4,6 +4,144 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
+## 1.5.0
+
+### Implementation Changes
+
+- Make 'Table.location' read-only. (#5687)
+
+### New Features
+
+- Add 'clustering_fields' properties. (#5630)
+- Add support for job labels (#5654)
+- Add 'QueryJob.estimated_bytes_processed' property (#5655)
+- Add support/tests for loading tables from 'gzip.GzipFile'. (#5711)
+- Add 'ExternalSourceFormat' enum. (#5674)
+- Add default location to client (#5678)
+
+### Documentation
+
+- Fix typo in CopyJob sources docstring (#5690)
+
+### Internal / Testing Changes
+
+- Add/refactor snippets for managing BigQuery jobs (#5631)
+- Reenable systests for 'dataset.update'/'table.update'. (#5732)
+
+## 1.4.0
+
+### Implementation Changes
+
+- Add 'internalError' to retryable error reasons. (#5599)
+- Don't raise exception if viewing CREATE VIEW DDL results (#5602)
+
+### New Features
+
+- Add Orc source format support and samples (#5500)
+- Move 'DEFAULT_RETRY' (w/ its predicate) to a new public 'retry' module. (#5552)
+- Allow listing rows on an empty table. (#5584)
+
+### Documentation
+
+- Add load_table_from_dataframe() to usage docs and changelog and dedents snippets in usage page (#5501)
+- Add samples for query external data sources (GCS & Sheets) (#5491)
+- Add BigQuery authorized view samples (#5515)
+- Update docs to show pyarrow as the only dependency of load_table_from_dataframe() (#5582)
+
+### Internal / Testing Changes
+
+- Add missing explict coverage for '_helpers' (#5550)
+- Skip update_table and update_dataset tests until etag issue is resolved. (#5590)
+
+## 1.3.0
+
+### New Features
+
+- NUMERIC type support (#5331)
+- Add timeline and top-level slot-millis to query statistics. (#5312)
+- Add additional statistics to query plan stages. (#5307)
+- Add `client.load_table_from_dataframe()` (#5387)
+
+### Documentation
+
+- Use autosummary to split up API reference docs (#5340)
+- Fix typo in Client docstrings (#5342)
+
+### Internal / Testing Changes
+
+- Prune systests identified as reduntant to snippets. (#5365)
+- Modify system tests to use prerelease versions of grpcio (#5304)
+- Improve system test performance (#5319)
+
+## 1.2.0
+
+### Implementation Changes
+- Switch `list_partitions` helper to a direct metatable read (#5273)
+- Fix typo in `Encoding.ISO_8859_1` enum value (#5211)
+
+### New Features
+- Add UnknownJob type for redacted jobs. (#5281)
+- Add project parameter to `list_datasets` and `list_jobs` (#5217)
+- Add from_string factory methods to Dataset and Table (#5255)
+- Add column based time partitioning (#5267)
+
+### Documentation
+- Standardize docstrings for constants (#5289)
+- Fix docstring / impl of `ExtractJob.destination_uri_file_counts`. (#5245)
+
+### Internal / Testing Changes
+- Add testing support for Python 3.7; remove testing support for Python 3.4. (#5295)
+
+## 1.1.0
+
+### New Features
+- Add `client.get_service_account_email` (#5203)
+
+### Documentation
+- Update samples and standardize region tags (#5195)
+
+### Internal / Testing Changes
+- Fix trove classifier to be Production/Stable
+- Don't suppress 'dots' output on test (#5202)
+
+## 1.0.0
+
+### Implementation Changes
+- Remove deprecated Client methods (#5182)
+
+## 0.32.0
+
+### :warning: Interface changes
+
+- Use `job.configuration` resource for XXXJobConfig classes (#5036)
+
+### Interface additions
+
+- Add `page_size` parameter for `list_rows` and use in DB-API for `arraysize` (#4931)
+- Add IPython magics for running queries (#4983)
+
+### Documentation
+
+- Add job string constant parameters in init and snippets documentation (#4987)
+
+### Internal / Testing changes
+
+- Specify IPython version 5.5 when running Python 2.7 tests (#5145)
+- Move all Dataset property conversion logic into properties (#5130)
+- Remove unnecessary _Table class from test_job.py (#5126)
+- Use explicit bytes to initialize 'BytesIO'. (#5116)
+- Make SchemaField be able to include description via from_api_repr method (#5114)
+- Remove _ApiResourceProperty class (#5107)
+- Add dev version for 0.32.0 release (#5105)
+- StringIO to BytesIO (#5101)
+- Shorten snippets test name (#5091)
+- Don't use `selected_fields` for listing query result rows (#5072)
+- Add location property to job classes. (#5071)
+- Use autospec for Connection in tests. (#5066)
+- Add Parquet SourceFormat and samples (#5057)
+- Remove test_load_table_from_uri_w_autodetect_schema_then_get_job because of duplicate test in snippets (#5004)
+- Fix encoding variable and strings UTF-8 and ISO-8859-1 difference documentation (#4990)
+
 ## 0.31.0
 
 ### Interface additions

@@ -4,6 +4,34 @@
 
 [1]: https://pypi.org/project/google-cloud-vision/#history
 
+## 0.33.0
+
+### New Features
+- Add v1p3beta1 endpoint to vision client library (#5638)
+
+## 0.32.0
+
+### Implementation Changes
+- Avoid overwriting '__module__' of messages from shared modules. (#5364)
+- Regenerate underlying client library (#5467)
+
+### Internal / Testing Changes
+- Add Test runs for Python 3.7 and remove 3.4 (#5295)
+- Modify system tests to use prerelease versions of grpcio (#5304)
+
+## 0.31.1
+
+### Packaging
+- Update setuptools before packaging (#5265)
+
+## 0.31.0
+
+- Vision v1p2beta1: PDF/TIFF OCR (#5127)
+- Use `install_requires` for platform dependencies instead of `extras_require` (#4991)
+- Add vision v1p2beta1 (#4998)
+- Fix bad trove classifier
+- Add max results to feature (#4817)
+
 ## 0.30.1
 
 ### Dependencies

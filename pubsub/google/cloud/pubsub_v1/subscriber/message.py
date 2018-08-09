@@ -14,11 +14,13 @@
 
 from __future__ import absolute_import
 
+import datetime
 import json
 import math
 import time
 
-from google.cloud.pubsub_v1.subscriber.policy import base as base_policy
+from google.api_core import datetime_helpers
+from google.cloud.pubsub_v1.subscriber._protocol import requests
 
 
 _MESSAGE_REPR = """\
@@ -151,12 +153,21 @@ class Message(object):
         Returns:
             datetime: The date and time that the message was published.
         """
-        return self._message.publish_time
+        timestamp = self._message.publish_time
+        delta = datetime.timedelta(
+            seconds=timestamp.seconds,
+            microseconds=timestamp.nanos // 1000)
+        return datetime_helpers._UTC_EPOCH + delta
 
     @property
     def size(self):
         """Return the size of the underlying message, in bytes."""
         return self._message.ByteSize()
+
+    @property
+    def ack_id(self):
+        """str: the ID used to ack the message."""
+        return self._ack_id
 
     def ack(self):
         """Acknowledge the given message.
@@ -174,7 +185,7 @@ class Message(object):
         """
         time_to_ack = math.ceil(time.time() - self._received_timestamp)
         self._request_queue.put(
-            base_policy.AckRequest(
+            requests.AckRequest(
                 ack_id=self._ack_id,
                 byte_size=self.size,
                 time_to_ack=time_to_ack
@@ -195,7 +206,7 @@ class Message(object):
             directly.
         """
         self._request_queue.put(
-            base_policy.DropRequest(
+            requests.DropRequest(
                 ack_id=self._ack_id,
                 byte_size=self.size
             )
@@ -209,7 +220,7 @@ class Message(object):
             need to call it manually.
         """
         self._request_queue.put(
-            base_policy.LeaseRequest(
+            requests.LeaseRequest(
                 ack_id=self._ack_id,
                 byte_size=self.size
             )
@@ -231,7 +242,7 @@ class Message(object):
                 values below 10 are advised against.
         """
         self._request_queue.put(
-            base_policy.ModAckRequest(
+            requests.ModAckRequest(
                 ack_id=self._ack_id,
                 seconds=seconds
             )
@@ -243,7 +254,7 @@ class Message(object):
         This will cause the message to be re-delivered to the subscription.
         """
         self._request_queue.put(
-            base_policy.NackRequest(
+            requests.NackRequest(
                 ack_id=self._ack_id,
                 byte_size=self.size
             )

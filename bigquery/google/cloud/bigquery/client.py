@@ -18,9 +18,9 @@ from __future__ import absolute_import
 
 import collections
 import functools
+import gzip
 import os
 import uuid
-import warnings
 
 import six
 
@@ -29,18 +29,19 @@ from google.resumable_media.requests import MultipartUpload
 from google.resumable_media.requests import ResumableUpload
 
 from google.api_core import page_iterator
+import google.cloud._helpers
 from google.cloud import exceptions
 from google.cloud.client import ClientWithProject
 
-from google.cloud.bigquery._helpers import DEFAULT_RETRY
 from google.cloud.bigquery._helpers import _SCALAR_VALUE_TO_JSON_ROW
-from google.cloud.bigquery._helpers import _snake_to_camel_case
+from google.cloud.bigquery._helpers import _str_or_none
 from google.cloud.bigquery._http import Connection
 from google.cloud.bigquery.dataset import Dataset
 from google.cloud.bigquery.dataset import DatasetListItem
 from google.cloud.bigquery.dataset import DatasetReference
 from google.cloud.bigquery import job
 from google.cloud.bigquery.query import _QueryResults
+from google.cloud.bigquery.retry import DEFAULT_RETRY
 from google.cloud.bigquery.table import Table
 from google.cloud.bigquery.table import TableListItem
 from google.cloud.bigquery.table import TableReference
@@ -107,6 +108,8 @@ class Client(ClientWithProject):
             current object.
             This parameter should be considered private, and could change in
             the future.
+        location str:
+            (Optional) Default location for jobs / datasets / tables.
 
     Raises:
         google.auth.exceptions.DefaultCredentialsError:
@@ -118,10 +121,46 @@ class Client(ClientWithProject):
              'https://www.googleapis.com/auth/cloud-platform')
     """The scopes required for authenticating as a BigQuery consumer."""
 
-    def __init__(self, project=None, credentials=None, _http=None):
+    def __init__(
+            self, project=None, credentials=None, _http=None, location=None):
         super(Client, self).__init__(
             project=project, credentials=credentials, _http=_http)
         self._connection = Connection(self)
+        self._location = location
+
+    @property
+    def location(self):
+        """Default location for jobs / datasets / tables."""
+        return self._location
+
+    def get_service_account_email(self, project=None):
+        """Get the email address of the project's BigQuery service account
+
+        Note:
+            This is the service account that BigQuery uses to manage tables
+            encrypted by a key in KMS.
+
+        Args:
+            project (str, optional):
+                Project ID to use for retreiving service account email.
+                Defaults to the client's project.
+
+        Returns:
+            str: service account email address
+
+        Example:
+
+            >>> from google.cloud import bigquery
+            >>> client = bigquery.Client()
+            >>> client.get_service_account_email()
+            my_service_account@my-project.iam.gserviceaccount.com
+
+        """
+        if project is None:
+            project = self.project
+        path = '/projects/%s/serviceAccount' % (project,)
+        api_response = self._connection.api_request(method='GET', path=path)
+        return api_response['email']
 
     def list_projects(self, max_results=None, page_token=None,
                       retry=DEFAULT_RETRY):
@@ -159,51 +198,53 @@ class Client(ClientWithProject):
             page_token=page_token,
             max_results=max_results)
 
-    def list_datasets(self, include_all=False, filter=None, max_results=None,
-                      page_token=None, retry=DEFAULT_RETRY):
+    def list_datasets(
+            self, project=None, include_all=False, filter=None,
+            max_results=None, page_token=None, retry=DEFAULT_RETRY):
         """List datasets for the project associated with this client.
 
         See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets/list
 
-        :type include_all: bool
-        :param include_all: True if results include hidden datasets.
+        Args:
+            project (str):
+                Optional. Project ID to use for retreiving datasets. Defaults
+                to the client's project.
+            include_all (bool):
+                Optional. True if results include hidden datasets. Defaults
+                to False.
+            filter (str):
+                Optional. An expression for filtering the results by label.
+                For syntax, see
+                https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets/list#filter.
+            max_results (int):
+                Optional. Maximum number of datasets to return.
+            page_token (str):
+                Optional. Token representing a cursor into the datasets. If
+                not passed, the API will return the first page of datasets.
+                The token marks the beginning of the iterator to be returned
+                and the value of the ``page_token`` can be accessed at
+                ``next_page_token`` of the
+                :class:`~google.api_core.page_iterator.HTTPIterator`.
+            retry (google.api_core.retry.Retry):
+                Optional. How to retry the RPC.
 
-        :type filter: str
-        :param filter: (Optional) an expression for filtering the results by
-                       label. For syntax, see
-                       https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets/list#filter.
-
-        :type max_results: int
-        :param max_results: (Optional) maximum number of datasets to return,
-                            if not passed, defaults to a value set by the API.
-
-        :type page_token: str
-        :param page_token:
-            (Optional) Token representing a cursor into the datasets. If
-            not passed, the API will return the first page of datasets.
-            The token marks the beginning of the iterator to be returned
-            and the value of the ``page_token`` can be accessed at
-            ``next_page_token`` of the
-            :class:`~google.api_core.page_iterator.HTTPIterator`.
-
-        :type retry: :class:`google.api_core.retry.Retry`
-        :param retry: (Optional) How to retry the RPC.
-
-        :rtype: :class:`~google.api_core.page_iterator.Iterator`
-        :returns:
-            Iterator of
-            :class:`~google.cloud.bigquery.dataset.DatasetListItem`.
-            associated with the client's project.
+        Returns:
+            google.api_core.page_iterator.Iterator:
+                Iterator of
+                :class:`~google.cloud.bigquery.dataset.DatasetListItem`.
+                associated with the project.
         """
         extra_params = {}
+        if project is None:
+            project = self.project
         if include_all:
             extra_params['all'] = True
         if filter:
             # TODO: consider supporting a dict of label -> value for filter,
             # and converting it into a string here.
             extra_params['filter'] = filter
-        path = '/projects/%s/datasets' % (self.project,)
+        path = '/projects/%s/datasets' % (project,)
         return page_iterator.HTTPIterator(
             client=self,
             api_request=functools.partial(self._call_api, retry),
@@ -233,22 +274,36 @@ class Client(ClientWithProject):
         return DatasetReference(project, dataset_id)
 
     def create_dataset(self, dataset):
-        """API call:  create the dataset via a PUT request.
+        """API call: create the dataset via a POST request.
 
         See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/tables/insert
 
-        :type dataset: :class:`~google.cloud.bigquery.dataset.Dataset`
-        :param dataset: A ``Dataset`` populated with the desired initial state.
-                        If project is missing, it defaults to the project of
-                        the client.
+        Args:
+            dataset (google.cloud.bigquery.dataset.Dataset):
+                A ``Dataset`` populated with the desired initial state.
 
-        :rtype: ":class:`~google.cloud.bigquery.dataset.Dataset`"
-        :returns: a new ``Dataset`` returned from the service.
+        Returns:
+            google.cloud.bigquery.dataset.Dataset:
+                A new ``Dataset`` returned from the API.
+
+        Example:
+
+            >>> from google.cloud import bigquery
+            >>> client = bigquery.Client()
+            >>> dataset = bigquery.Dataset(client.dataset('my_dataset'))
+            >>> dataset = client.create_dataset(dataset)
+
         """
         path = '/projects/%s/datasets' % (dataset.project,)
+
+        data = dataset.to_api_repr()
+        if data.get('location') is None and self.location is not None:
+            data['location'] = self.location
+
         api_response = self._connection.api_request(
-            method='POST', path=path, data=dataset._build_resource())
+            method='POST', path=path, data=data)
+
         return Dataset.from_api_repr(api_response)
 
     def create_table(self, table):
@@ -265,12 +320,8 @@ class Client(ClientWithProject):
         """
         path = '/projects/%s/datasets/%s/tables' % (
             table.project, table.dataset_id)
-        resource = table._build_resource(Table.all_fields)
-        doomed = [field for field in resource if resource[field] is None]
-        for field in doomed:
-            del resource[field]
         api_response = self._connection.api_request(
-            method='POST', path=path, data=resource)
+            method='POST', path=path, data=table.to_api_repr())
         return Table.from_api_repr(api_response)
 
     def _call_api(self, retry, **kwargs):
@@ -327,40 +378,29 @@ class Client(ClientWithProject):
         will only be saved if no modifications to the dataset occurred
         since the read.
 
-        :type dataset: :class:`google.cloud.bigquery.dataset.Dataset`
-        :param dataset: the dataset to update.
+        Args:
+            dataset (google.cloud.bigquery.dataset.Dataset):
+                The dataset to update.
+            fields (Sequence[str]):
+                The properties of ``dataset`` to change (e.g. "friendly_name").
+            retry (google.api_core.retry.Retry, optional):
+                How to retry the RPC.
 
-        :type fields: sequence of string
-        :param fields: the fields of ``dataset`` to change, spelled as the
-                       Dataset properties (e.g. "friendly_name").
-
-        :type retry: :class:`google.api_core.retry.Retry`
-        :param retry: (Optional) How to retry the RPC.
-
-        :rtype: :class:`google.cloud.bigquery.dataset.Dataset`
-        :returns: the modified ``Dataset`` instance
+        Returns:
+            google.cloud.bigquery.dataset.Dataset:
+                The modified ``Dataset`` instance.
         """
-        path = '/projects/%s/datasets/%s' % (dataset.project,
-                                             dataset.dataset_id)
-        partial = {}
-        for f in fields:
-            if not hasattr(dataset, f):
-                raise ValueError('No Dataset field %s' % f)
-            # All dataset attributes are trivially convertible to JSON except
-            # for access entries.
-            if f == 'access_entries':
-                attr = dataset._build_access_resource()
-                api_field = 'access'
-            else:
-                attr = getattr(dataset, f)
-                api_field = _snake_to_camel_case(f)
-            partial[api_field] = attr
+        partial = dataset._build_resource(fields)
         if dataset.etag is not None:
             headers = {'If-Match': dataset.etag}
         else:
             headers = None
         api_response = self._call_api(
-            retry, method='PATCH', path=path, data=partial, headers=headers)
+            retry,
+            method='PATCH',
+            path=dataset.path,
+            data=partial,
+            headers=headers)
         return Dataset.from_api_repr(api_response)
 
     def update_table(self, table, fields, retry=DEFAULT_RETRY):
@@ -445,16 +485,6 @@ class Client(ClientWithProject):
         result.dataset = dataset
         return result
 
-    def list_dataset_tables(self, *args, **kwargs):
-        """DEPRECATED: List tables in the dataset.
-
-        Use :func:`~google.cloud.bigquery.client.Client.list_tables` instead.
-        """
-        warnings.warn(
-            'list_dataset_tables is deprecated, use list_tables instead.',
-            DeprecationWarning)
-        return self.list_tables(*args, **kwargs)
-
     def delete_dataset(self, dataset, delete_contents=False,
                        retry=DEFAULT_RETRY):
         """Delete a dataset.
@@ -534,6 +564,9 @@ class Client(ClientWithProject):
         if timeout_ms is not None:
             extra_params['timeoutMs'] = timeout_ms
 
+        if location is None:
+            location = self.location
+
         if location is not None:
             extra_params['location'] = location
 
@@ -559,7 +592,7 @@ class Client(ClientWithProject):
                 or :class:`google.cloud.bigquery.job.QueryJob`
         :returns: the job instance, constructed via the resource
         """
-        config = resource['configuration']
+        config = resource.get('configuration', {})
         if 'load' in config:
             return job.LoadJob.from_api_repr(resource, self)
         elif 'copy' in config:
@@ -568,7 +601,7 @@ class Client(ClientWithProject):
             return job.ExtractJob.from_api_repr(resource, self)
         elif 'query' in config:
             return job.QueryJob.from_api_repr(resource, self)
-        raise ValueError('Cannot parse job resource')
+        return job.UnknownJob.from_api_repr(resource, self)
 
     def get_job(
             self, job_id, project=None, location=None, retry=DEFAULT_RETRY):
@@ -591,7 +624,7 @@ class Client(ClientWithProject):
         Returns:
             Union[google.cloud.bigquery.job.LoadJob, \
                   google.cloud.bigquery.job.CopyJob, \
-                  google.cloud.bigquery.job.ExtractJob \
+                  google.cloud.bigquery.job.ExtractJob, \
                   google.cloud.bigquery.job.QueryJob]:
                 Job instance, based on the resource returned by the API.
         """
@@ -599,6 +632,10 @@ class Client(ClientWithProject):
 
         if project is None:
             project = self.project
+
+        if location is None:
+            location = self.location
+
         if location is not None:
             extra_params['location'] = location
 
@@ -621,7 +658,7 @@ class Client(ClientWithProject):
 
         Keyword Arguments:
             project (str):
-                (Optional) ID of the project which ownsthe job (defaults to
+                (Optional) ID of the project which owns the job (defaults to
                 the client's project).
             location (str): Location where the job was run.
             retry (google.api_core.retry.Retry):
@@ -630,7 +667,7 @@ class Client(ClientWithProject):
         Returns:
             Union[google.cloud.bigquery.job.LoadJob, \
                   google.cloud.bigquery.job.CopyJob, \
-                  google.cloud.bigquery.job.ExtractJob \
+                  google.cloud.bigquery.job.ExtractJob, \
                   google.cloud.bigquery.job.QueryJob]:
                 Job instance, based on the resource returned by the API.
         """
@@ -638,6 +675,10 @@ class Client(ClientWithProject):
 
         if project is None:
             project = self.project
+
+        if location is None:
+            location = self.location
+
         if location is not None:
             extra_params['location'] = location
 
@@ -648,53 +689,70 @@ class Client(ClientWithProject):
 
         return self.job_from_resource(resource['job'])
 
-    def list_jobs(self, max_results=None, page_token=None, all_users=None,
-                  state_filter=None, retry=DEFAULT_RETRY):
+    def list_jobs(
+            self, project=None, max_results=None, page_token=None,
+            all_users=None, state_filter=None, retry=DEFAULT_RETRY,
+            min_creation_time=None, max_creation_time=None):
         """List jobs for the project associated with this client.
 
         See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/list
 
-        :type max_results: int
-        :param max_results: maximum number of jobs to return, If not
-                            passed, defaults to a value set by the API.
+        Args:
+            project (str, optional):
+                Project ID to use for retreiving datasets. Defaults
+                to the client's project.
+            max_results (int, optional):
+                Maximum number of jobs to return.
+            page_token (str, optional):
+                Opaque marker for the next "page" of jobs. If not
+                passed, the API will return the first page of jobs. The token
+                marks the beginning of the iterator to be returned and the
+                value of the ``page_token`` can be accessed at
+                ``next_page_token`` of
+                :class:`~google.api_core.page_iterator.HTTPIterator`.
+            all_users (bool, optional):
+                If true, include jobs owned by all users in the project.
+                Defaults to :data:`False`.
+            state_filter (str, optional):
+                If set, include only jobs matching the given state. One of:
+                    * ``"done"``
+                    * ``"pending"``
+                    * ``"running"``
+            retry (google.api_core.retry.Retry, optional):
+                How to retry the RPC.
+            min_creation_time (datetime.datetime, optional):
+                Min value for job creation time. If set, only jobs created
+                after or at this timestamp are returned. If the datetime has
+                no time zone assumes UTC time.
+            max_creation_time (datetime.datetime, optional):
+                Max value for job creation time. If set, only jobs created
+                before or at this timestamp are returned. If the datetime has
+                no time zone assumes UTC time.
 
-        :type page_token: str
-        :param page_token:
-             (Optional) Opaque marker for the next "page" of jobs. If not
-             passed, the API will return the first page of jobs. The token
-             marks the beginning of the iterator to be returned and the
-             value of the ``page_token`` can be accessed at
-             ``next_page_token`` of
-             :class:`~google.api_core.page_iterator.HTTPIterator`.
-
-        :type all_users: bool
-        :param all_users: if true, include jobs owned by all users in the
-                          project.
-
-        :type state_filter: str
-        :param state_filter: if passed, include only jobs matching the given
-                             state.  One of
-
-                             * ``"done"``
-                             * ``"pending"``
-                             * ``"running"``
-
-        :type retry: :class:`google.api_core.retry.Retry`
-        :param retry: (Optional) How to retry the RPC.
-
-        :rtype: :class:`~google.api_core.page_iterator.Iterator`
-        :returns: Iterable of job instances.
+        Returns:
+            google.api_core.page_iterator.Iterator:
+                Iterable of job instances.
         """
-        extra_params = {'projection': 'full'}
+        extra_params = {
+            'allUsers': all_users,
+            'stateFilter': state_filter,
+            'minCreationTime': _str_or_none(
+                google.cloud._helpers._millis_from_datetime(
+                    min_creation_time)),
+            'maxCreationTime': _str_or_none(
+                google.cloud._helpers._millis_from_datetime(
+                    max_creation_time)),
+            'projection': 'full'
+        }
 
-        if all_users is not None:
-            extra_params['allUsers'] = all_users
+        extra_params = {param: value for param, value in extra_params.items()
+                        if value is not None}
 
-        if state_filter is not None:
-            extra_params['stateFilter'] = state_filter
+        if project is None:
+            project = self.project
 
-        path = '/projects/%s/jobs' % (self.project,)
+        path = '/projects/%s/jobs' % (project,)
         return page_iterator.HTTPIterator(
             client=self,
             api_request=functools.partial(self._call_api, retry),
@@ -706,8 +764,12 @@ class Client(ClientWithProject):
             extra_params=extra_params)
 
     def load_table_from_uri(
-            self, source_uris, destination, job_id=None, job_id_prefix=None,
-            location=None, project=None, job_config=None,
+            self, source_uris, destination,
+            job_id=None,
+            job_id_prefix=None,
+            location=None,
+            project=None,
+            job_config=None,
             retry=DEFAULT_RETRY):
         """Starts a job for loading data into a table from CloudStorage.
 
@@ -742,14 +804,22 @@ class Client(ClientWithProject):
             google.cloud.bigquery.job.LoadJob: A new load job.
         """
         job_id = _make_job_id(job_id, job_id_prefix)
+
         if project is None:
             project = self.project
+
+        if location is None:
+            location = self.location
+
         job_ref = job._JobReference(job_id, project=project, location=location)
+
         if isinstance(source_uris, six.string_types):
             source_uris = [source_uris]
+
         load_job = job.LoadJob(
             job_ref, source_uris, destination, self, job_config)
         load_job._begin(retry=retry)
+
         return load_job
 
     def load_table_from_file(
@@ -759,8 +829,8 @@ class Client(ClientWithProject):
             job_config=None):
         """Upload the contents of this table from a file-like object.
 
-        Like load_table_from_uri, this creates, starts and returns
-        a ``LoadJob``.
+        Similar to :meth:`load_table_from_uri`, this method creates, starts and
+        returns a :class:`~google.cloud.bigquery.job.LoadJob`.
 
         Arguments:
             file_obj (file): A file handle opened in binary mode for reading.
@@ -800,14 +870,22 @@ class Client(ClientWithProject):
                 mode.
         """
         job_id = _make_job_id(job_id, job_id_prefix)
+
         if project is None:
             project = self.project
+
+        if location is None:
+            location = self.location
+
         job_ref = job._JobReference(job_id, project=project, location=location)
         load_job = job.LoadJob(job_ref, None, destination, self, job_config)
         job_resource = load_job._build_resource()
+
         if rewind:
             file_obj.seek(0, os.SEEK_SET)
+
         _check_mode(file_obj)
+
         try:
             if size is None or size >= _MAX_MULTIPART_SIZE:
                 response = self._do_resumable_upload(
@@ -817,7 +895,73 @@ class Client(ClientWithProject):
                     file_obj, job_resource, size, num_retries)
         except resumable_media.InvalidResponse as exc:
             raise exceptions.from_http_response(exc.response)
+
         return self.job_from_resource(response.json())
+
+    def load_table_from_dataframe(self, dataframe, destination,
+                                  num_retries=_DEFAULT_NUM_RETRIES,
+                                  job_id=None, job_id_prefix=None,
+                                  location=None, project=None,
+                                  job_config=None):
+        """Upload the contents of a table from a pandas DataFrame.
+
+        Similar to :meth:`load_table_from_uri`, this method creates, starts and
+        returns a :class:`~google.cloud.bigquery.job.LoadJob`.
+
+        Arguments:
+            dataframe (pandas.DataFrame):
+                A :class:`~pandas.DataFrame` containing the data to load.
+            destination (google.cloud.bigquery.table.TableReference):
+                The destination table to use for loading the data. If it is an
+                existing table, the schema of the :class:`~pandas.DataFrame`
+                must match the schema of the destination table. If the table
+                does not yet exist, the schema is inferred from the
+                :class:`~pandas.DataFrame`.
+
+        Keyword Arguments:
+            num_retries (int, optional): Number of upload retries.
+            job_id (str, optional): Name of the job.
+            job_id_prefix (str, optional):
+                The user-provided prefix for a randomly generated
+                job ID. This parameter will be ignored if a ``job_id`` is
+                also given.
+            location (str):
+                Location where to run the job. Must match the location of the
+                destination table.
+            project (str, optional):
+                Project ID of the project of where to run the job. Defaults
+                to the client's project.
+            job_config (google.cloud.bigquery.job.LoadJobConfig, optional):
+                Extra configuration options for the job.
+
+        Returns:
+            google.cloud.bigquery.job.LoadJob: A new load job.
+
+        Raises:
+            ImportError:
+                If a usable parquet engine cannot be found. This method
+                requires :mod:`pyarrow` to be installed.
+        """
+        buffer = six.BytesIO()
+        dataframe.to_parquet(buffer)
+
+        if job_config is None:
+            job_config = job.LoadJobConfig()
+        job_config.source_format = job.SourceFormat.PARQUET
+
+        if location is None:
+            location = self.location
+
+        return self.load_table_from_file(
+            buffer, destination,
+            num_retries=num_retries,
+            rewind=True,
+            job_id=job_id,
+            job_id_prefix=job_id_prefix,
+            location=location,
+            project=project,
+            job_config=job_config,
+        )
 
     def _do_resumable_upload(self, stream, metadata, num_retries):
         """Perform a resumable upload.
@@ -963,16 +1107,23 @@ class Client(ClientWithProject):
             google.cloud.bigquery.job.CopyJob: A new copy job instance.
         """
         job_id = _make_job_id(job_id, job_id_prefix)
+
         if project is None:
             project = self.project
+
+        if location is None:
+            location = self.location
+
         job_ref = job._JobReference(job_id, project=project, location=location)
 
         if not isinstance(sources, collections.Sequence):
             sources = [sources]
+
         copy_job = job.CopyJob(
             job_ref, sources, destination, client=self,
             job_config=job_config)
         copy_job._begin(retry=retry)
+
         return copy_job
 
     def extract_table(
@@ -1016,8 +1167,13 @@ class Client(ClientWithProject):
             google.cloud.bigquery.job.ExtractJob: A new extract job instance.
         """
         job_id = _make_job_id(job_id, job_id_prefix)
+
         if project is None:
             project = self.project
+
+        if location is None:
+            location = self.location
+
         job_ref = job._JobReference(job_id, project=project, location=location)
 
         if isinstance(destination_uris, six.string_types):
@@ -1027,6 +1183,7 @@ class Client(ClientWithProject):
             job_ref, source, destination_uris, client=self,
             job_config=job_config)
         extract_job._begin(retry=retry)
+
         return extract_job
 
     def query(
@@ -1062,12 +1219,18 @@ class Client(ClientWithProject):
             google.cloud.bigquery.job.QueryJob: A new query job instance.
         """
         job_id = _make_job_id(job_id, job_id_prefix)
+
         if project is None:
             project = self.project
+
+        if location is None:
+            location = self.location
+
         job_ref = job._JobReference(job_id, project=project, location=location)
         query_job = job.QueryJob(
             job_ref, query, client=self, job_config=job_config)
         query_job._begin(retry=retry)
+
         return query_job
 
     def insert_rows(self, table, rows, selected_fields=None, **kwargs):
@@ -1101,7 +1264,7 @@ class Client(ClientWithProject):
         :type kwargs: dict
         :param kwargs:
             Keyword arguments to
-            :meth:`~google.cloud.bigquery.client.Client.create_rows_json`
+            :meth:`~google.cloud.bigquery.client.Client.insert_rows_json`
 
         :rtype: list of mappings
         :returns: One mapping per row with insert errors:  the "index" key
@@ -1115,7 +1278,7 @@ class Client(ClientWithProject):
         elif isinstance(table, TableReference):
             raise ValueError('need selected_fields with TableReference')
         elif isinstance(table, Table):
-            if len(table._schema) == 0:
+            if len(table.schema) == 0:
                 raise ValueError(_TABLE_HAS_NO_SCHEMA)
             schema = table.schema
         else:
@@ -1225,29 +1388,34 @@ class Client(ClientWithProject):
 
         return errors
 
-    def create_rows(self, *args, **kwargs):
-        """DEPRECATED: Insert rows into a table via the streaming API.
+    def list_partitions(self, table, retry=DEFAULT_RETRY):
+        """List the partitions in a table.
 
-        Use :func:`~google.cloud.bigquery.client.Client.insert_rows` instead.
+        Arguments:
+            table (Union[google.cloud.bigquery.table.Table,
+                    google.cloud.bigquery.table.TableReference]):
+                The table or reference from which to get partition info
+            retry (google.api_core.retry.Retry):
+                (Optional) How to retry the RPC.
+
+        Returns:
+            List[str]:
+                A list of the partition ids present in the partitioned table
         """
-        warnings.warn(
-            'create_rows is deprecated, use insert_rows instead.',
-            DeprecationWarning)
-        return self.insert_rows(*args, **kwargs)
+        meta_table = self.get_table(
+            TableReference(
+                self.dataset(table.dataset_id, project=table.project),
+                '%s$__PARTITIONS_SUMMARY__' % table.table_id))
 
-    def create_rows_json(self, *args, **kwargs):
-        """DEPRECATED: Insert rows into a table without type conversions.
-
-        Use :func:`~google.cloud.bigquery.client.Client.insert_rows_json`
-        instead.
-        """
-        warnings.warn(
-            'create_rows_json is deprecated, use insert_rows_json instead.',
-            DeprecationWarning)
-        return self.insert_rows_json(*args, **kwargs)
+        subset = [col for col in
+                  meta_table.schema if col.name == 'partition_id']
+        return [row[0] for row in self.list_rows(meta_table,
+                selected_fields=subset,
+                retry=retry)]
 
     def list_rows(self, table, selected_fields=None, max_results=None,
-                  page_token=None, start_index=None, retry=DEFAULT_RETRY):
+                  page_token=None, start_index=None, page_size=None,
+                  retry=DEFAULT_RETRY):
         """List the rows of the table.
 
         See
@@ -1287,6 +1455,10 @@ class Client(ClientWithProject):
         :param start_index: (Optional) The zero-based index of the starting
                            row to read.
 
+        :type page_size: int
+        :param page_size: (Optional) The maximum number of items to return
+                          per page in the iterator.
+
         :type retry: :class:`google.api_core.retry.Retry`
         :param retry: (Optional) How to retry the RPC.
 
@@ -1304,7 +1476,7 @@ class Client(ClientWithProject):
         elif isinstance(table, TableReference):
             raise ValueError('need selected_fields with TableReference')
         elif isinstance(table, Table):
-            if len(table._schema) == 0:
+            if len(table.schema) == 0 and table.created is None:
                 raise ValueError(_TABLE_HAS_NO_SCHEMA)
             schema = table.schema
         else:
@@ -1314,7 +1486,6 @@ class Client(ClientWithProject):
         if selected_fields is not None:
             params['selectedFields'] = ','.join(
                 field.name for field in selected_fields)
-
         if start_index is not None:
             params['startIndex'] = start_index
 
@@ -1325,31 +1496,9 @@ class Client(ClientWithProject):
             schema=schema,
             page_token=page_token,
             max_results=max_results,
+            page_size=page_size,
             extra_params=params)
         return row_iterator
-
-    def list_partitions(self, table, retry=DEFAULT_RETRY):
-        """List the partitions in a table.
-
-        :type table: One of:
-                     :class:`~google.cloud.bigquery.table.Table`
-                     :class:`~google.cloud.bigquery.table.TableReference`
-        :param table: the table to list, or a reference to it.
-
-        :type retry: :class:`google.api_core.retry.Retry`
-        :param retry: (Optional) How to retry the RPC.
-
-        :rtype: list
-        :returns: a list of time partitions
-        """
-        config = job.QueryJobConfig()
-        config.use_legacy_sql = True  # required for '$' syntax
-        query_job = self.query(
-            'SELECT partition_id from [%s:%s.%s$__PARTITIONS_SUMMARY__]' %
-            (table.project, table.dataset_id, table.table_id),
-            job_config=config,
-            retry=retry)
-        return [row[0] for row in query_job]
 
 
 # pylint: disable=unused-argument
@@ -1445,10 +1594,16 @@ def _check_mode(stream):
     """
     mode = getattr(stream, 'mode', None)
 
-    if mode is not None and mode not in ('rb', 'r+b', 'rb+'):
-        raise ValueError(
-            "Cannot upload files opened in text mode:  use "
-            "open(filename, mode='rb') or open(filename, mode='r+b')")
+    if isinstance(stream, gzip.GzipFile):
+        if mode != gzip.READ:
+            raise ValueError(
+                "Cannot upload gzip files opened in write mode:  use "
+                "gzip.GzipFile(filename, mode='rb')")
+    else:
+        if mode is not None and mode not in ('rb', 'r+b', 'rb+'):
+            raise ValueError(
+                "Cannot upload files opened in text mode:  use "
+                "open(filename, mode='rb') or open(filename, mode='r+b')")
 
 
 def _get_upload_headers(user_agent):

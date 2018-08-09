@@ -4,6 +4,37 @@
 
 [1]: https://pypi.org/project/google-cloud-storage/#history
 
+## 1.10.0
+
+### New Features
+- Add support for KMS keys (#5259)
+- Add '{Blob,Bucket}make_private' method (#5336)
+
+### Internal / Testing Changes
+- Modify system tests to use prerelease versions of grpcio (#5304)
+
+## 1.9.0
+
+### Implementation Changes
+- Change GCS batch endpoint from `/batch` to `/batch/storage/v1` (#5040)
+
+### New Features
+- Allow uploading files larger than 2GB by using Resumable Media Requests (#5187)
+- Add range downloads (#5081)
+
+### Documentation
+- Update docstring to reflect correct units (#5277)
+- Replace link to 404 object IAM docs with a note on limited utility. (#5181)
+- Update doc reference in GCS client documentation (#5084)
+- Add see also for `Bucket.create` method call for `Client.create_bucket()` documentation. (#5073)
+- Link out to requester pays docs. (#5065)
+
+### Internal / Testing Changes
+- Add testing support for Python 3.7; remove testing support for Python 3.4. (#5295)
+- Fix bad trove classifier
+- Remove unused var (flake8 warning) (#5280)
+- Fix unit test moving batch to batch/storage/v1 (#5082)
+
 ## 1.8.0
 
 ### New features

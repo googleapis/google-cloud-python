@@ -15,30 +15,49 @@
 from __future__ import absolute_import
 
 import mock
+import pytest
 
-from google.auth import credentials
-from google.cloud.pubsub_v1 import subscriber
 from google.cloud.pubsub_v1.subscriber import futures
-from google.cloud.pubsub_v1.subscriber.policy import thread
+from google.cloud.pubsub_v1.subscriber._protocol import streaming_pull_manager
 
 
-def create_policy(**kwargs):
-    creds = mock.Mock(spec=credentials.Credentials)
-    client = subscriber.Client(credentials=creds)
-    return thread.Policy(client, 'sub_name_c', **kwargs)
+class TestStreamingPullFuture(object):
+    def make_future(self):
+        manager = mock.create_autospec(
+            streaming_pull_manager.StreamingPullManager, instance=True)
+        future = futures.StreamingPullFuture(manager)
+        return future
 
+    def test_default_state(self):
+        future = self.make_future()
 
-def create_future(policy=None):
-    if policy is None:
-        policy = create_policy()
-    future = futures.Future(policy=policy)
-    policy._future = future
-    return future
+        assert future.running()
+        assert not future.done()
+        future._manager.add_close_callback.assert_called_once_with(
+            future._on_close_callback)
 
+    def test__on_close_callback_success(self):
+        future = self.make_future()
 
-def test_running():
-    policy = create_policy()
-    future = create_future(policy=policy)
-    assert future.running() is True
-    policy._future = None
-    assert future.running() is False
+        future._on_close_callback(mock.sentinel.manager, None)
+
+        assert future.result() is True
+        assert not future.running()
+
+    def test__on_close_callback_failure(self):
+        future = self.make_future()
+
+        future._on_close_callback(mock.sentinel.manager, ValueError('meep'))
+
+        with pytest.raises(ValueError):
+            future.result()
+
+        assert not future.running()
+
+    def test_cancel(self):
+        future = self.make_future()
+
+        future.cancel()
+
+        future._manager.close.assert_called_once()
+        assert future.cancelled()

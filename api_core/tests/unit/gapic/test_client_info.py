@@ -44,12 +44,13 @@ def test_constructor_options():
 def test_to_user_agent_minimal():
     info = client_info.ClientInfo(
         python_version='1',
-        grpc_version='2',
-        api_core_version='3')
+        api_core_version='2',
+        grpc_version=None
+    )
 
     user_agent = info.to_user_agent()
 
-    assert user_agent == 'gl-python/1 gax/3 grpc/2'
+    assert user_agent == 'gl-python/1 gax/2'
 
 
 def test_to_user_agent_full():
@@ -62,7 +63,7 @@ def test_to_user_agent_full():
 
     user_agent = info.to_user_agent()
 
-    assert user_agent == 'gl-python/1 gccl/5 gapic/4 gax/3 grpc/2'
+    assert user_agent == 'gl-python/1 grpc/2 gax/3 gapic/4 gccl/5'
 
 
 def test_to_grpc_metadata():

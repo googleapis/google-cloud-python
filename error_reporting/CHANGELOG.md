@@ -4,6 +4,16 @@
 
 [1]: https://pypi.org/project/google-cloud-error-reporting/#history
 
+## 0.30.0
+
+### Implementation Changes
+- Make dependency on logging less restrictive in error_reporting (#5345)
+
+### Internal / Testing Changes
+- Modify system tests to use prerelease versions of grpcio (#5304)
+- Add Test runs for Python 3.7 and remove 3.4 (#5295)
+- Fix bad trove classifier
+
 ## 0.29.1
 
 ### Dependencies

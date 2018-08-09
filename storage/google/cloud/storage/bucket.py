@@ -171,7 +171,8 @@ class Bucket(_PropertyMixin):
         """
         return self._user_project
 
-    def blob(self, blob_name, chunk_size=None, encryption_key=None):
+    def blob(self, blob_name, chunk_size=None,
+             encryption_key=None, kms_key_name=None):
         """Factory constructor for blob object.
 
         .. note::
@@ -183,18 +184,22 @@ class Bucket(_PropertyMixin):
 
         :type chunk_size: int
         :param chunk_size: The size of a chunk of data whenever iterating
-                           (1 MB). This must be a multiple of 256 KB per the
-                           API specification.
+                           (in bytes). This must be a multiple of 256 KB per
+                           the API specification.
 
         :type encryption_key: bytes
         :param encryption_key:
             Optional 32 byte encryption key for customer-supplied encryption.
 
+        :type kms_key_name: str
+        :param kms_key_name:
+            Optional resource name of KMS key used to encrypt blob's content.
+
         :rtype: :class:`google.cloud.storage.blob.Blob`
         :returns: The blob object created.
         """
         return Blob(name=blob_name, bucket=self, chunk_size=chunk_size,
-                    encryption_key=encryption_key)
+                    encryption_key=encryption_key, kms_key_name=kms_key_name)
 
     def notification(self, topic_name,
                      topic_project=None,
@@ -704,7 +709,7 @@ class Bucket(_PropertyMixin):
             path=api_path,
             query_params=query_params,
             _target_object=new_blob,
-            )
+        )
 
         if not preserve_acl:
             new_blob.acl.save(acl={}, client=client)
@@ -787,6 +792,32 @@ class Bucket(_PropertyMixin):
         self._patch_property('cors', entries)
 
     @property
+    def default_kms_key_name(self):
+        """Retrieve / set default KMS encryption key for objects in the bucket.
+
+        See https://cloud.google.com/storage/docs/json_api/v1/buckets
+
+        :setter: Set default KMS encryption key for items in this bucket.
+        :getter: Get default KMS encryption key for items in this bucket.
+
+        :rtype: str
+        :returns: Default KMS encryption key, or ``None`` if not set.
+        """
+        encryption_config = self._properties.get('encryption', {})
+        return encryption_config.get('defaultKmsKeyName')
+
+    @default_kms_key_name.setter
+    def default_kms_key_name(self, value):
+        """Set default KMS encryption key for objects in the bucket.
+
+        :type value: str or None
+        :param value: new KMS key name (None to clear any existing key).
+        """
+        encryption_config = self._properties.get('encryption', {})
+        encryption_config['defaultKmsKeyName'] = value
+        self._patch_property('encryption', encryption_config)
+
+    @property
     def labels(self):
         """Retrieve or set labels assigned to this bucket.
 
@@ -845,8 +876,8 @@ class Bucket(_PropertyMixin):
              https://cloud.google.com/storage/docs/json_api/v1/buckets
 
         :rtype: str or ``NoneType``
-        :returns: The bucket etag or ``None`` if the property is not
-                  set locally.
+        :returns: The bucket etag or ``None`` if the bucket's
+                  resource has not been loaded from the server.
         """
         return self._properties.get('etag')
 
@@ -857,8 +888,8 @@ class Bucket(_PropertyMixin):
         See https://cloud.google.com/storage/docs/json_api/v1/buckets
 
         :rtype: str or ``NoneType``
-        :returns: The ID of the bucket or ``None`` if the property is not
-                  set locally.
+        :returns: The ID of the bucket or ``None`` if the bucket's
+                  resource has not been loaded from the server.
         """
         return self._properties.get('id')
 
@@ -907,10 +938,13 @@ class Bucket(_PropertyMixin):
     location = _scalar_property('location')
     """Retrieve location configured for this bucket.
 
+    This can only be set at bucket **creation** time.
+
     See https://cloud.google.com/storage/docs/json_api/v1/buckets and
     https://cloud.google.com/storage/docs/bucket-locations
 
-    If the property is not set locally, returns ``None``.
+    Returns ``None`` if the property has not been set before creation,
+    or if the bucket's resource has not been loaded from the server.
 
     :rtype: str or ``NoneType``
     """
@@ -955,8 +989,8 @@ class Bucket(_PropertyMixin):
         See https://cloud.google.com/storage/docs/json_api/v1/buckets
 
         :rtype: int or ``NoneType``
-        :returns: The metageneration of the bucket or ``None`` if the property
-                  is not set locally.
+        :returns: The metageneration of the bucket or ``None`` if the bucket's
+                  resource has not been loaded from the server.
         """
         metageneration = self._properties.get('metageneration')
         if metageneration is not None:
@@ -969,8 +1003,8 @@ class Bucket(_PropertyMixin):
         See https://cloud.google.com/storage/docs/json_api/v1/buckets
 
         :rtype: dict or ``NoneType``
-        :returns: Mapping of owner's role/ID. If the property is not set
-                  locally, returns ``None``.
+        :returns: Mapping of owner's role/ID. Returns ``None`` if the bucket's
+                  resource has not been loaded from the server.
         """
         return copy.deepcopy(self._properties.get('owner'))
 
@@ -981,8 +1015,8 @@ class Bucket(_PropertyMixin):
         See https://cloud.google.com/storage/docs/json_api/v1/buckets
 
         :rtype: int or ``NoneType``
-        :returns: The project number that owns the bucket or ``None`` if the
-                  property is not set locally.
+        :returns: The project number that owns the bucket or ``None`` if
+                  the bucket's resource has not been loaded from the server.
         """
         project_number = self._properties.get('projectNumber')
         if project_number is not None:
@@ -995,8 +1029,8 @@ class Bucket(_PropertyMixin):
         See https://cloud.google.com/storage/docs/json_api/v1/buckets
 
         :rtype: str or ``NoneType``
-        :returns: The self link for the bucket or ``None`` if the property is
-                  not set locally.
+        :returns: The self link for the bucket or ``None`` if
+                  the bucket's resource has not been loaded from the server.
         """
         return self._properties.get('selfLink')
 
@@ -1038,7 +1072,8 @@ class Bucket(_PropertyMixin):
 
         :rtype: :class:`datetime.datetime` or ``NoneType``
         :returns: Datetime object parsed from RFC3339 valid timestamp, or
-                  ``None`` if the property is not set locally.
+                  ``None`` if the bucket's resource has not been loaded
+                  from the server.
         """
         value = self._properties.get('timeCreated')
         if value is not None:
@@ -1250,11 +1285,7 @@ class Bucket(_PropertyMixin):
         return resp.get('permissions', [])
 
     def make_public(self, recursive=False, future=False, client=None):
-        """Make a bucket public.
-
-        If ``recursive=True`` and the bucket contains more than 256
-        objects / blobs this will cowardly refuse to make the objects public.
-        This is to prevent extremely long runtime of this method.
+        """Update bucket's ACL, granting read access to anonymous users.
 
         :type recursive: bool
         :param recursive: If True, this will make all blobs inside the bucket
@@ -1268,6 +1299,14 @@ class Bucket(_PropertyMixin):
                       ``NoneType``
         :param client: Optional. The client to use.  If not passed, falls back
                        to the ``client`` stored on the current bucket.
+
+        :raises ValueError:
+            If ``recursive`` is True, and the bucket contains more than 256
+            blobs.  This is to prevent extremely long runtime of this
+            method.  For such buckets, iterate over the blobs returned by
+            :meth:`list_blobs` and call
+            :meth:`~google.cloud.storage.blob.Blob.make_public`
+            for each blob.
         """
         self.acl.all().grant_read()
         self.acl.save(client=client)
@@ -1286,15 +1325,69 @@ class Bucket(_PropertyMixin):
                 client=client))
             if len(blobs) > self._MAX_OBJECTS_FOR_ITERATION:
                 message = (
-                    'Refusing to make public recursively with more than '
-                    '%d objects. If you actually want to make every object '
-                    'in this bucket public, please do it on the objects '
-                    'yourself.'
+                    "Refusing to make public recursively with more than "
+                    "%d objects. If you actually want to make every object "
+                    "in this bucket public, iterate through the blobs "
+                    "returned by 'Bucket.list_blobs()' and call "
+                    "'make_public' on each one."
                 ) % (self._MAX_OBJECTS_FOR_ITERATION,)
                 raise ValueError(message)
 
             for blob in blobs:
                 blob.acl.all().grant_read()
+                blob.acl.save(client=client)
+
+    def make_private(self, recursive=False, future=False, client=None):
+        """Update bucket's ACL, revoking read access for anonymous users.
+
+        :type recursive: bool
+        :param recursive: If True, this will make all blobs inside the bucket
+                          private as well.
+
+        :type future: bool
+        :param future: If True, this will make all objects created in the
+                       future private as well.
+
+        :type client: :class:`~google.cloud.storage.client.Client` or
+                      ``NoneType``
+        :param client: Optional. The client to use.  If not passed, falls back
+                       to the ``client`` stored on the current bucket.
+
+        :raises ValueError:
+            If ``recursive`` is True, and the bucket contains more than 256
+            blobs.  This is to prevent extremely long runtime of this
+            method.  For such buckets, iterate over the blobs returned by
+            :meth:`list_blobs` and call
+            :meth:`~google.cloud.storage.blob.Blob.make_private`
+            for each blob.
+        """
+        self.acl.all().revoke_read()
+        self.acl.save(client=client)
+
+        if future:
+            doa = self.default_object_acl
+            if not doa.loaded:
+                doa.reload(client=client)
+            doa.all().revoke_read()
+            doa.save(client=client)
+
+        if recursive:
+            blobs = list(self.list_blobs(
+                projection='full',
+                max_results=self._MAX_OBJECTS_FOR_ITERATION + 1,
+                client=client))
+            if len(blobs) > self._MAX_OBJECTS_FOR_ITERATION:
+                message = (
+                    'Refusing to make private recursively with more than '
+                    '%d objects. If you actually want to make every object '
+                    "in this bucket private, iterate through the blobs "
+                    "returned by 'Bucket.list_blobs()' and call "
+                    "'make_private' on each one."
+                ) % (self._MAX_OBJECTS_FOR_ITERATION,)
+                raise ValueError(message)
+
+            for blob in blobs:
+                blob.acl.all().revoke_read()
                 blob.acl.save(client=client)
 
     def generate_upload_policy(

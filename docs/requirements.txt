@@ -1,10 +1,12 @@
 setuptools >= 36.4.0
 sphinx >= 1.6.3
 ipython >= 4
+recommonmark >= 0.4.0
 
 api_core/
 core/
 storage/
+automl/
 bigquery/
 bigquery_datatransfer/
 bigtable/
@@ -14,16 +16,20 @@ datastore/
 dlp/
 dns/
 firestore/
+iot/
+kms/
 language/
 logging/
 error_reporting/
 monitoring/
 pubsub/
 oslogin/
+redis/
 resource_manager/
 runtimeconfig/
 spanner/
 speech/
+tasks/
 texttospeech/
 trace/
 translate/

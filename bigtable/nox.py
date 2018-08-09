@@ -53,7 +53,7 @@ def default(session):
 
 
 @nox.session
-@nox.parametrize('py', ['2.7', '3.4', '3.5', '3.6'])
+@nox.parametrize('py', ['2.7', '3.5', '3.6', '3.7'])
 def unit(session, py):
     """Run the unit test suite."""
 
@@ -81,14 +81,17 @@ def system(session, py):
     # Set the virtualenv dirname.
     session.virtualenv_dirname = 'sys-' + py
 
+    # Use pre-release gRPC for system tests.
+    session.install('--pre', 'grpcio')
+
     # Install all test dependencies, then install this package into the
     # virtualenv's dist-packages.
     session.install('mock', 'pytest', *LOCAL_DEPS)
     session.install('../test_utils/')
-    session.install('.')
+    session.install('-e', '.')
 
     # Run py.test against the system tests.
-    session.run('py.test', '--quiet', 'tests/system.py')
+    session.run('py.test', '--quiet', 'tests/system.py', *session.posargs)
 
 
 @nox.session

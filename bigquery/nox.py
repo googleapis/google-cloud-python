@@ -35,11 +35,19 @@ def default(session):
     run the tests.
     """
     # Install all test dependencies, then install this package in-place.
-    session.install('mock', 'pytest', 'pytest-cov', 'ipython', *LOCAL_DEPS)
-    if session.interpreter == 'python3.4':
+    session.install('mock', 'pytest', 'pytest-cov', *LOCAL_DEPS)
+
+    # Pandas does not support Python 3.7
+    if session.interpreter == 'python3.7':
         session.install('-e', '.')
     else:
-        session.install('-e', '.[pandas]')
+        session.install('-e', '.[pandas, pyarrow]')
+
+    # IPython does not support Python 2 after version 5.x
+    if session.interpreter == 'python2.7':
+        session.install('ipython==5.5')
+    else:
+        session.install('ipython')
 
     # Run py.test against the unit tests.
     session.run(
@@ -57,7 +65,7 @@ def default(session):
 
 
 @nox.session
-@nox.parametrize('py', ['2.7', '3.4', '3.5', '3.6'])
+@nox.parametrize('py', ['2.7', '3.5', '3.6', '3.7'])
 def unit(session, py):
     """Run the unit test suite."""
 
@@ -85,14 +93,23 @@ def system(session, py):
     # Set the virtualenv dirname.
     session.virtualenv_dirname = 'sys-' + py
 
+    # Use pre-release gRPC for system tests.
+    session.install('--pre', 'grpcio')
+
     # Install all test dependencies, then install this package into the
     # virtualenv's dist-packages.
-    session.install('mock', 'pytest', 'ipython', *LOCAL_DEPS)
+    session.install('mock', 'pytest', *LOCAL_DEPS)
     session.install(
         os.path.join('..', 'storage'),
         os.path.join('..', 'test_utils'),
     )
     session.install('-e', '.[pandas]')
+
+    # IPython does not support Python 2 after version 5.x
+    if session.interpreter == 'python2.7':
+        session.install('ipython==5.5')
+    else:
+        session.install('ipython')
 
     # Run py.test against the system tests.
     session.run(
@@ -105,7 +122,7 @@ def system(session, py):
 
 @nox.session
 @nox.parametrize('py', ['2.7', '3.6'])
-def snippets_tests(session, py):
+def snippets(session, py):
     """Run the system test suite."""
 
     # Sanity check: Only run system tests if the environment variable is set.
@@ -125,12 +142,11 @@ def snippets_tests(session, py):
         os.path.join('..', 'storage'),
         os.path.join('..', 'test_utils'),
     )
-    session.install('-e', '.')
+    session.install('-e', '.[pandas, pyarrow]')
 
     # Run py.test against the system tests.
     session.run(
         'py.test',
-        '--quiet',
         os.path.join(os.pardir, 'docs', 'bigquery', 'snippets.py'),
         *session.posargs
     )

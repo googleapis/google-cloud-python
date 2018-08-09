@@ -15,17 +15,11 @@
 from __future__ import absolute_import
 import sys
 
-from google.api_core.protobuf_helpers import get_messages
-
 from google.api import distribution_pb2
 from google.api import http_pb2
 from google.api import label_pb2
 from google.api import metric_pb2
 from google.api import monitored_resource_pb2
-from google.cloud.logging_v2.proto import log_entry_pb2
-from google.cloud.logging_v2.proto import logging_config_pb2
-from google.cloud.logging_v2.proto import logging_metrics_pb2
-from google.cloud.logging_v2.proto import logging_pb2
 from google.logging.type import http_request_pb2
 from google.protobuf import any_pb2
 from google.protobuf import descriptor_pb2
@@ -36,27 +30,45 @@ from google.protobuf import struct_pb2
 from google.protobuf import timestamp_pb2
 from google.rpc import status_pb2
 
+from google.api_core.protobuf_helpers import get_messages
+from google.cloud.logging_v2.proto import log_entry_pb2
+from google.cloud.logging_v2.proto import logging_config_pb2
+from google.cloud.logging_v2.proto import logging_metrics_pb2
+from google.cloud.logging_v2.proto import logging_pb2
+
+
+_shared_modules = [
+    distribution_pb2,
+    http_pb2,
+    label_pb2,
+    metric_pb2,
+    monitored_resource_pb2,
+    http_request_pb2,
+    any_pb2,
+    descriptor_pb2,
+    duration_pb2,
+    empty_pb2,
+    field_mask_pb2,
+    struct_pb2,
+    timestamp_pb2,
+    status_pb2,
+]
+
+_local_modules = [
+    log_entry_pb2,
+    logging_config_pb2,
+    logging_metrics_pb2,
+    logging_pb2,
+]
+
 names = []
-for module in (
-        distribution_pb2,
-        http_pb2,
-        label_pb2,
-        metric_pb2,
-        monitored_resource_pb2,
-        log_entry_pb2,
-        logging_config_pb2,
-        logging_metrics_pb2,
-        logging_pb2,
-        http_request_pb2,
-        any_pb2,
-        descriptor_pb2,
-        duration_pb2,
-        empty_pb2,
-        field_mask_pb2,
-        struct_pb2,
-        timestamp_pb2,
-        status_pb2,
-):
+
+for module in _shared_modules:
+    for name, message in get_messages(module).items():
+        setattr(sys.modules[__name__], name, message)
+        names.append(name)
+
+for module in _local_modules:
     for name, message in get_messages(module).items():
         message.__module__ = 'google.cloud.logging_v2.types'
         setattr(sys.modules[__name__], name, message)

@@ -14,10 +14,16 @@
 
 """Wrapper for interacting with the Stackdriver Trace API."""
 
+from google.api_core.gapic_v1 import client_info
+from google.cloud.trace import __version__
 from google.cloud.trace_v1.gapic import trace_service_client
 from google.cloud.trace_v1.proto import trace_pb2
 from google.protobuf.json_format import MessageToDict
 from google.protobuf.json_format import ParseDict
+
+
+_CLIENT_INFO = client_info.ClientInfo(
+    client_library_version=__version__)
 
 
 class _TraceAPI(object):
@@ -169,7 +175,8 @@ def make_trace_api(client):
         A :class:`~google.cloud.trace._gapic._TraceAPI` instance with the
         proper configurations.
     """
-    generated = trace_service_client.TraceServiceClient()
+    generated = trace_service_client.TraceServiceClient(
+        credentials=client._credentials, client_info=_CLIENT_INFO)
     return _TraceAPI(generated, client)
 
 

@@ -4,6 +4,80 @@
 
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
+## 0.35.4
+
+### Implementation Changes
+
+- Recover streams during the gRPC error callback. (#5446)
+- Use operational lock when checking for activity on streams. (#5445)
+
+## 0.35.3
+
+### Implementation Changes
+
+- Add additional error handling to unary RPCs (#5438)
+
+## 0.35.2
+
+### Implementation Changes
+- Add heartbeating to the streaming pull manager (#5413)
+- Fix retrying of bidirectional RPCs and closing the streaming pull manager (#5412)
+
+## 0.35.1
+
+### Implementation Changes
+- Catch errors when re-retying send() or recv() in addition to open() (#5402)
+
+## 0.35.0
+
+### Implementation Changes
+
+- Send requests during streaming pull over a separate unary RPC (#5377)
+- Initialize references to helper threads before starting them (#5374)
+- Make leaser exit more quickly (#5373)
+- Make re-open failures bubble to callbacks (#5372)
+- Avoid overwriting '__module__' of messages from shared modules. (#5364)
+- Normalize overflow handling for max count and bytes (#5343)
+
+### New Features
+
+- Restore the synchronous pull method (#5379)
+- Promote subscribe_experimental() to subscribe(), remove old subscriber implementation. (#5274)
+- Wire up scheduler argument for subscribe() (#5279)
+
+### Documentation
+
+- Add link to streaming pull behavior documentation (#5378)
+- Fix example in subscribe's documentation (#5375)
+
+### Internal / Testing Changes
+
+- Add Test runs for Python 3.7 and remove 3.4 (#5295)
+- Modify system tests to use prerelease versions of grpcio (#5304)
+
+## 0.34.0
+
+### Implementation Changes
+
+- Lower the flow control defaults. (#5248)
+
+### New Features
+
+- A new implementation of the subscriber has been added. This is available as `SubscriberClient.subscribe_experimental`. In the next release, this will be replace the current `subscribe` method. If you use this, please report your
+findings to us on GitHub. (#5189, #5201, #5210, #5229, #5230, #5237, #5256)
+
+### Dependencies
+
+- Remove psutil dependency. (#5248)
+
+## 0.33.1
+
+### Implementation changes
+
+- Surface publish RPC errors back to the publish futures (#5124)
+- Make the pausable response iterator aware of the RPC state to prevent deadlock (#5108)
+- Properly handle graceful stop in request generator (#5097)
+
 ## 0.33.0
 
 ### Implementation changes

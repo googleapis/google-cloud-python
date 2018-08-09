@@ -5,9 +5,17 @@ Stackdriver Error Reporting
   :maxdepth: 2
   :hidden:
 
-  releases
   client
   util
+
+Installation
+------------
+
+Install the ``google-cloud-error-reporting`` library using ``pip``:
+
+.. code-block:: console
+
+    $ pip install google-cloud-error-reporting
 
 Authentication and Configuration
 --------------------------------
@@ -75,9 +83,10 @@ be used by Stackdriver Error Reporting to help group exceptions.
    >>> from google.cloud import error_reporting
    >>> client = error_reporting.Client()
    >>> user = 'example@gmail.com'
-   >>> http_context = HTTPContext(method='GET', url='/', userAgent='test agent',
-   ...                            referrer='example.com', responseStatusCode=500,
-   ...                            remote_ip='1.2.3.4')
+   >>> http_context = error_reporting.HTTPContext(
+   ...     method='GET', url='/', user_agent='test agent',
+   ...     referrer='example.com', response_status_code=500,
+   ...     remote_ip='1.2.3.4')
    >>> try:
    >>>     raise NameError
    >>> except Exception:
@@ -116,7 +125,18 @@ Similarly to reporting an exception, the user and HTTP context can be provided:
    >>> from google.cloud import error_reporting
    >>> client = error_reporting.Client()
    >>> user = 'example@gmail.com'
-   >>> http_context = HTTPContext(method='GET', url='/', userAgent='test agent',
-   ...                            referrer='example.com', responseStatusCode=500,
-   ...                            remote_ip='1.2.3.4')
+   >>> http_context = error_reporting.HTTPContext(
+   ...     method='GET', url='/', user_agent='test agent',
+   ...     referrer='example.com', response_status_code=500,
+   ...     remote_ip='1.2.3.4')
    >>> error_reporting.report("Found an error!", http_context=http_context, user=user))
+
+Changelog
+---------
+
+For a list of all ``google-cloud-error-reporting`` releases:
+
+.. toctree::
+  :maxdepth: 2
+
+  changelog

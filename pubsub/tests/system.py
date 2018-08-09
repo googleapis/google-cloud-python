@@ -97,7 +97,6 @@ def test_subscribe_to_messages(
     # Subscribe to the topic. This must happen before the messages
     # are published.
     subscriber.create_subscription(subscription_path, topic_path)
-    subscription = subscriber.subscribe(subscription_path)
 
     # Publish some messages.
     futures = [
@@ -117,7 +116,7 @@ def test_subscribe_to_messages(
     # The callback should process the message numbers to prove
     # that we got everything at least once.
     callback = AckCallback()
-    subscription.open(callback)
+    future = subscriber.subscribe(subscription_path, callback)
     for second in six.moves.range(10):
         time.sleep(1)
 
@@ -129,7 +128,7 @@ def test_subscribe_to_messages(
     # Okay, we took too long; fail out.
     assert callback.calls >= 50
 
-    subscription.close()
+    future.cancel()
 
 
 def test_subscribe_to_messages_async_callbacks(
@@ -144,7 +143,6 @@ def test_subscribe_to_messages_async_callbacks(
     # Subscribe to the topic. This must happen before the messages
     # are published.
     subscriber.create_subscription(subscription_path, topic_path)
-    subscription = subscriber.subscribe(subscription_path)
 
     # Publish some messages.
     futures = [
@@ -165,7 +163,7 @@ def test_subscribe_to_messages_async_callbacks(
     callback = TimesCallback(2)
 
     # Actually open the subscription and hold it open for a few seconds.
-    subscription.open(callback)
+    future = subscriber.subscribe(subscription_path, callback)
     for second in six.moves.range(5):
         time.sleep(4)
 
@@ -183,7 +181,7 @@ def test_subscribe_to_messages_async_callbacks(
     # Okay, we took too long; fail out.
     assert callback.calls >= 2
 
-    subscription.close()
+    future.cancel()
 
 
 class AckCallback(object):

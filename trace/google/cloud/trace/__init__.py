@@ -14,6 +14,9 @@
 
 from __future__ import absolute_import
 
+from pkg_resources import get_distribution
+__version__ = get_distribution('google-cloud-trace').version
+
 from google.cloud.trace.client import Client
 from google.cloud.trace_v2 import types
 from google.cloud.trace_v2.gapic import enums
@@ -26,6 +29,7 @@ class TraceServiceClient(trace_service_client.TraceServiceClient):
 
 
 __all__ = (
+    '__version__',
     'enums',
     'types',
     'TraceServiceClient',

@@ -38,6 +38,7 @@
       "TeaTime" : "15:00:00",
       "Weight" : 198.6,
       "FavoriteTime" : "2001-12-19T23:59:59",
+      "FavoriteNumber" : "3.141592654",
       "IsMagic" : true
    },
    {
@@ -47,6 +48,7 @@
       "IsMagic" : true,
       "FavoriteTime" : "2000-10-31T23:27:46",
       "Age" : "17",
+      "FavoriteNumber" : "13",
       "Spells" : [
          {
             "LastUsed" : "2017-02-14 12:07:23 UTC",
