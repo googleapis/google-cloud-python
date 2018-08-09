@@ -19,6 +19,7 @@ import re
 
 from google.cloud.bigtable.table import Table
 from google.cloud.bigtable.cluster import Cluster
+from google.cloud.bigtable.app_profile import AppProfile
 
 from google.protobuf import field_mask_pb2
 
@@ -431,6 +432,46 @@ class Instance(object):
 
         return result
 
+    def app_profile(self, app_profile_id,
+                    routing_policy_type=None,
+                    description=None, cluster_id=None,
+                    allow_transactional_writes=None):
+        """Factory to create app profile assosiated with this instance.
+
+        :type app_profile_id: str
+        :param app_profile_id: The ID of the app profile. Must be of the form
+                               ``[_a-zA-Z0-9][-_.a-zA-Z0-9]*``.
+
+        :type: routing_policy_type: int
+        :param: routing_policy_type: The type of the routing policy.
+                                     Possible values are represented
+                                     by the following constants:
+                                     :data:`google.cloud.bigtable.enums.RoutingPolicyType.ANY`
+                                     :data:`google.cloud.bigtable.enums.RoutingPolicyType.SINGLE`
+
+        :type: description: str
+        :param: description: (Optional) Long form description of the use
+                             case for this AppProfile.
+
+        :type: ignore_warnings: bool
+        :param: ignore_warnings: (Optional) If true, ignore safety checks when
+                                 creating the app profile.
+
+        :type: cluster_id: str
+        :param: cluster_id: (Optional) Unique cluster_id which is only required
+                            when routing_policy_type is
+                            ROUTING_POLICY_TYPE_SINGLE.
+
+        :type: allow_transactional_writes: bool
+        :param: allow_transactional_writes: (Optional) If true, allow
+                                            transactional writes for
+                                            ROUTING_POLICY_TYPE_SINGLE.
+        """
+        return AppProfile(
+            app_profile_id, self, routing_policy_type,
+            description=description, cluster_id=cluster_id,
+            allow_transactional_writes=allow_transactional_writes)
+
     def create_app_profile(self, app_profile_id, routing_policy_type,
                            description=None, ignore_warnings=None,
                            cluster_id=None, allow_transactional_writes=False):
@@ -522,9 +563,10 @@ class Instance(object):
                 :class:`~google.cloud.bigtable_admin_v2.types.AppProfile`
                 instances.
         """
-        list_app_profiles = list(
-            self._client._instance_admin_client.list_app_profiles(self.name))
-        return list_app_profiles
+        resp = self._client._instance_admin_client.list_app_profiles(self.name)
+        app_profiles = [
+            AppProfile.from_pb(app_profile, self) for app_profile in resp]
+        return app_profiles
 
     def update_app_profile(self, app_profile_id,
                            routing_policy_type, description=None,
@@ -576,6 +618,7 @@ class Instance(object):
         update_mask_pb = field_mask_pb2.FieldMask()
         single_cluster_routing = None
         multi_cluster_routing_use_any = None
+
         instance_admin_client = self._client._instance_admin_client
         name = instance_admin_client.app_profile_path(
             self._client.project, self.instance_id, app_profile_id)

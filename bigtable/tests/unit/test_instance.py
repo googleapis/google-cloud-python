@@ -962,10 +962,13 @@ class TestInstance(unittest.TestCase):
         self.assertEqual(result, expected_response)
 
     def test_list_app_profiles(self):
-        from google.cloud.bigtable_admin_v2.proto import (
-            bigtable_instance_admin_pb2 as instance_messages_v1_pb2)
         from google.cloud.bigtable_admin_v2.gapic import (
             bigtable_instance_admin_client)
+        from google.cloud.bigtable_admin_v2.proto import (
+            bigtable_instance_admin_pb2 as messages_v2_pb2)
+        from google.cloud.bigtable_admin_v2.proto import (
+            instance_pb2 as data_v2_pb2)
+        from google.cloud.bigtable.app_profile import AppProfile
 
         instance_api = (
             bigtable_instance_admin_client.BigtableInstanceAdminClient(
@@ -978,14 +981,27 @@ class TestInstance(unittest.TestCase):
 
         # Setup Expected Response
         next_page_token = ''
-        app_profiles_element = {}
-        app_profiles = [app_profiles_element]
-        expected_response = {
-            'next_page_token': next_page_token,
-            'app_profiles': app_profiles
-        }
-        expected_response = instance_messages_v1_pb2.ListAppProfilesResponse(
-            **expected_response)
+        app_profile_id1 = 'app-profile-id1'
+        app_profile_id2 = 'app-profile-id2'
+        app_profile_name1 = (client.instance_admin_client.app_profile_path(
+            self.PROJECT, self.INSTANCE_ID, app_profile_id1))
+        app_profile_name2 = (client.instance_admin_client.app_profile_path(
+            self.PROJECT, self.INSTANCE_ID, app_profile_id2))
+        routing_policy = data_v2_pb2.AppProfile.MultiClusterRoutingUseAny()
+
+        expected_response = messages_v2_pb2.ListAppProfilesResponse(
+            next_page_token=next_page_token,
+            app_profiles=[
+                data_v2_pb2.AppProfile(
+                    name=app_profile_name1,
+                    multi_cluster_routing_use_any=routing_policy,
+                ),
+                data_v2_pb2.AppProfile(
+                    name=app_profile_name2,
+                    multi_cluster_routing_use_any=routing_policy,
+                )
+            ],
+        )
 
         # Patch the stub used by the API method.
         client._instance_admin_client = instance_api
@@ -995,9 +1011,15 @@ class TestInstance(unittest.TestCase):
             expected_response]
 
         # Perform the method and check the result.
-        response = instance.list_app_profiles()
+        app_profiles = instance.list_app_profiles()
 
-        self.assertEqual(response[0], expected_response.app_profiles[0])
+        app_profile_1, app_profile_2 = app_profiles
+
+        self.assertIsInstance(app_profile_1, AppProfile)
+        self.assertEqual(app_profile_1.name, app_profile_name1)
+
+        self.assertIsInstance(app_profile_2, AppProfile)
+        self.assertEqual(app_profile_2.name, app_profile_name2)
 
     def test_update_app_profile_multi_cluster_routing_policy(self):
         from google.api_core import operation
