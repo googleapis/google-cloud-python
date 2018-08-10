@@ -6,6 +6,10 @@ workflows:
     jobs:
       - unit-3.6
       - unit-3.7
+      - showcase:
+          requires:
+            - unit-3.6
+            - unit-3.7
       - docs
 jobs:
   unit-3.6:
@@ -42,6 +46,39 @@ jobs:
           name: Submit coverage data to codecov.
           command: codecov
           when: always
+  showcase:
+    docker:
+      - image: 'python:3.7'
+    steps:
+      - checkout
+      - run:
+          name: Install nox.
+          command: pip install --pre nox-automation
+      - run:
+          name: Install unzip.
+          command: |
+            apt-get update
+            apt-get install unzip
+      - run:
+          name: Install protoc 3.6.1.
+          command: |
+            mkdir -p /usr/src/protoc/
+            curl --location https://github.com/google/protobuf/releases/download/v3.6.1/protoc-3.6.1-linux-x86_64.zip --output /usr/src/protoc/protoc-3.6.1.zip
+            cd /usr/src/protoc/
+            unzip protoc-3.6.1.zip
+            ln -s /usr/src/protoc/bin/protoc /usr/local/bin/protoc
+      - run:
+          name: Download Showcase.
+          command: |
+            curl --location https://github.com/googleapis/gapic-showcase/releases/download/v0.0.3/gapic-showcase-v1alpha1-0.0.3-linux-amd64 --output /usr/local/bin/showcase
+            chmod a+x /usr/local/bin/showcase
+      - run:
+          name: Run Showcase.
+          command: /usr/local/bin/showcase
+          background: true
+      - run:
+          name: Run showcase tests.
+          command: nox -s showcase
   docs:
     docker:
       - image: 'python:3.6'

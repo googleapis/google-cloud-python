@@ -14,6 +14,7 @@
 
 from __future__ import absolute_import
 import os
+import tempfile
 
 import nox
 
@@ -34,6 +35,50 @@ def unit(session):
         '--cov-report=html',
         os.path.join('tests', 'unit'),
     )
+
+
+@nox.session(python='3.7')
+def showcase(session):
+    """Run the Showcase test suite."""
+
+    # Try to make it clear if Showcase is not running, so that
+    # people do not end up with tons of difficult-to-debug failures over
+    # an obvious problem.
+    if not os.environ.get('CIRCLECI'):
+        session.log('-' * 70)
+        session.log('Note: Showcase must be running for these tests to work.')
+        session.log('See https://github.com/googleapis/gapic-showcase')
+        session.log('-' * 70)
+        session.run('netstat', '-plnt', '|', 'grep', ':7469', silent=True)
+
+    # Install pytest and gapic-generator-python
+    session.install('pytest')
+    session.install('-e', '.')
+
+    # Install a client library for Showcase.
+    with tempfile.TemporaryDirectory() as tmp_dir:
+        showcase_version = '0.0.3'
+
+        # Download the Showcase descriptor.
+        session.run(
+            'curl', 'https://github.com/googleapis/gapic-showcase/releases/'
+                    f'download/v{showcase_version}/'
+                    f'gapic-showcase-v1alpha1-{showcase_version}.desc',
+            '-L', '--output', os.path.join(tmp_dir, 'showcase.desc'),
+            silent=True,
+        )
+
+        # Write out a client library for Showcase.
+        session.run('protoc',
+            f'--descriptor_set_in={tmp_dir}{os.path.sep}showcase.desc',
+            f'--python_out={tmp_dir}', f'--pyclient_out={tmp_dir}',
+            'google/showcase/v1alpha1/showcase.proto',
+        )
+
+        # Install the library.
+        session.install(tmp_dir)
+
+    session.run('py.test', '--quiet', os.path.join('tests', 'system'))
 
 
 @nox.session(python='3.6')
