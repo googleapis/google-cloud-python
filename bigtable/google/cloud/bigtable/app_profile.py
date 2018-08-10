@@ -252,7 +252,6 @@ class AppProfile(object):
             ``description``
             TODO: put full detail of properties that could be updated
         """
-        print('update\n')
         if not self.routing_policy_type:
             raise ValueError('AppProfile required routing policy.')
 
@@ -263,15 +262,12 @@ class AppProfile(object):
         if self.description is not None:
             update_mask_pb.paths.append('description')
 
-        print('self policy', self.routing_policy_type)
         if self.routing_policy_type == RoutingPolicyType.ANY:
             multi_cluster_routing_use_any = (
                 instance_pb2.AppProfile.MultiClusterRoutingUseAny())
             update_mask_pb.paths.append('multi_cluster_routing_use_any')
 
         if self.routing_policy_type == RoutingPolicyType.SINGLE:
-            print('self.cluster', self.cluster_id)
-            print('self.writes', self.allow_transactional_writes)
             single_cluster_routing = (
                 instance_pb2.AppProfile.SingleClusterRouting(
                     cluster_id=self.cluster_id,
@@ -285,8 +281,6 @@ class AppProfile(object):
             multi_cluster_routing_use_any=multi_cluster_routing_use_any,
             single_cluster_routing=single_cluster_routing
         )
-        print('profile to update with', update_app_profile_pb)
-        print('update_mask', update_mask_pb)
         return client._instance_admin_client.update_app_profile(
             app_profile=update_app_profile_pb, update_mask=update_mask_pb,
             ignore_warnings=ignore_warnings)
@@ -303,7 +297,6 @@ class AppProfile(object):
                 If the request failed due to a retryable error and retry
                 attempts failed. ValueError: If the parameters are invalid.
         """
-        print('deleting', self.name)
         client = self._instance._client
         client.instance_admin_client.delete_app_profile(
             self.name, ignore_warnings)
