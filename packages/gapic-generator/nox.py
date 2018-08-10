@@ -18,14 +18,9 @@ import os
 import nox
 
 
-@nox.session
-@nox.parametrize('python_version', ['3.6', '3.7'])
-def unit(session, python_version='3.7'):
+@nox.session(python=['3.6', '3.7'])
+def unit(session):
     """Run the unit test suite."""
-
-    session.interpreter = 'python{0}'.format(python_version)
-
-    session.virtualenv_dirname = 'unit-{0}'.format(python_version)
 
     session.install('coverage', 'pytest', 'pytest-cov')
     session.install('-e', '.')
@@ -41,11 +36,10 @@ def unit(session, python_version='3.7'):
     )
 
 
-@nox.session
+@nox.session(python='3.6')
 def docs(session):
     """Build the docs."""
 
-    session.interpreter = 'python3.6'
     session.install('sphinx', 'sphinx_rtd_theme')
     session.install('.')
 
