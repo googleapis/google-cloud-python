@@ -42,4 +42,26 @@
   "mode": "NULLABLE",
   "name": "bytes",
   "type": "BYTES"
+},
+{
+  "mode": "NULLABLE",
+  "name": "record",
+  "type": "RECORD",
+  "fields": [
+    {
+      "mode": "NULLABLE",
+      "name": "name",
+      "type": "STRING"
+    },
+    {
+      "mode": "NULLABLE",
+      "name": "age",
+      "type": "INTEGER"
+    }
+  ]
+},
+{
+  "mode": "REPEATED",
+  "name": "array",
+  "type": "INTEGER"
 }]
