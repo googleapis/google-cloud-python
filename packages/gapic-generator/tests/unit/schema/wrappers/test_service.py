@@ -16,6 +16,7 @@ import typing
 
 from google.api import annotations_pb2
 from google.api import http_pb2
+from google.api import signature_pb2
 from google.protobuf import descriptor_pb2
 
 from gapic.schema import metadata
@@ -50,7 +51,11 @@ def test_service_no_scopes():
 
 
 def test_service_python_modules():
-    service = make_service()
+    service = make_service(methods=(
+        get_method('DoThing', 'foo.bar.ThingRequest', 'foo.baz.ThingResponse'),
+        get_method('Jump', 'foo.bacon.JumpRequest', 'foo.bacon.JumpResponse'),
+        get_method('Yawn', 'a.b.v1.c.YawnRequest', 'x.y.v1.z.YawnResponse'),
+    ))
     assert service.python_modules == (
         ('a.b.v1', 'c_pb2'),
         ('foo', 'bacon_pb2'),
@@ -63,6 +68,28 @@ def test_service_python_modules():
 def test_service_python_modules_lro():
     service = make_service_with_method_options()
     assert service.python_modules == (
+        ('foo', 'bar_pb2'),
+        ('foo', 'baz_pb2'),
+        ('foo', 'qux_pb2'),
+        ('google.api_core', 'operation'),
+    )
+
+
+def test_service_python_modules_signature():
+    service = make_service_with_method_options(
+        in_fields=(
+            descriptor_pb2.FieldDescriptorProto(name='secs', type=5),
+            descriptor_pb2.FieldDescriptorProto(
+                name='d',
+                type=11,  # message
+                type_name='a.b.c.v2.D',
+            ),
+        ),
+        method_signature=signature_pb2.MethodSignature(fields=['secs', 'd']),
+    )
+    # type=5 is int, so nothing is added.
+    assert service.python_modules == (
+        ('a.b.c', 'v2_pb2'),
         ('foo', 'bar_pb2'),
         ('foo', 'baz_pb2'),
         ('foo', 'qux_pb2'),
@@ -97,14 +124,8 @@ def test_module_name():
 
 
 def make_service(name: str = 'Placeholder', host: str = '',
+                 methods: typing.Tuple[wrappers.Method] = (),
                  scopes: typing.Tuple[str] = ()) -> wrappers.Service:
-    # Declare a few methods, with messages in distinct packages.
-    methods = (
-        get_method('DoThing', 'foo.bar.ThingRequest', 'foo.baz.ThingResponse'),
-        get_method('Jump', 'foo.bacon.JumpRequest', 'foo.bacon.JumpResponse'),
-        get_method('Yawn', 'a.b.v1.c.YawnRequest', 'x.y.v1.z.YawnResponse'),
-    )
-
     # Define a service descriptor, and set a host and oauth scopes if
     # appropriate.
     service_pb = descriptor_pb2.ServiceDescriptorProto(name=name)
@@ -119,8 +140,12 @@ def make_service(name: str = 'Placeholder', host: str = '',
     )
 
 
+# FIXME (lukesneeringer): This test method is convoluted and it makes these
+#                         tests difficult to understand and maintain.
 def make_service_with_method_options(*,
         http_rule: http_pb2.HttpRule = None,
+        method_signature: signature_pb2.MethodSignature = None,
+        in_fields: typing.Tuple[descriptor_pb2.FieldDescriptorProto] = ()
         ) -> wrappers.Service:
     # Declare a method with options enabled for long-running operations and
     # field headers.
@@ -130,7 +155,9 @@ def make_service_with_method_options(*,
         'google.longrunning.operations.Operation',
         lro_response_type='foo.baz.ThingResponse',
         lro_metadata_type='foo.qux.ThingMetadata',
+        in_fields=in_fields,
         http_rule=http_rule,
+        method_signature=method_signature,
     )
 
     # Define a service descriptor.
@@ -147,10 +174,12 @@ def get_method(name: str,
         in_type: str,
         out_type: str,
         lro_response_type: str = '',
-        lro_metadata_type: str = '',
+        lro_metadata_type: str = '', *,
+        in_fields: typing.Tuple[descriptor_pb2.FieldDescriptorProto] = (),
         http_rule: http_pb2.HttpRule = None,
+        method_signature: signature_pb2.MethodSignature = None,
         ) -> wrappers.Method:
-    input_ = get_message(in_type)
+    input_ = get_message(in_type, fields=in_fields)
     output = get_message(out_type)
 
     # Define a method descriptor. Set the field headers if appropriate.
@@ -167,6 +196,9 @@ def get_method(name: str,
     if http_rule:
         ext_key = annotations_pb2.http
         method_pb.options.Extensions[ext_key].MergeFrom(http_rule)
+    if method_signature:
+        ext_key = annotations_pb2.method_signature
+        method_pb.options.Extensions[ext_key].MergeFrom(method_signature)
 
     return wrappers.Method(
         method_pb=method_pb,
@@ -175,7 +207,9 @@ def get_method(name: str,
     )
 
 
-def get_message(dot_path: str) -> wrappers.MessageType:
+def get_message(dot_path: str, *,
+        fields: typing.Tuple[descriptor_pb2.FieldDescriptorProto] = (),
+        ) -> wrappers.MessageType:
     # Pass explicit None through (for lro_metadata).
     if dot_path is None:
         return None
@@ -189,8 +223,11 @@ def get_message(dot_path: str) -> wrappers.MessageType:
     pieces = dot_path.split('.')
     pkg, module, name = pieces[:-2], pieces[-2], pieces[-1]
     return wrappers.MessageType(
-        fields={},
-        message_pb=descriptor_pb2.DescriptorProto(name=name),
+        fields={i.name: wrappers.Field(
+            field_pb=i,
+            message=get_message(i.type_name) if i.type_name else None,
+        ) for i in fields},
+        message_pb=descriptor_pb2.DescriptorProto(name=name, field=fields),
         meta=metadata.Metadata(address=metadata.Address(
             package=pkg,
             module=module,

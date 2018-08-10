@@ -521,6 +521,19 @@ class Service:
                 method.output.python_module,
             ))
 
+            # If this method has flattening that is honored, add its
+            # modules.
+            #
+            # This entails adding the module for any field on the signature
+            # unless the field is a primitive.
+            for sig in method.signatures.single_dispatch:
+                for field in sig.fields.values():
+                    if not isinstance(field.type, PythonType):
+                        answer.add((
+                            '.'.join(field.type.meta.address.package),
+                            field.type.python_module,
+                        ))
+
             # If this method has LRO, it is possible (albeit unlikely) that
             # the LRO messages reside in a different module.
             if getattr(method.output, 'lro_response', None):
