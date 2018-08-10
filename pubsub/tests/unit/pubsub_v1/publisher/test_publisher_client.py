@@ -36,13 +36,6 @@ def test_init():
     assert client.batch_settings.max_messages == 1000
 
 
-def test_batch_class_no_longer_supported():
-    creds = mock.Mock(spec=credentials.Credentials)
-    batch_class = mock.Mock()
-    with pytest.raises(NotImplementedError):
-        publisher.Client(credentials=creds, batch_class=batch_class)
-
-
 def test_init_emulator(monkeypatch):
     monkeypatch.setenv('PUBSUB_EMULATOR_HOST', '/foo/bar/')
     # NOTE: When the emulator host is set, a custom channel will be used, so

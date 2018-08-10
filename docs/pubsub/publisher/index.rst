@@ -58,10 +58,9 @@ If you want to include attributes, simply add keyword arguments:
 Batching
 --------
 
-Whenever you publish a message, a
-:class:`~.pubsub_v1.publisher._batch.thread.Batch` is automatically created.
-This way, if you publish a large volume of messages, it reduces the number of
-requests made to the server.
+Whenever you publish a message, the publisher will automatically batch the
+messages over a small time window to avoid making too many separate requests to
+the service.  This helps increase throughput.
 
 .. note::
 
@@ -69,12 +68,11 @@ requests made to the server.
     environment with threading enabled. It is possible to provide an
     alternative batch class that uses another concurrency strategy.
 
-The way that this works is that on the first message that you send, a new
-:class:`~.pubsub_v1.publisher._batch.thread.Batch` is created automatically.
-For every subsequent message, if there is already a valid batch that is still
-accepting messages, then that batch is used. When the batch is created, it
-begins a countdown that publishes the batch once sufficient time has
-elapsed (by default, this is 0.05 seconds).
+The way that this works is that on the first message that you send, a new batch
+is created automatically.  For every subsequent message, if there is already a
+valid batch that is still accepting messages, then that batch is used. When the
+batch is created, it begins a countdown that publishes the batch once
+sufficient time has elapsed (by default, this is 0.05 seconds).
 
 If you need different batching settings, simply provide a
 :class:`~.pubsub_v1.types.BatchSettings` object when you instantiate the

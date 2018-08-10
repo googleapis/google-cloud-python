@@ -61,12 +61,6 @@ class Client(object):
                 target=os.environ.get('PUBSUB_EMULATOR_HOST'),
             )
 
-        if 'batch_class' in kwargs:
-            raise NotImplementedError(
-                'The "batch_class" parameter to the Client constructor is no '
-                'longer supported.'
-            )
-
         # Use a custom channel.
         # We need this in order to set appropriate default message size and
         # keepalive options.
