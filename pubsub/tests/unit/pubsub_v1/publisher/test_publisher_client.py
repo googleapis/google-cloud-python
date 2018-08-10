@@ -36,6 +36,13 @@ def test_init():
     assert client.batch_settings.max_messages == 1000
 
 
+def test_batch_class_no_longer_supported():
+    creds = mock.Mock(spec=credentials.Credentials)
+    batch_class = mock.Mock()
+    with pytest.raises(NotImplementedError):
+        publisher.Client(credentials=creds, batch_class=batch_class)
+
+
 def test_init_emulator(monkeypatch):
     monkeypatch.setenv('PUBSUB_EMULATOR_HOST', '/foo/bar/')
     # NOTE: When the emulator host is set, a custom channel will be used, so
@@ -56,7 +63,7 @@ def test_batch_create():
 
     assert len(client._batches) == 0
     topic = 'topic/path'
-    batch = client.batch(topic, autocommit=False)
+    batch = client._batch(topic, autocommit=False)
     assert client._batches == {topic: batch}
 
 
@@ -68,7 +75,7 @@ def test_batch_exists():
     client._batches[topic] = mock.sentinel.batch
 
     # A subsequent request should return the same batch.
-    batch = client.batch(topic, autocommit=False)
+    batch = client._batch(topic, autocommit=False)
     assert batch is mock.sentinel.batch
     assert client._batches == {topic: batch}
 
@@ -81,7 +88,7 @@ def test_batch_create_and_exists():
     client._batches[topic] = mock.sentinel.batch
 
     # A subsequent request should return the same batch.
-    batch = client.batch(topic, create=True, autocommit=False)
+    batch = client._batch(topic, create=True, autocommit=False)
     assert batch is not mock.sentinel.batch
     assert client._batches == {topic: batch}
 
