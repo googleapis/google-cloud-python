@@ -4,6 +4,16 @@
 
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
+## 0.36.0
+
+### Implementation Changes
+- Pubsub: Make 'Message.publish_time' return datetime (#5633)
+- Ensure SPM methods check that 'self._consumer' is not None before use. (#5758)
+
+### New Features
+- PubSub: add geo-fencing support (#5769)
+- Add 'Message.ack_id' property. (#5693)
+
 ## 0.35.4
 
 ### Implementation Changes
