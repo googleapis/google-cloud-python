@@ -13,7 +13,7 @@
 # limitations under the License.
 
 import os
-from typing import Any, Iterable, Mapping, Sequence
+from typing import Any, Iterable, Mapping, Sequence, Tuple
 
 import jinja2
 
@@ -110,34 +110,32 @@ class Generator:
                 objects for inclusion in the final response.
         """
         answer = []
-        additional_context = additional_context or {}
+        context = additional_context or {}
 
         # Iterate over the provided templates and generate a File object
         # for each.
         for template_name in templates:
-            # Generate the File object.
-            answer.append(CodeGeneratorResponse.File(
-                content=formatter.fix_whitespace(
-                    self._env.get_template(template_name).render(
-                        api=self._api,
-                        **additional_context
+            for fn in self._get_filenames(template_name, context=context):
+                # Generate the File object.
+                answer.append(CodeGeneratorResponse.File(
+                    content=formatter.fix_whitespace(
+                        self._env.get_template(template_name).render(
+                            api=self._api,
+                            **context
+                        ),
                     ),
-                ),
-                name=self._get_output_filename(
-                    template_name,
-                    context=additional_context,
-                ),
-            ))
+                    name=fn,
+                ))
 
         # Done; return the File objects based on these templates.
         return answer
 
-    def _get_output_filename(
+    def _get_filenames(
             self,
             template_name: str, *,
             context: dict = None,
-            ) -> str:
-        """Return the appropriate output filename for this template.
+            ) -> Tuple[str]:
+        """Return the appropriate output filenames for this template.
 
         This entails running the template name through a series of
         replacements to replace the "filename variables" (``$name``,
@@ -154,15 +152,27 @@ class Generator:
             context (Mapping): Additional context being sent to the template.
 
         Returns:
-            str: The appropriate output filename.
+            Tuple[str]: The appropriate output filenames.
         """
-        filename = template_name[:-len('.j2')] \
+        filename = template_name[:-len('.j2')]
+
+        # Special case: If the filename is `$namespace/__init__.py`, we
+        # need this exact file to be part of every individual directory
+        # in the namespace tree. Handle this special case.
+        #
+        # For more information, see:
+        # https://packaging.python.org/guides/packaging-namespace-packages/
+        if filename == os.path.join('$namespace', '__init__.py'):
+            return tuple([
+                os.path.sep.join(i.split('.') + ['__init__.py'])
+                for i in self._api.naming.namespace_packages
+            ])
 
         # Replace the $namespace variable.
         filename = filename.replace(
             '$namespace',
-            '/'.join([i.lower() for i in self._api.naming.namespace]),
-        ).lstrip('/')
+            os.path.sep.join([i.lower() for i in self._api.naming.namespace]),
+        ).lstrip(os.path.sep)
 
         # Replace the $name and $version variables.
         filename = filename.replace('$name_$version',
@@ -175,7 +185,7 @@ class Generator:
                                         context['service'].module_name)
 
         # Done, return the filename.
-        return filename
+        return (filename,)
 
 
 __all__ = (

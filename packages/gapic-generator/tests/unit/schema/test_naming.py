@@ -53,6 +53,11 @@ def test_versioned_module_name():
     assert n.versioned_module_name == 'genie_v2'
 
 
+def test_namespace_packages():
+    n = make_naming(name='BigQuery', namespace=('Google', 'Cloud'))
+    assert n.namespace_packages == ('google', 'google.cloud')
+
+
 def test_warehouse_package_name_no_namespace():
     n = make_naming(name='BigQuery', namespace=[])
     assert n.warehouse_package_name == 'bigquery'

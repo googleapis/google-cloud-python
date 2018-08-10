@@ -134,15 +134,15 @@ def test_render_templates_additional_context():
     assert files[0].content == 'A bird!\n'
 
 
-def test_get_output_filename():
+def test_get_filenames():
     g = generator.Generator(api_schema=make_api(
         naming=make_naming(namespace=(), name='Spam', version='v2'),
     ))
     template_name = '$namespace/$name_$version/foo.py.j2'
-    assert g._get_output_filename(template_name) == 'spam_v2/foo.py'
+    assert g._get_filenames(template_name) == ('spam_v2/foo.py',)
 
 
-def test_get_output_filename_with_namespace():
+def test_get_filenames_with_namespace():
     g = generator.Generator(api_schema=make_api(
         naming=make_naming(
             name='Spam',
@@ -151,15 +151,15 @@ def test_get_output_filename_with_namespace():
         ),
     ))
     template_name = '$namespace/$name_$version/foo.py.j2'
-    assert g._get_output_filename(template_name) == 'ham/bacon/spam_v2/foo.py'
+    assert g._get_filenames(template_name) == ('ham/bacon/spam_v2/foo.py',)
 
 
-def test_get_output_filename_with_service():
+def test_get_filenames_with_service():
     g = generator.Generator(api_schema=make_api(
         naming=make_naming(namespace=(), name='Spam', version='v2'),
     ))
     template_name = '$name/$service/foo.py.j2'
-    assert g._get_output_filename(
+    assert g._get_filenames(
         template_name,
         context={
             'service': wrappers.Service(
@@ -167,7 +167,21 @@ def test_get_output_filename_with_service():
                 service_pb=descriptor_pb2.ServiceDescriptorProto(name='Eggs'),
             ),
         }
-    ) == 'spam/eggs/foo.py'
+    ) == ('spam/eggs/foo.py',)
+
+
+def test_get_filenames_with_namespace_init():
+    g = generator.Generator(api_schema=make_api(naming=make_naming(
+        namespace=('Foo', 'Bar', 'Baz'),
+        name='Spam',
+        version='v2',
+    )))
+    template_name = '$namespace/__init__.py.j2'
+    assert g._get_filenames(template_name) == (
+        'foo/__init__.py',
+        'foo/bar/__init__.py',
+        'foo/bar/baz/__init__.py',
+    )
 
 
 def make_proto(file_pb: descriptor_pb2.FileDescriptorProto,

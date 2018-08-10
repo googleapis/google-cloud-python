@@ -163,6 +163,14 @@ class Naming:
         return utils.to_valid_module_name(self.name)
 
     @property
+    def namespace_packages(self) -> Tuple[str]:
+        """Return the appropriate Python namespace packages."""
+        answer = []
+        for cursor in [i.lower() for i in self.namespace]:
+            answer.append(f'{answer[-1]}.{cursor}' if answer else cursor)
+        return tuple(answer)
+
+    @property
     def versioned_module_name(self) -> str:
         """Return the versiond module name (e.g. ``apiname_v1``).
 
