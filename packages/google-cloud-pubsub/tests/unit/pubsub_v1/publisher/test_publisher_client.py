@@ -206,11 +206,14 @@ def test_publish_attrs_type_error():
 def test_gapic_instance_method():
     creds = mock.Mock(spec=credentials.Credentials)
     client = publisher.Client(credentials=creds)
-    with mock.patch.object(client.api, '_create_topic', autospec=True) as ct:
-        client.create_topic('projects/foo/topics/bar')
-        assert ct.call_count == 1
-        _, args, _ = ct.mock_calls[0]
-        assert args[0] == types.Topic(name='projects/foo/topics/bar')
+
+    ct = mock.Mock()
+    client.api._inner_api_calls['create_topic'] = ct
+
+    client.create_topic('projects/foo/topics/bar')
+    assert ct.call_count == 1
+    _, args, _ = ct.mock_calls[0]
+    assert args[0] == types.Topic(name='projects/foo/topics/bar')
 
 
 def test_gapic_class_method():

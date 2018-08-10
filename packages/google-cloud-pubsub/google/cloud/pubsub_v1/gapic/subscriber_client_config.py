@@ -80,7 +80,7 @@ config = {
                     "retry_params_name": "messaging"
                 },
                 "StreamingPull": {
-                    "timeout_millis": 60000,
+                    "timeout_millis": 900000,
                     "retry_codes_name": "pull",
                     "retry_params_name": "streaming_messaging"
                 },

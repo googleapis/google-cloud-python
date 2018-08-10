@@ -12,9 +12,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-try:
-    import pkg_resources
-    pkg_resources.declare_namespace(__name__)
-except ImportError:
-    import pkgutil
-    __path__ = pkgutil.extend_path(__path__, __name__)
+import os
+import time
+
+from google.cloud import pubsub_v1
+from google.cloud.pubsub_v1.proto import pubsub_pb2
+
+
+class TestSystemPublisher(object):
+    def test_list_topics(self):
+        project_id = os.environ['PROJECT_ID']
+
+        client = pubsub_v1.PublisherClient()
+        project = client.project_path(project_id)
+        response = client.list_topics(project)
