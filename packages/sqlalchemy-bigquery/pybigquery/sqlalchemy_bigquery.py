@@ -52,9 +52,8 @@ _type_map = {
     'DATETIME': types.DATETIME,
     'DATE': types.DATE,
     'BYTES': types.BINARY,
-    'TIME': types.TIME
-    # TODO
-    # 'RECORD'
+    'TIME': types.TIME,
+    'RECORD': types.JSON,
 }
 
 
@@ -165,8 +164,8 @@ class BigQueryDialect(DefaultDialect):
 
             result.append({
                 'name': col.name,
-                'type': coltype,
-                'nullable': True if col.mode == 'NULLABLE' else False,
+                'type': types.ARRAY if col.mode == 'REPEATED' else coltype,
+                'nullable': col.mode == 'NULLABLE' or col.mode == 'REPEATED',
                 'default': None,
             })
 
