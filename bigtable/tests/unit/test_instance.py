@@ -905,10 +905,3 @@ class _Client(object):
     def __eq__(self, other):
         return (other.project == self.project and
                 other.project_name == self.project_name)
-
-
-def _CreateAppProfileRequestPB(*args, **kw):
-    from google.cloud.bigtable_admin_v2.proto import (
-        bigtable_instance_admin_pb2 as instance_v2_pb2)
-
-    return instance_v2_pb2.CreateAppProfileRequest(*args, **kw)

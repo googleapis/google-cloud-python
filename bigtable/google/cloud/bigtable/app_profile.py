@@ -1,4 +1,4 @@
-# Copyright 2018 Google Inc.
+# Copyright 2018 Google LLC.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -39,22 +39,18 @@ class AppProfile(object):
 
     :type app_profile_id: str
     :param app_profile_id: The ID of the app profile. Must be of the form
-                          ``[_a-zA-Z0-9][-_.a-zA-Z0-9]*``.
+                           ``[_a-zA-Z0-9][-_.a-zA-Z0-9]*``.
 
     :type: routing_policy_type: int
-        :param: routing_policy_type: The type of the routing policy.
-                                     Possible values are represented
-                                     by the following constants:
-                                     :data:`google.cloud.bigtable.enums.RoutingPolicyType.ANY`
-                                     :data:`google.cloud.bigtable.enums.RoutingPolicyType.SINGLE`
+    :param: routing_policy_type: The type of the routing policy.
+                                 Possible values are represented
+                                 by the following constants:
+                                 :data:`google.cloud.bigtable.enums.RoutingPolicyType.ANY`
+                                 :data:`google.cloud.bigtable.enums.RoutingPolicyType.SINGLE`
 
     :type: description: str
     :param: description: (Optional) Long form description of the use
-                            case for this AppProfile.
-
-    :type: ignore_warnings: bool
-    :param: ignore_warnings: (Optional) If true, ignore safety checks when
-                                creating the app profile.
+                         case for this AppProfile.
 
     :type: cluster_id: str
     :param: cluster_id: (Optional) Unique cluster_id which is only required
@@ -93,9 +89,18 @@ class AppProfile(object):
         :rtype: str
         :returns: The app profile name.
         """
-        return self._instance._client.instance_admin_client.app_profile_path(
+        return self.instance_admin_client.app_profile_path(
             self._instance._client.project, self._instance.instance_id,
             self.app_profile_id)
+
+    @property
+    def instance_admin_client(self):
+        """Shortcut to instance_admin_client
+
+        :rtype: :class:`.bigtable_admin_pb2.BigtableInstanceAdmin`
+        :returns: A BigtableInstanceAdmin instance.
+        """
+        return self._instance._client.instance_admin_client
 
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
@@ -170,11 +175,37 @@ class AppProfile(object):
                 .allow_transactional_writes)
         self.routing_policy_type = routing_policy_type
 
+    def _to_pb(self):
+        """ Create app profile proto buff message for API calls """
+        if not self.routing_policy_type:
+            raise ValueError('AppProfile required routing policy.')
+
+        single_cluster_routing = None
+        multi_cluster_routing_use_any = None
+
+        if self.routing_policy_type == RoutingPolicyType.ANY:
+            multi_cluster_routing_use_any = (
+                instance_pb2.AppProfile.MultiClusterRoutingUseAny())
+
+        if self.routing_policy_type == RoutingPolicyType.SINGLE:
+            single_cluster_routing = (
+                instance_pb2.AppProfile.SingleClusterRouting(
+                    cluster_id=self.cluster_id,
+                    allow_transactional_writes=self.allow_transactional_writes)
+            )
+
+        app_profile_pb = instance_pb2.AppProfile(
+            name=self.name, description=self.description,
+            multi_cluster_routing_use_any=multi_cluster_routing_use_any,
+            single_cluster_routing=single_cluster_routing
+        )
+        return app_profile_pb
+
     def reload(self):
         """Reload the metadata for this cluster"""
 
         app_profile_pb = (
-            self._instance._client.instance_admin_client.get_app_profile(
+            self.instance_admin_client.get_app_profile(
                 self.name))
 
         # NOTE: _update_from_pb does not check that the project and
@@ -187,9 +218,8 @@ class AppProfile(object):
         :rtype: bool
         :returns: True if the app profile exists, else False.
         """
-        client = self._instance._client
         try:
-            client.instance_admin_client.get_app_profile(self.name)
+            self.instance_admin_client.get_app_profile(self.name)
             return True
         # NOTE: There could be other exceptions that are returned to the user.
         except NotFound:
@@ -215,32 +245,9 @@ class AppProfile(object):
         :param: ignore_warnings: (Optional) If true, ignore safety checks when
                                  creating the app profile.
         """
-        if not self.routing_policy_type:
-            raise ValueError('AppProfile required routing policy.')
-
-        single_cluster_routing = None
-        multi_cluster_routing_use_any = None
-
-        if self.routing_policy_type == RoutingPolicyType.ANY:
-            multi_cluster_routing_use_any = (
-                instance_pb2.AppProfile.MultiClusterRoutingUseAny())
-
-        if self.routing_policy_type == RoutingPolicyType.SINGLE:
-            single_cluster_routing = (
-                instance_pb2.AppProfile.SingleClusterRouting(
-                    cluster_id=self.cluster_id,
-                    allow_transactional_writes=self.allow_transactional_writes)
-            )
-
-        client = self._instance._client
-        app_profile_pb = instance_pb2.AppProfile(
-            name=self.name, description=self.description,
-            multi_cluster_routing_use_any=multi_cluster_routing_use_any,
-            single_cluster_routing=single_cluster_routing
-        )
-        return self.from_pb(client._instance_admin_client.create_app_profile(
+        return self.from_pb(self.instance_admin_client.create_app_profile(
             parent=self._instance.name, app_profile_id=self.app_profile_id,
-            app_profile=app_profile_pb, ignore_warnings=ignore_warnings),
+            app_profile=self._to_pb(), ignore_warnings=ignore_warnings),
             self._instance)
 
     def update(self, ignore_warnings=None):
@@ -252,37 +259,19 @@ class AppProfile(object):
             ``description``
             TODO: put full detail of properties that could be updated
         """
-        if not self.routing_policy_type:
-            raise ValueError('AppProfile required routing policy.')
-
         update_mask_pb = field_mask_pb2.FieldMask()
-        single_cluster_routing = None
-        multi_cluster_routing_use_any = None
 
         if self.description is not None:
             update_mask_pb.paths.append('description')
 
         if self.routing_policy_type == RoutingPolicyType.ANY:
-            multi_cluster_routing_use_any = (
-                instance_pb2.AppProfile.MultiClusterRoutingUseAny())
             update_mask_pb.paths.append('multi_cluster_routing_use_any')
 
         if self.routing_policy_type == RoutingPolicyType.SINGLE:
-            single_cluster_routing = (
-                instance_pb2.AppProfile.SingleClusterRouting(
-                    cluster_id=self.cluster_id,
-                    allow_transactional_writes=self.allow_transactional_writes
-                ))
             update_mask_pb.paths.append('single_cluster_routing')
 
-        client = self._instance._client
-        update_app_profile_pb = instance_pb2.AppProfile(
-            name=self.name, description=self.description,
-            multi_cluster_routing_use_any=multi_cluster_routing_use_any,
-            single_cluster_routing=single_cluster_routing
-        )
-        return client._instance_admin_client.update_app_profile(
-            app_profile=update_app_profile_pb, update_mask=update_mask_pb,
+        return self.instance_admin_client.update_app_profile(
+            app_profile=self._to_pb(), update_mask=update_mask_pb,
             ignore_warnings=ignore_warnings)
 
     def delete(self, ignore_warnings=None):
@@ -293,10 +282,9 @@ class AppProfile(object):
                 the app profile.
 
         :raises: google.api_core.exceptions.GoogleAPICallError: If the request
-                failed for any reason. google.api_core.exceptions.RetryError:
-                If the request failed due to a retryable error and retry
-                attempts failed. ValueError: If the parameters are invalid.
+                 failed for any reason. google.api_core.exceptions.RetryError:
+                 If the request failed due to a retryable error and retry
+                 attempts failed. ValueError: If the parameters are invalid.
         """
-        client = self._instance._client
-        client.instance_admin_client.delete_app_profile(
+        self.instance_admin_client.delete_app_profile(
             self.name, ignore_warnings)

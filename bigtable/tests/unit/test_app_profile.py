@@ -1,4 +1,4 @@
-# Copyright 2018 Google Inc.
+# Copyright 2018 Google LLC.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -361,7 +361,6 @@ class TestAppProfile(unittest.TestCase):
     def test_create_routing_any(self):
         from google.cloud.bigtable_admin_v2.proto import (
             bigtable_instance_admin_pb2 as messages_v2_pb2)
-        from google.cloud.bigtable_admin_v2.types import instance_pb2
         from google.cloud.bigtable.enums import RoutingPolicyType
         from google.cloud.bigtable_admin_v2.gapic import (
             bigtable_instance_admin_client)
@@ -373,18 +372,12 @@ class TestAppProfile(unittest.TestCase):
 
         routing = RoutingPolicyType.ANY
         description = 'routing policy any'
-        multi_cluster_routing_use_any = (
-            instance_pb2.AppProfile.MultiClusterRoutingUseAny())
         ignore_warnings = True
 
         app_profile = self._make_one(self.APP_PROFILE_ID, instance,
                                      routing_policy_type=routing,
                                      description=description)
-        expected_request_app_profile = instance_pb2.AppProfile(
-            name=self.APP_PROFILE_NAME,
-            multi_cluster_routing_use_any=multi_cluster_routing_use_any,
-            description=description,
-        )
+        expected_request_app_profile = app_profile._to_pb()
         expected_request = messages_v2_pb2.CreateAppProfileRequest(
             parent=instance.name, app_profile_id=self.APP_PROFILE_ID,
             app_profile=expected_request_app_profile,
@@ -413,7 +406,6 @@ class TestAppProfile(unittest.TestCase):
     def test_create_routing_single(self):
         from google.cloud.bigtable_admin_v2.proto import (
             bigtable_instance_admin_pb2 as messages_v2_pb2)
-        from google.cloud.bigtable_admin_v2.types import instance_pb2
         from google.cloud.bigtable.enums import RoutingPolicyType
         from google.cloud.bigtable_admin_v2.gapic import (
             bigtable_instance_admin_client)
@@ -426,10 +418,6 @@ class TestAppProfile(unittest.TestCase):
         routing = RoutingPolicyType.SINGLE
         description = 'routing policy single'
         allow_writes = False
-        single_cluster_routing = (
-            instance_pb2.AppProfile.SingleClusterRouting(
-                cluster_id=self.CLUSTER_ID,
-                allow_transactional_writes=allow_writes))
         ignore_warnings = True
 
         app_profile = self._make_one(self.APP_PROFILE_ID, instance,
@@ -437,11 +425,7 @@ class TestAppProfile(unittest.TestCase):
                                      description=description,
                                      cluster_id=self.CLUSTER_ID,
                                      allow_transactional_writes=allow_writes)
-        expected_request_app_profile = instance_pb2.AppProfile(
-            name=self.APP_PROFILE_NAME,
-            single_cluster_routing=single_cluster_routing,
-            description=description,
-        )
+        expected_request_app_profile = app_profile._to_pb()
         expected_request = messages_v2_pb2.CreateAppProfileRequest(
             parent=instance.name, app_profile_id=self.APP_PROFILE_ID,
             app_profile=expected_request_app_profile,
@@ -483,7 +467,6 @@ class TestAppProfile(unittest.TestCase):
         from google.protobuf.any_pb2 import Any
         from google.cloud.bigtable_admin_v2.proto import (
             bigtable_instance_admin_pb2 as messages_v2_pb2)
-        from google.cloud.bigtable_admin_v2.types import instance_pb2
         from google.cloud.bigtable.enums import RoutingPolicyType
         from google.cloud.bigtable_admin_v2.gapic import (
             bigtable_instance_admin_client)
@@ -524,20 +507,12 @@ class TestAppProfile(unittest.TestCase):
         client._instance_admin_client = instance_api
 
         # Perform the method and check the result.
-        single_cluster_routing = (
-            instance_pb2.AppProfile.SingleClusterRouting(
-                cluster_id=self.CLUSTER_ID,
-                allow_transactional_writes=allow_writes))
         ignore_warnings = True
-        expected_request_app_profile = instance_pb2.AppProfile(
-            name=app_profile.name,
-            description=description,
-            single_cluster_routing=single_cluster_routing)
         expected_request_update_mask = field_mask_pb2.FieldMask(
             paths=['description', 'single_cluster_routing']
         )
         expected_request = messages_v2_pb2.UpdateAppProfileRequest(
-            app_profile=expected_request_app_profile,
+            app_profile=app_profile._to_pb(),
             update_mask=expected_request_update_mask,
             ignore_warnings=ignore_warnings
         )
@@ -557,7 +532,6 @@ class TestAppProfile(unittest.TestCase):
         from google.protobuf.any_pb2 import Any
         from google.cloud.bigtable_admin_v2.proto import (
             bigtable_instance_admin_pb2 as messages_v2_pb2)
-        from google.cloud.bigtable_admin_v2.types import instance_pb2
         from google.cloud.bigtable.enums import RoutingPolicyType
         from google.cloud.bigtable_admin_v2.gapic import (
             bigtable_instance_admin_client)
@@ -593,17 +567,12 @@ class TestAppProfile(unittest.TestCase):
         client._instance_admin_client = instance_api
 
         # Perform the method and check the result.
-        multi_cluster_routing_use_any = (
-            instance_pb2.AppProfile.MultiClusterRoutingUseAny())
         ignore_warnings = True
-        expected_request_app_profile = instance_pb2.AppProfile(
-            name=app_profile.name,
-            multi_cluster_routing_use_any=multi_cluster_routing_use_any)
         expected_request_update_mask = field_mask_pb2.FieldMask(
             paths=['multi_cluster_routing_use_any']
         )
         expected_request = messages_v2_pb2.UpdateAppProfileRequest(
-            app_profile=expected_request_app_profile,
+            app_profile=app_profile._to_pb(),
             update_mask=expected_request_update_mask,
             ignore_warnings=ignore_warnings
         )

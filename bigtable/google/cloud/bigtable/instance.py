@@ -453,10 +453,6 @@ class Instance(object):
         :param: description: (Optional) Long form description of the use
                              case for this AppProfile.
 
-        :type: ignore_warnings: bool
-        :param: ignore_warnings: (Optional) If true, ignore safety checks when
-                                 creating the app profile.
-
         :type: cluster_id: str
         :param: cluster_id: (Optional) Unique cluster_id which is only required
                             when routing_policy_type is
