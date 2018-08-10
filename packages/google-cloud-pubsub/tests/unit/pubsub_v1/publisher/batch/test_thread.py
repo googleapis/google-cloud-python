@@ -22,9 +22,9 @@ from google.auth import credentials
 from google.cloud.pubsub_v1 import publisher
 from google.cloud.pubsub_v1 import types
 from google.cloud.pubsub_v1.publisher import exceptions
-from google.cloud.pubsub_v1.publisher.batch.base import BatchStatus
-from google.cloud.pubsub_v1.publisher.batch import thread
-from google.cloud.pubsub_v1.publisher.batch.thread import Batch
+from google.cloud.pubsub_v1.publisher._batch.base import BatchStatus
+from google.cloud.pubsub_v1.publisher._batch import thread
+from google.cloud.pubsub_v1.publisher._batch.thread import Batch
 
 
 def create_client():

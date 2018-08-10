@@ -19,8 +19,8 @@ import mock
 from google.auth import credentials
 from google.cloud.pubsub_v1 import publisher
 from google.cloud.pubsub_v1 import types
-from google.cloud.pubsub_v1.publisher.batch.base import BatchStatus
-from google.cloud.pubsub_v1.publisher.batch.thread import Batch
+from google.cloud.pubsub_v1.publisher._batch.base import BatchStatus
+from google.cloud.pubsub_v1.publisher._batch.thread import Batch
 
 
 def create_batch(status=None, settings=types.BatchSettings()):
