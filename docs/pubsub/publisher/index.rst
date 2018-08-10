@@ -59,7 +59,7 @@ Batching
 --------
 
 Whenever you publish a message, a
-:class:`~.pubsub_v1.publisher.batch.thread.Batch` is automatically created.
+:class:`~.pubsub_v1.publisher._batch.thread.Batch` is automatically created.
 This way, if you publish a large volume of messages, it reduces the number of
 requests made to the server.
 
@@ -70,7 +70,7 @@ requests made to the server.
     alternative batch class that uses another concurrency strategy.
 
 The way that this works is that on the first message that you send, a new
-:class:`~.pubsub_v1.publisher.batch.thread.Batch` is created automatically.
+:class:`~.pubsub_v1.publisher._batch.thread.Batch` is created automatically.
 For every subsequent message, if there is already a valid batch that is still
 accepting messages, then that batch is used. When the batch is created, it
 begins a countdown that publishes the batch once sufficient time has
