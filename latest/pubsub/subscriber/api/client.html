@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Subscriber Client API &#8212; google-cloud b8b28b15eb documentation</title>
+    <title>Subscriber Client API &#8212; google-cloud 371333a documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -57,7 +57,7 @@ arguments.</td>
 </table>
 <dl class="method">
 <dt id="google.cloud.pubsub_v1.subscriber.client.Client.acknowledge">
-<code class="descname">acknowledge</code><span class="sig-paren">(</span><em>subscription</em>, <em>ack_ids</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.client.Client.acknowledge" title="Permalink to this definition">#</a></dt>
+<code class="descname">acknowledge</code><span class="sig-paren">(</span><em>subscription</em>, <em>ack_ids</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.client.Client.acknowledge" title="Permalink to this definition">#</a></dt>
 <dd><p>Acknowledges the messages associated with the <code class="docutils literal notranslate"><span class="pre">ack_ids</span></code> in the
 <code class="docutils literal notranslate"><span class="pre">AcknowledgeRequest</span></code>. The Pub/Sub system can remove the relevant messages
 from the subscription.</p>
@@ -70,6 +70,8 @@ than once will not result in an error.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">pubsub_v1</span><span class="o">.</span><span class="n">SubscriberClient</span><span class="p">()</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">subscription</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">subscription_path</span><span class="p">(</span><span class="s1">&#39;[PROJECT]&#39;</span><span class="p">,</span> <span class="s1">&#39;[SUBSCRIPTION]&#39;</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``ack_ids``:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">ack_ids</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span><span class="o">.</span><span class="n">acknowledge</span><span class="p">(</span><span class="n">subscription</span><span class="p">,</span> <span class="n">ack_ids</span><span class="p">)</span>
@@ -90,6 +92,8 @@ be retried.</li>
 <li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
 for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
 specified, the timeout applies to each individual attempt.</li>
+<li><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
+that is provided to the method.</li>
 </ul>
 </td>
 </tr>
@@ -114,16 +118,22 @@ to a retryable error and retry attempts failed.</li>
 
 <dl class="method">
 <dt id="google.cloud.pubsub_v1.subscriber.client.Client.create_snapshot">
-<code class="descname">create_snapshot</code><span class="sig-paren">(</span><em>name</em>, <em>subscription</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.client.Client.create_snapshot" title="Permalink to this definition">#</a></dt>
-<dd><p>Creates a snapshot from the requested subscription.
+<code class="descname">create_snapshot</code><span class="sig-paren">(</span><em>name</em>, <em>subscription</em>, <em>labels=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.client.Client.create_snapshot" title="Permalink to this definition">#</a></dt>
+<dd><p>Creates a snapshot from the requested subscription.&lt;br&gt;&lt;br&gt;
+&lt;b&gt;ALPHA:&lt;/b&gt; This feature is part of an alpha release. This API might be
+changed in backward-incompatible ways and is not recommended for production
+use. It is not subject to any SLA or deprecation policy.
 If the snapshot already exists, returns <code class="docutils literal notranslate"><span class="pre">ALREADY_EXISTS</span></code>.
-If the requested subscription doesn’t exist, returns <code class="docutils literal notranslate"><span class="pre">NOT_FOUND</span></code>.</p>
-<p>If the name is not provided in the request, the server will assign a random
+If the requested subscription doesn’t exist, returns <code class="docutils literal notranslate"><span class="pre">NOT_FOUND</span></code>.
+If the backlog in the subscription is too old – and the resulting snapshot
+would expire in less than 1 hour – then <code class="docutils literal notranslate"><span class="pre">FAILED_PRECONDITION</span></code> is returned.
+See also the <code class="docutils literal notranslate"><span class="pre">Snapshot.expire_time</span></code> field. If the name is not provided in
+the request, the server will assign a random
 name for this snapshot on the same project as the subscription, conforming
-to the
-<a class="reference external" href="https://cloud.google.com/pubsub/docs/overview#names">resource name format</a>.
-The generated name is populated in the returned Snapshot object.
-Note that for REST API requests, you must specify a name in the request.</p>
+to the <a class="reference external" href="https://cloud.google.com/pubsub/docs/overview#names">resource name format</a>.
+The generated
+name is populated in the returned Snapshot object. Note that for REST API
+requests, you must specify a name in the request.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">pubsub_v1</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -145,24 +155,18 @@ If the name is not provided in the request, the server will assign a random
 name for this snapshot on the same project as the subscription.
 Note that for REST API requests, you must specify a name.
 Format is <code class="docutils literal notranslate"><span class="pre">projects/{project}/snapshots/{snap}</span></code>.</li>
-<li><strong>subscription</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>The subscription whose backlog the snapshot retains.
-Specifically, the created snapshot is guaranteed to retain:</p>
-<ul>
-<li>The existing backlog on the subscription. More precisely, this is
-defined as the messages in the subscription’s backlog that are
-unacknowledged upon the successful completion of the
-<cite>CreateSnapshot</cite> request; as well as:</li>
-<li>Any messages published to the subscription’s topic following the
-successful completion of the CreateSnapshot request.</li>
-</ul>
-<p>Format is <code class="docutils literal notranslate"><span class="pre">projects/{project}/subscriptions/{sub}</span></code>.</p>
-</li>
+<li><strong>subscription</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The subscription whose backlog the snapshot retains.
+Specifically, the created snapshot is guaranteed to retain:                  (a) The existing backlog on the subscription. More precisely, this is                      defined as the messages in the subscription’s backlog that are                      unacknowledged upon the successful completion of the                      <cite>CreateSnapshot</cite> request; as well as:                  (b) Any messages published to the subscription’s topic following the                      successful completion of the CreateSnapshot request.
+Format is <code class="docutils literal notranslate"><span class="pre">projects/{project}/subscriptions/{sub}</span></code>.</li>
+<li><strong>labels</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>[</em><em>str -&gt; str</em><em>]</em>) – User labels.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
 <li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
 for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
 specified, the timeout applies to each individual attempt.</li>
+<li><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
+that is provided to the method.</li>
 </ul>
 </td>
 </tr>
@@ -184,8 +188,9 @@ to a retryable error and retry attempts failed.</li>
 
 <dl class="method">
 <dt id="google.cloud.pubsub_v1.subscriber.client.Client.create_subscription">
-<code class="descname">create_subscription</code><span class="sig-paren">(</span><em>name</em>, <em>topic</em>, <em>push_config=None</em>, <em>ack_deadline_seconds=None</em>, <em>retain_acked_messages=None</em>, <em>message_retention_duration=None</em>, <em>labels=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.client.Client.create_subscription" title="Permalink to this definition">#</a></dt>
-<dd><p>Creates a subscription to a given topic.
+<code class="descname">create_subscription</code><span class="sig-paren">(</span><em>name</em>, <em>topic</em>, <em>push_config=None</em>, <em>ack_deadline_seconds=None</em>, <em>retain_acked_messages=None</em>, <em>message_retention_duration=None</em>, <em>labels=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.client.Client.create_subscription" title="Permalink to this definition">#</a></dt>
+<dd><p>Creates a subscription to a given topic. See the
+&lt;a href=”/pubsub/docs/admin#resource_names”&gt; resource name rules&lt;/a&gt;.
 If the subscription already exists, returns <code class="docutils literal notranslate"><span class="pre">ALREADY_EXISTS</span></code>.
 If the corresponding topic doesn’t exist, returns <code class="docutils literal notranslate"><span class="pre">NOT_FOUND</span></code>.</p>
 <p>If the name is not provided in the request, the server will assign a random
@@ -215,7 +220,7 @@ Note that for REST API requests, you must specify a name in the request.</p>
 start with a letter, and contain only letters (<code class="docutils literal notranslate"><span class="pre">[A-Za-z]</span></code>), numbers
 (<code class="docutils literal notranslate"><span class="pre">[0-9]</span></code>), dashes (<code class="docutils literal notranslate"><span class="pre">-</span></code>), underscores (<code class="docutils literal notranslate"><span class="pre">_</span></code>), periods (<code class="docutils literal notranslate"><span class="pre">.</span></code>), tildes (<code class="docutils literal notranslate"><span class="pre">~</span></code>),
 plus (<code class="docutils literal notranslate"><span class="pre">+</span></code>) or percent signs (<code class="docutils literal notranslate"><span class="pre">%</span></code>). It must be between 3 and 255 characters
-in length, and it must not start with <code class="docutils literal notranslate"><span class="pre">&quot;goog&quot;</span></code>.</li>
+in length, and it must not start with <code class="docutils literal notranslate"><span class="pre">&quot;goog&quot;</span></code></li>
 <li><strong>topic</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the topic from which this subscription is receiving messages.
 Format is <code class="docutils literal notranslate"><span class="pre">projects/{project}/topics/{topic}</span></code>.
 The value of this field will be <code class="docutils literal notranslate"><span class="pre">_deleted-topic_</span></code> if the topic has been
@@ -233,7 +238,8 @@ again during that time (on a best-effort basis).</p>
 <p>For pull subscriptions, this value is used as the initial value for the ack
 deadline. To override this value for a given message, call
 <code class="docutils literal notranslate"><span class="pre">ModifyAckDeadline</span></code> with the corresponding <code class="docutils literal notranslate"><span class="pre">ack_id</span></code> if using
-pull.
+non-streaming pull or send the <code class="docutils literal notranslate"><span class="pre">ack_id</span></code> in a
+<code class="docutils literal notranslate"><span class="pre">StreamingModifyAckDeadlineRequest</span></code> if using streaming pull.
 The minimum custom deadline you can specify is 10 seconds.
 The maximum custom deadline you can specify is 600 seconds (10 minutes).
 If this parameter is 0, a default value of 10 seconds is used.</p>
@@ -245,13 +251,19 @@ system will eventually redeliver the message.</p>
 <li><strong>retain_acked_messages</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – Indicates whether to retain acknowledged messages. If true, then
 messages are not expunged from the subscription’s backlog, even if they are
 acknowledged, until they fall out of the <code class="docutils literal notranslate"><span class="pre">message_retention_duration</span></code>
-window.</li>
+window.&lt;br&gt;&lt;br&gt;
+&lt;b&gt;ALPHA:&lt;/b&gt; This feature is part of an alpha release. This API might be
+changed in backward-incompatible ways and is not recommended for production
+use. It is not subject to any SLA or deprecation policy.</li>
 <li><strong>message_retention_duration</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="../../types.html#google.cloud.pubsub_v1.types.Duration" title="google.cloud.pubsub_v1.types.Duration"><em>Duration</em></a><em>]</em>) – How long to retain unacknowledged messages in the subscription’s backlog,
 from the moment a message is published.
 If <code class="docutils literal notranslate"><span class="pre">retain_acked_messages</span></code> is true, then this also configures the retention
 of acknowledged messages, and thus configures how far back in time a <code class="docutils literal notranslate"><span class="pre">Seek</span></code>
 can be done. Defaults to 7 days. Cannot be more than 7 days or less than 10
-minutes.
+minutes.&lt;br&gt;&lt;br&gt;
+&lt;b&gt;ALPHA:&lt;/b&gt; This feature is part of an alpha release. This API might be
+changed in backward-incompatible ways and is not recommended for production
+use. It is not subject to any SLA or deprecation policy.
 If a dict is provided, it must be of the same form as the protobuf
 message <a class="reference internal" href="../../types.html#google.cloud.pubsub_v1.types.Duration" title="google.cloud.pubsub_v1.types.Duration"><code class="xref py py-class docutils literal notranslate"><span class="pre">Duration</span></code></a></li>
 <li><strong>labels</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>[</em><em>str -&gt; str</em><em>]</em>) – User labels.</li>
@@ -261,6 +273,8 @@ be retried.</li>
 <li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
 for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
 specified, the timeout applies to each individual attempt.</li>
+<li><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
+that is provided to the method.</li>
 </ul>
 </td>
 </tr>
@@ -282,8 +296,12 @@ to a retryable error and retry attempts failed.</li>
 
 <dl class="method">
 <dt id="google.cloud.pubsub_v1.subscriber.client.Client.delete_snapshot">
-<code class="descname">delete_snapshot</code><span class="sig-paren">(</span><em>snapshot</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.client.Client.delete_snapshot" title="Permalink to this definition">#</a></dt>
-<dd><p>Removes an existing snapshot. All messages retained in the snapshot
+<code class="descname">delete_snapshot</code><span class="sig-paren">(</span><em>snapshot</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.client.Client.delete_snapshot" title="Permalink to this definition">#</a></dt>
+<dd><p>Removes an existing snapshot. &lt;br&gt;&lt;br&gt;
+&lt;b&gt;ALPHA:&lt;/b&gt; This feature is part of an alpha release. This API might be
+changed in backward-incompatible ways and is not recommended for production
+use. It is not subject to any SLA or deprecation policy.
+When the snapshot is deleted, all messages retained in the snapshot
 are immediately dropped. After a snapshot is deleted, a new one may be
 created with the same name, but the new one has no association with the old
 snapshot or its subscription, unless the same subscription is specified.</p>
@@ -310,6 +328,8 @@ be retried.</li>
 <li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
 for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
 specified, the timeout applies to each individual attempt.</li>
+<li><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
+that is provided to the method.</li>
 </ul>
 </td>
 </tr>
@@ -328,7 +348,7 @@ to a retryable error and retry attempts failed.</li>
 
 <dl class="method">
 <dt id="google.cloud.pubsub_v1.subscriber.client.Client.delete_subscription">
-<code class="descname">delete_subscription</code><span class="sig-paren">(</span><em>subscription</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.client.Client.delete_subscription" title="Permalink to this definition">#</a></dt>
+<code class="descname">delete_subscription</code><span class="sig-paren">(</span><em>subscription</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.client.Client.delete_subscription" title="Permalink to this definition">#</a></dt>
 <dd><p>Deletes an existing subscription. All messages retained in the subscription
 are immediately dropped. Calls to <code class="docutils literal notranslate"><span class="pre">Pull</span></code> after deletion will return
 <code class="docutils literal notranslate"><span class="pre">NOT_FOUND</span></code>. After a subscription is deleted, a new one may be created with
@@ -357,6 +377,8 @@ be retried.</li>
 <li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
 for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
 specified, the timeout applies to each individual attempt.</li>
+<li><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
+that is provided to the method.</li>
 </ul>
 </td>
 </tr>
@@ -374,8 +396,62 @@ to a retryable error and retry attempts failed.</li>
 </dd></dl>
 
 <dl class="method">
+<dt id="google.cloud.pubsub_v1.subscriber.client.Client.from_service_account_file">
+<code class="descname">from_service_account_file</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.client.Client.from_service_account_file" title="Permalink to this definition">#</a></dt>
+<dd><p>Creates an instance of this client using the provided credentials
+file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The path to the service account private key json
+file.</li>
+<li><strong>args</strong> – Additional arguments to pass to the constructor.</li>
+<li><strong>kwargs</strong> – Additional arguments to pass to the constructor.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The constructed client.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">SubscriberClient</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.pubsub_v1.subscriber.client.Client.from_service_account_json">
+<code class="descname">from_service_account_json</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.client.Client.from_service_account_json" title="Permalink to this definition">#</a></dt>
+<dd><p>Creates an instance of this client using the provided credentials
+file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The path to the service account private key json
+file.</li>
+<li><strong>args</strong> – Additional arguments to pass to the constructor.</li>
+<li><strong>kwargs</strong> – Additional arguments to pass to the constructor.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The constructed client.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">SubscriberClient</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="google.cloud.pubsub_v1.subscriber.client.Client.get_iam_policy">
-<code class="descname">get_iam_policy</code><span class="sig-paren">(</span><em>resource</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.client.Client.get_iam_policy" title="Permalink to this definition">#</a></dt>
+<code class="descname">get_iam_policy</code><span class="sig-paren">(</span><em>resource</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.client.Client.get_iam_policy" title="Permalink to this definition">#</a></dt>
 <dd><p>Gets the access control policy for a resource.
 Returns an empty policy if the resource exists and does not have a policy
 set.</p>
@@ -403,6 +479,8 @@ be retried.</li>
 <li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
 for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
 specified, the timeout applies to each individual attempt.</li>
+<li><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
+that is provided to the method.</li>
 </ul>
 </td>
 </tr>
@@ -424,7 +502,7 @@ to a retryable error and retry attempts failed.</li>
 
 <dl class="method">
 <dt id="google.cloud.pubsub_v1.subscriber.client.Client.get_subscription">
-<code class="descname">get_subscription</code><span class="sig-paren">(</span><em>subscription</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.client.Client.get_subscription" title="Permalink to this definition">#</a></dt>
+<code class="descname">get_subscription</code><span class="sig-paren">(</span><em>subscription</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.client.Client.get_subscription" title="Permalink to this definition">#</a></dt>
 <dd><p>Gets the configuration details of a subscription.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">pubsub_v1</span>
@@ -449,6 +527,8 @@ be retried.</li>
 <li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
 for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
 specified, the timeout applies to each individual attempt.</li>
+<li><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
+that is provided to the method.</li>
 </ul>
 </td>
 </tr>
@@ -470,8 +550,11 @@ to a retryable error and retry attempts failed.</li>
 
 <dl class="method">
 <dt id="google.cloud.pubsub_v1.subscriber.client.Client.list_snapshots">
-<code class="descname">list_snapshots</code><span class="sig-paren">(</span><em>project</em>, <em>page_size=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.client.Client.list_snapshots" title="Permalink to this definition">#</a></dt>
-<dd><p>Lists the existing snapshots.</p>
+<code class="descname">list_snapshots</code><span class="sig-paren">(</span><em>project</em>, <em>page_size=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.client.Client.list_snapshots" title="Permalink to this definition">#</a></dt>
+<dd><p>Lists the existing snapshots.&lt;br&gt;&lt;br&gt;
+&lt;b&gt;ALPHA:&lt;/b&gt; This feature is part of an alpha release. This API might be
+changed in backward-incompatible ways and is not recommended for production
+use. It is not subject to any SLA or deprecation policy.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">pubsub_v1</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -479,13 +562,15 @@ to a retryable error and retry attempts failed.</li>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">project</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">project_path</span><span class="p">(</span><span class="s1">&#39;[PROJECT]&#39;</span><span class="p">)</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Iterate over all results</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_snapshots</span><span class="p">(</span><span class="n">project</span><span class="p">):</span>
 <span class="gp">... </span>    <span class="c1"># process element</span>
 <span class="gp">... </span>    <span class="k">pass</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Or iterate over results one page at a time</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Alternatively:</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Iterate over results one page at a time</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_snapshots</span><span class="p">(</span><span class="n">project</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">CallOptions</span><span class="p">(</span><span class="n">page_token</span><span class="o">=</span><span class="n">INITIAL_PAGE</span><span class="p">)):</span>
 <span class="gp">... </span>    <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">page</span><span class="p">:</span>
 <span class="gp">... </span>        <span class="c1"># process element</span>
@@ -510,6 +595,8 @@ be retried.</li>
 <li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
 for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
 specified, the timeout applies to each individual attempt.</li>
+<li><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
+that is provided to the method.</li>
 </ul>
 </td>
 </tr>
@@ -534,7 +621,7 @@ to a retryable error and retry attempts failed.</li>
 
 <dl class="method">
 <dt id="google.cloud.pubsub_v1.subscriber.client.Client.list_subscriptions">
-<code class="descname">list_subscriptions</code><span class="sig-paren">(</span><em>project</em>, <em>page_size=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.client.Client.list_subscriptions" title="Permalink to this definition">#</a></dt>
+<code class="descname">list_subscriptions</code><span class="sig-paren">(</span><em>project</em>, <em>page_size=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.client.Client.list_subscriptions" title="Permalink to this definition">#</a></dt>
 <dd><p>Lists matching subscriptions.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">pubsub_v1</span>
@@ -543,13 +630,15 @@ to a retryable error and retry attempts failed.</li>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">project</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">project_path</span><span class="p">(</span><span class="s1">&#39;[PROJECT]&#39;</span><span class="p">)</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Iterate over all results</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_subscriptions</span><span class="p">(</span><span class="n">project</span><span class="p">):</span>
 <span class="gp">... </span>    <span class="c1"># process element</span>
 <span class="gp">... </span>    <span class="k">pass</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Or iterate over results one page at a time</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Alternatively:</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Iterate over results one page at a time</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_subscriptions</span><span class="p">(</span><span class="n">project</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">CallOptions</span><span class="p">(</span><span class="n">page_token</span><span class="o">=</span><span class="n">INITIAL_PAGE</span><span class="p">)):</span>
 <span class="gp">... </span>    <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">page</span><span class="p">:</span>
 <span class="gp">... </span>        <span class="c1"># process element</span>
@@ -574,6 +663,8 @@ be retried.</li>
 <li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
 for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
 specified, the timeout applies to each individual attempt.</li>
+<li><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
+that is provided to the method.</li>
 </ul>
 </td>
 </tr>
@@ -598,7 +689,7 @@ to a retryable error and retry attempts failed.</li>
 
 <dl class="method">
 <dt id="google.cloud.pubsub_v1.subscriber.client.Client.modify_ack_deadline">
-<code class="descname">modify_ack_deadline</code><span class="sig-paren">(</span><em>subscription</em>, <em>ack_ids</em>, <em>ack_deadline_seconds</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.client.Client.modify_ack_deadline" title="Permalink to this definition">#</a></dt>
+<code class="descname">modify_ack_deadline</code><span class="sig-paren">(</span><em>subscription</em>, <em>ack_ids</em>, <em>ack_deadline_seconds</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.client.Client.modify_ack_deadline" title="Permalink to this definition">#</a></dt>
 <dd><p>Modifies the ack deadline for a specific message. This method is useful
 to indicate that more time is needed to process a message by the
 subscriber, or to make the message available for redelivery if the
@@ -610,7 +701,11 @@ subscription-level <code class="docutils literal notranslate"><span class="pre">
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">pubsub_v1</span><span class="o">.</span><span class="n">SubscriberClient</span><span class="p">()</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">subscription</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">subscription_path</span><span class="p">(</span><span class="s1">&#39;[PROJECT]&#39;</span><span class="p">,</span> <span class="s1">&#39;[SUBSCRIPTION]&#39;</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``ack_ids``:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">ack_ids</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``ack_deadline_seconds``:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">ack_deadline_seconds</span> <span class="o">=</span> <span class="mi">0</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span><span class="o">.</span><span class="n">modify_ack_deadline</span><span class="p">(</span><span class="n">subscription</span><span class="p">,</span> <span class="n">ack_ids</span><span class="p">,</span> <span class="n">ack_deadline_seconds</span><span class="p">)</span>
@@ -637,6 +732,8 @@ be retried.</li>
 <li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
 for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
 specified, the timeout applies to each individual attempt.</li>
+<li><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
+that is provided to the method.</li>
 </ul>
 </td>
 </tr>
@@ -655,7 +752,7 @@ to a retryable error and retry attempts failed.</li>
 
 <dl class="method">
 <dt id="google.cloud.pubsub_v1.subscriber.client.Client.modify_push_config">
-<code class="descname">modify_push_config</code><span class="sig-paren">(</span><em>subscription</em>, <em>push_config</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.client.Client.modify_push_config" title="Permalink to this definition">#</a></dt>
+<code class="descname">modify_push_config</code><span class="sig-paren">(</span><em>subscription</em>, <em>push_config</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.client.Client.modify_push_config" title="Permalink to this definition">#</a></dt>
 <dd><p>Modifies the <code class="docutils literal notranslate"><span class="pre">PushConfig</span></code> for a specified subscription.</p>
 <p>This may be used to change a push subscription to a pull one (signified by
 an empty <code class="docutils literal notranslate"><span class="pre">PushConfig</span></code>) or vice versa, or change the endpoint URL and other
@@ -667,6 +764,8 @@ continuously through the call regardless of changes to the <code class="docutils
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">pubsub_v1</span><span class="o">.</span><span class="n">SubscriberClient</span><span class="p">()</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">subscription</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">subscription_path</span><span class="p">(</span><span class="s1">&#39;[PROJECT]&#39;</span><span class="p">,</span> <span class="s1">&#39;[SUBSCRIPTION]&#39;</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``push_config``:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">push_config</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span><span class="o">.</span><span class="n">modify_push_config</span><span class="p">(</span><span class="n">subscription</span><span class="p">,</span> <span class="n">push_config</span><span class="p">)</span>
@@ -683,7 +782,7 @@ Format is <code class="docutils literal notranslate"><span class="pre">projects/
 <p>An empty <code class="docutils literal notranslate"><span class="pre">pushConfig</span></code> indicates that the Pub/Sub system should
 stop pushing messages from the given subscription and allow
 messages to be pulled and acknowledged - effectively pausing
-the subscription if <code class="docutils literal notranslate"><span class="pre">Pull</span></code> is not called.
+the subscription if <code class="docutils literal notranslate"><span class="pre">Pull</span></code> or <code class="docutils literal notranslate"><span class="pre">StreamingPull</span></code> is not called.
 If a dict is provided, it must be of the same form as the protobuf
 message <a class="reference internal" href="../../types.html#google.cloud.pubsub_v1.types.PushConfig" title="google.cloud.pubsub_v1.types.PushConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">PushConfig</span></code></a></p>
 </li>
@@ -693,6 +792,8 @@ be retried.</li>
 <li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
 for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
 specified, the timeout applies to each individual attempt.</li>
+<li><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
+that is provided to the method.</li>
 </ul>
 </td>
 </tr>
@@ -712,12 +813,12 @@ to a retryable error and retry attempts failed.</li>
 <dl class="method">
 <dt id="google.cloud.pubsub_v1.subscriber.client.Client.project_path">
 <code class="descname">project_path</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.client.Client.project_path" title="Permalink to this definition">#</a></dt>
-<dd><p>Returns a fully-qualified project resource name string.</p>
+<dd><p>Return a fully-qualified project string.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="google.cloud.pubsub_v1.subscriber.client.Client.pull">
-<code class="descname">pull</code><span class="sig-paren">(</span><em>subscription</em>, <em>max_messages</em>, <em>return_immediately=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.client.Client.pull" title="Permalink to this definition">#</a></dt>
+<code class="descname">pull</code><span class="sig-paren">(</span><em>subscription</em>, <em>max_messages</em>, <em>return_immediately=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.client.Client.pull" title="Permalink to this definition">#</a></dt>
 <dd><p>Pulls messages from the server. Returns an empty list if there are no
 messages available in the backlog. The server may return <code class="docutils literal notranslate"><span class="pre">UNAVAILABLE</span></code> if
 there are too many concurrent pull requests pending for the given
@@ -728,6 +829,8 @@ subscription.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">pubsub_v1</span><span class="o">.</span><span class="n">SubscriberClient</span><span class="p">()</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">subscription</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">subscription_path</span><span class="p">(</span><span class="s1">&#39;[PROJECT]&#39;</span><span class="p">,</span> <span class="s1">&#39;[SUBSCRIPTION]&#39;</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``max_messages``:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">max_messages</span> <span class="o">=</span> <span class="mi">0</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">pull</span><span class="p">(</span><span class="n">subscription</span><span class="p">,</span> <span class="n">max_messages</span><span class="p">)</span>
@@ -754,6 +857,8 @@ be retried.</li>
 <li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
 for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
 specified, the timeout applies to each individual attempt.</li>
+<li><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
+that is provided to the method.</li>
 </ul>
 </td>
 </tr>
@@ -775,9 +880,12 @@ to a retryable error and retry attempts failed.</li>
 
 <dl class="method">
 <dt id="google.cloud.pubsub_v1.subscriber.client.Client.seek">
-<code class="descname">seek</code><span class="sig-paren">(</span><em>subscription</em>, <em>time=None</em>, <em>snapshot=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.client.Client.seek" title="Permalink to this definition">#</a></dt>
+<code class="descname">seek</code><span class="sig-paren">(</span><em>subscription</em>, <em>time=None</em>, <em>snapshot=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.client.Client.seek" title="Permalink to this definition">#</a></dt>
 <dd><p>Seeks an existing subscription to a point in time or to a given snapshot,
-whichever is provided in the request.</p>
+whichever is provided in the request.&lt;br&gt;&lt;br&gt;
+&lt;b&gt;ALPHA:&lt;/b&gt; This feature is part of an alpha release. This API might be
+changed in backward-incompatible ways and is not recommended for production
+use. It is not subject to any SLA or deprecation policy.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">pubsub_v1</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -816,6 +924,8 @@ be retried.</li>
 <li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
 for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
 specified, the timeout applies to each individual attempt.</li>
+<li><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
+that is provided to the method.</li>
 </ul>
 </td>
 </tr>
@@ -837,7 +947,7 @@ to a retryable error and retry attempts failed.</li>
 
 <dl class="method">
 <dt id="google.cloud.pubsub_v1.subscriber.client.Client.set_iam_policy">
-<code class="descname">set_iam_policy</code><span class="sig-paren">(</span><em>resource</em>, <em>policy</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.client.Client.set_iam_policy" title="Permalink to this definition">#</a></dt>
+<code class="descname">set_iam_policy</code><span class="sig-paren">(</span><em>resource</em>, <em>policy</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.client.Client.set_iam_policy" title="Permalink to this definition">#</a></dt>
 <dd><p>Sets the access control policy on the specified resource. Replaces any
 existing policy.</p>
 <p class="rubric">Example</p>
@@ -846,6 +956,8 @@ existing policy.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">pubsub_v1</span><span class="o">.</span><span class="n">SubscriberClient</span><span class="p">()</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">resource</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">subscription_path</span><span class="p">(</span><span class="s1">&#39;[PROJECT]&#39;</span><span class="p">,</span> <span class="s1">&#39;[SUBSCRIPTION]&#39;</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``policy``:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">policy</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">set_iam_policy</span><span class="p">(</span><span class="n">resource</span><span class="p">,</span> <span class="n">policy</span><span class="p">)</span>
@@ -871,6 +983,8 @@ be retried.</li>
 <li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
 for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
 specified, the timeout applies to each individual attempt.</li>
+<li><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
+that is provided to the method.</li>
 </ul>
 </td>
 </tr>
@@ -893,7 +1007,7 @@ to a retryable error and retry attempts failed.</li>
 <dl class="method">
 <dt id="google.cloud.pubsub_v1.subscriber.client.Client.snapshot_path">
 <code class="descname">snapshot_path</code><span class="sig-paren">(</span><em>snapshot</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.client.Client.snapshot_path" title="Permalink to this definition">#</a></dt>
-<dd><p>Returns a fully-qualified snapshot resource name string.</p>
+<dd><p>Return a fully-qualified snapshot string.</p>
 </dd></dl>
 
 <dl class="method">
@@ -989,7 +1103,7 @@ how callbacks are executed concurrently.</li>
 <dl class="method">
 <dt id="google.cloud.pubsub_v1.subscriber.client.Client.subscription_path">
 <code class="descname">subscription_path</code><span class="sig-paren">(</span><em>subscription</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.client.Client.subscription_path" title="Permalink to this definition">#</a></dt>
-<dd><p>Returns a fully-qualified subscription resource name string.</p>
+<dd><p>Return a fully-qualified subscription string.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1010,7 +1124,7 @@ how callbacks are executed concurrently.</li>
 
 <dl class="method">
 <dt id="google.cloud.pubsub_v1.subscriber.client.Client.test_iam_permissions">
-<code class="descname">test_iam_permissions</code><span class="sig-paren">(</span><em>resource</em>, <em>permissions</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.client.Client.test_iam_permissions" title="Permalink to this definition">#</a></dt>
+<code class="descname">test_iam_permissions</code><span class="sig-paren">(</span><em>resource</em>, <em>permissions</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.client.Client.test_iam_permissions" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns permissions that a caller has on the specified resource.
 If the resource does not exist, this will return an empty set of
 permissions, not a NOT_FOUND error.</p>
@@ -1020,6 +1134,8 @@ permissions, not a NOT_FOUND error.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">pubsub_v1</span><span class="o">.</span><span class="n">SubscriberClient</span><span class="p">()</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">resource</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">subscription_path</span><span class="p">(</span><span class="s1">&#39;[PROJECT]&#39;</span><span class="p">,</span> <span class="s1">&#39;[SUBSCRIPTION]&#39;</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``permissions``:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">permissions</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">test_iam_permissions</span><span class="p">(</span><span class="n">resource</span><span class="p">,</span> <span class="n">permissions</span><span class="p">)</span>
@@ -1043,6 +1159,8 @@ be retried.</li>
 <li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
 for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
 specified, the timeout applies to each individual attempt.</li>
+<li><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
+that is provided to the method.</li>
 </ul>
 </td>
 </tr>
@@ -1065,25 +1183,28 @@ to a retryable error and retry attempts failed.</li>
 <dl class="method">
 <dt id="google.cloud.pubsub_v1.subscriber.client.Client.topic_path">
 <code class="descname">topic_path</code><span class="sig-paren">(</span><em>topic</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.client.Client.topic_path" title="Permalink to this definition">#</a></dt>
-<dd><p>Returns a fully-qualified topic resource name string.</p>
+<dd><p>Return a fully-qualified topic string.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="google.cloud.pubsub_v1.subscriber.client.Client.update_snapshot">
-<code class="descname">update_snapshot</code><span class="sig-paren">(</span><em>snapshot</em>, <em>update_mask</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.client.Client.update_snapshot" title="Permalink to this definition">#</a></dt>
-<dd><p>Updates an existing snapshot. Note that certain properties of a snapshot
-are not modifiable.
-NOTE:  The style guide requires body: “snapshot” instead of body: “*”.
-Keeping the latter for internal consistency in V1, however it should be
-corrected in V2.  See
-<a class="reference external" href="https://cloud.google.com/apis/design/standard_methods#update">https://cloud.google.com/apis/design/standard_methods#update</a> for details.</p>
+<code class="descname">update_snapshot</code><span class="sig-paren">(</span><em>snapshot</em>, <em>update_mask</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.client.Client.update_snapshot" title="Permalink to this definition">#</a></dt>
+<dd><p>Updates an existing snapshot.&lt;br&gt;&lt;br&gt;
+&lt;b&gt;ALPHA:&lt;/b&gt; This feature is part of an alpha release. This API might be
+changed in backward-incompatible ways and is not recommended for production
+use. It is not subject to any SLA or deprecation policy.
+Note that certain properties of a snapshot are not modifiable.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">pubsub_v1</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">pubsub_v1</span><span class="o">.</span><span class="n">SubscriberClient</span><span class="p">()</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">snapshot</span> <span class="o">=</span> <span class="p">{}</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">update_mask</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">seconds</span> <span class="o">=</span> <span class="mi">123456</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">expire_time</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;seconds&#39;</span><span class="p">:</span> <span class="n">seconds</span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">snapshot</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;expire_time&#39;</span><span class="p">:</span> <span class="n">expire_time</span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">paths_element</span> <span class="o">=</span> <span class="s1">&#39;expire_time&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">paths</span> <span class="o">=</span> <span class="p">[</span><span class="n">paths_element</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">update_mask</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;paths&#39;</span><span class="p">:</span> <span class="n">paths</span><span class="p">}</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">update_snapshot</span><span class="p">(</span><span class="n">snapshot</span><span class="p">,</span> <span class="n">update_mask</span><span class="p">)</span>
 </pre></div>
@@ -1093,7 +1214,7 @@ corrected in V2.  See
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>snapshot</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="../../types.html#google.cloud.pubsub_v1.types.Snapshot" title="google.cloud.pubsub_v1.types.Snapshot"><em>Snapshot</em></a><em>]</em>) – The updated snpashot object.
+<li><strong>snapshot</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="../../types.html#google.cloud.pubsub_v1.types.Snapshot" title="google.cloud.pubsub_v1.types.Snapshot"><em>Snapshot</em></a><em>]</em>) – The updated snapshot object.
 If a dict is provided, it must be of the same form as the protobuf
 message <a class="reference internal" href="../../types.html#google.cloud.pubsub_v1.types.Snapshot" title="google.cloud.pubsub_v1.types.Snapshot"><code class="xref py py-class docutils literal notranslate"><span class="pre">Snapshot</span></code></a></li>
 <li><strong>update_mask</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="../../types.html#google.cloud.pubsub_v1.types.FieldMask" title="google.cloud.pubsub_v1.types.FieldMask"><em>FieldMask</em></a><em>]</em>) – Indicates which fields in the provided snapshot to update.
@@ -1106,6 +1227,8 @@ be retried.</li>
 <li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
 for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
 specified, the timeout applies to each individual attempt.</li>
+<li><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
+that is provided to the method.</li>
 </ul>
 </td>
 </tr>
@@ -1127,20 +1250,19 @@ to a retryable error and retry attempts failed.</li>
 
 <dl class="method">
 <dt id="google.cloud.pubsub_v1.subscriber.client.Client.update_subscription">
-<code class="descname">update_subscription</code><span class="sig-paren">(</span><em>subscription</em>, <em>update_mask</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.client.Client.update_subscription" title="Permalink to this definition">#</a></dt>
+<code class="descname">update_subscription</code><span class="sig-paren">(</span><em>subscription</em>, <em>update_mask</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.client.Client.update_subscription" title="Permalink to this definition">#</a></dt>
 <dd><p>Updates an existing subscription. Note that certain properties of a
-subscription, such as its topic, are not modifiable.
-NOTE:  The style guide requires body: “subscription” instead of body: “*”.
-Keeping the latter for internal consistency in V1, however it should be
-corrected in V2.  See
-<a class="reference external" href="https://cloud.google.com/apis/design/standard_methods#update">https://cloud.google.com/apis/design/standard_methods#update</a> for details.</p>
+subscription, such as its topic, are not modifiable.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">pubsub_v1</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">pubsub_v1</span><span class="o">.</span><span class="n">SubscriberClient</span><span class="p">()</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">subscription</span> <span class="o">=</span> <span class="p">{}</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">update_mask</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ack_deadline_seconds</span> <span class="o">=</span> <span class="mi">42</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">subscription</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;ack_deadline_seconds&#39;</span><span class="p">:</span> <span class="n">ack_deadline_seconds</span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">paths_element</span> <span class="o">=</span> <span class="s1">&#39;ack_deadline_seconds&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">paths</span> <span class="o">=</span> <span class="p">[</span><span class="n">paths_element</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">update_mask</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;paths&#39;</span><span class="p">:</span> <span class="n">paths</span><span class="p">}</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">update_subscription</span><span class="p">(</span><span class="n">subscription</span><span class="p">,</span> <span class="n">update_mask</span><span class="p">)</span>
 </pre></div>
@@ -1163,6 +1285,8 @@ be retried.</li>
 <li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
 for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
 specified, the timeout applies to each individual attempt.</li>
+<li><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
+that is provided to the method.</li>
 </ul>
 </td>
 </tr>

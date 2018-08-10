@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Pub/Sub Client Types &#8212; google-cloud b8b28b15eb documentation</title>
+    <title>Pub/Sub Client Types &#8212; google-cloud 371333a documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -162,7 +162,10 @@ resource. Follows the same format of Binding.members. Required</p>
 <dl class="class">
 <dt id="google.cloud.pubsub_v1.types.CreateSnapshotRequest">
 <em class="property">class </em><code class="descclassname">google.cloud.pubsub_v1.types.</code><code class="descname">CreateSnapshotRequest</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.CreateSnapshotRequest" title="Permalink to this definition">#</a></dt>
-<dd><p>Request for the <code class="docutils literal notranslate"><span class="pre">CreateSnapshot</span></code> method.</p>
+<dd><p>Request for the <code class="docutils literal notranslate"><span class="pre">CreateSnapshot</span></code> method. ALPHA: This feature is part
+of an alpha release. This API might be changed in backward-incompatible
+ways and is not recommended for production use. It is not subject to any
+SLA or deprecation policy.</p>
 <dl class="attribute">
 <dt id="google.cloud.pubsub_v1.types.CreateSnapshotRequest.name">
 <code class="descname">name</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.CreateSnapshotRequest.name" title="Permalink to this definition">#</a></dt>
@@ -188,6 +191,17 @@ completion of the CreateSnapshot request. Format is
 <code class="docutils literal notranslate"><span class="pre">projects/{project}/subscriptions/{sub}</span></code>.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt id="google.cloud.pubsub_v1.types.CreateSnapshotRequest.labels">
+<code class="descname">labels</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.CreateSnapshotRequest.labels" title="Permalink to this definition">#</a></dt>
+<dd><p>User labels.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.pubsub_v1.types.CreateSnapshotRequest.LabelsEntry">
+<em class="property">class </em><code class="descname">LabelsEntry</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.CreateSnapshotRequest.LabelsEntry" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -198,7 +212,10 @@ completion of the CreateSnapshot request. Format is
 <dl class="class">
 <dt id="google.cloud.pubsub_v1.types.DeleteSnapshotRequest">
 <em class="property">class </em><code class="descclassname">google.cloud.pubsub_v1.types.</code><code class="descname">DeleteSnapshotRequest</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.DeleteSnapshotRequest" title="Permalink to this definition">#</a></dt>
-<dd><p>Request for the <code class="docutils literal notranslate"><span class="pre">DeleteSnapshot</span></code> method.</p>
+<dd><p>Request for the <code class="docutils literal notranslate"><span class="pre">DeleteSnapshot</span></code> method. ALPHA: This feature is part
+of an alpha release. This API might be changed in backward-incompatible
+ways and is not recommended for production use. It is not subject to any
+SLA or deprecation policy.</p>
 <dl class="attribute">
 <dt id="google.cloud.pubsub_v1.types.DeleteSnapshotRequest.snapshot">
 <code class="descname">snapshot</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.DeleteSnapshotRequest.snapshot" title="Permalink to this definition">#</a></dt>
@@ -393,6 +410,22 @@ example, a Project resource is specified as
 </dd></dl>
 
 <dl class="class">
+<dt id="google.cloud.pubsub_v1.types.GetSnapshotRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.pubsub_v1.types.</code><code class="descname">GetSnapshotRequest</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.GetSnapshotRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request for the GetSnapshot method. ALPHA: This feature is part of an
+alpha release. This API might be changed in backward-incompatible ways
+and is not recommended for production use. It is not subject to any SLA
+or deprecation policy.</p>
+<dl class="attribute">
+<dt id="google.cloud.pubsub_v1.types.GetSnapshotRequest.snapshot">
+<code class="descname">snapshot</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.GetSnapshotRequest.snapshot" title="Permalink to this definition">#</a></dt>
+<dd><p>The name of the snapshot to get. Format is
+<code class="docutils literal notranslate"><span class="pre">projects/{project}/snapshots/{snap}</span></code>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="google.cloud.pubsub_v1.types.GetSubscriptionRequest">
 <em class="property">class </em><code class="descclassname">google.cloud.pubsub_v1.types.</code><code class="descname">GetSubscriptionRequest</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.GetSubscriptionRequest" title="Permalink to this definition">#</a></dt>
 <dd><p>Request for the GetSubscription method.</p>
@@ -431,7 +464,10 @@ example, a Project resource is specified as
 <dl class="class">
 <dt id="google.cloud.pubsub_v1.types.ListSnapshotsRequest">
 <em class="property">class </em><code class="descclassname">google.cloud.pubsub_v1.types.</code><code class="descname">ListSnapshotsRequest</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.ListSnapshotsRequest" title="Permalink to this definition">#</a></dt>
-<dd><p>Request for the <code class="docutils literal notranslate"><span class="pre">ListSnapshots</span></code> method.</p>
+<dd><p>Request for the <code class="docutils literal notranslate"><span class="pre">ListSnapshots</span></code> method. ALPHA: This feature is part of
+an alpha release. This API might be changed in backward-incompatible
+ways and is not recommended for production use. It is not subject to any
+SLA or deprecation policy.</p>
 <dl class="attribute">
 <dt id="google.cloud.pubsub_v1.types.ListSnapshotsRequest.project">
 <code class="descname">project</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.ListSnapshotsRequest.project" title="Permalink to this definition">#</a></dt>
@@ -459,7 +495,10 @@ next page of data.</p>
 <dl class="class">
 <dt id="google.cloud.pubsub_v1.types.ListSnapshotsResponse">
 <em class="property">class </em><code class="descclassname">google.cloud.pubsub_v1.types.</code><code class="descname">ListSnapshotsResponse</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.ListSnapshotsResponse" title="Permalink to this definition">#</a></dt>
-<dd><p>Response for the <code class="docutils literal notranslate"><span class="pre">ListSnapshots</span></code> method.</p>
+<dd><p>Response for the <code class="docutils literal notranslate"><span class="pre">ListSnapshots</span></code> method. ALPHA: This feature is part
+of an alpha release. This API might be changed in backward-incompatible
+ways and is not recommended for production use. It is not subject to any
+SLA or deprecation policy.</p>
 <dl class="attribute">
 <dt id="google.cloud.pubsub_v1.types.ListSnapshotsResponse.snapshots">
 <code class="descname">snapshots</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.ListSnapshotsResponse.snapshots" title="Permalink to this definition">#</a></dt>
@@ -520,6 +559,60 @@ the next page of data.</p>
 <dd><p>If not empty, indicates that there may be more subscriptions
 that match the request; this value should be passed in a new
 <code class="docutils literal notranslate"><span class="pre">ListSubscriptionsRequest</span></code> to get more subscriptions.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.pubsub_v1.types.ListTopicSnapshotsRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.pubsub_v1.types.</code><code class="descname">ListTopicSnapshotsRequest</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.ListTopicSnapshotsRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request for the <code class="docutils literal notranslate"><span class="pre">ListTopicSnapshots</span></code> method. ALPHA: This feature is
+part of an alpha release. This API might be changed in
+backward-incompatible ways and is not recommended for production use. It
+is not subject to any SLA or deprecation policy.</p>
+<dl class="attribute">
+<dt id="google.cloud.pubsub_v1.types.ListTopicSnapshotsRequest.topic">
+<code class="descname">topic</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.ListTopicSnapshotsRequest.topic" title="Permalink to this definition">#</a></dt>
+<dd><p>The name of the topic that snapshots are attached to. Format
+is <code class="docutils literal notranslate"><span class="pre">projects/{project}/topics/{topic}</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.pubsub_v1.types.ListTopicSnapshotsRequest.page_size">
+<code class="descname">page_size</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.ListTopicSnapshotsRequest.page_size" title="Permalink to this definition">#</a></dt>
+<dd><p>Maximum number of snapshot names to return.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.pubsub_v1.types.ListTopicSnapshotsRequest.page_token">
+<code class="descname">page_token</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.ListTopicSnapshotsRequest.page_token" title="Permalink to this definition">#</a></dt>
+<dd><p>The value returned by the last <code class="docutils literal notranslate"><span class="pre">ListTopicSnapshotsResponse</span></code>;
+indicates that this is a continuation of a prior
+<code class="docutils literal notranslate"><span class="pre">ListTopicSnapshots</span></code> call, and that the system should return
+the next page of data.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.pubsub_v1.types.ListTopicSnapshotsResponse">
+<em class="property">class </em><code class="descclassname">google.cloud.pubsub_v1.types.</code><code class="descname">ListTopicSnapshotsResponse</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.ListTopicSnapshotsResponse" title="Permalink to this definition">#</a></dt>
+<dd><p>Response for the <code class="docutils literal notranslate"><span class="pre">ListTopicSnapshots</span></code> method. ALPHA: This feature is
+part of an alpha release. This API might be changed in
+backward-incompatible ways and is not recommended for production use. It
+is not subject to any SLA or deprecation policy.</p>
+<dl class="attribute">
+<dt id="google.cloud.pubsub_v1.types.ListTopicSnapshotsResponse.snapshots">
+<code class="descname">snapshots</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.ListTopicSnapshotsResponse.snapshots" title="Permalink to this definition">#</a></dt>
+<dd><p>The names of the snapshots that match the request.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.pubsub_v1.types.ListTopicSnapshotsResponse.next_page_token">
+<code class="descname">next_page_token</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.ListTopicSnapshotsResponse.next_page_token" title="Permalink to this definition">#</a></dt>
+<dd><p>If not empty, indicates that there may be more snapshots that
+match the request; this value should be passed in a new
+<code class="docutils literal notranslate"><span class="pre">ListTopicSnapshotsRequest</span></code> to get more snapshots.</p>
 </dd></dl>
 
 </dd></dl>
@@ -626,6 +719,24 @@ match the request; this value should be passed in a new
 <dd></dd></dl>
 
 <dl class="class">
+<dt id="google.cloud.pubsub_v1.types.MessageStoragePolicy">
+<em class="property">class </em><code class="descclassname">google.cloud.pubsub_v1.types.</code><code class="descname">MessageStoragePolicy</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.MessageStoragePolicy" title="Permalink to this definition">#</a></dt>
+<dd><p>A message storage policy.</p>
+<dl class="attribute">
+<dt id="google.cloud.pubsub_v1.types.MessageStoragePolicy.allowed_persistence_regions">
+<code class="descname">allowed_persistence_regions</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.MessageStoragePolicy.allowed_persistence_regions" title="Permalink to this definition">#</a></dt>
+<dd><p>The list of GCP regions where messages that are published to
+the topic may be persisted in storage. Messages published by
+publishers running in non-allowed GCP regions (or running
+outside of GCP altogether) will be routed for storage in one
+of the allowed regions. An empty list indicates a
+misconfiguration at the project or organization level, which
+will result in all Publish operations failing.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="google.cloud.pubsub_v1.types.MethodDescriptorProto">
 <em class="property">class </em><code class="descclassname">google.cloud.pubsub_v1.types.</code><code class="descname">MethodDescriptorProto</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.MethodDescriptorProto" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
@@ -685,7 +796,8 @@ minutes).</p>
 <code class="docutils literal notranslate"><span class="pre">pushConfig</span></code> indicates that the Pub/Sub system should stop
 pushing messages from the given subscription and allow
 messages to be pulled and acknowledged - effectively pausing
-the subscription if <code class="docutils literal notranslate"><span class="pre">Pull</span></code> is not called.</p>
+the subscription if <code class="docutils literal notranslate"><span class="pre">Pull</span></code> or <code class="docutils literal notranslate"><span class="pre">StreamingPull</span></code> is not
+called.</p>
 </dd></dl>
 
 </dd></dl>
@@ -962,7 +1074,10 @@ Pub/Sub    API.</p>
 <dl class="class">
 <dt id="google.cloud.pubsub_v1.types.SeekRequest">
 <em class="property">class </em><code class="descclassname">google.cloud.pubsub_v1.types.</code><code class="descname">SeekRequest</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.SeekRequest" title="Permalink to this definition">#</a></dt>
-<dd><p>Request for the <code class="docutils literal notranslate"><span class="pre">Seek</span></code> method.</p>
+<dd><p>Request for the <code class="docutils literal notranslate"><span class="pre">Seek</span></code> method. ALPHA: This feature is part of an alpha
+release. This API might be changed in backward-incompatible ways and is
+not recommended for production use. It is not subject to any SLA or
+deprecation policy.</p>
 <dl class="attribute">
 <dt id="google.cloud.pubsub_v1.types.SeekRequest.subscription">
 <code class="descname">subscription</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.SeekRequest.subscription" title="Permalink to this definition">#</a></dt>
@@ -1038,7 +1153,10 @@ Platform services (such as Projects) might reject them.</p>
 <dl class="class">
 <dt id="google.cloud.pubsub_v1.types.Snapshot">
 <em class="property">class </em><code class="descclassname">google.cloud.pubsub_v1.types.</code><code class="descname">Snapshot</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.Snapshot" title="Permalink to this definition">#</a></dt>
-<dd><p>A snapshot resource.</p>
+<dd><p>A snapshot resource. ALPHA: This feature is part of an alpha release.
+This API might be changed in backward-incompatible ways and is not
+recommended for production use. It is not subject to any SLA or
+deprecation policy.</p>
 <dl class="attribute">
 <dt id="google.cloud.pubsub_v1.types.Snapshot.name">
 <code class="descname">name</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.Snapshot.name" title="Permalink to this definition">#</a></dt>
@@ -1064,7 +1182,9 @@ Specifically, the lifetime of the snapshot is <code class="docutils literal notr
 consider a subscription whose oldest unacked message is 3 days
 old. If a snapshot is created from this subscription, the
 snapshot – which will always capture this 3-day-old backlog
-as long as the snapshot exists – will expire in 4 days.</p>
+as long as the snapshot exists – will expire in 4 days. The
+service will refuse to create a snapshot that would expire in
+less than 1 hour after creation.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1216,14 +1336,16 @@ message and will not be delivered again during that time (on a
 best-effort basis).  For pull subscriptions, this value is
 used as the initial value for the ack deadline. To override
 this value for a given message, call <code class="docutils literal notranslate"><span class="pre">ModifyAckDeadline</span></code>
-with the corresponding <code class="docutils literal notranslate"><span class="pre">ack_id</span></code> if using pull. The minimum
-custom deadline you can specify is 10 seconds. The maximum
-custom deadline you can specify is 600 seconds (10 minutes).
-If this parameter is 0, a default value of 10 seconds is used.
-For push delivery, this value is also used to set the request
-timeout for the call to the push endpoint.  If the subscriber
-never acknowledges the message, the Pub/Sub system will
-eventually redeliver the message.</p>
+with the corresponding <code class="docutils literal notranslate"><span class="pre">ack_id</span></code> if using non-streaming pull
+or send the <code class="docutils literal notranslate"><span class="pre">ack_id</span></code> in a
+<code class="docutils literal notranslate"><span class="pre">StreamingModifyAckDeadlineRequest</span></code> if using streaming pull.
+The minimum custom deadline you can specify is 10 seconds. The
+maximum custom deadline you can specify is 600 seconds (10
+minutes). If this parameter is 0, a default value of 10
+seconds is used.  For push delivery, this value is also used
+to set the request timeout for the call to the push endpoint.
+If the subscriber never acknowledges the message, the Pub/Sub
+system will eventually redeliver the message.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1232,7 +1354,11 @@ eventually redeliver the message.</p>
 <dd><p>Indicates whether to retain acknowledged messages. If true,
 then messages are not expunged from the subscription’s
 backlog, even if they are acknowledged, until they fall out of
-the <code class="docutils literal notranslate"><span class="pre">message_retention_duration</span></code> window.</p>
+the <code class="docutils literal notranslate"><span class="pre">message_retention_duration</span></code> window. ALPHA: This feature
+is part of an alpha release. This API might be changed in
+backward-incompatible ways and is not recommended for
+production use. It is not subject to any SLA or deprecation
+policy.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1244,7 +1370,10 @@ published. If <code class="docutils literal notranslate"><span class="pre">retai
 also configures the retention of acknowledged messages, and
 thus configures how far back in time a <code class="docutils literal notranslate"><span class="pre">Seek</span></code> can be done.
 Defaults to 7 days. Cannot be more than 7 days or less than 10
-minutes.</p>
+minutes. ALPHA: This feature is part of an alpha release. This
+API might be changed in backward-incompatible ways and is not
+recommended for production use. It is not subject to any SLA
+or deprecation policy.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1323,6 +1452,18 @@ and it must not start with <code class="docutils literal notranslate"><span clas
 <dd><p>User labels.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt id="google.cloud.pubsub_v1.types.Topic.message_storage_policy">
+<code class="descname">message_storage_policy</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.Topic.message_storage_policy" title="Permalink to this definition">#</a></dt>
+<dd><p>Policy constraining how messages published to the topic may be
+stored. It is determined when the topic is created based on
+the policy configured at the project level. It must not be set
+by the caller in the request to CreateTopic or to UpdateTopic.
+This field will be populated in the responses for GetTopic,
+CreateTopic, and UpdateTopic: if not present in the response,
+then no constraints are in effect.</p>
+</dd></dl>
+
 <dl class="class">
 <dt id="google.cloud.pubsub_v1.types.Topic.LabelsEntry">
 <em class="property">class </em><code class="descname">LabelsEntry</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.Topic.LabelsEntry" title="Permalink to this definition">#</a></dt>
@@ -1343,11 +1484,14 @@ and it must not start with <code class="docutils literal notranslate"><span clas
 <dl class="class">
 <dt id="google.cloud.pubsub_v1.types.UpdateSnapshotRequest">
 <em class="property">class </em><code class="descclassname">google.cloud.pubsub_v1.types.</code><code class="descname">UpdateSnapshotRequest</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.UpdateSnapshotRequest" title="Permalink to this definition">#</a></dt>
-<dd><p>Request for the UpdateSnapshot method.</p>
+<dd><p>Request for the UpdateSnapshot method. ALPHA: This feature is part of an
+alpha release. This API might be changed in backward-incompatible ways
+and is not recommended for production use. It is not subject to any SLA
+or deprecation policy.</p>
 <dl class="attribute">
 <dt id="google.cloud.pubsub_v1.types.UpdateSnapshotRequest.snapshot">
 <code class="descname">snapshot</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.UpdateSnapshotRequest.snapshot" title="Permalink to this definition">#</a></dt>
-<dd><p>The updated snpashot object.</p>
+<dd><p>The updated snapshot object.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1385,14 +1529,18 @@ Must be specified and non-empty.</p>
 <dl class="attribute">
 <dt id="google.cloud.pubsub_v1.types.UpdateTopicRequest.topic">
 <code class="descname">topic</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.UpdateTopicRequest.topic" title="Permalink to this definition">#</a></dt>
-<dd><p>The topic to update.</p>
+<dd><p>The updated topic object.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.pubsub_v1.types.UpdateTopicRequest.update_mask">
 <code class="descname">update_mask</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.UpdateTopicRequest.update_mask" title="Permalink to this definition">#</a></dt>
 <dd><p>Indicates which fields in the provided topic to update. Must
-be specified and non-empty.</p>
+be specified and non-empty. Note that if <code class="docutils literal notranslate"><span class="pre">update_mask</span></code>
+contains “message_storage_policy” then the new value will be
+determined based on the policy configured at the project or
+organization level. The <code class="docutils literal notranslate"><span class="pre">message_storage_policy</span></code> must not be
+set in the <code class="docutils literal notranslate"><span class="pre">topic</span></code> provided above.</p>
 </dd></dl>
 
 </dd></dl>
