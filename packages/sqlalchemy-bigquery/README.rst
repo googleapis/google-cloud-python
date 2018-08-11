@@ -70,8 +70,3 @@ Set up an environment and run tests::
     source .env/bin/activate
     pip install -r dev_requirements.txt
     pytest
-
-TODO
-====
-
-- Support for Record column type

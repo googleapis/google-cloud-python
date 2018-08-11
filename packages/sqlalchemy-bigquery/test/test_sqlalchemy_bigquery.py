@@ -22,7 +22,12 @@ ONE_ROW_CONTENTS = [
     datetime.date(2013, 10, 10),
     datetime.datetime(2013, 10, 10, 11, 27, 16),
     datetime.time(11, 27, 16),
-    b'\xef'
+    b'\xef',
+    {
+        'name': 'John Doe',
+        'age': 100,
+    },
+    [1, 2, 3],
 ]
 
 
@@ -47,7 +52,9 @@ SAMPLE_COLUMNS = [
     {'name': 'date', 'type': types.DATE(), 'nullable': True, 'default': None},
     {'name': 'datetime', 'type': types.DATETIME(), 'nullable': True, 'default': None},
     {'name': 'time', 'type': types.TIME(), 'nullable': True, 'default': None},
-    {'name': 'bytes', 'type': types.BINARY(), 'nullable': True, 'default': None}
+    {'name': 'bytes', 'type': types.BINARY(), 'nullable': True, 'default': None},
+    {'name': 'record', 'type': types.JSON(), 'nullable': True, 'default': None},
+    {'name': 'array', 'type': types.ARRAY(types.Integer()), 'nullable': True, 'default': None},
 ]
 
 
@@ -101,7 +108,7 @@ def query(table):
 
 
 def test_reflect_select(engine, table):
-    assert len(table.c) == 9
+    assert len(table.c) == 11
     assert isinstance(table.c.integer, Column)
     assert isinstance(table.c.integer.type, types.Integer)
     assert isinstance(table.c.timestamp.type, types.TIMESTAMP)
@@ -112,6 +119,8 @@ def test_reflect_select(engine, table):
     assert isinstance(table.c.datetime.type, types.DATETIME)
     assert isinstance(table.c.time.type, types.TIME)
     assert isinstance(table.c.bytes.type, types.BINARY)
+    assert isinstance(table.c.record.type, types.JSON)
+    assert isinstance(table.c.array.type, types.ARRAY)
 
     rows = table.select().execute().fetchall()
     assert len(rows) == 1000

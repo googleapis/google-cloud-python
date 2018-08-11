@@ -52,9 +52,8 @@ _type_map = {
     'DATETIME': types.DATETIME,
     'DATE': types.DATE,
     'BYTES': types.BINARY,
-    'TIME': types.TIME
-    # TODO
-    # 'RECORD'
+    'TIME': types.TIME,
+    'RECORD': types.JSON,
 }
 
 
@@ -116,6 +115,14 @@ class BigQueryDialect(DefaultDialect):
             client = bigquery.Client(url.host)
         return ([client], {})
 
+    def _json_deserializer(self, row):
+        """JSON deserializer for RECORD types.
+
+        The DB-API layer already deserializes JSON to a dictionary, so this
+        just returns the input.
+        """
+        return row
+
     def _split_table_name(self, full_table_name):
         # Split full_table_name to get project, dataset and table name
         dataset = None
@@ -165,8 +172,8 @@ class BigQueryDialect(DefaultDialect):
 
             result.append({
                 'name': col.name,
-                'type': coltype,
-                'nullable': True if col.mode == 'NULLABLE' else False,
+                'type': types.ARRAY(coltype) if col.mode == 'REPEATED' else coltype,
+                'nullable': col.mode == 'NULLABLE' or col.mode == 'REPEATED',
                 'default': None,
             })
 
