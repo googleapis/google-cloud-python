@@ -19,6 +19,7 @@ from google.api_core.exceptions import RetryError
 from google.api_core.retry import Retry
 from google.api_core.retry import if_exception_type
 from google.cloud._helpers import _to_bytes
+from google.cloud.bigtable import enums
 from google.cloud.bigtable.batcher import (FLUSH_COUNT, MAX_ROW_BYTES)
 from google.cloud.bigtable.batcher import MutationsBatcher
 from google.cloud.bigtable.column_family import ColumnFamily
@@ -30,7 +31,6 @@ from google.cloud.bigtable.row_data import PartialRowsData
 from google.cloud.bigtable.row_data import YieldRowsData
 from google.cloud.bigtable.row_set import RowRange
 from google.cloud.bigtable.row_set import RowSet
-from google.cloud.bigtable_admin_v2 import enums
 from google.cloud.bigtable_admin_v2.proto import (
     bigtable_table_admin_pb2 as table_admin_messages_v2_pb2)
 from google.cloud.bigtable_admin_v2.proto import (
@@ -286,12 +286,14 @@ class Table(object):
         :raises: :class:`ValueError <exceptions.ValueError>` if the cluster
                   state does not present in predefined states.
         """
+        REPLICATION_VIEW = enums.Table.View.REPLICATION_VIEW
         table_client = self._instance._client.table_admin_client
-        table_pb = table_client.get_table(self.name)
+        table_pb = table_client.get_table(self.name, view=REPLICATION_VIEW)
 
         result = {}
         for cluster_id, value_pb in table_pb.cluster_states.items():
-            result[str(cluster_id)] = value_pb.replication_state
+            result[cluster_id] = _ClusterStatePB(value_pb.replication_state
+                                                 ).replication_state_str
         return result
 
     def read_row(self, row_key, filter_=None):
@@ -656,6 +658,22 @@ class _RetryableMutateRowsWorker(object):
         return self.responses_statuses
 
 
+class _ClusterStatePB(object):
+    def __init__(self, replication_state):
+        self.replication_state = replication_state
+        self.replication_dict = {
+            enums.Table.ReplicationState.STATE_NOT_KNOWN: "STATE_NOT_KNOWN",
+            enums.Table.ReplicationState.INITIALIZING: "INITIALIZING",
+            enums.Table.ReplicationState.PLANNED_MAINTENANCE:
+                "PLANNED_MAINTENANCE",
+            enums.Table.ReplicationState.UNPLANNED_MAINTENANCE:
+                "UNPLANNED_MAINTENANCE",
+            enums.Table.ReplicationState.READY: "READY"
+        }
+        self.replication_state_str = \
+            self.replication_dict[self.replication_state]
+
+
 def _create_row_request(table_name, row_key=None, start_key=None, end_key=None,
                         filter_=None, limit=None, end_inclusive=False,
                         app_profile_id=None, row_set=None):
@@ -713,7 +731,7 @@ def _create_row_request(table_name, row_key=None, start_key=None, end_key=None,
                          'set simultaneously')
 
     if ((start_key is not None or end_key is not None) and
-                row_set is not None):
+            row_set is not None):
         raise ValueError('Row range and row set cannot be '
                          'set simultaneously')
 

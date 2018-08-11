@@ -407,13 +407,23 @@ class TestTable(unittest.TestCase):
     def test_list_column_families(self):
         self._list_column_families_helper()
 
-    def test_get_cluster_states(self):
+    def _test_get_cluster_states_helper(self):
         from google.cloud.bigtable_admin_v2.gapic import (
             bigtable_table_admin_client)
-        from google.cloud.bigtable import enums
-        INITIALIZING = enums.Table.ReplicationState.INITIALIZING
-        PLANNED_MAINTENANCE = enums.Table.ReplicationState.PLANNED_MAINTENANCE
-        READY = enums.Table.ReplicationState.READY
+        from google.cloud.bigtable.enums import Table as enum_table
+        STATE_NOT_KNOWN = enum_table.ReplicationState.STATE_NOT_KNOWN
+        INITIALIZING = enum_table.ReplicationState.INITIALIZING
+        PLANNED_MAINTENANCE = enum_table.ReplicationState.PLANNED_MAINTENANCE
+        UNPLANNED_MAINTENANCE = enum_table.ReplicationState.\
+            UNPLANNED_MAINTENANCE
+        READY = enum_table.ReplicationState.READY
+        replication_dict = {
+            STATE_NOT_KNOWN: "STATE_NOT_KNOWN",
+            INITIALIZING: "INITIALIZING",
+            PLANNED_MAINTENANCE: "PLANNED_MAINTENANCE",
+            UNPLANNED_MAINTENANCE: "UNPLANNED_MAINTENANCE",
+            READY: "READY"
+        }
 
         table_api = bigtable_table_admin_client.BigtableTableAdminClient(
             mock.Mock())
@@ -425,7 +435,8 @@ class TestTable(unittest.TestCase):
 
         response_pb = _TablePB(
             cluster_states={'cluster-id1': _ClusterStatePB(INITIALIZING),
-                            'cluster-id2': _ClusterStatePB(PLANNED_MAINTENANCE),
+                            'cluster-id2': _ClusterStatePB(
+                                PLANNED_MAINTENANCE),
                             'cluster-id3': _ClusterStatePB(READY),
                             },
         )
@@ -438,14 +449,17 @@ class TestTable(unittest.TestCase):
 
         # build expected result
         expected_result = {
-            'cluster-id1': INITIALIZING,
-            'cluster-id2': PLANNED_MAINTENANCE,
-            'cluster-id3': READY
+            'cluster-id1': replication_dict[INITIALIZING],
+            'cluster-id2': replication_dict[PLANNED_MAINTENANCE],
+            'cluster-id3': replication_dict[READY]
         }
 
         # Perform the method and check the result.
         result = table.get_cluster_states()
         self.assertEqual(result, expected_result)
+
+    def test_get_cluster_states(self):
+        self._test_get_cluster_states_helper()
 
     def _read_row_helper(self, chunks, expected_result, app_profile_id=None):
         from google.cloud._testing import _Monkey
