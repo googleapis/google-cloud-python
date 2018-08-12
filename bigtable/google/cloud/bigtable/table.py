@@ -264,22 +264,22 @@ class Table(object):
                   unavailable), then there will be an entry for the cluster
                   with STATE_NOT_KNOWN `replication_state`.
                   Possible replications_state values
-                  STATE_NOT_KNOWN (int): The replication state of the table is
+                  STATE_NOT_KNOWN (str): The replication state of the table is
                   unknown in this cluster.
-                  INITIALIZING (int): The cluster was recently created, and the
+                  INITIALIZING (str): The cluster was recently created, and the
                   table must finish copying
                   over pre-existing data from other clusters before it can
                   begin receiving live replication updates and serving
                   ``Data API`` requests.
-                  PLANNED_MAINTENANCE (int): The table is temporarily unable to
+                  PLANNED_MAINTENANCE (str): The table is temporarily unable to
                   serve
                   ``Data API`` requests from this
                   cluster due to planned internal maintenance.
-                  UNPLANNED_MAINTENANCE (int): The table is temporarily unable
+                  UNPLANNED_MAINTENANCE (str): The table is temporarily unable
                   to serve
                   ``Data API`` requests from this
                   cluster due to unplanned or emergency maintenance.
-                  READY (int): The table can serve
+                  READY (str): The table can serve
                   ``Data API`` requests from this
                   cluster. Depending on replication delay, reads may not
                   immediately reflect the state of the table in other clusters.
@@ -659,6 +659,13 @@ class _RetryableMutateRowsWorker(object):
 
 
 class _ClusterStatePB(object):
+    """Map cluster state int value to string value.
+            :rtype: _ClusterStatePB object
+            :returns: Sets string value for cluster state on
+            _ClusterStatePB object. Uses google.cloud.bigtable.Table
+            to map int value to string of cluster state.
+    """
+
     def __init__(self, replication_state):
         self.replication_state = replication_state
         self.replication_dict = {
