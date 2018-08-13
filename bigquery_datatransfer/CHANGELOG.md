@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery-datatransfer/#history
 
+## 0.2.0
+
+### Implementation Changes
+- Regenerate bigquery-datatransfer (#5793)
+
+### Internal / Testing Changes
+- Avoid overwriting '__module__' of messages from shared modules. (#5364)
+- Modify system tests to use prerelease versions of grpcio (#5304)
+- Add Test runs for Python 3.7 and remove 3.4 (#5295)
+- Fix bad trove classifier
+- Rename releases to changelog and include from CHANGELOG.md (#5191)
+
 ## 0.1.1
 
 ### Dependencies
