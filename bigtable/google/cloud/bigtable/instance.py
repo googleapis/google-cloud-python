@@ -436,10 +436,10 @@ class Instance(object):
                     routing_policy_type=None,
                     description=None, cluster_id=None,
                     allow_transactional_writes=None):
-        """Factory to create app profile assosiated with this instance.
+        """Factory to create AppProfile associated with this instance.
 
         :type app_profile_id: str
-        :param app_profile_id: The ID of the app profile. Must be of the form
+        :param app_profile_id: The ID of the AppProfile. Must be of the form
                                ``[_a-zA-Z0-9][-_.a-zA-Z0-9]*``.
 
         :type: routing_policy_type: int
@@ -462,6 +462,9 @@ class Instance(object):
         :param: allow_transactional_writes: (Optional) If true, allow
                                             transactional writes for
                                             ROUTING_POLICY_TYPE_SINGLE.
+
+        :rtype: :class:`~google.cloud.bigtable.app_profile.AppProfile>`
+        :returns: AppProfile for this instance.
         """
         return AppProfile(
             app_profile_id, self, routing_policy_type=routing_policy_type,
@@ -469,15 +472,13 @@ class Instance(object):
             allow_transactional_writes=allow_transactional_writes)
 
     def list_app_profiles(self):
-        """Lists information about app profiles in an instance.
+        """Lists information about AppProfiles in an instance.
 
-        :rtype: :list:[`~google.cloud.bigtable_admin_v2.types.AppProfile`]
-        :return: A :list:[`~google.cloud.bigtable_admin_v2.types.AppProfile`].
-                By default, this is a list of
-                :class:`~google.cloud.bigtable_admin_v2.types.AppProfile`
-                instances.
+        :rtype: :list:[`~google.cloud.bigtable.app_profile.AppProfile`]
+        :returns: A :list:[`~google.cloud.bigtable.app_profile.AppProfile`].
+                  By default, this is a list of
+                  :class:`~google.cloud.bigtable.app_profile.AppProfile`
+                  instances.
         """
         resp = self._client._instance_admin_client.list_app_profiles(self.name)
-        app_profiles = [
-            AppProfile.from_pb(app_profile, self) for app_profile in resp]
-        return app_profiles
+        return [AppProfile.from_pb(app_profile, self) for app_profile in resp]

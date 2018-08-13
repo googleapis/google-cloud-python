@@ -813,16 +813,19 @@ class TestInstance(unittest.TestCase):
 
         instance = self._make_one(self.INSTANCE_ID, None)
 
-        app_profile1 = instance.app_profile(APP_PROFILE_ID_1,
-                                            routing_policy_type=ANY,
-                                            description=DESCRIPTION_1)
+        app_profile1 = instance.app_profile(
+            APP_PROFILE_ID_1,
+            routing_policy_type=ANY,
+            description=DESCRIPTION_1,
+        )
 
-        app_profile2 = instance.app_profile(APP_PROFILE_ID_2,
-                                            routing_policy_type=SINGLE,
-                                            description=DESCRIPTION_2,
-                                            cluster_id=CLUSTER_ID,
-                                            allow_transactional_writes=(
-                                                ALLOW_WRITES))
+        app_profile2 = instance.app_profile(
+            APP_PROFILE_ID_2,
+            routing_policy_type=SINGLE,
+            description=DESCRIPTION_2,
+            cluster_id=CLUSTER_ID,
+            allow_transactional_writes=ALLOW_WRITES,
+        )
         self.assertEqual(app_profile1.app_profile_id, APP_PROFILE_ID_1)
         self.assertIs(app_profile1._instance, instance)
         self.assertEqual(app_profile1.routing_policy_type, ANY)

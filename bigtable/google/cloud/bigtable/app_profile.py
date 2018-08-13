@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""User firendly container for Google Cloud Bigtable App Profile."""
+"""User firendly container for Google Cloud Bigtable AppProfile."""
 
 
 import re
@@ -24,25 +24,26 @@ from google.api_core.exceptions import NotFound
 
 _APP_PROFILE_NAME_RE = re.compile(
     r'^projects/(?P<project>[^/]+)/'
-    r'instances/(?P<instance>[^/]+)/appProfiles/'
-    r'(?P<app_profile_id>[_a-zA-Z0-9][-_.a-zA-Z0-9]*)$')
+    r'instances/(?P<instance>[^/]+)/'
+    r'appProfiles/(?P<app_profile_id>[_a-zA-Z0-9][-_.a-zA-Z0-9]*)$')
 
 
 class AppProfile(object):
-    """Representation of a Google Cloud Bigtable App Profile.
+    """Representation of a Google Cloud Bigtable AppProfile.
 
     We can use a :class:`AppProfile` to:
 
+    * :meth:`reload` itself
     * :meth:`create` itself
     * :meth:`update` itself
     * :meth:`delete` itself
 
     :type app_profile_id: str
-    :param app_profile_id: The ID of the app profile. Must be of the form
+    :param app_profile_id: The ID of the AppProfile. Must be of the form
                            ``[_a-zA-Z0-9][-_.a-zA-Z0-9]*``.
 
     :type: routing_policy_type: int
-    :param: routing_policy_type: The type of the routing policy.
+    :param: routing_policy_type: (Optional) The type of the routing policy.
                                  Possible values are represented
                                  by the following constants:
                                  :data:`google.cloud.bigtable.enums.RoutingPolicyType.ANY`
@@ -76,18 +77,18 @@ class AppProfile(object):
 
     @property
     def name(self):
-        """App Profile name used in requests.
+        """AppProfile name used in requests.
 
         .. note::
 
           This property will not change if ``app_profile_id`` does not, but
           the return value is not cached.
 
-        The app profile name is of the form
+        The AppProfile name is of the form
             ``"projects/../instances/../app_profile/{app_profile_id}"``
 
         :rtype: str
-        :returns: The app profile name.
+        :returns: The AppProfile name.
         """
         return self.instance_admin_client.app_profile_path(
             self._instance._client.project, self._instance.instance_id,
@@ -107,8 +108,8 @@ class AppProfile(object):
             return NotImplemented
         # NOTE: This does not compare the configuration values, such as
         #       the routing_policy_type. Instead, it only compares
-        #       identifying values instance, app profile ID and client. This is
-        #       intentional, since the same app profile can be in different
+        #       identifying values instance, AppProfile ID and client. This is
+        #       intentional, since the same AppProfile can be in different
         #       states if not synchronized.
         return (other.app_profile_id == self.app_profile_id and
                 other._instance == self._instance)
@@ -128,6 +129,7 @@ class AppProfile(object):
 
         :rtype: :class:`AppProfile`
         :returns: The AppProfile parsed from the protobuf response.
+
         :raises: :class:`ValueError <exceptions.ValueError>` if the AppProfile
                  name does not match
                  ``projects/{project}/instances/{instance_id}/appProfiles/{app_profile_id}``
@@ -176,7 +178,13 @@ class AppProfile(object):
         self.routing_policy_type = routing_policy_type
 
     def _to_pb(self):
-        """ Create app profile proto buff message for API calls """
+        """ Create AppProfile proto buff message for API calls
+        :rtype: :class:`.instance_pb2.AppProfile`
+        :returns: The converted current object.
+
+        :raises: :class:`ValueError <exceptions.ValueError>` if the AppProfile
+                 routing_policy_type is not set
+        """
         if not self.routing_policy_type:
             raise ValueError('AppProfile required routing policy.')
 
@@ -186,8 +194,7 @@ class AppProfile(object):
         if self.routing_policy_type == RoutingPolicyType.ANY:
             multi_cluster_routing_use_any = (
                 instance_pb2.AppProfile.MultiClusterRoutingUseAny())
-
-        if self.routing_policy_type == RoutingPolicyType.SINGLE:
+        else:
             single_cluster_routing = (
                 instance_pb2.AppProfile.SingleClusterRouting(
                     cluster_id=self.cluster_id,
@@ -213,10 +220,10 @@ class AppProfile(object):
         self._update_from_pb(app_profile_pb)
 
     def exists(self):
-        """Check whether the app profile already exists.
+        """Check whether the AppProfile already exists.
 
         :rtype: bool
-        :returns: True if the app profile exists, else False.
+        :returns: True if the AppProfile exists, else False.
         """
         try:
             self.instance_admin_client.get_app_profile(self.name)
@@ -226,24 +233,30 @@ class AppProfile(object):
             return False
 
     def create(self, ignore_warnings=None):
-        """Create this app profile.
+        """Create this AppProfile.
 
         .. note::
 
-            Uses the ``project``, ``instance`` and ``app_profile_id`` on the
-            current :class:`AppProfile` in addition to the ``serve_nodes``.
+            Uses the ``instance`` and ``app_profile_id`` on the current
+            :class:`AppProfile` in addition to the ``routing_policy_type``,
+            ``description``, ``cluster_id`` and ``allow_transactional_writes``.
             To change them before creating, reset the values via
 
             .. code:: python
 
-                cluster.serve_nodes = 8
-                cluster.cluster_id = 'i-changed-my-mind'
+                app_profile.app_profile_id = 'i-changed-my-mind'
+                app_profile.routing_policy_type = (
+                    google.cloud.bigtable.enums.RoutingPolicyType.SINGLE
+                )
+                app_profile.description = 'new-description'
+                app-profile.cluster_id = 'other-cluster-id'
+                app-profile.allow_transactional_writes = True
 
             before calling :meth:`create`.
 
         :type: ignore_warnings: bool
         :param: ignore_warnings: (Optional) If true, ignore safety checks when
-                                 creating the app profile.
+                                 creating the AppProfile.
         """
         return self.from_pb(self.instance_admin_client.create_app_profile(
             parent=self._instance.name, app_profile_id=self.app_profile_id,
@@ -256,8 +269,11 @@ class AppProfile(object):
         .. note::
 
             Update any or all fo the following values:
+            ``routing_policy_type``
             ``description``
-            TODO: put full detail of properties that could be updated
+            ``cluster_id``
+            ``allow_transactional_writes``
+
         """
         update_mask_pb = field_mask_pb2.FieldMask()
 
@@ -266,8 +282,7 @@ class AppProfile(object):
 
         if self.routing_policy_type == RoutingPolicyType.ANY:
             update_mask_pb.paths.append('multi_cluster_routing_use_any')
-
-        if self.routing_policy_type == RoutingPolicyType.SINGLE:
+        else:
             update_mask_pb.paths.append('single_cluster_routing')
 
         return self.instance_admin_client.update_app_profile(
@@ -275,11 +290,11 @@ class AppProfile(object):
             ignore_warnings=ignore_warnings)
 
     def delete(self, ignore_warnings=None):
-        """Delete this app profile.
+        """Delete this AppProfile.
 
         :type: ignore_warnings: bool
         :param: ignore_warnings: If true, ignore safety checks when deleting
-                the app profile.
+                the AppProfile.
 
         :raises: google.api_core.exceptions.GoogleAPICallError: If the request
                  failed for any reason. google.api_core.exceptions.RetryError:
