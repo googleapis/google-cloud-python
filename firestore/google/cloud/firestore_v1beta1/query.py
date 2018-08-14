@@ -601,19 +601,32 @@ class Query(object):
             else:
                 yield snapshot
 
-    def onSnapshot(callback, options):
-        '''
-        db.collection("cities").where("state", "==", "CA")
-        .onSnapshot(function(querySnapshot) {
-            var cities = [];
-            querySnapshot.forEach(function(doc) {
-                cities.push(doc.data().name);
-            });
-            console.log("Current cities in CA: ", cities.join(", "));
-        });
-        '''
-        raise NotImplemented
+    # def on_snapshot(self, callback):
+    #     """Monitor the documents in this collection that match this query.
 
+    #     This starts a watch on this query using a background thread. The
+    #     provided callback is run on the snapshot of the documents.
+
+    #     Args:
+    #         callback(QuerySnapshot): a callback to run when a change occurs
+
+    #     Example:
+    #         from google.cloud import firestore
+
+    #         db = firestore.Client()
+    #         query_ref = db.collection(u'users').where("user", "==", u'ada')
+
+    #         def on_snapshot(query_snapshot):
+    #             for doc in query_snapshot.docs:
+    #                 print(u'{} => {}'.format(doc.id, doc.to_dict()))
+
+    #         # Watch this query
+    #         query_watch = query_ref.on_snapshot(on_snapshot)
+
+    #         # Terminate this watch
+    #         query_watch.unsubscribe()
+    #     """
+    #     raise NotImplemented
 
 def _enum_from_op_string(op_string):
     """Convert a string representation of a binary operator to an enum.

@@ -312,6 +312,9 @@ class Watch(object):
         thread.daemon = True
         thread.start()
 
+    def unsubscribe(self):
+        self.rpc.close()
+
     @classmethod
     def for_document(cls, document_ref, snapshot_callback,
                      snapshot_class_instance):
@@ -346,7 +349,19 @@ class Watch(object):
     #                    'target_id': WATCH_TARGET_ID
     #                },
     #                query.comparator(),
-    #                snapshot_callback)
+    #                snapshot_callback,
+    #                snapshot_class_instance)
+
+    # @classmethod
+    # def for_collection(cls, collection_ref, snapshot_callback):
+    #     return cls(collection_ref._client,
+    #                {
+    #                    'collection': collection_ref.to_proto(),
+    #                    'target_id': WATCH_TARGET_ID
+    #                },
+    #                document_watch_comparator,
+    #                snapshot_callback,
+    #                snapshot_class_instance)
 
     def on_snapshot(self, proto):
         """
@@ -511,15 +526,7 @@ class Watch(object):
         updated_tree, updated_map, appliedChanges = \
             Watch._compute_snapshot(
                 self.doc_tree, self.doc_map, deletes, adds, updates)
-#         _LOGGER.debug(f"""push
-#     self.doc_map {self.doc_map}
-#     self.change_map {self.change_map}
-#     read_time {read_time}
-#     deletes {deletes}
-#     adds {adds}
-#     updates {updates}
-#     updated_tree {updated_tree}
-# """)
+
         if not self.has_pushed or len(appliedChanges):
             _LOGGER.debug(
                 f'Sending snapshot with {len(appliedChanges)} changes'

@@ -447,9 +447,33 @@ class DocumentReference(object):
         return iterator
 
     def on_snapshot(self, callback):
-        '''
-        given options and the callback, monitor this document for changes
-        '''
+        """Watch this document.
+
+        This starts a watch on this document using a background thread. The
+        provided callback is run on the snapshot.
+
+        Args:
+            callback(DocumentSnapshot): a callback to run when a change occurs
+
+        Example:
+            from google.cloud import firestore
+
+            db = firestore.Client()
+            collection_ref = db.collection(u'users')
+
+            def on_snapshot(document_snapshot):
+                doc = document_snapshot
+                print(u'{} => {}'.format(doc.id, doc.to_dict()))
+
+            doc_ref = db.collection(u'users').document(
+                u'alovelace' + unique_resource_id())
+
+            # Watch this document
+            doc_watch = doc_ref.on_snapshot(on_snapshot)
+
+            # Terminate this watch
+            doc_watch.unsubscribe()
+        """
         Watch.for_document(self, callback, DocumentSnapshot)
 
 

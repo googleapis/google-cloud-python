@@ -371,11 +371,32 @@ class CollectionReference(object):
         query = query_mod.Query(self)
         return query.get(transaction=transaction)
 
-    def onSnapshot(options, callback):
-        '''
-        given options and the callback, monitor this collection for changes
-        '''
-        raise NotImplemented
+    # def on_snapshot(self, callback):
+    #     """Monitor the documents in this collection.
+    #
+    #     This starts a watch on this collection using a background thread. The
+    #     provided callback is run on the snapshot of the documents.
+    #
+    #     Args:
+    #         callback(CollectionSnapshot): a callback to run when a change occurs
+    #
+    #     Example:
+    #         from google.cloud import firestore
+    #
+    #         db = firestore.Client()
+    #         collection_ref = db.collection(u'users')
+    #
+    #         def on_snapshot(collection_snapshot):
+    #             for doc in collection_snapshot.docs:
+    #                 print(u'{} => {}'.format(doc.id, doc.to_dict()))
+    #
+    #         # Watch this collection
+    #         collection_watch = collection_ref.on_snapshot(on_snapshot)
+    #
+    #         # Terminate this watch
+    #         collection_watch.unsubscribe()
+    #     """
+    #     raise NotImplemented
 
 
 def _auto_id():

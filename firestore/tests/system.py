@@ -795,6 +795,8 @@ def test_batch(client, cleanup):
     assert snapshot2.update_time == write_result2.update_time
 
     assert not document3.get().exists
+
+
 def test_watch_document(client, cleanup):
     db = client
     doc_ref = db.collection(u'users').document(
