@@ -421,6 +421,19 @@ def test__get_initial_request():
     assert initial_request.modify_deadline_seconds == [10, 10]
 
 
+def test__get_initial_request_wo_leaser():
+    manager = make_manager()
+    manager._leaser = None
+
+    initial_request = manager._get_initial_request()
+
+    assert isinstance(initial_request, types.StreamingPullRequest)
+    assert initial_request.subscription == 'subscription-name'
+    assert initial_request.stream_ack_deadline_seconds == 10
+    assert initial_request.modify_deadline_ack_ids == []
+    assert initial_request.modify_deadline_seconds == []
+
+
 def test_on_response():
     manager, _, dispatcher, _, _, scheduler = make_running_manager()
     manager._callback = mock.sentinel.callback
