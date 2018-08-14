@@ -378,7 +378,10 @@ class StreamingPullManager(object):
         """
         # Any ack IDs that are under lease management need to have their
         # deadline extended immediately.
-        lease_ids = self._leaser.ack_ids
+        if self._leaser is not None:
+            lease_ids = self._leaser.ack_ids
+        else:
+            lease_ids = []
 
         # Put the request together.
         request = types.StreamingPullRequest(
