@@ -529,10 +529,10 @@ class Watch(object):
 
         if not self.has_pushed or len(appliedChanges):
             _LOGGER.debug(
-                f'Sending snapshot with {len(appliedChanges)} changes'
-                f' and {len(updated_tree)} documents')
+                'Sending snapshot with {len(appliedChanges)} changes'
+                ' and {len(updated_tree)} documents')
 
-            _LOGGER.debug(f"updatedTree:{updated_tree}")
+            _LOGGER.debug("updatedTree:{updated_tree}")
             self._snapshot_callback(
                 updated_tree.keys(),
                 appliedChanges,
@@ -560,7 +560,7 @@ class Watch(object):
             else:
                 value.read_time = read_time
                 adds.append(value)
-        _LOGGER.debug(f'deletes:{len(deletes)} adds:{len(adds)}')
+        _LOGGER.debug('deletes:{len(deletes)} adds:{len(adds)}')
         return (deletes, adds, updates)
 
     def _compute_snapshot(doc_tree, doc_map, delete_changes, add_changes,
@@ -672,7 +672,7 @@ class Watch(object):
         assert len(updated_tree) == len(updated_map), \
             'The update document ' + \
             'tree and document map should have the same number of entries.'
-        _LOGGER.debug(f"tree:{updated_tree}, map:{updated_map}, applied:{appliedChanges}")
+        _LOGGER.debug("tree:{updated_tree}, map:{updated_map}, applied:{appliedChanges}")
         return (updated_tree, updated_map, appliedChanges)
 
     def _affects_target(self, target_ids, current_id):
