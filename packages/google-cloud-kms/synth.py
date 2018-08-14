@@ -38,7 +38,3 @@ s.replace('setup.py',
           '(release_status = )(.*)$',
           f"\\1'{release_status}'")
 s.replace('setup.py', 'version = .*', f"version = '{client_library_version}'")
-
-# Wrong import name. Drop _grpc
-# https://github.com/googleapis/gapic-generator/issues/2160
-s.replace("**/*.py", "iam_policy_pb2_grpc", "iam_policy_pb2")
