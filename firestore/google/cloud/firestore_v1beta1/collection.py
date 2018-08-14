@@ -378,7 +378,8 @@ class CollectionReference(object):
     #     provided callback is run on the snapshot of the documents.
     #
     #     Args:
-    #         callback(CollectionSnapshot): a callback to run when a change occurs
+    #         callback(~.firestore.collection.CollectionSnapshot): a callback
+    #             to run when a change occurs.
     #
     #     Example:
     #         from google.cloud import firestore
@@ -387,7 +388,7 @@ class CollectionReference(object):
     #         collection_ref = db.collection(u'users')
     #
     #         def on_snapshot(collection_snapshot):
-    #             for doc in collection_snapshot.docs:
+    #             for doc in collection_snapshot.documents:
     #                 print(u'{} => {}'.format(doc.id, doc.to_dict()))
     #
     #         # Watch this collection
