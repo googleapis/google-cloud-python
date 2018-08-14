@@ -4,6 +4,12 @@
 
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
+## 0.37.0
+
+### Implementation Changes
+
+- Make Publisher batch-related interfaces private (#5784)
+
 ## 0.36.0
 
 ### Implementation Changes
