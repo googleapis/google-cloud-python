@@ -29,7 +29,6 @@ class MultiCallableStub(object):
 
     def __call__(self, request, timeout=None, metadata=None, credentials=None):
         self.channel_stub.requests.append((self.method, request))
-
         return self.channel_stub.responses.pop()
 
 
