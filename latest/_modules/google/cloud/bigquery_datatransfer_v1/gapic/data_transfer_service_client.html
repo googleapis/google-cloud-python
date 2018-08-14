@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigquery_datatransfer_v1.gapic.data_transfer_service_client &#8212; google-cloud 841bcbd6d1 documentation</title>
+    <title>google.cloud.bigquery_datatransfer_v1.gapic.data_transfer_service_client &#8212; google-cloud ef545dc documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -33,50 +33,47 @@
           <div class="body" role="main">
             
   <h1>Source code for google.cloud.bigquery_datatransfer_v1.gapic.data_transfer_service_client</h1><div class="highlight"><pre>
-<span></span><span class="c1"># Copyright 2017, Google LLC All rights reserved.</span>
+<span></span><span class="c1"># Copyright 2018 Google LLC</span>
 <span class="c1">#</span>
 <span class="c1"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
 <span class="c1"># you may not use this file except in compliance with the License.</span>
 <span class="c1"># You may obtain a copy of the License at</span>
 <span class="c1">#</span>
-<span class="c1">#     http://www.apache.org/licenses/LICENSE-2.0</span>
+<span class="c1">#     https://www.apache.org/licenses/LICENSE-2.0</span>
 <span class="c1">#</span>
 <span class="c1"># Unless required by applicable law or agreed to in writing, software</span>
 <span class="c1"># distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
 <span class="c1"># WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
 <span class="c1"># See the License for the specific language governing permissions and</span>
 <span class="c1"># limitations under the License.</span>
-<span class="c1">#</span>
-<span class="c1"># EDITING INSTRUCTIONS</span>
-<span class="c1"># This file was generated from the file</span>
-<span class="c1"># https://github.com/google/googleapis/blob/master/google/cloud/bigquery/datatransfer/v1/datatransfer.proto,</span>
-<span class="c1"># and updates to that file get reflected here through a refresh process.</span>
-<span class="c1"># For the short term, the refresh process will only be runnable by Google engineers.</span>
-<span class="c1">#</span>
-<span class="c1"># The only allowed edits are to method and file documentation. A 3-way</span>
-<span class="c1"># merge preserves those additions if the generated source changes.</span>
 <span class="sd">&quot;&quot;&quot;Accesses the google.cloud.bigquery.datatransfer.v1 DataTransferService API.&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">functools</span>
 <span class="kn">import</span> <span class="nn">pkg_resources</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
 
+<span class="kn">from</span> <span class="nn">google.oauth2</span> <span class="k">import</span> <span class="n">service_account</span>
 <span class="kn">import</span> <span class="nn">google.api_core.gapic_v1.client_info</span>
 <span class="kn">import</span> <span class="nn">google.api_core.gapic_v1.config</span>
 <span class="kn">import</span> <span class="nn">google.api_core.gapic_v1.method</span>
+<span class="kn">import</span> <span class="nn">google.api_core.path_template</span>
+<span class="kn">import</span> <span class="nn">google.api_core.gapic_v1.routing_header</span>
 <span class="kn">import</span> <span class="nn">google.api_core.grpc_helpers</span>
 <span class="kn">import</span> <span class="nn">google.api_core.page_iterator</span>
-<span class="kn">import</span> <span class="nn">google.api_core.path_template</span>
+<span class="kn">import</span> <span class="nn">grpc</span>
 
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery_datatransfer_v1.gapic</span> <span class="k">import</span> <span class="n">data_transfer_service_client_config</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery_datatransfer_v1.gapic</span> <span class="k">import</span> <span class="n">enums</span>
+<span class="kn">from</span> <span class="nn">google.cloud.bigquery_datatransfer_v1.gapic.transports</span> <span class="k">import</span> <span class="n">data_transfer_service_grpc_transport</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery_datatransfer_v1.proto</span> <span class="k">import</span> <span class="n">datatransfer_pb2</span>
+<span class="kn">from</span> <span class="nn">google.cloud.bigquery_datatransfer_v1.proto</span> <span class="k">import</span> <span class="n">datatransfer_pb2_grpc</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery_datatransfer_v1.proto</span> <span class="k">import</span> <span class="n">transfer_pb2</span>
+<span class="kn">from</span> <span class="nn">google.protobuf</span> <span class="k">import</span> <span class="n">empty_pb2</span>
 <span class="kn">from</span> <span class="nn">google.protobuf</span> <span class="k">import</span> <span class="n">field_mask_pb2</span>
 <span class="kn">from</span> <span class="nn">google.protobuf</span> <span class="k">import</span> <span class="n">timestamp_pb2</span>
 
 <span class="n">_GAPIC_LIBRARY_VERSION</span> <span class="o">=</span> <span class="n">pkg_resources</span><span class="o">.</span><span class="n">get_distribution</span><span class="p">(</span>
-    <span class="s1">&#39;google-cloud-bigquery-datatransfer&#39;</span><span class="p">,</span>
-<span class="p">)</span><span class="o">.</span><span class="n">version</span>
+    <span class="s1">&#39;google-cloud-bigquery-datatransfer&#39;</span><span class="p">,</span> <span class="p">)</span><span class="o">.</span><span class="n">version</span>
 
 
 <span class="k">class</span> <span class="nc">DataTransferServiceClient</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -90,88 +87,60 @@
     <span class="n">SERVICE_ADDRESS</span> <span class="o">=</span> <span class="s1">&#39;bigquerydatatransfer.googleapis.com:443&#39;</span>
     <span class="sd">&quot;&quot;&quot;The default address of the service.&quot;&quot;&quot;</span>
 
-    <span class="c1"># The scopes needed to make gRPC calls to all of the methods defined in</span>
-    <span class="c1"># this service</span>
-    <span class="n">_DEFAULT_SCOPES</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="s1">&#39;https://www.googleapis.com/auth/bigquery&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;https://www.googleapis.com/auth/cloud-platform&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;https://www.googleapis.com/auth/cloud-platform.read-only&#39;</span><span class="p">,</span>
-    <span class="p">)</span>
+    <span class="c1"># The name of the interface for this client. This is the key used to</span>
+    <span class="c1"># find the method configuration in the client_config dictionary.</span>
+    <span class="n">_INTERFACE_NAME</span> <span class="o">=</span> <span class="s1">&#39;google.cloud.bigquery.datatransfer.v1.DataTransferService&#39;</span>
 
-    <span class="c1"># The name of the interface for this client. This is the key used to find</span>
-    <span class="c1"># method configuration in the client_config dictionary</span>
-    <span class="n">_INTERFACE_NAME</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="s1">&#39;google.cloud.bigquery.datatransfer.v1.DataTransferService&#39;</span><span class="p">)</span>
+<div class="viewcode-block" id="DataTransferServiceClient.from_service_account_file"><a class="viewcode-back" href="../../../../../bigquery_datatransfer/gapic/v1/api.html#google.cloud.bigquery_datatransfer_v1.DataTransferServiceClient.from_service_account_file">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_service_account_file</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Creates an instance of this client using the provided credentials</span>
+<span class="sd">        file.</span>
 
-<div class="viewcode-block" id="DataTransferServiceClient.project_path"><a class="viewcode-back" href="../../../../../bigquery_datatransfer/gapic/v1/api.html#google.cloud.bigquery_datatransfer_v1.DataTransferServiceClient.project_path">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">project_path</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">project</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Returns a fully-qualified project resource name string.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">path_template</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span>
-            <span class="s1">&#39;projects/</span><span class="si">{project}</span><span class="s1">&#39;</span><span class="p">,</span>
-            <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span>
-        <span class="p">)</span></div>
+<span class="sd">        Args:</span>
+<span class="sd">            filename (str): The path to the service account private key json</span>
+<span class="sd">                file.</span>
+<span class="sd">            args: Additional arguments to pass to the constructor.</span>
+<span class="sd">            kwargs: Additional arguments to pass to the constructor.</span>
 
-<div class="viewcode-block" id="DataTransferServiceClient.location_path"><a class="viewcode-back" href="../../../../../bigquery_datatransfer/gapic/v1/api.html#google.cloud.bigquery_datatransfer_v1.DataTransferServiceClient.location_path">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">location_path</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">project</span><span class="p">,</span> <span class="n">location</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Returns a fully-qualified location resource name string.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">path_template</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span>
-            <span class="s1">&#39;projects/</span><span class="si">{project}</span><span class="s1">/locations/</span><span class="si">{location}</span><span class="s1">&#39;</span><span class="p">,</span>
-            <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span>
-            <span class="n">location</span><span class="o">=</span><span class="n">location</span><span class="p">,</span>
-        <span class="p">)</span></div>
+<span class="sd">        Returns:</span>
+<span class="sd">            DataTransferServiceClient: The constructed client.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">credentials</span> <span class="o">=</span> <span class="n">service_account</span><span class="o">.</span><span class="n">Credentials</span><span class="o">.</span><span class="n">from_service_account_file</span><span class="p">(</span>
+            <span class="n">filename</span><span class="p">)</span>
+        <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;credentials&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">credentials</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="DataTransferServiceClient.location_data_source_path"><a class="viewcode-back" href="../../../../../bigquery_datatransfer/gapic/v1/api.html#google.cloud.bigquery_datatransfer_v1.DataTransferServiceClient.location_data_source_path">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">location_data_source_path</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">project</span><span class="p">,</span> <span class="n">location</span><span class="p">,</span> <span class="n">data_source</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Returns a fully-qualified location_data_source resource name string.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">path_template</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span>
-            <span class="s1">&#39;projects/</span><span class="si">{project}</span><span class="s1">/locations/</span><span class="si">{location}</span><span class="s1">/dataSources/</span><span class="si">{data_source}</span><span class="s1">&#39;</span><span class="p">,</span>
-            <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span>
-            <span class="n">location</span><span class="o">=</span><span class="n">location</span><span class="p">,</span>
-            <span class="n">data_source</span><span class="o">=</span><span class="n">data_source</span><span class="p">,</span>
-        <span class="p">)</span></div>
+    <span class="n">from_service_account_json</span> <span class="o">=</span> <span class="n">from_service_account_file</span>
 
-<div class="viewcode-block" id="DataTransferServiceClient.location_transfer_config_path"><a class="viewcode-back" href="../../../../../bigquery_datatransfer/gapic/v1/api.html#google.cloud.bigquery_datatransfer_v1.DataTransferServiceClient.location_transfer_config_path">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">location_transfer_config_path</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">project</span><span class="p">,</span> <span class="n">location</span><span class="p">,</span> <span class="n">transfer_config</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Returns a fully-qualified location_transfer_config resource name string.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">path_template</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span>
-            <span class="s1">&#39;projects/</span><span class="si">{project}</span><span class="s1">/locations/</span><span class="si">{location}</span><span class="s1">/transferConfigs/</span><span class="si">{transfer_config}</span><span class="s1">&#39;</span><span class="p">,</span>
-            <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span>
-            <span class="n">location</span><span class="o">=</span><span class="n">location</span><span class="p">,</span>
-            <span class="n">transfer_config</span><span class="o">=</span><span class="n">transfer_config</span><span class="p">,</span>
-        <span class="p">)</span></div>
-
-<div class="viewcode-block" id="DataTransferServiceClient.location_run_path"><a class="viewcode-back" href="../../../../../bigquery_datatransfer/gapic/v1/api.html#google.cloud.bigquery_datatransfer_v1.DataTransferServiceClient.location_run_path">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">location_run_path</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">project</span><span class="p">,</span> <span class="n">location</span><span class="p">,</span> <span class="n">transfer_config</span><span class="p">,</span> <span class="n">run</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Returns a fully-qualified location_run resource name string.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">path_template</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span>
-            <span class="s1">&#39;projects/</span><span class="si">{project}</span><span class="s1">/locations/</span><span class="si">{location}</span><span class="s1">/transferConfigs/</span><span class="si">{transfer_config}</span><span class="s1">/runs/</span><span class="si">{run}</span><span class="s1">&#39;</span><span class="p">,</span>
-            <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span>
-            <span class="n">location</span><span class="o">=</span><span class="n">location</span><span class="p">,</span>
-            <span class="n">transfer_config</span><span class="o">=</span><span class="n">transfer_config</span><span class="p">,</span>
-            <span class="n">run</span><span class="o">=</span><span class="n">run</span><span class="p">,</span>
-        <span class="p">)</span></div>
-
-<div class="viewcode-block" id="DataTransferServiceClient.data_source_path"><a class="viewcode-back" href="../../../../../bigquery_datatransfer/gapic/v1/api.html#google.cloud.bigquery_datatransfer_v1.DataTransferServiceClient.data_source_path">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">data_source_path</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">project</span><span class="p">,</span> <span class="n">data_source</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Returns a fully-qualified data_source resource name string.&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="DataTransferServiceClient.project_data_source_path"><a class="viewcode-back" href="../../../../../bigquery_datatransfer/gapic/v1/api.html#google.cloud.bigquery_datatransfer_v1.DataTransferServiceClient.project_data_source_path">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">project_data_source_path</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">project</span><span class="p">,</span> <span class="n">data_source</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return a fully-qualified project_data_source string.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">path_template</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span>
             <span class="s1">&#39;projects/</span><span class="si">{project}</span><span class="s1">/dataSources/</span><span class="si">{data_source}</span><span class="s1">&#39;</span><span class="p">,</span>
             <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span>
             <span class="n">data_source</span><span class="o">=</span><span class="n">data_source</span><span class="p">,</span>
         <span class="p">)</span></div>
 
-<div class="viewcode-block" id="DataTransferServiceClient.transfer_config_path"><a class="viewcode-back" href="../../../../../bigquery_datatransfer/gapic/v1/api.html#google.cloud.bigquery_datatransfer_v1.DataTransferServiceClient.transfer_config_path">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">transfer_config_path</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">project</span><span class="p">,</span> <span class="n">transfer_config</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Returns a fully-qualified transfer_config resource name string.&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="DataTransferServiceClient.project_path"><a class="viewcode-back" href="../../../../../bigquery_datatransfer/gapic/v1/api.html#google.cloud.bigquery_datatransfer_v1.DataTransferServiceClient.project_path">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">project_path</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">project</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return a fully-qualified project string.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">path_template</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span>
+            <span class="s1">&#39;projects/</span><span class="si">{project}</span><span class="s1">&#39;</span><span class="p">,</span>
+            <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="DataTransferServiceClient.project_transfer_config_path"><a class="viewcode-back" href="../../../../../bigquery_datatransfer/gapic/v1/api.html#google.cloud.bigquery_datatransfer_v1.DataTransferServiceClient.project_transfer_config_path">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">project_transfer_config_path</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">project</span><span class="p">,</span> <span class="n">transfer_config</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return a fully-qualified project_transfer_config string.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">path_template</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span>
             <span class="s1">&#39;projects/</span><span class="si">{project}</span><span class="s1">/transferConfigs/</span><span class="si">{transfer_config}</span><span class="s1">&#39;</span><span class="p">,</span>
             <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span>
             <span class="n">transfer_config</span><span class="o">=</span><span class="n">transfer_config</span><span class="p">,</span>
         <span class="p">)</span></div>
 
-<div class="viewcode-block" id="DataTransferServiceClient.run_path"><a class="viewcode-back" href="../../../../../bigquery_datatransfer/gapic/v1/api.html#google.cloud.bigquery_datatransfer_v1.DataTransferServiceClient.run_path">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">run_path</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">project</span><span class="p">,</span> <span class="n">transfer_config</span><span class="p">,</span> <span class="n">run</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Returns a fully-qualified run resource name string.&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="DataTransferServiceClient.project_run_path"><a class="viewcode-back" href="../../../../../bigquery_datatransfer/gapic/v1/api.html#google.cloud.bigquery_datatransfer_v1.DataTransferServiceClient.project_run_path">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">project_run_path</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">project</span><span class="p">,</span> <span class="n">transfer_config</span><span class="p">,</span> <span class="n">run</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return a fully-qualified project_run string.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">path_template</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span>
             <span class="s1">&#39;projects/</span><span class="si">{project}</span><span class="s1">/transferConfigs/</span><span class="si">{transfer_config}</span><span class="s1">/runs/</span><span class="si">{run}</span><span class="s1">&#39;</span><span class="p">,</span>
             <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span>
@@ -180,6 +149,7 @@
         <span class="p">)</span></div>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">transport</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">channel</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">credentials</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">client_config</span><span class="o">=</span><span class="n">data_transfer_service_client_config</span><span class="o">.</span><span class="n">config</span><span class="p">,</span>
@@ -187,119 +157,90 @@
         <span class="sd">&quot;&quot;&quot;Constructor.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            channel (grpc.Channel): A ``Channel`` instance through</span>
-<span class="sd">                which to make calls. If specified, then the ``credentials``</span>
-<span class="sd">                argument is ignored.</span>
+<span class="sd">            transport (Union[~.DataTransferServiceGrpcTransport,</span>
+<span class="sd">                    Callable[[~.Credentials, type], ~.DataTransferServiceGrpcTransport]): A transport</span>
+<span class="sd">                instance, responsible for actually making the API calls.</span>
+<span class="sd">                The default transport uses the gRPC protocol.</span>
+<span class="sd">                This argument may also be a callable which returns a</span>
+<span class="sd">                transport instance. Callables will be sent the credentials</span>
+<span class="sd">                as the first argument and the default transport class as</span>
+<span class="sd">                the second argument.</span>
+<span class="sd">            channel (grpc.Channel): DEPRECATED. A ``Channel`` instance</span>
+<span class="sd">                through which to make calls. This argument is mutually exclusive</span>
+<span class="sd">                with ``credentials``; providing both will raise an exception.</span>
 <span class="sd">            credentials (google.auth.credentials.Credentials): The</span>
 <span class="sd">                authorization credentials to attach to requests. These</span>
 <span class="sd">                credentials identify this application to the service. If none</span>
 <span class="sd">                are specified, the client will attempt to ascertain the</span>
 <span class="sd">                credentials from the environment.</span>
-<span class="sd">            client_config (dict):</span>
-<span class="sd">                A dictionary of call options for each method. If not specified</span>
-<span class="sd">                the default configuration is used. Generally, you only need</span>
-<span class="sd">                to set this if you&#39;re developing your own client library.</span>
+<span class="sd">                This argument is mutually exclusive with providing a</span>
+<span class="sd">                transport instance to ``transport``; doing so will raise</span>
+<span class="sd">                an exception.</span>
+<span class="sd">            client_config (dict): DEPRECATED. A dictionary of call options for</span>
+<span class="sd">                each method. If not specified, the default configuration is used.</span>
 <span class="sd">            client_info (google.api_core.gapic_v1.client_info.ClientInfo):</span>
 <span class="sd">                The client info used to send a user-agent string along with</span>
 <span class="sd">                API requests. If ``None``, then default info will be used.</span>
 <span class="sd">                Generally, you only need to set this if you&#39;re developing</span>
 <span class="sd">                your own client library.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">channel</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">credentials</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="s1">&#39;channel and credentials arguments to </span><span class="si">{}</span><span class="s1"> are mutually &#39;</span>
-                <span class="s1">&#39;exclusive.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">))</span>
+        <span class="c1"># Raise deprecation warnings for things we want to go away.</span>
+        <span class="k">if</span> <span class="n">client_config</span><span class="p">:</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;The `client_config` argument is deprecated.&#39;</span><span class="p">,</span>
+                          <span class="ne">PendingDeprecationWarning</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">channel</span><span class="p">:</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+                <span class="s1">&#39;The `channel` argument is deprecated; use &#39;</span>
+                <span class="s1">&#39;`transport` instead.&#39;</span><span class="p">,</span> <span class="ne">PendingDeprecationWarning</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">channel</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">channel</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">grpc_helpers</span><span class="o">.</span><span class="n">create_channel</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">SERVICE_ADDRESS</span><span class="p">,</span>
+        <span class="c1"># Instantiate the transport.</span>
+        <span class="c1"># The transport is responsible for handling serialization and</span>
+        <span class="c1"># deserialization and actually sending data to the service.</span>
+        <span class="k">if</span> <span class="n">transport</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">callable</span><span class="p">(</span><span class="n">transport</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">transport</span> <span class="o">=</span> <span class="n">transport</span><span class="p">(</span>
+                    <span class="n">credentials</span><span class="o">=</span><span class="n">credentials</span><span class="p">,</span>
+                    <span class="n">default_class</span><span class="o">=</span><span class="n">data_transfer_service_grpc_transport</span><span class="o">.</span>
+                    <span class="n">DataTransferServiceGrpcTransport</span><span class="p">,</span>
+                <span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">credentials</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                        <span class="s1">&#39;Received both a transport instance and &#39;</span>
+                        <span class="s1">&#39;credentials; these are mutually exclusive.&#39;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">transport</span> <span class="o">=</span> <span class="n">transport</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">transport</span> <span class="o">=</span> <span class="n">data_transfer_service_grpc_transport</span><span class="o">.</span><span class="n">DataTransferServiceGrpcTransport</span><span class="p">(</span>
+                <span class="n">address</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">SERVICE_ADDRESS</span><span class="p">,</span>
+                <span class="n">channel</span><span class="o">=</span><span class="n">channel</span><span class="p">,</span>
                 <span class="n">credentials</span><span class="o">=</span><span class="n">credentials</span><span class="p">,</span>
-                <span class="n">scopes</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_DEFAULT_SCOPES</span><span class="p">)</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">data_transfer_service_stub</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="n">datatransfer_pb2</span><span class="o">.</span><span class="n">DataTransferServiceStub</span><span class="p">(</span><span class="n">channel</span><span class="p">))</span>
+            <span class="p">)</span>
 
         <span class="k">if</span> <span class="n">client_info</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">client_info</span> <span class="o">=</span> <span class="p">(</span>
                 <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">client_info</span><span class="o">.</span><span class="n">DEFAULT_CLIENT_INFO</span><span class="p">)</span>
-
         <span class="n">client_info</span><span class="o">.</span><span class="n">gapic_version</span> <span class="o">=</span> <span class="n">_GAPIC_LIBRARY_VERSION</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_client_info</span> <span class="o">=</span> <span class="n">client_info</span>
 
-        <span class="n">interface_config</span> <span class="o">=</span> <span class="n">client_config</span><span class="p">[</span><span class="s1">&#39;interfaces&#39;</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">_INTERFACE_NAME</span><span class="p">]</span>
-        <span class="n">method_configs</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">parse_method_configs</span><span class="p">(</span>
-            <span class="n">interface_config</span><span class="p">)</span>
+        <span class="c1"># Parse out the default settings for retry and timeout for each RPC</span>
+        <span class="c1"># from the client configuration.</span>
+        <span class="c1"># (Ordinarily, these are the defaults specified in the `*_config.py`</span>
+        <span class="c1"># file next to this one.)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">parse_method_configs</span><span class="p">(</span>
+            <span class="n">client_config</span><span class="p">[</span><span class="s1">&#39;interfaces&#39;</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">_INTERFACE_NAME</span><span class="p">],</span> <span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_get_data_source</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">wrap_method</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">data_transfer_service_stub</span><span class="o">.</span><span class="n">GetDataSource</span><span class="p">,</span>
-            <span class="n">default_retry</span><span class="o">=</span><span class="n">method_configs</span><span class="p">[</span><span class="s1">&#39;GetDataSource&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">retry</span><span class="p">,</span>
-            <span class="n">default_timeout</span><span class="o">=</span><span class="n">method_configs</span><span class="p">[</span><span class="s1">&#39;GetDataSource&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">timeout</span><span class="p">,</span>
-            <span class="n">client_info</span><span class="o">=</span><span class="n">client_info</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_list_data_sources</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">wrap_method</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">data_transfer_service_stub</span><span class="o">.</span><span class="n">ListDataSources</span><span class="p">,</span>
-            <span class="n">default_retry</span><span class="o">=</span><span class="n">method_configs</span><span class="p">[</span><span class="s1">&#39;ListDataSources&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">retry</span><span class="p">,</span>
-            <span class="n">default_timeout</span><span class="o">=</span><span class="n">method_configs</span><span class="p">[</span><span class="s1">&#39;ListDataSources&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">timeout</span><span class="p">,</span>
-            <span class="n">client_info</span><span class="o">=</span><span class="n">client_info</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_create_transfer_config</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">wrap_method</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">data_transfer_service_stub</span><span class="o">.</span><span class="n">CreateTransferConfig</span><span class="p">,</span>
-            <span class="n">default_retry</span><span class="o">=</span><span class="n">method_configs</span><span class="p">[</span><span class="s1">&#39;CreateTransferConfig&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">retry</span><span class="p">,</span>
-            <span class="n">default_timeout</span><span class="o">=</span><span class="n">method_configs</span><span class="p">[</span><span class="s1">&#39;CreateTransferConfig&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">timeout</span><span class="p">,</span>
-            <span class="n">client_info</span><span class="o">=</span><span class="n">client_info</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_update_transfer_config</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">wrap_method</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">data_transfer_service_stub</span><span class="o">.</span><span class="n">UpdateTransferConfig</span><span class="p">,</span>
-            <span class="n">default_retry</span><span class="o">=</span><span class="n">method_configs</span><span class="p">[</span><span class="s1">&#39;UpdateTransferConfig&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">retry</span><span class="p">,</span>
-            <span class="n">default_timeout</span><span class="o">=</span><span class="n">method_configs</span><span class="p">[</span><span class="s1">&#39;UpdateTransferConfig&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">timeout</span><span class="p">,</span>
-            <span class="n">client_info</span><span class="o">=</span><span class="n">client_info</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_delete_transfer_config</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">wrap_method</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">data_transfer_service_stub</span><span class="o">.</span><span class="n">DeleteTransferConfig</span><span class="p">,</span>
-            <span class="n">default_retry</span><span class="o">=</span><span class="n">method_configs</span><span class="p">[</span><span class="s1">&#39;DeleteTransferConfig&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">retry</span><span class="p">,</span>
-            <span class="n">default_timeout</span><span class="o">=</span><span class="n">method_configs</span><span class="p">[</span><span class="s1">&#39;DeleteTransferConfig&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">timeout</span><span class="p">,</span>
-            <span class="n">client_info</span><span class="o">=</span><span class="n">client_info</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_get_transfer_config</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">wrap_method</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">data_transfer_service_stub</span><span class="o">.</span><span class="n">GetTransferConfig</span><span class="p">,</span>
-            <span class="n">default_retry</span><span class="o">=</span><span class="n">method_configs</span><span class="p">[</span><span class="s1">&#39;GetTransferConfig&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">retry</span><span class="p">,</span>
-            <span class="n">default_timeout</span><span class="o">=</span><span class="n">method_configs</span><span class="p">[</span><span class="s1">&#39;GetTransferConfig&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">timeout</span><span class="p">,</span>
-            <span class="n">client_info</span><span class="o">=</span><span class="n">client_info</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_list_transfer_configs</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">wrap_method</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">data_transfer_service_stub</span><span class="o">.</span><span class="n">ListTransferConfigs</span><span class="p">,</span>
-            <span class="n">default_retry</span><span class="o">=</span><span class="n">method_configs</span><span class="p">[</span><span class="s1">&#39;ListTransferConfigs&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">retry</span><span class="p">,</span>
-            <span class="n">default_timeout</span><span class="o">=</span><span class="n">method_configs</span><span class="p">[</span><span class="s1">&#39;ListTransferConfigs&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">timeout</span><span class="p">,</span>
-            <span class="n">client_info</span><span class="o">=</span><span class="n">client_info</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_schedule_transfer_runs</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">wrap_method</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">data_transfer_service_stub</span><span class="o">.</span><span class="n">ScheduleTransferRuns</span><span class="p">,</span>
-            <span class="n">default_retry</span><span class="o">=</span><span class="n">method_configs</span><span class="p">[</span><span class="s1">&#39;ScheduleTransferRuns&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">retry</span><span class="p">,</span>
-            <span class="n">default_timeout</span><span class="o">=</span><span class="n">method_configs</span><span class="p">[</span><span class="s1">&#39;ScheduleTransferRuns&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">timeout</span><span class="p">,</span>
-            <span class="n">client_info</span><span class="o">=</span><span class="n">client_info</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_get_transfer_run</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">wrap_method</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">data_transfer_service_stub</span><span class="o">.</span><span class="n">GetTransferRun</span><span class="p">,</span>
-            <span class="n">default_retry</span><span class="o">=</span><span class="n">method_configs</span><span class="p">[</span><span class="s1">&#39;GetTransferRun&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">retry</span><span class="p">,</span>
-            <span class="n">default_timeout</span><span class="o">=</span><span class="n">method_configs</span><span class="p">[</span><span class="s1">&#39;GetTransferRun&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">timeout</span><span class="p">,</span>
-            <span class="n">client_info</span><span class="o">=</span><span class="n">client_info</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_delete_transfer_run</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">wrap_method</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">data_transfer_service_stub</span><span class="o">.</span><span class="n">DeleteTransferRun</span><span class="p">,</span>
-            <span class="n">default_retry</span><span class="o">=</span><span class="n">method_configs</span><span class="p">[</span><span class="s1">&#39;DeleteTransferRun&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">retry</span><span class="p">,</span>
-            <span class="n">default_timeout</span><span class="o">=</span><span class="n">method_configs</span><span class="p">[</span><span class="s1">&#39;DeleteTransferRun&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">timeout</span><span class="p">,</span>
-            <span class="n">client_info</span><span class="o">=</span><span class="n">client_info</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_list_transfer_runs</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">wrap_method</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">data_transfer_service_stub</span><span class="o">.</span><span class="n">ListTransferRuns</span><span class="p">,</span>
-            <span class="n">default_retry</span><span class="o">=</span><span class="n">method_configs</span><span class="p">[</span><span class="s1">&#39;ListTransferRuns&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">retry</span><span class="p">,</span>
-            <span class="n">default_timeout</span><span class="o">=</span><span class="n">method_configs</span><span class="p">[</span><span class="s1">&#39;ListTransferRuns&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">timeout</span><span class="p">,</span>
-            <span class="n">client_info</span><span class="o">=</span><span class="n">client_info</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_list_transfer_logs</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">wrap_method</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">data_transfer_service_stub</span><span class="o">.</span><span class="n">ListTransferLogs</span><span class="p">,</span>
-            <span class="n">default_retry</span><span class="o">=</span><span class="n">method_configs</span><span class="p">[</span><span class="s1">&#39;ListTransferLogs&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">retry</span><span class="p">,</span>
-            <span class="n">default_timeout</span><span class="o">=</span><span class="n">method_configs</span><span class="p">[</span><span class="s1">&#39;ListTransferLogs&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">timeout</span><span class="p">,</span>
-            <span class="n">client_info</span><span class="o">=</span><span class="n">client_info</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_check_valid_creds</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">wrap_method</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">data_transfer_service_stub</span><span class="o">.</span><span class="n">CheckValidCreds</span><span class="p">,</span>
-            <span class="n">default_retry</span><span class="o">=</span><span class="n">method_configs</span><span class="p">[</span><span class="s1">&#39;CheckValidCreds&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">retry</span><span class="p">,</span>
-            <span class="n">default_timeout</span><span class="o">=</span><span class="n">method_configs</span><span class="p">[</span><span class="s1">&#39;CheckValidCreds&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">timeout</span><span class="p">,</span>
-            <span class="n">client_info</span><span class="o">=</span><span class="n">client_info</span><span class="p">)</span>
+        <span class="c1"># Save a dictionary of cached API call functions.</span>
+        <span class="c1"># These are the actual callables which invoke the proper</span>
+        <span class="c1"># transport methods, wrapped with `wrap_method` to add retry,</span>
+        <span class="c1"># timeout, and the like.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span> <span class="o">=</span> <span class="p">{}</span>
 
     <span class="c1"># Service calls</span>
 <div class="viewcode-block" id="DataTransferServiceClient.get_data_source"><a class="viewcode-back" href="../../../../../bigquery_datatransfer/gapic/v1/api.html#google.cloud.bigquery_datatransfer_v1.DataTransferServiceClient.get_data_source">[docs]</a>    <span class="k">def</span> <span class="nf">get_data_source</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                         <span class="n">name</span><span class="p">,</span>
                         <span class="n">retry</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
-                        <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">):</span>
+                        <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+                        <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Retrieves a supported data source and returns its settings,</span>
 <span class="sd">        which can be used for UI rendering.</span>
@@ -309,7 +250,7 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; client = bigquery_datatransfer_v1.DataTransferServiceClient()</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; name = client.location_data_source_path(&#39;[PROJECT]&#39;, &#39;[LOCATION]&#39;, &#39;[DATA_SOURCE]&#39;)</span>
+<span class="sd">            &gt;&gt;&gt; name = client.project_data_source_path(&#39;[PROJECT]&#39;, &#39;[DATA_SOURCE]&#39;)</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; response = client.get_data_source(name)</span>
 
@@ -322,6 +263,8 @@
 <span class="sd">            timeout (Optional[float]): The amount of time, in seconds, to wait</span>
 <span class="sd">                for the request to complete. Note that if ``retry`` is</span>
 <span class="sd">                specified, the timeout applies to each individual attempt.</span>
+<span class="sd">            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata</span>
+<span class="sd">                that is provided to the method.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            A :class:`~google.cloud.bigquery_datatransfer_v1.types.DataSource` instance.</span>
@@ -333,14 +276,39 @@
 <span class="sd">                    to a retryable error and retry attempts failed.</span>
 <span class="sd">            ValueError: If the parameters are invalid.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">request</span> <span class="o">=</span> <span class="n">datatransfer_pb2</span><span class="o">.</span><span class="n">GetDataSourceRequest</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_data_source</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span></div>
+        <span class="c1"># Wrap the transport method to add retry and timeout logic.</span>
+        <span class="k">if</span> <span class="s1">&#39;get_data_source&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span>
+                <span class="s1">&#39;get_data_source&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">wrap_method</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">get_data_source</span><span class="p">,</span>
+                    <span class="n">default_retry</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span><span class="s1">&#39;GetDataSource&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">retry</span><span class="p">,</span>
+                    <span class="n">default_timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span><span class="s1">&#39;GetDataSource&#39;</span><span class="p">]</span>
+                    <span class="o">.</span><span class="n">timeout</span><span class="p">,</span>
+                    <span class="n">client_info</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client_info</span><span class="p">,</span>
+                <span class="p">)</span>
+
+        <span class="n">request</span> <span class="o">=</span> <span class="n">datatransfer_pb2</span><span class="o">.</span><span class="n">GetDataSourceRequest</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="p">)</span>
+        <span class="k">if</span> <span class="n">metadata</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">metadata</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">metadata</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">routing_header</span> <span class="o">=</span> <span class="p">[(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="n">name</span><span class="p">)]</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">routing_metadata</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">routing_header</span><span class="o">.</span><span class="n">to_grpc_metadata</span><span class="p">(</span>
+                <span class="n">routing_header</span><span class="p">)</span>
+            <span class="n">metadata</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">routing_metadata</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span><span class="s1">&#39;get_data_source&#39;</span><span class="p">](</span>
+            <span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="DataTransferServiceClient.list_data_sources"><a class="viewcode-back" href="../../../../../bigquery_datatransfer/gapic/v1/api.html#google.cloud.bigquery_datatransfer_v1.DataTransferServiceClient.list_data_sources">[docs]</a>    <span class="k">def</span> <span class="nf">list_data_sources</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                           <span class="n">parent</span><span class="p">,</span>
                           <span class="n">page_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                           <span class="n">retry</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
-                          <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">):</span>
+                          <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+                          <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Lists supported data sources and returns their settings,</span>
 <span class="sd">        which can be used for UI rendering.</span>
@@ -350,15 +318,17 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; client = bigquery_datatransfer_v1.DataTransferServiceClient()</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; parent = client.location_path(&#39;[PROJECT]&#39;, &#39;[LOCATION]&#39;)</span>
-<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; parent = client.project_path(&#39;[PROJECT]&#39;)</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; # Iterate over all results</span>
 <span class="sd">            &gt;&gt;&gt; for element in client.list_data_sources(parent):</span>
 <span class="sd">            ...     # process element</span>
 <span class="sd">            ...     pass</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # Or iterate over results one page at a time</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; # Alternatively:</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; # Iterate over results one page at a time</span>
 <span class="sd">            &gt;&gt;&gt; for page in client.list_data_sources(parent, options=CallOptions(page_token=INITIAL_PAGE)):</span>
 <span class="sd">            ...     for element in page:</span>
 <span class="sd">            ...         # process element</span>
@@ -378,6 +348,8 @@
 <span class="sd">            timeout (Optional[float]): The amount of time, in seconds, to wait</span>
 <span class="sd">                for the request to complete. Note that if ``retry`` is</span>
 <span class="sd">                specified, the timeout applies to each individual attempt.</span>
+<span class="sd">            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata</span>
+<span class="sd">                that is provided to the method.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            A :class:`~google.gax.PageIterator` instance. By default, this</span>
@@ -392,25 +364,55 @@
 <span class="sd">                    to a retryable error and retry attempts failed.</span>
 <span class="sd">            ValueError: If the parameters are invalid.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Wrap the transport method to add retry and timeout logic.</span>
+        <span class="k">if</span> <span class="s1">&#39;list_data_sources&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span>
+                <span class="s1">&#39;list_data_sources&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">wrap_method</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">list_data_sources</span><span class="p">,</span>
+                    <span class="n">default_retry</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span>
+                        <span class="s1">&#39;ListDataSources&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">retry</span><span class="p">,</span>
+                    <span class="n">default_timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span><span class="s1">&#39;ListDataSources&#39;</span><span class="p">]</span>
+                    <span class="o">.</span><span class="n">timeout</span><span class="p">,</span>
+                    <span class="n">client_info</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client_info</span><span class="p">,</span>
+                <span class="p">)</span>
+
         <span class="n">request</span> <span class="o">=</span> <span class="n">datatransfer_pb2</span><span class="o">.</span><span class="n">ListDataSourcesRequest</span><span class="p">(</span>
-            <span class="n">parent</span><span class="o">=</span><span class="n">parent</span><span class="p">,</span> <span class="n">page_size</span><span class="o">=</span><span class="n">page_size</span><span class="p">)</span>
+            <span class="n">parent</span><span class="o">=</span><span class="n">parent</span><span class="p">,</span>
+            <span class="n">page_size</span><span class="o">=</span><span class="n">page_size</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">metadata</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">metadata</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">metadata</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">routing_header</span> <span class="o">=</span> <span class="p">[(</span><span class="s1">&#39;parent&#39;</span><span class="p">,</span> <span class="n">parent</span><span class="p">)]</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">routing_metadata</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">routing_header</span><span class="o">.</span><span class="n">to_grpc_metadata</span><span class="p">(</span>
+                <span class="n">routing_header</span><span class="p">)</span>
+            <span class="n">metadata</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">routing_metadata</span><span class="p">)</span>
+
         <span class="n">iterator</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">page_iterator</span><span class="o">.</span><span class="n">GRPCIterator</span><span class="p">(</span>
             <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">method</span><span class="o">=</span><span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_list_data_sources</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">),</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span><span class="s1">&#39;list_data_sources&#39;</span><span class="p">],</span>
+                <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span>
+                <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span>
+                <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">),</span>
             <span class="n">request</span><span class="o">=</span><span class="n">request</span><span class="p">,</span>
             <span class="n">items_field</span><span class="o">=</span><span class="s1">&#39;data_sources&#39;</span><span class="p">,</span>
             <span class="n">request_token_field</span><span class="o">=</span><span class="s1">&#39;page_token&#39;</span><span class="p">,</span>
-            <span class="n">response_token_field</span><span class="o">=</span><span class="s1">&#39;next_page_token&#39;</span><span class="p">)</span>
+            <span class="n">response_token_field</span><span class="o">=</span><span class="s1">&#39;next_page_token&#39;</span><span class="p">,</span>
+        <span class="p">)</span>
         <span class="k">return</span> <span class="n">iterator</span></div>
 
-<div class="viewcode-block" id="DataTransferServiceClient.create_transfer_config"><a class="viewcode-back" href="../../../../../bigquery_datatransfer/gapic/v1/api.html#google.cloud.bigquery_datatransfer_v1.DataTransferServiceClient.create_transfer_config">[docs]</a>    <span class="k">def</span> <span class="nf">create_transfer_config</span><span class="p">(</span>
-            <span class="bp">self</span><span class="p">,</span>
-            <span class="n">parent</span><span class="p">,</span>
-            <span class="n">transfer_config</span><span class="p">,</span>
-            <span class="n">authorization_code</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">retry</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
-            <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">):</span>
+<div class="viewcode-block" id="DataTransferServiceClient.create_transfer_config"><a class="viewcode-back" href="../../../../../bigquery_datatransfer/gapic/v1/api.html#google.cloud.bigquery_datatransfer_v1.DataTransferServiceClient.create_transfer_config">[docs]</a>    <span class="k">def</span> <span class="nf">create_transfer_config</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                               <span class="n">parent</span><span class="p">,</span>
+                               <span class="n">transfer_config</span><span class="p">,</span>
+                               <span class="n">authorization_code</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                               <span class="n">retry</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+                               <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+                               <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Creates a new data transfer configuration.</span>
 
@@ -419,7 +421,9 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; client = bigquery_datatransfer_v1.DataTransferServiceClient()</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; parent = client.location_path(&#39;[PROJECT]&#39;, &#39;[LOCATION]&#39;)</span>
+<span class="sd">            &gt;&gt;&gt; parent = client.project_path(&#39;[PROJECT]&#39;)</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``transfer_config``:</span>
 <span class="sd">            &gt;&gt;&gt; transfer_config = {}</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; response = client.create_transfer_config(parent, transfer_config)</span>
@@ -427,10 +431,8 @@
 <span class="sd">        Args:</span>
 <span class="sd">            parent (str): The BigQuery project id where the transfer configuration should be created.</span>
 <span class="sd">                Must be in the format /projects/{project_id}/locations/{location_id}</span>
-<span class="sd">                or</span>
-<span class="sd">                /projects/{project_id}/locations/-</span>
-<span class="sd">                In case when &#39;-&#39; is specified as location_id, location is infered from</span>
-<span class="sd">                the destination dataset region.</span>
+<span class="sd">                If specified location and location of the destination bigquery dataset</span>
+<span class="sd">                do not match - the request will fail.</span>
 <span class="sd">            transfer_config (Union[dict, ~google.cloud.bigquery_datatransfer_v1.types.TransferConfig]): Data transfer configuration to create.</span>
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.bigquery_datatransfer_v1.types.TransferConfig`</span>
@@ -456,6 +458,8 @@
 <span class="sd">            timeout (Optional[float]): The amount of time, in seconds, to wait</span>
 <span class="sd">                for the request to complete. Note that if ``retry`` is</span>
 <span class="sd">                specified, the timeout applies to each individual attempt.</span>
+<span class="sd">            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata</span>
+<span class="sd">                that is provided to the method.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            A :class:`~google.cloud.bigquery_datatransfer_v1.types.TransferConfig` instance.</span>
@@ -467,20 +471,45 @@
 <span class="sd">                    to a retryable error and retry attempts failed.</span>
 <span class="sd">            ValueError: If the parameters are invalid.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Wrap the transport method to add retry and timeout logic.</span>
+        <span class="k">if</span> <span class="s1">&#39;create_transfer_config&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span>
+                <span class="s1">&#39;create_transfer_config&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">wrap_method</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">create_transfer_config</span><span class="p">,</span>
+                    <span class="n">default_retry</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span><span class="s1">&#39;CreateTransferConfig&#39;</span><span class="p">]</span>
+                    <span class="o">.</span><span class="n">retry</span><span class="p">,</span>
+                    <span class="n">default_timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span>
+                        <span class="s1">&#39;CreateTransferConfig&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">timeout</span><span class="p">,</span>
+                    <span class="n">client_info</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client_info</span><span class="p">,</span>
+                <span class="p">)</span>
+
         <span class="n">request</span> <span class="o">=</span> <span class="n">datatransfer_pb2</span><span class="o">.</span><span class="n">CreateTransferConfigRequest</span><span class="p">(</span>
             <span class="n">parent</span><span class="o">=</span><span class="n">parent</span><span class="p">,</span>
             <span class="n">transfer_config</span><span class="o">=</span><span class="n">transfer_config</span><span class="p">,</span>
-            <span class="n">authorization_code</span><span class="o">=</span><span class="n">authorization_code</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_transfer_config</span><span class="p">(</span>
-            <span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span></div>
+            <span class="n">authorization_code</span><span class="o">=</span><span class="n">authorization_code</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">metadata</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">metadata</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">metadata</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">routing_header</span> <span class="o">=</span> <span class="p">[(</span><span class="s1">&#39;parent&#39;</span><span class="p">,</span> <span class="n">parent</span><span class="p">)]</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">routing_metadata</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">routing_header</span><span class="o">.</span><span class="n">to_grpc_metadata</span><span class="p">(</span>
+                <span class="n">routing_header</span><span class="p">)</span>
+            <span class="n">metadata</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">routing_metadata</span><span class="p">)</span>
 
-<div class="viewcode-block" id="DataTransferServiceClient.update_transfer_config"><a class="viewcode-back" href="../../../../../bigquery_datatransfer/gapic/v1/api.html#google.cloud.bigquery_datatransfer_v1.DataTransferServiceClient.update_transfer_config">[docs]</a>    <span class="k">def</span> <span class="nf">update_transfer_config</span><span class="p">(</span>
-            <span class="bp">self</span><span class="p">,</span>
-            <span class="n">transfer_config</span><span class="p">,</span>
-            <span class="n">update_mask</span><span class="p">,</span>
-            <span class="n">authorization_code</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">retry</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
-            <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span><span class="s1">&#39;create_transfer_config&#39;</span><span class="p">](</span>
+            <span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="DataTransferServiceClient.update_transfer_config"><a class="viewcode-back" href="../../../../../bigquery_datatransfer/gapic/v1/api.html#google.cloud.bigquery_datatransfer_v1.DataTransferServiceClient.update_transfer_config">[docs]</a>    <span class="k">def</span> <span class="nf">update_transfer_config</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                               <span class="n">transfer_config</span><span class="p">,</span>
+                               <span class="n">update_mask</span><span class="p">,</span>
+                               <span class="n">authorization_code</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                               <span class="n">retry</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+                               <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+                               <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Updates a data transfer configuration.</span>
 <span class="sd">        All fields must be set, even if they are not updated.</span>
@@ -490,7 +519,10 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; client = bigquery_datatransfer_v1.DataTransferServiceClient()</span>
 <span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``transfer_config``:</span>
 <span class="sd">            &gt;&gt;&gt; transfer_config = {}</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``update_mask``:</span>
 <span class="sd">            &gt;&gt;&gt; update_mask = {}</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; response = client.update_transfer_config(transfer_config, update_mask)</span>
@@ -524,6 +556,8 @@
 <span class="sd">            timeout (Optional[float]): The amount of time, in seconds, to wait</span>
 <span class="sd">                for the request to complete. Note that if ``retry`` is</span>
 <span class="sd">                specified, the timeout applies to each individual attempt.</span>
+<span class="sd">            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata</span>
+<span class="sd">                that is provided to the method.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            A :class:`~google.cloud.bigquery_datatransfer_v1.types.TransferConfig` instance.</span>
@@ -535,18 +569,43 @@
 <span class="sd">                    to a retryable error and retry attempts failed.</span>
 <span class="sd">            ValueError: If the parameters are invalid.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Wrap the transport method to add retry and timeout logic.</span>
+        <span class="k">if</span> <span class="s1">&#39;update_transfer_config&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span>
+                <span class="s1">&#39;update_transfer_config&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">wrap_method</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">update_transfer_config</span><span class="p">,</span>
+                    <span class="n">default_retry</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span><span class="s1">&#39;UpdateTransferConfig&#39;</span><span class="p">]</span>
+                    <span class="o">.</span><span class="n">retry</span><span class="p">,</span>
+                    <span class="n">default_timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span>
+                        <span class="s1">&#39;UpdateTransferConfig&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">timeout</span><span class="p">,</span>
+                    <span class="n">client_info</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client_info</span><span class="p">,</span>
+                <span class="p">)</span>
+
         <span class="n">request</span> <span class="o">=</span> <span class="n">datatransfer_pb2</span><span class="o">.</span><span class="n">UpdateTransferConfigRequest</span><span class="p">(</span>
             <span class="n">transfer_config</span><span class="o">=</span><span class="n">transfer_config</span><span class="p">,</span>
             <span class="n">update_mask</span><span class="o">=</span><span class="n">update_mask</span><span class="p">,</span>
-            <span class="n">authorization_code</span><span class="o">=</span><span class="n">authorization_code</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_update_transfer_config</span><span class="p">(</span>
-            <span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span></div>
+            <span class="n">authorization_code</span><span class="o">=</span><span class="n">authorization_code</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">metadata</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">metadata</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">metadata</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">routing_header</span> <span class="o">=</span> <span class="p">[(</span><span class="s1">&#39;transfer_config.name&#39;</span><span class="p">,</span> <span class="n">transfer_config</span><span class="o">.</span><span class="n">name</span><span class="p">)]</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">routing_metadata</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">routing_header</span><span class="o">.</span><span class="n">to_grpc_metadata</span><span class="p">(</span>
+                <span class="n">routing_header</span><span class="p">)</span>
+            <span class="n">metadata</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">routing_metadata</span><span class="p">)</span>
 
-<div class="viewcode-block" id="DataTransferServiceClient.delete_transfer_config"><a class="viewcode-back" href="../../../../../bigquery_datatransfer/gapic/v1/api.html#google.cloud.bigquery_datatransfer_v1.DataTransferServiceClient.delete_transfer_config">[docs]</a>    <span class="k">def</span> <span class="nf">delete_transfer_config</span><span class="p">(</span>
-            <span class="bp">self</span><span class="p">,</span>
-            <span class="n">name</span><span class="p">,</span>
-            <span class="n">retry</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
-            <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span><span class="s1">&#39;update_transfer_config&#39;</span><span class="p">](</span>
+            <span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="DataTransferServiceClient.delete_transfer_config"><a class="viewcode-back" href="../../../../../bigquery_datatransfer/gapic/v1/api.html#google.cloud.bigquery_datatransfer_v1.DataTransferServiceClient.delete_transfer_config">[docs]</a>    <span class="k">def</span> <span class="nf">delete_transfer_config</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                               <span class="n">name</span><span class="p">,</span>
+                               <span class="n">retry</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+                               <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+                               <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Deletes a data transfer configuration,</span>
 <span class="sd">        including any associated transfer runs and logs.</span>
@@ -556,7 +615,7 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; client = bigquery_datatransfer_v1.DataTransferServiceClient()</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; name = client.location_transfer_config_path(&#39;[PROJECT]&#39;, &#39;[LOCATION]&#39;, &#39;[TRANSFER_CONFIG]&#39;)</span>
+<span class="sd">            &gt;&gt;&gt; name = client.project_transfer_config_path(&#39;[PROJECT]&#39;, &#39;[TRANSFER_CONFIG]&#39;)</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; client.delete_transfer_config(name)</span>
 
@@ -569,6 +628,8 @@
 <span class="sd">            timeout (Optional[float]): The amount of time, in seconds, to wait</span>
 <span class="sd">                for the request to complete. Note that if ``retry`` is</span>
 <span class="sd">                specified, the timeout applies to each individual attempt.</span>
+<span class="sd">            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata</span>
+<span class="sd">                that is provided to the method.</span>
 
 <span class="sd">        Raises:</span>
 <span class="sd">            google.api_core.exceptions.GoogleAPICallError: If the request</span>
@@ -577,13 +638,39 @@
 <span class="sd">                    to a retryable error and retry attempts failed.</span>
 <span class="sd">            ValueError: If the parameters are invalid.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">request</span> <span class="o">=</span> <span class="n">datatransfer_pb2</span><span class="o">.</span><span class="n">DeleteTransferConfigRequest</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_delete_transfer_config</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span></div>
+        <span class="c1"># Wrap the transport method to add retry and timeout logic.</span>
+        <span class="k">if</span> <span class="s1">&#39;delete_transfer_config&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span>
+                <span class="s1">&#39;delete_transfer_config&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">wrap_method</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">delete_transfer_config</span><span class="p">,</span>
+                    <span class="n">default_retry</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span><span class="s1">&#39;DeleteTransferConfig&#39;</span><span class="p">]</span>
+                    <span class="o">.</span><span class="n">retry</span><span class="p">,</span>
+                    <span class="n">default_timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span>
+                        <span class="s1">&#39;DeleteTransferConfig&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">timeout</span><span class="p">,</span>
+                    <span class="n">client_info</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client_info</span><span class="p">,</span>
+                <span class="p">)</span>
+
+        <span class="n">request</span> <span class="o">=</span> <span class="n">datatransfer_pb2</span><span class="o">.</span><span class="n">DeleteTransferConfigRequest</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="p">)</span>
+        <span class="k">if</span> <span class="n">metadata</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">metadata</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">metadata</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">routing_header</span> <span class="o">=</span> <span class="p">[(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="n">name</span><span class="p">)]</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">routing_metadata</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">routing_header</span><span class="o">.</span><span class="n">to_grpc_metadata</span><span class="p">(</span>
+                <span class="n">routing_header</span><span class="p">)</span>
+            <span class="n">metadata</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">routing_metadata</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span><span class="s1">&#39;delete_transfer_config&#39;</span><span class="p">](</span>
+            <span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="DataTransferServiceClient.get_transfer_config"><a class="viewcode-back" href="../../../../../bigquery_datatransfer/gapic/v1/api.html#google.cloud.bigquery_datatransfer_v1.DataTransferServiceClient.get_transfer_config">[docs]</a>    <span class="k">def</span> <span class="nf">get_transfer_config</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                             <span class="n">name</span><span class="p">,</span>
                             <span class="n">retry</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
-                            <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">):</span>
+                            <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+                            <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns information about a data transfer config.</span>
 
@@ -592,7 +679,7 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; client = bigquery_datatransfer_v1.DataTransferServiceClient()</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; name = client.location_transfer_config_path(&#39;[PROJECT]&#39;, &#39;[LOCATION]&#39;, &#39;[TRANSFER_CONFIG]&#39;)</span>
+<span class="sd">            &gt;&gt;&gt; name = client.project_transfer_config_path(&#39;[PROJECT]&#39;, &#39;[TRANSFER_CONFIG]&#39;)</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; response = client.get_transfer_config(name)</span>
 
@@ -605,6 +692,8 @@
 <span class="sd">            timeout (Optional[float]): The amount of time, in seconds, to wait</span>
 <span class="sd">                for the request to complete. Note that if ``retry`` is</span>
 <span class="sd">                specified, the timeout applies to each individual attempt.</span>
+<span class="sd">            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata</span>
+<span class="sd">                that is provided to the method.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            A :class:`~google.cloud.bigquery_datatransfer_v1.types.TransferConfig` instance.</span>
@@ -616,15 +705,41 @@
 <span class="sd">                    to a retryable error and retry attempts failed.</span>
 <span class="sd">            ValueError: If the parameters are invalid.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">request</span> <span class="o">=</span> <span class="n">datatransfer_pb2</span><span class="o">.</span><span class="n">GetTransferConfigRequest</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_transfer_config</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span></div>
+        <span class="c1"># Wrap the transport method to add retry and timeout logic.</span>
+        <span class="k">if</span> <span class="s1">&#39;get_transfer_config&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span>
+                <span class="s1">&#39;get_transfer_config&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">wrap_method</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">get_transfer_config</span><span class="p">,</span>
+                    <span class="n">default_retry</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span>
+                        <span class="s1">&#39;GetTransferConfig&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">retry</span><span class="p">,</span>
+                    <span class="n">default_timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span><span class="s1">&#39;GetTransferConfig&#39;</span><span class="p">]</span>
+                    <span class="o">.</span><span class="n">timeout</span><span class="p">,</span>
+                    <span class="n">client_info</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client_info</span><span class="p">,</span>
+                <span class="p">)</span>
+
+        <span class="n">request</span> <span class="o">=</span> <span class="n">datatransfer_pb2</span><span class="o">.</span><span class="n">GetTransferConfigRequest</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="p">)</span>
+        <span class="k">if</span> <span class="n">metadata</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">metadata</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">metadata</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">routing_header</span> <span class="o">=</span> <span class="p">[(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="n">name</span><span class="p">)]</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">routing_metadata</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">routing_header</span><span class="o">.</span><span class="n">to_grpc_metadata</span><span class="p">(</span>
+                <span class="n">routing_header</span><span class="p">)</span>
+            <span class="n">metadata</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">routing_metadata</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span><span class="s1">&#39;get_transfer_config&#39;</span><span class="p">](</span>
+            <span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="DataTransferServiceClient.list_transfer_configs"><a class="viewcode-back" href="../../../../../bigquery_datatransfer/gapic/v1/api.html#google.cloud.bigquery_datatransfer_v1.DataTransferServiceClient.list_transfer_configs">[docs]</a>    <span class="k">def</span> <span class="nf">list_transfer_configs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                               <span class="n">parent</span><span class="p">,</span>
                               <span class="n">data_source_ids</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                               <span class="n">page_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                               <span class="n">retry</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
-                              <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">):</span>
+                              <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+                              <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns information about all data transfers in the project.</span>
 
@@ -633,15 +748,17 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; client = bigquery_datatransfer_v1.DataTransferServiceClient()</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; parent = client.location_path(&#39;[PROJECT]&#39;, &#39;[LOCATION]&#39;)</span>
-<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; parent = client.project_path(&#39;[PROJECT]&#39;)</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; # Iterate over all results</span>
 <span class="sd">            &gt;&gt;&gt; for element in client.list_transfer_configs(parent):</span>
 <span class="sd">            ...     # process element</span>
 <span class="sd">            ...     pass</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # Or iterate over results one page at a time</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; # Alternatively:</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; # Iterate over results one page at a time</span>
 <span class="sd">            &gt;&gt;&gt; for page in client.list_transfer_configs(parent, options=CallOptions(page_token=INITIAL_PAGE)):</span>
 <span class="sd">            ...     for element in page:</span>
 <span class="sd">            ...         # process element</span>
@@ -662,6 +779,8 @@
 <span class="sd">            timeout (Optional[float]): The amount of time, in seconds, to wait</span>
 <span class="sd">                for the request to complete. Note that if ``retry`` is</span>
 <span class="sd">                specified, the timeout applies to each individual attempt.</span>
+<span class="sd">            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata</span>
+<span class="sd">                that is provided to the method.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            A :class:`~google.gax.PageIterator` instance. By default, this</span>
@@ -676,29 +795,58 @@
 <span class="sd">                    to a retryable error and retry attempts failed.</span>
 <span class="sd">            ValueError: If the parameters are invalid.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Wrap the transport method to add retry and timeout logic.</span>
+        <span class="k">if</span> <span class="s1">&#39;list_transfer_configs&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span>
+                <span class="s1">&#39;list_transfer_configs&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">wrap_method</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">list_transfer_configs</span><span class="p">,</span>
+                    <span class="n">default_retry</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span>
+                        <span class="s1">&#39;ListTransferConfigs&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">retry</span><span class="p">,</span>
+                    <span class="n">default_timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span><span class="s1">&#39;ListTransferConfigs&#39;</span><span class="p">]</span>
+                    <span class="o">.</span><span class="n">timeout</span><span class="p">,</span>
+                    <span class="n">client_info</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client_info</span><span class="p">,</span>
+                <span class="p">)</span>
+
         <span class="n">request</span> <span class="o">=</span> <span class="n">datatransfer_pb2</span><span class="o">.</span><span class="n">ListTransferConfigsRequest</span><span class="p">(</span>
             <span class="n">parent</span><span class="o">=</span><span class="n">parent</span><span class="p">,</span>
             <span class="n">data_source_ids</span><span class="o">=</span><span class="n">data_source_ids</span><span class="p">,</span>
-            <span class="n">page_size</span><span class="o">=</span><span class="n">page_size</span><span class="p">)</span>
+            <span class="n">page_size</span><span class="o">=</span><span class="n">page_size</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">metadata</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">metadata</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">metadata</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">routing_header</span> <span class="o">=</span> <span class="p">[(</span><span class="s1">&#39;parent&#39;</span><span class="p">,</span> <span class="n">parent</span><span class="p">)]</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">routing_metadata</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">routing_header</span><span class="o">.</span><span class="n">to_grpc_metadata</span><span class="p">(</span>
+                <span class="n">routing_header</span><span class="p">)</span>
+            <span class="n">metadata</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">routing_metadata</span><span class="p">)</span>
+
         <span class="n">iterator</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">page_iterator</span><span class="o">.</span><span class="n">GRPCIterator</span><span class="p">(</span>
             <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">method</span><span class="o">=</span><span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_list_transfer_configs</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">),</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span><span class="s1">&#39;list_transfer_configs&#39;</span><span class="p">],</span>
+                <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span>
+                <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span>
+                <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">),</span>
             <span class="n">request</span><span class="o">=</span><span class="n">request</span><span class="p">,</span>
             <span class="n">items_field</span><span class="o">=</span><span class="s1">&#39;transfer_configs&#39;</span><span class="p">,</span>
             <span class="n">request_token_field</span><span class="o">=</span><span class="s1">&#39;page_token&#39;</span><span class="p">,</span>
-            <span class="n">response_token_field</span><span class="o">=</span><span class="s1">&#39;next_page_token&#39;</span><span class="p">)</span>
+            <span class="n">response_token_field</span><span class="o">=</span><span class="s1">&#39;next_page_token&#39;</span><span class="p">,</span>
+        <span class="p">)</span>
         <span class="k">return</span> <span class="n">iterator</span></div>
 
-<div class="viewcode-block" id="DataTransferServiceClient.schedule_transfer_runs"><a class="viewcode-back" href="../../../../../bigquery_datatransfer/gapic/v1/api.html#google.cloud.bigquery_datatransfer_v1.DataTransferServiceClient.schedule_transfer_runs">[docs]</a>    <span class="k">def</span> <span class="nf">schedule_transfer_runs</span><span class="p">(</span>
-            <span class="bp">self</span><span class="p">,</span>
-            <span class="n">parent</span><span class="p">,</span>
-            <span class="n">start_time</span><span class="p">,</span>
-            <span class="n">end_time</span><span class="p">,</span>
-            <span class="n">retry</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
-            <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">):</span>
+<div class="viewcode-block" id="DataTransferServiceClient.schedule_transfer_runs"><a class="viewcode-back" href="../../../../../bigquery_datatransfer/gapic/v1/api.html#google.cloud.bigquery_datatransfer_v1.DataTransferServiceClient.schedule_transfer_runs">[docs]</a>    <span class="k">def</span> <span class="nf">schedule_transfer_runs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                               <span class="n">parent</span><span class="p">,</span>
+                               <span class="n">start_time</span><span class="p">,</span>
+                               <span class="n">end_time</span><span class="p">,</span>
+                               <span class="n">retry</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+                               <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+                               <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Creates transfer runs for a time range [range_start_time, range_end_time].</span>
+<span class="sd">        Creates transfer runs for a time range [start_time, end_time].</span>
 <span class="sd">        For each date - or whatever granularity the data source supports - in the</span>
 <span class="sd">        range, one transfer run is created.</span>
 <span class="sd">        Note that runs are created per UTC time in the time range.</span>
@@ -708,8 +856,12 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; client = bigquery_datatransfer_v1.DataTransferServiceClient()</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; parent = client.location_transfer_config_path(&#39;[PROJECT]&#39;, &#39;[LOCATION]&#39;, &#39;[TRANSFER_CONFIG]&#39;)</span>
+<span class="sd">            &gt;&gt;&gt; parent = client.project_transfer_config_path(&#39;[PROJECT]&#39;, &#39;[TRANSFER_CONFIG]&#39;)</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``start_time``:</span>
 <span class="sd">            &gt;&gt;&gt; start_time = {}</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``end_time``:</span>
 <span class="sd">            &gt;&gt;&gt; end_time = {}</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; response = client.schedule_transfer_runs(parent, start_time, end_time)</span>
@@ -731,6 +883,8 @@
 <span class="sd">            timeout (Optional[float]): The amount of time, in seconds, to wait</span>
 <span class="sd">                for the request to complete. Note that if ``retry`` is</span>
 <span class="sd">                specified, the timeout applies to each individual attempt.</span>
+<span class="sd">            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata</span>
+<span class="sd">                that is provided to the method.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            A :class:`~google.cloud.bigquery_datatransfer_v1.types.ScheduleTransferRunsResponse` instance.</span>
@@ -742,15 +896,43 @@
 <span class="sd">                    to a retryable error and retry attempts failed.</span>
 <span class="sd">            ValueError: If the parameters are invalid.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Wrap the transport method to add retry and timeout logic.</span>
+        <span class="k">if</span> <span class="s1">&#39;schedule_transfer_runs&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span>
+                <span class="s1">&#39;schedule_transfer_runs&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">wrap_method</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">schedule_transfer_runs</span><span class="p">,</span>
+                    <span class="n">default_retry</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span><span class="s1">&#39;ScheduleTransferRuns&#39;</span><span class="p">]</span>
+                    <span class="o">.</span><span class="n">retry</span><span class="p">,</span>
+                    <span class="n">default_timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span>
+                        <span class="s1">&#39;ScheduleTransferRuns&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">timeout</span><span class="p">,</span>
+                    <span class="n">client_info</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client_info</span><span class="p">,</span>
+                <span class="p">)</span>
+
         <span class="n">request</span> <span class="o">=</span> <span class="n">datatransfer_pb2</span><span class="o">.</span><span class="n">ScheduleTransferRunsRequest</span><span class="p">(</span>
-            <span class="n">parent</span><span class="o">=</span><span class="n">parent</span><span class="p">,</span> <span class="n">start_time</span><span class="o">=</span><span class="n">start_time</span><span class="p">,</span> <span class="n">end_time</span><span class="o">=</span><span class="n">end_time</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_schedule_transfer_runs</span><span class="p">(</span>
-            <span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span></div>
+            <span class="n">parent</span><span class="o">=</span><span class="n">parent</span><span class="p">,</span>
+            <span class="n">start_time</span><span class="o">=</span><span class="n">start_time</span><span class="p">,</span>
+            <span class="n">end_time</span><span class="o">=</span><span class="n">end_time</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">metadata</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">metadata</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">metadata</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">routing_header</span> <span class="o">=</span> <span class="p">[(</span><span class="s1">&#39;parent&#39;</span><span class="p">,</span> <span class="n">parent</span><span class="p">)]</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">routing_metadata</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">routing_header</span><span class="o">.</span><span class="n">to_grpc_metadata</span><span class="p">(</span>
+                <span class="n">routing_header</span><span class="p">)</span>
+            <span class="n">metadata</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">routing_metadata</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span><span class="s1">&#39;schedule_transfer_runs&#39;</span><span class="p">](</span>
+            <span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="DataTransferServiceClient.get_transfer_run"><a class="viewcode-back" href="../../../../../bigquery_datatransfer/gapic/v1/api.html#google.cloud.bigquery_datatransfer_v1.DataTransferServiceClient.get_transfer_run">[docs]</a>    <span class="k">def</span> <span class="nf">get_transfer_run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                          <span class="n">name</span><span class="p">,</span>
                          <span class="n">retry</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
-                         <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">):</span>
+                         <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+                         <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns information about the particular transfer run.</span>
 
@@ -759,7 +941,7 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; client = bigquery_datatransfer_v1.DataTransferServiceClient()</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; name = client.location_run_path(&#39;[PROJECT]&#39;, &#39;[LOCATION]&#39;, &#39;[TRANSFER_CONFIG]&#39;, &#39;[RUN]&#39;)</span>
+<span class="sd">            &gt;&gt;&gt; name = client.project_run_path(&#39;[PROJECT]&#39;, &#39;[TRANSFER_CONFIG]&#39;, &#39;[RUN]&#39;)</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; response = client.get_transfer_run(name)</span>
 
@@ -772,6 +954,8 @@
 <span class="sd">            timeout (Optional[float]): The amount of time, in seconds, to wait</span>
 <span class="sd">                for the request to complete. Note that if ``retry`` is</span>
 <span class="sd">                specified, the timeout applies to each individual attempt.</span>
+<span class="sd">            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata</span>
+<span class="sd">                that is provided to the method.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            A :class:`~google.cloud.bigquery_datatransfer_v1.types.TransferRun` instance.</span>
@@ -783,13 +967,38 @@
 <span class="sd">                    to a retryable error and retry attempts failed.</span>
 <span class="sd">            ValueError: If the parameters are invalid.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">request</span> <span class="o">=</span> <span class="n">datatransfer_pb2</span><span class="o">.</span><span class="n">GetTransferRunRequest</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_transfer_run</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span></div>
+        <span class="c1"># Wrap the transport method to add retry and timeout logic.</span>
+        <span class="k">if</span> <span class="s1">&#39;get_transfer_run&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span>
+                <span class="s1">&#39;get_transfer_run&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">wrap_method</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">get_transfer_run</span><span class="p">,</span>
+                    <span class="n">default_retry</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span><span class="s1">&#39;GetTransferRun&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">retry</span><span class="p">,</span>
+                    <span class="n">default_timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span><span class="s1">&#39;GetTransferRun&#39;</span><span class="p">]</span>
+                    <span class="o">.</span><span class="n">timeout</span><span class="p">,</span>
+                    <span class="n">client_info</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client_info</span><span class="p">,</span>
+                <span class="p">)</span>
+
+        <span class="n">request</span> <span class="o">=</span> <span class="n">datatransfer_pb2</span><span class="o">.</span><span class="n">GetTransferRunRequest</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="p">)</span>
+        <span class="k">if</span> <span class="n">metadata</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">metadata</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">metadata</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">routing_header</span> <span class="o">=</span> <span class="p">[(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="n">name</span><span class="p">)]</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">routing_metadata</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">routing_header</span><span class="o">.</span><span class="n">to_grpc_metadata</span><span class="p">(</span>
+                <span class="n">routing_header</span><span class="p">)</span>
+            <span class="n">metadata</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">routing_metadata</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span><span class="s1">&#39;get_transfer_run&#39;</span><span class="p">](</span>
+            <span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="DataTransferServiceClient.delete_transfer_run"><a class="viewcode-back" href="../../../../../bigquery_datatransfer/gapic/v1/api.html#google.cloud.bigquery_datatransfer_v1.DataTransferServiceClient.delete_transfer_run">[docs]</a>    <span class="k">def</span> <span class="nf">delete_transfer_run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                             <span class="n">name</span><span class="p">,</span>
                             <span class="n">retry</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
-                            <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">):</span>
+                            <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+                            <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Deletes the specified transfer run.</span>
 
@@ -798,7 +1007,7 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; client = bigquery_datatransfer_v1.DataTransferServiceClient()</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; name = client.location_run_path(&#39;[PROJECT]&#39;, &#39;[LOCATION]&#39;, &#39;[TRANSFER_CONFIG]&#39;, &#39;[RUN]&#39;)</span>
+<span class="sd">            &gt;&gt;&gt; name = client.project_run_path(&#39;[PROJECT]&#39;, &#39;[TRANSFER_CONFIG]&#39;, &#39;[RUN]&#39;)</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; client.delete_transfer_run(name)</span>
 
@@ -811,6 +1020,8 @@
 <span class="sd">            timeout (Optional[float]): The amount of time, in seconds, to wait</span>
 <span class="sd">                for the request to complete. Note that if ``retry`` is</span>
 <span class="sd">                specified, the timeout applies to each individual attempt.</span>
+<span class="sd">            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata</span>
+<span class="sd">                that is provided to the method.</span>
 
 <span class="sd">        Raises:</span>
 <span class="sd">            google.api_core.exceptions.GoogleAPICallError: If the request</span>
@@ -819,8 +1030,33 @@
 <span class="sd">                    to a retryable error and retry attempts failed.</span>
 <span class="sd">            ValueError: If the parameters are invalid.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">request</span> <span class="o">=</span> <span class="n">datatransfer_pb2</span><span class="o">.</span><span class="n">DeleteTransferRunRequest</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_delete_transfer_run</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span></div>
+        <span class="c1"># Wrap the transport method to add retry and timeout logic.</span>
+        <span class="k">if</span> <span class="s1">&#39;delete_transfer_run&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span>
+                <span class="s1">&#39;delete_transfer_run&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">wrap_method</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">delete_transfer_run</span><span class="p">,</span>
+                    <span class="n">default_retry</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span>
+                        <span class="s1">&#39;DeleteTransferRun&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">retry</span><span class="p">,</span>
+                    <span class="n">default_timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span><span class="s1">&#39;DeleteTransferRun&#39;</span><span class="p">]</span>
+                    <span class="o">.</span><span class="n">timeout</span><span class="p">,</span>
+                    <span class="n">client_info</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client_info</span><span class="p">,</span>
+                <span class="p">)</span>
+
+        <span class="n">request</span> <span class="o">=</span> <span class="n">datatransfer_pb2</span><span class="o">.</span><span class="n">DeleteTransferRunRequest</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="p">)</span>
+        <span class="k">if</span> <span class="n">metadata</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">metadata</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">metadata</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">routing_header</span> <span class="o">=</span> <span class="p">[(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="n">name</span><span class="p">)]</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">routing_metadata</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">routing_header</span><span class="o">.</span><span class="n">to_grpc_metadata</span><span class="p">(</span>
+                <span class="n">routing_header</span><span class="p">)</span>
+            <span class="n">metadata</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">routing_metadata</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span><span class="s1">&#39;delete_transfer_run&#39;</span><span class="p">](</span>
+            <span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="DataTransferServiceClient.list_transfer_runs"><a class="viewcode-back" href="../../../../../bigquery_datatransfer/gapic/v1/api.html#google.cloud.bigquery_datatransfer_v1.DataTransferServiceClient.list_transfer_runs">[docs]</a>    <span class="k">def</span> <span class="nf">list_transfer_runs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                            <span class="n">parent</span><span class="p">,</span>
@@ -828,7 +1064,8 @@
                            <span class="n">page_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                            <span class="n">run_attempt</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                            <span class="n">retry</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
-                           <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">):</span>
+                           <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+                           <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns information about running and completed jobs.</span>
 
@@ -837,15 +1074,17 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; client = bigquery_datatransfer_v1.DataTransferServiceClient()</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; parent = client.location_transfer_config_path(&#39;[PROJECT]&#39;, &#39;[LOCATION]&#39;, &#39;[TRANSFER_CONFIG]&#39;)</span>
-<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; parent = client.project_transfer_config_path(&#39;[PROJECT]&#39;, &#39;[TRANSFER_CONFIG]&#39;)</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; # Iterate over all results</span>
 <span class="sd">            &gt;&gt;&gt; for element in client.list_transfer_runs(parent):</span>
 <span class="sd">            ...     # process element</span>
 <span class="sd">            ...     pass</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # Or iterate over results one page at a time</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; # Alternatively:</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; # Iterate over results one page at a time</span>
 <span class="sd">            &gt;&gt;&gt; for page in client.list_transfer_runs(parent, options=CallOptions(page_token=INITIAL_PAGE)):</span>
 <span class="sd">            ...     for element in page:</span>
 <span class="sd">            ...         # process element</span>
@@ -868,6 +1107,8 @@
 <span class="sd">            timeout (Optional[float]): The amount of time, in seconds, to wait</span>
 <span class="sd">                for the request to complete. Note that if ``retry`` is</span>
 <span class="sd">                specified, the timeout applies to each individual attempt.</span>
+<span class="sd">            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata</span>
+<span class="sd">                that is provided to the method.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            A :class:`~google.gax.PageIterator` instance. By default, this</span>
@@ -882,19 +1123,48 @@
 <span class="sd">                    to a retryable error and retry attempts failed.</span>
 <span class="sd">            ValueError: If the parameters are invalid.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Wrap the transport method to add retry and timeout logic.</span>
+        <span class="k">if</span> <span class="s1">&#39;list_transfer_runs&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span>
+                <span class="s1">&#39;list_transfer_runs&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">wrap_method</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">list_transfer_runs</span><span class="p">,</span>
+                    <span class="n">default_retry</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span>
+                        <span class="s1">&#39;ListTransferRuns&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">retry</span><span class="p">,</span>
+                    <span class="n">default_timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span><span class="s1">&#39;ListTransferRuns&#39;</span><span class="p">]</span>
+                    <span class="o">.</span><span class="n">timeout</span><span class="p">,</span>
+                    <span class="n">client_info</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client_info</span><span class="p">,</span>
+                <span class="p">)</span>
+
         <span class="n">request</span> <span class="o">=</span> <span class="n">datatransfer_pb2</span><span class="o">.</span><span class="n">ListTransferRunsRequest</span><span class="p">(</span>
             <span class="n">parent</span><span class="o">=</span><span class="n">parent</span><span class="p">,</span>
             <span class="n">states</span><span class="o">=</span><span class="n">states</span><span class="p">,</span>
             <span class="n">page_size</span><span class="o">=</span><span class="n">page_size</span><span class="p">,</span>
-            <span class="n">run_attempt</span><span class="o">=</span><span class="n">run_attempt</span><span class="p">)</span>
+            <span class="n">run_attempt</span><span class="o">=</span><span class="n">run_attempt</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">metadata</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">metadata</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">metadata</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">routing_header</span> <span class="o">=</span> <span class="p">[(</span><span class="s1">&#39;parent&#39;</span><span class="p">,</span> <span class="n">parent</span><span class="p">)]</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">routing_metadata</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">routing_header</span><span class="o">.</span><span class="n">to_grpc_metadata</span><span class="p">(</span>
+                <span class="n">routing_header</span><span class="p">)</span>
+            <span class="n">metadata</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">routing_metadata</span><span class="p">)</span>
+
         <span class="n">iterator</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">page_iterator</span><span class="o">.</span><span class="n">GRPCIterator</span><span class="p">(</span>
             <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">method</span><span class="o">=</span><span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_list_transfer_runs</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">),</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span><span class="s1">&#39;list_transfer_runs&#39;</span><span class="p">],</span>
+                <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span>
+                <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span>
+                <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">),</span>
             <span class="n">request</span><span class="o">=</span><span class="n">request</span><span class="p">,</span>
             <span class="n">items_field</span><span class="o">=</span><span class="s1">&#39;transfer_runs&#39;</span><span class="p">,</span>
             <span class="n">request_token_field</span><span class="o">=</span><span class="s1">&#39;page_token&#39;</span><span class="p">,</span>
-            <span class="n">response_token_field</span><span class="o">=</span><span class="s1">&#39;next_page_token&#39;</span><span class="p">)</span>
+            <span class="n">response_token_field</span><span class="o">=</span><span class="s1">&#39;next_page_token&#39;</span><span class="p">,</span>
+        <span class="p">)</span>
         <span class="k">return</span> <span class="n">iterator</span></div>
 
 <div class="viewcode-block" id="DataTransferServiceClient.list_transfer_logs"><a class="viewcode-back" href="../../../../../bigquery_datatransfer/gapic/v1/api.html#google.cloud.bigquery_datatransfer_v1.DataTransferServiceClient.list_transfer_logs">[docs]</a>    <span class="k">def</span> <span class="nf">list_transfer_logs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
@@ -902,7 +1172,8 @@
                            <span class="n">page_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                            <span class="n">message_types</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                            <span class="n">retry</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
-                           <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">):</span>
+                           <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+                           <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns user facing log messages for the data transfer run.</span>
 
@@ -911,15 +1182,17 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; client = bigquery_datatransfer_v1.DataTransferServiceClient()</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; parent = client.location_run_path(&#39;[PROJECT]&#39;, &#39;[LOCATION]&#39;, &#39;[TRANSFER_CONFIG]&#39;, &#39;[RUN]&#39;)</span>
-<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; parent = client.project_run_path(&#39;[PROJECT]&#39;, &#39;[TRANSFER_CONFIG]&#39;, &#39;[RUN]&#39;)</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; # Iterate over all results</span>
 <span class="sd">            &gt;&gt;&gt; for element in client.list_transfer_logs(parent):</span>
 <span class="sd">            ...     # process element</span>
 <span class="sd">            ...     pass</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # Or iterate over results one page at a time</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; # Alternatively:</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; # Iterate over results one page at a time</span>
 <span class="sd">            &gt;&gt;&gt; for page in client.list_transfer_logs(parent, options=CallOptions(page_token=INITIAL_PAGE)):</span>
 <span class="sd">            ...     for element in page:</span>
 <span class="sd">            ...         # process element</span>
@@ -941,6 +1214,8 @@
 <span class="sd">            timeout (Optional[float]): The amount of time, in seconds, to wait</span>
 <span class="sd">                for the request to complete. Note that if ``retry`` is</span>
 <span class="sd">                specified, the timeout applies to each individual attempt.</span>
+<span class="sd">            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata</span>
+<span class="sd">                that is provided to the method.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            A :class:`~google.gax.PageIterator` instance. By default, this</span>
@@ -955,22 +1230,54 @@
 <span class="sd">                    to a retryable error and retry attempts failed.</span>
 <span class="sd">            ValueError: If the parameters are invalid.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Wrap the transport method to add retry and timeout logic.</span>
+        <span class="k">if</span> <span class="s1">&#39;list_transfer_logs&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span>
+                <span class="s1">&#39;list_transfer_logs&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">wrap_method</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">list_transfer_logs</span><span class="p">,</span>
+                    <span class="n">default_retry</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span>
+                        <span class="s1">&#39;ListTransferLogs&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">retry</span><span class="p">,</span>
+                    <span class="n">default_timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span><span class="s1">&#39;ListTransferLogs&#39;</span><span class="p">]</span>
+                    <span class="o">.</span><span class="n">timeout</span><span class="p">,</span>
+                    <span class="n">client_info</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client_info</span><span class="p">,</span>
+                <span class="p">)</span>
+
         <span class="n">request</span> <span class="o">=</span> <span class="n">datatransfer_pb2</span><span class="o">.</span><span class="n">ListTransferLogsRequest</span><span class="p">(</span>
-            <span class="n">parent</span><span class="o">=</span><span class="n">parent</span><span class="p">,</span> <span class="n">page_size</span><span class="o">=</span><span class="n">page_size</span><span class="p">,</span> <span class="n">message_types</span><span class="o">=</span><span class="n">message_types</span><span class="p">)</span>
+            <span class="n">parent</span><span class="o">=</span><span class="n">parent</span><span class="p">,</span>
+            <span class="n">page_size</span><span class="o">=</span><span class="n">page_size</span><span class="p">,</span>
+            <span class="n">message_types</span><span class="o">=</span><span class="n">message_types</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">metadata</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">metadata</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">metadata</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">routing_header</span> <span class="o">=</span> <span class="p">[(</span><span class="s1">&#39;parent&#39;</span><span class="p">,</span> <span class="n">parent</span><span class="p">)]</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">routing_metadata</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">routing_header</span><span class="o">.</span><span class="n">to_grpc_metadata</span><span class="p">(</span>
+                <span class="n">routing_header</span><span class="p">)</span>
+            <span class="n">metadata</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">routing_metadata</span><span class="p">)</span>
+
         <span class="n">iterator</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">page_iterator</span><span class="o">.</span><span class="n">GRPCIterator</span><span class="p">(</span>
             <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">method</span><span class="o">=</span><span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_list_transfer_logs</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">),</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span><span class="s1">&#39;list_transfer_logs&#39;</span><span class="p">],</span>
+                <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span>
+                <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span>
+                <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">),</span>
             <span class="n">request</span><span class="o">=</span><span class="n">request</span><span class="p">,</span>
             <span class="n">items_field</span><span class="o">=</span><span class="s1">&#39;transfer_messages&#39;</span><span class="p">,</span>
             <span class="n">request_token_field</span><span class="o">=</span><span class="s1">&#39;page_token&#39;</span><span class="p">,</span>
-            <span class="n">response_token_field</span><span class="o">=</span><span class="s1">&#39;next_page_token&#39;</span><span class="p">)</span>
+            <span class="n">response_token_field</span><span class="o">=</span><span class="s1">&#39;next_page_token&#39;</span><span class="p">,</span>
+        <span class="p">)</span>
         <span class="k">return</span> <span class="n">iterator</span></div>
 
 <div class="viewcode-block" id="DataTransferServiceClient.check_valid_creds"><a class="viewcode-back" href="../../../../../bigquery_datatransfer/gapic/v1/api.html#google.cloud.bigquery_datatransfer_v1.DataTransferServiceClient.check_valid_creds">[docs]</a>    <span class="k">def</span> <span class="nf">check_valid_creds</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                           <span class="n">name</span><span class="p">,</span>
                           <span class="n">retry</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
-                          <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">):</span>
+                          <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+                          <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns true if valid credentials exist for the given data source and</span>
 <span class="sd">        requesting user.</span>
@@ -984,7 +1291,7 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; client = bigquery_datatransfer_v1.DataTransferServiceClient()</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; name = client.location_data_source_path(&#39;[PROJECT]&#39;, &#39;[LOCATION]&#39;, &#39;[DATA_SOURCE]&#39;)</span>
+<span class="sd">            &gt;&gt;&gt; name = client.project_data_source_path(&#39;[PROJECT]&#39;, &#39;[DATA_SOURCE]&#39;)</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; response = client.check_valid_creds(name)</span>
 
@@ -997,6 +1304,8 @@
 <span class="sd">            timeout (Optional[float]): The amount of time, in seconds, to wait</span>
 <span class="sd">                for the request to complete. Note that if ``retry`` is</span>
 <span class="sd">                specified, the timeout applies to each individual attempt.</span>
+<span class="sd">            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata</span>
+<span class="sd">                that is provided to the method.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            A :class:`~google.cloud.bigquery_datatransfer_v1.types.CheckValidCredsResponse` instance.</span>
@@ -1008,8 +1317,33 @@
 <span class="sd">                    to a retryable error and retry attempts failed.</span>
 <span class="sd">            ValueError: If the parameters are invalid.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">request</span> <span class="o">=</span> <span class="n">datatransfer_pb2</span><span class="o">.</span><span class="n">CheckValidCredsRequest</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_check_valid_creds</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span></div>
+        <span class="c1"># Wrap the transport method to add retry and timeout logic.</span>
+        <span class="k">if</span> <span class="s1">&#39;check_valid_creds&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span>
+                <span class="s1">&#39;check_valid_creds&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">wrap_method</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">check_valid_creds</span><span class="p">,</span>
+                    <span class="n">default_retry</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span>
+                        <span class="s1">&#39;CheckValidCreds&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">retry</span><span class="p">,</span>
+                    <span class="n">default_timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span><span class="s1">&#39;CheckValidCreds&#39;</span><span class="p">]</span>
+                    <span class="o">.</span><span class="n">timeout</span><span class="p">,</span>
+                    <span class="n">client_info</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client_info</span><span class="p">,</span>
+                <span class="p">)</span>
+
+        <span class="n">request</span> <span class="o">=</span> <span class="n">datatransfer_pb2</span><span class="o">.</span><span class="n">CheckValidCredsRequest</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="p">)</span>
+        <span class="k">if</span> <span class="n">metadata</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">metadata</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">metadata</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">routing_header</span> <span class="o">=</span> <span class="p">[(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="n">name</span><span class="p">)]</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">routing_metadata</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">routing_header</span><span class="o">.</span><span class="n">to_grpc_metadata</span><span class="p">(</span>
+                <span class="n">routing_header</span><span class="p">)</span>
+            <span class="n">metadata</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">routing_metadata</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span><span class="s1">&#39;check_valid_creds&#39;</span><span class="p">](</span>
+            <span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">)</span></div>
 </pre></div>
 
           </div>

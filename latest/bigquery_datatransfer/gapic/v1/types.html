@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Types for BigQuery Data Transfer API Client &#8212; google-cloud 841bcbd6d1 documentation</title>
+    <title>Types for BigQuery Data Transfer API Client &#8212; google-cloud ef545dc documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -95,10 +95,9 @@ associated with the calling user.</p>
 <code class="descname">parent</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.CreateTransferConfigRequest.parent" title="Permalink to this definition">#</a></dt>
 <dd><p>The BigQuery project id where the transfer configuration
 should be created. Must be in the format
-/projects/{project_id}/locations/{location_id} or
-/projects/{project_id}/locations/- In case when ‘-‘ is
-specified as location_id, location is infered from the
-destination dataset region.</p>
+/projects/{project_id}/locations/{location_id} If specified
+location and location of the destination bigquery dataset do
+not match - the request will fail.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -143,7 +142,7 @@ request proper OAuth tokens.</p>
 <dl class="attribute">
 <dt id="google.cloud.bigquery_datatransfer_v1.types.DataSource.name">
 <code class="descname">name</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.DataSource.name" title="Permalink to this definition">#</a></dt>
-<dd><p>Data source resource name.</p>
+<dd><p>Output only. Data source resource name.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -185,9 +184,7 @@ ingest them into BigQuery, e.g.,
 <dl class="attribute">
 <dt id="google.cloud.bigquery_datatransfer_v1.types.DataSource.transfer_type">
 <code class="descname">transfer_type</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.DataSource.transfer_type" title="Permalink to this definition">#</a></dt>
-<dd><p>Transfer type. Currently supports only batch transfers, which
-are transfers that use the BigQuery batch APIs (load or query)
-to ingest the data.</p>
+<dd><p>Deprecated. This field has no effect.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -264,7 +261,7 @@ source.</p>
 <dl class="attribute">
 <dt id="google.cloud.bigquery_datatransfer_v1.types.DataSource.minimum_schedule_interval">
 <code class="descname">minimum_schedule_interval</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.DataSource.minimum_schedule_interval" title="Permalink to this definition">#</a></dt>
-<dd><p>The minimum interval between two consecutive scheduled runs.</p>
+<dd><p>The minimum interval for scheduler to schedule runs.</p>
 </dd></dl>
 
 </dd></dl>
@@ -1021,7 +1018,9 @@ server on input.</p>
 <dd><p>Output only. Unique ID of the user on whose behalf transfer is
 done. Applicable only to data sources that do not support
 service accounts. When set to 0, the data source service
-account credentials are used.</p>
+account credentials are used. May be negative. Note, that this
+identifier is not stable. It may change over time even for the
+same user.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1059,7 +1058,7 @@ account credentials are used.</p>
 <dl class="class">
 <dt id="google.cloud.bigquery_datatransfer_v1.types.TransferRun">
 <em class="property">class </em><code class="descclassname">google.cloud.bigquery_datatransfer_v1.types.</code><code class="descname">TransferRun</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.TransferRun" title="Permalink to this definition">#</a></dt>
-<dd><p>Represents a data transfer run. Next id: 23</p>
+<dd><p>Represents a data transfer run.</p>
 <dl class="attribute">
 <dt id="google.cloud.bigquery_datatransfer_v1.types.TransferRun.name">
 <code class="descname">name</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.TransferRun.name" title="Permalink to this definition">#</a></dt>
@@ -1070,21 +1069,9 @@ creating a transfer run.</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="google.cloud.bigquery_datatransfer_v1.types.TransferRun.destination_dataset_id">
-<code class="descname">destination_dataset_id</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.TransferRun.destination_dataset_id" title="Permalink to this definition">#</a></dt>
-<dd><p>The BigQuery target dataset id.</p>
-</dd></dl>
-
-<dl class="attribute">
 <dt id="google.cloud.bigquery_datatransfer_v1.types.TransferRun.schedule_time">
 <code class="descname">schedule_time</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.TransferRun.schedule_time" title="Permalink to this definition">#</a></dt>
 <dd><p>Minimum time after which a transfer run can be started.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.cloud.bigquery_datatransfer_v1.types.TransferRun.params">
-<code class="descname">params</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.TransferRun.params" title="Permalink to this definition">#</a></dt>
-<dd><p>Data transfer specific parameters.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1092,6 +1079,12 @@ creating a transfer run.</p>
 <code class="descname">run_time</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.TransferRun.run_time" title="Permalink to this definition">#</a></dt>
 <dd><p>For batch transfer runs, specifies the date and time that data
 should be ingested.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.TransferRun.error_status">
+<code class="descname">error_status</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.TransferRun.error_status" title="Permalink to this definition">#</a></dt>
+<dd><p>Status of the transfer run.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1116,6 +1109,18 @@ updated.</p>
 </dd></dl>
 
 <dl class="attribute">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.TransferRun.params">
+<code class="descname">params</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.TransferRun.params" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. Data transfer specific parameters.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.TransferRun.destination_dataset_id">
+<code class="descname">destination_dataset_id</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.TransferRun.destination_dataset_id" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. The BigQuery target dataset id.</p>
+</dd></dl>
+
+<dl class="attribute">
 <dt id="google.cloud.bigquery_datatransfer_v1.types.TransferRun.data_source_id">
 <code class="descname">data_source_id</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.TransferRun.data_source_id" title="Permalink to this definition">#</a></dt>
 <dd><p>Output only. Data source id.</p>
@@ -1133,7 +1138,9 @@ updated.</p>
 <dd><p>Output only. Unique ID of the user on whose behalf transfer is
 done. Applicable only to data sources that do not support
 service accounts. When set to 0, the data source service
-account credentials are used. May be negative.</p>
+account credentials are used. May be negative. Note, that this
+identifier is not stable. It may change over time even for the
+same user.</p>
 </dd></dl>
 
 <dl class="attribute">

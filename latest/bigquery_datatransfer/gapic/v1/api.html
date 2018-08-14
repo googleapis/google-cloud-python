@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Client for BigQuery Data Transfer API &#8212; google-cloud 841bcbd6d1 documentation</title>
+    <title>Client for BigQuery Data Transfer API &#8212; google-cloud ef545dc documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -38,7 +38,7 @@
 <span id="client-for-bigquery-data-transfer-api"></span><h1>Client for BigQuery Data Transfer API<a class="headerlink" href="#module-google.cloud.bigquery_datatransfer_v1" title="Permalink to this headline">#</a></h1>
 <dl class="class">
 <dt id="google.cloud.bigquery_datatransfer_v1.DataTransferServiceClient">
-<em class="property">class </em><code class="descclassname">google.cloud.bigquery_datatransfer_v1.</code><code class="descname">DataTransferServiceClient</code><span class="sig-paren">(</span><em>channel=None, credentials=None, client_config={'interfaces': {'google.cloud.bigquery.datatransfer.v1.DataTransferService': {'retry_codes': {'idempotent': ['DEADLINE_EXCEEDED', 'UNAVAILABLE'], 'non_idempotent': []}, 'retry_params': {'default': {'initial_retry_delay_millis': 100, 'retry_delay_multiplier': 1.3, 'max_retry_delay_millis': 60000, 'initial_rpc_timeout_millis': 20000, 'rpc_timeout_multiplier': 1.0, 'max_rpc_timeout_millis': 20000, 'total_timeout_millis': 600000}}, 'methods': {'GetDataSource': {'timeout_millis': 20000, 'retry_codes_name': 'idempotent', 'retry_params_name': 'default'}, 'ListDataSources': {'timeout_millis': 20000, 'retry_codes_name': 'idempotent', 'retry_params_name': 'default'}, 'CreateTransferConfig': {'timeout_millis': 30000, 'retry_codes_name': 'non_idempotent', 'retry_params_name': 'default'}, 'UpdateTransferConfig': {'timeout_millis': 30000, 'retry_codes_name': 'non_idempotent', 'retry_params_name': 'default'}, 'DeleteTransferConfig': {'timeout_millis': 30000, 'retry_codes_name': 'idempotent', 'retry_params_name': 'default'}, 'GetTransferConfig': {'timeout_millis': 30000, 'retry_codes_name': 'idempotent', 'retry_params_name': 'default'}, 'ListTransferConfigs': {'timeout_millis': 30000, 'retry_codes_name': 'idempotent', 'retry_params_name': 'default'}, 'ScheduleTransferRuns': {'timeout_millis': 30000, 'retry_codes_name': 'non_idempotent', 'retry_params_name': 'default'}, 'GetTransferRun': {'timeout_millis': 30000, 'retry_codes_name': 'idempotent', 'retry_params_name': 'default'}, 'DeleteTransferRun': {'timeout_millis': 30000, 'retry_codes_name': 'idempotent', 'retry_params_name': 'default'}, 'ListTransferRuns': {'timeout_millis': 30000, 'retry_codes_name': 'idempotent', 'retry_params_name': 'default'}, 'ListTransferLogs': {'timeout_millis': 30000, 'retry_codes_name': 'idempotent', 'retry_params_name': 'default'}, 'CheckValidCreds': {'timeout_millis': 30000, 'retry_codes_name': 'idempotent', 'retry_params_name': 'default'}}}}}, client_info=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/bigquery_datatransfer_v1.html#DataTransferServiceClient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.DataTransferServiceClient" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="descclassname">google.cloud.bigquery_datatransfer_v1.</code><code class="descname">DataTransferServiceClient</code><span class="sig-paren">(</span><em>transport=None, channel=None, credentials=None, client_config={'interfaces': {'google.cloud.bigquery.datatransfer.v1.DataTransferService': {'retry_codes': {'idempotent': ['DEADLINE_EXCEEDED', 'UNAVAILABLE'], 'non_idempotent': []}, 'retry_params': {'default': {'initial_retry_delay_millis': 100, 'retry_delay_multiplier': 1.3, 'max_retry_delay_millis': 60000, 'initial_rpc_timeout_millis': 20000, 'rpc_timeout_multiplier': 1.0, 'max_rpc_timeout_millis': 20000, 'total_timeout_millis': 600000}}, 'methods': {'GetDataSource': {'timeout_millis': 20000, 'retry_codes_name': 'idempotent', 'retry_params_name': 'default'}, 'ListDataSources': {'timeout_millis': 20000, 'retry_codes_name': 'idempotent', 'retry_params_name': 'default'}, 'CreateTransferConfig': {'timeout_millis': 30000, 'retry_codes_name': 'non_idempotent', 'retry_params_name': 'default'}, 'UpdateTransferConfig': {'timeout_millis': 30000, 'retry_codes_name': 'non_idempotent', 'retry_params_name': 'default'}, 'DeleteTransferConfig': {'timeout_millis': 30000, 'retry_codes_name': 'idempotent', 'retry_params_name': 'default'}, 'GetTransferConfig': {'timeout_millis': 30000, 'retry_codes_name': 'idempotent', 'retry_params_name': 'default'}, 'ListTransferConfigs': {'timeout_millis': 30000, 'retry_codes_name': 'idempotent', 'retry_params_name': 'default'}, 'ScheduleTransferRuns': {'timeout_millis': 30000, 'retry_codes_name': 'non_idempotent', 'retry_params_name': 'default'}, 'GetTransferRun': {'timeout_millis': 30000, 'retry_codes_name': 'idempotent', 'retry_params_name': 'default'}, 'DeleteTransferRun': {'timeout_millis': 30000, 'retry_codes_name': 'idempotent', 'retry_params_name': 'default'}, 'ListTransferRuns': {'timeout_millis': 30000, 'retry_codes_name': 'idempotent', 'retry_params_name': 'default'}, 'ListTransferLogs': {'timeout_millis': 30000, 'retry_codes_name': 'idempotent', 'retry_params_name': 'default'}, 'CheckValidCreds': {'timeout_millis': 30000, 'retry_codes_name': 'idempotent', 'retry_params_name': 'default'}}}}}, client_info=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/bigquery_datatransfer_v1.html#DataTransferServiceClient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.DataTransferServiceClient" title="Permalink to this definition">#</a></dt>
 <dd><p>The Google BigQuery Data Transfer Service API enables BigQuery users to
 configure the transfer of their data from other Google Products into BigQuery.
 This service contains methods that are end user exposed. It backs up the
@@ -49,17 +49,26 @@ frontend.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>channel</strong> (<a class="reference external" href="https://grpc.io/grpc/python/grpc.html#grpc.Channel" title="(in grpcio v1.8.0)"><em>grpc.Channel</em></a>) – A <code class="docutils literal notranslate"><span class="pre">Channel</span></code> instance through
-which to make calls. If specified, then the <code class="docutils literal notranslate"><span class="pre">credentials</span></code>
-argument is ignored.</li>
+<li><strong>(</strong><strong>Union</strong><strong>[</strong><strong>DataTransferServiceGrpcTransport</strong><strong>,</strong> (<em>transport</em>) – Callable[[~.Credentials, type], ~.DataTransferServiceGrpcTransport]): A transport
+instance, responsible for actually making the API calls.
+The default transport uses the gRPC protocol.
+This argument may also be a callable which returns a
+transport instance. Callables will be sent the credentials
+as the first argument and the default transport class as
+the second argument.</li>
+<li><strong>channel</strong> (<a class="reference external" href="https://grpc.io/grpc/python/grpc.html#grpc.Channel" title="(in grpcio v1.8.0)"><em>grpc.Channel</em></a>) – DEPRECATED. A <code class="docutils literal notranslate"><span class="pre">Channel</span></code> instance
+through which to make calls. This argument is mutually exclusive
+with <code class="docutils literal notranslate"><span class="pre">credentials</span></code>; providing both will raise an exception.</li>
 <li><strong>credentials</strong> (<a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.credentials.html#google.auth.credentials.Credentials" title="(in google-auth v1.5.1)"><em>google.auth.credentials.Credentials</em></a>) – The
 authorization credentials to attach to requests. These
 credentials identify this application to the service. If none
 are specified, the client will attempt to ascertain the
-credentials from the environment.</li>
-<li><strong>client_config</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – A dictionary of call options for each method. If not specified
-the default configuration is used. Generally, you only need
-to set this if you’re developing your own client library.</li>
+credentials from the environment.
+This argument is mutually exclusive with providing a
+transport instance to <code class="docutils literal notranslate"><span class="pre">transport</span></code>; doing so will raise
+an exception.</li>
+<li><strong>client_config</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – DEPRECATED. A dictionary of call options for
+each method. If not specified, the default configuration is used.</li>
 <li><strong>client_info</strong> (<em>google.api_core.gapic_v1.client_info.ClientInfo</em>) – The client info used to send a user-agent string along with
 API requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code>, then default info will be used.
 Generally, you only need to set this if you’re developing
@@ -71,7 +80,7 @@ your own client library.</li>
 </table>
 <dl class="method">
 <dt id="google.cloud.bigquery_datatransfer_v1.DataTransferServiceClient.check_valid_creds">
-<code class="descname">check_valid_creds</code><span class="sig-paren">(</span><em>name</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/bigquery_datatransfer_v1/gapic/data_transfer_service_client.html#DataTransferServiceClient.check_valid_creds"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.DataTransferServiceClient.check_valid_creds" title="Permalink to this definition">#</a></dt>
+<code class="descname">check_valid_creds</code><span class="sig-paren">(</span><em>name</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/bigquery_datatransfer_v1/gapic/data_transfer_service_client.html#DataTransferServiceClient.check_valid_creds"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.DataTransferServiceClient.check_valid_creds" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns true if valid credentials exist for the given data source and
 requesting user.
 Some data sources doesn’t support service account, so we need to talk to
@@ -83,7 +92,7 @@ create a transfer config.</p>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">bigquery_datatransfer_v1</span><span class="o">.</span><span class="n">DataTransferServiceClient</span><span class="p">()</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">name</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">location_data_source_path</span><span class="p">(</span><span class="s1">&#39;[PROJECT]&#39;</span><span class="p">,</span> <span class="s1">&#39;[LOCATION]&#39;</span><span class="p">,</span> <span class="s1">&#39;[DATA_SOURCE]&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">name</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">project_data_source_path</span><span class="p">(</span><span class="s1">&#39;[PROJECT]&#39;</span><span class="p">,</span> <span class="s1">&#39;[DATA_SOURCE]&#39;</span><span class="p">)</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">check_valid_creds</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
 </pre></div>
@@ -101,6 +110,8 @@ be retried.</li>
 <li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
 for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
 specified, the timeout applies to each individual attempt.</li>
+<li><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
+that is provided to the method.</li>
 </ul>
 </td>
 </tr>
@@ -122,14 +133,16 @@ to a retryable error and retry attempts failed.</li>
 
 <dl class="method">
 <dt id="google.cloud.bigquery_datatransfer_v1.DataTransferServiceClient.create_transfer_config">
-<code class="descname">create_transfer_config</code><span class="sig-paren">(</span><em>parent</em>, <em>transfer_config</em>, <em>authorization_code=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/bigquery_datatransfer_v1/gapic/data_transfer_service_client.html#DataTransferServiceClient.create_transfer_config"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.DataTransferServiceClient.create_transfer_config" title="Permalink to this definition">#</a></dt>
+<code class="descname">create_transfer_config</code><span class="sig-paren">(</span><em>parent</em>, <em>transfer_config</em>, <em>authorization_code=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/bigquery_datatransfer_v1/gapic/data_transfer_service_client.html#DataTransferServiceClient.create_transfer_config"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.DataTransferServiceClient.create_transfer_config" title="Permalink to this definition">#</a></dt>
 <dd><p>Creates a new data transfer configuration.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">bigquery_datatransfer_v1</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">bigquery_datatransfer_v1</span><span class="o">.</span><span class="n">DataTransferServiceClient</span><span class="p">()</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">parent</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">location_path</span><span class="p">(</span><span class="s1">&#39;[PROJECT]&#39;</span><span class="p">,</span> <span class="s1">&#39;[LOCATION]&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">parent</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">project_path</span><span class="p">(</span><span class="s1">&#39;[PROJECT]&#39;</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``transfer_config``:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">transfer_config</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">create_transfer_config</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">transfer_config</span><span class="p">)</span>
@@ -142,10 +155,8 @@ to a retryable error and retry attempts failed.</li>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The BigQuery project id where the transfer configuration should be created.
 Must be in the format /projects/{project_id}/locations/{location_id}
-or
-/projects/{project_id}/locations/-
-In case when ‘-‘ is specified as location_id, location is infered from
-the destination dataset region.</li>
+If specified location and location of the destination bigquery dataset
+do not match - the request will fail.</li>
 <li><strong>transfer_config</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.bigquery_datatransfer_v1.types.TransferConfig" title="google.cloud.bigquery_datatransfer_v1.types.TransferConfig"><em>TransferConfig</em></a><em>]</em>) – Data transfer configuration to create.
 If a dict is provided, it must be of the same form as the protobuf
 message <a class="reference internal" href="types.html#google.cloud.bigquery_datatransfer_v1.types.TransferConfig" title="google.cloud.bigquery_datatransfer_v1.types.TransferConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">TransferConfig</span></code></a></li>
@@ -173,6 +184,8 @@ be retried.</li>
 <li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
 for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
 specified, the timeout applies to each individual attempt.</li>
+<li><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
+that is provided to the method.</li>
 </ul>
 </td>
 </tr>
@@ -192,15 +205,9 @@ to a retryable error and retry attempts failed.</li>
 </table>
 </dd></dl>
 
-<dl class="classmethod">
-<dt id="google.cloud.bigquery_datatransfer_v1.DataTransferServiceClient.data_source_path">
-<em class="property">classmethod </em><code class="descname">data_source_path</code><span class="sig-paren">(</span><em>project</em>, <em>data_source</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/bigquery_datatransfer_v1/gapic/data_transfer_service_client.html#DataTransferServiceClient.data_source_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.DataTransferServiceClient.data_source_path" title="Permalink to this definition">#</a></dt>
-<dd><p>Returns a fully-qualified data_source resource name string.</p>
-</dd></dl>
-
 <dl class="method">
 <dt id="google.cloud.bigquery_datatransfer_v1.DataTransferServiceClient.delete_transfer_config">
-<code class="descname">delete_transfer_config</code><span class="sig-paren">(</span><em>name</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/bigquery_datatransfer_v1/gapic/data_transfer_service_client.html#DataTransferServiceClient.delete_transfer_config"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.DataTransferServiceClient.delete_transfer_config" title="Permalink to this definition">#</a></dt>
+<code class="descname">delete_transfer_config</code><span class="sig-paren">(</span><em>name</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/bigquery_datatransfer_v1/gapic/data_transfer_service_client.html#DataTransferServiceClient.delete_transfer_config"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.DataTransferServiceClient.delete_transfer_config" title="Permalink to this definition">#</a></dt>
 <dd><p>Deletes a data transfer configuration,
 including any associated transfer runs and logs.</p>
 <p class="rubric">Example</p>
@@ -208,7 +215,7 @@ including any associated transfer runs and logs.</p>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">bigquery_datatransfer_v1</span><span class="o">.</span><span class="n">DataTransferServiceClient</span><span class="p">()</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">name</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">location_transfer_config_path</span><span class="p">(</span><span class="s1">&#39;[PROJECT]&#39;</span><span class="p">,</span> <span class="s1">&#39;[LOCATION]&#39;</span><span class="p">,</span> <span class="s1">&#39;[TRANSFER_CONFIG]&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">name</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">project_transfer_config_path</span><span class="p">(</span><span class="s1">&#39;[PROJECT]&#39;</span><span class="p">,</span> <span class="s1">&#39;[TRANSFER_CONFIG]&#39;</span><span class="p">)</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span><span class="o">.</span><span class="n">delete_transfer_config</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
 </pre></div>
@@ -226,6 +233,8 @@ be retried.</li>
 <li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
 for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
 specified, the timeout applies to each individual attempt.</li>
+<li><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
+that is provided to the method.</li>
 </ul>
 </td>
 </tr>
@@ -244,14 +253,14 @@ to a retryable error and retry attempts failed.</li>
 
 <dl class="method">
 <dt id="google.cloud.bigquery_datatransfer_v1.DataTransferServiceClient.delete_transfer_run">
-<code class="descname">delete_transfer_run</code><span class="sig-paren">(</span><em>name</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/bigquery_datatransfer_v1/gapic/data_transfer_service_client.html#DataTransferServiceClient.delete_transfer_run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.DataTransferServiceClient.delete_transfer_run" title="Permalink to this definition">#</a></dt>
+<code class="descname">delete_transfer_run</code><span class="sig-paren">(</span><em>name</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/bigquery_datatransfer_v1/gapic/data_transfer_service_client.html#DataTransferServiceClient.delete_transfer_run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.DataTransferServiceClient.delete_transfer_run" title="Permalink to this definition">#</a></dt>
 <dd><p>Deletes the specified transfer run.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">bigquery_datatransfer_v1</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">bigquery_datatransfer_v1</span><span class="o">.</span><span class="n">DataTransferServiceClient</span><span class="p">()</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">name</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">location_run_path</span><span class="p">(</span><span class="s1">&#39;[PROJECT]&#39;</span><span class="p">,</span> <span class="s1">&#39;[LOCATION]&#39;</span><span class="p">,</span> <span class="s1">&#39;[TRANSFER_CONFIG]&#39;</span><span class="p">,</span> <span class="s1">&#39;[RUN]&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">name</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">project_run_path</span><span class="p">(</span><span class="s1">&#39;[PROJECT]&#39;</span><span class="p">,</span> <span class="s1">&#39;[TRANSFER_CONFIG]&#39;</span><span class="p">,</span> <span class="s1">&#39;[RUN]&#39;</span><span class="p">)</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span><span class="o">.</span><span class="n">delete_transfer_run</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
 </pre></div>
@@ -269,6 +278,8 @@ be retried.</li>
 <li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
 for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
 specified, the timeout applies to each individual attempt.</li>
+<li><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
+that is provided to the method.</li>
 </ul>
 </td>
 </tr>
@@ -287,12 +298,66 @@ to a retryable error and retry attempts failed.</li>
 
 <dl class="attribute">
 <dt id="google.cloud.bigquery_datatransfer_v1.DataTransferServiceClient.enums">
-<code class="descname">enums</code><em class="property"> = &lt;module 'google.cloud.bigquery_datatransfer_v1.gapic.enums' from '/home/kbuilder/.pyenv/versions/3.6.1/lib/python3.6/site-packages/google/cloud/bigquery_datatransfer_v1/gapic/enums.py'&gt;</em><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.DataTransferServiceClient.enums" title="Permalink to this definition">#</a></dt>
+<code class="descname">enums</code><em class="property"> = &lt;module 'google.cloud.bigquery_datatransfer_v1.gapic.enums' from '/var/code/gcp/.nox/docs/lib/python3.6/site-packages/google/cloud/bigquery_datatransfer_v1/gapic/enums.py'&gt;</em><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.DataTransferServiceClient.enums" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
+<dl class="classmethod">
+<dt id="google.cloud.bigquery_datatransfer_v1.DataTransferServiceClient.from_service_account_file">
+<em class="property">classmethod </em><code class="descname">from_service_account_file</code><span class="sig-paren">(</span><em>filename</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/bigquery_datatransfer_v1/gapic/data_transfer_service_client.html#DataTransferServiceClient.from_service_account_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.DataTransferServiceClient.from_service_account_file" title="Permalink to this definition">#</a></dt>
+<dd><p>Creates an instance of this client using the provided credentials
+file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The path to the service account private key json
+file.</li>
+<li><strong>args</strong> – Additional arguments to pass to the constructor.</li>
+<li><strong>kwargs</strong> – Additional arguments to pass to the constructor.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The constructed client.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#google.cloud.bigquery_datatransfer_v1.DataTransferServiceClient" title="google.cloud.bigquery_datatransfer_v1.DataTransferServiceClient">DataTransferServiceClient</a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="google.cloud.bigquery_datatransfer_v1.DataTransferServiceClient.from_service_account_json">
+<em class="property">classmethod </em><code class="descname">from_service_account_json</code><span class="sig-paren">(</span><em>filename</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.DataTransferServiceClient.from_service_account_json" title="Permalink to this definition">#</a></dt>
+<dd><p>Creates an instance of this client using the provided credentials
+file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The path to the service account private key json
+file.</li>
+<li><strong>args</strong> – Additional arguments to pass to the constructor.</li>
+<li><strong>kwargs</strong> – Additional arguments to pass to the constructor.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The constructed client.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#google.cloud.bigquery_datatransfer_v1.DataTransferServiceClient" title="google.cloud.bigquery_datatransfer_v1.DataTransferServiceClient">DataTransferServiceClient</a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="method">
 <dt id="google.cloud.bigquery_datatransfer_v1.DataTransferServiceClient.get_data_source">
-<code class="descname">get_data_source</code><span class="sig-paren">(</span><em>name</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/bigquery_datatransfer_v1/gapic/data_transfer_service_client.html#DataTransferServiceClient.get_data_source"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.DataTransferServiceClient.get_data_source" title="Permalink to this definition">#</a></dt>
+<code class="descname">get_data_source</code><span class="sig-paren">(</span><em>name</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/bigquery_datatransfer_v1/gapic/data_transfer_service_client.html#DataTransferServiceClient.get_data_source"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.DataTransferServiceClient.get_data_source" title="Permalink to this definition">#</a></dt>
 <dd><p>Retrieves a supported data source and returns its settings,
 which can be used for UI rendering.</p>
 <p class="rubric">Example</p>
@@ -300,7 +365,7 @@ which can be used for UI rendering.</p>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">bigquery_datatransfer_v1</span><span class="o">.</span><span class="n">DataTransferServiceClient</span><span class="p">()</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">name</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">location_data_source_path</span><span class="p">(</span><span class="s1">&#39;[PROJECT]&#39;</span><span class="p">,</span> <span class="s1">&#39;[LOCATION]&#39;</span><span class="p">,</span> <span class="s1">&#39;[DATA_SOURCE]&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">name</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">project_data_source_path</span><span class="p">(</span><span class="s1">&#39;[PROJECT]&#39;</span><span class="p">,</span> <span class="s1">&#39;[DATA_SOURCE]&#39;</span><span class="p">)</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_data_source</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
 </pre></div>
@@ -318,6 +383,8 @@ be retried.</li>
 <li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
 for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
 specified, the timeout applies to each individual attempt.</li>
+<li><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
+that is provided to the method.</li>
 </ul>
 </td>
 </tr>
@@ -339,14 +406,14 @@ to a retryable error and retry attempts failed.</li>
 
 <dl class="method">
 <dt id="google.cloud.bigquery_datatransfer_v1.DataTransferServiceClient.get_transfer_config">
-<code class="descname">get_transfer_config</code><span class="sig-paren">(</span><em>name</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/bigquery_datatransfer_v1/gapic/data_transfer_service_client.html#DataTransferServiceClient.get_transfer_config"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.DataTransferServiceClient.get_transfer_config" title="Permalink to this definition">#</a></dt>
+<code class="descname">get_transfer_config</code><span class="sig-paren">(</span><em>name</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/bigquery_datatransfer_v1/gapic/data_transfer_service_client.html#DataTransferServiceClient.get_transfer_config"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.DataTransferServiceClient.get_transfer_config" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns information about a data transfer config.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">bigquery_datatransfer_v1</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">bigquery_datatransfer_v1</span><span class="o">.</span><span class="n">DataTransferServiceClient</span><span class="p">()</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">name</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">location_transfer_config_path</span><span class="p">(</span><span class="s1">&#39;[PROJECT]&#39;</span><span class="p">,</span> <span class="s1">&#39;[LOCATION]&#39;</span><span class="p">,</span> <span class="s1">&#39;[TRANSFER_CONFIG]&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">name</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">project_transfer_config_path</span><span class="p">(</span><span class="s1">&#39;[PROJECT]&#39;</span><span class="p">,</span> <span class="s1">&#39;[TRANSFER_CONFIG]&#39;</span><span class="p">)</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_transfer_config</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
 </pre></div>
@@ -364,6 +431,8 @@ be retried.</li>
 <li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
 for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
 specified, the timeout applies to each individual attempt.</li>
+<li><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
+that is provided to the method.</li>
 </ul>
 </td>
 </tr>
@@ -385,14 +454,14 @@ to a retryable error and retry attempts failed.</li>
 
 <dl class="method">
 <dt id="google.cloud.bigquery_datatransfer_v1.DataTransferServiceClient.get_transfer_run">
-<code class="descname">get_transfer_run</code><span class="sig-paren">(</span><em>name</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/bigquery_datatransfer_v1/gapic/data_transfer_service_client.html#DataTransferServiceClient.get_transfer_run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.DataTransferServiceClient.get_transfer_run" title="Permalink to this definition">#</a></dt>
+<code class="descname">get_transfer_run</code><span class="sig-paren">(</span><em>name</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/bigquery_datatransfer_v1/gapic/data_transfer_service_client.html#DataTransferServiceClient.get_transfer_run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.DataTransferServiceClient.get_transfer_run" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns information about the particular transfer run.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">bigquery_datatransfer_v1</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">bigquery_datatransfer_v1</span><span class="o">.</span><span class="n">DataTransferServiceClient</span><span class="p">()</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">name</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">location_run_path</span><span class="p">(</span><span class="s1">&#39;[PROJECT]&#39;</span><span class="p">,</span> <span class="s1">&#39;[LOCATION]&#39;</span><span class="p">,</span> <span class="s1">&#39;[TRANSFER_CONFIG]&#39;</span><span class="p">,</span> <span class="s1">&#39;[RUN]&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">name</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">project_run_path</span><span class="p">(</span><span class="s1">&#39;[PROJECT]&#39;</span><span class="p">,</span> <span class="s1">&#39;[TRANSFER_CONFIG]&#39;</span><span class="p">,</span> <span class="s1">&#39;[RUN]&#39;</span><span class="p">)</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_transfer_run</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
 </pre></div>
@@ -410,6 +479,8 @@ be retried.</li>
 <li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
 for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
 specified, the timeout applies to each individual attempt.</li>
+<li><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
+that is provided to the method.</li>
 </ul>
 </td>
 </tr>
@@ -431,7 +502,7 @@ to a retryable error and retry attempts failed.</li>
 
 <dl class="method">
 <dt id="google.cloud.bigquery_datatransfer_v1.DataTransferServiceClient.list_data_sources">
-<code class="descname">list_data_sources</code><span class="sig-paren">(</span><em>parent</em>, <em>page_size=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/bigquery_datatransfer_v1/gapic/data_transfer_service_client.html#DataTransferServiceClient.list_data_sources"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.DataTransferServiceClient.list_data_sources" title="Permalink to this definition">#</a></dt>
+<code class="descname">list_data_sources</code><span class="sig-paren">(</span><em>parent</em>, <em>page_size=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/bigquery_datatransfer_v1/gapic/data_transfer_service_client.html#DataTransferServiceClient.list_data_sources"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.DataTransferServiceClient.list_data_sources" title="Permalink to this definition">#</a></dt>
 <dd><p>Lists supported data sources and returns their settings,
 which can be used for UI rendering.</p>
 <p class="rubric">Example</p>
@@ -439,15 +510,17 @@ which can be used for UI rendering.</p>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">bigquery_datatransfer_v1</span><span class="o">.</span><span class="n">DataTransferServiceClient</span><span class="p">()</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">parent</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">location_path</span><span class="p">(</span><span class="s1">&#39;[PROJECT]&#39;</span><span class="p">,</span> <span class="s1">&#39;[LOCATION]&#39;</span><span class="p">)</span>
-<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">parent</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">project_path</span><span class="p">(</span><span class="s1">&#39;[PROJECT]&#39;</span><span class="p">)</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Iterate over all results</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_data_sources</span><span class="p">(</span><span class="n">parent</span><span class="p">):</span>
 <span class="gp">... </span>    <span class="c1"># process element</span>
 <span class="gp">... </span>    <span class="k">pass</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Or iterate over results one page at a time</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Alternatively:</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Iterate over results one page at a time</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_data_sources</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">CallOptions</span><span class="p">(</span><span class="n">page_token</span><span class="o">=</span><span class="n">INITIAL_PAGE</span><span class="p">)):</span>
 <span class="gp">... </span>    <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">page</span><span class="p">:</span>
 <span class="gp">... </span>        <span class="c1"># process element</span>
@@ -472,6 +545,8 @@ be retried.</li>
 <li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
 for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
 specified, the timeout applies to each individual attempt.</li>
+<li><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
+that is provided to the method.</li>
 </ul>
 </td>
 </tr>
@@ -496,22 +571,24 @@ to a retryable error and retry attempts failed.</li>
 
 <dl class="method">
 <dt id="google.cloud.bigquery_datatransfer_v1.DataTransferServiceClient.list_transfer_configs">
-<code class="descname">list_transfer_configs</code><span class="sig-paren">(</span><em>parent</em>, <em>data_source_ids=None</em>, <em>page_size=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/bigquery_datatransfer_v1/gapic/data_transfer_service_client.html#DataTransferServiceClient.list_transfer_configs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.DataTransferServiceClient.list_transfer_configs" title="Permalink to this definition">#</a></dt>
+<code class="descname">list_transfer_configs</code><span class="sig-paren">(</span><em>parent</em>, <em>data_source_ids=None</em>, <em>page_size=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/bigquery_datatransfer_v1/gapic/data_transfer_service_client.html#DataTransferServiceClient.list_transfer_configs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.DataTransferServiceClient.list_transfer_configs" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns information about all data transfers in the project.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">bigquery_datatransfer_v1</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">bigquery_datatransfer_v1</span><span class="o">.</span><span class="n">DataTransferServiceClient</span><span class="p">()</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">parent</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">location_path</span><span class="p">(</span><span class="s1">&#39;[PROJECT]&#39;</span><span class="p">,</span> <span class="s1">&#39;[LOCATION]&#39;</span><span class="p">)</span>
-<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">parent</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">project_path</span><span class="p">(</span><span class="s1">&#39;[PROJECT]&#39;</span><span class="p">)</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Iterate over all results</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_transfer_configs</span><span class="p">(</span><span class="n">parent</span><span class="p">):</span>
 <span class="gp">... </span>    <span class="c1"># process element</span>
 <span class="gp">... </span>    <span class="k">pass</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Or iterate over results one page at a time</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Alternatively:</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Iterate over results one page at a time</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_transfer_configs</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">CallOptions</span><span class="p">(</span><span class="n">page_token</span><span class="o">=</span><span class="n">INITIAL_PAGE</span><span class="p">)):</span>
 <span class="gp">... </span>    <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">page</span><span class="p">:</span>
 <span class="gp">... </span>        <span class="c1"># process element</span>
@@ -537,6 +614,8 @@ be retried.</li>
 <li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
 for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
 specified, the timeout applies to each individual attempt.</li>
+<li><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
+that is provided to the method.</li>
 </ul>
 </td>
 </tr>
@@ -561,22 +640,24 @@ to a retryable error and retry attempts failed.</li>
 
 <dl class="method">
 <dt id="google.cloud.bigquery_datatransfer_v1.DataTransferServiceClient.list_transfer_logs">
-<code class="descname">list_transfer_logs</code><span class="sig-paren">(</span><em>parent</em>, <em>page_size=None</em>, <em>message_types=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/bigquery_datatransfer_v1/gapic/data_transfer_service_client.html#DataTransferServiceClient.list_transfer_logs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.DataTransferServiceClient.list_transfer_logs" title="Permalink to this definition">#</a></dt>
+<code class="descname">list_transfer_logs</code><span class="sig-paren">(</span><em>parent</em>, <em>page_size=None</em>, <em>message_types=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/bigquery_datatransfer_v1/gapic/data_transfer_service_client.html#DataTransferServiceClient.list_transfer_logs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.DataTransferServiceClient.list_transfer_logs" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns user facing log messages for the data transfer run.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">bigquery_datatransfer_v1</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">bigquery_datatransfer_v1</span><span class="o">.</span><span class="n">DataTransferServiceClient</span><span class="p">()</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">parent</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">location_run_path</span><span class="p">(</span><span class="s1">&#39;[PROJECT]&#39;</span><span class="p">,</span> <span class="s1">&#39;[LOCATION]&#39;</span><span class="p">,</span> <span class="s1">&#39;[TRANSFER_CONFIG]&#39;</span><span class="p">,</span> <span class="s1">&#39;[RUN]&#39;</span><span class="p">)</span>
-<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">parent</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">project_run_path</span><span class="p">(</span><span class="s1">&#39;[PROJECT]&#39;</span><span class="p">,</span> <span class="s1">&#39;[TRANSFER_CONFIG]&#39;</span><span class="p">,</span> <span class="s1">&#39;[RUN]&#39;</span><span class="p">)</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Iterate over all results</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_transfer_logs</span><span class="p">(</span><span class="n">parent</span><span class="p">):</span>
 <span class="gp">... </span>    <span class="c1"># process element</span>
 <span class="gp">... </span>    <span class="k">pass</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Or iterate over results one page at a time</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Alternatively:</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Iterate over results one page at a time</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_transfer_logs</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">CallOptions</span><span class="p">(</span><span class="n">page_token</span><span class="o">=</span><span class="n">INITIAL_PAGE</span><span class="p">)):</span>
 <span class="gp">... </span>    <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">page</span><span class="p">:</span>
 <span class="gp">... </span>        <span class="c1"># process element</span>
@@ -603,6 +684,8 @@ be retried.</li>
 <li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
 for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
 specified, the timeout applies to each individual attempt.</li>
+<li><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
+that is provided to the method.</li>
 </ul>
 </td>
 </tr>
@@ -627,22 +710,24 @@ to a retryable error and retry attempts failed.</li>
 
 <dl class="method">
 <dt id="google.cloud.bigquery_datatransfer_v1.DataTransferServiceClient.list_transfer_runs">
-<code class="descname">list_transfer_runs</code><span class="sig-paren">(</span><em>parent</em>, <em>states=None</em>, <em>page_size=None</em>, <em>run_attempt=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/bigquery_datatransfer_v1/gapic/data_transfer_service_client.html#DataTransferServiceClient.list_transfer_runs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.DataTransferServiceClient.list_transfer_runs" title="Permalink to this definition">#</a></dt>
+<code class="descname">list_transfer_runs</code><span class="sig-paren">(</span><em>parent</em>, <em>states=None</em>, <em>page_size=None</em>, <em>run_attempt=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/bigquery_datatransfer_v1/gapic/data_transfer_service_client.html#DataTransferServiceClient.list_transfer_runs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.DataTransferServiceClient.list_transfer_runs" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns information about running and completed jobs.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">bigquery_datatransfer_v1</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">bigquery_datatransfer_v1</span><span class="o">.</span><span class="n">DataTransferServiceClient</span><span class="p">()</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">parent</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">location_transfer_config_path</span><span class="p">(</span><span class="s1">&#39;[PROJECT]&#39;</span><span class="p">,</span> <span class="s1">&#39;[LOCATION]&#39;</span><span class="p">,</span> <span class="s1">&#39;[TRANSFER_CONFIG]&#39;</span><span class="p">)</span>
-<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">parent</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">project_transfer_config_path</span><span class="p">(</span><span class="s1">&#39;[PROJECT]&#39;</span><span class="p">,</span> <span class="s1">&#39;[TRANSFER_CONFIG]&#39;</span><span class="p">)</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Iterate over all results</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_transfer_runs</span><span class="p">(</span><span class="n">parent</span><span class="p">):</span>
 <span class="gp">... </span>    <span class="c1"># process element</span>
 <span class="gp">... </span>    <span class="k">pass</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Or iterate over results one page at a time</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Alternatively:</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Iterate over results one page at a time</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_transfer_runs</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">CallOptions</span><span class="p">(</span><span class="n">page_token</span><span class="o">=</span><span class="n">INITIAL_PAGE</span><span class="p">)):</span>
 <span class="gp">... </span>    <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">page</span><span class="p">:</span>
 <span class="gp">... </span>        <span class="c1"># process element</span>
@@ -670,6 +755,8 @@ be retried.</li>
 <li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
 for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
 specified, the timeout applies to each individual attempt.</li>
+<li><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
+that is provided to the method.</li>
 </ul>
 </td>
 </tr>
@@ -693,45 +780,33 @@ to a retryable error and retry attempts failed.</li>
 </dd></dl>
 
 <dl class="classmethod">
-<dt id="google.cloud.bigquery_datatransfer_v1.DataTransferServiceClient.location_data_source_path">
-<em class="property">classmethod </em><code class="descname">location_data_source_path</code><span class="sig-paren">(</span><em>project</em>, <em>location</em>, <em>data_source</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/bigquery_datatransfer_v1/gapic/data_transfer_service_client.html#DataTransferServiceClient.location_data_source_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.DataTransferServiceClient.location_data_source_path" title="Permalink to this definition">#</a></dt>
-<dd><p>Returns a fully-qualified location_data_source resource name string.</p>
-</dd></dl>
-
-<dl class="classmethod">
-<dt id="google.cloud.bigquery_datatransfer_v1.DataTransferServiceClient.location_path">
-<em class="property">classmethod </em><code class="descname">location_path</code><span class="sig-paren">(</span><em>project</em>, <em>location</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/bigquery_datatransfer_v1/gapic/data_transfer_service_client.html#DataTransferServiceClient.location_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.DataTransferServiceClient.location_path" title="Permalink to this definition">#</a></dt>
-<dd><p>Returns a fully-qualified location resource name string.</p>
-</dd></dl>
-
-<dl class="classmethod">
-<dt id="google.cloud.bigquery_datatransfer_v1.DataTransferServiceClient.location_run_path">
-<em class="property">classmethod </em><code class="descname">location_run_path</code><span class="sig-paren">(</span><em>project</em>, <em>location</em>, <em>transfer_config</em>, <em>run</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/bigquery_datatransfer_v1/gapic/data_transfer_service_client.html#DataTransferServiceClient.location_run_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.DataTransferServiceClient.location_run_path" title="Permalink to this definition">#</a></dt>
-<dd><p>Returns a fully-qualified location_run resource name string.</p>
-</dd></dl>
-
-<dl class="classmethod">
-<dt id="google.cloud.bigquery_datatransfer_v1.DataTransferServiceClient.location_transfer_config_path">
-<em class="property">classmethod </em><code class="descname">location_transfer_config_path</code><span class="sig-paren">(</span><em>project</em>, <em>location</em>, <em>transfer_config</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/bigquery_datatransfer_v1/gapic/data_transfer_service_client.html#DataTransferServiceClient.location_transfer_config_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.DataTransferServiceClient.location_transfer_config_path" title="Permalink to this definition">#</a></dt>
-<dd><p>Returns a fully-qualified location_transfer_config resource name string.</p>
+<dt id="google.cloud.bigquery_datatransfer_v1.DataTransferServiceClient.project_data_source_path">
+<em class="property">classmethod </em><code class="descname">project_data_source_path</code><span class="sig-paren">(</span><em>project</em>, <em>data_source</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/bigquery_datatransfer_v1/gapic/data_transfer_service_client.html#DataTransferServiceClient.project_data_source_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.DataTransferServiceClient.project_data_source_path" title="Permalink to this definition">#</a></dt>
+<dd><p>Return a fully-qualified project_data_source string.</p>
 </dd></dl>
 
 <dl class="classmethod">
 <dt id="google.cloud.bigquery_datatransfer_v1.DataTransferServiceClient.project_path">
 <em class="property">classmethod </em><code class="descname">project_path</code><span class="sig-paren">(</span><em>project</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/bigquery_datatransfer_v1/gapic/data_transfer_service_client.html#DataTransferServiceClient.project_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.DataTransferServiceClient.project_path" title="Permalink to this definition">#</a></dt>
-<dd><p>Returns a fully-qualified project resource name string.</p>
+<dd><p>Return a fully-qualified project string.</p>
 </dd></dl>
 
 <dl class="classmethod">
-<dt id="google.cloud.bigquery_datatransfer_v1.DataTransferServiceClient.run_path">
-<em class="property">classmethod </em><code class="descname">run_path</code><span class="sig-paren">(</span><em>project</em>, <em>transfer_config</em>, <em>run</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/bigquery_datatransfer_v1/gapic/data_transfer_service_client.html#DataTransferServiceClient.run_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.DataTransferServiceClient.run_path" title="Permalink to this definition">#</a></dt>
-<dd><p>Returns a fully-qualified run resource name string.</p>
+<dt id="google.cloud.bigquery_datatransfer_v1.DataTransferServiceClient.project_run_path">
+<em class="property">classmethod </em><code class="descname">project_run_path</code><span class="sig-paren">(</span><em>project</em>, <em>transfer_config</em>, <em>run</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/bigquery_datatransfer_v1/gapic/data_transfer_service_client.html#DataTransferServiceClient.project_run_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.DataTransferServiceClient.project_run_path" title="Permalink to this definition">#</a></dt>
+<dd><p>Return a fully-qualified project_run string.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="google.cloud.bigquery_datatransfer_v1.DataTransferServiceClient.project_transfer_config_path">
+<em class="property">classmethod </em><code class="descname">project_transfer_config_path</code><span class="sig-paren">(</span><em>project</em>, <em>transfer_config</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/bigquery_datatransfer_v1/gapic/data_transfer_service_client.html#DataTransferServiceClient.project_transfer_config_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.DataTransferServiceClient.project_transfer_config_path" title="Permalink to this definition">#</a></dt>
+<dd><p>Return a fully-qualified project_transfer_config string.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="google.cloud.bigquery_datatransfer_v1.DataTransferServiceClient.schedule_transfer_runs">
-<code class="descname">schedule_transfer_runs</code><span class="sig-paren">(</span><em>parent</em>, <em>start_time</em>, <em>end_time</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/bigquery_datatransfer_v1/gapic/data_transfer_service_client.html#DataTransferServiceClient.schedule_transfer_runs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.DataTransferServiceClient.schedule_transfer_runs" title="Permalink to this definition">#</a></dt>
-<dd><p>Creates transfer runs for a time range [range_start_time, range_end_time].
+<code class="descname">schedule_transfer_runs</code><span class="sig-paren">(</span><em>parent</em>, <em>start_time</em>, <em>end_time</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/bigquery_datatransfer_v1/gapic/data_transfer_service_client.html#DataTransferServiceClient.schedule_transfer_runs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.DataTransferServiceClient.schedule_transfer_runs" title="Permalink to this definition">#</a></dt>
+<dd><p>Creates transfer runs for a time range [start_time, end_time].
 For each date - or whatever granularity the data source supports - in the
 range, one transfer run is created.
 Note that runs are created per UTC time in the time range.</p>
@@ -740,8 +815,12 @@ Note that runs are created per UTC time in the time range.</p>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">bigquery_datatransfer_v1</span><span class="o">.</span><span class="n">DataTransferServiceClient</span><span class="p">()</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">parent</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">location_transfer_config_path</span><span class="p">(</span><span class="s1">&#39;[PROJECT]&#39;</span><span class="p">,</span> <span class="s1">&#39;[LOCATION]&#39;</span><span class="p">,</span> <span class="s1">&#39;[TRANSFER_CONFIG]&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">parent</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">project_transfer_config_path</span><span class="p">(</span><span class="s1">&#39;[PROJECT]&#39;</span><span class="p">,</span> <span class="s1">&#39;[TRANSFER_CONFIG]&#39;</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``start_time``:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">start_time</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``end_time``:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">end_time</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">schedule_transfer_runs</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">start_time</span><span class="p">,</span> <span class="n">end_time</span><span class="p">)</span>
@@ -768,6 +847,8 @@ be retried.</li>
 <li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
 for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
 specified, the timeout applies to each individual attempt.</li>
+<li><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
+that is provided to the method.</li>
 </ul>
 </td>
 </tr>
@@ -787,15 +868,9 @@ to a retryable error and retry attempts failed.</li>
 </table>
 </dd></dl>
 
-<dl class="classmethod">
-<dt id="google.cloud.bigquery_datatransfer_v1.DataTransferServiceClient.transfer_config_path">
-<em class="property">classmethod </em><code class="descname">transfer_config_path</code><span class="sig-paren">(</span><em>project</em>, <em>transfer_config</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/bigquery_datatransfer_v1/gapic/data_transfer_service_client.html#DataTransferServiceClient.transfer_config_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.DataTransferServiceClient.transfer_config_path" title="Permalink to this definition">#</a></dt>
-<dd><p>Returns a fully-qualified transfer_config resource name string.</p>
-</dd></dl>
-
 <dl class="method">
 <dt id="google.cloud.bigquery_datatransfer_v1.DataTransferServiceClient.update_transfer_config">
-<code class="descname">update_transfer_config</code><span class="sig-paren">(</span><em>transfer_config</em>, <em>update_mask</em>, <em>authorization_code=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/bigquery_datatransfer_v1/gapic/data_transfer_service_client.html#DataTransferServiceClient.update_transfer_config"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.DataTransferServiceClient.update_transfer_config" title="Permalink to this definition">#</a></dt>
+<code class="descname">update_transfer_config</code><span class="sig-paren">(</span><em>transfer_config</em>, <em>update_mask</em>, <em>authorization_code=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/bigquery_datatransfer_v1/gapic/data_transfer_service_client.html#DataTransferServiceClient.update_transfer_config"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.DataTransferServiceClient.update_transfer_config" title="Permalink to this definition">#</a></dt>
 <dd><p>Updates a data transfer configuration.
 All fields must be set, even if they are not updated.</p>
 <p class="rubric">Example</p>
@@ -803,7 +878,10 @@ All fields must be set, even if they are not updated.</p>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">bigquery_datatransfer_v1</span><span class="o">.</span><span class="n">DataTransferServiceClient</span><span class="p">()</span>
 <span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``transfer_config``:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">transfer_config</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``update_mask``:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">update_mask</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">update_transfer_config</span><span class="p">(</span><span class="n">transfer_config</span><span class="p">,</span> <span class="n">update_mask</span><span class="p">)</span>
@@ -844,6 +922,8 @@ be retried.</li>
 <li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
 for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
 specified, the timeout applies to each individual attempt.</li>
+<li><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
+that is provided to the method.</li>
 </ul>
 </td>
 </tr>
