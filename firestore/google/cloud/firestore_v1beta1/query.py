@@ -608,7 +608,8 @@ class Query(object):
     #     provided callback is run on the snapshot of the documents.
 
     #     Args:
-    #         callback(QuerySnapshot): a callback to run when a change occurs
+    #         callback(~.firestore.query.QuerySnapshot): a callback to run when
+    #             a change occurs.
 
     #     Example:
     #         from google.cloud import firestore
@@ -617,7 +618,7 @@ class Query(object):
     #         query_ref = db.collection(u'users').where("user", "==", u'ada')
 
     #         def on_snapshot(query_snapshot):
-    #             for doc in query_snapshot.docs:
+    #             for doc in query_snapshot.documents:
     #                 print(u'{} => {}'.format(doc.id, doc.to_dict()))
 
     #         # Watch this query

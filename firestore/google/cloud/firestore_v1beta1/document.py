@@ -453,7 +453,8 @@ class DocumentReference(object):
         provided callback is run on the snapshot.
 
         Args:
-            callback(DocumentSnapshot): a callback to run when a change occurs
+            callback(~.firestore.document.DocumentSnapshot):a callback to run
+                when a change occurs
 
         Example:
             from google.cloud import firestore
