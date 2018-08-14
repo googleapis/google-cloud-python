@@ -601,6 +601,19 @@ class Query(object):
             else:
                 yield snapshot
 
+    def onSnapshot(callback, options):
+        '''
+        db.collection("cities").where("state", "==", "CA")
+        .onSnapshot(function(querySnapshot) {
+            var cities = [];
+            querySnapshot.forEach(function(doc) {
+                cities.push(doc.data().name);
+            });
+            console.log("Current cities in CA: ", cities.join(", "));
+        });
+        '''
+        raise NotImplemented
+
 
 def _enum_from_op_string(op_string):
     """Convert a string representation of a binary operator to an enum.

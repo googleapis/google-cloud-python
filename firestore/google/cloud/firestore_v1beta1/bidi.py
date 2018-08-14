@@ -196,6 +196,7 @@ class BidiRpc(object):
 
         request_generator = _RequestQueueGenerator(
             self._request_queue, initial_request=self._initial_request)
+        print('request generator created')
         call = self._start_rpc(iter(request_generator))
 
         request_generator.call = call

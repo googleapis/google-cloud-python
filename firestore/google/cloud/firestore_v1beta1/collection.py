@@ -371,6 +371,12 @@ class CollectionReference(object):
         query = query_mod.Query(self)
         return query.get(transaction=transaction)
 
+    def onSnapshot(options, callback):
+        '''
+        given options and the callback, monitor this collection for changes
+        '''
+        raise NotImplemented
+
 
 def _auto_id():
     """Generate a "random" automatically generated ID.

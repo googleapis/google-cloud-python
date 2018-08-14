@@ -18,6 +18,7 @@
 import copy
 
 from google.cloud.firestore_v1beta1 import _helpers
+from google.cloud.firestore_v1beta1.watch import Watch
 
 
 class DocumentReference(object):
@@ -440,6 +441,12 @@ class DocumentReference(object):
         iterator.document = self
         iterator.item_to_value = _item_to_collection_ref
         return iterator
+
+    def on_snapshot(self, callback):
+        '''
+        given options and the callback, monitor this document for changes
+        '''
+        Watch.for_document(self, callback, DocumentSnapshot)
 
 
 class DocumentSnapshot(object):
