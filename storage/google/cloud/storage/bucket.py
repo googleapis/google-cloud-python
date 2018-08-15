@@ -18,6 +18,7 @@ import base64
 import copy
 import datetime
 import json
+import warnings
 
 import six
 
@@ -256,7 +257,7 @@ class Bucket(_PropertyMixin):
         except NotFound:
             return False
 
-    def create(self, client=None, project=None):
+    def create(self, client=None, project=None, location=None):
         """Creates current bucket.
 
         If the bucket already exists, will raise
@@ -268,16 +269,21 @@ class Bucket(_PropertyMixin):
 
         :type client: :class:`~google.cloud.storage.client.Client` or
                       ``NoneType``
-        :param client: Optional. The client to use.  If not passed, falls back
+        :param client: Optional. The client to use. If not passed, falls back
                        to the ``client`` stored on the current bucket.
 
         :type project: str
-        :param project: (Optional) the project under which the  bucket is to
-                        be created.  If not passed, uses the project set on
+        :param project: Optional. The project under which the bucket is to
+                        be created. If not passed, uses the project set on
                         the client.
         :raises ValueError: if :attr:`user_project` is set.
         :raises ValueError: if ``project`` is None and client's
                             :attr:`project` is also None.
+
+        :type location: str
+        :param location: Optional. The location of the bucket. If not passed,
+                         the default location, US, will be used. See
+                         https://cloud.google.com/storage/docs/bucket-locations
         """
         if self.user_project is not None:
             raise ValueError("Cannot create bucket with 'user_project' set.")
@@ -294,6 +300,10 @@ class Bucket(_PropertyMixin):
         query_params = {'project': project}
         properties = {key: self._properties[key] for key in self._changes}
         properties['name'] = self.name
+
+        if location is not None:
+            properties['location'] = location
+
         api_response = client._connection.api_request(
             method='POST', path='/b', query_params=query_params,
             data=properties, _target_object=self)
@@ -935,19 +945,42 @@ class Bucket(_PropertyMixin):
         """
         self._patch_property('lifecycle', {'rule': rules})
 
-    location = _scalar_property('location')
-    """Retrieve location configured for this bucket.
+    _location = _scalar_property('location')
 
-    This can only be set at bucket **creation** time.
+    @property
+    def location(self):
+        """Retrieve location configured for this bucket.
 
-    See https://cloud.google.com/storage/docs/json_api/v1/buckets and
-    https://cloud.google.com/storage/docs/bucket-locations
+        See https://cloud.google.com/storage/docs/json_api/v1/buckets and
+        https://cloud.google.com/storage/docs/bucket-locations
+        
+        Returns ``None`` if the property has not been set before creation,
+        or if the bucket's resource has not been loaded from the server.
+        :rtype: str or ``NoneType``
+        """
+        return self._location
 
-    Returns ``None`` if the property has not been set before creation,
-    or if the bucket's resource has not been loaded from the server.
+    @location.setter
+    def location(self, value):
+        """(Deprecated) Set `Bucket.location`
 
-    :rtype: str or ``NoneType``
-    """
+        This can only be set at bucket **creation** time.
+
+        See https://cloud.google.com/storage/docs/json_api/v1/buckets and
+        https://cloud.google.com/storage/docs/bucket-locations
+
+        .. warning::
+
+            Assignment to 'Bucket.location' is deprecated, as it is only
+            valid before the bucket is created. Instead, pass the location
+            to `Bucket.create`.
+        """
+        warnings.warn(
+            "Assignment to 'Bucket.location' is deprecated, as it is only "
+            "valid before the bucket is created. Instead, pass the location "
+            "to `Bucket.create`.",
+            DeprecationWarning)
+        self._location = value
 
     def get_logging(self):
         """Return info about access logging for this bucket.
