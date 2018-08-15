@@ -953,7 +953,7 @@ class Bucket(_PropertyMixin):
 
         See https://cloud.google.com/storage/docs/json_api/v1/buckets and
         https://cloud.google.com/storage/docs/bucket-locations
-        
+
         Returns ``None`` if the property has not been set before creation,
         or if the bucket's resource has not been loaded from the server.
         :rtype: str or ``NoneType``
