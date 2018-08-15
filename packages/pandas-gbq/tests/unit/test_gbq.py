@@ -190,12 +190,12 @@ def test_read_gbq_with_no_project_id_given_should_fail(monkeypatch):
         auth, 'get_application_default_credentials', mock_none_credentials)
 
     with pytest.raises(ValueError) as exception:
-        gbq.read_gbq('SELECT 1')
+        gbq.read_gbq('SELECT 1', dialect='standard')
     assert 'Could not determine project ID' in str(exception)
 
 
 def test_read_gbq_with_inferred_project_id(monkeypatch):
-    df = gbq.read_gbq('SELECT 1')
+    df = gbq.read_gbq('SELECT 1', dialect='standard')
     assert df is not None
 
 
@@ -214,32 +214,35 @@ def test_that_parse_data_works_properly():
 
 def test_read_gbq_with_invalid_private_key_json_should_fail():
     with pytest.raises(pandas_gbq.exceptions.InvalidPrivateKeyFormat):
-        gbq.read_gbq('SELECT 1', project_id='x', private_key='y')
+        gbq.read_gbq(
+            'SELECT 1', dialect='standard', project_id='x', private_key='y')
 
 
 def test_read_gbq_with_empty_private_key_json_should_fail():
     with pytest.raises(pandas_gbq.exceptions.InvalidPrivateKeyFormat):
-        gbq.read_gbq('SELECT 1', project_id='x', private_key='{}')
+        gbq.read_gbq(
+            'SELECT 1', dialect='standard', project_id='x', private_key='{}')
 
 
 def test_read_gbq_with_private_key_json_wrong_types_should_fail():
     with pytest.raises(pandas_gbq.exceptions.InvalidPrivateKeyFormat):
         gbq.read_gbq(
-            'SELECT 1', project_id='x',
+            'SELECT 1', dialect='standard', project_id='x',
             private_key='{ "client_email" : 1, "private_key" : True }')
 
 
 def test_read_gbq_with_empty_private_key_file_should_fail():
     with tm.ensure_clean() as empty_file_path:
         with pytest.raises(pandas_gbq.exceptions.InvalidPrivateKeyFormat):
-            gbq.read_gbq('SELECT 1', project_id='x',
+            gbq.read_gbq('SELECT 1', dialect='standard', project_id='x',
                          private_key=empty_file_path)
 
 
 def test_read_gbq_with_corrupted_private_key_json_should_fail():
     with pytest.raises(pandas_gbq.exceptions.InvalidPrivateKeyFormat):
         gbq.read_gbq(
-            'SELECT 1', project_id='x', private_key='99999999999999999')
+            'SELECT 1', dialect='standard', project_id='x',
+            private_key='99999999999999999')
 
 
 def test_read_gbq_with_verbose_new_pandas_warns_deprecation(min_bq_version):
@@ -272,7 +275,7 @@ def test_read_gbq_wo_verbose_w_new_pandas_no_warnings(recwarn, min_bq_version):
             'pkg_resources.Distribution.parsed_version',
             new_callable=mock.PropertyMock) as mock_version:
         mock_version.side_effect = [min_bq_version, pandas_version]
-        gbq.read_gbq('SELECT 1', project_id='my-project')
+        gbq.read_gbq('SELECT 1', project_id='my-project', dialect='standard')
         assert len(recwarn) == 0
 
 
@@ -283,8 +286,21 @@ def test_read_gbq_with_verbose_old_pandas_no_warnings(recwarn, min_bq_version):
             'pkg_resources.Distribution.parsed_version',
             new_callable=mock.PropertyMock) as mock_version:
         mock_version.side_effect = [min_bq_version, pandas_version]
-        gbq.read_gbq('SELECT 1', project_id='my-project', verbose=True)
+        gbq.read_gbq(
+            'SELECT 1', project_id='my-project', dialect='standard',
+            verbose=True)
         assert len(recwarn) == 0
+
+
+def test_read_gbq_with_invalid_dialect():
+    with pytest.raises(ValueError) as excinfo:
+        gbq.read_gbq('SELECT 1', dialect='invalid')
+    assert 'is not valid for dialect' in str(excinfo.value)
+
+
+def test_read_gbq_without_dialect_warns_future_change():
+    with pytest.warns(FutureWarning):
+        gbq.read_gbq('SELECT 1')
 
 
 def test_generate_bq_schema_deprecated():

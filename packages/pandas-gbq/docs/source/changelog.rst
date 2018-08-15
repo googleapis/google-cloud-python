@@ -1,11 +1,14 @@
 Changelog
 =========
 
-.. _changelog-0.5.1:
+.. _changelog-0.6.0:
 
-0.5.1 / (Unreleased)
+0.6.0 / 2018-08-15
 --------------------
 
+- Warn when ``dialect`` is not passed in to ``read_gbq``. The default dialect
+  will be changing from 'legacy' to 'standard' in a future version.
+  (:issue:`195`)
 - Use general float with 15 decimal digit precision when writing to local
   CSV buffer in ``to_gbq``. This prevents numerical overflow in certain
   edge cases. (:issue:`192`)
