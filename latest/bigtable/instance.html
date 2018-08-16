@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Instance &#8212; google-cloud 6c1a7a8 documentation</title>
+    <title>Instance &#8212; google-cloud d1cda15 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -93,6 +93,50 @@ Possible values are represented by the following constants:
 </tr>
 </tbody>
 </table>
+<dl class="method">
+<dt id="google.cloud.bigtable.instance.Instance.app_profile">
+<code class="descname">app_profile</code><span class="sig-paren">(</span><em>app_profile_id</em>, <em>routing_policy_type=None</em>, <em>description=None</em>, <em>cluster_id=None</em>, <em>allow_transactional_writes=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/instance.html#Instance.app_profile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.instance.Instance.app_profile" title="Permalink to this definition">#</a></dt>
+<dd><p>Factory to create AppProfile associated with this instance.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>app_profile_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The ID of the AppProfile. Must be of the form
+<code class="docutils literal notranslate"><span class="pre">[_a-zA-Z0-9][-_.a-zA-Z0-9]*</span></code>.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Type:</th><td class="field-body">routing_policy_type: int</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Param:</th><td class="field-body">routing_policy_type: The type of the routing policy.
+Possible values are represented
+by the following constants:
+<code class="xref py py-data docutils literal notranslate"><span class="pre">google.cloud.bigtable.enums.RoutingPolicyType.ANY</span></code>
+<code class="xref py py-data docutils literal notranslate"><span class="pre">google.cloud.bigtable.enums.RoutingPolicyType.SINGLE</span></code></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Type:</th><td class="field-body">description: str</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Param:</th><td class="field-body">description: (Optional) Long form description of the use
+case for this AppProfile.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Type:</th><td class="field-body">cluster_id: str</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Param:</th><td class="field-body">cluster_id: (Optional) Unique cluster_id which is only required
+when routing_policy_type is
+ROUTING_POLICY_TYPE_SINGLE.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Type:</th><td class="field-body">allow_transactional_writes: bool</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Param:</th><td class="field-body">allow_transactional_writes: (Optional) If true, allow
+transactional writes for
+ROUTING_POLICY_TYPE_SINGLE.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">AppProfile&gt;</span></code></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">AppProfile for this instance.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 <dl class="method">
 <dt id="google.cloud.bigtable.instance.Instance.cluster">
 <code class="descname">cluster</code><span class="sig-paren">(</span><em>cluster_id</em>, <em>location_id=None</em>, <em>serve_nodes=None</em>, <em>default_storage_type=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/instance.html#Instance.cluster"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.instance.Instance.cluster" title="Permalink to this definition">#</a></dt>
@@ -188,59 +232,6 @@ and <code class="docutils literal notranslate"><span class="pre">default_storage
 </dd></dl>
 
 <dl class="method">
-<dt id="google.cloud.bigtable.instance.Instance.create_app_profile">
-<code class="descname">create_app_profile</code><span class="sig-paren">(</span><em>app_profile_id</em>, <em>routing_policy_type</em>, <em>description=None</em>, <em>ignore_warnings=None</em>, <em>cluster_id=None</em>, <em>allow_transactional_writes=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/instance.html#Instance.create_app_profile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.instance.Instance.create_app_profile" title="Permalink to this definition">#</a></dt>
-<dd><p>Creates an app profile within an instance.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">app_profile_id: str</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Parameters:</th><td class="field-body"><strong>app_profile_id</strong> – The unique name for the new app profile.</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">routing_policy_type: int</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Param:</th><td class="field-body">routing_policy_type: The type of the routing policy.
-Possible values are represented
-by the following constants:
-<code class="xref py py-data docutils literal notranslate"><span class="pre">google.cloud.bigtable.enums.RoutingPolicyType.ANY</span></code>
-<code class="xref py py-data docutils literal notranslate"><span class="pre">google.cloud.bigtable.enums.RoutingPolicyType.SINGLE</span></code></td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">description: str</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Param:</th><td class="field-body">description: (Optional) Long form description of the use
-case for this AppProfile.</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">ignore_warnings: bool</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Param:</th><td class="field-body">ignore_warnings: (Optional) If true, ignore safety checks when
-creating the app profile.</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">cluster_id: str</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Param:</th><td class="field-body">cluster_id: (Optional) Unique cluster_id which is only required
-when routing_policy_type is
-ROUTING_POLICY_TYPE_SINGLE.</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">allow_transactional_writes: bool</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Param:</th><td class="field-body">allow_transactional_writes: (Optional) If true, allow
-transactional writes for
-ROUTING_POLICY_TYPE_SINGLE.</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">AppProfile</span></code></td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The AppProfile instance.</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">ValueError</span></code> If routing
-policy is not set.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
 <dt id="google.cloud.bigtable.instance.Instance.delete">
 <code class="descname">delete</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/instance.html#Instance.delete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.instance.Instance.delete" title="Permalink to this definition">#</a></dt>
 <dd><p>Delete this instance.</p>
@@ -262,27 +253,6 @@ the future.</li>
 irrevocably disappear from the API, and their data will be
 permanently deleted.</li>
 </ul>
-</dd></dl>
-
-<dl class="method">
-<dt id="google.cloud.bigtable.instance.Instance.delete_app_profile">
-<code class="descname">delete_app_profile</code><span class="sig-paren">(</span><em>app_profile_id</em>, <em>ignore_warnings=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/instance.html#Instance.delete_app_profile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.instance.Instance.delete_app_profile" title="Permalink to this definition">#</a></dt>
-<dd><p>Deletes an app profile from an instance.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">app_profile_id: str</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Parameters:</th><td class="field-body"><strong>app_profile_id</strong> – The unique name for the app profile to delete.</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body">google.api_core.exceptions.GoogleAPICallError: If the request
-failed for any reason. google.api_core.exceptions.RetryError:
-If the request failed due to a retryable error and retry
-attempts failed. ValueError: If the parameters are invalid.</td>
-</tr>
-</tbody>
-</table>
 </dd></dl>
 
 <dl class="method">
@@ -333,36 +303,16 @@ on the client.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="google.cloud.bigtable.instance.Instance.get_app_profile">
-<code class="descname">get_app_profile</code><span class="sig-paren">(</span><em>app_profile_id</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/instance.html#Instance.get_app_profile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.instance.Instance.get_app_profile" title="Permalink to this definition">#</a></dt>
-<dd><p>Gets information about an app profile.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">app_profile_id: str</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Parameters:</th><td class="field-body"><strong>app_profile_id</strong> – The unique name for the app profile.</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">AppProfile</span></code></td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The AppProfile instance.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
 <dt id="google.cloud.bigtable.instance.Instance.list_app_profiles">
 <code class="descname">list_app_profiles</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/instance.html#Instance.list_app_profiles"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.instance.Instance.list_app_profiles" title="Permalink to this definition">#</a></dt>
-<dd><p>Lists information about app profiles in an instance.</p>
+<dd><p>Lists information about AppProfiles in an instance.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">:list:[<cite>~google.cloud.bigtable_admin_v2.types.AppProfile</cite>]</td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">:list:[<cite>~google.cloud.bigtable.app_profile.AppProfile</cite>]</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A :list:[<cite>~google.cloud.bigtable_admin_v2.types.AppProfile</cite>].
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A :list:[<cite>~google.cloud.bigtable.app_profile.AppProfile</cite>].
 By default, this is a list of
 <code class="xref py py-class docutils literal notranslate"><span class="pre">AppProfile</span></code>
 instances.</td>
@@ -494,64 +444,6 @@ updating, assign that values via</p>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The long-running operation corresponding to the update
 operation.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="google.cloud.bigtable.instance.Instance.update_app_profile">
-<code class="descname">update_app_profile</code><span class="sig-paren">(</span><em>app_profile_id</em>, <em>routing_policy_type</em>, <em>description=None</em>, <em>ignore_warnings=None</em>, <em>cluster_id=None</em>, <em>allow_transactional_writes=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/instance.html#Instance.update_app_profile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.instance.Instance.update_app_profile" title="Permalink to this definition">#</a></dt>
-<dd><p>Updates an app profile within an instance.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">app_profile_id: str</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Parameters:</th><td class="field-body"><strong>app_profile_id</strong> – The unique name for the new app profile.</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">update_mask: list</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Param:</th><td class="field-body">update_mask: Name of the parameters of AppProfiles that
-needed to update.</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">routing_policy_type: int</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Param:</th><td class="field-body">routing_policy_type: The type of the routing policy.
-Possible values are represented
-by the following constants:
-<code class="xref py py-data docutils literal notranslate"><span class="pre">google.cloud.bigtable.enums.RoutingPolicyType.ANY</span></code>
-<code class="xref py py-data docutils literal notranslate"><span class="pre">google.cloud.bigtable.enums.RoutingPolicyType.SINGLE</span></code></td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">description: str</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Param:</th><td class="field-body">description: (Optional) Optional long form description of the
-use case for this AppProfile.</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">ignore_warnings: bool</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Param:</th><td class="field-body">ignore_warnings: (Optional) If true, ignore safety checks when
-creating the app profile.</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">cluster_id: str</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Param:</th><td class="field-body">cluster_id: (Optional) Unique cluster_id which is only required
-when routing_policy_type is
-ROUTING_POLICY_TYPE_SINGLE.</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">allow_transactional_writes: bool</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Param:</th><td class="field-body">allow_transactional_writes: (Optional) If true, allow
-transactional writes for
-ROUTING_POLICY_TYPE_SINGLE.</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">AppProfile</span></code></td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The AppProfile instance.</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">ValueError</span></code> If routing
-policy is not set.</td>
 </tr>
 </tbody>
 </table>
