@@ -659,9 +659,3 @@ class _Other(object):
     def __init__(self, app_profile_id, instance):
         self.app_profile_id = app_profile_id
         self._instance = instance
-
-    def __eq__(self, other):
-        if isinstance(other, self.__class__):
-            return False
-        return (other.app_profile_id == self.app_profile_id and
-                other._instance == self._instance)
