@@ -146,6 +146,27 @@ class DlpJobType(enum.IntEnum):
     RISK_ANALYSIS_JOB = 2
 
 
+class StoredInfoTypeState(enum.IntEnum):
+    """
+    State of a StoredInfoType version.
+
+    Attributes:
+      STORED_INFO_TYPE_STATE_UNSPECIFIED (int)
+      PENDING (int): StoredInfoType version is being created.
+      READY (int): StoredInfoType version is ready for use.
+      FAILED (int): StoredInfoType creation failed. All relevant error messages are returned in
+      the ``StoredInfoTypeVersion`` message.
+      INVALID (int): StoredInfoType is no longer valid because artifacts stored in
+      user-controlled storage were modified. To fix an invalid StoredInfoType,
+      use the ``UpdateStoredInfoType`` method to create a new version.
+    """
+    STORED_INFO_TYPE_STATE_UNSPECIFIED = 0
+    PENDING = 1
+    READY = 2
+    FAILED = 3
+    INVALID = 4
+
+
 class CloudStorageOptions(object):
     class SampleMethod(enum.IntEnum):
         """
