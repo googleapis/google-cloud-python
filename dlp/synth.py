@@ -23,7 +23,7 @@ logging.basicConfig(level=logging.DEBUG)
 gapic = gcp.GAPICGenerator()
 common = gcp.CommonTemplates()
 
-client_library_version = '0.5.0'
+client_library_version = '0.6.0'
 
 library = gapic.py_library(
     'dlp', 'v2',
@@ -38,7 +38,7 @@ s.replace('setup.py',
           f"\\1'{release_status}'")
 
 # Set version
-s.replace('setup.py', "version = .*", "version = '{client_library_version}'")
+s.replace('setup.py', "version = .*", f"version = '{client_library_version}'")
 
 # Fix namespace
 s.replace('**/*.py', 'google\.cloud\.privacy\.dlp_v2', 'google.cloud.dlp_v2')
@@ -48,6 +48,12 @@ s.replace(
     'docs/index.rst',
     '    gapic/v2/types',
     '    gapic/v2/types\n    changelog\n')
+
+# Add newlines to end of files
+s.replace(
+    ['google/__init__.py', 'google/cloud/__init__.py'],
+    '__path__ = pkgutil.extend_path\(__path__, __name__\)',
+    '\g<0>\n')
 
 # Add missing utf-8 marker
 s.replace(
