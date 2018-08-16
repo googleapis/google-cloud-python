@@ -25,7 +25,6 @@ from google.protobuf import field_mask_pb2
 
 from google.cloud.bigtable_admin_v2.types import instance_pb2
 
-from google.cloud.bigtable.enums import RoutingPolicyType
 from google.api_core.exceptions import NotFound
 
 
