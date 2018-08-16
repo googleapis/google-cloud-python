@@ -394,6 +394,44 @@ class TestInstance(unittest.TestCase):
         # Check Instance optional config values before.
         self.assertEqual(instance.display_name, DISPLAY_NAME)
 
+    def test_exists(self):
+        from google.cloud.bigtable_admin_v2.gapic import (
+            bigtable_instance_admin_client)
+        from google.cloud.bigtable_admin_v2.proto import (
+            instance_pb2 as data_v2_pb2)
+        from google.api_core import exceptions
+
+        api = (
+            bigtable_instance_admin_client.BigtableInstanceAdminClient(
+                mock.Mock()))
+        credentials = _make_credentials()
+        client = self._make_client(project=self.PROJECT,
+                                   credentials=credentials, admin=True)
+
+        # Create response_pb
+        instance_name = client.instance_admin_client.instance_path(
+            self.PROJECT, self.INSTANCE_ID)
+        response_pb = data_v2_pb2.Instance(name=instance_name)
+
+        # Patch the stub used by the API method.
+        client._instance_admin_client = api
+        instance_admin_client = client._instance_admin_client
+        instance_stub = instance_admin_client.bigtable_instance_admin_stub
+        instance_stub.GetCluster.side_effect = [
+            response_pb,
+            exceptions.NotFound('testing'),
+            exceptions.BadRequest('testing')
+        ]
+
+        # Perform the method and check the result.
+        non_existing_instance_id = 'instance-id-2'
+        alt_instance_1 = self._make_one(self.INSTANCE_ID, client)
+        alt_instance_2 = self._make_one(non_existing_instance_id, client)
+        self.assertTrue(alt_instance_1.exists())
+        self.assertFalse(alt_instance_2.exists())
+        with self.assertRaises(exceptions.BadRequest):
+            alt_instance_2.exists()
+
     def test_create_check_conflicts(self):
         instance = self._make_one(self.INSTANCE_ID, None)
         with self.assertRaises(ValueError):
