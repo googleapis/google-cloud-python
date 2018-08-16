@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.storage.bucket &#8212; google-cloud d1cda15 documentation</title>
+    <title>google.cloud.storage.bucket &#8212; google-cloud 4944e02 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -53,6 +53,7 @@
 <span class="kn">import</span> <span class="nn">copy</span>
 <span class="kn">import</span> <span class="nn">datetime</span>
 <span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
 
 <span class="kn">import</span> <span class="nn">six</span>
 
@@ -291,7 +292,7 @@
         <span class="k">except</span> <span class="n">NotFound</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">False</span></div>
 
-<div class="viewcode-block" id="Bucket.create"><a class="viewcode-back" href="../../../../storage/buckets.html#google.cloud.storage.bucket.Bucket.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Bucket.create"><a class="viewcode-back" href="../../../../storage/buckets.html#google.cloud.storage.bucket.Bucket.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">location</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Creates current bucket.</span>
 
 <span class="sd">        If the bucket already exists, will raise</span>
@@ -303,16 +304,21 @@
 
 <span class="sd">        :type client: :class:`~google.cloud.storage.client.Client` or</span>
 <span class="sd">                      ``NoneType``</span>
-<span class="sd">        :param client: Optional. The client to use.  If not passed, falls back</span>
+<span class="sd">        :param client: Optional. The client to use. If not passed, falls back</span>
 <span class="sd">                       to the ``client`` stored on the current bucket.</span>
 
 <span class="sd">        :type project: str</span>
-<span class="sd">        :param project: (Optional) the project under which the  bucket is to</span>
-<span class="sd">                        be created.  If not passed, uses the project set on</span>
+<span class="sd">        :param project: Optional. The project under which the bucket is to</span>
+<span class="sd">                        be created. If not passed, uses the project set on</span>
 <span class="sd">                        the client.</span>
 <span class="sd">        :raises ValueError: if :attr:`user_project` is set.</span>
 <span class="sd">        :raises ValueError: if ``project`` is None and client&#39;s</span>
 <span class="sd">                            :attr:`project` is also None.</span>
+
+<span class="sd">        :type location: str</span>
+<span class="sd">        :param location: Optional. The location of the bucket. If not passed,</span>
+<span class="sd">                         the default location, US, will be used. See</span>
+<span class="sd">                         https://cloud.google.com/storage/docs/bucket-locations</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_project</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Cannot create bucket with &#39;user_project&#39; set.&quot;</span><span class="p">)</span>
@@ -329,6 +335,10 @@
         <span class="n">query_params</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;project&#39;</span><span class="p">:</span> <span class="n">project</span><span class="p">}</span>
         <span class="n">properties</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_changes</span><span class="p">}</span>
         <span class="n">properties</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+
+        <span class="k">if</span> <span class="n">location</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">properties</span><span class="p">[</span><span class="s1">&#39;location&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">location</span>
+
         <span class="n">api_response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
             <span class="n">method</span><span class="o">=</span><span class="s1">&#39;POST&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s1">&#39;/b&#39;</span><span class="p">,</span> <span class="n">query_params</span><span class="o">=</span><span class="n">query_params</span><span class="p">,</span>
             <span class="n">data</span><span class="o">=</span><span class="n">properties</span><span class="p">,</span> <span class="n">_target_object</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
@@ -970,19 +980,42 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_patch_property</span><span class="p">(</span><span class="s1">&#39;lifecycle&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;rule&#39;</span><span class="p">:</span> <span class="n">rules</span><span class="p">})</span>
 
-    <span class="n">location</span> <span class="o">=</span> <span class="n">_scalar_property</span><span class="p">(</span><span class="s1">&#39;location&#39;</span><span class="p">)</span>
-    <span class="sd">&quot;&quot;&quot;Retrieve location configured for this bucket.</span>
+    <span class="n">_location</span> <span class="o">=</span> <span class="n">_scalar_property</span><span class="p">(</span><span class="s1">&#39;location&#39;</span><span class="p">)</span>
 
-<span class="sd">    This can only be set at bucket **creation** time.</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">location</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Retrieve location configured for this bucket.</span>
 
-<span class="sd">    See https://cloud.google.com/storage/docs/json_api/v1/buckets and</span>
-<span class="sd">    https://cloud.google.com/storage/docs/bucket-locations</span>
+<span class="sd">        See https://cloud.google.com/storage/docs/json_api/v1/buckets and</span>
+<span class="sd">        https://cloud.google.com/storage/docs/bucket-locations</span>
 
-<span class="sd">    Returns ``None`` if the property has not been set before creation,</span>
-<span class="sd">    or if the bucket&#39;s resource has not been loaded from the server.</span>
+<span class="sd">        Returns ``None`` if the property has not been set before creation,</span>
+<span class="sd">        or if the bucket&#39;s resource has not been loaded from the server.</span>
+<span class="sd">        :rtype: str or ``NoneType``</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_location</span>
 
-<span class="sd">    :rtype: str or ``NoneType``</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="nd">@location</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">location</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;(Deprecated) Set `Bucket.location`</span>
+
+<span class="sd">        This can only be set at bucket **creation** time.</span>
+
+<span class="sd">        See https://cloud.google.com/storage/docs/json_api/v1/buckets and</span>
+<span class="sd">        https://cloud.google.com/storage/docs/bucket-locations</span>
+
+<span class="sd">        .. warning::</span>
+
+<span class="sd">            Assignment to &#39;Bucket.location&#39; is deprecated, as it is only</span>
+<span class="sd">            valid before the bucket is created. Instead, pass the location</span>
+<span class="sd">            to `Bucket.create`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+            <span class="s2">&quot;Assignment to &#39;Bucket.location&#39; is deprecated, as it is only &quot;</span>
+            <span class="s2">&quot;valid before the bucket is created. Instead, pass the location &quot;</span>
+            <span class="s2">&quot;to `Bucket.create`.&quot;</span><span class="p">,</span>
+            <span class="ne">DeprecationWarning</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_location</span> <span class="o">=</span> <span class="n">value</span>
 
 <div class="viewcode-block" id="Bucket.get_logging"><a class="viewcode-back" href="../../../../storage/buckets.html#google.cloud.storage.bucket.Bucket.get_logging">[docs]</a>    <span class="k">def</span> <span class="nf">get_logging</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return info about access logging for this bucket.</span>
