@@ -40,7 +40,7 @@ from test_utils.system import unique_resource_id
 LOCATION_ID = 'us-central1-c'
 INSTANCE_ID = 'g-c-p' + unique_resource_id('-')
 TABLE_ID = 'google-cloud-python-test-table'
-CLUSTER_ID = INSTANCE_ID + '-cluster'
+CLUSTER_ID = INSTANCE_ID+'-cluster'
 SERVE_NODES = 3
 COLUMN_FAMILY_ID1 = u'col-fam-id1'
 COLUMN_FAMILY_ID2 = u'col-fam-id2'
@@ -58,8 +58,8 @@ ROUTING_POLICY_TYPE_SINGLE = 2
 EXISTING_INSTANCES = []
 LABEL_KEY = u'python-system'
 label_stamp = datetime.datetime.utcnow() \
-    .replace(microsecond=0, tzinfo=UTC, ) \
-    .strftime("%Y-%m-%dt%H-%M-%S")
+                               .replace(microsecond=0, tzinfo=UTC,) \
+                               .strftime("%Y-%m-%dt%H-%M-%S")
 LABELS = {LABEL_KEY: str(label_stamp)}
 
 
@@ -117,6 +117,7 @@ def tearDownModule():
 
 
 class TestInstanceAdminAPI(unittest.TestCase):
+
     def setUp(self):
         if Config.IN_EMULATOR:
             self.skipTest(
@@ -154,7 +155,7 @@ class TestInstanceAdminAPI(unittest.TestCase):
 
         ALT_INSTANCE_ID = 'ndef' + unique_resource_id('-')
         instance = Config.CLIENT.instance(ALT_INSTANCE_ID, labels=LABELS)
-        ALT_CLUSTER_ID = ALT_INSTANCE_ID + '-cluster'
+        ALT_CLUSTER_ID = ALT_INSTANCE_ID+'-cluster'
         cluster = instance.cluster(
             ALT_CLUSTER_ID, location_id=LOCATION_ID, serve_nodes=SERVE_NODES)
         operation = instance.create(clusters=[cluster])
@@ -183,7 +184,7 @@ class TestInstanceAdminAPI(unittest.TestCase):
         instance = Config.CLIENT.instance(ALT_INSTANCE_ID,
                                           instance_type=_DEVELOPMENT,
                                           labels=LABELS)
-        ALT_CLUSTER_ID = ALT_INSTANCE_ID + '-cluster'
+        ALT_CLUSTER_ID = ALT_INSTANCE_ID+'-cluster'
         cluster = instance.cluster(ALT_CLUSTER_ID, location_id=LOCATION_ID)
         operation = instance.create(clusters=[cluster])
         # We want to make sure the operation completes.
@@ -218,8 +219,8 @@ class TestInstanceAdminAPI(unittest.TestCase):
                                           instance_type=_PRODUCTION,
                                           labels=LABELS)
 
-        ALT_CLUSTER_ID_1 = ALT_INSTANCE_ID + '-c1'
-        ALT_CLUSTER_ID_2 = ALT_INSTANCE_ID + '-c2'
+        ALT_CLUSTER_ID_1 = ALT_INSTANCE_ID+'-c1'
+        ALT_CLUSTER_ID_2 = ALT_INSTANCE_ID+'-c2'
         LOCATION_ID_2 = 'us-central1-f'
         STORAGE_TYPE = enums.StorageType.HDD
         cluster_1 = instance.cluster(
@@ -267,23 +268,44 @@ class TestInstanceAdminAPI(unittest.TestCase):
         self.assertTrue({alt_cluster_1.name,
                          alt_cluster_2.name,
                          Config.CLUSTER.name}.issubset(found))
+        self._test_state_helper(instance, ALT_CLUSTER_ID_1,
+                                ALT_CLUSTER_ID_2)
 
+    def _test_state_helper(self, instance, clusterid1, clusterid2):
         # test get_cluster_states for a table in instance
-        expected_result = {ALT_CLUSTER_ID_1: "READY",
-                           ALT_CLUSTER_ID_2: "READY"
-                           }
+        from google.cloud.bigtable.enums import Table as enum_table
+        from google.cloud.bigtable.table import _ClusterState
+        STATE_NOT_KNOWN = enum_table.ReplicationState.STATE_NOT_KNOWN
+        INITIALIZING = enum_table.ReplicationState.INITIALIZING
+        PLANNED_MAINTENANCE = enum_table.ReplicationState. \
+            PLANNED_MAINTENANCE
+        UNPLANNED_MAINTENANCE = enum_table.ReplicationState. \
+            UNPLANNED_MAINTENANCE
+        READY = enum_table.ReplicationState.READY
         temp_table_id = 'test-get-cluster-states'
         temp_table = instance.table(temp_table_id)
         temp_table.create()
         result = temp_table.get_cluster_states()
-        self.assertEqual(result, expected_result)
+        expected_results = [
+            _ClusterState(STATE_NOT_KNOWN),
+            _ClusterState(INITIALIZING),
+            _ClusterState(PLANNED_MAINTENANCE),
+            _ClusterState(UNPLANNED_MAINTENANCE),
+            _ClusterState(READY)
+        ]
+        cluster_id_list = result.keys()
+        self.assertEqual(len(cluster_id_list), 2)
+        self.assertIn(clusterid1, cluster_id_list)
+        self.assertIn(clusterid2, cluster_id_list)
+        for clusterstate in result.values():
+            self.assertIn(clusterstate, expected_results)
 
     def test_update_display_name_and_labels(self):
         OLD_DISPLAY_NAME = Config.INSTANCE.display_name
         NEW_DISPLAY_NAME = 'Foo Bar Baz'
         n_label_stamp = datetime.datetime.utcnow() \
-            .replace(microsecond=0, tzinfo=UTC) \
-            .strftime("%Y-%m-%dt%H-%M-%S")
+                                         .replace(microsecond=0, tzinfo=UTC) \
+                                         .strftime("%Y-%m-%dt%H-%M-%S")
 
         NEW_LABELS = {LABEL_KEY: str(n_label_stamp)}
         Config.INSTANCE.display_name = NEW_DISPLAY_NAME
@@ -493,7 +515,7 @@ class TestInstanceAdminAPI(unittest.TestCase):
         from google.cloud.bigtable.enums import StorageType
         from google.cloud.bigtable.enums import Cluster
 
-        ALT_CLUSTER_ID = INSTANCE_ID + '-c2'
+        ALT_CLUSTER_ID = INSTANCE_ID+'-c2'
         ALT_LOCATION_ID = 'us-central1-f'
         ALT_SERVE_NODES = 4
 
@@ -501,7 +523,7 @@ class TestInstanceAdminAPI(unittest.TestCase):
                                             location_id=ALT_LOCATION_ID,
                                             serve_nodes=ALT_SERVE_NODES,
                                             default_storage_type=(
-                                                StorageType.SSD))
+                                               StorageType.SSD))
         operation = cluster_2.create()
 
         # We want to make sure the operation completes.
@@ -525,6 +547,7 @@ class TestInstanceAdminAPI(unittest.TestCase):
 
 
 class TestTableAdminAPI(unittest.TestCase):
+
     @classmethod
     def setUpClass(cls):
         cls._table = Config.INSTANCE.table(TABLE_ID)
@@ -669,6 +692,7 @@ class TestTableAdminAPI(unittest.TestCase):
 
 
 class TestDataAPI(unittest.TestCase):
+
     @classmethod
     def setUpClass(cls):
         cls._table = table = Config.INSTANCE.table('test-data-api')

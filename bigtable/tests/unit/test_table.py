@@ -22,6 +22,7 @@ from ._testing import _make_credentials
 
 
 class Test___mutate_rows_request(unittest.TestCase):
+
     def _call_fut(self, table_name, rows):
         from google.cloud.bigtable.table import _mutate_rows_request
 
@@ -74,6 +75,7 @@ class Test___mutate_rows_request(unittest.TestCase):
 
 
 class Test__check_row_table_name(unittest.TestCase):
+
     def _call_fut(self, table_name, row):
         from google.cloud.bigtable.table import _check_row_table_name
 
@@ -121,6 +123,7 @@ class Test__check_row_type(unittest.TestCase):
 
 
 class TestTable(unittest.TestCase):
+
     PROJECT_ID = 'project-id'
     INSTANCE_ID = 'instance-id'
     INSTANCE_NAME = ('projects/' + PROJECT_ID + '/instances/' + INSTANCE_ID)
@@ -395,6 +398,7 @@ class TestTable(unittest.TestCase):
         bigtable_table_stub = (
             client._table_admin_client.bigtable_table_admin_stub)
         bigtable_table_stub.GetTable.side_effect = [response_pb]
+
         # Create expected_result.
         expected_result = {
             COLUMN_FAMILY_ID: table.column_family(COLUMN_FAMILY_ID),
@@ -407,23 +411,14 @@ class TestTable(unittest.TestCase):
     def test_list_column_families(self):
         self._list_column_families_helper()
 
-    def _test_get_cluster_states_helper(self):
+    def test_get_cluster_states(self):
         from google.cloud.bigtable_admin_v2.gapic import (
             bigtable_table_admin_client)
         from google.cloud.bigtable.enums import Table as enum_table
-        STATE_NOT_KNOWN = enum_table.ReplicationState.STATE_NOT_KNOWN
+        from google.cloud.bigtable.table import _ClusterState
         INITIALIZING = enum_table.ReplicationState.INITIALIZING
         PLANNED_MAINTENANCE = enum_table.ReplicationState.PLANNED_MAINTENANCE
-        UNPLANNED_MAINTENANCE = enum_table.ReplicationState.\
-            UNPLANNED_MAINTENANCE
         READY = enum_table.ReplicationState.READY
-        replication_dict = {
-            STATE_NOT_KNOWN: "STATE_NOT_KNOWN",
-            INITIALIZING: "INITIALIZING",
-            PLANNED_MAINTENANCE: "PLANNED_MAINTENANCE",
-            UNPLANNED_MAINTENANCE: "UNPLANNED_MAINTENANCE",
-            READY: "READY"
-        }
 
         table_api = bigtable_table_admin_client.BigtableTableAdminClient(
             mock.Mock())
@@ -449,17 +444,54 @@ class TestTable(unittest.TestCase):
 
         # build expected result
         expected_result = {
-            'cluster-id1': replication_dict[INITIALIZING],
-            'cluster-id2': replication_dict[PLANNED_MAINTENANCE],
-            'cluster-id3': replication_dict[READY]
+            u'cluster-id1': _ClusterState(INITIALIZING),
+            u'cluster-id2': _ClusterState(PLANNED_MAINTENANCE),
+            u'cluster-id3': _ClusterState(READY)
         }
 
         # Perform the method and check the result.
         result = table.get_cluster_states()
         self.assertEqual(result, expected_result)
 
-    def test_get_cluster_states(self):
-        self._test_get_cluster_states_helper()
+    def test__ClusterState(self):
+        from google.cloud.bigtable.enums import Table as enum_table
+        from google.cloud.bigtable.table import _ClusterState
+        STATE_NOT_KNOWN = enum_table.ReplicationState.STATE_NOT_KNOWN
+        INITIALIZING = enum_table.ReplicationState.INITIALIZING
+        PLANNED_MAINTENANCE = enum_table.ReplicationState.PLANNED_MAINTENANCE
+        UNPLANNED_MAINTENANCE = enum_table.ReplicationState. \
+            UNPLANNED_MAINTENANCE
+        READY = enum_table.ReplicationState.READY
+
+        replication_dict = {
+            STATE_NOT_KNOWN: "STATE_NOT_KNOWN",
+            INITIALIZING: "INITIALIZING",
+            PLANNED_MAINTENANCE: "PLANNED_MAINTENANCE",
+            UNPLANNED_MAINTENANCE: "UNPLANNED_MAINTENANCE",
+            READY: "READY"
+        }
+
+        self.assertEqual(str(_ClusterState(STATE_NOT_KNOWN)),
+                         replication_dict[STATE_NOT_KNOWN])
+        self.assertEqual(str(_ClusterState(INITIALIZING)),
+                         replication_dict[INITIALIZING])
+        self.assertEqual(str(_ClusterState(PLANNED_MAINTENANCE)),
+                         replication_dict[PLANNED_MAINTENANCE])
+        self.assertEqual(str(_ClusterState(UNPLANNED_MAINTENANCE)),
+                         replication_dict[UNPLANNED_MAINTENANCE])
+        self.assertEqual(str(_ClusterState(READY)),
+                         replication_dict[READY])
+
+        self.assertEqual(_ClusterState(STATE_NOT_KNOWN).replication_state,
+                         STATE_NOT_KNOWN)
+        self.assertEqual(_ClusterState(INITIALIZING).replication_state,
+                         INITIALIZING)
+        self.assertEqual(_ClusterState(PLANNED_MAINTENANCE).replication_state,
+                         PLANNED_MAINTENANCE)
+        self.assertEqual(_ClusterState(UNPLANNED_MAINTENANCE).
+                         replication_state, UNPLANNED_MAINTENANCE)
+        self.assertEqual(_ClusterState(READY).replication_state,
+                         READY)
 
     def _read_row_helper(self, chunks, expected_result, app_profile_id=None):
         from google.cloud._testing import _Monkey
@@ -799,7 +831,7 @@ class TestTable(unittest.TestCase):
         instance = client.instance(instance_id=self.INSTANCE_ID)
         table = self._make_one(self.TABLE_ID, instance)
         table.name.return_value = client._table_data_client.table_path(
-            self.PROJECT_ID, self.INSTANCE_ID, self.TABLE_ID)
+            self.PROJECT_ID,  self.INSTANCE_ID, self.TABLE_ID)
 
         expected_result = None  # truncate() has no return value.
         with mock.patch('google.cloud.bigtable.table.Table.name',
@@ -1127,7 +1159,7 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         bigtable_stub.MutateRows.return_value = [response]
 
         retry = DEFAULT_RETRY.with_delay(
-            initial=0.1, maximum=0.2, multiplier=2.0).with_deadline(0.5)
+                initial=0.1, maximum=0.2, multiplier=2.0).with_deadline(0.5)
         worker = self._make_worker(client, table.name, [row_1, row_2])
         statuses = worker(retry=retry)
 
@@ -1452,6 +1484,7 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
 
 
 class Test__create_row_request(unittest.TestCase):
+
     def _call_fut(self, table_name, row_key=None, start_key=None, end_key=None,
                   filter_=None, limit=None, end_inclusive=False,
                   app_profile_id=None, row_set=None):
@@ -1617,6 +1650,7 @@ class _MockReadRowsIterator(object):
 
 
 class _MockFailureIterator_1(object):
+
     def next(self):
         class DeadlineExceeded(grpc.RpcError, grpc.Call):
             """ErrorDeadlineExceeded exception"""
@@ -1633,6 +1667,7 @@ class _MockFailureIterator_1(object):
 
 
 class _MockFailureIterator_2(object):
+
     def __init__(self, *values):
         self.iter_values = values[0]
         self.calls = 0
@@ -1657,6 +1692,7 @@ class _MockFailureIterator_2(object):
 
 
 class _ReadRowsResponseV2(object):
+
     def __init__(self, chunks, last_scanned_row_key=''):
         self.chunks = chunks
         self.last_scanned_row_key = last_scanned_row_key

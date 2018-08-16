@@ -14,30 +14,33 @@
 
 """User-friendly container for Google Cloud Bigtable Table."""
 
-from google.api_core.exceptions import NotFound
+
+from grpc import StatusCode
+
 from google.api_core.exceptions import RetryError
-from google.api_core.retry import Retry
+from google.api_core.exceptions import NotFound
 from google.api_core.retry import if_exception_type
+from google.api_core.retry import Retry
 from google.cloud._helpers import _to_bytes
-from google.cloud.bigtable import enums
-from google.cloud.bigtable.batcher import (FLUSH_COUNT, MAX_ROW_BYTES)
-from google.cloud.bigtable.batcher import MutationsBatcher
-from google.cloud.bigtable.column_family import ColumnFamily
 from google.cloud.bigtable.column_family import _gc_rule_from_pb
+from google.cloud.bigtable.column_family import ColumnFamily
+from google.cloud.bigtable.batcher import MutationsBatcher
+from google.cloud.bigtable.batcher import (FLUSH_COUNT, MAX_ROW_BYTES)
 from google.cloud.bigtable.row import AppendRow
 from google.cloud.bigtable.row import ConditionalRow
 from google.cloud.bigtable.row import DirectRow
 from google.cloud.bigtable.row_data import PartialRowsData
 from google.cloud.bigtable.row_data import YieldRowsData
-from google.cloud.bigtable.row_set import RowRange
 from google.cloud.bigtable.row_set import RowSet
-from google.cloud.bigtable_admin_v2.proto import (
-    bigtable_table_admin_pb2 as table_admin_messages_v2_pb2)
-from google.cloud.bigtable_admin_v2.proto import (
-    table_pb2 as admin_messages_v2_pb2)
+from google.cloud.bigtable.row_set import RowRange
+from google.cloud.bigtable import enums
 from google.cloud.bigtable_v2.proto import (
     bigtable_pb2 as data_messages_v2_pb2)
-from grpc import StatusCode
+from google.cloud.bigtable_admin_v2.proto import (
+    table_pb2 as admin_messages_v2_pb2)
+from google.cloud.bigtable_admin_v2.proto import (
+    bigtable_table_admin_pb2 as table_admin_messages_v2_pb2)
+
 
 # Maximum number of mutations in bulk (MutateRowsRequest message):
 # (https://cloud.google.com/bigtable/docs/reference/data/rpc/
@@ -256,45 +259,19 @@ class Table(object):
 
     def get_cluster_states(self):
         """List the cluster states owned by this table.
+
         :rtype: dict
-        :returns: Dictionary from cluster ID to
-                  per-cluster table replication_state.
-                  If it could not be determined whether or not the table has
-                  data in a particular cluster (for example, if its zone is
-                  unavailable), then there will be an entry for the cluster
-                  with STATE_NOT_KNOWN `replication_state`.
-                  Possible replications_state values
-                  STATE_NOT_KNOWN (str): The replication state of the table is
-                  unknown in this cluster.
-                  INITIALIZING (str): The cluster was recently created, and the
-                  table must finish copying
-                  over pre-existing data from other clusters before it can
-                  begin receiving live replication updates and serving
-                  ``Data API`` requests.
-                  PLANNED_MAINTENANCE (str): The table is temporarily unable to
-                  serve
-                  ``Data API`` requests from this
-                  cluster due to planned internal maintenance.
-                  UNPLANNED_MAINTENANCE (str): The table is temporarily unable
-                  to serve
-                  ``Data API`` requests from this
-                  cluster due to unplanned or emergency maintenance.
-                  READY (str): The table can serve
-                  ``Data API`` requests from this
-                  cluster. Depending on replication delay, reads may not
-                  immediately reflect the state of the table in other clusters.
-        :raises: :class:`ValueError <exceptions.ValueError>` if the cluster
-                  state does not present in predefined states.
+        :returns: Dictionary of cluster states for this table.
+        Keys are cluster ids and values are
+        :class: '_ClusterState' instances
         """
+
         REPLICATION_VIEW = enums.Table.View.REPLICATION_VIEW
         table_client = self._instance._client.table_admin_client
         table_pb = table_client.get_table(self.name, view=REPLICATION_VIEW)
 
-        result = {}
-        for cluster_id, value_pb in table_pb.cluster_states.items():
-            result[cluster_id] = _ClusterStatePB(value_pb.replication_state
-                                                 ).replication_state_str
-        return result
+        return {cluster_id: _ClusterState(value_pb.replication_state)
+                for cluster_id, value_pb in table_pb.cluster_states.items()}
 
     def read_row(self, row_key, filter_=None):
         """Read a single row from this table.
@@ -561,7 +538,6 @@ class _RetryableMutateRowsWorker(object):
         StatusCode.ABORTED.value[0],
         StatusCode.UNAVAILABLE.value[0],
     )
-
     # pylint: enable=unsubscriptable-object
 
     def __init__(self, client, table_name, rows, app_profile_id=None):
@@ -658,17 +634,47 @@ class _RetryableMutateRowsWorker(object):
         return self.responses_statuses
 
 
-class _ClusterStatePB(object):
-    """Map cluster state int value to string value.
-            :rtype: _ClusterStatePB object
-            :returns: Sets string value for cluster state on
-            _ClusterStatePB object. Uses google.cloud.bigtable.Table
-            to map int value to string of cluster state.
+class _ClusterState(object):
+    """Representation of a Cluster State.
+
+    :type replication_state: int
+    :param replication_state: enum value for cluster state
+        Possible replications_state values are
+        0 for STATE_NOT_KNOWN: The replication state of the table is
+        unknown in this cluster.
+        1 for INITIALIZING: The cluster was recently created, and the
+        table must finish copying
+        over pre-existing data from other clusters before it can
+        begin receiving live replication updates and serving
+        ``Data API`` requests.
+        2 for PLANNED_MAINTENANCE: The table is temporarily unable to
+        serve
+        ``Data API`` requests from this
+        cluster due to planned internal maintenance.
+        3 for UNPLANNED_MAINTENANCE: The table is temporarily unable
+        to serve
+        ``Data API`` requests from this
+        cluster due to unplanned or emergency maintenance.
+        4 for READY: The table can serve
+        ``Data API`` requests from this
+        cluster. Depending on replication delay, reads may not
+        immediately reflect the state of the table in other clusters.
+    :raises: :class:`ValueError <exceptions.ValueError>` if the cluster
+              state does not present in predefined states.
     """
 
     def __init__(self, replication_state):
         self.replication_state = replication_state
-        self.replication_dict = {
+
+    def __repr__(self):
+        """Representation of  cluster state instance as string value
+        for cluster state.
+
+        :rtype: _ClusterState instance
+        :returns: _ClusterState instance as representation of string
+        value for cluster state
+        """
+        replication_dict = {
             enums.Table.ReplicationState.STATE_NOT_KNOWN: "STATE_NOT_KNOWN",
             enums.Table.ReplicationState.INITIALIZING: "INITIALIZING",
             enums.Table.ReplicationState.PLANNED_MAINTENANCE:
@@ -677,8 +683,34 @@ class _ClusterStatePB(object):
                 "UNPLANNED_MAINTENANCE",
             enums.Table.ReplicationState.READY: "READY"
         }
-        self.replication_state_str = \
-            self.replication_dict[self.replication_state]
+        return replication_dict[self.replication_state]
+
+    def __eq__(self, other):
+        """Checks if two _ClusterState instances(self and other) are
+        equal on the basis of instance variable 'replication_state'.
+
+        :type other: _ClusterState
+        :param other: _ClusterState instance to compare with.
+
+        :rtype: Boolean value
+        :returns: True if  two cluster state instances have same
+        replication_state
+        """
+        if not isinstance(other, self.__class__):
+            return NotImplemented
+        return self.replication_state == other.replication_state
+
+    def __ne__(self, other):
+        """Checks if two _ClusterState instances(self and other) are
+        not equal.
+
+        :type other: _ClusterState.
+        :param other: _ClusterState instance to compare with.
+
+        :rtype: Boolean value.
+        :returns: True if  two cluster state instances are not equal.
+        """
+        return not self == other
 
 
 def _create_row_request(table_name, row_key=None, start_key=None, end_key=None,
