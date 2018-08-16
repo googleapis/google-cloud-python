@@ -4,6 +4,12 @@
 
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
+## 0.37.1
+
+### Implementation Changes
+
+- Make get_initial_request more resilient to race conditions. (#5803)
+
 ## 0.37.0
 
 ### Implementation Changes
