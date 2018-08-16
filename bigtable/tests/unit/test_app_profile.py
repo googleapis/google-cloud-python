@@ -134,14 +134,17 @@ class TestAppProfile(unittest.TestCase):
         instance = _Instance(self.INSTANCE_ID, client)
         app_profile1 = self._make_one(self.APP_PROFILE_ID, instance)
         app_profile2 = self._make_one(self.APP_PROFILE_ID, instance)
-        self.assertEqual(app_profile1, app_profile2)
+        self.assertTrue(app_profile1 == app_profile2)
 
-    def test___eq__type_differ(self):
+    def test___eq__type_instance_differ(self):
         client = _Client(self.PROJECT)
         instance = _Instance(self.INSTANCE_ID, client)
+        alt_instance = _Instance('other-instance', client)
+        other_object = _Other(self.APP_PROFILE_ID, instance)
         app_profile1 = self._make_one(self.APP_PROFILE_ID, instance)
-        app_profile2 = object()
-        self.assertNotEqual(app_profile1, app_profile2)
+        app_profile2 = self._make_one(self.APP_PROFILE_ID, alt_instance)
+        self.assertFalse(app_profile1 == other_object)
+        self.assertFalse(app_profile1 == app_profile2)
 
     def test___ne__same_value(self):
         client = _Client(self.PROJECT)
@@ -649,3 +652,16 @@ class _Instance(object):
     def __eq__(self, other):
         return (other.instance_id == self.instance_id and
                 other._client == self._client)
+
+
+class _Other(object):
+
+    def __init__(self, app_profile_id, instance):
+        self.app_profile_id = app_profile_id
+        self._instance = instance
+
+    def __eq__(self, other):
+        if isinstance(other, self.__class__):
+            return False
+        return (other.app_profile_id == self.app_profile_id and
+                other._instance == self._instance)

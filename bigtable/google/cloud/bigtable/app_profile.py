@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""User firendly container for Google Cloud Bigtable AppProfile."""
+"""User firiendly container for Google Cloud Bigtable AppProfile."""
 
 
 import re
@@ -105,7 +105,7 @@ class AppProfile(object):
 
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
-            return NotImplemented
+            return False
         # NOTE: This does not compare the configuration values, such as
         #       the routing_policy_type. Instead, it only compares
         #       identifying values instance, AppProfile ID and client. This is
@@ -178,7 +178,7 @@ class AppProfile(object):
         self.routing_policy_type = routing_policy_type
 
     def _to_pb(self):
-        """ Create AppProfile proto buff message for API calls
+        """Create an AppProfile proto buff message for API calls
         :rtype: :class:`.instance_pb2.AppProfile`
         :returns: The converted current object.
 
@@ -268,7 +268,7 @@ class AppProfile(object):
 
         .. note::
 
-            Update any or all fo the following values:
+            Update any or all of the following values:
             ``routing_policy_type``
             ``description``
             ``cluster_id``

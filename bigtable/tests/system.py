@@ -293,7 +293,7 @@ class TestInstanceAdminAPI(unittest.TestCase):
         # Test modify app profile app_profile_id_1
         # routing policy to single cluster policy,
         # cluster -> ALT_CLUSTER_ID_1,
-        # allo_transactional_writes -> disallowed
+        # allow_transactional_writes -> disallowed
         # modify description
         description = 'to routing policy-single'
         routing = enums.RoutingPolicyType.SINGLE
@@ -305,7 +305,7 @@ class TestInstanceAdminAPI(unittest.TestCase):
 
         # Test modify app profile app_profile_id_1
         # cluster -> ALT_CLUSTER_ID_2,
-        # allo_transactional_writes -> allowed
+        # allow_transactional_writes -> allowed
         self._test_modify_app_profile_helper(
             app_profile_id_1, instance,
             routing_policy_type=routing,
