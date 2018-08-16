@@ -311,11 +311,11 @@ class Test_Bucket(unittest.TestCase):
     def test_create_w_explicit_location(self):
         PROJECT = 'PROJECT'
         BUCKET_NAME = 'bucket-name'
-        LOCATION = 'continent-northeast1'
+        LOCATION = 'us-central1'
         DATA = {'location': LOCATION, 'name': BUCKET_NAME}
         connection = _Connection(
             DATA,
-            "{'location': 'continent-northeast1', 'name': 'bucket-name'}")
+            "{'location': 'us-central1', 'name': 'bucket-name'}")
         client = _Client(connection, project=PROJECT)
         bucket = self._make_one(client, BUCKET_NAME)
 
