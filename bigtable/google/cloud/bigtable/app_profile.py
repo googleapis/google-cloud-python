@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""User firiendly container for Google Cloud Bigtable AppProfile."""
+"""User-friendly container for Google Cloud Bigtable AppProfile."""
 
 
 import re
