@@ -308,6 +308,25 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(kw['query_params'], {'project': OTHER_PROJECT})
         self.assertEqual(kw['data'], DATA)
 
+    def test_create_w_explicit_location(self):
+        PROJECT = 'PROJECT'
+        BUCKET_NAME = 'bucket-name'
+        LOCATION = 'us-central1'
+        DATA = {'location': LOCATION, 'name': BUCKET_NAME}
+        connection = _Connection(
+            DATA,
+            "{'location': 'us-central1', 'name': 'bucket-name'}")
+        client = _Client(connection, project=PROJECT)
+        bucket = self._make_one(client, BUCKET_NAME)
+
+        bucket.create(location=LOCATION)
+
+        kw, = connection._requested
+        self.assertEqual(kw['method'], 'POST')
+        self.assertEqual(kw['path'], '/b')
+        self.assertEqual(kw['data'], DATA)
+        self.assertEqual(bucket.location, LOCATION)
+
     def test_create_hit(self):
         PROJECT = 'PROJECT'
         BUCKET_NAME = 'bucket-name'
