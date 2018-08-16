@@ -4,6 +4,11 @@
 
 [1]: https://pypi.org/project/google-cloud-dlp/#history
 
+## 0.7.0
+
+### New Features
+- Add StoredInfoTypes (#5809)
+
 ## 0.6.0
 
 ### New Features
