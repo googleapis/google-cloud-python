@@ -25,6 +25,7 @@ from google.protobuf import field_mask_pb2
 from google.cloud.bigtable_admin_v2.types import instance_pb2
 
 from google.cloud.bigtable.enums import RoutingPolicyType
+from google.api_core.exceptions import NotFound
 
 
 _EXISTING_INSTANCE_LOCATION_ID = 'see-existing-cluster'
@@ -191,6 +192,19 @@ class Instance(object):
         # NOTE: _update_from_pb does not check that the project and
         #       instance ID on the response match the request.
         self._update_from_pb(instance_pb)
+
+    def exists(self):
+        """Check whether the instance already exists.
+
+        :rtype: bool
+        :returns: True if the table exists, else False.
+        """
+        try:
+            self._client.instance_admin_client.get_instance(name=self.name)
+            return True
+        # NOTE: There could be other exceptions that are returned to the user.
+        except NotFound:
+            return False
 
     def create(self, location_id=None,
                serve_nodes=None,
