@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Types for Cloud Data Loss Prevention (DLP) API Client &#8212; google-cloud 4944e023d4 documentation</title>
+    <title>Types for Cloud Data Loss Prevention (DLP) API Client &#8212; google-cloud 2c6f69e documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -1168,7 +1168,14 @@ proximity of hotwords.</p>
 <dl class="attribute">
 <dt id="google.cloud.dlp_v2.types.CustomInfoType.DetectionRule.HotwordRule.proximity">
 <code class="descname">proximity</code><a class="headerlink" href="#google.cloud.dlp_v2.types.CustomInfoType.DetectionRule.HotwordRule.proximity" title="Permalink to this definition">#</a></dt>
-<dd><p>Proximity of the finding within which the entire hotword must               reside. The total length of the window cannot exceed 1000               characters. Note that the finding itself will be included in               the window, so that hotwords may be used to match substrings               of the finding itself. For example, the certainty of a phone               number regex “(<cite>d{3}</cite>) <cite>d{3}</cite>-:raw-               latex:<cite>d{4}</cite>” could be adjusted upwards if the area code is               known to be the local area code of a company office using the               hotword regex “(xxx)”, where “xxx” is the area code in               question.</p>
+<dd><p>Proximity of the finding within which the entire hotword must
+reside. The total length of the window cannot exceed 1000
+characters. Note that the finding itself will be included in
+the window, so that hotwords may be used to match substrings
+of the finding itself. For example, the certainty of a phone
+number regex “(d{3}) d{3}-d{4} ”              could be adjusted upwards if the area code is               known to be the local area code of a company office using the
+hotword regex “(xxx)”, where “xxx” is the area code in
+question.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1548,7 +1555,7 @@ field.</p>
 <dl class="attribute">
 <dt id="google.cloud.dlp_v2.types.DeidentifyTemplate.deidentify_config">
 <code class="descname">deidentify_config</code><a class="headerlink" href="#google.cloud.dlp_v2.types.DeidentifyTemplate.deidentify_config" title="Permalink to this definition">#</a></dt>
-<dd><p>The core content of the template</p>
+<dd><p>///////////// // The core content of the template // ///////////////</p>
 </dd></dl>
 
 </dd></dl>

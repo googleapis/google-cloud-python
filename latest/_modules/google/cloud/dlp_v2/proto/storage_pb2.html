@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.dlp_v2.proto.storage_pb2 &#8212; google-cloud 4944e023d4 documentation</title>
+    <title>google.cloud.dlp_v2.proto.storage_pb2 &#8212; google-cloud 2c6f69e documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -1532,16 +1532,16 @@
 <span class="s2">          hotword_regex: </span><span class="se">\</span>
 <span class="s2">              Regular expression pattern defining what qualifies as a </span><span class="se">\</span>
 <span class="s2">              hotword.</span>
-<span class="s2">          proximity: </span><span class="se">\</span>
-<span class="s2">              Proximity of the finding within which the entire hotword must </span><span class="se">\</span>
-<span class="s2">              reside. The total length of the window cannot exceed 1000 </span><span class="se">\</span>
-<span class="s2">              characters. Note that the finding itself will be included in </span><span class="se">\</span>
-<span class="s2">              the window, so that hotwords may be used to match substrings </span><span class="se">\</span>
-<span class="s2">              of the finding itself. For example, the certainty of a phone </span><span class="se">\</span>
-<span class="s2">              number regex &quot;(`\d</span><span class="si">{3}</span><span class="s2">`) `\d</span><span class="si">{3}</span><span class="s2">`-:raw- </span><span class="se">\</span>
-<span class="s2">              latex:`\d</span><span class="si">{4}</span><span class="s2">`&quot; could be adjusted upwards if the area code is </span><span class="se">\</span>
-<span class="s2">              known to be the local area code of a company office using the </span><span class="se">\</span>
-<span class="s2">              hotword regex &quot;(xxx)&quot;, where &quot;xxx&quot; is the area code in </span><span class="se">\</span>
+<span class="s2">          proximity:</span>
+<span class="s2">              Proximity of the finding within which the entire hotword must</span>
+<span class="s2">              reside. The total length of the window cannot exceed 1000</span>
+<span class="s2">              characters. Note that the finding itself will be included in</span>
+<span class="s2">              the window, so that hotwords may be used to match substrings</span>
+<span class="s2">              of the finding itself. For example, the certainty of a phone</span>
+<span class="s2">              number regex &quot;(\d</span><span class="si">{3}</span><span class="s2">) \d</span><span class="si">{3}</span><span class="s2">-\d</span><span class="si">{4}</span><span class="s2"> &quot;</span><span class="se">\</span>
+<span class="s2">              could be adjusted upwards if the area code is </span><span class="se">\</span>
+<span class="s2">              known to be the local area code of a company office using the</span>
+<span class="s2">              hotword regex &quot;(xxx)&quot;, where &quot;xxx&quot; is the area code in</span>
 <span class="s2">              question.</span>
 <span class="s2">          likelihood_adjustment: </span><span class="se">\</span>
 <span class="s2">              Likelihood adjustment to apply to all matching findings.</span>
