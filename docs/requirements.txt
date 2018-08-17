@@ -6,6 +6,7 @@ recommonmark >= 0.4.0
 api_core/
 core/
 storage/
+asset/
 automl/
 bigquery/
 bigquery_datatransfer/
