@@ -9334,7 +9334,7 @@ DeidentifyTemplate = _reflection.GeneratedProtocolMessageType('DeidentifyTemplat
           The last update timestamp of a inspectTemplate, output only
           field.
       deidentify_config:
-           The core content of the template
+          ///////////// // The core content of the template // ///////////////
   """,
   # @@protoc_insertion_point(class_scope:google.privacy.dlp.v2.DeidentifyTemplate)
   ))
