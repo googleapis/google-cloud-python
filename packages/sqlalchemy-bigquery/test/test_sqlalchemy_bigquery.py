@@ -13,6 +13,25 @@ import sqlalchemy
 import datetime
 
 
+ONE_ROW_CONTENTS_EXPANDED = [
+    588,
+    datetime.datetime(2013, 10, 10, 11, 27, 16, tzinfo=timezone('UTC')),
+    'W 52 St & 11 Ave',
+    40.76727216,
+    False,
+    datetime.date(2013, 10, 10),
+    datetime.datetime(2013, 10, 10, 11, 27, 16),
+    datetime.time(11, 27, 16),
+    b'\xef',
+    'John Doe',
+    100,
+    {
+        'name': 'John Doe',
+        'age': 100,
+    },
+    [1, 2, 3],
+]
+
 ONE_ROW_CONTENTS = [
     588,
     datetime.datetime(2013, 10, 10, 11, 27, 16, tzinfo=timezone('UTC')),
@@ -29,7 +48,6 @@ ONE_ROW_CONTENTS = [
     },
     [1, 2, 3],
 ]
-
 
 ONE_ROW_CONTENTS_DML = [
     588,
@@ -53,6 +71,8 @@ SAMPLE_COLUMNS = [
     {'name': 'datetime', 'type': types.DATETIME(), 'nullable': True, 'default': None},
     {'name': 'time', 'type': types.TIME(), 'nullable': True, 'default': None},
     {'name': 'bytes', 'type': types.BINARY(), 'nullable': True, 'default': None},
+    {'name': 'record.name', 'type': types.String(), 'nullable': True, 'default': None},
+    {'name': 'record.age', 'type': types.Integer(), 'nullable': True, 'default': None},
     {'name': 'record', 'type': types.JSON(), 'nullable': True, 'default': None},
     {'name': 'array', 'type': types.ARRAY(types.Integer()), 'nullable': True, 'default': None},
 ]
@@ -108,7 +128,7 @@ def query(table):
 
 
 def test_reflect_select(engine, table):
-    assert len(table.c) == 11
+    assert len(table.c) == 13
     assert isinstance(table.c.integer, Column)
     assert isinstance(table.c.integer.type, types.Integer)
     assert isinstance(table.c.timestamp.type, types.TIMESTAMP)
@@ -133,7 +153,7 @@ def test_content_from_raw_queries(engine):
 
 def test_content_from_reflect(engine, table_one_row):
     rows = table_one_row.select().execute().fetchall()
-    assert list(rows[0]) == ONE_ROW_CONTENTS
+    assert list(rows[0]) == ONE_ROW_CONTENTS_EXPANDED
 
 
 def test_unicode(engine, table_one_row):
