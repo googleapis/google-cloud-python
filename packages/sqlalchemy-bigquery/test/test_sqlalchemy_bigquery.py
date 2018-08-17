@@ -151,6 +151,11 @@ def test_content_from_raw_queries(engine):
     assert list(rows[0]) == ONE_ROW_CONTENTS
 
 
+def test_record_content_from_raw_queries(engine):
+    rows = engine.execute('SELECT record.name FROM test_pybigquery.sample_one_row').fetchall()
+    assert rows[0][0] == 'John Doe'
+
+
 def test_content_from_reflect(engine, table_one_row):
     rows = table_one_row.select().execute().fetchall()
     assert list(rows[0]) == ONE_ROW_CONTENTS_EXPANDED
