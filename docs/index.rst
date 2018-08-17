@@ -4,6 +4,7 @@
 
   releases
   core/index
+  asset/index
   automl/index
   bigquery/usage
   bigquery_datatransfer/index
