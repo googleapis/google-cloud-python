@@ -129,8 +129,6 @@ class BigQueryCompiler(SQLCompiler):
         args[0].use_labels = True
         return super(BigQueryCompiler, self).visit_select(*args, **kwargs)
 
-
-
     def visit_column(self, column, add_to_result_map=None,
                      include_table=True, **kwargs):
 
