@@ -453,6 +453,11 @@ class TestTable(unittest.TestCase):
         result = table.get_cluster_states()
         self.assertEqual(result, expected_result)
 
+        # test for __eq__ and __ne__
+        self.assertNotEqual(_ClusterState(READY), enum_table())
+        self.assertNotEqual(_ClusterState(READY),
+                            _ClusterState(INITIALIZING))
+
     def test__ClusterState(self):
         from google.cloud.bigtable.enums import Table as enum_table
         from google.cloud.bigtable.table import _ClusterState
