@@ -282,7 +282,7 @@ def test_dml(engine, session, table_dml):
         .filter(table_dml.c.string == 'test')\
         .update({'string': 'updated_row'}, synchronize_session=False)
     updated_result = table_dml.select().execute().fetchone()
-    assert updated_result['string'] == 'updated_row'
+    assert updated_result['test_pybigquery.sample_dml_string'] == 'updated_row'
 
     # test delete
     session.query(table_dml).filter(table_dml.c.string == 'updated_row').delete(synchronize_session=False)
