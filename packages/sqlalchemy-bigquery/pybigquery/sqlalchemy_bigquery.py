@@ -14,6 +14,10 @@ from sqlalchemy.engine.default import DefaultDialect, DefaultExecutionContext
 from sqlalchemy.engine.base import Engine
 from sqlalchemy.sql.schema import Column
 from sqlalchemy.sql import elements
+import re
+
+
+FIELD_LEGAL_CHARACTERS = re.compile('[^\w+r]+')
 
 
 class UniversalSet(object):
@@ -69,10 +73,21 @@ class BigQueryIdentifierPreparer(IdentifierPreparer):
         else:
             return ident
 
-    def format_label(self, *args, **kwargs):
-        # Replace dots with underscores in labels
-        result = super(BigQueryIdentifierPreparer, self).format_label(*args, **kwargs)
-        return result.replace('.', '_')
+    def format_label(self, label, name=None):
+        name = name or label.name
+
+        # Fields must start with a letter or underscore
+        if not name[0].isalpha() and name[0] != '_':
+            name = "_" + name
+
+        # Replace dashes and dots with underscores
+        name = name.replace('.', '_').replace('-', '_')
+
+        # Fields must contain only letters, numbers, and underscores
+        name = FIELD_LEGAL_CHARACTERS.sub('', name)
+
+        result = self.quote(name)
+        return result
 
 
 _type_map = {
@@ -104,6 +119,17 @@ class BigQueryCompiler(SQLCompiler):
         if isinstance(statement, Column):
             kwargs['compile_kwargs'] = util.immutabledict({'include_table': False})
         super(BigQueryCompiler, self).__init__(dialect, statement, column_keys, inline, **kwargs)
+
+    def visit_select(self, *args, **kwargs):
+        """
+        Use labels for every column.
+        This ensures that fields won't contain duplicate names
+        """
+
+        args[0].use_labels = True
+        return super(BigQueryCompiler, self).visit_select(*args, **kwargs)
+
+
 
     def visit_column(self, column, add_to_result_map=None,
                      include_table=True, **kwargs):

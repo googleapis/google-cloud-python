@@ -227,6 +227,24 @@ def test_session_query(session, table):
     assert len(result) > 0
 
 
+def test_labels(session, table):
+    result = (
+        session
+        .query(
+            # Valid
+            table.c.string.label('abc'),
+            # Invalid, needs to start with underscore
+            table.c.string.label('123'),
+            # Valid
+            table.c.string.label('_123abc'),
+            # Invalid, contains illegal characters
+            table.c.string.label('!@#$%^&*()~`'),
+        )
+    )
+    result = result.all()
+    assert len(result) > 0
+
+
 def test_custom_expression(engine, query):
     """GROUP BY clause should use labels instead of expressions"""
     result = engine.execute(query).fetchall()
