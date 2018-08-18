@@ -25,10 +25,8 @@ ONE_ROW_CONTENTS_EXPANDED = [
     b'\xef',
     'John Doe',
     100,
-    {
-        'name': 'John Doe',
-        'age': 100,
-    },
+    'John Doe 2',
+    200,
     [1, 2, 3],
 ]
 
@@ -45,6 +43,12 @@ ONE_ROW_CONTENTS = [
     {
         'name': 'John Doe',
         'age': 100,
+    },
+    {
+        'record': {
+            'name': 'John Doe 2',
+            'age': 200,
+        }
     },
     [1, 2, 3],
 ]
@@ -73,7 +77,8 @@ SAMPLE_COLUMNS = [
     {'name': 'bytes', 'type': types.BINARY(), 'nullable': True, 'default': None},
     {'name': 'record.name', 'type': types.String(), 'nullable': True, 'default': None},
     {'name': 'record.age', 'type': types.Integer(), 'nullable': True, 'default': None},
-    {'name': 'record', 'type': types.JSON(), 'nullable': True, 'default': None},
+    {'name': 'nested_record.record.name', 'type': types.String(), 'nullable': True, 'default': None},
+    {'name': 'nested_record.record.age', 'type': types.Integer(), 'nullable': True, 'default': None},
     {'name': 'array', 'type': types.ARRAY(types.Integer()), 'nullable': True, 'default': None},
 ]
 
@@ -128,7 +133,8 @@ def query(table):
 
 
 def test_reflect_select(engine, table):
-    assert len(table.c) == 13
+    assert len(table.c) == 14
+
     assert isinstance(table.c.integer, Column)
     assert isinstance(table.c.integer.type, types.Integer)
     assert isinstance(table.c.timestamp.type, types.TIMESTAMP)
@@ -139,7 +145,10 @@ def test_reflect_select(engine, table):
     assert isinstance(table.c.datetime.type, types.DATETIME)
     assert isinstance(table.c.time.type, types.TIME)
     assert isinstance(table.c.bytes.type, types.BINARY)
-    assert isinstance(table.c.record.type, types.JSON)
+    assert isinstance(table.c['record.age'].type, types.Integer)
+    assert isinstance(table.c['record.name'].type, types.String)
+    assert isinstance(table.c['nested_record.record.age'].type, types.Integer)
+    assert isinstance(table.c['nested_record.record.name'].type, types.String)
     assert isinstance(table.c.array.type, types.ARRAY)
 
     rows = table.select().execute().fetchall()
