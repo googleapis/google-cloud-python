@@ -493,6 +493,11 @@ class TestTable(unittest.TestCase):
         self.assertEqual(_ClusterState(READY).replication_state,
                          READY)
 
+        # test for __eq__ and __ne__
+        self.assertNotEqual(_ClusterState(READY), enum_table())
+        self.assertNotEqual(_ClusterState(READY),
+                            _ClusterState(INITIALIZING))
+
     def _read_row_helper(self, chunks, expected_result, app_profile_id=None):
         from google.cloud._testing import _Monkey
         from google.cloud.bigtable import table as MUT

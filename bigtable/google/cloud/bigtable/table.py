@@ -659,8 +659,6 @@ class _ClusterState(object):
         ``Data API`` requests from this
         cluster. Depending on replication delay, reads may not
         immediately reflect the state of the table in other clusters.
-    :raises: :class:`ValueError <exceptions.ValueError>` if the cluster
-              state does not present in predefined states.
     """
 
     def __init__(self, replication_state):
@@ -697,7 +695,7 @@ class _ClusterState(object):
         replication_state
         """
         if not isinstance(other, self.__class__):
-            return NotImplemented
+            return False
         return self.replication_state == other.replication_state
 
     def __ne__(self, other):
