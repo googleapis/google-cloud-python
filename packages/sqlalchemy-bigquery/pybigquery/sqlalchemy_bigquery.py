@@ -240,16 +240,16 @@ class BigQueryDialect(DefaultDialect):
         """
         results = []
         for col in columns:
-            if col.field_type == 'RECORD':
+            if col.field_type == 'RECORD' and col.mode != 'REPEATED':
                 cur_columns.append(col)
                 results += self._get_columns_helper(col.fields, cur_columns)
                 cur_columns.pop()
-
-            results += [SchemaField(name='.'.join(col.name for col in cur_columns + [col]),
-                                    field_type=col.field_type,
-                                    mode=col.mode,
-                                    description=col.description,
-                                    fields=col.fields)]
+            else:
+                results += [SchemaField(name='.'.join(col.name for col in cur_columns + [col]),
+                                        field_type=col.field_type,
+                                        mode=col.mode,
+                                        description=col.description,
+                                        fields=col.fields)]
         return results
 
     def get_columns(self, connection, table_name, schema=None, **kw):
