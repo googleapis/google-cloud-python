@@ -4,13 +4,13 @@ from setuptools import setup
 
 setup(
     name="pybigquery",
-    version='0.3.2',
+    version='0.3.3',
     description="SQLAlchemy dialect for BigQuery",
     author="Maxim Zudilov",
     author_email="maxim.zudilov@gmail.com",
     packages=['pybigquery'],
     url="https://github.com/mxmzdlv/pybigquery",
-    download_url='https://github.com/mxmzdlv/pybigquery/archive/v0.3.2.tar.gz',
+    download_url='https://github.com/mxmzdlv/pybigquery/archive/v0.3.3.tar.gz',
     keywords=['bigquery', 'sqlalchemy'],
     classifiers=[
         "Intended Audience :: Developers",
