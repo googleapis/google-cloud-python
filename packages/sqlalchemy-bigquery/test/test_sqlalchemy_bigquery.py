@@ -13,6 +13,23 @@ import sqlalchemy
 import datetime
 
 
+ONE_ROW_CONTENTS_EXPANDED = [
+    588,
+    datetime.datetime(2013, 10, 10, 11, 27, 16, tzinfo=timezone('UTC')),
+    'W 52 St & 11 Ave',
+    40.76727216,
+    False,
+    datetime.date(2013, 10, 10),
+    datetime.datetime(2013, 10, 10, 11, 27, 16),
+    datetime.time(11, 27, 16),
+    b'\xef',
+    'John Doe',
+    100,
+    'John Doe 2',
+    200,
+    [1, 2, 3],
+]
+
 ONE_ROW_CONTENTS = [
     588,
     datetime.datetime(2013, 10, 10, 11, 27, 16, tzinfo=timezone('UTC')),
@@ -27,9 +44,14 @@ ONE_ROW_CONTENTS = [
         'name': 'John Doe',
         'age': 100,
     },
+    {
+        'record': {
+            'name': 'John Doe 2',
+            'age': 200,
+        }
+    },
     [1, 2, 3],
 ]
-
 
 ONE_ROW_CONTENTS_DML = [
     588,
@@ -53,7 +75,10 @@ SAMPLE_COLUMNS = [
     {'name': 'datetime', 'type': types.DATETIME(), 'nullable': True, 'default': None},
     {'name': 'time', 'type': types.TIME(), 'nullable': True, 'default': None},
     {'name': 'bytes', 'type': types.BINARY(), 'nullable': True, 'default': None},
-    {'name': 'record', 'type': types.JSON(), 'nullable': True, 'default': None},
+    {'name': 'record.name', 'type': types.String(), 'nullable': True, 'default': None},
+    {'name': 'record.age', 'type': types.Integer(), 'nullable': True, 'default': None},
+    {'name': 'nested_record.record.name', 'type': types.String(), 'nullable': True, 'default': None},
+    {'name': 'nested_record.record.age', 'type': types.Integer(), 'nullable': True, 'default': None},
     {'name': 'array', 'type': types.ARRAY(types.Integer()), 'nullable': True, 'default': None},
 ]
 
@@ -108,7 +133,8 @@ def query(table):
 
 
 def test_reflect_select(engine, table):
-    assert len(table.c) == 11
+    assert len(table.c) == 14
+
     assert isinstance(table.c.integer, Column)
     assert isinstance(table.c.integer.type, types.Integer)
     assert isinstance(table.c.timestamp.type, types.TIMESTAMP)
@@ -119,7 +145,10 @@ def test_reflect_select(engine, table):
     assert isinstance(table.c.datetime.type, types.DATETIME)
     assert isinstance(table.c.time.type, types.TIME)
     assert isinstance(table.c.bytes.type, types.BINARY)
-    assert isinstance(table.c.record.type, types.JSON)
+    assert isinstance(table.c['record.age'].type, types.Integer)
+    assert isinstance(table.c['record.name'].type, types.String)
+    assert isinstance(table.c['nested_record.record.age'].type, types.Integer)
+    assert isinstance(table.c['nested_record.record.name'].type, types.String)
     assert isinstance(table.c.array.type, types.ARRAY)
 
     rows = table.select().execute().fetchall()
@@ -131,9 +160,14 @@ def test_content_from_raw_queries(engine):
     assert list(rows[0]) == ONE_ROW_CONTENTS
 
 
+def test_record_content_from_raw_queries(engine):
+    rows = engine.execute('SELECT record.name FROM test_pybigquery.sample_one_row').fetchall()
+    assert rows[0][0] == 'John Doe'
+
+
 def test_content_from_reflect(engine, table_one_row):
     rows = table_one_row.select().execute().fetchall()
-    assert list(rows[0]) == ONE_ROW_CONTENTS
+    assert list(rows[0]) == ONE_ROW_CONTENTS_EXPANDED
 
 
 def test_unicode(engine, table_one_row):
@@ -193,6 +227,24 @@ def test_session_query(session, table):
     assert len(result) > 0
 
 
+def test_labels(session, table):
+    result = (
+        session
+        .query(
+            # Valid
+            table.c.string.label('abc'),
+            # Invalid, needs to start with underscore
+            table.c.string.label('123'),
+            # Valid
+            table.c.string.label('_123abc'),
+            # Invalid, contains illegal characters
+            table.c.string.label('!@#$%^&*()~`'),
+        )
+    )
+    result = result.all()
+    assert len(result) > 0
+
+
 def test_custom_expression(engine, query):
     """GROUP BY clause should use labels instead of expressions"""
     result = engine.execute(query).fetchall()
@@ -230,7 +282,7 @@ def test_dml(engine, session, table_dml):
         .filter(table_dml.c.string == 'test')\
         .update({'string': 'updated_row'}, synchronize_session=False)
     updated_result = table_dml.select().execute().fetchone()
-    assert updated_result['string'] == 'updated_row'
+    assert updated_result['test_pybigquery.sample_dml_string'] == 'updated_row'
 
     # test delete
     session.query(table_dml).filter(table_dml.c.string == 'updated_row').delete(synchronize_session=False)
