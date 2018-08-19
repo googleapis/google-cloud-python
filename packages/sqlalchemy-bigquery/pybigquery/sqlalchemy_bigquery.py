@@ -17,7 +17,7 @@ from sqlalchemy.sql import elements
 import re
 
 
-FIELD_LEGAL_CHARACTERS = re.compile('[^\w+r]+')
+FIELD_ILLEGAL_CHARACTERS = re.compile('[^\w]+')
 
 
 class UniversalSet(object):
@@ -80,11 +80,8 @@ class BigQueryIdentifierPreparer(IdentifierPreparer):
         if not name[0].isalpha() and name[0] != '_':
             name = "_" + name
 
-        # Replace dashes and dots with underscores
-        name = name.replace('.', '_').replace('-', '_')
-
         # Fields must contain only letters, numbers, and underscores
-        name = FIELD_LEGAL_CHARACTERS.sub('', name)
+        name = FIELD_ILLEGAL_CHARACTERS.sub('_', name)
 
         result = self.quote(name)
         return result
