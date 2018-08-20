@@ -95,6 +95,10 @@ class WatchDocTree(object):
         del self._dict[key]
         return self
 
+    def __iter__(self):
+        for k in self._dict:
+            yield k
+
     def __len__(self):
         return len(self._dict)
 
@@ -521,10 +525,12 @@ class Watch(object):
                 if name in doc_map:
                     deletes.append(name)
             elif name in doc_map:
-                value.read_time = read_time
+                if read_time is not None:
+                    value.read_time = read_time
                 updates.append(value)
             else:
-                value.read_time = read_time
+                if read_time is not None:
+                    value.read_time = read_time
                 adds.append(value)
         _LOGGER.debug('deletes:{len(deletes)} adds:{len(adds)}')
         return (deletes, adds, updates)
@@ -656,8 +662,10 @@ class Watch(object):
         Returns the current count of all documents, including the changes from
         the current changeMap.
         """
-        deletes, adds, _ = Watch._extract_changes(self.docMap, self.changeMap)
-        return self.docMap.size + len(adds) - len(deletes)
+        deletes, adds, _ = Watch._extract_changes(
+            self.doc_map, self.change_map, None
+            )
+        return len(self.doc_map) + len(adds) - len(deletes)
 
     def _reset_docs(self):  # XXX broken via formattedName
         """
