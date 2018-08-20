@@ -146,7 +146,7 @@ class Watch(object):
     threading = threading  # FBO unit tests
     BackgroundConsumer = BackgroundConsumer  # FBO unit tests
     ResumableBidiRpc = ResumableBidiRpc  # FBO unit tests
-    MessageToDict = json_format.MessageToDict  # FBO unit tests
+    MessageToDict = staticmethod(json_format.MessageToDict)  # FBO unit tests
 
     def __init__(self,
                  document_reference,
@@ -512,6 +512,7 @@ class Watch(object):
         self.change_map.clear()
         self.resume_token = next_resume_token
 
+    @staticmethod
     def _extract_changes(doc_map, changes, read_time):
         deletes = []
         adds = []
@@ -530,6 +531,7 @@ class Watch(object):
         _LOGGER.debug('deletes:{len(deletes)} adds:{len(adds)}')
         return (deletes, adds, updates)
 
+    @staticmethod
     def _compute_snapshot(doc_tree, doc_map, delete_changes, add_changes,
                           update_changes):
         # TODO: ACTUALLY NEED TO CALCULATE
@@ -646,9 +648,8 @@ class Watch(object):
         if target_ids is None or len(target_ids) == 0:
             return True
 
-        for target_id in target_ids:
-            if target_id == current_id:
-                return True
+        if current_id in target_ids:
+            return True
 
         return False
 
