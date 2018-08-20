@@ -262,8 +262,8 @@ class Table(object):
 
         :rtype: dict
         :returns: Dictionary of cluster states for this table.
-        Keys are cluster ids and values are
-        :class: '_ClusterState' instances
+                  Keys are cluster ids and values are
+                  :class: '_ClusterState' instances.
         """
 
         REPLICATION_VIEW = enums.Table.View.REPLICATION_VIEW
@@ -670,7 +670,7 @@ class _ClusterState(object):
 
         :rtype: _ClusterState instance
         :returns: _ClusterState instance as representation of string
-        value for cluster state
+                  value for cluster state.
         """
         replication_dict = {
             enums.Table.ReplicationState.STATE_NOT_KNOWN: "STATE_NOT_KNOWN",
@@ -692,7 +692,7 @@ class _ClusterState(object):
 
         :rtype: Boolean value
         :returns: True if  two cluster state instances have same
-        replication_state
+                  replication_state.
         """
         if not isinstance(other, self.__class__):
             return False

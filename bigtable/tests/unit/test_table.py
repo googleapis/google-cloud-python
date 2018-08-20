@@ -453,56 +453,6 @@ class TestTable(unittest.TestCase):
         result = table.get_cluster_states()
         self.assertEqual(result, expected_result)
 
-        # test for __eq__ and __ne__
-        self.assertNotEqual(_ClusterState(READY), enum_table())
-        self.assertNotEqual(_ClusterState(READY),
-                            _ClusterState(INITIALIZING))
-
-    def test__ClusterState(self):
-        from google.cloud.bigtable.enums import Table as enum_table
-        from google.cloud.bigtable.table import _ClusterState
-        STATE_NOT_KNOWN = enum_table.ReplicationState.STATE_NOT_KNOWN
-        INITIALIZING = enum_table.ReplicationState.INITIALIZING
-        PLANNED_MAINTENANCE = enum_table.ReplicationState.PLANNED_MAINTENANCE
-        UNPLANNED_MAINTENANCE = enum_table.ReplicationState. \
-            UNPLANNED_MAINTENANCE
-        READY = enum_table.ReplicationState.READY
-
-        replication_dict = {
-            STATE_NOT_KNOWN: "STATE_NOT_KNOWN",
-            INITIALIZING: "INITIALIZING",
-            PLANNED_MAINTENANCE: "PLANNED_MAINTENANCE",
-            UNPLANNED_MAINTENANCE: "UNPLANNED_MAINTENANCE",
-            READY: "READY"
-        }
-
-        self.assertEqual(str(_ClusterState(STATE_NOT_KNOWN)),
-                         replication_dict[STATE_NOT_KNOWN])
-        self.assertEqual(str(_ClusterState(INITIALIZING)),
-                         replication_dict[INITIALIZING])
-        self.assertEqual(str(_ClusterState(PLANNED_MAINTENANCE)),
-                         replication_dict[PLANNED_MAINTENANCE])
-        self.assertEqual(str(_ClusterState(UNPLANNED_MAINTENANCE)),
-                         replication_dict[UNPLANNED_MAINTENANCE])
-        self.assertEqual(str(_ClusterState(READY)),
-                         replication_dict[READY])
-
-        self.assertEqual(_ClusterState(STATE_NOT_KNOWN).replication_state,
-                         STATE_NOT_KNOWN)
-        self.assertEqual(_ClusterState(INITIALIZING).replication_state,
-                         INITIALIZING)
-        self.assertEqual(_ClusterState(PLANNED_MAINTENANCE).replication_state,
-                         PLANNED_MAINTENANCE)
-        self.assertEqual(_ClusterState(UNPLANNED_MAINTENANCE).
-                         replication_state, UNPLANNED_MAINTENANCE)
-        self.assertEqual(_ClusterState(READY).replication_state,
-                         READY)
-
-        # test for __eq__ and __ne__
-        self.assertNotEqual(_ClusterState(READY), enum_table())
-        self.assertNotEqual(_ClusterState(READY),
-                            _ClusterState(INITIALIZING))
-
     def _read_row_helper(self, chunks, expected_result, app_profile_id=None):
         from google.cloud._testing import _Monkey
         from google.cloud.bigtable import table as MUT
@@ -1621,6 +1571,82 @@ def _ReadRowsRequestPB(*args, **kw):
         bigtable_pb2 as messages_v2_pb2)
 
     return messages_v2_pb2.ReadRowsRequest(*args, **kw)
+
+
+class Test_ClusterState(unittest.TestCase):
+    def test___eq__(self):
+        from google.cloud.bigtable.enums import Table as enum_table
+        from google.cloud.bigtable.table import _ClusterState
+        READY = enum_table.ReplicationState.READY
+        state1 = _ClusterState(READY)
+        state2 = _ClusterState(READY)
+        self.assertEqual(state1, state2)
+
+    def test___eq__type_differ(self):
+        from google.cloud.bigtable.enums import Table as enum_table
+        from google.cloud.bigtable.table import _ClusterState
+        READY = enum_table.ReplicationState.READY
+        state1 = _ClusterState(READY)
+        state2 = object()
+        self.assertNotEqual(state1, state2)
+
+    def test___ne__same_value(self):
+        from google.cloud.bigtable.enums import Table as enum_table
+        from google.cloud.bigtable.table import _ClusterState
+        READY = enum_table.ReplicationState.READY
+        state1 = _ClusterState(READY)
+        state2 = _ClusterState(READY)
+        comparison_val = (state1 != state2)
+        self.assertFalse(comparison_val)
+
+    def test___ne__(self):
+        from google.cloud.bigtable.enums import Table as enum_table
+        from google.cloud.bigtable.table import _ClusterState
+        READY = enum_table.ReplicationState.READY
+        INITIALIZING = enum_table.ReplicationState.INITIALIZING
+        state1 = _ClusterState(READY)
+        state2 = _ClusterState(INITIALIZING)
+        self.assertNotEqual(state1, state2)
+
+    def test__repr__(self):
+        from google.cloud.bigtable.enums import Table as enum_table
+        from google.cloud.bigtable.table import _ClusterState
+        STATE_NOT_KNOWN = enum_table.ReplicationState.STATE_NOT_KNOWN
+        INITIALIZING = enum_table.ReplicationState.INITIALIZING
+        PLANNED_MAINTENANCE = enum_table.ReplicationState.PLANNED_MAINTENANCE
+        UNPLANNED_MAINTENANCE = enum_table.ReplicationState. \
+            UNPLANNED_MAINTENANCE
+        READY = enum_table.ReplicationState.READY
+
+        replication_dict = {
+            STATE_NOT_KNOWN: "STATE_NOT_KNOWN",
+            INITIALIZING: "INITIALIZING",
+            PLANNED_MAINTENANCE: "PLANNED_MAINTENANCE",
+            UNPLANNED_MAINTENANCE: "UNPLANNED_MAINTENANCE",
+            READY: "READY"
+        }
+
+        self.assertEqual(str(_ClusterState(STATE_NOT_KNOWN)),
+                         replication_dict[STATE_NOT_KNOWN])
+        self.assertEqual(str(_ClusterState(INITIALIZING)),
+                         replication_dict[INITIALIZING])
+        self.assertEqual(str(_ClusterState(PLANNED_MAINTENANCE)),
+                         replication_dict[PLANNED_MAINTENANCE])
+        self.assertEqual(str(_ClusterState(UNPLANNED_MAINTENANCE)),
+                         replication_dict[UNPLANNED_MAINTENANCE])
+        self.assertEqual(str(_ClusterState(READY)),
+                         replication_dict[READY])
+
+        self.assertEqual(_ClusterState(STATE_NOT_KNOWN).replication_state,
+                         STATE_NOT_KNOWN)
+        self.assertEqual(_ClusterState(INITIALIZING).replication_state,
+                         INITIALIZING)
+        self.assertEqual(_ClusterState(PLANNED_MAINTENANCE).replication_state,
+                         PLANNED_MAINTENANCE)
+        self.assertEqual(_ClusterState(UNPLANNED_MAINTENANCE).
+                         replication_state, UNPLANNED_MAINTENANCE)
+        self.assertEqual(_ClusterState(READY).replication_state,
+                         READY)
 
 
 def _ReadRowsResponseCellChunkPB(*args, **kw):
