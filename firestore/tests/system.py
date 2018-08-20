@@ -812,10 +812,8 @@ def test_watch_document(client, cleanup):
     sleep(1)
 
     # Setup listener
-    def on_response(response):
+    def on_response(*arg):
         on_response.called_count += 1
-        print('Response: %s' % response)
-        print(type(response))
 
     on_response.called_count = 0
 
