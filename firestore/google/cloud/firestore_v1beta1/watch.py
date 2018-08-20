@@ -412,13 +412,11 @@ class Watch(object):
             changed = False
             removed = False
 
-            for target in target_ids:
-                if target == WATCH_TARGET_ID:
-                    changed = True
+            if WATCH_TARGET_ID in target_ids:
+                changed = True
 
-            for target in removed_target_ids:
-                if target == WATCH_TARGET_ID:
-                    removed = True
+            if WATCH_TARGET_ID in removed_target_ids:
+                removed = True
 
             if changed:
                 _LOGGER.debug('on_snapshot: document change: CHANGED')
