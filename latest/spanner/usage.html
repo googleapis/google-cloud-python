@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Spanner &#8212; google-cloud af8547f documentation</title>
+    <title>Spanner &#8212; google-cloud 565df74 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -56,17 +56,17 @@ workloads.</p>
 <h2>Spanner Client<a class="headerlink" href="#spanner-client" title="Permalink to this headline">#</a></h2>
 <div class="section" id="instantiating-a-client">
 <span id="id1"></span><h3>Instantiating a Client<a class="headerlink" href="#instantiating-a-client" title="Permalink to this headline">#</a></h3>
-<p>To use the API, the <code class="xref py py-class docutils literal notranslate"><span class="pre">Client</span></code>
+<p>To use the API, the <a class="reference internal" href="client-api.html#google.cloud.spanner_v1.client.Client" title="google.cloud.spanner_v1.client.Client"><code class="xref py py-class docutils literal notranslate"><span class="pre">Client</span></code></a>
 class defines a high-level interface which handles authorization
 and creating other objects:</p>
-<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">spanner</span>
-<span class="n">client</span> <span class="o">=</span> <span class="n">spanner</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">spanner_v1</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">spanner_v1</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="long-lived-defaults">
 <h3>Long-lived Defaults<a class="headerlink" href="#long-lived-defaults" title="Permalink to this headline">#</a></h3>
-<p>When creating a <code class="xref py py-class docutils literal notranslate"><span class="pre">Client</span></code>, the
+<p>When creating a <a class="reference internal" href="client-api.html#google.cloud.spanner_v1.client.Client" title="google.cloud.spanner_v1.client.Client"><code class="xref py py-class docutils literal notranslate"><span class="pre">Client</span></code></a>, the
 <code class="docutils literal notranslate"><span class="pre">user_agent</span></code> and <code class="docutils literal notranslate"><span class="pre">timeout_seconds</span></code> arguments have sensible
 defaults
 (<code class="xref py py-data docutils literal notranslate"><span class="pre">DEFAULT_USER_AGENT</span></code> and
@@ -86,17 +86,17 @@ project you’d like to interact with. If your code is running in Google App
 Engine or Google Compute Engine the project will be detected automatically.
 (Setting this environment variable is not required, you may instead pass the
 <code class="docutils literal notranslate"><span class="pre">project</span></code> explicitly when constructing a
-<code class="xref py py-class docutils literal notranslate"><span class="pre">Client</span></code>).</p>
+<a class="reference internal" href="client-api.html#google.cloud.spanner_v1.client.Client" title="google.cloud.spanner_v1.client.Client"><code class="xref py py-class docutils literal notranslate"><span class="pre">Client</span></code></a>).</p>
 </li>
 <li><p class="first">After configuring your environment, create a
-<code class="xref py py-class docutils literal notranslate"><span class="pre">Client</span></code></p>
-<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">spanner</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">spanner</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
+<a class="reference internal" href="client-api.html#google.cloud.spanner_v1.client.Client" title="google.cloud.spanner_v1.client.Client"><code class="xref py py-class docutils literal notranslate"><span class="pre">Client</span></code></a></p>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">spanner_v1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">spanner_v1</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>or pass in <code class="docutils literal notranslate"><span class="pre">credentials</span></code> and <code class="docutils literal notranslate"><span class="pre">project</span></code> explicitly</p>
-<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">spanner</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">spanner</span><span class="o">.</span><span class="n">Client</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="s1">&#39;my-project&#39;</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="n">creds</span><span class="p">)</span>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">spanner_v1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">spanner_v1</span><span class="o">.</span><span class="n">Client</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="s1">&#39;my-project&#39;</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="n">creds</span><span class="p">)</span>
 </pre></div>
 </div>
 </li>
@@ -118,8 +118,8 @@ See <a class="reference external" href="https://github.com/grpc/grpc/issues/1245
 </div>
 <div class="section" id="next-step">
 <h3>Next Step<a class="headerlink" href="#next-step" title="Permalink to this headline">#</a></h3>
-<p>After a <code class="xref py py-class docutils literal notranslate"><span class="pre">Client</span></code>, the next
-highest-level object is an <code class="xref py py-class docutils literal notranslate"><span class="pre">Instance</span></code>.
+<p>After a <a class="reference internal" href="client-api.html#google.cloud.spanner_v1.client.Client" title="google.cloud.spanner_v1.client.Client"><code class="xref py py-class docutils literal notranslate"><span class="pre">Client</span></code></a>, the next
+highest-level object is an <a class="reference internal" href="instance-api.html#google.cloud.spanner_v1.instance.Instance" title="google.cloud.spanner_v1.instance.Instance"><code class="xref py py-class docutils literal notranslate"><span class="pre">Instance</span></code></a>.
 You’ll need one before you can interact with databases.</p>
 <p>Next, learn about the <a class="reference internal" href="instance-usage.html"><span class="doc">Instance Admin</span></a>.</p>
 </div>
