@@ -34,7 +34,6 @@ __version__ = pkg_resources.get_distribution('google-cloud-pubsub').version
 
 @_gapic.add_methods(publisher_client.PublisherClient, blacklist=('publish',))
 class Client(object):
-    _batch_class = thread.Batch
     """A publisher client for Google Cloud Pub/Sub.
 
     This creates an object that is capable of publishing messages.
@@ -52,6 +51,8 @@ class Client(object):
             be added if ``credentials`` are passed explicitly or if the
             Pub / Sub emulator is detected as running.
     """
+    _batch_class = thread.Batch
+
     def __init__(self, batch_settings=(), **kwargs):
         # Sanity check: Is our goal to use the emulator?
         # If so, create a grpc insecure channel with the emulator host
