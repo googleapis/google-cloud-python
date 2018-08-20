@@ -66,7 +66,7 @@ via its :meth:`~google.cloud.spanner.database.Database.update_ddl` method:
 
 .. code:: python
 
-    operation = instance.update_ddl(ddl_statements, operation_id)
+    operation = database.update_ddl(ddl_statements, operation_id)
 
 - ``ddl_statements`` is a string containing DDL to be applied to
   the database.
