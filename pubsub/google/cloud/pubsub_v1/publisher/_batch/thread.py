@@ -24,7 +24,7 @@ import google.api_core.exceptions
 from google.cloud.pubsub_v1 import types
 from google.cloud.pubsub_v1.publisher import exceptions
 from google.cloud.pubsub_v1.publisher import futures
-from google.cloud.pubsub_v1.publisher.batch import base
+from google.cloud.pubsub_v1.publisher._batch import base
 
 
 _LOGGER = logging.getLogger(__name__)

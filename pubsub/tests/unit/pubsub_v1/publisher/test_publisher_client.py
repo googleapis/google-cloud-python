@@ -56,7 +56,7 @@ def test_batch_create():
 
     assert len(client._batches) == 0
     topic = 'topic/path'
-    batch = client.batch(topic, autocommit=False)
+    batch = client._batch(topic, autocommit=False)
     assert client._batches == {topic: batch}
 
 
@@ -68,7 +68,7 @@ def test_batch_exists():
     client._batches[topic] = mock.sentinel.batch
 
     # A subsequent request should return the same batch.
-    batch = client.batch(topic, autocommit=False)
+    batch = client._batch(topic, autocommit=False)
     assert batch is mock.sentinel.batch
     assert client._batches == {topic: batch}
 
@@ -81,7 +81,7 @@ def test_batch_create_and_exists():
     client._batches[topic] = mock.sentinel.batch
 
     # A subsequent request should return the same batch.
-    batch = client.batch(topic, create=True, autocommit=False)
+    batch = client._batch(topic, create=True, autocommit=False)
     assert batch is not mock.sentinel.batch
     assert client._batches == {topic: batch}
 
@@ -206,11 +206,14 @@ def test_publish_attrs_type_error():
 def test_gapic_instance_method():
     creds = mock.Mock(spec=credentials.Credentials)
     client = publisher.Client(credentials=creds)
-    with mock.patch.object(client.api, '_create_topic', autospec=True) as ct:
-        client.create_topic('projects/foo/topics/bar')
-        assert ct.call_count == 1
-        _, args, _ = ct.mock_calls[0]
-        assert args[0] == types.Topic(name='projects/foo/topics/bar')
+
+    ct = mock.Mock()
+    client.api._inner_api_calls['create_topic'] = ct
+
+    client.create_topic('projects/foo/topics/bar')
+    assert ct.call_count == 1
+    _, args, _ = ct.mock_calls[0]
+    assert args[0] == types.Topic(name='projects/foo/topics/bar')
 
 
 def test_gapic_class_method():

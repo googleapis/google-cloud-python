@@ -24,11 +24,42 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='google/cloud/pubsub_v1/proto/pubsub.proto',
   package='google.pubsub.v1',
   syntax='proto3',
-  serialized_pb=_b('\n)google/cloud/pubsub_v1/proto/pubsub.proto\x12\x10google.pubsub.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a google/protobuf/field_mask.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"y\n\x05Topic\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x33\n\x06labels\x18\x02 \x03(\x0b\x32#.google.pubsub.v1.Topic.LabelsEntry\x1a-\n\x0bLabelsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"\xdb\x01\n\rPubsubMessage\x12\x0c\n\x04\x64\x61ta\x18\x01 \x01(\x0c\x12\x43\n\nattributes\x18\x02 \x03(\x0b\x32/.google.pubsub.v1.PubsubMessage.AttributesEntry\x12\x12\n\nmessage_id\x18\x03 \x01(\t\x12\x30\n\x0cpublish_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x1a\x31\n\x0f\x41ttributesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\" \n\x0fGetTopicRequest\x12\r\n\x05topic\x18\x01 \x01(\t\"m\n\x12UpdateTopicRequest\x12&\n\x05topic\x18\x01 \x01(\x0b\x32\x17.google.pubsub.v1.Topic\x12/\n\x0bupdate_mask\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.FieldMask\"R\n\x0ePublishRequest\x12\r\n\x05topic\x18\x01 \x01(\t\x12\x31\n\x08messages\x18\x02 \x03(\x0b\x32\x1f.google.pubsub.v1.PubsubMessage\"&\n\x0fPublishResponse\x12\x13\n\x0bmessage_ids\x18\x01 \x03(\t\"K\n\x11ListTopicsRequest\x12\x0f\n\x07project\x18\x01 \x01(\t\x12\x11\n\tpage_size\x18\x02 \x01(\x05\x12\x12\n\npage_token\x18\x03 \x01(\t\"V\n\x12ListTopicsResponse\x12\'\n\x06topics\x18\x01 \x03(\x0b\x32\x17.google.pubsub.v1.Topic\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\"U\n\x1dListTopicSubscriptionsRequest\x12\r\n\x05topic\x18\x01 \x01(\t\x12\x11\n\tpage_size\x18\x02 \x01(\x05\x12\x12\n\npage_token\x18\x03 \x01(\t\"P\n\x1eListTopicSubscriptionsResponse\x12\x15\n\rsubscriptions\x18\x01 \x03(\t\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\"#\n\x12\x44\x65leteTopicRequest\x12\r\n\x05topic\x18\x01 \x01(\t\"\xc5\x02\n\x0cSubscription\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\r\n\x05topic\x18\x02 \x01(\t\x12\x31\n\x0bpush_config\x18\x04 \x01(\x0b\x32\x1c.google.pubsub.v1.PushConfig\x12\x1c\n\x14\x61\x63k_deadline_seconds\x18\x05 \x01(\x05\x12\x1d\n\x15retain_acked_messages\x18\x07 \x01(\x08\x12=\n\x1amessage_retention_duration\x18\x08 \x01(\x0b\x32\x19.google.protobuf.Duration\x12:\n\x06labels\x18\t \x03(\x0b\x32*.google.pubsub.v1.Subscription.LabelsEntry\x1a-\n\x0bLabelsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"\x98\x01\n\nPushConfig\x12\x15\n\rpush_endpoint\x18\x01 \x01(\t\x12@\n\nattributes\x18\x02 \x03(\x0b\x32,.google.pubsub.v1.PushConfig.AttributesEntry\x1a\x31\n\x0f\x41ttributesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"S\n\x0fReceivedMessage\x12\x0e\n\x06\x61\x63k_id\x18\x01 \x01(\t\x12\x30\n\x07message\x18\x02 \x01(\x0b\x32\x1f.google.pubsub.v1.PubsubMessage\".\n\x16GetSubscriptionRequest\x12\x14\n\x0csubscription\x18\x01 \x01(\t\"\x82\x01\n\x19UpdateSubscriptionRequest\x12\x34\n\x0csubscription\x18\x01 \x01(\x0b\x32\x1e.google.pubsub.v1.Subscription\x12/\n\x0bupdate_mask\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.FieldMask\"R\n\x18ListSubscriptionsRequest\x12\x0f\n\x07project\x18\x01 \x01(\t\x12\x11\n\tpage_size\x18\x02 \x01(\x05\x12\x12\n\npage_token\x18\x03 \x01(\t\"k\n\x19ListSubscriptionsResponse\x12\x35\n\rsubscriptions\x18\x01 \x03(\x0b\x32\x1e.google.pubsub.v1.Subscription\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\"1\n\x19\x44\x65leteSubscriptionRequest\x12\x14\n\x0csubscription\x18\x01 \x01(\t\"b\n\x17ModifyPushConfigRequest\x12\x14\n\x0csubscription\x18\x01 \x01(\t\x12\x31\n\x0bpush_config\x18\x02 \x01(\x0b\x32\x1c.google.pubsub.v1.PushConfig\"U\n\x0bPullRequest\x12\x14\n\x0csubscription\x18\x01 \x01(\t\x12\x1a\n\x12return_immediately\x18\x02 \x01(\x08\x12\x14\n\x0cmax_messages\x18\x03 \x01(\x05\"L\n\x0cPullResponse\x12<\n\x11received_messages\x18\x01 \x03(\x0b\x32!.google.pubsub.v1.ReceivedMessage\"_\n\x18ModifyAckDeadlineRequest\x12\x14\n\x0csubscription\x18\x01 \x01(\t\x12\x0f\n\x07\x61\x63k_ids\x18\x04 \x03(\t\x12\x1c\n\x14\x61\x63k_deadline_seconds\x18\x03 \x01(\x05\";\n\x12\x41\x63knowledgeRequest\x12\x14\n\x0csubscription\x18\x01 \x01(\t\x12\x0f\n\x07\x61\x63k_ids\x18\x02 \x03(\t\"\xa4\x01\n\x14StreamingPullRequest\x12\x14\n\x0csubscription\x18\x01 \x01(\t\x12\x0f\n\x07\x61\x63k_ids\x18\x02 \x03(\t\x12\x1f\n\x17modify_deadline_seconds\x18\x03 \x03(\x05\x12\x1f\n\x17modify_deadline_ack_ids\x18\x04 \x03(\t\x12#\n\x1bstream_ack_deadline_seconds\x18\x05 \x01(\x05\"U\n\x15StreamingPullResponse\x12<\n\x11received_messages\x18\x01 \x03(\x0b\x32!.google.pubsub.v1.ReceivedMessage\";\n\x15\x43reateSnapshotRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x14\n\x0csubscription\x18\x02 \x01(\t\"v\n\x15UpdateSnapshotRequest\x12,\n\x08snapshot\x18\x01 \x01(\x0b\x32\x1a.google.pubsub.v1.Snapshot\x12/\n\x0bupdate_mask\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.FieldMask\"\xbf\x01\n\x08Snapshot\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\r\n\x05topic\x18\x02 \x01(\t\x12/\n\x0b\x65xpire_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x36\n\x06labels\x18\x04 \x03(\x0b\x32&.google.pubsub.v1.Snapshot.LabelsEntry\x1a-\n\x0bLabelsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"N\n\x14ListSnapshotsRequest\x12\x0f\n\x07project\x18\x01 \x01(\t\x12\x11\n\tpage_size\x18\x02 \x01(\x05\x12\x12\n\npage_token\x18\x03 \x01(\t\"_\n\x15ListSnapshotsResponse\x12-\n\tsnapshots\x18\x01 \x03(\x0b\x32\x1a.google.pubsub.v1.Snapshot\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\")\n\x15\x44\x65leteSnapshotRequest\x12\x10\n\x08snapshot\x18\x01 \x01(\t\"m\n\x0bSeekRequest\x12\x14\n\x0csubscription\x18\x01 \x01(\t\x12*\n\x04time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.TimestampH\x00\x12\x12\n\x08snapshot\x18\x03 \x01(\tH\x00\x42\x08\n\x06target\"\x0e\n\x0cSeekResponse2\xf7\x10\n\nSubscriber\x12\x86\x01\n\x12\x43reateSubscription\x12\x1e.google.pubsub.v1.Subscription\x1a\x1e.google.pubsub.v1.Subscription\"0\x82\xd3\xe4\x93\x02*\x1a%/v1/{name=projects/*/subscriptions/*}:\x01*\x12\x92\x01\n\x0fGetSubscription\x12(.google.pubsub.v1.GetSubscriptionRequest\x1a\x1e.google.pubsub.v1.Subscription\"5\x82\xd3\xe4\x93\x02/\x12-/v1/{subscription=projects/*/subscriptions/*}\x12\xa0\x01\n\x12UpdateSubscription\x12+.google.pubsub.v1.UpdateSubscriptionRequest\x1a\x1e.google.pubsub.v1.Subscription\"=\x82\xd3\xe4\x93\x02\x37\x32\x32/v1/{subscription.name=projects/*/subscriptions/*}:\x01*\x12\x9c\x01\n\x11ListSubscriptions\x12*.google.pubsub.v1.ListSubscriptionsRequest\x1a+.google.pubsub.v1.ListSubscriptionsResponse\".\x82\xd3\xe4\x93\x02(\x12&/v1/{project=projects/*}/subscriptions\x12\x90\x01\n\x12\x44\x65leteSubscription\x12+.google.pubsub.v1.DeleteSubscriptionRequest\x1a\x16.google.protobuf.Empty\"5\x82\xd3\xe4\x93\x02/*-/v1/{subscription=projects/*/subscriptions/*}\x12\xa3\x01\n\x11ModifyAckDeadline\x12*.google.pubsub.v1.ModifyAckDeadlineRequest\x1a\x16.google.protobuf.Empty\"J\x82\xd3\xe4\x93\x02\x44\"?/v1/{subscription=projects/*/subscriptions/*}:modifyAckDeadline:\x01*\x12\x91\x01\n\x0b\x41\x63knowledge\x12$.google.pubsub.v1.AcknowledgeRequest\x1a\x16.google.protobuf.Empty\"D\x82\xd3\xe4\x93\x02>\"9/v1/{subscription=projects/*/subscriptions/*}:acknowledge:\x01*\x12\x84\x01\n\x04Pull\x12\x1d.google.pubsub.v1.PullRequest\x1a\x1e.google.pubsub.v1.PullResponse\"=\x82\xd3\xe4\x93\x02\x37\"2/v1/{subscription=projects/*/subscriptions/*}:pull:\x01*\x12\x64\n\rStreamingPull\x12&.google.pubsub.v1.StreamingPullRequest\x1a\'.google.pubsub.v1.StreamingPullResponse(\x01\x30\x01\x12\xa0\x01\n\x10ModifyPushConfig\x12).google.pubsub.v1.ModifyPushConfigRequest\x1a\x16.google.protobuf.Empty\"I\x82\xd3\xe4\x93\x02\x43\">/v1/{subscription=projects/*/subscriptions/*}:modifyPushConfig:\x01*\x12\x8c\x01\n\rListSnapshots\x12&.google.pubsub.v1.ListSnapshotsRequest\x1a\'.google.pubsub.v1.ListSnapshotsResponse\"*\x82\xd3\xe4\x93\x02$\x12\"/v1/{project=projects/*}/snapshots\x12\x83\x01\n\x0e\x43reateSnapshot\x12\'.google.pubsub.v1.CreateSnapshotRequest\x1a\x1a.google.pubsub.v1.Snapshot\",\x82\xd3\xe4\x93\x02&\x1a!/v1/{name=projects/*/snapshots/*}:\x01*\x12\x8c\x01\n\x0eUpdateSnapshot\x12\'.google.pubsub.v1.UpdateSnapshotRequest\x1a\x1a.google.pubsub.v1.Snapshot\"5\x82\xd3\xe4\x93\x02/2*/v1/{snapshot.name=projects/*/snapshots/*}:\x01*\x12\x80\x01\n\x0e\x44\x65leteSnapshot\x12\'.google.pubsub.v1.DeleteSnapshotRequest\x1a\x16.google.protobuf.Empty\"-\x82\xd3\xe4\x93\x02\'*%/v1/{snapshot=projects/*/snapshots/*}\x12\x84\x01\n\x04Seek\x12\x1d.google.pubsub.v1.SeekRequest\x1a\x1e.google.pubsub.v1.SeekResponse\"=\x82\xd3\xe4\x93\x02\x37\"2/v1/{subscription=projects/*/subscriptions/*}:seek:\x01*2\x9a\x07\n\tPublisher\x12j\n\x0b\x43reateTopic\x12\x17.google.pubsub.v1.Topic\x1a\x17.google.pubsub.v1.Topic\")\x82\xd3\xe4\x93\x02#\x1a\x1e/v1/{name=projects/*/topics/*}:\x01*\x12}\n\x0bUpdateTopic\x12$.google.pubsub.v1.UpdateTopicRequest\x1a\x17.google.pubsub.v1.Topic\"/\x82\xd3\xe4\x93\x02)2$/v1/{topic.name=projects/*/topics/*}:\x01*\x12\x82\x01\n\x07Publish\x12 .google.pubsub.v1.PublishRequest\x1a!.google.pubsub.v1.PublishResponse\"2\x82\xd3\xe4\x93\x02,\"\'/v1/{topic=projects/*/topics/*}:publish:\x01*\x12o\n\x08GetTopic\x12!.google.pubsub.v1.GetTopicRequest\x1a\x17.google.pubsub.v1.Topic\"\'\x82\xd3\xe4\x93\x02!\x12\x1f/v1/{topic=projects/*/topics/*}\x12\x80\x01\n\nListTopics\x12#.google.pubsub.v1.ListTopicsRequest\x1a$.google.pubsub.v1.ListTopicsResponse\"\'\x82\xd3\xe4\x93\x02!\x12\x1f/v1/{project=projects/*}/topics\x12\xb2\x01\n\x16ListTopicSubscriptions\x12/.google.pubsub.v1.ListTopicSubscriptionsRequest\x1a\x30.google.pubsub.v1.ListTopicSubscriptionsResponse\"5\x82\xd3\xe4\x93\x02/\x12-/v1/{topic=projects/*/topics/*}/subscriptions\x12t\n\x0b\x44\x65leteTopic\x12$.google.pubsub.v1.DeleteTopicRequest\x1a\x16.google.protobuf.Empty\"\'\x82\xd3\xe4\x93\x02!*\x1f/v1/{topic=projects/*/topics/*}By\n\x14\x63om.google.pubsub.v1B\x0bPubsubProtoP\x01Z6google.golang.org/genproto/googleapis/pubsub/v1;pubsub\xf8\x01\x01\xaa\x02\x16Google.Cloud.PubSub.V1b\x06proto3')
+  serialized_pb=_b('\n)google/cloud/pubsub_v1/proto/pubsub.proto\x12\x10google.pubsub.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a google/protobuf/field_mask.proto\x1a\x1fgoogle/protobuf/timestamp.proto\";\n\x14MessageStoragePolicy\x12#\n\x1b\x61llowed_persistence_regions\x18\x01 \x03(\t\"\xc1\x01\n\x05Topic\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x33\n\x06labels\x18\x02 \x03(\x0b\x32#.google.pubsub.v1.Topic.LabelsEntry\x12\x46\n\x16message_storage_policy\x18\x03 \x01(\x0b\x32&.google.pubsub.v1.MessageStoragePolicy\x1a-\n\x0bLabelsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"\xdb\x01\n\rPubsubMessage\x12\x0c\n\x04\x64\x61ta\x18\x01 \x01(\x0c\x12\x43\n\nattributes\x18\x02 \x03(\x0b\x32/.google.pubsub.v1.PubsubMessage.AttributesEntry\x12\x12\n\nmessage_id\x18\x03 \x01(\t\x12\x30\n\x0cpublish_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x1a\x31\n\x0f\x41ttributesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\" \n\x0fGetTopicRequest\x12\r\n\x05topic\x18\x01 \x01(\t\"m\n\x12UpdateTopicRequest\x12&\n\x05topic\x18\x01 \x01(\x0b\x32\x17.google.pubsub.v1.Topic\x12/\n\x0bupdate_mask\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.FieldMask\"R\n\x0ePublishRequest\x12\r\n\x05topic\x18\x01 \x01(\t\x12\x31\n\x08messages\x18\x02 \x03(\x0b\x32\x1f.google.pubsub.v1.PubsubMessage\"&\n\x0fPublishResponse\x12\x13\n\x0bmessage_ids\x18\x01 \x03(\t\"K\n\x11ListTopicsRequest\x12\x0f\n\x07project\x18\x01 \x01(\t\x12\x11\n\tpage_size\x18\x02 \x01(\x05\x12\x12\n\npage_token\x18\x03 \x01(\t\"V\n\x12ListTopicsResponse\x12\'\n\x06topics\x18\x01 \x03(\x0b\x32\x17.google.pubsub.v1.Topic\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\"U\n\x1dListTopicSubscriptionsRequest\x12\r\n\x05topic\x18\x01 \x01(\t\x12\x11\n\tpage_size\x18\x02 \x01(\x05\x12\x12\n\npage_token\x18\x03 \x01(\t\"P\n\x1eListTopicSubscriptionsResponse\x12\x15\n\rsubscriptions\x18\x01 \x03(\t\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\"Q\n\x19ListTopicSnapshotsRequest\x12\r\n\x05topic\x18\x01 \x01(\t\x12\x11\n\tpage_size\x18\x02 \x01(\x05\x12\x12\n\npage_token\x18\x03 \x01(\t\"H\n\x1aListTopicSnapshotsResponse\x12\x11\n\tsnapshots\x18\x01 \x03(\t\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\"#\n\x12\x44\x65leteTopicRequest\x12\r\n\x05topic\x18\x01 \x01(\t\"\xc5\x02\n\x0cSubscription\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\r\n\x05topic\x18\x02 \x01(\t\x12\x31\n\x0bpush_config\x18\x04 \x01(\x0b\x32\x1c.google.pubsub.v1.PushConfig\x12\x1c\n\x14\x61\x63k_deadline_seconds\x18\x05 \x01(\x05\x12\x1d\n\x15retain_acked_messages\x18\x07 \x01(\x08\x12=\n\x1amessage_retention_duration\x18\x08 \x01(\x0b\x32\x19.google.protobuf.Duration\x12:\n\x06labels\x18\t \x03(\x0b\x32*.google.pubsub.v1.Subscription.LabelsEntry\x1a-\n\x0bLabelsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"\x98\x01\n\nPushConfig\x12\x15\n\rpush_endpoint\x18\x01 \x01(\t\x12@\n\nattributes\x18\x02 \x03(\x0b\x32,.google.pubsub.v1.PushConfig.AttributesEntry\x1a\x31\n\x0f\x41ttributesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"S\n\x0fReceivedMessage\x12\x0e\n\x06\x61\x63k_id\x18\x01 \x01(\t\x12\x30\n\x07message\x18\x02 \x01(\x0b\x32\x1f.google.pubsub.v1.PubsubMessage\".\n\x16GetSubscriptionRequest\x12\x14\n\x0csubscription\x18\x01 \x01(\t\"\x82\x01\n\x19UpdateSubscriptionRequest\x12\x34\n\x0csubscription\x18\x01 \x01(\x0b\x32\x1e.google.pubsub.v1.Subscription\x12/\n\x0bupdate_mask\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.FieldMask\"R\n\x18ListSubscriptionsRequest\x12\x0f\n\x07project\x18\x01 \x01(\t\x12\x11\n\tpage_size\x18\x02 \x01(\x05\x12\x12\n\npage_token\x18\x03 \x01(\t\"k\n\x19ListSubscriptionsResponse\x12\x35\n\rsubscriptions\x18\x01 \x03(\x0b\x32\x1e.google.pubsub.v1.Subscription\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\"1\n\x19\x44\x65leteSubscriptionRequest\x12\x14\n\x0csubscription\x18\x01 \x01(\t\"b\n\x17ModifyPushConfigRequest\x12\x14\n\x0csubscription\x18\x01 \x01(\t\x12\x31\n\x0bpush_config\x18\x02 \x01(\x0b\x32\x1c.google.pubsub.v1.PushConfig\"U\n\x0bPullRequest\x12\x14\n\x0csubscription\x18\x01 \x01(\t\x12\x1a\n\x12return_immediately\x18\x02 \x01(\x08\x12\x14\n\x0cmax_messages\x18\x03 \x01(\x05\"L\n\x0cPullResponse\x12<\n\x11received_messages\x18\x01 \x03(\x0b\x32!.google.pubsub.v1.ReceivedMessage\"_\n\x18ModifyAckDeadlineRequest\x12\x14\n\x0csubscription\x18\x01 \x01(\t\x12\x0f\n\x07\x61\x63k_ids\x18\x04 \x03(\t\x12\x1c\n\x14\x61\x63k_deadline_seconds\x18\x03 \x01(\x05\";\n\x12\x41\x63knowledgeRequest\x12\x14\n\x0csubscription\x18\x01 \x01(\t\x12\x0f\n\x07\x61\x63k_ids\x18\x02 \x03(\t\"\xa4\x01\n\x14StreamingPullRequest\x12\x14\n\x0csubscription\x18\x01 \x01(\t\x12\x0f\n\x07\x61\x63k_ids\x18\x02 \x03(\t\x12\x1f\n\x17modify_deadline_seconds\x18\x03 \x03(\x05\x12\x1f\n\x17modify_deadline_ack_ids\x18\x04 \x03(\t\x12#\n\x1bstream_ack_deadline_seconds\x18\x05 \x01(\x05\"U\n\x15StreamingPullResponse\x12<\n\x11received_messages\x18\x01 \x03(\x0b\x32!.google.pubsub.v1.ReceivedMessage\"\xaf\x01\n\x15\x43reateSnapshotRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x14\n\x0csubscription\x18\x02 \x01(\t\x12\x43\n\x06labels\x18\x03 \x03(\x0b\x32\x33.google.pubsub.v1.CreateSnapshotRequest.LabelsEntry\x1a-\n\x0bLabelsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"v\n\x15UpdateSnapshotRequest\x12,\n\x08snapshot\x18\x01 \x01(\x0b\x32\x1a.google.pubsub.v1.Snapshot\x12/\n\x0bupdate_mask\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.FieldMask\"\xbf\x01\n\x08Snapshot\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\r\n\x05topic\x18\x02 \x01(\t\x12/\n\x0b\x65xpire_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x36\n\x06labels\x18\x04 \x03(\x0b\x32&.google.pubsub.v1.Snapshot.LabelsEntry\x1a-\n\x0bLabelsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"&\n\x12GetSnapshotRequest\x12\x10\n\x08snapshot\x18\x01 \x01(\t\"N\n\x14ListSnapshotsRequest\x12\x0f\n\x07project\x18\x01 \x01(\t\x12\x11\n\tpage_size\x18\x02 \x01(\x05\x12\x12\n\npage_token\x18\x03 \x01(\t\"_\n\x15ListSnapshotsResponse\x12-\n\tsnapshots\x18\x01 \x03(\x0b\x32\x1a.google.pubsub.v1.Snapshot\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\")\n\x15\x44\x65leteSnapshotRequest\x12\x10\n\x08snapshot\x18\x01 \x01(\t\"m\n\x0bSeekRequest\x12\x14\n\x0csubscription\x18\x01 \x01(\t\x12*\n\x04time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.TimestampH\x00\x12\x12\n\x08snapshot\x18\x03 \x01(\tH\x00\x42\x08\n\x06target\"\x0e\n\x0cSeekResponse2\xbf\x08\n\tPublisher\x12j\n\x0b\x43reateTopic\x12\x17.google.pubsub.v1.Topic\x1a\x17.google.pubsub.v1.Topic\")\x82\xd3\xe4\x93\x02#\x1a\x1e/v1/{name=projects/*/topics/*}:\x01*\x12}\n\x0bUpdateTopic\x12$.google.pubsub.v1.UpdateTopicRequest\x1a\x17.google.pubsub.v1.Topic\"/\x82\xd3\xe4\x93\x02)2$/v1/{topic.name=projects/*/topics/*}:\x01*\x12\x82\x01\n\x07Publish\x12 .google.pubsub.v1.PublishRequest\x1a!.google.pubsub.v1.PublishResponse\"2\x82\xd3\xe4\x93\x02,\"\'/v1/{topic=projects/*/topics/*}:publish:\x01*\x12o\n\x08GetTopic\x12!.google.pubsub.v1.GetTopicRequest\x1a\x17.google.pubsub.v1.Topic\"\'\x82\xd3\xe4\x93\x02!\x12\x1f/v1/{topic=projects/*/topics/*}\x12\x80\x01\n\nListTopics\x12#.google.pubsub.v1.ListTopicsRequest\x1a$.google.pubsub.v1.ListTopicsResponse\"\'\x82\xd3\xe4\x93\x02!\x12\x1f/v1/{project=projects/*}/topics\x12\xb2\x01\n\x16ListTopicSubscriptions\x12/.google.pubsub.v1.ListTopicSubscriptionsRequest\x1a\x30.google.pubsub.v1.ListTopicSubscriptionsResponse\"5\x82\xd3\xe4\x93\x02/\x12-/v1/{topic=projects/*/topics/*}/subscriptions\x12\xa2\x01\n\x12ListTopicSnapshots\x12+.google.pubsub.v1.ListTopicSnapshotsRequest\x1a,.google.pubsub.v1.ListTopicSnapshotsResponse\"1\x82\xd3\xe4\x93\x02+\x12)/v1/{topic=projects/*/topics/*}/snapshots\x12t\n\x0b\x44\x65leteTopic\x12$.google.pubsub.v1.DeleteTopicRequest\x1a\x16.google.protobuf.Empty\"\'\x82\xd3\xe4\x93\x02!*\x1f/v1/{topic=projects/*/topics/*}2\xf7\x11\n\nSubscriber\x12\x86\x01\n\x12\x43reateSubscription\x12\x1e.google.pubsub.v1.Subscription\x1a\x1e.google.pubsub.v1.Subscription\"0\x82\xd3\xe4\x93\x02*\x1a%/v1/{name=projects/*/subscriptions/*}:\x01*\x12\x92\x01\n\x0fGetSubscription\x12(.google.pubsub.v1.GetSubscriptionRequest\x1a\x1e.google.pubsub.v1.Subscription\"5\x82\xd3\xe4\x93\x02/\x12-/v1/{subscription=projects/*/subscriptions/*}\x12\xa0\x01\n\x12UpdateSubscription\x12+.google.pubsub.v1.UpdateSubscriptionRequest\x1a\x1e.google.pubsub.v1.Subscription\"=\x82\xd3\xe4\x93\x02\x37\x32\x32/v1/{subscription.name=projects/*/subscriptions/*}:\x01*\x12\x9c\x01\n\x11ListSubscriptions\x12*.google.pubsub.v1.ListSubscriptionsRequest\x1a+.google.pubsub.v1.ListSubscriptionsResponse\".\x82\xd3\xe4\x93\x02(\x12&/v1/{project=projects/*}/subscriptions\x12\x90\x01\n\x12\x44\x65leteSubscription\x12+.google.pubsub.v1.DeleteSubscriptionRequest\x1a\x16.google.protobuf.Empty\"5\x82\xd3\xe4\x93\x02/*-/v1/{subscription=projects/*/subscriptions/*}\x12\xa3\x01\n\x11ModifyAckDeadline\x12*.google.pubsub.v1.ModifyAckDeadlineRequest\x1a\x16.google.protobuf.Empty\"J\x82\xd3\xe4\x93\x02\x44\"?/v1/{subscription=projects/*/subscriptions/*}:modifyAckDeadline:\x01*\x12\x91\x01\n\x0b\x41\x63knowledge\x12$.google.pubsub.v1.AcknowledgeRequest\x1a\x16.google.protobuf.Empty\"D\x82\xd3\xe4\x93\x02>\"9/v1/{subscription=projects/*/subscriptions/*}:acknowledge:\x01*\x12\x84\x01\n\x04Pull\x12\x1d.google.pubsub.v1.PullRequest\x1a\x1e.google.pubsub.v1.PullResponse\"=\x82\xd3\xe4\x93\x02\x37\"2/v1/{subscription=projects/*/subscriptions/*}:pull:\x01*\x12\x64\n\rStreamingPull\x12&.google.pubsub.v1.StreamingPullRequest\x1a\'.google.pubsub.v1.StreamingPullResponse(\x01\x30\x01\x12\xa0\x01\n\x10ModifyPushConfig\x12).google.pubsub.v1.ModifyPushConfigRequest\x1a\x16.google.protobuf.Empty\"I\x82\xd3\xe4\x93\x02\x43\">/v1/{subscription=projects/*/subscriptions/*}:modifyPushConfig:\x01*\x12~\n\x0bGetSnapshot\x12$.google.pubsub.v1.GetSnapshotRequest\x1a\x1a.google.pubsub.v1.Snapshot\"-\x82\xd3\xe4\x93\x02\'\x12%/v1/{snapshot=projects/*/snapshots/*}\x12\x8c\x01\n\rListSnapshots\x12&.google.pubsub.v1.ListSnapshotsRequest\x1a\'.google.pubsub.v1.ListSnapshotsResponse\"*\x82\xd3\xe4\x93\x02$\x12\"/v1/{project=projects/*}/snapshots\x12\x83\x01\n\x0e\x43reateSnapshot\x12\'.google.pubsub.v1.CreateSnapshotRequest\x1a\x1a.google.pubsub.v1.Snapshot\",\x82\xd3\xe4\x93\x02&\x1a!/v1/{name=projects/*/snapshots/*}:\x01*\x12\x8c\x01\n\x0eUpdateSnapshot\x12\'.google.pubsub.v1.UpdateSnapshotRequest\x1a\x1a.google.pubsub.v1.Snapshot\"5\x82\xd3\xe4\x93\x02/2*/v1/{snapshot.name=projects/*/snapshots/*}:\x01*\x12\x80\x01\n\x0e\x44\x65leteSnapshot\x12\'.google.pubsub.v1.DeleteSnapshotRequest\x1a\x16.google.protobuf.Empty\"-\x82\xd3\xe4\x93\x02\'*%/v1/{snapshot=projects/*/snapshots/*}\x12\x84\x01\n\x04Seek\x12\x1d.google.pubsub.v1.SeekRequest\x1a\x1e.google.pubsub.v1.SeekResponse\"=\x82\xd3\xe4\x93\x02\x37\"2/v1/{subscription=projects/*/subscriptions/*}:seek:\x01*B\x92\x01\n\x14\x63om.google.pubsub.v1B\x0bPubsubProtoP\x01Z6google.golang.org/genproto/googleapis/pubsub/v1;pubsub\xf8\x01\x01\xaa\x02\x16Google.Cloud.PubSub.V1\xca\x02\x16Google\\Cloud\\PubSub\\V1b\x06proto3')
   ,
   dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR,google_dot_protobuf_dot_duration__pb2.DESCRIPTOR,google_dot_protobuf_dot_empty__pb2.DESCRIPTOR,google_dot_protobuf_dot_field__mask__pb2.DESCRIPTOR,google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,])
 
 
+
+
+_MESSAGESTORAGEPOLICY = _descriptor.Descriptor(
+  name='MessageStoragePolicy',
+  full_name='google.pubsub.v1.MessageStoragePolicy',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='allowed_persistence_regions', full_name='google.pubsub.v1.MessageStoragePolicy.allowed_persistence_regions', index=0,
+      number=1, type=9, cpp_type=9, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=221,
+  serialized_end=280,
+)
 
 
 _TOPIC_LABELSENTRY = _descriptor.Descriptor(
@@ -44,14 +75,14 @@ _TOPIC_LABELSENTRY = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='value', full_name='google.pubsub.v1.Topic.LabelsEntry.value', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -64,8 +95,8 @@ _TOPIC_LABELSENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=297,
-  serialized_end=342,
+  serialized_start=431,
+  serialized_end=476,
 )
 
 _TOPIC = _descriptor.Descriptor(
@@ -81,14 +112,21 @@ _TOPIC = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='labels', full_name='google.pubsub.v1.Topic.labels', index=1,
       number=2, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='message_storage_policy', full_name='google.pubsub.v1.Topic.message_storage_policy', index=2,
+      number=3, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -101,8 +139,8 @@ _TOPIC = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=221,
-  serialized_end=342,
+  serialized_start=283,
+  serialized_end=476,
 )
 
 
@@ -119,14 +157,14 @@ _PUBSUBMESSAGE_ATTRIBUTESENTRY = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='value', full_name='google.pubsub.v1.PubsubMessage.AttributesEntry.value', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -139,8 +177,8 @@ _PUBSUBMESSAGE_ATTRIBUTESENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=515,
-  serialized_end=564,
+  serialized_start=649,
+  serialized_end=698,
 )
 
 _PUBSUBMESSAGE = _descriptor.Descriptor(
@@ -156,28 +194,28 @@ _PUBSUBMESSAGE = _descriptor.Descriptor(
       has_default_value=False, default_value=_b(""),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='attributes', full_name='google.pubsub.v1.PubsubMessage.attributes', index=1,
       number=2, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='message_id', full_name='google.pubsub.v1.PubsubMessage.message_id', index=2,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='publish_time', full_name='google.pubsub.v1.PubsubMessage.publish_time', index=3,
       number=4, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -190,8 +228,8 @@ _PUBSUBMESSAGE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=345,
-  serialized_end=564,
+  serialized_start=479,
+  serialized_end=698,
 )
 
 
@@ -208,7 +246,7 @@ _GETTOPICREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -221,8 +259,8 @@ _GETTOPICREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=566,
-  serialized_end=598,
+  serialized_start=700,
+  serialized_end=732,
 )
 
 
@@ -239,14 +277,14 @@ _UPDATETOPICREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='update_mask', full_name='google.pubsub.v1.UpdateTopicRequest.update_mask', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -259,8 +297,8 @@ _UPDATETOPICREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=600,
-  serialized_end=709,
+  serialized_start=734,
+  serialized_end=843,
 )
 
 
@@ -277,14 +315,14 @@ _PUBLISHREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='messages', full_name='google.pubsub.v1.PublishRequest.messages', index=1,
       number=2, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -297,8 +335,8 @@ _PUBLISHREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=711,
-  serialized_end=793,
+  serialized_start=845,
+  serialized_end=927,
 )
 
 
@@ -315,7 +353,7 @@ _PUBLISHRESPONSE = _descriptor.Descriptor(
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -328,8 +366,8 @@ _PUBLISHRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=795,
-  serialized_end=833,
+  serialized_start=929,
+  serialized_end=967,
 )
 
 
@@ -346,21 +384,21 @@ _LISTTOPICSREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='page_size', full_name='google.pubsub.v1.ListTopicsRequest.page_size', index=1,
       number=2, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='page_token', full_name='google.pubsub.v1.ListTopicsRequest.page_token', index=2,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -373,8 +411,8 @@ _LISTTOPICSREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=835,
-  serialized_end=910,
+  serialized_start=969,
+  serialized_end=1044,
 )
 
 
@@ -391,14 +429,14 @@ _LISTTOPICSRESPONSE = _descriptor.Descriptor(
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='next_page_token', full_name='google.pubsub.v1.ListTopicsResponse.next_page_token', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -411,8 +449,8 @@ _LISTTOPICSRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=912,
-  serialized_end=998,
+  serialized_start=1046,
+  serialized_end=1132,
 )
 
 
@@ -429,21 +467,21 @@ _LISTTOPICSUBSCRIPTIONSREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='page_size', full_name='google.pubsub.v1.ListTopicSubscriptionsRequest.page_size', index=1,
       number=2, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='page_token', full_name='google.pubsub.v1.ListTopicSubscriptionsRequest.page_token', index=2,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -456,8 +494,8 @@ _LISTTOPICSUBSCRIPTIONSREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1000,
-  serialized_end=1085,
+  serialized_start=1134,
+  serialized_end=1219,
 )
 
 
@@ -474,14 +512,14 @@ _LISTTOPICSUBSCRIPTIONSRESPONSE = _descriptor.Descriptor(
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='next_page_token', full_name='google.pubsub.v1.ListTopicSubscriptionsResponse.next_page_token', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -494,8 +532,91 @@ _LISTTOPICSUBSCRIPTIONSRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1087,
-  serialized_end=1167,
+  serialized_start=1221,
+  serialized_end=1301,
+)
+
+
+_LISTTOPICSNAPSHOTSREQUEST = _descriptor.Descriptor(
+  name='ListTopicSnapshotsRequest',
+  full_name='google.pubsub.v1.ListTopicSnapshotsRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='topic', full_name='google.pubsub.v1.ListTopicSnapshotsRequest.topic', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='page_size', full_name='google.pubsub.v1.ListTopicSnapshotsRequest.page_size', index=1,
+      number=2, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='page_token', full_name='google.pubsub.v1.ListTopicSnapshotsRequest.page_token', index=2,
+      number=3, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=1303,
+  serialized_end=1384,
+)
+
+
+_LISTTOPICSNAPSHOTSRESPONSE = _descriptor.Descriptor(
+  name='ListTopicSnapshotsResponse',
+  full_name='google.pubsub.v1.ListTopicSnapshotsResponse',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='snapshots', full_name='google.pubsub.v1.ListTopicSnapshotsResponse.snapshots', index=0,
+      number=1, type=9, cpp_type=9, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='next_page_token', full_name='google.pubsub.v1.ListTopicSnapshotsResponse.next_page_token', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=1386,
+  serialized_end=1458,
 )
 
 
@@ -512,7 +633,7 @@ _DELETETOPICREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -525,8 +646,8 @@ _DELETETOPICREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1169,
-  serialized_end=1204,
+  serialized_start=1460,
+  serialized_end=1495,
 )
 
 
@@ -543,14 +664,14 @@ _SUBSCRIPTION_LABELSENTRY = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='value', full_name='google.pubsub.v1.Subscription.LabelsEntry.value', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -563,8 +684,8 @@ _SUBSCRIPTION_LABELSENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=297,
-  serialized_end=342,
+  serialized_start=431,
+  serialized_end=476,
 )
 
 _SUBSCRIPTION = _descriptor.Descriptor(
@@ -580,49 +701,49 @@ _SUBSCRIPTION = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='topic', full_name='google.pubsub.v1.Subscription.topic', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='push_config', full_name='google.pubsub.v1.Subscription.push_config', index=2,
       number=4, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='ack_deadline_seconds', full_name='google.pubsub.v1.Subscription.ack_deadline_seconds', index=3,
       number=5, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='retain_acked_messages', full_name='google.pubsub.v1.Subscription.retain_acked_messages', index=4,
       number=7, type=8, cpp_type=7, label=1,
       has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='message_retention_duration', full_name='google.pubsub.v1.Subscription.message_retention_duration', index=5,
       number=8, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='labels', full_name='google.pubsub.v1.Subscription.labels', index=6,
       number=9, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -635,8 +756,8 @@ _SUBSCRIPTION = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1207,
-  serialized_end=1532,
+  serialized_start=1498,
+  serialized_end=1823,
 )
 
 
@@ -653,14 +774,14 @@ _PUSHCONFIG_ATTRIBUTESENTRY = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='value', full_name='google.pubsub.v1.PushConfig.AttributesEntry.value', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -673,8 +794,8 @@ _PUSHCONFIG_ATTRIBUTESENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=515,
-  serialized_end=564,
+  serialized_start=649,
+  serialized_end=698,
 )
 
 _PUSHCONFIG = _descriptor.Descriptor(
@@ -690,14 +811,14 @@ _PUSHCONFIG = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='attributes', full_name='google.pubsub.v1.PushConfig.attributes', index=1,
       number=2, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -710,8 +831,8 @@ _PUSHCONFIG = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1535,
-  serialized_end=1687,
+  serialized_start=1826,
+  serialized_end=1978,
 )
 
 
@@ -728,14 +849,14 @@ _RECEIVEDMESSAGE = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='message', full_name='google.pubsub.v1.ReceivedMessage.message', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -748,8 +869,8 @@ _RECEIVEDMESSAGE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1689,
-  serialized_end=1772,
+  serialized_start=1980,
+  serialized_end=2063,
 )
 
 
@@ -766,7 +887,7 @@ _GETSUBSCRIPTIONREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -779,8 +900,8 @@ _GETSUBSCRIPTIONREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1774,
-  serialized_end=1820,
+  serialized_start=2065,
+  serialized_end=2111,
 )
 
 
@@ -797,14 +918,14 @@ _UPDATESUBSCRIPTIONREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='update_mask', full_name='google.pubsub.v1.UpdateSubscriptionRequest.update_mask', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -817,8 +938,8 @@ _UPDATESUBSCRIPTIONREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1823,
-  serialized_end=1953,
+  serialized_start=2114,
+  serialized_end=2244,
 )
 
 
@@ -835,21 +956,21 @@ _LISTSUBSCRIPTIONSREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='page_size', full_name='google.pubsub.v1.ListSubscriptionsRequest.page_size', index=1,
       number=2, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='page_token', full_name='google.pubsub.v1.ListSubscriptionsRequest.page_token', index=2,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -862,8 +983,8 @@ _LISTSUBSCRIPTIONSREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1955,
-  serialized_end=2037,
+  serialized_start=2246,
+  serialized_end=2328,
 )
 
 
@@ -880,14 +1001,14 @@ _LISTSUBSCRIPTIONSRESPONSE = _descriptor.Descriptor(
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='next_page_token', full_name='google.pubsub.v1.ListSubscriptionsResponse.next_page_token', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -900,8 +1021,8 @@ _LISTSUBSCRIPTIONSRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2039,
-  serialized_end=2146,
+  serialized_start=2330,
+  serialized_end=2437,
 )
 
 
@@ -918,7 +1039,7 @@ _DELETESUBSCRIPTIONREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -931,8 +1052,8 @@ _DELETESUBSCRIPTIONREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2148,
-  serialized_end=2197,
+  serialized_start=2439,
+  serialized_end=2488,
 )
 
 
@@ -949,14 +1070,14 @@ _MODIFYPUSHCONFIGREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='push_config', full_name='google.pubsub.v1.ModifyPushConfigRequest.push_config', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -969,8 +1090,8 @@ _MODIFYPUSHCONFIGREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2199,
-  serialized_end=2297,
+  serialized_start=2490,
+  serialized_end=2588,
 )
 
 
@@ -987,21 +1108,21 @@ _PULLREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='return_immediately', full_name='google.pubsub.v1.PullRequest.return_immediately', index=1,
       number=2, type=8, cpp_type=7, label=1,
       has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='max_messages', full_name='google.pubsub.v1.PullRequest.max_messages', index=2,
       number=3, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -1014,8 +1135,8 @@ _PULLREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2299,
-  serialized_end=2384,
+  serialized_start=2590,
+  serialized_end=2675,
 )
 
 
@@ -1032,7 +1153,7 @@ _PULLRESPONSE = _descriptor.Descriptor(
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -1045,8 +1166,8 @@ _PULLRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2386,
-  serialized_end=2462,
+  serialized_start=2677,
+  serialized_end=2753,
 )
 
 
@@ -1063,21 +1184,21 @@ _MODIFYACKDEADLINEREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='ack_ids', full_name='google.pubsub.v1.ModifyAckDeadlineRequest.ack_ids', index=1,
       number=4, type=9, cpp_type=9, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='ack_deadline_seconds', full_name='google.pubsub.v1.ModifyAckDeadlineRequest.ack_deadline_seconds', index=2,
       number=3, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -1090,8 +1211,8 @@ _MODIFYACKDEADLINEREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2464,
-  serialized_end=2559,
+  serialized_start=2755,
+  serialized_end=2850,
 )
 
 
@@ -1108,14 +1229,14 @@ _ACKNOWLEDGEREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='ack_ids', full_name='google.pubsub.v1.AcknowledgeRequest.ack_ids', index=1,
       number=2, type=9, cpp_type=9, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -1128,8 +1249,8 @@ _ACKNOWLEDGEREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2561,
-  serialized_end=2620,
+  serialized_start=2852,
+  serialized_end=2911,
 )
 
 
@@ -1146,35 +1267,35 @@ _STREAMINGPULLREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='ack_ids', full_name='google.pubsub.v1.StreamingPullRequest.ack_ids', index=1,
       number=2, type=9, cpp_type=9, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='modify_deadline_seconds', full_name='google.pubsub.v1.StreamingPullRequest.modify_deadline_seconds', index=2,
       number=3, type=5, cpp_type=1, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='modify_deadline_ack_ids', full_name='google.pubsub.v1.StreamingPullRequest.modify_deadline_ack_ids', index=3,
       number=4, type=9, cpp_type=9, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='stream_ack_deadline_seconds', full_name='google.pubsub.v1.StreamingPullRequest.stream_ack_deadline_seconds', index=4,
       number=5, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -1187,8 +1308,8 @@ _STREAMINGPULLREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2623,
-  serialized_end=2787,
+  serialized_start=2914,
+  serialized_end=3078,
 )
 
 
@@ -1205,7 +1326,7 @@ _STREAMINGPULLRESPONSE = _descriptor.Descriptor(
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -1218,10 +1339,47 @@ _STREAMINGPULLRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2789,
-  serialized_end=2874,
+  serialized_start=3080,
+  serialized_end=3165,
 )
 
+
+_CREATESNAPSHOTREQUEST_LABELSENTRY = _descriptor.Descriptor(
+  name='LabelsEntry',
+  full_name='google.pubsub.v1.CreateSnapshotRequest.LabelsEntry',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='key', full_name='google.pubsub.v1.CreateSnapshotRequest.LabelsEntry.key', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='value', full_name='google.pubsub.v1.CreateSnapshotRequest.LabelsEntry.value', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=_descriptor._ParseOptions(descriptor_pb2.MessageOptions(), _b('8\001')),
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=431,
+  serialized_end=476,
+)
 
 _CREATESNAPSHOTREQUEST = _descriptor.Descriptor(
   name='CreateSnapshotRequest',
@@ -1236,18 +1394,25 @@ _CREATESNAPSHOTREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='subscription', full_name='google.pubsub.v1.CreateSnapshotRequest.subscription', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='labels', full_name='google.pubsub.v1.CreateSnapshotRequest.labels', index=2,
+      number=3, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
-  nested_types=[],
+  nested_types=[_CREATESNAPSHOTREQUEST_LABELSENTRY, ],
   enum_types=[
   ],
   options=None,
@@ -1256,8 +1421,8 @@ _CREATESNAPSHOTREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2876,
-  serialized_end=2935,
+  serialized_start=3168,
+  serialized_end=3343,
 )
 
 
@@ -1274,14 +1439,14 @@ _UPDATESNAPSHOTREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='update_mask', full_name='google.pubsub.v1.UpdateSnapshotRequest.update_mask', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -1294,8 +1459,8 @@ _UPDATESNAPSHOTREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2937,
-  serialized_end=3055,
+  serialized_start=3345,
+  serialized_end=3463,
 )
 
 
@@ -1312,14 +1477,14 @@ _SNAPSHOT_LABELSENTRY = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='value', full_name='google.pubsub.v1.Snapshot.LabelsEntry.value', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -1332,8 +1497,8 @@ _SNAPSHOT_LABELSENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=297,
-  serialized_end=342,
+  serialized_start=431,
+  serialized_end=476,
 )
 
 _SNAPSHOT = _descriptor.Descriptor(
@@ -1349,28 +1514,28 @@ _SNAPSHOT = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='topic', full_name='google.pubsub.v1.Snapshot.topic', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='expire_time', full_name='google.pubsub.v1.Snapshot.expire_time', index=2,
       number=3, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='labels', full_name='google.pubsub.v1.Snapshot.labels', index=3,
       number=4, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -1383,8 +1548,39 @@ _SNAPSHOT = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3058,
-  serialized_end=3249,
+  serialized_start=3466,
+  serialized_end=3657,
+)
+
+
+_GETSNAPSHOTREQUEST = _descriptor.Descriptor(
+  name='GetSnapshotRequest',
+  full_name='google.pubsub.v1.GetSnapshotRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='snapshot', full_name='google.pubsub.v1.GetSnapshotRequest.snapshot', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=3659,
+  serialized_end=3697,
 )
 
 
@@ -1401,21 +1597,21 @@ _LISTSNAPSHOTSREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='page_size', full_name='google.pubsub.v1.ListSnapshotsRequest.page_size', index=1,
       number=2, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='page_token', full_name='google.pubsub.v1.ListSnapshotsRequest.page_token', index=2,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -1428,8 +1624,8 @@ _LISTSNAPSHOTSREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3251,
-  serialized_end=3329,
+  serialized_start=3699,
+  serialized_end=3777,
 )
 
 
@@ -1446,14 +1642,14 @@ _LISTSNAPSHOTSRESPONSE = _descriptor.Descriptor(
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='next_page_token', full_name='google.pubsub.v1.ListSnapshotsResponse.next_page_token', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -1466,8 +1662,8 @@ _LISTSNAPSHOTSRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3331,
-  serialized_end=3426,
+  serialized_start=3779,
+  serialized_end=3874,
 )
 
 
@@ -1484,7 +1680,7 @@ _DELETESNAPSHOTREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -1497,8 +1693,8 @@ _DELETESNAPSHOTREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3428,
-  serialized_end=3469,
+  serialized_start=3876,
+  serialized_end=3917,
 )
 
 
@@ -1515,21 +1711,21 @@ _SEEKREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='time', full_name='google.pubsub.v1.SeekRequest.time', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='snapshot', full_name='google.pubsub.v1.SeekRequest.snapshot', index=2,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -1545,8 +1741,8 @@ _SEEKREQUEST = _descriptor.Descriptor(
       name='target', full_name='google.pubsub.v1.SeekRequest.target',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=3471,
-  serialized_end=3580,
+  serialized_start=3919,
+  serialized_end=4028,
 )
 
 
@@ -1569,12 +1765,13 @@ _SEEKRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3582,
-  serialized_end=3596,
+  serialized_start=4030,
+  serialized_end=4044,
 )
 
 _TOPIC_LABELSENTRY.containing_type = _TOPIC
 _TOPIC.fields_by_name['labels'].message_type = _TOPIC_LABELSENTRY
+_TOPIC.fields_by_name['message_storage_policy'].message_type = _MESSAGESTORAGEPOLICY
 _PUBSUBMESSAGE_ATTRIBUTESENTRY.containing_type = _PUBSUBMESSAGE
 _PUBSUBMESSAGE.fields_by_name['attributes'].message_type = _PUBSUBMESSAGE_ATTRIBUTESENTRY
 _PUBSUBMESSAGE.fields_by_name['publish_time'].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
@@ -1595,6 +1792,8 @@ _LISTSUBSCRIPTIONSRESPONSE.fields_by_name['subscriptions'].message_type = _SUBSC
 _MODIFYPUSHCONFIGREQUEST.fields_by_name['push_config'].message_type = _PUSHCONFIG
 _PULLRESPONSE.fields_by_name['received_messages'].message_type = _RECEIVEDMESSAGE
 _STREAMINGPULLRESPONSE.fields_by_name['received_messages'].message_type = _RECEIVEDMESSAGE
+_CREATESNAPSHOTREQUEST_LABELSENTRY.containing_type = _CREATESNAPSHOTREQUEST
+_CREATESNAPSHOTREQUEST.fields_by_name['labels'].message_type = _CREATESNAPSHOTREQUEST_LABELSENTRY
 _UPDATESNAPSHOTREQUEST.fields_by_name['snapshot'].message_type = _SNAPSHOT
 _UPDATESNAPSHOTREQUEST.fields_by_name['update_mask'].message_type = google_dot_protobuf_dot_field__mask__pb2._FIELDMASK
 _SNAPSHOT_LABELSENTRY.containing_type = _SNAPSHOT
@@ -1608,6 +1807,7 @@ _SEEKREQUEST.fields_by_name['time'].containing_oneof = _SEEKREQUEST.oneofs_by_na
 _SEEKREQUEST.oneofs_by_name['target'].fields.append(
   _SEEKREQUEST.fields_by_name['snapshot'])
 _SEEKREQUEST.fields_by_name['snapshot'].containing_oneof = _SEEKREQUEST.oneofs_by_name['target']
+DESCRIPTOR.message_types_by_name['MessageStoragePolicy'] = _MESSAGESTORAGEPOLICY
 DESCRIPTOR.message_types_by_name['Topic'] = _TOPIC
 DESCRIPTOR.message_types_by_name['PubsubMessage'] = _PUBSUBMESSAGE
 DESCRIPTOR.message_types_by_name['GetTopicRequest'] = _GETTOPICREQUEST
@@ -1618,6 +1818,8 @@ DESCRIPTOR.message_types_by_name['ListTopicsRequest'] = _LISTTOPICSREQUEST
 DESCRIPTOR.message_types_by_name['ListTopicsResponse'] = _LISTTOPICSRESPONSE
 DESCRIPTOR.message_types_by_name['ListTopicSubscriptionsRequest'] = _LISTTOPICSUBSCRIPTIONSREQUEST
 DESCRIPTOR.message_types_by_name['ListTopicSubscriptionsResponse'] = _LISTTOPICSUBSCRIPTIONSRESPONSE
+DESCRIPTOR.message_types_by_name['ListTopicSnapshotsRequest'] = _LISTTOPICSNAPSHOTSREQUEST
+DESCRIPTOR.message_types_by_name['ListTopicSnapshotsResponse'] = _LISTTOPICSNAPSHOTSRESPONSE
 DESCRIPTOR.message_types_by_name['DeleteTopicRequest'] = _DELETETOPICREQUEST
 DESCRIPTOR.message_types_by_name['Subscription'] = _SUBSCRIPTION
 DESCRIPTOR.message_types_by_name['PushConfig'] = _PUSHCONFIG
@@ -1637,12 +1839,34 @@ DESCRIPTOR.message_types_by_name['StreamingPullResponse'] = _STREAMINGPULLRESPON
 DESCRIPTOR.message_types_by_name['CreateSnapshotRequest'] = _CREATESNAPSHOTREQUEST
 DESCRIPTOR.message_types_by_name['UpdateSnapshotRequest'] = _UPDATESNAPSHOTREQUEST
 DESCRIPTOR.message_types_by_name['Snapshot'] = _SNAPSHOT
+DESCRIPTOR.message_types_by_name['GetSnapshotRequest'] = _GETSNAPSHOTREQUEST
 DESCRIPTOR.message_types_by_name['ListSnapshotsRequest'] = _LISTSNAPSHOTSREQUEST
 DESCRIPTOR.message_types_by_name['ListSnapshotsResponse'] = _LISTSNAPSHOTSRESPONSE
 DESCRIPTOR.message_types_by_name['DeleteSnapshotRequest'] = _DELETESNAPSHOTREQUEST
 DESCRIPTOR.message_types_by_name['SeekRequest'] = _SEEKREQUEST
 DESCRIPTOR.message_types_by_name['SeekResponse'] = _SEEKRESPONSE
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
+
+MessageStoragePolicy = _reflection.GeneratedProtocolMessageType('MessageStoragePolicy', (_message.Message,), dict(
+  DESCRIPTOR = _MESSAGESTORAGEPOLICY,
+  __module__ = 'google.cloud.pubsub_v1.proto.pubsub_pb2'
+  ,
+  __doc__ = """A message storage policy.
+
+
+    Attributes:
+      allowed_persistence_regions:
+          The list of GCP regions where messages that are published to
+          the topic may be persisted in storage. Messages published by
+          publishers running in non-allowed GCP regions (or running
+          outside of GCP altogether) will be routed for storage in one
+          of the allowed regions. An empty list indicates a
+          misconfiguration at the project or organization level, which
+          will result in all Publish operations failing.
+  """,
+  # @@protoc_insertion_point(class_scope:google.pubsub.v1.MessageStoragePolicy)
+  ))
+_sym_db.RegisterMessage(MessageStoragePolicy)
 
 Topic = _reflection.GeneratedProtocolMessageType('Topic', (_message.Message,), dict(
 
@@ -1669,6 +1893,14 @@ Topic = _reflection.GeneratedProtocolMessageType('Topic', (_message.Message,), d
           and it must not start with ``"goog"``.
       labels:
           User labels.
+      message_storage_policy:
+          Policy constraining how messages published to the topic may be
+          stored. It is determined when the topic is created based on
+          the policy configured at the project level. It must not be set
+          by the caller in the request to CreateTopic or to UpdateTopic.
+          This field will be populated in the responses for GetTopic,
+          CreateTopic, and UpdateTopic: if not present in the response,
+          then no constraints are in effect.
   """,
   # @@protoc_insertion_point(class_scope:google.pubsub.v1.Topic)
   ))
@@ -1737,10 +1969,14 @@ UpdateTopicRequest = _reflection.GeneratedProtocolMessageType('UpdateTopicReques
   
   Attributes:
       topic:
-          The topic to update.
+          The updated topic object.
       update_mask:
           Indicates which fields in the provided topic to update. Must
-          be specified and non-empty.
+          be specified and non-empty. Note that if ``update_mask``
+          contains "message\_storage\_policy" then the new value will be
+          determined based on the policy configured at the project or
+          organization level. The ``message_storage_policy`` must not be
+          set in the ``topic`` provided above.
   """,
   # @@protoc_insertion_point(class_scope:google.pubsub.v1.UpdateTopicRequest)
   ))
@@ -1865,6 +2101,54 @@ ListTopicSubscriptionsResponse = _reflection.GeneratedProtocolMessageType('ListT
   ))
 _sym_db.RegisterMessage(ListTopicSubscriptionsResponse)
 
+ListTopicSnapshotsRequest = _reflection.GeneratedProtocolMessageType('ListTopicSnapshotsRequest', (_message.Message,), dict(
+  DESCRIPTOR = _LISTTOPICSNAPSHOTSREQUEST,
+  __module__ = 'google.cloud.pubsub_v1.proto.pubsub_pb2'
+  ,
+  __doc__ = """Request for the ``ListTopicSnapshots`` method. ALPHA: This feature is
+  part of an alpha release. This API might be changed in
+  backward-incompatible ways and is not recommended for production use. It
+  is not subject to any SLA or deprecation policy.
+  
+  
+  Attributes:
+      topic:
+          The name of the topic that snapshots are attached to. Format
+          is ``projects/{project}/topics/{topic}``.
+      page_size:
+          Maximum number of snapshot names to return.
+      page_token:
+          The value returned by the last ``ListTopicSnapshotsResponse``;
+          indicates that this is a continuation of a prior
+          ``ListTopicSnapshots`` call, and that the system should return
+          the next page of data.
+  """,
+  # @@protoc_insertion_point(class_scope:google.pubsub.v1.ListTopicSnapshotsRequest)
+  ))
+_sym_db.RegisterMessage(ListTopicSnapshotsRequest)
+
+ListTopicSnapshotsResponse = _reflection.GeneratedProtocolMessageType('ListTopicSnapshotsResponse', (_message.Message,), dict(
+  DESCRIPTOR = _LISTTOPICSNAPSHOTSRESPONSE,
+  __module__ = 'google.cloud.pubsub_v1.proto.pubsub_pb2'
+  ,
+  __doc__ = """Response for the ``ListTopicSnapshots`` method. ALPHA: This feature is
+  part of an alpha release. This API might be changed in
+  backward-incompatible ways and is not recommended for production use. It
+  is not subject to any SLA or deprecation policy.
+  
+  
+  Attributes:
+      snapshots:
+          The names of the snapshots that match the request.
+      next_page_token:
+          If not empty, indicates that there may be more snapshots that
+          match the request; this value should be passed in a new
+          ``ListTopicSnapshotsRequest`` to get more snapshots.
+  """,
+  # @@protoc_insertion_point(class_scope:google.pubsub.v1.ListTopicSnapshotsResponse)
+  ))
+_sym_db.RegisterMessage(ListTopicSnapshotsResponse)
+
 DeleteTopicRequest = _reflection.GeneratedProtocolMessageType('DeleteTopicRequest', (_message.Message,), dict(
   DESCRIPTOR = _DELETETOPICREQUEST,
   __module__ = 'google.cloud.pubsub_v1.proto.pubsub_pb2'
@@ -1922,19 +2206,25 @@ Subscription = _reflection.GeneratedProtocolMessageType('Subscription', (_messag
           best-effort basis).  For pull subscriptions, this value is
           used as the initial value for the ack deadline. To override
           this value for a given message, call ``ModifyAckDeadline``
-          with the corresponding ``ack_id`` if using pull. The minimum
-          custom deadline you can specify is 10 seconds. The maximum
-          custom deadline you can specify is 600 seconds (10 minutes).
-          If this parameter is 0, a default value of 10 seconds is used.
-          For push delivery, this value is also used to set the request
-          timeout for the call to the push endpoint.  If the subscriber
-          never acknowledges the message, the Pub/Sub system will
-          eventually redeliver the message.
+          with the corresponding ``ack_id`` if using non-streaming pull
+          or send the ``ack_id`` in a
+          ``StreamingModifyAckDeadlineRequest`` if using streaming pull.
+          The minimum custom deadline you can specify is 10 seconds. The
+          maximum custom deadline you can specify is 600 seconds (10
+          minutes). If this parameter is 0, a default value of 10
+          seconds is used.  For push delivery, this value is also used
+          to set the request timeout for the call to the push endpoint.
+          If the subscriber never acknowledges the message, the Pub/Sub
+          system will eventually redeliver the message.
       retain_acked_messages:
           Indicates whether to retain acknowledged messages. If true,
           then messages are not expunged from the subscription's
           backlog, even if they are acknowledged, until they fall out of
-          the ``message_retention_duration`` window.
+          the ``message_retention_duration`` window. ALPHA: This feature
+          is part of an alpha release. This API might be changed in
+          backward-incompatible ways and is not recommended for
+          production use. It is not subject to any SLA or deprecation
+          policy.
       message_retention_duration:
           How long to retain unacknowledged messages in the
           subscription's backlog, from the moment a message is
@@ -1942,7 +2232,10 @@ Subscription = _reflection.GeneratedProtocolMessageType('Subscription', (_messag
           also configures the retention of acknowledged messages, and
           thus configures how far back in time a ``Seek`` can be done.
           Defaults to 7 days. Cannot be more than 7 days or less than 10
-          minutes.
+          minutes. ALPHA: This feature is part of an alpha release. This
+          API might be changed in backward-incompatible ways and is not
+          recommended for production use. It is not subject to any SLA
+          or deprecation policy.
       labels:
           User labels.
   """,
@@ -2120,7 +2413,8 @@ ModifyPushConfigRequest = _reflection.GeneratedProtocolMessageType('ModifyPushCo
           ``pushConfig`` indicates that the Pub/Sub system should stop
           pushing messages from the given subscription and allow
           messages to be pulled and acknowledged - effectively pausing
-          the subscription if ``Pull`` is not called.
+          the subscription if ``Pull`` or ``StreamingPull`` is not
+          called.
   """,
   # @@protoc_insertion_point(class_scope:google.pubsub.v1.ModifyPushConfigRequest)
   ))
@@ -2292,10 +2586,20 @@ StreamingPullResponse = _reflection.GeneratedProtocolMessageType('StreamingPullR
 _sym_db.RegisterMessage(StreamingPullResponse)
 
 CreateSnapshotRequest = _reflection.GeneratedProtocolMessageType('CreateSnapshotRequest', (_message.Message,), dict(
+
+  LabelsEntry = _reflection.GeneratedProtocolMessageType('LabelsEntry', (_message.Message,), dict(
+    DESCRIPTOR = _CREATESNAPSHOTREQUEST_LABELSENTRY,
+    __module__ = 'google.cloud.pubsub_v1.proto.pubsub_pb2'
+    # @@protoc_insertion_point(class_scope:google.pubsub.v1.CreateSnapshotRequest.LabelsEntry)
+    ))
+  ,
   DESCRIPTOR = _CREATESNAPSHOTREQUEST,
   __module__ = 'google.cloud.pubsub_v1.proto.pubsub_pb2'
   ,
-  __doc__ = """Request for the ``CreateSnapshot`` method.
+  __doc__ = """Request for the ``CreateSnapshot`` method. ALPHA: This feature is part
+  of an alpha release. This API might be changed in backward-incompatible
+  ways and is not recommended for production use. It is not subject to any
+  SLA or deprecation policy.
   
   
   Attributes:
@@ -2316,21 +2620,27 @@ CreateSnapshotRequest = _reflection.GeneratedProtocolMessageType('CreateSnapshot
           published to the subscription's topic following the successful
           completion of the CreateSnapshot request. Format is
           ``projects/{project}/subscriptions/{sub}``.
+      labels:
+          User labels.
   """,
   # @@protoc_insertion_point(class_scope:google.pubsub.v1.CreateSnapshotRequest)
   ))
 _sym_db.RegisterMessage(CreateSnapshotRequest)
+_sym_db.RegisterMessage(CreateSnapshotRequest.LabelsEntry)
 
 UpdateSnapshotRequest = _reflection.GeneratedProtocolMessageType('UpdateSnapshotRequest', (_message.Message,), dict(
   DESCRIPTOR = _UPDATESNAPSHOTREQUEST,
   __module__ = 'google.cloud.pubsub_v1.proto.pubsub_pb2'
   ,
-  __doc__ = """Request for the UpdateSnapshot method.
+  __doc__ = """Request for the UpdateSnapshot method. ALPHA: This feature is part of an
+  alpha release. This API might be changed in backward-incompatible ways
+  and is not recommended for production use. It is not subject to any SLA
+  or deprecation policy.
   
   
   Attributes:
       snapshot:
-          The updated snpashot object.
+          The updated snapshot object.
       update_mask:
           Indicates which fields in the provided snapshot to update.
           Must be specified and non-empty.
@@ -2350,7 +2660,10 @@ Snapshot = _reflection.GeneratedProtocolMessageType('Snapshot', (_message.Messag
   DESCRIPTOR = _SNAPSHOT,
   __module__ = 'google.cloud.pubsub_v1.proto.pubsub_pb2'
   ,
-  __doc__ = """A snapshot resource.
+  __doc__ = """A snapshot resource. ALPHA: This feature is part of an alpha release.
+  This API might be changed in backward-incompatible ways and is not
+  recommended for production use. It is not subject to any SLA or
+  deprecation policy.
   
   
   Attributes:
@@ -2369,7 +2682,9 @@ Snapshot = _reflection.GeneratedProtocolMessageType('Snapshot', (_message.Messag
           consider a subscription whose oldest unacked message is 3 days
           old. If a snapshot is created from this subscription, the
           snapshot -- which will always capture this 3-day-old backlog
-          as long as the snapshot exists -- will expire in 4 days.
+          as long as the snapshot exists -- will expire in 4 days. The
+          service will refuse to create a snapshot that would expire in
+          less than 1 hour after creation.
       labels:
           User labels.
   """,
@@ -2378,11 +2693,33 @@ Snapshot = _reflection.GeneratedProtocolMessageType('Snapshot', (_message.Messag
 _sym_db.RegisterMessage(Snapshot)
 _sym_db.RegisterMessage(Snapshot.LabelsEntry)
 
+GetSnapshotRequest = _reflection.GeneratedProtocolMessageType('GetSnapshotRequest', (_message.Message,), dict(
+  DESCRIPTOR = _GETSNAPSHOTREQUEST,
+  __module__ = 'google.cloud.pubsub_v1.proto.pubsub_pb2'
+  ,
+  __doc__ = """Request for the GetSnapshot method. ALPHA: This feature is part of an
+  alpha release. This API might be changed in backward-incompatible ways
+  and is not recommended for production use. It is not subject to any SLA
+  or deprecation policy.
+  
+  
+  Attributes:
+      snapshot:
+          The name of the snapshot to get. Format is
+          ``projects/{project}/snapshots/{snap}``.
+  """,
+  # @@protoc_insertion_point(class_scope:google.pubsub.v1.GetSnapshotRequest)
+  ))
+_sym_db.RegisterMessage(GetSnapshotRequest)
+
 ListSnapshotsRequest = _reflection.GeneratedProtocolMessageType('ListSnapshotsRequest', (_message.Message,), dict(
   DESCRIPTOR = _LISTSNAPSHOTSREQUEST,
   __module__ = 'google.cloud.pubsub_v1.proto.pubsub_pb2'
   ,
-  __doc__ = """Request for the ``ListSnapshots`` method.
+  __doc__ = """Request for the ``ListSnapshots`` method. ALPHA: This feature is part of
+  an alpha release. This API might be changed in backward-incompatible
+  ways and is not recommended for production use. It is not subject to any
+  SLA or deprecation policy.
   
   
   Attributes:
@@ -2405,7 +2742,10 @@ ListSnapshotsResponse = _reflection.GeneratedProtocolMessageType('ListSnapshotsR
   DESCRIPTOR = _LISTSNAPSHOTSRESPONSE,
   __module__ = 'google.cloud.pubsub_v1.proto.pubsub_pb2'
   ,
-  __doc__ = """Response for the ``ListSnapshots`` method.
+  __doc__ = """Response for the ``ListSnapshots`` method. ALPHA: This feature is part
+  of an alpha release. This API might be changed in backward-incompatible
+  ways and is not recommended for production use. It is not subject to any
+  SLA or deprecation policy.
   
   
   Attributes:
@@ -2424,7 +2764,10 @@ DeleteSnapshotRequest = _reflection.GeneratedProtocolMessageType('DeleteSnapshot
   DESCRIPTOR = _DELETESNAPSHOTREQUEST,
   __module__ = 'google.cloud.pubsub_v1.proto.pubsub_pb2'
   ,
-  __doc__ = """Request for the ``DeleteSnapshot`` method.
+  __doc__ = """Request for the ``DeleteSnapshot`` method. ALPHA: This feature is part
+  of an alpha release. This API might be changed in backward-incompatible
+  ways and is not recommended for production use. It is not subject to any
+  SLA or deprecation policy.
   
   
   Attributes:
@@ -2440,7 +2783,10 @@ SeekRequest = _reflection.GeneratedProtocolMessageType('SeekRequest', (_message.
   DESCRIPTOR = _SEEKREQUEST,
   __module__ = 'google.cloud.pubsub_v1.proto.pubsub_pb2'
   ,
-  __doc__ = """Request for the ``Seek`` method.
+  __doc__ = """Request for the ``Seek`` method. ALPHA: This feature is part of an alpha
+  release. This API might be changed in backward-incompatible ways and is
+  not recommended for production use. It is not subject to any SLA or
+  deprecation policy.
   
   
   Attributes:
@@ -2477,7 +2823,7 @@ _sym_db.RegisterMessage(SeekResponse)
 
 
 DESCRIPTOR.has_options = True
-DESCRIPTOR._options = _descriptor._ParseOptions(descriptor_pb2.FileOptions(), _b('\n\024com.google.pubsub.v1B\013PubsubProtoP\001Z6google.golang.org/genproto/googleapis/pubsub/v1;pubsub\370\001\001\252\002\026Google.Cloud.PubSub.V1'))
+DESCRIPTOR._options = _descriptor._ParseOptions(descriptor_pb2.FileOptions(), _b('\n\024com.google.pubsub.v1B\013PubsubProtoP\001Z6google.golang.org/genproto/googleapis/pubsub/v1;pubsub\370\001\001\252\002\026Google.Cloud.PubSub.V1\312\002\026Google\\Cloud\\PubSub\\V1'))
 _TOPIC_LABELSENTRY.has_options = True
 _TOPIC_LABELSENTRY._options = _descriptor._ParseOptions(descriptor_pb2.MessageOptions(), _b('8\001'))
 _PUBSUBMESSAGE_ATTRIBUTESENTRY.has_options = True
@@ -2486,1109 +2832,254 @@ _SUBSCRIPTION_LABELSENTRY.has_options = True
 _SUBSCRIPTION_LABELSENTRY._options = _descriptor._ParseOptions(descriptor_pb2.MessageOptions(), _b('8\001'))
 _PUSHCONFIG_ATTRIBUTESENTRY.has_options = True
 _PUSHCONFIG_ATTRIBUTESENTRY._options = _descriptor._ParseOptions(descriptor_pb2.MessageOptions(), _b('8\001'))
+_CREATESNAPSHOTREQUEST_LABELSENTRY.has_options = True
+_CREATESNAPSHOTREQUEST_LABELSENTRY._options = _descriptor._ParseOptions(descriptor_pb2.MessageOptions(), _b('8\001'))
 _SNAPSHOT_LABELSENTRY.has_options = True
 _SNAPSHOT_LABELSENTRY._options = _descriptor._ParseOptions(descriptor_pb2.MessageOptions(), _b('8\001'))
-try:
-  # THESE ELEMENTS WILL BE DEPRECATED.
-  # Please use the generated *_pb2_grpc.py files instead.
-  import grpc
-  from grpc.beta import implementations as beta_implementations
-  from grpc.beta import interfaces as beta_interfaces
-  from grpc.framework.common import cardinality
-  from grpc.framework.interfaces.face import utilities as face_utilities
 
+_PUBLISHER = _descriptor.ServiceDescriptor(
+  name='Publisher',
+  full_name='google.pubsub.v1.Publisher',
+  file=DESCRIPTOR,
+  index=0,
+  options=None,
+  serialized_start=4047,
+  serialized_end=5134,
+  methods=[
+  _descriptor.MethodDescriptor(
+    name='CreateTopic',
+    full_name='google.pubsub.v1.Publisher.CreateTopic',
+    index=0,
+    containing_service=None,
+    input_type=_TOPIC,
+    output_type=_TOPIC,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002#\032\036/v1/{name=projects/*/topics/*}:\001*')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='UpdateTopic',
+    full_name='google.pubsub.v1.Publisher.UpdateTopic',
+    index=1,
+    containing_service=None,
+    input_type=_UPDATETOPICREQUEST,
+    output_type=_TOPIC,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002)2$/v1/{topic.name=projects/*/topics/*}:\001*')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='Publish',
+    full_name='google.pubsub.v1.Publisher.Publish',
+    index=2,
+    containing_service=None,
+    input_type=_PUBLISHREQUEST,
+    output_type=_PUBLISHRESPONSE,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002,\"\'/v1/{topic=projects/*/topics/*}:publish:\001*')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='GetTopic',
+    full_name='google.pubsub.v1.Publisher.GetTopic',
+    index=3,
+    containing_service=None,
+    input_type=_GETTOPICREQUEST,
+    output_type=_TOPIC,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002!\022\037/v1/{topic=projects/*/topics/*}')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='ListTopics',
+    full_name='google.pubsub.v1.Publisher.ListTopics',
+    index=4,
+    containing_service=None,
+    input_type=_LISTTOPICSREQUEST,
+    output_type=_LISTTOPICSRESPONSE,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002!\022\037/v1/{project=projects/*}/topics')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='ListTopicSubscriptions',
+    full_name='google.pubsub.v1.Publisher.ListTopicSubscriptions',
+    index=5,
+    containing_service=None,
+    input_type=_LISTTOPICSUBSCRIPTIONSREQUEST,
+    output_type=_LISTTOPICSUBSCRIPTIONSRESPONSE,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002/\022-/v1/{topic=projects/*/topics/*}/subscriptions')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='ListTopicSnapshots',
+    full_name='google.pubsub.v1.Publisher.ListTopicSnapshots',
+    index=6,
+    containing_service=None,
+    input_type=_LISTTOPICSNAPSHOTSREQUEST,
+    output_type=_LISTTOPICSNAPSHOTSRESPONSE,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002+\022)/v1/{topic=projects/*/topics/*}/snapshots')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='DeleteTopic',
+    full_name='google.pubsub.v1.Publisher.DeleteTopic',
+    index=7,
+    containing_service=None,
+    input_type=_DELETETOPICREQUEST,
+    output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002!*\037/v1/{topic=projects/*/topics/*}')),
+  ),
+])
+_sym_db.RegisterServiceDescriptor(_PUBLISHER)
+
+DESCRIPTOR.services_by_name['Publisher'] = _PUBLISHER
+
+
+_SUBSCRIBER = _descriptor.ServiceDescriptor(
+  name='Subscriber',
+  full_name='google.pubsub.v1.Subscriber',
+  file=DESCRIPTOR,
+  index=1,
+  options=None,
+  serialized_start=5137,
+  serialized_end=7432,
+  methods=[
+  _descriptor.MethodDescriptor(
+    name='CreateSubscription',
+    full_name='google.pubsub.v1.Subscriber.CreateSubscription',
+    index=0,
+    containing_service=None,
+    input_type=_SUBSCRIPTION,
+    output_type=_SUBSCRIPTION,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002*\032%/v1/{name=projects/*/subscriptions/*}:\001*')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='GetSubscription',
+    full_name='google.pubsub.v1.Subscriber.GetSubscription',
+    index=1,
+    containing_service=None,
+    input_type=_GETSUBSCRIPTIONREQUEST,
+    output_type=_SUBSCRIPTION,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002/\022-/v1/{subscription=projects/*/subscriptions/*}')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='UpdateSubscription',
+    full_name='google.pubsub.v1.Subscriber.UpdateSubscription',
+    index=2,
+    containing_service=None,
+    input_type=_UPDATESUBSCRIPTIONREQUEST,
+    output_type=_SUBSCRIPTION,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002722/v1/{subscription.name=projects/*/subscriptions/*}:\001*')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='ListSubscriptions',
+    full_name='google.pubsub.v1.Subscriber.ListSubscriptions',
+    index=3,
+    containing_service=None,
+    input_type=_LISTSUBSCRIPTIONSREQUEST,
+    output_type=_LISTSUBSCRIPTIONSRESPONSE,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002(\022&/v1/{project=projects/*}/subscriptions')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='DeleteSubscription',
+    full_name='google.pubsub.v1.Subscriber.DeleteSubscription',
+    index=4,
+    containing_service=None,
+    input_type=_DELETESUBSCRIPTIONREQUEST,
+    output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002/*-/v1/{subscription=projects/*/subscriptions/*}')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='ModifyAckDeadline',
+    full_name='google.pubsub.v1.Subscriber.ModifyAckDeadline',
+    index=5,
+    containing_service=None,
+    input_type=_MODIFYACKDEADLINEREQUEST,
+    output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002D\"?/v1/{subscription=projects/*/subscriptions/*}:modifyAckDeadline:\001*')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='Acknowledge',
+    full_name='google.pubsub.v1.Subscriber.Acknowledge',
+    index=6,
+    containing_service=None,
+    input_type=_ACKNOWLEDGEREQUEST,
+    output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002>\"9/v1/{subscription=projects/*/subscriptions/*}:acknowledge:\001*')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='Pull',
+    full_name='google.pubsub.v1.Subscriber.Pull',
+    index=7,
+    containing_service=None,
+    input_type=_PULLREQUEST,
+    output_type=_PULLRESPONSE,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\0027\"2/v1/{subscription=projects/*/subscriptions/*}:pull:\001*')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='StreamingPull',
+    full_name='google.pubsub.v1.Subscriber.StreamingPull',
+    index=8,
+    containing_service=None,
+    input_type=_STREAMINGPULLREQUEST,
+    output_type=_STREAMINGPULLRESPONSE,
+    options=None,
+  ),
+  _descriptor.MethodDescriptor(
+    name='ModifyPushConfig',
+    full_name='google.pubsub.v1.Subscriber.ModifyPushConfig',
+    index=9,
+    containing_service=None,
+    input_type=_MODIFYPUSHCONFIGREQUEST,
+    output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002C\">/v1/{subscription=projects/*/subscriptions/*}:modifyPushConfig:\001*')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='GetSnapshot',
+    full_name='google.pubsub.v1.Subscriber.GetSnapshot',
+    index=10,
+    containing_service=None,
+    input_type=_GETSNAPSHOTREQUEST,
+    output_type=_SNAPSHOT,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002\'\022%/v1/{snapshot=projects/*/snapshots/*}')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='ListSnapshots',
+    full_name='google.pubsub.v1.Subscriber.ListSnapshots',
+    index=11,
+    containing_service=None,
+    input_type=_LISTSNAPSHOTSREQUEST,
+    output_type=_LISTSNAPSHOTSRESPONSE,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002$\022\"/v1/{project=projects/*}/snapshots')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='CreateSnapshot',
+    full_name='google.pubsub.v1.Subscriber.CreateSnapshot',
+    index=12,
+    containing_service=None,
+    input_type=_CREATESNAPSHOTREQUEST,
+    output_type=_SNAPSHOT,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002&\032!/v1/{name=projects/*/snapshots/*}:\001*')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='UpdateSnapshot',
+    full_name='google.pubsub.v1.Subscriber.UpdateSnapshot',
+    index=13,
+    containing_service=None,
+    input_type=_UPDATESNAPSHOTREQUEST,
+    output_type=_SNAPSHOT,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002/2*/v1/{snapshot.name=projects/*/snapshots/*}:\001*')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='DeleteSnapshot',
+    full_name='google.pubsub.v1.Subscriber.DeleteSnapshot',
+    index=14,
+    containing_service=None,
+    input_type=_DELETESNAPSHOTREQUEST,
+    output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002\'*%/v1/{snapshot=projects/*/snapshots/*}')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='Seek',
+    full_name='google.pubsub.v1.Subscriber.Seek',
+    index=15,
+    containing_service=None,
+    input_type=_SEEKREQUEST,
+    output_type=_SEEKRESPONSE,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\0027\"2/v1/{subscription=projects/*/subscriptions/*}:seek:\001*')),
+  ),
+])
+_sym_db.RegisterServiceDescriptor(_SUBSCRIBER)
+
+DESCRIPTOR.services_by_name['Subscriber'] = _SUBSCRIBER
 
-  class SubscriberStub(object):
-    """The service that an application uses to manipulate subscriptions and to
-    consume messages from a subscription via the `Pull` method.
-    """
-
-    def __init__(self, channel):
-      """Constructor.
-
-      Args:
-        channel: A grpc.Channel.
-      """
-      self.CreateSubscription = channel.unary_unary(
-          '/google.pubsub.v1.Subscriber/CreateSubscription',
-          request_serializer=Subscription.SerializeToString,
-          response_deserializer=Subscription.FromString,
-          )
-      self.GetSubscription = channel.unary_unary(
-          '/google.pubsub.v1.Subscriber/GetSubscription',
-          request_serializer=GetSubscriptionRequest.SerializeToString,
-          response_deserializer=Subscription.FromString,
-          )
-      self.UpdateSubscription = channel.unary_unary(
-          '/google.pubsub.v1.Subscriber/UpdateSubscription',
-          request_serializer=UpdateSubscriptionRequest.SerializeToString,
-          response_deserializer=Subscription.FromString,
-          )
-      self.ListSubscriptions = channel.unary_unary(
-          '/google.pubsub.v1.Subscriber/ListSubscriptions',
-          request_serializer=ListSubscriptionsRequest.SerializeToString,
-          response_deserializer=ListSubscriptionsResponse.FromString,
-          )
-      self.DeleteSubscription = channel.unary_unary(
-          '/google.pubsub.v1.Subscriber/DeleteSubscription',
-          request_serializer=DeleteSubscriptionRequest.SerializeToString,
-          response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
-          )
-      self.ModifyAckDeadline = channel.unary_unary(
-          '/google.pubsub.v1.Subscriber/ModifyAckDeadline',
-          request_serializer=ModifyAckDeadlineRequest.SerializeToString,
-          response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
-          )
-      self.Acknowledge = channel.unary_unary(
-          '/google.pubsub.v1.Subscriber/Acknowledge',
-          request_serializer=AcknowledgeRequest.SerializeToString,
-          response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
-          )
-      self.Pull = channel.unary_unary(
-          '/google.pubsub.v1.Subscriber/Pull',
-          request_serializer=PullRequest.SerializeToString,
-          response_deserializer=PullResponse.FromString,
-          )
-      self.StreamingPull = channel.stream_stream(
-          '/google.pubsub.v1.Subscriber/StreamingPull',
-          request_serializer=StreamingPullRequest.SerializeToString,
-          response_deserializer=StreamingPullResponse.FromString,
-          )
-      self.ModifyPushConfig = channel.unary_unary(
-          '/google.pubsub.v1.Subscriber/ModifyPushConfig',
-          request_serializer=ModifyPushConfigRequest.SerializeToString,
-          response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
-          )
-      self.ListSnapshots = channel.unary_unary(
-          '/google.pubsub.v1.Subscriber/ListSnapshots',
-          request_serializer=ListSnapshotsRequest.SerializeToString,
-          response_deserializer=ListSnapshotsResponse.FromString,
-          )
-      self.CreateSnapshot = channel.unary_unary(
-          '/google.pubsub.v1.Subscriber/CreateSnapshot',
-          request_serializer=CreateSnapshotRequest.SerializeToString,
-          response_deserializer=Snapshot.FromString,
-          )
-      self.UpdateSnapshot = channel.unary_unary(
-          '/google.pubsub.v1.Subscriber/UpdateSnapshot',
-          request_serializer=UpdateSnapshotRequest.SerializeToString,
-          response_deserializer=Snapshot.FromString,
-          )
-      self.DeleteSnapshot = channel.unary_unary(
-          '/google.pubsub.v1.Subscriber/DeleteSnapshot',
-          request_serializer=DeleteSnapshotRequest.SerializeToString,
-          response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
-          )
-      self.Seek = channel.unary_unary(
-          '/google.pubsub.v1.Subscriber/Seek',
-          request_serializer=SeekRequest.SerializeToString,
-          response_deserializer=SeekResponse.FromString,
-          )
-
-
-  class SubscriberServicer(object):
-    """The service that an application uses to manipulate subscriptions and to
-    consume messages from a subscription via the `Pull` method.
-    """
-
-    def CreateSubscription(self, request, context):
-      """Creates a subscription to a given topic.
-      If the subscription already exists, returns `ALREADY_EXISTS`.
-      If the corresponding topic doesn't exist, returns `NOT_FOUND`.
-
-      If the name is not provided in the request, the server will assign a random
-      name for this subscription on the same project as the topic, conforming
-      to the
-      [resource name format](https://cloud.google.com/pubsub/docs/overview#names).
-      The generated name is populated in the returned Subscription object.
-      Note that for REST API requests, you must specify a name in the request.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def GetSubscription(self, request, context):
-      """Gets the configuration details of a subscription.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def UpdateSubscription(self, request, context):
-      """Updates an existing subscription. Note that certain properties of a
-      subscription, such as its topic, are not modifiable.
-      NOTE:  The style guide requires body: "subscription" instead of body: "*".
-      Keeping the latter for internal consistency in V1, however it should be
-      corrected in V2.  See
-      https://cloud.google.com/apis/design/standard_methods#update for details.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def ListSubscriptions(self, request, context):
-      """Lists matching subscriptions.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def DeleteSubscription(self, request, context):
-      """Deletes an existing subscription. All messages retained in the subscription
-      are immediately dropped. Calls to `Pull` after deletion will return
-      `NOT_FOUND`. After a subscription is deleted, a new one may be created with
-      the same name, but the new one has no association with the old
-      subscription or its topic unless the same topic is specified.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def ModifyAckDeadline(self, request, context):
-      """Modifies the ack deadline for a specific message. This method is useful
-      to indicate that more time is needed to process a message by the
-      subscriber, or to make the message available for redelivery if the
-      processing was interrupted. Note that this does not modify the
-      subscription-level `ackDeadlineSeconds` used for subsequent messages.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def Acknowledge(self, request, context):
-      """Acknowledges the messages associated with the `ack_ids` in the
-      `AcknowledgeRequest`. The Pub/Sub system can remove the relevant messages
-      from the subscription.
-
-      Acknowledging a message whose ack deadline has expired may succeed,
-      but such a message may be redelivered later. Acknowledging a message more
-      than once will not result in an error.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def Pull(self, request, context):
-      """Pulls messages from the server. Returns an empty list if there are no
-      messages available in the backlog. The server may return `UNAVAILABLE` if
-      there are too many concurrent pull requests pending for the given
-      subscription.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def StreamingPull(self, request_iterator, context):
-      """(EXPERIMENTAL) StreamingPull is an experimental feature. This RPC will
-      respond with UNIMPLEMENTED errors unless you have been invited to test
-      this feature. Contact cloud-pubsub@google.com with any questions.
-
-      Establishes a stream with the server, which sends messages down to the
-      client. The client streams acknowledgements and ack deadline modifications
-      back to the server. The server will close the stream and return the status
-      on any error. The server may close the stream with status `OK` to reassign
-      server-side resources, in which case, the client should re-establish the
-      stream. `UNAVAILABLE` may also be returned in the case of a transient error
-      (e.g., a server restart). These should also be retried by the client. Flow
-      control can be achieved by configuring the underlying RPC channel.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def ModifyPushConfig(self, request, context):
-      """Modifies the `PushConfig` for a specified subscription.
-
-      This may be used to change a push subscription to a pull one (signified by
-      an empty `PushConfig`) or vice versa, or change the endpoint URL and other
-      attributes of a push subscription. Messages will accumulate for delivery
-      continuously through the call regardless of changes to the `PushConfig`.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def ListSnapshots(self, request, context):
-      """Lists the existing snapshots.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def CreateSnapshot(self, request, context):
-      """Creates a snapshot from the requested subscription.
-      If the snapshot already exists, returns `ALREADY_EXISTS`.
-      If the requested subscription doesn't exist, returns `NOT_FOUND`.
-
-      If the name is not provided in the request, the server will assign a random
-      name for this snapshot on the same project as the subscription, conforming
-      to the
-      [resource name format](https://cloud.google.com/pubsub/docs/overview#names).
-      The generated name is populated in the returned Snapshot object.
-      Note that for REST API requests, you must specify a name in the request.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def UpdateSnapshot(self, request, context):
-      """Updates an existing snapshot. Note that certain properties of a snapshot
-      are not modifiable.
-      NOTE:  The style guide requires body: "snapshot" instead of body: "*".
-      Keeping the latter for internal consistency in V1, however it should be
-      corrected in V2.  See
-      https://cloud.google.com/apis/design/standard_methods#update for details.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def DeleteSnapshot(self, request, context):
-      """Removes an existing snapshot. All messages retained in the snapshot
-      are immediately dropped. After a snapshot is deleted, a new one may be
-      created with the same name, but the new one has no association with the old
-      snapshot or its subscription, unless the same subscription is specified.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def Seek(self, request, context):
-      """Seeks an existing subscription to a point in time or to a given snapshot,
-      whichever is provided in the request.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-
-  def add_SubscriberServicer_to_server(servicer, server):
-    rpc_method_handlers = {
-        'CreateSubscription': grpc.unary_unary_rpc_method_handler(
-            servicer.CreateSubscription,
-            request_deserializer=Subscription.FromString,
-            response_serializer=Subscription.SerializeToString,
-        ),
-        'GetSubscription': grpc.unary_unary_rpc_method_handler(
-            servicer.GetSubscription,
-            request_deserializer=GetSubscriptionRequest.FromString,
-            response_serializer=Subscription.SerializeToString,
-        ),
-        'UpdateSubscription': grpc.unary_unary_rpc_method_handler(
-            servicer.UpdateSubscription,
-            request_deserializer=UpdateSubscriptionRequest.FromString,
-            response_serializer=Subscription.SerializeToString,
-        ),
-        'ListSubscriptions': grpc.unary_unary_rpc_method_handler(
-            servicer.ListSubscriptions,
-            request_deserializer=ListSubscriptionsRequest.FromString,
-            response_serializer=ListSubscriptionsResponse.SerializeToString,
-        ),
-        'DeleteSubscription': grpc.unary_unary_rpc_method_handler(
-            servicer.DeleteSubscription,
-            request_deserializer=DeleteSubscriptionRequest.FromString,
-            response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
-        ),
-        'ModifyAckDeadline': grpc.unary_unary_rpc_method_handler(
-            servicer.ModifyAckDeadline,
-            request_deserializer=ModifyAckDeadlineRequest.FromString,
-            response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
-        ),
-        'Acknowledge': grpc.unary_unary_rpc_method_handler(
-            servicer.Acknowledge,
-            request_deserializer=AcknowledgeRequest.FromString,
-            response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
-        ),
-        'Pull': grpc.unary_unary_rpc_method_handler(
-            servicer.Pull,
-            request_deserializer=PullRequest.FromString,
-            response_serializer=PullResponse.SerializeToString,
-        ),
-        'StreamingPull': grpc.stream_stream_rpc_method_handler(
-            servicer.StreamingPull,
-            request_deserializer=StreamingPullRequest.FromString,
-            response_serializer=StreamingPullResponse.SerializeToString,
-        ),
-        'ModifyPushConfig': grpc.unary_unary_rpc_method_handler(
-            servicer.ModifyPushConfig,
-            request_deserializer=ModifyPushConfigRequest.FromString,
-            response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
-        ),
-        'ListSnapshots': grpc.unary_unary_rpc_method_handler(
-            servicer.ListSnapshots,
-            request_deserializer=ListSnapshotsRequest.FromString,
-            response_serializer=ListSnapshotsResponse.SerializeToString,
-        ),
-        'CreateSnapshot': grpc.unary_unary_rpc_method_handler(
-            servicer.CreateSnapshot,
-            request_deserializer=CreateSnapshotRequest.FromString,
-            response_serializer=Snapshot.SerializeToString,
-        ),
-        'UpdateSnapshot': grpc.unary_unary_rpc_method_handler(
-            servicer.UpdateSnapshot,
-            request_deserializer=UpdateSnapshotRequest.FromString,
-            response_serializer=Snapshot.SerializeToString,
-        ),
-        'DeleteSnapshot': grpc.unary_unary_rpc_method_handler(
-            servicer.DeleteSnapshot,
-            request_deserializer=DeleteSnapshotRequest.FromString,
-            response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
-        ),
-        'Seek': grpc.unary_unary_rpc_method_handler(
-            servicer.Seek,
-            request_deserializer=SeekRequest.FromString,
-            response_serializer=SeekResponse.SerializeToString,
-        ),
-    }
-    generic_handler = grpc.method_handlers_generic_handler(
-        'google.pubsub.v1.Subscriber', rpc_method_handlers)
-    server.add_generic_rpc_handlers((generic_handler,))
-
-
-  class PublisherStub(object):
-    """The service that an application uses to manipulate topics, and to send
-    messages to a topic.
-    """
-
-    def __init__(self, channel):
-      """Constructor.
-
-      Args:
-        channel: A grpc.Channel.
-      """
-      self.CreateTopic = channel.unary_unary(
-          '/google.pubsub.v1.Publisher/CreateTopic',
-          request_serializer=Topic.SerializeToString,
-          response_deserializer=Topic.FromString,
-          )
-      self.UpdateTopic = channel.unary_unary(
-          '/google.pubsub.v1.Publisher/UpdateTopic',
-          request_serializer=UpdateTopicRequest.SerializeToString,
-          response_deserializer=Topic.FromString,
-          )
-      self.Publish = channel.unary_unary(
-          '/google.pubsub.v1.Publisher/Publish',
-          request_serializer=PublishRequest.SerializeToString,
-          response_deserializer=PublishResponse.FromString,
-          )
-      self.GetTopic = channel.unary_unary(
-          '/google.pubsub.v1.Publisher/GetTopic',
-          request_serializer=GetTopicRequest.SerializeToString,
-          response_deserializer=Topic.FromString,
-          )
-      self.ListTopics = channel.unary_unary(
-          '/google.pubsub.v1.Publisher/ListTopics',
-          request_serializer=ListTopicsRequest.SerializeToString,
-          response_deserializer=ListTopicsResponse.FromString,
-          )
-      self.ListTopicSubscriptions = channel.unary_unary(
-          '/google.pubsub.v1.Publisher/ListTopicSubscriptions',
-          request_serializer=ListTopicSubscriptionsRequest.SerializeToString,
-          response_deserializer=ListTopicSubscriptionsResponse.FromString,
-          )
-      self.DeleteTopic = channel.unary_unary(
-          '/google.pubsub.v1.Publisher/DeleteTopic',
-          request_serializer=DeleteTopicRequest.SerializeToString,
-          response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
-          )
-
-
-  class PublisherServicer(object):
-    """The service that an application uses to manipulate topics, and to send
-    messages to a topic.
-    """
-
-    def CreateTopic(self, request, context):
-      """Creates the given topic with the given name.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def UpdateTopic(self, request, context):
-      """Updates an existing topic. Note that certain properties of a topic are not
-      modifiable.  Options settings follow the style guide:
-      NOTE:  The style guide requires body: "topic" instead of body: "*".
-      Keeping the latter for internal consistency in V1, however it should be
-      corrected in V2.  See
-      https://cloud.google.com/apis/design/standard_methods#update for details.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def Publish(self, request, context):
-      """Adds one or more messages to the topic. Returns `NOT_FOUND` if the topic
-      does not exist. The message payload must not be empty; it must contain
-      either a non-empty data field, or at least one attribute.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def GetTopic(self, request, context):
-      """Gets the configuration of a topic.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def ListTopics(self, request, context):
-      """Lists matching topics.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def ListTopicSubscriptions(self, request, context):
-      """Lists the name of the subscriptions for this topic.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def DeleteTopic(self, request, context):
-      """Deletes the topic with the given name. Returns `NOT_FOUND` if the topic
-      does not exist. After a topic is deleted, a new topic may be created with
-      the same name; this is an entirely new topic with none of the old
-      configuration or subscriptions. Existing subscriptions to this topic are
-      not deleted, but their `topic` field is set to `_deleted-topic_`.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-
-  def add_PublisherServicer_to_server(servicer, server):
-    rpc_method_handlers = {
-        'CreateTopic': grpc.unary_unary_rpc_method_handler(
-            servicer.CreateTopic,
-            request_deserializer=Topic.FromString,
-            response_serializer=Topic.SerializeToString,
-        ),
-        'UpdateTopic': grpc.unary_unary_rpc_method_handler(
-            servicer.UpdateTopic,
-            request_deserializer=UpdateTopicRequest.FromString,
-            response_serializer=Topic.SerializeToString,
-        ),
-        'Publish': grpc.unary_unary_rpc_method_handler(
-            servicer.Publish,
-            request_deserializer=PublishRequest.FromString,
-            response_serializer=PublishResponse.SerializeToString,
-        ),
-        'GetTopic': grpc.unary_unary_rpc_method_handler(
-            servicer.GetTopic,
-            request_deserializer=GetTopicRequest.FromString,
-            response_serializer=Topic.SerializeToString,
-        ),
-        'ListTopics': grpc.unary_unary_rpc_method_handler(
-            servicer.ListTopics,
-            request_deserializer=ListTopicsRequest.FromString,
-            response_serializer=ListTopicsResponse.SerializeToString,
-        ),
-        'ListTopicSubscriptions': grpc.unary_unary_rpc_method_handler(
-            servicer.ListTopicSubscriptions,
-            request_deserializer=ListTopicSubscriptionsRequest.FromString,
-            response_serializer=ListTopicSubscriptionsResponse.SerializeToString,
-        ),
-        'DeleteTopic': grpc.unary_unary_rpc_method_handler(
-            servicer.DeleteTopic,
-            request_deserializer=DeleteTopicRequest.FromString,
-            response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
-        ),
-    }
-    generic_handler = grpc.method_handlers_generic_handler(
-        'google.pubsub.v1.Publisher', rpc_method_handlers)
-    server.add_generic_rpc_handlers((generic_handler,))
-
-
-  class BetaSubscriberServicer(object):
-    """The Beta API is deprecated for 0.15.0 and later.
-
-    It is recommended to use the GA API (classes and functions in this
-    file not marked beta) for all further purposes. This class was generated
-    only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0."""
-    """The service that an application uses to manipulate subscriptions and to
-    consume messages from a subscription via the `Pull` method.
-    """
-    def CreateSubscription(self, request, context):
-      """Creates a subscription to a given topic.
-      If the subscription already exists, returns `ALREADY_EXISTS`.
-      If the corresponding topic doesn't exist, returns `NOT_FOUND`.
-
-      If the name is not provided in the request, the server will assign a random
-      name for this subscription on the same project as the topic, conforming
-      to the
-      [resource name format](https://cloud.google.com/pubsub/docs/overview#names).
-      The generated name is populated in the returned Subscription object.
-      Note that for REST API requests, you must specify a name in the request.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def GetSubscription(self, request, context):
-      """Gets the configuration details of a subscription.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def UpdateSubscription(self, request, context):
-      """Updates an existing subscription. Note that certain properties of a
-      subscription, such as its topic, are not modifiable.
-      NOTE:  The style guide requires body: "subscription" instead of body: "*".
-      Keeping the latter for internal consistency in V1, however it should be
-      corrected in V2.  See
-      https://cloud.google.com/apis/design/standard_methods#update for details.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def ListSubscriptions(self, request, context):
-      """Lists matching subscriptions.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def DeleteSubscription(self, request, context):
-      """Deletes an existing subscription. All messages retained in the subscription
-      are immediately dropped. Calls to `Pull` after deletion will return
-      `NOT_FOUND`. After a subscription is deleted, a new one may be created with
-      the same name, but the new one has no association with the old
-      subscription or its topic unless the same topic is specified.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def ModifyAckDeadline(self, request, context):
-      """Modifies the ack deadline for a specific message. This method is useful
-      to indicate that more time is needed to process a message by the
-      subscriber, or to make the message available for redelivery if the
-      processing was interrupted. Note that this does not modify the
-      subscription-level `ackDeadlineSeconds` used for subsequent messages.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def Acknowledge(self, request, context):
-      """Acknowledges the messages associated with the `ack_ids` in the
-      `AcknowledgeRequest`. The Pub/Sub system can remove the relevant messages
-      from the subscription.
-
-      Acknowledging a message whose ack deadline has expired may succeed,
-      but such a message may be redelivered later. Acknowledging a message more
-      than once will not result in an error.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def Pull(self, request, context):
-      """Pulls messages from the server. Returns an empty list if there are no
-      messages available in the backlog. The server may return `UNAVAILABLE` if
-      there are too many concurrent pull requests pending for the given
-      subscription.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def StreamingPull(self, request_iterator, context):
-      """(EXPERIMENTAL) StreamingPull is an experimental feature. This RPC will
-      respond with UNIMPLEMENTED errors unless you have been invited to test
-      this feature. Contact cloud-pubsub@google.com with any questions.
-
-      Establishes a stream with the server, which sends messages down to the
-      client. The client streams acknowledgements and ack deadline modifications
-      back to the server. The server will close the stream and return the status
-      on any error. The server may close the stream with status `OK` to reassign
-      server-side resources, in which case, the client should re-establish the
-      stream. `UNAVAILABLE` may also be returned in the case of a transient error
-      (e.g., a server restart). These should also be retried by the client. Flow
-      control can be achieved by configuring the underlying RPC channel.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def ModifyPushConfig(self, request, context):
-      """Modifies the `PushConfig` for a specified subscription.
-
-      This may be used to change a push subscription to a pull one (signified by
-      an empty `PushConfig`) or vice versa, or change the endpoint URL and other
-      attributes of a push subscription. Messages will accumulate for delivery
-      continuously through the call regardless of changes to the `PushConfig`.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def ListSnapshots(self, request, context):
-      """Lists the existing snapshots.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def CreateSnapshot(self, request, context):
-      """Creates a snapshot from the requested subscription.
-      If the snapshot already exists, returns `ALREADY_EXISTS`.
-      If the requested subscription doesn't exist, returns `NOT_FOUND`.
-
-      If the name is not provided in the request, the server will assign a random
-      name for this snapshot on the same project as the subscription, conforming
-      to the
-      [resource name format](https://cloud.google.com/pubsub/docs/overview#names).
-      The generated name is populated in the returned Snapshot object.
-      Note that for REST API requests, you must specify a name in the request.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def UpdateSnapshot(self, request, context):
-      """Updates an existing snapshot. Note that certain properties of a snapshot
-      are not modifiable.
-      NOTE:  The style guide requires body: "snapshot" instead of body: "*".
-      Keeping the latter for internal consistency in V1, however it should be
-      corrected in V2.  See
-      https://cloud.google.com/apis/design/standard_methods#update for details.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def DeleteSnapshot(self, request, context):
-      """Removes an existing snapshot. All messages retained in the snapshot
-      are immediately dropped. After a snapshot is deleted, a new one may be
-      created with the same name, but the new one has no association with the old
-      snapshot or its subscription, unless the same subscription is specified.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def Seek(self, request, context):
-      """Seeks an existing subscription to a point in time or to a given snapshot,
-      whichever is provided in the request.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-
-
-  class BetaSubscriberStub(object):
-    """The Beta API is deprecated for 0.15.0 and later.
-
-    It is recommended to use the GA API (classes and functions in this
-    file not marked beta) for all further purposes. This class was generated
-    only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0."""
-    """The service that an application uses to manipulate subscriptions and to
-    consume messages from a subscription via the `Pull` method.
-    """
-    def CreateSubscription(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Creates a subscription to a given topic.
-      If the subscription already exists, returns `ALREADY_EXISTS`.
-      If the corresponding topic doesn't exist, returns `NOT_FOUND`.
-
-      If the name is not provided in the request, the server will assign a random
-      name for this subscription on the same project as the topic, conforming
-      to the
-      [resource name format](https://cloud.google.com/pubsub/docs/overview#names).
-      The generated name is populated in the returned Subscription object.
-      Note that for REST API requests, you must specify a name in the request.
-      """
-      raise NotImplementedError()
-    CreateSubscription.future = None
-    def GetSubscription(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Gets the configuration details of a subscription.
-      """
-      raise NotImplementedError()
-    GetSubscription.future = None
-    def UpdateSubscription(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Updates an existing subscription. Note that certain properties of a
-      subscription, such as its topic, are not modifiable.
-      NOTE:  The style guide requires body: "subscription" instead of body: "*".
-      Keeping the latter for internal consistency in V1, however it should be
-      corrected in V2.  See
-      https://cloud.google.com/apis/design/standard_methods#update for details.
-      """
-      raise NotImplementedError()
-    UpdateSubscription.future = None
-    def ListSubscriptions(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Lists matching subscriptions.
-      """
-      raise NotImplementedError()
-    ListSubscriptions.future = None
-    def DeleteSubscription(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Deletes an existing subscription. All messages retained in the subscription
-      are immediately dropped. Calls to `Pull` after deletion will return
-      `NOT_FOUND`. After a subscription is deleted, a new one may be created with
-      the same name, but the new one has no association with the old
-      subscription or its topic unless the same topic is specified.
-      """
-      raise NotImplementedError()
-    DeleteSubscription.future = None
-    def ModifyAckDeadline(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Modifies the ack deadline for a specific message. This method is useful
-      to indicate that more time is needed to process a message by the
-      subscriber, or to make the message available for redelivery if the
-      processing was interrupted. Note that this does not modify the
-      subscription-level `ackDeadlineSeconds` used for subsequent messages.
-      """
-      raise NotImplementedError()
-    ModifyAckDeadline.future = None
-    def Acknowledge(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Acknowledges the messages associated with the `ack_ids` in the
-      `AcknowledgeRequest`. The Pub/Sub system can remove the relevant messages
-      from the subscription.
-
-      Acknowledging a message whose ack deadline has expired may succeed,
-      but such a message may be redelivered later. Acknowledging a message more
-      than once will not result in an error.
-      """
-      raise NotImplementedError()
-    Acknowledge.future = None
-    def Pull(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Pulls messages from the server. Returns an empty list if there are no
-      messages available in the backlog. The server may return `UNAVAILABLE` if
-      there are too many concurrent pull requests pending for the given
-      subscription.
-      """
-      raise NotImplementedError()
-    Pull.future = None
-    def StreamingPull(self, request_iterator, timeout, metadata=None, with_call=False, protocol_options=None):
-      """(EXPERIMENTAL) StreamingPull is an experimental feature. This RPC will
-      respond with UNIMPLEMENTED errors unless you have been invited to test
-      this feature. Contact cloud-pubsub@google.com with any questions.
-
-      Establishes a stream with the server, which sends messages down to the
-      client. The client streams acknowledgements and ack deadline modifications
-      back to the server. The server will close the stream and return the status
-      on any error. The server may close the stream with status `OK` to reassign
-      server-side resources, in which case, the client should re-establish the
-      stream. `UNAVAILABLE` may also be returned in the case of a transient error
-      (e.g., a server restart). These should also be retried by the client. Flow
-      control can be achieved by configuring the underlying RPC channel.
-      """
-      raise NotImplementedError()
-    def ModifyPushConfig(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Modifies the `PushConfig` for a specified subscription.
-
-      This may be used to change a push subscription to a pull one (signified by
-      an empty `PushConfig`) or vice versa, or change the endpoint URL and other
-      attributes of a push subscription. Messages will accumulate for delivery
-      continuously through the call regardless of changes to the `PushConfig`.
-      """
-      raise NotImplementedError()
-    ModifyPushConfig.future = None
-    def ListSnapshots(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Lists the existing snapshots.
-      """
-      raise NotImplementedError()
-    ListSnapshots.future = None
-    def CreateSnapshot(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Creates a snapshot from the requested subscription.
-      If the snapshot already exists, returns `ALREADY_EXISTS`.
-      If the requested subscription doesn't exist, returns `NOT_FOUND`.
-
-      If the name is not provided in the request, the server will assign a random
-      name for this snapshot on the same project as the subscription, conforming
-      to the
-      [resource name format](https://cloud.google.com/pubsub/docs/overview#names).
-      The generated name is populated in the returned Snapshot object.
-      Note that for REST API requests, you must specify a name in the request.
-      """
-      raise NotImplementedError()
-    CreateSnapshot.future = None
-    def UpdateSnapshot(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Updates an existing snapshot. Note that certain properties of a snapshot
-      are not modifiable.
-      NOTE:  The style guide requires body: "snapshot" instead of body: "*".
-      Keeping the latter for internal consistency in V1, however it should be
-      corrected in V2.  See
-      https://cloud.google.com/apis/design/standard_methods#update for details.
-      """
-      raise NotImplementedError()
-    UpdateSnapshot.future = None
-    def DeleteSnapshot(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Removes an existing snapshot. All messages retained in the snapshot
-      are immediately dropped. After a snapshot is deleted, a new one may be
-      created with the same name, but the new one has no association with the old
-      snapshot or its subscription, unless the same subscription is specified.
-      """
-      raise NotImplementedError()
-    DeleteSnapshot.future = None
-    def Seek(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Seeks an existing subscription to a point in time or to a given snapshot,
-      whichever is provided in the request.
-      """
-      raise NotImplementedError()
-    Seek.future = None
-
-
-  def beta_create_Subscriber_server(servicer, pool=None, pool_size=None, default_timeout=None, maximum_timeout=None):
-    """The Beta API is deprecated for 0.15.0 and later.
-
-    It is recommended to use the GA API (classes and functions in this
-    file not marked beta) for all further purposes. This function was
-    generated only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0"""
-    request_deserializers = {
-      ('google.pubsub.v1.Subscriber', 'Acknowledge'): AcknowledgeRequest.FromString,
-      ('google.pubsub.v1.Subscriber', 'CreateSnapshot'): CreateSnapshotRequest.FromString,
-      ('google.pubsub.v1.Subscriber', 'CreateSubscription'): Subscription.FromString,
-      ('google.pubsub.v1.Subscriber', 'DeleteSnapshot'): DeleteSnapshotRequest.FromString,
-      ('google.pubsub.v1.Subscriber', 'DeleteSubscription'): DeleteSubscriptionRequest.FromString,
-      ('google.pubsub.v1.Subscriber', 'GetSubscription'): GetSubscriptionRequest.FromString,
-      ('google.pubsub.v1.Subscriber', 'ListSnapshots'): ListSnapshotsRequest.FromString,
-      ('google.pubsub.v1.Subscriber', 'ListSubscriptions'): ListSubscriptionsRequest.FromString,
-      ('google.pubsub.v1.Subscriber', 'ModifyAckDeadline'): ModifyAckDeadlineRequest.FromString,
-      ('google.pubsub.v1.Subscriber', 'ModifyPushConfig'): ModifyPushConfigRequest.FromString,
-      ('google.pubsub.v1.Subscriber', 'Pull'): PullRequest.FromString,
-      ('google.pubsub.v1.Subscriber', 'Seek'): SeekRequest.FromString,
-      ('google.pubsub.v1.Subscriber', 'StreamingPull'): StreamingPullRequest.FromString,
-      ('google.pubsub.v1.Subscriber', 'UpdateSnapshot'): UpdateSnapshotRequest.FromString,
-      ('google.pubsub.v1.Subscriber', 'UpdateSubscription'): UpdateSubscriptionRequest.FromString,
-    }
-    response_serializers = {
-      ('google.pubsub.v1.Subscriber', 'Acknowledge'): google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
-      ('google.pubsub.v1.Subscriber', 'CreateSnapshot'): Snapshot.SerializeToString,
-      ('google.pubsub.v1.Subscriber', 'CreateSubscription'): Subscription.SerializeToString,
-      ('google.pubsub.v1.Subscriber', 'DeleteSnapshot'): google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
-      ('google.pubsub.v1.Subscriber', 'DeleteSubscription'): google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
-      ('google.pubsub.v1.Subscriber', 'GetSubscription'): Subscription.SerializeToString,
-      ('google.pubsub.v1.Subscriber', 'ListSnapshots'): ListSnapshotsResponse.SerializeToString,
-      ('google.pubsub.v1.Subscriber', 'ListSubscriptions'): ListSubscriptionsResponse.SerializeToString,
-      ('google.pubsub.v1.Subscriber', 'ModifyAckDeadline'): google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
-      ('google.pubsub.v1.Subscriber', 'ModifyPushConfig'): google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
-      ('google.pubsub.v1.Subscriber', 'Pull'): PullResponse.SerializeToString,
-      ('google.pubsub.v1.Subscriber', 'Seek'): SeekResponse.SerializeToString,
-      ('google.pubsub.v1.Subscriber', 'StreamingPull'): StreamingPullResponse.SerializeToString,
-      ('google.pubsub.v1.Subscriber', 'UpdateSnapshot'): Snapshot.SerializeToString,
-      ('google.pubsub.v1.Subscriber', 'UpdateSubscription'): Subscription.SerializeToString,
-    }
-    method_implementations = {
-      ('google.pubsub.v1.Subscriber', 'Acknowledge'): face_utilities.unary_unary_inline(servicer.Acknowledge),
-      ('google.pubsub.v1.Subscriber', 'CreateSnapshot'): face_utilities.unary_unary_inline(servicer.CreateSnapshot),
-      ('google.pubsub.v1.Subscriber', 'CreateSubscription'): face_utilities.unary_unary_inline(servicer.CreateSubscription),
-      ('google.pubsub.v1.Subscriber', 'DeleteSnapshot'): face_utilities.unary_unary_inline(servicer.DeleteSnapshot),
-      ('google.pubsub.v1.Subscriber', 'DeleteSubscription'): face_utilities.unary_unary_inline(servicer.DeleteSubscription),
-      ('google.pubsub.v1.Subscriber', 'GetSubscription'): face_utilities.unary_unary_inline(servicer.GetSubscription),
-      ('google.pubsub.v1.Subscriber', 'ListSnapshots'): face_utilities.unary_unary_inline(servicer.ListSnapshots),
-      ('google.pubsub.v1.Subscriber', 'ListSubscriptions'): face_utilities.unary_unary_inline(servicer.ListSubscriptions),
-      ('google.pubsub.v1.Subscriber', 'ModifyAckDeadline'): face_utilities.unary_unary_inline(servicer.ModifyAckDeadline),
-      ('google.pubsub.v1.Subscriber', 'ModifyPushConfig'): face_utilities.unary_unary_inline(servicer.ModifyPushConfig),
-      ('google.pubsub.v1.Subscriber', 'Pull'): face_utilities.unary_unary_inline(servicer.Pull),
-      ('google.pubsub.v1.Subscriber', 'Seek'): face_utilities.unary_unary_inline(servicer.Seek),
-      ('google.pubsub.v1.Subscriber', 'StreamingPull'): face_utilities.stream_stream_inline(servicer.StreamingPull),
-      ('google.pubsub.v1.Subscriber', 'UpdateSnapshot'): face_utilities.unary_unary_inline(servicer.UpdateSnapshot),
-      ('google.pubsub.v1.Subscriber', 'UpdateSubscription'): face_utilities.unary_unary_inline(servicer.UpdateSubscription),
-    }
-    server_options = beta_implementations.server_options(request_deserializers=request_deserializers, response_serializers=response_serializers, thread_pool=pool, thread_pool_size=pool_size, default_timeout=default_timeout, maximum_timeout=maximum_timeout)
-    return beta_implementations.server(method_implementations, options=server_options)
-
-
-  def beta_create_Subscriber_stub(channel, host=None, metadata_transformer=None, pool=None, pool_size=None):
-    """The Beta API is deprecated for 0.15.0 and later.
-
-    It is recommended to use the GA API (classes and functions in this
-    file not marked beta) for all further purposes. This function was
-    generated only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0"""
-    request_serializers = {
-      ('google.pubsub.v1.Subscriber', 'Acknowledge'): AcknowledgeRequest.SerializeToString,
-      ('google.pubsub.v1.Subscriber', 'CreateSnapshot'): CreateSnapshotRequest.SerializeToString,
-      ('google.pubsub.v1.Subscriber', 'CreateSubscription'): Subscription.SerializeToString,
-      ('google.pubsub.v1.Subscriber', 'DeleteSnapshot'): DeleteSnapshotRequest.SerializeToString,
-      ('google.pubsub.v1.Subscriber', 'DeleteSubscription'): DeleteSubscriptionRequest.SerializeToString,
-      ('google.pubsub.v1.Subscriber', 'GetSubscription'): GetSubscriptionRequest.SerializeToString,
-      ('google.pubsub.v1.Subscriber', 'ListSnapshots'): ListSnapshotsRequest.SerializeToString,
-      ('google.pubsub.v1.Subscriber', 'ListSubscriptions'): ListSubscriptionsRequest.SerializeToString,
-      ('google.pubsub.v1.Subscriber', 'ModifyAckDeadline'): ModifyAckDeadlineRequest.SerializeToString,
-      ('google.pubsub.v1.Subscriber', 'ModifyPushConfig'): ModifyPushConfigRequest.SerializeToString,
-      ('google.pubsub.v1.Subscriber', 'Pull'): PullRequest.SerializeToString,
-      ('google.pubsub.v1.Subscriber', 'Seek'): SeekRequest.SerializeToString,
-      ('google.pubsub.v1.Subscriber', 'StreamingPull'): StreamingPullRequest.SerializeToString,
-      ('google.pubsub.v1.Subscriber', 'UpdateSnapshot'): UpdateSnapshotRequest.SerializeToString,
-      ('google.pubsub.v1.Subscriber', 'UpdateSubscription'): UpdateSubscriptionRequest.SerializeToString,
-    }
-    response_deserializers = {
-      ('google.pubsub.v1.Subscriber', 'Acknowledge'): google_dot_protobuf_dot_empty__pb2.Empty.FromString,
-      ('google.pubsub.v1.Subscriber', 'CreateSnapshot'): Snapshot.FromString,
-      ('google.pubsub.v1.Subscriber', 'CreateSubscription'): Subscription.FromString,
-      ('google.pubsub.v1.Subscriber', 'DeleteSnapshot'): google_dot_protobuf_dot_empty__pb2.Empty.FromString,
-      ('google.pubsub.v1.Subscriber', 'DeleteSubscription'): google_dot_protobuf_dot_empty__pb2.Empty.FromString,
-      ('google.pubsub.v1.Subscriber', 'GetSubscription'): Subscription.FromString,
-      ('google.pubsub.v1.Subscriber', 'ListSnapshots'): ListSnapshotsResponse.FromString,
-      ('google.pubsub.v1.Subscriber', 'ListSubscriptions'): ListSubscriptionsResponse.FromString,
-      ('google.pubsub.v1.Subscriber', 'ModifyAckDeadline'): google_dot_protobuf_dot_empty__pb2.Empty.FromString,
-      ('google.pubsub.v1.Subscriber', 'ModifyPushConfig'): google_dot_protobuf_dot_empty__pb2.Empty.FromString,
-      ('google.pubsub.v1.Subscriber', 'Pull'): PullResponse.FromString,
-      ('google.pubsub.v1.Subscriber', 'Seek'): SeekResponse.FromString,
-      ('google.pubsub.v1.Subscriber', 'StreamingPull'): StreamingPullResponse.FromString,
-      ('google.pubsub.v1.Subscriber', 'UpdateSnapshot'): Snapshot.FromString,
-      ('google.pubsub.v1.Subscriber', 'UpdateSubscription'): Subscription.FromString,
-    }
-    cardinalities = {
-      'Acknowledge': cardinality.Cardinality.UNARY_UNARY,
-      'CreateSnapshot': cardinality.Cardinality.UNARY_UNARY,
-      'CreateSubscription': cardinality.Cardinality.UNARY_UNARY,
-      'DeleteSnapshot': cardinality.Cardinality.UNARY_UNARY,
-      'DeleteSubscription': cardinality.Cardinality.UNARY_UNARY,
-      'GetSubscription': cardinality.Cardinality.UNARY_UNARY,
-      'ListSnapshots': cardinality.Cardinality.UNARY_UNARY,
-      'ListSubscriptions': cardinality.Cardinality.UNARY_UNARY,
-      'ModifyAckDeadline': cardinality.Cardinality.UNARY_UNARY,
-      'ModifyPushConfig': cardinality.Cardinality.UNARY_UNARY,
-      'Pull': cardinality.Cardinality.UNARY_UNARY,
-      'Seek': cardinality.Cardinality.UNARY_UNARY,
-      'StreamingPull': cardinality.Cardinality.STREAM_STREAM,
-      'UpdateSnapshot': cardinality.Cardinality.UNARY_UNARY,
-      'UpdateSubscription': cardinality.Cardinality.UNARY_UNARY,
-    }
-    stub_options = beta_implementations.stub_options(host=host, metadata_transformer=metadata_transformer, request_serializers=request_serializers, response_deserializers=response_deserializers, thread_pool=pool, thread_pool_size=pool_size)
-    return beta_implementations.dynamic_stub(channel, 'google.pubsub.v1.Subscriber', cardinalities, options=stub_options)
-
-
-  class BetaPublisherServicer(object):
-    """The Beta API is deprecated for 0.15.0 and later.
-
-    It is recommended to use the GA API (classes and functions in this
-    file not marked beta) for all further purposes. This class was generated
-    only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0."""
-    """The service that an application uses to manipulate topics, and to send
-    messages to a topic.
-    """
-    def CreateTopic(self, request, context):
-      """Creates the given topic with the given name.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def UpdateTopic(self, request, context):
-      """Updates an existing topic. Note that certain properties of a topic are not
-      modifiable.  Options settings follow the style guide:
-      NOTE:  The style guide requires body: "topic" instead of body: "*".
-      Keeping the latter for internal consistency in V1, however it should be
-      corrected in V2.  See
-      https://cloud.google.com/apis/design/standard_methods#update for details.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def Publish(self, request, context):
-      """Adds one or more messages to the topic. Returns `NOT_FOUND` if the topic
-      does not exist. The message payload must not be empty; it must contain
-      either a non-empty data field, or at least one attribute.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def GetTopic(self, request, context):
-      """Gets the configuration of a topic.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def ListTopics(self, request, context):
-      """Lists matching topics.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def ListTopicSubscriptions(self, request, context):
-      """Lists the name of the subscriptions for this topic.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def DeleteTopic(self, request, context):
-      """Deletes the topic with the given name. Returns `NOT_FOUND` if the topic
-      does not exist. After a topic is deleted, a new topic may be created with
-      the same name; this is an entirely new topic with none of the old
-      configuration or subscriptions. Existing subscriptions to this topic are
-      not deleted, but their `topic` field is set to `_deleted-topic_`.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-
-
-  class BetaPublisherStub(object):
-    """The Beta API is deprecated for 0.15.0 and later.
-
-    It is recommended to use the GA API (classes and functions in this
-    file not marked beta) for all further purposes. This class was generated
-    only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0."""
-    """The service that an application uses to manipulate topics, and to send
-    messages to a topic.
-    """
-    def CreateTopic(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Creates the given topic with the given name.
-      """
-      raise NotImplementedError()
-    CreateTopic.future = None
-    def UpdateTopic(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Updates an existing topic. Note that certain properties of a topic are not
-      modifiable.  Options settings follow the style guide:
-      NOTE:  The style guide requires body: "topic" instead of body: "*".
-      Keeping the latter for internal consistency in V1, however it should be
-      corrected in V2.  See
-      https://cloud.google.com/apis/design/standard_methods#update for details.
-      """
-      raise NotImplementedError()
-    UpdateTopic.future = None
-    def Publish(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Adds one or more messages to the topic. Returns `NOT_FOUND` if the topic
-      does not exist. The message payload must not be empty; it must contain
-      either a non-empty data field, or at least one attribute.
-      """
-      raise NotImplementedError()
-    Publish.future = None
-    def GetTopic(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Gets the configuration of a topic.
-      """
-      raise NotImplementedError()
-    GetTopic.future = None
-    def ListTopics(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Lists matching topics.
-      """
-      raise NotImplementedError()
-    ListTopics.future = None
-    def ListTopicSubscriptions(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Lists the name of the subscriptions for this topic.
-      """
-      raise NotImplementedError()
-    ListTopicSubscriptions.future = None
-    def DeleteTopic(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Deletes the topic with the given name. Returns `NOT_FOUND` if the topic
-      does not exist. After a topic is deleted, a new topic may be created with
-      the same name; this is an entirely new topic with none of the old
-      configuration or subscriptions. Existing subscriptions to this topic are
-      not deleted, but their `topic` field is set to `_deleted-topic_`.
-      """
-      raise NotImplementedError()
-    DeleteTopic.future = None
-
-
-  def beta_create_Publisher_server(servicer, pool=None, pool_size=None, default_timeout=None, maximum_timeout=None):
-    """The Beta API is deprecated for 0.15.0 and later.
-
-    It is recommended to use the GA API (classes and functions in this
-    file not marked beta) for all further purposes. This function was
-    generated only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0"""
-    request_deserializers = {
-      ('google.pubsub.v1.Publisher', 'CreateTopic'): Topic.FromString,
-      ('google.pubsub.v1.Publisher', 'DeleteTopic'): DeleteTopicRequest.FromString,
-      ('google.pubsub.v1.Publisher', 'GetTopic'): GetTopicRequest.FromString,
-      ('google.pubsub.v1.Publisher', 'ListTopicSubscriptions'): ListTopicSubscriptionsRequest.FromString,
-      ('google.pubsub.v1.Publisher', 'ListTopics'): ListTopicsRequest.FromString,
-      ('google.pubsub.v1.Publisher', 'Publish'): PublishRequest.FromString,
-      ('google.pubsub.v1.Publisher', 'UpdateTopic'): UpdateTopicRequest.FromString,
-    }
-    response_serializers = {
-      ('google.pubsub.v1.Publisher', 'CreateTopic'): Topic.SerializeToString,
-      ('google.pubsub.v1.Publisher', 'DeleteTopic'): google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
-      ('google.pubsub.v1.Publisher', 'GetTopic'): Topic.SerializeToString,
-      ('google.pubsub.v1.Publisher', 'ListTopicSubscriptions'): ListTopicSubscriptionsResponse.SerializeToString,
-      ('google.pubsub.v1.Publisher', 'ListTopics'): ListTopicsResponse.SerializeToString,
-      ('google.pubsub.v1.Publisher', 'Publish'): PublishResponse.SerializeToString,
-      ('google.pubsub.v1.Publisher', 'UpdateTopic'): Topic.SerializeToString,
-    }
-    method_implementations = {
-      ('google.pubsub.v1.Publisher', 'CreateTopic'): face_utilities.unary_unary_inline(servicer.CreateTopic),
-      ('google.pubsub.v1.Publisher', 'DeleteTopic'): face_utilities.unary_unary_inline(servicer.DeleteTopic),
-      ('google.pubsub.v1.Publisher', 'GetTopic'): face_utilities.unary_unary_inline(servicer.GetTopic),
-      ('google.pubsub.v1.Publisher', 'ListTopicSubscriptions'): face_utilities.unary_unary_inline(servicer.ListTopicSubscriptions),
-      ('google.pubsub.v1.Publisher', 'ListTopics'): face_utilities.unary_unary_inline(servicer.ListTopics),
-      ('google.pubsub.v1.Publisher', 'Publish'): face_utilities.unary_unary_inline(servicer.Publish),
-      ('google.pubsub.v1.Publisher', 'UpdateTopic'): face_utilities.unary_unary_inline(servicer.UpdateTopic),
-    }
-    server_options = beta_implementations.server_options(request_deserializers=request_deserializers, response_serializers=response_serializers, thread_pool=pool, thread_pool_size=pool_size, default_timeout=default_timeout, maximum_timeout=maximum_timeout)
-    return beta_implementations.server(method_implementations, options=server_options)
-
-
-  def beta_create_Publisher_stub(channel, host=None, metadata_transformer=None, pool=None, pool_size=None):
-    """The Beta API is deprecated for 0.15.0 and later.
-
-    It is recommended to use the GA API (classes and functions in this
-    file not marked beta) for all further purposes. This function was
-    generated only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0"""
-    request_serializers = {
-      ('google.pubsub.v1.Publisher', 'CreateTopic'): Topic.SerializeToString,
-      ('google.pubsub.v1.Publisher', 'DeleteTopic'): DeleteTopicRequest.SerializeToString,
-      ('google.pubsub.v1.Publisher', 'GetTopic'): GetTopicRequest.SerializeToString,
-      ('google.pubsub.v1.Publisher', 'ListTopicSubscriptions'): ListTopicSubscriptionsRequest.SerializeToString,
-      ('google.pubsub.v1.Publisher', 'ListTopics'): ListTopicsRequest.SerializeToString,
-      ('google.pubsub.v1.Publisher', 'Publish'): PublishRequest.SerializeToString,
-      ('google.pubsub.v1.Publisher', 'UpdateTopic'): UpdateTopicRequest.SerializeToString,
-    }
-    response_deserializers = {
-      ('google.pubsub.v1.Publisher', 'CreateTopic'): Topic.FromString,
-      ('google.pubsub.v1.Publisher', 'DeleteTopic'): google_dot_protobuf_dot_empty__pb2.Empty.FromString,
-      ('google.pubsub.v1.Publisher', 'GetTopic'): Topic.FromString,
-      ('google.pubsub.v1.Publisher', 'ListTopicSubscriptions'): ListTopicSubscriptionsResponse.FromString,
-      ('google.pubsub.v1.Publisher', 'ListTopics'): ListTopicsResponse.FromString,
-      ('google.pubsub.v1.Publisher', 'Publish'): PublishResponse.FromString,
-      ('google.pubsub.v1.Publisher', 'UpdateTopic'): Topic.FromString,
-    }
-    cardinalities = {
-      'CreateTopic': cardinality.Cardinality.UNARY_UNARY,
-      'DeleteTopic': cardinality.Cardinality.UNARY_UNARY,
-      'GetTopic': cardinality.Cardinality.UNARY_UNARY,
-      'ListTopicSubscriptions': cardinality.Cardinality.UNARY_UNARY,
-      'ListTopics': cardinality.Cardinality.UNARY_UNARY,
-      'Publish': cardinality.Cardinality.UNARY_UNARY,
-      'UpdateTopic': cardinality.Cardinality.UNARY_UNARY,
-    }
-    stub_options = beta_implementations.stub_options(host=host, metadata_transformer=metadata_transformer, request_serializers=request_serializers, response_deserializers=response_deserializers, thread_pool=pool, thread_pool_size=pool_size)
-    return beta_implementations.dynamic_stub(channel, 'google.pubsub.v1.Publisher', cardinalities, options=stub_options)
-except ImportError:
-  pass
 # @@protoc_insertion_point(module_scope)

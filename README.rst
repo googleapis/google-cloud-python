@@ -15,10 +15,10 @@ Google Cloud Python Client
 .. _API Documentation: https://googlecloudplatform.github.io/google-cloud-python/latest/
 .. _Read The Docs Documentation: https://google-cloud-python.readthedocs.io/en/latest/
 
-.. note::
+**Heads up**! These libraries are supported on App Engine standard's `Python 3 runtime`_ but are *not* supported on App Engine's `Python 2 runtime`_.
 
-    These libraries currently do not run on Google App Engine Standard.
-    We are actively working on adding this support.
+.. _Python 3 runtime: https://cloud.google.com/appengine/docs/standard/python3
+.. _Python 2 runtime: https://cloud.google.com/appengine/docs/standard/python
 
 The following client libraries have **GA** support:
 
