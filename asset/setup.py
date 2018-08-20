@@ -24,7 +24,6 @@ release_status = '3 - Alpha'
 dependencies = [
     'google-api-core[grpc] >= 1.1.0, < 2.0.0dev',
     'enum34; python_version < "3.4"',
-    'grpc-google-iam-v1<0.12dev,>=0.11.4',
 ]
 
 package_root = os.path.abspath(os.path.dirname(__file__))
