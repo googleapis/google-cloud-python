@@ -309,7 +309,7 @@ class TestWatch(unittest.TestCase):
         inst.on_snapshot(proto)
         self.assertTrue(inst.change_map['fred'] is ChangeType.REMOVED)
 
-    def dont_test_on_snapshot_filter_update(self):  # XXX _current_size broken
+    def test_on_snapshot_filter_update(self):
         inst = self._makeOne()
         proto = DummyProto()
         proto.target_change = ''
@@ -323,9 +323,9 @@ class TestWatch(unittest.TestCase):
         proto.filter = DummyFilter()
 
         def reset():
-            self._docs_reset = True
+            inst._docs_reset = True
 
-        proto._reset_docs = reset
+        inst._reset_docs = reset
         inst.on_snapshot(proto)
         self.assertTrue(inst._docs_reset)
 
