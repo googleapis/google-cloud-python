@@ -23,6 +23,15 @@ Install the ``google-cloud-storage`` library using ``pip``:
 Usage
 -----
 
+.. note::
+
+   Becuase the :class:`~google.cloud.storage.client.Client` uses the
+   third-party :mod:`requests` library by default, it is safe to
+   share instances across threads.  In multiprocessing scenarious, best
+   practice is to create client instances *after*
+   :class:`multiprocessing.Pool` or :class:`multiprocessing.Process` invokes
+   :func:`os.fork`.
+
 .. automodule:: google.cloud.storage.client
   :members:
   :show-inheritance:

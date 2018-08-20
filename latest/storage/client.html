@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Storage &#8212; google-cloud cae232c documentation</title>
+    <title>Storage &#8212; google-cloud af8547f documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -45,9 +45,18 @@
 </pre></div>
 </div>
 </div>
-<div class="section" id="module-google.cloud.storage.client">
-<span id="usage"></span><h2>Usage<a class="headerlink" href="#module-google.cloud.storage.client" title="Permalink to this headline">#</a></h2>
-<p>Client for interacting with the Google Cloud Storage API.</p>
+<div class="section" id="usage">
+<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">#</a></h2>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Becuase the <a class="reference internal" href="#google.cloud.storage.client.Client" title="google.cloud.storage.client.Client"><code class="xref py py-class docutils literal notranslate"><span class="pre">Client</span></code></a> uses the
+third-party <a class="reference external" href="http://docs.python-requests.org/en/master/api/#module-requests" title="(in Requests v2.19.1)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">requests</span></code></a> library by default, it is safe to
+share instances across threads.  In multiprocessing scenarious, best
+practice is to create client instances <em>after</em>
+<code class="xref py py-class docutils literal notranslate"><span class="pre">multiprocessing.Pool</span></code> or <a class="reference external" href="https://docs.python.org/3/library/multiprocessing.html#multiprocessing.Process" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">multiprocessing.Process</span></code></a> invokes
+<a class="reference external" href="https://docs.python.org/3/library/os.html#os.fork" title="(in Python v3.7)"><code class="xref py py-func docutils literal notranslate"><span class="pre">os.fork()</span></code></a>.</p>
+</div>
+<span class="target" id="module-google.cloud.storage.client"></span><p>Client for interacting with the Google Cloud Storage API.</p>
 <dl class="class">
 <dt id="google.cloud.storage.client.Client">
 <em class="property">class </em><code class="descclassname">google.cloud.storage.client.</code><code class="descname">Client</code><span class="sig-paren">(</span><em>project=&lt;object object&gt;</em>, <em>credentials=None</em>, <em>_http=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/storage/client.html#Client"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.storage.client.Client" title="Permalink to this definition">#</a></dt>
@@ -403,7 +412,7 @@ than catching an exception:</p>
 <li class="toctree-l2"><a class="reference internal" href="batch.html">Batches</a></li>
 <li class="toctree-l2"><a class="reference internal" href="changelog.html">Changelog</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#installation">Installation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#module-google.cloud.storage.client">Usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#usage">Usage</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../tasks/index.html">Python Client for Cloud Tasks API (Alpha)</a></li>
