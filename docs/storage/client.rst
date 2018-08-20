@@ -26,7 +26,7 @@ Usage
 .. note::
 
    Becuase the :class:`~google.cloud.storage.client.Client` uses the
-   third-party :mod:`requests` library by default, it should be safe to
+   third-party :mod:`requests` library by default, it is safe to
    share instances across threads.  In multiprocessing scenarious, best
    practice is to create client instances *after*
    :class:`multiprocessing.Pool` or :class:`multiprocessing.Process` invokes
