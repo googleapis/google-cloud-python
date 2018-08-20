@@ -26,8 +26,6 @@ from google.protobuf import json_format
 
 
 # from bidi import BidiRpc, ResumableBidiRpc
-import time
-import random
 import grpc
 
 """Python client for Google Cloud Firestore Watch."""
@@ -138,87 +136,28 @@ def _maybe_wrap_exception(exception):
     return exception
 
 
-def is_permanent_error(self, error):
-    try:
-        if (error.code == GRPC_STATUS_CODE['CANCELLED'] or
-                error.code == GRPC_STATUS_CODE['UNKNOWN'] or
-                error.code == GRPC_STATUS_CODE['DEADLINE_EXCEEDED'] or
-                error.code == GRPC_STATUS_CODE['RESOURCE_EXHAUSTED'] or
-                error.code == GRPC_STATUS_CODE['INTERNAL'] or
-                error.code == GRPC_STATUS_CODE['UNAVAILABLE'] or
-                error.code == GRPC_STATUS_CODE['UNAUTHENTICATED']):
-            return False
-        else:
-            return True
-    except AttributeError:
-        _LOGGER.error("Unable to determine error code")
-        return False
-
-
 def document_watch_comparator(doc1, doc2):
     assert doc1 == doc2, 'Document watches only support one document.'
     return 0
 
 
-class ExponentialBackOff(object):
-    _INITIAL_SLEEP = 1.0
-    """float: Initial "max" for sleep interval."""
-    _MAX_SLEEP = 30.0
-    """float: Eventual "max" sleep time."""
-    _MULTIPLIER = 2.0
-    """float: Multiplier for exponential backoff."""
-
-    def __init__(self, initial_sleep=_INITIAL_SLEEP, max_sleep=_MAX_SLEEP,
-                 multiplier=_MULTIPLIER):
-        self.initial_sleep = self.current_sleep = initial_sleep
-        self.max_sleep = max_sleep
-        self.multipler = multiplier
-
-    def back_off(self):
-        self.current_sleep = self._sleep(self.current_sleep,
-                                         self.max_sleep,
-                                         self.multipler)
-
-    def reset_to_max(self):
-        self.current_sleep = self.max_sleep
-
-    def reset(self):
-        self.current_sleep = self._INITIAL_SLEEP
-
-    def _sleep(self, current_sleep, max_sleep=_MAX_SLEEP,
-               multiplier=_MULTIPLIER):
-        """Sleep and produce a new sleep time.
-
-        .. _Exponential Backoff And Jitter:
-            https://www.awsarchitectureblog.com/2015/03/backoff.html
-
-        Select a duration between zero and ``current_sleep``. It might seem
-        counterintuitive to have so much jitter, but
-        `Exponential Backoff And Jitter`_ argues that "full jitter" is
-        the best strategy.
-
-        Args:
-            current_sleep (float): The current "max" for sleep interval.
-            max_sleep (Optional[float]): Eventual "max" sleep time
-            multiplier (Optional[float]): Multiplier for exponential backoff.
-
-        Returns:
-            float: Newly doubled ``current_sleep`` or ``max_sleep`` (whichever
-            is smaller)
-        """
-        actual_sleep = random.uniform(0.0, self.current_sleep)
-        time.sleep(actual_sleep)
-        return min(self.multiplier * self.current_sleep, self.max_sleep)
-
-
 class Watch(object):
+
+    threading = threading  # FBO unit tests
+    BackgroundConsumer = BackgroundConsumer  # FBO unit tests
+    ResumableBidiRpc = ResumableBidiRpc  # FBO unit tests
+    MessageToDict = json_format.MessageToDict  # FBO unit tests
+
     def __init__(self,
                  document_reference,
                  firestore,
                  target,
                  comparator,
                  snapshot_callback,
-                 DocumentSnapshotCls):
+                 DocumentSnapshotCls,
+                 BackgroundConsumer=None,  # FBO unit testing
+                 ResumableBidiRpc=None,  # FBO unit testing
+                 ):
         """
         Args:
             firestore:
@@ -234,7 +173,7 @@ class Watch(object):
                     read_time (string): The ISO 8601 time at which this
                         snapshot was obtained.
                     # TODO: Go had an err here and node.js provided size.
-                    # TODO: do we want to include either?                    
+                    # TODO: do we want to include either?
             DocumentSnapshotCls: instance of the DocumentSnapshot class
         """
         self._document_reference = document_reference
@@ -254,6 +193,9 @@ class Watch(object):
             database=self._firestore._database_string,
             add_target=self._targets
         )
+
+        if ResumableBidiRpc is None:
+            ResumableBidiRpc = self.ResumableBidiRpc  # FBO unit tests
 
         self.rpc = ResumableBidiRpc(
             self._api.firestore_stub.Listen,
@@ -278,7 +220,7 @@ class Watch(object):
 
         # The current state of the query results.
         self.current = False
-        
+
         # We need this to track whether we've pushed an initial set of changes,
         # since we should push those even when there are no changes, if there
         # aren't docs.
@@ -286,6 +228,8 @@ class Watch(object):
 
         # The server assigns and updates the resume token.
         self.resume_token = None
+        if BackgroundConsumer is None:  # FBO unit tests
+            BackgroundConsumer = self.BackgroundConsumer
 
         self._consumer = BackgroundConsumer(self.rpc, self.on_snapshot)
         self._consumer.start()
@@ -305,14 +249,14 @@ class Watch(object):
         _LOGGER.info(
             'RPC termination has signaled shutdown.')
         future = _maybe_wrap_exception(future)
-        thread = threading.Thread(
+        thread = self.threading.Thread(
             name=_RPC_ERROR_THREAD_NAME,
             target=self.close,
             kwargs={'reason': future})
         thread.daemon = True
         thread.start()
 
-    def unsubscribe(self):
+    def unsubscribe(self):  # XXX should this be aliased to close?
         self.rpc.close()
 
     @classmethod
@@ -326,7 +270,7 @@ class Watch(object):
         Args:
             document_ref: Reference to Document
             snapshot_callback: callback to be called on snapshot
-            snapshot_class_instance: instance of snapshot cls to make 
+            snapshot_class_instance: instance of snapshot cls to make
                 snapshots with to pass to snapshot_callback
 
         """
@@ -363,6 +307,52 @@ class Watch(object):
     #                snapshot_callback,
     #                snapshot_class_instance)
 
+    def _on_snapshot_target_change_no_change(self, proto):
+        _LOGGER.debug('on_snapshot: target change: NO_CHANGE')
+        change = proto.target_change
+
+        no_target_ids = (change.target_ids is None or
+                         len(change.target_ids) == 0)
+        if no_target_ids and change.read_time and self.current:
+            # TargetChange.CURRENT followed by TargetChange.NO_CHANGE
+            # signals a consistent state. Invoke the onSnapshot
+            # callback as specified by the user.
+            self.push(change.read_time, change.resume_token)
+
+    def _on_snapshot_target_change_add(self, proto):
+        _LOGGER.debug("on_snapshot: target change: ADD")
+        assert WATCH_TARGET_ID == proto.target_change.target_ids[0], \
+            'Unexpected target ID sent by server'
+        # TODO : do anything here? Node didn't so I think this isn't
+        # the right thing to do
+        # wr = WatchResult(
+        #     None,
+        #     self._document_reference.id,
+        #     ChangeType.ADDED)
+        # self._snapshot_callback(wr)
+
+    def _on_snapshot_target_change_remove(self, proto):
+        _LOGGER.debug("on_snapshot: target change: REMOVE")
+        change = proto.target_change
+
+        code = 13
+        message = 'internal error'
+        if change.cause:
+            code = change.cause.code
+            message = change.cause.message
+
+        # TODO: Surface a .code property on the exception.
+        raise Exception('Error %s:  %s' % (code, message))  # XXX Exception?
+
+    def _on_snapshot_target_change_reset(self, proto):
+        # Whatever changes have happened so far no longer matter.
+        _LOGGER.debug("on_snapshot: target change: RESET")
+        self._reset_docs()
+
+    def _on_snapshot_target_change_current(self, proto):
+        _LOGGER.debug("on_snapshot: target change: CURRENT")
+        self.current = True
+
     def on_snapshot(self, proto):
         """
         Called everytime there is a response from listen. Collect changes
@@ -375,72 +365,47 @@ class Watch(object):
         """
         TargetChange = firestore_pb2.TargetChange
 
-        if str(proto.target_change):
+        target_changetype_dispatch = {
+            TargetChange.NO_CHANGE: self._on_snapshot_target_change_no_change,
+            TargetChange.ADD: self._on_snapshot_target_change_add,
+            TargetChange.REMOVE: self._on_snapshot_target_change_remove,
+            TargetChange.RESET: self._on_snapshot_target_change_reset,
+            TargetChange.CURRENT: self._on_snapshot_target_change_current,
+            }
+
+        target_change = proto.target_change
+
+        if str(target_change):  # XXX why if str
             _LOGGER.debug('on_snapshot: target change')
-
-            # google.cloud.firestore_v1beta1.types.TargetChange
-            change = proto.target_change
-
-            no_target_ids = change.target_ids is None or \
-                len(change.target_ids) == 0
-            if change.target_change_type == TargetChange.NO_CHANGE:
-                _LOGGER.debug('on_snapshot: target change: NO_CHANGE')
-                if no_target_ids and change.read_time and self.current: 
-                    # TargetChange.CURRENT followed by TargetChange.NO_CHANGE
-                    # signals a consistent state. Invoke the onSnapshot
-                    # callback as specified by the user.
-                    self.push(change.read_time, change.resume_token)
-            elif change.target_change_type == TargetChange.ADD:
-                _LOGGER.debug("on_snapshot: target change: ADD")
-                assert WATCH_TARGET_ID == change.target_ids[0], \
-                    'Unexpected target ID sent by server'
-                # TODO : do anything here? Node didn't so I think this isn't
-                # the right thing to do
-                # wr = WatchResult(
-                #     None,
-                #     self._document_reference.id,
-                #     ChangeType.ADDED)
-                # self._snapshot_callback(wr)
-
-            elif change.target_change_type == TargetChange.REMOVE:
-                _LOGGER.debug("on_snapshot: target change: REMOVE")
-
-                code = 13
-                message = 'internal error'
-                if change.cause:
-                    code = change.cause.code
-                    message = change.cause.message
-
-                # TODO: Surface a .code property on the exception.
-                raise Exception('Error ' + code + ': ' + message)
-            elif change.target_change_type == TargetChange.RESET:
-                # Whatever changes have happened so far no longer matter.
-                _LOGGER.debug("on_snapshot: target change: RESET")
-                self._reset_docs()
-            elif change.target_change_type == TargetChange.CURRENT:
-                _LOGGER.debug("on_snapshot: target change: CURRENT")
-                self.current = True
-            else:
+            target_change_type = target_change.target_change_type
+            meth = target_changetype_dispatch.get(target_change_type)
+            if meth is None:
                 _LOGGER.info('on_snapshot: Unknown target change ' +
-                             str(change.target_change_type))
-
+                             str(target_change_type))
                 self._consumer.stop()
                 # closeStream(
                 #   new Error('Unknown target change type: ' +
                 #       JSON.stringify(change))
                 # TODO : make this exit the inner function and stop processing?
-                raise Exception('Unknown target change type: ' + str(change))
+                raise Exception('Unknown target change type: %s ' %
+                                str(target_change_type))  # XXX Exception?
+            else:
+                meth(proto)
 
-            if change.resume_token and self._affects_target(change.target_ids,
-                                                            WATCH_TARGET_ID):
-                # TODO: they node version resets backoff here. We allow
-                # bidi rpc to do its thing.
-                pass
+            # XXX this is currently a no-op
+            # affects_target = self._affects_target(
+            #     target_change.target_ids, WATCH_TARGET_ID
+            # )
 
-        elif str(proto.document_change):
+            # if target_change.resume_token and affects_target:
+            #     # TODO: they node version resets backoff here. We allow
+            #     # bidi rpc to do its thing.
+            #     pass
+
+        elif str(proto.document_change):  # XXX why if str
             _LOGGER.debug('on_snapshot: document change')
 
-            # No other target_ids can show up here, but we still need to see 
+            # No other target_ids can show up here, but we still need to see
             # if the targetId was in the added list or removed list.
             target_ids = proto.document_change.target_ids or []
             removed_target_ids = proto.document_change.removed_target_ids or []
@@ -463,7 +428,7 @@ class Watch(object):
                 # google.cloud.firestore_v1beta1.types.Document
                 document = document_change.document
 
-                data = json_format.MessageToDict(document)
+                data = self.MessageToDict(document)
 
                 snapshot = self.DocumentSnapshot(
                     reference=self._document_reference,
@@ -482,6 +447,7 @@ class Watch(object):
 
             elif removed:
                 _LOGGER.debug('on_snapshot: document change: REMOVED')
+                document = proto.document_change.document
                 self.change_map[document.name] = ChangeType.REMOVED
 
         elif (proto.document_delete or proto.document_remove):
@@ -506,7 +472,8 @@ class Watch(object):
             _LOGGER.debug("UNKNOWN TYPE. UHOH")
             self._consumer.stop()
             raise Exception(
-                'Unknown listen response type: ' + proto)
+                'Unknown listen response type: %s' % proto
+                )  # XXX Exception?
             # TODO: can we stop but raise an error?
             #   closeStream(
             #     new Error('Unknown listen response type: ' +
@@ -610,6 +577,7 @@ class Watch(object):
                                    new_index),
                     updated_tree, updated_map)
 
+        # XXX modify_doc is broken via formattedName
         def modify_doc(new_document, updated_tree, updated_map):
             """
             Applies a document modification to the document tree and the
@@ -672,7 +640,6 @@ class Watch(object):
         assert len(updated_tree) == len(updated_map), \
             'The update document ' + \
             'tree and document map should have the same number of entries.'
-        _LOGGER.debug("tree:{updated_tree}, map:{updated_map}, applied:{appliedChanges}")
         return (updated_tree, updated_map, appliedChanges)
 
     def _affects_target(self, target_ids, current_id):
@@ -685,7 +652,7 @@ class Watch(object):
 
         return False
 
-    def _current_size(self):
+    def _current_size(self):  # XXX broken, no docMap or changeMap
         """
         Returns the current count of all documents, including the changes from
         the current changeMap.
@@ -693,7 +660,7 @@ class Watch(object):
         deletes, adds, _ = Watch._extract_changes(self.docMap, self.changeMap)
         return self.docMap.size + len(adds) - len(deletes)
 
-    def _reset_docs(self):
+    def _reset_docs(self):  # XXX broken via formattedName
         """
         Helper to clear the docs on RESET or filter mismatch.
         """

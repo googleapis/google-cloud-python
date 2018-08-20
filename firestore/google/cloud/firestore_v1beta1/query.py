@@ -629,6 +629,7 @@ class Query(object):
     #     """
     #     raise NotImplemented
 
+
 def _enum_from_op_string(op_string):
     """Convert a string representation of a binary operator to an enum.
 
