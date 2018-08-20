@@ -765,7 +765,7 @@ def test_watch_document(client, cleanup):
     # Setup listener
     def on_response(response):
         on_response.called_count += 1
-        print(f'Response: {response}')
+        print('Response: %s' % response)
         print(type(response))
 
     on_response.called_count = 0
