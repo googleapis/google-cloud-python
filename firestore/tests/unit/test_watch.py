@@ -478,7 +478,28 @@ class TestWatch(unittest.TestCase):
             add_changes,
             update_changes
             )
-        self.assertEqual(updated_map, None)
+        # assertion is incorrect below, but we don't get here yet; the tested
+        # code raises an exception before we get a result
+        self.assertEqual(updated_map, None)  
+
+    def test__reset_docs(self):
+        from google.cloud.firestore_v1beta1.watch import ChangeType
+        inst = self._makeOne()
+        inst.change_map = {None:None}
+        from google.cloud.firestore_v1beta1.watch import WatchDocTree
+        doc = DummyDocumentReference()
+        doc._document_path = '/doc'
+        doc_tree = WatchDocTree()
+        doc_tree = doc_tree.insert('/doc', doc)
+        doc_tree = doc_tree.insert('/doc', doc)
+        snapshot = DummyDocumentSnapshot()
+        snapshot.reference = doc
+        inst.doc_tree = doc_tree
+        inst._reset_docs()
+        self.assertEqual(inst.change_map, {'/doc':ChangeType.REMOVED})
+        self.assertEqual(inst.resume_token, None)
+        self.assertFalse(inst.current)
+
 
 class DummyFirestoreStub(object):
     def Listen(self):
