@@ -196,7 +196,6 @@ class BidiRpc(object):
 
         request_generator = _RequestQueueGenerator(
             self._request_queue, initial_request=self._initial_request)
-        print('request generator created')
         call = self._start_rpc(iter(request_generator))
 
         request_generator.call = call
@@ -282,7 +281,7 @@ class ResumableBidiRpc(BidiRpc):
         def should_recover(exc):
             return (
                 isinstance(exc, grpc.RpcError) and
-                exc.code() == grpc.StatusCode.UNVAILABLE)
+                exc.code() == grpc.StatusCode.UNAVAILABLE)
 
         initial_request = example_pb2.StreamingRpcRequest(
             setting='example')
@@ -429,7 +428,7 @@ class BackgroundConsumer(object):
         def should_recover(exc):
             return (
                 isinstance(exc, grpc.RpcError) and
-                exc.code() == grpc.StatusCode.UNVAILABLE)
+                exc.code() == grpc.StatusCode.UNAVAILABLE)
 
         initial_request = example_pb2.StreamingRpcRequest(
             setting='example')
@@ -443,7 +442,7 @@ class BackgroundConsumer(object):
             print(response)
 
         consumer = BackgroundConsumer(rpc, on_response)
-        consumer.start()
+        consume.start()
 
     Note that error handling *must* be done by using the provided
     ``bidi_rpc``'s ``add_done_callback``. This helper will automatically exit
