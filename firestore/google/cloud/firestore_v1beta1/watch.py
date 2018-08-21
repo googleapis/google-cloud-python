@@ -604,6 +604,7 @@ class Watch(object):
             """
             assert name in updated_map, 'Document to delete does not exist'
             old_document = updated_map.get(name)
+            # XXX probably should not expose IndexError when doc doesnt exist
             existing = updated_tree.find(name)
             old_index = existing.index
             # TODO: was existing.remove returning tree (presumably immuatable?)
@@ -638,18 +639,18 @@ class Watch(object):
             document map.
             Returns the DocumentChange event for successful modifications.
             """
-            name = new_document.reference.formattedName
-            assert updated_map.has(name), 'Document to modify does not exist'
-            oldDocument = updated_map.get(name)
-            if oldDocument.updateTime != new_document.updateTime:
-                removeChange, updated_tree, updated_map = delete_doc(
+            name = new_document.reference._document_path
+            assert name in updated_map, 'Document to modify does not exist'
+            old_document = updated_map.get(name)
+            if old_document.update_time != new_document.update_time:
+                remove_change, updated_tree, updated_map = delete_doc(
                     name, updated_tree, updated_map)
-                addChange, updated_tree, updated_map = add_doc(
+                add_change, updated_tree, updated_map = add_doc(
                     new_document, updated_tree, updated_map)
                 return (DocumentChange(ChangeType.MODIFIED,
                                        new_document,
-                                       removeChange.old_index,
-                                       addChange.new_index),
+                                       remove_change.old_index,
+                                       add_change.new_index),
                         updated_tree, updated_map)
 
             return None
@@ -670,8 +671,7 @@ class Watch(object):
         for name in delete_changes:
             change, updated_tree, updated_map = delete_doc(
                 name, updated_tree, updated_map)
-            if change:  # XXX will always be True
-                appliedChanges.append(change)
+            appliedChanges.append(change)
 
         # TODO: SORT
         # add_changes.sort(self._comparator)
@@ -680,15 +680,14 @@ class Watch(object):
             _LOGGER.debug('in add_changes')
             change, updated_tree, updated_map = add_doc(
                 snapshot, updated_tree, updated_map)
-            if change:  # XXX will always be True
-                appliedChanges.append(change)
+            appliedChanges.append(change)
 
         # TODO: SORT
         # update_changes.sort(self._comparator)
         for snapshot in update_changes:
             change, updated_tree, updated_map = modify_doc(
                 snapshot, updated_tree, updated_map)
-            if change:  # XXX will always be True
+            if change is not None:
                 appliedChanges.append(change)
 
         assert len(updated_tree) == len(updated_map), \

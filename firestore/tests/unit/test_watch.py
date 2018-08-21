@@ -454,19 +454,20 @@ class TestWatch(unittest.TestCase):
             pass
         deleted_doc = DummyDoc()
         added_doc = DummyDoc()
+        added_doc._document_path = '/added'
         updated_doc = DummyDoc()
-        doc_tree = doc_tree.insert('deleted', deleted_doc)
-        doc_tree = doc_tree.insert('added', added_doc)
-        doc_tree = doc_tree.insert('updated', updated_doc)
+        updated_doc._document_path = '/updated'
+        doc_tree = doc_tree.insert('/deleted', deleted_doc)
+        doc_tree = doc_tree.insert('/updated', updated_doc)
         doc_map = {
-            'deleted':deleted_doc,
-            'added':added_doc,
-            'updated':updated_doc,
+            '/deleted':deleted_doc,
+            '/updated':updated_doc,
             }
         added_snapshot = DummyDocumentSnapshot()
+        added_snapshot.reference = added_doc
         updated_snapshot = DummyDocumentSnapshot()
         updated_snapshot.reference = updated_doc
-        delete_changes = ['deleted']
+        delete_changes = ['/deleted']
         add_changes = [added_snapshot]
         update_changes = [updated_snapshot]
         inst = self._makeOne()
