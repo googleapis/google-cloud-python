@@ -147,7 +147,6 @@ def document_watch_comparator(doc1, doc2):
 
 class Watch(object):
 
-    threading = threading  # FBO unit tests
     BackgroundConsumer = BackgroundConsumer  # FBO unit tests
     ResumableBidiRpc = ResumableBidiRpc  # FBO unit tests
     MessageToDict = staticmethod(json_format.MessageToDict)  # FBO unit tests
