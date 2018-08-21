@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.pubsub_v1.gapic.publisher_client &#8212; google-cloud fd62cb27d8 documentation</title>
+    <title>google.cloud.pubsub_v1.gapic.publisher_client &#8212; google-cloud d6fe5e1 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -59,6 +59,7 @@
 <span class="kn">import</span> <span class="nn">google.api_core.path_template</span>
 <span class="kn">import</span> <span class="nn">google.api_core.grpc_helpers</span>
 <span class="kn">import</span> <span class="nn">google.api_core.page_iterator</span>
+<span class="kn">import</span> <span class="nn">google.api_core.path_template</span>
 <span class="kn">import</span> <span class="nn">grpc</span>
 
 <span class="kn">from</span> <span class="nn">google.cloud.pubsub_v1.gapic</span> <span class="k">import</span> <span class="n">publisher_client_config</span>
@@ -198,9 +199,6 @@
                 <span class="n">channel</span><span class="o">=</span><span class="n">channel</span><span class="p">,</span>
                 <span class="n">credentials</span><span class="o">=</span><span class="n">credentials</span><span class="p">,</span>
             <span class="p">)</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">iam_policy_stub</span> <span class="o">=</span> <span class="p">(</span><span class="n">iam_policy_pb2</span><span class="o">.</span><span class="n">IAMPolicyStub</span><span class="p">(</span><span class="n">channel</span><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">publisher_stub</span> <span class="o">=</span> <span class="p">(</span><span class="n">pubsub_pb2_grpc</span><span class="o">.</span><span class="n">PublisherStub</span><span class="p">(</span><span class="n">channel</span><span class="p">))</span>
 
         <span class="k">if</span> <span class="n">client_info</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">client_info</span> <span class="o">=</span> <span class="p">(</span>
