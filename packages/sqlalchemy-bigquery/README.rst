@@ -20,9 +20,9 @@ _______
 ``project`` in ``bigquery://project`` is used to instantiate BigQuery client with the specific project ID. To infer project from the environment, use ``bigquery://`` – without ``project``
 
 Authentication
-_______
+______________
 
-Follow the `Google Cloud library guide <https://google-cloud-python.readthedocs.io/en/latest/core/auth.html#overview>`_ for authentication. Alternatively, you can provide the path to a service account JSON file in ``create_engine()``:
+Follow the `Google Cloud library guide <https://google-cloud-python.readthedocs.io/en/latest/core/auth.html>`_ for authentication. Alternatively, you can provide the path to a service account JSON file in ``create_engine()``:
 
 .. code-block:: python
 
