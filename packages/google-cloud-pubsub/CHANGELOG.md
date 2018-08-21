@@ -4,6 +4,21 @@
 
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
+## 0.37.2
+
+### Implementation Changes
+
+- Fix classmethod wrapping (#5826)
+
+### Documentation
+
+- Fix Sphinx rendering for publisher client. (#5822)
+
+### Internal / Testing Changes
+
+- Re-generate library, removing obsolete synth modifications. (#5825)
+- Add test for testing invoking a wrapped class method on the class itself (#5828)
+
 ## 0.37.1
 
 ### Implementation Changes
