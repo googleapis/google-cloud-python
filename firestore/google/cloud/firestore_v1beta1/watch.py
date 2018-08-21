@@ -439,6 +439,7 @@ class Watch(object):
                     meth(proto)
                 except Exception as exc2:
                     _LOGGER.debug("meth(proto) exc: " + str(exc2))
+                    raise
 
             # XXX this is currently a no-op
             # affects_target = self._affects_target(
