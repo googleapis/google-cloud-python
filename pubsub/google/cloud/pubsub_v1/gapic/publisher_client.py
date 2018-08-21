@@ -24,6 +24,7 @@ import google.api_core.gapic_v1.method
 import google.api_core.path_template
 import google.api_core.grpc_helpers
 import google.api_core.page_iterator
+import google.api_core.path_template
 import grpc
 
 from google.cloud.pubsub_v1.gapic import publisher_client_config
@@ -163,9 +164,6 @@ class PublisherClient(object):
                 channel=channel,
                 credentials=credentials,
             )
-
-        self.iam_policy_stub = (iam_policy_pb2.IAMPolicyStub(channel))
-        self.publisher_stub = (pubsub_pb2_grpc.PublisherStub(channel))
 
         if client_info is None:
             client_info = (
