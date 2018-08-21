@@ -411,6 +411,48 @@ class TestTable(unittest.TestCase):
     def test_list_column_families(self):
         self._list_column_families_helper()
 
+    def test_get_cluster_states(self):
+        from google.cloud.bigtable_admin_v2.gapic import (
+            bigtable_table_admin_client)
+        from google.cloud.bigtable.enums import Table as enum_table
+        from google.cloud.bigtable.table import ClusterState
+        INITIALIZING = enum_table.ReplicationState.INITIALIZING
+        PLANNED_MAINTENANCE = enum_table.ReplicationState.PLANNED_MAINTENANCE
+        READY = enum_table.ReplicationState.READY
+
+        table_api = bigtable_table_admin_client.BigtableTableAdminClient(
+            mock.Mock())
+        credentials = _make_credentials()
+        client = self._make_client(project='project-id',
+                                   credentials=credentials, admin=True)
+        instance = client.instance(instance_id=self.INSTANCE_ID)
+        table = self._make_one(self.TABLE_ID, instance)
+
+        response_pb = _TablePB(
+            cluster_states={'cluster-id1': _ClusterStatePB(INITIALIZING),
+                            'cluster-id2': _ClusterStatePB(
+                                PLANNED_MAINTENANCE),
+                            'cluster-id3': _ClusterStatePB(READY),
+                            },
+        )
+
+        # Patch the stub used by the API method.
+        client._table_admin_client = table_api
+        bigtable_table_stub = (
+            client._table_admin_client.bigtable_table_admin_stub)
+        bigtable_table_stub.GetTable.side_effect = [response_pb]
+
+        # build expected result
+        expected_result = {
+            u'cluster-id1': ClusterState(INITIALIZING),
+            u'cluster-id2': ClusterState(PLANNED_MAINTENANCE),
+            u'cluster-id3': ClusterState(READY)
+        }
+
+        # Perform the method and check the result.
+        result = table.get_cluster_states()
+        self.assertEqual(result, expected_result)
+
     def _read_row_helper(self, chunks, expected_result, app_profile_id=None):
         from google.cloud._testing import _Monkey
         from google.cloud.bigtable import table as MUT
@@ -1531,6 +1573,82 @@ def _ReadRowsRequestPB(*args, **kw):
     return messages_v2_pb2.ReadRowsRequest(*args, **kw)
 
 
+class Test_ClusterState(unittest.TestCase):
+    def test___eq__(self):
+        from google.cloud.bigtable.enums import Table as enum_table
+        from google.cloud.bigtable.table import ClusterState
+        READY = enum_table.ReplicationState.READY
+        state1 = ClusterState(READY)
+        state2 = ClusterState(READY)
+        self.assertEqual(state1, state2)
+
+    def test___eq__type_differ(self):
+        from google.cloud.bigtable.enums import Table as enum_table
+        from google.cloud.bigtable.table import ClusterState
+        READY = enum_table.ReplicationState.READY
+        state1 = ClusterState(READY)
+        state2 = object()
+        self.assertNotEqual(state1, state2)
+
+    def test___ne__same_value(self):
+        from google.cloud.bigtable.enums import Table as enum_table
+        from google.cloud.bigtable.table import ClusterState
+        READY = enum_table.ReplicationState.READY
+        state1 = ClusterState(READY)
+        state2 = ClusterState(READY)
+        comparison_val = (state1 != state2)
+        self.assertFalse(comparison_val)
+
+    def test___ne__(self):
+        from google.cloud.bigtable.enums import Table as enum_table
+        from google.cloud.bigtable.table import ClusterState
+        READY = enum_table.ReplicationState.READY
+        INITIALIZING = enum_table.ReplicationState.INITIALIZING
+        state1 = ClusterState(READY)
+        state2 = ClusterState(INITIALIZING)
+        self.assertNotEqual(state1, state2)
+
+    def test__repr__(self):
+        from google.cloud.bigtable.enums import Table as enum_table
+        from google.cloud.bigtable.table import ClusterState
+        STATE_NOT_KNOWN = enum_table.ReplicationState.STATE_NOT_KNOWN
+        INITIALIZING = enum_table.ReplicationState.INITIALIZING
+        PLANNED_MAINTENANCE = enum_table.ReplicationState.PLANNED_MAINTENANCE
+        UNPLANNED_MAINTENANCE = enum_table.ReplicationState. \
+            UNPLANNED_MAINTENANCE
+        READY = enum_table.ReplicationState.READY
+
+        replication_dict = {
+            STATE_NOT_KNOWN: "STATE_NOT_KNOWN",
+            INITIALIZING: "INITIALIZING",
+            PLANNED_MAINTENANCE: "PLANNED_MAINTENANCE",
+            UNPLANNED_MAINTENANCE: "UNPLANNED_MAINTENANCE",
+            READY: "READY"
+        }
+
+        self.assertEqual(str(ClusterState(STATE_NOT_KNOWN)),
+                         replication_dict[STATE_NOT_KNOWN])
+        self.assertEqual(str(ClusterState(INITIALIZING)),
+                         replication_dict[INITIALIZING])
+        self.assertEqual(str(ClusterState(PLANNED_MAINTENANCE)),
+                         replication_dict[PLANNED_MAINTENANCE])
+        self.assertEqual(str(ClusterState(UNPLANNED_MAINTENANCE)),
+                         replication_dict[UNPLANNED_MAINTENANCE])
+        self.assertEqual(str(ClusterState(READY)),
+                         replication_dict[READY])
+
+        self.assertEqual(ClusterState(STATE_NOT_KNOWN).replication_state,
+                         STATE_NOT_KNOWN)
+        self.assertEqual(ClusterState(INITIALIZING).replication_state,
+                         INITIALIZING)
+        self.assertEqual(ClusterState(PLANNED_MAINTENANCE).replication_state,
+                         PLANNED_MAINTENANCE)
+        self.assertEqual(ClusterState(UNPLANNED_MAINTENANCE).
+                         replication_state, UNPLANNED_MAINTENANCE)
+        self.assertEqual(ClusterState(READY).replication_state,
+                         READY)
+
+
 def _ReadRowsResponseCellChunkPB(*args, **kw):
     from google.cloud.bigtable_v2.proto import (
         bigtable_pb2 as messages_v2_pb2)
@@ -1628,3 +1746,12 @@ def _ColumnFamilyPB(*args, **kw):
         table_pb2 as table_v2_pb2)
 
     return table_v2_pb2.ColumnFamily(*args, **kw)
+
+
+def _ClusterStatePB(replication_state):
+    from google.cloud.bigtable_admin_v2.proto import (
+        table_pb2 as table_v2_pb2)
+
+    return table_v2_pb2.Table.ClusterState(
+        replication_state=replication_state
+    )

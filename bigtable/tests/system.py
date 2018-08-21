@@ -273,6 +273,37 @@ class TestInstanceAdminAPI(unittest.TestCase):
         self.assertTrue({alt_cluster_1.name,
                          alt_cluster_2.name,
                          Config.CLUSTER.name}.issubset(found))
+        self._test_state_helper(instance, ALT_CLUSTER_ID_1,
+                                ALT_CLUSTER_ID_2)
+
+    def _test_state_helper(self, instance, clusterid1, clusterid2):
+        # test get_cluster_states for a table in instance
+        from google.cloud.bigtable.enums import Table as enum_table
+        from google.cloud.bigtable.table import ClusterState
+        STATE_NOT_KNOWN = enum_table.ReplicationState.STATE_NOT_KNOWN
+        INITIALIZING = enum_table.ReplicationState.INITIALIZING
+        PLANNED_MAINTENANCE = enum_table.ReplicationState. \
+            PLANNED_MAINTENANCE
+        UNPLANNED_MAINTENANCE = enum_table.ReplicationState. \
+            UNPLANNED_MAINTENANCE
+        READY = enum_table.ReplicationState.READY
+        temp_table_id = 'test-get-cluster-states'
+        temp_table = instance.table(temp_table_id)
+        temp_table.create()
+        result = temp_table.get_cluster_states()
+        expected_results = [
+            ClusterState(STATE_NOT_KNOWN),
+            ClusterState(INITIALIZING),
+            ClusterState(PLANNED_MAINTENANCE),
+            ClusterState(UNPLANNED_MAINTENANCE),
+            ClusterState(READY)
+        ]
+        cluster_id_list = result.keys()
+        self.assertEqual(len(cluster_id_list), 2)
+        self.assertIn(clusterid1, cluster_id_list)
+        self.assertIn(clusterid2, cluster_id_list)
+        for clusterstate in result.values():
+            self.assertIn(clusterstate, expected_results)
 
         # Test create app profile with multi_cluster_routing policy
         app_profiles_to_delete = []
