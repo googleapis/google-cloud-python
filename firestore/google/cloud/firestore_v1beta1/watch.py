@@ -604,10 +604,10 @@ class Watch(object):
             """
             assert name in updated_map, 'Document to delete does not exist'
             old_document = updated_map.get(name)
-            existing = updated_tree.find(old_document)
+            existing = updated_tree.find(name)
             old_index = existing.index
             # TODO: was existing.remove returning tree (presumably immuatable?)
-            updated_tree = updated_tree.remove(old_document)
+            updated_tree = updated_tree.remove(name)
             del updated_map[name]
             return (DocumentChange(ChangeType.REMOVED,
                                    old_document,
@@ -670,7 +670,7 @@ class Watch(object):
         for name in delete_changes:
             change, updated_tree, updated_map = delete_doc(
                 name, updated_tree, updated_map)
-            if change:
+            if change:  # XXX will always be True
                 appliedChanges.append(change)
 
         # TODO: SORT
@@ -680,7 +680,7 @@ class Watch(object):
             _LOGGER.debug('in add_changes')
             change, updated_tree, updated_map = add_doc(
                 snapshot, updated_tree, updated_map)
-            if change:
+            if change:  # XXX will always be True
                 appliedChanges.append(change)
 
         # TODO: SORT
@@ -688,7 +688,7 @@ class Watch(object):
         for snapshot in update_changes:
             change, updated_tree, updated_map = modify_doc(
                 snapshot, updated_tree, updated_map)
-            if change:
+            if change:  # XXX will always be True
                 appliedChanges.append(change)
 
         assert len(updated_tree) == len(updated_map), \
