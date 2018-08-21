@@ -187,11 +187,13 @@ class Watch(object):
         self._comparator = comparator
         self.DocumentSnapshot = DocumentSnapshotCls
         self._snapshot_callback = snapshot_callback
-
+        self._closing = threading.Lock()
+        self._closed = False
+    
         def should_recover(exc):
             return (
                 isinstance(exc, grpc.RpcError) and
-                exc.code() == grpc.StatusCode.UNVAILABLE)
+                exc.code() == grpc.StatusCode.UNAVAILABLE)
 
         initial_request = firestore_pb2.ListenRequest(
             database=self._firestore._database_string,
@@ -238,6 +240,41 @@ class Watch(object):
         self._consumer = BackgroundConsumer(self.rpc, self.on_snapshot)
         self._consumer.start()
 
+    @property
+    def is_active(self):
+        """bool: True if this manager is actively streaming.
+
+        Note that ``False`` does not indicate this is complete shut down,
+        just that it stopped getting new messages.
+        """
+        return self._consumer is not None and self._consumer.is_active
+
+    def close(self, reason=None):
+        """Stop consuming messages and shutdown all helper threads.
+
+        This method is idempotent. Additional calls will have no effect.
+
+        Args:
+            reason (Any): The reason to close this. If None, this is considered
+                an "intentional" shutdown.
+        """
+        with self._closing:
+            if self._closed:
+                return
+
+            # Stop consuming messages.
+            if self.is_active:
+                _LOGGER.debug('Stopping consumer.')
+                self._consumer.stop()
+            self._consumer = None
+
+            # TODO: Verify we don't have other helper threads that need to be 
+            # shut down here.
+
+            self._rpc = None
+            self._closed = True
+            _LOGGER.debug('Finished stopping manager.')
+
     def _on_rpc_done(self, future):
         """Triggered whenever the underlying RPC terminates without recovery.
 
@@ -249,11 +286,10 @@ class Watch(object):
         with shutting everything down. This is to prevent blocking in the
         background consumer and preventing it from being ``joined()``.
         """
-        # TODO: look at pushing this down into the background consumer
         _LOGGER.info(
-            'RPC termination has signaled shutdown.')
+            'RPC termination has signaled manager shutdown.')
         future = _maybe_wrap_exception(future)
-        thread = self.threading.Thread(
+        thread = threading.Thread(
             name=_RPC_ERROR_THREAD_NAME,
             target=self.close,
             kwargs={'reason': future})
@@ -289,19 +325,25 @@ class Watch(object):
                    snapshot_callback,
                    snapshot_class_instance)
 
-    # @classmethod
-    # def for_query(cls, query, snapshot_callback):
-    #     return cls(query._client,
-    #                {
-    #                    'query': query.to_proto(),
-    #                    'target_id': WATCH_TARGET_ID
-    #                },
-    #                query.comparator(),
-    #                snapshot_callback,
-    #                snapshot_class_instance)
+    @classmethod
+    def for_query(cls, query, snapshot_callback, snapshot_class_instance):
+        query_target = firestore_pb2.Target.QueryTarget(
+            parent=query._parent.id,
+            structured_query=query._to_protobuf(),
+        )
+        return cls(query,
+                   query._client,
+                   {
+                       'query': query_target,
+                       'target_id': WATCH_TARGET_ID
+                   },
+                   document_watch_comparator,
+                   snapshot_callback,
+                   snapshot_class_instance)
 
     # @classmethod
-    # def for_collection(cls, collection_ref, snapshot_callback):
+    # def for_collection(cls, collection_ref, snapshot_callback,
+    #                    snapshot_class_instance):
     #     return cls(collection_ref._client,
     #                {
     #                    'collection': collection_ref.to_proto(),
@@ -379,9 +421,9 @@ class Watch(object):
 
         target_change = proto.target_change
 
-        if str(target_change):  # XXX why if str
-            _LOGGER.debug('on_snapshot: target change')
+        if str(target_change):  # XXX why if str - if it doesn't exist it will be empty (falsy). Otherwise always true.
             target_change_type = target_change.target_change_type
+            _LOGGER.debug('on_snapshot: target change: ' + str(target_change_type))
             meth = target_changetype_dispatch.get(target_change_type)
             if meth is None:
                 _LOGGER.info('on_snapshot: Unknown target change ' +
@@ -394,7 +436,10 @@ class Watch(object):
                 raise Exception('Unknown target change type: %s ' %
                                 str(target_change_type))  # XXX Exception?
             else:
-                meth(proto)
+                try:
+                    meth(proto)
+                except Exception as exc2:
+                    _LOGGER.debug("meth(proto) exc: " + str(exc2))
 
             # XXX this is currently a no-op
             # affects_target = self._affects_target(

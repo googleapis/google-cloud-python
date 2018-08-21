@@ -29,7 +29,7 @@ from google.cloud.firestore_v1beta1 import _helpers
 from google.cloud.firestore_v1beta1 import document
 from google.cloud.firestore_v1beta1.gapic import enums
 from google.cloud.firestore_v1beta1.proto import query_pb2
-
+from google.cloud.firestore_v1beta1.watch import Watch
 
 _EQ_OP = '=='
 _COMPARISON_OPERATORS = {
@@ -601,33 +601,34 @@ class Query(object):
             else:
                 yield snapshot
 
-    # def on_snapshot(self, callback):
-    #     """Monitor the documents in this collection that match this query.
+    def on_snapshot(self, callback):
+        """Monitor the documents in this collection that match this query.
 
-    #     This starts a watch on this query using a background thread. The
-    #     provided callback is run on the snapshot of the documents.
+        This starts a watch on this query using a background thread. The
+        provided callback is run on the snapshot of the documents.
 
-    #     Args:
-    #         callback(~.firestore.query.QuerySnapshot): a callback to run when
-    #             a change occurs.
+        Args:
+            callback(~.firestore.query.QuerySnapshot): a callback to run when
+                a change occurs.
 
-    #     Example:
-    #         from google.cloud import firestore
+        Example:
+            from google.cloud import firestore
 
-    #         db = firestore.Client()
-    #         query_ref = db.collection(u'users').where("user", "==", u'ada')
+            db = firestore.Client()
+            query_ref = db.collection(u'users').where("user", "==", u'Ada')
 
-    #         def on_snapshot(query_snapshot):
-    #             for doc in query_snapshot.documents:
-    #                 print(u'{} => {}'.format(doc.id, doc.to_dict()))
+            def on_snapshot(query_snapshot):
+                for doc in query_snapshot.documents:
+                    print(u'{} => {}'.format(doc.id, doc.to_dict()))
 
-    #         # Watch this query
-    #         query_watch = query_ref.on_snapshot(on_snapshot)
+            # Watch this query
+            query_watch = query_ref.on_snapshot(on_snapshot)
 
-    #         # Terminate this watch
-    #         query_watch.unsubscribe()
-    #     """
-    #     raise NotImplemented
+            # Terminate this watch
+            query_watch.unsubscribe()
+        """
+        Watch.for_query(self, callback, document.DocumentSnapshot)
+
 
 
 def _enum_from_op_string(op_string):
