@@ -74,6 +74,9 @@ class WatchDocTree(object):
     def keys(self):
         return list(self._dict.keys())
 
+    def items(self):
+        return list(self._dict.items())
+
     def _copy(self):
         wdt = WatchDocTree()
         wdt._dict = self._dict.copy()
@@ -632,7 +635,6 @@ class Watch(object):
                                    new_index),
                     updated_tree, updated_map)
 
-        # XXX modify_doc is broken via formattedName
         def modify_doc(new_document, updated_tree, updated_map):
             """
             Applies a document modification to the document tree and the
@@ -714,7 +716,7 @@ class Watch(object):
             )
         return len(self.doc_map) + len(adds) - len(deletes)
 
-    def _reset_docs(self):  # XXX broken via formattedName
+    def _reset_docs(self):
         """
         Helper to clear the docs on RESET or filter mismatch.
         """
@@ -724,8 +726,7 @@ class Watch(object):
 
         # TODO: mark each document as deleted. If documents are not delete
         # they will be sent again by the server.
-        for snapshot in self.doc_tree:
-            document_name = snapshot.reference.formattedName
-            self.change_map[document_name] = ChangeType.REMOVED
+        for name, snapshot in self.doc_tree.items():
+            self.change_map[name] = ChangeType.REMOVED
 
         self.current = False
