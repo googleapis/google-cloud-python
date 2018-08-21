@@ -1580,7 +1580,7 @@ def test_load_table_from_uri_append(client, to_delete, capsys):
     # [END bigquery_load_table_gcs_parquet_append]
 
     # [START bigquery_load_table_gcs_orc_append]
-    # The schema of the parquet file must match the table schema in an append
+    # The schema of the orc file must match the table schema in an append
     job_config.source_format = bigquery.SourceFormat.ORC
     uri = 'gs://cloud-samples-data/bigquery/us-states/us-states.orc'
     # [END bigquery_load_table_gcs_orc_append]
