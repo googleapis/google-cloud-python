@@ -383,6 +383,77 @@ class TestWatch(unittest.TestCase):
         inst = self._makeOne()
         self.assertFalse(inst._affects_target([1], 2))
 
+    def test__extract_changes_doc_removed(self):
+        from google.cloud.firestore_v1beta1.watch import ChangeType
+        inst = self._makeOne()
+        changes = {'name':ChangeType.REMOVED}
+        doc_map = {'name':True}
+        results = inst._extract_changes(doc_map, changes, None)
+        self.assertEqual(results, (['name'], [], []))
+
+    def test__extract_changes_doc_updated(self):
+        inst = self._makeOne()
+        class Dummy(object):
+            pass
+        doc = Dummy()
+        snapshot = Dummy()
+        changes = {'name':snapshot}
+        doc_map = {'name':doc}
+        results = inst._extract_changes(doc_map, changes, 1)
+        self.assertEqual(results, ([], [], [snapshot]))
+        self.assertEqual(snapshot.read_time, 1)
+        
+    def test__extract_changes_doc_added(self):
+        inst = self._makeOne()
+        class Dummy(object):
+            pass
+        snapshot = Dummy()
+        changes = {'name':snapshot}
+        doc_map = {}
+        results = inst._extract_changes(doc_map, changes, 1)
+        self.assertEqual(results, ([], [snapshot], []))
+        self.assertEqual(snapshot.read_time, 1)
+
+    def test__compute_snapshot_doctree_and_docmap_disagree_about_length(self):
+        inst = self._makeOne()
+        doc_tree = {}
+        doc_map = {None:None}
+        self.assertRaises(
+            AssertionError,
+            inst._compute_snapshot, doc_tree, doc_map, None, None, None,
+            )
+
+    def test__compute_snapshot_operation_relative_ordering(self):
+        from google.cloud.firestore_v1beta1.watch import WatchDocTree
+        doc_tree = WatchDocTree()
+        class DummyDoc(object):
+            pass
+        deleted_doc = DummyDoc()
+        added_doc = DummyDoc()
+        updated_doc = DummyDoc()
+        doc_tree = doc_tree.insert('deleted', deleted_doc)
+        doc_tree = doc_tree.insert('added', added_doc)
+        doc_tree = doc_tree.insert('updated', updated_doc)
+        doc_map = {
+            'deleted':deleted_doc,
+            'added':added_doc,
+            'updated':updated_doc,
+            }
+        added_snapshot = DummyDocumentSnapshot()
+        updated_snapshot = DummyDocumentSnapshot()
+        updated_snapshot.reference = updated_doc
+        delete_changes = ['deleted']
+        add_changes = [added_snapshot]
+        update_changes = [updated_snapshot]
+        inst = self._makeOne()
+        updated_tree, updated_map, applied_changes = inst._compute_snapshot(
+            doc_tree,
+            doc_map,
+            delete_changes,
+            add_changes,
+            update_changes
+            )
+        self.assertEqual(updated_map, None)
 
 class DummyFirestoreStub(object):
     def Listen(self):
