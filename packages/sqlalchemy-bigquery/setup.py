@@ -2,10 +2,16 @@
 
 from setuptools import setup
 
+def readme():
+    with open('README.rst') as f:
+        return f.read()
+
 setup(
     name="pybigquery",
     version='0.3.3',
     description="SQLAlchemy dialect for BigQuery",
+    long_description=readme(),
+    long_description_content_type="text/x-rst",
     author="Maxim Zudilov",
     author_email="maxim.zudilov@gmail.com",
     packages=['pybigquery'],
