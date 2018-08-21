@@ -38,8 +38,6 @@ def add_methods(source_class, blacklist=()):
         if issubclass(type(self), type):
             instance_method = False
 
-        print(wrapped_fx, self, instance_method)
-
         # Okay, we have figured out what kind of method this is; send
         # down the correct wrapper function.
         if instance_method:
