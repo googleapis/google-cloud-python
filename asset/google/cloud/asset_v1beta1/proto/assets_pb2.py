@@ -14,7 +14,7 @@ _sym_db = _symbol_database.Default()
 
 
 from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
-from google.iam.v1 import iam_policy_pb2 as google_dot_iam_dot_v1_dot_policy__pb2
+from google.iam.v1 import policy_pb2 as google_dot_iam_dot_v1_dot_policy__pb2
 from google.protobuf import any_pb2 as google_dot_protobuf_dot_any__pb2
 from google.protobuf import struct_pb2 as google_dot_protobuf_dot_struct__pb2
 from google.protobuf import timestamp_pb2 as google_dot_protobuf_dot_timestamp__pb2
@@ -236,7 +236,7 @@ _TEMPORALASSET.fields_by_name['asset'].message_type = _ASSET
 _TIMEWINDOW.fields_by_name['start_time'].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
 _TIMEWINDOW.fields_by_name['end_time'].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
 _ASSET.fields_by_name['resource'].message_type = _RESOURCE
-_ASSET.fields_by_name['iam_policy'].message_type = google_dot_iam_dot_v1_dot_policy__pb2.google_dot_iam_dot_v1_dot_policy__pb2._POLICY
+_ASSET.fields_by_name['iam_policy'].message_type = google_dot_iam_dot_v1_dot_policy__pb2._POLICY
 _RESOURCE.fields_by_name['data'].message_type = google_dot_protobuf_dot_struct__pb2._STRUCT
 DESCRIPTOR.message_types_by_name['TemporalAsset'] = _TEMPORALASSET
 DESCRIPTOR.message_types_by_name['TimeWindow'] = _TIMEWINDOW
