@@ -1,3 +1,4 @@
+import datetime
 import unittest
 import mock
 from google.cloud.firestore_v1beta1.proto import firestore_pb2
@@ -7,6 +8,9 @@ class TestWatchDocTree(unittest.TestCase):
     def _makeOne(self):
         from google.cloud.firestore_v1beta1.watch import WatchDocTree
         return WatchDocTree()
+
+    def setUp(self):
+        self.snapshotted = None
 
     def test_insert_and_keys(self):
         inst = self._makeOne()
@@ -138,7 +142,7 @@ class TestWatch(unittest.TestCase):
         return 0
 
     def _snapshot_callback(self, docs, changes, read_time):
-        return True
+        self.snapshotted = (docs, changes, read_time)
 
     def test_ctor(self):
         inst = self._makeOne()
@@ -343,6 +347,41 @@ class TestWatch(unittest.TestCase):
             str(exc.exception).startswith('Unknown listen response type'),
             str(exc.exception)
         )
+
+    def test_push_no_changes(self):
+        class DummyReadTime(object):
+            seconds = 1534858278
+        inst = self._makeOne()
+        inst.push(DummyReadTime, 'token')
+        self.assertEqual(
+            self.snapshotted,
+            ([], [], datetime.datetime(2018, 8, 21, 9, 31, 18)),
+            )
+        self.assertTrue(inst.has_pushed)
+        self.assertEqual(inst.resume_token, 'token')
+
+    def test__current_size_empty(self):
+        inst = self._makeOne()
+        result = inst._current_size()
+        self.assertEqual(result, 0)
+
+    def test__current_size_docmap_has_one(self):
+        inst = self._makeOne()
+        inst.doc_map['a'] = 1
+        result = inst._current_size()
+        self.assertEqual(result, 1)
+
+    def test__affects_target_target_id_None(self):
+        inst = self._makeOne()
+        self.assertTrue(inst._affects_target(None, []))
+
+    def test__affects_target_current_id_in_target_ids(self):
+        inst = self._makeOne()
+        self.assertTrue(inst._affects_target([1], 1))
+
+    def test__affects_target_current_id_not_in_target_ids(self):
+        inst = self._makeOne()
+        self.assertFalse(inst._affects_target([1], 2))
 
 
 class DummyFirestoreStub(object):

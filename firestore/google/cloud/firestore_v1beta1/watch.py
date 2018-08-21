@@ -491,17 +491,20 @@ class Watch(object):
         # and sending them to the user.
 
         deletes, adds, updates = Watch._extract_changes(
-            self.doc_map, self.change_map, read_time)
-        updated_tree, updated_map, appliedChanges = \
-            Watch._compute_snapshot(
-                self.doc_tree, self.doc_map, deletes, adds, updates)
+            self.doc_map,
+            self.change_map,
+            read_time,
+            )
+
+        updated_tree, updated_map, appliedChanges = Watch._compute_snapshot(
+            self.doc_tree,
+            self.doc_map,
+            deletes,
+            adds,
+            updates,
+            )
 
         if not self.has_pushed or len(appliedChanges):
-            _LOGGER.debug(
-                'Sending snapshot with {len(appliedChanges)} changes'
-                ' and {len(updated_tree)} documents')
-
-            _LOGGER.debug("updatedTree:{updated_tree}")
             self._snapshot_callback(
                 updated_tree.keys(),
                 appliedChanges,
@@ -532,7 +535,7 @@ class Watch(object):
                 if read_time is not None:
                     value.read_time = read_time
                 adds.append(value)
-        _LOGGER.debug('deletes:{len(deletes)} adds:{len(adds)}')
+
         return (deletes, adds, updates)
 
     @staticmethod
@@ -649,7 +652,7 @@ class Watch(object):
         return (updated_tree, updated_map, appliedChanges)
 
     def _affects_target(self, target_ids, current_id):
-        if target_ids is None or len(target_ids) == 0:
+        if target_ids is None:
             return True
 
         if current_id in target_ids:
@@ -657,7 +660,7 @@ class Watch(object):
 
         return False
 
-    def _current_size(self):  # XXX broken, no docMap or changeMap
+    def _current_size(self):
         """
         Returns the current count of all documents, including the changes from
         the current changeMap.
