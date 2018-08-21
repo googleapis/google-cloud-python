@@ -274,7 +274,7 @@ class TestInstanceAdminAPI(unittest.TestCase):
     def _test_state_helper(self, instance, clusterid1, clusterid2):
         # test get_cluster_states for a table in instance
         from google.cloud.bigtable.enums import Table as enum_table
-        from google.cloud.bigtable.table import _ClusterState
+        from google.cloud.bigtable.table import ClusterState
         STATE_NOT_KNOWN = enum_table.ReplicationState.STATE_NOT_KNOWN
         INITIALIZING = enum_table.ReplicationState.INITIALIZING
         PLANNED_MAINTENANCE = enum_table.ReplicationState. \
@@ -287,11 +287,11 @@ class TestInstanceAdminAPI(unittest.TestCase):
         temp_table.create()
         result = temp_table.get_cluster_states()
         expected_results = [
-            _ClusterState(STATE_NOT_KNOWN),
-            _ClusterState(INITIALIZING),
-            _ClusterState(PLANNED_MAINTENANCE),
-            _ClusterState(UNPLANNED_MAINTENANCE),
-            _ClusterState(READY)
+            ClusterState(STATE_NOT_KNOWN),
+            ClusterState(INITIALIZING),
+            ClusterState(PLANNED_MAINTENANCE),
+            ClusterState(UNPLANNED_MAINTENANCE),
+            ClusterState(READY)
         ]
         cluster_id_list = result.keys()
         self.assertEqual(len(cluster_id_list), 2)

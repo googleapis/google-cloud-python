@@ -415,7 +415,7 @@ class TestTable(unittest.TestCase):
         from google.cloud.bigtable_admin_v2.gapic import (
             bigtable_table_admin_client)
         from google.cloud.bigtable.enums import Table as enum_table
-        from google.cloud.bigtable.table import _ClusterState
+        from google.cloud.bigtable.table import ClusterState
         INITIALIZING = enum_table.ReplicationState.INITIALIZING
         PLANNED_MAINTENANCE = enum_table.ReplicationState.PLANNED_MAINTENANCE
         READY = enum_table.ReplicationState.READY
@@ -444,9 +444,9 @@ class TestTable(unittest.TestCase):
 
         # build expected result
         expected_result = {
-            u'cluster-id1': _ClusterState(INITIALIZING),
-            u'cluster-id2': _ClusterState(PLANNED_MAINTENANCE),
-            u'cluster-id3': _ClusterState(READY)
+            u'cluster-id1': ClusterState(INITIALIZING),
+            u'cluster-id2': ClusterState(PLANNED_MAINTENANCE),
+            u'cluster-id3': ClusterState(READY)
         }
 
         # Perform the method and check the result.
@@ -1576,41 +1576,41 @@ def _ReadRowsRequestPB(*args, **kw):
 class Test_ClusterState(unittest.TestCase):
     def test___eq__(self):
         from google.cloud.bigtable.enums import Table as enum_table
-        from google.cloud.bigtable.table import _ClusterState
+        from google.cloud.bigtable.table import ClusterState
         READY = enum_table.ReplicationState.READY
-        state1 = _ClusterState(READY)
-        state2 = _ClusterState(READY)
+        state1 = ClusterState(READY)
+        state2 = ClusterState(READY)
         self.assertEqual(state1, state2)
 
     def test___eq__type_differ(self):
         from google.cloud.bigtable.enums import Table as enum_table
-        from google.cloud.bigtable.table import _ClusterState
+        from google.cloud.bigtable.table import ClusterState
         READY = enum_table.ReplicationState.READY
-        state1 = _ClusterState(READY)
+        state1 = ClusterState(READY)
         state2 = object()
         self.assertNotEqual(state1, state2)
 
     def test___ne__same_value(self):
         from google.cloud.bigtable.enums import Table as enum_table
-        from google.cloud.bigtable.table import _ClusterState
+        from google.cloud.bigtable.table import ClusterState
         READY = enum_table.ReplicationState.READY
-        state1 = _ClusterState(READY)
-        state2 = _ClusterState(READY)
+        state1 = ClusterState(READY)
+        state2 = ClusterState(READY)
         comparison_val = (state1 != state2)
         self.assertFalse(comparison_val)
 
     def test___ne__(self):
         from google.cloud.bigtable.enums import Table as enum_table
-        from google.cloud.bigtable.table import _ClusterState
+        from google.cloud.bigtable.table import ClusterState
         READY = enum_table.ReplicationState.READY
         INITIALIZING = enum_table.ReplicationState.INITIALIZING
-        state1 = _ClusterState(READY)
-        state2 = _ClusterState(INITIALIZING)
+        state1 = ClusterState(READY)
+        state2 = ClusterState(INITIALIZING)
         self.assertNotEqual(state1, state2)
 
     def test__repr__(self):
         from google.cloud.bigtable.enums import Table as enum_table
-        from google.cloud.bigtable.table import _ClusterState
+        from google.cloud.bigtable.table import ClusterState
         STATE_NOT_KNOWN = enum_table.ReplicationState.STATE_NOT_KNOWN
         INITIALIZING = enum_table.ReplicationState.INITIALIZING
         PLANNED_MAINTENANCE = enum_table.ReplicationState.PLANNED_MAINTENANCE
@@ -1626,26 +1626,26 @@ class Test_ClusterState(unittest.TestCase):
             READY: "READY"
         }
 
-        self.assertEqual(str(_ClusterState(STATE_NOT_KNOWN)),
+        self.assertEqual(str(ClusterState(STATE_NOT_KNOWN)),
                          replication_dict[STATE_NOT_KNOWN])
-        self.assertEqual(str(_ClusterState(INITIALIZING)),
+        self.assertEqual(str(ClusterState(INITIALIZING)),
                          replication_dict[INITIALIZING])
-        self.assertEqual(str(_ClusterState(PLANNED_MAINTENANCE)),
+        self.assertEqual(str(ClusterState(PLANNED_MAINTENANCE)),
                          replication_dict[PLANNED_MAINTENANCE])
-        self.assertEqual(str(_ClusterState(UNPLANNED_MAINTENANCE)),
+        self.assertEqual(str(ClusterState(UNPLANNED_MAINTENANCE)),
                          replication_dict[UNPLANNED_MAINTENANCE])
-        self.assertEqual(str(_ClusterState(READY)),
+        self.assertEqual(str(ClusterState(READY)),
                          replication_dict[READY])
 
-        self.assertEqual(_ClusterState(STATE_NOT_KNOWN).replication_state,
+        self.assertEqual(ClusterState(STATE_NOT_KNOWN).replication_state,
                          STATE_NOT_KNOWN)
-        self.assertEqual(_ClusterState(INITIALIZING).replication_state,
+        self.assertEqual(ClusterState(INITIALIZING).replication_state,
                          INITIALIZING)
-        self.assertEqual(_ClusterState(PLANNED_MAINTENANCE).replication_state,
+        self.assertEqual(ClusterState(PLANNED_MAINTENANCE).replication_state,
                          PLANNED_MAINTENANCE)
-        self.assertEqual(_ClusterState(UNPLANNED_MAINTENANCE).
+        self.assertEqual(ClusterState(UNPLANNED_MAINTENANCE).
                          replication_state, UNPLANNED_MAINTENANCE)
-        self.assertEqual(_ClusterState(READY).replication_state,
+        self.assertEqual(ClusterState(READY).replication_state,
                          READY)
 
 

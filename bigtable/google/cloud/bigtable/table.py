@@ -263,14 +263,14 @@ class Table(object):
         :rtype: dict
         :returns: Dictionary of cluster states for this table.
                   Keys are cluster ids and values are
-                  :class: '_ClusterState' instances.
+                  :class: 'ClusterState' instances.
         """
 
         REPLICATION_VIEW = enums.Table.View.REPLICATION_VIEW
         table_client = self._instance._client.table_admin_client
         table_pb = table_client.get_table(self.name, view=REPLICATION_VIEW)
 
-        return {cluster_id: _ClusterState(value_pb.replication_state)
+        return {cluster_id: ClusterState(value_pb.replication_state)
                 for cluster_id, value_pb in table_pb.cluster_states.items()}
 
     def read_row(self, row_key, filter_=None):
@@ -634,7 +634,7 @@ class _RetryableMutateRowsWorker(object):
         return self.responses_statuses
 
 
-class _ClusterState(object):
+class ClusterState(object):
     """Representation of a Cluster State.
 
     :type replication_state: int
@@ -668,8 +668,8 @@ class _ClusterState(object):
         """Representation of  cluster state instance as string value
         for cluster state.
 
-        :rtype: _ClusterState instance
-        :returns: _ClusterState instance as representation of string
+        :rtype: ClusterState instance
+        :returns: ClusterState instance as representation of string
                   value for cluster state.
         """
         replication_dict = {
@@ -684,11 +684,11 @@ class _ClusterState(object):
         return replication_dict[self.replication_state]
 
     def __eq__(self, other):
-        """Checks if two _ClusterState instances(self and other) are
+        """Checks if two ClusterState instances(self and other) are
         equal on the basis of instance variable 'replication_state'.
 
-        :type other: _ClusterState
-        :param other: _ClusterState instance to compare with.
+        :type other: ClusterState
+        :param other: ClusterState instance to compare with.
 
         :rtype: Boolean value
         :returns: True if  two cluster state instances have same
@@ -699,11 +699,11 @@ class _ClusterState(object):
         return self.replication_state == other.replication_state
 
     def __ne__(self, other):
-        """Checks if two _ClusterState instances(self and other) are
+        """Checks if two ClusterState instances(self and other) are
         not equal.
 
-        :type other: _ClusterState.
-        :param other: _ClusterState instance to compare with.
+        :type other: ClusterState.
+        :param other: ClusterState instance to compare with.
 
         :rtype: Boolean value.
         :returns: True if  two cluster state instances are not equal.
