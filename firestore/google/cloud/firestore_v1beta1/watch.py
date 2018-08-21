@@ -188,7 +188,7 @@ class Watch(object):
         self._snapshot_callback = snapshot_callback
         self._closing = threading.Lock()
         self._closed = False
-    
+
         def should_recover(exc):
             return (
                 isinstance(exc, grpc.RpcError) and
@@ -327,7 +327,7 @@ class Watch(object):
     @classmethod
     def for_query(cls, query, snapshot_callback, snapshot_class_instance):
         query_target = firestore_pb2.Target.QueryTarget(
-            parent=query._parent.id,
+            parent=query._client._database_string,
             structured_query=query._to_protobuf(),
         )
         return cls(query,
