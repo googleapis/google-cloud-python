@@ -149,13 +149,37 @@ class TestWatch(unittest.TestCase):
         self.assertTrue(inst._consumer.started)
         self.assertTrue(inst.rpc.callbacks, [inst._on_rpc_done])
 
-    def dont_test__on_rpc_done(self):  # XXX fails
+    def test__on_rpc_done(self):
         inst = self._makeOne()
         threading = DummyThreading()
-        inst.threading = threading
-        inst._on_rpc_done(True)  # no close method, fails
+        with mock.patch(
+                'google.cloud.firestore_v1beta1.watch.threading',
+                threading
+                ):
+            inst._on_rpc_done(True)
         from google.cloud.firestore_v1beta1.watch import _RPC_ERROR_THREAD_NAME
         self.assertTrue(threading.threads[_RPC_ERROR_THREAD_NAME].started)
+
+    def test_close(self):
+        inst = self._makeOne()
+        inst.close()
+        self.assertEqual(inst._consumer, None)
+        self.assertEqual(inst._rpc, None)
+        self.assertTrue(inst._closed)
+
+    def test_close_already_closed(self):
+        inst = self._makeOne()
+        inst._closed = True
+        old_consumer = inst._consumer
+        inst.close()
+        self.assertEqual(inst._consumer, old_consumer)
+
+    def test_close_inactive(self):
+        inst = self._makeOne()
+        old_consumer = inst._consumer
+        old_consumer.is_active = False
+        inst.close()
+        self.assertEqual(old_consumer.stopped, False)
 
     def test_unsubscribe(self):
         inst = self._makeOne()
@@ -484,6 +508,7 @@ class DummyDocumentSnapshot(object):
 class DummyBackgroundConsumer(object):
     started = False
     stopped = False
+    is_active = True
 
     def __init__(self, rpc, on_snapshot):
         self.rpc = rpc
@@ -494,10 +519,16 @@ class DummyBackgroundConsumer(object):
 
     def stop(self):
         self.stopped = True
+        self.is_active = False
 
 
 class DummyThread(object):
     started = False
+
+    def __init__(self, name, target, kwargs):
+        self.name = name
+        self.target = target
+        self.kwargs = kwargs
 
     def start(self):
         self.started = True
