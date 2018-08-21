@@ -46,7 +46,7 @@ def test_init_emulator(monkeypatch):
     #
     # Sadly, there seems to be no good way to do this without poking at
     # the private API of gRPC.
-    channel = client.api.publisher_stub.Publish._channel
+    channel = client.api.transport.publish._channel
     assert channel.target().decode('utf8') == '/foo/bar/'
 
 

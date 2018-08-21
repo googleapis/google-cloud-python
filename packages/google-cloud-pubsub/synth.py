@@ -53,26 +53,6 @@ s.replace(
     ' pubsub_v1',
     ' subscriber_client')
 
-# iam_policy_pb2_grpc doesn't exist.
-s.replace(
-    ['google/cloud/pubsub_v1/gapic/publisher_client.py',
-     'google/cloud/pubsub_v1/gapic/subscriber_client.py'],
-    'from google.iam.v1 import iam_policy_pb2_grpc\n',
-    '')
-s.replace(
-    ['google/cloud/pubsub_v1/gapic/transports/publisher_grpc_transport.py',
-     'google/cloud/pubsub_v1/gapic/transports/subscriber_grpc_transport.py'],
-    'from google.iam.v1 import iam_policy_pb2_grpc\n',
-    'from google.iam.v1 import iam_policy_pb2\n')
-s.replace(
-    'google/cloud/pubsub_v1/gapic/transports/publisher_grpc_transport.py',
-    'iam_policy_pb2_grpc',
-    'iam_policy_pb2')
-s.replace(
-    'google/cloud/pubsub_v1/gapic/transports/subscriber_grpc_transport.py',
-    'iam_policy_pb2_grpc',
-    'iam_policy_pb2')
-
 # DEFAULT SCOPES are being used. so let's force them in.
 s.replace(
     'google/cloud/pubsub_v1/gapic/*er_client.py',
@@ -84,24 +64,6 @@ s.replace(
         'https://www.googleapis.com/auth/pubsub', )
 
     \g<0>'''
-)
-
-
-# Stubs are missing
-s.replace(
-    'google/cloud/pubsub_v1/gapic/subscriber_client.py',
-    '^(\s+)if client_info is None:\n',
-    '\g<1>self.iam_policy_stub = (iam_policy_pb2.IAMPolicyStub(channel))'
-    '\g<1>self.subscriber_stub = (pubsub_pb2_grpc.SubscriberStub(channel))\n'
-    '\g<0>'
-)
-
-s.replace(
-    'google/cloud/pubsub_v1/gapic/publisher_client.py',
-    '^(\s+)if client_info is None:\n',
-    '\g<1>self.iam_policy_stub = (iam_policy_pb2.IAMPolicyStub(channel))'
-    '\g<1>self.publisher_stub = (pubsub_pb2_grpc.PublisherStub(channel))\n'
-    '\g<0>'
 )
 
 s.replace(
