@@ -923,9 +923,8 @@ class TestStorageNotificationCRUD(unittest.TestCase):
         binding = policy.bindings.add()
         binding.role = 'roles/pubsub.publisher'
         binding.members.append(
-            'serviceAccount:{}'
-            '@gs-project-accounts.iam.gserviceaccount.com'.format(
-                Config.CLIENT.project))
+            'serviceAccount:{}'.format(
+                Config.CLIENT.get_service_account_email()))
         self.publisher_client.set_iam_policy(self.topic_path, policy)
 
     def setUp(self):
@@ -1054,6 +1053,9 @@ class TestKMSIntegration(TestStorageFiles):
             key_name,
         )
 
+    @unittest.skipUnless(storage.Client().get_service_account_email()
+                         .startswith("circleci@"),
+                         "Test only supported via CI")
     def test_blob_w_explicit_kms_key_name(self):
         BLOB_NAME = 'explicit-kms-key-name'
         file_data = self.FILES['simple']
@@ -1069,6 +1071,9 @@ class TestKMSIntegration(TestStorageFiles):
         listed, = list(self.bucket.list_blobs())
         self.assertTrue(listed.kms_key_name.startswith(kms_key_name))
 
+    @unittest.skipUnless(storage.Client().get_service_account_email()
+                         .startswith("circleci@"),
+                         "Test only supported via CI")
     def test_bucket_w_default_kms_key_name(self):
         BLOB_NAME = 'default-kms-key-name'
         OVERRIDE_BLOB_NAME = 'override-default-kms-key-name'
@@ -1125,7 +1130,10 @@ class TestKMSIntegration(TestStorageFiles):
 
         self.assertEqual(cleartext_blob.download_as_string(), contents)
         self.assertIsNone(cleartext_blob.kms_key_name)
-
+    
+    @unittest.skipUnless(storage.Client().get_service_account_email()
+                         .startswith("circleci@"),
+                         "Test only supported via CI")
     def test_rewrite_rotate_csek_to_cmek(self):
         BLOB_NAME = 'rotating-keys'
         file_data = self.FILES['simple']
