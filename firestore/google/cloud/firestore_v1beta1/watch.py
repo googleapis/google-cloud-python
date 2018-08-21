@@ -632,7 +632,6 @@ class Watch(object):
                                    new_index),
                     updated_tree, updated_map)
 
-        # XXX modify_doc is broken via formattedName
         def modify_doc(new_document, updated_tree, updated_map):
             """
             Applies a document modification to the document tree and the
