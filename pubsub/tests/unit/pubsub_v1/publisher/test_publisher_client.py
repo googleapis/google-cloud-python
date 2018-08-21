@@ -216,7 +216,12 @@ def test_gapic_instance_method():
     assert args[0] == types.Topic(name='projects/foo/topics/bar')
 
 
-def test_gapic_class_method():
+def test_gapic_class_method_on_class():
+    answer = publisher.Client.topic_path('foo', 'bar')
+    assert answer == 'projects/foo/topics/bar'
+
+
+def test_gapic_class_method_on_instance():
     creds = mock.Mock(spec=credentials.Credentials)
     client = publisher.Client(credentials=creds)
     answer = client.topic_path('foo', 'bar')
