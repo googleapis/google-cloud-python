@@ -90,6 +90,7 @@ def system(session, py):
     session.install('mock', 'pytest', *LOCAL_DEPS)
     session.install('../test_utils/')
     session.install('../pubsub')
+    session.install('../kms')
     session.install('-e', '.')
 
     # Run py.test against the system tests.
