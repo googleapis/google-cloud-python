@@ -4,10 +4,11 @@ SQLAlchemy dialect and API client for BigQuery.
 Usage
 =====
 
-.. code-block:: python
 
 SQLAchemy
 _________
+
+.. code-block:: python
 
     from sqlalchemy import *
     from sqlalchemy.engine import create_engine
@@ -17,7 +18,10 @@ _________
     print(select([func.count('*')], from_obj=table).scalar())
 
 API Client
-_________
+__________
+
+.. code-block:: python
+
     from pybigquery.api import ApiClient
     api_client = ApiClient()
     print(api_client.dry_run_query(query=sqlstr).total_bytes_processed)

@@ -8,7 +8,7 @@ def readme():
 
 setup(
     name="pybigquery",
-    version='0.4.0',
+    version='0.4.1',
     description="SQLAlchemy dialect for BigQuery",
     long_description=readme(),
     long_description_content_type="text/x-rst",
@@ -16,7 +16,7 @@ setup(
     author_email="maxim.zudilov@gmail.com",
     packages=['pybigquery'],
     url="https://github.com/mxmzdlv/pybigquery",
-    download_url='https://github.com/mxmzdlv/pybigquery/archive/v0.4.0.tar.gz',
+    download_url='https://github.com/mxmzdlv/pybigquery/archive/v0.4.1.tar.gz',
     keywords=['bigquery', 'sqlalchemy'],
     classifiers=[
         "Intended Audience :: Developers",
