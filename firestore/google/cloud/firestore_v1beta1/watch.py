@@ -702,11 +702,8 @@ class Watch(object):
         if target_ids is None:
             return True
 
-        if current_id in target_ids:
-            return True
-
-        return False
-
+        return current_id in target_ids
+ 
     def _current_size(self):
         """
         Returns the current count of all documents, including the changes from
