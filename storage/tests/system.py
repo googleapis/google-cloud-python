@@ -24,6 +24,7 @@ import six
 from google.cloud import exceptions
 from google.cloud import storage
 from google.cloud.storage._helpers import _base64_md5hash
+from google.cloud import kms
 
 from test_utils.retry import RetryErrors
 from test_utils.system import unique_resource_id
@@ -912,7 +913,7 @@ class TestStorageNotificationCRUD(unittest.TestCase):
         return 'projects/{}/topics/{}'.format(
             Config.CLIENT.project, self.TOPIC_NAME)
 
-    def _intialize_topic(self):
+    def _initialize_topic(self):
         try:
             from google.cloud.pubsub_v1 import PublisherClient
         except ImportError:
@@ -929,7 +930,7 @@ class TestStorageNotificationCRUD(unittest.TestCase):
 
     def setUp(self):
         self.case_buckets_to_delete = []
-        self._intialize_topic()
+        self._initialize_topic()
 
     def tearDown(self):
         retry_429(self.publisher_client.delete_topic)(self.topic_path)
@@ -1053,9 +1054,62 @@ class TestKMSIntegration(TestStorageFiles):
             key_name,
         )
 
-    @unittest.skipUnless(storage.Client().get_service_account_email()
-                         .startswith("circleci@"),
-                         "Test only supported via CI")
+    @classmethod
+    def setUpClass(cls):
+        super(TestKMSIntegration, cls).setUpClass()
+
+    def setUp(self):
+        super(TestKMSIntegration, self).setUp()
+        client = kms.KeyManagementServiceClient()
+
+        # If the keyring doesn't exist create it.
+        name = client.key_ring_path(
+            Config.CLIENT.project,
+            self.bucket.location.lower(),
+            self.KEYRING_NAME)
+
+        try:
+            client.get_key_ring(name)
+        except exceptions.NotFound:
+            parent = client.location_path(
+                Config.CLIENT.project, self.bucket.location.lower())
+            client.create_key_ring(parent, self.KEYRING_NAME, {})
+
+        # Ensure this service account is marked as an owner to the test keyring
+        keyring_location_path = client.key_ring_path(
+            Config.CLIENT.project,
+            self.bucket.location.lower(),
+            self.KEYRING_NAME)
+        service_account = Config.CLIENT.get_service_account_email()
+        policy = {
+            "bindings": [
+                {
+                    "role": "roles/owner",
+                    "members": [
+                        "serviceAccount:" + service_account,
+                    ]
+                }
+            ]
+        }
+
+        client.set_iam_policy(keyring_location_path, policy)
+
+        # Populate the keyring with the keys we use in the tests
+        for keyname in ['gcs-test2', 'gcs-test-alternate',
+                        'explicit-kms-key-name', 'default-kms-key-name',
+                        'override-default-kms-key-name',
+                        'alt-default-kms-key-name']:
+            key_path = client.crypto_key_path(Config.CLIENT.project,
+                                              self.bucket.location.lower(),
+                                              self.KEYRING_NAME,
+                                              keyname)
+            try:
+                client.get_crypto_key(key_path)
+            except exceptions.NotFound:
+                purpose = kms.enums.CryptoKey.CryptoKeyPurpose.ENCRYPT_DECRYPT
+                key = {'purpose': purpose}
+                client.create_crypto_key(keyring_location_path, keyname, key)
+
     def test_blob_w_explicit_kms_key_name(self):
         BLOB_NAME = 'explicit-kms-key-name'
         file_data = self.FILES['simple']
@@ -1071,9 +1125,6 @@ class TestKMSIntegration(TestStorageFiles):
         listed, = list(self.bucket.list_blobs())
         self.assertTrue(listed.kms_key_name.startswith(kms_key_name))
 
-    @unittest.skipUnless(storage.Client().get_service_account_email()
-                         .startswith("circleci@"),
-                         "Test only supported via CI")
     def test_bucket_w_default_kms_key_name(self):
         BLOB_NAME = 'default-kms-key-name'
         OVERRIDE_BLOB_NAME = 'override-default-kms-key-name'
@@ -1130,10 +1181,7 @@ class TestKMSIntegration(TestStorageFiles):
 
         self.assertEqual(cleartext_blob.download_as_string(), contents)
         self.assertIsNone(cleartext_blob.kms_key_name)
-    
-    @unittest.skipUnless(storage.Client().get_service_account_email()
-                         .startswith("circleci@"),
-                         "Test only supported via CI")
+
     def test_rewrite_rotate_csek_to_cmek(self):
         BLOB_NAME = 'rotating-keys'
         file_data = self.FILES['simple']
@@ -1147,7 +1195,7 @@ class TestKMSIntegration(TestStorageFiles):
         kms_key_name = self._kms_key_name()
 
         # We can't verify it, but ideally we would check that the following
-        # URL was resolvable with our credentals
+        # URL was resolvable with our credentials
         # KEY_URL = 'https://cloudkms.googleapis.com/v1/{}'.format(
         #     kms_key_name)
 
