@@ -630,7 +630,6 @@ class Query(object):
         Watch.for_query(self, callback, document.DocumentSnapshot)
 
 
-
 def _enum_from_op_string(op_string):
     """Convert a string representation of a binary operator to an enum.
 
