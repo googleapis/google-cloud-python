@@ -1,10 +1,13 @@
-SQLAlchemy dialect for BigQuery.
+SQLAlchemy dialect and API client for BigQuery.
 
 
 Usage
 =====
 
 .. code-block:: python
+
+SQLAchemy
+_________
 
     from sqlalchemy import *
     from sqlalchemy.engine import create_engine
@@ -13,6 +16,11 @@ Usage
     table = Table('dataset.table', MetaData(bind=engine), autoload=True)
     print(select([func.count('*')], from_obj=table).scalar())
 
+API Client
+_________
+    from pybigquery.api import ApiClient
+    api_client = ApiClient()
+    print(api_client.dry_run_query(query=sqlstr).total_bytes_processed)
 
 Project
 _______
