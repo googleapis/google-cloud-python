@@ -412,8 +412,6 @@ class Watch(object):
         target_change = proto.target_change
 
         if str(target_change):
-            # XXX why if str - if it doesn't exist it will be empty (falsy).
-            # Otherwise this was always true.
             target_change_type = target_change.target_change_type
             _LOGGER.debug(
                 'on_snapshot: target change: ' + str(target_change_type))
@@ -445,7 +443,7 @@ class Watch(object):
             #     # bidi rpc to do its thing.
             #     pass
 
-        elif str(proto.document_change):  # XXX why if str
+        elif str(proto.document_change):
             _LOGGER.debug('on_snapshot: document change')
 
             # No other target_ids can show up here, but we still need to see
@@ -692,11 +690,8 @@ class Watch(object):
         if target_ids is None:
             return True
 
-        if current_id in target_ids:
-            return True
-
-        return False
-
+        return current_id in target_ids
+ 
     def _current_size(self):
         """
         Returns the current count of all documents, including the changes from
