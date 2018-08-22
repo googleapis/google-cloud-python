@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+from google.api_core.exceptions import BadRequest
+from pybigquery.api import ApiClient
 from sqlalchemy.engine import create_engine
 from sqlalchemy.schema import Table, MetaData, Column
 from sqlalchemy import types, func, case, inspect
@@ -131,6 +133,19 @@ def query(table):
     )
     return query
 
+@pytest.fixture(scope='session')
+def api_client():
+    return ApiClient()
+
+def test_dry_run(engine, api_client):
+    sql = 'SELECT * FROM test_pybigquery.sample_one_row'
+    assert api_client.dry_run_query(sql).total_bytes_processed == 112
+
+    sql = 'SELECT * FROM sample_one_row'
+    with pytest.raises(BadRequest) as excinfo:
+        api_client.dry_run_query(sql)
+
+    assert 'Table name "sample_one_row" cannot be resolved: dataset name is missing.' in str(excinfo.value.message)
 
 def test_reflect_select(engine, table):
     assert len(table.c) == 14
