@@ -270,7 +270,7 @@ class Watch(object):
                 self._consumer.stop()
             self._consumer = None
 
-            # TODO: Verify we don't have other helper threads that need to be 
+            # TODO: Verify we don't have other helper threads that need to be
             # shut down here.
 
             self._rpc = None
@@ -423,9 +423,10 @@ class Watch(object):
 
         target_change = proto.target_change
 
-        if str(target_change):  # XXX why if str - if it doesn't exist it will be empty (falsy). Otherwise always true.
+        if str(target_change):
             target_change_type = target_change.target_change_type
-            _LOGGER.debug('on_snapshot: target change: ' + str(target_change_type))
+            _LOGGER.debug(
+                'on_snapshot: target change: ' + str(target_change_type))
             meth = target_changetype_dispatch.get(target_change_type)
             if meth is None:
                 _LOGGER.info('on_snapshot: Unknown target change ' +
@@ -454,7 +455,7 @@ class Watch(object):
             #     # bidi rpc to do its thing.
             #     pass
 
-        elif str(proto.document_change):  # XXX why if str
+        elif str(proto.document_change):
             _LOGGER.debug('on_snapshot: document change')
 
             # No other target_ids can show up here, but we still need to see
