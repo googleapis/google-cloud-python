@@ -270,7 +270,7 @@ class Watch(object):
                 self._consumer.stop()
             self._consumer = None
 
-            # TODO: Verify we don't have other helper threads that need to be 
+            # TODO: Verify we don't have other helper threads that need to be
             # shut down here.
 
             self._rpc = None
@@ -343,18 +343,6 @@ class Watch(object):
                    snapshot_callback,
                    snapshot_class_instance)
 
-    # @classmethod
-    # def for_collection(cls, collection_ref, snapshot_callback,
-    #                    snapshot_class_instance):
-    #     return cls(collection_ref._client,
-    #                {
-    #                    'collection': collection_ref.to_proto(),
-    #                    'target_id': WATCH_TARGET_ID
-    #                },
-    #                document_watch_comparator,
-    #                snapshot_callback,
-    #                snapshot_class_instance)
-
     def _on_snapshot_target_change_no_change(self, proto):
         _LOGGER.debug('on_snapshot: target change: NO_CHANGE')
         change = proto.target_change
@@ -423,9 +411,12 @@ class Watch(object):
 
         target_change = proto.target_change
 
-        if str(target_change):  # XXX why if str - if it doesn't exist it will be empty (falsy). Otherwise always true.
+        if str(target_change):
+            # XXX why if str - if it doesn't exist it will be empty (falsy).
+            # Otherwise this was always true.
             target_change_type = target_change.target_change_type
-            _LOGGER.debug('on_snapshot: target change: ' + str(target_change_type))
+            _LOGGER.debug(
+                'on_snapshot: target change: ' + str(target_change_type))
             meth = target_changetype_dispatch.get(target_change_type)
             if meth is None:
                 _LOGGER.info('on_snapshot: Unknown target change ' +
