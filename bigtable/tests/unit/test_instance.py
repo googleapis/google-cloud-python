@@ -19,6 +19,8 @@ import mock
 
 from ._testing import _make_credentials
 from google.cloud.bigtable.cluster import Cluster
+from google.iam.v1 import iam_policy_pb2
+from google.iam.v1 import policy_pb2
 
 
 class MultiCallableStub(object):
@@ -896,6 +898,114 @@ class TestInstance(unittest.TestCase):
 
         self.assertIsInstance(app_profile_2, AppProfile)
         self.assertEqual(app_profile_2.name, app_profile_name2)
+
+    def test_get_iam_policy(self):
+        from google.cloud.bigtable_admin_v2.gapic import (
+            bigtable_instance_admin_client)
+        from google.cloud.iam import Policy
+
+        instance_api = (
+            bigtable_instance_admin_client.BigtableInstanceAdminClient(
+                mock.Mock()))
+
+        credentials = _make_credentials()
+        client = self._make_client(project=self.PROJECT,
+                                   credentials=credentials, admin=True)
+        instance = self._make_one(self.INSTANCE_ID, client)
+
+        version = 1
+        etag = b'etag_v1'
+        bindings = [{'role': 'roles/owner',
+                     'members': ['serviceAccount:service_acc1@test.com',
+                                 'user:user1@test.com']}]
+        policy = {
+            'version': version,
+            'etag': etag,
+            'bindings': bindings
+        }
+        response_pb = policy_pb2.Policy(**policy)
+
+        # Patch the stub used by the API method.
+        client._instance_admin_client = instance_api
+        bigtable_instance_stub = (
+            client._instance_admin_client.bigtable_instance_admin_stub)
+        bigtable_instance_stub.GetIamPolicy.side_effect = [response_pb]
+
+        expected_policy = Policy(etag, version)
+        expected_policy.owners = [Policy.user("user1@test.com"),
+                                  Policy.service_account(
+                                      "service_acc1@test.com")]
+
+        result = instance.get_iam_policy()
+        self.assertEqual(result.owners, expected_policy.owners)
+
+    def test_set_iam_policy(self):
+        from google.cloud.bigtable_admin_v2.gapic import (
+            bigtable_instance_admin_client)
+        from google.cloud.iam import Policy
+
+        instance_api = (
+            bigtable_instance_admin_client.BigtableInstanceAdminClient(
+                mock.Mock()))
+
+        credentials = _make_credentials()
+        client = self._make_client(project=self.PROJECT,
+                                   credentials=credentials, admin=True)
+        instance = self._make_one(self.INSTANCE_ID, client)
+
+        version = 1
+        etag = b'etag_v1'
+        bindings = [{'role': 'roles/owner',
+                     'members': ['serviceAccount:service_acc1@test.com',
+                                 'user:user1@test.com']}]
+        policy = {
+            'version': version,
+            'etag': etag,
+            'bindings': bindings
+        }
+        response_pb = policy_pb2.Policy(**policy)
+
+        # Patch the stub used by the API method.
+        client._instance_admin_client = instance_api
+        bigtable_instance_stub = (
+            client._instance_admin_client.bigtable_instance_admin_stub)
+        bigtable_instance_stub.SetIamPolicy.side_effect = [response_pb]
+
+        expected_policy = Policy(etag, version)
+        expected_policy.owners = [Policy.user("user1@test.com"),
+                                  Policy.service_account(
+                                      "service_acc1@test.com")]
+
+        result = instance.set_iam_policy(expected_policy)
+        self.assertEqual(result.owners, expected_policy.owners)
+
+    def test_test_iam_permissions(self):
+        from google.cloud.bigtable_admin_v2.gapic import (
+            bigtable_instance_admin_client)
+
+        instance_api = (
+            bigtable_instance_admin_client.BigtableInstanceAdminClient(
+                mock.Mock()))
+
+        credentials = _make_credentials()
+        client = self._make_client(project=self.PROJECT,
+                                   credentials=credentials, admin=True)
+        instance = self._make_one(self.INSTANCE_ID, client)
+
+        permissions = ["bigtable.tables.create", "bigtable.clusters.create"]
+        expected_response = {'permissions': permissions}
+
+        response_pb = iam_policy_pb2.TestIamPermissionsResponse(
+                                                **expected_response)
+
+        # Patch the stub used by the API method.
+        client._instance_admin_client = instance_api
+        bigtable_instance_stub = (
+            client._instance_admin_client.bigtable_instance_admin_stub)
+        bigtable_instance_stub.TestIamPermissions.side_effect = [response_pb]
+
+        result = instance.test_iam_permissions(permissions)
+        self.assertEqual(result, permissions)
 
 
 class _Client(object):
