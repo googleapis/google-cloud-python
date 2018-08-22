@@ -55,10 +55,10 @@ The following client libraries have **beta** support:
 mostly stable and is being prepared for release. Issues and requests
 against beta libraries are addressed with a higher priority.
 
-This client library has **alpha** support for the following Google
-Cloud Platform services:
+The following client libraries have **alpha** support:
 
 -  `Google BigQuery Data Transfer`_ (`BigQuery Data Transfer README`_)
+-  `Google Cloud AutoML`_ (`AutoML README`_ )
 -  `Google Cloud Bigtable`_ (`Bigtable README`_)
 -  `Google Cloud Bigtable - HappyBase`_ (`HappyBase README`_)
 -  `Google Cloud Container`_ (`Container README`_)
@@ -118,6 +118,8 @@ updates. See `versioning`_ for more details.
 .. _Firestore README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/firestore
 .. _Google Cloud Memorystore for Redis: https://pypi.org/project/google-cloud-redis/
 .. _Redis README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/redis
+.. _Google Cloud AutoML: https://pypi.org/project/google-cloud-automl/
+.. _AutoML README: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/automl
 
 If you need support for other Google APIs, check out the
 `Google APIs Python Client library`_.
