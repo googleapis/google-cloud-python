@@ -780,3 +780,32 @@ def test_watch_document(client, cleanup):
     sleep(1)
     if on_response.called_count != 1:
         raise AssertionError("Failed to get exactly one document change")
+
+def test_watch_collection(client, cleanup):
+    db = client
+    doc_ref = db.collection(u'users').document(
+        u'alovelace' + unique_resource_id())
+    collection_ref = db.collection(u'users')
+    def on_snapshot(snapshot):
+        for doc in snapshot.documents:
+            print(u'{} => {}'.format(doc.id, doc.to_dict()))
+
+    collection_ref.on_snapshot(on_snapshot)
+
+    sleep(1)
+
+    # Initial setting
+    doc_ref.set({
+        u'first': u'Jane',
+        u'last': u'Doe',
+        u'born': 1900
+    })
+
+    doc_ref.set({
+        u'first': u'Ada',
+        u'last': u'Lovelace',
+        u'born': 1815
+    })
+
+    # CM: had to stop here, this test is totally unfinished, trying to formalize
+    # https://gist.github.com/crwilcox/ce05f3857adc7a0ed86ffbd039b1a035
