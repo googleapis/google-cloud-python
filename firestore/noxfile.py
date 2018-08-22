@@ -44,14 +44,14 @@ def default(session):
     session.run(
         'py.test',
         '--quiet',
-#        '--cov=google.cloud.firestore',
-#        '--cov=google.cloud.firestore_v1beta1',
-#        '--cov=tests.unit',
-#        '--cov-append',
-#        '--cov-config=.coveragerc',
-#        '--cov-report=',
-#        '--cov-fail-under=97',
-        os.path.join('tests', 'unit', 'test_watch.py'),
+        '--cov=google.cloud.firestore',
+        '--cov=google.cloud.firestore_v1beta1',
+        '--cov=tests.unit',
+        '--cov-append',
+        '--cov-config=.coveragerc',
+        '--cov-report=',
+        '--cov-fail-under=97',
+        os.path.join('tests', 'unit'),
         *session.posargs
     )
 
