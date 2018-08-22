@@ -1095,7 +1095,7 @@ class TestKMSIntegration(TestStorageFiles):
         client.set_iam_policy(keyring_location_path, policy)
 
         # Populate the keyring with the keys we use in the tests
-        for keyname in ['gcs-test2', 'gcs-test-alternate',
+        for keyname in ['gcs-test', 'gcs-test-alternate',
                         'explicit-kms-key-name', 'default-kms-key-name',
                         'override-default-kms-key-name',
                         'alt-default-kms-key-name']:
