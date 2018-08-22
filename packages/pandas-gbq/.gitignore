@@ -69,6 +69,8 @@ dist
 **/wheelhouse/*
 # coverage
 .coverage
+.testmondata
+.pytest_cache
 .nox
 
 # OS generated files #

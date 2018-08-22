@@ -13,7 +13,6 @@ from pandas.compat import range, u
 
 from pandas_gbq import gbq
 
-
 TABLE_ID = 'new_test'
 
 
@@ -21,8 +20,7 @@ def _get_dataset_prefix_random():
     return ''.join(['pandas_gbq_', str(randint(1, 100000))])
 
 
-@pytest.fixture(autouse=True, scope='module')
-def _test_imports():
+def test_imports():
     try:
         import pkg_resources  # noqa
     except ImportError:
@@ -142,13 +140,6 @@ class TestReadGBQIntegration(object):
         self.gbq_connector = gbq.GbqConnector(
             project, private_key=credentials)
         self.credentials = credentials
-
-    def test_should_properly_handle_valid_strings(self, project_id):
-        query = 'SELECT "PI" AS valid_string'
-        df = gbq.read_gbq(query, project_id=project_id,
-                          private_key=self.credentials,
-                          dialect='legacy')
-        tm.assert_frame_equal(df, DataFrame({'valid_string': ['PI']}))
 
     def test_should_properly_handle_empty_strings(self, project_id):
         query = 'SELECT "" AS empty_string'
@@ -392,7 +383,8 @@ class TestReadGBQIntegration(object):
         with pytest.raises(gbq.GenericGBQException):
             gbq.read_gbq('SELCET * FROM [publicdata:samples.shakespeare]',
                          project_id='not-my-project',
-                         private_key=self.credentials)
+                         private_key=self.credentials,
+                         dialect='legacy')
 
     def test_bad_table_name(self, project_id):
         with pytest.raises(gbq.GenericGBQException):
@@ -427,7 +419,7 @@ class TestReadGBQIntegration(object):
                          ('is_bot', np.dtype(bool)), ('ts', 'M8[ns]')])
         expected_result = DataFrame(
             page_array, columns=['title', 'id', 'is_bot', 'ts'])
-        tm.assert_frame_equal(df, expected_result)
+        tm.assert_frame_equal(df, expected_result, check_index_type=False)
 
     def test_legacy_sql(self, project_id):
         legacy_sql = "SELECT id FROM [publicdata.samples.wikipedia] LIMIT 10"

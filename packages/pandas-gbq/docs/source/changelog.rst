@@ -1,6 +1,16 @@
 Changelog
 =========
 
+.. _changelog-0.6.1:
+
+0.6.1 / [unreleased]
+--------------------
+
+- Improved ``read_gbq`` performance and memory consumption by delegating
+  ``DataFrame`` construction to the Pandas library, radically reducing
+  the number of loops that execute in python
+  (:issue:`128`)
+
 .. _changelog-0.6.0:
 
 0.6.0 / 2018-08-15

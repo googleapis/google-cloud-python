@@ -13,6 +13,9 @@ try:
 except ImportError:  # pragma: NO COVER
     from unittest import mock
 
+pytestmark = pytest.mark.filter_warnings(
+    "ignore:credentials from Google Cloud SDK")
+
 
 @pytest.fixture
 def min_bq_version():
