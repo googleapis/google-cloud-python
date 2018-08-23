@@ -421,6 +421,14 @@ class TestReadGBQIntegration(object):
             page_array, columns=['title', 'id', 'is_bot', 'ts'])
         tm.assert_frame_equal(df, expected_result, check_index_type=False)
 
+    def test_one_row_one_column(self, project_id):
+        df = gbq.read_gbq("SELECT 3 as v",
+                          project_id=project_id,
+                          private_key=self.credentials,
+                          dialect='standard')
+        expected_result = DataFrame(dict(v=[3]))
+        tm.assert_frame_equal(df, expected_result)
+
     def test_legacy_sql(self, project_id):
         legacy_sql = "SELECT id FROM [publicdata.samples.wikipedia] LIMIT 10"
 
