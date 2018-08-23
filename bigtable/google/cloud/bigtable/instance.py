@@ -485,8 +485,7 @@ class Instance(object):
         return [AppProfile.from_pb(app_profile, self) for app_profile in resp]
 
     def get_iam_policy(self):
-        """
-        Gets the access control policy for an instance resource.
+        """Gets the access control policy for an instance resource.
 
         .. code-block:: python
 
@@ -506,8 +505,7 @@ class Instance(object):
         return Policy.from_api_repr(self._to_dict_from_policy_pb(resp))
 
     def set_iam_policy(self, policy):
-        """
-        Sets the access control policy on an instance resource. Replaces any
+        """Sets the access control policy on an instance resource. Replaces any
         existing policy.
 
         .. code-block:: python
@@ -538,8 +536,7 @@ class Instance(object):
         return Policy.from_api_repr(self._to_dict_from_policy_pb(resp))
 
     def test_iam_permissions(self, permissions):
-        """
-        Returns permissions that the caller has on the specified instance
+        """Returns permissions that the caller has on the specified instance
         resource.
 
         .. code-block:: python
@@ -555,12 +552,12 @@ class Instance(object):
 
         :type permissions: list
         :param permissions: The set of permissions to check for
-                the ``resource``. Permissions with wildcards (such as '*'
-                or 'storage.*') are not allowed. For more information see
-                `IAM Overview
-                <https://cloud.google.com/iam/docs/overview#permissions>`_.
-                `Bigtable Permissions
-                <https://cloud.google.com/bigtable/docs/access-control>`_.
+               the ``resource``. Permissions with wildcards (such as '*'
+               or 'storage.*') are not allowed. For more information see
+               `IAM Overview
+               <https://cloud.google.com/iam/docs/overview#permissions>`_.
+               `Bigtable Permissions
+               <https://cloud.google.com/bigtable/docs/access-control>`_.
 
         :rtype: list
         :returns: A List(string) of permissions allowed on the instance
@@ -571,7 +568,7 @@ class Instance(object):
         return list(resp.permissions)
 
     def _to_dict_from_policy_pb(self, policy):
-        """ Returns a dictionary representation of resource returned from
+        """Returns a dictionary representation of resource returned from
         the getIamPolicy API to use as parameter for
         :meth: google.cloud.iam.Policy.from_api_repr
         """
