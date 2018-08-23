@@ -23,7 +23,7 @@ from google.cloud.firestore_v1beta1 import _helpers
 from google.cloud.firestore_v1beta1 import query as query_mod
 from google.cloud.firestore_v1beta1.proto import document_pb2
 from google.cloud.firestore_v1beta1.watch import Watch
-from google.cloud.firestore_v1beta1.document import DocumentSnapshot
+from google.cloud.firestore_v1beta1 import document
 
 _AUTO_ID_CHARS = (
     'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789')
@@ -398,7 +398,7 @@ class CollectionReference(object):
             # Terminate this watch
             collection_watch.unsubscribe()
         """
-        Watch.for_query(query_mod.Query(self), callback, DocumentSnapshot)
+        Watch.for_query(query_mod.Query(self), callback, document)
 
 
 def _auto_id():
