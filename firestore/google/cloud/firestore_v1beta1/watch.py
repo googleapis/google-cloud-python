@@ -160,7 +160,7 @@ class Watch(object):
                  target,
                  comparator,
                  snapshot_callback,
-                 DocumentSnapshotCls,
+                 document_module,
                  BackgroundConsumer=None,  # FBO unit testing
                  ResumableBidiRpc=None,  # FBO unit testing
                  ):
@@ -180,14 +180,15 @@ class Watch(object):
                         snapshot was obtained.
                     # TODO: Go had an err here and node.js provided size.
                     # TODO: do we want to include either?
-            DocumentSnapshotCls: instance of the DocumentSnapshot class
+            document_module: instance of the Document module
         """
         self._document_reference = document_reference
         self._firestore = firestore
         self._api = firestore._firestore_api
         self._targets = target
         self._comparator = comparator
-        self.DocumentSnapshot = DocumentSnapshotCls
+        self.DocumentSnapshot = document_module.DocumentSnapshot
+        self.DocumentReference = document_module.DocumentReference
         self._snapshot_callback = snapshot_callback
         self._closing = threading.Lock()
         self._closed = False
@@ -410,7 +411,6 @@ class Watch(object):
             }
 
         target_change = proto.target_change
-
         if str(target_change):
 <<<<<<< HEAD
 =======
@@ -474,8 +474,17 @@ class Watch(object):
 
                 data = self.MessageToDict(document)
 
+                # Create a snapshot. As Document and Query objects can be
+                # passed we need to get a Document Reference in a more manual
+                # fashion than self._document_reference
+                document_name = document.name
+                db_str = self._firestore._database_string
+                if document_name.startswith(db_str):
+                    document_name = document_name[len(db_str):]
+                document_ref = self._firestore.document(document_name)
+
                 snapshot = self.DocumentSnapshot(
-                    reference=self._document_reference,
+                    reference=document_ref,
                     data=data['fields'],
                     exists=True,
                     read_time=None,
