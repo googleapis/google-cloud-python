@@ -298,58 +298,6 @@ class InvalidChunk(RuntimeError):
     """Exception raised to to invalid chunk data from back-end."""
 
 
-class PartialRowsData(object):
-    """Convenience wrapper for consuming a ``ReadRows`` streaming response.
-
-    :type read_method: :class:`client._table_data_client.read_rows`
-    :param read_method: ``ReadRows`` method.
-
-    :type request: :class:`data_messages_v2_pb2.ReadRowsRequest`
-    :param request: The ``ReadRowsRequest`` message used to create a
-                    ReadRowsResponse iterator.
-    """
-
-    START = 'Start'                         # No responses yet processed.
-    NEW_ROW = 'New row'                     # No cells yet complete for row
-    ROW_IN_PROGRESS = 'Row in progress'     # Some cells complete for row
-    CELL_IN_PROGRESS = 'Cell in progress'   # Incomplete cell for row
-
-    def __init__(self, read_method, request):
-        self._generator = YieldRowsData(read_method, request)
-
-        # Fully-processed rows, keyed by `row_key`
-        self.rows = {}
-
-    def __eq__(self, other):
-        if not isinstance(other, self.__class__):
-            return NotImplemented
-        return other._generator == self._generator
-
-    def __ne__(self, other):
-        return not self == other
-
-    @property
-    def state(self):
-        """State machine state.
-
-        :rtype: str
-        :returns:  name of state corresponding to currrent row / chunk
-                   processing.
-        """
-        return self._generator.state
-
-    def consume_all(self, max_loops=None):
-        """Consume the streamed responses until there are no more.
-
-        :type max_loops: int
-        :param max_loops: (Optional) Maximum number of times to try to consume
-                          an additional ``ReadRowsResponse``. You can use this
-                          to avoid long wait times.
-        """
-        for row in self._generator.read_rows():
-            self.rows[row.row_key] = row
-
-
 def _retry_read_rows_exception(exc):
     if isinstance(exc, grpc.RpcError):
         exc = exceptions.from_grpc_error(exc)
@@ -357,7 +305,8 @@ def _retry_read_rows_exception(exc):
                             exceptions.DeadlineExceeded))
 
 
-class YieldRowsData(object):
+
+class PartialRowsData(object):
     """Convenience wrapper for consuming a ``ReadRows`` streaming response.
 
     :type read_method: :class:`client._table_data_client.read_rows`
@@ -404,6 +353,7 @@ class YieldRowsData(object):
         self.read_method = read_method
         self.request = request
         self.response_iterator = read_method(request)
+        self.rows = {}
 
     @property
     def state(self):
@@ -436,15 +386,26 @@ class YieldRowsData(object):
         """Cancels the iterator, closing the stream."""
         self.response_iterator.cancel()
 
+    def consume_all(self, max_loops=None):
+        """Consume the streamed responses until there are no more.
+
+        :type max_loops: int
+        :param max_loops: (Optional) Maximum number of times to try to consume
+                          an additional ``ReadRowsResponse``. You can use this
+                          to avoid long wait times.
+        """
+        for row in self:
+            self.rows[row.row_key] = row
+
     def _create_retry_request(self):
-        """Helper for :meth:`read_rows`."""
+        """Helper for :meth:`__iter__`."""
         req_manager = _ReadRowsRequestManager(self.request,
                                               self.last_scanned_row_key,
                                               self._counter)
         self.request = req_manager.build_updated_request()
 
     def _on_error(self, exc):
-        """Helper for :meth:`read_rows`."""
+        """Helper for :meth:`__iter__`."""
         # restart the read scan from AFTER the last successfully read row
         if self.last_scanned_row_key:
             self._create_retry_request()
@@ -452,17 +413,17 @@ class YieldRowsData(object):
         self.response_iterator = self.read_method(self.request)
 
     def _read_next(self):
-        """Helper for :meth:`read_rows`."""
+        """Helper for :meth:`__iter__`."""
         return six.next(self.response_iterator)
 
     def _read_next_response(self):
-        """Helper for :meth:`read_rows`."""
+        """Helper for :meth:`__iter__`."""
         retry_ = retry.Retry(
             predicate=_retry_read_rows_exception,
             deadline=60)
         return retry_(self._read_next, on_error=self._on_error)()
 
-    def read_rows(self):
+    def __iter__(self):
         """Consume the ``ReadRowsResponse's`` from the stream.
         Read the rows and yield each to the reader
 

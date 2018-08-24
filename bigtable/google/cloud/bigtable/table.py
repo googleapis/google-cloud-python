@@ -30,7 +30,6 @@ from google.cloud.bigtable.row import AppendRow
 from google.cloud.bigtable.row import ConditionalRow
 from google.cloud.bigtable.row import DirectRow
 from google.cloud.bigtable.row_data import PartialRowsData
-from google.cloud.bigtable.row_data import YieldRowsData
 from google.cloud.bigtable.row_set import RowSet
 from google.cloud.bigtable.row_set import RowRange
 from google.cloud.bigtable import enums
@@ -305,7 +304,7 @@ class Table(object):
         return rows_data.rows[row_key]
 
     def read_rows(self, start_key=None, end_key=None, limit=None,
-                  filter_=None, end_inclusive=False):
+                  filter_=None, end_inclusive=False, row_set=None):
         """Read rows from this table.
 
         :type start_key: bytes
@@ -332,6 +331,10 @@ class Table(object):
         :param end_inclusive: (Optional) Whether the ``end_key`` should be
                       considered inclusive. The default is False (exclusive).
 
+        :type row_set: :class:`row_set.RowSet`
+        :param filter_: (Optional) The row set containing multiple row keys and
+                        row_ranges.
+
         :rtype: :class:`.PartialRowsData`
         :returns: A :class:`.PartialRowsData` convenience wrapper for consuming
                   the streamed results.
@@ -339,12 +342,11 @@ class Table(object):
         request_pb = _create_row_request(
             self.name, start_key=start_key, end_key=end_key,
             filter_=filter_, limit=limit, end_inclusive=end_inclusive,
-            app_profile_id=self._app_profile_id)
+            app_profile_id=self._app_profile_id, row_set=row_set)
         data_client = self._instance._client.table_data_client
         return PartialRowsData(data_client._read_rows, request_pb)
 
-    def yield_rows(self, start_key=None, end_key=None, limit=None,
-                   filter_=None, row_set=None):
+    def yield_rows(self, **kwargs):
         """Read rows from this table.
 
         :type start_key: bytes
@@ -374,14 +376,7 @@ class Table(object):
         :rtype: :class:`.PartialRowData`
         :returns: A :class:`.PartialRowData` for each row returned
         """
-        request_pb = _create_row_request(
-            self.name, start_key=start_key, end_key=end_key, filter_=filter_,
-            limit=limit, app_profile_id=self._app_profile_id, row_set=row_set)
-        data_client = self._instance._client.table_data_client
-        generator = YieldRowsData(data_client._read_rows, request_pb)
-
-        for row in generator.read_rows():
-            yield row
+        return self.read_rows(**kwargs)
 
     def mutate_rows(self, rows, retry=DEFAULT_RETRY):
         """Mutates multiple rows in bulk.
