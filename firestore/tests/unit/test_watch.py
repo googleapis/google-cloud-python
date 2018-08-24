@@ -461,7 +461,7 @@ class TestWatch(unittest.TestCase):
         doc_tree = WatchDocTree()
 
         class DummyDoc(object):
-            pass
+            update_time = mock.sentinel
 
         deleted_doc = DummyDoc()
         added_doc = DummyDoc()
@@ -471,9 +471,11 @@ class TestWatch(unittest.TestCase):
         doc_tree = doc_tree.insert('/deleted', deleted_doc)
         doc_tree = doc_tree.insert('/updated', updated_doc)
         doc_map = {'/deleted': deleted_doc, '/updated': updated_doc}
-        added_snapshot = DummyDocumentSnapshot()
+        added_snapshot = DummyDocumentSnapshot(added_doc, None, True,
+                                               None, None, None)
         added_snapshot.reference = added_doc
-        updated_snapshot = DummyDocumentSnapshot()
+        updated_snapshot = DummyDocumentSnapshot(updated_doc, None, True,
+                                                 None, None, None)
         updated_snapshot.reference = updated_doc
         delete_changes = ['/deleted']
         add_changes = [added_snapshot]
@@ -486,9 +488,13 @@ class TestWatch(unittest.TestCase):
             add_changes,
             update_changes
             )
-        # assertion is incorrect below, but we don't get here yet; the tested
-        # code raises an exception before we get a result
-        self.assertEqual(updated_map, None)
+        # TODO:
+        # Assertion is not verified correct below. Verify this test is good.
+        self.assertEqual(updated_map,
+                         {
+                             '/updated': updated_snapshot,
+                             '/added': added_snapshot,
+                         })
 
     def test__reset_docs(self):
         from google.cloud.firestore_v1beta1.watch import ChangeType
@@ -500,7 +506,7 @@ class TestWatch(unittest.TestCase):
         doc_tree = WatchDocTree()
         doc_tree = doc_tree.insert('/doc', doc)
         doc_tree = doc_tree.insert('/doc', doc)
-        snapshot = DummyDocumentSnapshot()
+        snapshot = DummyDocumentSnapshot(doc, None, True, None, None, None)
         snapshot.reference = doc
         inst.doc_tree = doc_tree
         inst._reset_docs()
@@ -520,20 +526,42 @@ class DummyFirestoreClient(object):
 
 
 class DummyDocumentReference(object):
-    def __init__(self):
-        self._client = DummyFirestore()
+    def __init__(self, *document_path, **kw):
+        if 'client' not in kw:
+            self._client = DummyFirestore()
+        else:
+            self._client = kw['client']
+
+        self._path = document_path
+        self.__dict__.update(kw)
+
     _document_path = '/'
 
 
 class DummyFirestore(object):
     _firestore_api = DummyFirestoreClient()
     _database_string = ''
-    document = DummyDocumentReference
+
+    def document(self, *document_path):
+        if len(document_path) == 1:
+            path = document_path[0].split('/')
+        else:
+            path = document_path
+
+        return DummyDocumentReference(*path, client=self)
 
 
 class DummyDocumentSnapshot(object):
-    def __init__(self, **kw):
-        self.__dict__.update(kw)
+    # def __init__(self, **kw):
+    #     self.__dict__.update(kw)
+    def __init__(self, reference, data, exists,
+                 read_time, create_time, update_time):
+        self.reference = reference
+        self.data = data
+        self.exists = exists
+        self.read_time = read_time
+        self.create_time = create_time
+        self.update_time = update_time
 
 
 class DummyBackgroundConsumer(object):
