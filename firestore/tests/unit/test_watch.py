@@ -106,8 +106,10 @@ class TestWatch(unittest.TestCase):
             comparator=None,
             snapshot_callback=None,
             snapshot_class=None,
+            document_reference_class=None,
             ):
         from google.cloud.firestore_v1beta1.watch import Watch
+        from google.cloud.firestore_v1beta1.document import DocumentReference
         if document_reference is None:
             document_reference = DummyDocumentReference()
         if firestore is None:
@@ -125,6 +127,8 @@ class TestWatch(unittest.TestCase):
             snapshot_callback = self._snapshot_callback
         if snapshot_class is None:
             snapshot_class = DummyDocumentSnapshot
+        if document_reference_class is None:
+            document_reference_class = DocumentReference
 
         inst = Watch(
             document_reference,
@@ -133,6 +137,7 @@ class TestWatch(unittest.TestCase):
             comparator,
             snapshot_callback,
             snapshot_class,
+            document_reference_class,
             BackgroundConsumer=DummyBackgroundConsumer,
             ResumableBidiRpc=DummyRpc,
             )
