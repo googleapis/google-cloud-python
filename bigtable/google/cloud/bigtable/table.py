@@ -336,7 +336,7 @@ class Table(object):
                         row_ranges.
 
         :rtype: :class:`.PartialRowsData`
-        :returns: A :class:`.PartialRowsData` convenience wrapper for consuming
+        :returns: A :class:`.PartialRowsData` an iterable for consuming
                   the streamed results.
         """
         request_pb = _create_row_request(
@@ -348,6 +348,9 @@ class Table(object):
 
     def yield_rows(self, **kwargs):
         """Read rows from this table.
+        
+        NOTE: This method will be removed in future releases.  Please use
+        ``read_rows`` instead as a drop-in replacement.
 
         :type start_key: bytes
         :param start_key: (Optional) The beginning of a range of row keys to
