@@ -106,10 +106,9 @@ class TestWatch(unittest.TestCase):
             comparator=None,
             snapshot_callback=None,
             snapshot_class=None,
-            document_reference_class=None,
+            reference_class=None
             ):
         from google.cloud.firestore_v1beta1.watch import Watch
-        from google.cloud.firestore_v1beta1.document import DocumentReference
         if document_reference is None:
             document_reference = DummyDocumentReference()
         if firestore is None:
@@ -127,9 +126,8 @@ class TestWatch(unittest.TestCase):
             snapshot_callback = self._snapshot_callback
         if snapshot_class is None:
             snapshot_class = DummyDocumentSnapshot
-        if document_reference_class is None:
-            document_reference_class = DocumentReference
-
+        if reference_class is None:
+            reference_class = DummyDocumentReference
         inst = Watch(
             document_reference,
             firestore,
@@ -137,7 +135,7 @@ class TestWatch(unittest.TestCase):
             comparator,
             snapshot_callback,
             snapshot_class,
-            document_reference_class,
+            reference_class,
             BackgroundConsumer=DummyBackgroundConsumer,
             ResumableBidiRpc=DummyRpc,
             )
@@ -196,6 +194,7 @@ class TestWatch(unittest.TestCase):
         docref = DummyDocumentReference()
         snapshot_callback = self._snapshot_callback
         snapshot_class_instance = DummyDocumentSnapshot
+        document_reference_class_instance = DummyDocumentReference
         modulename = 'google.cloud.firestore_v1beta1.watch'
         with mock.patch(
                 '%s.Watch.ResumableBidiRpc' % modulename,
@@ -208,7 +207,8 @@ class TestWatch(unittest.TestCase):
                 inst = Watch.for_document(
                     docref,
                     snapshot_callback,
-                    snapshot_class_instance
+                    snapshot_class_instance,
+                    document_reference_class_instance
                 )
         self.assertTrue(inst._consumer.started)
         self.assertTrue(inst.rpc.callbacks, [inst._on_rpc_done])
@@ -528,6 +528,7 @@ class DummyDocumentReference(object):
 class DummyFirestore(object):
     _firestore_api = DummyFirestoreClient()
     _database_string = ''
+    document = DummyDocumentReference
 
 
 class DummyDocumentSnapshot(object):
