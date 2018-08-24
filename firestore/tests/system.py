@@ -812,12 +812,12 @@ def test_watch_document(client, cleanup):
     sleep(1)
 
     # Setup listener
-    def on_response(*arg):
-        on_response.called_count += 1
+    def on_snapshot(docs, changes, read_time):
+        on_snapshot.called_count += 1
 
-    on_response.called_count = 0
+    on_snapshot.called_count = 0
 
-    doc_ref.on_snapshot(on_response)
+    doc_ref.on_snapshot(on_snapshot)
 
     # Alter document
     doc_ref.set({
@@ -827,21 +827,23 @@ def test_watch_document(client, cleanup):
     })
 
     sleep(1)
-    if on_response.called_count != 1:
-        raise AssertionError("Failed to get exactly one document change")
+
+    for _ in range(10):
+        if on_snapshot.called_count == 1:
+            return
+        sleep(1)
+
+    if on_snapshot.called_count != 1:
+        raise AssertionError(
+            "Failed to get exactly one document change: count: " +
+            str(on_snapshot.called_count))
+
 
 def test_watch_collection(client, cleanup):
     db = client
     doc_ref = db.collection(u'users').document(
         u'alovelace' + unique_resource_id())
     collection_ref = db.collection(u'users')
-    def on_snapshot(snapshot):
-        for doc in snapshot.documents:
-            print(u'{} => {}'.format(doc.id, doc.to_dict()))
-
-    collection_ref.on_snapshot(on_snapshot)
-
-    sleep(1)
 
     # Initial setting
     doc_ref.set({
@@ -850,11 +852,82 @@ def test_watch_collection(client, cleanup):
         u'born': 1900
     })
 
+    # Setup listener
+    def on_snapshot(docs, changes, read_time):
+        on_snapshot.called_count += 1
+
+    on_snapshot.called_count = 0
+
+    # def on_snapshot(docs, changes, read_time):
+    #     for doc in docs:
+    #         print(u'{} => {}'.format(doc.id, doc.to_dict()))
+
+    collection_ref.on_snapshot(on_snapshot)
+
+    sleep(1)
+
     doc_ref.set({
         u'first': u'Ada',
         u'last': u'Lovelace',
         u'born': 1815
     })
 
-    # CM: had to stop here, this test is totally unfinished, trying to formalize
+    sleep(1)
+
+    for _ in range(10):
+        if on_snapshot.called_count == 1:
+            return
+        sleep(1)
+
+    if on_snapshot.called_count != 1:
+        raise AssertionError(
+            "Failed to get exactly one document change: count: " +
+            str(on_snapshot.called_count))
+
+    # CM: had to stop here, this test is totally unfinished, trying to
+    # formalize
     # https://gist.github.com/crwilcox/ce05f3857adc7a0ed86ffbd039b1a035
+
+
+def test_watch_query(client, cleanup):
+    db = client
+    doc_ref = db.collection(u'users').document(
+        u'alovelace' + unique_resource_id())
+    query_ref = db.collection(u'users').where("first", "==", u'Ada')
+
+    # Initial setting
+    doc_ref.set({
+        u'first': u'Jane',
+        u'last': u'Doe',
+        u'born': 1900
+    })
+
+    sleep(1)
+
+    # Setup listener
+    def on_snapshot(docs, changes, read_time):
+        on_snapshot.called_count += 1
+        print("docs: " + docs)
+        print("changes: " + changes)
+        print("read_time: " + read_time)
+
+    on_snapshot.called_count = 0
+
+    query_ref.on_snapshot(on_snapshot)
+
+    # Alter document
+    doc_ref.set({
+        u'first': u'Ada',
+        u'last': u'Lovelace',
+        u'born': 1815
+    })
+
+    for _ in range(10):
+        if on_snapshot.called_count == 1:
+            return
+        sleep(1)
+
+    if on_snapshot.called_count != 1:
+        raise AssertionError(
+            "Failed to get exactly one document change: count: " +
+            str(on_snapshot.called_count))

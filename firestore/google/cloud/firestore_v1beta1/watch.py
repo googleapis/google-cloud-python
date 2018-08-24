@@ -160,7 +160,8 @@ class Watch(object):
                  target,
                  comparator,
                  snapshot_callback,
-                 document_module,
+                 document_snapshot_cls,
+                 document_reference_cls,
                  BackgroundConsumer=None,  # FBO unit testing
                  ResumableBidiRpc=None,  # FBO unit testing
                  ):
@@ -180,15 +181,16 @@ class Watch(object):
                         snapshot was obtained.
                     # TODO: Go had an err here and node.js provided size.
                     # TODO: do we want to include either?
-            document_module: instance of the Document module
+            document_snapshot_cls: instance of DocumentSnapshot
+            document_reference_cls: instance of DocumentReference
         """
         self._document_reference = document_reference
         self._firestore = firestore
         self._api = firestore._firestore_api
         self._targets = target
         self._comparator = comparator
-        self.DocumentSnapshot = document_module.DocumentSnapshot
-        self.DocumentReference = document_module.DocumentReference
+        self.DocumentSnapshot = document_snapshot_cls
+        self.DocumentReference = document_reference_cls
         self._snapshot_callback = snapshot_callback
         self._closing = threading.Lock()
         self._closed = False
@@ -304,7 +306,7 @@ class Watch(object):
 
     @classmethod
     def for_document(cls, document_ref, snapshot_callback,
-                     snapshot_class_instance):
+                     snapshot_class_instance, reference_class_instance):
         """
         Creates a watch snapshot listener for a document. snapshot_callback
         receives a DocumentChange object, but may also start to get
@@ -313,8 +315,10 @@ class Watch(object):
         Args:
             document_ref: Reference to Document
             snapshot_callback: callback to be called on snapshot
-            snapshot_class_instance: instance of snapshot cls to make
+            snapshot_class_instance: instance of DocumentSnapshot to make
                 snapshots with to pass to snapshot_callback
+            reference_class_instance: instance of DocumentReference to make
+                references
 
         """
         return cls(document_ref,
@@ -326,10 +330,12 @@ class Watch(object):
                    },
                    document_watch_comparator,
                    snapshot_callback,
-                   snapshot_class_instance)
+                   snapshot_class_instance,
+                   reference_class_instance)
 
     @classmethod
-    def for_query(cls, query, snapshot_callback, snapshot_class_instance):
+    def for_query(cls, query, snapshot_callback, snapshot_class_instance,
+                  reference_class_instance):
         query_target = firestore_pb2.Target.QueryTarget(
             parent=query._client._database_string,
             structured_query=query._to_protobuf(),
@@ -342,7 +348,8 @@ class Watch(object):
                    },
                    document_watch_comparator,
                    snapshot_callback,
-                   snapshot_class_instance)
+                   snapshot_class_instance,
+                   reference_class_instance)
 
     def _on_snapshot_target_change_no_change(self, proto):
         _LOGGER.debug('on_snapshot: target change: NO_CHANGE')
@@ -705,7 +712,7 @@ class Watch(object):
             return True
 
         return current_id in target_ids
- 
+
     def _current_size(self):
         """
         Returns the current count of all documents, including the changes from

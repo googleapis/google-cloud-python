@@ -627,7 +627,10 @@ class Query(object):
             # Terminate this watch
             query_watch.unsubscribe()
         """
-        Watch.for_query(self, callback, document)
+        Watch.for_query(self,
+                        callback,
+                        document.DocumentSnapshot,
+                        document.DocumentReference)
 
 
 def _enum_from_op_string(op_string):
