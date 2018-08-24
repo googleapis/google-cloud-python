@@ -353,10 +353,6 @@ class PartialRowsData(object):
         self.request = request
         self.response_iterator = read_method(request)
 
-        # Fully-processed rows, keyed by `row_key`.  This is only populated
-        # if `consume_all` is called.  This is required for backwards
-        # compatibility.  Ideally, consume all should just return a method
-        # scoped variable, and not a member variable.
         self.rows = {}
 
     @property
@@ -392,6 +388,10 @@ class PartialRowsData(object):
 
     def consume_all(self, max_loops=None):
         """Consume the streamed responses until there are no more.
+
+        .. warning::
+           This method will be removed in future releases.  Please use this
+           class as a generator instead.
 
         :type max_loops: int
         :param max_loops: (Optional) Maximum number of times to try to consume
