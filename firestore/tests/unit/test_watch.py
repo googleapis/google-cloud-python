@@ -384,7 +384,7 @@ class TestWatch(unittest.TestCase):
         inst.push(DummyReadTime, 'token')
         self.assertEqual(
             self.snapshotted,
-            ([], [], datetime.datetime(2018, 8, 21, 9, 31, 18)),
+            ([], [], datetime.datetime(2018, 8, 21, 6, 31, 18)),
             )
         self.assertTrue(inst.has_pushed)
         self.assertEqual(inst.resume_token, 'token')
