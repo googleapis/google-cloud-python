@@ -400,7 +400,6 @@ class TestPartialRowsData(unittest.TestCase):
         partial_rows_data.rows = value = object()
         self.assertIs(partial_rows_data.rows, value)
 
-
     def _make_client(self, *args, **kwargs):
         return self._get_target_client_class()(*args, **kwargs)
 

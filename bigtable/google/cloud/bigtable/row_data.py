@@ -305,7 +305,6 @@ def _retry_read_rows_exception(exc):
                             exceptions.DeadlineExceeded))
 
 
-
 class PartialRowsData(object):
     """Convenience wrapper for consuming a ``ReadRows`` streaming response.
 

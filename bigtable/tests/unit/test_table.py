@@ -620,7 +620,7 @@ class TestTable(unittest.TestCase):
             'limit': limit,
             'end_inclusive': False,
             'app_profile_id': app_profile_id,
-            'row_set' : None
+            'row_set': None
         }
         self.assertEqual(mock_created, [(table.name, created_kwargs)])
 
