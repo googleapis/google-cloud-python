@@ -352,6 +352,11 @@ class PartialRowsData(object):
         self.read_method = read_method
         self.request = request
         self.response_iterator = read_method(request)
+
+        # Fully-processed rows, keyed by `row_key`.  This is only populated
+        # if `consume_all` is called.  This is required for backwards
+        # compatibility.  Ideally, consume all should just return a method
+        # scoped variable, and not a member variable.
         self.rows = {}
 
     @property
