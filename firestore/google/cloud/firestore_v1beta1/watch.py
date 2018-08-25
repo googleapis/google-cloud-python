@@ -18,6 +18,8 @@ import threading
 import datetime
 from enum import Enum
 
+import pytz
+
 from google.cloud.firestore_v1beta1.bidi import ResumableBidiRpc
 from google.cloud.firestore_v1beta1.bidi import BackgroundConsumer
 from google.cloud.firestore_v1beta1.proto import firestore_pb2
@@ -561,7 +563,7 @@ class Watch(object):
             self._snapshot_callback(
                 updated_tree.keys(),
                 appliedChanges,
-                datetime.datetime.fromtimestamp(read_time.seconds)
+                datetime.datetime.fromtimestamp(read_time.seconds, pytz.utc)
             )
             self.has_pushed = True
 

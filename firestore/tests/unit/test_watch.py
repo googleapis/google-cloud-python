@@ -378,13 +378,18 @@ class TestWatch(unittest.TestCase):
         )
 
     def test_push_no_changes(self):
+        import pytz
         class DummyReadTime(object):
             seconds = 1534858278
         inst = self._makeOne()
         inst.push(DummyReadTime, 'token')
         self.assertEqual(
             self.snapshotted,
-            ([], [], datetime.datetime(2018, 8, 21, 6, 31, 18)),
+            (
+                [],
+                [],
+                datetime.datetime.fromtimestamp(DummyReadTime.seconds, pytz.utc)
+            ),
             )
         self.assertTrue(inst.has_pushed)
         self.assertEqual(inst.resume_token, 'token')
