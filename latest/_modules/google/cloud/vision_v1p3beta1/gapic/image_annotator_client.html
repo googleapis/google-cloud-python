@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.vision_v1p3beta1.gapic.image_annotator_client &#8212; google-cloud 95e9bca0a2 documentation</title>
+    <title>google.cloud.vision_v1p3beta1.gapic.image_annotator_client &#8212; google-cloud bed940bc9f documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -171,11 +171,12 @@
                         <span class="s1">&#39;Received both a transport instance and &#39;</span>
                         <span class="s1">&#39;credentials; these are mutually exclusive.&#39;</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">transport</span> <span class="o">=</span> <span class="n">transport</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">transport</span> <span class="o">=</span> <span class="n">image_annotator_grpc_transport</span><span class="o">.</span><span class="n">ImageAnnotatorGrpcTransport</span><span class="p">(</span>
-            <span class="n">address</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">SERVICE_ADDRESS</span><span class="p">,</span>
-            <span class="n">channel</span><span class="o">=</span><span class="n">channel</span><span class="p">,</span>
-            <span class="n">credentials</span><span class="o">=</span><span class="n">credentials</span><span class="p">,</span>
-        <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">transport</span> <span class="o">=</span> <span class="n">image_annotator_grpc_transport</span><span class="o">.</span><span class="n">ImageAnnotatorGrpcTransport</span><span class="p">(</span>
+                <span class="n">address</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">SERVICE_ADDRESS</span><span class="p">,</span>
+                <span class="n">channel</span><span class="o">=</span><span class="n">channel</span><span class="p">,</span>
+                <span class="n">credentials</span><span class="o">=</span><span class="n">credentials</span><span class="p">,</span>
+            <span class="p">)</span>
 
         <span class="k">if</span> <span class="n">client_info</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">client_info</span> <span class="o">=</span> <span class="p">(</span>
