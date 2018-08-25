@@ -40,6 +40,17 @@ Follow the `Google Cloud library guide <https://google-cloud-python.readthedocs.
 
     engine = create_engine('bigquery://', credentials_path='/path/to/keyfile.json')
 
+
+Location
+________
+
+To specify location of your datasets pass ``location`` to ``create_engine()``:
+
+.. code-block:: python
+
+    engine = create_engine('bigquery://project', location="asia-northeast1")
+
+
 Table names
 ___________
 
