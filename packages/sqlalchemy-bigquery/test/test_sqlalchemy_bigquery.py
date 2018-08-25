@@ -92,6 +92,12 @@ def engine():
 
 
 @pytest.fixture(scope='session')
+def engine_with_location():
+    engine = create_engine('bigquery://', echo=True, location="asia-northeast1")
+    return engine
+
+
+@pytest.fixture(scope='session')
 def table(engine):
     return Table('test_pybigquery.sample', MetaData(bind=engine), autoload=True)
 
@@ -133,19 +139,27 @@ def query(table):
     )
     return query
 
+
 @pytest.fixture(scope='session')
 def api_client():
     return ApiClient()
 
+
 def test_dry_run(engine, api_client):
     sql = 'SELECT * FROM test_pybigquery.sample_one_row'
-    assert api_client.dry_run_query(sql).total_bytes_processed == 112
+    assert api_client.dry_run_query(sql).total_bytes_processed == 132
 
     sql = 'SELECT * FROM sample_one_row'
     with pytest.raises(BadRequest) as excinfo:
         api_client.dry_run_query(sql)
 
     assert 'Table name "sample_one_row" cannot be resolved: dataset name is missing.' in str(excinfo.value.message)
+
+
+def test_dataset_location(engine_with_location):
+    rows = engine_with_location.execute('SELECT * FROM test_pybigquery_location.sample_one_row').fetchall()
+    assert list(rows[0]) == ONE_ROW_CONTENTS
+
 
 def test_reflect_select(engine, table):
     assert len(table.c) == 14

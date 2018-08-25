@@ -193,10 +193,11 @@ class BigQueryDialect(DefaultDialect):
     supports_simple_order_by_label = True
     postfetch_lastrowid = False
 
-    def __init__(self, arraysize=5000, credentials_path=None, *args, **kwargs):
+    def __init__(self, arraysize=5000, credentials_path=None, location=None, *args, **kwargs):
         super(BigQueryDialect, self).__init__(*args, **kwargs)
         self.arraysize = arraysize
         self.credentials_path = credentials_path
+        self.location = location
 
     @classmethod
     def dbapi(cls):
@@ -204,9 +205,10 @@ class BigQueryDialect(DefaultDialect):
 
     def create_connect_args(self, url):
         if self.credentials_path:
-            client = bigquery.Client.from_service_account_json(self.credentials_path)
+            client = bigquery.Client.from_service_account_json(
+                self.credentials_path, location=self.location)
         else:
-            client = bigquery.Client(url.host)
+            client = bigquery.Client(url.host, location=self.location)
         return ([client], {})
 
     def _json_deserializer(self, row):
