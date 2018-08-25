@@ -14,7 +14,9 @@
 """Accesses the google.cloud.texttospeech.v1 TextToSpeech API."""
 
 import pkg_resources
+import warnings
 
+from google.oauth2 import service_account
 import google.api_core.gapic_v1.client_info
 import google.api_core.gapic_v1.config
 import google.api_core.gapic_v1.method
@@ -23,6 +25,7 @@ import grpc
 
 from google.cloud.texttospeech_v1.gapic import enums
 from google.cloud.texttospeech_v1.gapic import text_to_speech_client_config
+from google.cloud.texttospeech_v1.gapic.transports import text_to_speech_grpc_transport
 from google.cloud.texttospeech_v1.proto import cloud_tts_pb2
 from google.cloud.texttospeech_v1.proto import cloud_tts_pb2_grpc
 
@@ -36,15 +39,33 @@ class TextToSpeechClient(object):
     SERVICE_ADDRESS = 'texttospeech.googleapis.com:443'
     """The default address of the service."""
 
-    # The scopes needed to make gRPC calls to all of the methods defined in
-    # this service
-    _DEFAULT_SCOPES = ('https://www.googleapis.com/auth/cloud-platform', )
-
-    # The name of the interface for this client. This is the key used to find
-    # method configuration in the client_config dictionary.
+    # The name of the interface for this client. This is the key used to
+    # find the method configuration in the client_config dictionary.
     _INTERFACE_NAME = 'google.cloud.texttospeech.v1.TextToSpeech'
 
+    @classmethod
+    def from_service_account_file(cls, filename, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials
+        file.
+
+        Args:
+            filename (str): The path to the service account private key json
+                file.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            TextToSpeechClient: The constructed client.
+        """
+        credentials = service_account.Credentials.from_service_account_file(
+            filename)
+        kwargs['credentials'] = credentials
+        return cls(*args, **kwargs)
+
+    from_service_account_json = from_service_account_file
+
     def __init__(self,
+                 transport=None,
                  channel=None,
                  credentials=None,
                  client_config=text_to_speech_client_config.config,
@@ -52,41 +73,64 @@ class TextToSpeechClient(object):
         """Constructor.
 
         Args:
-            channel (grpc.Channel): A ``Channel`` instance through
-                which to make calls. This argument is mutually exclusive
+            transport (Union[~.TextToSpeechGrpcTransport,
+                    Callable[[~.Credentials, type], ~.TextToSpeechGrpcTransport]): A transport
+                instance, responsible for actually making the API calls.
+                The default transport uses the gRPC protocol.
+                This argument may also be a callable which returns a
+                transport instance. Callables will be sent the credentials
+                as the first argument and the default transport class as
+                the second argument.
+            channel (grpc.Channel): DEPRECATED. A ``Channel`` instance
+                through which to make calls. This argument is mutually exclusive
                 with ``credentials``; providing both will raise an exception.
             credentials (google.auth.credentials.Credentials): The
                 authorization credentials to attach to requests. These
                 credentials identify this application to the service. If none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            client_config (dict): A dictionary of call options for each
-                method. If not specified, the default configuration is used.
+                This argument is mutually exclusive with providing a
+                transport instance to ``transport``; doing so will raise
+                an exception.
+            client_config (dict): DEPRECATED. A dictionary of call options for
+                each method. If not specified, the default configuration is used.
             client_info (google.api_core.gapic_v1.client_info.ClientInfo):
                 The client info used to send a user-agent string along with
                 API requests. If ``None``, then default info will be used.
                 Generally, you only need to set this if you're developing
                 your own client library.
         """
-        # If both `channel` and `credentials` are specified, raise an
-        # exception (channels come with credentials baked in already).
-        if channel is not None and credentials is not None:
-            raise ValueError(
-                'The `channel` and `credentials` arguments to {} are mutually '
-                'exclusive.'.format(self.__class__.__name__), )
+        # Raise deprecation warnings for things we want to go away.
+        if client_config:
+            warnings.warn('The `client_config` argument is deprecated.',
+                          PendingDeprecationWarning)
+        if channel:
+            warnings.warn(
+                'The `channel` argument is deprecated; use '
+                '`transport` instead.', PendingDeprecationWarning)
 
-        # Create the channel.
-        self.channel = channel
-        if self.channel is None:
-            self.channel = google.api_core.grpc_helpers.create_channel(
-                self.SERVICE_ADDRESS,
+        # Instantiate the transport.
+        # The transport is responsible for handling serialization and
+        # deserialization and actually sending data to the service.
+        if transport:
+            if callable(transport):
+                self.transport = transport(
+                    credentials=credentials,
+                    default_class=text_to_speech_grpc_transport.
+                    TextToSpeechGrpcTransport,
+                )
+            else:
+                if credentials:
+                    raise ValueError(
+                        'Received both a transport instance and '
+                        'credentials; these are mutually exclusive.')
+                self.transport = transport
+        else:
+            self.transport = text_to_speech_grpc_transport.TextToSpeechGrpcTransport(
+                address=self.SERVICE_ADDRESS,
+                channel=channel,
                 credentials=credentials,
-                scopes=self._DEFAULT_SCOPES,
             )
-
-        # Create the gRPC stubs.
-        self._text_to_speech_stub = (cloud_tts_pb2_grpc.TextToSpeechStub(
-            self.channel))
 
         if client_info is None:
             client_info = (
@@ -101,26 +145,11 @@ class TextToSpeechClient(object):
         self._method_configs = google.api_core.gapic_v1.config.parse_method_configs(
             client_config['interfaces'][self._INTERFACE_NAME], )
 
+        # Save a dictionary of cached API call functions.
+        # These are the actual callables which invoke the proper
+        # transport methods, wrapped with `wrap_method` to add retry,
+        # timeout, and the like.
         self._inner_api_calls = {}
-
-    def _intercept_channel(self, *interceptors):
-        """ Experimental. Bind gRPC interceptors to the gRPC channel.
-
-        Args:
-            interceptors (*Union[grpc.UnaryUnaryClientInterceptor, grpc.UnaryStreamingClientInterceptor, grpc.StreamingUnaryClientInterceptor, grpc.StreamingStreamingClientInterceptor]):
-              Zero or more gRPC interceptors. Interceptors are given control in the order
-              they are listed.
-        Raises:
-            TypeError: If interceptor does not derive from any of
-              UnaryUnaryClientInterceptor,
-              UnaryStreamClientInterceptor,
-              StreamUnaryClientInterceptor, or
-              StreamStreamClientInterceptor.
-        """
-        self.channel = grpc.intercept_channel(self.channel, *interceptors)
-        self._text_to_speech_stub = (cloud_tts_pb2_grpc.TextToSpeechStub(
-            self.channel))
-        self._inner_api_calls.clear()
 
     # Service calls
     def list_voices(self,
@@ -167,10 +196,11 @@ class TextToSpeechClient(object):
                     to a retryable error and retry attempts failed.
             ValueError: If the parameters are invalid.
         """
+        # Wrap the transport method to add retry and timeout logic.
         if 'list_voices' not in self._inner_api_calls:
             self._inner_api_calls[
                 'list_voices'] = google.api_core.gapic_v1.method.wrap_method(
-                    self._text_to_speech_stub.ListVoices,
+                    self.transport.list_voices,
                     default_retry=self._method_configs['ListVoices'].retry,
                     default_timeout=self._method_configs['ListVoices'].timeout,
                     client_info=self._client_info,
@@ -237,10 +267,11 @@ class TextToSpeechClient(object):
                     to a retryable error and retry attempts failed.
             ValueError: If the parameters are invalid.
         """
+        # Wrap the transport method to add retry and timeout logic.
         if 'synthesize_speech' not in self._inner_api_calls:
             self._inner_api_calls[
                 'synthesize_speech'] = google.api_core.gapic_v1.method.wrap_method(
-                    self._text_to_speech_stub.SynthesizeSpeech,
+                    self.transport.synthesize_speech,
                     default_retry=self._method_configs[
                         'SynthesizeSpeech'].retry,
                     default_timeout=self._method_configs['SynthesizeSpeech']
