@@ -240,12 +240,12 @@ class GbqConnector(object):
         self._start_timer()
 
         try:
-            logger.info('Requesting query... ')
+            logger.debug('Requesting query... ')
             query_reply = self.client.query(
                 query,
                 job_config=bigquery.QueryJobConfig.from_api_repr(job_config),
                 location=self.location)
-            logger.info('ok.\nQuery running...')
+            logger.info('Query running...')
         except (RefreshError, ValueError):
             if self.private_key:
                 raise AccessDenied(
@@ -258,7 +258,7 @@ class GbqConnector(object):
             self.process_http_error(ex)
 
         job_id = query_reply.job_id
-        logger.info('Job ID: %s\nQuery running...' % job_id)
+        logger.debug('Job ID: %s' % job_id)
 
         while query_reply.state != 'DONE':
             self.log_elapsed_seconds('  Elapsed', 's. Waiting...')
@@ -303,8 +303,7 @@ class GbqConnector(object):
                 for field in rows_iter.schema],
         }
 
-        # log basic query stats
-        logger.info('Got {} rows.\n'.format(total_rows))
+        logger.debug('Got {} rows.\n'.format(total_rows))
 
         return schema, result_rows
 
@@ -314,7 +313,6 @@ class GbqConnector(object):
         from pandas_gbq import load
 
         total_rows = len(dataframe)
-        logger.info("\n\n")
 
         try:
             chunks = load.load_chunks(self.client, dataframe, dataset_id,
@@ -327,8 +325,6 @@ class GbqConnector(object):
                     ((total_rows - remaining_rows) * 100) / total_rows))
         except self.http_error as ex:
             self.process_http_error(ex)
-
-        logger.info("\n")
 
     def schema(self, dataset_id, table_id):
         """Retrieve the schema of the table
@@ -611,7 +607,6 @@ def read_gbq(query, project_id=None, index_col=None, col_order=None,
     connector.log_elapsed_seconds(
         'Total time taken',
         datetime.now().strftime('s.\nFinished at %Y-%m-%d %H:%M:%S.'),
-        0
     )
 
     return final_df

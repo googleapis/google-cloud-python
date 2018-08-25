@@ -10,6 +10,8 @@ Changelog
   ``DataFrame`` construction to the Pandas library, radically reducing
   the number of loops that execute in python
   (:issue:`128`)
+- Reduced verbosity of logging from ``read_gbq``, particularly for short
+  queries. (:issue:`201`)
 
 .. _changelog-0.6.0:
 
