@@ -336,7 +336,7 @@ class Table(object):
                         row_ranges.
 
         :rtype: :class:`.PartialRowsData`
-        :returns: A :class:`.PartialRowsData` an iterable for consuming
+        :returns: A :class:`.PartialRowsData` a generator for consuming
                   the streamed results.
         """
         request_pb = _create_row_request(
