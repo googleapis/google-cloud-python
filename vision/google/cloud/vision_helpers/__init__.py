@@ -73,11 +73,6 @@ class VisionHelpers(object):
         Returns:
             list: A list of all available features.
         """
-        answer = []
-        for key, value in self.enums.Feature.Type.__dict__.items():
-            if key.upper() != key:
-                continue
-            if not isinstance(value, int) or value == 0:
-                continue
-            answer.append({'type': value})
-        return answer
+        return [
+            {'type': feature}
+            for feature in self.enums.Feature.Type if feature != 0]
