@@ -6,8 +6,6 @@
 
 ## 0.30.0
 
-### Implementation Changes
-
 ### New Features
 
 - Improved reads: Improving performance, and capabilities of reads.  `read_rows` now returns a generator; has automatic retries; and can read an arbitrary set of keys and ranges
@@ -56,10 +54,6 @@
 -- Pass through 'session.posargs' when running Bigtable system tests. (#5418)
 -- BigTable: Add admin app profile methods on Instance (#5315)
 -- BigTable: Add data app profile id  (#5369)
-
-### Dependencies
-
-### Documentation
 
 ### Internal / Testing Changes
 - Fixing the broken Bigtable system test. (#5607)
