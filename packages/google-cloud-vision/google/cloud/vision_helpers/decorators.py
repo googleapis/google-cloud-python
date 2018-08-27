@@ -26,19 +26,14 @@ def add_single_feature_methods(cls):
     if not hasattr(cls, 'enums'):
         return cls
 
-    # Iterate over the Feature.Type enum and add get a list of
-    # features which will receive single-feature detection methods.
-    features = [k for k in cls.enums.Feature.Type.__dict__.keys()
-                if k.replace('_', '').isalpha() and k.upper() == k]
-
     # Add each single-feature method to the class.
-    for feature in features:
+    for feature in cls.enums.Feature.Type:
         # Sanity check: Do not make a method for the falsy feature.
-        if feature == 'TYPE_UNSPECIFIED':
+        if feature.name == 'TYPE_UNSPECIFIED':
             continue
 
         # Assign the appropriate metadata to the function.
-        detect = _create_single_feature_method(feature, cls.enums.Feature.Type)
+        detect = _create_single_feature_method(feature)
 
         # Assign a qualified name to the function, and perform module
         # replacement on the docstring.
@@ -57,19 +52,18 @@ def add_single_feature_methods(cls):
     return cls
 
 
-def _create_single_feature_method(feature, enum):
+def _create_single_feature_method(feature):
     """Return a function that will detect a single feature.
 
     Args:
-        feature (str): A specific feature defined as an attribute on
+        feature (enum): A specific feature defined as a member of
             :class:`~enums.Feature.Type`.
-        enum (class): The :class:`~enums.Feature.Type` class.
 
     Returns:
         function: A helper function to detect just that feature.
     """
     # Define the function properties.
-    fx_name = feature.lower()
+    fx_name = feature.name.lower()
     if 'detection' in fx_name:
         fx_doc = 'Perform {0}.'.format(fx_name.replace('_', ' '))
     else:
@@ -96,7 +90,7 @@ def _create_single_feature_method(feature, enum):
     """
 
     # Get the actual feature value to send.
-    feature_value = {'type': enum.__dict__[feature]}
+    feature_value = {'type': feature}
 
     # Define the function to be returned.
     def inner(self, image, max_results=None,
