@@ -6,67 +6,70 @@
 
 ## 0.30.0
 
+## 0.30.0
+
 ### New Features
 
 - Improved reads: Improving performance, and capabilities of reads.  `read_rows` now returns a generator; has automatic retries; and can read an arbitrary set of keys and ranges
--- Bigtable: consolidating read_rows and yield_rows (#5840)
--- Bigtable: Implement row set for yield_rows  (#5506)
--- BigTable: improve read rows validation performance (#5390)
--- Add retry for yield_rows (#4882)
--- Bigtable: TimestampRanges must be milliseconds granularity (#5002)
--- BigTable: provide better access to cell values  (#4908)
+-- Consolidated read_rows and yield_rows (#5840)
+-- Implemented row set for yield_rows  (#5506)
+-- Improved read rows validation performance (#5390)
+-- Added retry for yield_rows (#4882)
+-- Required TimestampRanges to be milliseconds granularity (#5002)
+-- Provided better access to cell values  (#4908)
+-- Added data app profile id  (#5369)
 
 - Improved writes: Writes are usable in Beam
--- BigTable: Create MutationBatcher for bigtable (#5651)
--- Bigtable: DirectRow without a table (#5567)
+-- Creatd MutationBatcher for bigtable (#5651)
+-- Allowed DirectRow to be created without a table (#5567)
+-- Added data app profile id  (#5369)
 
-- BigTable: Add split keys on create table - v2 (#5513)
 
 - Improved table admin: Table creation now can also create families in a single RPC.  Added an `exist()` method.  Added `get_cluster_states` for information about replication
--- Bigtable: Add 'Table.get_cluster_states' method (#5790)
--- Bigtable: optimize 'Table.exists' performance (#5749)
--- Bigtable: Allow 'Table.create()' to create column families. (#5576)
--- Add 'Table.exists' method (#5545)
+-- Added 'Table.get_cluster_states' method (#5790)
+-- Optimized 'Table.exists' performance (#5749)
+-- Added column creation in 'Table.create()'. (#5576)
+-- Added 'Table.exists' method (#5545)
+-- Added split keys on create table - v2 (#5513)
 -- Avoid sharing table names across unrelated systests. (#5421)
--- BigTable: Add truncate table and drop by prefix on top of GAPIC integration (#5360)
+-- Added truncate table and drop by prefix on top of GAPIC integration (#5360)
 
 - Improved instance admin: Instance creation allows for the creation of multiple clusters.  Instance lable management is now enabled.  
--- Fix failing systest: 'test_create_instance_w_two_clusters'. (#5836)
--- Bigtable: app_profile_object (#5782)
--- added instance.exists(), system and unit tests (#5802)
--- Bigtable: add 'Client.list_clusters()' (#5715)
--- Bigtable: add labels {'python-system': ISO-timestamp} to systest instances (#5729)
--- Bigtable : Add 'Instance._state' property (#5736)
--- BIgtable: return 'instance.labels' as dictionary (#5728)
--- shortenning cluster ID in system test (#5719)
--- Bigtable: Reshaping cluster.py, adding cluster() factory to instance.py (#5663)
--- Harden 'test_list_instances' further. (#5696)
--- Bigtable: 'Instance.update()' now uses 'instance.partial_instance_update' API (#5643)
--- Bigtable: refactor update_app_profile() to remove update_mask argument (#5684)
--- Bigtable: Ability to create an instance with multiple clusters (#5622)
--- Shorten instance / cluster name to fix CI breakage. (#5641)
--- Bigtable:  Add 'instance_type', 'labels' to 'Instance' ctor (#5614)
--- Adding optional app profile on instance.table() (#5605)
--- Bigtable: Instance creation cleanup. (#5542)
--- Bigtable: Improve testing of create instance (#5544)
--- Harden 'test_list_instances' against simultaneous test runs. (#5476)
--- Make 'Client.list_instances' return actual instance objects, not protos. (#5420)
+-- Fixed failing systest: 'test_create_instance_w_two_clusters'. (#5836)
+-- Created app_profile_object (#5782)
+-- Added instance.exists(), system and unit tests (#5802)
+-- Added 'Client.list_clusters()' (#5715)
+-- Added labels {'python-system': ISO-timestamp} to systest instances (#5729)
+-- Added 'Instance._state' property (#5736)
+-- Converted 'instance.labels' to return as dictionary (#5728)
+-- Shortenned cluster ID in system test (#5719)
+-- Reshaped cluster.py, adding cluster() factory to instance.py (#5663)
+-- Hardened 'test_list_instances' further. (#5696)
+-- Converted 'Instance.update()' to use 'instance.partial_instance_update' API (#5643)
+-- Refactored update_app_profile() to remove update_mask argument (#5684)
+-- Added the ability to create an instance with multiple clusters (#5622)
+-- Shortened instance / cluster name to fix CI breakage. (#5641)
+-- Added 'instance_type', 'labels' to 'Instance' ctor (#5614)
+-- Added optional app profile on instance.table() (#5605)
+-- Cleaned up Instance creation. (#5542)
+-- Improved testing of create instance (#5544)
+-- Hardened 'test_list_instances' against simultaneous test runs. (#5476)
+-- Made 'Client.list_instances' return actual instance objects, not protos. (#5420)
 -- Pass through 'session.posargs' when running Bigtable system tests. (#5418)
--- BigTable: Add admin app profile methods on Instance (#5315)
--- BigTable: Add data app profile id  (#5369)
+-- Added admin app profile methods on Instance (#5315)
 
 ### Internal / Testing Changes
 - Fixing the broken Bigtable system test. (#5607)
-- BigTable: use client properties rather than private attrs (#5398)
-- Fix Py3 breakage in new system test. (#5474)
-- BigTable: Modify system test for new GAPIC code (#5302)
-- Rename releases to changelog and include from CHANGELOG.md (#5191)
-- Integrate new generated low-level client (#5178)
-- Fix bad trove classifier
-- Add Test runs for Python 3.7 and remove 3.4 (#5295)
-- disable bigtable system tests (#5381)
-- Modify system tests to use prerelease versions of grpcio (#5304)
-- Override gRPC max message lengths. (#5498)
+- Used client properties rather than private attrs (#5398)
+- Fixed Py3 breakage in new system test. (#5474)
+- Modified system test for new GAPIC code (#5302)
+- Renamed releases to changelog and include from CHANGELOG.md (#5191)
+- Integrated new generated low-level client (#5178)
+- Fixed bad trove classifier
+- Added Test runs for Python 3.7 and remove 3.4 (#5295)
+- Disabled Bigtable system tests (#5381)
+- Modified system tests to use prerelease versions of grpcio (#5304)
+- Overrode gRPC max message lengths. (#5498)
 
 ## 0.29.0
 
