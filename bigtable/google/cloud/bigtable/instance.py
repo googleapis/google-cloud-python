@@ -27,7 +27,7 @@ from google.cloud.bigtable_admin_v2.types import instance_pb2
 
 from google.api_core.exceptions import NotFound
 
-from google.cloud.iam import Policy
+from google.cloud.bigtable.policy import Policy
 
 
 _EXISTING_INSTANCE_LOCATION_ID = 'see-existing-cluster'
@@ -490,15 +490,15 @@ class Instance(object):
         .. code-block:: python
 
             from google.cloud.bigtable.client import Client
-            from google.cloud.iam import Policy
+            from google.cloud.bigtable.policy import Policy
 
             client = Client(admin=True)
             instance = client.instance('[INSTANCE_ID]')
             policy_latest = instance.get_iam_policy()
-            print (policy_latest.owners)
+            print (policy_latest.bigtable_viewers)
 
-        :rtype: :class:`~google.cloud.iam.Policy`
-        :returns: A :class:`~google.cloud.iam.Policy` instance.
+        :rtype: :class:`policy.Policy`
+        :returns: A :class:`policy.Policy` instance.
         """
         instance_admin_client = self._client._instance_admin_client
         resp = instance_admin_client.get_iam_policy(resource=self.name)
@@ -508,27 +508,40 @@ class Instance(object):
         """Sets the access control policy on an instance resource. Replaces any
         existing policy.
 
+        A Policy consists of a list of bindings. A binding binds a list of
+        members to a role, where the members can be user accounts, Google
+        groups, Google domains, and service accounts. A role is a named list
+        of permissions defined by IAM.
+        For more information about predefined roles currently supoprted
+        by Bigtable Instance please see
+        `Predefined roles
+        <https://cloud.google.com/bigtable/docs/access-control#roles>`_.
+        For more information about custom roles please see
+        `Custom roles
+        <https://cloud.google.com/bigtable/docs/access-control#custom-roles>`_.
+
         .. code-block:: python
 
             from google.cloud.bigtable.client import Client
-            from google.cloud.iam import Policy
+            from google.cloud.bigtable.policy import Policy
+            from google.cloud.bigtable.policy import BIGTABLE_ADMIN_ROLE
 
             client = Client(admin=True)
             instance = client.instance('[INSTANCE_ID]')
-            policy = instance.get_iam_policy()
-            policy.owners = [
+            ins_policy = instance.get_iam_policy()
+            ins_policy[BIGTABLE_ADMIN_ROLE] = [
                 Policy.user("test_iam@test.com"),
                 Policy.service_account("sv_account@gmail.com")]
 
             instance.set_iam_policy(policy)
             policy_latest = instance.get_iam_policy()
-            print (policy_latest.owners)
+            print (policy_latest.bigtable_admins)
 
-        :type policy: :class:`~google.cloud.iam.Policy`
-        :param policy: A :class:`~google.cloud.iam.Policy` instance.
+        :type policy: :class:`policy.Policy`
+        :param policy: A :class:`policy.Policy` instance.
 
-        :rtype: :class:`~google.cloud.iam.Policy`
-        :returns: A :class:`~google.cloud.iam.Policy` instance.
+        :rtype: :class:`policy.Policy`
+        :returns: A :class:`policy.Policy` instance.
         """
         instance_admin_client = self._client._instance_admin_client
         resp = instance_admin_client.set_iam_policy(

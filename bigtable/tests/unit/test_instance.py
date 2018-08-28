@@ -902,7 +902,8 @@ class TestInstance(unittest.TestCase):
             bigtable_instance_admin_client)
         from google.iam.v1 import iam_policy_pb2
         from google.iam.v1 import policy_pb2
-        from google.cloud.iam import Policy
+        from google.cloud.bigtable.policy import Policy
+        from google.cloud.bigtable.policy import BIGTABLE_ADMIN_ROLE
 
         credentials = _make_credentials()
         client = self._make_client(project=self.PROJECT,
@@ -911,7 +912,7 @@ class TestInstance(unittest.TestCase):
 
         version = 1
         etag = b'etag_v1'
-        bindings = [{'role': 'roles/owner',
+        bindings = [{'role': 'roles/bigtable.admin',
                      'members': ['serviceAccount:service_acc1@test.com',
                                  'user:user1@test.com']}]
 
@@ -931,22 +932,24 @@ class TestInstance(unittest.TestCase):
         client._instance_admin_client = instance_api
         # Perform the method and check the result.
         policy_request = Policy(etag=etag, version=version)
-        policy_request.owners = [Policy.user("user1@test.com"),
-                                 Policy.service_account(
-                                     "service_acc1@test.com")]
+        policy_request[BIGTABLE_ADMIN_ROLE] = [Policy.user("user1@test.com"),
+                                               Policy.service_account(
+                                                   "service_acc1@test.com")]
 
         result = instance.get_iam_policy()
         actual_request = channel.requests[0][1]
 
         self.assertEqual(actual_request, expected_request)
-        self.assertEqual(result.owners, policy_request.owners)
+        self.assertEqual(result.bigtable_admins,
+                         policy_request.bigtable_admins)
 
     def test_set_iam_policy(self):
         from google.cloud.bigtable_admin_v2.gapic import (
             bigtable_instance_admin_client)
         from google.iam.v1 import iam_policy_pb2
         from google.iam.v1 import policy_pb2
-        from google.cloud.iam import Policy
+        from google.cloud.bigtable.policy import Policy
+        from google.cloud.bigtable.policy import BIGTABLE_ADMIN_ROLE
 
         credentials = _make_credentials()
         client = self._make_client(project=self.PROJECT,
@@ -955,7 +958,7 @@ class TestInstance(unittest.TestCase):
 
         version = 1
         etag = b'etag_v1'
-        bindings = [{'role': 'roles/owner',
+        bindings = [{'role': 'roles/bigtable.admin',
                      'members': ['serviceAccount:service_acc1@test.com',
                                  'user:user1@test.com']}]
 
@@ -976,15 +979,16 @@ class TestInstance(unittest.TestCase):
         client._instance_admin_client = instance_api
         # Perform the method and check the result.
         policy_request = Policy(etag=etag, version=version)
-        policy_request.owners = [Policy.user("user1@test.com"),
-                                 Policy.service_account(
-                                     "service_acc1@test.com")]
+        policy_request[BIGTABLE_ADMIN_ROLE] = [Policy.user("user1@test.com"),
+                                               Policy.service_account(
+                                                   "service_acc1@test.com")]
 
         result = instance.set_iam_policy(policy_request)
         actual_request = channel.requests[0][1]
 
         self.assertEqual(actual_request, expected_request)
-        self.assertEqual(result.owners, policy_request.owners)
+        self.assertEqual(result.bigtable_admins,
+                         policy_request.bigtable_admins)
 
     def test_test_iam_permissions(self):
         from google.cloud.bigtable_admin_v2.gapic import (
