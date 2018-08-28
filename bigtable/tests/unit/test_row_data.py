@@ -321,12 +321,23 @@ class _Client(object):
 
 
 class TestPartialRowsData(unittest.TestCase):
+    ROW_KEY = b'row-key'
+    FAMILY_NAME = u'family'
+    QUALIFIER = b'qualifier'
+    TIMESTAMP_MICROS = 100
+    VALUE = b'value'
 
     @staticmethod
     def _get_target_class():
         from google.cloud.bigtable.row_data import PartialRowsData
 
         return PartialRowsData
+
+    @staticmethod
+    def _get_target_client_class():
+        from google.cloud.bigtable.client import Client
+
+        return Client
 
     def _make_one(self, *args, **kwargs):
         return self._get_target_class()(*args, **kwargs)
@@ -337,8 +348,7 @@ class TestPartialRowsData(unittest.TestCase):
         request = object()
         partial_rows_data = self._make_one(client._data_stub.ReadRows,
                                            request)
-        self.assertIs(partial_rows_data._generator.request,
-                      request)
+        self.assertIs(partial_rows_data.request, request)
         self.assertEqual(partial_rows_data.rows, {})
 
     def test___eq__(self):
@@ -390,29 +400,6 @@ class TestPartialRowsData(unittest.TestCase):
         partial_rows_data.rows = value = object()
         self.assertIs(partial_rows_data.rows, value)
 
-
-class TestYieldRowsData(unittest.TestCase):
-    ROW_KEY = b'row-key'
-    FAMILY_NAME = u'family'
-    QUALIFIER = b'qualifier'
-    TIMESTAMP_MICROS = 100
-    VALUE = b'value'
-
-    @staticmethod
-    def _get_target_class():
-        from google.cloud.bigtable.row_data import YieldRowsData
-
-        return YieldRowsData
-
-    def _make_one(self, *args, **kwargs):
-        return self._get_target_class()(*args, **kwargs)
-
-    @staticmethod
-    def _get_target_client_class():
-        from google.cloud.bigtable.client import Client
-
-        return Client
-
     def _make_client(self, *args, **kwargs):
         return self._get_target_client_class()(*args, **kwargs)
 
@@ -451,7 +438,7 @@ class TestYieldRowsData(unittest.TestCase):
             client._table_data_client.bigtable_stub.ReadRows, request)
         yrd._response_iterator = iterator
         yrd._last_scanned_row_key = ''
-        rows = [row for row in yrd.read_rows()]
+        rows = [row for row in yrd]
 
         result = rows[0]
         self.assertEqual(result.row_key, self.ROW_KEY)
@@ -696,15 +683,12 @@ class TestYieldRowsData(unittest.TestCase):
 
         yrd = self._make_one(client._data_stub.ReadRows, request)
 
-        rows = []
-        for row in yrd.read_rows():
-            rows.append(row)
-        result = rows[0]
+        result = self._consume_all(yrd)[0]
 
-        self.assertEqual(result.row_key, self.ROW_KEY)
+        self.assertEqual(result, self.ROW_KEY)
 
     def _consume_all(self, yrd):
-        return [row.row_key for row in yrd.read_rows()]
+        return [row.row_key for row in yrd]
 
 
 class Test_ReadRowsRequestManager(unittest.TestCase):
