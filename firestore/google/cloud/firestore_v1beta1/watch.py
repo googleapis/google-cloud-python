@@ -197,7 +197,7 @@ class Watch(object):
         self._closing = threading.Lock()
         self._closed = False
 
-        def should_recover(exc):
+        def should_recover(exc):  # pragma: NO COVER
             return (
                 isinstance(exc, grpc.RpcError) and
                 exc.code() == grpc.StatusCode.UNAVAILABLE)
@@ -662,7 +662,7 @@ class Watch(object):
                                        add_change.new_index),
                         updated_tree, updated_map)
 
-            return None
+            return None, updated_tree, updated_map
 
         # Process the sorted changes in the order that is expected by our
         # clients (removals, additions, and then modifications). We also need
