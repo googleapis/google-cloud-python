@@ -860,6 +860,12 @@ class TestQuery(unittest.TestCase):
             parent_path, query._to_protobuf(), transaction=None,
             metadata=client._rpc_metadata)
 
+    @mock.patch('google.cloud.firestore_v1beta1.query.Watch', autospec=True)
+    def test_on_snapshot(self, watch):
+        query = self._make_one(mock.sentinel.parent)
+        query.on_snapshot(None)
+        watch.for_query.assert_called_once()
+        
 
 class Test__enum_from_op_string(unittest.TestCase):
 
