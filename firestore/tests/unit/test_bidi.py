@@ -279,7 +279,7 @@ class CallStub(object):
 
 
 class TestResumableBidiRpc(object):
-    def test_initial_state(self):
+    def test_initial_state(self):  # pragma: NO COVER
         bidi_rpc = bidi.ResumableBidiRpc(None, lambda _: True)
 
         assert bidi_rpc.is_active is False
