@@ -563,6 +563,15 @@ class TestDocumentReference(unittest.TestCase):
     def test_collections_w_page_size(self):
         self._collections_helper(page_size=10)
 
+    @mock.patch('google.cloud.firestore_v1beta1.document.Watch', autospec=True)
+    def test_on_snapshot(self, watch):
+        client = mock.Mock(
+            _database_string='sprinklez',
+            spec=['_database_string'])
+        document = self._make_one('yellow', 'mellow', client=client)
+        document.on_snapshot(None)
+        watch.for_document.assert_called_once()
+
 
 class TestDocumentSnapshot(unittest.TestCase):
 
