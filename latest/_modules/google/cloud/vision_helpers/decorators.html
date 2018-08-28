@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.vision_helpers.decorators &#8212; google-cloud bed940bc9f documentation</title>
+    <title>google.cloud.vision_helpers.decorators &#8212; google-cloud b176b888d5 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -61,19 +61,14 @@
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="s1">&#39;enums&#39;</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">cls</span>
 
-    <span class="c1"># Iterate over the Feature.Type enum and add get a list of</span>
-    <span class="c1"># features which will receive single-feature detection methods.</span>
-    <span class="n">features</span> <span class="o">=</span> <span class="p">[</span><span class="n">k</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">enums</span><span class="o">.</span><span class="n">Feature</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
-                <span class="k">if</span> <span class="n">k</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">isalpha</span><span class="p">()</span> <span class="ow">and</span> <span class="n">k</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="o">==</span> <span class="n">k</span><span class="p">]</span>
-
     <span class="c1"># Add each single-feature method to the class.</span>
-    <span class="k">for</span> <span class="n">feature</span> <span class="ow">in</span> <span class="n">features</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">feature</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">enums</span><span class="o">.</span><span class="n">Feature</span><span class="o">.</span><span class="n">Type</span><span class="p">:</span>
         <span class="c1"># Sanity check: Do not make a method for the falsy feature.</span>
-        <span class="k">if</span> <span class="n">feature</span> <span class="o">==</span> <span class="s1">&#39;TYPE_UNSPECIFIED&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">feature</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;TYPE_UNSPECIFIED&#39;</span><span class="p">:</span>
             <span class="k">continue</span>
 
         <span class="c1"># Assign the appropriate metadata to the function.</span>
-        <span class="n">detect</span> <span class="o">=</span> <span class="n">_create_single_feature_method</span><span class="p">(</span><span class="n">feature</span><span class="p">,</span> <span class="bp">cls</span><span class="o">.</span><span class="n">enums</span><span class="o">.</span><span class="n">Feature</span><span class="o">.</span><span class="n">Type</span><span class="p">)</span>
+        <span class="n">detect</span> <span class="o">=</span> <span class="n">_create_single_feature_method</span><span class="p">(</span><span class="n">feature</span><span class="p">)</span>
 
         <span class="c1"># Assign a qualified name to the function, and perform module</span>
         <span class="c1"># replacement on the docstring.</span>
@@ -92,19 +87,18 @@
     <span class="k">return</span> <span class="bp">cls</span>
 
 
-<span class="k">def</span> <span class="nf">_create_single_feature_method</span><span class="p">(</span><span class="n">feature</span><span class="p">,</span> <span class="n">enum</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">_create_single_feature_method</span><span class="p">(</span><span class="n">feature</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Return a function that will detect a single feature.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        feature (str): A specific feature defined as an attribute on</span>
+<span class="sd">        feature (enum): A specific feature defined as a member of</span>
 <span class="sd">            :class:`~enums.Feature.Type`.</span>
-<span class="sd">        enum (class): The :class:`~enums.Feature.Type` class.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        function: A helper function to detect just that feature.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Define the function properties.</span>
-    <span class="n">fx_name</span> <span class="o">=</span> <span class="n">feature</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+    <span class="n">fx_name</span> <span class="o">=</span> <span class="n">feature</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
     <span class="k">if</span> <span class="s1">&#39;detection&#39;</span> <span class="ow">in</span> <span class="n">fx_name</span><span class="p">:</span>
         <span class="n">fx_doc</span> <span class="o">=</span> <span class="s1">&#39;Perform </span><span class="si">{0}</span><span class="s1">.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">fx_name</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">))</span>
     <span class="k">else</span><span class="p">:</span>
@@ -131,7 +125,7 @@
 <span class="s2">    &quot;&quot;&quot;</span>
 
     <span class="c1"># Get the actual feature value to send.</span>
-    <span class="n">feature_value</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="n">enum</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="n">feature</span><span class="p">]}</span>
+    <span class="n">feature_value</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="n">feature</span><span class="p">}</span>
 
     <span class="c1"># Define the function to be returned.</span>
     <span class="k">def</span> <span class="nf">inner</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">,</span> <span class="n">max_results</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>

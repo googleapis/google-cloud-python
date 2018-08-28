@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Table &#8212; google-cloud bed940bc9f documentation</title>
+    <title>Table &#8212; google-cloud b176b888d5 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -371,7 +371,7 @@ chunk is never encountered.</p>
 
 <dl class="method">
 <dt id="google.cloud.bigtable.table.Table.read_rows">
-<code class="descname">read_rows</code><span class="sig-paren">(</span><em>start_key=None</em>, <em>end_key=None</em>, <em>limit=None</em>, <em>filter_=None</em>, <em>end_inclusive=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/table.html#Table.read_rows"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.table.Table.read_rows" title="Permalink to this definition">#</a></dt>
+<code class="descname">read_rows</code><span class="sig-paren">(</span><em>start_key=None</em>, <em>end_key=None</em>, <em>limit=None</em>, <em>filter_=None</em>, <em>end_inclusive=False</em>, <em>row_set=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/table.html#Table.read_rows"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.table.Table.read_rows" title="Permalink to this definition">#</a></dt>
 <dd><p>Read rows from this table.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -392,13 +392,15 @@ specified row(s). If unset, reads every column in
 each row.</li>
 <li><strong>end_inclusive</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – (Optional) Whether the <code class="docutils literal notranslate"><span class="pre">end_key</span></code> should be
 considered inclusive. The default is False (exclusive).</li>
+<li><strong>filter</strong> – (Optional) The row set containing multiple row keys and
+row_ranges.</li>
 </ul>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="row-data.html#google.cloud.bigtable.row_data.PartialRowsData" title="google.cloud.bigtable.row_data.PartialRowsData"><code class="xref py py-class docutils literal notranslate"><span class="pre">PartialRowsData</span></code></a></p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A <a class="reference internal" href="row-data.html#google.cloud.bigtable.row_data.PartialRowsData" title="google.cloud.bigtable.row_data.PartialRowsData"><code class="xref py py-class docutils literal notranslate"><span class="pre">PartialRowsData</span></code></a> convenience wrapper for consuming
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A <a class="reference internal" href="row-data.html#google.cloud.bigtable.row_data.PartialRowsData" title="google.cloud.bigtable.row_data.PartialRowsData"><code class="xref py py-class docutils literal notranslate"><span class="pre">PartialRowsData</span></code></a> a generator for consuming
 the streamed results.</p>
 </td>
 </tr>
@@ -503,8 +505,13 @@ ValueError: If the parameters are invalid.</td>
 
 <dl class="method">
 <dt id="google.cloud.bigtable.table.Table.yield_rows">
-<code class="descname">yield_rows</code><span class="sig-paren">(</span><em>start_key=None</em>, <em>end_key=None</em>, <em>limit=None</em>, <em>filter_=None</em>, <em>row_set=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/table.html#Table.yield_rows"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.table.Table.yield_rows" title="Permalink to this definition">#</a></dt>
+<code class="descname">yield_rows</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/table.html#Table.yield_rows"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.table.Table.yield_rows" title="Permalink to this definition">#</a></dt>
 <dd><p>Read rows from this table.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">This method will be removed in future releases.  Please use
+<code class="docutils literal notranslate"><span class="pre">read_rows</span></code> instead.</p>
+</div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />

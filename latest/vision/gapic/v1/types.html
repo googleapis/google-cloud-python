@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Types for Cloud Vision API Client &#8212; google-cloud bed940bc9f documentation</title>
+    <title>Types for Cloud Vision API Client &#8212; google-cloud b176b888d5 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -107,6 +107,14 @@ user-provided image, with user-requested features.</p>
 <dt id="google.cloud.vision_v1.types.AnnotateImageResponse.label_annotations">
 <code class="descname">label_annotations</code><a class="headerlink" href="#google.cloud.vision_v1.types.AnnotateImageResponse.label_annotations" title="Permalink to this definition">#</a></dt>
 <dd><p>If present, label detection has completed successfully.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.AnnotateImageResponse.localized_object_annotations">
+<code class="descname">localized_object_annotations</code><a class="headerlink" href="#google.cloud.vision_v1.types.AnnotateImageResponse.localized_object_annotations" title="Permalink to this definition">#</a></dt>
+<dd><p>If present, localized object detection has completed
+successfully. This will be sorted descending by confidence
+score.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1031,6 +1039,45 @@ are specified, <code class="docutils literal notranslate"><span class="pre">imag
 <dt id="google.cloud.vision_v1.types.ListOperationsResponse">
 <em class="property">class </em><code class="descclassname">google.cloud.vision_v1.types.</code><code class="descname">ListOperationsResponse</code><a class="headerlink" href="#google.cloud.vision_v1.types.ListOperationsResponse" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.vision_v1.types.LocalizedObjectAnnotation">
+<em class="property">class </em><code class="descclassname">google.cloud.vision_v1.types.</code><code class="descname">LocalizedObjectAnnotation</code><a class="headerlink" href="#google.cloud.vision_v1.types.LocalizedObjectAnnotation" title="Permalink to this definition">#</a></dt>
+<dd><p>Set of detected objects with bounding boxes.</p>
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.LocalizedObjectAnnotation.mid">
+<code class="descname">mid</code><a class="headerlink" href="#google.cloud.vision_v1.types.LocalizedObjectAnnotation.mid" title="Permalink to this definition">#</a></dt>
+<dd><p>Object ID that should align with EntityAnnotation mid.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.LocalizedObjectAnnotation.language_code">
+<code class="descname">language_code</code><a class="headerlink" href="#google.cloud.vision_v1.types.LocalizedObjectAnnotation.language_code" title="Permalink to this definition">#</a></dt>
+<dd><p>The BCP-47 language code, such as “en-US” or “sr-Latn”. For
+more information, see <a class="reference external" href="http://www.unicode.org/reports/tr35/#Uni">http://www.unicode.org/reports/tr35/#Uni</a>
+code_locale_identifier.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.LocalizedObjectAnnotation.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.vision_v1.types.LocalizedObjectAnnotation.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Object name, expressed in its <code class="docutils literal notranslate"><span class="pre">language_code</span></code> language.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.LocalizedObjectAnnotation.score">
+<code class="descname">score</code><a class="headerlink" href="#google.cloud.vision_v1.types.LocalizedObjectAnnotation.score" title="Permalink to this definition">#</a></dt>
+<dd><p>Score of the result. Range [0, 1].</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.LocalizedObjectAnnotation.bounding_poly">
+<code class="descname">bounding_poly</code><a class="headerlink" href="#google.cloud.vision_v1.types.LocalizedObjectAnnotation.bounding_poly" title="Permalink to this definition">#</a></dt>
+<dd><p>Image region to which this object belongs. This must be
+populated.</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.vision_v1.types.LocationInfo">
