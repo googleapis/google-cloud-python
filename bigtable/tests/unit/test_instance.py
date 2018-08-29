@@ -912,7 +912,7 @@ class TestInstance(unittest.TestCase):
 
         version = 1
         etag = b'etag_v1'
-        bindings = [{'role': 'roles/bigtable.admin',
+        bindings = [{'role': BIGTABLE_ADMIN_ROLE,
                      'members': ['serviceAccount:service_acc1@test.com',
                                  'user:user1@test.com']}]
 
@@ -958,7 +958,7 @@ class TestInstance(unittest.TestCase):
 
         version = 1
         etag = b'etag_v1'
-        bindings = [{'role': 'roles/bigtable.admin',
+        bindings = [{'role': BIGTABLE_ADMIN_ROLE,
                      'members': ['serviceAccount:service_acc1@test.com',
                                  'user:user1@test.com']}]
 

@@ -497,8 +497,8 @@ class Instance(object):
             policy_latest = instance.get_iam_policy()
             print (policy_latest.bigtable_viewers)
 
-        :rtype: :class:`policy.Policy`
-        :returns: A :class:`policy.Policy` instance.
+        :rtype: :class:`google.cloud.bigtable.policy.Policy`
+        :returns: The current IAM policy of this instance
         """
         instance_admin_client = self._client._instance_admin_client
         resp = instance_admin_client.get_iam_policy(resource=self.name)
@@ -533,15 +533,15 @@ class Instance(object):
                 Policy.user("test_iam@test.com"),
                 Policy.service_account("sv_account@gmail.com")]
 
-            instance.set_iam_policy(policy)
-            policy_latest = instance.get_iam_policy()
+            policy_latest = instance.set_iam_policy()
             print (policy_latest.bigtable_admins)
 
-        :type policy: :class:`policy.Policy`
-        :param policy: A :class:`policy.Policy` instance.
+        :type policy: :class:`google.cloud.bigtable.policy.Policy`
+        :param policy: A new IAM policy to replace the current IAM policy
+                       of this instance
 
-        :rtype: :class:`policy.Policy`
-        :returns: A :class:`policy.Policy` instance.
+        :rtype: :class:`google.cloud.bigtable.policy.Policy`
+        :returns: The current IAM policy of this instance.
         """
         instance_admin_client = self._client._instance_admin_client
         resp = instance_admin_client.set_iam_policy(
