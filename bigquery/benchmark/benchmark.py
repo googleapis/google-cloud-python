@@ -42,5 +42,5 @@ for query in queries:
             raise Exception('found {0} columsn, expected {1}'.format(len(row), num_cols))
         num_rows += 1
     total_time = datetime.now() - start_time
-    print "query {0}: {1} rows, {2} cols, first byte {3} sec, total {4} sec"\
-        .format(query, num_rows, num_cols, first_byte_time.total_seconds(), total_time.total_seconds())
+    print("query {0}: {1} rows, {2} cols, first byte {3} sec, total {4} sec"
+        .format(query, num_rows, num_cols, first_byte_time.total_seconds(), total_time.total_seconds()))
