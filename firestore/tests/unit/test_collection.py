@@ -415,7 +415,8 @@ class TestCollectionReference(unittest.TestCase):
         self.assertIs(get_response, query_instance.get.return_value)
         query_instance.get.assert_called_once_with(transaction=transaction)
 
-    @mock.patch('google.cloud.firestore_v1beta1.collection.Watch',autospec=True)
+    @mock.patch('google.cloud.firestore_v1beta1.collection.Watch',
+                autospec=True)
     def test_on_snapshot(self, watch):
         collection = self._make_one('collection')
         collection.on_snapshot(None)
