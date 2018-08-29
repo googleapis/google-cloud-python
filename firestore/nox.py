@@ -35,8 +35,9 @@ def default(session):
     Python corresponding to the ``nox`` binary the ``PATH`` can
     run the tests.
     """
-    # Install all test dependencies, then install this package in-place.
-    session.install('mock', 'pytest', 'pytest-cov', *LOCAL_DEPS)
+    # Install all test dependencies, then install local packages in-place.
+    session.install('mock', 'pytest', 'pytest-cov')
+    session.install('-e', *LOCAL_DEPS)
     session.install('-e', '.')
 
     # Run py.test against the unit tests.
@@ -86,11 +87,10 @@ def system(session, py):
     # Use pre-release gRPC for system tests.
     session.install('--pre', 'grpcio')
 
-    # Install all test dependencies, then install this package into the
-    # virtualenv's dist-packages.
-    session.install('mock', 'pytest', *LOCAL_DEPS)
-    session.install(os.path.join('..', 'test_utils'))
-    session.install('.')
+    # Install all test dependencies, then install local packages in-place.
+    session.install('mock', 'pytest')
+    session.install('-e', os.path.join('..', 'test_utils'), *LOCAL_DEPS)
+    session.install('-e', '.')
 
     # Run py.test against the system tests.
     session.run(
