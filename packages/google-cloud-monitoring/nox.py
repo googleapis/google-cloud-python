@@ -37,7 +37,7 @@ def unit(session, py):
 
     # Install all test dependencies, then install this package in-place.
     session.install('pytest', 'mock')
-    session.install('-e', '.')
+    session.install('-e', '.[pandas]')
 
     # Run py.test against the unit tests.
     session.run('py.test', '--quiet', os.path.join('tests', 'unit'))
