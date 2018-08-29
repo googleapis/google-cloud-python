@@ -33,8 +33,9 @@ def default(session):
     Python corresponding to the ``nox`` binary the ``PATH`` can
     run the tests.
     """
-    # Install all test dependencies, then install this package in-place.
-    session.install('mock', 'pytest', 'pytest-cov', *LOCAL_DEPS)
+    # Install all test dependencies, then install local packages in-place.
+    session.install('mock', 'pytest', 'pytest-cov')
+    session.install('-e', *LOCAL_DEPS)
     session.install('-e', '.')
 
     # Run py.test against the unit tests.
