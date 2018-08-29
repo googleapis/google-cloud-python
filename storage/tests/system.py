@@ -1080,7 +1080,7 @@ class TestKMSIntegration(TestStorageFiles):
             policy = {
                 "bindings": [
                     {
-                        "role": "roles/owner",
+                        "role": "roles/cloudkms.cryptoKeyEncrypterDecrypter",
                         "members": [
                             "serviceAccount:" + service_account,
                         ]
