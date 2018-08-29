@@ -1105,7 +1105,7 @@ class TestKMSIntegration(TestStorageFiles):
                 client.get_crypto_key(key_path)
             except exceptions.NotFound:
                 key = {'purpose': purpose}
-                client.create_crypto_key(keyring_location_path, key_name, key)
+                client.create_crypto_key(keyring_path, key_name, key)
 
     def test_blob_w_explicit_kms_key_name(self):
         BLOB_NAME = 'explicit-kms-key-name'
