@@ -107,6 +107,9 @@ class WatchDocTree(object):
     def __len__(self):
         return len(self._dict)
 
+    def __contains__(self, k):
+        return k in self._dict
+
 
 class ChangeType(Enum):
     ADDED = 0
