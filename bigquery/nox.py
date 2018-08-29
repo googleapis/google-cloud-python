@@ -37,7 +37,7 @@ def default(session):
     # Install all test dependencies, then install this package in-place.
     session.install('mock', 'pytest', 'pytest-cov', *LOCAL_DEPS)
 
-    # Pyarror does not support Python 3.7
+    # Pyarrow does not support Python 3.7
     if session.interpreter == 'python3.7':
         dev_install = '.[pandas]'
     else:
