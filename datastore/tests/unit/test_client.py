@@ -164,7 +164,7 @@ class TestClient(unittest.TestCase):
         self.assertIsNone(client.namespace)
         self.assertIs(client._credentials, creds)
         self.assertIsNone(client._http_internal)
-        self.assertEqual(client._base_url, _DATASTORE_BASE_URL)
+        self.assertEqual(client.base_url, _DATASTORE_BASE_URL)
 
         self.assertIsNone(client.current_batch)
         self.assertIsNone(client.current_transaction)
@@ -189,7 +189,7 @@ class TestClient(unittest.TestCase):
         self.assertIs(client._http_internal, http)
         self.assertIsNone(client.current_batch)
         self.assertEqual(list(client._batch_stack), [])
-        self.assertEqual(client._base_url, _DATASTORE_BASE_URL)
+        self.assertEqual(client.base_url, _DATASTORE_BASE_URL)
 
     def test_constructor_use_grpc_default(self):
         import google.cloud.datastore.client as MUT
@@ -230,7 +230,7 @@ class TestClient(unittest.TestCase):
         with mock.patch('os.environ', new=fake_environ):
             client = self._make_one(
                 project=project, credentials=creds, _http=http)
-            self.assertEqual(client._base_url, 'http://' + host)
+            self.assertEqual(client.base_url, 'http://' + host)
 
     def test__datastore_api_property_gapic(self):
         client = self._make_one(
@@ -252,6 +252,17 @@ class TestClient(unittest.TestCase):
             self.assertIs(
                 client._datastore_api, mock.sentinel.ds_api)
             self.assertEqual(make_api.call_count, 1)
+
+    def test_base_url_property(self):
+        alternate_url = 'https://alias.example.com/'
+        project = 'PROJECT'
+        creds = _make_credentials()
+        http = object()
+
+        client = self._make_one(
+            project=project, credentials=creds, _http=http)
+        client.base_url = alternate_url
+        self.assertEqual(client.base_url, alternate_url)
 
     def test__datastore_api_property_http(self):
         from google.cloud.datastore._http import HTTPDatastoreAPI
