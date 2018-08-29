@@ -37,11 +37,12 @@ def default(session):
     # Install all test dependencies, then install this package in-place.
     session.install('mock', 'pytest', 'pytest-cov', *LOCAL_DEPS)
 
-    # Pandas does not support Python 3.7
+    # Pyarrow does not support Python 3.7
     if session.interpreter == 'python3.7':
-        session.install('-e', '.')
+        dev_install = '.[pandas]'
     else:
-        session.install('-e', '.[pandas, pyarrow]')
+        dev_install = '.[pandas, pyarrow]'
+    session.install('-e', dev_install)
 
     # IPython does not support Python 2 after version 5.x
     if session.interpreter == 'python2.7':

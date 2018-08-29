@@ -222,6 +222,16 @@ class Client(ClientWithProject):
         return _determine_default_project(project)
 
     @property
+    def base_url(self):
+        """Getter for API base URL."""
+        return self._base_url
+
+    @base_url.setter
+    def base_url(self, value):
+        """Setter for API base URL."""
+        self._base_url = value
+
+    @property
     def _datastore_api(self):
         """Getter for a wrapped API object."""
         if self._datastore_api_internal is None:
