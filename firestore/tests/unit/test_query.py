@@ -865,7 +865,7 @@ class TestQuery(unittest.TestCase):
         query = self._make_one(mock.sentinel.parent)
         query.on_snapshot(None)
         watch.for_query.assert_called_once()
-        
+
 
 class Test__enum_from_op_string(unittest.TestCase):
 

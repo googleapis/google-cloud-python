@@ -116,7 +116,7 @@ class TestWatch(unittest.TestCase):
             snapshot_callback=None,
             snapshot_class=None,
             reference_class=None
-            ): # pragma: NO COVER
+            ):  # pragma: NO COVER
         from google.cloud.firestore_v1beta1.watch import Watch
         if document_reference is None:
             document_reference = DummyDocumentReference()
@@ -482,8 +482,10 @@ class TestWatch(unittest.TestCase):
 
     def test_push_callback_called_no_changes(self):
         import pytz
+
         class DummyReadTime(object):
             seconds = 1534858278
+
         inst = self._makeOne()
         inst.push(DummyReadTime, 'token')
         self.assertEqual(
@@ -491,7 +493,8 @@ class TestWatch(unittest.TestCase):
             (
                 [],
                 [],
-                datetime.datetime.fromtimestamp(DummyReadTime.seconds, pytz.utc)
+                datetime.datetime.fromtimestamp(
+                    DummyReadTime.seconds, pytz.utc)
             ),
             )
         self.assertTrue(inst.has_pushed)
@@ -724,6 +727,7 @@ class DummyDocumentReference(object):
 
     _document_path = '/'
 
+
 class DummyQuery(object):  # pragma: NO COVER
     def __init__(self, **kw):
         if 'client' not in kw:
@@ -843,6 +847,8 @@ class DummyTarget(object):
 
 
 class DummyPb2(object):
+
     Target = DummyTarget()
+
     def ListenRequest(self, **kw):
         pass
