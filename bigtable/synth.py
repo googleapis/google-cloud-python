@@ -37,3 +37,9 @@ library = gapic.py_library(
     artman_output_name='bigtable-admin-v2')
 
 s.move(library / 'google/cloud/bigtable_admin_v2')
+
+s.replace(
+    ['google/cloud/bigtable_admin_v2/gapic/bigtable_instance_admin_client.py',
+     'google/cloud/bigtable_admin_v2/gapic/bigtable_table_admin_client.py'],
+    "'google-cloud-bigtable-admin'",
+    "'google-cloud-bigtable'")
