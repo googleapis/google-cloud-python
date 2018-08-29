@@ -1061,54 +1061,51 @@ class TestKMSIntegration(TestStorageFiles):
     def setUp(self):
         super(TestKMSIntegration, self).setUp()
         client = kms.KeyManagementServiceClient()
+        project = Config.CLIENT.project
+        location = self.bucket.location.lower()
+        keyring_name = self.KEYRING_NAME
+        purpose = kms.enums.CryptoKey.CryptoKeyPurpose.ENCRYPT_DECRYPT
 
         # If the keyring doesn't exist create it.
-        name = client.key_ring_path(
-            Config.CLIENT.project,
-            self.bucket.location.lower(),
-            self.KEYRING_NAME)
+        keyring_path = client.key_ring_path(project, location, keyring_name)
 
         try:
-            client.get_key_ring(name)
+            client.get_key_ring(keyring_path)
         except exceptions.NotFound:
-            parent = client.location_path(
-                Config.CLIENT.project, self.bucket.location.lower())
-            client.create_key_ring(parent, self.KEYRING_NAME, {})
+            parent = client.location_path(project, location)
+            client.create_key_ring(parent, keyring_name, {})
 
-        # Ensure this service account is marked as an owner to the test keyring
-        keyring_location_path = client.key_ring_path(
-            Config.CLIENT.project,
-            self.bucket.location.lower(),
-            self.KEYRING_NAME)
-        service_account = Config.CLIENT.get_service_account_email()
-        policy = {
-            "bindings": [
-                {
-                    "role": "roles/owner",
-                    "members": [
-                        "serviceAccount:" + service_account,
-                    ]
-                }
-            ]
-        }
-
-        client.set_iam_policy(keyring_location_path, policy)
+            # Mark this service account as an owner of the new keyring
+            service_account = Config.CLIENT.get_service_account_email()
+            policy = {
+                "bindings": [
+                    {
+                        "role": "roles/cloudkms.cryptoKeyEncrypterDecrypter",
+                        "members": [
+                            "serviceAccount:" + service_account,
+                        ]
+                    }
+                ]
+            }
+            client.set_iam_policy(keyring_path, policy)
 
         # Populate the keyring with the keys we use in the tests
-        for keyname in ['gcs-test', 'gcs-test-alternate',
-                        'explicit-kms-key-name', 'default-kms-key-name',
-                        'override-default-kms-key-name',
-                        'alt-default-kms-key-name']:
-            key_path = client.crypto_key_path(Config.CLIENT.project,
-                                              self.bucket.location.lower(),
-                                              self.KEYRING_NAME,
-                                              keyname)
+        key_names = [
+            'gcs-test',
+            'gcs-test-alternate',
+            'explicit-kms-key-name',
+            'default-kms-key-name',
+            'override-default-kms-key-name',
+            'alt-default-kms-key-name',
+        ]
+        for key_name in key_names:
+            key_path = client.crypto_key_path(
+                project, location, keyring_name, key_name)
             try:
                 client.get_crypto_key(key_path)
             except exceptions.NotFound:
-                purpose = kms.enums.CryptoKey.CryptoKeyPurpose.ENCRYPT_DECRYPT
                 key = {'purpose': purpose}
-                client.create_crypto_key(keyring_location_path, keyname, key)
+                client.create_crypto_key(keyring_path, key_name, key)
 
     def test_blob_w_explicit_kms_key_name(self):
         BLOB_NAME = 'explicit-kms-key-name'
