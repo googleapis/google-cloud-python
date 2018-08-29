@@ -23,18 +23,6 @@ With this API, you can do the following:
     Don't forget to look at the :ref:`Authentication` section below.
     It's slightly different from the rest of this library.
 
-.. warning::
-
-    Alpha
-
-    The `projects.create() API method`_ is in the Alpha stage. It might be changed in
-    backward-incompatible ways and is not recommended for production use. It is
-    not subject to any SLA or deprecation policy. Access to this feature is
-    currently invite-only. For an invitation, contact our sales team at
-    https://cloud.google.com/contact.
-
-.. _projects.create() API method: https://cloud.google.com/resource-manager/docs/creating-project
-
 Installation
 ------------
 
