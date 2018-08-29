@@ -14,7 +14,7 @@ _sym_db = _symbol_database.Default()
 
 
 from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
-from google.cloud.bigtable_admin_v2.proto import table_pb2 as google_dot_cloud_dot_bigtable_dot_admin__v2_dot_proto_dot_table__pb2
+from google.cloud.bigtable.admin_v2.proto import table_pb2 as google_dot_cloud_dot_bigtable_dot_admin__v2_dot_proto_dot_table__pb2
 from google.longrunning import operations_pb2 as google_dot_longrunning_dot_operations__pb2
 from google.protobuf import duration_pb2 as google_dot_protobuf_dot_duration__pb2
 from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
@@ -987,14 +987,14 @@ CreateTableFromSnapshotRequest = _reflection.GeneratedProtocolMessageType('Creat
   DESCRIPTOR = _CREATETABLEFROMSNAPSHOTREQUEST,
   __module__ = 'google.cloud.bigtable.admin_v2.proto.bigtable_table_admin_pb2'
   ,
-  __doc__ = """This is a private alpha release of Cloud Bigtable snapshots. This
+  __doc__ = """Request message for
+  [google.bigtable.admin.v2.BigtableTableAdmin.CreateTableFromSnapshot][google.bigtable.admin.v2.BigtableTableAdmin.CreateTableFromSnapshot]
+  
+  Note: This is a private alpha release of Cloud Bigtable snapshots. This
   feature is not currently available to most Cloud Bigtable customers.
   This feature might be changed in backward-incompatible ways and is not
   recommended for production use. It is not subject to any SLA or
   deprecation policy.
-  
-  Request message for
-  [google.bigtable.admin.v2.BigtableTableAdmin.CreateTableFromSnapshot][google.bigtable.admin.v2.BigtableTableAdmin.CreateTableFromSnapshot]
   
   
   Attributes:
@@ -1178,13 +1178,7 @@ GenerateConsistencyTokenRequest = _reflection.GeneratedProtocolMessageType('Gene
   DESCRIPTOR = _GENERATECONSISTENCYTOKENREQUEST,
   __module__ = 'google.cloud.bigtable.admin_v2.proto.bigtable_table_admin_pb2'
   ,
-  __doc__ = """This is a private alpha release of Cloud Bigtable replication. This
-  feature is not currently available to most Cloud Bigtable customers.
-  This feature might be changed in backward-incompatible ways and is not
-  recommended for production use. It is not subject to any SLA or
-  deprecation policy.
-  
-  Request message for
+  __doc__ = """Request message for
   [google.bigtable.admin.v2.BigtableTableAdmin.GenerateConsistencyToken][google.bigtable.admin.v2.BigtableTableAdmin.GenerateConsistencyToken]
   
   
@@ -1202,13 +1196,7 @@ GenerateConsistencyTokenResponse = _reflection.GeneratedProtocolMessageType('Gen
   DESCRIPTOR = _GENERATECONSISTENCYTOKENRESPONSE,
   __module__ = 'google.cloud.bigtable.admin_v2.proto.bigtable_table_admin_pb2'
   ,
-  __doc__ = """This is a private alpha release of Cloud Bigtable replication. This
-  feature is not currently available to most Cloud Bigtable customers.
-  This feature might be changed in backward-incompatible ways and is not
-  recommended for production use. It is not subject to any SLA or
-  deprecation policy.
-  
-  Response message for
+  __doc__ = """Response message for
   [google.bigtable.admin.v2.BigtableTableAdmin.GenerateConsistencyToken][google.bigtable.admin.v2.BigtableTableAdmin.GenerateConsistencyToken]
   
   
@@ -1224,13 +1212,7 @@ CheckConsistencyRequest = _reflection.GeneratedProtocolMessageType('CheckConsist
   DESCRIPTOR = _CHECKCONSISTENCYREQUEST,
   __module__ = 'google.cloud.bigtable.admin_v2.proto.bigtable_table_admin_pb2'
   ,
-  __doc__ = """This is a private alpha release of Cloud Bigtable replication. This
-  feature is not currently available to most Cloud Bigtable customers.
-  This feature might be changed in backward-incompatible ways and is not
-  recommended for production use. It is not subject to any SLA or
-  deprecation policy.
-  
-  Request message for
+  __doc__ = """Request message for
   [google.bigtable.admin.v2.BigtableTableAdmin.CheckConsistency][google.bigtable.admin.v2.BigtableTableAdmin.CheckConsistency]
   
   
@@ -1251,13 +1233,7 @@ CheckConsistencyResponse = _reflection.GeneratedProtocolMessageType('CheckConsis
   DESCRIPTOR = _CHECKCONSISTENCYRESPONSE,
   __module__ = 'google.cloud.bigtable.admin_v2.proto.bigtable_table_admin_pb2'
   ,
-  __doc__ = """This is a private alpha release of Cloud Bigtable replication. This
-  feature is not currently available to most Cloud Bigtable customers.
-  This feature might be changed in backward-incompatible ways and is not
-  recommended for production use. It is not subject to any SLA or
-  deprecation policy.
-  
-  Response message for
+  __doc__ = """Response message for
   [google.bigtable.admin.v2.BigtableTableAdmin.CheckConsistency][google.bigtable.admin.v2.BigtableTableAdmin.CheckConsistency]
   
   
@@ -1275,14 +1251,14 @@ SnapshotTableRequest = _reflection.GeneratedProtocolMessageType('SnapshotTableRe
   DESCRIPTOR = _SNAPSHOTTABLEREQUEST,
   __module__ = 'google.cloud.bigtable.admin_v2.proto.bigtable_table_admin_pb2'
   ,
-  __doc__ = """This is a private alpha release of Cloud Bigtable snapshots. This
+  __doc__ = """Request message for
+  [google.bigtable.admin.v2.BigtableTableAdmin.SnapshotTable][google.bigtable.admin.v2.BigtableTableAdmin.SnapshotTable]
+  
+  Note: This is a private alpha release of Cloud Bigtable snapshots. This
   feature is not currently available to most Cloud Bigtable customers.
   This feature might be changed in backward-incompatible ways and is not
   recommended for production use. It is not subject to any SLA or
   deprecation policy.
-  
-  Request message for
-  [google.bigtable.admin.v2.BigtableTableAdmin.SnapshotTable][google.bigtable.admin.v2.BigtableTableAdmin.SnapshotTable]
   
   
   Attributes:
@@ -1316,14 +1292,14 @@ GetSnapshotRequest = _reflection.GeneratedProtocolMessageType('GetSnapshotReques
   DESCRIPTOR = _GETSNAPSHOTREQUEST,
   __module__ = 'google.cloud.bigtable.admin_v2.proto.bigtable_table_admin_pb2'
   ,
-  __doc__ = """This is a private alpha release of Cloud Bigtable snapshots. This
+  __doc__ = """Request message for
+  [google.bigtable.admin.v2.BigtableTableAdmin.GetSnapshot][google.bigtable.admin.v2.BigtableTableAdmin.GetSnapshot]
+  
+  Note: This is a private alpha release of Cloud Bigtable snapshots. This
   feature is not currently available to most Cloud Bigtable customers.
   This feature might be changed in backward-incompatible ways and is not
   recommended for production use. It is not subject to any SLA or
   deprecation policy.
-  
-  Request message for
-  [google.bigtable.admin.v2.BigtableTableAdmin.GetSnapshot][google.bigtable.admin.v2.BigtableTableAdmin.GetSnapshot]
   
   
   Attributes:
@@ -1340,14 +1316,14 @@ ListSnapshotsRequest = _reflection.GeneratedProtocolMessageType('ListSnapshotsRe
   DESCRIPTOR = _LISTSNAPSHOTSREQUEST,
   __module__ = 'google.cloud.bigtable.admin_v2.proto.bigtable_table_admin_pb2'
   ,
-  __doc__ = """This is a private alpha release of Cloud Bigtable snapshots. This
+  __doc__ = """Request message for
+  [google.bigtable.admin.v2.BigtableTableAdmin.ListSnapshots][google.bigtable.admin.v2.BigtableTableAdmin.ListSnapshots]
+  
+  Note: This is a private alpha release of Cloud Bigtable snapshots. This
   feature is not currently available to most Cloud Bigtable customers.
   This feature might be changed in backward-incompatible ways and is not
   recommended for production use. It is not subject to any SLA or
   deprecation policy.
-  
-  Request message for
-  [google.bigtable.admin.v2.BigtableTableAdmin.ListSnapshots][google.bigtable.admin.v2.BigtableTableAdmin.ListSnapshots]
   
   
   Attributes:
@@ -1370,14 +1346,14 @@ ListSnapshotsResponse = _reflection.GeneratedProtocolMessageType('ListSnapshotsR
   DESCRIPTOR = _LISTSNAPSHOTSRESPONSE,
   __module__ = 'google.cloud.bigtable.admin_v2.proto.bigtable_table_admin_pb2'
   ,
-  __doc__ = """This is a private alpha release of Cloud Bigtable snapshots. This
+  __doc__ = """Response message for
+  [google.bigtable.admin.v2.BigtableTableAdmin.ListSnapshots][google.bigtable.admin.v2.BigtableTableAdmin.ListSnapshots]
+  
+  Note: This is a private alpha release of Cloud Bigtable snapshots. This
   feature is not currently available to most Cloud Bigtable customers.
   This feature might be changed in backward-incompatible ways and is not
   recommended for production use. It is not subject to any SLA or
   deprecation policy.
-  
-  Response message for
-  [google.bigtable.admin.v2.BigtableTableAdmin.ListSnapshots][google.bigtable.admin.v2.BigtableTableAdmin.ListSnapshots]
   
   
   Attributes:
@@ -1396,14 +1372,14 @@ DeleteSnapshotRequest = _reflection.GeneratedProtocolMessageType('DeleteSnapshot
   DESCRIPTOR = _DELETESNAPSHOTREQUEST,
   __module__ = 'google.cloud.bigtable.admin_v2.proto.bigtable_table_admin_pb2'
   ,
-  __doc__ = """This is a private alpha release of Cloud Bigtable snapshots. This
+  __doc__ = """Request message for
+  [google.bigtable.admin.v2.BigtableTableAdmin.DeleteSnapshot][google.bigtable.admin.v2.BigtableTableAdmin.DeleteSnapshot]
+  
+  Note: This is a private alpha release of Cloud Bigtable snapshots. This
   feature is not currently available to most Cloud Bigtable customers.
   This feature might be changed in backward-incompatible ways and is not
   recommended for production use. It is not subject to any SLA or
   deprecation policy.
-  
-  Request message for
-  [google.bigtable.admin.v2.BigtableTableAdmin.DeleteSnapshot][google.bigtable.admin.v2.BigtableTableAdmin.DeleteSnapshot]
   
   
   Attributes:
@@ -1420,13 +1396,13 @@ SnapshotTableMetadata = _reflection.GeneratedProtocolMessageType('SnapshotTableM
   DESCRIPTOR = _SNAPSHOTTABLEMETADATA,
   __module__ = 'google.cloud.bigtable.admin_v2.proto.bigtable_table_admin_pb2'
   ,
-  __doc__ = """This is a private alpha release of Cloud Bigtable snapshots. This
+  __doc__ = """The metadata for the Operation returned by SnapshotTable.
+  
+  Note: This is a private alpha release of Cloud Bigtable snapshots. This
   feature is not currently available to most Cloud Bigtable customers.
   This feature might be changed in backward-incompatible ways and is not
   recommended for production use. It is not subject to any SLA or
   deprecation policy.
-  
-  The metadata for the Operation returned by SnapshotTable.
   
   
   Attributes:
@@ -1447,13 +1423,13 @@ CreateTableFromSnapshotMetadata = _reflection.GeneratedProtocolMessageType('Crea
   DESCRIPTOR = _CREATETABLEFROMSNAPSHOTMETADATA,
   __module__ = 'google.cloud.bigtable.admin_v2.proto.bigtable_table_admin_pb2'
   ,
-  __doc__ = """This is a private alpha release of Cloud Bigtable snapshots. This
+  __doc__ = """The metadata for the Operation returned by CreateTableFromSnapshot.
+  
+  Note: This is a private alpha release of Cloud Bigtable snapshots. This
   feature is not currently available to most Cloud Bigtable customers.
   This feature might be changed in backward-incompatible ways and is not
   recommended for production use. It is not subject to any SLA or
   deprecation policy.
-  
-  The metadata for the Operation returned by CreateTableFromSnapshot.
   
   
   Attributes:
