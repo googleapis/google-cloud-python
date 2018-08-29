@@ -9,9 +9,6 @@ class TestWatchDocTree(unittest.TestCase):
         from google.cloud.firestore_v1beta1.watch import WatchDocTree
         return WatchDocTree()
 
-    def setUp(self):
-        self.snapshotted = None
-
     def test_insert_and_keys(self):
         inst = self._makeOne()
         inst = inst.insert('b', 1)
@@ -43,6 +40,12 @@ class TestWatchDocTree(unittest.TestCase):
         inst = inst.insert('b', 1)
         inst = inst.insert('a', 2)
         self.assertEqual(sorted(list(inst)), ['a', 'b'])
+
+    def test___contains__(self):
+        inst = self._makeOne()
+        inst = inst.insert('b', 1)
+        self.assertTrue('b' in inst)
+        self.assertFalse('a' in inst)
 
 
 class TestDocumentChange(unittest.TestCase):
@@ -146,6 +149,9 @@ class TestWatch(unittest.TestCase):
             ResumableBidiRpc=DummyRpc,
             )
         return inst
+
+    def setUp(self):
+        self.snapshotted = None
 
     def _document_watch_comparator(self, doc1, doc2):  # pragma: NO COVER
         return 0
@@ -372,6 +378,40 @@ class TestWatch(unittest.TestCase):
         inst.on_snapshot(proto)
         self.assertEqual(inst.change_map['fred'].data, None)
 
+    def test_on_snapshot_document_change_changed_docname_db_prefix(self):
+        # XXX This test asserts the current behavior, but I have no level
+        # of confidence that the change map should contain the
+        # db-prefixed document name instead of the bare document name.
+        from google.cloud.firestore_v1beta1.watch import WATCH_TARGET_ID
+        inst = self._makeOne()
+
+        def message_to_dict(document):
+            return {'fields': None}
+
+        inst.MessageToDict = message_to_dict
+        proto = DummyProto()
+        proto.target_change = ''
+        proto.document_change.target_ids = [WATCH_TARGET_ID]
+
+        class DummyDocument:
+            name = 'abc://foo/fred'
+            create_time = None
+            update_time = None
+
+        proto.document_change.document = DummyDocument()
+        inst._firestore._database_string = 'abc://foo/'
+        inst.on_snapshot(proto)
+        self.assertEqual(inst.change_map['abc://foo/fred'].data, None)
+
+    def test_on_snapshot_document_change_neither_changed_nor_removed(self):
+        inst = self._makeOne()
+        proto = DummyProto()
+        proto.target_change = ''
+        proto.document_change.target_ids = []
+
+        inst.on_snapshot(proto)
+        self.assertTrue(not inst.change_map)
+
     def test_on_snapshot_document_removed(self):
         from google.cloud.firestore_v1beta1.watch import ChangeType
         inst = self._makeOne()
@@ -408,6 +448,23 @@ class TestWatch(unittest.TestCase):
         inst.on_snapshot(proto)
         self.assertTrue(inst._docs_reset)
 
+    def test_on_snapshot_filter_update_no_size_change(self):
+        inst = self._makeOne()
+        proto = DummyProto()
+        proto.target_change = ''
+        proto.document_change = ''
+        proto.document_remove = None
+        proto.document_delete = None
+
+        class DummyFilter(object):
+            count = 0
+
+        proto.filter = DummyFilter()
+        inst._docs_reset = False
+
+        inst.on_snapshot(proto)
+        self.assertFalse(inst._docs_reset)
+
     def test_on_snapshot_unknown_listen_type(self):
         inst = self._makeOne()
         proto = DummyProto()
@@ -423,7 +480,7 @@ class TestWatch(unittest.TestCase):
             str(exc.exception)
         )
 
-    def test_push_no_changes(self):
+    def test_push_callback_called_no_changes(self):
         import pytz
         class DummyReadTime(object):
             seconds = 1534858278
@@ -437,6 +494,18 @@ class TestWatch(unittest.TestCase):
                 datetime.datetime.fromtimestamp(DummyReadTime.seconds, pytz.utc)
             ),
             )
+        self.assertTrue(inst.has_pushed)
+        self.assertEqual(inst.resume_token, 'token')
+
+    def test_push_already_pushed(self):
+        class DummyReadTime(object):
+            seconds = 1534858278
+        inst = self._makeOne()
+        inst.has_pushed = True
+        inst.push(DummyReadTime, 'token')
+        self.assertEqual(
+            self.snapshotted,
+            None)
         self.assertTrue(inst.has_pushed)
         self.assertEqual(inst.resume_token, 'token')
 
@@ -471,6 +540,14 @@ class TestWatch(unittest.TestCase):
         results = inst._extract_changes(doc_map, changes, None)
         self.assertEqual(results, (['name'], [], []))
 
+    def test__extract_changes_doc_removed_docname_not_in_docmap(self):
+        from google.cloud.firestore_v1beta1.watch import ChangeType
+        inst = self._makeOne()
+        changes = {'name': ChangeType.REMOVED}
+        doc_map = {}
+        results = inst._extract_changes(doc_map, changes, None)
+        self.assertEqual(results, ([], [], []))
+
     def test__extract_changes_doc_updated(self):
         inst = self._makeOne()
 
@@ -485,6 +562,21 @@ class TestWatch(unittest.TestCase):
         self.assertEqual(results, ([], [], [snapshot]))
         self.assertEqual(snapshot.read_time, 1)
 
+    def test__extract_changes_doc_updated_read_time_is_None(self):
+        inst = self._makeOne()
+
+        class Dummy(object):
+            pass
+
+        doc = Dummy()
+        snapshot = Dummy()
+        snapshot.read_time = None
+        changes = {'name': snapshot}
+        doc_map = {'name': doc}
+        results = inst._extract_changes(doc_map, changes, None)
+        self.assertEqual(results, ([], [], [snapshot]))
+        self.assertEqual(snapshot.read_time, None)
+
     def test__extract_changes_doc_added(self):
         inst = self._makeOne()
 
@@ -497,6 +589,20 @@ class TestWatch(unittest.TestCase):
         results = inst._extract_changes(doc_map, changes, 1)
         self.assertEqual(results, ([], [snapshot], []))
         self.assertEqual(snapshot.read_time, 1)
+
+    def test__extract_changes_doc_added_read_time_is_None(self):
+        inst = self._makeOne()
+
+        class Dummy(object):
+            pass
+
+        snapshot = Dummy()
+        snapshot.read_time = None
+        changes = {'name': snapshot}
+        doc_map = {}
+        results = inst._extract_changes(doc_map, changes, None)
+        self.assertEqual(results, ([], [snapshot], []))
+        self.assertEqual(snapshot.read_time, None)
 
     def test__compute_snapshot_doctree_and_docmap_disagree_about_length(self):
         inst = self._makeOne()
@@ -631,7 +737,7 @@ class DummyQuery(object):  # pragma: NO COVER
 
 class DummyFirestore(object):
     _firestore_api = DummyFirestoreClient()
-    _database_string = ''
+    _database_string = 'abc://bar/'
 
     def document(self, *document_path):  # pragma: NO COVER
         if len(document_path) == 1:
