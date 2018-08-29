@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Changelog &#8212; google-cloud b176b888d5 documentation</title>
+    <title>Changelog &#8212; google-cloud 10e72aacb7 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -38,9 +38,84 @@
 <span id="changelog"></span><h1>Changelog<a class="headerlink" href="#changelog" title="Permalink to this headline">#</a></h1>
 <p><a class="reference external" href="https://pypi.org/project/google-cloud-bigtable/#history">PyPI History</a></p>
 <div class="section" id="">
-<span id="id1"></span><h2>0.29.0<a class="headerlink" href="#" title="Permalink to this headline">#</a></h2>
+<span id="id1"></span><h2>0.30.0<a class="headerlink" href="#" title="Permalink to this headline">#</a></h2>
 <div class="section" id="new-features">
-<span id="new-features"></span><h3>New features<a class="headerlink" href="#new-features" title="Permalink to this headline">#</a></h3>
+<span id="new-features"></span><h3>New Features<a class="headerlink" href="#new-features" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li>Improve performance and capabilities of reads.  <code class="docutils literal notranslate"><span class="pre">read_rows</span></code> now returns a generator; has automatic retries; and can read an arbitrary set of keys and ranges<ul>
+<li>Consolidate read_rows and yield_rows (#5840)</li>
+<li>Implement row set for yield_rows  (#5506)</li>
+<li>Improve read rows validation performance (#5390)</li>
+<li>Add retry for yield_rows (#4882)</li>
+<li>Require TimestampRanges to be milliseconds granularity (#5002)</li>
+<li>Provide better access to cell values (#4908)</li>
+<li>Add data app profile id  (#5369)</li>
+</ul>
+</li>
+<li>Improve writes: Writes are usable in Beam<ul>
+<li>Create MutationBatcher for bigtable (#5651)</li>
+<li>Allow DirectRow to be created without a table (#5567)</li>
+<li>Add data app profile id  (#5369)</li>
+</ul>
+</li>
+<li>Improve table admin: Table creation now can also create families in a single RPC.  Add an <code class="docutils literal notranslate"><span class="pre">exist()</span></code> method.  Add <code class="docutils literal notranslate"><span class="pre">get_cluster_states</span></code> for information about replication<ul>
+<li>Add ‘Table.get_cluster_states’ method (#5790)</li>
+<li>Optimize ‘Table.exists’ performance (#5749)</li>
+<li>Add column creation in ‘Table.create()’. (#5576)</li>
+<li>Add ‘Table.exists’ method (#5545)</li>
+<li>Add split keys on create table - v2 (#5513)</li>
+<li>Avoid sharing table names across unrelated systests. (#5421)</li>
+<li>Add truncate table and drop by prefix on top of GAPIC integration (#5360)</li>
+</ul>
+</li>
+<li>Improve instance admin: Instance creation allows for the creation of multiple clusters.  Instance label management is now enabled.<ul>
+<li>Create app_profile_object (#5782)</li>
+<li>Add ‘Instance.exists’ method (#5802)</li>
+<li>Add ‘InstanceAdminClient.list_clusters’ method (#5715)</li>
+<li>Add ‘Instance._state’ property (#5736)</li>
+<li>Convert ‘instance.labels’ to return a dictionary (#5728)</li>
+<li>Reshape cluster.py, adding cluster() factory to instance.py (#5663)</li>
+<li>Convert ‘Instance.update’ to use ‘instance.partial_instance_update’ API (#5643)</li>
+<li>Refactor ‘InstanceAdminClient.update_app_profile’ to remove update_mask argument (#5684)</li>
+<li>Add the ability to create an instance with multiple clusters (#5622)</li>
+<li>Add ‘instance_type’, ‘labels’ to ‘Instance’ ctor (#5614)</li>
+<li>Add optional app profile to ‘Instance.table’ (#5605)</li>
+<li>Clean up Instance creation. (#5542)</li>
+<li>Make ‘InstanceAdminClient.list_instances’ return actual instance objects, not protos. (#5420)</li>
+<li>Add admin app profile methods on Instance (#5315)</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="internal-testing-changes">
+<span id="internal-testing-changes"></span><h3>Internal / Testing Changes<a class="headerlink" href="#internal-testing-changes" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li>Rename releases to changelog and include from CHANGELOG.md (#5191)</li>
+<li>Fix bad trove classifier</li>
+<li>Integrate new generated low-level client (#5178)</li>
+<li>Override gRPC max message lengths. (#5498)</li>
+<li>Use client properties rather than private attrs (#5398)</li>
+<li>Fix the broken Bigtable system test. (#5607)</li>
+<li>Fix Py3 breakage in new system test. (#5474)</li>
+<li>Modify system test for new GAPIC code (#5302)</li>
+<li>Add Test runs for Python 3.7 and remove 3.4 (#5295)</li>
+<li>Disable Bigtable system tests (#5381)</li>
+<li>Modify system tests to use prerelease versions of grpcio (#5304)</li>
+<li>Pass through ‘session.posargs’ when running Bigtable system tests. (#5418)</li>
+<li>Harden ‘test_list_instances’ against simultaneous test runs. (#5476)</li>
+<li>Shorten instance / cluster name to fix CI breakage. (#5641)</li>
+<li>Fix failing systest: ‘test_create_instance_w_two_clusters’. (#5836)</li>
+<li>Add labels {‘python-system’: ISO-timestamp} to systest instances (#5729)</li>
+<li>Shorten cluster ID in system test (#5719)</li>
+<li>Harden ‘test_list_instances’ further. (#5696)</li>
+<li>Improve testing of create instance (#5544)</li>
+</ul>
+</div>
+</div>
+<div class="section" id="">
+<span id="id2"></span><h2>0.29.0<a class="headerlink" href="#" title="Permalink to this headline">#</a></h2>
+<div class="section" id="new-features">
+<span id="id3"></span><h3>New features<a class="headerlink" href="#new-features" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li>Use <code class="docutils literal notranslate"><span class="pre">api_core.retry</span></code> for <code class="docutils literal notranslate"><span class="pre">mutate_row</span></code> (#4665, #4341)</li>
 <li>Added a row generator on a table. (#4679)</li>
@@ -79,9 +154,9 @@
 </div>
 </div>
 <div class="section" id="">
-<span id="id2"></span><h2>0.28.1<a class="headerlink" href="#" title="Permalink to this headline">#</a></h2>
+<span id="id4"></span><h2>0.28.1<a class="headerlink" href="#" title="Permalink to this headline">#</a></h2>
 <div class="section" id="implementation-changes">
-<span id="id3"></span><h3>Implementation Changes<a class="headerlink" href="#implementation-changes" title="Permalink to this headline">#</a></h3>
+<span id="id5"></span><h3>Implementation Changes<a class="headerlink" href="#implementation-changes" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li>Bugfix: Distinguish between an unset column qualifier and an empty string
 column qualifier while parsing a <code class="docutils literal notranslate"><span class="pre">ReadRows</span></code> response (#4252)</li>
@@ -98,9 +173,9 @@ in <code class="docutils literal notranslate"><span class="pre">Table.mutate_row
 </div>
 </div>
 <div class="section" id="">
-<span id="id4"></span><h2>0.28.0<a class="headerlink" href="#" title="Permalink to this headline">#</a></h2>
+<span id="id6"></span><h2>0.28.0<a class="headerlink" href="#" title="Permalink to this headline">#</a></h2>
 <div class="section" id="documentation">
-<span id="id5"></span><h3>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">#</a></h3>
+<span id="id7"></span><h3>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li>Fixed referenced types in <code class="docutils literal notranslate"><span class="pre">Table.row</span></code> docstring (#3934, h/t to
 &#64;MichaelTamm)</li>
@@ -109,7 +184,7 @@ project README (#4187, h/t to &#64;michaelawyu)</li>
 </ul>
 </div>
 <div class="section" id="dependencies">
-<span id="id6"></span><h3>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline">#</a></h3>
+<span id="id8"></span><h3>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li>Upgrading to <code class="docutils literal notranslate"><span class="pre">google-cloud-core</span> <span class="pre">&gt;=</span> <span class="pre">0.28.0</span></code> and adding dependency
 on <code class="docutils literal notranslate"><span class="pre">google-api-core</span></code> (#4221, #4280)</li>
@@ -229,7 +304,7 @@ on <code class="docutils literal notranslate"><span class="pre">google-api-core<
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.7</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.8</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.11</a>
       
       |
