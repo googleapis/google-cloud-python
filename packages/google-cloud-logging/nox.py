@@ -51,8 +51,9 @@ def default(session, django_dep=('django',)):
     else:
         deps += django_dep
 
-    deps += LOCAL_DEPS
     session.install(*deps)
+    for local_dep in LOCAL_DEPS:
+        session.install('-e', local_dep)
     session.install('-e', '.')
 
     # Run py.test against the unit tests.
@@ -114,10 +115,18 @@ def system(session, py):
 
     # Install all test dependencies, then install this package into the
     # virtualenv's dist-packages.
-    session.install('mock', 'pytest', *LOCAL_DEPS)
-    session.install('../test_utils/', '../bigquery/', '../pubsub/',
-                    '../storage/')
-    session.install('.')
+    session.install('mock', 'pytest')
+    for local_dep in LOCAL_DEPS:
+        session.install('-e', local_dep)
+    systest_deps = [
+        '../bigquery/',
+        '../pubsub/',
+        '../storage/',
+        '../test_utils/',
+    ]
+    for systest_dep in systest_deps:
+        session.install('-e', systest_dep)
+    session.install('-e', '.')
 
     # Run py.test against the system tests.
     session.run(
