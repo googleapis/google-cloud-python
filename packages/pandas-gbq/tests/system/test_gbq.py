@@ -13,27 +13,27 @@ from pandas.compat import range, u
 
 from pandas_gbq import gbq
 
-TABLE_ID = 'new_test'
+TABLE_ID = "new_test"
 
 
 def _get_dataset_prefix_random():
-    return ''.join(['pandas_gbq_', str(randint(1, 100000))])
+    return "".join(["pandas_gbq_", str(randint(1, 100000))])
 
 
 def test_imports():
     try:
         import pkg_resources  # noqa
     except ImportError:
-        raise ImportError('Could not import pkg_resources (setuptools).')
+        raise ImportError("Could not import pkg_resources (setuptools).")
 
     gbq._test_google_api_imports()
 
 
-@pytest.fixture(params=['env'])
+@pytest.fixture(params=["env"])
 def project(request, project_id):
-    if request.param == 'env':
+    if request.param == "env":
         return project_id
-    elif request.param == 'none':
+    elif request.param == "none":
         return None
 
 
@@ -47,28 +47,31 @@ def gbq_connector(project, credentials):
     return gbq.GbqConnector(project, private_key=credentials)
 
 
-@pytest.fixture(scope='module')
+@pytest.fixture(scope="module")
 def bigquery_client(project_id, private_key_path):
     from google.cloud import bigquery
+
     return bigquery.Client.from_service_account_json(
-        private_key_path, project=project_id)
+        private_key_path, project=project_id
+    )
 
 
-@pytest.fixture(scope='module')
+@pytest.fixture(scope="module")
 def tokyo_dataset(bigquery_client):
     from google.cloud import bigquery
-    dataset_id = 'tokyo_{}'.format(_get_dataset_prefix_random())
+
+    dataset_id = "tokyo_{}".format(_get_dataset_prefix_random())
     dataset_ref = bigquery_client.dataset(dataset_id)
     dataset = bigquery.Dataset(dataset_ref)
-    dataset.location = 'asia-northeast1'
+    dataset.location = "asia-northeast1"
     bigquery_client.create_dataset(dataset)
     yield dataset_id
     bigquery_client.delete_dataset(dataset_ref, delete_contents=True)
 
 
-@pytest.fixture(scope='module')
+@pytest.fixture(scope="module")
 def tokyo_table(bigquery_client, tokyo_dataset):
-    table_id = 'tokyo_table'
+    table_id = "tokyo_table"
     # Create a random table using DDL.
     # https://github.com/GoogleCloudPlatform/golang-samples/blob/2ab2c6b79a1ea3d71d8f91609b57a8fbde07ae5d/bigquery/snippets/snippet.go#L739
     bigquery_client.query(
@@ -77,8 +80,11 @@ def tokyo_table(bigquery_client, tokyo_dataset):
           2000 + CAST(18 * RAND() as INT64) as year,
           IF(RAND() > 0.5,"foo","bar") as token
         FROM UNNEST(GENERATE_ARRAY(0,5,1)) as r
-        """.format(tokyo_dataset, table_id),
-        location='asia-northeast1').result()
+        """.format(
+            tokyo_dataset, table_id
+        ),
+        location="asia-northeast1",
+    ).result()
     return table_id
 
 
@@ -95,337 +101,453 @@ def make_mixed_dataframe_v2(test_size):
     flts = np.random.randn(1, test_size)
     ints = np.random.randint(1, 10, size=(1, test_size))
     strs = np.random.randint(1, 10, size=(1, test_size)).astype(str)
-    times = [datetime.now(pytz.timezone('US/Arizona'))
-             for t in range(test_size)]
-    return DataFrame({'bools': bools[0],
-                      'flts': flts[0],
-                      'ints': ints[0],
-                      'strs': strs[0],
-                      'times': times[0]},
-                     index=range(test_size))
+    times = [
+        datetime.now(pytz.timezone("US/Arizona")) for t in range(test_size)
+    ]
+    return DataFrame(
+        {
+            "bools": bools[0],
+            "flts": flts[0],
+            "ints": ints[0],
+            "strs": strs[0],
+            "times": times[0],
+        },
+        index=range(test_size),
+    )
 
 
 class TestGBQConnectorIntegration(object):
-
     def test_should_be_able_to_make_a_connector(self, gbq_connector):
-        assert gbq_connector is not None, 'Could not create a GbqConnector'
+        assert gbq_connector is not None, "Could not create a GbqConnector"
 
     def test_should_be_able_to_get_a_bigquery_client(self, gbq_connector):
         bigquery_client = gbq_connector.get_client()
         assert bigquery_client is not None
 
     def test_should_be_able_to_get_schema_from_query(self, gbq_connector):
-        schema, pages = gbq_connector.run_query('SELECT 1')
+        schema, pages = gbq_connector.run_query("SELECT 1")
         assert schema is not None
 
     def test_should_be_able_to_get_results_from_query(self, gbq_connector):
-        schema, pages = gbq_connector.run_query('SELECT 1')
+        schema, pages = gbq_connector.run_query("SELECT 1")
         assert pages is not None
 
 
 def test_should_read(project, credentials):
     query = 'SELECT "PI" AS valid_string'
     df = gbq.read_gbq(
-        query, project_id=project, private_key=credentials, dialect='legacy')
-    tm.assert_frame_equal(df, DataFrame({'valid_string': ['PI']}))
+        query, project_id=project, private_key=credentials, dialect="legacy"
+    )
+    tm.assert_frame_equal(df, DataFrame({"valid_string": ["PI"]}))
 
 
 class TestReadGBQIntegration(object):
-
     @pytest.fixture(autouse=True)
     def setup(self, project, credentials):
         # - PER-TEST FIXTURES -
         # put here any instruction you want to be run *BEFORE* *EVERY* test is
         # executed.
-        self.gbq_connector = gbq.GbqConnector(
-            project, private_key=credentials)
+        self.gbq_connector = gbq.GbqConnector(project, private_key=credentials)
         self.credentials = credentials
 
     def test_should_properly_handle_empty_strings(self, project_id):
         query = 'SELECT "" AS empty_string'
-        df = gbq.read_gbq(query, project_id=project_id,
-                          private_key=self.credentials,
-                          dialect='legacy')
-        tm.assert_frame_equal(df, DataFrame({'empty_string': [""]}))
+        df = gbq.read_gbq(
+            query,
+            project_id=project_id,
+            private_key=self.credentials,
+            dialect="legacy",
+        )
+        tm.assert_frame_equal(df, DataFrame({"empty_string": [""]}))
 
     def test_should_properly_handle_null_strings(self, project_id):
-        query = 'SELECT STRING(NULL) AS null_string'
-        df = gbq.read_gbq(query, project_id=project_id,
-                          private_key=self.credentials,
-                          dialect='legacy')
-        tm.assert_frame_equal(df, DataFrame({'null_string': [None]}))
+        query = "SELECT STRING(NULL) AS null_string"
+        df = gbq.read_gbq(
+            query,
+            project_id=project_id,
+            private_key=self.credentials,
+            dialect="legacy",
+        )
+        tm.assert_frame_equal(df, DataFrame({"null_string": [None]}))
 
     def test_should_properly_handle_valid_integers(self, project_id):
-        query = 'SELECT INTEGER(3) AS valid_integer'
-        df = gbq.read_gbq(query, project_id=project_id,
-                          private_key=self.credentials,
-                          dialect='legacy')
-        tm.assert_frame_equal(df, DataFrame({'valid_integer': [3]}))
+        query = "SELECT INTEGER(3) AS valid_integer"
+        df = gbq.read_gbq(
+            query,
+            project_id=project_id,
+            private_key=self.credentials,
+            dialect="legacy",
+        )
+        tm.assert_frame_equal(df, DataFrame({"valid_integer": [3]}))
 
     def test_should_properly_handle_nullable_integers(self, project_id):
-        query = '''SELECT * FROM
+        query = """SELECT * FROM
                     (SELECT 1 AS nullable_integer),
-                    (SELECT NULL AS nullable_integer)'''
-        df = gbq.read_gbq(query, project_id=project_id,
-                          private_key=self.credentials,
-                          dialect='legacy')
+                    (SELECT NULL AS nullable_integer)"""
+        df = gbq.read_gbq(
+            query,
+            project_id=project_id,
+            private_key=self.credentials,
+            dialect="legacy",
+        )
         tm.assert_frame_equal(
-            df, DataFrame({'nullable_integer': [1, None]}).astype(object))
+            df, DataFrame({"nullable_integer": [1, None]}).astype(object)
+        )
 
     def test_should_properly_handle_valid_longs(self, project_id):
-        query = 'SELECT 1 << 62 AS valid_long'
-        df = gbq.read_gbq(query, project_id=project_id,
-                          private_key=self.credentials,
-                          dialect='legacy')
-        tm.assert_frame_equal(
-            df, DataFrame({'valid_long': [1 << 62]}))
+        query = "SELECT 1 << 62 AS valid_long"
+        df = gbq.read_gbq(
+            query,
+            project_id=project_id,
+            private_key=self.credentials,
+            dialect="legacy",
+        )
+        tm.assert_frame_equal(df, DataFrame({"valid_long": [1 << 62]}))
 
     def test_should_properly_handle_nullable_longs(self, project_id):
-        query = '''SELECT * FROM
+        query = """SELECT * FROM
                     (SELECT 1 << 62 AS nullable_long),
-                    (SELECT NULL AS nullable_long)'''
-        df = gbq.read_gbq(query, project_id=project_id,
-                          private_key=self.credentials,
-                          dialect='legacy')
+                    (SELECT NULL AS nullable_long)"""
+        df = gbq.read_gbq(
+            query,
+            project_id=project_id,
+            private_key=self.credentials,
+            dialect="legacy",
+        )
         tm.assert_frame_equal(
-            df, DataFrame({'nullable_long': [1 << 62, None]}).astype(object))
+            df, DataFrame({"nullable_long": [1 << 62, None]}).astype(object)
+        )
 
     def test_should_properly_handle_null_integers(self, project_id):
-        query = 'SELECT INTEGER(NULL) AS null_integer'
-        df = gbq.read_gbq(query, project_id=project_id,
-                          private_key=self.credentials,
-                          dialect='legacy')
-        tm.assert_frame_equal(df, DataFrame({'null_integer': [None]}))
+        query = "SELECT INTEGER(NULL) AS null_integer"
+        df = gbq.read_gbq(
+            query,
+            project_id=project_id,
+            private_key=self.credentials,
+            dialect="legacy",
+        )
+        tm.assert_frame_equal(df, DataFrame({"null_integer": [None]}))
 
     def test_should_properly_handle_valid_floats(self, project_id):
         from math import pi
-        query = 'SELECT PI() AS valid_float'
-        df = gbq.read_gbq(query, project_id=project_id,
-                          private_key=self.credentials,
-                          dialect='legacy')
-        tm.assert_frame_equal(df, DataFrame(
-            {'valid_float': [pi]}))
+
+        query = "SELECT PI() AS valid_float"
+        df = gbq.read_gbq(
+            query,
+            project_id=project_id,
+            private_key=self.credentials,
+            dialect="legacy",
+        )
+        tm.assert_frame_equal(df, DataFrame({"valid_float": [pi]}))
 
     def test_should_properly_handle_nullable_floats(self, project_id):
         from math import pi
-        query = '''SELECT * FROM
+
+        query = """SELECT * FROM
                     (SELECT PI() AS nullable_float),
-                    (SELECT NULL AS nullable_float)'''
-        df = gbq.read_gbq(query, project_id=project_id,
-                          private_key=self.credentials,
-                          dialect='legacy')
-        tm.assert_frame_equal(
-            df, DataFrame({'nullable_float': [pi, None]}))
+                    (SELECT NULL AS nullable_float)"""
+        df = gbq.read_gbq(
+            query,
+            project_id=project_id,
+            private_key=self.credentials,
+            dialect="legacy",
+        )
+        tm.assert_frame_equal(df, DataFrame({"nullable_float": [pi, None]}))
 
     def test_should_properly_handle_valid_doubles(self, project_id):
         from math import pi
-        query = 'SELECT PI() * POW(10, 307) AS valid_double'
-        df = gbq.read_gbq(query, project_id=project_id,
-                          private_key=self.credentials,
-                          dialect='legacy')
-        tm.assert_frame_equal(df, DataFrame(
-            {'valid_double': [pi * 10 ** 307]}))
+
+        query = "SELECT PI() * POW(10, 307) AS valid_double"
+        df = gbq.read_gbq(
+            query,
+            project_id=project_id,
+            private_key=self.credentials,
+            dialect="legacy",
+        )
+        tm.assert_frame_equal(
+            df, DataFrame({"valid_double": [pi * 10 ** 307]})
+        )
 
     def test_should_properly_handle_nullable_doubles(self, project_id):
         from math import pi
-        query = '''SELECT * FROM
+
+        query = """SELECT * FROM
                     (SELECT PI() * POW(10, 307) AS nullable_double),
-                    (SELECT NULL AS nullable_double)'''
-        df = gbq.read_gbq(query, project_id=project_id,
-                          private_key=self.credentials,
-                          dialect='legacy')
+                    (SELECT NULL AS nullable_double)"""
+        df = gbq.read_gbq(
+            query,
+            project_id=project_id,
+            private_key=self.credentials,
+            dialect="legacy",
+        )
         tm.assert_frame_equal(
-            df, DataFrame({'nullable_double': [pi * 10 ** 307, None]}))
+            df, DataFrame({"nullable_double": [pi * 10 ** 307, None]})
+        )
 
     def test_should_properly_handle_null_floats(self, project_id):
-        query = 'SELECT FLOAT(NULL) AS null_float'
-        df = gbq.read_gbq(query, project_id=project_id,
-                          private_key=self.credentials,
-                          dialect='legacy')
-        tm.assert_frame_equal(df, DataFrame({'null_float': [np.nan]}))
+        query = "SELECT FLOAT(NULL) AS null_float"
+        df = gbq.read_gbq(
+            query,
+            project_id=project_id,
+            private_key=self.credentials,
+            dialect="legacy",
+        )
+        tm.assert_frame_equal(df, DataFrame({"null_float": [np.nan]}))
 
     def test_should_properly_handle_timestamp_unix_epoch(self, project_id):
         query = 'SELECT TIMESTAMP("1970-01-01 00:00:00") AS unix_epoch'
-        df = gbq.read_gbq(query, project_id=project_id,
-                          private_key=self.credentials,
-                          dialect='legacy')
-        tm.assert_frame_equal(df, DataFrame(
-            {'unix_epoch': [np.datetime64('1970-01-01T00:00:00.000000Z')]}))
+        df = gbq.read_gbq(
+            query,
+            project_id=project_id,
+            private_key=self.credentials,
+            dialect="legacy",
+        )
+        tm.assert_frame_equal(
+            df,
+            DataFrame(
+                {"unix_epoch": [np.datetime64("1970-01-01T00:00:00.000000Z")]}
+            ),
+        )
 
     def test_should_properly_handle_arbitrary_timestamp(self, project_id):
         query = 'SELECT TIMESTAMP("2004-09-15 05:00:00") AS valid_timestamp'
-        df = gbq.read_gbq(query, project_id=project_id,
-                          private_key=self.credentials,
-                          dialect='legacy')
-        tm.assert_frame_equal(df, DataFrame({
-            'valid_timestamp': [np.datetime64('2004-09-15T05:00:00.000000Z')]
-        }))
+        df = gbq.read_gbq(
+            query,
+            project_id=project_id,
+            private_key=self.credentials,
+            dialect="legacy",
+        )
+        tm.assert_frame_equal(
+            df,
+            DataFrame(
+                {
+                    "valid_timestamp": [
+                        np.datetime64("2004-09-15T05:00:00.000000Z")
+                    ]
+                }
+            ),
+        )
 
     def test_should_properly_handle_null_timestamp(self, project_id):
-        query = 'SELECT TIMESTAMP(NULL) AS null_timestamp'
-        df = gbq.read_gbq(query, project_id=project_id,
-                          private_key=self.credentials,
-                          dialect='legacy')
-        tm.assert_frame_equal(df, DataFrame({'null_timestamp': [NaT]}))
+        query = "SELECT TIMESTAMP(NULL) AS null_timestamp"
+        df = gbq.read_gbq(
+            query,
+            project_id=project_id,
+            private_key=self.credentials,
+            dialect="legacy",
+        )
+        tm.assert_frame_equal(df, DataFrame({"null_timestamp": [NaT]}))
 
     def test_should_properly_handle_true_boolean(self, project_id):
-        query = 'SELECT BOOLEAN(TRUE) AS true_boolean'
-        df = gbq.read_gbq(query, project_id=project_id,
-                          private_key=self.credentials,
-                          dialect='legacy')
-        tm.assert_frame_equal(df, DataFrame({'true_boolean': [True]}))
+        query = "SELECT BOOLEAN(TRUE) AS true_boolean"
+        df = gbq.read_gbq(
+            query,
+            project_id=project_id,
+            private_key=self.credentials,
+            dialect="legacy",
+        )
+        tm.assert_frame_equal(df, DataFrame({"true_boolean": [True]}))
 
     def test_should_properly_handle_false_boolean(self, project_id):
-        query = 'SELECT BOOLEAN(FALSE) AS false_boolean'
-        df = gbq.read_gbq(query, project_id=project_id,
-                          private_key=self.credentials,
-                          dialect='legacy')
-        tm.assert_frame_equal(df, DataFrame({'false_boolean': [False]}))
+        query = "SELECT BOOLEAN(FALSE) AS false_boolean"
+        df = gbq.read_gbq(
+            query,
+            project_id=project_id,
+            private_key=self.credentials,
+            dialect="legacy",
+        )
+        tm.assert_frame_equal(df, DataFrame({"false_boolean": [False]}))
 
     def test_should_properly_handle_null_boolean(self, project_id):
-        query = 'SELECT BOOLEAN(NULL) AS null_boolean'
-        df = gbq.read_gbq(query, project_id=project_id,
-                          private_key=self.credentials,
-                          dialect='legacy')
-        tm.assert_frame_equal(df, DataFrame({'null_boolean': [None]}))
+        query = "SELECT BOOLEAN(NULL) AS null_boolean"
+        df = gbq.read_gbq(
+            query,
+            project_id=project_id,
+            private_key=self.credentials,
+            dialect="legacy",
+        )
+        tm.assert_frame_equal(df, DataFrame({"null_boolean": [None]}))
 
     def test_should_properly_handle_nullable_booleans(self, project_id):
-        query = '''SELECT * FROM
+        query = """SELECT * FROM
                     (SELECT BOOLEAN(TRUE) AS nullable_boolean),
-                    (SELECT NULL AS nullable_boolean)'''
-        df = gbq.read_gbq(query, project_id=project_id,
-                          private_key=self.credentials,
-                          dialect='legacy')
+                    (SELECT NULL AS nullable_boolean)"""
+        df = gbq.read_gbq(
+            query,
+            project_id=project_id,
+            private_key=self.credentials,
+            dialect="legacy",
+        )
         tm.assert_frame_equal(
-            df, DataFrame({'nullable_boolean': [True, None]}).astype(object))
+            df, DataFrame({"nullable_boolean": [True, None]}).astype(object)
+        )
 
     def test_unicode_string_conversion_and_normalization(self, project_id):
-        correct_test_datatype = DataFrame(
-            {'unicode_string': [u("\xe9\xfc")]}
-        )
+        correct_test_datatype = DataFrame({"unicode_string": [u("\xe9\xfc")]})
 
         unicode_string = "\xc3\xa9\xc3\xbc"
 
         if compat.PY3:
-            unicode_string = unicode_string.encode('latin-1').decode('utf8')
+            unicode_string = unicode_string.encode("latin-1").decode("utf8")
 
         query = 'SELECT "{0}" AS unicode_string'.format(unicode_string)
 
-        df = gbq.read_gbq(query, project_id=project_id,
-                          private_key=self.credentials,
-                          dialect='legacy')
+        df = gbq.read_gbq(
+            query,
+            project_id=project_id,
+            private_key=self.credentials,
+            dialect="legacy",
+        )
         tm.assert_frame_equal(df, correct_test_datatype)
 
     def test_index_column(self, project_id):
         query = "SELECT 'a' AS string_1, 'b' AS string_2"
-        result_frame = gbq.read_gbq(query, project_id=project_id,
-                                    index_col="string_1",
-                                    private_key=self.credentials,
-                                    dialect='legacy')
+        result_frame = gbq.read_gbq(
+            query,
+            project_id=project_id,
+            index_col="string_1",
+            private_key=self.credentials,
+            dialect="legacy",
+        )
         correct_frame = DataFrame(
-            {'string_1': ['a'], 'string_2': ['b']}).set_index("string_1")
+            {"string_1": ["a"], "string_2": ["b"]}
+        ).set_index("string_1")
         assert result_frame.index.name == correct_frame.index.name
 
     def test_column_order(self, project_id):
         query = "SELECT 'a' AS string_1, 'b' AS string_2, 'c' AS string_3"
-        col_order = ['string_3', 'string_1', 'string_2']
-        result_frame = gbq.read_gbq(query, project_id=project_id,
-                                    col_order=col_order,
-                                    private_key=self.credentials,
-                                    dialect='legacy')
-        correct_frame = DataFrame({'string_1': ['a'], 'string_2': [
-                                  'b'], 'string_3': ['c']})[col_order]
+        col_order = ["string_3", "string_1", "string_2"]
+        result_frame = gbq.read_gbq(
+            query,
+            project_id=project_id,
+            col_order=col_order,
+            private_key=self.credentials,
+            dialect="legacy",
+        )
+        correct_frame = DataFrame(
+            {"string_1": ["a"], "string_2": ["b"], "string_3": ["c"]}
+        )[col_order]
         tm.assert_frame_equal(result_frame, correct_frame)
 
     def test_read_gbq_raises_invalid_column_order(self, project_id):
         query = "SELECT 'a' AS string_1, 'b' AS string_2, 'c' AS string_3"
-        col_order = ['string_aaa', 'string_1', 'string_2']
+        col_order = ["string_aaa", "string_1", "string_2"]
 
         # Column string_aaa does not exist. Should raise InvalidColumnOrder
         with pytest.raises(gbq.InvalidColumnOrder):
-            gbq.read_gbq(query, project_id=project_id,
-                         col_order=col_order,
-                         private_key=self.credentials,
-                         dialect='legacy')
+            gbq.read_gbq(
+                query,
+                project_id=project_id,
+                col_order=col_order,
+                private_key=self.credentials,
+                dialect="legacy",
+            )
 
     def test_column_order_plus_index(self, project_id):
         query = "SELECT 'a' AS string_1, 'b' AS string_2, 'c' AS string_3"
-        col_order = ['string_3', 'string_2']
-        result_frame = gbq.read_gbq(query, project_id=project_id,
-                                    index_col='string_1', col_order=col_order,
-                                    private_key=self.credentials,
-                                    dialect='legacy')
+        col_order = ["string_3", "string_2"]
+        result_frame = gbq.read_gbq(
+            query,
+            project_id=project_id,
+            index_col="string_1",
+            col_order=col_order,
+            private_key=self.credentials,
+            dialect="legacy",
+        )
         correct_frame = DataFrame(
-            {'string_1': ['a'], 'string_2': ['b'], 'string_3': ['c']})
-        correct_frame.set_index('string_1', inplace=True)
+            {"string_1": ["a"], "string_2": ["b"], "string_3": ["c"]}
+        )
+        correct_frame.set_index("string_1", inplace=True)
         correct_frame = correct_frame[col_order]
         tm.assert_frame_equal(result_frame, correct_frame)
 
     def test_read_gbq_raises_invalid_index_column(self, project_id):
         query = "SELECT 'a' AS string_1, 'b' AS string_2, 'c' AS string_3"
-        col_order = ['string_3', 'string_2']
+        col_order = ["string_3", "string_2"]
 
         # Column string_bbb does not exist. Should raise InvalidIndexColumn
         with pytest.raises(gbq.InvalidIndexColumn):
-            gbq.read_gbq(query, project_id=project_id,
-                         index_col='string_bbb', col_order=col_order,
-                         private_key=self.credentials,
-                         dialect='legacy')
+            gbq.read_gbq(
+                query,
+                project_id=project_id,
+                index_col="string_bbb",
+                col_order=col_order,
+                private_key=self.credentials,
+                dialect="legacy",
+            )
 
     def test_malformed_query(self, project_id):
         with pytest.raises(gbq.GenericGBQException):
-            gbq.read_gbq("SELCET * FORM [publicdata:samples.shakespeare]",
-                         project_id=project_id,
-                         private_key=self.credentials,
-                         dialect='legacy')
+            gbq.read_gbq(
+                "SELCET * FORM [publicdata:samples.shakespeare]",
+                project_id=project_id,
+                private_key=self.credentials,
+                dialect="legacy",
+            )
 
     def test_bad_project_id(self):
         with pytest.raises(gbq.GenericGBQException):
-            gbq.read_gbq('SELCET * FROM [publicdata:samples.shakespeare]',
-                         project_id='not-my-project',
-                         private_key=self.credentials,
-                         dialect='legacy')
+            gbq.read_gbq(
+                "SELCET * FROM [publicdata:samples.shakespeare]",
+                project_id="not-my-project",
+                private_key=self.credentials,
+                dialect="legacy",
+            )
 
     def test_bad_table_name(self, project_id):
         with pytest.raises(gbq.GenericGBQException):
-            gbq.read_gbq("SELECT * FROM [publicdata:samples.nope]",
-                         project_id=project_id,
-                         private_key=self.credentials,
-                         dialect='legacy')
+            gbq.read_gbq(
+                "SELECT * FROM [publicdata:samples.nope]",
+                project_id=project_id,
+                private_key=self.credentials,
+                dialect="legacy",
+            )
 
     def test_download_dataset_larger_than_200k_rows(self, project_id):
         test_size = 200005
         # Test for known BigQuery bug in datasets larger than 100k rows
         # http://stackoverflow.com/questions/19145587/bq-py-not-paging-results
-        df = gbq.read_gbq("SELECT id FROM [publicdata:samples.wikipedia] "
-                          "GROUP EACH BY id ORDER BY id ASC LIMIT {0}"
-                          .format(test_size),
-                          project_id=project_id,
-                          private_key=self.credentials,
-                          dialect='legacy')
+        df = gbq.read_gbq(
+            "SELECT id FROM [publicdata:samples.wikipedia] "
+            "GROUP EACH BY id ORDER BY id ASC LIMIT {0}".format(test_size),
+            project_id=project_id,
+            private_key=self.credentials,
+            dialect="legacy",
+        )
         assert len(df.drop_duplicates()) == test_size
 
     def test_zero_rows(self, project_id):
         # Bug fix for https://github.com/pandas-dev/pandas/issues/10273
-        df = gbq.read_gbq("SELECT title, id, is_bot, "
-                          "SEC_TO_TIMESTAMP(timestamp) ts "
-                          "FROM [publicdata:samples.wikipedia] "
-                          "WHERE timestamp=-9999999",
-                          project_id=project_id,
-                          private_key=self.credentials,
-                          dialect='legacy')
+        df = gbq.read_gbq(
+            "SELECT title, id, is_bot, "
+            "SEC_TO_TIMESTAMP(timestamp) ts "
+            "FROM [publicdata:samples.wikipedia] "
+            "WHERE timestamp=-9999999",
+            project_id=project_id,
+            private_key=self.credentials,
+            dialect="legacy",
+        )
         page_array = np.zeros(
-            (0,), dtype=[('title', object), ('id', np.dtype(int)),
-                         ('is_bot', np.dtype(bool)), ('ts', 'M8[ns]')])
+            (0,),
+            dtype=[
+                ("title", object),
+                ("id", np.dtype(int)),
+                ("is_bot", np.dtype(bool)),
+                ("ts", "M8[ns]"),
+            ],
+        )
         expected_result = DataFrame(
-            page_array, columns=['title', 'id', 'is_bot', 'ts'])
+            page_array, columns=["title", "id", "is_bot", "ts"]
+        )
         tm.assert_frame_equal(df, expected_result, check_index_type=False)
 
     def test_one_row_one_column(self, project_id):
-        df = gbq.read_gbq("SELECT 3 as v",
-                          project_id=project_id,
-                          private_key=self.credentials,
-                          dialect='standard')
+        df = gbq.read_gbq(
+            "SELECT 3 as v",
+            project_id=project_id,
+            private_key=self.credentials,
+            dialect="standard",
+        )
         expected_result = DataFrame(dict(v=[3]))
         tm.assert_frame_equal(df, expected_result)
 
@@ -435,158 +557,171 @@ class TestReadGBQIntegration(object):
         # Test that a legacy sql statement fails when
         # setting dialect='standard'
         with pytest.raises(gbq.GenericGBQException):
-            gbq.read_gbq(legacy_sql, project_id=project_id,
-                         dialect='standard',
-                         private_key=self.credentials)
+            gbq.read_gbq(
+                legacy_sql,
+                project_id=project_id,
+                dialect="standard",
+                private_key=self.credentials,
+            )
 
         # Test that a legacy sql statement succeeds when
         # setting dialect='legacy'
-        df = gbq.read_gbq(legacy_sql, project_id=project_id,
-                          dialect='legacy',
-                          private_key=self.credentials)
+        df = gbq.read_gbq(
+            legacy_sql,
+            project_id=project_id,
+            dialect="legacy",
+            private_key=self.credentials,
+        )
         assert len(df.drop_duplicates()) == 10
 
     def test_standard_sql(self, project_id):
-        standard_sql = "SELECT DISTINCT id FROM " \
-                       "`publicdata.samples.wikipedia` LIMIT 10"
+        standard_sql = (
+            "SELECT DISTINCT id FROM "
+            "`publicdata.samples.wikipedia` LIMIT 10"
+        )
 
         # Test that a standard sql statement fails when using
         # the legacy SQL dialect.
         with pytest.raises(gbq.GenericGBQException):
-            gbq.read_gbq(standard_sql, project_id=project_id,
-                         private_key=self.credentials,
-                         dialect='legacy')
+            gbq.read_gbq(
+                standard_sql,
+                project_id=project_id,
+                private_key=self.credentials,
+                dialect="legacy",
+            )
 
         # Test that a standard sql statement succeeds when
         # setting dialect='standard'
-        df = gbq.read_gbq(standard_sql, project_id=project_id,
-                          dialect='standard',
-                          private_key=self.credentials)
+        df = gbq.read_gbq(
+            standard_sql,
+            project_id=project_id,
+            dialect="standard",
+            private_key=self.credentials,
+        )
         assert len(df.drop_duplicates()) == 10
 
     def test_query_with_parameters(self, project_id):
         sql_statement = "SELECT @param1 + @param2 AS valid_result"
         config = {
-            'query': {
+            "query": {
                 "useLegacySql": False,
                 "parameterMode": "named",
                 "queryParameters": [
                     {
                         "name": "param1",
-                        "parameterType": {
-                            "type": "INTEGER"
-                        },
-                        "parameterValue": {
-                            "value": 1
-                        }
+                        "parameterType": {"type": "INTEGER"},
+                        "parameterValue": {"value": 1},
                     },
                     {
                         "name": "param2",
-                        "parameterType": {
-                            "type": "INTEGER"
-                        },
-                        "parameterValue": {
-                            "value": 2
-                        }
-                    }
-                ]
+                        "parameterType": {"type": "INTEGER"},
+                        "parameterValue": {"value": 2},
+                    },
+                ],
             }
         }
         # Test that a query that relies on parameters fails
         # when parameters are not supplied via configuration
         with pytest.raises(ValueError):
-            gbq.read_gbq(sql_statement, project_id=project_id,
-                         private_key=self.credentials,
-                         dialect='legacy')
+            gbq.read_gbq(
+                sql_statement,
+                project_id=project_id,
+                private_key=self.credentials,
+                dialect="legacy",
+            )
 
         # Test that the query is successful because we have supplied
         # the correct query parameters via the 'config' option
-        df = gbq.read_gbq(sql_statement, project_id=project_id,
-                          private_key=self.credentials,
-                          configuration=config,
-                          dialect='legacy')
-        tm.assert_frame_equal(df, DataFrame({'valid_result': [3]}))
+        df = gbq.read_gbq(
+            sql_statement,
+            project_id=project_id,
+            private_key=self.credentials,
+            configuration=config,
+            dialect="legacy",
+        )
+        tm.assert_frame_equal(df, DataFrame({"valid_result": [3]}))
 
     def test_query_inside_configuration(self, project_id):
         query_no_use = 'SELECT "PI_WRONG" AS valid_string'
         query = 'SELECT "PI" AS valid_string'
-        config = {
-            'query': {
-                "query": query,
-                "useQueryCache": False,
-            }
-        }
+        config = {"query": {"query": query, "useQueryCache": False}}
         # Test that it can't pass query both
         # inside config and as parameter
         with pytest.raises(ValueError):
-            gbq.read_gbq(query_no_use, project_id=project_id,
-                         private_key=self.credentials,
-                         configuration=config,
-                         dialect='legacy')
+            gbq.read_gbq(
+                query_no_use,
+                project_id=project_id,
+                private_key=self.credentials,
+                configuration=config,
+                dialect="legacy",
+            )
 
-        df = gbq.read_gbq(None, project_id=project_id,
-                          private_key=self.credentials,
-                          configuration=config,
-                          dialect='legacy')
-        tm.assert_frame_equal(df, DataFrame({'valid_string': ['PI']}))
+        df = gbq.read_gbq(
+            None,
+            project_id=project_id,
+            private_key=self.credentials,
+            configuration=config,
+            dialect="legacy",
+        )
+        tm.assert_frame_equal(df, DataFrame({"valid_string": ["PI"]}))
 
     def test_configuration_without_query(self, project_id):
-        sql_statement = 'SELECT 1'
+        sql_statement = "SELECT 1"
         config = {
-            'copy': {
+            "copy": {
                 "sourceTable": {
                     "projectId": project_id,
                     "datasetId": "publicdata:samples",
-                    "tableId": "wikipedia"
+                    "tableId": "wikipedia",
                 },
                 "destinationTable": {
                     "projectId": project_id,
                     "datasetId": "publicdata:samples",
-                    "tableId": "wikipedia_copied"
+                    "tableId": "wikipedia_copied",
                 },
             }
         }
         # Test that only 'query' configurations are supported
         # nor 'copy','load','extract'
         with pytest.raises(ValueError):
-            gbq.read_gbq(sql_statement, project_id=project_id,
-                         private_key=self.credentials,
-                         configuration=config,
-                         dialect='legacy')
+            gbq.read_gbq(
+                sql_statement,
+                project_id=project_id,
+                private_key=self.credentials,
+                configuration=config,
+                dialect="legacy",
+            )
 
     def test_configuration_raises_value_error_with_multiple_config(
-            self, project_id):
-        sql_statement = 'SELECT 1'
+        self, project_id
+    ):
+        sql_statement = "SELECT 1"
         config = {
-            'query': {
-                "query": sql_statement,
-                "useQueryCache": False,
-            },
-            'load': {
-                "query": sql_statement,
-                "useQueryCache": False,
-            }
+            "query": {"query": sql_statement, "useQueryCache": False},
+            "load": {"query": sql_statement, "useQueryCache": False},
         }
         # Test that only ValueError is raised with multiple configurations
         with pytest.raises(ValueError):
-            gbq.read_gbq(sql_statement, project_id=project_id,
-                         private_key=self.credentials,
-                         configuration=config,
-                         dialect='legacy')
+            gbq.read_gbq(
+                sql_statement,
+                project_id=project_id,
+                private_key=self.credentials,
+                configuration=config,
+                dialect="legacy",
+            )
 
     def test_timeout_configuration(self, project_id):
-        sql_statement = 'SELECT 1'
-        config = {
-            'query': {
-                "timeoutMs": 1
-            }
-        }
+        sql_statement = "SELECT 1"
+        config = {"query": {"timeoutMs": 1}}
         # Test that QueryTimeout error raises
         with pytest.raises(gbq.QueryTimeout):
-            gbq.read_gbq(sql_statement, project_id=project_id,
-                         private_key=self.credentials,
-                         configuration=config,
-                         dialect='legacy')
+            gbq.read_gbq(
+                sql_statement,
+                project_id=project_id,
+                private_key=self.credentials,
+                configuration=config,
+                dialect="legacy",
+            )
 
     def test_query_response_bytes(self):
         assert self.gbq_connector.sizeof_fmt(999) == "999.0 B"
@@ -606,20 +741,30 @@ class TestReadGBQIntegration(object):
     def test_struct(self, project_id):
         query = """SELECT 1 int_field,
                    STRUCT("a" as letter, 1 as num) struct_field"""
-        df = gbq.read_gbq(query, project_id=project_id,
-                          private_key=self.credentials,
-                          dialect='standard')
-        expected = DataFrame([[1, {"letter": "a", "num": 1}]],
-                             columns=["int_field", "struct_field"])
+        df = gbq.read_gbq(
+            query,
+            project_id=project_id,
+            private_key=self.credentials,
+            dialect="standard",
+        )
+        expected = DataFrame(
+            [[1, {"letter": "a", "num": 1}]],
+            columns=["int_field", "struct_field"],
+        )
         tm.assert_frame_equal(df, expected)
 
     def test_array(self, project_id):
         query = """select ["a","x","b","y","c","z"] as letters"""
-        df = gbq.read_gbq(query, project_id=project_id,
-                          private_key=self.credentials,
-                          dialect='standard')
-        tm.assert_frame_equal(df, DataFrame([[["a", "x", "b", "y", "c", "z"]]],
-                                            columns=["letters"]))
+        df = gbq.read_gbq(
+            query,
+            project_id=project_id,
+            private_key=self.credentials,
+            dialect="standard",
+        )
+        tm.assert_frame_equal(
+            df,
+            DataFrame([[["a", "x", "b", "y", "c", "z"]]], columns=["letters"]),
+        )
 
     def test_array_length_zero(self, project_id):
         query = """WITH t as (
@@ -630,11 +775,16 @@ class TestReadGBQIntegration(object):
                    select letter, array_field, array_length(array_field) len
                    from t
                    order by letter ASC"""
-        df = gbq.read_gbq(query, project_id=project_id,
-                          private_key=self.credentials,
-                          dialect='standard')
-        expected = DataFrame([["a", [""], 1], ["b", [], 0]],
-                             columns=["letter", "array_field", "len"])
+        df = gbq.read_gbq(
+            query,
+            project_id=project_id,
+            private_key=self.credentials,
+            dialect="standard",
+        )
+        expected = DataFrame(
+            [["a", [""], 1], ["b", [], 0]],
+            columns=["letter", "array_field", "len"],
+        )
         tm.assert_frame_equal(df, expected)
 
     def test_array_agg(self, project_id):
@@ -649,29 +799,42 @@ class TestReadGBQIntegration(object):
                 from t
                 group by letter
                 order by letter ASC"""
-        df = gbq.read_gbq(query, project_id=project_id,
-                          private_key=self.credentials,
-                          dialect='standard')
-        tm.assert_frame_equal(df, DataFrame([["a", [1, 3]], ["b", [2]]],
-                                            columns=["letter", "numbers"]))
+        df = gbq.read_gbq(
+            query,
+            project_id=project_id,
+            private_key=self.credentials,
+            dialect="standard",
+        )
+        tm.assert_frame_equal(
+            df,
+            DataFrame(
+                [["a", [1, 3]], ["b", [2]]], columns=["letter", "numbers"]
+            ),
+        )
 
     def test_array_of_floats(self, private_key_path, project_id):
         query = """select [1.1, 2.2, 3.3] as a, 4 as b"""
-        df = gbq.read_gbq(query, project_id=project_id,
-                          private_key=private_key_path,
-                          dialect='standard')
-        tm.assert_frame_equal(df, DataFrame([[[1.1, 2.2, 3.3], 4]],
-                                            columns=["a", "b"]))
+        df = gbq.read_gbq(
+            query,
+            project_id=project_id,
+            private_key=private_key_path,
+            dialect="standard",
+        )
+        tm.assert_frame_equal(
+            df, DataFrame([[[1.1, 2.2, 3.3], 4]], columns=["a", "b"])
+        )
 
     def test_tokyo(self, tokyo_dataset, tokyo_table, private_key_path):
         df = gbq.read_gbq(
-            'SELECT MAX(year) AS max_year FROM {}.{}'.format(
-                tokyo_dataset, tokyo_table),
-            dialect='standard',
-            location='asia-northeast1',
-            private_key=private_key_path)
+            "SELECT MAX(year) AS max_year FROM {}.{}".format(
+                tokyo_dataset, tokyo_table
+            ),
+            dialect="standard",
+            location="asia-northeast1",
+            private_key=private_key_path,
+        )
         print(df)
-        assert df['max_year'][0] >= 2000
+        assert df["max_year"][0] >= 2000
 
 
 class TestToGBQIntegration(object):
@@ -681,7 +844,7 @@ class TestToGBQIntegration(object):
     # test is added See `Issue 191
     # <https://code.google.com/p/google-bigquery/issues/detail?id=191>`__
 
-    @pytest.fixture(autouse=True, scope='function')
+    @pytest.fixture(autouse=True, scope="function")
     def setup(self, project, credentials, bigquery_client):
         # - PER-TEST FIXTURES -
         # put here any instruction you want to be run *BEFORE* *EVERY* test is
@@ -689,14 +852,14 @@ class TestToGBQIntegration(object):
 
         self.dataset_prefix = _get_dataset_prefix_random()
         clean_gbq_environment(self.dataset_prefix, bigquery_client)
-        self.dataset = gbq._Dataset(project,
-                                    private_key=credentials)
-        self.table = gbq._Table(project, self.dataset_prefix + "1",
-                                private_key=credentials)
-        self.sut = gbq.GbqConnector(project,
-                                    private_key=credentials)
-        self.destination_table = "{0}{1}.{2}".format(self.dataset_prefix, "1",
-                                                     TABLE_ID)
+        self.dataset = gbq._Dataset(project, private_key=credentials)
+        self.table = gbq._Table(
+            project, self.dataset_prefix + "1", private_key=credentials
+        )
+        self.sut = gbq.GbqConnector(project, private_key=credentials)
+        self.destination_table = "{0}{1}.{2}".format(
+            self.dataset_prefix, "1", TABLE_ID
+        )
         self.dataset.create(self.dataset_prefix + "1")
         self.credentials = credentials
         yield
@@ -707,15 +870,23 @@ class TestToGBQIntegration(object):
         test_size = 20001
         df = make_mixed_dataframe_v2(test_size)
 
-        gbq.to_gbq(df, self.destination_table + test_id, project_id,
-                   chunksize=10000, private_key=self.credentials)
+        gbq.to_gbq(
+            df,
+            self.destination_table + test_id,
+            project_id,
+            chunksize=10000,
+            private_key=self.credentials,
+        )
 
-        result = gbq.read_gbq("SELECT COUNT(*) AS num_rows FROM {0}"
-                              .format(self.destination_table + test_id),
-                              project_id=project_id,
-                              private_key=self.credentials,
-                              dialect='legacy')
-        assert result['num_rows'][0] == test_size
+        result = gbq.read_gbq(
+            "SELECT COUNT(*) AS num_rows FROM {0}".format(
+                self.destination_table + test_id
+            ),
+            project_id=project_id,
+            private_key=self.credentials,
+            dialect="legacy",
+        )
+        assert result["num_rows"][0] == test_size
 
     def test_upload_data_if_table_exists_fail(self, project_id):
         test_id = "2"
@@ -725,13 +896,22 @@ class TestToGBQIntegration(object):
 
         # Test the default value of if_exists is 'fail'
         with pytest.raises(gbq.TableCreationError):
-            gbq.to_gbq(df, self.destination_table + test_id, project_id,
-                       private_key=self.credentials)
+            gbq.to_gbq(
+                df,
+                self.destination_table + test_id,
+                project_id,
+                private_key=self.credentials,
+            )
 
         # Test the if_exists parameter with value 'fail'
         with pytest.raises(gbq.TableCreationError):
-            gbq.to_gbq(df, self.destination_table + test_id, project_id,
-                       if_exists='fail', private_key=self.credentials)
+            gbq.to_gbq(
+                df,
+                self.destination_table + test_id,
+                project_id,
+                if_exists="fail",
+                private_key=self.credentials,
+            )
 
     def test_upload_data_if_table_exists_append(self, project_id):
         test_id = "3"
@@ -740,25 +920,42 @@ class TestToGBQIntegration(object):
         df_different_schema = tm.makeMixedDataFrame()
 
         # Initialize table with sample data
-        gbq.to_gbq(df, self.destination_table + test_id, project_id,
-                   chunksize=10000, private_key=self.credentials)
+        gbq.to_gbq(
+            df,
+            self.destination_table + test_id,
+            project_id,
+            chunksize=10000,
+            private_key=self.credentials,
+        )
 
         # Test the if_exists parameter with value 'append'
-        gbq.to_gbq(df, self.destination_table + test_id, project_id,
-                   if_exists='append', private_key=self.credentials)
+        gbq.to_gbq(
+            df,
+            self.destination_table + test_id,
+            project_id,
+            if_exists="append",
+            private_key=self.credentials,
+        )
 
-        result = gbq.read_gbq("SELECT COUNT(*) AS num_rows FROM {0}"
-                              .format(self.destination_table + test_id),
-                              project_id=project_id,
-                              private_key=self.credentials,
-                              dialect='legacy')
-        assert result['num_rows'][0] == test_size * 2
+        result = gbq.read_gbq(
+            "SELECT COUNT(*) AS num_rows FROM {0}".format(
+                self.destination_table + test_id
+            ),
+            project_id=project_id,
+            private_key=self.credentials,
+            dialect="legacy",
+        )
+        assert result["num_rows"][0] == test_size * 2
 
         # Try inserting with a different schema, confirm failure
         with pytest.raises(gbq.InvalidSchema):
-            gbq.to_gbq(df_different_schema, self.destination_table + test_id,
-                       project_id, if_exists='append',
-                       private_key=self.credentials)
+            gbq.to_gbq(
+                df_different_schema,
+                self.destination_table + test_id,
+                project_id,
+                if_exists="append",
+                private_key=self.credentials,
+            )
 
     def test_upload_subset_columns_if_table_exists_append(self, project_id):
         # Issue 24: Upload is succesful if dataframe has columns
@@ -769,20 +966,32 @@ class TestToGBQIntegration(object):
         df_subset_cols = df.iloc[:, :2]
 
         # Initialize table with sample data
-        gbq.to_gbq(df, self.destination_table + test_id, project_id,
-                   chunksize=10000, private_key=self.credentials)
+        gbq.to_gbq(
+            df,
+            self.destination_table + test_id,
+            project_id,
+            chunksize=10000,
+            private_key=self.credentials,
+        )
 
         # Test the if_exists parameter with value 'append'
-        gbq.to_gbq(df_subset_cols,
-                   self.destination_table + test_id, project_id,
-                   if_exists='append', private_key=self.credentials)
+        gbq.to_gbq(
+            df_subset_cols,
+            self.destination_table + test_id,
+            project_id,
+            if_exists="append",
+            private_key=self.credentials,
+        )
 
-        result = gbq.read_gbq("SELECT COUNT(*) AS num_rows FROM {0}"
-                              .format(self.destination_table + test_id),
-                              project_id=project_id,
-                              private_key=self.credentials,
-                              dialect='legacy')
-        assert result['num_rows'][0] == test_size * 2
+        result = gbq.read_gbq(
+            "SELECT COUNT(*) AS num_rows FROM {0}".format(
+                self.destination_table + test_id
+            ),
+            project_id=project_id,
+            private_key=self.credentials,
+            dialect="legacy",
+        )
+        assert result["num_rows"][0] == test_size * 2
 
     def test_upload_data_if_table_exists_replace(self, project_id):
         test_id = "4"
@@ -791,20 +1000,32 @@ class TestToGBQIntegration(object):
         df_different_schema = tm.makeMixedDataFrame()
 
         # Initialize table with sample data
-        gbq.to_gbq(df, self.destination_table + test_id, project_id,
-                   chunksize=10000, private_key=self.credentials)
+        gbq.to_gbq(
+            df,
+            self.destination_table + test_id,
+            project_id,
+            chunksize=10000,
+            private_key=self.credentials,
+        )
 
         # Test the if_exists parameter with the value 'replace'.
-        gbq.to_gbq(df_different_schema, self.destination_table + test_id,
-                   project_id, if_exists='replace',
-                   private_key=self.credentials)
+        gbq.to_gbq(
+            df_different_schema,
+            self.destination_table + test_id,
+            project_id,
+            if_exists="replace",
+            private_key=self.credentials,
+        )
 
-        result = gbq.read_gbq("SELECT COUNT(*) AS num_rows FROM {0}"
-                              .format(self.destination_table + test_id),
-                              project_id=project_id,
-                              private_key=self.credentials,
-                              dialect='legacy')
-        assert result['num_rows'][0] == 5
+        result = gbq.read_gbq(
+            "SELECT COUNT(*) AS num_rows FROM {0}".format(
+                self.destination_table + test_id
+            ),
+            project_id=project_id,
+            private_key=self.credentials,
+            dialect="legacy",
+        )
+        assert result["num_rows"][0] == 5
 
     def test_upload_data_if_table_exists_raises_value_error(self, project_id):
         test_id = "4"
@@ -813,83 +1034,108 @@ class TestToGBQIntegration(object):
 
         # Test invalid value for if_exists parameter raises value error
         with pytest.raises(ValueError):
-            gbq.to_gbq(df, self.destination_table + test_id, project_id,
-                       if_exists='xxxxx', private_key=self.credentials)
+            gbq.to_gbq(
+                df,
+                self.destination_table + test_id,
+                project_id,
+                if_exists="xxxxx",
+                private_key=self.credentials,
+            )
 
     def test_google_upload_errors_should_raise_exception(self, project_id):
         raise pytest.skip("buggy test")
 
         test_id = "5"
-        test_timestamp = datetime.now(pytz.timezone('US/Arizona'))
-        bad_df = DataFrame({'bools': [False, False], 'flts': [0.0, 1.0],
-                            'ints': [0, '1'], 'strs': ['a', 1],
-                            'times': [test_timestamp, test_timestamp]},
-                           index=range(2))
+        test_timestamp = datetime.now(pytz.timezone("US/Arizona"))
+        bad_df = DataFrame(
+            {
+                "bools": [False, False],
+                "flts": [0.0, 1.0],
+                "ints": [0, "1"],
+                "strs": ["a", 1],
+                "times": [test_timestamp, test_timestamp],
+            },
+            index=range(2),
+        )
 
         with pytest.raises(gbq.StreamingInsertError):
-            gbq.to_gbq(bad_df, self.destination_table + test_id,
-                       project_id, private_key=self.credentials)
+            gbq.to_gbq(
+                bad_df,
+                self.destination_table + test_id,
+                project_id,
+                private_key=self.credentials,
+            )
 
     def test_upload_chinese_unicode_data(self, project_id):
         test_id = "2"
         test_size = 6
-        df = DataFrame(np.random.randn(6, 4), index=range(6),
-                       columns=list('ABCD'))
-        df['s'] = u'信用卡'
+        df = DataFrame(
+            np.random.randn(6, 4), index=range(6), columns=list("ABCD")
+        )
+        df["s"] = u"信用卡"
 
         gbq.to_gbq(
-            df, self.destination_table + test_id,
+            df,
+            self.destination_table + test_id,
             project_id,
             private_key=self.credentials,
-            chunksize=10000)
+            chunksize=10000,
+        )
 
         result_df = gbq.read_gbq(
             "SELECT * FROM {0}".format(self.destination_table + test_id),
             project_id=project_id,
             private_key=self.credentials,
-            dialect='legacy')
+            dialect="legacy",
+        )
 
         assert len(result_df) == test_size
 
         if sys.version_info.major < 3:
-            pytest.skip(msg='Unicode comparison in Py2 not working')
+            pytest.skip(msg="Unicode comparison in Py2 not working")
 
-        result = result_df['s'].sort_values()
-        expected = df['s'].sort_values()
+        result = result_df["s"].sort_values()
+        expected = df["s"].sort_values()
 
         tm.assert_numpy_array_equal(expected.values, result.values)
 
     def test_upload_other_unicode_data(self, project_id):
         test_id = "3"
         test_size = 3
-        df = DataFrame({
-            's': ['Skywalker™', 'lego', 'hülle'],
-            'i': [200, 300, 400],
-            'd': [
-                '2017-12-13 17:40:39', '2017-12-13 17:40:39',
-                '2017-12-13 17:40:39'
-            ]
-        })
+        df = DataFrame(
+            {
+                "s": ["Skywalker™", "lego", "hülle"],
+                "i": [200, 300, 400],
+                "d": [
+                    "2017-12-13 17:40:39",
+                    "2017-12-13 17:40:39",
+                    "2017-12-13 17:40:39",
+                ],
+            }
+        )
 
         gbq.to_gbq(
-            df, self.destination_table + test_id,
+            df,
+            self.destination_table + test_id,
             project_id=project_id,
             private_key=self.credentials,
-            chunksize=10000)
+            chunksize=10000,
+        )
 
-        result_df = gbq.read_gbq("SELECT * FROM {0}".format(
-            self.destination_table + test_id),
+        result_df = gbq.read_gbq(
+            "SELECT * FROM {0}".format(self.destination_table + test_id),
             project_id=project_id,
             private_key=self.credentials,
-            dialect='legacy')
+            dialect="legacy",
+        )
 
         assert len(result_df) == test_size
 
         if sys.version_info.major < 3:
-            pytest.skip(msg='Unicode comparison in Py2 not working')
+            pytest.skip(msg="Unicode comparison in Py2 not working")
 
-        result = result_df['s'].sort_values()
-        expected = df['s'].sort_values()
+        result = result_df["s"].sort_values()
+        expected = df["s"].sort_values()
 
         tm.assert_numpy_array_equal(expected.values, result.values)
 
@@ -901,19 +1147,23 @@ class TestToGBQIntegration(object):
         test_size = 2
         df = DataFrame(
             [[1, 1.1], [2, 2.2]],
-            index=['row 1', 'row 2'],
-            columns=['intColumn', 'floatColumn'])
+            index=["row 1", "row 2"],
+            columns=["intColumn", "floatColumn"],
+        )
 
         gbq.to_gbq(
-            df, self.destination_table + test_id,
-            project_id=project_id,
-            private_key=self.credentials)
-
-        result_df = gbq.read_gbq(
-            'SELECT * FROM {0}'.format(self.destination_table + test_id),
+            df,
+            self.destination_table + test_id,
             project_id=project_id,
             private_key=self.credentials,
-            dialect='legacy')
+        )
+
+        result_df = gbq.read_gbq(
+            "SELECT * FROM {0}".format(self.destination_table + test_id),
+            project_id=project_id,
+            private_key=self.credentials,
+            dialect="legacy",
+        )
 
         assert len(result_df) == test_size
 
@@ -922,10 +1172,14 @@ class TestToGBQIntegration(object):
         df = tm.makeMixedDataFrame()
         schema = gbq._generate_bq_schema(df)
 
-        test_schema = {'fields': [{'name': 'A', 'type': 'FLOAT'},
-                                  {'name': 'B', 'type': 'FLOAT'},
-                                  {'name': 'C', 'type': 'STRING'},
-                                  {'name': 'D', 'type': 'TIMESTAMP'}]}
+        test_schema = {
+            "fields": [
+                {"name": "A", "type": "FLOAT"},
+                {"name": "B", "type": "FLOAT"},
+                {"name": "C", "type": "STRING"},
+                {"name": "D", "type": "TIMESTAMP"},
+            ]
+        }
 
         assert schema == test_schema
 
@@ -948,14 +1202,17 @@ class TestToGBQIntegration(object):
 
     def test_delete_table(self):
         test_id = "8"
-        test_schema = {'fields': [{'name': 'A', 'type': 'FLOAT'},
-                                  {'name': 'B', 'type': 'FLOAT'},
-                                  {'name': 'C', 'type': 'STRING'},
-                                  {'name': 'D', 'type': 'TIMESTAMP'}]}
+        test_schema = {
+            "fields": [
+                {"name": "A", "type": "FLOAT"},
+                {"name": "B", "type": "FLOAT"},
+                {"name": "C", "type": "STRING"},
+                {"name": "D", "type": "TIMESTAMP"},
+            ]
+        }
         self.table.create(TABLE_ID + test_id, test_schema)
         self.table.delete(TABLE_ID + test_id)
-        assert not self.table.exists(
-            TABLE_ID + test_id)
+        assert not self.table.exists(TABLE_ID + test_id)
 
     def test_delete_table_not_found(self):
         with pytest.raises(gbq.NotFoundException):
@@ -963,58 +1220,90 @@ class TestToGBQIntegration(object):
 
     def test_list_table(self):
         test_id = "9"
-        test_schema = {'fields': [{'name': 'A', 'type': 'FLOAT'},
-                                  {'name': 'B', 'type': 'FLOAT'},
-                                  {'name': 'C', 'type': 'STRING'},
-                                  {'name': 'D', 'type': 'TIMESTAMP'}]}
+        test_schema = {
+            "fields": [
+                {"name": "A", "type": "FLOAT"},
+                {"name": "B", "type": "FLOAT"},
+                {"name": "C", "type": "STRING"},
+                {"name": "D", "type": "TIMESTAMP"},
+            ]
+        }
         self.table.create(TABLE_ID + test_id, test_schema)
         assert TABLE_ID + test_id in self.dataset.tables(
-            self.dataset_prefix + "1")
+            self.dataset_prefix + "1"
+        )
 
     def test_verify_schema_allows_flexible_column_order(self):
         test_id = "10"
-        test_schema_1 = {'fields': [{'name': 'A', 'type': 'FLOAT'},
-                                    {'name': 'B', 'type': 'FLOAT'},
-                                    {'name': 'C', 'type': 'STRING'},
-                                    {'name': 'D', 'type': 'TIMESTAMP'}]}
-        test_schema_2 = {'fields': [{'name': 'A', 'type': 'FLOAT'},
-                                    {'name': 'C', 'type': 'STRING'},
-                                    {'name': 'B', 'type': 'FLOAT'},
-                                    {'name': 'D', 'type': 'TIMESTAMP'}]}
+        test_schema_1 = {
+            "fields": [
+                {"name": "A", "type": "FLOAT"},
+                {"name": "B", "type": "FLOAT"},
+                {"name": "C", "type": "STRING"},
+                {"name": "D", "type": "TIMESTAMP"},
+            ]
+        }
+        test_schema_2 = {
+            "fields": [
+                {"name": "A", "type": "FLOAT"},
+                {"name": "C", "type": "STRING"},
+                {"name": "B", "type": "FLOAT"},
+                {"name": "D", "type": "TIMESTAMP"},
+            ]
+        }
 
         self.table.create(TABLE_ID + test_id, test_schema_1)
         assert self.sut.verify_schema(
-            self.dataset_prefix + "1", TABLE_ID + test_id, test_schema_2)
+            self.dataset_prefix + "1", TABLE_ID + test_id, test_schema_2
+        )
 
     def test_verify_schema_fails_different_data_type(self):
         test_id = "11"
-        test_schema_1 = {'fields': [{'name': 'A', 'type': 'FLOAT'},
-                                    {'name': 'B', 'type': 'FLOAT'},
-                                    {'name': 'C', 'type': 'STRING'},
-                                    {'name': 'D', 'type': 'TIMESTAMP'}]}
-        test_schema_2 = {'fields': [{'name': 'A', 'type': 'FLOAT'},
-                                    {'name': 'B', 'type': 'STRING'},
-                                    {'name': 'C', 'type': 'STRING'},
-                                    {'name': 'D', 'type': 'TIMESTAMP'}]}
-
-        self.table.create(TABLE_ID + test_id, test_schema_1)
-        assert not self.sut.verify_schema(self.dataset_prefix + "1",
-                                          TABLE_ID + test_id, test_schema_2)
-
-    def test_verify_schema_fails_different_structure(self):
-        test_id = "12"
-        test_schema_1 = {'fields': [{'name': 'A', 'type': 'FLOAT'},
-                                    {'name': 'B', 'type': 'FLOAT'},
-                                    {'name': 'C', 'type': 'STRING'},
-                                    {'name': 'D', 'type': 'TIMESTAMP'}]}
-        test_schema_2 = {'fields': [{'name': 'A', 'type': 'FLOAT'},
-                                    {'name': 'B2', 'type': 'FLOAT'},
-                                    {'name': 'C', 'type': 'STRING'},
-                                    {'name': 'D', 'type': 'TIMESTAMP'}]}
+        test_schema_1 = {
+            "fields": [
+                {"name": "A", "type": "FLOAT"},
+                {"name": "B", "type": "FLOAT"},
+                {"name": "C", "type": "STRING"},
+                {"name": "D", "type": "TIMESTAMP"},
+            ]
+        }
+        test_schema_2 = {
+            "fields": [
+                {"name": "A", "type": "FLOAT"},
+                {"name": "B", "type": "STRING"},
+                {"name": "C", "type": "STRING"},
+                {"name": "D", "type": "TIMESTAMP"},
+            ]
+        }
 
         self.table.create(TABLE_ID + test_id, test_schema_1)
         assert not self.sut.verify_schema(
-            self.dataset_prefix + "1", TABLE_ID + test_id, test_schema_2)
+            self.dataset_prefix + "1", TABLE_ID + test_id, test_schema_2
+        )
+
+    def test_verify_schema_fails_different_structure(self):
+        test_id = "12"
+        test_schema_1 = {
+            "fields": [
+                {"name": "A", "type": "FLOAT"},
+                {"name": "B", "type": "FLOAT"},
+                {"name": "C", "type": "STRING"},
+                {"name": "D", "type": "TIMESTAMP"},
+            ]
+        }
+        test_schema_2 = {
+            "fields": [
+                {"name": "A", "type": "FLOAT"},
+                {"name": "B2", "type": "FLOAT"},
+                {"name": "C", "type": "STRING"},
+                {"name": "D", "type": "TIMESTAMP"},
+            ]
+        }
+
+        self.table.create(TABLE_ID + test_id, test_schema_1)
+        assert not self.sut.verify_schema(
+            self.dataset_prefix + "1", TABLE_ID + test_id, test_schema_2
+        )
 
     def test_upload_data_flexible_column_order(self, project_id):
         test_id = "13"
@@ -1022,230 +1311,287 @@ class TestToGBQIntegration(object):
         df = make_mixed_dataframe_v2(test_size)
 
         # Initialize table with sample data
-        gbq.to_gbq(df, self.destination_table + test_id, project_id,
-                   chunksize=10000, private_key=self.credentials)
+        gbq.to_gbq(
+            df,
+            self.destination_table + test_id,
+            project_id,
+            chunksize=10000,
+            private_key=self.credentials,
+        )
 
         df_columns_reversed = df[df.columns[::-1]]
 
-        gbq.to_gbq(df_columns_reversed, self.destination_table + test_id,
-                   project_id, if_exists='append',
-                   private_key=self.credentials)
+        gbq.to_gbq(
+            df_columns_reversed,
+            self.destination_table + test_id,
+            project_id,
+            if_exists="append",
+            private_key=self.credentials,
+        )
 
     def test_verify_schema_ignores_field_mode(self):
         test_id = "14"
-        test_schema_1 = {'fields': [{'name': 'A',
-                                     'type': 'FLOAT',
-                                     'mode': 'NULLABLE'},
-                                    {'name': 'B',
-                                     'type': 'FLOAT',
-                                     'mode': 'NULLABLE'},
-                                    {'name': 'C',
-                                     'type': 'STRING',
-                                     'mode': 'NULLABLE'},
-                                    {'name': 'D',
-                                     'type': 'TIMESTAMP',
-                                     'mode': 'REQUIRED'}]}
-        test_schema_2 = {'fields': [{'name': 'A',
-                                     'type': 'FLOAT'},
-                                    {'name': 'B',
-                                     'type': 'FLOAT'},
-                                    {'name': 'C',
-                                     'type': 'STRING'},
-                                    {'name': 'D',
-                                     'type': 'TIMESTAMP'}]}
+        test_schema_1 = {
+            "fields": [
+                {"name": "A", "type": "FLOAT", "mode": "NULLABLE"},
+                {"name": "B", "type": "FLOAT", "mode": "NULLABLE"},
+                {"name": "C", "type": "STRING", "mode": "NULLABLE"},
+                {"name": "D", "type": "TIMESTAMP", "mode": "REQUIRED"},
+            ]
+        }
+        test_schema_2 = {
+            "fields": [
+                {"name": "A", "type": "FLOAT"},
+                {"name": "B", "type": "FLOAT"},
+                {"name": "C", "type": "STRING"},
+                {"name": "D", "type": "TIMESTAMP"},
+            ]
+        }
 
         self.table.create(TABLE_ID + test_id, test_schema_1)
         assert self.sut.verify_schema(
-            self.dataset_prefix + "1", TABLE_ID + test_id, test_schema_2)
+            self.dataset_prefix + "1", TABLE_ID + test_id, test_schema_2
+        )
 
     def test_retrieve_schema(self):
         # Issue #24 schema function returns the schema in biquery
         test_id = "15"
         test_schema = {
-            'fields': [
+            "fields": [
                 {
-                    'name': 'A',
-                    'type': 'FLOAT',
-                    'mode': 'NULLABLE',
-                    'description': None,
+                    "name": "A",
+                    "type": "FLOAT",
+                    "mode": "NULLABLE",
+                    "description": None,
                 },
                 {
-                    'name': 'B',
-                    'type': 'FLOAT',
-                    'mode': 'NULLABLE',
-                    'description': None,
+                    "name": "B",
+                    "type": "FLOAT",
+                    "mode": "NULLABLE",
+                    "description": None,
                 },
                 {
-                    'name': 'C',
-                    'type': 'STRING',
-                    'mode': 'NULLABLE',
-                    'description': None,
+                    "name": "C",
+                    "type": "STRING",
+                    "mode": "NULLABLE",
+                    "description": None,
                 },
                 {
-                    'name': 'D',
-                    'type': 'TIMESTAMP',
-                    'mode': 'NULLABLE',
-                    'description': None,
+                    "name": "D",
+                    "type": "TIMESTAMP",
+                    "mode": "NULLABLE",
+                    "description": None,
                 },
             ]
         }
 
         self.table.create(TABLE_ID + test_id, test_schema)
         actual = self.sut._clean_schema_fields(
-            self.sut.schema(self.dataset_prefix + "1", TABLE_ID + test_id))
+            self.sut.schema(self.dataset_prefix + "1", TABLE_ID + test_id)
+        )
         expected = [
-            {'name': 'A', 'type': 'FLOAT'},
-            {'name': 'B', 'type': 'FLOAT'},
-            {'name': 'C', 'type': 'STRING'},
-            {'name': 'D', 'type': 'TIMESTAMP'},
+            {"name": "A", "type": "FLOAT"},
+            {"name": "B", "type": "FLOAT"},
+            {"name": "C", "type": "STRING"},
+            {"name": "D", "type": "TIMESTAMP"},
         ]
-        assert expected == actual, 'Expected schema used to create table'
+        assert expected == actual, "Expected schema used to create table"
 
     def test_schema_is_subset_passes_if_subset(self):
         # Issue #24 schema_is_subset indicates whether the schema of the
         # dataframe is a subset of the schema of the bigquery table
-        test_id = '16'
+        test_id = "16"
 
         table_name = TABLE_ID + test_id
-        dataset = self.dataset_prefix + '1'
+        dataset = self.dataset_prefix + "1"
 
-        table_schema = {'fields': [{'name': 'A',
-                                    'type': 'FLOAT'},
-                                   {'name': 'B',
-                                    'type': 'FLOAT'},
-                                   {'name': 'C',
-                                    'type': 'STRING'}]}
-        tested_schema = {'fields': [{'name': 'A',
-                                     'type': 'FLOAT'},
-                                    {'name': 'B',
-                                     'type': 'FLOAT'}]}
+        table_schema = {
+            "fields": [
+                {"name": "A", "type": "FLOAT"},
+                {"name": "B", "type": "FLOAT"},
+                {"name": "C", "type": "STRING"},
+            ]
+        }
+        tested_schema = {
+            "fields": [
+                {"name": "A", "type": "FLOAT"},
+                {"name": "B", "type": "FLOAT"},
+            ]
+        }
 
         self.table.create(table_name, table_schema)
 
-        assert self.sut.schema_is_subset(
-            dataset, table_name, tested_schema) is True
+        assert (
+            self.sut.schema_is_subset(dataset, table_name, tested_schema)
+            is True
+        )
 
     def test_schema_is_subset_fails_if_not_subset(self):
         # For pull request #24
-        test_id = '17'
+        test_id = "17"
 
         table_name = TABLE_ID + test_id
-        dataset = self.dataset_prefix + '1'
+        dataset = self.dataset_prefix + "1"
 
-        table_schema = {'fields': [{'name': 'A',
-                                    'type': 'FLOAT'},
-                                   {'name': 'B',
-                                    'type': 'FLOAT'},
-                                   {'name': 'C',
-                                    'type': 'STRING'}]}
-        tested_schema = {'fields': [{'name': 'A',
-                                     'type': 'FLOAT'},
-                                    {'name': 'C',
-                                     'type': 'FLOAT'}]}
+        table_schema = {
+            "fields": [
+                {"name": "A", "type": "FLOAT"},
+                {"name": "B", "type": "FLOAT"},
+                {"name": "C", "type": "STRING"},
+            ]
+        }
+        tested_schema = {
+            "fields": [
+                {"name": "A", "type": "FLOAT"},
+                {"name": "C", "type": "FLOAT"},
+            ]
+        }
 
         self.table.create(table_name, table_schema)
 
-        assert self.sut.schema_is_subset(
-            dataset, table_name, tested_schema) is False
+        assert (
+            self.sut.schema_is_subset(dataset, table_name, tested_schema)
+            is False
+        )
 
     def test_upload_data_with_valid_user_schema(self, project_id):
         # Issue #46; tests test scenarios with user-provided
         # schemas
         df = tm.makeMixedDataFrame()
         test_id = "18"
-        test_schema = [{'name': 'A', 'type': 'FLOAT'},
-                       {'name': 'B', 'type': 'FLOAT'},
-                       {'name': 'C', 'type': 'STRING'},
-                       {'name': 'D', 'type': 'TIMESTAMP'}]
+        test_schema = [
+            {"name": "A", "type": "FLOAT"},
+            {"name": "B", "type": "FLOAT"},
+            {"name": "C", "type": "STRING"},
+            {"name": "D", "type": "TIMESTAMP"},
+        ]
         destination_table = self.destination_table + test_id
-        gbq.to_gbq(df, destination_table, project_id,
-                   private_key=self.credentials,
-                   table_schema=test_schema)
-        dataset, table = destination_table.split('.')
-        assert self.table.verify_schema(dataset, table,
-                                        dict(fields=test_schema))
+        gbq.to_gbq(
+            df,
+            destination_table,
+            project_id,
+            private_key=self.credentials,
+            table_schema=test_schema,
+        )
+        dataset, table = destination_table.split(".")
+        assert self.table.verify_schema(
+            dataset, table, dict(fields=test_schema)
+        )
 
     def test_upload_data_with_invalid_user_schema_raises_error(
-            self, project_id):
+        self, project_id
+    ):
         df = tm.makeMixedDataFrame()
         test_id = "19"
-        test_schema = [{'name': 'A', 'type': 'FLOAT'},
-                       {'name': 'B', 'type': 'FLOAT'},
-                       {'name': 'C', 'type': 'FLOAT'},
-                       {'name': 'D', 'type': 'FLOAT'}]
+        test_schema = [
+            {"name": "A", "type": "FLOAT"},
+            {"name": "B", "type": "FLOAT"},
+            {"name": "C", "type": "FLOAT"},
+            {"name": "D", "type": "FLOAT"},
+        ]
         destination_table = self.destination_table + test_id
         with pytest.raises(gbq.GenericGBQException):
-            gbq.to_gbq(df, destination_table, project_id,
-                       private_key=self.credentials,
-                       table_schema=test_schema)
+            gbq.to_gbq(
+                df,
+                destination_table,
+                project_id,
+                private_key=self.credentials,
+                table_schema=test_schema,
+            )
 
     def test_upload_data_with_missing_schema_fields_raises_error(
-            self, project_id):
+        self, project_id
+    ):
         df = tm.makeMixedDataFrame()
         test_id = "20"
-        test_schema = [{'name': 'A', 'type': 'FLOAT'},
-                       {'name': 'B', 'type': 'FLOAT'},
-                       {'name': 'C', 'type': 'FLOAT'}]
+        test_schema = [
+            {"name": "A", "type": "FLOAT"},
+            {"name": "B", "type": "FLOAT"},
+            {"name": "C", "type": "FLOAT"},
+        ]
         destination_table = self.destination_table + test_id
         with pytest.raises(gbq.GenericGBQException):
-            gbq.to_gbq(df, destination_table, project_id,
-                       private_key=self.credentials,
-                       table_schema=test_schema)
+            gbq.to_gbq(
+                df,
+                destination_table,
+                project_id,
+                private_key=self.credentials,
+                table_schema=test_schema,
+            )
 
     def test_upload_data_with_timestamp(self, project_id):
         test_id = "21"
         test_size = 6
-        df = DataFrame(np.random.randn(test_size, 4), index=range(test_size),
-                       columns=list('ABCD'))
-        df['times'] = np.datetime64('2018-03-13T05:40:45.348318Z')
+        df = DataFrame(
+            np.random.randn(test_size, 4),
+            index=range(test_size),
+            columns=list("ABCD"),
+        )
+        df["times"] = np.datetime64("2018-03-13T05:40:45.348318Z")
 
         gbq.to_gbq(
-            df, self.destination_table + test_id,
-            project_id=project_id,
-            private_key=self.credentials)
-
-        result_df = gbq.read_gbq(
-            'SELECT * FROM {0}'.format(self.destination_table + test_id),
+            df,
+            self.destination_table + test_id,
             project_id=project_id,
             private_key=self.credentials,
-            dialect='legacy')
+        )
+
+        result_df = gbq.read_gbq(
+            "SELECT * FROM {0}".format(self.destination_table + test_id),
+            project_id=project_id,
+            private_key=self.credentials,
+            dialect="legacy",
+        )
 
         assert len(result_df) == test_size
 
-        expected = df['times'].sort_values()
-        result = result_df['times'].sort_values()
+        expected = df["times"].sort_values()
+        result = result_df["times"].sort_values()
         tm.assert_numpy_array_equal(expected.values, result.values)
 
     def test_upload_data_with_different_df_and_user_schema(self, project_id):
         df = tm.makeMixedDataFrame()
-        df['A'] = df['A'].astype(str)
-        df['B'] = df['B'].astype(str)
+        df["A"] = df["A"].astype(str)
+        df["B"] = df["B"].astype(str)
         test_id = "22"
-        test_schema = [{'name': 'A', 'type': 'FLOAT'},
-                       {'name': 'B', 'type': 'FLOAT'},
-                       {'name': 'C', 'type': 'STRING'},
-                       {'name': 'D', 'type': 'TIMESTAMP'}]
+        test_schema = [
+            {"name": "A", "type": "FLOAT"},
+            {"name": "B", "type": "FLOAT"},
+            {"name": "C", "type": "STRING"},
+            {"name": "D", "type": "TIMESTAMP"},
+        ]
         destination_table = self.destination_table + test_id
-        gbq.to_gbq(df, destination_table, project_id,
-                   private_key=self.credentials,
-                   table_schema=test_schema)
-        dataset, table = destination_table.split('.')
-        assert self.table.verify_schema(dataset, table,
-                                        dict(fields=test_schema))
+        gbq.to_gbq(
+            df,
+            destination_table,
+            project_id,
+            private_key=self.credentials,
+            table_schema=test_schema,
+        )
+        dataset, table = destination_table.split(".")
+        assert self.table.verify_schema(
+            dataset, table, dict(fields=test_schema)
+        )
 
     def test_upload_data_tokyo(
-            self, project_id, tokyo_dataset, bigquery_client):
+        self, project_id, tokyo_dataset, bigquery_client
+    ):
         test_size = 10
         df = make_mixed_dataframe_v2(test_size)
-        tokyo_destination = '{}.to_gbq_test'.format(tokyo_dataset)
+        tokyo_destination = "{}.to_gbq_test".format(tokyo_dataset)
 
         # Initialize table with sample data
         gbq.to_gbq(
-            df, tokyo_destination, project_id, private_key=self.credentials,
-            location='asia-northeast1')
+            df,
+            tokyo_destination,
+            project_id,
+            private_key=self.credentials,
+            location="asia-northeast1",
+        )
 
         table = bigquery_client.get_table(
-            bigquery_client.dataset(tokyo_dataset).table('to_gbq_test'))
+            bigquery_client.dataset(tokyo_dataset).table("to_gbq_test")
+        )
         assert table.num_rows > 0
 
     def test_list_dataset(self):
@@ -1255,9 +1601,9 @@ class TestToGBQIntegration(object):
     def test_list_table_zero_results(self, project_id):
         dataset_id = self.dataset_prefix + "2"
         self.dataset.create(dataset_id)
-        table_list = gbq._Dataset(project_id,
-                                  private_key=self.credentials
-                                  ).tables(dataset_id)
+        table_list = gbq._Dataset(
+            project_id, private_key=self.credentials
+        ).tables(dataset_id)
         assert len(table_list) == 0
 
     def test_create_dataset(self):

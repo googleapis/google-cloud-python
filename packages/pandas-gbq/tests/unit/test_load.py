@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 
+from io import StringIO
+
 import numpy
 import pandas
 
 from pandas_gbq import load
-from io import StringIO
 
 
 def test_encode_chunk_with_unicode():
@@ -13,12 +14,13 @@ def test_encode_chunk_with_unicode():
     See: https://github.com/pydata/pandas-gbq/issues/106
     """
     df = pandas.DataFrame(
-        numpy.random.randn(6, 4), index=range(6), columns=list('ABCD'))
-    df['s'] = u'信用卡'
+        numpy.random.randn(6, 4), index=range(6), columns=list("ABCD")
+    )
+    df["s"] = u"信用卡"
     csv_buffer = load.encode_chunk(df)
     csv_bytes = csv_buffer.read()
-    csv_string = csv_bytes.decode('utf-8')
-    assert u'信用卡' in csv_string
+    csv_string = csv_bytes.decode("utf-8")
+    assert u"信用卡" in csv_string
 
 
 def test_encode_chunk_with_floats():
@@ -27,12 +29,12 @@ def test_encode_chunk_with_floats():
 
     See: https://github.com/pydata/pandas-gbq/issues/192
     """
-    input_csv = StringIO(u'01/01/17 23:00,1.05148,1.05153,1.05148,1.05153,4')
+    input_csv = StringIO(u"01/01/17 23:00,1.05148,1.05153,1.05148,1.05153,4")
     df = pandas.read_csv(input_csv, header=None)
     csv_buffer = load.encode_chunk(df)
     csv_bytes = csv_buffer.read()
-    csv_string = csv_bytes.decode('utf-8')
-    assert '1.05153' in csv_string
+    csv_string = csv_bytes.decode("utf-8")
+    assert "1.05153" in csv_string
 
 
 def test_encode_chunks_splits_dataframe():

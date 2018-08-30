@@ -1,10 +1,4 @@
 linters:
-  flake8:
-    max-line-length: 79
+  black:
+    config: ./pyproject.toml
     fixer: true
-    ignore:
-files:
-  ignore:
-    - doc/**/*.py
-fixers:
-  enable: true
