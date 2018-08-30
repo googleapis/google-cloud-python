@@ -292,7 +292,9 @@ class Table(object):
             self.name, row_key=row_key, filter_=filter_,
             app_profile_id=self._app_profile_id)
         data_client = self._instance._client.table_data_client
-        rows_data = PartialRowsData(data_client._read_rows, request_pb)
+        rows_data = PartialRowsData(
+            data_client._inner_api_calls['read_rows'],
+            request_pb)
 
         rows_data.consume_all()
         if rows_data.state not in (rows_data.NEW_ROW, rows_data.START):
@@ -344,7 +346,9 @@ class Table(object):
             filter_=filter_, limit=limit, end_inclusive=end_inclusive,
             app_profile_id=self._app_profile_id, row_set=row_set)
         data_client = self._instance._client.table_data_client
-        return PartialRowsData(data_client._read_rows, request_pb)
+        return PartialRowsData(
+            data_client.transport.read_rows,
+            request_pb)
 
     def yield_rows(self, **kwargs):
         """Read rows from this table.
@@ -608,7 +612,8 @@ class _RetryableMutateRowsWorker(object):
             self.table_name, retryable_rows,
             app_profile_id=self.app_profile_id)
         data_client = self.client.table_data_client
-        responses = data_client._mutate_rows(mutate_rows_request, retry=None)
+        responses = data_client._inner_api_calls['mutate_rows'](
+            mutate_rows_request, retry=None)
 
         num_responses = 0
         num_retryable_responses = 0
