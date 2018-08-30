@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Messages &#8212; google-cloud fa27f5dbbb documentation</title>
+    <title>Messages &#8212; google-cloud 20edbb4132 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -114,6 +114,12 @@ receive any given message more than once.</p>
 </dd></dl>
 
 <dl class="attribute">
+<dt id="google.cloud.pubsub_v1.subscriber.message.Message.ack_id">
+<code class="descname">ack_id</code><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.message.Message.ack_id" title="Permalink to this definition">#</a></dt>
+<dd><p><em>str</em> – the ID used to ack the message.</p>
+</dd></dl>
+
+<dl class="attribute">
 <dt>
 <code class="descname">attributes</code></dt>
 <dd><p>Return the attributes of the underlying Pub/Sub Message.</p>
@@ -160,6 +166,54 @@ to just cast the map to a <code class="docutils literal notranslate"><span class
 </dd></dl>
 
 <dl class="method">
+<dt id="google.cloud.pubsub_v1.subscriber.message.Message.drop">
+<code class="descname">drop</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/pubsub_v1/subscriber/message.html#Message.drop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.message.Message.drop" title="Permalink to this definition">#</a></dt>
+<dd><p>Release the message from lease management.</p>
+<p>This informs the policy to no longer hold on to the lease for this
+message. Pub/Sub will re-deliver the message if it is not acknowledged
+before the existing lease expires.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">For most use cases, the only reason to drop a message from
+lease management is on <a class="reference internal" href="#google.cloud.pubsub_v1.subscriber.message.Message.ack" title="google.cloud.pubsub_v1.subscriber.message.Message.ack"><code class="xref py py-meth docutils literal notranslate"><span class="pre">ack()</span></code></a> or <a class="reference internal" href="#google.cloud.pubsub_v1.subscriber.message.Message.nack" title="google.cloud.pubsub_v1.subscriber.message.Message.nack"><code class="xref py py-meth docutils literal notranslate"><span class="pre">nack()</span></code></a>; these methods
+both call this one. You probably do not want to call this method
+directly.</p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.pubsub_v1.subscriber.message.Message.lease">
+<code class="descname">lease</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/pubsub_v1/subscriber/message.html#Message.lease"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.message.Message.lease" title="Permalink to this definition">#</a></dt>
+<dd><p>Inform the policy to lease this message continually.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This method is called by the constructor, and you should never
+need to call it manually.</p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.pubsub_v1.subscriber.message.Message.modify_ack_deadline">
+<code class="descname">modify_ack_deadline</code><span class="sig-paren">(</span><em>seconds</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/pubsub_v1/subscriber/message.html#Message.modify_ack_deadline"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.message.Message.modify_ack_deadline" title="Permalink to this definition">#</a></dt>
+<dd><p>Resets the deadline for acknowledgement.</p>
+<p>New deadline will be the given value of seconds from now.</p>
+<p>The default implementation handles this for you; you should not need
+to manually deal with setting ack deadlines. The exception case is
+if you are implementing your own custom subclass of
+<code class="xref py py-class docutils literal notranslate"><span class="pre">Consumer</span></code>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>seconds</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – The number of seconds to set the lease deadline
+to. This should be between 0 and 600. Due to network latency,
+values below 10 are advised against.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="google.cloud.pubsub_v1.subscriber.message.Message.nack">
 <code class="descname">nack</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/pubsub_v1/subscriber/message.html#Message.nack"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.message.Message.nack" title="Permalink to this definition">#</a></dt>
 <dd><p>Decline to acknowldge the given message.</p>
@@ -180,6 +234,12 @@ to just cast the map to a <code class="docutils literal notranslate"><span class
 </tr>
 </tbody>
 </table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.pubsub_v1.subscriber.message.Message.size">
+<code class="descname">size</code><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.message.Message.size" title="Permalink to this definition">#</a></dt>
+<dd><p>Return the size of the underlying message, in bytes.</p>
 </dd></dl>
 
 </dd></dl>

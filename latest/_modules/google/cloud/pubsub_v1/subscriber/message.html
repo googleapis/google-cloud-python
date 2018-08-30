@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.pubsub_v1.subscriber.message &#8212; google-cloud fa27f5dbbb documentation</title>
+    <title>google.cloud.pubsub_v1.subscriber.message &#8212; google-cloud 20edbb4132 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -227,7 +227,7 @@
             <span class="p">)</span>
         <span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">drop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Message.drop"><a class="viewcode-back" href="../../../../../pubsub/subscriber/api/message.html#google.cloud.pubsub_v1.subscriber.message.Message.drop">[docs]</a>    <span class="k">def</span> <span class="nf">drop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Release the message from lease management.</span>
 
 <span class="sd">        This informs the policy to no longer hold on to the lease for this</span>
@@ -245,9 +245,9 @@
                 <span class="n">ack_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_ack_id</span><span class="p">,</span>
                 <span class="n">byte_size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">size</span>
             <span class="p">)</span>
-        <span class="p">)</span>
+        <span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">lease</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Message.lease"><a class="viewcode-back" href="../../../../../pubsub/subscriber/api/message.html#google.cloud.pubsub_v1.subscriber.message.Message.lease">[docs]</a>    <span class="k">def</span> <span class="nf">lease</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Inform the policy to lease this message continually.</span>
 
 <span class="sd">        .. note::</span>
@@ -259,9 +259,9 @@
                 <span class="n">ack_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_ack_id</span><span class="p">,</span>
                 <span class="n">byte_size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">size</span>
             <span class="p">)</span>
-        <span class="p">)</span>
+        <span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">modify_ack_deadline</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">seconds</span><span class="p">):</span>
+<div class="viewcode-block" id="Message.modify_ack_deadline"><a class="viewcode-back" href="../../../../../pubsub/subscriber/api/message.html#google.cloud.pubsub_v1.subscriber.message.Message.modify_ack_deadline">[docs]</a>    <span class="k">def</span> <span class="nf">modify_ack_deadline</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">seconds</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Resets the deadline for acknowledgement.</span>
 
 <span class="sd">        New deadline will be the given value of seconds from now.</span>
@@ -281,7 +281,7 @@
                 <span class="n">ack_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_ack_id</span><span class="p">,</span>
                 <span class="n">seconds</span><span class="o">=</span><span class="n">seconds</span>
             <span class="p">)</span>
-        <span class="p">)</span>
+        <span class="p">)</span></div>
 
 <div class="viewcode-block" id="Message.nack"><a class="viewcode-back" href="../../../../../pubsub/subscriber/api/message.html#google.cloud.pubsub_v1.subscriber.message.Message.nack">[docs]</a>    <span class="k">def</span> <span class="nf">nack</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Decline to acknowldge the given message.</span>
