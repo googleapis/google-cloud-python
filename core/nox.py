@@ -39,7 +39,8 @@ def default(session):
         'pytest-cov',
         'grpcio >= 1.0.2',
     )
-    session.install('-e', *LOCAL_DEPS)
+    for local_dep in LOCAL_DEPS:
+        session.install('-e', local_dep)
     session.install('-e', '.')
 
     # Run py.test against the unit tests.

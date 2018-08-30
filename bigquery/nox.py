@@ -36,7 +36,8 @@ def default(session):
     """
     # Install all test dependencies, then install local packages in-place.
     session.install('mock', 'pytest', 'pytest-cov')
-    session.install('-e', *LOCAL_DEPS)
+    for local_dep in LOCAL_DEPS:
+        session.install('-e', local_dep)
 
     # Pyarrow does not support Python 3.7
     if session.interpreter == 'python3.7':
@@ -100,11 +101,10 @@ def system(session, py):
 
     # Install all test dependencies, then install local packages in place.
     session.install('mock', 'pytest')
-    session.install('-e', *LOCAL_DEPS)
-    session.install('-e',
-        os.path.join('..', 'storage'),
-        os.path.join('..', 'test_utils'),
-    )
+    for local_dep in LOCAL_DEPS:
+        session.install('-e', local_dep)
+    session.install('-e', os.path.join('..', 'storage'))
+    session.install('-e', os.path.join('..', 'test_utils'))
     session.install('-e', '.[pandas]')
 
     # IPython does not support Python 2 after version 5.x
@@ -139,11 +139,10 @@ def snippets(session, py):
 
     # Install all test dependencies, then install local packages in place.
     session.install('mock', 'pytest')
-    session.install('-e', *LOCAL_DEPS)
-    session.install('-e',
-        os.path.join('..', 'storage'),
-        os.path.join('..', 'test_utils'),
-    )
+    for local_dep in LOCAL_DEPS:
+        session.install('-e', local_dep)
+    session.install('-e', os.path.join('..', 'storage'))
+    session.install('-e', os.path.join('..', 'test_utils'))
     session.install('-e', '.[pandas, pyarrow]')
 
     # Run py.test against the system tests.

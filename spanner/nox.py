@@ -36,7 +36,8 @@ def default(session):
     """
     # Install all test dependencies, then install local packages in-place.
     session.install('mock', 'pytest', 'pytest-cov')
-    session.install('-e', *LOCAL_DEPS)
+    for local_dep in LOCAL_DEPS:
+        session.install('-e', local_dep)
     session.install('-e', '.')
 
     # Run py.test against the unit tests.
@@ -92,7 +93,9 @@ def system_common(session):
 
     # Install all test dependencies, then install local packages in-place.
     session.install('mock', 'pytest')
-    session.install('-e', '../test_utils/', *LOCAL_DEPS)
+    for local_dep in LOCAL_DEPS:
+        session.install('-e', local_dep)
+    session.install('-e', '../test_utils/')
     session.install('-e', '.')
 
     # Run py.test against the system tests.
