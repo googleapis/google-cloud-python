@@ -28,6 +28,7 @@ library = gapic.py_library(
     artman_output_name='bigtable-v2')
 
 s.move(library / 'google/cloud/bigtable_v2')
+s.move(library / 'tests')
 
 # Generate admin client
 library = gapic.py_library(
@@ -37,9 +38,24 @@ library = gapic.py_library(
     artman_output_name='bigtable-admin-v2')
 
 s.move(library / 'google/cloud/bigtable_admin_v2')
+s.move(library / 'tests')
 
 s.replace(
     ['google/cloud/bigtable_admin_v2/gapic/bigtable_instance_admin_client.py',
      'google/cloud/bigtable_admin_v2/gapic/bigtable_table_admin_client.py'],
     "'google-cloud-bigtable-admin'",
     "'google-cloud-bigtable'")
+
+s.replace(
+    "**/*.py",
+    'from google\.cloud\.bigtable\.admin_v2.proto',
+    'from google.cloud.bigtable_admin_v2.proto')
+
+
+# # The handwritten client counts on there being a self.bigtable_stub
+# s.replace(
+#     'google/cloud/bigtable_v2/gapic/bigtable_client.py',
+#     '^(\s+)if client_info is None:',
+#     '\g<1># Create the gRPC stubs.'
+#     '\g<1>self.bigtable_stub = (bigtable_pb2.BigtableStub(channel))\n'
+#     '\g<0>')
