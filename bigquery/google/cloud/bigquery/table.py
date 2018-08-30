@@ -1166,7 +1166,8 @@ class RowIterator(HTTPIterator):
             raise ValueError(_NO_PANDAS_ERROR)
 
         column_headers = [field.name for field in self.schema]
-        rows = [row.values() for row in iter(self)]
+        # Use generator, rather than pulling the whole rowset into memory.
+        rows = (row.values() for row in iter(self))
 
         return pandas.DataFrame(rows, columns=column_headers)
 
