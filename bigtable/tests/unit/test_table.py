@@ -791,8 +791,6 @@ class TestTable(unittest.TestCase):
         client._table_admin_client = table_api
         instance = client.instance(instance_id=self.INSTANCE_ID)
         table = self._make_one(self.TABLE_ID, instance)
-        table.name.return_value = client._table_data_client.table_path(
-            self.PROJECT_ID,  self.INSTANCE_ID, self.TABLE_ID)
 
         expected_result = None  # truncate() has no return value.
         with mock.patch('google.cloud.bigtable.table.Table.name',
