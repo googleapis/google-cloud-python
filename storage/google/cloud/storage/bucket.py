@@ -1091,11 +1091,18 @@ class Bucket(_PropertyMixin):
         :setter: Set lifestyle rules for this bucket.
         :getter: Gets the lifestyle rules for this bucket.
 
-        :rtype: list(dict)
+        :rtype: generator(dict)
         :returns: A sequence of mappings describing each lifecycle rule.
         """
         info = self._properties.get('lifecycle', {})
-        return [copy.deepcopy(rule) for rule in info.get('rule', ())]
+        for rule in info.get('rule', ()):
+            action_type = rule['action']['type']
+            if action_type == 'Delete':
+                yield LifecycleRuleDeleteItem.from_api_repr(rule)
+            elif action_type == 'SetStorageClass':
+                yield LifecycleRuleSetItemStorageClass.from_api_repr(rule)
+            else:
+                raise ValueError("Unknown lifecycle rule: {}".format(rule))
 
     @lifecycle_rules.setter
     def lifecycle_rules(self, rules):
@@ -1107,6 +1114,7 @@ class Bucket(_PropertyMixin):
         :type entries: list of dictionaries
         :param entries: A sequence of mappings describing each lifecycle rule.
         """
+        rules = [dict(rule) for rule in rules]  # Convert helpers if needed
         self._patch_property('lifecycle', {'rule': rules})
 
     _location = _scalar_property('location')

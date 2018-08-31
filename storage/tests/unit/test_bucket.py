@@ -1099,24 +1099,121 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(bucket.location, 'AS')
         self.assertTrue('location' in bucket._changes)
 
-    def test_lifecycle_rules_getter(self):
+    def test_lifecycle_rules_getter_unknown_action_type(self):
         NAME = 'name'
-        LC_RULE = {'action': {'type': 'Delete'}, 'condition': {'age': 42}}
-        rules = [LC_RULE]
+        BOGUS_RULE = {
+            'action': {
+                'type': 'Bogus',
+            },
+            'condition': {
+                'age': 42,
+            },
+        }
+        rules = [BOGUS_RULE]
         properties = {'lifecycle': {'rule': rules}}
         bucket = self._make_one(name=NAME, properties=properties)
-        self.assertEqual(bucket.lifecycle_rules, rules)
-        # Make sure it's a copy
-        self.assertIsNot(bucket.lifecycle_rules, rules)
 
-    def test_lifecycle_rules_setter(self):
+        with self.assertRaises(ValueError):
+            list(bucket.lifecycle_rules)
+
+    def test_lifecycle_rules_getter(self):
+        from google.cloud.storage.bucket import (
+            LifecycleRuleDeleteItem, LifecycleRuleSetItemStorageClass)
+
         NAME = 'name'
-        LC_RULE = {'action': {'type': 'Delete'}, 'condition': {'age': 42}}
-        rules = [LC_RULE]
+        DELETE_RULE = {
+            'action': {
+                'type': 'Delete',
+            },
+            'condition': {
+                'age': 42,
+            },
+        }
+        SSC_RULE = {
+            'action': {
+                'type': 'SetStorageClass',
+                'storageClass': 'NEARLINE',
+            },
+            'condition': {
+                'isLive': False,
+            },
+        }
+        rules = [DELETE_RULE, SSC_RULE]
+        properties = {'lifecycle': {'rule': rules}}
+        bucket = self._make_one(name=NAME, properties=properties)
+
+        found = list(bucket.lifecycle_rules)
+
+        delete_rule = found[0]
+        self.assertIsInstance(delete_rule, LifecycleRuleDeleteItem)
+        self.assertEqual(dict(delete_rule), DELETE_RULE)
+
+        ssc_rule = found[1]
+        self.assertIsInstance(ssc_rule, LifecycleRuleSetItemStorageClass)
+        self.assertEqual(dict(ssc_rule), SSC_RULE)
+
+    def test_lifecycle_rules_setter_w_dicts(self):
+        NAME = 'name'
+        DELETE_RULE = {
+            'action': {
+                'type': 'Delete',
+            },
+            'condition': {
+                'age': 42,
+            },
+        }
+        SSC_RULE = {
+            'action': {
+                'type': 'SetStorageClass',
+                'storageClass': 'NEARLINE',
+            },
+            'condition': {
+                'isLive': False,
+            },
+        }
+        rules = [DELETE_RULE, SSC_RULE]
         bucket = self._make_one(name=NAME)
-        self.assertEqual(bucket.lifecycle_rules, [])
+        self.assertEqual(list(bucket.lifecycle_rules), [])
+
         bucket.lifecycle_rules = rules
-        self.assertEqual(bucket.lifecycle_rules, rules)
+
+        self.assertEqual(
+            [dict(rule) for rule in bucket.lifecycle_rules], rules)
+        self.assertTrue('lifecycle' in bucket._changes)
+
+    def test_lifecycle_rules_setter_w_helpers(self):
+        from google.cloud.storage.bucket import (
+            LifecycleRuleDeleteItem, LifecycleRuleSetItemStorageClass)
+
+        NAME = 'name'
+        DELETE_RULE = {
+            'action': {
+                'type': 'Delete',
+            },
+            'condition': {
+                'age': 42,
+            },
+        }
+        SSC_RULE = {
+            'action': {
+                'type': 'SetStorageClass',
+                'storageClass': 'NEARLINE',
+            },
+            'condition': {
+                'isLive': False,
+            },
+        }
+        rules = [DELETE_RULE, SSC_RULE]
+        bucket = self._make_one(name=NAME)
+        self.assertEqual(list(bucket.lifecycle_rules), [])
+
+        bucket.lifecycle_rules = [
+            LifecycleRuleDeleteItem(age=42),
+            LifecycleRuleSetItemStorageClass('NEARLINE', is_live=False),
+        ]
+
+        self.assertEqual(
+            [dict(rule) for rule in bucket.lifecycle_rules], rules)
         self.assertTrue('lifecycle' in bucket._changes)
 
     def test_cors_getter(self):
