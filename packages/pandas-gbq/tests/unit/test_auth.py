@@ -95,7 +95,9 @@ def test_get_credentials_load_user_no_default(monkeypatch):
         google.auth.credentials.Credentials
     )
 
-    def mock_load_credentials(project_id=None, credentials_path=None):
+    def mock_load_credentials(
+        try_credentials, project_id=None, credentials_path=None
+    ):
         return mock_user_credentials
 
     monkeypatch.setattr(

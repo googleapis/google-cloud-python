@@ -16,20 +16,28 @@ SCOPES = ["https://www.googleapis.com/auth/bigquery"]
 
 
 def get_credentials(
-    private_key=None, project_id=None, reauth=False, auth_local_webserver=False
+    private_key=None,
+    project_id=None,
+    reauth=False,
+    auth_local_webserver=False,
+    try_credentials=None,
 ):
+    if try_credentials is None:
+        try_credentials = _try_credentials
+
     if private_key:
         return get_service_account_credentials(private_key)
 
     # Try to retrieve Application Default Credentials
     credentials, default_project = get_application_default_credentials(
-        project_id=project_id
+        try_credentials, project_id=project_id
     )
 
     if credentials:
         return credentials, default_project
 
     credentials = get_user_account_credentials(
+        try_credentials,
         project_id=project_id,
         reauth=reauth,
         auth_local_webserver=auth_local_webserver,
@@ -79,7 +87,7 @@ def get_service_account_credentials(private_key):
         )
 
 
-def get_application_default_credentials(project_id=None):
+def get_application_default_credentials(try_credentials, project_id=None):
     """
     This method tries to retrieve the "default application credentials".
     This could be useful for running code on Google Cloud Platform.
@@ -111,10 +119,11 @@ def get_application_default_credentials(project_id=None):
     # used with BigQuery. For example, we could be running on a GCE instance
     # that does not allow the BigQuery scopes.
     billing_project = project_id or default_project
-    return _try_credentials(billing_project, credentials), billing_project
+    return try_credentials(billing_project, credentials), billing_project
 
 
 def get_user_account_credentials(
+    try_credentials,
     project_id=None,
     reauth=False,
     auth_local_webserver=False,
@@ -151,7 +160,9 @@ def get_user_account_credentials(
             os.rename("bigquery_credentials.dat", credentials_path)
 
     credentials = load_user_account_credentials(
-        project_id=project_id, credentials_path=credentials_path
+        try_credentials,
+        project_id=project_id,
+        credentials_path=credentials_path,
     )
 
     client_config = {
@@ -187,7 +198,9 @@ def get_user_account_credentials(
     return credentials
 
 
-def load_user_account_credentials(project_id=None, credentials_path=None):
+def load_user_account_credentials(
+    try_credentials, project_id=None, credentials_path=None
+):
     """
     Loads user account credentials from a local file.
 
@@ -230,7 +243,7 @@ def load_user_account_credentials(project_id=None, credentials_path=None):
     request = google.auth.transport.requests.Request()
     credentials.refresh(request)
 
-    return _try_credentials(project_id, credentials)
+    return try_credentials(project_id, credentials)
 
 
 def get_default_credentials_path():

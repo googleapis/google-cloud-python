@@ -171,6 +171,7 @@ class GbqConnector(object):
         auth_local_webserver=False,
         dialect="legacy",
         location=None,
+        try_credentials=None,
     ):
         from google.api_core.exceptions import GoogleAPIError
         from google.api_core.exceptions import ClientError
@@ -189,6 +190,7 @@ class GbqConnector(object):
             project_id=project_id,
             reauth=reauth,
             auth_local_webserver=auth_local_webserver,
+            try_credentials=try_credentials,
         )
 
         if self.project_id is None:
@@ -804,6 +806,9 @@ def to_gbq(
         private_key=private_key,
         auth_local_webserver=auth_local_webserver,
         location=location,
+        # Avoid reads when writing tables.
+        # https://github.com/pydata/pandas-gbq/issues/202
+        try_credentials=lambda project, creds: creds,
     )
     dataset_id, table_id = destination_table.rsplit(".", 1)
 

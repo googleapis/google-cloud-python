@@ -12,6 +12,7 @@ Changelog
   (:issue:`128`)
 - Reduced verbosity of logging from ``read_gbq``, particularly for short
   queries. (:issue:`201`)
+- Avoid ``SELECT 1`` query when running ``to_gbq``. (:issue:`202`)
 
 .. _changelog-0.6.0:
 

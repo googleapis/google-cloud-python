@@ -66,9 +66,13 @@ def test_get_application_default_credentials_does_not_throw_error():
         with mock.patch(
             "google.auth.default", side_effect=DefaultCredentialsError()
         ):
-            credentials, _ = auth.get_application_default_credentials()
+            credentials, _ = auth.get_application_default_credentials(
+                try_credentials=auth._try_credentials
+            )
     else:
-        credentials, _ = auth.get_application_default_credentials()
+        credentials, _ = auth.get_application_default_credentials(
+            try_credentials=auth._try_credentials
+        )
     assert credentials is None
 
 
@@ -77,7 +81,9 @@ def test_get_application_default_credentials_returns_credentials():
         pytest.skip("Cannot get default_credentials " "from the environment!")
     from google.auth.credentials import Credentials
 
-    credentials, default_project = auth.get_application_default_credentials()
+    credentials, default_project = auth.get_application_default_credentials(
+        try_credentials=auth._try_credentials
+    )
 
     assert isinstance(credentials, Credentials)
     assert default_project is not None
@@ -88,7 +94,9 @@ def test_get_user_account_credentials_bad_file_returns_credentials():
     from google.auth.credentials import Credentials
 
     with mock.patch("__main__.open", side_effect=IOError()):
-        credentials = auth.get_user_account_credentials()
+        credentials = auth.get_user_account_credentials(
+            try_credentials=auth._try_credentials
+        )
     assert isinstance(credentials, Credentials)
 
 
@@ -97,7 +105,9 @@ def test_get_user_account_credentials_returns_credentials(project_id):
     from google.auth.credentials import Credentials
 
     credentials = auth.get_user_account_credentials(
-        project_id=project_id, auth_local_webserver=True
+        project_id=project_id,
+        auth_local_webserver=True,
+        try_credentials=auth._try_credentials,
     )
     assert isinstance(credentials, Credentials)
 
@@ -107,6 +117,9 @@ def test_get_user_account_credentials_reauth_returns_credentials(project_id):
     from google.auth.credentials import Credentials
 
     credentials = auth.get_user_account_credentials(
-        project_id=project_id, auth_local_webserver=True, reauth=True
+        project_id=project_id,
+        auth_local_webserver=True,
+        reauth=True,
+        try_credentials=auth._try_credentials,
     )
     assert isinstance(credentials, Credentials)

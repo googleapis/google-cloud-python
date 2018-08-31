@@ -46,6 +46,7 @@ def mock_bigquery_client(monkeypatch):
     # Mock table creation.
     mock_client.get_table.side_effect = NotFound("nope")
     monkeypatch.setattr(gbq.GbqConnector, "get_client", lambda _: mock_client)
+    return mock_client
 
 
 def mock_none_credentials(*args, **kwargs):
@@ -208,6 +209,19 @@ def test_to_gbq_with_verbose_old_pandas_no_warnings(recwarn, min_bq_version):
         except gbq.TableCreationError:
             pass
         assert len(recwarn) == 0
+
+
+def test_to_gbq_doesnt_run_query(
+    recwarn, mock_bigquery_client, min_bq_version
+):
+    try:
+        gbq.to_gbq(
+            DataFrame([[1]]), "dataset.tablename", project_id="my-project"
+        )
+    except gbq.TableCreationError:
+        pass
+
+    mock_bigquery_client.query.assert_not_called()
 
 
 def test_read_gbq_with_no_project_id_given_should_fail(monkeypatch):
