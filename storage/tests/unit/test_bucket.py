@@ -31,6 +31,62 @@ def _create_signing_credentials():
     return credentials
 
 
+class Test_LifecycleRuleConditions(unittest.TestCase):
+
+    @staticmethod
+    def _get_target_class():
+        from google.cloud.storage.bucket import LifecycleRuleConditions
+        return LifecycleRuleConditions
+
+    def _make_one(self, **kw):
+        return self._get_target_class()(**kw)
+
+    def test_ctor_wo_conditions(self):
+        with self.assertRaises(ValueError):
+            self._make_one()
+
+    def test_ctor_w_age_and_matches_storage_class(self):
+        conditions = self._make_one(age=10, matches_storage_class='REGIONAL')
+        expected = {
+            'age': 10,
+            'matchesStorageClass': 'REGIONAL',
+        }
+        self.assertEqual( dict(conditions), expected)
+        self.assertEqual(conditions.age, 10)
+        self.assertIsNone(conditions.created_before)
+        self.assertIsNone(conditions.is_live)
+        self.assertEqual(conditions.matches_storage_class, 'REGIONAL')
+        self.assertIsNone(conditions.number_of_newer_versions)
+
+    def test_ctor_w_created_before_and_is_live(self):
+        import datetime
+
+        before = datetime.date(2018, 8, 1)
+        conditions = self._make_one(created_before=before, is_live=False)
+        expected = {
+            'createdBefore': '2018-08-01',
+            'isLive': False,
+        }
+        self.assertEqual(dict(conditions), expected)
+        self.assertIsNone(conditions.age)
+        self.assertEqual(conditions.created_before, before)
+        self.assertEqual(conditions.is_live, False)
+        self.assertIsNone(conditions.matches_storage_class)
+        self.assertIsNone(conditions.number_of_newer_versions)
+
+    def test_ctor_w_number_of_newer_versions(self):
+        conditions = self._make_one(number_of_newer_versions=3)
+        expected = {
+            'numNewerVersions': 3,
+        }
+        self.assertEqual(dict(conditions), expected)
+        self.assertIsNone(conditions.age)
+        self.assertIsNone(conditions.created_before)
+        self.assertIsNone(conditions.is_live)
+        self.assertIsNone(conditions.matches_storage_class)
+        self.assertEqual(conditions.number_of_newer_versions, 3)
+
+
 class Test_Bucket(unittest.TestCase):
 
     @staticmethod

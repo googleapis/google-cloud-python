@@ -23,6 +23,7 @@ import warnings
 import six
 
 from google.api_core import page_iterator
+from google.api_core import datetime_helpers
 from google.cloud._helpers import _datetime_to_rfc3339
 from google.cloud._helpers import _NOW
 from google.cloud._helpers import _rfc3339_to_datetime
@@ -97,6 +98,87 @@ def _item_to_notification(iterator, item):
     :returns: The next notification being iterated.
     """
     return BucketNotification.from_api_repr(item, bucket=iterator.bucket)
+
+
+class LifecycleRuleConditions(dict):
+    """Map a single lifecycle rule for a bucket.
+
+    See: https://cloud.google.com/storage/docs/lifecycle
+
+    :type age: int
+    :param age: (optional) apply rule action to items whos age, in days,
+                exceeds this value.
+
+    :type created_before: datetime.date
+    :param created_before: (optional) apply rule action to items created
+                           before this date.
+
+    :type is_live: bool
+    :param is_live: (optional) if true, apply rule action to non-versioned
+                    items, or to items with no newer versions. If false, apply
+                    rule action to versioned items with at least one newer
+                    version.
+
+    :type matches_storage_class: str, one of :attr:`Bucket._STORAGE_CLASSES`.
+    :param matches_storage_class: (optional) apply rule action to items which
+                                  whose storage class matches this value.
+
+    :type number_of_newer_versions: int
+    :param number_of_newer_versions: (optional) apply rule action to versioned
+                                     items having N newer versions.
+
+    :raises ValueError: if no arguments are passed.
+    """
+    def __init__(self, age=None, created_before=None, is_live=None,
+                 matches_storage_class=None, number_of_newer_versions=None):
+        conditions = {}
+
+        if age is not None:
+            conditions['age'] = age
+
+        if created_before is not None:
+            conditions['createdBefore'] = created_before.isoformat()
+
+        if is_live is not None:
+            conditions['isLive'] = is_live
+
+        if matches_storage_class is not None:
+            conditions['matchesStorageClass'] = matches_storage_class
+
+        if number_of_newer_versions is not None:
+            conditions['numNewerVersions'] = number_of_newer_versions
+
+        if not conditions:
+            raise ValueError("Supply at least one condition")
+
+        super(LifecycleRuleConditions, self).__init__(conditions)
+
+    @property
+    def age(self):
+        """Conditon's age value."""
+        return self.get('age')
+
+    @property
+    def created_before(self):
+        """Conditon's created_before value."""
+        before = self.get('createdBefore')
+        if before is not None:
+            return datetime_helpers.from_iso8601_date(before)
+
+    @property
+    def is_live(self):
+        """Conditon's 'is_live' value."""
+        return self.get('isLive')
+
+    @property
+    def matches_storage_class(self):
+        """Conditon's 'matches_storage_class' value."""
+        return self.get('matchesStorageClass')
+
+    @property
+    def number_of_newer_versions(self):
+        """Conditon's 'number_of_newer_versions' value."""
+        return self.get('numNewerVersions')
 
 
 class Bucket(_PropertyMixin):
