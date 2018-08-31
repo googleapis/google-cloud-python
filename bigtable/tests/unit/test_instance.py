@@ -417,7 +417,7 @@ class TestInstance(unittest.TestCase):
         client._instance_admin_client = api
         instance_admin_client = client._instance_admin_client
         instance_stub = instance_admin_client.transport
-        instance_stub.get_instance.side_effect=[
+        instance_stub.get_instance.side_effect = [
             response_pb,
             exceptions.NotFound('testing'),
             exceptions.BadRequest('testing')
@@ -883,7 +883,7 @@ class TestInstance(unittest.TestCase):
         client._instance_admin_client = instance_api
         bigtable_instance_stub = (
             client._instance_admin_client.transport)
-        bigtable_instance_stub.list_app_profiles.side_effect=[
+        bigtable_instance_stub.list_app_profiles.side_effect = [
             expected_response]
 
         # Perform the method and check the result.

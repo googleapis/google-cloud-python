@@ -1080,7 +1080,9 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         expected_result = [self.SUCCESS, self.SUCCESS, self.NON_RETRYABLE]
 
         self.assertEqual(
-            client._table_data_client._inner_api_calls['mutate_rows'].call_count, 2)
+            client._table_data_client._inner_api_calls[
+                'mutate_rows'].call_count,
+            2)
         self.assertEqual(result, expected_result)
 
     def test_callable_retry_timeout(self):
