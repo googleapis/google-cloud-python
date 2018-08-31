@@ -1013,3 +1013,9 @@ class TestDataAPI(unittest.TestCase):
         self.assertEqual(cell3_new.timestamp, cell3.timestamp)
         self.assertEqual(cell3.labels, [])
         self.assertEqual(cell3_new.labels, [label2])
+
+    def test_access_with_non_admin_client(self):
+        client = Client(admin=False)
+        instance = client.instance(INSTANCE_ID)
+        table = instance.table(self._table.table_id)
+        self.assertIsNone(table.read_row('nonesuch'))
