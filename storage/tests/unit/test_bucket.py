@@ -51,7 +51,7 @@ class Test_LifecycleRuleConditions(unittest.TestCase):
             'age': 10,
             'matchesStorageClass': 'REGIONAL',
         }
-        self.assertEqual( dict(conditions), expected)
+        self.assertEqual(dict(conditions), expected)
         self.assertEqual(conditions.age, 10)
         self.assertIsNone(conditions.created_before)
         self.assertIsNone(conditions.is_live)
@@ -85,6 +85,34 @@ class Test_LifecycleRuleConditions(unittest.TestCase):
         self.assertIsNone(conditions.is_live)
         self.assertIsNone(conditions.matches_storage_class)
         self.assertEqual(conditions.number_of_newer_versions, 3)
+
+
+class Test_LifecycleRuleDeleteItem(unittest.TestCase):
+
+    @staticmethod
+    def _get_target_class():
+        from google.cloud.storage.bucket import LifecycleRuleDeleteItem
+        return LifecycleRuleDeleteItem
+
+    def _make_one(self, **kw):
+        return self._get_target_class()(**kw)
+
+    def test_ctor_wo_conditions(self):
+        with self.assertRaises(ValueError):
+            self._make_one()
+
+    def test_ctor_w_condition(self):
+        rule = self._make_one(age=10, matches_storage_class='REGIONAL')
+        expected = {
+            'action': {
+                'type': 'Delete',
+            },
+            'condition': {
+                'age': 10,
+                'matchesStorageClass': 'REGIONAL',
+            }
+        }
+        self.assertEqual(dict(rule), expected)
 
 
 class Test_Bucket(unittest.TestCase):

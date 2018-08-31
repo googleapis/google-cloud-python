@@ -181,6 +181,23 @@ class LifecycleRuleConditions(dict):
         return self.get('numNewerVersions')
 
 
+class LifecycleRuleDeleteItem(dict):
+    """Map a lifecycle rule deleting matching items.
+
+    :type kw: dict
+    :params kw: arguments passed to :class:`LifecycleRuleConditions`.
+    """
+    def __init__(self, **kw):
+        conditions = LifecycleRuleConditions(**kw)
+        rule = {
+            'action': {
+                'type': 'Delete',
+            },
+            'condition': dict(conditions),
+        }
+        super(LifecycleRuleDeleteItem, self).__init__(rule)
+
+
 class Bucket(_PropertyMixin):
     """A class representing a Bucket on Cloud Storage.
 
