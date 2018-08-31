@@ -198,6 +198,27 @@ class LifecycleRuleDeleteItem(dict):
         super(LifecycleRuleDeleteItem, self).__init__(rule)
 
 
+class LifecycleRuleSetItemStorageClass(dict):
+    """Map a lifecycle rule upating storage class of matching items.
+
+    :type storage_class: str, one of :attr:`Bucket._STORAGE_CLASSES`.
+    :param storage_class: new storage class to assign to matching items.
+
+    :type kw: dict
+    :params kw: arguments passed to :class:`LifecycleRuleConditions`.
+    """
+    def __init__(self, storage_class, **kw):
+        conditions = LifecycleRuleConditions(**kw)
+        rule = {
+            'action': {
+                'type': 'SetStorageClass',
+                'storageClass': storage_class,
+            },
+            'condition': dict(conditions),
+        }
+        super(LifecycleRuleSetItemStorageClass, self).__init__(rule)
+
+
 class Bucket(_PropertyMixin):
     """A class representing a Bucket on Cloud Storage.
 

@@ -115,6 +115,37 @@ class Test_LifecycleRuleDeleteItem(unittest.TestCase):
         self.assertEqual(dict(rule), expected)
 
 
+class Test_LifecycleRuleSetItemStorageClass(unittest.TestCase):
+
+    @staticmethod
+    def _get_target_class():
+        from google.cloud.storage.bucket import (
+            LifecycleRuleSetItemStorageClass)
+        return LifecycleRuleSetItemStorageClass
+
+    def _make_one(self, **kw):
+        return self._get_target_class()(**kw)
+
+    def test_ctor_wo_conditions(self):
+        with self.assertRaises(ValueError):
+            self._make_one(storage_class='REGIONAL')
+
+    def test_ctor_w_condition(self):
+        rule = self._make_one(
+            storage_class='NEARLINE', age=10, matches_storage_class='REGIONAL')
+        expected = {
+            'action': {
+                'type': 'SetStorageClass',
+                'storageClass': 'NEARLINE',
+            },
+            'condition': {
+                'age': 10,
+                'matchesStorageClass': 'REGIONAL',
+            }
+        }
+        self.assertEqual(dict(rule), expected)
+
+
 class Test_Bucket(unittest.TestCase):
 
     @staticmethod
