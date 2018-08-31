@@ -508,17 +508,8 @@ class Instance(object):
         """Sets the access control policy on an instance resource. Replaces any
         existing policy.
 
-        A Policy consists of a list of bindings. A binding binds a list of
-        members to a role, where the members can be user accounts, Google
-        groups, Google domains, and service accounts. A role is a named list
-        of permissions defined by IAM.
-        For more information about predefined roles currently supoprted
-        by Bigtable Instance please see
-        `Predefined roles
-        <https://cloud.google.com/bigtable/docs/access-control#roles>`_.
-        For more information about custom roles please see
-        `Custom roles
-        <https://cloud.google.com/bigtable/docs/access-control#custom-roles>`_.
+        For more information about policy, please see documentation of
+        class `google.cloud.bigtable.policy.Policy`
 
         .. code-block:: python
 

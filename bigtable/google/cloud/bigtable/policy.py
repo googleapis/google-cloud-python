@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from google.cloud.iam import Policy as IamPolicy
+from google.cloud.iam import Policy as BasePolicy
 from google.cloud._helpers import _to_bytes
 
 """IAM roles supported by Bigtable Instance resource"""
@@ -38,11 +38,23 @@ https://cloud.google.com/bigtable/docs/access-control#roles
 """
 
 
-class Policy(IamPolicy):
+class Policy(BasePolicy):
     """IAM Policy
 
     See
     https://cloud.google.com/bigtable/docs/reference/admin/rpc/google.iam.v1#policy
+
+    A Policy consists of a list of bindings. A binding binds a list of
+    members to a role, where the members can be user accounts, Google
+    groups, Google domains, and service accounts. A role is a named list
+    of permissions defined by IAM.
+    For more information about predefined roles currently supoprted
+    by Bigtable Instance please see
+    `Predefined roles
+    <https://cloud.google.com/bigtable/docs/access-control#roles>`_.
+    For more information about custom roles please see
+    `Custom roles
+    <https://cloud.google.com/bigtable/docs/access-control#custom-roles>`_.
 
     :type etag: str
     :param etag: etag is used for optimistic concurrency control as a way to
@@ -59,9 +71,9 @@ class Policy(IamPolicy):
                  existing policy is overwritten blindly.
     """
     def __init__(self, etag=None, version=None):
-        IamPolicy.__init__(self,
-                           etag=etag if etag is None else _to_bytes(etag),
-                           version=version)
+        BasePolicy.__init__(self,
+                            etag=etag if etag is None else _to_bytes(etag),
+                            version=version)
 
     @property
     def bigtable_admins(self):
