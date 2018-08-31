@@ -130,7 +130,8 @@ class LifecycleRuleConditions(dict):
     :raises ValueError: if no arguments are passed.
     """
     def __init__(self, age=None, created_before=None, is_live=None,
-                 matches_storage_class=None, number_of_newer_versions=None):
+                 matches_storage_class=None, number_of_newer_versions=None,
+                 _factory=False):
         conditions = {}
 
         if age is not None:
@@ -148,10 +149,24 @@ class LifecycleRuleConditions(dict):
         if number_of_newer_versions is not None:
             conditions['numNewerVersions'] = number_of_newer_versions
 
-        if not conditions:
+        if not _factory and not conditions:
             raise ValueError("Supply at least one condition")
 
         super(LifecycleRuleConditions, self).__init__(conditions)
+
+    @classmethod
+    def from_api_repr(cls, resource):
+        """Factory:  construct instance from resource.
+
+        :type resource: dict
+        :param resource: mapping as returned from API call.
+
+        :rtype: :class:`LifecycleRuleConditions`
+        :returns: Instance created from resource.
+        """
+        instance = cls(_factory=True)
+        instance.update(resource)
+        return instance
 
     @property
     def age(self):
@@ -197,6 +212,20 @@ class LifecycleRuleDeleteItem(dict):
         }
         super(LifecycleRuleDeleteItem, self).__init__(rule)
 
+    @classmethod
+    def from_api_repr(cls, resource):
+        """Factory:  construct instance from resource.
+
+        :type resource: dict
+        :param resource: mapping as returned from API call.
+
+        :rtype: :class:`LifecycleRuleDeleteItem`
+        :returns: Instance created from resource.
+        """
+        instance = cls(_factory=True)
+        instance.update(resource)
+        return instance
+
 
 class LifecycleRuleSetItemStorageClass(dict):
     """Map a lifecycle rule upating storage class of matching items.
@@ -217,6 +246,21 @@ class LifecycleRuleSetItemStorageClass(dict):
             'condition': dict(conditions),
         }
         super(LifecycleRuleSetItemStorageClass, self).__init__(rule)
+
+    @classmethod
+    def from_api_repr(cls, resource):
+        """Factory:  construct instance from resource.
+
+        :type resource: dict
+        :param resource: mapping as returned from API call.
+
+        :rtype: :class:`LifecycleRuleDeleteItem`
+        :returns: Instance created from resource.
+        """
+        action = resource['action']
+        instance = cls(action['storageClass'], _factory=True)
+        instance.update(resource)
+        return instance
 
 
 class Bucket(_PropertyMixin):
