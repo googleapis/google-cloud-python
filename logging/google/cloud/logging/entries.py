@@ -76,7 +76,7 @@ class _BaseEntry(object):
 
     :type trace: str
     :param trace: (optional) traceid to apply to the entry.
-                         
+
 
     :type resource: :class:`~google.cloud.logging.resource.Resource`
     :param resource: (Optional) Monitored resource of the entry
@@ -129,7 +129,7 @@ class _BaseEntry(object):
         labels = resource.get('labels')
         severity = resource.get('severity')
         http_request = resource.get('httpRequest')
-        trace = resource.get('trace')        
+        trace = resource.get('trace')
 
         monitored_resource_dict = resource.get('resource')
         monitored_resource = None
@@ -191,7 +191,7 @@ class ProtobufEntry(_BaseEntry):
                          the entry
 
     :type trace: str
-    :param trace: (optional) traceid to apply to the entry.                         
+    :param trace: (optional) traceid to apply to the entry.
 
     :type resource: :class:`~google.cloud.logging.resource.Resource`
     :param resource: (Optional) Monitored resource of the entry

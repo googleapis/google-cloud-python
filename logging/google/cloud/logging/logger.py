@@ -217,7 +217,7 @@ class Logger(object):
         :param timestamp: (optional) timestamp of event being logged.
 
         :type trace: str
-        :param trace: (optional) traceid to apply to the entry.        
+        :param trace: (optional) traceid to apply to the entry.
         """
         client = self._require_client(client)
         entry_resource = self._make_entry_resource(
@@ -263,7 +263,7 @@ class Logger(object):
         :param timestamp: (optional) timestamp of event being logged.
 
         :type trace: str
-        :param trace: (optional) traceid to apply to the entry.        
+        :param trace: (optional) traceid to apply to the entry.
         """
         client = self._require_client(client)
         entry_resource = self._make_entry_resource(
@@ -309,7 +309,7 @@ class Logger(object):
         :param timestamp: (optional) timestamp of event being logged.
 
         :type trace: str
-        :param trace: (optional) traceid to apply to the entry.        
+        :param trace: (optional) traceid to apply to the entry.
         """
         client = self._require_client(client)
         entry_resource = self._make_entry_resource(
@@ -440,7 +440,7 @@ class Batch(object):
                          the API will return an error.
 
         :type trace: str
-        :param trace: (optional) traceid to apply to the entry.                         
+        :param trace: (optional) traceid to apply to the entry.
         """
         self.entries.append(
             ('text', text, labels, insert_id, severity, http_request,
@@ -478,7 +478,7 @@ class Batch(object):
                          the API will return an error.
 
         :type trace: str
-        :param trace: (optional) traceid to apply to the entry.                         
+        :param trace: (optional) traceid to apply to the entry.
         """
         self.entries.append(
             ('struct', info, labels, insert_id, severity, http_request,
@@ -516,7 +516,7 @@ class Batch(object):
                          the API will return an error.
 
         :type trace: str
-        :param trace: (optional) traceid to apply to the entry.                         
+        :param trace: (optional) traceid to apply to the entry.
         """
         self.entries.append(
             ('proto', message, labels, insert_id, severity, http_request,
@@ -572,7 +572,7 @@ class Batch(object):
             if timestamp is not None:
                 info['timestamp'] = _datetime_to_rfc3339(timestamp)
             if trace is not None:
-                info['trace'] = trace                
+                info['trace'] = trace
             entries.append(info)
 
         client.logging_api.write_entries(entries, **kwargs)

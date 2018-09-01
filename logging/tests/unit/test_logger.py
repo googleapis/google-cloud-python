@@ -191,7 +191,8 @@ class TestLogger(unittest.TestCase):
                                 labels=DEFAULT_LABELS)
 
         logger.log_text(TEXT, client=client2, labels=LABELS,
-                        insert_id=IID, severity=SEVERITY, http_request=REQUEST, trace=TRACE)
+                        insert_id=IID, severity=SEVERITY, http_request=REQUEST,
+                        trace=TRACE)
 
         self.assertEqual(api._write_entries_called_with,
                          (ENTRIES, None, None, None))
@@ -881,7 +882,6 @@ class TestBatch(unittest.TestCase):
         METHOD = 'POST'
         URI = 'https://api.example.com/endpoint'
         STATUS = '500'
-        TRACE = '12345678-1234-5678-1234-567812345678'
         REQUEST = {
             'requestMethod': METHOD,
             'requestUrl': URI,

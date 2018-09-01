@@ -159,7 +159,7 @@ class Test_BaseEntry(unittest.TestCase):
             }
         )
         STATUS = '500'
-        TRACE = '12345678-1234-5678-1234-567812345678'        
+        TRACE = '12345678-1234-5678-1234-567812345678'
         API_REPR = {
             'dummyPayload': PAYLOAD,
             'logName': LOG_NAME,
@@ -212,7 +212,7 @@ class Test_BaseEntry(unittest.TestCase):
             'timestamp': TIMESTAMP,
             'labels': LABELS,
             'trace': TRACE
-        }        
+        }
         LOGGER = object()
         loggers = {LOG_NAME: LOGGER}
         klass = self._get_target_class()
