@@ -8,9 +8,10 @@ matrix:
   - os: linux
     python: 3.5
     env: PYTHON=3.5 PANDAS=0.18.1 COVERAGE='true' LINT='false'
-  - os: linux
-    python: 3.6
-    env: PYTHON=3.6 PANDAS=0.20.1 COVERAGE='false' LINT='false'
+  # https://github.com/pydata/pandas-gbq/issues/189
+  # - os: linux
+  #   python: 3.6
+  #   env: PYTHON=3.6 PANDAS=0.20.1 COVERAGE='false' LINT='false'
   - os: linux
     python: 3.6
     env: PYTHON=3.6 PANDAS=MASTER COVERAGE='false' LINT='true'
