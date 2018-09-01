@@ -68,6 +68,7 @@ class Test_BaseEntry(unittest.TestCase):
         self.assertIsNone(entry.severity)
         self.assertIsNone(entry.http_request)
         self.assertIsNone(entry.resource)
+        self.assertIsNone(entry.trace)
 
     def test_ctor_explicit(self):
         import datetime
@@ -87,6 +88,7 @@ class Test_BaseEntry(unittest.TestCase):
             'status': STATUS,
         }
         resource = Resource(type='global', labels={})
+        TRACE = '12345678-1234-5678-1234-567812345678'
 
         logger = _Logger(self.LOGGER_NAME, self.PROJECT)
         entry = self._make_one(PAYLOAD, logger,
@@ -95,7 +97,8 @@ class Test_BaseEntry(unittest.TestCase):
                                labels=LABELS,
                                severity=SEVERITY,
                                http_request=REQUEST,
-                               resource=resource)
+                               resource=resource,
+                               trace=TRACE)
         self.assertEqual(entry.payload, PAYLOAD)
         self.assertIs(entry.logger, logger)
         self.assertEqual(entry.insert_id, IID)
@@ -106,6 +109,7 @@ class Test_BaseEntry(unittest.TestCase):
         self.assertEqual(entry.http_request['requestUrl'], URI)
         self.assertEqual(entry.http_request['status'], STATUS)
         self.assertEqual(entry.resource, resource)
+        self.assertEqual(entry.trace, TRACE)
 
     def test_from_api_repr_missing_data_no_loggers(self):
         client = _Client(self.PROJECT)
@@ -122,6 +126,7 @@ class Test_BaseEntry(unittest.TestCase):
         self.assertIsNone(entry.timestamp)
         self.assertIsNone(entry.severity)
         self.assertIsNone(entry.http_request)
+        self.assertIsNone(entry.trace)
         logger = entry.logger
         self.assertIsInstance(logger, _Logger)
         self.assertIs(logger.client, client)
@@ -154,6 +159,7 @@ class Test_BaseEntry(unittest.TestCase):
             }
         )
         STATUS = '500'
+        TRACE = '12345678-1234-5678-1234-567812345678'
         API_REPR = {
             'dummyPayload': PAYLOAD,
             'logName': LOG_NAME,
@@ -167,6 +173,7 @@ class Test_BaseEntry(unittest.TestCase):
                 'status': STATUS,
             },
             'resource': RESOURCE._to_dict(),
+            'trace': TRACE
         }
         loggers = {}
         entry = klass.from_api_repr(API_REPR, client, loggers=loggers)
@@ -184,6 +191,7 @@ class Test_BaseEntry(unittest.TestCase):
         self.assertEqual(logger.name, self.LOGGER_NAME)
         self.assertEqual(loggers, {LOG_NAME: logger})
         self.assertEqual(entry.resource, RESOURCE)
+        self.assertEqual(entry.trace, TRACE)
 
     def test_from_api_repr_w_loggers_w_logger_match(self):
         from datetime import datetime
@@ -196,12 +204,14 @@ class Test_BaseEntry(unittest.TestCase):
         TIMESTAMP = _datetime_to_rfc3339_w_nanos(NOW)
         LOG_NAME = 'projects/%s/logs/%s' % (self.PROJECT, self.LOGGER_NAME)
         LABELS = {'foo': 'bar', 'baz': 'qux'}
+        TRACE = '12345678-1234-5678-1234-567812345678'
         API_REPR = {
             'dummyPayload': PAYLOAD,
             'logName': LOG_NAME,
             'insertId': IID,
             'timestamp': TIMESTAMP,
             'labels': LABELS,
+            'trace': TRACE
         }
         LOGGER = object()
         loggers = {LOG_NAME: LOGGER}
@@ -211,6 +221,7 @@ class Test_BaseEntry(unittest.TestCase):
         self.assertEqual(entry.insert_id, IID)
         self.assertEqual(entry.timestamp, NOW)
         self.assertEqual(entry.labels, LABELS)
+        self.assertEqual(entry.trace, TRACE)
         self.assertIs(entry.logger, LOGGER)
 
 
@@ -239,6 +250,7 @@ class TestProtobufEntry(unittest.TestCase):
         self.assertIsNone(pb_entry.labels)
         self.assertIsNone(pb_entry.severity)
         self.assertIsNone(pb_entry.http_request)
+        self.assertIsNone(pb_entry.trace)
 
     def test_constructor_with_any(self):
         from google.protobuf.any_pb2 import Any
@@ -253,6 +265,7 @@ class TestProtobufEntry(unittest.TestCase):
         self.assertIsNone(pb_entry.labels)
         self.assertIsNone(pb_entry.severity)
         self.assertIsNone(pb_entry.http_request)
+        self.assertIsNone(pb_entry.trace)
 
     def test_parse_message(self):
         import json

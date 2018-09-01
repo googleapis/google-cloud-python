@@ -155,6 +155,29 @@ class TestLogger(unittest.TestCase):
         self.assertEqual(api._write_entries_called_with,
                          (ENTRIES, None, None, None))
 
+    def test_log_text_w_trace(self):
+
+        TEXT = 'TEXT'
+        TRACE = '12345678-1234-5678-1234-567812345678'
+        ENTRIES = [{
+            'logName': 'projects/%s/logs/%s' % (
+                self.PROJECT, self.LOGGER_NAME),
+            'textPayload': TEXT,
+            'resource': {
+                'type': 'global',
+                'labels': {},
+            },
+            'trace': TRACE
+        }]
+        client = _Client(self.PROJECT)
+        api = client.logging_api = _DummyLoggingAPI()
+        logger = self._make_one(self.LOGGER_NAME, client=client)
+
+        logger.log_text(TEXT, trace=TRACE)
+
+        self.assertEqual(api._write_entries_called_with,
+                         (ENTRIES, None, None, None))
+
     def test_log_text_w_unicode_explicit_client_labels_severity_httpreq(self):
         TEXT = u'TEXT'
         DEFAULT_LABELS = {'foo': 'spam'}
@@ -164,6 +187,7 @@ class TestLogger(unittest.TestCase):
         METHOD = 'POST'
         URI = 'https://api.example.com/endpoint'
         STATUS = '500'
+        TRACE = '12345678-1234-5678-1234-567812345678'
         REQUEST = {
             'requestMethod': METHOD,
             'requestUrl': URI,
@@ -181,6 +205,7 @@ class TestLogger(unittest.TestCase):
             'insertId': IID,
             'severity': SEVERITY,
             'httpRequest': REQUEST,
+            'trace': TRACE
         }]
         client1 = _Client(self.PROJECT)
         client2 = _Client(self.PROJECT)
@@ -189,7 +214,8 @@ class TestLogger(unittest.TestCase):
                                 labels=DEFAULT_LABELS)
 
         logger.log_text(TEXT, client=client2, labels=LABELS,
-                        insert_id=IID, severity=SEVERITY, http_request=REQUEST)
+                        insert_id=IID, severity=SEVERITY, http_request=REQUEST,
+                        trace=TRACE)
 
         self.assertEqual(api._write_entries_called_with,
                          (ENTRIES, None, None, None))
@@ -246,6 +272,7 @@ class TestLogger(unittest.TestCase):
         METHOD = 'POST'
         URI = 'https://api.example.com/endpoint'
         STATUS = '500'
+        TRACE = '12345678-1234-5678-1234-567812345678'
         REQUEST = {
             'requestMethod': METHOD,
             'requestUrl': URI,
@@ -263,6 +290,7 @@ class TestLogger(unittest.TestCase):
             'insertId': IID,
             'severity': SEVERITY,
             'httpRequest': REQUEST,
+            'trace': TRACE
         }]
         client1 = _Client(self.PROJECT)
         client2 = _Client(self.PROJECT)
@@ -272,7 +300,7 @@ class TestLogger(unittest.TestCase):
 
         logger.log_struct(STRUCT, client=client2, labels=LABELS,
                           insert_id=IID, severity=SEVERITY,
-                          http_request=REQUEST)
+                          http_request=REQUEST, trace=TRACE)
 
         self.assertEqual(api._write_entries_called_with,
                          (ENTRIES, None, None, None))
@@ -297,6 +325,29 @@ class TestLogger(unittest.TestCase):
         logger = self._make_one(self.LOGGER_NAME, client=client)
 
         logger.log_struct(STRUCT, timestamp=TIMESTAMP)
+
+        self.assertEqual(api._write_entries_called_with,
+                         (ENTRIES, None, None, None))
+
+    def test_log_struct_w_trace(self):
+
+        STRUCT = {'message': 'MESSAGE', 'weather': 'cloudy'}
+        TRACE = '12345678-1234-5678-1234-567812345678'
+        ENTRIES = [{
+            'logName': 'projects/%s/logs/%s' % (
+                self.PROJECT, self.LOGGER_NAME),
+            'jsonPayload': STRUCT,
+            'resource': {
+                'type': 'global',
+                'labels': {},
+            },
+            'trace': TRACE
+        }]
+        client = _Client(self.PROJECT)
+        api = client.logging_api = _DummyLoggingAPI()
+        logger = self._make_one(self.LOGGER_NAME, client=client)
+
+        logger.log_struct(STRUCT, trace=TRACE)
 
         self.assertEqual(api._write_entries_called_with,
                          (ENTRIES, None, None, None))
@@ -366,6 +417,7 @@ class TestLogger(unittest.TestCase):
         METHOD = 'POST'
         URI = 'https://api.example.com/endpoint'
         STATUS = '500'
+        TRACE = '12345678-1234-5678-1234-567812345678'
         REQUEST = {
             'requestMethod': METHOD,
             'requestUrl': URI,
@@ -383,6 +435,7 @@ class TestLogger(unittest.TestCase):
             'insertId': IID,
             'severity': SEVERITY,
             'httpRequest': REQUEST,
+            'trace': TRACE
         }]
         client1 = _Client(self.PROJECT)
         client2 = _Client(self.PROJECT)
@@ -392,7 +445,7 @@ class TestLogger(unittest.TestCase):
 
         logger.log_proto(message, client=client2, labels=LABELS,
                          insert_id=IID, severity=SEVERITY,
-                         http_request=REQUEST)
+                         http_request=REQUEST, trace=TRACE)
 
         self.assertEqual(api._write_entries_called_with,
                          (ENTRIES, None, None, None))
@@ -421,6 +474,33 @@ class TestLogger(unittest.TestCase):
         logger = self._make_one(self.LOGGER_NAME, client=client)
 
         logger.log_proto(message, timestamp=TIMESTAMP)
+
+        self.assertEqual(api._write_entries_called_with,
+                         (ENTRIES, None, None, None))
+
+    def test_log_proto_w_trace(self):
+        import json
+        from google.protobuf.json_format import MessageToJson
+        from google.protobuf.struct_pb2 import Struct
+        from google.protobuf.struct_pb2 import Value
+
+        message = Struct(fields={'foo': Value(bool_value=True)})
+        TRACE = '12345678-1234-5678-1234-567812345678'
+        ENTRIES = [{
+            'logName': 'projects/%s/logs/%s' % (
+                self.PROJECT, self.LOGGER_NAME),
+            'protoPayload': json.loads(MessageToJson(message)),
+            'resource': {
+                'type': 'global',
+                'labels': {},
+            },
+            'trace': TRACE
+        }]
+        client = _Client(self.PROJECT)
+        api = client.logging_api = _DummyLoggingAPI()
+        logger = self._make_one(self.LOGGER_NAME, client=client)
+
+        logger.log_proto(message, trace=TRACE)
 
         self.assertEqual(api._write_entries_called_with,
                          (ENTRIES, None, None, None))
@@ -550,7 +630,7 @@ class TestBatch(unittest.TestCase):
         batch.log_text(TEXT)
         self.assertEqual(batch.entries,
                          [('text', TEXT, None, None, None, None, None,
-                           _GLOBAL_RESOURCE)])
+                           _GLOBAL_RESOURCE, None)])
 
     def test_log_text_explicit(self):
         import datetime
@@ -576,17 +656,18 @@ class TestBatch(unittest.TestCase):
                 'version_id': 'test'
             }
         )
+        TRACE = '12345678-1234-5678-1234-567812345678'
 
         client = _Client(project=self.PROJECT, connection=_make_credentials())
         logger = _Logger()
         batch = self._make_one(logger, client=client)
         batch.log_text(TEXT, labels=LABELS, insert_id=IID, severity=SEVERITY,
                        http_request=REQUEST, timestamp=TIMESTAMP,
-                       resource=RESOURCE)
+                       resource=RESOURCE, trace=TRACE)
         self.assertEqual(
             batch.entries,
             [('text', TEXT, LABELS, IID, SEVERITY, REQUEST, TIMESTAMP,
-              RESOURCE)])
+              RESOURCE, TRACE)])
 
     def test_log_struct_defaults(self):
         from google.cloud.logging.logger import _GLOBAL_RESOURCE
@@ -598,7 +679,7 @@ class TestBatch(unittest.TestCase):
         self.assertEqual(
             batch.entries,
             [('struct', STRUCT, None, None, None, None, None,
-              _GLOBAL_RESOURCE)])
+              _GLOBAL_RESOURCE, None)])
 
     def test_log_struct_explicit(self):
         import datetime
@@ -611,6 +692,7 @@ class TestBatch(unittest.TestCase):
         METHOD = 'POST'
         URI = 'https://api.example.com/endpoint'
         STATUS = '500'
+        TRACE = '12345678-1234-5678-1234-567812345678'
         REQUEST = {
             'requestMethod': METHOD,
             'requestUrl': URI,
@@ -630,11 +712,11 @@ class TestBatch(unittest.TestCase):
         batch = self._make_one(logger, client=client)
         batch.log_struct(STRUCT, labels=LABELS, insert_id=IID,
                          severity=SEVERITY, http_request=REQUEST,
-                         timestamp=TIMESTAMP, resource=RESOURCE)
+                         timestamp=TIMESTAMP, resource=RESOURCE, trace=TRACE)
         self.assertEqual(
             batch.entries,
             [('struct', STRUCT, LABELS, IID, SEVERITY, REQUEST, TIMESTAMP,
-              RESOURCE)])
+              RESOURCE, TRACE)])
 
     def test_log_proto_defaults(self):
         from google.cloud.logging.logger import _GLOBAL_RESOURCE
@@ -648,7 +730,7 @@ class TestBatch(unittest.TestCase):
         batch.log_proto(message)
         self.assertEqual(batch.entries,
                          [('proto', message, None, None, None, None, None,
-                           _GLOBAL_RESOURCE)])
+                           _GLOBAL_RESOURCE, None)])
 
     def test_log_proto_explicit(self):
         import datetime
@@ -663,6 +745,7 @@ class TestBatch(unittest.TestCase):
         METHOD = 'POST'
         URI = 'https://api.example.com/endpoint'
         STATUS = '500'
+        TRACE = '12345678-1234-5678-1234-567812345678'
         REQUEST = {
             'requestMethod': METHOD,
             'requestUrl': URI,
@@ -681,18 +764,18 @@ class TestBatch(unittest.TestCase):
         batch = self._make_one(logger, client=client)
         batch.log_proto(message, labels=LABELS, insert_id=IID,
                         severity=SEVERITY, http_request=REQUEST,
-                        timestamp=TIMESTAMP, resource=RESOURCE)
+                        timestamp=TIMESTAMP, resource=RESOURCE, trace=TRACE)
         self.assertEqual(
             batch.entries,
             [('proto', message, LABELS, IID, SEVERITY, REQUEST, TIMESTAMP,
-              RESOURCE)])
+              RESOURCE, TRACE)])
 
     def test_commit_w_invalid_entry_type(self):
         logger = _Logger()
         client = _Client(project=self.PROJECT, connection=_make_credentials())
         batch = self._make_one(logger, client)
         batch.entries.append(('bogus', 'BOGUS', None, None, None, None, None,
-                              None))
+                              None, None))
         with self.assertRaises(ValueError):
             batch.commit()
 
@@ -742,26 +825,32 @@ class TestBatch(unittest.TestCase):
         TIMESTAMP1 = datetime.datetime(2016, 12, 31, 0, 0, 1, 999999)
         TIMESTAMP2 = datetime.datetime(2016, 12, 31, 0, 0, 2, 999999)
         TIMESTAMP3 = datetime.datetime(2016, 12, 31, 0, 0, 3, 999999)
+        TRACE1 = '12345678-1234-5678-1234-567812345678'
+        TRACE2 = '12345678-1234-5678-1234-567812345679'
+        TRACE3 = '12345678-1234-5678-1234-567812345670'
         ENTRIES = [
             {'textPayload': TEXT, 'insertId': IID1,
              'timestamp': _datetime_to_rfc3339(TIMESTAMP1),
-             'resource': _GLOBAL_RESOURCE._to_dict()},
+             'resource': _GLOBAL_RESOURCE._to_dict(), 'trace': TRACE1},
             {'jsonPayload': STRUCT, 'insertId': IID2,
              'timestamp': _datetime_to_rfc3339(TIMESTAMP2),
-             'resource': _GLOBAL_RESOURCE._to_dict()},
+             'resource': _GLOBAL_RESOURCE._to_dict(), 'trace': TRACE2},
             {'protoPayload': json.loads(MessageToJson(message)),
              'insertId': IID3,
              'timestamp': _datetime_to_rfc3339(TIMESTAMP3),
-             'resource': _GLOBAL_RESOURCE._to_dict()},
+             'resource': _GLOBAL_RESOURCE._to_dict(), 'trace': TRACE3},
         ]
         client = _Client(project=self.PROJECT)
         api = client.logging_api = _DummyLoggingAPI()
         logger = _Logger()
         batch = self._make_one(logger, client=client)
 
-        batch.log_text(TEXT, insert_id=IID1, timestamp=TIMESTAMP1)
-        batch.log_struct(STRUCT, insert_id=IID2, timestamp=TIMESTAMP2)
-        batch.log_proto(message, insert_id=IID3, timestamp=TIMESTAMP3)
+        batch.log_text(TEXT, insert_id=IID1, timestamp=TIMESTAMP1,
+                       trace=TRACE1)
+        batch.log_struct(STRUCT, insert_id=IID2, timestamp=TIMESTAMP2,
+                         trace=TRACE2)
+        batch.log_proto(message, insert_id=IID3, timestamp=TIMESTAMP3,
+                        trace=TRACE3)
         batch.commit()
 
         self.assertEqual(list(batch.entries), [])
@@ -888,11 +977,11 @@ class TestBatch(unittest.TestCase):
         logger = _Logger()
         UNSENT = [
             ('text', TEXT, None, IID, None, None, TIMESTAMP,
-             _GLOBAL_RESOURCE),
+             _GLOBAL_RESOURCE, None),
             ('struct', STRUCT, None, None, SEVERITY, None, None,
-             _GLOBAL_RESOURCE),
+             _GLOBAL_RESOURCE, None),
             ('proto', message, LABELS, None, None, REQUEST, None,
-             _GLOBAL_RESOURCE),
+             _GLOBAL_RESOURCE, None),
         ]
         batch = self._make_one(logger, client=client)
 
