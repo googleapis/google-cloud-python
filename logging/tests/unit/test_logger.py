@@ -155,7 +155,30 @@ class TestLogger(unittest.TestCase):
         self.assertEqual(api._write_entries_called_with,
                          (ENTRIES, None, None, None))
 
-    def test_log_text_w_unicode_explicit_client_labels_severity_httpreq(self):
+    def test_log_text_w_trace(self):
+
+        TEXT = 'TEXT'
+        TRACE = '12345678-1234-5678-1234-567812345678'
+        ENTRIES = [{
+            'logName': 'projects/%s/logs/%s' % (
+                self.PROJECT, self.LOGGER_NAME),
+            'textPayload': TEXT,
+            'resource': {
+                'type': 'global',
+                'labels': {},
+            },
+            'trace': TRACE
+        }]
+        client = _Client(self.PROJECT)
+        api = client.logging_api = _DummyLoggingAPI()
+        logger = self._make_one(self.LOGGER_NAME, client=client)
+
+        logger.log_text(TEXT, trace=TRACE)
+
+        self.assertEqual(api._write_entries_called_with,
+                         (ENTRIES, None, None, None))
+
+    def test_log_text_w_unicode_explicit_client_labels_severity_httpreq_trace(self):
         TEXT = u'TEXT'
         DEFAULT_LABELS = {'foo': 'spam'}
         LABELS = {'foo': 'bar', 'baz': 'qux'}
@@ -240,7 +263,7 @@ class TestLogger(unittest.TestCase):
         self.assertEqual(api._write_entries_called_with,
                          (ENTRIES, None, None, None))
 
-    def test_log_struct_w_explicit_client_labels_severity_httpreq(self):
+    def test_log_struct_w_explicit_client_labels_severity_httpreq_trace(self):
         STRUCT = {'message': 'MESSAGE', 'weather': 'cloudy'}
         DEFAULT_LABELS = {'foo': 'spam'}
         LABELS = {'foo': 'bar', 'baz': 'qux'}
@@ -249,6 +272,7 @@ class TestLogger(unittest.TestCase):
         METHOD = 'POST'
         URI = 'https://api.example.com/endpoint'
         STATUS = '500'
+        TRACE = '12345678-1234-5678-1234-567812345678'
         REQUEST = {
             'requestMethod': METHOD,
             'requestUrl': URI,
@@ -266,6 +290,7 @@ class TestLogger(unittest.TestCase):
             'insertId': IID,
             'severity': SEVERITY,
             'httpRequest': REQUEST,
+            'trace': TRACE
         }]
         client1 = _Client(self.PROJECT)
         client2 = _Client(self.PROJECT)
@@ -275,7 +300,7 @@ class TestLogger(unittest.TestCase):
 
         logger.log_struct(STRUCT, client=client2, labels=LABELS,
                           insert_id=IID, severity=SEVERITY,
-                          http_request=REQUEST)
+                          http_request=REQUEST, trace=TRACE)
 
         self.assertEqual(api._write_entries_called_with,
                          (ENTRIES, None, None, None))
@@ -300,6 +325,29 @@ class TestLogger(unittest.TestCase):
         logger = self._make_one(self.LOGGER_NAME, client=client)
 
         logger.log_struct(STRUCT, timestamp=TIMESTAMP)
+
+        self.assertEqual(api._write_entries_called_with,
+                         (ENTRIES, None, None, None))
+
+    def test_log_struct_w_trace(self):
+
+        STRUCT = {'message': 'MESSAGE', 'weather': 'cloudy'}
+        TRACE = '12345678-1234-5678-1234-567812345678'
+        ENTRIES = [{
+            'logName': 'projects/%s/logs/%s' % (
+                self.PROJECT, self.LOGGER_NAME),
+            'jsonPayload': STRUCT,
+            'resource': {
+                'type': 'global',
+                'labels': {},
+            },
+            'trace': TRACE
+        }]
+        client = _Client(self.PROJECT)
+        api = client.logging_api = _DummyLoggingAPI()
+        logger = self._make_one(self.LOGGER_NAME, client=client)
+
+        logger.log_struct(STRUCT, trace=TRACE)
 
         self.assertEqual(api._write_entries_called_with,
                          (ENTRIES, None, None, None))
@@ -355,7 +403,7 @@ class TestLogger(unittest.TestCase):
         self.assertEqual(api._write_entries_called_with,
                          (ENTRIES, None, None, None))
 
-    def test_log_proto_w_explicit_client_labels_severity_httpreq(self):
+    def test_log_proto_w_explicit_client_labels_severity_httpreq_trace(self):
         import json
         from google.protobuf.json_format import MessageToJson
         from google.protobuf.struct_pb2 import Struct
@@ -369,6 +417,7 @@ class TestLogger(unittest.TestCase):
         METHOD = 'POST'
         URI = 'https://api.example.com/endpoint'
         STATUS = '500'
+        TRACE = '12345678-1234-5678-1234-567812345678'
         REQUEST = {
             'requestMethod': METHOD,
             'requestUrl': URI,
@@ -386,6 +435,7 @@ class TestLogger(unittest.TestCase):
             'insertId': IID,
             'severity': SEVERITY,
             'httpRequest': REQUEST,
+            'trace': TRACE
         }]
         client1 = _Client(self.PROJECT)
         client2 = _Client(self.PROJECT)
@@ -395,7 +445,7 @@ class TestLogger(unittest.TestCase):
 
         logger.log_proto(message, client=client2, labels=LABELS,
                          insert_id=IID, severity=SEVERITY,
-                         http_request=REQUEST)
+                         http_request=REQUEST, trace=TRACE)
 
         self.assertEqual(api._write_entries_called_with,
                          (ENTRIES, None, None, None))
@@ -424,6 +474,33 @@ class TestLogger(unittest.TestCase):
         logger = self._make_one(self.LOGGER_NAME, client=client)
 
         logger.log_proto(message, timestamp=TIMESTAMP)
+
+        self.assertEqual(api._write_entries_called_with,
+                         (ENTRIES, None, None, None))
+
+    def test_log_proto_w_trace(self):
+        import json
+        from google.protobuf.json_format import MessageToJson
+        from google.protobuf.struct_pb2 import Struct
+        from google.protobuf.struct_pb2 import Value
+
+        message = Struct(fields={'foo': Value(bool_value=True)})
+        TRACE = '12345678-1234-5678-1234-567812345678'
+        ENTRIES = [{
+            'logName': 'projects/%s/logs/%s' % (
+                self.PROJECT, self.LOGGER_NAME),
+            'protoPayload': json.loads(MessageToJson(message)),
+            'resource': {
+                'type': 'global',
+                'labels': {},
+            },
+            'trace': TRACE
+        }]
+        client = _Client(self.PROJECT)
+        api = client.logging_api = _DummyLoggingAPI()
+        logger = self._make_one(self.LOGGER_NAME, client=client)
+
+        logger.log_proto(message, trace=TRACE)
 
         self.assertEqual(api._write_entries_called_with,
                          (ENTRIES, None, None, None))

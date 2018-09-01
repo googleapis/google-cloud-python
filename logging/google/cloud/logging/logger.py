@@ -209,12 +209,12 @@ class Logger(object):
         :param http_request: (optional) info about HTTP request associated with
                              the entry
 
+        :type timestamp: :class:`datetime.datetime`
+        :param timestamp: (optional) timestamp of event being logged.
+
         :type resource: :class:`~google.cloud.logging.resource.Resource`
         :param resource: Monitored resource of the entry, defaults
                          to the global resource type.
-
-        :type timestamp: :class:`datetime.datetime`
-        :param timestamp: (optional) timestamp of event being logged.
 
         :type trace: str
         :param trace: (optional) traceid to apply to the entry.
@@ -255,12 +255,12 @@ class Logger(object):
         :param http_request: (optional) info about HTTP request associated with
                              the entry.
 
+        :type timestamp: :class:`datetime.datetime`
+        :param timestamp: (optional) timestamp of event being logged.
+
         :type resource: :class:`~google.cloud.logging.resource.Resource`
         :param resource: Monitored resource of the entry, defaults
                          to the global resource type.
-
-        :type timestamp: :class:`datetime.datetime`
-        :param timestamp: (optional) timestamp of event being logged.
 
         :type trace: str
         :param trace: (optional) traceid to apply to the entry.
@@ -301,12 +301,12 @@ class Logger(object):
         :param http_request: (optional) info about HTTP request associated with
                              the entry.
 
+        :type timestamp: :class:`datetime.datetime`
+        :param timestamp: (optional) timestamp of event being logged.
+        
         :type resource: :class:`~google.cloud.logging.resource.Resource`
         :param resource: Monitored resource of the entry, defaults
                          to the global resource type.
-
-        :type timestamp: :class:`datetime.datetime`
-        :param timestamp: (optional) timestamp of event being logged.
 
         :type trace: str
         :param trace: (optional) traceid to apply to the entry.

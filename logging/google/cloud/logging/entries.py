@@ -74,12 +74,11 @@ class _BaseEntry(object):
     :param http_request: (optional) info about HTTP request associated with
                          the entry.
 
-    :type trace: str
-    :param trace: (optional) traceid to apply to the entry.
-
-
     :type resource: :class:`~google.cloud.logging.resource.Resource`
     :param resource: (Optional) Monitored resource of the entry
+
+    :type trace: str
+    :param trace: (optional) traceid to apply to the entry.    
     """
     def __init__(self, payload, logger, insert_id=None, timestamp=None,
                  labels=None, severity=None, http_request=None, resource=None,
@@ -190,11 +189,11 @@ class ProtobufEntry(_BaseEntry):
     :param http_request: (optional) info about HTTP request associated with
                          the entry
 
-    :type trace: str
-    :param trace: (optional) traceid to apply to the entry.
-
     :type resource: :class:`~google.cloud.logging.resource.Resource`
     :param resource: (Optional) Monitored resource of the entry
+
+    :type trace: str
+    :param trace: (optional) traceid to apply to the entry.    
     """
     _PAYLOAD_KEY = 'protoPayload'
 
