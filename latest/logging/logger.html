@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Logger &#8212; google-cloud 1364a39f6d documentation</title>
+    <title>Logger &#8212; google-cloud bc58370 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -80,7 +80,7 @@ set to None, this parameter will be ignored on the server.</li>
 
 <dl class="method">
 <dt id="google.cloud.logging.logger.Batch.log_proto">
-<code class="descname">log_proto</code><span class="sig-paren">(</span><em>message</em>, <em>labels=None</em>, <em>insert_id=None</em>, <em>severity=None</em>, <em>http_request=None</em>, <em>timestamp=None</em>, <em>resource=Resource(type='global'</em>, <em>labels={})</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/logging/logger.html#Batch.log_proto"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.logging.logger.Batch.log_proto" title="Permalink to this definition">#</a></dt>
+<code class="descname">log_proto</code><span class="sig-paren">(</span><em>message</em>, <em>labels=None</em>, <em>insert_id=None</em>, <em>severity=None</em>, <em>http_request=None</em>, <em>timestamp=None</em>, <em>resource=Resource(type='global'</em>, <em>labels={})</em>, <em>trace=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/logging/logger.html#Batch.log_proto"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.logging.logger.Batch.log_proto" title="Permalink to this definition">#</a></dt>
 <dd><p>Add a protobuf entry to be logged during <a class="reference internal" href="#google.cloud.logging.logger.Batch.commit" title="google.cloud.logging.logger.Batch.commit"><code class="xref py py-meth docutils literal notranslate"><span class="pre">commit()</span></code></a>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -99,6 +99,7 @@ to the global resource type. If set to None, the
 resource of the batch is used for this entry. If
 both this resource and the Batch resource are None,
 the API will return an error.</li>
+<li><strong>trace</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – (optional) traceid to apply to the entry.</li>
 </ul>
 </td>
 </tr>
@@ -108,7 +109,7 @@ the API will return an error.</li>
 
 <dl class="method">
 <dt id="google.cloud.logging.logger.Batch.log_struct">
-<code class="descname">log_struct</code><span class="sig-paren">(</span><em>info</em>, <em>labels=None</em>, <em>insert_id=None</em>, <em>severity=None</em>, <em>http_request=None</em>, <em>timestamp=None</em>, <em>resource=Resource(type='global'</em>, <em>labels={})</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/logging/logger.html#Batch.log_struct"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.logging.logger.Batch.log_struct" title="Permalink to this definition">#</a></dt>
+<code class="descname">log_struct</code><span class="sig-paren">(</span><em>info</em>, <em>labels=None</em>, <em>insert_id=None</em>, <em>severity=None</em>, <em>http_request=None</em>, <em>timestamp=None</em>, <em>resource=Resource(type='global'</em>, <em>labels={})</em>, <em>trace=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/logging/logger.html#Batch.log_struct"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.logging.logger.Batch.log_struct" title="Permalink to this definition">#</a></dt>
 <dd><p>Add a struct entry to be logged during <a class="reference internal" href="#google.cloud.logging.logger.Batch.commit" title="google.cloud.logging.logger.Batch.commit"><code class="xref py py-meth docutils literal notranslate"><span class="pre">commit()</span></code></a>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -127,6 +128,7 @@ to the global resource type. If set to None, the
 resource of the batch is used for this entry. If
 both this resource and the Batch resource are None,
 the API will return an error.</li>
+<li><strong>trace</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – (optional) traceid to apply to the entry.</li>
 </ul>
 </td>
 </tr>
@@ -136,7 +138,7 @@ the API will return an error.</li>
 
 <dl class="method">
 <dt id="google.cloud.logging.logger.Batch.log_text">
-<code class="descname">log_text</code><span class="sig-paren">(</span><em>text</em>, <em>labels=None</em>, <em>insert_id=None</em>, <em>severity=None</em>, <em>http_request=None</em>, <em>timestamp=None</em>, <em>resource=Resource(type='global'</em>, <em>labels={})</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/logging/logger.html#Batch.log_text"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.logging.logger.Batch.log_text" title="Permalink to this definition">#</a></dt>
+<code class="descname">log_text</code><span class="sig-paren">(</span><em>text</em>, <em>labels=None</em>, <em>insert_id=None</em>, <em>severity=None</em>, <em>http_request=None</em>, <em>timestamp=None</em>, <em>resource=Resource(type='global'</em>, <em>labels={})</em>, <em>trace=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/logging/logger.html#Batch.log_text"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.logging.logger.Batch.log_text" title="Permalink to this definition">#</a></dt>
 <dd><p>Add a text entry to be logged during <a class="reference internal" href="#google.cloud.logging.logger.Batch.commit" title="google.cloud.logging.logger.Batch.commit"><code class="xref py py-meth docutils literal notranslate"><span class="pre">commit()</span></code></a>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -155,6 +157,7 @@ to the global resource type. If set to None, the
 resource of the batch is used for this entry. If
 both this resource and the Batch resource are None,
 the API will return an error.</li>
+<li><strong>trace</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – (optional) traceid to apply to the entry.</li>
 </ul>
 </td>
 </tr>
@@ -274,7 +277,7 @@ accessible to the current logger.</p>
 
 <dl class="method">
 <dt id="google.cloud.logging.logger.Logger.log_proto">
-<code class="descname">log_proto</code><span class="sig-paren">(</span><em>message</em>, <em>client=None</em>, <em>labels=None</em>, <em>insert_id=None</em>, <em>severity=None</em>, <em>http_request=None</em>, <em>timestamp=None</em>, <em>resource=Resource(type='global'</em>, <em>labels={})</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/logging/logger.html#Logger.log_proto"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.logging.logger.Logger.log_proto" title="Permalink to this definition">#</a></dt>
+<code class="descname">log_proto</code><span class="sig-paren">(</span><em>message</em>, <em>client=None</em>, <em>labels=None</em>, <em>insert_id=None</em>, <em>severity=None</em>, <em>http_request=None</em>, <em>timestamp=None</em>, <em>resource=Resource(type='global'</em>, <em>labels={})</em>, <em>trace=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/logging/logger.html#Logger.log_proto"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.logging.logger.Logger.log_proto" title="Permalink to this definition">#</a></dt>
 <dd><p>API call:  log a protobuf message via a POST request</p>
 <p>See
 <a class="reference external" href="https://cloud.google.com/logging/docs/reference/v2/rest/v2/entries/list">https://cloud.google.com/logging/docs/reference/v2/rest/v2/entries/list</a></p>
@@ -292,9 +295,10 @@ accessible to the current logger.</p>
 <li><strong>severity</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – (optional) severity of event being logged.</li>
 <li><strong>http_request</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – (optional) info about HTTP request associated with
 the entry.</li>
+<li><strong>timestamp</strong> (<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">datetime.datetime</span></code></a>) – (optional) timestamp of event being logged.</li>
 <li><strong>resource</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Resource</span></code>) – Monitored resource of the entry, defaults
 to the global resource type.</li>
-<li><strong>timestamp</strong> (<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">datetime.datetime</span></code></a>) – (optional) timestamp of event being logged.</li>
+<li><strong>trace</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – (optional) traceid to apply to the entry.</li>
 </ul>
 </td>
 </tr>
@@ -304,7 +308,7 @@ to the global resource type.</li>
 
 <dl class="method">
 <dt id="google.cloud.logging.logger.Logger.log_struct">
-<code class="descname">log_struct</code><span class="sig-paren">(</span><em>info</em>, <em>client=None</em>, <em>labels=None</em>, <em>insert_id=None</em>, <em>severity=None</em>, <em>http_request=None</em>, <em>timestamp=None</em>, <em>resource=Resource(type='global'</em>, <em>labels={})</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/logging/logger.html#Logger.log_struct"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.logging.logger.Logger.log_struct" title="Permalink to this definition">#</a></dt>
+<code class="descname">log_struct</code><span class="sig-paren">(</span><em>info</em>, <em>client=None</em>, <em>labels=None</em>, <em>insert_id=None</em>, <em>severity=None</em>, <em>http_request=None</em>, <em>timestamp=None</em>, <em>resource=Resource(type='global'</em>, <em>labels={})</em>, <em>trace=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/logging/logger.html#Logger.log_struct"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.logging.logger.Logger.log_struct" title="Permalink to this definition">#</a></dt>
 <dd><p>API call:  log a structured message via a POST request</p>
 <p>See
 <a class="reference external" href="https://cloud.google.com/logging/docs/reference/v2/rest/v2/entries/write">https://cloud.google.com/logging/docs/reference/v2/rest/v2/entries/write</a></p>
@@ -322,9 +326,10 @@ to the global resource type.</li>
 <li><strong>severity</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – (optional) severity of event being logged.</li>
 <li><strong>http_request</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – (optional) info about HTTP request associated with
 the entry.</li>
+<li><strong>timestamp</strong> (<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">datetime.datetime</span></code></a>) – (optional) timestamp of event being logged.</li>
 <li><strong>resource</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Resource</span></code>) – Monitored resource of the entry, defaults
 to the global resource type.</li>
-<li><strong>timestamp</strong> (<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">datetime.datetime</span></code></a>) – (optional) timestamp of event being logged.</li>
+<li><strong>trace</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – (optional) traceid to apply to the entry.</li>
 </ul>
 </td>
 </tr>
@@ -334,7 +339,7 @@ to the global resource type.</li>
 
 <dl class="method">
 <dt id="google.cloud.logging.logger.Logger.log_text">
-<code class="descname">log_text</code><span class="sig-paren">(</span><em>text</em>, <em>client=None</em>, <em>labels=None</em>, <em>insert_id=None</em>, <em>severity=None</em>, <em>http_request=None</em>, <em>timestamp=None</em>, <em>resource=Resource(type='global'</em>, <em>labels={})</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/logging/logger.html#Logger.log_text"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.logging.logger.Logger.log_text" title="Permalink to this definition">#</a></dt>
+<code class="descname">log_text</code><span class="sig-paren">(</span><em>text</em>, <em>client=None</em>, <em>labels=None</em>, <em>insert_id=None</em>, <em>severity=None</em>, <em>http_request=None</em>, <em>timestamp=None</em>, <em>resource=Resource(type='global'</em>, <em>labels={})</em>, <em>trace=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/logging/logger.html#Logger.log_text"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.logging.logger.Logger.log_text" title="Permalink to this definition">#</a></dt>
 <dd><p>API call:  log a text message via a POST request</p>
 <p>See
 <a class="reference external" href="https://cloud.google.com/logging/docs/reference/v2/rest/v2/entries/write">https://cloud.google.com/logging/docs/reference/v2/rest/v2/entries/write</a></p>
@@ -352,9 +357,10 @@ to the global resource type.</li>
 <li><strong>severity</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – (optional) severity of event being logged.</li>
 <li><strong>http_request</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – (optional) info about HTTP request associated with
 the entry</li>
+<li><strong>timestamp</strong> (<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">datetime.datetime</span></code></a>) – (optional) timestamp of event being logged.</li>
 <li><strong>resource</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Resource</span></code>) – Monitored resource of the entry, defaults
 to the global resource type.</li>
-<li><strong>timestamp</strong> (<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">datetime.datetime</span></code></a>) – (optional) timestamp of event being logged.</li>
+<li><strong>trace</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – (optional) traceid to apply to the entry.</li>
 </ul>
 </td>
 </tr>
