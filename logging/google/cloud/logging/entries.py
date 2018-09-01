@@ -78,7 +78,7 @@ class _BaseEntry(object):
     :param resource: (Optional) Monitored resource of the entry
 
     :type trace: str
-    :param trace: (optional) traceid to apply to the entry.    
+    :param trace: (optional) traceid to apply to the entry.
     """
     def __init__(self, payload, logger, insert_id=None, timestamp=None,
                  labels=None, severity=None, http_request=None, resource=None,
@@ -193,7 +193,7 @@ class ProtobufEntry(_BaseEntry):
     :param resource: (Optional) Monitored resource of the entry
 
     :type trace: str
-    :param trace: (optional) traceid to apply to the entry.    
+    :param trace: (optional) traceid to apply to the entry.
     """
     _PAYLOAD_KEY = 'protoPayload'
 

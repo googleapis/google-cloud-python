@@ -303,7 +303,7 @@ class Logger(object):
 
         :type timestamp: :class:`datetime.datetime`
         :param timestamp: (optional) timestamp of event being logged.
-        
+
         :type resource: :class:`~google.cloud.logging.resource.Resource`
         :param resource: Monitored resource of the entry, defaults
                          to the global resource type.

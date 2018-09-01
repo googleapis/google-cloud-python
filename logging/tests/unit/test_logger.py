@@ -178,7 +178,7 @@ class TestLogger(unittest.TestCase):
         self.assertEqual(api._write_entries_called_with,
                          (ENTRIES, None, None, None))
 
-    def test_log_text_w_unicode_explicit_client_labels_severity_httpreq_trace(self):
+    def test_log_text_w_unicode_explicit_client_labels_severity_httpreq(self):
         TEXT = u'TEXT'
         DEFAULT_LABELS = {'foo': 'spam'}
         LABELS = {'foo': 'bar', 'baz': 'qux'}
@@ -263,7 +263,7 @@ class TestLogger(unittest.TestCase):
         self.assertEqual(api._write_entries_called_with,
                          (ENTRIES, None, None, None))
 
-    def test_log_struct_w_explicit_client_labels_severity_httpreq_trace(self):
+    def test_log_struct_w_explicit_client_labels_severity_httpreq(self):
         STRUCT = {'message': 'MESSAGE', 'weather': 'cloudy'}
         DEFAULT_LABELS = {'foo': 'spam'}
         LABELS = {'foo': 'bar', 'baz': 'qux'}
@@ -403,7 +403,7 @@ class TestLogger(unittest.TestCase):
         self.assertEqual(api._write_entries_called_with,
                          (ENTRIES, None, None, None))
 
-    def test_log_proto_w_explicit_client_labels_severity_httpreq_trace(self):
+    def test_log_proto_w_explicit_client_labels_severity_httpreq(self):
         import json
         from google.protobuf.json_format import MessageToJson
         from google.protobuf.struct_pb2 import Struct
@@ -825,26 +825,32 @@ class TestBatch(unittest.TestCase):
         TIMESTAMP1 = datetime.datetime(2016, 12, 31, 0, 0, 1, 999999)
         TIMESTAMP2 = datetime.datetime(2016, 12, 31, 0, 0, 2, 999999)
         TIMESTAMP3 = datetime.datetime(2016, 12, 31, 0, 0, 3, 999999)
+        TRACE1 = '12345678-1234-5678-1234-567812345678'
+        TRACE2 = '12345678-1234-5678-1234-567812345679'
+        TRACE3 = '12345678-1234-5678-1234-567812345670'
         ENTRIES = [
             {'textPayload': TEXT, 'insertId': IID1,
              'timestamp': _datetime_to_rfc3339(TIMESTAMP1),
-             'resource': _GLOBAL_RESOURCE._to_dict()},
+             'resource': _GLOBAL_RESOURCE._to_dict(), 'trace': TRACE1},
             {'jsonPayload': STRUCT, 'insertId': IID2,
              'timestamp': _datetime_to_rfc3339(TIMESTAMP2),
-             'resource': _GLOBAL_RESOURCE._to_dict()},
+             'resource': _GLOBAL_RESOURCE._to_dict(), 'trace': TRACE2},
             {'protoPayload': json.loads(MessageToJson(message)),
              'insertId': IID3,
              'timestamp': _datetime_to_rfc3339(TIMESTAMP3),
-             'resource': _GLOBAL_RESOURCE._to_dict()},
+             'resource': _GLOBAL_RESOURCE._to_dict(), 'trace': TRACE3},
         ]
         client = _Client(project=self.PROJECT)
         api = client.logging_api = _DummyLoggingAPI()
         logger = _Logger()
         batch = self._make_one(logger, client=client)
 
-        batch.log_text(TEXT, insert_id=IID1, timestamp=TIMESTAMP1)
-        batch.log_struct(STRUCT, insert_id=IID2, timestamp=TIMESTAMP2)
-        batch.log_proto(message, insert_id=IID3, timestamp=TIMESTAMP3)
+        batch.log_text(TEXT, insert_id=IID1, timestamp=TIMESTAMP1,
+                       trace=TRACE1)
+        batch.log_struct(STRUCT, insert_id=IID2, timestamp=TIMESTAMP2,
+                         trace=TRACE2)
+        batch.log_proto(message, insert_id=IID3, timestamp=TIMESTAMP3,
+                        trace=TRACE3)
         batch.commit()
 
         self.assertEqual(list(batch.entries), [])
