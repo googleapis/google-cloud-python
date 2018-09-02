@@ -22,6 +22,7 @@ from google.cloud.bigtable.row_set import RowRange
 from google.cloud.bigtable_v2.proto import (
     data_pb2 as data_v2_pb2)
 
+
 class MultiCallableStub(object):
     """Stub for the grpc.UnaryUnaryMultiCallable interface."""
 
