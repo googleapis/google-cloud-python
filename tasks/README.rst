@@ -8,7 +8,7 @@ Python Client for Cloud Tasks API (`Alpha`_)
 
 .. _Alpha: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/README.rst
 .. _Cloud Tasks API: https://cloud.google.com/tasks
-.. _Client Library Documentation: https://googlecloudplatform.github.io/google-cloud-python/latest/tasks/index.html
+.. _Client Library Documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/tasks/usage.html
 .. _Product Documentation:  https://cloud.google.com/tasks
 
 Quick Start
@@ -65,7 +65,7 @@ Next Steps
 ~~~~~~~~~~
 
 -  Read the `Client Library Documentation`_ for Cloud Tasks API
-   to see other available methods on the client.
+   API to see other available methods on the client.
 -  Read the `Cloud Tasks API Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `repository’s main README`_ to see the full list of Cloud

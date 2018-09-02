@@ -23,12 +23,12 @@ logging.basicConfig(level=logging.DEBUG)
 gapic = gcp.GAPICGenerator()
 common = gcp.CommonTemplates()
 
-# tasks has two product names, and a poorly named artman yaml
-v2beta2_library = gapic.py_library(
-    'tasks', 'v2beta2',
-    config_path='artman_cloudtasks.yaml')
+for version in ['v2beta2', 'v2beta3']:
+    library = gapic.py_library(
+        'tasks', version,
+        config_path=f'artman_cloudtasks_{version}.yaml')
 
-s.copy(v2beta2_library)
+    s.copy(library, excludes=['docs/conf.py'])
 
 # Set Release Status
 release_status = 'Development Status :: 3 - Alpha'
