@@ -41,17 +41,6 @@ s.replace('setup.py',
           'dependencies = \[\n*(^.*,\n)+',
           "\\g<0>    'grpc-google-iam-v1<0.12dev,>=0.11.4',\n")
 
-# Correct Naming of package
-s.replace('**/*.rst',
-          'google-cloud-cloud-tasks',
-          'google-cloud-tasks')
-s.replace('**/*.py',
-          'google-cloud-cloud-tasks',
-          'google-cloud-tasks')
-s.replace('README.rst',
-          '/cloud-tasks',
-          '/tasks')
-
 # Fix the enable API link
 s.replace(
     'README.rst',
@@ -74,8 +63,6 @@ s.replace(
     'google/cloud/tasks_v2beta2/gapic/cloud_tasks_client.py',
     r'(Sample filter \\"app_engine_http_target: )\*\\".',
     '\g<1>\\*\\".')
-
-s.replace("google/cloud/**/*.py", "`[.\s\n]+ </appengine/.*?>`__", "")
 
 # Issues with Anonymous ('__') links. Change to named.
 s.replace(
