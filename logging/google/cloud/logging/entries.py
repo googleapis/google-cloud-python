@@ -76,9 +76,13 @@ class _BaseEntry(object):
 
     :type resource: :class:`~google.cloud.logging.resource.Resource`
     :param resource: (Optional) Monitored resource of the entry
+
+    :type trace: str
+    :param trace: (optional) traceid to apply to the entry.
     """
     def __init__(self, payload, logger, insert_id=None, timestamp=None,
-                 labels=None, severity=None, http_request=None, resource=None):
+                 labels=None, severity=None, http_request=None, resource=None,
+                 trace=None):
         self.payload = payload
         self.logger = logger
         self.insert_id = insert_id
@@ -87,6 +91,7 @@ class _BaseEntry(object):
         self.severity = severity
         self.http_request = http_request
         self.resource = resource
+        self.trace = trace
 
     @classmethod
     def from_api_repr(cls, resource, client, loggers=None):
@@ -123,6 +128,7 @@ class _BaseEntry(object):
         labels = resource.get('labels')
         severity = resource.get('severity')
         http_request = resource.get('httpRequest')
+        trace = resource.get('trace')
 
         monitored_resource_dict = resource.get('resource')
         monitored_resource = None
@@ -131,7 +137,7 @@ class _BaseEntry(object):
 
         return cls(payload, logger, insert_id=insert_id, timestamp=timestamp,
                    labels=labels, severity=severity, http_request=http_request,
-                   resource=monitored_resource)
+                   resource=monitored_resource, trace=trace)
 
 
 class TextEntry(_BaseEntry):
@@ -185,15 +191,19 @@ class ProtobufEntry(_BaseEntry):
 
     :type resource: :class:`~google.cloud.logging.resource.Resource`
     :param resource: (Optional) Monitored resource of the entry
+
+    :type trace: str
+    :param trace: (optional) traceid to apply to the entry.
     """
     _PAYLOAD_KEY = 'protoPayload'
 
     def __init__(self, payload, logger, insert_id=None, timestamp=None,
-                 labels=None, severity=None, http_request=None, resource=None):
+                 labels=None, severity=None, http_request=None, resource=None,
+                 trace=None):
         super(ProtobufEntry, self).__init__(
             payload, logger, insert_id=insert_id, timestamp=timestamp,
             labels=labels, severity=severity, http_request=http_request,
-            resource=resource)
+            resource=resource, trace=trace)
         if isinstance(self.payload, any_pb2.Any):
             self.payload_pb = self.payload
             self.payload = None
