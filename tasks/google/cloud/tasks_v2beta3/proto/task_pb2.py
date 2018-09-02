@@ -233,7 +233,7 @@ Task = _reflection.GeneratedProtocolMessageType('Task', (_message.Message,), dic
           ([0-9]),    hyphens (-), colons (:), or periods (.). For more
           information, see    `Identifying    projects
           <https://cloud.google.com/resource-manager/docs/creating-
-          managing-projects#identifying_projects>`__ -  ``LOCATION_ID``
+          managing-projects#identifying_projects>`_ -  ``LOCATION_ID``
           is the canonical ID for the task's location. The list    of
           available locations can be obtained by calling    [ListLocatio
           ns][google.cloud.location.Locations.ListLocations]. For

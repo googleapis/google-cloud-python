@@ -893,7 +893,7 @@ class CloudTasksClient(object):
         set.
 
         Authorization requires the following
-        `Google IAM <https://cloud.google.com/iam>`_ permission on the specified
+        `Google IAM <https://cloud.google.com/iam>`__ permission on the specified
         resource parent:
 
         * ``cloudtasks.queues.getIamPolicy``
@@ -971,7 +971,7 @@ class CloudTasksClient(object):
         Project-level permissions are required to use the Cloud Console.
 
         Authorization requires the following
-        `Google IAM <https://cloud.google.com/iam>`_ permission on the specified
+        `Google IAM <https://cloud.google.com/iam>`__ permission on the specified
         resource parent:
 
         * ``cloudtasks.queues.setIamPolicy``
@@ -1352,7 +1352,7 @@ class CloudTasksClient(object):
         Tasks cannot be updated after creation; there is no UpdateTask command.
 
         * For ``App Engine queues``, the maximum task size is
-        100KB.
+          100KB.
 
         Example:
             >>> from google.cloud import tasks_v2beta3
