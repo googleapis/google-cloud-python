@@ -1,0 +1,1616 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Types for Cloud Tasks API Client &#8212; google-cloud 61cec6f documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Python Client for Cloud Text-to-Speech API (Alpha)" href="../../../texttospeech/index.html" />
+    <link rel="prev" title="Client for Cloud Tasks API" href="api.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="module-google.cloud.tasks_v2beta3.types">
+<span id="types-for-cloud-tasks-api-client"></span><h1>Types for Cloud Tasks API Client<a class="headerlink" href="#module-google.cloud.tasks_v2beta3.types" title="Permalink to this headline">#</a></h1>
+<dl class="class">
+<dt id="google.cloud.tasks_v2beta3.types.Any">
+<em class="property">class </em><code class="descclassname">google.cloud.tasks_v2beta3.types.</code><code class="descname">Any</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.Any" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.tasks_v2beta3.types.AppEngineHttpQueue">
+<em class="property">class </em><code class="descclassname">google.cloud.tasks_v2beta3.types.</code><code class="descname">AppEngineHttpQueue</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.AppEngineHttpQueue" title="Permalink to this definition">#</a></dt>
+<dd><p>App Engine HTTP queue.</p>
+<p>The task will be delivered to the App Engine application hostname
+specified by its
+[AppEngineHttpQueue][google.cloud.tasks.v2beta3.AppEngineHttpQueue] and
+[AppEngineHttpRequest][google.cloud.tasks.v2beta3.AppEngineHttpRequest].
+The documentation for
+[AppEngineHttpRequest][google.cloud.tasks.v2beta3.AppEngineHttpRequest]
+explains how the task’s host URL is constructed.</p>
+<p>Using
+[AppEngineHttpQueue][google.cloud.tasks.v2beta3.AppEngineHttpQueue]
+requires
+<code class="docutils literal notranslate"><span class="pre">`appengine.applications.get</span></code> &lt;<a class="reference external" href="https://cloud.google.com/appengine/docs/admin-api/access-control">https://cloud.google.com/appengine/docs/admin-api/access-control</a>&gt;`_
+Google IAM permission for the project and the following scope:</p>
+<p><code class="docutils literal notranslate"><span class="pre">https://www.googleapis.com/auth/cloud-platform</span></code></p>
+<dl class="attribute">
+<dt id="google.cloud.tasks_v2beta3.types.AppEngineHttpQueue.app_engine_routing_override">
+<code class="descname">app_engine_routing_override</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.AppEngineHttpQueue.app_engine_routing_override" title="Permalink to this definition">#</a></dt>
+<dd><p>Overrides for the [task-level app_engine_routing][google.clo
+ud.tasks.v2beta3.AppEngineHttpRequest.app_engine_routing].
+If set, <code class="docutils literal notranslate"><span class="pre">app_engine_routing_override</span></code> is used for all tasks
+in the queue, no matter what the setting is for the [task-
+level app_engine_routing][google.cloud.tasks.v2beta3.AppEngi
+neHttpRequest.app_engine_routing].</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.tasks_v2beta3.types.AppEngineHttpRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.tasks_v2beta3.types.</code><code class="descname">AppEngineHttpRequest</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.AppEngineHttpRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>App Engine HTTP request.</p>
+<p>The message defines the HTTP request that is sent to an App Engine app
+when the task is dispatched.</p>
+<p>This proto can only be used for tasks in a queue which has
+[app_engine_http_queue][google.cloud.tasks.v2beta3.Queue.app_engine_http_queue]
+set.</p>
+<p>Using
+[AppEngineHttpRequest][google.cloud.tasks.v2beta3.AppEngineHttpRequest]
+requires
+<code class="docutils literal notranslate"><span class="pre">`appengine.applications.get</span></code> &lt;<a class="reference external" href="https://cloud.google.com/appengine/docs/admin-api/access-control">https://cloud.google.com/appengine/docs/admin-api/access-control</a>&gt;`_
+Google IAM permission for the project and the following scope:</p>
+<p><code class="docutils literal notranslate"><span class="pre">https://www.googleapis.com/auth/cloud-platform</span></code></p>
+<p>The task will be delivered to the App Engine app which belongs to the
+same project as the queue. For more information, see <a class="reference external" href="https://cloud.google.com/appengine/docs/standard/python/how-requests-are-routed">How Requests are
+Routed</a>
+and how routing is affected by <a class="reference external" href="https://cloud.google.com/appengine/docs/python/config/dispatchref">dispatch
+files</a>.</p>
+<p>The [AppEngineRouting][google.cloud.tasks.v2beta3.AppEngineRouting] used
+to construct the URL that the task is delivered to can be set at the
+queue-level or task-level:</p>
+<ul class="simple">
+<li>If set,
+[app_engine_routing_override][google.cloud.tasks.v2beta3.AppEngineHttpQueue.app_engine_routing_override]
+is used for all tasks in the queue, no matter what the setting is for
+the [task-level
+app_engine_routing][google.cloud.tasks.v2beta3.AppEngineHttpRequest.app_engine_routing].</li>
+</ul>
+<p>The <code class="docutils literal notranslate"><span class="pre">url</span></code> that the task will be sent to is:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">url</span> <span class="pre">=</span></code> [host][google.cloud.tasks.v2beta3.AppEngineRouting.host]
+<code class="docutils literal notranslate"><span class="pre">+</span></code>
+[relative_uri][google.cloud.tasks.v2beta3.AppEngineHttpRequest.relative_uri]</li>
+</ul>
+<p>The task attempt has succeeded if the app’s request handler returns an
+HTTP response code in the range [<code class="docutils literal notranslate"><span class="pre">200</span></code> - <code class="docutils literal notranslate"><span class="pre">299</span></code>]. <code class="docutils literal notranslate"><span class="pre">503</span></code> is
+considered an App Engine system error instead of an application error.
+Requests returning error <code class="docutils literal notranslate"><span class="pre">503</span></code> will be retried regardless of retry
+configuration and not counted against retry counts. Any other response
+code or a failure to receive a response before the deadline is a failed
+attempt.</p>
+<dl class="attribute">
+<dt id="google.cloud.tasks_v2beta3.types.AppEngineHttpRequest.http_method">
+<code class="descname">http_method</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.AppEngineHttpRequest.http_method" title="Permalink to this definition">#</a></dt>
+<dd><p>The HTTP method to use for the request. The default is POST.
+The app’s request handler for the task’s target URL must be
+able to handle HTTP requests with this http_method, otherwise
+the task attempt will fail with error code 405 (Method Not
+Allowed). See <a class="reference external" href="https://cloud.google.com/appengine/docs/java/taskqueue/push/creating-handlers#writing_a_push_task_request_handler">Writing a push task request handler</a> and the
+documentation for the request handlers in the language your
+app is written in e.g. <a class="reference external" href="https://cloud.google.com/appengine/docs/python/tools/webapp/requesthandlerclass">Python Request Handler</a>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.tasks_v2beta3.types.AppEngineHttpRequest.app_engine_routing">
+<code class="descname">app_engine_routing</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.AppEngineHttpRequest.app_engine_routing" title="Permalink to this definition">#</a></dt>
+<dd><p>Task-level setting for App Engine routing.  If set, [app_engi
+ne_routing_override][google.cloud.tasks.v2beta3.AppEngineHtt
+pQueue.app_engine_routing_override] is used for all tasks
+in the queue, no matter what the setting is for the [task-
+level app_engine_routing][google.cloud.tasks.v2beta3.AppEngi
+neHttpRequest.app_engine_routing].</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.tasks_v2beta3.types.AppEngineHttpRequest.relative_uri">
+<code class="descname">relative_uri</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.AppEngineHttpRequest.relative_uri" title="Permalink to this definition">#</a></dt>
+<dd><p>The relative URI.  The relative URI must begin with “/” and
+must be a valid HTTP relative URI. It can contain a path and
+query string arguments. If the relative URI is empty, then the
+root path “/” will be used. No spaces are allowed, and the
+maximum length allowed is 2083 characters.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.tasks_v2beta3.types.AppEngineHttpRequest.headers">
+<code class="descname">headers</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.AppEngineHttpRequest.headers" title="Permalink to this definition">#</a></dt>
+<dd><p>HTTP request headers.  This map contains the header field
+names and values. Headers can be set when the [task is
+created][google.cloud.tasks.v2beta3.CloudTasks.CreateTask].
+Repeated headers are not supported but a header value can
+contain commas.  Cloud Tasks sets some headers to default
+values:  -  <code class="docutils literal notranslate"><span class="pre">User-Agent</span></code>: By default, this header is
+<code class="docutils literal notranslate"><span class="pre">&quot;AppEngine-Google;</span> <span class="pre">(+http://code.google.com/appengine)&quot;</span></code>.
+This    header can be modified, but Cloud Tasks will append
+<code class="docutils literal notranslate"><span class="pre">&quot;AppEngine-Google;</span> <span class="pre">(+http://code.google.com/appengine)&quot;</span></code> to
+the    modified <code class="docutils literal notranslate"><span class="pre">User-Agent</span></code>.  If the task has a
+[body][google.cloud.tasks.v2beta3.AppEngineHttpRequest.body],
+Cloud Tasks sets the following headers:  -  <code class="docutils literal notranslate"><span class="pre">Content-Type</span></code>:
+By default, the <code class="docutils literal notranslate"><span class="pre">Content-Type</span></code> header is set to
+<code class="docutils literal notranslate"><span class="pre">&quot;application/octet-stream&quot;</span></code>. The default can be overridden
+by    explicitly setting <code class="docutils literal notranslate"><span class="pre">Content-Type</span></code> to a particular
+media type when    the [task is
+created][google.cloud.tasks.v2beta3.CloudTasks.CreateTask].
+For    example, <code class="docutils literal notranslate"><span class="pre">Content-Type</span></code> can be set to
+<code class="docutils literal notranslate"><span class="pre">&quot;application/json&quot;</span></code>. -  <code class="docutils literal notranslate"><span class="pre">Content-Length</span></code>: This is
+computed by Cloud Tasks. This value is    output only. It
+cannot be changed.  The headers below cannot be set or
+overridden:  -  <code class="docutils literal notranslate"><span class="pre">Host</span></code> -  <code class="docutils literal notranslate"><span class="pre">X-Google-*</span></code> -
+<code class="docutils literal notranslate"><span class="pre">X-AppEngine-*</span></code>  In addition, Cloud Tasks sets some headers
+when the task is dispatched, such as headers containing
+information about the task; see <a class="reference external" href="https://cloud.google.com/appengine/docs/python/taskqueue/push/creating-handlers#reading_request_headers">request headers</a>. These headers are set
+only when the task is dispatched, so they are not visible when
+the task is returned in a Cloud Tasks response.  Although
+there is no specific limit for the maximum number of headers
+or the size, there is a limit on the maximum size of the
+[Task][google.cloud.tasks.v2beta3.Task]. For more information,
+see the
+[CreateTask][google.cloud.tasks.v2beta3.CloudTasks.CreateTask]
+documentation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.tasks_v2beta3.types.AppEngineHttpRequest.body">
+<code class="descname">body</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.AppEngineHttpRequest.body" title="Permalink to this definition">#</a></dt>
+<dd><p>HTTP request body.  A request body is allowed only if the HTTP
+method is POST or PUT. It is an error to set a body on a task
+with an incompatible
+[HttpMethod][google.cloud.tasks.v2beta3.HttpMethod].</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.tasks_v2beta3.types.AppEngineHttpRequest.HeadersEntry">
+<em class="property">class </em><code class="descname">HeadersEntry</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.AppEngineHttpRequest.HeadersEntry" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.tasks_v2beta3.types.AppEngineRouting">
+<em class="property">class </em><code class="descclassname">google.cloud.tasks_v2beta3.types.</code><code class="descname">AppEngineRouting</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.AppEngineRouting" title="Permalink to this definition">#</a></dt>
+<dd><p>App Engine Routing.</p>
+<p>Specifies the target URI. Since this target type dispatches tasks to
+secure app handlers, unsecure app handlers, and URIs restricted with
+<code class="docutils literal notranslate"><span class="pre">`login:</span> <span class="pre">admin</span></code> &lt;<a class="reference external" href="https://cloud.google.com/appengine/docs/standard/python/config/appref">https://cloud.google.com/appengine/docs/standard/python/config/appref</a>&gt;`_
+the protocol (for example, HTTP or HTTPS) cannot be explictly specified.
+Task dispatches do not follow redirects and cannot target URI paths
+restricted with
+<code class="docutils literal notranslate"><span class="pre">`login:</span> <span class="pre">required</span></code> &lt;<a class="reference external" href="https://cloud.google.com/appengine/docs/standard/python/config/appref">https://cloud.google.com/appengine/docs/standard/python/config/appref</a>&gt;`_
+because tasks are not run as any user.</p>
+<p>For more information about services, versions, and instances see <a class="reference external" href="https://cloud.google.com/appengine/docs/python/an-overview-of-app-engine">An
+Overview of App
+Engine</a>,
+<a class="reference external" href="https://cloud.google.com/appengine/docs/python/microservices-on-app-engine">Microservices Architecture on Google App
+Engine</a>,
+<a class="reference external" href="https://cloud.google.com/appengine/docs/standard/python/how-requests-are-routed">App Engine Standard request
+routing</a>,
+and <a class="reference external" href="https://cloud.google.com/appengine/docs/flexible/python/how-requests-are-routed">App Engine Flex request
+routing</a>.</p>
+<dl class="attribute">
+<dt id="google.cloud.tasks_v2beta3.types.AppEngineRouting.service">
+<code class="descname">service</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.AppEngineRouting.service" title="Permalink to this definition">#</a></dt>
+<dd><p>App service.  By default, the task is sent to the service
+which is the default service when the task is attempted.  For
+some queues or tasks which were created using the App Engine
+Task Queue API,
+[host][google.cloud.tasks.v2beta3.AppEngineRouting.host] is
+not parsable into [service][google.cloud.tasks.v2beta3.AppEngi
+neRouting.service], [version][google.cloud.tasks.v2beta3.AppEn
+gineRouting.version], and [instance][google.cloud.tasks.v2beta
+3.AppEngineRouting.instance]. For example, some tasks which
+were created using the App Engine SDK use a custom domain
+name; custom domains are not parsed by Cloud Tasks. If
+[host][google.cloud.tasks.v2beta3.AppEngineRouting.host] is
+not parsable, then [service][google.cloud.tasks.v2beta3.AppEng
+ineRouting.service], [version][google.cloud.tasks.v2beta3.AppE
+ngineRouting.version], and [instance][google.cloud.tasks.v2bet
+a3.AppEngineRouting.instance] are the empty string.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.tasks_v2beta3.types.AppEngineRouting.version">
+<code class="descname">version</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.AppEngineRouting.version" title="Permalink to this definition">#</a></dt>
+<dd><p>App version.  By default, the task is sent to the version
+which is the default version when the task is attempted.  For
+some queues or tasks which were created using the App Engine
+Task Queue API,
+[host][google.cloud.tasks.v2beta3.AppEngineRouting.host] is
+not parsable into [service][google.cloud.tasks.v2beta3.AppEngi
+neRouting.service], [version][google.cloud.tasks.v2beta3.AppEn
+gineRouting.version], and [instance][google.cloud.tasks.v2beta
+3.AppEngineRouting.instance]. For example, some tasks which
+were created using the App Engine SDK use a custom domain
+name; custom domains are not parsed by Cloud Tasks. If
+[host][google.cloud.tasks.v2beta3.AppEngineRouting.host] is
+not parsable, then [service][google.cloud.tasks.v2beta3.AppEng
+ineRouting.service], [version][google.cloud.tasks.v2beta3.AppE
+ngineRouting.version], and [instance][google.cloud.tasks.v2bet
+a3.AppEngineRouting.instance] are the empty string.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.tasks_v2beta3.types.AppEngineRouting.instance">
+<code class="descname">instance</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.AppEngineRouting.instance" title="Permalink to this definition">#</a></dt>
+<dd><p>App instance.  By default, the task is sent to an instance
+which is available when the task is attempted.  Requests can
+only be sent to a specific instance if <a class="reference external" href="https://cloud.google.com/appengine/docs/python/an-overview-of-app-engine?hl=en_US#scaling_types_and_instance_classes">manual scaling is used
+in App Engine Standard</a>.
+App Engine Flex does not support instances. For more
+information, see <a class="reference external" href="https://cloud.google.com/appengine/docs/standard/python/how-requests-are-routed">App Engine Standard request routing</a> and <a class="reference external" href="https://cloud.google.com/appengine/docs/flexible/python/how-requests-are-routed">App Engine Flex request routing</a>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.tasks_v2beta3.types.AppEngineRouting.host">
+<code class="descname">host</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.AppEngineRouting.host" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. The host that the task is sent to.  The host is
+constructed from the domain name of the app associated with
+the queue’s project ID (for example .appspot.com), and the [se
+rvice][google.cloud.tasks.v2beta3.AppEngineRouting.service], [
+version][google.cloud.tasks.v2beta3.AppEngineRouting.version],
+and [instance][google.cloud.tasks.v2beta3.AppEngineRouting.ins
+tance]. Tasks which were created using the App Engine SDK
+might have a custom domain name.  For more information, see
+<a class="reference external" href="https://cloud.google.com/appengine/docs/standard/python/how-requests-are-routed">How Requests are Routed</a>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.tasks_v2beta3.types.Attempt">
+<em class="property">class </em><code class="descclassname">google.cloud.tasks_v2beta3.types.</code><code class="descname">Attempt</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.Attempt" title="Permalink to this definition">#</a></dt>
+<dd><p>The status of a task attempt.</p>
+<dl class="attribute">
+<dt id="google.cloud.tasks_v2beta3.types.Attempt.schedule_time">
+<code class="descname">schedule_time</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.Attempt.schedule_time" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. The time that this attempt was scheduled.
+<code class="docutils literal notranslate"><span class="pre">schedule_time</span></code> will be truncated to the nearest
+microsecond.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.tasks_v2beta3.types.Attempt.dispatch_time">
+<code class="descname">dispatch_time</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.Attempt.dispatch_time" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. The time that this attempt was dispatched.
+<code class="docutils literal notranslate"><span class="pre">dispatch_time</span></code> will be truncated to the nearest
+microsecond.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.tasks_v2beta3.types.Attempt.response_time">
+<code class="descname">response_time</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.Attempt.response_time" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. The time that this attempt response was received.
+<code class="docutils literal notranslate"><span class="pre">response_time</span></code> will be truncated to the nearest
+microsecond.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.tasks_v2beta3.types.Attempt.response_status">
+<code class="descname">response_status</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.Attempt.response_status" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. The response from the target for this attempt.
+If <code class="docutils literal notranslate"><span class="pre">response_time</span></code> is unset, then the task has not been
+attempted or is currently running and the <code class="docutils literal notranslate"><span class="pre">response_status</span></code>
+field is meaningless.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.tasks_v2beta3.types.Binding">
+<em class="property">class </em><code class="descclassname">google.cloud.tasks_v2beta3.types.</code><code class="descname">Binding</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.Binding" title="Permalink to this definition">#</a></dt>
+<dd><p>Associates <code class="docutils literal notranslate"><span class="pre">members</span></code> with a <code class="docutils literal notranslate"><span class="pre">role</span></code>.</p>
+<dl class="attribute">
+<dt id="google.cloud.tasks_v2beta3.types.Binding.role">
+<code class="descname">role</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.Binding.role" title="Permalink to this definition">#</a></dt>
+<dd><p>Role that is assigned to <code class="docutils literal notranslate"><span class="pre">members</span></code>. For example,
+<code class="docutils literal notranslate"><span class="pre">roles/viewer</span></code>, <code class="docutils literal notranslate"><span class="pre">roles/editor</span></code>, or <code class="docutils literal notranslate"><span class="pre">roles/owner</span></code>.
+Required</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.tasks_v2beta3.types.Binding.members">
+<code class="descname">members</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.Binding.members" title="Permalink to this definition">#</a></dt>
+<dd><p>Specifies the identities requesting access for a Cloud
+Platform resource. <code class="docutils literal notranslate"><span class="pre">members</span></code> can have the following values:
+-  <code class="docutils literal notranslate"><span class="pre">allUsers</span></code>: A special identifier that represents anyone
+who is on    the internet; with or without a Google account.
+-  <code class="docutils literal notranslate"><span class="pre">allAuthenticatedUsers</span></code>: A special identifier that
+represents    anyone who is authenticated with a Google
+account or a service    account.  -  <code class="docutils literal notranslate"><span class="pre">user:{emailid}</span></code>: An
+email address that represents a specific    Google account.
+For example, <code class="docutils literal notranslate"><span class="pre">alice&#64;gmail.com</span></code> or    <code class="docutils literal notranslate"><span class="pre">joe&#64;example.com</span></code>.  -
+<code class="docutils literal notranslate"><span class="pre">serviceAccount:{emailid}</span></code>: An email address that represents
+a    service account. For example,    <code class="docutils literal notranslate"><span class="pre">my-other-</span>
+<span class="pre">app&#64;appspot.gserviceaccount.com</span></code>.  -  <code class="docutils literal notranslate"><span class="pre">group:{emailid}</span></code>: An
+email address that represents a Google group.    For example,
+<code class="docutils literal notranslate"><span class="pre">admins&#64;example.com</span></code>.  -  <code class="docutils literal notranslate"><span class="pre">domain:{domain}</span></code>: A Google Apps
+domain name that represents all    the users of that domain.
+For example, <code class="docutils literal notranslate"><span class="pre">google.com</span></code> or    <code class="docutils literal notranslate"><span class="pre">example.com</span></code>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.tasks_v2beta3.types.BindingDelta">
+<em class="property">class </em><code class="descclassname">google.cloud.tasks_v2beta3.types.</code><code class="descname">BindingDelta</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.BindingDelta" title="Permalink to this definition">#</a></dt>
+<dd><p>One delta entry for Binding. Each individual change (only one member in
+each entry) to a binding will be a separate entry.</p>
+<dl class="attribute">
+<dt id="google.cloud.tasks_v2beta3.types.BindingDelta.action">
+<code class="descname">action</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.BindingDelta.action" title="Permalink to this definition">#</a></dt>
+<dd><p>The action that was performed on a Binding. Required</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.tasks_v2beta3.types.BindingDelta.role">
+<code class="descname">role</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.BindingDelta.role" title="Permalink to this definition">#</a></dt>
+<dd><p>Role that is assigned to <code class="docutils literal notranslate"><span class="pre">members</span></code>. For example,
+<code class="docutils literal notranslate"><span class="pre">roles/viewer</span></code>, <code class="docutils literal notranslate"><span class="pre">roles/editor</span></code>, or <code class="docutils literal notranslate"><span class="pre">roles/owner</span></code>.
+Required</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.tasks_v2beta3.types.BindingDelta.member">
+<code class="descname">member</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.BindingDelta.member" title="Permalink to this definition">#</a></dt>
+<dd><p>A single identity requesting access for a Cloud Platform
+resource. Follows the same format of Binding.members. Required</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.tasks_v2beta3.types.CreateQueueRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.tasks_v2beta3.types.</code><code class="descname">CreateQueueRequest</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.CreateQueueRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request message for
+[CreateQueue][google.cloud.tasks.v2beta3.CloudTasks.CreateQueue].</p>
+<dl class="attribute">
+<dt id="google.cloud.tasks_v2beta3.types.CreateQueueRequest.parent">
+<code class="descname">parent</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.CreateQueueRequest.parent" title="Permalink to this definition">#</a></dt>
+<dd><p>Required.  The location name in which the queue will be
+created. For example:
+<code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/locations/LOCATION_ID</span></code>  The list of
+allowed locations can be obtained by calling Cloud Tasks’
+implementation of [ListLocations][google.cloud.location.Locati
+ons.ListLocations].</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.tasks_v2beta3.types.CreateQueueRequest.queue">
+<code class="descname">queue</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.CreateQueueRequest.queue" title="Permalink to this definition">#</a></dt>
+<dd><p>Required.  The queue to create.  [Queue’s
+name][google.cloud.tasks.v2beta3.Queue.name] cannot be the
+same as an existing queue.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.tasks_v2beta3.types.CreateTaskRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.tasks_v2beta3.types.</code><code class="descname">CreateTaskRequest</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.CreateTaskRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request message for
+[CreateTask][google.cloud.tasks.v2beta3.CloudTasks.CreateTask].</p>
+<dl class="attribute">
+<dt id="google.cloud.tasks_v2beta3.types.CreateTaskRequest.parent">
+<code class="descname">parent</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.CreateTaskRequest.parent" title="Permalink to this definition">#</a></dt>
+<dd><p>Required.  The queue name. For example:
+<code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID</span></code>
+The queue must already exist.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.tasks_v2beta3.types.CreateTaskRequest.task">
+<code class="descname">task</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.CreateTaskRequest.task" title="Permalink to this definition">#</a></dt>
+<dd><p>Required.  The task to add.  Task names have the following
+format: <code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/locations/LOCATION_ID/queues/QUE</span>
+<span class="pre">UE_ID/tasks/TASK_ID</span></code>. The user can optionally specify a task
+[name][google.cloud.tasks.v2beta3.Task.name]. If a name is not
+specified then the system will generate a random unique task
+id, which will be set in the task returned in the
+[response][google.cloud.tasks.v2beta3.Task.name].  If [schedul
+e_time][google.cloud.tasks.v2beta3.Task.schedule_time] is
+not set or is in the past then Cloud Tasks will set it to the
+current time.  Task De-duplication:  Explicitly specifying a
+task ID enables task de-duplication. If a task’s ID is
+identical to that of an existing task or a task that was
+deleted or executed recently then the call will fail with
+[ALREADY_EXISTS][google.rpc.Code.ALREADY_EXISTS]. If the
+task’s queue was created using Cloud Tasks, then another task
+with the same name can’t be created for ~1hour after the
+original task was deleted or executed. If the task’s queue was
+created using queue.yaml or queue.xml, then another task with
+the same name can’t be created for ~9days after the original
+task was deleted or executed.  Because there is an extra
+lookup cost to identify duplicate task names, these
+[CreateTask][google.cloud.tasks.v2beta3.CloudTasks.CreateTask]
+calls have significantly increased latency. Using hashed
+strings for the task id or for the prefix of the task id is
+recommended. Choosing task ids that are sequential or have
+sequential prefixes, for example using a timestamp, causes an
+increase in latency and error rates in all task commands. The
+infrastructure relies on an approximately uniform distribution
+of task ids to store and serve tasks efficiently.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.tasks_v2beta3.types.CreateTaskRequest.response_view">
+<code class="descname">response_view</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.CreateTaskRequest.response_view" title="Permalink to this definition">#</a></dt>
+<dd><p>The response_view specifies which subset of the
+[Task][google.cloud.tasks.v2beta3.Task] will be returned.  By
+default response_view is
+[BASIC][google.cloud.tasks.v2beta3.Task.View.BASIC]; not all
+information is retrieved by default because some data, such as
+payloads, might be desirable to return only when needed
+because of its large size or because of the sensitivity of
+data that it contains.  Authorization for
+[FULL][google.cloud.tasks.v2beta3.Task.View.FULL] requires
+<code class="docutils literal notranslate"><span class="pre">cloudtasks.tasks.fullView</span></code> <a class="reference external" href="https://cloud.google.com/iam/">Google IAM</a> permission on the
+[Task][google.cloud.tasks.v2beta3.Task] resource.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.tasks_v2beta3.types.CustomHttpPattern">
+<em class="property">class </em><code class="descclassname">google.cloud.tasks_v2beta3.types.</code><code class="descname">CustomHttpPattern</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.CustomHttpPattern" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.tasks_v2beta3.types.DeleteQueueRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.tasks_v2beta3.types.</code><code class="descname">DeleteQueueRequest</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.DeleteQueueRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request message for
+[DeleteQueue][google.cloud.tasks.v2beta3.CloudTasks.DeleteQueue].</p>
+<dl class="attribute">
+<dt id="google.cloud.tasks_v2beta3.types.DeleteQueueRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.DeleteQueueRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Required.  The queue name. For example:
+<code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID</span></code></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.tasks_v2beta3.types.DeleteTaskRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.tasks_v2beta3.types.</code><code class="descname">DeleteTaskRequest</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.DeleteTaskRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request message for deleting a task using
+[DeleteTask][google.cloud.tasks.v2beta3.CloudTasks.DeleteTask].</p>
+<dl class="attribute">
+<dt id="google.cloud.tasks_v2beta3.types.DeleteTaskRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.DeleteTaskRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Required.  The task name. For example: <code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/l</span>
+<span class="pre">ocations/LOCATION_ID/queues/QUEUE_ID/tasks/TASK_ID</span></code></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.tasks_v2beta3.types.DescriptorProto">
+<em class="property">class </em><code class="descclassname">google.cloud.tasks_v2beta3.types.</code><code class="descname">DescriptorProto</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.DescriptorProto" title="Permalink to this definition">#</a></dt>
+<dd><dl class="class">
+<dt id="google.cloud.tasks_v2beta3.types.DescriptorProto.ExtensionRange">
+<em class="property">class </em><code class="descname">ExtensionRange</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.DescriptorProto.ExtensionRange" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.tasks_v2beta3.types.DescriptorProto.ReservedRange">
+<em class="property">class </em><code class="descname">ReservedRange</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.DescriptorProto.ReservedRange" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.tasks_v2beta3.types.Duration">
+<em class="property">class </em><code class="descclassname">google.cloud.tasks_v2beta3.types.</code><code class="descname">Duration</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.Duration" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.tasks_v2beta3.types.Empty">
+<em class="property">class </em><code class="descclassname">google.cloud.tasks_v2beta3.types.</code><code class="descname">Empty</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.Empty" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.tasks_v2beta3.types.EnumDescriptorProto">
+<em class="property">class </em><code class="descclassname">google.cloud.tasks_v2beta3.types.</code><code class="descname">EnumDescriptorProto</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.EnumDescriptorProto" title="Permalink to this definition">#</a></dt>
+<dd><dl class="class">
+<dt id="google.cloud.tasks_v2beta3.types.EnumDescriptorProto.EnumReservedRange">
+<em class="property">class </em><code class="descname">EnumReservedRange</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.EnumDescriptorProto.EnumReservedRange" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.tasks_v2beta3.types.EnumOptions">
+<em class="property">class </em><code class="descclassname">google.cloud.tasks_v2beta3.types.</code><code class="descname">EnumOptions</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.EnumOptions" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.tasks_v2beta3.types.EnumValueDescriptorProto">
+<em class="property">class </em><code class="descclassname">google.cloud.tasks_v2beta3.types.</code><code class="descname">EnumValueDescriptorProto</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.EnumValueDescriptorProto" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.tasks_v2beta3.types.EnumValueOptions">
+<em class="property">class </em><code class="descclassname">google.cloud.tasks_v2beta3.types.</code><code class="descname">EnumValueOptions</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.EnumValueOptions" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.tasks_v2beta3.types.ExtensionRangeOptions">
+<em class="property">class </em><code class="descclassname">google.cloud.tasks_v2beta3.types.</code><code class="descname">ExtensionRangeOptions</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.ExtensionRangeOptions" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.tasks_v2beta3.types.FieldDescriptorProto">
+<em class="property">class </em><code class="descclassname">google.cloud.tasks_v2beta3.types.</code><code class="descname">FieldDescriptorProto</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.FieldDescriptorProto" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.tasks_v2beta3.types.FieldMask">
+<em class="property">class </em><code class="descclassname">google.cloud.tasks_v2beta3.types.</code><code class="descname">FieldMask</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.FieldMask" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.tasks_v2beta3.types.FieldOptions">
+<em class="property">class </em><code class="descclassname">google.cloud.tasks_v2beta3.types.</code><code class="descname">FieldOptions</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.FieldOptions" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.tasks_v2beta3.types.FileDescriptorProto">
+<em class="property">class </em><code class="descclassname">google.cloud.tasks_v2beta3.types.</code><code class="descname">FileDescriptorProto</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.FileDescriptorProto" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.tasks_v2beta3.types.FileDescriptorSet">
+<em class="property">class </em><code class="descclassname">google.cloud.tasks_v2beta3.types.</code><code class="descname">FileDescriptorSet</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.FileDescriptorSet" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.tasks_v2beta3.types.FileOptions">
+<em class="property">class </em><code class="descclassname">google.cloud.tasks_v2beta3.types.</code><code class="descname">FileOptions</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.FileOptions" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.tasks_v2beta3.types.GeneratedCodeInfo">
+<em class="property">class </em><code class="descclassname">google.cloud.tasks_v2beta3.types.</code><code class="descname">GeneratedCodeInfo</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.GeneratedCodeInfo" title="Permalink to this definition">#</a></dt>
+<dd><dl class="class">
+<dt id="google.cloud.tasks_v2beta3.types.GeneratedCodeInfo.Annotation">
+<em class="property">class </em><code class="descname">Annotation</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.GeneratedCodeInfo.Annotation" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.tasks_v2beta3.types.GetIamPolicyRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.tasks_v2beta3.types.</code><code class="descname">GetIamPolicyRequest</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.GetIamPolicyRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request message for <code class="docutils literal notranslate"><span class="pre">GetIamPolicy</span></code> method.</p>
+<dl class="attribute">
+<dt id="google.cloud.tasks_v2beta3.types.GetIamPolicyRequest.resource">
+<code class="descname">resource</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.GetIamPolicyRequest.resource" title="Permalink to this definition">#</a></dt>
+<dd><p>REQUIRED: The resource for which the policy is being
+requested. <code class="docutils literal notranslate"><span class="pre">resource</span></code> is usually specified as a path. For
+example, a Project resource is specified as
+<code class="docutils literal notranslate"><span class="pre">projects/{project}</span></code>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.tasks_v2beta3.types.GetQueueRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.tasks_v2beta3.types.</code><code class="descname">GetQueueRequest</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.GetQueueRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request message for
+[GetQueue][google.cloud.tasks.v2beta3.CloudTasks.GetQueue].</p>
+<dl class="attribute">
+<dt id="google.cloud.tasks_v2beta3.types.GetQueueRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.GetQueueRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Required.  The resource name of the queue. For example:
+<code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID</span></code></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.tasks_v2beta3.types.GetTaskRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.tasks_v2beta3.types.</code><code class="descname">GetTaskRequest</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.GetTaskRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request message for getting a task using
+[GetTask][google.cloud.tasks.v2beta3.CloudTasks.GetTask].</p>
+<dl class="attribute">
+<dt id="google.cloud.tasks_v2beta3.types.GetTaskRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.GetTaskRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Required.  The task name. For example: <code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/l</span>
+<span class="pre">ocations/LOCATION_ID/queues/QUEUE_ID/tasks/TASK_ID</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.tasks_v2beta3.types.GetTaskRequest.response_view">
+<code class="descname">response_view</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.GetTaskRequest.response_view" title="Permalink to this definition">#</a></dt>
+<dd><p>The response_view specifies which subset of the
+[Task][google.cloud.tasks.v2beta3.Task] will be returned.  By
+default response_view is
+[BASIC][google.cloud.tasks.v2beta3.Task.View.BASIC]; not all
+information is retrieved by default because some data, such as
+payloads, might be desirable to return only when needed
+because of its large size or because of the sensitivity of
+data that it contains.  Authorization for
+[FULL][google.cloud.tasks.v2beta3.Task.View.FULL] requires
+<code class="docutils literal notranslate"><span class="pre">cloudtasks.tasks.fullView</span></code> <a class="reference external" href="https://cloud.google.com/iam/">Google IAM</a> permission on the
+[Task][google.cloud.tasks.v2beta3.Task] resource.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.tasks_v2beta3.types.Http">
+<em class="property">class </em><code class="descclassname">google.cloud.tasks_v2beta3.types.</code><code class="descname">Http</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.Http" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.tasks_v2beta3.types.HttpRule">
+<em class="property">class </em><code class="descclassname">google.cloud.tasks_v2beta3.types.</code><code class="descname">HttpRule</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.HttpRule" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.tasks_v2beta3.types.ListQueuesRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.tasks_v2beta3.types.</code><code class="descname">ListQueuesRequest</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.ListQueuesRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request message for
+[ListQueues][google.cloud.tasks.v2beta3.CloudTasks.ListQueues].</p>
+<dl class="attribute">
+<dt id="google.cloud.tasks_v2beta3.types.ListQueuesRequest.parent">
+<code class="descname">parent</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.ListQueuesRequest.parent" title="Permalink to this definition">#</a></dt>
+<dd><p>Required.  The location name. For example:
+<code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/locations/LOCATION_ID</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.tasks_v2beta3.types.ListQueuesRequest.filter">
+<code class="descname">filter</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.ListQueuesRequest.filter" title="Permalink to this definition">#</a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">filter</span></code> can be used to specify a subset of queues. Any
+[Queue][google.cloud.tasks.v2beta3.Queue] field can be used as
+a filter and several operators as supported. For example:
+<code class="docutils literal notranslate"><span class="pre">&lt;=,</span> <span class="pre">&lt;,</span> <span class="pre">&gt;=,</span> <span class="pre">&gt;,</span> <span class="pre">!=,</span> <span class="pre">=,</span> <span class="pre">:</span></code>. The filter syntax is the same as
+described in <a class="reference external" href="https://cloud.google.com/logging/docs/view/advanced_filters">Stackdriver’s Advanced Logs Filters</a>.  Sample
+filter “state: PAUSED”.  Note that using filters might cause
+fewer queues than the requested page_size to be returned.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.tasks_v2beta3.types.ListQueuesRequest.page_size">
+<code class="descname">page_size</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.ListQueuesRequest.page_size" title="Permalink to this definition">#</a></dt>
+<dd><p>Requested page size.  The maximum page size is 9800. If
+unspecified, the page size will be the maximum. Fewer queues
+than requested might be returned, even if more queues exist;
+use the [next_page_token][google.cloud.tasks.v2beta3.ListQue
+uesResponse.next_page_token] in the response to determine if
+more queues exist.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.tasks_v2beta3.types.ListQueuesRequest.page_token">
+<code class="descname">page_token</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.ListQueuesRequest.page_token" title="Permalink to this definition">#</a></dt>
+<dd><p>A token identifying the page of results to return.  To request
+the first page results, page_token must be empty. To request
+the next page of results, page_token must be the value of [ne
+xt_page_token][google.cloud.tasks.v2beta3.ListQueuesResponse
+.next_page_token] returned from the previous call to
+[ListQueues][google.cloud.tasks.v2beta3.CloudTasks.ListQueues]
+method. It is an error to switch the value of the
+[filter][google.cloud.tasks.v2beta3.ListQueuesRequest.filter]
+while iterating through pages.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.tasks_v2beta3.types.ListQueuesResponse">
+<em class="property">class </em><code class="descclassname">google.cloud.tasks_v2beta3.types.</code><code class="descname">ListQueuesResponse</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.ListQueuesResponse" title="Permalink to this definition">#</a></dt>
+<dd><p>Response message for
+[ListQueues][google.cloud.tasks.v2beta3.CloudTasks.ListQueues].</p>
+<dl class="attribute">
+<dt id="google.cloud.tasks_v2beta3.types.ListQueuesResponse.queues">
+<code class="descname">queues</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.ListQueuesResponse.queues" title="Permalink to this definition">#</a></dt>
+<dd><p>The list of queues.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.tasks_v2beta3.types.ListQueuesResponse.next_page_token">
+<code class="descname">next_page_token</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.ListQueuesResponse.next_page_token" title="Permalink to this definition">#</a></dt>
+<dd><p>A token to retrieve next page of results.  To return the next
+page of results, call
+[ListQueues][google.cloud.tasks.v2beta3.CloudTasks.ListQueues]
+with this value as the [page_token][google.cloud.tasks.v2beta
+3.ListQueuesRequest.page_token].  If the next_page_token is
+empty, there are no more results.  The page token is valid for
+only 2 hours.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.tasks_v2beta3.types.ListTasksRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.tasks_v2beta3.types.</code><code class="descname">ListTasksRequest</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.ListTasksRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request message for listing tasks using
+[ListTasks][google.cloud.tasks.v2beta3.CloudTasks.ListTasks].</p>
+<dl class="attribute">
+<dt id="google.cloud.tasks_v2beta3.types.ListTasksRequest.parent">
+<code class="descname">parent</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.ListTasksRequest.parent" title="Permalink to this definition">#</a></dt>
+<dd><p>Required.  The queue name. For example:
+<code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.tasks_v2beta3.types.ListTasksRequest.response_view">
+<code class="descname">response_view</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.ListTasksRequest.response_view" title="Permalink to this definition">#</a></dt>
+<dd><p>The response_view specifies which subset of the
+[Task][google.cloud.tasks.v2beta3.Task] will be returned.  By
+default response_view is
+[BASIC][google.cloud.tasks.v2beta3.Task.View.BASIC]; not all
+information is retrieved by default because some data, such as
+payloads, might be desirable to return only when needed
+because of its large size or because of the sensitivity of
+data that it contains.  Authorization for
+[FULL][google.cloud.tasks.v2beta3.Task.View.FULL] requires
+<code class="docutils literal notranslate"><span class="pre">cloudtasks.tasks.fullView</span></code> <a class="reference external" href="https://cloud.google.com/iam/">Google IAM</a> permission on the
+[Task][google.cloud.tasks.v2beta3.Task] resource.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.tasks_v2beta3.types.ListTasksRequest.page_size">
+<code class="descname">page_size</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.ListTasksRequest.page_size" title="Permalink to this definition">#</a></dt>
+<dd><p>Requested page size. Fewer tasks than requested might be
+returned.  The maximum page size is 1000. If unspecified, the
+page size will be the maximum. Fewer tasks than requested
+might be returned, even if more tasks exist; use [next_page_
+token][google.cloud.tasks.v2beta3.ListTasksResponse.next_page
+_token] in the response to determine if more tasks exist.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.tasks_v2beta3.types.ListTasksRequest.page_token">
+<code class="descname">page_token</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.ListTasksRequest.page_token" title="Permalink to this definition">#</a></dt>
+<dd><p>A token identifying the page of results to return.  To request
+the first page results, page_token must be empty. To request
+the next page of results, page_token must be the value of [ne
+xt_page_token][google.cloud.tasks.v2beta3.ListTasksResponse.
+next_page_token] returned from the previous call to
+[ListTasks][google.cloud.tasks.v2beta3.CloudTasks.ListTasks]
+method.  The page token is valid for only 2 hours.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.tasks_v2beta3.types.ListTasksResponse">
+<em class="property">class </em><code class="descclassname">google.cloud.tasks_v2beta3.types.</code><code class="descname">ListTasksResponse</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.ListTasksResponse" title="Permalink to this definition">#</a></dt>
+<dd><p>Response message for listing tasks using
+[ListTasks][google.cloud.tasks.v2beta3.CloudTasks.ListTasks].</p>
+<dl class="attribute">
+<dt id="google.cloud.tasks_v2beta3.types.ListTasksResponse.tasks">
+<code class="descname">tasks</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.ListTasksResponse.tasks" title="Permalink to this definition">#</a></dt>
+<dd><p>The list of tasks.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.tasks_v2beta3.types.ListTasksResponse.next_page_token">
+<code class="descname">next_page_token</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.ListTasksResponse.next_page_token" title="Permalink to this definition">#</a></dt>
+<dd><p>A token to retrieve next page of results.  To return the next
+page of results, call
+[ListTasks][google.cloud.tasks.v2beta3.CloudTasks.ListTasks]
+with this value as the [page_token][google.cloud.tasks.v2beta
+3.ListTasksRequest.page_token].  If the next_page_token is
+empty, there are no more results.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.tasks_v2beta3.types.MessageOptions">
+<em class="property">class </em><code class="descclassname">google.cloud.tasks_v2beta3.types.</code><code class="descname">MessageOptions</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.MessageOptions" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.tasks_v2beta3.types.MethodDescriptorProto">
+<em class="property">class </em><code class="descclassname">google.cloud.tasks_v2beta3.types.</code><code class="descname">MethodDescriptorProto</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.MethodDescriptorProto" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.tasks_v2beta3.types.MethodOptions">
+<em class="property">class </em><code class="descclassname">google.cloud.tasks_v2beta3.types.</code><code class="descname">MethodOptions</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.MethodOptions" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.tasks_v2beta3.types.OneofDescriptorProto">
+<em class="property">class </em><code class="descclassname">google.cloud.tasks_v2beta3.types.</code><code class="descname">OneofDescriptorProto</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.OneofDescriptorProto" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.tasks_v2beta3.types.OneofOptions">
+<em class="property">class </em><code class="descclassname">google.cloud.tasks_v2beta3.types.</code><code class="descname">OneofOptions</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.OneofOptions" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.tasks_v2beta3.types.PauseQueueRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.tasks_v2beta3.types.</code><code class="descname">PauseQueueRequest</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.PauseQueueRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request message for
+[PauseQueue][google.cloud.tasks.v2beta3.CloudTasks.PauseQueue].</p>
+<dl class="attribute">
+<dt id="google.cloud.tasks_v2beta3.types.PauseQueueRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.PauseQueueRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Required.  The queue name. For example:
+<code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/location/LOCATION_ID/queues/QUEUE_ID</span></code></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.tasks_v2beta3.types.Policy">
+<em class="property">class </em><code class="descclassname">google.cloud.tasks_v2beta3.types.</code><code class="descname">Policy</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.Policy" title="Permalink to this definition">#</a></dt>
+<dd><p>Defines an Identity and Access Management (IAM) policy. It is used to
+specify access control policies for Cloud Platform resources.</p>
+<p>A <code class="docutils literal notranslate"><span class="pre">Policy</span></code> consists of a list of <code class="docutils literal notranslate"><span class="pre">bindings</span></code>. A <code class="docutils literal notranslate"><span class="pre">Binding</span></code> binds a
+list of <code class="docutils literal notranslate"><span class="pre">members</span></code> to a <code class="docutils literal notranslate"><span class="pre">role</span></code>, where the members can be user
+accounts, Google groups, Google domains, and service accounts. A
+<code class="docutils literal notranslate"><span class="pre">role</span></code> is a named list of permissions defined by IAM.</p>
+<p><strong>Example</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;bindings&quot;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="p">{</span>
+      <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;roles/owner&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;members&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s2">&quot;user:mike@example.com&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;group:admins@example.com&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;domain:google.com&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;serviceAccount:my-other-app@appspot.gserviceaccount.com&quot;</span><span class="p">,</span>
+      <span class="p">]</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+      <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;roles/viewer&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;members&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;user:sean@example.com&quot;</span><span class="p">]</span>
+    <span class="p">}</span>
+  <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>For a description of IAM and its features, see the <a class="reference external" href="https://cloud.google.com/iam">IAM developer’s
+guide</a>.</p>
+<dl class="attribute">
+<dt id="google.cloud.tasks_v2beta3.types.Policy.version">
+<code class="descname">version</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.Policy.version" title="Permalink to this definition">#</a></dt>
+<dd><p>Version of the <code class="docutils literal notranslate"><span class="pre">Policy</span></code>. The default version is 0.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.tasks_v2beta3.types.Policy.bindings">
+<code class="descname">bindings</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.Policy.bindings" title="Permalink to this definition">#</a></dt>
+<dd><p>Associates a list of <code class="docutils literal notranslate"><span class="pre">members</span></code> to a <code class="docutils literal notranslate"><span class="pre">role</span></code>. Multiple
+<code class="docutils literal notranslate"><span class="pre">bindings</span></code> must not be specified for the same <code class="docutils literal notranslate"><span class="pre">role</span></code>.
+<code class="docutils literal notranslate"><span class="pre">bindings</span></code> with no members will result in an error.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.tasks_v2beta3.types.Policy.etag">
+<code class="descname">etag</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.Policy.etag" title="Permalink to this definition">#</a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">etag</span></code> is used for optimistic concurrency control as a way
+to help prevent simultaneous updates of a policy from
+overwriting each other. It is strongly suggested that systems
+make use of the <code class="docutils literal notranslate"><span class="pre">etag</span></code> in the read-modify-write cycle to
+perform policy updates in order to avoid race conditions: An
+<code class="docutils literal notranslate"><span class="pre">etag</span></code> is returned in the response to <code class="docutils literal notranslate"><span class="pre">getIamPolicy</span></code>, and
+systems are expected to put that etag in the request to
+<code class="docutils literal notranslate"><span class="pre">setIamPolicy</span></code> to ensure that their change will be applied
+to the same version of the policy.  If no <code class="docutils literal notranslate"><span class="pre">etag</span></code> is provided
+in the call to <code class="docutils literal notranslate"><span class="pre">setIamPolicy</span></code>, then the existing policy is
+overwritten blindly.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.tasks_v2beta3.types.PolicyDelta">
+<em class="property">class </em><code class="descclassname">google.cloud.tasks_v2beta3.types.</code><code class="descname">PolicyDelta</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.PolicyDelta" title="Permalink to this definition">#</a></dt>
+<dd><p>The difference delta between two policies.</p>
+<dl class="attribute">
+<dt id="google.cloud.tasks_v2beta3.types.PolicyDelta.binding_deltas">
+<code class="descname">binding_deltas</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.PolicyDelta.binding_deltas" title="Permalink to this definition">#</a></dt>
+<dd><p>The delta for Bindings between two policies.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.tasks_v2beta3.types.PurgeQueueRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.tasks_v2beta3.types.</code><code class="descname">PurgeQueueRequest</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.PurgeQueueRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request message for
+[PurgeQueue][google.cloud.tasks.v2beta3.CloudTasks.PurgeQueue].</p>
+<dl class="attribute">
+<dt id="google.cloud.tasks_v2beta3.types.PurgeQueueRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.PurgeQueueRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Required.  The queue name. For example:
+<code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/location/LOCATION_ID/queues/QUEUE_ID</span></code></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.tasks_v2beta3.types.Queue">
+<em class="property">class </em><code class="descclassname">google.cloud.tasks_v2beta3.types.</code><code class="descname">Queue</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.Queue" title="Permalink to this definition">#</a></dt>
+<dd><p>A queue is a container of related tasks. Queues are configured to manage
+how those tasks are dispatched. Configurable properties include rate
+limits, retry options, queue types, and others.</p>
+<dl class="attribute">
+<dt id="google.cloud.tasks_v2beta3.types.Queue.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.Queue.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Caller-specified and required in [CreateQueue][google.cloud.ta
+sks.v2beta3.CloudTasks.CreateQueue], after which it becomes
+output only.  The queue name.  The queue name must have the
+following format:
+<code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID</span></code>
+-  <code class="docutils literal notranslate"><span class="pre">PROJECT_ID</span></code> can contain letters ([A-Za-z]), numbers
+([0-9]),    hyphens (-), colons (:), or periods (.). For more
+information, see    <a class="reference external" href="https://cloud.google.com/resource-manager/docs/creating-managing-projects#identifying_projects">Identifying    projects</a> -  <code class="docutils literal notranslate"><span class="pre">LOCATION_ID</span></code>
+is the canonical ID for the queue’s location. The    list of
+available locations can be obtained by calling    [ListLocatio
+ns][google.cloud.location.Locations.ListLocations]. For
+more information, see
+<a class="reference external" href="https://cloud.google.com/about/locations/">https://cloud.google.com/about/locations/</a>. -  <code class="docutils literal notranslate"><span class="pre">QUEUE_ID</span></code> can
+contain letters ([A-Za-z]), numbers ([0-9]), or    hyphens
+(-). The maximum length is 100 characters.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.tasks_v2beta3.types.Queue.queue_type">
+<code class="descname">queue_type</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.Queue.queue_type" title="Permalink to this definition">#</a></dt>
+<dd><p>Caller-specified and required in [CreateQueue][google.cloud.ta
+sks.v2beta3.CloudTasks.CreateQueue][], after which the queue
+config type becomes output only, though fields within the
+config are mutable.  The queue’s type.  The type applies to
+all tasks in the queue.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.tasks_v2beta3.types.Queue.app_engine_http_queue">
+<code class="descname">app_engine_http_queue</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.Queue.app_engine_http_queue" title="Permalink to this definition">#</a></dt>
+<dd><p>App Engine HTTP queue.  An App Engine queue is a queue that
+has an [AppEngineHttpQeueue][] type.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.tasks_v2beta3.types.Queue.rate_limits">
+<code class="descname">rate_limits</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.Queue.rate_limits" title="Permalink to this definition">#</a></dt>
+<dd><p>Rate limits for task dispatches.
+[rate_limits][google.cloud.tasks.v2beta3.Queue.rate_limits]
+and [retry_config][google.cloud.tasks.v2beta3.Queue.retry_co
+nfig] are related because they both control task attempts
+however they control how tasks are attempted in different
+ways:  -
+[rate_limits][google.cloud.tasks.v2beta3.Queue.rate_limits]
+controls the total rate of dispatches from a queue (i.e. all
+traffic    dispatched from the queue, regardless of whether
+the dispatch is from    a first attempt or a retry). -  [retry
+_config][google.cloud.tasks.v2beta3.Queue.retry_config]
+controls what happens to particular a task after its first
+attempt    fails. That is,    [retry_config][google.cloud.tas
+ks.v2beta3.Queue.retry_config]    controls task retries (the
+second attempt, third attempt, etc).</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.tasks_v2beta3.types.Queue.retry_config">
+<code class="descname">retry_config</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.Queue.retry_config" title="Permalink to this definition">#</a></dt>
+<dd><p>Settings that determine the retry behavior.  -  For tasks
+created using Cloud Tasks: the queue-level retry settings
+apply to all tasks in the queue that were created using Cloud
+Tasks.    Retry settings cannot be set on individual tasks. -
+For tasks created using the App Engine SDK: the queue-level
+retry    settings apply to all tasks in the queue which do not
+have retry    settings explicitly set on the task and were
+created by the App    Engine SDK. See <a class="reference external" href="https://cloud.google.com/appengine/docs/standard/python/taskqueue/push/retrying-tasks">App Engine
+documentation</a>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.tasks_v2beta3.types.Queue.state">
+<code class="descname">state</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.Queue.state" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. The state of the queue.  <code class="docutils literal notranslate"><span class="pre">state</span></code> can only be
+changed by called [PauseQueue][google.cloud.tasks.v2beta3.Clou
+dTasks.PauseQueue], [ResumeQueue][google.cloud.tasks.v2beta3.C
+loudTasks.ResumeQueue], or uploading <a class="reference external" href="https://cloud.google.com/appengine/docs/python/config/queueref">queue.yaml/xml</a>. [U
+pdateQueue][google.cloud.tasks.v2beta3.CloudTasks.UpdateQueue]
+cannot be used to change <code class="docutils literal notranslate"><span class="pre">state</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.tasks_v2beta3.types.Queue.purge_time">
+<code class="descname">purge_time</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.Queue.purge_time" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. The last time this queue was purged.  All tasks
+that were
+[created][google.cloud.tasks.v2beta3.Task.create_time] before
+this time were purged.  A queue can be purged using [PurgeQueu
+e][google.cloud.tasks.v2beta3.CloudTasks.PurgeQueue], the <a class="reference external" href="https://cloud.google.com/appengine/docs/standard/python/taskqueue/push/deleting-tasks-and-queues#purging_all_tasks_from_a_queue">App
+Engine Task Queue SDK, or the Cloud Console</a>.  Purge
+time will be truncated to the nearest microsecond. Purge time
+will be unset if the queue has never been purged.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.tasks_v2beta3.types.RateLimits">
+<em class="property">class </em><code class="descclassname">google.cloud.tasks_v2beta3.types.</code><code class="descname">RateLimits</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.RateLimits" title="Permalink to this definition">#</a></dt>
+<dd><p>Rate limits.</p>
+<p>This message determines the maximum rate that tasks can be dispatched by
+a queue, regardless of whether the dispatch is a first task attempt or a
+retry.</p>
+<p>Note: The debugging command,
+[RunTask][google.cloud.tasks.v2beta3.CloudTasks.RunTask], will run a
+task even if the queue has reached its
+[RateLimits][google.cloud.tasks.v2beta3.RateLimits].</p>
+<dl class="attribute">
+<dt id="google.cloud.tasks_v2beta3.types.RateLimits.max_dispatches_per_second">
+<code class="descname">max_dispatches_per_second</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.RateLimits.max_dispatches_per_second" title="Permalink to this definition">#</a></dt>
+<dd><p>The maximum rate at which tasks are dispatched from this
+queue.  If unspecified when the queue is created, Cloud Tasks
+will pick the default.  -  For [App Engine
+queues][google.cloud.tasks.v2beta3.AppEngineHttpQueue], the
+maximum    allowed value is 500.  This field has the same
+meaning as <a class="reference external" href="https://cloud.google.com/appengine/docs/standard/python/config/queueref#rate">rate in queue.yaml/xml</a>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.tasks_v2beta3.types.RateLimits.max_burst_size">
+<code class="descname">max_burst_size</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.RateLimits.max_burst_size" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. The max burst size.  Max burst size limits how
+fast tasks in queue are processed when many tasks are in the
+queue and the rate is high. This field allows the queue to
+have a high rate so processing starts shortly after a task is
+enqueued, but still limits resource usage when many tasks are
+enqueued in a short period of time.  The <a class="reference external" href="https://wikipedia.org/wiki/Token_Bucket">token bucket</a> algorithm is used
+to control the rate of task dispatches. Each queue has a token
+bucket that holds tokens, up to the maximum specified by
+<code class="docutils literal notranslate"><span class="pre">max_burst_size</span></code>. Each time a task is dispatched, a token is
+removed from the bucket. Tasks will be dispatched until the
+queue’s bucket runs out of tokens. The bucket will be
+continuously refilled with new tokens based on [max_dispatche
+s_per_second][google.cloud.tasks.v2beta3.RateLimits.max_dis
+patches_per_second].  Cloud Tasks will pick the value of
+<code class="docutils literal notranslate"><span class="pre">max_burst_size</span></code> based on the value of [max_dispatches_per
+_second][google.cloud.tasks.v2beta3.RateLimits.max_dispatche
+s_per_second].  For App Engine queues that were created or
+updated using <code class="docutils literal notranslate"><span class="pre">queue.yaml/xml</span></code>, <code class="docutils literal notranslate"><span class="pre">max_burst_size</span></code> is equal
+to <a class="reference external" href="https://cloud.google.com/appengine/docs/standard/python/config/queueref#bucket_size">bucket_size</a>. Since
+<code class="docutils literal notranslate"><span class="pre">max_burst_size</span></code> is output only, if [UpdateQueue][google.clo
+ud.tasks.v2beta3.CloudTasks.UpdateQueue] is called on a queue
+created by <code class="docutils literal notranslate"><span class="pre">queue.yaml/xml</span></code>, <code class="docutils literal notranslate"><span class="pre">max_burst_size</span></code> will be
+reset based on the value of [max_dispatches_per_second][goo
+gle.cloud.tasks.v2beta3.RateLimits.max_dispatches_per_secon
+d], regardless of whether [max_dispatches_per_second][googl
+e.cloud.tasks.v2beta3.RateLimits.max_dispatches_per_second]
+is updated.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.tasks_v2beta3.types.RateLimits.max_concurrent_dispatches">
+<code class="descname">max_concurrent_dispatches</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.RateLimits.max_concurrent_dispatches" title="Permalink to this definition">#</a></dt>
+<dd><p>The maximum number of concurrent tasks that Cloud Tasks allows
+to be dispatched for this queue. After this threshold has been
+reached, Cloud Tasks stops dispatching tasks until the number
+of concurrent requests decreases.  If unspecified when the
+queue is created, Cloud Tasks will pick the default.  The
+maximum allowed value is 5,000.  This field has the same
+meaning as <a class="reference external" href="https://cloud.google.com/appengine/docs/standard/python/config/queueref#max_concurrent_requests">max_concurrent_requests in queue.yaml/xml</a>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.tasks_v2beta3.types.ResumeQueueRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.tasks_v2beta3.types.</code><code class="descname">ResumeQueueRequest</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.ResumeQueueRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request message for
+[ResumeQueue][google.cloud.tasks.v2beta3.CloudTasks.ResumeQueue].</p>
+<dl class="attribute">
+<dt id="google.cloud.tasks_v2beta3.types.ResumeQueueRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.ResumeQueueRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Required.  The queue name. For example:
+<code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/location/LOCATION_ID/queues/QUEUE_ID</span></code></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.tasks_v2beta3.types.RetryConfig">
+<em class="property">class </em><code class="descclassname">google.cloud.tasks_v2beta3.types.</code><code class="descname">RetryConfig</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.RetryConfig" title="Permalink to this definition">#</a></dt>
+<dd><p>Retry config.</p>
+<p>These settings determine when a failed task attempt is retried.</p>
+<dl class="attribute">
+<dt id="google.cloud.tasks_v2beta3.types.RetryConfig.max_attempts">
+<code class="descname">max_attempts</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.RetryConfig.max_attempts" title="Permalink to this definition">#</a></dt>
+<dd><p>Number of attempts per task.  Cloud Tasks will attempt the
+task <code class="docutils literal notranslate"><span class="pre">max_attempts</span></code> times (that is, if the first attempt
+fails, then there will be <code class="docutils literal notranslate"><span class="pre">max_attempts</span> <span class="pre">-</span> <span class="pre">1</span></code> retries). Must
+be &gt;= -1.  If unspecified when the queue is created, Cloud
+Tasks will pick the default.  -1 indicates unlimited attempts.
+This field has the same meaning as <a class="reference external" href="https://cloud.google.com/appengine/docs/standard/python/config/queueref#retry_parameters">task_retry_limit in
+queue.yaml/xml</a>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.tasks_v2beta3.types.RetryConfig.max_retry_duration">
+<code class="descname">max_retry_duration</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.RetryConfig.max_retry_duration" title="Permalink to this definition">#</a></dt>
+<dd><p>If positive, <code class="docutils literal notranslate"><span class="pre">max_retry_duration</span></code> specifies the time limit
+for retrying a failed task, measured from when the task was
+first attempted. Once <code class="docutils literal notranslate"><span class="pre">max_retry_duration</span></code> time has passed
+<em>and</em> the task has been attempted [max_attempts][google.cloud
+.tasks.v2beta3.RetryConfig.max_attempts] times, no further
+attempts will be made and the task will be deleted.  If zero,
+then the task age is unlimited.  If unspecified when the queue
+is created, Cloud Tasks will pick the default.
+<code class="docutils literal notranslate"><span class="pre">max_retry_duration</span></code> will be truncated to the nearest
+second.  This field has the same meaning as <a class="reference external" href="https://cloud.google.com/appengine/docs/standard/python/config/queueref#retry_parameters">task_age_limit
+in queue.yaml/xml</a>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.tasks_v2beta3.types.RetryConfig.min_backoff">
+<code class="descname">min_backoff</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.RetryConfig.min_backoff" title="Permalink to this definition">#</a></dt>
+<dd><p>A task will be
+[scheduled][google.cloud.tasks.v2beta3.Task.schedule_time]
+for retry between [min_backoff][google.cloud.tasks.v2beta3.Re
+tryConfig.min_backoff] and [max_backoff][google.cloud.tasks.
+v2beta3.RetryConfig.max_backoff] duration after it fails, if
+the queue’s
+[RetryConfig][google.cloud.tasks.v2beta3.RetryConfig]
+specifies that the task should be retried.  If unspecified
+when the queue is created, Cloud Tasks will pick the default.
+<code class="docutils literal notranslate"><span class="pre">min_backoff</span></code> will be truncated to the nearest second.  This
+field has the same meaning as <a class="reference external" href="https://cloud.google.com/appengine/docs/standard/python/config/queueref#retry_parameters">min_backoff_seconds in
+queue.yaml/xml</a>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.tasks_v2beta3.types.RetryConfig.max_backoff">
+<code class="descname">max_backoff</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.RetryConfig.max_backoff" title="Permalink to this definition">#</a></dt>
+<dd><p>A task will be
+[scheduled][google.cloud.tasks.v2beta3.Task.schedule_time]
+for retry between [min_backoff][google.cloud.tasks.v2beta3.Re
+tryConfig.min_backoff] and [max_backoff][google.cloud.tasks.
+v2beta3.RetryConfig.max_backoff] duration after it fails, if
+the queue’s
+[RetryConfig][google.cloud.tasks.v2beta3.RetryConfig]
+specifies that the task should be retried.  If unspecified
+when the queue is created, Cloud Tasks will pick the default.
+<code class="docutils literal notranslate"><span class="pre">max_backoff</span></code> will be truncated to the nearest second.  This
+field has the same meaning as <a class="reference external" href="https://cloud.google.com/appengine/docs/standard/python/config/queueref#retry_parameters">max_backoff_seconds in
+queue.yaml/xml</a>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.tasks_v2beta3.types.RetryConfig.max_doublings">
+<code class="descname">max_doublings</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.RetryConfig.max_doublings" title="Permalink to this definition">#</a></dt>
+<dd><p>The time between retries will double <code class="docutils literal notranslate"><span class="pre">max_doublings</span></code> times.
+A task’s retry interval starts at [min_backoff][google.cloud.
+tasks.v2beta3.RetryConfig.min_backoff], then doubles
+<code class="docutils literal notranslate"><span class="pre">max_doublings</span></code> times, then increases linearly, and finally
+retries retries at intervals of [max_backoff][google.cloud.ta
+sks.v2beta3.RetryConfig.max_backoff] up to [max_attempts][go
+ogle.cloud.tasks.v2beta3.RetryConfig.max_attempts] times.
+For example, if [min_backoff][google.cloud.tasks.v2beta3.Retr
+yConfig.min_backoff] is 10s, [max_backoff][google.cloud.task
+s.v2beta3.RetryConfig.max_backoff] is 300s, and
+<code class="docutils literal notranslate"><span class="pre">max_doublings</span></code> is 3, then the a task will first be retried
+in 10s. The retry interval will double three times, and then
+increase linearly by 2^3 * 10s. Finally, the task will retry
+at intervals of [max_backoff][google.cloud.tasks.v2beta3.Retr
+yConfig.max_backoff] until the task has been attempted [max_
+attempts][google.cloud.tasks.v2beta3.RetryConfig.max_attempts
+] times. Thus, the requests will retry at 10s, 20s, 40s, 80s,
+160s, 240s, 300s, 300s, ….  If unspecified when the queue is
+created, Cloud Tasks will pick the default.  This field has
+the same meaning as <a class="reference external" href="https://cloud.google.com/appengine/docs/standard/python/config/queueref#retry_parameters">max_doublings in queue.yaml/xml</a>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.tasks_v2beta3.types.RunTaskRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.tasks_v2beta3.types.</code><code class="descname">RunTaskRequest</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.RunTaskRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request message for forcing a task to run now using
+[RunTask][google.cloud.tasks.v2beta3.CloudTasks.RunTask].</p>
+<dl class="attribute">
+<dt id="google.cloud.tasks_v2beta3.types.RunTaskRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.RunTaskRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Required.  The task name. For example: <code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/l</span>
+<span class="pre">ocations/LOCATION_ID/queues/QUEUE_ID/tasks/TASK_ID</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.tasks_v2beta3.types.RunTaskRequest.response_view">
+<code class="descname">response_view</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.RunTaskRequest.response_view" title="Permalink to this definition">#</a></dt>
+<dd><p>The response_view specifies which subset of the
+[Task][google.cloud.tasks.v2beta3.Task] will be returned.  By
+default response_view is
+[BASIC][google.cloud.tasks.v2beta3.Task.View.BASIC]; not all
+information is retrieved by default because some data, such as
+payloads, might be desirable to return only when needed
+because of its large size or because of the sensitivity of
+data that it contains.  Authorization for
+[FULL][google.cloud.tasks.v2beta3.Task.View.FULL] requires
+<code class="docutils literal notranslate"><span class="pre">cloudtasks.tasks.fullView</span></code> <a class="reference external" href="https://cloud.google.com/iam/">Google IAM</a> permission on the
+[Task][google.cloud.tasks.v2beta3.Task] resource.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.tasks_v2beta3.types.ServiceDescriptorProto">
+<em class="property">class </em><code class="descclassname">google.cloud.tasks_v2beta3.types.</code><code class="descname">ServiceDescriptorProto</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.ServiceDescriptorProto" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.tasks_v2beta3.types.ServiceOptions">
+<em class="property">class </em><code class="descclassname">google.cloud.tasks_v2beta3.types.</code><code class="descname">ServiceOptions</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.ServiceOptions" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.tasks_v2beta3.types.SetIamPolicyRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.tasks_v2beta3.types.</code><code class="descname">SetIamPolicyRequest</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.SetIamPolicyRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request message for <code class="docutils literal notranslate"><span class="pre">SetIamPolicy</span></code> method.</p>
+<dl class="attribute">
+<dt id="google.cloud.tasks_v2beta3.types.SetIamPolicyRequest.resource">
+<code class="descname">resource</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.SetIamPolicyRequest.resource" title="Permalink to this definition">#</a></dt>
+<dd><p>REQUIRED: The resource for which the policy is being
+specified. <code class="docutils literal notranslate"><span class="pre">resource</span></code> is usually specified as a path. For
+example, a Project resource is specified as
+<code class="docutils literal notranslate"><span class="pre">projects/{project}</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.tasks_v2beta3.types.SetIamPolicyRequest.policy">
+<code class="descname">policy</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.SetIamPolicyRequest.policy" title="Permalink to this definition">#</a></dt>
+<dd><p>REQUIRED: The complete policy to be applied to the
+<code class="docutils literal notranslate"><span class="pre">resource</span></code>. The size of the policy is limited to a few 10s
+of KB. An empty policy is a valid policy but certain Cloud
+Platform services (such as Projects) might reject them.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.tasks_v2beta3.types.SourceCodeInfo">
+<em class="property">class </em><code class="descclassname">google.cloud.tasks_v2beta3.types.</code><code class="descname">SourceCodeInfo</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.SourceCodeInfo" title="Permalink to this definition">#</a></dt>
+<dd><dl class="class">
+<dt id="google.cloud.tasks_v2beta3.types.SourceCodeInfo.Location">
+<em class="property">class </em><code class="descname">Location</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.SourceCodeInfo.Location" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.tasks_v2beta3.types.Status">
+<em class="property">class </em><code class="descclassname">google.cloud.tasks_v2beta3.types.</code><code class="descname">Status</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.Status" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.tasks_v2beta3.types.Task">
+<em class="property">class </em><code class="descclassname">google.cloud.tasks_v2beta3.types.</code><code class="descname">Task</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.Task" title="Permalink to this definition">#</a></dt>
+<dd><p>A unit of scheduled work.</p>
+<dl class="attribute">
+<dt id="google.cloud.tasks_v2beta3.types.Task.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.Task.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Optionally caller-specified in [CreateTask][google.cloud.tasks
+.v2beta3.CloudTasks.CreateTask].  The task name.  The task
+name must have the following format: <code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/loc</span>
+<span class="pre">ations/LOCATION_ID/queues/QUEUE_ID/tasks/TASK_ID</span></code>  -
+<code class="docutils literal notranslate"><span class="pre">PROJECT_ID</span></code> can contain letters ([A-Za-z]), numbers
+([0-9]),    hyphens (-), colons (:), or periods (.). For more
+information, see    <a class="reference external" href="https://cloud.google.com/resource-manager/docs/creating-managing-projects#identifying_projects">Identifying    projects</a> -  <code class="docutils literal notranslate"><span class="pre">LOCATION_ID</span></code>
+is the canonical ID for the task’s location. The list    of
+available locations can be obtained by calling    [ListLocatio
+ns][google.cloud.location.Locations.ListLocations]. For
+more information, see
+<a class="reference external" href="https://cloud.google.com/about/locations/">https://cloud.google.com/about/locations/</a>. -  <code class="docutils literal notranslate"><span class="pre">QUEUE_ID</span></code> can
+contain letters ([A-Za-z]), numbers ([0-9]), or    hyphens
+(-). The maximum length is 100 characters. -  <code class="docutils literal notranslate"><span class="pre">TASK_ID</span></code> can
+contain only letters ([A-Za-z]), numbers ([0-9]),    hyphens
+(-), or underscores (_). The maximum length is 500
+characters.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.tasks_v2beta3.types.Task.payload_type">
+<code class="descname">payload_type</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.Task.payload_type" title="Permalink to this definition">#</a></dt>
+<dd><p>Required.  The task’s payload is used by the task’s target to
+process the task. A payload is valid only if it is compatible
+with the queue’s target.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.tasks_v2beta3.types.Task.app_engine_http_request">
+<code class="descname">app_engine_http_request</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.Task.app_engine_http_request" title="Permalink to this definition">#</a></dt>
+<dd><p>App Engine HTTP request that is sent to the task’s target. Can
+be set only if [app_engine_http_queue][google.cloud.tasks.v
+2beta3.Queue.app_engine_http_queue] is set on the queue.
+An App Engine task is a task that has [AppEngineHttpRequest][g
+oogle.cloud.tasks.v2beta3.AppEngineHttpRequest] set.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.tasks_v2beta3.types.Task.schedule_time">
+<code class="descname">schedule_time</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.Task.schedule_time" title="Permalink to this definition">#</a></dt>
+<dd><p>The time when the task is scheduled to be attempted.  For App
+Engine queues, this is when the task will be attempted or
+retried.  <code class="docutils literal notranslate"><span class="pre">schedule_time</span></code> will be truncated to the nearest
+microsecond.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.tasks_v2beta3.types.Task.create_time">
+<code class="descname">create_time</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.Task.create_time" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. The time that the task was created.
+<code class="docutils literal notranslate"><span class="pre">create_time</span></code> will be truncated to the nearest second.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.tasks_v2beta3.types.Task.dispatch_count">
+<code class="descname">dispatch_count</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.Task.dispatch_count" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. The number of attempts dispatched.  This count
+includes tasks which have been dispatched but haven’t received
+a response.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.tasks_v2beta3.types.Task.response_count">
+<code class="descname">response_count</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.Task.response_count" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. The number of attempts which have received a
+response.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.tasks_v2beta3.types.Task.first_attempt">
+<code class="descname">first_attempt</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.Task.first_attempt" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. The status of the task’s first attempt.  Only [di
+spatch_time][google.cloud.tasks.v2beta3.Attempt.dispatch_tim
+e] will be set. The other
+[Attempt][google.cloud.tasks.v2beta3.Attempt] information is
+not retained by Cloud Tasks.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.tasks_v2beta3.types.Task.last_attempt">
+<code class="descname">last_attempt</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.Task.last_attempt" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. The status of the task’s last attempt.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.tasks_v2beta3.types.Task.view">
+<code class="descname">view</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.Task.view" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. The view specifies which subset of the
+[Task][google.cloud.tasks.v2beta3.Task] has been returned.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.tasks_v2beta3.types.TestIamPermissionsRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.tasks_v2beta3.types.</code><code class="descname">TestIamPermissionsRequest</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.TestIamPermissionsRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request message for <code class="docutils literal notranslate"><span class="pre">TestIamPermissions</span></code> method.</p>
+<dl class="attribute">
+<dt id="google.cloud.tasks_v2beta3.types.TestIamPermissionsRequest.resource">
+<code class="descname">resource</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.TestIamPermissionsRequest.resource" title="Permalink to this definition">#</a></dt>
+<dd><p>REQUIRED: The resource for which the policy detail is being
+requested. <code class="docutils literal notranslate"><span class="pre">resource</span></code> is usually specified as a path. For
+example, a Project resource is specified as
+<code class="docutils literal notranslate"><span class="pre">projects/{project}</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.tasks_v2beta3.types.TestIamPermissionsRequest.permissions">
+<code class="descname">permissions</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.TestIamPermissionsRequest.permissions" title="Permalink to this definition">#</a></dt>
+<dd><p>The set of permissions to check for the <code class="docutils literal notranslate"><span class="pre">resource</span></code>.
+Permissions with wildcards (such as ‘*’ or ‘storage.*’) are
+not allowed. For more information see <a class="reference external" href="https://cloud.google.com/iam/docs/overview#permissions">IAM Overview</a>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.tasks_v2beta3.types.TestIamPermissionsResponse">
+<em class="property">class </em><code class="descclassname">google.cloud.tasks_v2beta3.types.</code><code class="descname">TestIamPermissionsResponse</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.TestIamPermissionsResponse" title="Permalink to this definition">#</a></dt>
+<dd><p>Response message for <code class="docutils literal notranslate"><span class="pre">TestIamPermissions</span></code> method.</p>
+<dl class="attribute">
+<dt id="google.cloud.tasks_v2beta3.types.TestIamPermissionsResponse.permissions">
+<code class="descname">permissions</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.TestIamPermissionsResponse.permissions" title="Permalink to this definition">#</a></dt>
+<dd><p>A subset of <code class="docutils literal notranslate"><span class="pre">TestPermissionsRequest.permissions</span></code> that the
+caller is allowed.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.tasks_v2beta3.types.Timestamp">
+<em class="property">class </em><code class="descclassname">google.cloud.tasks_v2beta3.types.</code><code class="descname">Timestamp</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.Timestamp" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.tasks_v2beta3.types.UninterpretedOption">
+<em class="property">class </em><code class="descclassname">google.cloud.tasks_v2beta3.types.</code><code class="descname">UninterpretedOption</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.UninterpretedOption" title="Permalink to this definition">#</a></dt>
+<dd><dl class="class">
+<dt id="google.cloud.tasks_v2beta3.types.UninterpretedOption.NamePart">
+<em class="property">class </em><code class="descname">NamePart</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.UninterpretedOption.NamePart" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.tasks_v2beta3.types.UpdateQueueRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.tasks_v2beta3.types.</code><code class="descname">UpdateQueueRequest</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.UpdateQueueRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request message for
+[UpdateQueue][google.cloud.tasks.v2beta3.CloudTasks.UpdateQueue].</p>
+<dl class="attribute">
+<dt id="google.cloud.tasks_v2beta3.types.UpdateQueueRequest.queue">
+<code class="descname">queue</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.UpdateQueueRequest.queue" title="Permalink to this definition">#</a></dt>
+<dd><p>Required.  The queue to create or update.  The queue’s
+[name][google.cloud.tasks.v2beta3.Queue.name] must be
+specified.  Output only fields cannot be modified using
+UpdateQueue. Any value specified for an output only field will
+be ignored. The queue’s
+[name][google.cloud.tasks.v2beta3.Queue.name] cannot be
+changed.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.tasks_v2beta3.types.UpdateQueueRequest.update_mask">
+<code class="descname">update_mask</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.UpdateQueueRequest.update_mask" title="Permalink to this definition">#</a></dt>
+<dd><p>A mask used to specify which fields of the queue are being
+updated.  If empty, then all fields will be updated.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">google-cloud</a></h1>
+
+
+
+<p class="blurb">Google Cloud Client Libraries for Python</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=GoogleCloudPlatform&repo=google-cloud-python&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../releases.html"><code class="docutils literal notranslate"><span class="pre">google-cloud</span></code> Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../core/index.html">Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../asset/index.html">Python Client for Cloud Asset API (Alpha)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../automl/index.html">Python Client for Cloud AutoML API (Alpha)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../bigquery/usage.html">BigQuery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../bigquery_datatransfer/index.html">Python Client for BigQuery Data Transfer API (Alpha)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../bigtable/usage.html">Bigtable</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../container/index.html">Python Client for Google Container Engine API (Beta)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dataproc/index.html">Python Client for Google Cloud Dataproc API (Alpha)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../datastore/usage.html">Datastore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dlp/index.html">Python Client for Cloud Data Loss Prevention (DLP) API (Alpha)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dns/usage.html">DNS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../firestore/index.html">Firestore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../iot/index.html">Python Client for Cloud IoT API (Alpha)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../kms/index.html">Python Client for Google Cloud Key Management Service (KMS) API (Alpha)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../language/usage.html">Natural Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pubsub/index.html">Pub/Sub</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../oslogin/index.html">Python Client for Google Cloud OS Login API (Alpha)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../resource-manager/api.html">Resource Manager</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../resource-manager/api.html#installation">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../resource-manager/api.html#usage">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../runtimeconfig/usage.html">Runtimeconfig</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../spanner/usage.html">Spanner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../speech/index.html">Speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../error-reporting/usage.html">Stackdriver Error Reporting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../monitoring/index.html">Python Client for Stackdriver Monitoring API (Alpha)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../logging/usage.html">Stackdriver Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../redis/index.html">Python Client for Google Cloud Memorystore for Redis API (Alpha)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../storage/client.html">Storage</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Python Client for Cloud Tasks API (Alpha)</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../index.html#quick-start">Quick Start</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../../index.html#api-reference">Api Reference</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../texttospeech/index.html">Python Client for Cloud Text-to-Speech API (Alpha)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../translate/usage.html">Translation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../vision/index.html">Vision</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../videointelligence/index.html">Video Intelligence</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Python Client for Cloud Tasks API (Alpha)</a><ul>
+      <li>Previous: <a href="api.html" title="previous chapter">Client for Cloud Tasks API</a></li>
+      <li>Next: <a href="../../../texttospeech/index.html" title="next chapter">Python Client for Cloud Text-to-Speech API (Alpha)</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2014-2017, Google.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.8</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.11</a>
+      
+      |
+      <a href="../../../_sources/tasks/gapic/v2beta3/types.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/GoogleCloudPlatform/google-cloud-python" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>
