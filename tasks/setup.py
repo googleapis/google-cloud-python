@@ -21,7 +21,7 @@ import setuptools
 
 name = 'google-cloud-tasks'
 description = 'Cloud Tasks API API client library'
-version = '0.1.0'
+version = '0.3.0'
 release_status = 'Development Status :: 3 - Alpha'
 dependencies = [
     'google-api-core[grpc] >= 1.1.0, < 2.0.0dev',
