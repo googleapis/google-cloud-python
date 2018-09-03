@@ -17,15 +17,13 @@
 
 import pytest
 
-from google.cloud import tasks_v2beta2
-from google.cloud.tasks_v2beta2.proto import cloudtasks_pb2
-from google.cloud.tasks_v2beta2.proto import queue_pb2
-from google.cloud.tasks_v2beta2.proto import task_pb2
+from google.cloud import tasks_v2beta3
+from google.cloud.tasks_v2beta3.proto import cloudtasks_pb2
+from google.cloud.tasks_v2beta3.proto import queue_pb2
+from google.cloud.tasks_v2beta3.proto import task_pb2
 from google.iam.v1 import iam_policy_pb2
 from google.iam.v1 import policy_pb2
-from google.protobuf import duration_pb2
 from google.protobuf import empty_pb2
-from google.protobuf import timestamp_pb2
 
 
 class MultiCallableStub(object):
@@ -82,7 +80,7 @@ class TestCloudTasksClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = tasks_v2beta2.CloudTasksClient(channel=channel)
+        client = tasks_v2beta3.CloudTasksClient(channel=channel)
 
         # Setup Request
         parent = client.location_path('[PROJECT]', '[LOCATION]')
@@ -100,7 +98,7 @@ class TestCloudTasksClient(object):
 
     def test_list_queues_exception(self):
         channel = ChannelStub(responses=[CustomException()])
-        client = tasks_v2beta2.CloudTasksClient(channel=channel)
+        client = tasks_v2beta3.CloudTasksClient(channel=channel)
 
         # Setup request
         parent = client.location_path('[PROJECT]', '[LOCATION]')
@@ -117,7 +115,7 @@ class TestCloudTasksClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = tasks_v2beta2.CloudTasksClient(channel=channel)
+        client = tasks_v2beta3.CloudTasksClient(channel=channel)
 
         # Setup Request
         name = client.queue_path('[PROJECT]', '[LOCATION]', '[QUEUE]')
@@ -133,7 +131,7 @@ class TestCloudTasksClient(object):
     def test_get_queue_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = tasks_v2beta2.CloudTasksClient(channel=channel)
+        client = tasks_v2beta3.CloudTasksClient(channel=channel)
 
         # Setup request
         name = client.queue_path('[PROJECT]', '[LOCATION]', '[QUEUE]')
@@ -149,7 +147,7 @@ class TestCloudTasksClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = tasks_v2beta2.CloudTasksClient(channel=channel)
+        client = tasks_v2beta3.CloudTasksClient(channel=channel)
 
         # Setup Request
         parent = client.location_path('[PROJECT]', '[LOCATION]')
@@ -167,7 +165,7 @@ class TestCloudTasksClient(object):
     def test_create_queue_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = tasks_v2beta2.CloudTasksClient(channel=channel)
+        client = tasks_v2beta3.CloudTasksClient(channel=channel)
 
         # Setup request
         parent = client.location_path('[PROJECT]', '[LOCATION]')
@@ -184,7 +182,7 @@ class TestCloudTasksClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = tasks_v2beta2.CloudTasksClient(channel=channel)
+        client = tasks_v2beta3.CloudTasksClient(channel=channel)
 
         # Setup Request
         queue = {}
@@ -200,7 +198,7 @@ class TestCloudTasksClient(object):
     def test_update_queue_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = tasks_v2beta2.CloudTasksClient(channel=channel)
+        client = tasks_v2beta3.CloudTasksClient(channel=channel)
 
         # Setup request
         queue = {}
@@ -210,7 +208,7 @@ class TestCloudTasksClient(object):
 
     def test_delete_queue(self):
         channel = ChannelStub()
-        client = tasks_v2beta2.CloudTasksClient(channel=channel)
+        client = tasks_v2beta3.CloudTasksClient(channel=channel)
 
         # Setup Request
         name = client.queue_path('[PROJECT]', '[LOCATION]', '[QUEUE]')
@@ -225,7 +223,7 @@ class TestCloudTasksClient(object):
     def test_delete_queue_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = tasks_v2beta2.CloudTasksClient(channel=channel)
+        client = tasks_v2beta3.CloudTasksClient(channel=channel)
 
         # Setup request
         name = client.queue_path('[PROJECT]', '[LOCATION]', '[QUEUE]')
@@ -241,7 +239,7 @@ class TestCloudTasksClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = tasks_v2beta2.CloudTasksClient(channel=channel)
+        client = tasks_v2beta3.CloudTasksClient(channel=channel)
 
         # Setup Request
         name = client.queue_path('[PROJECT]', '[LOCATION]', '[QUEUE]')
@@ -257,7 +255,7 @@ class TestCloudTasksClient(object):
     def test_purge_queue_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = tasks_v2beta2.CloudTasksClient(channel=channel)
+        client = tasks_v2beta3.CloudTasksClient(channel=channel)
 
         # Setup request
         name = client.queue_path('[PROJECT]', '[LOCATION]', '[QUEUE]')
@@ -273,7 +271,7 @@ class TestCloudTasksClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = tasks_v2beta2.CloudTasksClient(channel=channel)
+        client = tasks_v2beta3.CloudTasksClient(channel=channel)
 
         # Setup Request
         name = client.queue_path('[PROJECT]', '[LOCATION]', '[QUEUE]')
@@ -289,7 +287,7 @@ class TestCloudTasksClient(object):
     def test_pause_queue_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = tasks_v2beta2.CloudTasksClient(channel=channel)
+        client = tasks_v2beta3.CloudTasksClient(channel=channel)
 
         # Setup request
         name = client.queue_path('[PROJECT]', '[LOCATION]', '[QUEUE]')
@@ -305,7 +303,7 @@ class TestCloudTasksClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = tasks_v2beta2.CloudTasksClient(channel=channel)
+        client = tasks_v2beta3.CloudTasksClient(channel=channel)
 
         # Setup Request
         name = client.queue_path('[PROJECT]', '[LOCATION]', '[QUEUE]')
@@ -321,7 +319,7 @@ class TestCloudTasksClient(object):
     def test_resume_queue_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = tasks_v2beta2.CloudTasksClient(channel=channel)
+        client = tasks_v2beta3.CloudTasksClient(channel=channel)
 
         # Setup request
         name = client.queue_path('[PROJECT]', '[LOCATION]', '[QUEUE]')
@@ -338,7 +336,7 @@ class TestCloudTasksClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = tasks_v2beta2.CloudTasksClient(channel=channel)
+        client = tasks_v2beta3.CloudTasksClient(channel=channel)
 
         # Setup Request
         resource = client.queue_path('[PROJECT]', '[LOCATION]', '[QUEUE]')
@@ -355,7 +353,7 @@ class TestCloudTasksClient(object):
     def test_get_iam_policy_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = tasks_v2beta2.CloudTasksClient(channel=channel)
+        client = tasks_v2beta3.CloudTasksClient(channel=channel)
 
         # Setup request
         resource = client.queue_path('[PROJECT]', '[LOCATION]', '[QUEUE]')
@@ -372,7 +370,7 @@ class TestCloudTasksClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = tasks_v2beta2.CloudTasksClient(channel=channel)
+        client = tasks_v2beta3.CloudTasksClient(channel=channel)
 
         # Setup Request
         resource = client.queue_path('[PROJECT]', '[LOCATION]', '[QUEUE]')
@@ -390,7 +388,7 @@ class TestCloudTasksClient(object):
     def test_set_iam_policy_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = tasks_v2beta2.CloudTasksClient(channel=channel)
+        client = tasks_v2beta3.CloudTasksClient(channel=channel)
 
         # Setup request
         resource = client.queue_path('[PROJECT]', '[LOCATION]', '[QUEUE]')
@@ -407,7 +405,7 @@ class TestCloudTasksClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = tasks_v2beta2.CloudTasksClient(channel=channel)
+        client = tasks_v2beta3.CloudTasksClient(channel=channel)
 
         # Setup Request
         resource = client.queue_path('[PROJECT]', '[LOCATION]', '[QUEUE]')
@@ -425,7 +423,7 @@ class TestCloudTasksClient(object):
     def test_test_iam_permissions_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = tasks_v2beta2.CloudTasksClient(channel=channel)
+        client = tasks_v2beta3.CloudTasksClient(channel=channel)
 
         # Setup request
         resource = client.queue_path('[PROJECT]', '[LOCATION]', '[QUEUE]')
@@ -448,7 +446,7 @@ class TestCloudTasksClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = tasks_v2beta2.CloudTasksClient(channel=channel)
+        client = tasks_v2beta3.CloudTasksClient(channel=channel)
 
         # Setup Request
         parent = client.queue_path('[PROJECT]', '[LOCATION]', '[QUEUE]')
@@ -466,7 +464,7 @@ class TestCloudTasksClient(object):
 
     def test_list_tasks_exception(self):
         channel = ChannelStub(responses=[CustomException()])
-        client = tasks_v2beta2.CloudTasksClient(channel=channel)
+        client = tasks_v2beta3.CloudTasksClient(channel=channel)
 
         # Setup request
         parent = client.queue_path('[PROJECT]', '[LOCATION]', '[QUEUE]')
@@ -478,12 +476,18 @@ class TestCloudTasksClient(object):
     def test_get_task(self):
         # Setup Expected Response
         name_2 = 'name2-1052831874'
-        expected_response = {'name': name_2}
+        dispatch_count = 1217252086
+        response_count = 424727441
+        expected_response = {
+            'name': name_2,
+            'dispatch_count': dispatch_count,
+            'response_count': response_count
+        }
         expected_response = task_pb2.Task(**expected_response)
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = tasks_v2beta2.CloudTasksClient(channel=channel)
+        client = tasks_v2beta3.CloudTasksClient(channel=channel)
 
         # Setup Request
         name = client.task_path('[PROJECT]', '[LOCATION]', '[QUEUE]', '[TASK]')
@@ -499,7 +503,7 @@ class TestCloudTasksClient(object):
     def test_get_task_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = tasks_v2beta2.CloudTasksClient(channel=channel)
+        client = tasks_v2beta3.CloudTasksClient(channel=channel)
 
         # Setup request
         name = client.task_path('[PROJECT]', '[LOCATION]', '[QUEUE]', '[TASK]')
@@ -510,12 +514,18 @@ class TestCloudTasksClient(object):
     def test_create_task(self):
         # Setup Expected Response
         name = 'name3373707'
-        expected_response = {'name': name}
+        dispatch_count = 1217252086
+        response_count = 424727441
+        expected_response = {
+            'name': name,
+            'dispatch_count': dispatch_count,
+            'response_count': response_count
+        }
         expected_response = task_pb2.Task(**expected_response)
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = tasks_v2beta2.CloudTasksClient(channel=channel)
+        client = tasks_v2beta3.CloudTasksClient(channel=channel)
 
         # Setup Request
         parent = client.queue_path('[PROJECT]', '[LOCATION]', '[QUEUE]')
@@ -533,7 +543,7 @@ class TestCloudTasksClient(object):
     def test_create_task_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = tasks_v2beta2.CloudTasksClient(channel=channel)
+        client = tasks_v2beta3.CloudTasksClient(channel=channel)
 
         # Setup request
         parent = client.queue_path('[PROJECT]', '[LOCATION]', '[QUEUE]')
@@ -544,7 +554,7 @@ class TestCloudTasksClient(object):
 
     def test_delete_task(self):
         channel = ChannelStub()
-        client = tasks_v2beta2.CloudTasksClient(channel=channel)
+        client = tasks_v2beta3.CloudTasksClient(channel=channel)
 
         # Setup Request
         name = client.task_path('[PROJECT]', '[LOCATION]', '[QUEUE]', '[TASK]')
@@ -559,7 +569,7 @@ class TestCloudTasksClient(object):
     def test_delete_task_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = tasks_v2beta2.CloudTasksClient(channel=channel)
+        client = tasks_v2beta3.CloudTasksClient(channel=channel)
 
         # Setup request
         name = client.task_path('[PROJECT]', '[LOCATION]', '[QUEUE]', '[TASK]')
@@ -567,152 +577,21 @@ class TestCloudTasksClient(object):
         with pytest.raises(CustomException):
             client.delete_task(name)
 
-    def test_lease_tasks(self):
-        # Setup Expected Response
-        expected_response = {}
-        expected_response = cloudtasks_pb2.LeaseTasksResponse(
-            **expected_response)
-
-        # Mock the API response
-        channel = ChannelStub(responses=[expected_response])
-        client = tasks_v2beta2.CloudTasksClient(channel=channel)
-
-        # Setup Request
-        parent = client.queue_path('[PROJECT]', '[LOCATION]', '[QUEUE]')
-        lease_duration = {}
-
-        response = client.lease_tasks(parent, lease_duration)
-        assert expected_response == response
-
-        assert len(channel.requests) == 1
-        expected_request = cloudtasks_pb2.LeaseTasksRequest(
-            parent=parent, lease_duration=lease_duration)
-        actual_request = channel.requests[0][1]
-        assert expected_request == actual_request
-
-    def test_lease_tasks_exception(self):
-        # Mock the API response
-        channel = ChannelStub(responses=[CustomException()])
-        client = tasks_v2beta2.CloudTasksClient(channel=channel)
-
-        # Setup request
-        parent = client.queue_path('[PROJECT]', '[LOCATION]', '[QUEUE]')
-        lease_duration = {}
-
-        with pytest.raises(CustomException):
-            client.lease_tasks(parent, lease_duration)
-
-    def test_acknowledge_task(self):
-        channel = ChannelStub()
-        client = tasks_v2beta2.CloudTasksClient(channel=channel)
-
-        # Setup Request
-        name = client.task_path('[PROJECT]', '[LOCATION]', '[QUEUE]', '[TASK]')
-        schedule_time = {}
-
-        client.acknowledge_task(name, schedule_time)
-
-        assert len(channel.requests) == 1
-        expected_request = cloudtasks_pb2.AcknowledgeTaskRequest(
-            name=name, schedule_time=schedule_time)
-        actual_request = channel.requests[0][1]
-        assert expected_request == actual_request
-
-    def test_acknowledge_task_exception(self):
-        # Mock the API response
-        channel = ChannelStub(responses=[CustomException()])
-        client = tasks_v2beta2.CloudTasksClient(channel=channel)
-
-        # Setup request
-        name = client.task_path('[PROJECT]', '[LOCATION]', '[QUEUE]', '[TASK]')
-        schedule_time = {}
-
-        with pytest.raises(CustomException):
-            client.acknowledge_task(name, schedule_time)
-
-    def test_renew_lease(self):
-        # Setup Expected Response
-        name_2 = 'name2-1052831874'
-        expected_response = {'name': name_2}
-        expected_response = task_pb2.Task(**expected_response)
-
-        # Mock the API response
-        channel = ChannelStub(responses=[expected_response])
-        client = tasks_v2beta2.CloudTasksClient(channel=channel)
-
-        # Setup Request
-        name = client.task_path('[PROJECT]', '[LOCATION]', '[QUEUE]', '[TASK]')
-        schedule_time = {}
-        lease_duration = {}
-
-        response = client.renew_lease(name, schedule_time, lease_duration)
-        assert expected_response == response
-
-        assert len(channel.requests) == 1
-        expected_request = cloudtasks_pb2.RenewLeaseRequest(
-            name=name,
-            schedule_time=schedule_time,
-            lease_duration=lease_duration)
-        actual_request = channel.requests[0][1]
-        assert expected_request == actual_request
-
-    def test_renew_lease_exception(self):
-        # Mock the API response
-        channel = ChannelStub(responses=[CustomException()])
-        client = tasks_v2beta2.CloudTasksClient(channel=channel)
-
-        # Setup request
-        name = client.task_path('[PROJECT]', '[LOCATION]', '[QUEUE]', '[TASK]')
-        schedule_time = {}
-        lease_duration = {}
-
-        with pytest.raises(CustomException):
-            client.renew_lease(name, schedule_time, lease_duration)
-
-    def test_cancel_lease(self):
-        # Setup Expected Response
-        name_2 = 'name2-1052831874'
-        expected_response = {'name': name_2}
-        expected_response = task_pb2.Task(**expected_response)
-
-        # Mock the API response
-        channel = ChannelStub(responses=[expected_response])
-        client = tasks_v2beta2.CloudTasksClient(channel=channel)
-
-        # Setup Request
-        name = client.task_path('[PROJECT]', '[LOCATION]', '[QUEUE]', '[TASK]')
-        schedule_time = {}
-
-        response = client.cancel_lease(name, schedule_time)
-        assert expected_response == response
-
-        assert len(channel.requests) == 1
-        expected_request = cloudtasks_pb2.CancelLeaseRequest(
-            name=name, schedule_time=schedule_time)
-        actual_request = channel.requests[0][1]
-        assert expected_request == actual_request
-
-    def test_cancel_lease_exception(self):
-        # Mock the API response
-        channel = ChannelStub(responses=[CustomException()])
-        client = tasks_v2beta2.CloudTasksClient(channel=channel)
-
-        # Setup request
-        name = client.task_path('[PROJECT]', '[LOCATION]', '[QUEUE]', '[TASK]')
-        schedule_time = {}
-
-        with pytest.raises(CustomException):
-            client.cancel_lease(name, schedule_time)
-
     def test_run_task(self):
         # Setup Expected Response
         name_2 = 'name2-1052831874'
-        expected_response = {'name': name_2}
+        dispatch_count = 1217252086
+        response_count = 424727441
+        expected_response = {
+            'name': name_2,
+            'dispatch_count': dispatch_count,
+            'response_count': response_count
+        }
         expected_response = task_pb2.Task(**expected_response)
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = tasks_v2beta2.CloudTasksClient(channel=channel)
+        client = tasks_v2beta3.CloudTasksClient(channel=channel)
 
         # Setup Request
         name = client.task_path('[PROJECT]', '[LOCATION]', '[QUEUE]', '[TASK]')
@@ -728,7 +607,7 @@ class TestCloudTasksClient(object):
     def test_run_task_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = tasks_v2beta2.CloudTasksClient(channel=channel)
+        client = tasks_v2beta3.CloudTasksClient(channel=channel)
 
         # Setup request
         name = client.task_path('[PROJECT]', '[LOCATION]', '[QUEUE]', '[TASK]')
