@@ -209,9 +209,7 @@ class Queue(object):
           has been re-activated.
           PAUSED (int): Tasks are paused by the user. If the queue is paused then Cloud
           Tasks will stop delivering tasks from it, but more tasks can
-          still be added to it by the user. When a pull queue is paused,
-          all ``LeaseTasks`` calls will return a
-          ``FAILED_PRECONDITION``.
+          still be added to it by the user.
           DISABLED (int): The queue is disabled.
 
           A queue becomes ``DISABLED`` when
@@ -220,9 +218,7 @@ class Queue(object):
           which does not contain the queue. You cannot directly disable a queue.
 
           When a queue is disabled, tasks can still be added to a queue
-          but the tasks are not dispatched and
-          ``LeaseTasks`` calls return a
-          ``FAILED_PRECONDITION`` error.
+          but the tasks are not dispatched.
 
           To permanently delete this queue and all of its tasks, call
           ``DeleteQueue``.
@@ -250,11 +246,10 @@ class Task(object):
           sensitive data.
 
           This view does not include the
-          (``payload in AppEngineHttpRequest`` and
-          ``payload in PullMessage``). These payloads are
-          desirable to return only when needed, because they can be large
-          and because of the sensitivity of the data that you choose to
-          store in it.
+          ``body in AppEngineHttpRequest``.
+          Bodies are desirable to return only when needed, because they
+          can be large and because of the sensitivity of the data that you
+          choose to store in it.
           FULL (int): All information is returned.
 
           Authorization for ``FULL`` requires

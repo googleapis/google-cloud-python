@@ -16,9 +16,15 @@
 
 from __future__ import absolute_import
 
-from google.cloud.tasks_v2beta3 import CloudTasksClient
-from google.cloud.tasks_v2beta3 import enums
 from google.cloud.tasks_v2beta3 import types
+from google.cloud.tasks_v2beta3.gapic import cloud_tasks_client
+from google.cloud.tasks_v2beta3.gapic import enums
+
+
+class CloudTasksClient(cloud_tasks_client.CloudTasksClient):
+    __doc__ = cloud_tasks_client.CloudTasksClient.__doc__
+    enums = enums
+
 
 __all__ = (
     'enums',

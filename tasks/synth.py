@@ -23,12 +23,40 @@ logging.basicConfig(level=logging.DEBUG)
 gapic = gcp.GAPICGenerator()
 common = gcp.CommonTemplates()
 
-# tasks has two product names, and a poorly named artman yaml
-v2beta2_library = gapic.py_library(
-    'tasks', 'v2beta2',
-    config_path='artman_cloudtasks.yaml')
+for version in ['v2beta2', 'v2beta3']:
+    library = gapic.py_library(
+        'tasks', version,
+        config_path=f'artman_cloudtasks_{version}.yaml')
 
-s.copy(v2beta2_library)
+    s.copy(library, excludes=['docs/conf.py', 'docs/index.rst'])
+
+    # Fix unindentation of bullet list second line
+    s.replace(
+        f'google/cloud/tasks_{version}/gapic/cloud_tasks_client.py',
+        '(        \* .*\n        )([^\s*])',
+        '\g<1>  \g<2>')
+
+    s.replace(
+        f'google/cloud/tasks_{version}/gapic/cloud_tasks_client.py',
+        '(Google IAM .*?_) ',
+        '\g<1>_ ')
+
+    s.replace(
+        f'google/cloud/tasks_{version}/gapic/cloud_tasks_client.py',
+        r'(Sample filter \\"app_engine_http_target: )\*\\".',
+        '\g<1>\\*\\".')
+
+    # Issues with Anonymous ('__') links. Change to named.
+    s.replace(
+        f"google/cloud/tasks_{version}/proto/*.py",
+        ">`__",
+        ">`_")
+
+    # Wrapped link fails due ot space in link
+    s.replace(
+        f"google/cloud/tasks_{version}/proto/queue_pb2.py",
+        '(uests in queue.yaml/xml) <\n\s+',
+        '\g<1>\n          <')
 
 # Set Release Status
 release_status = 'Development Status :: 3 - Alpha'
@@ -41,50 +69,9 @@ s.replace('setup.py',
           'dependencies = \[\n*(^.*,\n)+',
           "\\g<0>    'grpc-google-iam-v1<0.12dev,>=0.11.4',\n")
 
-# Correct Naming of package
-s.replace('**/*.rst',
-          'google-cloud-cloud-tasks',
-          'google-cloud-tasks')
-s.replace('**/*.py',
-          'google-cloud-cloud-tasks',
-          'google-cloud-tasks')
-s.replace('README.rst',
-          '/cloud-tasks',
-          '/tasks')
-
 # Fix the enable API link
 s.replace(
     'README.rst',
     r'.. _Enable the Cloud Tasks API.:  https://cloud.google.com/tasks',
     '.. _Enable the Cloud Tasks API.:  https://console.cloud.google.com/apis/'
     'library/cloudtasks.googleapis.com')
-
-# Fix unindentation of bullet list second line
-s.replace(
-    'google/cloud/tasks_v2beta2/gapic/cloud_tasks_client.py',
-    '(        \* .*\n        )([^\s*])',
-    '\g<1>  \g<2>')
-
-s.replace(
-    'google/cloud/tasks_v2beta2/gapic/cloud_tasks_client.py',
-    '(Google IAM .*?_) ',
-    '\g<1>_ ')
-
-s.replace(
-    'google/cloud/tasks_v2beta2/gapic/cloud_tasks_client.py',
-    r'(Sample filter \\"app_engine_http_target: )\*\\".',
-    '\g<1>\\*\\".')
-
-s.replace("google/cloud/**/*.py", "`[.\s\n]+ </appengine/.*?>`__", "")
-
-# Issues with Anonymous ('__') links. Change to named.
-s.replace(
-    "google/cloud/tasks_v2beta2/proto/*.py",
-    ">`__",
-    ">`_")
-
-# Wrapped link fails due ot space in link
-s.replace(
-    "google/cloud/tasks_v2beta2/proto/queue_pb2.py",
-    '(uests in queue.yaml/xml) <\n\s+',
-    '\g<1>\n          <')
