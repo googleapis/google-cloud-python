@@ -17,7 +17,6 @@ import unittest
 
 import grpc
 import mock
-
 from ._testing import _make_credentials
 
 
@@ -453,7 +452,8 @@ class TestTable(unittest.TestCase):
         result = table.get_cluster_states()
         self.assertEqual(result, expected_result)
 
-    def _read_row_helper(self, chunks, expected_result, app_profile_id=None):
+    def _read_row_helper(self, chunks, expected_result, app_profile_id=None,
+                         initialized_read_row=True):
         from google.cloud._testing import _Monkey
         from google.cloud.bigtable import table as MUT
         from google.cloud.bigtable_v2.gapic import bigtable_client
@@ -489,9 +489,13 @@ class TestTable(unittest.TestCase):
         # Patch the stub used by the API method.
         client._table_data_client = data_api
         client._table_admin_client = table_api
+
         inner_api_calls = client._table_data_client._inner_api_calls
-        inner_api_calls['read_rows'] = mock.Mock(
-            side_effect=[response_iterator])
+        if initialized_read_row:
+            inner_api_calls['read_rows'] = mock.Mock(
+                side_effect=[response_iterator])
+        elif 'read_rows' in inner_api_calls:
+            del inner_api_calls['read_rows']
 
         # Perform the method and check the result.
         filter_obj = object()
@@ -542,6 +546,14 @@ class TestTable(unittest.TestCase):
         chunks = [chunk]
         with self.assertRaises(ValueError):
             self._read_row_helper(chunks, None)
+
+    def test_read_row_no_inner_api(self):
+        chunks = []
+        with mock.patch(
+                'google.cloud.bigtable.table.wrap_method') as patched:
+            patched.return_value = mock.Mock(
+                return_value=iter(()))
+            self._read_row_helper(chunks, None, initialized_read_row=False)
 
     def test_mutate_rows(self):
         from google.rpc.status_pb2 import Status
@@ -1012,12 +1024,16 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
             self.RETRYABLE_1,
             self.NON_RETRYABLE])
 
-        # Patch the stub used by the API method.
-        inner_api_calls = client._table_data_client._inner_api_calls
-        inner_api_calls['mutate_rows'] = mock.Mock(return_value=[response])
+        with mock.patch(
+                'google.cloud.bigtable.table.wrap_method') as patched:
+            patched.return_value = mock.Mock(
+                return_value=[response])
 
-        worker = self._make_worker(client, table.name, [row_1, row_2, row_3])
-        statuses = worker(retry=None)
+            worker = self._make_worker(
+                client,
+                table.name,
+                [row_1, row_2, row_3])
+            statuses = worker(retry=None)
 
         result = [status.code for status in statuses]
         expected_result = [self.SUCCESS, self.RETRYABLE_1, self.NON_RETRYABLE]
