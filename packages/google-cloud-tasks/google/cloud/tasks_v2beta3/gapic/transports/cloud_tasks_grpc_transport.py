@@ -16,12 +16,12 @@
 
 import google.api_core.grpc_helpers
 
-from google.cloud.tasks_v2beta2.proto import cloudtasks_pb2_grpc
+from google.cloud.tasks_v2beta3.proto import cloudtasks_pb2_grpc
 
 
 class CloudTasksGrpcTransport(object):
     """gRPC transport class providing stubs for
-    google.cloud.tasks.v2beta2 CloudTasks API.
+    google.cloud.tasks.v2beta3 CloudTasks API.
 
     The transport provides access to the raw gRPC stubs,
     which can be used to take advantage of advanced
@@ -360,7 +360,6 @@ class CloudTasksGrpcTransport(object):
 
         * For ``App Engine queues``, the maximum task size is
         100KB.
-        * For ``pull queues``, the maximum task size is 1MB.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -376,7 +375,7 @@ class CloudTasksGrpcTransport(object):
         Deletes a task.
 
         A task can be deleted if it is scheduled or dispatched. A task
-        cannot be deleted if it has completed successfully or permanently
+        cannot be deleted if it has executed successfully or permanently
         failed.
 
         Returns:
@@ -385,100 +384,6 @@ class CloudTasksGrpcTransport(object):
                 deserialized response object.
         """
         return self._stubs['cloud_tasks_stub'].DeleteTask
-
-    @property
-    def lease_tasks(self):
-        """Return the gRPC stub for {$apiMethod.name}.
-
-        Leases tasks from a pull queue for
-        ``lease_duration``.
-
-        This method is invoked by the worker to obtain a lease. The
-        worker must acknowledge the task via
-        ``AcknowledgeTask`` after they have
-        performed the work associated with the task.
-
-        The ``payload`` is intended to store data that
-        the worker needs to perform the work associated with the task. To
-        return the payloads in the ``response``, set
-        ``response_view`` to
-        ``FULL``.
-
-        A maximum of 10 qps of ``LeaseTasks``
-        requests are allowed per
-        queue. ``RESOURCE_EXHAUSTED``
-        is returned when this limit is
-        exceeded. ``RESOURCE_EXHAUSTED``
-        is also returned when
-        ``max_tasks_dispatched_per_second``
-        is exceeded.
-
-        Returns:
-            Callable: A callable which accepts the appropriate
-                deserialized request object and returns a
-                deserialized response object.
-        """
-        return self._stubs['cloud_tasks_stub'].LeaseTasks
-
-    @property
-    def acknowledge_task(self):
-        """Return the gRPC stub for {$apiMethod.name}.
-
-        Acknowledges a pull task.
-
-        The worker, that is, the entity that
-        ``leased`` this task must call this method
-        to indicate that the work associated with the task has finished.
-
-        The worker must acknowledge a task within the
-        ``lease_duration`` or the lease
-        will expire and the task will become available to be leased
-        again. After the task is acknowledged, it will not be returned
-        by a later ``LeaseTasks``,
-        ``GetTask``, or
-        ``ListTasks``.
-
-        Returns:
-            Callable: A callable which accepts the appropriate
-                deserialized request object and returns a
-                deserialized response object.
-        """
-        return self._stubs['cloud_tasks_stub'].AcknowledgeTask
-
-    @property
-    def renew_lease(self):
-        """Return the gRPC stub for {$apiMethod.name}.
-
-        Renew the current lease of a pull task.
-
-        The worker can use this method to extend the lease by a new
-        duration, starting from now. The new task lease will be
-        returned in the task's ``schedule_time``.
-
-        Returns:
-            Callable: A callable which accepts the appropriate
-                deserialized request object and returns a
-                deserialized response object.
-        """
-        return self._stubs['cloud_tasks_stub'].RenewLease
-
-    @property
-    def cancel_lease(self):
-        """Return the gRPC stub for {$apiMethod.name}.
-
-        Cancel a pull task's lease.
-
-        The worker can use this method to cancel a task's lease by
-        setting its ``schedule_time`` to now. This will
-        make the task available to be leased to the next caller of
-        ``LeaseTasks``.
-
-        Returns:
-            Callable: A callable which accepts the appropriate
-                deserialized request object and returns a
-                deserialized response object.
-        """
-        return self._stubs['cloud_tasks_stub'].CancelLease
 
     @property
     def run_task(self):
@@ -508,9 +413,6 @@ class CloudTasksGrpcTransport(object):
         ``RunTask`` returns
         ``NOT_FOUND`` when it is called on a
         task that has already succeeded or permanently failed.
-
-        ``RunTask`` cannot be called on a
-        ``pull task``.
 
         Returns:
             Callable: A callable which accepts the appropriate
