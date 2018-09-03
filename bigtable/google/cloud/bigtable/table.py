@@ -293,7 +293,7 @@ class Table(object):
             self.name, row_key=row_key, filter_=filter_,
             app_profile_id=self._app_profile_id)
         data_client = self._instance._client.table_data_client
-        if 'read_rows' not in data_client._inner_api_calls:  # pragma: no cover
+        if 'read_rows' not in data_client._inner_api_calls:
             default_retry = data_client._method_configs['ReadRows'].retry
             timeout = data_client._method_configs['ReadRows'].timeout
             data_client._inner_api_calls['read_rows'] = \
@@ -624,7 +624,7 @@ class _RetryableMutateRowsWorker(object):
             app_profile_id=self.app_profile_id)
         data_client = self.client.table_data_client
         inner_api_calls = data_client._inner_api_calls
-        if 'mutate_rows' not in inner_api_calls:  # pragma: no cover
+        if 'mutate_rows' not in inner_api_calls:
             default_retry = data_client._method_configs['MutateRows'].retry,
             default_timeout = data_client._method_configs['MutateRows'].timeout
             data_client._inner_api_calls[

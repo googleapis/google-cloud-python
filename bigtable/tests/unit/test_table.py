@@ -494,8 +494,6 @@ class TestTable(unittest.TestCase):
         if initialized_read_row:
             inner_api_calls['read_rows'] = mock.Mock(
                 side_effect=[response_iterator])
-        elif 'read_rows' in inner_api_calls:
-            del inner_api_calls['read_rows']
 
         # Perform the method and check the result.
         filter_obj = object()
