@@ -251,7 +251,7 @@ class CloudTasksClient(object):
                 described in
                 `Stackdriver's Advanced Logs Filters <https://cloud.google.com/logging/docs/view/advanced_filters>`_.
 
-                Sample filter \"app_engine_http_target: \*\".
+                Sample filter \"app_engine_http_target: *\".
 
                 Note that using filters might cause fewer queues than the
                 requested_page size to be returned.

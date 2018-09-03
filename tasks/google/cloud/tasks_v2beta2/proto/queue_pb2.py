@@ -440,8 +440,8 @@ RateLimits = _reflection.GeneratedProtocolMessageType('RateLimits', (_message.Me
           [pull queues][google.cloud.tasks.v2beta2.PullTarget] and
           always -1, which indicates no limit. No other queue types can
           have ``max_concurrent_tasks`` set to -1.  This field has the
-          same meaning as `max\_concurrent\_requests in queue.yaml/xml
-          <https://cloud.google.com/appengine/docs/standard/python/config
+          same meaning as `max\_concurrent\_requests in queue.yaml/xml <
+          https://cloud.google.com/appengine/docs/standard/python/config
           /queueref#max_concurrent_requests>`_.
   """,
   # @@protoc_insertion_point(class_scope:google.cloud.tasks.v2beta2.RateLimits)
