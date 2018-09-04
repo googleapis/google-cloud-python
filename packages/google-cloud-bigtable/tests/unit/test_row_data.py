@@ -434,8 +434,10 @@ class TestPartialRowsData(unittest.TestCase):
                                    credentials=credentials, admin=True)
         client._table_data_client = data_api
         request = object()
+
         yrd = self._make_one(
-            client._table_data_client.bigtable_stub.ReadRows, request)
+            client._table_data_client.transport.read_rows, request)
+
         yrd._response_iterator = iterator
         yrd._last_scanned_row_key = ''
         rows = [row for row in yrd]

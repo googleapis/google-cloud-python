@@ -300,8 +300,8 @@ class TestAppProfile(unittest.TestCase):
         # Patch the stub used by the API method.
         client._instance_admin_client = api
         instance_stub = (
-            client._instance_admin_client.bigtable_instance_admin_stub)
-        instance_stub.GetCluster.side_effect = [response_pb]
+            client._instance_admin_client.transport)
+        instance_stub.get_app_profile.side_effect = [response_pb]
 
         # Create expected_result.
         expected_result = None  # reload() has no return value.
@@ -344,8 +344,8 @@ class TestAppProfile(unittest.TestCase):
         # Patch the stub used by the API method.
         client._instance_admin_client = instance_api
         instance_stub = (
-            client._instance_admin_client.bigtable_instance_admin_stub)
-        instance_stub.GetCluster.side_effect = [
+            client._instance_admin_client.transport)
+        instance_stub.get_app_profile.side_effect = [
             response_pb,
             exceptions.NotFound('testing'),
             exceptions.BadRequest('testing'),
@@ -619,8 +619,8 @@ class TestAppProfile(unittest.TestCase):
         # Patch the stub used by the API method.
         client._instance_admin_client = instance_api
         instance_stub = (
-            client._instance_admin_client.bigtable_instance_admin_stub)
-        instance_stub.DeleteCluster.side_effect = [response_pb]
+            client._instance_admin_client.transport)
+        instance_stub.delete_cluster.side_effect = [response_pb]
 
         # Create expected_result.
         expected_result = None  # delete() has no return value.

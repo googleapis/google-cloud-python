@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+#
 # Copyright 2018 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -247,7 +249,7 @@ class TestBigtableInstanceAdminClient(object):
         client = bigtable_admin_v2.BigtableInstanceAdminClient(channel=channel)
 
         # Setup Request
-        instance = instance_pb2.Instance()
+        instance = {}
         update_mask = {}
 
         response = client.partial_update_instance(instance, update_mask)
@@ -273,7 +275,7 @@ class TestBigtableInstanceAdminClient(object):
         client = bigtable_admin_v2.BigtableInstanceAdminClient(channel=channel)
 
         # Setup Request
-        instance = instance_pb2.Instance()
+        instance = {}
         update_mask = {}
 
         response = client.partial_update_instance(instance, update_mask)
@@ -436,11 +438,11 @@ class TestBigtableInstanceAdminClient(object):
     def test_update_cluster(self):
         # Setup Expected Response
         name_2 = 'name2-1052831874'
-        location_2 = 'location21541837352'
+        location = 'location1901043637'
         serve_nodes_2 = 1623486220
         expected_response = {
             'name': name_2,
-            'location': location_2,
+            'location': location,
             'serve_nodes': serve_nodes_2
         }
         expected_response = instance_pb2.Cluster(**expected_response)
@@ -454,16 +456,15 @@ class TestBigtableInstanceAdminClient(object):
 
         # Setup Request
         name = client.cluster_path('[PROJECT]', '[INSTANCE]', '[CLUSTER]')
-        location = 'location1901043637'
         serve_nodes = 1288838783
 
-        response = client.update_cluster(name, location, serve_nodes)
+        response = client.update_cluster(name, serve_nodes)
         result = response.result()
         assert expected_response == result
 
         assert len(channel.requests) == 1
         expected_request = instance_pb2.Cluster(
-            name=name, location=location, serve_nodes=serve_nodes)
+            name=name, serve_nodes=serve_nodes)
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
@@ -480,10 +481,9 @@ class TestBigtableInstanceAdminClient(object):
 
         # Setup Request
         name = client.cluster_path('[PROJECT]', '[INSTANCE]', '[CLUSTER]')
-        location = 'location1901043637'
         serve_nodes = 1288838783
 
-        response = client.update_cluster(name, location, serve_nodes)
+        response = client.update_cluster(name, serve_nodes)
         exception = response.exception()
         assert exception.errors[0] == error
 
@@ -662,7 +662,7 @@ class TestBigtableInstanceAdminClient(object):
         client = bigtable_admin_v2.BigtableInstanceAdminClient(channel=channel)
 
         # Setup Request
-        app_profile = instance_pb2.AppProfile()
+        app_profile = {}
         update_mask = {}
 
         response = client.update_app_profile(app_profile, update_mask)
@@ -687,7 +687,7 @@ class TestBigtableInstanceAdminClient(object):
         client = bigtable_admin_v2.BigtableInstanceAdminClient(channel=channel)
 
         # Setup Request
-        app_profile = instance_pb2.AppProfile()
+        app_profile = {}
         update_mask = {}
 
         response = client.update_app_profile(app_profile, update_mask)

@@ -209,8 +209,8 @@ class TestClient(unittest.TestCase):
         # Patch the stub used by the API method.
         client._instance_admin_client = api
         bigtable_instance_stub = (
-            client.instance_admin_client.bigtable_instance_admin_stub)
-        bigtable_instance_stub.ListInstances.side_effect = [response_pb]
+            client.instance_admin_client.transport)
+        bigtable_instance_stub.list_instances.side_effect = [response_pb]
 
         # Perform the method and check the result.
         instances, failed_locations = client.list_instances()
@@ -279,8 +279,8 @@ class TestClient(unittest.TestCase):
         # Patch the stub used by the API method.
         client._instance_admin_client = instance_api
         instance_stub = (
-            client._instance_admin_client.bigtable_instance_admin_stub)
-        instance_stub.ListClusters.side_effect = [response_pb]
+            client._instance_admin_client.transport)
+        instance_stub.list_clusters.side_effect = [response_pb]
 
         # Perform the method and check the result.
         clusters, failed_locations = client.list_clusters()

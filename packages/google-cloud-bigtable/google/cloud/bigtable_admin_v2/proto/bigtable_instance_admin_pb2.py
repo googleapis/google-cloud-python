@@ -1312,13 +1312,7 @@ CreateAppProfileRequest = _reflection.GeneratedProtocolMessageType('CreateAppPro
   DESCRIPTOR = _CREATEAPPPROFILEREQUEST,
   __module__ = 'google.cloud.bigtable.admin_v2.proto.bigtable_instance_admin_pb2'
   ,
-  __doc__ = """This is a private alpha release of Cloud Bigtable replication. This
-  feature is not currently available to most Cloud Bigtable customers.
-  This feature might be changed in backward-incompatible ways and is not
-  recommended for production use. It is not subject to any SLA or
-  deprecation policy.
-  
-  Request message for BigtableInstanceAdmin.CreateAppProfile.
+  __doc__ = """Request message for BigtableInstanceAdmin.CreateAppProfile.
   
   
   Attributes:
@@ -1344,13 +1338,7 @@ GetAppProfileRequest = _reflection.GeneratedProtocolMessageType('GetAppProfileRe
   DESCRIPTOR = _GETAPPPROFILEREQUEST,
   __module__ = 'google.cloud.bigtable.admin_v2.proto.bigtable_instance_admin_pb2'
   ,
-  __doc__ = """This is a private alpha release of Cloud Bigtable replication. This
-  feature is not currently available to most Cloud Bigtable customers.
-  This feature might be changed in backward-incompatible ways and is not
-  recommended for production use. It is not subject to any SLA or
-  deprecation policy.
-  
-  Request message for BigtableInstanceAdmin.GetAppProfile.
+  __doc__ = """Request message for BigtableInstanceAdmin.GetAppProfile.
   
   
   Attributes:
@@ -1367,13 +1355,7 @@ ListAppProfilesRequest = _reflection.GeneratedProtocolMessageType('ListAppProfil
   DESCRIPTOR = _LISTAPPPROFILESREQUEST,
   __module__ = 'google.cloud.bigtable.admin_v2.proto.bigtable_instance_admin_pb2'
   ,
-  __doc__ = """This is a private alpha release of Cloud Bigtable replication. This
-  feature is not currently available to most Cloud Bigtable customers.
-  This feature might be changed in backward-incompatible ways and is not
-  recommended for production use. It is not subject to any SLA or
-  deprecation policy.
-  
-  Request message for BigtableInstanceAdmin.ListAppProfiles.
+  __doc__ = """Request message for BigtableInstanceAdmin.ListAppProfiles.
   
   
   Attributes:
@@ -1392,13 +1374,7 @@ ListAppProfilesResponse = _reflection.GeneratedProtocolMessageType('ListAppProfi
   DESCRIPTOR = _LISTAPPPROFILESRESPONSE,
   __module__ = 'google.cloud.bigtable.admin_v2.proto.bigtable_instance_admin_pb2'
   ,
-  __doc__ = """This is a private alpha release of Cloud Bigtable replication. This
-  feature is not currently available to most Cloud Bigtable customers.
-  This feature might be changed in backward-incompatible ways and is not
-  recommended for production use. It is not subject to any SLA or
-  deprecation policy.
-  
-  Response message for BigtableInstanceAdmin.ListAppProfiles.
+  __doc__ = """Response message for BigtableInstanceAdmin.ListAppProfiles.
   
   
   Attributes:
@@ -1417,13 +1393,7 @@ UpdateAppProfileRequest = _reflection.GeneratedProtocolMessageType('UpdateAppPro
   DESCRIPTOR = _UPDATEAPPPROFILEREQUEST,
   __module__ = 'google.cloud.bigtable.admin_v2.proto.bigtable_instance_admin_pb2'
   ,
-  __doc__ = """This is a private alpha release of Cloud Bigtable replication. This
-  feature is not currently available to most Cloud Bigtable customers.
-  This feature might be changed in backward-incompatible ways and is not
-  recommended for production use. It is not subject to any SLA or
-  deprecation policy.
-  
-  Request message for BigtableInstanceAdmin.UpdateAppProfile.
+  __doc__ = """Request message for BigtableInstanceAdmin.UpdateAppProfile.
   
   
   Attributes:
@@ -1444,13 +1414,7 @@ DeleteAppProfileRequest = _reflection.GeneratedProtocolMessageType('DeleteAppPro
   DESCRIPTOR = _DELETEAPPPROFILEREQUEST,
   __module__ = 'google.cloud.bigtable.admin_v2.proto.bigtable_instance_admin_pb2'
   ,
-  __doc__ = """This is a private alpha release of Cloud Bigtable replication. This
-  feature is not currently available to most Cloud Bigtable customers.
-  This feature might be changed in backward-incompatible ways and is not
-  recommended for production use. It is not subject to any SLA or
-  deprecation policy.
-  
-  Request message for BigtableInstanceAdmin.DeleteAppProfile.
+  __doc__ = """Request message for BigtableInstanceAdmin.DeleteAppProfile.
   
   
   Attributes:
@@ -1469,13 +1433,7 @@ UpdateAppProfileMetadata = _reflection.GeneratedProtocolMessageType('UpdateAppPr
   DESCRIPTOR = _UPDATEAPPPROFILEMETADATA,
   __module__ = 'google.cloud.bigtable.admin_v2.proto.bigtable_instance_admin_pb2'
   ,
-  __doc__ = """This is a private alpha release of Cloud Bigtable replication. This
-  feature is not currently available to most Cloud Bigtable customers.
-  This feature might be changed in backward-incompatible ways and is not
-  recommended for production use. It is not subject to any SLA or
-  deprecation policy.
-  
-  The metadata for the Operation returned by UpdateAppProfile.
+  __doc__ = """The metadata for the Operation returned by UpdateAppProfile.
   """,
   # @@protoc_insertion_point(class_scope:google.bigtable.admin.v2.UpdateAppProfileMetadata)
   ))
