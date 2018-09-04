@@ -46,16 +46,17 @@ class Test_LifecycleRuleConditions(unittest.TestCase):
             self._make_one()
 
     def test_ctor_w_age_and_matches_storage_class(self):
-        conditions = self._make_one(age=10, matches_storage_class='REGIONAL')
+        conditions = self._make_one(
+            age=10, matches_storage_class=['REGIONAL'])
         expected = {
             'age': 10,
-            'matchesStorageClass': 'REGIONAL',
+            'matchesStorageClass': ['REGIONAL'],
         }
         self.assertEqual(dict(conditions), expected)
         self.assertEqual(conditions.age, 10)
         self.assertIsNone(conditions.created_before)
         self.assertIsNone(conditions.is_live)
-        self.assertEqual(conditions.matches_storage_class, 'REGIONAL')
+        self.assertEqual(conditions.matches_storage_class, ['REGIONAL'])
         self.assertIsNone(conditions.number_of_newer_versions)
 
     def test_ctor_w_created_before_and_is_live(self):
@@ -95,14 +96,14 @@ class Test_LifecycleRuleConditions(unittest.TestCase):
             'age': 10,
             'createdBefore': '2018-08-01',
             'isLive': True,
-            'matchesStorageClass': 'REGIONAL',
+            'matchesStorageClass': ['REGIONAL'],
             'numNewerVersions': 3,
         }
         conditions = klass.from_api_repr(resource)
         self.assertEqual(conditions.age, 10)
         self.assertEqual(conditions.created_before, before)
         self.assertEqual(conditions.is_live, True)
-        self.assertEqual(conditions.matches_storage_class, 'REGIONAL')
+        self.assertEqual(conditions.matches_storage_class, ['REGIONAL'])
         self.assertEqual(conditions.number_of_newer_versions, 3)
 
 
@@ -121,14 +122,14 @@ class Test_LifecycleRuleDeleteItem(unittest.TestCase):
             self._make_one()
 
     def test_ctor_w_condition(self):
-        rule = self._make_one(age=10, matches_storage_class='REGIONAL')
+        rule = self._make_one(age=10, matches_storage_class=['REGIONAL'])
         expected = {
             'action': {
                 'type': 'Delete',
             },
             'condition': {
                 'age': 10,
-                'matchesStorageClass': 'REGIONAL',
+                'matchesStorageClass': ['REGIONAL'],
             }
         }
         self.assertEqual(dict(rule), expected)
@@ -139,7 +140,7 @@ class Test_LifecycleRuleDeleteItem(unittest.TestCase):
             'age': 10,
             'createdBefore': '2018-08-01',
             'isLive': True,
-            'matchesStorageClass': 'REGIONAL',
+            'matchesStorageClass': ['REGIONAL'],
             'numNewerVersions': 3,
         }
         resource = {
@@ -169,7 +170,9 @@ class Test_LifecycleRuleSetItemStorageClass(unittest.TestCase):
 
     def test_ctor_w_condition(self):
         rule = self._make_one(
-            storage_class='NEARLINE', age=10, matches_storage_class='REGIONAL')
+            storage_class='NEARLINE',
+            age=10,
+            matches_storage_class=['REGIONAL'])
         expected = {
             'action': {
                 'type': 'SetStorageClass',
@@ -177,7 +180,7 @@ class Test_LifecycleRuleSetItemStorageClass(unittest.TestCase):
             },
             'condition': {
                 'age': 10,
-                'matchesStorageClass': 'REGIONAL',
+                'matchesStorageClass': ['REGIONAL'],
             }
         }
         self.assertEqual(dict(rule), expected)
@@ -188,7 +191,7 @@ class Test_LifecycleRuleSetItemStorageClass(unittest.TestCase):
             'age': 10,
             'createdBefore': '2018-08-01',
             'isLive': True,
-            'matchesStorageClass': 'REGIONAL',
+            'matchesStorageClass': ['REGIONAL'],
             'numNewerVersions': 3,
         }
         resource = {

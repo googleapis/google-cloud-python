@@ -119,7 +119,8 @@ class LifecycleRuleConditions(dict):
                     rule action to versioned items with at least one newer
                     version.
 
-    :type matches_storage_class: str, one of :attr:`Bucket._STORAGE_CLASSES`.
+    :type matches_storage_class: list(str), one or more of
+                                 :attr:`Bucket._STORAGE_CLASSES`.
     :param matches_storage_class: (optional) apply rule action to items which
                                   whose storage class matches this value.
 

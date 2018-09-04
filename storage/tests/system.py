@@ -131,7 +131,7 @@ class TestStorageBuckets(unittest.TestCase):
         rules = bucket.lifecycle_rules = [
             LifecycleRuleDeleteItem(age=42),
             LifecycleRuleSetItemStorageClass(
-                'COLDLINE', is_live=False, matches_storage_class='NEARLINE'),
+                'COLDLINE', is_live=False, matches_storage_class=['NEARLINE']),
         ]
 
         retry_429(bucket.create)()
