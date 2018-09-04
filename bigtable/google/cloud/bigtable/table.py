@@ -21,11 +21,13 @@ from google.api_core.exceptions import RetryError
 from google.api_core.exceptions import NotFound
 from google.api_core.retry import if_exception_type
 from google.api_core.retry import Retry
+
 from google.cloud._helpers import _to_bytes
 from google.cloud.bigtable.column_family import _gc_rule_from_pb
 from google.cloud.bigtable.column_family import ColumnFamily
 from google.cloud.bigtable.batcher import MutationsBatcher
 from google.cloud.bigtable.batcher import (FLUSH_COUNT, MAX_ROW_BYTES)
+from google.cloud.bigtable import paths
 from google.cloud.bigtable.row import AppendRow
 from google.cloud.bigtable.row import ConditionalRow
 from google.cloud.bigtable.row import DirectRow
@@ -122,8 +124,7 @@ class Table(object):
         """
         project = self._instance._client.project
         instance_id = self._instance.instance_id
-        table_client = self._instance._client.table_admin_client
-        return table_client.table_path(
+        return paths.table_path(
             project=project, instance=instance_id, table=self.table_id)
 
     def column_family(self, column_family_id, gc_rule=None):

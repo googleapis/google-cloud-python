@@ -16,6 +16,13 @@
 import functools
 import pkg_resources
 
+from google.iam.v1 import iam_policy_pb2
+from google.iam.v1 import policy_pb2
+from google.longrunning import operations_pb2
+from google.protobuf import duration_pb2
+from google.protobuf import empty_pb2
+from google.protobuf import field_mask_pb2
+
 import google.api_core.gapic_v1.client_info
 import google.api_core.gapic_v1.config
 import google.api_core.gapic_v1.method
@@ -27,20 +34,17 @@ import google.api_core.page_iterator
 import google.api_core.path_template
 import google.api_core.protobuf_helpers
 
-from google.cloud.bigtable_admin_v2.gapic import bigtable_table_admin_client_config
+from google.cloud.bigtable import paths
+from google.cloud.bigtable_admin_v2.gapic import (
+    bigtable_table_admin_client_config)
 from google.cloud.bigtable_admin_v2.gapic import enums
 from google.cloud.bigtable_admin_v2.proto import bigtable_instance_admin_pb2
-from google.cloud.bigtable_admin_v2.proto import bigtable_instance_admin_pb2_grpc
+from google.cloud.bigtable_admin_v2.proto import (
+    bigtable_instance_admin_pb2_grpc)
 from google.cloud.bigtable_admin_v2.proto import bigtable_table_admin_pb2
 from google.cloud.bigtable_admin_v2.proto import bigtable_table_admin_pb2_grpc
 from google.cloud.bigtable_admin_v2.proto import instance_pb2
 from google.cloud.bigtable_admin_v2.proto import table_pb2
-from google.iam.v1 import iam_policy_pb2
-from google.iam.v1 import policy_pb2
-from google.longrunning import operations_pb2
-from google.protobuf import duration_pb2
-from google.protobuf import empty_pb2
-from google.protobuf import field_mask_pb2
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
     'google-cloud-bigtable', ).version
@@ -76,45 +80,10 @@ class BigtableTableAdminClient(object):
     # method configuration in the client_config dictionary.
     _INTERFACE_NAME = 'google.bigtable.admin.v2.BigtableTableAdmin'
 
-    @classmethod
-    def instance_path(cls, project, instance):
-        """Return a fully-qualified instance string."""
-        return google.api_core.path_template.expand(
-            'projects/{project}/instances/{instance}',
-            project=project,
-            instance=instance,
-        )
-
-    @classmethod
-    def cluster_path(cls, project, instance, cluster):
-        """Return a fully-qualified cluster string."""
-        return google.api_core.path_template.expand(
-            'projects/{project}/instances/{instance}/clusters/{cluster}',
-            project=project,
-            instance=instance,
-            cluster=cluster,
-        )
-
-    @classmethod
-    def snapshot_path(cls, project, instance, cluster, snapshot):
-        """Return a fully-qualified snapshot string."""
-        return google.api_core.path_template.expand(
-            'projects/{project}/instances/{instance}/clusters/{cluster}/snapshots/{snapshot}',
-            project=project,
-            instance=instance,
-            cluster=cluster,
-            snapshot=snapshot,
-        )
-
-    @classmethod
-    def table_path(cls, project, instance, table):
-        """Return a fully-qualified table string."""
-        return google.api_core.path_template.expand(
-            'projects/{project}/instances/{instance}/tables/{table}',
-            project=project,
-            instance=instance,
-            table=table,
-        )
+    instance_path = staticmethod(paths.instance_path)
+    cluster_path = staticmethod(paths.cluster_path)
+    snapshot_path = staticmethod(paths.snapshot_path)
+    table_path = staticmethod(paths.table_path)
 
     def __init__(self,
                  channel=None,
