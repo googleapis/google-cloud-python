@@ -859,7 +859,7 @@ class TestBatch(unittest.TestCase):
         client = _Client(project=self.PROJECT, connection=_make_credentials())
         batch = self._make_one(logger, client)
         batch.entries.append(('bogus', 'BOGUS', None, None, None, None, None,
-                              None, None))
+                              None, None, None))
         with self.assertRaises(ValueError):
             batch.commit()
 
