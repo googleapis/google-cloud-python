@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-tasks/#history
 
+## 0.3.0
+
+### Implementation Changes
+- Regenerate tasks to fix API enablement URL (#5579)
+
+### New Features
+- Tasks: Add v2beta3 endpoint (#5880)
+
+### Documentation
+- update Task library doc link (#5708)
+- tasks missing from docs (#5656)
+
 ## 0.2.0
 
 ### Implementation Changes
