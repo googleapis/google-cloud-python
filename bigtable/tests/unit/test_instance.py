@@ -190,8 +190,8 @@ class TestInstance(unittest.TestCase):
         # Patch the stub used by the API method.
         client._instance_admin_client = instance_api
         instance_admin_client = client._instance_admin_client
-        instance_stub = instance_admin_client.bigtable_instance_admin_stub
-        instance_stub.ListClusters.side_effect = [response_pb]
+        instance_stub = instance_admin_client.transport
+        instance_stub.list_clusters.side_effect = [response_pb]
 
         # Perform the method and check the result.
         clusters, failed_locations = instance.list_clusters()
@@ -378,8 +378,8 @@ class TestInstance(unittest.TestCase):
         # Patch the stub used by the API method.
         client._instance_admin_client = api
         bigtable_instance_stub = (
-            client._instance_admin_client.bigtable_instance_admin_stub)
-        bigtable_instance_stub.GetInstance.side_effect = [response_pb]
+            client._instance_admin_client.transport)
+        bigtable_instance_stub.get_instance.side_effect = [response_pb]
 
         # Create expected_result.
         expected_result = None  # reload() has no return value.
@@ -416,8 +416,8 @@ class TestInstance(unittest.TestCase):
         # Patch the stub used by the API method.
         client._instance_admin_client = api
         instance_admin_client = client._instance_admin_client
-        instance_stub = instance_admin_client.bigtable_instance_admin_stub
-        instance_stub.GetCluster.side_effect = [
+        instance_stub = instance_admin_client.transport
+        instance_stub.get_instance.side_effect = [
             response_pb,
             exceptions.NotFound('testing'),
             exceptions.BadRequest('testing')
@@ -772,8 +772,8 @@ class TestInstance(unittest.TestCase):
         client._table_admin_client = table_api
         client._instance_admin_client = instance_api
         bigtable_table_stub = (
-            client._table_admin_client.bigtable_table_admin_stub)
-        bigtable_table_stub.ListTables.side_effect = [response_pb]
+            client._table_admin_client.transport)
+        bigtable_table_stub.list_tables.side_effect = [response_pb]
 
         # Create expected_result.
         expected_table = instance.table(self.TABLE_ID)
@@ -882,8 +882,8 @@ class TestInstance(unittest.TestCase):
         # Patch the stub used by the API method.
         client._instance_admin_client = instance_api
         bigtable_instance_stub = (
-            client._instance_admin_client.bigtable_instance_admin_stub)
-        bigtable_instance_stub.ListAppProfiles.side_effect = [
+            client._instance_admin_client.transport)
+        bigtable_instance_stub.list_app_profiles.side_effect = [
             expected_response]
 
         # Perform the method and check the result.

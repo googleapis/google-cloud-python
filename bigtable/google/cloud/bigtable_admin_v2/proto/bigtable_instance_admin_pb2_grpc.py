@@ -202,73 +202,42 @@ class BigtableInstanceAdminServicer(object):
     raise NotImplementedError('Method not implemented!')
 
   def CreateAppProfile(self, request, context):
-    """This is a private alpha release of Cloud Bigtable replication. This feature
-    is not currently available to most Cloud Bigtable customers. This feature
-    might be changed in backward-incompatible ways and is not recommended for
-    production use. It is not subject to any SLA or deprecation policy.
-
-    Creates an app profile within an instance.
+    """Creates an app profile within an instance.
     """
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')
     raise NotImplementedError('Method not implemented!')
 
   def GetAppProfile(self, request, context):
-    """This is a private alpha release of Cloud Bigtable replication. This feature
-    is not currently available to most Cloud Bigtable customers. This feature
-    might be changed in backward-incompatible ways and is not recommended for
-    production use. It is not subject to any SLA or deprecation policy.
-
-    Gets information about an app profile.
+    """Gets information about an app profile.
     """
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')
     raise NotImplementedError('Method not implemented!')
 
   def ListAppProfiles(self, request, context):
-    """This is a private alpha release of Cloud Bigtable replication. This feature
-    is not currently available to most Cloud Bigtable customers. This feature
-    might be changed in backward-incompatible ways and is not recommended for
-    production use. It is not subject to any SLA or deprecation policy.
-
-    Lists information about app profiles in an instance.
+    """Lists information about app profiles in an instance.
     """
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')
     raise NotImplementedError('Method not implemented!')
 
   def UpdateAppProfile(self, request, context):
-    """This is a private alpha release of Cloud Bigtable replication. This feature
-    is not currently available to most Cloud Bigtable customers. This feature
-    might be changed in backward-incompatible ways and is not recommended for
-    production use. It is not subject to any SLA or deprecation policy.
-
-    Updates an app profile within an instance.
+    """Updates an app profile within an instance.
     """
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')
     raise NotImplementedError('Method not implemented!')
 
   def DeleteAppProfile(self, request, context):
-    """This is a private alpha release of Cloud Bigtable replication. This feature
-    is not currently available to most Cloud Bigtable customers. This feature
-    might be changed in backward-incompatible ways and is not recommended for
-    production use. It is not subject to any SLA or deprecation policy.
-
-    Deletes an app profile from an instance.
+    """Deletes an app profile from an instance.
     """
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')
     raise NotImplementedError('Method not implemented!')
 
   def GetIamPolicy(self, request, context):
-    """This is a private alpha release of Cloud Bigtable instance level
-    permissions. This feature is not currently available to most Cloud Bigtable
-    customers. This feature might be changed in backward-incompatible ways and
-    is not recommended for production use. It is not subject to any SLA or
-    deprecation policy.
-
-    Gets the access control policy for an instance resource. Returns an empty
+    """Gets the access control policy for an instance resource. Returns an empty
     policy if an instance exists but does not have a policy set.
     """
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
@@ -276,13 +245,7 @@ class BigtableInstanceAdminServicer(object):
     raise NotImplementedError('Method not implemented!')
 
   def SetIamPolicy(self, request, context):
-    """This is a private alpha release of Cloud Bigtable instance level
-    permissions. This feature is not currently available to most Cloud Bigtable
-    customers. This feature might be changed in backward-incompatible ways and
-    is not recommended for production use. It is not subject to any SLA or
-    deprecation policy.
-
-    Sets the access control policy on an instance resource. Replaces any
+    """Sets the access control policy on an instance resource. Replaces any
     existing policy.
     """
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
@@ -290,13 +253,7 @@ class BigtableInstanceAdminServicer(object):
     raise NotImplementedError('Method not implemented!')
 
   def TestIamPermissions(self, request, context):
-    """This is a private alpha release of Cloud Bigtable instance level
-    permissions. This feature is not currently available to most Cloud Bigtable
-    customers. This feature might be changed in backward-incompatible ways and
-    is not recommended for production use. It is not subject to any SLA or
-    deprecation policy.
-
-    Returns permissions that the caller has on the specified instance resource.
+    """Returns permissions that the caller has on the specified instance resource.
     """
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')
