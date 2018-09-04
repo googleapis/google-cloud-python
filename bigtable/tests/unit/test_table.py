@@ -17,7 +17,6 @@ import unittest
 
 import grpc
 import mock
-
 from ._testing import _make_credentials
 
 
@@ -332,8 +331,8 @@ class TestTable(unittest.TestCase):
         client._table_admin_client = table_api
         client._instance_admin_client = instance_api
         bigtable_table_stub = (
-            client._table_admin_client.bigtable_table_admin_stub)
-        bigtable_table_stub.GetTable.side_effect = [
+            client._table_admin_client.transport)
+        bigtable_table_stub.get_table.side_effect = [
             response_pb,
             NotFound('testing'),
             BadRequest('testing')
@@ -396,8 +395,8 @@ class TestTable(unittest.TestCase):
         # Patch the stub used by the API method.
         client._table_admin_client = table_api
         bigtable_table_stub = (
-            client._table_admin_client.bigtable_table_admin_stub)
-        bigtable_table_stub.GetTable.side_effect = [response_pb]
+            client._table_admin_client.transport)
+        bigtable_table_stub.get_table.side_effect = [response_pb]
 
         # Create expected_result.
         expected_result = {
@@ -439,8 +438,8 @@ class TestTable(unittest.TestCase):
         # Patch the stub used by the API method.
         client._table_admin_client = table_api
         bigtable_table_stub = (
-            client._table_admin_client.bigtable_table_admin_stub)
-        bigtable_table_stub.GetTable.side_effect = [response_pb]
+            client._table_admin_client.transport)
+        bigtable_table_stub.get_table.side_effect = [response_pb]
 
         # build expected result
         expected_result = {
@@ -453,7 +452,8 @@ class TestTable(unittest.TestCase):
         result = table.get_cluster_states()
         self.assertEqual(result, expected_result)
 
-    def _read_row_helper(self, chunks, expected_result, app_profile_id=None):
+    def _read_row_helper(self, chunks, expected_result, app_profile_id=None,
+                         initialized_read_row=True):
         from google.cloud._testing import _Monkey
         from google.cloud.bigtable import table as MUT
         from google.cloud.bigtable_v2.gapic import bigtable_client
@@ -489,8 +489,11 @@ class TestTable(unittest.TestCase):
         # Patch the stub used by the API method.
         client._table_data_client = data_api
         client._table_admin_client = table_api
-        bigtable_stub = client._table_data_client.bigtable_stub
-        bigtable_stub.ReadRows.side_effect = [response_iterator]
+
+        inner_api_calls = client._table_data_client._inner_api_calls
+        if initialized_read_row:
+            inner_api_calls['read_rows'] = mock.Mock(
+                side_effect=[response_iterator])
 
         # Perform the method and check the result.
         filter_obj = object()
@@ -541,6 +544,14 @@ class TestTable(unittest.TestCase):
         chunks = [chunk]
         with self.assertRaises(ValueError):
             self._read_row_helper(chunks, None)
+
+    def test_read_row_no_inner_api(self):
+        chunks = []
+        with mock.patch(
+                'google.cloud.bigtable.table.wrap_method') as patched:
+            patched.return_value = mock.Mock(
+                return_value=iter(()))
+            self._read_row_helper(chunks, None, initialized_read_row=False)
 
     def test_mutate_rows(self):
         from google.rpc.status_pb2 import Status
@@ -599,7 +610,7 @@ class TestTable(unittest.TestCase):
 
         # Create expected_result.
         expected_result = PartialRowsData(
-            client._table_data_client.bigtable_stub.ReadRows,
+            client._table_data_client.transport.read_rows,
             request)
 
         # Perform the method and check the result.
@@ -666,9 +677,10 @@ class TestTable(unittest.TestCase):
         response_iterator = _MockReadRowsIterator(response_2)
 
         # Patch the stub used by the API method.
-        client._table_data_client.bigtable_stub.ReadRows.side_effect = [
-            response_failure_iterator_1, response_failure_iterator_2,
-            response_iterator]
+        client._table_data_client.transport.read_rows = mock.Mock(
+            side_effect=[
+                response_failure_iterator_1, response_failure_iterator_2,
+                response_iterator])
 
         rows = []
         for row in table.yield_rows(start_key=self.ROW_KEY_1,
@@ -731,8 +743,8 @@ class TestTable(unittest.TestCase):
                                                   response_3)
 
         # Patch the stub used by the API method.
-        client._table_data_client.bigtable_stub.ReadRows.side_effect = [
-            response_iterator]
+        client._table_data_client.transport.read_rows = mock.Mock(
+            side_effect=[response_iterator])
 
         rows = []
         row_set = RowSet()
@@ -766,8 +778,9 @@ class TestTable(unittest.TestCase):
         response_iterator = object()  # Just passed to a mock.
 
         # Patch the stub used by the API method.
-        bigtable_stub = client._table_data_client.bigtable_stub
-        bigtable_stub.SampleRowKeys.side_effect = [[response_iterator]]
+        inner_api_calls = client._table_data_client._inner_api_calls
+        inner_api_calls['sample_row_keys'] = mock.Mock(
+            side_effect=[[response_iterator]])
 
         # Create expected_result.
         expected_result = response_iterator
@@ -1009,17 +1022,22 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
             self.RETRYABLE_1,
             self.NON_RETRYABLE])
 
-        # Patch the stub used by the API method.
-        bigtable_stub = client._table_data_client.bigtable_stub
-        bigtable_stub.MutateRows.return_value = [response]
+        with mock.patch(
+                'google.cloud.bigtable.table.wrap_method') as patched:
+            patched.return_value = mock.Mock(
+                return_value=[response])
 
-        worker = self._make_worker(client, table.name, [row_1, row_2, row_3])
-        statuses = worker(retry=None)
+            worker = self._make_worker(
+                client,
+                table.name,
+                [row_1, row_2, row_3])
+            statuses = worker(retry=None)
 
         result = [status.code for status in statuses]
         expected_result = [self.SUCCESS, self.RETRYABLE_1, self.NON_RETRYABLE]
 
-        client._table_data_client.bigtable_stub.MutateRows.assert_called_once()
+        client._table_data_client._inner_api_calls[
+            'mutate_rows'].assert_called_once()
         self.assertEqual(result, expected_result)
 
     def test_callable_retry(self):
@@ -1065,8 +1083,8 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         response_2 = self._make_responses([self.SUCCESS])
 
         # Patch the stub used by the API method.
-        client._table_data_client.bigtable_stub.MutateRows.side_effect = [
-            [response_1], [response_2]]
+        client._table_data_client._inner_api_calls['mutate_rows'] = mock.Mock(
+            side_effect=[[response_1], [response_2]])
 
         retry = DEFAULT_RETRY.with_delay(initial=0.1)
         worker = self._make_worker(client, table.name, [row_1, row_2, row_3])
@@ -1076,7 +1094,9 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         expected_result = [self.SUCCESS, self.SUCCESS, self.NON_RETRYABLE]
 
         self.assertEqual(
-            client._table_data_client.bigtable_stub.MutateRows.call_count, 2)
+            client._table_data_client._inner_api_calls[
+                'mutate_rows'].call_count,
+            2)
         self.assertEqual(result, expected_result)
 
     def test_callable_retry_timeout(self):
@@ -1116,8 +1136,8 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         response = self._make_responses([self.RETRYABLE_1, self.RETRYABLE_1])
 
         # Patch the stub used by the API method.
-        bigtable_stub = client._table_data_client.bigtable_stub
-        bigtable_stub.MutateRows.return_value = [response]
+        inner_api_calls = client._table_data_client._inner_api_calls
+        inner_api_calls['mutate_rows'] = mock.Mock(return_value=[response])
 
         retry = DEFAULT_RETRY.with_delay(
                 initial=0.1, maximum=0.2, multiplier=2.0).with_deadline(0.5)
@@ -1128,7 +1148,8 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         expected_result = [self.RETRYABLE_1, self.RETRYABLE_1]
 
         self.assertTrue(
-            client._table_data_client.bigtable_stub.MutateRows.call_count > 1)
+            client._table_data_client._inner_api_calls[
+                'mutate_rows'].call_count > 1)
         self.assertEqual(result, expected_result)
 
     def test_do_mutate_retryable_rows_empty_rows(self):
@@ -1181,8 +1202,8 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         response = self._make_responses([self.SUCCESS, self.NON_RETRYABLE])
 
         # Patch the stub used by the API method.
-        bigtable_stub = client._table_data_client.bigtable_stub
-        bigtable_stub.MutateRows.side_effect = [[response]]
+        inner_api_calls = client._table_data_client._inner_api_calls
+        inner_api_calls['mutate_rows'] = mock.Mock(side_effect=[[response]])
 
         worker = self._make_worker(client, table.name, [row_1, row_2])
         statuses = worker._do_mutate_retryable_rows()
@@ -1232,8 +1253,8 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
             self.NON_RETRYABLE])
 
         # Patch the stub used by the API method.
-        bigtable_stub = client._table_data_client.bigtable_stub
-        bigtable_stub.MutateRows.side_effect = [[response]]
+        inner_api_calls = client._table_data_client._inner_api_calls
+        inner_api_calls['mutate_rows'] = mock.Mock(side_effect=[[response]])
 
         worker = self._make_worker(client, table.name, [row_1, row_2, row_3])
 
@@ -1290,8 +1311,8 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         response = self._make_responses([self.SUCCESS, self.RETRYABLE_1])
 
         # Patch the stub used by the API method.
-        bigtable_stub = client._table_data_client.bigtable_stub
-        bigtable_stub.MutateRows.side_effect = [[response]]
+        inner_api_calls = client._table_data_client._inner_api_calls
+        inner_api_calls['mutate_rows'] = mock.Mock(side_effect=[[response]])
 
         worker = self._make_worker(client, table.name,
                                    [row_1, row_2, row_3, row_4])
@@ -1352,8 +1373,8 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         response = self._make_responses([self.NON_RETRYABLE, self.SUCCESS])
 
         # Patch the stub used by the API method.
-        bigtable_stub = client._table_data_client.bigtable_stub
-        bigtable_stub.MutateRows.side_effect = [[response]]
+        inner_api_calls = client._table_data_client._inner_api_calls
+        inner_api_calls['mutate_rows'] = mock.Mock(side_effect=[[response]])
 
         worker = self._make_worker(client, table.name,
                                    [row_1, row_2, row_3, row_4])
@@ -1436,8 +1457,8 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         response = self._make_responses([self.SUCCESS])
 
         # Patch the stub used by the API method.
-        bigtable_stub = client._table_data_client.bigtable_stub
-        bigtable_stub.MutateRows.side_effect = [[response]]
+        inner_api_calls = client._table_data_client._inner_api_calls
+        inner_api_calls['mutate_rows'] = mock.Mock(side_effect=[[response]])
 
         worker = self._make_worker(client, table.name, [row_1, row_2])
         with self.assertRaises(RuntimeError):

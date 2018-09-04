@@ -572,13 +572,7 @@ Table = _reflection.GeneratedProtocolMessageType('Table', (_message.Message,), d
     DESCRIPTOR = _TABLE_CLUSTERSTATE,
     __module__ = 'google.cloud.bigtable.admin_v2.proto.table_pb2'
     ,
-    __doc__ = """This is a private alpha release of Cloud Bigtable replication. This
-    feature is not currently available to most Cloud Bigtable customers.
-    This feature might be changed in backward-incompatible ways and is not
-    recommended for production use. It is not subject to any SLA or
-    deprecation policy.
-    
-    The state of a table's data in a particular cluster.
+    __doc__ = """The state of a table's data in a particular cluster.
     
     
     Attributes:
@@ -615,28 +609,24 @@ Table = _reflection.GeneratedProtocolMessageType('Table', (_message.Message,), d
           (``OutputOnly``) The unique name of the table. Values are of
           the form ``projects/<project>/instances/<instance>/tables/[_a-
           zA-Z0-9][-_.a-zA-Z0-9]*``. Views: ``NAME_ONLY``,
-          ``SCHEMA_VIEW``, ``FULL``
+          ``SCHEMA_VIEW``, ``REPLICATION_VIEW``, ``FULL``
       cluster_states:
-          This is a private alpha release of Cloud Bigtable replication.
-          This feature is not currently available to most Cloud Bigtable
-          customers. This feature might be changed in backward-
-          incompatible ways and is not recommended for production use.
-          It is not subject to any SLA or deprecation policy.
           (``OutputOnly``) Map from cluster ID to per-cluster table
           state. If it could not be determined whether or not the table
           has data in a particular cluster (for example, if its zone is
           unavailable), then there will be an entry for the cluster with
-          UNKNOWN ``replication_status``. Views: ``FULL``
+          UNKNOWN ``replication_status``. Views: ``REPLICATION_VIEW``,
+          ``FULL``
       column_families:
           (``CreationOnly``) The column families configured for this
           table, mapped by column family ID. Views: ``SCHEMA_VIEW``,
           ``FULL``
       granularity:
-          (``CreationOnly``) The granularity (e.g. ``MILLIS``,
-          ``MICROS``) at which timestamps are stored in this table.
-          Timestamps not matching the granularity will be rejected. If
-          unspecified at creation time, the value will be set to
-          ``MILLIS``. Views: ``SCHEMA_VIEW``, ``FULL``
+          (``CreationOnly``) The granularity (i.e. ``MILLIS``) at which
+          timestamps are stored in this table. Timestamps not matching
+          the granularity will be rejected. If unspecified at creation
+          time, the value will be set to ``MILLIS``. Views:
+          ``SCHEMA_VIEW``, ``FULL``
   """,
   # @@protoc_insertion_point(class_scope:google.bigtable.admin.v2.Table)
   ))
@@ -727,14 +717,14 @@ Snapshot = _reflection.GeneratedProtocolMessageType('Snapshot', (_message.Messag
   DESCRIPTOR = _SNAPSHOT,
   __module__ = 'google.cloud.bigtable.admin_v2.proto.table_pb2'
   ,
-  __doc__ = """This is a private alpha release of Cloud Bigtable snapshots. This
+  __doc__ = """A snapshot of a table at a particular time. A snapshot can be used as a
+  checkpoint for data restoration or a data source for a new table.
+  
+  Note: This is a private alpha release of Cloud Bigtable snapshots. This
   feature is not currently available to most Cloud Bigtable customers.
   This feature might be changed in backward-incompatible ways and is not
   recommended for production use. It is not subject to any SLA or
   deprecation policy.
-  
-  A snapshot of a table at a particular time. A snapshot can be used as a
-  checkpoint for data restoration or a data source for a new table.
   
   
   Attributes:

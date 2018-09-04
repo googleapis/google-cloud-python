@@ -21,6 +21,7 @@ from google.api_core.exceptions import RetryError
 from google.api_core.exceptions import NotFound
 from google.api_core.retry import if_exception_type
 from google.api_core.retry import Retry
+from google.api_core.gapic_v1.method import wrap_method
 from google.cloud._helpers import _to_bytes
 from google.cloud.bigtable.column_family import _gc_rule_from_pb
 from google.cloud.bigtable.column_family import ColumnFamily
@@ -292,7 +293,19 @@ class Table(object):
             self.name, row_key=row_key, filter_=filter_,
             app_profile_id=self._app_profile_id)
         data_client = self._instance._client.table_data_client
-        rows_data = PartialRowsData(data_client._read_rows, request_pb)
+        if 'read_rows' not in data_client._inner_api_calls:
+            default_retry = data_client._method_configs['ReadRows'].retry
+            timeout = data_client._method_configs['ReadRows'].timeout
+            data_client._inner_api_calls['read_rows'] = \
+                wrap_method(
+                    data_client.transport.read_rows,
+                    default_retry=default_retry,
+                    default_timeout=timeout,
+                    client_info=data_client._client_info,
+                )
+        rows_data = PartialRowsData(
+            data_client._inner_api_calls['read_rows'],
+            request_pb)
 
         rows_data.consume_all()
         if rows_data.state not in (rows_data.NEW_ROW, rows_data.START):
@@ -344,7 +357,9 @@ class Table(object):
             filter_=filter_, limit=limit, end_inclusive=end_inclusive,
             app_profile_id=self._app_profile_id, row_set=row_set)
         data_client = self._instance._client.table_data_client
-        return PartialRowsData(data_client._read_rows, request_pb)
+        return PartialRowsData(
+            data_client.transport.read_rows,
+            request_pb)
 
     def yield_rows(self, **kwargs):
         """Read rows from this table.
@@ -608,7 +623,20 @@ class _RetryableMutateRowsWorker(object):
             self.table_name, retryable_rows,
             app_profile_id=self.app_profile_id)
         data_client = self.client.table_data_client
-        responses = data_client._mutate_rows(mutate_rows_request, retry=None)
+        inner_api_calls = data_client._inner_api_calls
+        if 'mutate_rows' not in inner_api_calls:
+            default_retry = data_client._method_configs['MutateRows'].retry,
+            default_timeout = data_client._method_configs['MutateRows'].timeout
+            data_client._inner_api_calls[
+                'mutate_rows'] = wrap_method(
+                    data_client.transport.mutate_rows,
+                    default_retry=default_retry,
+                    default_timeout=default_timeout,
+                    client_info=data_client._client_info,
+                )
+
+        responses = data_client._inner_api_calls['mutate_rows'](
+            mutate_rows_request, retry=None)
 
         num_responses = 0
         num_retryable_responses = 0
