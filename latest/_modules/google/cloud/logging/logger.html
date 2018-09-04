@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.logging.logger &#8212; google-cloud 6573a12745 documentation</title>
+    <title>google.cloud.logging.logger &#8212; google-cloud 4c7adde documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -131,7 +131,8 @@
     <span class="k">def</span> <span class="nf">_make_entry_resource</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">info</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                              <span class="n">labels</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">insert_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">severity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                              <span class="n">http_request</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">timestamp</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                             <span class="n">resource</span><span class="o">=</span><span class="n">_GLOBAL_RESOURCE</span><span class="p">,</span> <span class="n">trace</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+                             <span class="n">resource</span><span class="o">=</span><span class="n">_GLOBAL_RESOURCE</span><span class="p">,</span> <span class="n">trace</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                             <span class="n">span_id</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return a log entry resource of the appropriate type.</span>
 
 <span class="sd">        Helper for :meth:`log_text`, :meth:`log_struct`, and :meth:`log_proto`.</span>
@@ -168,6 +169,10 @@
 
 <span class="sd">        :type trace: str</span>
 <span class="sd">        :param trace: (optional) traceid to apply to the entry.</span>
+
+<span class="sd">        :type span_id: str</span>
+<span class="sd">        :param span_id: (optional) span_id within the trace for the log entry.</span>
+<span class="sd">                        Specify the trace parameter if span_id is set.</span>
 
 <span class="sd">        :rtype: dict</span>
 <span class="sd">        :returns: The JSON resource created.</span>
@@ -213,11 +218,14 @@
         <span class="k">if</span> <span class="n">trace</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">entry</span><span class="p">[</span><span class="s1">&#39;trace&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">trace</span>
 
+        <span class="k">if</span> <span class="n">span_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">entry</span><span class="p">[</span><span class="s1">&#39;spanId&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">span_id</span>
+
         <span class="k">return</span> <span class="n">entry</span>
 
 <div class="viewcode-block" id="Logger.log_text"><a class="viewcode-back" href="../../../../logging/logger.html#google.cloud.logging.logger.Logger.log_text">[docs]</a>    <span class="k">def</span> <span class="nf">log_text</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">insert_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">severity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">http_request</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">timestamp</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">resource</span><span class="o">=</span><span class="n">_GLOBAL_RESOURCE</span><span class="p">,</span> <span class="n">trace</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+                 <span class="n">resource</span><span class="o">=</span><span class="n">_GLOBAL_RESOURCE</span><span class="p">,</span> <span class="n">trace</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">span_id</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;API call:  log a text message via a POST request</span>
 
 <span class="sd">        See</span>
@@ -253,17 +261,21 @@
 
 <span class="sd">        :type trace: str</span>
 <span class="sd">        :param trace: (optional) traceid to apply to the entry.</span>
+
+<span class="sd">        :type span_id: str</span>
+<span class="sd">        :param span_id: (optional) span_id within the trace for the log entry.</span>
+<span class="sd">                        Specify the trace parameter if span_id is set.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
         <span class="n">entry_resource</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_entry_resource</span><span class="p">(</span>
             <span class="n">text</span><span class="o">=</span><span class="n">text</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">,</span> <span class="n">insert_id</span><span class="o">=</span><span class="n">insert_id</span><span class="p">,</span> <span class="n">severity</span><span class="o">=</span><span class="n">severity</span><span class="p">,</span>
             <span class="n">http_request</span><span class="o">=</span><span class="n">http_request</span><span class="p">,</span> <span class="n">timestamp</span><span class="o">=</span><span class="n">timestamp</span><span class="p">,</span> <span class="n">resource</span><span class="o">=</span><span class="n">resource</span><span class="p">,</span>
-            <span class="n">trace</span><span class="o">=</span><span class="n">trace</span><span class="p">)</span>
+            <span class="n">trace</span><span class="o">=</span><span class="n">trace</span><span class="p">,</span> <span class="n">span_id</span><span class="o">=</span><span class="n">span_id</span><span class="p">)</span>
         <span class="n">client</span><span class="o">.</span><span class="n">logging_api</span><span class="o">.</span><span class="n">write_entries</span><span class="p">([</span><span class="n">entry_resource</span><span class="p">])</span></div>
 
 <div class="viewcode-block" id="Logger.log_struct"><a class="viewcode-back" href="../../../../logging/logger.html#google.cloud.logging.logger.Logger.log_struct">[docs]</a>    <span class="k">def</span> <span class="nf">log_struct</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">info</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">insert_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                    <span class="n">severity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">http_request</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">timestamp</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                   <span class="n">resource</span><span class="o">=</span><span class="n">_GLOBAL_RESOURCE</span><span class="p">,</span> <span class="n">trace</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+                   <span class="n">resource</span><span class="o">=</span><span class="n">_GLOBAL_RESOURCE</span><span class="p">,</span> <span class="n">trace</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">span_id</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;API call:  log a structured message via a POST request</span>
 
 <span class="sd">        See</span>
@@ -299,17 +311,21 @@
 
 <span class="sd">        :type trace: str</span>
 <span class="sd">        :param trace: (optional) traceid to apply to the entry.</span>
+
+<span class="sd">        :type span_id: str</span>
+<span class="sd">        :param span_id: (optional) span_id within the trace for the log entry.</span>
+<span class="sd">                        Specify the trace parameter if span_id is set.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
         <span class="n">entry_resource</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_entry_resource</span><span class="p">(</span>
             <span class="n">info</span><span class="o">=</span><span class="n">info</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">,</span> <span class="n">insert_id</span><span class="o">=</span><span class="n">insert_id</span><span class="p">,</span> <span class="n">severity</span><span class="o">=</span><span class="n">severity</span><span class="p">,</span>
             <span class="n">http_request</span><span class="o">=</span><span class="n">http_request</span><span class="p">,</span> <span class="n">timestamp</span><span class="o">=</span><span class="n">timestamp</span><span class="p">,</span> <span class="n">resource</span><span class="o">=</span><span class="n">resource</span><span class="p">,</span>
-            <span class="n">trace</span><span class="o">=</span><span class="n">trace</span><span class="p">)</span>
+            <span class="n">trace</span><span class="o">=</span><span class="n">trace</span><span class="p">,</span> <span class="n">span_id</span><span class="o">=</span><span class="n">span_id</span><span class="p">)</span>
         <span class="n">client</span><span class="o">.</span><span class="n">logging_api</span><span class="o">.</span><span class="n">write_entries</span><span class="p">([</span><span class="n">entry_resource</span><span class="p">])</span></div>
 
 <div class="viewcode-block" id="Logger.log_proto"><a class="viewcode-back" href="../../../../logging/logger.html#google.cloud.logging.logger.Logger.log_proto">[docs]</a>    <span class="k">def</span> <span class="nf">log_proto</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">insert_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                   <span class="n">severity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">http_request</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">timestamp</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                  <span class="n">resource</span><span class="o">=</span><span class="n">_GLOBAL_RESOURCE</span><span class="p">,</span> <span class="n">trace</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+                  <span class="n">resource</span><span class="o">=</span><span class="n">_GLOBAL_RESOURCE</span><span class="p">,</span> <span class="n">trace</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">span_id</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;API call:  log a protobuf message via a POST request</span>
 
 <span class="sd">        See</span>
@@ -345,12 +361,16 @@
 
 <span class="sd">        :type trace: str</span>
 <span class="sd">        :param trace: (optional) traceid to apply to the entry.</span>
+
+<span class="sd">        :type span_id: str</span>
+<span class="sd">        :param span_id: (optional) span_id within the trace for the log entry.</span>
+<span class="sd">                        Specify the trace parameter if span_id is set.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
         <span class="n">entry_resource</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_entry_resource</span><span class="p">(</span>
             <span class="n">message</span><span class="o">=</span><span class="n">message</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">,</span> <span class="n">insert_id</span><span class="o">=</span><span class="n">insert_id</span><span class="p">,</span>
             <span class="n">severity</span><span class="o">=</span><span class="n">severity</span><span class="p">,</span> <span class="n">http_request</span><span class="o">=</span><span class="n">http_request</span><span class="p">,</span> <span class="n">timestamp</span><span class="o">=</span><span class="n">timestamp</span><span class="p">,</span>
-            <span class="n">resource</span><span class="o">=</span><span class="n">resource</span><span class="p">,</span> <span class="n">trace</span><span class="o">=</span><span class="n">trace</span><span class="p">)</span>
+            <span class="n">resource</span><span class="o">=</span><span class="n">resource</span><span class="p">,</span> <span class="n">trace</span><span class="o">=</span><span class="n">trace</span><span class="p">,</span> <span class="n">span_id</span><span class="o">=</span><span class="n">span_id</span><span class="p">)</span>
         <span class="n">client</span><span class="o">.</span><span class="n">logging_api</span><span class="o">.</span><span class="n">write_entries</span><span class="p">([</span><span class="n">entry_resource</span><span class="p">])</span></div>
 
 <div class="viewcode-block" id="Logger.delete"><a class="viewcode-back" href="../../../../logging/logger.html#google.cloud.logging.logger.Logger.delete">[docs]</a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -445,7 +465,7 @@
 
 <div class="viewcode-block" id="Batch.log_text"><a class="viewcode-back" href="../../../../logging/logger.html#google.cloud.logging.logger.Batch.log_text">[docs]</a>    <span class="k">def</span> <span class="nf">log_text</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">insert_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">severity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">http_request</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">timestamp</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">resource</span><span class="o">=</span><span class="n">_GLOBAL_RESOURCE</span><span class="p">,</span>
-                 <span class="n">trace</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+                 <span class="n">trace</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">span_id</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Add a text entry to be logged during :meth:`commit`.</span>
 
 <span class="sd">        :type text: str</span>
@@ -476,14 +496,18 @@
 
 <span class="sd">        :type trace: str</span>
 <span class="sd">        :param trace: (optional) traceid to apply to the entry.</span>
+
+<span class="sd">        :type span_id: str</span>
+<span class="sd">        :param span_id: (optional) span_id within the trace for the log entry.</span>
+<span class="sd">                        Specify the trace parameter if span_id is set.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">entries</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
             <span class="p">(</span><span class="s1">&#39;text&#39;</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">insert_id</span><span class="p">,</span> <span class="n">severity</span><span class="p">,</span> <span class="n">http_request</span><span class="p">,</span>
-             <span class="n">timestamp</span><span class="p">,</span> <span class="n">resource</span><span class="p">,</span> <span class="n">trace</span><span class="p">))</span></div>
+             <span class="n">timestamp</span><span class="p">,</span> <span class="n">resource</span><span class="p">,</span> <span class="n">trace</span><span class="p">,</span> <span class="n">span_id</span><span class="p">))</span></div>
 
 <div class="viewcode-block" id="Batch.log_struct"><a class="viewcode-back" href="../../../../logging/logger.html#google.cloud.logging.logger.Batch.log_struct">[docs]</a>    <span class="k">def</span> <span class="nf">log_struct</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">info</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">insert_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">severity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                    <span class="n">http_request</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">timestamp</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                   <span class="n">resource</span><span class="o">=</span><span class="n">_GLOBAL_RESOURCE</span><span class="p">,</span> <span class="n">trace</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+                   <span class="n">resource</span><span class="o">=</span><span class="n">_GLOBAL_RESOURCE</span><span class="p">,</span> <span class="n">trace</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">span_id</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Add a struct entry to be logged during :meth:`commit`.</span>
 
 <span class="sd">        :type info: dict</span>
@@ -514,14 +538,18 @@
 
 <span class="sd">        :type trace: str</span>
 <span class="sd">        :param trace: (optional) traceid to apply to the entry.</span>
+
+<span class="sd">        :type span_id: str</span>
+<span class="sd">        :param span_id: (optional) span_id within the trace for the log entry.</span>
+<span class="sd">                        Specify the trace parameter if span_id is set.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">entries</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
             <span class="p">(</span><span class="s1">&#39;struct&#39;</span><span class="p">,</span> <span class="n">info</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">insert_id</span><span class="p">,</span> <span class="n">severity</span><span class="p">,</span> <span class="n">http_request</span><span class="p">,</span>
-             <span class="n">timestamp</span><span class="p">,</span> <span class="n">resource</span><span class="p">,</span> <span class="n">trace</span><span class="p">))</span></div>
+             <span class="n">timestamp</span><span class="p">,</span> <span class="n">resource</span><span class="p">,</span> <span class="n">trace</span><span class="p">,</span> <span class="n">span_id</span><span class="p">))</span></div>
 
 <div class="viewcode-block" id="Batch.log_proto"><a class="viewcode-back" href="../../../../logging/logger.html#google.cloud.logging.logger.Batch.log_proto">[docs]</a>    <span class="k">def</span> <span class="nf">log_proto</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">insert_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">severity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                   <span class="n">http_request</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">timestamp</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                  <span class="n">resource</span><span class="o">=</span><span class="n">_GLOBAL_RESOURCE</span><span class="p">,</span> <span class="n">trace</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+                  <span class="n">resource</span><span class="o">=</span><span class="n">_GLOBAL_RESOURCE</span><span class="p">,</span> <span class="n">trace</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">span_id</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Add a protobuf entry to be logged during :meth:`commit`.</span>
 
 <span class="sd">        :type message: protobuf message</span>
@@ -552,10 +580,14 @@
 
 <span class="sd">        :type trace: str</span>
 <span class="sd">        :param trace: (optional) traceid to apply to the entry.</span>
+
+<span class="sd">        :type span_id: str</span>
+<span class="sd">        :param span_id: (optional) span_id within the trace for the log entry.</span>
+<span class="sd">                        Specify the trace parameter if span_id is set.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">entries</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
             <span class="p">(</span><span class="s1">&#39;proto&#39;</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">insert_id</span><span class="p">,</span> <span class="n">severity</span><span class="p">,</span> <span class="n">http_request</span><span class="p">,</span>
-             <span class="n">timestamp</span><span class="p">,</span> <span class="n">resource</span><span class="p">,</span> <span class="n">trace</span><span class="p">))</span></div>
+             <span class="n">timestamp</span><span class="p">,</span> <span class="n">resource</span><span class="p">,</span> <span class="n">trace</span><span class="p">,</span> <span class="n">span_id</span><span class="p">))</span></div>
 
 <div class="viewcode-block" id="Batch.commit"><a class="viewcode-back" href="../../../../logging/logger.html#google.cloud.logging.logger.Batch.commit">[docs]</a>    <span class="k">def</span> <span class="nf">commit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Send saved log entries as a single API call.</span>
@@ -579,7 +611,7 @@
 
         <span class="n">entries</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="p">(</span><span class="n">entry_type</span><span class="p">,</span> <span class="n">entry</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">iid</span><span class="p">,</span> <span class="n">severity</span><span class="p">,</span> <span class="n">http_req</span><span class="p">,</span>
-             <span class="n">timestamp</span><span class="p">,</span> <span class="n">resource</span><span class="p">,</span> <span class="n">trace</span><span class="p">)</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">entries</span><span class="p">:</span>
+             <span class="n">timestamp</span><span class="p">,</span> <span class="n">resource</span><span class="p">,</span> <span class="n">trace</span><span class="p">,</span> <span class="n">span_id</span><span class="p">)</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">entries</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">entry_type</span> <span class="o">==</span> <span class="s1">&#39;text&#39;</span><span class="p">:</span>
                 <span class="n">info</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;textPayload&#39;</span><span class="p">:</span> <span class="n">entry</span><span class="p">}</span>
             <span class="k">elif</span> <span class="n">entry_type</span> <span class="o">==</span> <span class="s1">&#39;struct&#39;</span><span class="p">:</span>
@@ -608,6 +640,8 @@
                 <span class="n">info</span><span class="p">[</span><span class="s1">&#39;timestamp&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_datetime_to_rfc3339</span><span class="p">(</span><span class="n">timestamp</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">trace</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">info</span><span class="p">[</span><span class="s1">&#39;trace&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">trace</span>
+            <span class="k">if</span> <span class="n">span_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">info</span><span class="p">[</span><span class="s1">&#39;spanId&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">span_id</span>
             <span class="n">entries</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">info</span><span class="p">)</span>
 
         <span class="n">client</span><span class="o">.</span><span class="n">logging_api</span><span class="o">.</span><span class="n">write_entries</span><span class="p">(</span><span class="n">entries</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>

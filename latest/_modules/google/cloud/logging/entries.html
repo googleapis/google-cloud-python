@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.logging.entries &#8212; google-cloud 6573a12745 documentation</title>
+    <title>google.cloud.logging.entries &#8212; google-cloud 4c7adde documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -114,10 +114,14 @@
 
 <span class="sd">    :type trace: str</span>
 <span class="sd">    :param trace: (optional) traceid to apply to the entry.</span>
+
+<span class="sd">    :type span_id: str</span>
+<span class="sd">    :param span_id: (optional) span_id within the trace for the log entry.</span>
+<span class="sd">                    Specify the trace parameter if span_id is set.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">payload</span><span class="p">,</span> <span class="n">logger</span><span class="p">,</span> <span class="n">insert_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">timestamp</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">labels</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">severity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">http_request</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">resource</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">trace</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+                 <span class="n">trace</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">span_id</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">payload</span> <span class="o">=</span> <span class="n">payload</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span> <span class="o">=</span> <span class="n">logger</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">insert_id</span> <span class="o">=</span> <span class="n">insert_id</span>
@@ -127,6 +131,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">http_request</span> <span class="o">=</span> <span class="n">http_request</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">resource</span> <span class="o">=</span> <span class="n">resource</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">trace</span> <span class="o">=</span> <span class="n">trace</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">span_id</span> <span class="o">=</span> <span class="n">span_id</span>
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">resource</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">loggers</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -164,6 +169,7 @@
         <span class="n">severity</span> <span class="o">=</span> <span class="n">resource</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;severity&#39;</span><span class="p">)</span>
         <span class="n">http_request</span> <span class="o">=</span> <span class="n">resource</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;httpRequest&#39;</span><span class="p">)</span>
         <span class="n">trace</span> <span class="o">=</span> <span class="n">resource</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;trace&#39;</span><span class="p">)</span>
+        <span class="n">span_id</span> <span class="o">=</span> <span class="n">resource</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;spanId&#39;</span><span class="p">)</span>
 
         <span class="n">monitored_resource_dict</span> <span class="o">=</span> <span class="n">resource</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;resource&#39;</span><span class="p">)</span>
         <span class="n">monitored_resource</span> <span class="o">=</span> <span class="kc">None</span>
@@ -172,7 +178,7 @@
 
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">payload</span><span class="p">,</span> <span class="n">logger</span><span class="p">,</span> <span class="n">insert_id</span><span class="o">=</span><span class="n">insert_id</span><span class="p">,</span> <span class="n">timestamp</span><span class="o">=</span><span class="n">timestamp</span><span class="p">,</span>
                    <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">,</span> <span class="n">severity</span><span class="o">=</span><span class="n">severity</span><span class="p">,</span> <span class="n">http_request</span><span class="o">=</span><span class="n">http_request</span><span class="p">,</span>
-                   <span class="n">resource</span><span class="o">=</span><span class="n">monitored_resource</span><span class="p">,</span> <span class="n">trace</span><span class="o">=</span><span class="n">trace</span><span class="p">)</span>
+                   <span class="n">resource</span><span class="o">=</span><span class="n">monitored_resource</span><span class="p">,</span> <span class="n">trace</span><span class="o">=</span><span class="n">trace</span><span class="p">,</span> <span class="n">span_id</span><span class="o">=</span><span class="n">span_id</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="TextEntry"><a class="viewcode-back" href="../../../../logging/entries.html#google.cloud.logging.entries.TextEntry">[docs]</a><span class="k">class</span> <span class="nc">TextEntry</span><span class="p">(</span><span class="n">_BaseEntry</span><span class="p">):</span>
@@ -229,16 +235,20 @@
 
 <span class="sd">    :type trace: str</span>
 <span class="sd">    :param trace: (optional) traceid to apply to the entry.</span>
+
+<span class="sd">    :type span_id: str</span>
+<span class="sd">    :param span_id: (optional) span_id within the trace for the log entry.</span>
+<span class="sd">                    Specify the trace parameter if span_id is set.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">_PAYLOAD_KEY</span> <span class="o">=</span> <span class="s1">&#39;protoPayload&#39;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">payload</span><span class="p">,</span> <span class="n">logger</span><span class="p">,</span> <span class="n">insert_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">timestamp</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">labels</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">severity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">http_request</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">resource</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">trace</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+                 <span class="n">trace</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">span_id</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">ProtobufEntry</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
             <span class="n">payload</span><span class="p">,</span> <span class="n">logger</span><span class="p">,</span> <span class="n">insert_id</span><span class="o">=</span><span class="n">insert_id</span><span class="p">,</span> <span class="n">timestamp</span><span class="o">=</span><span class="n">timestamp</span><span class="p">,</span>
             <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">,</span> <span class="n">severity</span><span class="o">=</span><span class="n">severity</span><span class="p">,</span> <span class="n">http_request</span><span class="o">=</span><span class="n">http_request</span><span class="p">,</span>
-            <span class="n">resource</span><span class="o">=</span><span class="n">resource</span><span class="p">,</span> <span class="n">trace</span><span class="o">=</span><span class="n">trace</span><span class="p">)</span>
+            <span class="n">resource</span><span class="o">=</span><span class="n">resource</span><span class="p">,</span> <span class="n">trace</span><span class="o">=</span><span class="n">trace</span><span class="p">,</span> <span class="n">span_id</span><span class="o">=</span><span class="n">span_id</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">payload</span><span class="p">,</span> <span class="n">any_pb2</span><span class="o">.</span><span class="n">Any</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">payload_pb</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">payload</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">payload</span> <span class="o">=</span> <span class="kc">None</span>
