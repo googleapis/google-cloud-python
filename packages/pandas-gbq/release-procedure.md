@@ -1,3 +1,14 @@
+*   Add current date to `docs/source/changelog.rst`.
+
+*   Send PR to prepare release on scheduled date.
+
+*   Verify you are on the latest changes. `rebase -i` should be noop.
+
+        git fetch pandas-gbq master
+        git checkout master
+        git rebase -i pandas-gbq/master
+        git diff pandas-gbq/master
+
 *   Tag commit
 
         git tag -a x.x.x -m 'Version x.x.x'

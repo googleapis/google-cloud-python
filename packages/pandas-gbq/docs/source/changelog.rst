@@ -3,7 +3,7 @@ Changelog
 
 .. _changelog-0.6.1:
 
-0.6.1 / [unreleased]
+0.6.1 / 2018-09-11
 --------------------
 
 - Improved ``read_gbq`` performance and memory consumption by delegating
