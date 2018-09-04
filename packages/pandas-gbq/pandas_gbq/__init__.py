@@ -1,4 +1,4 @@
-from .gbq import to_gbq, read_gbq  # noqa
+from .gbq import to_gbq, read_gbq, Context, context  # noqa
 
 from ._version import get_versions
 

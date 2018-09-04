@@ -162,6 +162,72 @@ class TableCreationError(ValueError):
     pass
 
 
+class Context(object):
+    """Storage for objects to be used throughout a session.
+
+    A Context object is initialized when the ``pandas_gbq`` module is
+    imported, and can be found at :attr:`pandas_gbq.context`.
+    """
+
+    def __init__(self):
+        self._credentials = None
+        self._project = None
+
+    @property
+    def credentials(self):
+        """google.auth.credentials.Credentials: Credentials to use for Google
+        APIs.
+
+        Note:
+            These credentials are automatically cached in memory by calls to
+            :func:`pandas_gbq.read_gbq` and :func:`pandas_gbq.to_gbq`. To
+            manually set the credentials, construct an
+            :class:`google.auth.credentials.Credentials` object and set it as
+            the context credentials as demonstrated in the example below. See
+            `auth docs`_ for more information on obtaining credentials.
+
+        Example:
+            Manually setting the context credentials:
+            >>> import pandas_gbq
+            >>> from google.oauth2 import service_account
+            >>> credentials = (service_account
+            ...     .Credentials.from_service_account_file(
+            ...         '/path/to/key.json'))
+            >>> pandas_gbq.context.credentials = credentials
+        .. _auth docs: http://google-auth.readthedocs.io
+            /en/latest/user-guide.html#obtaining-credentials
+        """
+        return self._credentials
+
+    @credentials.setter
+    def credentials(self, value):
+        self._credentials = value
+
+    @property
+    def project(self):
+        """str: Default project to use for calls to Google APIs.
+
+        Example:
+            Manually setting the context project:
+            >>> import pandas_gbq
+            >>> pandas_gbq.context.project = 'my-project'
+        """
+        return self._project
+
+    @project.setter
+    def project(self, value):
+        self._project = value
+
+
+# Create an empty context, used to cache credentials.
+context = Context()
+"""A :class:`pandas_gbq.Context` object used to cache credentials.
+
+Credentials automatically are cached in-memory by :func:`pandas_gbq.read_gbq`
+and :func:`pandas_gbq.to_gbq`.
+"""
+
+
 class GbqConnector(object):
     def __init__(
         self,
@@ -173,6 +239,7 @@ class GbqConnector(object):
         location=None,
         try_credentials=None,
     ):
+        global context
         from google.api_core.exceptions import GoogleAPIError
         from google.api_core.exceptions import ClientError
         from pandas_gbq import auth
@@ -185,13 +252,20 @@ class GbqConnector(object):
         self.auth_local_webserver = auth_local_webserver
         self.dialect = dialect
         self.credentials_path = _get_credentials_file()
-        self.credentials, default_project = auth.get_credentials(
-            private_key=private_key,
-            project_id=project_id,
-            reauth=reauth,
-            auth_local_webserver=auth_local_webserver,
-            try_credentials=try_credentials,
-        )
+
+        # Load credentials from cache.
+        self.credentials = context.credentials
+        default_project = context.project
+
+        # Credentials were explicitly asked for, so don't use the cache.
+        if private_key or reauth or not self.credentials:
+            self.credentials, default_project = auth.get_credentials(
+                private_key=private_key,
+                project_id=project_id,
+                reauth=reauth,
+                auth_local_webserver=auth_local_webserver,
+                try_credentials=try_credentials,
+            )
 
         if self.project_id is None:
             self.project_id = default_project
@@ -200,6 +274,12 @@ class GbqConnector(object):
             raise ValueError(
                 "Could not determine project ID and one was not supplied."
             )
+
+        # Cache the credentials if they haven't been set yet.
+        if context.credentials is None:
+            context.credentials = self.credentials
+        if context.project is None:
+            context.project = self.project_id
 
         self.client = self.get_client()
 

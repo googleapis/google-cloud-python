@@ -14,6 +14,10 @@ API Reference
 
    read_gbq
    to_gbq
+   context
+   Context
 
 .. autofunction:: read_gbq
 .. autofunction:: to_gbq
+.. autodata:: context
+.. autoclass:: Context

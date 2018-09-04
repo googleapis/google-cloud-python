@@ -25,30 +25,6 @@ def min_bq_version():
     return pkg_resources.parse_version("0.32.0")
 
 
-@pytest.fixture(autouse=True)
-def mock_bigquery_client(monkeypatch):
-    from google.api_core.exceptions import NotFound
-    import google.cloud.bigquery
-    import google.cloud.bigquery.table
-
-    mock_client = mock.create_autospec(google.cloud.bigquery.Client)
-    mock_schema = [google.cloud.bigquery.SchemaField("_f0", "INTEGER")]
-    # Mock out SELECT 1 query results.
-    mock_query = mock.create_autospec(google.cloud.bigquery.QueryJob)
-    mock_query.job_id = "some-random-id"
-    mock_query.state = "DONE"
-    mock_rows = mock.create_autospec(google.cloud.bigquery.table.RowIterator)
-    mock_rows.total_rows = 1
-    mock_rows.schema = mock_schema
-    mock_rows.__iter__.return_value = [(1,)]
-    mock_query.result.return_value = mock_rows
-    mock_client.query.return_value = mock_query
-    # Mock table creation.
-    mock_client.get_table.side_effect = NotFound("nope")
-    monkeypatch.setattr(gbq.GbqConnector, "get_client", lambda _: mock_client)
-    return mock_client
-
-
 def mock_none_credentials(*args, **kwargs):
     return None, None
 
