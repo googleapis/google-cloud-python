@@ -125,46 +125,74 @@ class TestClient(unittest.TestCase):
         self.assertEqual(instance.labels, labels)
         self.assertIs(instance._client, client)
 
-    def test_admin_client_w_value_error(self):
+    def test_table_data_client_not_initialized(self):
+        from google.cloud.bigtable_v2 import BigtableClient
+
+        credentials = _make_credentials()
+        client = self._make_one(project=self.PROJECT, credentials=credentials)
+
+        table_data_client = client.table_data_client
+        self.assertIsInstance(table_data_client, BigtableClient)
+        self.assertIs(client._table_data_client, table_data_client)
+
+    def test_table_data_client_initialized(self):
+        credentials = _make_credentials()
+        client = self._make_one(project=self.PROJECT, credentials=credentials,
+                                admin=True)
+
+        already = client._table_data_client = object()
+        self.assertIs(client.table_data_client, already)
+
+    def test_table_admin_client_not_initialized_no_admin_flag(self):
         credentials = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=credentials)
 
         with self.assertRaises(ValueError):
             client.table_admin_client()
 
-        with self.assertRaises(ValueError):
-            client.instance_admin_client()
+    def test_table_admin_client_not_initialized_w_admin_flag(self):
+        from google.cloud.bigtable_admin_v2 import BigtableTableAdminClient
 
-    def test_table_data_client(self):
+        credentials = _make_credentials()
+        client = self._make_one(
+            project=self.PROJECT, credentials=credentials, admin=True)
+
+        table_admin_client = client.table_admin_client
+        self.assertIsInstance(table_admin_client, BigtableTableAdminClient)
+
+    def test_table_admin_client_initialized(self):
         credentials = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=credentials,
                                 admin=True)
 
-        table_data_client = client.table_data_client
-        self.assertEqual(client._table_data_client, table_data_client)
+        already = client._table_admin_client = object()
+        self.assertIs(client.table_admin_client, already)
 
-        client._table_data_client = object()
-        table_data_client = client.table_data_client
-        self.assertEqual(client.table_data_client, table_data_client)
-
-    def test_table_admin_client(self):
-        credentials = _make_credentials()
-        client = self._make_one(project=self.PROJECT, credentials=credentials,
-                                admin=True)
-
-        table_admin_client = client.table_admin_client
-        self.assertEqual(client._table_admin_client, table_admin_client)
-
-        client._table_admin_client = object()
-        table_admin_client = client.table_admin_client
-        self.assertEqual(client._table_admin_client, table_admin_client)
-
-    def test_table_data_client_w_value_error(self):
+    def test_instance_admin_client_not_initialized_no_admin_flag(self):
         credentials = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=credentials)
 
         with self.assertRaises(ValueError):
-            client.table_data_client()
+            client.instance_admin_client()
+
+    def test_instance_admin_client_not_initialized_w_admin_flag(self):
+        from google.cloud.bigtable_admin_v2 import BigtableInstanceAdminClient
+
+        credentials = _make_credentials()
+        client = self._make_one(
+            project=self.PROJECT, credentials=credentials, admin=True)
+
+        instance_admin_client = client.instance_admin_client
+        self.assertIsInstance(
+            instance_admin_client, BigtableInstanceAdminClient)
+
+    def test_instance_admin_client_initialized(self):
+        credentials = _make_credentials()
+        client = self._make_one(project=self.PROJECT, credentials=credentials,
+                                admin=True)
+
+        already = client._instance_admin_client = object()
+        self.assertIs(client.instance_admin_client, already)
 
     def test_list_instances(self):
         from google.cloud.bigtable_admin_v2.proto import (
