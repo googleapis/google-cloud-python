@@ -123,7 +123,7 @@ class Table(object):
         """
         project = self._instance._client.project
         instance_id = self._instance.instance_id
-        table_client = self._instance._client.table_admin_client
+        table_client = self._instance._client.table_data_client
         return table_client.table_path(
             project=project, instance=instance_id, table=self.table_id)
 
