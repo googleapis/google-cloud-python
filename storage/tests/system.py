@@ -134,7 +134,7 @@ class TestStorageBuckets(unittest.TestCase):
                 'COLDLINE', is_live=False, matches_storage_class=['NEARLINE']),
         ]
 
-        retry_429(bucket.create)()
+        retry_429(bucket.create)(location='us')
 
         self.case_buckets_to_delete.append(new_bucket_name)
         self.assertEqual(bucket.name, new_bucket_name)
