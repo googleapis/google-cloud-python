@@ -1,9 +1,10 @@
 #!/usr/bin/env python
-
+import io
 from setuptools import setup
 
+
 def readme():
-    with open('README.rst') as f:
+    with io.open("README.rst", "r", encoding="utf8") as f:
         return f.read()
 
 setup(
