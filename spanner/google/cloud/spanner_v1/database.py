@@ -284,7 +284,7 @@ class Database(object):
         """Execute a partitionable DML statement.
 
         :type dml: str
-        :param dml: SQL DML statement
+        :param dml: DML statement
 
         :type params: dict, {str -> column value}
         :param params: values for parameter replacement.  Keys must match
