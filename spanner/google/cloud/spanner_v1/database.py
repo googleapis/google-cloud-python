@@ -280,7 +280,7 @@ class Database(object):
         api.drop_database(self.name, metadata=metadata)
 
     def execute_partitioned_dml(
-            self, dml, params=None, param_types=None, query_mode=None):
+            self, dml, params=None, param_types=None):
         """Execute a partitionable DML statement.
 
         :type dml: str
@@ -294,11 +294,6 @@ class Database(object):
         :param param_types:
             (Optional) maps explicit types for one or more param values;
             required if parameters are passed.
-
-        :type query_mode:
-            :class:`google.cloud.spanner_v1.proto.ExecuteSqlRequest.QueryMode`
-        :param query_mode: Mode governing return of results / query plan. See
-            https://cloud.google.com/spanner/reference/rpc/google.spanner.v1#google.spanner.v1.ExecuteSqlRequest.QueryMode1
 
         :rtype: int
         :returns: Count of rows affected by the DML statement.
@@ -333,7 +328,6 @@ class Database(object):
                 transaction=txn_selector,
                 params=params_pb,
                 param_types=param_types,
-                query_mode=query_mode,
                 metadata=metadata)
 
             iterator = _restart_on_unavailable(restart)

@@ -669,7 +669,7 @@ class TestDatabase(_BaseTest):
         api.execute_streaming_sql.return_value = iterator
 
         row_count = database.execute_partitioned_dml(
-            dml, params, param_types, query_mode=MODE)
+            dml, params, param_types)
 
         self.assertEqual(row_count, 2)
 
@@ -696,7 +696,6 @@ class TestDatabase(_BaseTest):
             transaction=expected_transaction,
             params=expected_params,
             param_types=param_types,
-            query_mode=MODE,
             metadata=[('google-cloud-resource-prefix', database.name)],
         )
 
