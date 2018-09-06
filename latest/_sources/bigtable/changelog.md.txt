@@ -4,6 +4,17 @@
 
 [1]: https://pypi.org/project/google-cloud-bigtable/#history
 
+## 0.30.1
+
+### Implementation changes
+
+- Fix non-admin access to table data. (#5875)
+- Synth bigtable and bigtable admin GAPIC clients. (#5867)
+
+### Testing and internal changes
+
+- Nox: use in-place installs for local packages. (#5865)
+
 ## 0.30.0
 
 ### New Features
