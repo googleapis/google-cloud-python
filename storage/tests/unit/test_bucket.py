@@ -1219,6 +1219,76 @@ class Test_Bucket(unittest.TestCase):
             [dict(rule) for rule in bucket.lifecycle_rules], rules)
         self.assertTrue('lifecycle' in bucket._changes)
 
+    def test_clear_lifecycle_rules(self):
+        NAME = 'name'
+        DELETE_RULE = {
+            'action': {
+                'type': 'Delete',
+            },
+            'condition': {
+                'age': 42,
+            },
+        }
+        SSC_RULE = {
+            'action': {
+                'type': 'SetStorageClass',
+                'storageClass': 'NEARLINE',
+            },
+            'condition': {
+                'isLive': False,
+            },
+        }
+        rules = [DELETE_RULE, SSC_RULE]
+        bucket = self._make_one(name=NAME)
+        bucket._properties['lifecycle'] = {'rule': rules}
+        self.assertEqual(list(bucket.lifecycle_rules), rules)
+
+        bucket.clear_lifecyle_rules()
+
+        self.assertEqual(list(bucket.lifecycle_rules), [])
+        self.assertTrue('lifecycle' in bucket._changes)
+
+    def test_add_lifecycle_delete_rule(self):
+        NAME = 'name'
+        DELETE_RULE = {
+            'action': {
+                'type': 'Delete',
+            },
+            'condition': {
+                'age': 42,
+            },
+        }
+        rules = [DELETE_RULE]
+        bucket = self._make_one(name=NAME)
+        self.assertEqual(list(bucket.lifecycle_rules), [])
+
+        bucket.add_lifecycle_delete_rule(age=42)
+
+        self.assertEqual(
+            [dict(rule) for rule in bucket.lifecycle_rules], rules)
+        self.assertTrue('lifecycle' in bucket._changes)
+
+    def test_add_lifecycle_set_storage_class_rule(self):
+        NAME = 'name'
+        SSC_RULE = {
+            'action': {
+                'type': 'SetStorageClass',
+                'storageClass': 'NEARLINE',
+            },
+            'condition': {
+                'isLive': False,
+            },
+        }
+        rules = [SSC_RULE]
+        bucket = self._make_one(name=NAME)
+        self.assertEqual(list(bucket.lifecycle_rules), [])
+
+        bucket.add_lifecycle_set_storage_class_rule('NEARLINE', is_live=False)
+
+        self.assertEqual(
+            [dict(rule) for rule in bucket.lifecycle_rules], rules)
+        self.assertTrue('lifecycle' in bucket._changes)
+
     def test_cors_getter(self):
         NAME = 'name'
         CORS_ENTRY = {

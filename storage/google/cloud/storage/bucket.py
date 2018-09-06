@@ -1118,6 +1118,43 @@ class Bucket(_PropertyMixin):
         rules = [dict(rule) for rule in rules]  # Convert helpers if needed
         self._patch_property('lifecycle', {'rule': rules})
 
+    def clear_lifecyle_rules(self):
+        """Set lifestyle rules configured for this bucket.
+
+        See https://cloud.google.com/storage/docs/lifecycle and
+             https://cloud.google.com/storage/docs/json_api/v1/buckets
+        """
+        self.lifecycle_rules = []
+
+    def add_lifecycle_delete_rule(self, **kw):
+        """Add a "delete" rule to lifestyle rules configured for this bucket.
+
+        See https://cloud.google.com/storage/docs/lifecycle and
+             https://cloud.google.com/storage/docs/json_api/v1/buckets
+
+        :type kw: dict
+        :params kw: arguments passed to :class:`LifecycleRuleConditions`.
+        """
+        rules = list(self.lifecycle_rules)
+        rules.append(LifecycleRuleDelete(**kw))
+        self.lifecycle_rules = rules
+
+    def add_lifecycle_set_storage_class_rule(self, storage_class, **kw):
+        """Add a "delete" rule to lifestyle rules configured for this bucket.
+
+        See https://cloud.google.com/storage/docs/lifecycle and
+             https://cloud.google.com/storage/docs/json_api/v1/buckets
+
+        :type storage_class: str, one of :attr:`_STORAGE_CLASSES`.
+        :param storage_class: new storage class to assign to matching items.
+
+        :type kw: dict
+        :params kw: arguments passed to :class:`LifecycleRuleConditions`.
+        """
+        rules = list(self.lifecycle_rules)
+        rules.append(LifecycleRuleSetStorageClass(storage_class, **kw))
+        self.lifecycle_rules = rules
+
     _location = _scalar_property('location')
 
     @property

@@ -123,22 +123,32 @@ class TestStorageBuckets(unittest.TestCase):
         self.case_buckets_to_delete.append(new_bucket_name)
         self.assertEqual(created.name, new_bucket_name)
 
-    def test_create_bucket_w_lifecycle_rules(self):
+    def test_lifecycle_rules(self):
         new_bucket_name = 'w-lifcycle-rules' + unique_resource_id('-')
         self.assertRaises(exceptions.NotFound,
                           Config.CLIENT.get_bucket, new_bucket_name)
         bucket = Config.CLIENT.bucket(new_bucket_name)
-        rules = bucket.lifecycle_rules = [
+        bucket.add_lifecycle_delete_rule(age=42)
+        bucket.add_lifecycle_set_storage_class_rule(
+            'COLDLINE', is_live=False, matches_storage_class=['NEARLINE'])
+
+        expected_rules = [
             LifecycleRuleDelete(age=42),
             LifecycleRuleSetStorageClass(
-                'COLDLINE', is_live=False, matches_storage_class=['NEARLINE']),
+                'COLDLINE',
+                is_live=False, matches_storage_class=['NEARLINE']),
         ]
 
         retry_429(bucket.create)(location='us')
 
         self.case_buckets_to_delete.append(new_bucket_name)
         self.assertEqual(bucket.name, new_bucket_name)
-        self.assertEqual(list(bucket.lifecycle_rules), rules)
+        self.assertEqual(list(bucket.lifecycle_rules), expected_rules)
+
+        bucket.clear_lifecyle_rules()
+        bucket.patch()
+
+        self.assertEqual(list(bucket.lifecycle_rules), [])
 
     def test_list_buckets(self):
         buckets_to_create = [
