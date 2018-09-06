@@ -833,15 +833,18 @@ def process_server_timestamp(document_data, split_on_dots=True):
             (for updates only).
 
     Returns:
-        Tuple[List[str, ...], Dict[str, Any]]: A two-tuple of
+        List[List[str, ...], Dict[str, Any]], List[List[str, ...]: A
+        three-tuple of:
 
         * A list of all transform paths that use the server timestamp sentinel
         * The remaining keys in ``document_data`` after removing the
           server timestamp sentinels
+        * A list of all field paths that do not use the server timestamp
+          sentinel
     """
-    field_paths = []
     transform_paths = []
     actual_data = {}
+    field_paths = []
     for field_name, value in six.iteritems(document_data):
         if split_on_dots:
             top_level_path = FieldPath(*field_name.split("."))
