@@ -1132,6 +1132,10 @@ class Bucket(_PropertyMixin):
         See https://cloud.google.com/storage/docs/lifecycle and
              https://cloud.google.com/storage/docs/json_api/v1/buckets
 
+        .. literalinclude:: snippets.py
+          :start-after: [START add_lifecycle_delete_rule]
+          :end-before: [END add_lifecycle_delete_rule]
+
         :type kw: dict
         :params kw: arguments passed to :class:`LifecycleRuleConditions`.
         """
@@ -1144,6 +1148,10 @@ class Bucket(_PropertyMixin):
 
         See https://cloud.google.com/storage/docs/lifecycle and
              https://cloud.google.com/storage/docs/json_api/v1/buckets
+
+        .. literalinclude:: snippets.py
+          :start-after: [START add_lifecycle_set_storage_class_rule]
+          :end-before: [END add_lifecycle_set_storage_class_rule]
 
         :type storage_class: str, one of :attr:`_STORAGE_CLASSES`.
         :param storage_class: new storage class to assign to matching items.
