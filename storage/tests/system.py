@@ -24,8 +24,8 @@ import six
 from google.cloud import exceptions
 from google.cloud import storage
 from google.cloud.storage._helpers import _base64_md5hash
-from google.cloud.storage.bucket import LifecycleRuleDeleteItem
-from google.cloud.storage.bucket import LifecycleRuleSetItemStorageClass
+from google.cloud.storage.bucket import LifecycleRuleDelete
+from google.cloud.storage.bucket import LifecycleRuleSetStorageClass
 from google.cloud import kms
 
 from test_utils.retry import RetryErrors
@@ -129,8 +129,8 @@ class TestStorageBuckets(unittest.TestCase):
                           Config.CLIENT.get_bucket, new_bucket_name)
         bucket = Config.CLIENT.bucket(new_bucket_name)
         rules = bucket.lifecycle_rules = [
-            LifecycleRuleDeleteItem(age=42),
-            LifecycleRuleSetItemStorageClass(
+            LifecycleRuleDelete(age=42),
+            LifecycleRuleSetStorageClass(
                 'COLDLINE', is_live=False, matches_storage_class=['NEARLINE']),
         ]
 

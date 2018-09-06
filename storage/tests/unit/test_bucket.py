@@ -107,12 +107,12 @@ class Test_LifecycleRuleConditions(unittest.TestCase):
         self.assertEqual(conditions.number_of_newer_versions, 3)
 
 
-class Test_LifecycleRuleDeleteItem(unittest.TestCase):
+class Test_LifecycleRuleDelete(unittest.TestCase):
 
     @staticmethod
     def _get_target_class():
-        from google.cloud.storage.bucket import LifecycleRuleDeleteItem
-        return LifecycleRuleDeleteItem
+        from google.cloud.storage.bucket import LifecycleRuleDelete
+        return LifecycleRuleDelete
 
     def _make_one(self, **kw):
         return self._get_target_class()(**kw)
@@ -153,13 +153,13 @@ class Test_LifecycleRuleDeleteItem(unittest.TestCase):
         self.assertEqual(dict(rule), resource)
 
 
-class Test_LifecycleRuleSetItemStorageClass(unittest.TestCase):
+class Test_LifecycleRuleSetStorageClass(unittest.TestCase):
 
     @staticmethod
     def _get_target_class():
         from google.cloud.storage.bucket import (
-            LifecycleRuleSetItemStorageClass)
-        return LifecycleRuleSetItemStorageClass
+            LifecycleRuleSetStorageClass)
+        return LifecycleRuleSetStorageClass
 
     def _make_one(self, **kw):
         return self._get_target_class()(**kw)
@@ -1121,7 +1121,7 @@ class Test_Bucket(unittest.TestCase):
 
     def test_lifecycle_rules_getter(self):
         from google.cloud.storage.bucket import (
-            LifecycleRuleDeleteItem, LifecycleRuleSetItemStorageClass)
+            LifecycleRuleDelete, LifecycleRuleSetStorageClass)
 
         NAME = 'name'
         DELETE_RULE = {
@@ -1148,11 +1148,11 @@ class Test_Bucket(unittest.TestCase):
         found = list(bucket.lifecycle_rules)
 
         delete_rule = found[0]
-        self.assertIsInstance(delete_rule, LifecycleRuleDeleteItem)
+        self.assertIsInstance(delete_rule, LifecycleRuleDelete)
         self.assertEqual(dict(delete_rule), DELETE_RULE)
 
         ssc_rule = found[1]
-        self.assertIsInstance(ssc_rule, LifecycleRuleSetItemStorageClass)
+        self.assertIsInstance(ssc_rule, LifecycleRuleSetStorageClass)
         self.assertEqual(dict(ssc_rule), SSC_RULE)
 
     def test_lifecycle_rules_setter_w_dicts(self):
@@ -1186,7 +1186,7 @@ class Test_Bucket(unittest.TestCase):
 
     def test_lifecycle_rules_setter_w_helpers(self):
         from google.cloud.storage.bucket import (
-            LifecycleRuleDeleteItem, LifecycleRuleSetItemStorageClass)
+            LifecycleRuleDelete, LifecycleRuleSetStorageClass)
 
         NAME = 'name'
         DELETE_RULE = {
@@ -1211,8 +1211,8 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(list(bucket.lifecycle_rules), [])
 
         bucket.lifecycle_rules = [
-            LifecycleRuleDeleteItem(age=42),
-            LifecycleRuleSetItemStorageClass('NEARLINE', is_live=False),
+            LifecycleRuleDelete(age=42),
+            LifecycleRuleSetStorageClass('NEARLINE', is_live=False),
         ]
 
         self.assertEqual(

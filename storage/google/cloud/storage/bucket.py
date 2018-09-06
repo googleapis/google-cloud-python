@@ -197,7 +197,7 @@ class LifecycleRuleConditions(dict):
         return self.get('numNewerVersions')
 
 
-class LifecycleRuleDeleteItem(dict):
+class LifecycleRuleDelete(dict):
     """Map a lifecycle rule deleting matching items.
 
     :type kw: dict
@@ -211,7 +211,7 @@ class LifecycleRuleDeleteItem(dict):
             },
             'condition': dict(conditions),
         }
-        super(LifecycleRuleDeleteItem, self).__init__(rule)
+        super(LifecycleRuleDelete, self).__init__(rule)
 
     @classmethod
     def from_api_repr(cls, resource):
@@ -220,7 +220,7 @@ class LifecycleRuleDeleteItem(dict):
         :type resource: dict
         :param resource: mapping as returned from API call.
 
-        :rtype: :class:`LifecycleRuleDeleteItem`
+        :rtype: :class:`LifecycleRuleDelete`
         :returns: Instance created from resource.
         """
         instance = cls(_factory=True)
@@ -228,7 +228,7 @@ class LifecycleRuleDeleteItem(dict):
         return instance
 
 
-class LifecycleRuleSetItemStorageClass(dict):
+class LifecycleRuleSetStorageClass(dict):
     """Map a lifecycle rule upating storage class of matching items.
 
     :type storage_class: str, one of :attr:`Bucket._STORAGE_CLASSES`.
@@ -246,7 +246,7 @@ class LifecycleRuleSetItemStorageClass(dict):
             },
             'condition': dict(conditions),
         }
-        super(LifecycleRuleSetItemStorageClass, self).__init__(rule)
+        super(LifecycleRuleSetStorageClass, self).__init__(rule)
 
     @classmethod
     def from_api_repr(cls, resource):
@@ -255,7 +255,7 @@ class LifecycleRuleSetItemStorageClass(dict):
         :type resource: dict
         :param resource: mapping as returned from API call.
 
-        :rtype: :class:`LifecycleRuleDeleteItem`
+        :rtype: :class:`LifecycleRuleDelete`
         :returns: Instance created from resource.
         """
         action = resource['action']
@@ -1099,9 +1099,9 @@ class Bucket(_PropertyMixin):
         for rule in info.get('rule', ()):
             action_type = rule['action']['type']
             if action_type == 'Delete':
-                yield LifecycleRuleDeleteItem.from_api_repr(rule)
+                yield LifecycleRuleDelete.from_api_repr(rule)
             elif action_type == 'SetStorageClass':
-                yield LifecycleRuleSetItemStorageClass.from_api_repr(rule)
+                yield LifecycleRuleSetStorageClass.from_api_repr(rule)
             else:
                 raise ValueError("Unknown lifecycle rule: {}".format(rule))
 
