@@ -122,7 +122,7 @@ class TestFieldPath(unittest.TestCase):
 
     def test_component(self):
         field_path = self._make_one('a..b')
-        self.assertEquals(field_path.parts, ('a..b',))
+        self.assertEqual(field_path.parts, ('a..b',))
 
     def test_constructor_iterable(self):
         field_path = self._make_one('a', 'b', 'c')
@@ -140,7 +140,7 @@ class TestFieldPath(unittest.TestCase):
     def test_to_api_repr_backtick(self):
         parts = '`'
         field_path = self._make_one(parts)
-        self.assertEqual(field_path.to_api_repr(), '`\``')
+        self.assertEqual(field_path.to_api_repr(), r'`\``')
 
     def test_to_api_repr_dot(self):
         parts = '.'
