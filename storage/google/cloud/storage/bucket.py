@@ -40,6 +40,12 @@ from google.cloud.storage.notification import BucketNotification
 from google.cloud.storage.notification import NONE_PAYLOAD_FORMAT
 
 
+_LOCATION_SETTER_MESSAGE = (
+    "Assignment to 'Bucket.location' is deprecated, as it is only "
+    "valid before the bucket is created. Instead, pass the location "
+    "to `Bucket.create`.")
+
+
 def _blobs_page_start(iterator, page, response):
     """Grab prefixes after a :class:`~google.cloud.iterator.Page` started.
 
@@ -976,10 +982,7 @@ class Bucket(_PropertyMixin):
             to `Bucket.create`.
         """
         warnings.warn(
-            "Assignment to 'Bucket.location' is deprecated, as it is only "
-            "valid before the bucket is created. Instead, pass the location "
-            "to `Bucket.create`.",
-            DeprecationWarning)
+            _LOCATION_SETTER_MESSAGE, DeprecationWarning, stacklevel=2)
         self._location = value
 
     def get_logging(self):
