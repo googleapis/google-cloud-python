@@ -27,6 +27,8 @@ from google.cloud.bigtable_admin_v2.types import instance_pb2
 
 from google.api_core.exceptions import NotFound
 
+from google.cloud.bigtable.policy import Policy
+
 
 _EXISTING_INSTANCE_LOCATION_ID = 'see-existing-cluster'
 _INSTANCE_NAME_RE = re.compile(r'^projects/(?P<project>[^/]+)/'
@@ -481,3 +483,103 @@ class Instance(object):
         """
         resp = self._client._instance_admin_client.list_app_profiles(self.name)
         return [AppProfile.from_pb(app_profile, self) for app_profile in resp]
+
+    def get_iam_policy(self):
+        """Gets the access control policy for an instance resource.
+
+        .. code-block:: python
+
+            from google.cloud.bigtable.client import Client
+            from google.cloud.bigtable.policy import Policy
+
+            client = Client(admin=True)
+            instance = client.instance('[INSTANCE_ID]')
+            policy_latest = instance.get_iam_policy()
+            print (policy_latest.bigtable_viewers)
+
+        :rtype: :class:`google.cloud.bigtable.policy.Policy`
+        :returns: The current IAM policy of this instance
+        """
+        instance_admin_client = self._client._instance_admin_client
+        resp = instance_admin_client.get_iam_policy(resource=self.name)
+        return Policy.from_api_repr(self._to_dict_from_policy_pb(resp))
+
+    def set_iam_policy(self, policy):
+        """Sets the access control policy on an instance resource. Replaces any
+        existing policy.
+
+        For more information about policy, please see documentation of
+        class `google.cloud.bigtable.policy.Policy`
+
+        .. code-block:: python
+
+            from google.cloud.bigtable.client import Client
+            from google.cloud.bigtable.policy import Policy
+            from google.cloud.bigtable.policy import BIGTABLE_ADMIN_ROLE
+
+            client = Client(admin=True)
+            instance = client.instance('[INSTANCE_ID]')
+            ins_policy = instance.get_iam_policy()
+            ins_policy[BIGTABLE_ADMIN_ROLE] = [
+                Policy.user("test_iam@test.com"),
+                Policy.service_account("sv_account@gmail.com")]
+
+            policy_latest = instance.set_iam_policy()
+            print (policy_latest.bigtable_admins)
+
+        :type policy: :class:`google.cloud.bigtable.policy.Policy`
+        :param policy: A new IAM policy to replace the current IAM policy
+                       of this instance
+
+        :rtype: :class:`google.cloud.bigtable.policy.Policy`
+        :returns: The current IAM policy of this instance.
+        """
+        instance_admin_client = self._client._instance_admin_client
+        resp = instance_admin_client.set_iam_policy(
+            resource=self.name, policy=policy.to_api_repr())
+        return Policy.from_api_repr(self._to_dict_from_policy_pb(resp))
+
+    def test_iam_permissions(self, permissions):
+        """Returns permissions that the caller has on the specified instance
+        resource.
+
+        .. code-block:: python
+
+            from google.cloud.bigtable.client import Client
+
+            client = Client(admin=True)
+            instance = client.instance('[INSTANCE_ID]')
+            permissions = ["bigtable.tables.create",
+                           "bigtable.clusters.create"]
+            permissions_allowed = instance.test_iam_permissions(permissions)
+            print (permissions_allowed)
+
+        :type permissions: list
+        :param permissions: The set of permissions to check for
+               the ``resource``. Permissions with wildcards (such as '*'
+               or 'storage.*') are not allowed. For more information see
+               `IAM Overview
+               <https://cloud.google.com/iam/docs/overview#permissions>`_.
+               `Bigtable Permissions
+               <https://cloud.google.com/bigtable/docs/access-control>`_.
+
+        :rtype: list
+        :returns: A List(string) of permissions allowed on the instance
+        """
+        instance_admin_client = self._client._instance_admin_client
+        resp = instance_admin_client.test_iam_permissions(
+            resource=self.name, permissions=permissions)
+        return list(resp.permissions)
+
+    def _to_dict_from_policy_pb(self, policy):
+        """Returns a dictionary representation of resource returned from
+        the getIamPolicy API to use as parameter for
+        :meth: google.cloud.iam.Policy.from_api_repr
+        """
+        pb_dict = {}
+        bindings = [{'role': binding.role, 'members': binding.members}
+                    for binding in policy.bindings]
+        pb_dict['etag'] = policy.etag
+        pb_dict['version'] = policy.version
+        pb_dict['bindings'] = bindings
+        return pb_dict
