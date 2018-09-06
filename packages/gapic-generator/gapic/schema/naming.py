@@ -96,7 +96,7 @@ class Naming:
         package_info = cls(
             name=match['name'].capitalize(),
             namespace=tuple([i.capitalize()
-                             for i in match['namespace'].split('.')]),
+                             for i in match['namespace'].split('.') if i]),
             product_name=match['name'].capitalize(),
             product_url='',
             version=match.get('version', ''),

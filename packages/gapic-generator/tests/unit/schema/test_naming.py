@@ -126,6 +126,20 @@ def test_build_with_annotations():
     assert n.product_name == 'Spanner'
 
 
+def test_build_no_namespace():
+    protos = (
+        descriptor_pb2.FileDescriptorProto(
+            name='foo_service.proto',
+            package='foo',
+        ),
+    )
+    n = naming.Naming.build(*protos)
+    assert n.name == 'Foo'
+    assert n.namespace == ()
+    assert n.version == ''
+    assert n.product_name == 'Foo'
+
+
 def test_inconsistent_metadata_error():
     # Set up the first proto.
     proto1 = descriptor_pb2.FileDescriptorProto(
