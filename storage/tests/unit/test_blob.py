@@ -1654,7 +1654,9 @@ class Test_Blob(unittest.TestCase):
 
         self._upload_from_file_helper(num_retries=20)
         mock_warn.assert_called_once_with(
-            blob_module._NUM_RETRIES_MESSAGE, DeprecationWarning)
+            blob_module._NUM_RETRIES_MESSAGE,
+            DeprecationWarning,
+            stacklevel=2)
 
     def test_upload_from_file_with_rewind(self):
         stream = self._upload_from_file_helper(rewind=True)
