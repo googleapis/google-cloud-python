@@ -1026,7 +1026,8 @@ class Blob(_PropertyMixin):
         .. _lifecycle: https://cloud.google.com/storage/docs/lifecycle
         """
         if num_retries is not None:
-            warnings.warn(_NUM_RETRIES_MESSAGE, DeprecationWarning)
+            warnings.warn(
+                _NUM_RETRIES_MESSAGE, DeprecationWarning, stacklevel=2)
 
         _maybe_rewind(file_obj, rewind=rewind)
         predefined_acl = ACL.validate_predefined(predefined_acl)

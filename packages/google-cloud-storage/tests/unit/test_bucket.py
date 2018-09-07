@@ -547,12 +547,11 @@ class Test_Bucket(unittest.TestCase):
         bucket = self._make_one(client=client, name=BUCKET_NAME)
         bucket.cors = CORS
         bucket.lifecycle_rules = LIFECYCLE_RULES
-        bucket.location = LOCATION
         bucket.storage_class = STORAGE_CLASS
         bucket.versioning_enabled = True
         bucket.requester_pays = True
         bucket.labels = LABELS
-        bucket.create()
+        bucket.create(location=LOCATION)
 
         kw, = connection._requested
         self.assertEqual(kw['method'], 'POST')
@@ -1094,13 +1093,20 @@ class Test_Bucket(unittest.TestCase):
         bucket = self._make_one(name=NAME, properties=before)
         self.assertEqual(bucket.location, 'AS')
 
-    def test_location_setter(self):
+    @mock.patch('warnings.warn')
+    def test_location_setter(self, mock_warn):
+        from google.cloud.storage import bucket as bucket_module
+
         NAME = 'name'
         bucket = self._make_one(name=NAME)
         self.assertIsNone(bucket.location)
         bucket.location = 'AS'
         self.assertEqual(bucket.location, 'AS')
         self.assertTrue('location' in bucket._changes)
+        mock_warn.assert_called_once_with(
+            bucket_module._LOCATION_SETTER_MESSAGE,
+            DeprecationWarning,
+            stacklevel=2)
 
     def test_lifecycle_rules_getter_unknown_action_type(self):
         NAME = 'name'
