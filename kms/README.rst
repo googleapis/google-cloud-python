@@ -9,7 +9,7 @@ You can generate, use, rotate, and destroy AES256 encryption keys.
 
 .. _Alpha: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/README.rst
 .. _Google Cloud Key Management Service (KMS) API: https://cloud.google.com/kms
-.. _Client Library Documentation: https://googlecloudplatform.github.io/google-cloud-python/latest/kms/usage.html
+.. _Client Library Documentation: https://googlecloudplatform.github.io/google-cloud-python/latest/kms/index.html
 .. _Product Documentation:  https://cloud.google.com/kms
 
 Quick Start

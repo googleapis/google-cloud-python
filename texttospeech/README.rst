@@ -9,8 +9,8 @@ models.
 
 .. _Alpha: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/README.rst
 .. _Cloud Text-to-Speech API: https://cloud.google.com/texttospeech
-.. _Client Library Documentation: https://google-cloud-python.readthedocs.io/en/latest/texttospeech/index.html
-.. _Product Documentation:  https://cloud.google.com/texttospeech
+.. _Client Library Documentation: https://googlecloudplatform.github.io/google-cloud-python/latest/texttospeech/api.html
+.. _Product Documentation: https://cloud.google.com/texttospeech
 
 Quick Start
 -----------

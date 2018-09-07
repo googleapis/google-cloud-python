@@ -9,7 +9,7 @@ Google Cloud Platform.
 
 .. _Alpha: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/README.rst
 .. _Cloud IoT API: https://cloud.google.com/iot
-.. _Client Library Documentation: https://googlecloudplatform.github.io/google-cloud-python/latest/iot/usage.html
+.. _Client Library Documentation: https://googlecloudplatform.github.io/google-cloud-python/latest/iot/index.html
 .. _Product Documentation:  https://cloud.google.com/iot
 
 Quick Start

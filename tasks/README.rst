@@ -8,7 +8,7 @@ Python Client for Cloud Tasks API (`Alpha`_)
 
 .. _Alpha: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/README.rst
 .. _Cloud Tasks API: https://cloud.google.com/tasks
-.. _Client Library Documentation: https://googlecloudplatform.github.io/google-cloud-python/latest/tasks/usage.html
+.. _Client Library Documentation: https://googlecloudplatform.github.io/google-cloud-python/latest/tasks/index.html
 .. _Product Documentation:  https://cloud.google.com/tasks
 
 Quick Start

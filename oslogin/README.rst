@@ -8,7 +8,7 @@ Python Client for Google Cloud OS Login API (`Alpha`_)
 
 .. _Alpha: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/README.rst
 .. _Google Cloud OS Login API: https://cloud.google.com/os-login
-.. _Client Library Documentation: https://googlecloudplatform.github.io/google-cloud-python/latest/os-login/usage.html
+.. _Client Library Documentation: https://googlecloudplatform.github.io/google-cloud-python/latest/oslogin/index.html
 .. _Product Documentation:  https://cloud.google.com/os-login
 
 Quick Start

@@ -8,7 +8,7 @@ Python Client for Cloud Asset API (`Alpha`_)
 
 .. _Alpha: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/README.rst
 .. _Cloud Asset API: https://cloud.google.com/cloudasset
-.. _Client Library Documentation: https://googlecloudplatform.github.io/google-cloud-python/latest/cloudasset/usage.html
+.. _Client Library Documentation: https://googlecloudplatform.github.io/google-cloud-python/latest/asset/index.html
 .. _Product Documentation:  https://cloud.google.com/cloudasset
 
 Quick Start

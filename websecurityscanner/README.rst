@@ -8,7 +8,7 @@ Python Client for Web Security Scanner API (`Alpha`_)
 
 .. _Alpha: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/README.rst
 .. _Web Security Scanner API: https://cloud.google.com/security-scanner
-.. _Client Library Documentation: https://googlecloudplatform.github.io/google-cloud-python/latest/websecurityscanner/usage.html
+.. _Client Library Documentation: https://googlecloudplatform.github.io/google-cloud-python/latest/websecurityscanner/index.html
 .. _Product Documentation:  https://cloud.google.com/security-scanner
 
 Quick Start

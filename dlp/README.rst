@@ -10,7 +10,7 @@ storage repositories.
 
 .. _Alpha: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/README.rst
 .. _Cloud Data Loss Prevention (DLP) API: https://cloud.google.com/dlp
-.. _Client Library Documentation: https://googlecloudplatform.github.io/google-cloud-python/latest/dlp/usage.html
+.. _Client Library Documentation: https://googlecloudplatform.github.io/google-cloud-python/latest/dlp/index.html
 .. _Product Documentation:  https://cloud.google.com/dlp
 
 Quick Start
