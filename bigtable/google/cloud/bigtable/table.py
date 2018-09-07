@@ -308,7 +308,7 @@ class Table(object):
             request_pb)
 
         rows_data.consume_all()
-        if rows_data.state not in (rows_data.NEW_ROW, rows_data.START):
+        if rows_data.state != rows_data.NEW_ROW:
             raise ValueError('The row remains partial / is not committed.')
 
         if len(rows_data.rows) == 0:
