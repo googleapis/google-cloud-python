@@ -8,7 +8,7 @@ Python Client for Google Cloud Speech API (`Beta`_)
 
 .. _Alpha: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/README.rst
 .. _Google Cloud Speech API: https://cloud.google.com/speech
-.. _Client Library Documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/speech/usage.html
+.. _Client Library Documentation: https://googlecloudplatform.github.io/google-cloud-python/latest/speech/usage.html
 .. _Product Documentation:  https://cloud.google.com/speech
 
 Quick Start
@@ -24,7 +24,7 @@ In order to use this library, you first need to go through the following steps:
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
 .. _Enable the Google Cloud Speech API.:  https://cloud.google.com/speech
-.. _Setup Authentication.: https://googlecloudplatform.github.io/google-cloud-python/stable/core/auth.html
+.. _Setup Authentication.: https://googlecloudplatform.github.io/google-cloud-python/latest/core/auth.html
 
 Installation
 ~~~~~~~~~~~~
