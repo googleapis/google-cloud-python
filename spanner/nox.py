@@ -71,7 +71,7 @@ def unit(session, py):
 
 
 @nox.session
-@nox.parametrize('py', ['2.7', '3.4', '3.5', '3.6', '3.7'])
+@nox.parametrize('py', ['2.7', '3.6'])
 def unit_grpc_gcp(session, py):
     """Run the unit test suite with grpcio-gcp installed."""
 
