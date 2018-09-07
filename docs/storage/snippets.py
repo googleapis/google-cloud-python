@@ -186,6 +186,27 @@ def get_bucket(client, to_delete):
 
 
 @snippet
+def add_lifecycle_delete_rule(client, to_delete):
+    # [START add_lifecycle_delete_rule]
+    bucket = client.get_bucket('my-bucket')
+    bucket.add_lifecycle_rule_delete(age=2)
+    bucket.patch()
+    # [END add_lifecycle_delete_rule]
+    to_delete.append(bucket)
+
+
+@snippet
+def add_lifecycle_set_storage_class_rule(client, to_delete):
+    # [START add_lifecycle_set_storage_class_rule]
+    bucket = client.get_bucket('my-bucket')
+    bucket.add_lifecycle_rule_set_storage_class(
+        'COLD_LINE', matches_storage_class=['NEARLINE'])
+    bucket.patch()
+    # [END add_lifecycle_set_storage_class_rule]
+    to_delete.append(bucket)
+
+
+@snippet
 def lookup_bucket(client, to_delete):
     from google.cloud.storage.bucket import Bucket
     # [START lookup_bucket]

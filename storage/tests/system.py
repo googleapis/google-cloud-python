@@ -24,6 +24,8 @@ import six
 from google.cloud import exceptions
 from google.cloud import storage
 from google.cloud.storage._helpers import _base64_md5hash
+from google.cloud.storage.bucket import LifecycleRuleDelete
+from google.cloud.storage.bucket import LifecycleRuleSetStorageClass
 from google.cloud import kms
 
 from test_utils.retry import RetryErrors
@@ -120,6 +122,33 @@ class TestStorageBuckets(unittest.TestCase):
         created = retry_429(Config.CLIENT.create_bucket)(new_bucket_name)
         self.case_buckets_to_delete.append(new_bucket_name)
         self.assertEqual(created.name, new_bucket_name)
+
+    def test_lifecycle_rules(self):
+        new_bucket_name = 'w-lifcycle-rules' + unique_resource_id('-')
+        self.assertRaises(exceptions.NotFound,
+                          Config.CLIENT.get_bucket, new_bucket_name)
+        bucket = Config.CLIENT.bucket(new_bucket_name)
+        bucket.add_lifecycle_delete_rule(age=42)
+        bucket.add_lifecycle_set_storage_class_rule(
+            'COLDLINE', is_live=False, matches_storage_class=['NEARLINE'])
+
+        expected_rules = [
+            LifecycleRuleDelete(age=42),
+            LifecycleRuleSetStorageClass(
+                'COLDLINE',
+                is_live=False, matches_storage_class=['NEARLINE']),
+        ]
+
+        retry_429(bucket.create)(location='us')
+
+        self.case_buckets_to_delete.append(new_bucket_name)
+        self.assertEqual(bucket.name, new_bucket_name)
+        self.assertEqual(list(bucket.lifecycle_rules), expected_rules)
+
+        bucket.clear_lifecyle_rules()
+        bucket.patch()
+
+        self.assertEqual(list(bucket.lifecycle_rules), [])
 
     def test_list_buckets(self):
         buckets_to_create = [
