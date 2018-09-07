@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.storage.bucket &#8212; google-cloud 005ddd1177 documentation</title>
+    <title>google.cloud.storage.bucket &#8212; google-cloud 6bad253 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -58,6 +58,7 @@
 <span class="kn">import</span> <span class="nn">six</span>
 
 <span class="kn">from</span> <span class="nn">google.api_core</span> <span class="k">import</span> <span class="n">page_iterator</span>
+<span class="kn">from</span> <span class="nn">google.api_core</span> <span class="k">import</span> <span class="n">datetime_helpers</span>
 <span class="kn">from</span> <span class="nn">google.cloud._helpers</span> <span class="k">import</span> <span class="n">_datetime_to_rfc3339</span>
 <span class="kn">from</span> <span class="nn">google.cloud._helpers</span> <span class="k">import</span> <span class="n">_NOW</span>
 <span class="kn">from</span> <span class="nn">google.cloud._helpers</span> <span class="k">import</span> <span class="n">_rfc3339_to_datetime</span>
@@ -132,6 +133,170 @@
 <span class="sd">    :returns: The next notification being iterated.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">BucketNotification</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">bucket</span><span class="o">=</span><span class="n">iterator</span><span class="o">.</span><span class="n">bucket</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="LifecycleRuleConditions"><a class="viewcode-back" href="../../../../storage/buckets.html#google.cloud.storage.bucket.LifecycleRuleConditions">[docs]</a><span class="k">class</span> <span class="nc">LifecycleRuleConditions</span><span class="p">(</span><span class="nb">dict</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Map a single lifecycle rule for a bucket.</span>
+
+<span class="sd">    See: https://cloud.google.com/storage/docs/lifecycle</span>
+
+<span class="sd">    :type age: int</span>
+<span class="sd">    :param age: (optional) apply rule action to items whos age, in days,</span>
+<span class="sd">                exceeds this value.</span>
+
+<span class="sd">    :type created_before: datetime.date</span>
+<span class="sd">    :param created_before: (optional) apply rule action to items created</span>
+<span class="sd">                           before this date.</span>
+
+<span class="sd">    :type is_live: bool</span>
+<span class="sd">    :param is_live: (optional) if true, apply rule action to non-versioned</span>
+<span class="sd">                    items, or to items with no newer versions. If false, apply</span>
+<span class="sd">                    rule action to versioned items with at least one newer</span>
+<span class="sd">                    version.</span>
+
+<span class="sd">    :type matches_storage_class: list(str), one or more of</span>
+<span class="sd">                                 :attr:`Bucket._STORAGE_CLASSES`.</span>
+<span class="sd">    :param matches_storage_class: (optional) apply rule action to items which</span>
+<span class="sd">                                  whose storage class matches this value.</span>
+
+<span class="sd">    :type number_of_newer_versions: int</span>
+<span class="sd">    :param number_of_newer_versions: (optional) apply rule action to versioned</span>
+<span class="sd">                                     items having N newer versions.</span>
+
+<span class="sd">    :raises ValueError: if no arguments are passed.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">created_before</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">is_live</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">matches_storage_class</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">number_of_newer_versions</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">_factory</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="n">conditions</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="k">if</span> <span class="n">age</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">conditions</span><span class="p">[</span><span class="s1">&#39;age&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">age</span>
+
+        <span class="k">if</span> <span class="n">created_before</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">conditions</span><span class="p">[</span><span class="s1">&#39;createdBefore&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">created_before</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">is_live</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">conditions</span><span class="p">[</span><span class="s1">&#39;isLive&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">is_live</span>
+
+        <span class="k">if</span> <span class="n">matches_storage_class</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">conditions</span><span class="p">[</span><span class="s1">&#39;matchesStorageClass&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">matches_storage_class</span>
+
+        <span class="k">if</span> <span class="n">number_of_newer_versions</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">conditions</span><span class="p">[</span><span class="s1">&#39;numNewerVersions&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">number_of_newer_versions</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">_factory</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">conditions</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Supply at least one condition&quot;</span><span class="p">)</span>
+
+        <span class="nb">super</span><span class="p">(</span><span class="n">LifecycleRuleConditions</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">conditions</span><span class="p">)</span>
+
+<div class="viewcode-block" id="LifecycleRuleConditions.from_api_repr"><a class="viewcode-back" href="../../../../storage/buckets.html#google.cloud.storage.bucket.LifecycleRuleConditions.from_api_repr">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">resource</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Factory:  construct instance from resource.</span>
+
+<span class="sd">        :type resource: dict</span>
+<span class="sd">        :param resource: mapping as returned from API call.</span>
+
+<span class="sd">        :rtype: :class:`LifecycleRuleConditions`</span>
+<span class="sd">        :returns: Instance created from resource.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">instance</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="n">_factory</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">instance</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">resource</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">instance</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">age</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Conditon&#39;s age value.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;age&#39;</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">created_before</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Conditon&#39;s created_before value.&quot;&quot;&quot;</span>
+        <span class="n">before</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;createdBefore&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">before</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">datetime_helpers</span><span class="o">.</span><span class="n">from_iso8601_date</span><span class="p">(</span><span class="n">before</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">is_live</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Conditon&#39;s &#39;is_live&#39; value.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;isLive&#39;</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">matches_storage_class</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Conditon&#39;s &#39;matches_storage_class&#39; value.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;matchesStorageClass&#39;</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">number_of_newer_versions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Conditon&#39;s &#39;number_of_newer_versions&#39; value.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;numNewerVersions&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="LifecycleRuleDelete"><a class="viewcode-back" href="../../../../storage/buckets.html#google.cloud.storage.bucket.LifecycleRuleDelete">[docs]</a><span class="k">class</span> <span class="nc">LifecycleRuleDelete</span><span class="p">(</span><span class="nb">dict</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Map a lifecycle rule deleting matching items.</span>
+
+<span class="sd">    :type kw: dict</span>
+<span class="sd">    :params kw: arguments passed to :class:`LifecycleRuleConditions`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="n">conditions</span> <span class="o">=</span> <span class="n">LifecycleRuleConditions</span><span class="p">(</span><span class="o">**</span><span class="n">kw</span><span class="p">)</span>
+        <span class="n">rule</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;action&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;Delete&#39;</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="s1">&#39;condition&#39;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(</span><span class="n">conditions</span><span class="p">),</span>
+        <span class="p">}</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">LifecycleRuleDelete</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">rule</span><span class="p">)</span>
+
+<div class="viewcode-block" id="LifecycleRuleDelete.from_api_repr"><a class="viewcode-back" href="../../../../storage/buckets.html#google.cloud.storage.bucket.LifecycleRuleDelete.from_api_repr">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">resource</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Factory:  construct instance from resource.</span>
+
+<span class="sd">        :type resource: dict</span>
+<span class="sd">        :param resource: mapping as returned from API call.</span>
+
+<span class="sd">        :rtype: :class:`LifecycleRuleDelete`</span>
+<span class="sd">        :returns: Instance created from resource.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">instance</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="n">_factory</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">instance</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">resource</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">instance</span></div></div>
+
+
+<div class="viewcode-block" id="LifecycleRuleSetStorageClass"><a class="viewcode-back" href="../../../../storage/buckets.html#google.cloud.storage.bucket.LifecycleRuleSetStorageClass">[docs]</a><span class="k">class</span> <span class="nc">LifecycleRuleSetStorageClass</span><span class="p">(</span><span class="nb">dict</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Map a lifecycle rule upating storage class of matching items.</span>
+
+<span class="sd">    :type storage_class: str, one of :attr:`Bucket._STORAGE_CLASSES`.</span>
+<span class="sd">    :param storage_class: new storage class to assign to matching items.</span>
+
+<span class="sd">    :type kw: dict</span>
+<span class="sd">    :params kw: arguments passed to :class:`LifecycleRuleConditions`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">storage_class</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="n">conditions</span> <span class="o">=</span> <span class="n">LifecycleRuleConditions</span><span class="p">(</span><span class="o">**</span><span class="n">kw</span><span class="p">)</span>
+        <span class="n">rule</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;action&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;SetStorageClass&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;storageClass&#39;</span><span class="p">:</span> <span class="n">storage_class</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="s1">&#39;condition&#39;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(</span><span class="n">conditions</span><span class="p">),</span>
+        <span class="p">}</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">LifecycleRuleSetStorageClass</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">rule</span><span class="p">)</span>
+
+<div class="viewcode-block" id="LifecycleRuleSetStorageClass.from_api_repr"><a class="viewcode-back" href="../../../../storage/buckets.html#google.cloud.storage.bucket.LifecycleRuleSetStorageClass.from_api_repr">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">resource</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Factory:  construct instance from resource.</span>
+
+<span class="sd">        :type resource: dict</span>
+<span class="sd">        :param resource: mapping as returned from API call.</span>
+
+<span class="sd">        :rtype: :class:`LifecycleRuleDelete`</span>
+<span class="sd">        :returns: Instance created from resource.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">action</span> <span class="o">=</span> <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;action&#39;</span><span class="p">]</span>
+        <span class="n">instance</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="n">action</span><span class="p">[</span><span class="s1">&#39;storageClass&#39;</span><span class="p">],</span> <span class="n">_factory</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">instance</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">resource</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">instance</span></div></div>
 
 
 <div class="viewcode-block" id="Bucket"><a class="viewcode-back" href="../../../../storage/buckets.html#google.cloud.storage.bucket.Bucket">[docs]</a><span class="k">class</span> <span class="nc">Bucket</span><span class="p">(</span><span class="n">_PropertyMixin</span><span class="p">):</span>
@@ -962,11 +1127,18 @@
 <span class="sd">        :setter: Set lifestyle rules for this bucket.</span>
 <span class="sd">        :getter: Gets the lifestyle rules for this bucket.</span>
 
-<span class="sd">        :rtype: list(dict)</span>
+<span class="sd">        :rtype: generator(dict)</span>
 <span class="sd">        :returns: A sequence of mappings describing each lifecycle rule.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;lifecycle&#39;</span><span class="p">,</span> <span class="p">{})</span>
-        <span class="k">return</span> <span class="p">[</span><span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">rule</span><span class="p">)</span> <span class="k">for</span> <span class="n">rule</span> <span class="ow">in</span> <span class="n">info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;rule&#39;</span><span class="p">,</span> <span class="p">())]</span>
+        <span class="k">for</span> <span class="n">rule</span> <span class="ow">in</span> <span class="n">info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;rule&#39;</span><span class="p">,</span> <span class="p">()):</span>
+            <span class="n">action_type</span> <span class="o">=</span> <span class="n">rule</span><span class="p">[</span><span class="s1">&#39;action&#39;</span><span class="p">][</span><span class="s1">&#39;type&#39;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">action_type</span> <span class="o">==</span> <span class="s1">&#39;Delete&#39;</span><span class="p">:</span>
+                <span class="k">yield</span> <span class="n">LifecycleRuleDelete</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">rule</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">action_type</span> <span class="o">==</span> <span class="s1">&#39;SetStorageClass&#39;</span><span class="p">:</span>
+                <span class="k">yield</span> <span class="n">LifecycleRuleSetStorageClass</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">rule</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Unknown lifecycle rule: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">rule</span><span class="p">))</span>
 
     <span class="nd">@lifecycle_rules</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">lifecycle_rules</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rules</span><span class="p">):</span>
@@ -978,7 +1150,53 @@
 <span class="sd">        :type entries: list of dictionaries</span>
 <span class="sd">        :param entries: A sequence of mappings describing each lifecycle rule.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">rules</span> <span class="o">=</span> <span class="p">[</span><span class="nb">dict</span><span class="p">(</span><span class="n">rule</span><span class="p">)</span> <span class="k">for</span> <span class="n">rule</span> <span class="ow">in</span> <span class="n">rules</span><span class="p">]</span>  <span class="c1"># Convert helpers if needed</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_patch_property</span><span class="p">(</span><span class="s1">&#39;lifecycle&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;rule&#39;</span><span class="p">:</span> <span class="n">rules</span><span class="p">})</span>
+
+<div class="viewcode-block" id="Bucket.clear_lifecyle_rules"><a class="viewcode-back" href="../../../../storage/buckets.html#google.cloud.storage.bucket.Bucket.clear_lifecyle_rules">[docs]</a>    <span class="k">def</span> <span class="nf">clear_lifecyle_rules</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set lifestyle rules configured for this bucket.</span>
+
+<span class="sd">        See https://cloud.google.com/storage/docs/lifecycle and</span>
+<span class="sd">             https://cloud.google.com/storage/docs/json_api/v1/buckets</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lifecycle_rules</span> <span class="o">=</span> <span class="p">[]</span></div>
+
+<div class="viewcode-block" id="Bucket.add_lifecycle_delete_rule"><a class="viewcode-back" href="../../../../storage/buckets.html#google.cloud.storage.bucket.Bucket.add_lifecycle_delete_rule">[docs]</a>    <span class="k">def</span> <span class="nf">add_lifecycle_delete_rule</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Add a &quot;delete&quot; rule to lifestyle rules configured for this bucket.</span>
+
+<span class="sd">        See https://cloud.google.com/storage/docs/lifecycle and</span>
+<span class="sd">             https://cloud.google.com/storage/docs/json_api/v1/buckets</span>
+
+<span class="sd">        .. literalinclude:: snippets.py</span>
+<span class="sd">          :start-after: [START add_lifecycle_delete_rule]</span>
+<span class="sd">          :end-before: [END add_lifecycle_delete_rule]</span>
+
+<span class="sd">        :type kw: dict</span>
+<span class="sd">        :params kw: arguments passed to :class:`LifecycleRuleConditions`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">rules</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lifecycle_rules</span><span class="p">)</span>
+        <span class="n">rules</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">LifecycleRuleDelete</span><span class="p">(</span><span class="o">**</span><span class="n">kw</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lifecycle_rules</span> <span class="o">=</span> <span class="n">rules</span></div>
+
+<div class="viewcode-block" id="Bucket.add_lifecycle_set_storage_class_rule"><a class="viewcode-back" href="../../../../storage/buckets.html#google.cloud.storage.bucket.Bucket.add_lifecycle_set_storage_class_rule">[docs]</a>    <span class="k">def</span> <span class="nf">add_lifecycle_set_storage_class_rule</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">storage_class</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Add a &quot;delete&quot; rule to lifestyle rules configured for this bucket.</span>
+
+<span class="sd">        See https://cloud.google.com/storage/docs/lifecycle and</span>
+<span class="sd">             https://cloud.google.com/storage/docs/json_api/v1/buckets</span>
+
+<span class="sd">        .. literalinclude:: snippets.py</span>
+<span class="sd">          :start-after: [START add_lifecycle_set_storage_class_rule]</span>
+<span class="sd">          :end-before: [END add_lifecycle_set_storage_class_rule]</span>
+
+<span class="sd">        :type storage_class: str, one of :attr:`_STORAGE_CLASSES`.</span>
+<span class="sd">        :param storage_class: new storage class to assign to matching items.</span>
+
+<span class="sd">        :type kw: dict</span>
+<span class="sd">        :params kw: arguments passed to :class:`LifecycleRuleConditions`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">rules</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lifecycle_rules</span><span class="p">)</span>
+        <span class="n">rules</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">LifecycleRuleSetStorageClass</span><span class="p">(</span><span class="n">storage_class</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lifecycle_rules</span> <span class="o">=</span> <span class="n">rules</span></div>
 
     <span class="n">_location</span> <span class="o">=</span> <span class="n">_scalar_property</span><span class="p">(</span><span class="s1">&#39;location&#39;</span><span class="p">)</span>
 
