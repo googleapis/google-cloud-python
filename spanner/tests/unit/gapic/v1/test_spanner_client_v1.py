@@ -570,7 +570,7 @@ class TestSpannerClient(object):
                                           api_config,
                                           merge,
                                           auth_default):
-        spanner_target = 'spanner.googleapis.com:443'
+        spanner_target = spanner_v1.SpannerClient.SERVICE_ADDRESS
         client = spanner_v1.SpannerClient()
         merge.assert_called_once_with(mock.ANY, mock.sentinel.api_config)
         options = [('grpc_gcp.api_config', mock.sentinel.api_config)]
