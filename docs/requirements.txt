@@ -36,3 +36,4 @@ recommonmark >= 0.4.0
 -e translate/
 -e videointelligence/
 -e vision/
+-e websecurityscanner/

@@ -34,6 +34,7 @@
   translate/usage
   vision/index
   videointelligence/index
+  websecurityscanner/index
 
 Google Cloud Client Library for Python
 ======================================

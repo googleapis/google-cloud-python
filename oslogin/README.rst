@@ -8,7 +8,7 @@ Python Client for Google Cloud OS Login API (`Alpha`_)
 
 .. _Alpha: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/README.rst
 .. _Google Cloud OS Login API: https://cloud.google.com/os-login
-.. _Client Library Documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/os-login/usage.html
+.. _Client Library Documentation: https://googlecloudplatform.github.io/google-cloud-python/latest/oslogin/index.html
 .. _Product Documentation:  https://cloud.google.com/os-login
 
 Quick Start
@@ -24,7 +24,7 @@ In order to use this library, you first need to go through the following steps:
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
 .. _Enable the Google Cloud OS Login API.:  https://cloud.google.com/os-login
-.. _Setup Authentication.: https://googlecloudplatform.github.io/google-cloud-python/stable/core/auth.html
+.. _Setup Authentication.: https://googlecloudplatform.github.io/google-cloud-python/latest/core/auth.html
 
 Installation
 ~~~~~~~~~~~~
