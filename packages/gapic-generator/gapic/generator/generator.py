@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import collections
 import os
 from typing import Any, Iterable, Mapping, Sequence, Tuple
 
@@ -71,22 +72,24 @@ class Generator:
             ~.CodeGeneratorResponse: A response describing appropriate
             files and contents. See ``plugin.proto``.
         """
-        output_files = []
+        output_files = collections.OrderedDict()
 
         # Some templates are rendered once per API client library.
         # These are generally boilerplate packaging and metadata files.
-        output_files += self._render_templates(self._env.loader.api_templates)
+        output_files.update(
+            self._render_templates(self._env.loader.api_templates),
+        )
 
         # Some templates are rendered once per service (an API may have
         # one or more services).
         for service in self._api.services.values():
-            output_files += self._render_templates(
+            output_files.update(self._render_templates(
                 self._env.loader.service_templates,
                 additional_context={'service': service},
-            )
+            ))
 
         # Return the CodeGeneratorResponse output.
-        return CodeGeneratorResponse(file=output_files)
+        return CodeGeneratorResponse(file=[i for i in output_files.values()])
 
     def _render_templates(
             self,
@@ -109,7 +112,7 @@ class Generator:
             Sequence[~.CodeGeneratorResponse.File]: A sequence of File
                 objects for inclusion in the final response.
         """
-        answer = []
+        answer = collections.OrderedDict()
         context = additional_context or {}
 
         # Iterate over the provided templates and generate a File object
@@ -117,7 +120,7 @@ class Generator:
         for template_name in templates:
             for fn in self._get_filenames(template_name, context=context):
                 # Generate the File object.
-                answer.append(CodeGeneratorResponse.File(
+                answer[fn] = CodeGeneratorResponse.File(
                     content=formatter.fix_whitespace(
                         self._env.get_template(template_name).render(
                             api=self._api,
@@ -125,7 +128,7 @@ class Generator:
                         ),
                     ),
                     name=fn,
-                ))
+                )
 
         # Done; return the File objects based on these templates.
         return answer
