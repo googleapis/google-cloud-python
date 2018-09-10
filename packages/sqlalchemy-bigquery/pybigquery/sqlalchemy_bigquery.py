@@ -6,6 +6,7 @@ from __future__ import unicode_literals
 from google.cloud.bigquery import dbapi
 from google.cloud.bigquery.schema import SchemaField
 from google.cloud import bigquery
+from google.oauth2 import service_account
 from google.api_core.exceptions import NotFound
 from sqlalchemy.exc import NoSuchTableError
 from sqlalchemy import types, util
@@ -193,10 +194,17 @@ class BigQueryDialect(DefaultDialect):
     supports_simple_order_by_label = True
     postfetch_lastrowid = False
 
-    def __init__(self, arraysize=5000, credentials_path=None, location=None, *args, **kwargs):
+    def __init__(
+            self,
+            arraysize=5000,
+            credentials_path=None,
+            location=None,
+            credentials_info=None,
+            *args, **kwargs):
         super(BigQueryDialect, self).__init__(*args, **kwargs)
         self.arraysize = arraysize
         self.credentials_path = credentials_path
+        self.credentials_info = credentials_info
         self.location = location
 
     @classmethod
@@ -207,6 +215,14 @@ class BigQueryDialect(DefaultDialect):
         if self.credentials_path:
             client = bigquery.Client.from_service_account_json(
                 self.credentials_path, location=self.location)
+        elif self.credentials_info:
+            credentials = service_account.Credentials.from_service_account_info(
+                self.credentials_info)
+            client = bigquery.Client(
+                credentials=credentials,
+                location=self.location,
+                project=self.credentials_info.get('project_id'),
+            )
         else:
             client = bigquery.Client(url.host, location=self.location)
         return ([client], {})
