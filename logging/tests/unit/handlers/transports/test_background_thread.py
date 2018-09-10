@@ -64,7 +64,49 @@ class TestBackgroundThreadHandler(unittest.TestCase):
         transport.send(record, message, _GLOBAL_RESOURCE, None)
 
         transport.worker.enqueue.assert_called_once_with(
-            record, message, _GLOBAL_RESOURCE, None)
+            record, message, _GLOBAL_RESOURCE, None, None, None)
+
+    def test_trace_send(self):
+        from google.cloud.logging.logger import _GLOBAL_RESOURCE
+
+        client = _Client(self.PROJECT)
+        name = 'python_logger'
+
+        transport, _ = self._make_one(client, name)
+
+        python_logger_name = 'mylogger'
+        message = 'hello world'
+        trace = 'the-project/trace/longlogTraceid'
+
+        record = logging.LogRecord(
+            python_logger_name, logging.INFO,
+            None, None, message, trace, None)
+
+        transport.send(record, message, _GLOBAL_RESOURCE, None)
+
+        transport.worker.enqueue.assert_called_once_with(
+            record, message, _GLOBAL_RESOURCE, None, trace, None)
+
+    def test_span_send(self):
+        from google.cloud.logging.logger import _GLOBAL_RESOURCE
+
+        client = _Client(self.PROJECT)
+        name = 'python_logger'
+
+        transport, _ = self._make_one(client, name)
+
+        python_logger_name = 'mylogger'
+        message = 'hello world'
+        span_id = 'the-project/trace/longlogTraceid/span/123456789012abbacdac'
+
+        record = logging.LogRecord(
+            python_logger_name, logging.INFO,
+            None, None, message, None, span_id)
+
+        transport.send(record, message, _GLOBAL_RESOURCE, None)
+
+        transport.worker.enqueue.assert_called_once_with(
+            record, message, _GLOBAL_RESOURCE, None, None, span_id)
 
     def test_flush(self):
         client = _Client(self.PROJECT)
