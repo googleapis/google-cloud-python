@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Python Client for Cloud Data Loss Prevention (DLP) API (Alpha) &#8212; google-cloud de5b775811 documentation</title>
+    <title>Python Client for Cloud Data Loss Prevention (DLP) API (Alpha) &#8212; google-cloud 97a4353 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -40,7 +40,7 @@
 privacy-sensitive fragments in text, images, and Google Cloud Platform
 storage repositories.</p>
 <ul class="simple">
-<li><a class="reference external" href="https://googlecloudplatform.github.io/google-cloud-python/stable/dlp/usage.html">Client Library Documentation</a></li>
+<li><a class="reference external" href="https://googlecloudplatform.github.io/google-cloud-python/latest/dlp/index.html">Client Library Documentation</a></li>
 <li><a class="reference external" href="https://cloud.google.com/dlp">Product Documentation</a></li>
 </ul>
 <div class="section" id="quick-start">
@@ -50,7 +50,7 @@ storage repositories.</p>
 <li><a class="reference external" href="https://console.cloud.google.com/project">Select or create a Cloud Platform project.</a></li>
 <li><a class="reference external" href="https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project">Enable billing for your project.</a></li>
 <li><a class="reference external" href="https://cloud.google.com/dlp">Enable the Cloud Data Loss Prevention (DLP) API.</a></li>
-<li><a class="reference external" href="https://googlecloudplatform.github.io/google-cloud-python/stable/core/auth.html">Setup Authentication.</a></li>
+<li><a class="reference external" href="https://googlecloudplatform.github.io/google-cloud-python/latest/core/auth.html">Setup Authentication.</a></li>
 </ol>
 <div class="section" id="installation">
 <h3>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">#</a></h3>
@@ -79,10 +79,32 @@ dependencies.</p>
 </div>
 </div>
 </div>
+<div class="section" id="preview">
+<h3>Preview<a class="headerlink" href="#preview" title="Permalink to this headline">#</a></h3>
+<div class="section" id="dlpserviceclient">
+<h4>DlpServiceClient<a class="headerlink" href="#dlpserviceclient" title="Permalink to this headline">#</a></h4>
+<div class="code py highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">dlp_v2</span>
+
+<span class="n">client</span> <span class="o">=</span> <span class="n">dlp_v2</span><span class="o">.</span><span class="n">DlpServiceClient</span><span class="p">()</span>
+
+<span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;EMAIL_ADDRESS&#39;</span>
+<span class="n">info_types_element</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">name</span><span class="p">}</span>
+<span class="n">info_types</span> <span class="o">=</span> <span class="p">[</span><span class="n">info_types_element</span><span class="p">]</span>
+<span class="n">inspect_config</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;info_types&#39;</span><span class="p">:</span> <span class="n">info_types</span><span class="p">}</span>
+<span class="n">type_</span> <span class="o">=</span> <span class="s1">&#39;text/plain&#39;</span>
+<span class="n">value</span> <span class="o">=</span> <span class="s1">&#39;My email is example@example.com.&#39;</span>
+<span class="n">items_element</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="n">type_</span><span class="p">,</span> <span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="n">value</span><span class="p">}</span>
+<span class="n">items</span> <span class="o">=</span> <span class="p">[</span><span class="n">items_element</span><span class="p">]</span>
+
+<span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">inspect_content</span><span class="p">(</span><span class="n">inspect_config</span><span class="p">,</span> <span class="n">items</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
 <div class="section" id="next-steps">
 <h3>Next Steps<a class="headerlink" href="#next-steps" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Read the <a class="reference external" href="https://googlecloudplatform.github.io/google-cloud-python/stable/dlp/usage.html">Client Library Documentation</a> for Cloud Data Loss Prevention (DLP) API
+<li>Read the <a class="reference external" href="https://googlecloudplatform.github.io/google-cloud-python/latest/dlp/index.html">Client Library Documentation</a> for Cloud Data Loss Prevention (DLP) API
 API to see other available methods on the client.</li>
 <li>Read the <a class="reference external" href="https://cloud.google.com/dlp">Cloud Data Loss Prevention (DLP) API Product documentation</a> to learn
 more about the product and see How-to Guides.</li>
@@ -178,6 +200,7 @@ APIs that we cover.</li>
 <li class="toctree-l1"><a class="reference internal" href="../translate/usage.html">Translation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../vision/index.html">Vision</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../videointelligence/index.html">Video Intelligence</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../websecurityscanner/index.html">Python Client for Web Security Scanner API (Alpha)</a></li>
 </ul>
 
 <div class="relations">
