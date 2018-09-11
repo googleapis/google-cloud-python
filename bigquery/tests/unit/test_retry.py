@@ -51,3 +51,8 @@ class Test_should_retry(unittest.TestCase):
         exc = mock.Mock(
             errors=[{'reason': 'internalError'}], spec=['errors'])
         self.assertTrue(self._call_fut(exc))
+
+    def test_w_badGateway(self):
+        exc = mock.Mock(
+            errors=[{'reason': 'badGateway'}], spec=['errors'])
+        self.assertTrue(self._call_fut(exc))

@@ -20,6 +20,7 @@ _RETRYABLE_REASONS = frozenset([
     'backendError',
     'rateLimitExceeded',
     'internalError',
+    'badGateway',
 ])
 
 
