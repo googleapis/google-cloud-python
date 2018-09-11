@@ -29,7 +29,8 @@ class SyncTransport(Transport):
     def __init__(self, client, name):
         self.logger = client.logger(name)
 
-    def send(self, record, message, resource=None, labels=None):
+    def send(self, record, message, resource=None, labels=None,
+             trace=None, span_id=None):
         """Overrides transport.send().
 
         :type record: :class:`logging.LogRecord`
@@ -49,4 +50,6 @@ class SyncTransport(Transport):
         self.logger.log_struct(info,
                                severity=record.levelname,
                                resource=resource,
-                               labels=labels)
+                               labels=labels,
+                               trace=trace,
+                               span_id=span_id)
