@@ -6,7 +6,7 @@ Python Client for Cloud Speech API (`Beta`_)
 - `Client Library Documentation`_
 - `Product Documentation`_
 
-.. _Alpha: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/README.rst
+.. _Beta: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/README.rst
 .. _Cloud Speech API: https://cloud.google.com/speech
 .. _Client Library Documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/speech/usage.html
 .. _Product Documentation:  https://cloud.google.com/speech
