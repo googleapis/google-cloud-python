@@ -207,8 +207,21 @@ class BidiRpc(object):
         else:
             call.add_done_callback(self._on_call_done)
 
+        import time
+        import random
+        from unittest import mock
+        from google.cloud.pubsub_v1.proto import pubsub_pb2
+
+        mock_call = mock.MagicMock(wraps=call)
+
+        def mock_next():
+            #time.sleep(random.uniform(0.0, 1.0))
+            return pubsub_pb2.StreamingPullResponse()
+
+        mock_call.__next__.side_effect = mock_next
+
         self._request_generator = request_generator
-        self.call = call
+        self.call = mock_call
 
     def close(self):
         """Closes the stream."""
@@ -239,6 +252,7 @@ class BidiRpc(object):
         # to mean something semantically different.
         if self.call.is_active():
             self._request_queue.put(request)
+            pass
         else:
             # calling next should cause the call to raise.
             next(self.call)
@@ -330,18 +344,19 @@ class ResumableBidiRpc(BidiRpc):
         # Unlike the base class, we only execute the callbacks on a terminal
         # error, not for errors that we can recover from. Note that grpc's
         # "future" here is also a grpc.RpcError.
-        if not self._should_recover(future):
-            self._finalize(future)
-        else:
-            _LOGGER.debug('Re-opening stream from gRPC callback.')
-            self._reopen()
+        with self._operational_lock:
+            if not self._should_recover(future):
+                self._finalize(future)
+            else:
+                _LOGGER.debug('Re-opening stream from gRPC callback.')
+                self._reopen()
 
     def _reopen(self):
         with self._operational_lock:
             # Another thread already managed to re-open this stream.
             if self.call is not None and self.call.is_active():
                 _LOGGER.debug('Stream was already re-established.')
-                return
+                #return
 
             self.call = None
             # Request generator should exit cleanly since the RPC its bound to
@@ -361,6 +376,7 @@ class ResumableBidiRpc(BidiRpc):
             # If re-opening or re-calling the method fails for any reason,
             # consider it a terminal error and finalize the stream.
             except Exception as exc:
+                _LOGGER.debug('Failed to re-open stream due to %s', exc)
                 self._finalize(exc)
                 raise
 
@@ -385,19 +401,57 @@ class ResumableBidiRpc(BidiRpc):
                 return method(*args, **kwargs)
 
             except Exception as exc:
-                _LOGGER.debug('Call to retryable %r caused %s.', method, exc)
-                if not self._should_recover(exc):
-                    self.close()
-                    _LOGGER.debug('Not retrying %r due to %s.', method, exc)
-                    self._finalize(exc)
-                    raise exc
+                with self._operational_lock:
+                    _LOGGER.debug(
+                        'Call to retryable %r caused %s.', method, exc)
 
-            _LOGGER.debug('Re-opening stream from retryable %r.', method)
-            self._reopen()
+                    if not self._should_recover(exc):
+                        self.close()
+                        _LOGGER.debug(
+                            'Not retrying %r due to %s.', method, exc)
+                        self._finalize(exc)
+                        raise exc
+
+                    _LOGGER.debug(
+                        'Re-opening stream from retryable %r.', method)
+                    self._reopen()
+
+    def _send(self, request):
+        # Grab a reference to the RPC call. Because another thread (notably
+        # the gRPC error thread) can modify self.call (by invoking reopen),
+        # we should ensure our reference can not change underneath us.
+        # If self.call is modified (such as replaced with a new RPC call) then
+        # this will use the "old" RPC, which should result in the same
+        # exception passed into gRPC's error handler being raised here, which
+        # will be handled by the usual error handling in retryable.
+        with self._operational_lock:
+            call = self.call
+
+        if call is None:
+            raise ValueError(
+                'Can not send() on an RPC that has never been open()ed.')
+
+        # Don't use self.is_active(), as ResumableBidiRpc will overload it
+        # to mean something semantically different.
+        if call.is_active():
+            self._request_queue.put(request)
+            pass
+        else:
+            # calling next should cause the call to raise.
+            next(call)
 
     def send(self, request):
-        return self._recoverable(
-            super(ResumableBidiRpc, self).send, request)
+        return self._recoverable(self._send, request)
+
+    def _recv(self):
+        with self._operational_lock:
+            call = self.call
+
+        if call is None:
+            raise ValueError(
+                'Can not recv() on an RPC that has never been open()ed.')
+
+        return next(call)
 
     def recv(self):
         return self._recoverable(
@@ -415,6 +469,16 @@ class ResumableBidiRpc(BidiRpc):
         # the stream.
         with self._operational_lock:
             return self.call is not None and not self._finalized
+
+
+def meanie_thread_main(rpc):
+    import time
+    import random
+
+    while True:
+        time.sleep(random.uniform(0, 0.1))
+        print('Wahaha')
+        rpc._reopen()
 
 
 class BackgroundConsumer(object):
@@ -472,6 +536,13 @@ class BackgroundConsumer(object):
             self._bidi_rpc.add_done_callback(self._on_call_done)
             self._bidi_rpc.open()
 
+            import functools
+            meanie_thread = threading.Thread(
+                name='meanie thread',
+                target=functools.partial(meanie_thread_main, self._bidi_rpc))
+            meanie_thread.deamon = True
+            meanie_thread.start()
+
             while self._bidi_rpc.is_active:
                 # Do not allow the paused status to change at all during this
                 # section. There is a condition where we could be resumed
@@ -506,8 +577,7 @@ class BackgroundConsumer(object):
 
         else:
             _LOGGER.error(
-                'The bidirectional RPC unexpectedly exited. This is a truly '
-                'exceptional case. Please file a bug with your logs.')
+                'The bidirectional RPC exited.')
 
         _LOGGER.info('%s exiting', _BIDIRECTIONAL_CONSUMER_NAME)
 
