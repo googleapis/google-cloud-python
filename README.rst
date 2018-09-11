@@ -29,6 +29,19 @@ The following client libraries have **GA** support:
 -  `Google Cloud Translation`_ (`Translation README`_)
 -  `Stackdriver Logging`_ (`Logging README`_)
 
+.. _Google Cloud Datastore: https://pypi.org/project/google-cloud-datastore/
+.. _Datastore README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/datastore
+.. _Google Cloud Natural Language: https://pypi.org/project/google-cloud-language/
+.. _Natural Language README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/language
+.. _Google Cloud Spanner: https://pypi.python.org/pypi/google-cloud-spanner
+.. _Spanner README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/spanner
+.. _Google Cloud Storage: https://pypi.org/project/google-cloud-storage/
+.. _Storage README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/storage
+.. _Google Cloud Translation: https://pypi.org/project/google-cloud-translate/
+.. _Translation README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/translate
+.. _Stackdriver Logging: https://pypi.org/project/google-cloud-logging/
+.. _Logging README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/logging
+
 **GA** (general availability) indicates that the client library for a
 particular service is stable, and that the code surface will not change in
 backwards-incompatible ways unless either absolutely necessary (e.g. because
@@ -55,10 +68,23 @@ The following client libraries have **beta** support:
 mostly stable and is being prepared for release. Issues and requests
 against beta libraries are addressed with a higher priority.
 
+.. _Google BigQuery: https://pypi.org/project/google-cloud-bigquery/
+.. _BigQuery README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/bigquery
+.. _Google Cloud Firestore: https://pypi.org/project/google-cloud-firestore/
+.. _Firestore README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/firestore
+.. _Google Cloud Pub/Sub: https://pypi.org/project/google-cloud-pubsub/
+.. _Pub/Sub README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/pubsub
+.. _Google Cloud Speech: https://pypi.org/project/google-cloud-speech/
+.. _Speech README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/speech
+.. _Google Cloud Video Intelligence: https://pypi.python.org/pypi/google-cloud-videointelligence
+.. _Video Intelligence README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/videointelligence
+.. _Google Cloud Vision: https://pypi.org/project/google-cloud-vision/
+.. _Vision README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/vision
+
 The following client libraries have **alpha** support:
 
+-  `Google Cloud AutoML`_ (`AutoML README`_)
 -  `Google BigQuery Data Transfer`_ (`BigQuery Data Transfer README`_)
--  `Google Cloud AutoML`_ (`AutoML README`_ )
 -  `Google Cloud Bigtable`_ (`Bigtable README`_)
 -  `Google Cloud Bigtable - HappyBase`_ (`HappyBase README`_)
 -  `Google Cloud Container`_ (`Container README`_)
@@ -74,55 +100,32 @@ The following client libraries have **alpha** support:
 still a work-in-progress and is more likely to get backwards-incompatible
 updates. See `versioning`_ for more details.
 
-.. _Google Cloud Datastore: https://pypi.org/project/google-cloud-datastore/
-.. _Datastore README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/datastore
-.. _Google Cloud Storage: https://pypi.org/project/google-cloud-storage/
-.. _Storage README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/storage
-.. _Google Cloud Pub/Sub: https://pypi.org/project/google-cloud-pubsub/
-.. _Pub/Sub README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/pubsub
-.. _Google BigQuery: https://pypi.org/project/google-cloud-bigquery/
-.. _BigQuery README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/bigquery
-.. _Google BigQuery Data Transfer: https://pypi.org/project/google-cloud-bigquery-datatransfer/
-.. _BigQuery Data Transfer README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/bigquery_datatransfer
-.. _Google Cloud Container: https://pypi.org/project/google-cloud-container/
-.. _Container README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/container
-.. _Google Cloud Resource Manager: https://pypi.org/project/google-cloud-resource-manager/
-.. _Resource Manager README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/resource_manager
-.. _Stackdriver Logging: https://pypi.org/project/google-cloud-logging/
-.. _Logging README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/logging
-.. _Stackdriver Monitoring: https://pypi.org/project/google-cloud-monitoring/
-.. _Monitoring README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/monitoring
-.. _Google Cloud Bigtable: https://pypi.org/project/google-cloud-bigtable/
-.. _Bigtable README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/bigtable
-.. _Google Cloud DNS: https://pypi.org/project/google-cloud-dns/
-.. _DNS README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/dns
-.. _Stackdriver Error Reporting: https://pypi.org/project/google-cloud-error-reporting/
-.. _Error Reporting README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/error_reporting
-.. _Google Cloud Natural Language: https://pypi.org/project/google-cloud-language/
-.. _Natural Language README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/language
-.. _Google Cloud Translation: https://pypi.org/project/google-cloud-translate/
-.. _Translation README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/translate
-.. _Google Cloud Speech: https://pypi.org/project/google-cloud-speech/
-.. _Speech README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/speech
-.. _Google Cloud Vision: https://pypi.org/project/google-cloud-vision/
-.. _Vision README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/vision
-.. _Google Cloud Bigtable - HappyBase: https://pypi.org/project/google-cloud-happybase/
-.. _HappyBase README: https://github.com/GoogleCloudPlatform/google-cloud-python-happybase
-.. _Google Cloud Runtime Configuration: https://cloud.google.com/deployment-manager/runtime-configurator/
-.. _Runtime Config README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/runtimeconfig
-.. _Google Cloud Spanner: https://pypi.python.org/pypi/google-cloud-spanner
-.. _Spanner README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/spanner
-.. _Google Cloud Video Intelligence: https://pypi.python.org/pypi/google-cloud-videointelligence
-.. _Video Intelligence README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/videointelligence
-.. _versioning: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/CONTRIBUTING.rst#versioning
-.. _Google Cloud Firestore: https://pypi.org/project/google-cloud-firestore/
-.. _Firestore README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/firestore
-.. _Google Cloud Memorystore for Redis: https://pypi.org/project/google-cloud-redis/
-.. _Redis README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/redis
 .. _Google Cloud AutoML: https://pypi.org/project/google-cloud-automl/
 .. _AutoML README: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/automl
-.. _Google Cloud Security Scanner: https://pypi.org/project/google-cloud-websecurityscanner/
+.. _Google BigQuery Data Transfer: https://pypi.org/project/google-cloud-bigquery-datatransfer/
+.. _BigQuery Data Transfer README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/bigquery_datatransfer
+.. _Google Cloud Bigtable: https://pypi.org/project/google-cloud-bigtable/
+.. _Bigtable README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/bigtable
+.. _Google Cloud Bigtable - HappyBase: https://pypi.org/project/google-cloud-happybase/
+.. _HappyBase README: https://github.com/GoogleCloudPlatform/google-cloud-python-happybase
+.. _Google Cloud Container: https://pypi.org/project/google-cloud-container/
+.. _Container README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/container
+.. _Google Cloud DNS: https://pypi.org/project/google-cloud-dns/
+.. _DNS README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/dns
+.. _Google Cloud Memorystore for Redis: https://pypi.org/project/google-cloud-redis/
+.. _Redis README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/redis
+.. _Google Cloud Resource Manager: https://pypi.org/project/google-cloud-resource-manager/
+.. _Resource Manager README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/resource_manager
+.. _Google Cloud Runtime Configuration: https://cloud.google.com/deployment-manager/runtime-configurator/
+.. _Runtime Config README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/runtimeconfig
+.. _Google Cloud Web Security Scanner: https://pypi.org/project/google-cloud-websecurityscanner/
 .. _Web Security Scanner README: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/websecurityscanner
+.. _Stackdriver Error Reporting: https://pypi.org/project/google-cloud-error-reporting/
+.. _Error Reporting README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/error_reporting
+.. _Stackdriver Monitoring: https://pypi.org/project/google-cloud-monitoring/
+.. _Monitoring README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/monitoring
+
+.. _versioning: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/CONTRIBUTING.rst#versioning
 
 If you need support for other Google APIs, check out the
 `Google APIs Python Client library`_.
