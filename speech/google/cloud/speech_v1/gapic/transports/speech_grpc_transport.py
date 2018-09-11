@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+#
 # Copyright 2018 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -70,7 +72,8 @@ class SpeechGrpcTransport(object):
         # Because this API includes a method that returns a
         # long-running operation (proto: google.longrunning.Operation),
         # instantiate an LRO client.
-        self._operations_client = google.api_core.operations_v1.OperationsClient(channel)
+        self._operations_client = google.api_core.operations_v1.OperationsClient(
+            channel)
 
     @classmethod
     def create_channel(cls,
