@@ -22,7 +22,7 @@
   oslogin/index
   resource-manager/api
   runtimeconfig/usage
-  spanner/usage
+  spanner/index
   speech/index
   error-reporting/usage
   monitoring/index
