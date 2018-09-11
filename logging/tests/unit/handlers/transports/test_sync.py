@@ -67,7 +67,8 @@ class _Logger(object):
     def log_struct(self, message, severity=None,
                    resource=_GLOBAL_RESOURCE, labels=None,
                    trace=None, span_id=None):
-        self.log_struct_called_with = (message, severity, resource, labels, trace, span_id)
+        self.log_struct_called_with = (message, severity, resource, labels,
+                                       trace, span_id)
 
 
 class _Client(object):

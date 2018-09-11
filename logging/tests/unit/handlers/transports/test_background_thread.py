@@ -433,7 +433,8 @@ class _Batch(object):
         assert resource is None
         resource = _GLOBAL_RESOURCE
 
-        self.log_struct_called_with = (info, severity, resource, labels, trace, span_id)
+        self.log_struct_called_with = (info, severity, resource, labels,
+                                       trace, span_id)
         self.entries.append(info)
 
     def commit(self):
