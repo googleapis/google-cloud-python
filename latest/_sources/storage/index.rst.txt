@@ -18,4 +18,10 @@ API Reference
   buckets
   acl
   batch
+
+Changelog
+---------
+.. toctree::
+  :maxdepth: 2
+
   changelog
