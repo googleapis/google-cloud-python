@@ -52,7 +52,8 @@ class TestSyncHandler(unittest.TestCase):
             'message': message,
             'python_logger': python_logger_name,
         }
-        EXPECTED_SENT = (EXPECTED_STRUCT, 'INFO', _GLOBAL_RESOURCE, None)
+        EXPECTED_SENT = (EXPECTED_STRUCT, 'INFO', _GLOBAL_RESOURCE, None,
+                         None, None)
         self.assertEqual(
             transport.logger.log_struct_called_with, EXPECTED_SENT)
 
@@ -65,7 +66,7 @@ class _Logger(object):
 
     def log_struct(self, message, severity=None,
                    resource=_GLOBAL_RESOURCE, labels=None,
-            trace=None, span_id=None):
+                   trace=None, span_id=None):
         self.log_struct_called_with = (message, severity, resource, labels, trace, span_id)
 
 
