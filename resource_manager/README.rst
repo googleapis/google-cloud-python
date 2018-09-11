@@ -27,7 +27,7 @@ With this API, you can do the following:
 
 .. note::
 
-    Don't forget to look at the :ref:`Authentication` section below.
+    Don't forget to look at the `Authentication`_ section below.
     It's slightly different from the rest of this library.
 
 Quick Start
