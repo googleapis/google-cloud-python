@@ -1542,8 +1542,6 @@ def test_load_table_from_uri_append(client, to_delete, capsys):
     # SHared code
     # [START bigquery_load_table_gcs_csv_append]
     # [START bigquery_load_table_gcs_json_append]
-    # [START bigquery_load_table_gcs_parquet_append]
-    # [START bigquery_load_table_gcs_orc_append]
     # from google.cloud import bigquery
     # client = bigquery.Client()
     # table_ref = client.dataset('my_dataset').table('existing_table')
@@ -1555,8 +1553,6 @@ def test_load_table_from_uri_append(client, to_delete, capsys):
     job_config.write_disposition = bigquery.WriteDisposition.WRITE_APPEND
     # [END bigquery_load_table_gcs_csv_append]
     # [END bigquery_load_table_gcs_json_append]
-    # [END bigquery_load_table_gcs_parquet_append]
-    # [END bigquery_load_table_gcs_orc_append]
 
     # Format-specific code
     # [START bigquery_load_table_gcs_csv_append]
@@ -1573,23 +1569,9 @@ def test_load_table_from_uri_append(client, to_delete, capsys):
     uri = 'gs://cloud-samples-data/bigquery/us-states/us-states.json'
     # [END bigquery_load_table_gcs_json_append]
 
-    # [START bigquery_load_table_gcs_parquet_append]
-    # The schema of the parquet file must match the table schema in an append
-    job_config.source_format = bigquery.SourceFormat.PARQUET
-    uri = 'gs://cloud-samples-data/bigquery/us-states/us-states.parquet'
-    # [END bigquery_load_table_gcs_parquet_append]
-
-    # [START bigquery_load_table_gcs_orc_append]
-    # The schema of the orc file must match the table schema in an append
-    job_config.source_format = bigquery.SourceFormat.ORC
-    uri = 'gs://cloud-samples-data/bigquery/us-states/us-states.orc'
-    # [END bigquery_load_table_gcs_orc_append]
-
     # Shared code
     # [START bigquery_load_table_gcs_csv_append]
     # [START bigquery_load_table_gcs_json_append]
-    # [START bigquery_load_table_gcs_parquet_append]
-    # [START bigquery_load_table_gcs_orc_append]
     load_job = client.load_table_from_uri(
         uri,
         table_ref,
@@ -1603,8 +1585,6 @@ def test_load_table_from_uri_append(client, to_delete, capsys):
     print('Loaded {} rows.'.format(destination_table.num_rows - previous_rows))
     # [END bigquery_load_table_gcs_csv_append]
     # [END bigquery_load_table_gcs_json_append]
-    # [END bigquery_load_table_gcs_parquet_append]
-    # [END bigquery_load_table_gcs_orc_append]
 
     out, _ = capsys.readouterr()
     assert previous_rows == 1
