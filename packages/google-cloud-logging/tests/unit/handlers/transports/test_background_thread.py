@@ -61,10 +61,55 @@ class TestBackgroundThreadHandler(unittest.TestCase):
             python_logger_name, logging.INFO,
             None, None, message, None, None)
 
-        transport.send(record, message, _GLOBAL_RESOURCE, None)
+        transport.send(record, message, _GLOBAL_RESOURCE)
 
         transport.worker.enqueue.assert_called_once_with(
-            record, message, _GLOBAL_RESOURCE, None)
+            record, message, _GLOBAL_RESOURCE, None,
+            trace=None, span_id=None)
+
+    def test_trace_send(self):
+        from google.cloud.logging.logger import _GLOBAL_RESOURCE
+
+        client = _Client(self.PROJECT)
+        name = 'python_logger'
+
+        transport, _ = self._make_one(client, name)
+
+        python_logger_name = 'mylogger'
+        message = 'hello world'
+        trace = 'the-project/trace/longlogTraceid'
+
+        record = logging.LogRecord(
+            python_logger_name, logging.INFO,
+            None, None, message, None, None)
+
+        transport.send(record, message, _GLOBAL_RESOURCE, trace=trace)
+
+        transport.worker.enqueue.assert_called_once_with(
+            record, message, _GLOBAL_RESOURCE, None,
+            trace=trace, span_id=None)
+
+    def test_span_send(self):
+        from google.cloud.logging.logger import _GLOBAL_RESOURCE
+
+        client = _Client(self.PROJECT)
+        name = 'python_logger'
+
+        transport, _ = self._make_one(client, name)
+
+        python_logger_name = 'mylogger'
+        message = 'hello world'
+        span_id = 'the-project/trace/longlogTraceid/span/123456789012abbacdac'
+
+        record = logging.LogRecord(
+            python_logger_name, logging.INFO,
+            None, None, message, None, None)
+
+        transport.send(record, message, _GLOBAL_RESOURCE, span_id=span_id)
+
+        transport.worker.enqueue.assert_called_once_with(
+            record, message, _GLOBAL_RESOURCE, None,
+            trace=None, span_id=span_id)
 
     def test_flush(self):
         client = _Client(self.PROJECT)
@@ -381,13 +426,15 @@ class _Batch(object):
         self.commit_count = None
 
     def log_struct(
-            self, info, severity=logging.INFO, resource=None, labels=None):
+            self, info, severity=logging.INFO, resource=None, labels=None,
+            trace=None, span_id=None):
         from google.cloud.logging.logger import _GLOBAL_RESOURCE
 
         assert resource is None
         resource = _GLOBAL_RESOURCE
 
-        self.log_struct_called_with = (info, severity, resource, labels)
+        self.log_struct_called_with = (info, severity, resource, labels,
+                                       trace, span_id)
         self.entries.append(info)
 
     def commit(self):

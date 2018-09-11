@@ -229,7 +229,8 @@ class _Worker(object):
                 'Failed to send %d pending logs.' % (self._queue.qsize(),),
                 file=sys.stderr)
 
-    def enqueue(self, record, message, resource=None, labels=None):
+    def enqueue(self, record, message, resource=None, labels=None,
+                trace=None, span_id=None):
         """Queues a log entry to be written by the background thread.
 
         :type record: :class:`logging.LogRecord`
@@ -244,6 +245,13 @@ class _Worker(object):
 
         :type labels: dict
         :param labels: (Optional) Mapping of labels for the entry.
+
+        :type trace: str
+        :param trace: (optional) traceid to apply to the logging entry.
+
+        :type span_id: str
+        :param span_id: (optional) span_id within the trace for the log entry.
+                        Specify the trace parameter if span_id is set.
         """
         self._queue.put_nowait({
             'info': {
@@ -253,6 +261,8 @@ class _Worker(object):
             'severity': record.levelname,
             'resource': resource,
             'labels': labels,
+            'trace': trace,
+            'span_id': span_id,
         })
 
     def flush(self):
@@ -296,7 +306,8 @@ class BackgroundThreadTransport(Transport):
                               max_latency=max_latency)
         self.worker.start()
 
-    def send(self, record, message, resource=None, labels=None):
+    def send(self, record, message, resource=None, labels=None,
+             trace=None, span_id=None):
         """Overrides Transport.send().
 
         :type record: :class:`logging.LogRecord`
@@ -311,8 +322,16 @@ class BackgroundThreadTransport(Transport):
 
         :type labels: dict
         :param labels: (Optional) Mapping of labels for the entry.
+
+        :type trace: str
+        :param trace: (optional) traceid to apply to the logging entry.
+
+        :type span_id: str
+        :param span_id: (optional) span_id within the trace for the log entry.
+                        Specify the trace parameter if span_id is set.
         """
-        self.worker.enqueue(record, message, resource=resource, labels=labels)
+        self.worker.enqueue(record, message, resource=resource, labels=labels,
+                            trace=trace, span_id=span_id)
 
     def flush(self):
         """Submit any pending log records."""
