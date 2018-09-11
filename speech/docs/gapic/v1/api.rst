@@ -1,5 +1,5 @@
-Client for Google Cloud Speech API
-==================================
+Client for Cloud Speech API
+===========================
 
 .. automodule:: google.cloud.speech_v1
     :members:
