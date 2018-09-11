@@ -1,4 +1,4 @@
-Python Client for Cloud Speech API (`Alpha`_)
+Python Client for Cloud Speech API (`Beta`_)
 =============================================
 
 `Cloud Speech API`_: Converts audio to text by applying powerful neural network models.
