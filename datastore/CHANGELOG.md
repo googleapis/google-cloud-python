@@ -27,7 +27,7 @@
 
 ### Implementation changes
 
-- Don't check 'exclude_from_indexes' for empty lists. (#4915)
+- Don't check `exclude_from_indexes` for empty lists. (#4915)
 
 ### Dependencies
 
@@ -39,7 +39,7 @@
 - Re-enable lint for tests, remove usage of pylint (#4921)
 - Normalize all setup.py files (#4909)
 - Exercise datastore query result paging (#4905)
-- Pass '*session.posargs' through on command line for system tests. (#4904)
+- Pass `*session.posargs` through on command line for system tests. (#4904)
 
 ## 1.5.0
 
