@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Storage &#8212; google-cloud 7d59799 documentation</title>
+    <title>Storage Client &#8212; google-cloud 57d25c2 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -17,7 +17,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Blobs / Objects" href="blobs.html" />
-    <link rel="prev" title="Types for Google Cloud Memorystore for Redis API Client" href="../redis/gapic/v1beta1/types.html" />
+    <link rel="prev" title="Python Client for Google Cloud Storage" href="index.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
@@ -34,29 +34,9 @@
 
           <div class="body" role="main">
             
-  <div class="section" id="storage">
-<h1>Storage<a class="headerlink" href="#storage" title="Permalink to this headline">#</a></h1>
-<div class="toctree-wrapper compound">
-</div>
-<div class="section" id="installation">
-<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">#</a></h2>
-<p>Install the <code class="docutils literal notranslate"><span class="pre">google-cloud-storage</span></code> library using <code class="docutils literal notranslate"><span class="pre">pip</span></code>:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> pip install google-cloud-storage
-</pre></div>
-</div>
-</div>
-<div class="section" id="usage">
-<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">#</a></h2>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">Becuase the <a class="reference internal" href="#google.cloud.storage.client.Client" title="google.cloud.storage.client.Client"><code class="xref py py-class docutils literal notranslate"><span class="pre">Client</span></code></a> uses the
-third-party <a class="reference external" href="http://docs.python-requests.org/en/master/api/#module-requests" title="(in Requests v2.19.1)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">requests</span></code></a> library by default, it is safe to
-share instances across threads.  In multiprocessing scenarious, best
-practice is to create client instances <em>after</em>
-<code class="xref py py-class docutils literal notranslate"><span class="pre">multiprocessing.Pool</span></code> or <a class="reference external" href="https://docs.python.org/3/library/multiprocessing.html#multiprocessing.Process" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">multiprocessing.Process</span></code></a> invokes
-<a class="reference external" href="https://docs.python.org/3/library/os.html#os.fork" title="(in Python v3.7)"><code class="xref py py-func docutils literal notranslate"><span class="pre">os.fork()</span></code></a>.</p>
-</div>
-<span class="target" id="module-google.cloud.storage.client"></span><p>Client for interacting with the Google Cloud Storage API.</p>
+  <div class="section" id="module-google.cloud.storage.client">
+<span id="storage-client"></span><h1>Storage Client<a class="headerlink" href="#module-google.cloud.storage.client" title="Permalink to this headline">#</a></h1>
+<p>Client for interacting with the Google Cloud Storage API.</p>
 <dl class="class">
 <dt id="google.cloud.storage.client.Client">
 <em class="property">class </em><code class="descclassname">google.cloud.storage.client.</code><code class="descname">Client</code><span class="sig-paren">(</span><em>project=&lt;object object&gt;</em>, <em>credentials=None</em>, <em>_http=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/storage/client.html#Client"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.storage.client.Client" title="Permalink to this definition">#</a></dt>
@@ -348,7 +328,6 @@ than catching an exception:</p>
 </dd></dl>
 
 </div>
-</div>
 
 
           </div>
@@ -405,14 +384,9 @@ than catching an exception:</p>
 <li class="toctree-l1"><a class="reference internal" href="../monitoring/index.html">Python Client for Stackdriver Monitoring API (Alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../logging/usage.html">Stackdriver Logging</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../redis/index.html">Python Client for Google Cloud Memorystore for Redis API (Alpha)</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Storage</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="blobs.html">Blobs / Objects</a></li>
-<li class="toctree-l2"><a class="reference internal" href="buckets.html">Buckets</a></li>
-<li class="toctree-l2"><a class="reference internal" href="acl.html">ACL</a></li>
-<li class="toctree-l2"><a class="reference internal" href="batch.html">Batches</a></li>
-<li class="toctree-l2"><a class="reference internal" href="changelog.html">Changelog</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#installation">Installation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#usage">Usage</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Python Client for Google Cloud Storage</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="index.html#quick-start">Quick Start</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html#api-reference">API Reference</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../tasks/index.html">Python Client for Cloud Tasks API (Alpha)</a></li>
@@ -427,8 +401,10 @@ than catching an exception:</p>
 <h3>Related Topics</h3>
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="../redis/gapic/v1beta1/types.html" title="previous chapter">Types for Google Cloud Memorystore for Redis API Client</a></li>
+  <li><a href="index.html">Python Client for Google Cloud Storage</a><ul>
+      <li>Previous: <a href="index.html" title="previous chapter">Python Client for Google Cloud Storage</a></li>
       <li>Next: <a href="blobs.html" title="next chapter">Blobs / Objects</a></li>
+  </ul></li>
   </ul></li>
 </ul>
 </div>
