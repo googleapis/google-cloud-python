@@ -4,6 +4,26 @@
 
 [1]: https://pypi.org/project/google-cloud-spanner/#history
 
+## 1.5.0
+
+### New Features
+
+- Spanner: add support for session / pool labels ([#5734](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/5734))
+- Add support for gRPC connection management ([#5553](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/5553))
+
+### Dependencies
+
+- Add grpcio-gcp dependency for Cloud Spanner ([#5904](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/5904))
+
+### Internal / Testing Changes
+
+- Don't hardcode endpoint URL in grpc_gcp unit tests. ([#5893](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/5893))
+- Run 'grpc_gcp' unit tests only with Python 2.7 / 3.6. ([#5871](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/5871))
+- Nox: use inplace installs ([#5865](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/5865))
+- Spanner benchmarks: print() is a function in Python 3 ([#5862](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/5862))
+- Retry 'test_transaction_read_and_insert_then_rollback' when aborted. ([#5737](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/5737))
+- Skip the flaky 'test_update_database_ddl' systest. ([#5704](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/5704))
+
 ## 1.4.0
 
 ### Implementation Changes
