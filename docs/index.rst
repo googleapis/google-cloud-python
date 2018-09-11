@@ -28,7 +28,7 @@
   monitoring/index
   logging/usage
   redis/index
-  storage/client
+  storage/index
   tasks/index
   texttospeech/index
   translate/usage
