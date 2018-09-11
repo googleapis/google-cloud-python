@@ -1,55 +1,77 @@
 Python Client for Google Cloud Storage
 ======================================
 
-    Python idiomatic client for `Google Cloud Storage`_
-
-.. _Google Cloud Storage: https://cloud.google.com/storage/docs
-
 |pypi| |versions|
 
--  `Documentation`_
-
-.. _Documentation: https://googlecloudplatform.github.io/google-cloud-python/latest/storage/client.html
-
-Quick Start
------------
-
-.. code-block:: console
-
-    $ pip install --upgrade google-cloud-storage
-
-For more information on setting up your Python development environment,
-such as installing ``pip`` and ``virtualenv`` on your system, please refer
-to `Python Development Environment Setup Guide`_ for Google Cloud Platform.
-
-.. _Python Development Environment Setup Guide: https://cloud.google.com/python/setup
-
-Authentication
---------------
-
-With ``google-cloud-python`` we try to make authentication as painless as
-possible. Check out the `Authentication section`_ in our documentation to
-learn more. You may also find the `authentication document`_ shared by all
-the ``google-cloud-*`` libraries to be helpful.
-
-.. _Authentication section: https://google-cloud-python.readthedocs.io/en/latest/core/auth.html
-.. _authentication document: https://github.com/GoogleCloudPlatform/google-cloud-common/tree/master/authentication
-
-Using the API
--------------
-
-Google `Cloud Storage`_ (`Storage API docs`_) allows you to store data on
+`Google Cloud Storage`_ () allows you to store data on
 Google infrastructure with very high reliability, performance and
 availability, and can be used to distribute large data objects to users
 via direct download.
 
-.. _Cloud Storage: https://cloud.google.com/storage/docs
+- `Client Library Documentation`_
+- `Storage API docs`_
+
+.. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-storage.svg
+   :target: https://pypi.org/project/google-cloud-storage
+.. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-storage.svg
+   :target: https://pypi.org/project/google-cloud-storage
+.. _Google Cloud Storage: https://cloud.google.com/storage/docs
+.. _Client Library Documentation: https://googlecloudplatform.github.io/google-cloud-python/latest/storage/client.html
 .. _Storage API docs: https://cloud.google.com/storage/docs/json_api/v1
 
-See the ``google-cloud-python`` API `storage documentation`_ to learn how to
-connect to Cloud Storage using this Client Library.
+Quick Start
+-----------
 
-.. _storage documentation: https://googlecloudplatform.github.io/google-cloud-python/latest/storage/client.html
+In order to use this library, you first need to go through the following steps:
+
+1. `Select or create a Cloud Platform project.`_
+2. `Enable billing for your project.`_
+3. `Enable the Google Cloud Storage API.`_
+4. `Setup Authentication.`_
+
+.. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
+.. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
+.. _Enable the Google Cloud Storage API.:  https://cloud.google.com/storage
+.. _Setup Authentication.: https://googlecloudplatform.github.io/google-cloud-python/latest/core/auth.html
+
+Installation
+~~~~~~~~~~~~
+
+Install this library in a `virtualenv`_ using pip. `virtualenv`_ is a tool to
+create isolated Python environments. The basic problem it addresses is one of
+dependencies and versions, and indirectly permissions.
+
+With `virtualenv`_, it's possible to install this library without needing system
+install permissions, and without clashing with the installed system
+dependencies.
+
+.. _`virtualenv`: https://virtualenv.pypa.io/en/latest/
+
+
+Mac/Linux
+^^^^^^^^^
+
+.. code-block:: console
+
+    pip install virtualenv
+    virtualenv <your-env>
+    source <your-env>/bin/activate
+    <your-env>/bin/pip install google-cloud-storage
+
+
+Windows
+^^^^^^^
+
+.. code-block:: console
+
+    pip install virtualenv
+    virtualenv <your-env>
+    <your-env>\Scripts\activate
+    <your-env>\Scripts\pip.exe install google-cloud-storage
+
+
+Example Usage
+~~~~~~~~~~~~~
 
 You need to create a Google Cloud Storage bucket to use this client library.
 Follow along with the `official Google Cloud Storage documentation`_ to learn
@@ -69,8 +91,3 @@ how to create a bucket.
     blob.upload_from_string('New contents!')
     blob2 = bucket.blob('remote/path/storage.txt')
     blob2.upload_from_filename(filename='/local/path.txt')
-
-.. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-storage.svg
-   :target: https://pypi.org/project/google-cloud-storage
-.. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-storage.svg
-   :target: https://pypi.org/project/google-cloud-storage
