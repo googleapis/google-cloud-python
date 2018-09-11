@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.datastore.client &#8212; google-cloud 413f8e71d9 documentation</title>
+    <title>google.cloud.datastore.client &#8212; google-cloud 24d590b documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -193,7 +193,7 @@
     <span class="k">return</span> <span class="n">results</span>
 
 
-<div class="viewcode-block" id="Client"><a class="viewcode-back" href="../../../../datastore/usage.html#google.cloud.datastore.client.Client">[docs]</a><span class="k">class</span> <span class="nc">Client</span><span class="p">(</span><span class="n">ClientWithProject</span><span class="p">):</span>
+<div class="viewcode-block" id="Client"><a class="viewcode-back" href="../../../../datastore/client.html#google.cloud.datastore.client.Client">[docs]</a><span class="k">class</span> <span class="nc">Client</span><span class="p">(</span><span class="n">ClientWithProject</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Convenience wrapper for invoking APIs/factories w/ a project.</span>
 
 <span class="sd">    .. doctest::</span>
@@ -322,7 +322,7 @@
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">transaction</span><span class="p">,</span> <span class="n">Transaction</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">transaction</span>
 
-<div class="viewcode-block" id="Client.get"><a class="viewcode-back" href="../../../../datastore/usage.html#google.cloud.datastore.client.Client.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">missing</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">deferred</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<div class="viewcode-block" id="Client.get"><a class="viewcode-back" href="../../../../datastore/client.html#google.cloud.datastore.client.Client.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">missing</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">deferred</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">transaction</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">eventual</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Retrieve an entity from a single key (if it exists).</span>
 
@@ -367,7 +367,7 @@
         <span class="k">if</span> <span class="n">entities</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">entities</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div>
 
-<div class="viewcode-block" id="Client.get_multi"><a class="viewcode-back" href="../../../../datastore/usage.html#google.cloud.datastore.client.Client.get_multi">[docs]</a>    <span class="k">def</span> <span class="nf">get_multi</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">keys</span><span class="p">,</span> <span class="n">missing</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">deferred</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<div class="viewcode-block" id="Client.get_multi"><a class="viewcode-back" href="../../../../datastore/client.html#google.cloud.datastore.client.Client.get_multi">[docs]</a>    <span class="k">def</span> <span class="nf">get_multi</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">keys</span><span class="p">,</span> <span class="n">missing</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">deferred</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                   <span class="n">transaction</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">eventual</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Retrieve entities, along with their attributes.</span>
 
@@ -434,7 +434,7 @@
         <span class="k">return</span> <span class="p">[</span><span class="n">helpers</span><span class="o">.</span><span class="n">entity_from_protobuf</span><span class="p">(</span><span class="n">entity_pb</span><span class="p">)</span>
                 <span class="k">for</span> <span class="n">entity_pb</span> <span class="ow">in</span> <span class="n">entity_pbs</span><span class="p">]</span></div>
 
-<div class="viewcode-block" id="Client.put"><a class="viewcode-back" href="../../../../datastore/usage.html#google.cloud.datastore.client.Client.put">[docs]</a>    <span class="k">def</span> <span class="nf">put</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entity</span><span class="p">):</span>
+<div class="viewcode-block" id="Client.put"><a class="viewcode-back" href="../../../../datastore/client.html#google.cloud.datastore.client.Client.put">[docs]</a>    <span class="k">def</span> <span class="nf">put</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entity</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Save an entity in the Cloud Datastore.</span>
 
 <span class="sd">        .. note::</span>
@@ -448,7 +448,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">put_multi</span><span class="p">(</span><span class="n">entities</span><span class="o">=</span><span class="p">[</span><span class="n">entity</span><span class="p">])</span></div>
 
-<div class="viewcode-block" id="Client.put_multi"><a class="viewcode-back" href="../../../../datastore/usage.html#google.cloud.datastore.client.Client.put_multi">[docs]</a>    <span class="k">def</span> <span class="nf">put_multi</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entities</span><span class="p">):</span>
+<div class="viewcode-block" id="Client.put_multi"><a class="viewcode-back" href="../../../../datastore/client.html#google.cloud.datastore.client.Client.put_multi">[docs]</a>    <span class="k">def</span> <span class="nf">put_multi</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entities</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Save entities in the Cloud Datastore.</span>
 
 <span class="sd">        :type entities: list of :class:`google.cloud.datastore.entity.Entity`</span>
@@ -475,7 +475,7 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="n">in_batch</span><span class="p">:</span>
             <span class="n">current</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="Client.delete"><a class="viewcode-back" href="../../../../datastore/usage.html#google.cloud.datastore.client.Client.delete">[docs]</a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+<div class="viewcode-block" id="Client.delete"><a class="viewcode-back" href="../../../../datastore/client.html#google.cloud.datastore.client.Client.delete">[docs]</a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Delete the key in the Cloud Datastore.</span>
 
 <span class="sd">        .. note::</span>
@@ -489,7 +489,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">delete_multi</span><span class="p">(</span><span class="n">keys</span><span class="o">=</span><span class="p">[</span><span class="n">key</span><span class="p">])</span></div>
 
-<div class="viewcode-block" id="Client.delete_multi"><a class="viewcode-back" href="../../../../datastore/usage.html#google.cloud.datastore.client.Client.delete_multi">[docs]</a>    <span class="k">def</span> <span class="nf">delete_multi</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">keys</span><span class="p">):</span>
+<div class="viewcode-block" id="Client.delete_multi"><a class="viewcode-back" href="../../../../datastore/client.html#google.cloud.datastore.client.Client.delete_multi">[docs]</a>    <span class="k">def</span> <span class="nf">delete_multi</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">keys</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Delete keys from the Cloud Datastore.</span>
 
 <span class="sd">        :type keys: list of :class:`google.cloud.datastore.key.Key`</span>
@@ -512,7 +512,7 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="n">in_batch</span><span class="p">:</span>
             <span class="n">current</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="Client.allocate_ids"><a class="viewcode-back" href="../../../../datastore/usage.html#google.cloud.datastore.client.Client.allocate_ids">[docs]</a>    <span class="k">def</span> <span class="nf">allocate_ids</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">incomplete_key</span><span class="p">,</span> <span class="n">num_ids</span><span class="p">):</span>
+<div class="viewcode-block" id="Client.allocate_ids"><a class="viewcode-back" href="../../../../datastore/client.html#google.cloud.datastore.client.Client.allocate_ids">[docs]</a>    <span class="k">def</span> <span class="nf">allocate_ids</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">incomplete_key</span><span class="p">,</span> <span class="n">num_ids</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Allocate a list of IDs from a partial key.</span>
 
 <span class="sd">        :type incomplete_key: :class:`google.cloud.datastore.key.Key`</span>
@@ -540,7 +540,7 @@
         <span class="k">return</span> <span class="p">[</span><span class="n">incomplete_key</span><span class="o">.</span><span class="n">completed_key</span><span class="p">(</span><span class="n">allocated_id</span><span class="p">)</span>
                 <span class="k">for</span> <span class="n">allocated_id</span> <span class="ow">in</span> <span class="n">allocated_ids</span><span class="p">]</span></div>
 
-<div class="viewcode-block" id="Client.key"><a class="viewcode-back" href="../../../../datastore/usage.html#google.cloud.datastore.client.Client.key">[docs]</a>    <span class="k">def</span> <span class="nf">key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">path_args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="Client.key"><a class="viewcode-back" href="../../../../datastore/client.html#google.cloud.datastore.client.Client.key">[docs]</a>    <span class="k">def</span> <span class="nf">key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">path_args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Proxy to :class:`google.cloud.datastore.key.Key`.</span>
 
 <span class="sd">        Passes our ``project``.</span>
@@ -552,11 +552,11 @@
             <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;namespace&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">namespace</span>
         <span class="k">return</span> <span class="n">Key</span><span class="p">(</span><span class="o">*</span><span class="n">path_args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Client.batch"><a class="viewcode-back" href="../../../../datastore/usage.html#google.cloud.datastore.client.Client.batch">[docs]</a>    <span class="k">def</span> <span class="nf">batch</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Client.batch"><a class="viewcode-back" href="../../../../datastore/client.html#google.cloud.datastore.client.Client.batch">[docs]</a>    <span class="k">def</span> <span class="nf">batch</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Proxy to :class:`google.cloud.datastore.batch.Batch`.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">Batch</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Client.transaction"><a class="viewcode-back" href="../../../../datastore/usage.html#google.cloud.datastore.client.Client.transaction">[docs]</a>    <span class="k">def</span> <span class="nf">transaction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="Client.transaction"><a class="viewcode-back" href="../../../../datastore/client.html#google.cloud.datastore.client.Client.transaction">[docs]</a>    <span class="k">def</span> <span class="nf">transaction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Proxy to :class:`google.cloud.datastore.transaction.Transaction`.</span>
 
 <span class="sd">        :type kwargs: dict</span>
@@ -564,7 +564,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">Transaction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Client.query"><a class="viewcode-back" href="../../../../datastore/usage.html#google.cloud.datastore.client.Client.query">[docs]</a>    <span class="k">def</span> <span class="nf">query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="Client.query"><a class="viewcode-back" href="../../../../datastore/client.html#google.cloud.datastore.client.Client.query">[docs]</a>    <span class="k">def</span> <span class="nf">query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Proxy to :class:`google.cloud.datastore.query.Query`.</span>
 
 <span class="sd">        Passes our ``project``.</span>
@@ -684,7 +684,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../bigtable/usage.html">Bigtable</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../container/index.html">Python Client for Google Container Engine API (Beta)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../dataproc/index.html">Python Client for Google Cloud Dataproc API (Alpha)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../datastore/usage.html">Datastore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../datastore/index.html">Python Client for Google Cloud Datastore</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../dlp/index.html">Python Client for Cloud Data Loss Prevention (DLP) API (Alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../dns/usage.html">DNS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../firestore/index.html">Firestore</a></li>
