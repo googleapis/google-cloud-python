@@ -4,6 +4,17 @@
 
 [1]: https://pypi.org/project/google-cloud-speech/#history
 
+## 0.36.0
+
+### New Features
+
+- Re-generate the library to pick up changes and new features in the underlying API. ([#5915](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/5915))
+
+### Documentation
+
+- Fix broken links to description of 'Beta' ([#5917](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/5917))
+- Replace links to '/stable/' with '/latest/'. ([#5901](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/5901))
+
 ## 0.35.0
 
 ### Implementation Changes
