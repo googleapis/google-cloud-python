@@ -18,6 +18,7 @@ from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
 from google.longrunning import operations_pb2 as google_dot_longrunning_dot_operations__pb2
 from google.protobuf import any_pb2 as google_dot_protobuf_dot_any__pb2
 from google.protobuf import duration_pb2 as google_dot_protobuf_dot_duration__pb2
+from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
 from google.protobuf import timestamp_pb2 as google_dot_protobuf_dot_timestamp__pb2
 from google.rpc import status_pb2 as google_dot_rpc_dot_status__pb2
 
@@ -26,9 +27,9 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='google/cloud/speech_v1/proto/cloud_speech.proto',
   package='google.cloud.speech.v1',
   syntax='proto3',
-  serialized_pb=_b('\n/google/cloud/speech_v1/proto/cloud_speech.proto\x12\x16google.cloud.speech.v1\x1a\x1cgoogle/api/annotations.proto\x1a#google/longrunning/operations.proto\x1a\x19google/protobuf/any.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x17google/rpc/status.proto\"\x86\x01\n\x10RecognizeRequest\x12\x39\n\x06\x63onfig\x18\x01 \x01(\x0b\x32).google.cloud.speech.v1.RecognitionConfig\x12\x37\n\x05\x61udio\x18\x02 \x01(\x0b\x32(.google.cloud.speech.v1.RecognitionAudio\"\x91\x01\n\x1bLongRunningRecognizeRequest\x12\x39\n\x06\x63onfig\x18\x01 \x01(\x0b\x32).google.cloud.speech.v1.RecognitionConfig\x12\x37\n\x05\x61udio\x18\x02 \x01(\x0b\x32(.google.cloud.speech.v1.RecognitionAudio\"\x99\x01\n\x19StreamingRecognizeRequest\x12N\n\x10streaming_config\x18\x01 \x01(\x0b\x32\x32.google.cloud.speech.v1.StreamingRecognitionConfigH\x00\x12\x17\n\raudio_content\x18\x02 \x01(\x0cH\x00\x42\x13\n\x11streaming_request\"\x8a\x01\n\x1aStreamingRecognitionConfig\x12\x39\n\x06\x63onfig\x18\x01 \x01(\x0b\x32).google.cloud.speech.v1.RecognitionConfig\x12\x18\n\x10single_utterance\x18\x02 \x01(\x08\x12\x17\n\x0finterim_results\x18\x03 \x01(\x08\"\xb4\x03\n\x11RecognitionConfig\x12I\n\x08\x65ncoding\x18\x01 \x01(\x0e\x32\x37.google.cloud.speech.v1.RecognitionConfig.AudioEncoding\x12\x19\n\x11sample_rate_hertz\x18\x02 \x01(\x05\x12\x15\n\rlanguage_code\x18\x03 \x01(\t\x12\x18\n\x10max_alternatives\x18\x04 \x01(\x05\x12\x18\n\x10profanity_filter\x18\x05 \x01(\x08\x12>\n\x0fspeech_contexts\x18\x06 \x03(\x0b\x32%.google.cloud.speech.v1.SpeechContext\x12 \n\x18\x65nable_word_time_offsets\x18\x08 \x01(\x08\"\x8b\x01\n\rAudioEncoding\x12\x18\n\x14\x45NCODING_UNSPECIFIED\x10\x00\x12\x0c\n\x08LINEAR16\x10\x01\x12\x08\n\x04\x46LAC\x10\x02\x12\t\n\x05MULAW\x10\x03\x12\x07\n\x03\x41MR\x10\x04\x12\n\n\x06\x41MR_WB\x10\x05\x12\x0c\n\x08OGG_OPUS\x10\x06\x12\x1a\n\x16SPEEX_WITH_HEADER_BYTE\x10\x07\" \n\rSpeechContext\x12\x0f\n\x07phrases\x18\x01 \x03(\t\"D\n\x10RecognitionAudio\x12\x11\n\x07\x63ontent\x18\x01 \x01(\x0cH\x00\x12\r\n\x03uri\x18\x02 \x01(\tH\x00\x42\x0e\n\x0c\x61udio_source\"U\n\x11RecognizeResponse\x12@\n\x07results\x18\x02 \x03(\x0b\x32/.google.cloud.speech.v1.SpeechRecognitionResult\"`\n\x1cLongRunningRecognizeResponse\x12@\n\x07results\x18\x02 \x03(\x0b\x32/.google.cloud.speech.v1.SpeechRecognitionResult\"\x9e\x01\n\x1cLongRunningRecognizeMetadata\x12\x18\n\x10progress_percent\x18\x01 \x01(\x05\x12.\n\nstart_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x34\n\x10last_update_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\"\xb1\x02\n\x1aStreamingRecognizeResponse\x12!\n\x05\x65rror\x18\x01 \x01(\x0b\x32\x12.google.rpc.Status\x12\x43\n\x07results\x18\x02 \x03(\x0b\x32\x32.google.cloud.speech.v1.StreamingRecognitionResult\x12]\n\x11speech_event_type\x18\x04 \x01(\x0e\x32\x42.google.cloud.speech.v1.StreamingRecognizeResponse.SpeechEventType\"L\n\x0fSpeechEventType\x12\x1c\n\x18SPEECH_EVENT_UNSPECIFIED\x10\x00\x12\x1b\n\x17\x45ND_OF_SINGLE_UTTERANCE\x10\x01\"\x8d\x01\n\x1aStreamingRecognitionResult\x12J\n\x0c\x61lternatives\x18\x01 \x03(\x0b\x32\x34.google.cloud.speech.v1.SpeechRecognitionAlternative\x12\x10\n\x08is_final\x18\x02 \x01(\x08\x12\x11\n\tstability\x18\x03 \x01(\x02\"e\n\x17SpeechRecognitionResult\x12J\n\x0c\x61lternatives\x18\x01 \x03(\x0b\x32\x34.google.cloud.speech.v1.SpeechRecognitionAlternative\"w\n\x1cSpeechRecognitionAlternative\x12\x12\n\ntranscript\x18\x01 \x01(\t\x12\x12\n\nconfidence\x18\x02 \x01(\x02\x12/\n\x05words\x18\x03 \x03(\x0b\x32 .google.cloud.speech.v1.WordInfo\"t\n\x08WordInfo\x12-\n\nstart_time\x18\x01 \x01(\x0b\x32\x19.google.protobuf.Duration\x12+\n\x08\x65nd_time\x18\x02 \x01(\x0b\x32\x19.google.protobuf.Duration\x12\x0c\n\x04word\x18\x03 \x01(\t2\xa6\x03\n\x06Speech\x12\x81\x01\n\tRecognize\x12(.google.cloud.speech.v1.RecognizeRequest\x1a).google.cloud.speech.v1.RecognizeResponse\"\x1f\x82\xd3\xe4\x93\x02\x19\"\x14/v1/speech:recognize:\x01*\x12\x96\x01\n\x14LongRunningRecognize\x12\x33.google.cloud.speech.v1.LongRunningRecognizeRequest\x1a\x1d.google.longrunning.Operation\"*\x82\xd3\xe4\x93\x02$\"\x1f/v1/speech:longrunningrecognize:\x01*\x12\x7f\n\x12StreamingRecognize\x12\x31.google.cloud.speech.v1.StreamingRecognizeRequest\x1a\x32.google.cloud.speech.v1.StreamingRecognizeResponse(\x01\x30\x01\x42l\n\x1a\x63om.google.cloud.speech.v1B\x0bSpeechProtoP\x01Z<google.golang.org/genproto/googleapis/cloud/speech/v1;speech\xf8\x01\x01\x62\x06proto3')
+  serialized_pb=_b('\n/google/cloud/speech_v1/proto/cloud_speech.proto\x12\x16google.cloud.speech.v1\x1a\x1cgoogle/api/annotations.proto\x1a#google/longrunning/operations.proto\x1a\x19google/protobuf/any.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x17google/rpc/status.proto\"\x86\x01\n\x10RecognizeRequest\x12\x39\n\x06\x63onfig\x18\x01 \x01(\x0b\x32).google.cloud.speech.v1.RecognitionConfig\x12\x37\n\x05\x61udio\x18\x02 \x01(\x0b\x32(.google.cloud.speech.v1.RecognitionAudio\"\x91\x01\n\x1bLongRunningRecognizeRequest\x12\x39\n\x06\x63onfig\x18\x01 \x01(\x0b\x32).google.cloud.speech.v1.RecognitionConfig\x12\x37\n\x05\x61udio\x18\x02 \x01(\x0b\x32(.google.cloud.speech.v1.RecognitionAudio\"\x99\x01\n\x19StreamingRecognizeRequest\x12N\n\x10streaming_config\x18\x01 \x01(\x0b\x32\x32.google.cloud.speech.v1.StreamingRecognitionConfigH\x00\x12\x17\n\raudio_content\x18\x02 \x01(\x0cH\x00\x42\x13\n\x11streaming_request\"\x8a\x01\n\x1aStreamingRecognitionConfig\x12\x39\n\x06\x63onfig\x18\x01 \x01(\x0b\x32).google.cloud.speech.v1.RecognitionConfig\x12\x18\n\x10single_utterance\x18\x02 \x01(\x08\x12\x17\n\x0finterim_results\x18\x03 \x01(\x08\"\xff\x03\n\x11RecognitionConfig\x12I\n\x08\x65ncoding\x18\x01 \x01(\x0e\x32\x37.google.cloud.speech.v1.RecognitionConfig.AudioEncoding\x12\x19\n\x11sample_rate_hertz\x18\x02 \x01(\x05\x12\x15\n\rlanguage_code\x18\x03 \x01(\t\x12\x18\n\x10max_alternatives\x18\x04 \x01(\x05\x12\x18\n\x10profanity_filter\x18\x05 \x01(\x08\x12>\n\x0fspeech_contexts\x18\x06 \x03(\x0b\x32%.google.cloud.speech.v1.SpeechContext\x12 \n\x18\x65nable_word_time_offsets\x18\x08 \x01(\x08\x12$\n\x1c\x65nable_automatic_punctuation\x18\x0b \x01(\x08\x12\r\n\x05model\x18\r \x01(\t\x12\x14\n\x0cuse_enhanced\x18\x0e \x01(\x08\"\x8b\x01\n\rAudioEncoding\x12\x18\n\x14\x45NCODING_UNSPECIFIED\x10\x00\x12\x0c\n\x08LINEAR16\x10\x01\x12\x08\n\x04\x46LAC\x10\x02\x12\t\n\x05MULAW\x10\x03\x12\x07\n\x03\x41MR\x10\x04\x12\n\n\x06\x41MR_WB\x10\x05\x12\x0c\n\x08OGG_OPUS\x10\x06\x12\x1a\n\x16SPEEX_WITH_HEADER_BYTE\x10\x07\" \n\rSpeechContext\x12\x0f\n\x07phrases\x18\x01 \x03(\t\"D\n\x10RecognitionAudio\x12\x11\n\x07\x63ontent\x18\x01 \x01(\x0cH\x00\x12\r\n\x03uri\x18\x02 \x01(\tH\x00\x42\x0e\n\x0c\x61udio_source\"U\n\x11RecognizeResponse\x12@\n\x07results\x18\x02 \x03(\x0b\x32/.google.cloud.speech.v1.SpeechRecognitionResult\"`\n\x1cLongRunningRecognizeResponse\x12@\n\x07results\x18\x02 \x03(\x0b\x32/.google.cloud.speech.v1.SpeechRecognitionResult\"\x9e\x01\n\x1cLongRunningRecognizeMetadata\x12\x18\n\x10progress_percent\x18\x01 \x01(\x05\x12.\n\nstart_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x34\n\x10last_update_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\"\xb1\x02\n\x1aStreamingRecognizeResponse\x12!\n\x05\x65rror\x18\x01 \x01(\x0b\x32\x12.google.rpc.Status\x12\x43\n\x07results\x18\x02 \x03(\x0b\x32\x32.google.cloud.speech.v1.StreamingRecognitionResult\x12]\n\x11speech_event_type\x18\x04 \x01(\x0e\x32\x42.google.cloud.speech.v1.StreamingRecognizeResponse.SpeechEventType\"L\n\x0fSpeechEventType\x12\x1c\n\x18SPEECH_EVENT_UNSPECIFIED\x10\x00\x12\x1b\n\x17\x45ND_OF_SINGLE_UTTERANCE\x10\x01\"\x8d\x01\n\x1aStreamingRecognitionResult\x12J\n\x0c\x61lternatives\x18\x01 \x03(\x0b\x32\x34.google.cloud.speech.v1.SpeechRecognitionAlternative\x12\x10\n\x08is_final\x18\x02 \x01(\x08\x12\x11\n\tstability\x18\x03 \x01(\x02\"e\n\x17SpeechRecognitionResult\x12J\n\x0c\x61lternatives\x18\x01 \x03(\x0b\x32\x34.google.cloud.speech.v1.SpeechRecognitionAlternative\"w\n\x1cSpeechRecognitionAlternative\x12\x12\n\ntranscript\x18\x01 \x01(\t\x12\x12\n\nconfidence\x18\x02 \x01(\x02\x12/\n\x05words\x18\x03 \x03(\x0b\x32 .google.cloud.speech.v1.WordInfo\"t\n\x08WordInfo\x12-\n\nstart_time\x18\x01 \x01(\x0b\x32\x19.google.protobuf.Duration\x12+\n\x08\x65nd_time\x18\x02 \x01(\x0b\x32\x19.google.protobuf.Duration\x12\x0c\n\x04word\x18\x03 \x01(\t2\xa9\x03\n\x06Speech\x12\x81\x01\n\tRecognize\x12(.google.cloud.speech.v1.RecognizeRequest\x1a).google.cloud.speech.v1.RecognizeResponse\"\x1f\x82\xd3\xe4\x93\x02\x19\"\x14/v1/speech:recognize:\x01*\x12\x96\x01\n\x14LongRunningRecognize\x12\x33.google.cloud.speech.v1.LongRunningRecognizeRequest\x1a\x1d.google.longrunning.Operation\"*\x82\xd3\xe4\x93\x02$\"\x1f/v1/speech:longrunningrecognize:\x01*\x12\x81\x01\n\x12StreamingRecognize\x12\x31.google.cloud.speech.v1.StreamingRecognizeRequest\x1a\x32.google.cloud.speech.v1.StreamingRecognizeResponse\"\x00(\x01\x30\x01\x42l\n\x1a\x63om.google.cloud.speech.v1B\x0bSpeechProtoP\x01Z<google.golang.org/genproto/googleapis/cloud/speech/v1;speech\xf8\x01\x01\x62\x06proto3')
   ,
-  dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR,google_dot_longrunning_dot_operations__pb2.DESCRIPTOR,google_dot_protobuf_dot_any__pb2.DESCRIPTOR,google_dot_protobuf_dot_duration__pb2.DESCRIPTOR,google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,google_dot_rpc_dot_status__pb2.DESCRIPTOR,])
+  dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR,google_dot_longrunning_dot_operations__pb2.DESCRIPTOR,google_dot_protobuf_dot_any__pb2.DESCRIPTOR,google_dot_protobuf_dot_duration__pb2.DESCRIPTOR,google_dot_protobuf_dot_empty__pb2.DESCRIPTOR,google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,google_dot_rpc_dot_status__pb2.DESCRIPTOR,])
 
 
 
@@ -73,8 +74,8 @@ _RECOGNITIONCONFIG_AUDIOENCODING = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=1139,
-  serialized_end=1278,
+  serialized_start=1243,
+  serialized_end=1382,
 )
 _sym_db.RegisterEnumDescriptor(_RECOGNITIONCONFIG_AUDIOENCODING)
 
@@ -95,8 +96,8 @@ _STREAMINGRECOGNIZERESPONSE_SPEECHEVENTTYPE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=1960,
-  serialized_end=2036,
+  serialized_start=2064,
+  serialized_end=2140,
 )
 _sym_db.RegisterEnumDescriptor(_STREAMINGRECOGNIZERESPONSE_SPEECHEVENTTYPE)
 
@@ -134,8 +135,8 @@ _RECOGNIZEREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=260,
-  serialized_end=394,
+  serialized_start=289,
+  serialized_end=423,
 )
 
 
@@ -172,8 +173,8 @@ _LONGRUNNINGRECOGNIZEREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=397,
-  serialized_end=542,
+  serialized_start=426,
+  serialized_end=571,
 )
 
 
@@ -213,8 +214,8 @@ _STREAMINGRECOGNIZEREQUEST = _descriptor.Descriptor(
       name='streaming_request', full_name='google.cloud.speech.v1.StreamingRecognizeRequest.streaming_request',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=545,
-  serialized_end=698,
+  serialized_start=574,
+  serialized_end=727,
 )
 
 
@@ -258,8 +259,8 @@ _STREAMINGRECOGNITIONCONFIG = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=701,
-  serialized_end=839,
+  serialized_start=730,
+  serialized_end=868,
 )
 
 
@@ -319,6 +320,27 @@ _RECOGNITIONCONFIG = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='enable_automatic_punctuation', full_name='google.cloud.speech.v1.RecognitionConfig.enable_automatic_punctuation', index=7,
+      number=11, type=8, cpp_type=7, label=1,
+      has_default_value=False, default_value=False,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='model', full_name='google.cloud.speech.v1.RecognitionConfig.model', index=8,
+      number=13, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='use_enhanced', full_name='google.cloud.speech.v1.RecognitionConfig.use_enhanced', index=9,
+      number=14, type=8, cpp_type=7, label=1,
+      has_default_value=False, default_value=False,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -332,8 +354,8 @@ _RECOGNITIONCONFIG = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=842,
-  serialized_end=1278,
+  serialized_start=871,
+  serialized_end=1382,
 )
 
 
@@ -363,8 +385,8 @@ _SPEECHCONTEXT = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1280,
-  serialized_end=1312,
+  serialized_start=1384,
+  serialized_end=1416,
 )
 
 
@@ -404,8 +426,8 @@ _RECOGNITIONAUDIO = _descriptor.Descriptor(
       name='audio_source', full_name='google.cloud.speech.v1.RecognitionAudio.audio_source',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=1314,
-  serialized_end=1382,
+  serialized_start=1418,
+  serialized_end=1486,
 )
 
 
@@ -435,8 +457,8 @@ _RECOGNIZERESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1384,
-  serialized_end=1469,
+  serialized_start=1488,
+  serialized_end=1573,
 )
 
 
@@ -466,8 +488,8 @@ _LONGRUNNINGRECOGNIZERESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1471,
-  serialized_end=1567,
+  serialized_start=1575,
+  serialized_end=1671,
 )
 
 
@@ -511,8 +533,8 @@ _LONGRUNNINGRECOGNIZEMETADATA = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1570,
-  serialized_end=1728,
+  serialized_start=1674,
+  serialized_end=1832,
 )
 
 
@@ -557,8 +579,8 @@ _STREAMINGRECOGNIZERESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1731,
-  serialized_end=2036,
+  serialized_start=1835,
+  serialized_end=2140,
 )
 
 
@@ -602,8 +624,8 @@ _STREAMINGRECOGNITIONRESULT = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2039,
-  serialized_end=2180,
+  serialized_start=2143,
+  serialized_end=2284,
 )
 
 
@@ -633,8 +655,8 @@ _SPEECHRECOGNITIONRESULT = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2182,
-  serialized_end=2283,
+  serialized_start=2286,
+  serialized_end=2387,
 )
 
 
@@ -678,8 +700,8 @@ _SPEECHRECOGNITIONALTERNATIVE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2285,
-  serialized_end=2404,
+  serialized_start=2389,
+  serialized_end=2508,
 )
 
 
@@ -723,8 +745,8 @@ _WORDINFO = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2406,
-  serialized_end=2522,
+  serialized_start=2510,
+  serialized_end=2626,
 )
 
 _RECOGNIZEREQUEST.fields_by_name['config'].message_type = _RECOGNITIONCONFIG
@@ -843,8 +865,8 @@ StreamingRecognizeRequest = _reflection.GeneratedProtocolMessageType('StreamingR
           ``audio_content`` data. The audio bytes must be encoded as
           specified in ``RecognitionConfig``. Note: as with all bytes
           fields, protobuffers use a pure binary representation (not
-          base64). See `audio limits
-          <https://cloud.google.com/speech/limits#content>`__.
+          base64). See `content limits </speech-to-
+          text/quotas#content>`__.
   """,
   # @@protoc_insertion_point(class_scope:google.cloud.speech.v1.StreamingRecognizeRequest)
   ))
@@ -896,21 +918,27 @@ RecognitionConfig = _reflection.GeneratedProtocolMessageType('RecognitionConfig'
   
   Attributes:
       encoding:
-          *Required* Encoding of audio data sent in all
-          ``RecognitionAudio`` messages.
+          Encoding of audio data sent in all ``RecognitionAudio``
+          messages. This field is optional for ``FLAC`` and ``WAV``
+          audio files and required for all other audio formats. For
+          details, see [AudioEncoding][google.cloud.speech.v1.Recognitio
+          nConfig.AudioEncoding].
       sample_rate_hertz:
-          *Required* Sample rate in Hertz of the audio data sent in all
+          Sample rate in Hertz of the audio data sent in all
           ``RecognitionAudio`` messages. Valid values are: 8000-48000.
           16000 is optimal. For best results, set the sampling rate of
           the audio source to 16000 Hz. If that's not possible, use the
           native sample rate of the audio source (instead of re-
-          sampling).
+          sampling). This field is optional for ``FLAC`` and ``WAV``
+          audio files and required for all other audio formats. For
+          details, see [AudioEncoding][google.cloud.speech.v1.Recognitio
+          nConfig.AudioEncoding].
       language_code:
           *Required* The language of the supplied audio as a `BCP-47
           <https://www.rfc-editor.org/rfc/bcp/bcp47.txt>`__ language
-          tag. Example: "en-US". See `Language Support
-          <https://cloud.google.com/speech/docs/languages>`__ for a list
-          of the currently supported language codes.
+          tag. Example: "en-US". See `Language Support </speech-to-
+          text/docs/languages>`__ for a list of the currently supported
+          language codes.
       max_alternatives:
           *Optional* Maximum number of recognition hypotheses to be
           returned. Specifically, the maximum number of
@@ -926,13 +954,63 @@ RecognitionConfig = _reflection.GeneratedProtocolMessageType('RecognitionConfig'
           "f\*\*\*". If set to ``false`` or omitted, profanities won't
           be filtered out.
       speech_contexts:
-          *Optional* A means to provide context to assist the speech
-          recognition.
+          *Optional* array of
+          [SpeechContext][google.cloud.speech.v1.SpeechContext]. A means
+          to provide context to assist the speech recognition. For more
+          information, see `Phrase Hints </speech-to-
+          text/docs/basics#phrase-hints>`__.
       enable_word_time_offsets:
           *Optional* If ``true``, the top result includes a list of
           words and the start and end time offsets (timestamps) for
           those words. If ``false``, no word-level time offset
           information is returned. The default is ``false``.
+      enable_automatic_punctuation:
+          *Optional* If 'true', adds punctuation to recognition result
+          hypotheses. This feature is only available in select
+          languages. Setting this for requests in other languages has no
+          effect at all. The default 'false' value does not add
+          punctuation to result hypotheses. Note: This is currently
+          offered as an experimental service, complimentary to all
+          users. In the future this may be exclusively available as a
+          premium feature.
+      model:
+          *Optional* Which model to select for the given request. Select
+          the model best suited to your domain to get best results. If a
+          model is not explicitly specified, then we auto-select a model
+          based on the parameters in the RecognitionConfig.  .. raw::
+          html     <table>  .. raw:: html     <tr>  ::
+          <td><b>Model</b></td>     <td><b>Description</b></td>  ..
+          raw:: html     </tr>  .. raw:: html     <tr>  ::
+          <td><code>command_and_search</code></td>     <td>Best for
+          short queries such as voice commands or voice search.</td>  ..
+          raw:: html     </tr>  .. raw:: html     <tr>  ::
+          <td><code>phone_call</code></td>     <td>Best for audio that
+          originated from a phone call (typically     recorded at an
+          8khz sampling rate).</td>  .. raw:: html     </tr>  .. raw::
+          html     <tr>  ::      <td><code>video</code></td>
+          <td>Best for audio that originated from from video or includes
+          multiple         speakers. Ideally the audio is recorded at a
+          16khz or greater         sampling rate. This is a premium
+          model that costs more than the         standard rate.</td>  ..
+          raw:: html     </tr>  .. raw:: html     <tr>  ::
+          <td><code>default</code></td>     <td>Best for audio that is
+          not one of the specific audio models.         For example,
+          long-form audio. Ideally the audio is high-fidelity,
+          recorded at a 16khz or greater sampling rate.</td>  .. raw::
+          html     </tr>  .. raw:: html     </table>
+      use_enhanced:
+          *Optional* Set to true to use an enhanced model for speech
+          recognition. You must also set the ``model`` field to a valid,
+          enhanced model. If ``use_enhanced`` is set to true and the
+          ``model`` field is not set, then ``use_enhanced`` is ignored.
+          If ``use_enhanced`` is true and an enhanced version of the
+          specified model does not exist, then the speech is recognized
+          using the standard version of the specified model.  Enhanced
+          speech models require that you opt-in to data logging using
+          instructions in the `documentation </speech-to-text/enable-
+          data-logging>`__. If you set ``use_enhanced`` to true and you
+          have not enabled audio logging, then you will receive an
+          error.
   """,
   # @@protoc_insertion_point(class_scope:google.cloud.speech.v1.RecognitionConfig)
   ))
@@ -954,8 +1032,7 @@ SpeechContext = _reflection.GeneratedProtocolMessageType('SpeechContext', (_mess
           specific words and phrases, for example, if specific commands
           are typically spoken by the user. This can also be used to add
           additional words to the vocabulary of the recognizer. See
-          `usage limits
-          <https://cloud.google.com/speech/limits#content>`__.
+          `usage limits </speech-to-text/quotas#content>`__.
   """,
   # @@protoc_insertion_point(class_scope:google.cloud.speech.v1.SpeechContext)
   ))
@@ -969,7 +1046,7 @@ RecognitionAudio = _reflection.GeneratedProtocolMessageType('RecognitionAudio', 
   ``RecognitionConfig``. Either ``content`` or ``uri`` must be supplied.
   Supplying both or neither returns
   [google.rpc.Code.INVALID\_ARGUMENT][google.rpc.Code.INVALID\_ARGUMENT].
-  See `audio limits <https://cloud.google.com/speech/limits#content>`__.
+  See `content limits </speech-to-text/quotas#content>`__.
   
   
   Attributes:
@@ -983,13 +1060,14 @@ RecognitionAudio = _reflection.GeneratedProtocolMessageType('RecognitionAudio', 
           representations use base64.
       uri:
           URI that points to a file that contains audio data bytes as
-          specified in ``RecognitionConfig``. Currently, only Google
-          Cloud Storage URIs are supported, which must be specified in
-          the following format: ``gs://bucket_name/object_name`` (other
-          URI formats return [google.rpc.Code.INVALID\_ARGUMENT][google.
-          rpc.Code.INVALID\_ARGUMENT]). For more information, see
-          `Request URIs
-          <https://cloud.google.com/storage/docs/reference-uris>`__.
+          specified in ``RecognitionConfig``. The file must not be
+          compressed (for example, gzip). Currently, only Google Cloud
+          Storage URIs are supported, which must be specified in the
+          following format: ``gs://bucket_name/object_name`` (other URI
+          formats return [google.rpc.Code.INVALID\_ARGUMENT][google.rpc.
+          Code.INVALID\_ARGUMENT]). For more information, see `Request
+          URIs <https://cloud.google.com/storage/docs/reference-
+          uris>`__.
   """,
   # @@protoc_insertion_point(class_scope:google.cloud.speech.v1.RecognitionAudio)
   ))
@@ -1006,7 +1084,7 @@ RecognizeResponse = _reflection.GeneratedProtocolMessageType('RecognizeResponse'
   
   Attributes:
       results:
-          *Output-only* Sequential list of transcription results
+          Output only. Sequential list of transcription results
           corresponding to sequential portions of audio.
   """,
   # @@protoc_insertion_point(class_scope:google.cloud.speech.v1.RecognizeResponse)
@@ -1027,7 +1105,7 @@ LongRunningRecognizeResponse = _reflection.GeneratedProtocolMessageType('LongRun
   
   Attributes:
       results:
-          *Output-only* Sequential list of transcription results
+          Output only. Sequential list of transcription results
           corresponding to sequential portions of audio.
   """,
   # @@protoc_insertion_point(class_scope:google.cloud.speech.v1.LongRunningRecognizeResponse)
@@ -1115,17 +1193,17 @@ StreamingRecognizeResponse = _reflection.GeneratedProtocolMessageType('Streaming
   
   Attributes:
       error:
-          *Output-only* If set, returns a
+          Output only. If set, returns a
           [google.rpc.Status][google.rpc.Status] message that specifies
           the error for the operation.
       results:
-          *Output-only* This repeated list contains zero or more results
+          Output only. This repeated list contains zero or more results
           that correspond to consecutive portions of the audio currently
-          being processed. It contains zero or more ``is_final=false``
-          results followed by zero or one ``is_final=true`` result (the
-          newly settled portion).
+          being processed. It contains zero or one ``is_final=true``
+          result (the newly settled portion), followed by zero or more
+          ``is_final=false`` results (the interim results).
       speech_event_type:
-          *Output-only* Indicates the type of speech event.
+          Output only. Indicates the type of speech event.
   """,
   # @@protoc_insertion_point(class_scope:google.cloud.speech.v1.StreamingRecognizeResponse)
   ))
@@ -1141,23 +1219,25 @@ StreamingRecognitionResult = _reflection.GeneratedProtocolMessageType('Streaming
   
   Attributes:
       alternatives:
-          *Output-only* May contain one or more recognition hypotheses
-          (up to the maximum specified in ``max_alternatives``).
+          Output only. May contain one or more recognition hypotheses
+          (up to the maximum specified in ``max_alternatives``). These
+          alternatives are ordered in terms of accuracy, with the top
+          (first) alternative being the most probable, as ranked by the
+          recognizer.
       is_final:
-          *Output-only* If ``false``, this
-          ``StreamingRecognitionResult`` represents an interim result
-          that may change. If ``true``, this is the final time the
-          speech service will return this particular
-          ``StreamingRecognitionResult``, the recognizer will not return
-          any further hypotheses for this portion of the transcript and
-          corresponding audio.
+          Output only. If ``false``, this ``StreamingRecognitionResult``
+          represents an interim result that may change. If ``true``,
+          this is the final time the speech service will return this
+          particular ``StreamingRecognitionResult``, the recognizer will
+          not return any further hypotheses for this portion of the
+          transcript and corresponding audio.
       stability:
-          *Output-only* An estimate of the likelihood that the
-          recognizer will not change its guess about this interim
-          result. Values range from 0.0 (completely unstable) to 1.0
-          (completely stable). This field is only provided for interim
-          results (``is_final=false``). The default of 0.0 is a sentinel
-          value indicating ``stability`` was not set.
+          Output only. An estimate of the likelihood that the recognizer
+          will not change its guess about this interim result. Values
+          range from 0.0 (completely unstable) to 1.0 (completely
+          stable). This field is only provided for interim results
+          (``is_final=false``). The default of 0.0 is a sentinel value
+          indicating ``stability`` was not set.
   """,
   # @@protoc_insertion_point(class_scope:google.cloud.speech.v1.StreamingRecognitionResult)
   ))
@@ -1172,7 +1252,7 @@ SpeechRecognitionResult = _reflection.GeneratedProtocolMessageType('SpeechRecogn
   
   Attributes:
       alternatives:
-          *Output-only* May contain one or more recognition hypotheses
+          Output only. May contain one or more recognition hypotheses
           (up to the maximum specified in ``max_alternatives``). These
           alternatives are ordered in terms of accuracy, with the top
           (first) alternative being the most probable, as ranked by the
@@ -1191,19 +1271,19 @@ SpeechRecognitionAlternative = _reflection.GeneratedProtocolMessageType('SpeechR
   
   Attributes:
       transcript:
-          *Output-only* Transcript text representing the words that the
+          Output only. Transcript text representing the words that the
           user spoke.
       confidence:
-          *Output-only* The confidence estimate between 0.0 and 1.0. A
+          Output only. The confidence estimate between 0.0 and 1.0. A
           higher number indicates an estimated greater likelihood that
-          the recognized words are correct. This field is typically
-          provided only for the top hypothesis, and only for
-          ``is_final=true`` results. Clients should not rely on the
-          ``confidence`` field as it is not guaranteed to be accurate or
-          consistent. The default of 0.0 is a sentinel value indicating
-          ``confidence`` was not set.
+          the recognized words are correct. This field is set only for
+          the top alternative of a non-streaming result or, of a
+          streaming result where ``is_final=true``. This field is not
+          guaranteed to be accurate and users should not rely on it to
+          be always provided. The default of 0.0 is a sentinel value
+          indicating ``confidence`` was not set.
       words:
-          *Output-only* A list of word-specific information for each
+          Output only. A list of word-specific information for each
           recognized word.
   """,
   # @@protoc_insertion_point(class_scope:google.cloud.speech.v1.SpeechRecognitionAlternative)
@@ -1214,26 +1294,24 @@ WordInfo = _reflection.GeneratedProtocolMessageType('WordInfo', (_message.Messag
   DESCRIPTOR = _WORDINFO,
   __module__ = 'google.cloud.speech_v1.proto.cloud_speech_pb2'
   ,
-  __doc__ = """Word-specific information for recognized words. Word information is only
-  included in the response when certain request parameters are set, such
-  as ``enable_word_time_offsets``.
+  __doc__ = """Word-specific information for recognized words.
   
   
   Attributes:
       start_time:
-          *Output-only* Time offset relative to the beginning of the
+          Output only. Time offset relative to the beginning of the
           audio, and corresponding to the start of the spoken word. This
           field is only set if ``enable_word_time_offsets=true`` and
           only in the top hypothesis. This is an experimental feature
           and the accuracy of the time offset can vary.
       end_time:
-          *Output-only* Time offset relative to the beginning of the
+          Output only. Time offset relative to the beginning of the
           audio, and corresponding to the end of the spoken word. This
           field is only set if ``enable_word_time_offsets=true`` and
           only in the top hypothesis. This is an experimental feature
           and the accuracy of the time offset can vary.
       word:
-          *Output-only* The word corresponding to this set of
+          Output only. The word corresponding to this set of
           information.
   """,
   # @@protoc_insertion_point(class_scope:google.cloud.speech.v1.WordInfo)
@@ -1250,8 +1328,8 @@ _SPEECH = _descriptor.ServiceDescriptor(
   file=DESCRIPTOR,
   index=0,
   options=None,
-  serialized_start=2525,
-  serialized_end=2947,
+  serialized_start=2629,
+  serialized_end=3054,
   methods=[
   _descriptor.MethodDescriptor(
     name='Recognize',
