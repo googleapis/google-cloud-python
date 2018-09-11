@@ -263,8 +263,7 @@ class StreamingPullManager(object):
         """Queue a request to be sent to the RPC."""
         if self._UNARY_REQUESTS:
             try:
-                pass
-                #self._send_unary_request(request)
+                self._send_unary_request(request)
             except exceptions.GoogleAPICallError as exc:
                 _LOGGER.debug(
                     'Exception while sending unary RPC. This is typically '

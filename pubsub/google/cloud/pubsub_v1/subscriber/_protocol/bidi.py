@@ -207,21 +207,8 @@ class BidiRpc(object):
         else:
             call.add_done_callback(self._on_call_done)
 
-        import time
-        import random
-        from unittest import mock
-        from google.cloud.pubsub_v1.proto import pubsub_pb2
-
-        mock_call = mock.MagicMock(wraps=call)
-
-        def mock_next():
-            #time.sleep(random.uniform(0.0, 1.0))
-            return pubsub_pb2.StreamingPullResponse()
-
-        mock_call.__next__.side_effect = mock_next
-
         self._request_generator = request_generator
-        self.call = mock_call
+        self.call = call
 
     def close(self):
         """Closes the stream."""
@@ -252,7 +239,6 @@ class BidiRpc(object):
         # to mean something semantically different.
         if self.call.is_active():
             self._request_queue.put(request)
-            pass
         else:
             # calling next should cause the call to raise.
             next(self.call)
@@ -356,7 +342,7 @@ class ResumableBidiRpc(BidiRpc):
             # Another thread already managed to re-open this stream.
             if self.call is not None and self.call.is_active():
                 _LOGGER.debug('Stream was already re-established.')
-                #return
+                return
 
             self.call = None
             # Request generator should exit cleanly since the RPC its bound to
@@ -454,8 +440,7 @@ class ResumableBidiRpc(BidiRpc):
         return next(call)
 
     def recv(self):
-        return self._recoverable(
-            super(ResumableBidiRpc, self).recv)
+        return self._recoverable(self._recv)
 
     @property
     def is_active(self):
@@ -469,16 +454,6 @@ class ResumableBidiRpc(BidiRpc):
         # the stream.
         with self._operational_lock:
             return self.call is not None and not self._finalized
-
-
-def meanie_thread_main(rpc):
-    import time
-    import random
-
-    while True:
-        time.sleep(random.uniform(0, 0.1))
-        print('Wahaha')
-        rpc._reopen()
 
 
 class BackgroundConsumer(object):
@@ -535,13 +510,6 @@ class BackgroundConsumer(object):
         try:
             self._bidi_rpc.add_done_callback(self._on_call_done)
             self._bidi_rpc.open()
-
-            import functools
-            meanie_thread = threading.Thread(
-                name='meanie thread',
-                target=functools.partial(meanie_thread_main, self._bidi_rpc))
-            meanie_thread.deamon = True
-            meanie_thread.start()
 
             while self._bidi_rpc.is_active:
                 # Do not allow the paused status to change at all during this
