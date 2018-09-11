@@ -159,11 +159,13 @@ def get_user_account_credentials(
         if os.path.isfile("bigquery_credentials.dat"):
             os.rename("bigquery_credentials.dat", credentials_path)
 
-    credentials = load_user_account_credentials(
-        try_credentials,
-        project_id=project_id,
-        credentials_path=credentials_path,
-    )
+    credentials = None
+    if not reauth:
+        credentials = load_user_account_credentials(
+            try_credentials,
+            project_id=project_id,
+            credentials_path=credentials_path,
+        )
 
     client_config = {
         "installed": {
@@ -178,7 +180,7 @@ def get_user_account_credentials(
         }
     }
 
-    if credentials is None or reauth:
+    if credentials is None:
         app_flow = InstalledAppFlow.from_client_config(
             client_config, scopes=SCOPES
         )
