@@ -11,7 +11,7 @@
   bigtable/usage
   container/index
   dataproc/index
-  datastore/usage
+  datastore/index
   dlp/index
   dns/usage
   firestore/index
