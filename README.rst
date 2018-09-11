@@ -33,7 +33,7 @@ The following client libraries have **GA** support:
 .. _Datastore README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/datastore
 .. _Google Cloud Natural Language: https://pypi.org/project/google-cloud-language/
 .. _Natural Language README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/language
-.. _Google Cloud Spanner: https://pypi.python.org/pypi/google-cloud-spanner
+.. _Google Cloud Spanner: https://pypi.org/project/google-cloud-spanner
 .. _Spanner README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/spanner
 .. _Google Cloud Storage: https://pypi.org/project/google-cloud-storage/
 .. _Storage README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/storage
@@ -76,7 +76,7 @@ against beta libraries are addressed with a higher priority.
 .. _Pub/Sub README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/pubsub
 .. _Google Cloud Speech: https://pypi.org/project/google-cloud-speech/
 .. _Speech README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/speech
-.. _Google Cloud Video Intelligence: https://pypi.python.org/pypi/google-cloud-videointelligence
+.. _Google Cloud Video Intelligence: https://pypi.org/project/google-cloud-videointelligence
 .. _Video Intelligence README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/videointelligence
 .. _Google Cloud Vision: https://pypi.org/project/google-cloud-vision/
 .. _Vision README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/vision
