@@ -59,7 +59,7 @@ class TestBackgroundThreadHandler(unittest.TestCase):
 
         record = logging.LogRecord(
             python_logger_name, logging.INFO,
-            None, None, message)
+            None, None, message, None, None)
 
         transport.send(record, message, _GLOBAL_RESOURCE)
 
@@ -80,7 +80,7 @@ class TestBackgroundThreadHandler(unittest.TestCase):
 
         record = logging.LogRecord(
             python_logger_name, logging.INFO,
-            None, None, message)
+            None, None, message, None, None)
 
         transport.send(record, message, _GLOBAL_RESOURCE, None)
 
@@ -101,7 +101,7 @@ class TestBackgroundThreadHandler(unittest.TestCase):
 
         record = logging.LogRecord(
             python_logger_name, logging.INFO,
-            None, None, message)
+            None, None, message, None, None)
 
         transport.send(record, message, _GLOBAL_RESOURCE, span_id=record.span_id)
 
