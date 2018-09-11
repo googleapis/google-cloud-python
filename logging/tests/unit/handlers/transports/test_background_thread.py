@@ -426,13 +426,14 @@ class _Batch(object):
         self.commit_count = None
 
     def log_struct(
-            self, info, severity=logging.INFO, resource=None, labels=None):
+            self, info, severity=logging.INFO, resource=None, labels=None,
+            trace=None, span_id=None):
         from google.cloud.logging.logger import _GLOBAL_RESOURCE
 
         assert resource is None
         resource = _GLOBAL_RESOURCE
 
-        self.log_struct_called_with = (info, severity, resource, labels)
+        self.log_struct_called_with = (info, severity, resource, labels, trace, span_id)
         self.entries.append(info)
 
     def commit(self):
