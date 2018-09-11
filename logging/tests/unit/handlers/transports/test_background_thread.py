@@ -105,7 +105,7 @@ class TestBackgroundThreadHandler(unittest.TestCase):
             python_logger_name, logging.INFO,
             None, None, message, None, None)
 
-        transport.send(record, message, _GLOBAL_RESOURCE, span_id=record.span_id)
+        transport.send(record, message, _GLOBAL_RESOURCE, span_id=span_id)
 
         transport.worker.enqueue.assert_called_once_with(
             record, message, _GLOBAL_RESOURCE, None,
