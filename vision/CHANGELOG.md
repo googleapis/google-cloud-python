@@ -12,7 +12,7 @@
 
 ### New Features
 
-- The library was regenerated to pick up new features in the underlying API. ([#5854](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/5854))
+- Regenerate to pick up new features in the underlying API. ([#5854](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/5854))
 
 ## 0.33.0
 
