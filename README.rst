@@ -88,10 +88,17 @@ The following client libraries have **alpha** support:
 -  `Google Cloud Bigtable`_ (`Bigtable README`_)
 -  `Google Cloud Bigtable - HappyBase`_ (`HappyBase README`_)
 -  `Google Cloud Container`_ (`Container README`_)
+-  `Google Cloud Dataproc`_ (`Dataproc README`_)
+-  `Google Cloud DLP`_ (`DLP README`_)
 -  `Google Cloud DNS`_ (`DNS README`_)
+-  `Google Cloud IoT`_ (`IoT README`_)
+-  `Google Cloud KMS`_ (`KMS README`_)
 -  `Google Cloud Memorystore for Redis`_ (`Redis README`_)
 -  `Google Cloud Resource Manager`_ (`Resource Manager README`_)
 -  `Google Cloud Runtime Configuration`_ (`Runtime Config README`_)
+-  `Google Cloud Tasks`_ (`Tasks README`_)
+-  `Google Cloud Trace`_ (`Trace README`_)
+-  `Google Cloud Text-to-Speech`_ (`Text-to-Speech README`_)
 -  `Google Cloud Web Security Scanner`_ (`Web Security Scanner README`_ )
 -  `Stackdriver Error Reporting`_ (`Error Reporting README`_)
 -  `Stackdriver Monitoring`_ (`Monitoring README`_)
@@ -110,14 +117,28 @@ updates. See `versioning`_ for more details.
 .. _HappyBase README: https://github.com/GoogleCloudPlatform/google-cloud-python-happybase
 .. _Google Cloud Container: https://pypi.org/project/google-cloud-container/
 .. _Container README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/container
+.. _Google Cloud Dataproc: https://pypi.org/project/google-cloud-dataproc/
+.. _Dataproc README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/dataproc
+.. _Google Cloud DLP: https://pypi.org/project/google-cloud-dlp/
+.. _DLP README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/dlp
 .. _Google Cloud DNS: https://pypi.org/project/google-cloud-dns/
 .. _DNS README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/dns
+.. _Google Cloud IoT: https://pypi.org/project/google-cloud-iot/
+.. _IoT README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/iot
+.. _Google Cloud KMS: https://pypi.org/project/google-cloud-kms/
+.. _KMS README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/kms
 .. _Google Cloud Memorystore for Redis: https://pypi.org/project/google-cloud-redis/
 .. _Redis README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/redis
 .. _Google Cloud Resource Manager: https://pypi.org/project/google-cloud-resource-manager/
 .. _Resource Manager README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/resource_manager
-.. _Google Cloud Runtime Configuration: https://cloud.google.com/deployment-manager/runtime-configurator/
+.. _Google Cloud Runtime Configuration: https://pypi.org/project/google-cloud-runtimeconfig/
 .. _Runtime Config README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/runtimeconfig
+.. _Google Cloud Tasks: https://pypi.org/project/google-cloud-tasks/
+.. _Tasks README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/tasks
+.. _Google Cloud Text-to-Speech: https://pypi.org/project/google-cloud-texttospeech/
+.. _Text-to-Speech README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/texttospeech
+.. _Google Cloud Trace: https://pypi.org/project/google-cloud-trace/
+.. _Trace README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/trace
 .. _Google Cloud Web Security Scanner: https://pypi.org/project/google-cloud-websecurityscanner/
 .. _Web Security Scanner README: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/websecurityscanner
 .. _Stackdriver Error Reporting: https://pypi.org/project/google-cloud-error-reporting/
