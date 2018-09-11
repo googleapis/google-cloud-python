@@ -3,7 +3,7 @@ Python Client for Google Cloud Storage
 
 |pypi| |versions|
 
-`Google Cloud Storage`_ () allows you to store data on
+`Google Cloud Storage`_ allows you to store data on
 Google infrastructure with very high reliability, performance and
 availability, and can be used to distribute large data objects to users
 via direct download.
