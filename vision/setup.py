@@ -19,7 +19,7 @@ import setuptools
 
 name = 'google-cloud-vision'
 description = 'Cloud Vision API API client library'
-version = '0.33.0'
+version = '0.34.0'
 release_status = 'Development Status :: 4 - Beta'
 dependencies = [
     'google-api-core[grpc] >= 1.1.0, < 2.0.0dev',

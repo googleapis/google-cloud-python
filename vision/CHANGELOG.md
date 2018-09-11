@@ -4,6 +4,16 @@
 
 [1]: https://pypi.org/project/google-cloud-vision/#history
 
+## 0.34.0
+
+### Implementation Changes
+
+- Clean up feature introspection. ([#5851](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/5851))
+
+### New Features
+
+- The library was regenerated to pick up new features in the underlying API. ([#5854](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/5854))
+
 ## 0.33.0
 
 ### New Features
