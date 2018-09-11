@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Speech Client Types &#8212; google-cloud 427bd4c documentation</title>
+    <title>Speech Client Types &#8212; google-cloud 413f8e7 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -232,7 +232,7 @@ service.</p>
 <dl class="attribute">
 <dt id="google.cloud.speech_v1.types.LongRunningRecognizeResponse.results">
 <code class="descname">results</code><a class="headerlink" href="#google.cloud.speech_v1.types.LongRunningRecognizeResponse.results" title="Permalink to this definition">#</a></dt>
-<dd><p><em>Output-only</em> Sequential list of transcription results
+<dd><p>Output only. Sequential list of transcription results
 corresponding to sequential portions of audio.</p>
 </dd></dl>
 
@@ -275,7 +275,7 @@ corresponding to sequential portions of audio.</p>
 <code class="docutils literal notranslate"><span class="pre">RecognitionConfig</span></code>. Either <code class="docutils literal notranslate"><span class="pre">content</span></code> or <code class="docutils literal notranslate"><span class="pre">uri</span></code> must be supplied.
 Supplying both or neither returns
 [google.rpc.Code.INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT].
-See <a class="reference external" href="https://cloud.google.com/speech/limits#content">audio limits</a>.</p>
+See <a class="reference external" href="/speech-to-text/quotas#content">content limits</a>.</p>
 <dl class="attribute">
 <dt id="google.cloud.speech_v1.types.RecognitionAudio.audio_source">
 <code class="descname">audio_source</code><a class="headerlink" href="#google.cloud.speech_v1.types.RecognitionAudio.audio_source" title="Permalink to this definition">#</a></dt>
@@ -296,12 +296,13 @@ representations use base64.</p>
 <dt id="google.cloud.speech_v1.types.RecognitionAudio.uri">
 <code class="descname">uri</code><a class="headerlink" href="#google.cloud.speech_v1.types.RecognitionAudio.uri" title="Permalink to this definition">#</a></dt>
 <dd><p>URI that points to a file that contains audio data bytes as
-specified in <code class="docutils literal notranslate"><span class="pre">RecognitionConfig</span></code>. Currently, only Google
-Cloud Storage URIs are supported, which must be specified in
-the following format: <code class="docutils literal notranslate"><span class="pre">gs://bucket_name/object_name</span></code> (other
-URI formats return [google.rpc.Code.INVALID_ARGUMENT][google.
-rpc.Code.INVALID_ARGUMENT]). For more information, see
-<a class="reference external" href="https://cloud.google.com/storage/docs/reference-uris">Request URIs</a>.</p>
+specified in <code class="docutils literal notranslate"><span class="pre">RecognitionConfig</span></code>. The file must not be
+compressed (for example, gzip). Currently, only Google Cloud
+Storage URIs are supported, which must be specified in the
+following format: <code class="docutils literal notranslate"><span class="pre">gs://bucket_name/object_name</span></code> (other URI
+formats return [google.rpc.Code.INVALID_ARGUMENT][google.rpc.
+Code.INVALID_ARGUMENT]). For more information, see <a class="reference external" href="https://cloud.google.com/storage/docs/reference-uris">Request
+URIs</a>.</p>
 </dd></dl>
 
 </dd></dl>
@@ -314,27 +315,33 @@ request.</p>
 <dl class="attribute">
 <dt id="google.cloud.speech_v1.types.RecognitionConfig.encoding">
 <code class="descname">encoding</code><a class="headerlink" href="#google.cloud.speech_v1.types.RecognitionConfig.encoding" title="Permalink to this definition">#</a></dt>
-<dd><p><em>Required</em> Encoding of audio data sent in all
-<code class="docutils literal notranslate"><span class="pre">RecognitionAudio</span></code> messages.</p>
+<dd><p>Encoding of audio data sent in all <code class="docutils literal notranslate"><span class="pre">RecognitionAudio</span></code>
+messages. This field is optional for <code class="docutils literal notranslate"><span class="pre">FLAC</span></code> and <code class="docutils literal notranslate"><span class="pre">WAV</span></code>
+audio files and required for all other audio formats. For
+details, see [AudioEncoding][google.cloud.speech.v1.Recognitio
+nConfig.AudioEncoding].</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.speech_v1.types.RecognitionConfig.sample_rate_hertz">
 <code class="descname">sample_rate_hertz</code><a class="headerlink" href="#google.cloud.speech_v1.types.RecognitionConfig.sample_rate_hertz" title="Permalink to this definition">#</a></dt>
-<dd><p><em>Required</em> Sample rate in Hertz of the audio data sent in all
+<dd><p>Sample rate in Hertz of the audio data sent in all
 <code class="docutils literal notranslate"><span class="pre">RecognitionAudio</span></code> messages. Valid values are: 8000-48000.
 16000 is optimal. For best results, set the sampling rate of
 the audio source to 16000 Hz. If that’s not possible, use the
 native sample rate of the audio source (instead of re-
-sampling).</p>
+sampling). This field is optional for <code class="docutils literal notranslate"><span class="pre">FLAC</span></code> and <code class="docutils literal notranslate"><span class="pre">WAV</span></code>
+audio files and required for all other audio formats. For
+details, see [AudioEncoding][google.cloud.speech.v1.Recognitio
+nConfig.AudioEncoding].</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.speech_v1.types.RecognitionConfig.language_code">
 <code class="descname">language_code</code><a class="headerlink" href="#google.cloud.speech_v1.types.RecognitionConfig.language_code" title="Permalink to this definition">#</a></dt>
 <dd><p><em>Required</em> The language of the supplied audio as a <a class="reference external" href="https://www.rfc-editor.org/rfc/bcp/bcp47.txt">BCP-47</a> language
-tag. Example: “en-US”. See <a class="reference external" href="https://cloud.google.com/speech/docs/languages">Language Support</a> for a list
-of the currently supported language codes.</p>
+tag. Example: “en-US”. See <a class="reference external" href="/speech-to-text/docs/languages">Language Support</a> for a list of the currently supported
+language codes.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -362,8 +369,10 @@ be filtered out.</p>
 <dl class="attribute">
 <dt id="google.cloud.speech_v1.types.RecognitionConfig.speech_contexts">
 <code class="descname">speech_contexts</code><a class="headerlink" href="#google.cloud.speech_v1.types.RecognitionConfig.speech_contexts" title="Permalink to this definition">#</a></dt>
-<dd><p><em>Optional</em> A means to provide context to assist the speech
-recognition.</p>
+<dd><p><em>Optional</em> array of
+[SpeechContext][google.cloud.speech.v1.SpeechContext]. A means
+to provide context to assist the speech recognition. For more
+information, see <a class="reference external" href="/speech-to-text/docs/basics#phrase-hints">Phrase Hints</a>.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -373,6 +382,64 @@ recognition.</p>
 words and the start and end time offsets (timestamps) for
 those words. If <code class="docutils literal notranslate"><span class="pre">false</span></code>, no word-level time offset
 information is returned. The default is <code class="docutils literal notranslate"><span class="pre">false</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.speech_v1.types.RecognitionConfig.enable_automatic_punctuation">
+<code class="descname">enable_automatic_punctuation</code><a class="headerlink" href="#google.cloud.speech_v1.types.RecognitionConfig.enable_automatic_punctuation" title="Permalink to this definition">#</a></dt>
+<dd><p><em>Optional</em> If ‘true’, adds punctuation to recognition result
+hypotheses. This feature is only available in select
+languages. Setting this for requests in other languages has no
+effect at all. The default ‘false’ value does not add
+punctuation to result hypotheses. Note: This is currently
+offered as an experimental service, complimentary to all
+users. In the future this may be exclusively available as a
+premium feature.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.speech_v1.types.RecognitionConfig.model">
+<code class="descname">model</code><a class="headerlink" href="#google.cloud.speech_v1.types.RecognitionConfig.model" title="Permalink to this definition">#</a></dt>
+<dd><p><em>Optional</em> Which model to select for the given request. Select
+the model best suited to your domain to get best results. If a
+model is not explicitly specified, then we auto-select a model
+based on the parameters in the RecognitionConfig.  .. raw::
+html     &lt;table&gt;  .. raw:: html     &lt;tr&gt;  ::
+&lt;td&gt;&lt;b&gt;Model&lt;/b&gt;&lt;/td&gt;     &lt;td&gt;&lt;b&gt;Description&lt;/b&gt;&lt;/td&gt;  ..
+raw:: html     &lt;/tr&gt;  .. raw:: html     &lt;tr&gt;  ::
+&lt;td&gt;&lt;code&gt;command_and_search&lt;/code&gt;&lt;/td&gt;     &lt;td&gt;Best for
+short queries such as voice commands or voice search.&lt;/td&gt;  ..
+raw:: html     &lt;/tr&gt;  .. raw:: html     &lt;tr&gt;  ::
+&lt;td&gt;&lt;code&gt;phone_call&lt;/code&gt;&lt;/td&gt;     &lt;td&gt;Best for audio that
+originated from a phone call (typically     recorded at an
+8khz sampling rate).&lt;/td&gt;  .. raw:: html     &lt;/tr&gt;  .. raw::
+html     &lt;tr&gt;  ::      &lt;td&gt;&lt;code&gt;video&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;Best for audio that originated from from video or includes
+multiple         speakers. Ideally the audio is recorded at a
+16khz or greater         sampling rate. This is a premium
+model that costs more than the         standard rate.&lt;/td&gt;  ..
+raw:: html     &lt;/tr&gt;  .. raw:: html     &lt;tr&gt;  ::
+&lt;td&gt;&lt;code&gt;default&lt;/code&gt;&lt;/td&gt;     &lt;td&gt;Best for audio that is
+not one of the specific audio models.         For example,
+long-form audio. Ideally the audio is high-fidelity,
+recorded at a 16khz or greater sampling rate.&lt;/td&gt;  .. raw::
+html     &lt;/tr&gt;  .. raw:: html     &lt;/table&gt;</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.speech_v1.types.RecognitionConfig.use_enhanced">
+<code class="descname">use_enhanced</code><a class="headerlink" href="#google.cloud.speech_v1.types.RecognitionConfig.use_enhanced" title="Permalink to this definition">#</a></dt>
+<dd><p><em>Optional</em> Set to true to use an enhanced model for speech
+recognition. You must also set the <code class="docutils literal notranslate"><span class="pre">model</span></code> field to a valid,
+enhanced model. If <code class="docutils literal notranslate"><span class="pre">use_enhanced</span></code> is set to true and the
+<code class="docutils literal notranslate"><span class="pre">model</span></code> field is not set, then <code class="docutils literal notranslate"><span class="pre">use_enhanced</span></code> is ignored.
+If <code class="docutils literal notranslate"><span class="pre">use_enhanced</span></code> is true and an enhanced version of the
+specified model does not exist, then the speech is recognized
+using the standard version of the specified model.  Enhanced
+speech models require that you opt-in to data logging using
+instructions in the <a class="reference external" href="/speech-to-text/enable-data-logging">documentation</a>. If you set <code class="docutils literal notranslate"><span class="pre">use_enhanced</span></code> to true and you
+have not enabled audio logging, then you will receive an
+error.</p>
 </dd></dl>
 
 </dd></dl>
@@ -405,7 +472,7 @@ contains the result as zero or more sequential
 <dl class="attribute">
 <dt id="google.cloud.speech_v1.types.RecognizeResponse.results">
 <code class="descname">results</code><a class="headerlink" href="#google.cloud.speech_v1.types.RecognizeResponse.results" title="Permalink to this definition">#</a></dt>
-<dd><p><em>Output-only</em> Sequential list of transcription results
+<dd><p>Output only. Sequential list of transcription results
 corresponding to sequential portions of audio.</p>
 </dd></dl>
 
@@ -445,7 +512,7 @@ recognize them. This can be used to improve the accuracy for
 specific words and phrases, for example, if specific commands
 are typically spoken by the user. This can also be used to add
 additional words to the vocabulary of the recognizer. See
-<a class="reference external" href="https://cloud.google.com/speech/limits#content">usage limits</a>.</p>
+<a class="reference external" href="/speech-to-text/quotas#content">usage limits</a>.</p>
 </dd></dl>
 
 </dd></dl>
@@ -457,27 +524,27 @@ additional words to the vocabulary of the recognizer. See
 <dl class="attribute">
 <dt id="google.cloud.speech_v1.types.SpeechRecognitionAlternative.transcript">
 <code class="descname">transcript</code><a class="headerlink" href="#google.cloud.speech_v1.types.SpeechRecognitionAlternative.transcript" title="Permalink to this definition">#</a></dt>
-<dd><p><em>Output-only</em> Transcript text representing the words that the
+<dd><p>Output only. Transcript text representing the words that the
 user spoke.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.speech_v1.types.SpeechRecognitionAlternative.confidence">
 <code class="descname">confidence</code><a class="headerlink" href="#google.cloud.speech_v1.types.SpeechRecognitionAlternative.confidence" title="Permalink to this definition">#</a></dt>
-<dd><p><em>Output-only</em> The confidence estimate between 0.0 and 1.0. A
+<dd><p>Output only. The confidence estimate between 0.0 and 1.0. A
 higher number indicates an estimated greater likelihood that
-the recognized words are correct. This field is typically
-provided only for the top hypothesis, and only for
-<code class="docutils literal notranslate"><span class="pre">is_final=true</span></code> results. Clients should not rely on the
-<code class="docutils literal notranslate"><span class="pre">confidence</span></code> field as it is not guaranteed to be accurate or
-consistent. The default of 0.0 is a sentinel value indicating
-<code class="docutils literal notranslate"><span class="pre">confidence</span></code> was not set.</p>
+the recognized words are correct. This field is set only for
+the top alternative of a non-streaming result or, of a
+streaming result where <code class="docutils literal notranslate"><span class="pre">is_final=true</span></code>. This field is not
+guaranteed to be accurate and users should not rely on it to
+be always provided. The default of 0.0 is a sentinel value
+indicating <code class="docutils literal notranslate"><span class="pre">confidence</span></code> was not set.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.speech_v1.types.SpeechRecognitionAlternative.words">
 <code class="descname">words</code><a class="headerlink" href="#google.cloud.speech_v1.types.SpeechRecognitionAlternative.words" title="Permalink to this definition">#</a></dt>
-<dd><p><em>Output-only</em> A list of word-specific information for each
+<dd><p>Output only. A list of word-specific information for each
 recognized word.</p>
 </dd></dl>
 
@@ -490,7 +557,7 @@ recognized word.</p>
 <dl class="attribute">
 <dt id="google.cloud.speech_v1.types.SpeechRecognitionResult.alternatives">
 <code class="descname">alternatives</code><a class="headerlink" href="#google.cloud.speech_v1.types.SpeechRecognitionResult.alternatives" title="Permalink to this definition">#</a></dt>
-<dd><p><em>Output-only</em> May contain one or more recognition hypotheses
+<dd><p>Output only. May contain one or more recognition hypotheses
 (up to the maximum specified in <code class="docutils literal notranslate"><span class="pre">max_alternatives</span></code>). These
 alternatives are ordered in terms of accuracy, with the top
 (first) alternative being the most probable, as ranked by the
@@ -553,31 +620,33 @@ audio that is currently being processed.</p>
 <dl class="attribute">
 <dt id="google.cloud.speech_v1.types.StreamingRecognitionResult.alternatives">
 <code class="descname">alternatives</code><a class="headerlink" href="#google.cloud.speech_v1.types.StreamingRecognitionResult.alternatives" title="Permalink to this definition">#</a></dt>
-<dd><p><em>Output-only</em> May contain one or more recognition hypotheses
-(up to the maximum specified in <code class="docutils literal notranslate"><span class="pre">max_alternatives</span></code>).</p>
+<dd><p>Output only. May contain one or more recognition hypotheses
+(up to the maximum specified in <code class="docutils literal notranslate"><span class="pre">max_alternatives</span></code>). These
+alternatives are ordered in terms of accuracy, with the top
+(first) alternative being the most probable, as ranked by the
+recognizer.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.speech_v1.types.StreamingRecognitionResult.is_final">
 <code class="descname">is_final</code><a class="headerlink" href="#google.cloud.speech_v1.types.StreamingRecognitionResult.is_final" title="Permalink to this definition">#</a></dt>
-<dd><p><em>Output-only</em> If <code class="docutils literal notranslate"><span class="pre">false</span></code>, this
-<code class="docutils literal notranslate"><span class="pre">StreamingRecognitionResult</span></code> represents an interim result
-that may change. If <code class="docutils literal notranslate"><span class="pre">true</span></code>, this is the final time the
-speech service will return this particular
-<code class="docutils literal notranslate"><span class="pre">StreamingRecognitionResult</span></code>, the recognizer will not return
-any further hypotheses for this portion of the transcript and
-corresponding audio.</p>
+<dd><p>Output only. If <code class="docutils literal notranslate"><span class="pre">false</span></code>, this <code class="docutils literal notranslate"><span class="pre">StreamingRecognitionResult</span></code>
+represents an interim result that may change. If <code class="docutils literal notranslate"><span class="pre">true</span></code>,
+this is the final time the speech service will return this
+particular <code class="docutils literal notranslate"><span class="pre">StreamingRecognitionResult</span></code>, the recognizer will
+not return any further hypotheses for this portion of the
+transcript and corresponding audio.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.speech_v1.types.StreamingRecognitionResult.stability">
 <code class="descname">stability</code><a class="headerlink" href="#google.cloud.speech_v1.types.StreamingRecognitionResult.stability" title="Permalink to this definition">#</a></dt>
-<dd><p><em>Output-only</em> An estimate of the likelihood that the
-recognizer will not change its guess about this interim
-result. Values range from 0.0 (completely unstable) to 1.0
-(completely stable). This field is only provided for interim
-results (<code class="docutils literal notranslate"><span class="pre">is_final=false</span></code>). The default of 0.0 is a sentinel
-value indicating <code class="docutils literal notranslate"><span class="pre">stability</span></code> was not set.</p>
+<dd><p>Output only. An estimate of the likelihood that the recognizer
+will not change its guess about this interim result. Values
+range from 0.0 (completely unstable) to 1.0 (completely
+stable). This field is only provided for interim results
+(<code class="docutils literal notranslate"><span class="pre">is_final=false</span></code>). The default of 0.0 is a sentinel value
+indicating <code class="docutils literal notranslate"><span class="pre">stability</span></code> was not set.</p>
 </dd></dl>
 
 </dd></dl>
@@ -616,7 +685,7 @@ not contain <code class="docutils literal notranslate"><span class="pre">audio_c
 <code class="docutils literal notranslate"><span class="pre">audio_content</span></code> data. The audio bytes must be encoded as
 specified in <code class="docutils literal notranslate"><span class="pre">RecognitionConfig</span></code>. Note: as with all bytes
 fields, protobuffers use a pure binary representation (not
-base64). See <a class="reference external" href="https://cloud.google.com/speech/limits#content">audio limits</a>.</p>
+base64). See <a class="reference external" href="/speech-to-text/quotas#content">content limits</a>.</p>
 </dd></dl>
 
 </dd></dl>
@@ -667,7 +736,7 @@ only for illustrative purposes. Actual values may vary.</li>
 <dl class="attribute">
 <dt id="google.cloud.speech_v1.types.StreamingRecognizeResponse.error">
 <code class="descname">error</code><a class="headerlink" href="#google.cloud.speech_v1.types.StreamingRecognizeResponse.error" title="Permalink to this definition">#</a></dt>
-<dd><p><em>Output-only</em> If set, returns a
+<dd><p>Output only. If set, returns a
 [google.rpc.Status][google.rpc.Status] message that specifies
 the error for the operation.</p>
 </dd></dl>
@@ -675,17 +744,17 @@ the error for the operation.</p>
 <dl class="attribute">
 <dt id="google.cloud.speech_v1.types.StreamingRecognizeResponse.results">
 <code class="descname">results</code><a class="headerlink" href="#google.cloud.speech_v1.types.StreamingRecognizeResponse.results" title="Permalink to this definition">#</a></dt>
-<dd><p><em>Output-only</em> This repeated list contains zero or more results
+<dd><p>Output only. This repeated list contains zero or more results
 that correspond to consecutive portions of the audio currently
-being processed. It contains zero or more <code class="docutils literal notranslate"><span class="pre">is_final=false</span></code>
-results followed by zero or one <code class="docutils literal notranslate"><span class="pre">is_final=true</span></code> result (the
-newly settled portion).</p>
+being processed. It contains zero or one <code class="docutils literal notranslate"><span class="pre">is_final=true</span></code>
+result (the newly settled portion), followed by zero or more
+<code class="docutils literal notranslate"><span class="pre">is_final=false</span></code> results (the interim results).</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.speech_v1.types.StreamingRecognizeResponse.speech_event_type">
 <code class="descname">speech_event_type</code><a class="headerlink" href="#google.cloud.speech_v1.types.StreamingRecognizeResponse.speech_event_type" title="Permalink to this definition">#</a></dt>
-<dd><p><em>Output-only</em> Indicates the type of speech event.</p>
+<dd><p>Output only. Indicates the type of speech event.</p>
 </dd></dl>
 
 </dd></dl>
@@ -708,13 +777,11 @@ newly settled portion).</p>
 <dl class="class">
 <dt id="google.cloud.speech_v1.types.WordInfo">
 <em class="property">class </em><code class="descclassname">google.cloud.speech_v1.types.</code><code class="descname">WordInfo</code><a class="headerlink" href="#google.cloud.speech_v1.types.WordInfo" title="Permalink to this definition">#</a></dt>
-<dd><p>Word-specific information for recognized words. Word information is only
-included in the response when certain request parameters are set, such
-as <code class="docutils literal notranslate"><span class="pre">enable_word_time_offsets</span></code>.</p>
+<dd><p>Word-specific information for recognized words.</p>
 <dl class="attribute">
 <dt id="google.cloud.speech_v1.types.WordInfo.start_time">
 <code class="descname">start_time</code><a class="headerlink" href="#google.cloud.speech_v1.types.WordInfo.start_time" title="Permalink to this definition">#</a></dt>
-<dd><p><em>Output-only</em> Time offset relative to the beginning of the
+<dd><p>Output only. Time offset relative to the beginning of the
 audio, and corresponding to the start of the spoken word. This
 field is only set if <code class="docutils literal notranslate"><span class="pre">enable_word_time_offsets=true</span></code> and
 only in the top hypothesis. This is an experimental feature
@@ -724,7 +791,7 @@ and the accuracy of the time offset can vary.</p>
 <dl class="attribute">
 <dt id="google.cloud.speech_v1.types.WordInfo.end_time">
 <code class="descname">end_time</code><a class="headerlink" href="#google.cloud.speech_v1.types.WordInfo.end_time" title="Permalink to this definition">#</a></dt>
-<dd><p><em>Output-only</em> Time offset relative to the beginning of the
+<dd><p>Output only. Time offset relative to the beginning of the
 audio, and corresponding to the end of the spoken word. This
 field is only set if <code class="docutils literal notranslate"><span class="pre">enable_word_time_offsets=true</span></code> and
 only in the top hypothesis. This is an experimental feature
@@ -734,7 +801,7 @@ and the accuracy of the time offset can vary.</p>
 <dl class="attribute">
 <dt id="google.cloud.speech_v1.types.WordInfo.word">
 <code class="descname">word</code><a class="headerlink" href="#google.cloud.speech_v1.types.WordInfo.word" title="Permalink to this definition">#</a></dt>
-<dd><p><em>Output-only</em> The word corresponding to this set of
+<dd><p>Output only. The word corresponding to this set of
 information.</p>
 </dd></dl>
 
