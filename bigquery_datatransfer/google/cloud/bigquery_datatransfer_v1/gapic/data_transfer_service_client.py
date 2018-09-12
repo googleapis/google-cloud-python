@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+#
 # Copyright 2018 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -25,6 +27,7 @@ import google.api_core.path_template
 import google.api_core.gapic_v1.routing_header
 import google.api_core.grpc_helpers
 import google.api_core.page_iterator
+import google.api_core.path_template
 import grpc
 
 from google.cloud.bigquery_datatransfer_v1.gapic import data_transfer_service_client_config
