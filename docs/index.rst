@@ -17,7 +17,7 @@
   firestore/index
   iot/index
   kms/index
-  language/usage
+  language/index
   pubsub/index
   oslogin/index
   resource-manager/api
