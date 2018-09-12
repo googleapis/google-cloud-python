@@ -30,23 +30,6 @@ for version in ['v1beta1', 'v1']:
 
     s.copy(library, excludes=['docs/conf.py', 'docs/index.rst'])
 
-    # # Fix unindentation of bullet list second line
-    # s.replace(
-    #     f'google/cloud/tasks_{version}/gapic/cloud_tasks_client.py',
-    #     '(        \* .*\n        )([^\s*])',
-    #     '\g<1>  \g<2>')
-    #
-    # s.replace(
-    #     f'google/cloud/tasks_{version}/gapic/cloud_tasks_client.py',
-    #     '(Google IAM .*?_) ',
-    #     '\g<1>_ ')
-    #
-    # # Issues with Anonymous ('__') links. Change to named.
-    # s.replace(
-    #     f"google/cloud/tasks_{version}/proto/*.py",
-    #     ">`__",
-    #     ">`_")
-
 
 # Set Release Status
 release_status = 'Development Status :: 3 - Alpha'
