@@ -29,7 +29,7 @@ library = gapic.py_library(
     "dlp", "v2", config_path="/google/privacy/dlp/artman_dlp_v2.yaml"
 )
 
-s.copy(library, excludes=["README.rst", "nox.py"])
+s.copy(library, excludes=["README.rst", "nox.py", "docs/index.rst"])
 
 # Set Release Status
 release_status = "Development Status :: 3 - Alpha"
@@ -43,13 +43,6 @@ s.replace(
     "**/*.py",
     "google\.cloud\.privacy\.dlp_v2",
     "google.cloud.dlp_v2"
-)
-
-# Add changelog to index.rst
-s.replace(
-    "docs/index.rst",
-    "    gapic/v2/types",
-    "    gapic/v2/types\n    changelog\n"
 )
 
 # Add newlines to end of files
