@@ -66,7 +66,8 @@ The following client libraries have **alpha** support:
 -  `Google Cloud Memorystore for Redis`_ (`Redis README`_)
 -  `Google Cloud Resource Manager`_ (`Resource Manager README`_)
 -  `Google Cloud Runtime Configuration`_ (`Runtime Config README`_)
--  `Google Cloud Web Security Scanner`_ (`Web Security Scanner README`_ )
+-  `Google Cloud Security Scanner`_ (`Web Security Scanner README`_ )
+-  `Google Cloud Tasks`_ (`Cloud Tasks README`_)
 -  `Stackdriver Error Reporting`_ (`Error Reporting README`_)
 -  `Stackdriver Monitoring`_ (`Monitoring README`_)
 
@@ -123,6 +124,8 @@ updates. See `versioning`_ for more details.
 .. _AutoML README: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/automl
 .. _Google Cloud Security Scanner: https://pypi.org/project/google-cloud-websecurityscanner/
 .. _Web Security Scanner README: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/websecurityscanner
+.. _Google Cloud Tasks: https://pypi.org/project/google-cloud-tasks/
+.. _Cloud Tasks README: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/tasks
 
 If you need support for other Google APIs, check out the
 `Google APIs Python Client library`_.
