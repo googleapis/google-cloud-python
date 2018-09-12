@@ -26,7 +26,7 @@
   speech/index
   error-reporting/usage
   monitoring/index
-  logging/usage
+  logging/index
   redis/index
   storage/index
   tasks/index
