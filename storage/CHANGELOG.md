@@ -7,7 +7,9 @@
 ## 1.12.0
 
 ### New Features
-- Storage: add lifecycle rules helpers to bucket ([#5877](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/5877))
+- Add support for Python 3.7, drop support for Python 3.4. ([#5942](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/5942))
+
+- Storage: add lifecycle rules helpers to bucket. ([#5877](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/5877))
 
 ### Implementation Changes
 - Add 'stacklevel=2' to deprecation warnings. ([#5897](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/5897))
