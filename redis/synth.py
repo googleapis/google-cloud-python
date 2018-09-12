@@ -22,13 +22,19 @@ logging.basicConfig(level=logging.DEBUG)
 
 gapic = gcp.GAPICGenerator()
 common = gcp.CommonTemplates()
+excludes = [
+    'setup.py',
+    'nox.py',
+    'docs/conf.py',
+    'docs/index.rst',
+]
 
 for version in ['v1beta1', 'v1']:
     library = gapic.py_library(
         'redis', version,
         config_path=f'artman_redis_{version}.yaml')
 
-    s.copy(library, excludes=['nox.py', 'docs/conf.py', 'docs/index.rst'])
+    s.copy(library, excludes=excludes)
 
 
 # Set Release Status
