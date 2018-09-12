@@ -425,13 +425,14 @@ class PartialRowsData(object):
             for chunk in response.chunks:
                 self._process_chunk(chunk)
                 if chunk.commit_row:
-                   self.last_scanned_row_key = self._previous_row.row_key
-                   self._counter += 1
-                   yield self._previous_row
+                    self.last_scanned_row_key = self._previous_row.row_key
+                    self._counter += 1
+                    yield self._previous_row
 
-            if (response.last_scanned_row_key and
-                response.last_scanned_row_key > self.last_scanned_row_key):
-                self.last_scanned_row_key = response.last_scanned_row_key
+            resp_last_key = response.last_scanned_row_key
+            if (resp_last_key and
+                resp_last_key > self.last_scanned_row_key):
+                self.last_scanned_row_key = resp_last_key
 
     def _process_chunk(self, chunk):
         if chunk.reset_row:
@@ -540,7 +541,7 @@ class PartialRowsData(object):
                 cell.row_key = previous.row_key
                 if not cell.family_name:
                     cell.family_name = previous.family_name
-                    NOTE: ``cell.qualifier`` **can** be empty string.
+                    # NOTE: ``cell.qualifier`` **can** be empty string.
                     if cell.qualifier is None:
                         cell.qualifier = previous.qualifier
 
