@@ -430,8 +430,7 @@ class PartialRowsData(object):
                     yield self._previous_row
 
             resp_last_key = response.last_scanned_row_key
-            if (resp_last_key and
-                   resp_last_key > self.last_scanned_row_key):
+            if resp_last_key and resp_last_key > self.last_scanned_row_key:
                 self.last_scanned_row_key = resp_last_key
 
     def _process_chunk(self, chunk):
@@ -495,7 +494,7 @@ class PartialRowsData(object):
             raise InvalidChunk()
 
         prev = self._previous_cell
-        if (prev and prev.row_key != cell.row_key:
+        if prev and prev.row_key != cell.row_key:
             raise InvalidChunk()
 
     def _validate_cell_data_cell_in_progress(self, chunk):
