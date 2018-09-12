@@ -4,6 +4,22 @@
 
 [1]: https://pypi.org/project/google-cloud-storage/#history
 
+## 1.12.0
+
+### New Features
+- Storage: add lifecycle rules helpers to bucket ([#5877](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/5877))
+
+### Implementation Changes
+- Add 'stacklevel=2' to deprecation warnings. ([#5897](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/5897))
+
+### Documentation
+- Storage docs: fix typos. ([#5933](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/5933))
+- Prep storage docs for repo split. ([#5923](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/5923))
+
+### Internal / Testing Changes
+- Harden systest teardown further. ([#5900](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/5900))
+- Nox: use inplace installs ([#5865](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/5865))
+
 ## 1.11.0
 
 ### Implementation Changes
