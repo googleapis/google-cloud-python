@@ -43,11 +43,6 @@ s.replace('setup.py',
           '(release_status = )(.*)$',
           f"\\1'{release_status}'")
 
-# Add Dependencies
-s.replace('setup.py',
-          'dependencies = \[\n*(^.*,\n)+',
-          "\\g<0>    'grpc-google-iam-v1<0.12dev,>=0.11.4',\n")
-
 # Fix the enable API link
 s.replace(
     'README.rst',
