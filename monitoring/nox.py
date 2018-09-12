@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+#
 # Copyright 2018 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,7 +39,7 @@ def unit(session, py):
 
     # Install all test dependencies, then install this package in-place.
     session.install('pytest', 'mock')
-    session.install('-e', '.[pandas]')
+    session.install('-e', '.')
 
     # Run py.test against the unit tests.
     session.run('py.test', '--quiet', os.path.join('tests', 'unit'))

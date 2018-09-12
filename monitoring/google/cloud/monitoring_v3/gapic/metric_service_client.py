@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+#
 # Copyright 2018 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -170,11 +172,12 @@ class MetricServiceClient(object):
                         'Received both a transport instance and '
                         'credentials; these are mutually exclusive.')
                 self.transport = transport
-        self.transport = metric_service_grpc_transport.MetricServiceGrpcTransport(
-            address=self.SERVICE_ADDRESS,
-            channel=channel,
-            credentials=credentials,
-        )
+        else:
+            self.transport = metric_service_grpc_transport.MetricServiceGrpcTransport(
+                address=self.SERVICE_ADDRESS,
+                channel=channel,
+                credentials=credentials,
+            )
 
         if client_info is None:
             client_info = (
@@ -728,9 +731,8 @@ class MetricServiceClient(object):
                 views of the data.
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.monitoring_v3.types.Aggregation`
-            order_by (str): Specifies the order in which the points of the time series should
-                be returned.  By default, results are not ordered.  Currently,
-                this field must be left blank.
+            order_by (str): Unsupported: must be left blank. The points in each time series are
+                returned in reverse time order.
             page_size (int): The maximum number of resources contained in the
                 underlying API response. If page streaming is performed per-
                 resource, this parameter does not affect the return value. If page

@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+#
 # Copyright 2018 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -47,7 +49,7 @@ _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
 class GroupServiceClient(object):
     """
     The Group API lets you inspect and manage your
-    `groups <https://cloud.google.comgoogle.monitoring.v3.Group>`_.
+    `groups <https://cloud.google.com#google.monitoring.v3.Group>`_.
 
     A group is a named filter that is used to identify
     a collection of monitored resources. Groups are typically used to
@@ -166,11 +168,12 @@ class GroupServiceClient(object):
                         'Received both a transport instance and '
                         'credentials; these are mutually exclusive.')
                 self.transport = transport
-        self.transport = group_service_grpc_transport.GroupServiceGrpcTransport(
-            address=self.SERVICE_ADDRESS,
-            channel=channel,
-            credentials=credentials,
-        )
+        else:
+            self.transport = group_service_grpc_transport.GroupServiceGrpcTransport(
+                address=self.SERVICE_ADDRESS,
+                channel=channel,
+                credentials=credentials,
+            )
 
         if client_info is None:
             client_info = (
