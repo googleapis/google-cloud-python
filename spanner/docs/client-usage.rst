@@ -1,38 +1,3 @@
-Spanner
-^^^^^^^
-
-`Cloud Spanner`_ is the world's first fully managed relational database service
-to offer both strong consistency and horizontal scalability for
-mission-critical online transaction processing (OLTP) applications. With Cloud
-Spanner you enjoy all the traditional benefits of a relational database; but
-unlike any other relational database service, Cloud Spanner scales horizontally
-to hundreds or thousands of servers to handle the biggest transactional
-workloads.
-
-.. _Cloud Spanner: https://cloud.google.com/spanner/
-
-.. toctree::
-  :maxdepth: 1
-  :titlesonly:
-  :hidden:
-
-  instance-usage
-  database-usage
-  batch-usage
-  snapshot-usage
-  transaction-usage
-  advanced-session-pool-topics
-  api-reference
-
-Installation
-============
-
-Install the ``google-cloud-spanner`` library using ``pip``:
-
-.. code-block:: console
-
-    $ pip install google-cloud-spanner
-
 Spanner Client
 ==============
 
@@ -95,13 +60,18 @@ Configuration
 
     Be sure to use the **Project ID**, not the **Project Number**.
 
+
 Warnings about Multiprocessing
--------------------------------------------------
-- When using multiprocessing, the application may hang if a
-  :class:`Client <google.cloud.spanner_v1.client.Client>` instance is created before
-  :class:`multiprocessing.Pool` or :class:`multiprocessing.Process` invokes :func:`os.fork`.
-  The issue is under investigation, but may be only happening on Macintosh and not Linux.
-  See `GRPC/GRPC#12455 <https://github.com/grpc/grpc/issues/12455#issuecomment-348578950>`_ for more information.
+------------------------------
+
+.. warning::
+   When using multiprocessing, the application may hang if a
+   :class:`Client <google.cloud.spanner_v1.client.Client>` instance is created
+   before :class:`multiprocessing.Pool` or :class:`multiprocessing.Process`
+   invokes :func:`os.fork`.  The issue is under investigation, but may be only
+   happening on Macintosh and not Linux.  See `GRPC/GRPC#12455
+   <https://github.com/grpc/grpc/issues/12455#issuecomment-348578950>`_ for
+   more information.
 
 Next Step
 ---------
@@ -114,13 +84,3 @@ Next, learn about the :doc:`instance-usage`.
 
 .. _Instance Admin: https://cloud.google.com/spanner/reference/rpc/google.spanner.admin.instance.v1
 .. _Database Admin: https://cloud.google.com/spanner/reference/rpc/google.spanner.admin.database.v1
-
-Changelog
-=========
-
-For a list of all ``google-cloud-spanner`` releases:
-
-.. toctree::
-  :maxdepth: 2
-
-  changelog
