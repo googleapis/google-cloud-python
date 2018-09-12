@@ -148,6 +148,31 @@ class DlpServiceStub(object):
         request_serializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.CancelDlpJobRequest.SerializeToString,
         response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
         )
+    self.CreateStoredInfoType = channel.unary_unary(
+        '/google.privacy.dlp.v2.DlpService/CreateStoredInfoType',
+        request_serializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.CreateStoredInfoTypeRequest.SerializeToString,
+        response_deserializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.StoredInfoType.FromString,
+        )
+    self.UpdateStoredInfoType = channel.unary_unary(
+        '/google.privacy.dlp.v2.DlpService/UpdateStoredInfoType',
+        request_serializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.UpdateStoredInfoTypeRequest.SerializeToString,
+        response_deserializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.StoredInfoType.FromString,
+        )
+    self.GetStoredInfoType = channel.unary_unary(
+        '/google.privacy.dlp.v2.DlpService/GetStoredInfoType',
+        request_serializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.GetStoredInfoTypeRequest.SerializeToString,
+        response_deserializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.StoredInfoType.FromString,
+        )
+    self.ListStoredInfoTypes = channel.unary_unary(
+        '/google.privacy.dlp.v2.DlpService/ListStoredInfoTypes',
+        request_serializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.ListStoredInfoTypesRequest.SerializeToString,
+        response_deserializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.ListStoredInfoTypesResponse.FromString,
+        )
+    self.DeleteStoredInfoType = channel.unary_unary(
+        '/google.privacy.dlp.v2.DlpService/DeleteStoredInfoType',
+        request_serializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.DeleteStoredInfoTypeRequest.SerializeToString,
+        response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
+        )
 
 
 class DlpServiceServicer(object):
@@ -405,6 +430,52 @@ class DlpServiceServicer(object):
     context.set_details('Method not implemented!')
     raise NotImplementedError('Method not implemented!')
 
+  def CreateStoredInfoType(self, request, context):
+    """Creates a pre-built stored infoType to be used for inspection.
+    See https://cloud.google.com/dlp/docs/creating-stored-infotypes to
+    learn more.
+    """
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details('Method not implemented!')
+    raise NotImplementedError('Method not implemented!')
+
+  def UpdateStoredInfoType(self, request, context):
+    """Updates the stored infoType by creating a new version. The existing version
+    will continue to be used until the new version is ready.
+    See https://cloud.google.com/dlp/docs/creating-stored-infotypes to
+    learn more.
+    """
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details('Method not implemented!')
+    raise NotImplementedError('Method not implemented!')
+
+  def GetStoredInfoType(self, request, context):
+    """Gets a stored infoType.
+    See https://cloud.google.com/dlp/docs/creating-stored-infotypes to
+    learn more.
+    """
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details('Method not implemented!')
+    raise NotImplementedError('Method not implemented!')
+
+  def ListStoredInfoTypes(self, request, context):
+    """Lists stored infoTypes.
+    See https://cloud.google.com/dlp/docs/creating-stored-infotypes to
+    learn more.
+    """
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details('Method not implemented!')
+    raise NotImplementedError('Method not implemented!')
+
+  def DeleteStoredInfoType(self, request, context):
+    """Deletes a stored infoType.
+    See https://cloud.google.com/dlp/docs/creating-stored-infotypes to
+    learn more.
+    """
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details('Method not implemented!')
+    raise NotImplementedError('Method not implemented!')
+
 
 def add_DlpServiceServicer_to_server(servicer, server):
   rpc_method_handlers = {
@@ -531,6 +602,31 @@ def add_DlpServiceServicer_to_server(servicer, server):
       'CancelDlpJob': grpc.unary_unary_rpc_method_handler(
           servicer.CancelDlpJob,
           request_deserializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.CancelDlpJobRequest.FromString,
+          response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
+      ),
+      'CreateStoredInfoType': grpc.unary_unary_rpc_method_handler(
+          servicer.CreateStoredInfoType,
+          request_deserializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.CreateStoredInfoTypeRequest.FromString,
+          response_serializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.StoredInfoType.SerializeToString,
+      ),
+      'UpdateStoredInfoType': grpc.unary_unary_rpc_method_handler(
+          servicer.UpdateStoredInfoType,
+          request_deserializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.UpdateStoredInfoTypeRequest.FromString,
+          response_serializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.StoredInfoType.SerializeToString,
+      ),
+      'GetStoredInfoType': grpc.unary_unary_rpc_method_handler(
+          servicer.GetStoredInfoType,
+          request_deserializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.GetStoredInfoTypeRequest.FromString,
+          response_serializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.StoredInfoType.SerializeToString,
+      ),
+      'ListStoredInfoTypes': grpc.unary_unary_rpc_method_handler(
+          servicer.ListStoredInfoTypes,
+          request_deserializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.ListStoredInfoTypesRequest.FromString,
+          response_serializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.ListStoredInfoTypesResponse.SerializeToString,
+      ),
+      'DeleteStoredInfoType': grpc.unary_unary_rpc_method_handler(
+          servicer.DeleteStoredInfoType,
+          request_deserializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.DeleteStoredInfoTypeRequest.FromString,
           response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
       ),
   }
