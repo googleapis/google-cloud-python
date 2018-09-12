@@ -8,9 +8,9 @@ Redis instances on the Google Cloud Platform.
 - `Product Documentation`_
 
 .. _Alpha: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/README.rst
-.. _Google Cloud Memorystore for Redis API: https://cloud.google.com/memorystore
+.. _Google Cloud Memorystore for Redis API: https://cloud.google.com/memorystore/
 .. _Client Library Documentation: https://googlecloudplatform.github.io/google-cloud-python/latest/redis/index.html
-.. _Product Documentation:  https://cloud.google.com/memorystore
+.. _Product Documentation:  https://cloud.google.com/memorystore/
 
 Quick Start
 -----------
@@ -72,5 +72,5 @@ Next Steps
 -  View this `repository’s main README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Google Cloud Memorystore for Redis API Product documentation:  https://cloud.google.com/memorystore
+.. _Google Cloud Memorystore for Redis API Product documentation:  https://cloud.google.com/memorystore/
 .. _repository’s main README: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/README.rst

@@ -53,7 +53,7 @@ s.replace(
 s.replace(
     'README.rst',
     r'https://cloud.google.com/redis',
-    'https://cloud.google.com/memorystore')
+    'https://cloud.google.com/memorystore/')
 
 # Fix link to Client Library Documentation
 s.replace(
