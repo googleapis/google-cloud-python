@@ -96,10 +96,10 @@ The following client libraries have **alpha** support:
 -  `Google Cloud Memorystore for Redis`_ (`Redis README`_)
 -  `Google Cloud Resource Manager`_ (`Resource Manager README`_)
 -  `Google Cloud Runtime Configuration`_ (`Runtime Config README`_)
+-  `Google Cloud Security Scanner`_ (`Security Scanner README`_ )
 -  `Google Cloud Tasks`_ (`Tasks README`_)
 -  `Google Cloud Trace`_ (`Trace README`_)
 -  `Google Cloud Text-to-Speech`_ (`Text-to-Speech README`_)
--  `Google Cloud Web Security Scanner`_ (`Web Security Scanner README`_ )
 -  `Stackdriver Error Reporting`_ (`Error Reporting README`_)
 -  `Stackdriver Monitoring`_ (`Monitoring README`_)
 
@@ -133,14 +133,14 @@ updates. See `versioning`_ for more details.
 .. _Resource Manager README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/resource_manager
 .. _Google Cloud Runtime Configuration: https://pypi.org/project/google-cloud-runtimeconfig/
 .. _Runtime Config README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/runtimeconfig
+.. _Google Cloud Security Scanner: https://pypi.org/project/google-cloud-websecurityscanner/
+.. _Security Scanner README: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/websecurityscanner
 .. _Google Cloud Tasks: https://pypi.org/project/google-cloud-tasks/
 .. _Tasks README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/tasks
 .. _Google Cloud Text-to-Speech: https://pypi.org/project/google-cloud-texttospeech/
 .. _Text-to-Speech README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/texttospeech
 .. _Google Cloud Trace: https://pypi.org/project/google-cloud-trace/
 .. _Trace README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/trace
-.. _Google Cloud Web Security Scanner: https://pypi.org/project/google-cloud-websecurityscanner/
-.. _Web Security Scanner README: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/websecurityscanner
 .. _Stackdriver Error Reporting: https://pypi.org/project/google-cloud-error-reporting/
 .. _Error Reporting README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/error_reporting
 .. _Stackdriver Monitoring: https://pypi.org/project/google-cloud-monitoring/
