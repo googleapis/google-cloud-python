@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+#
 # Copyright 2018 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,97 +15,40 @@
 # limitations under the License.
 
 from __future__ import absolute_import
-
 import os
 
 import nox
 
 
-LOCAL_DEPS = (
-    os.path.join('..', 'api_core'),
-    os.path.join('..', 'core'),
-)
-
-
 @nox.session
 def default(session):
-    """Default unit test session.
-
-    This is intended to be run **without** an interpreter set, so
-    that the current ``python`` (on the ``PATH``) or the version of
-    Python corresponding to the ``nox`` binary the ``PATH`` can
-    run the tests.
-    """
-    # Install all test dependencies, then install local packages in-place.
-    session.install('mock', 'pytest', 'pytest-cov')
-    for local_dep in LOCAL_DEPS:
-        session.install('-e', local_dep)
-    session.install('-e', '.')
-
-    # Run py.test against the unit tests.
-    session.run(
-        'py.test',
-        '--quiet',
-        '--cov=google.cloud.redis',
-        '--cov=google.cloud.redis_v1beta1',
-        '--cov=tests.unit',
-        '--cov-append',
-        '--cov-config=.coveragerc',
-        '--cov-report=',
-        '--cov-fail-under=97',
-        'tests/unit',
-        *session.posargs
-    )
+    return unit(session, 'default')
 
 
 @nox.session
-@nox.parametrize('py', ['2.7', '3.5', '3.6'])
+@nox.parametrize('py', ['2.7', '3.5', '3.6', '3.7'])
 def unit(session, py):
     """Run the unit test suite."""
 
     # Run unit tests against all supported versions of Python.
     if py != 'default':
         session.interpreter = 'python{}'.format(py)
+
     # Set the virtualenv directory name.
     session.virtualenv_dirname = 'unit-' + py
 
-    default(session)
+    # Install all test dependencies, then install this package in-place.
+    session.install('pytest')
+    session.install('-e', '.')
 
-
-@nox.session
-def lint(session):
-    """Run linters.
-
-    Returns a failure if the linters find linting errors or sufficiently
-    serious code quality issues.
-    """
-    session.interpreter = 'python3.6'
-    session.install('flake8', *LOCAL_DEPS)
-    session.install('.')
-    session.run('flake8', 'google', 'tests')
+    # Run py.test against the unit tests.
+    session.run('py.test', '--quiet', os.path.join('tests', 'unit'))
 
 
 @nox.session
 def lint_setup_py(session):
     """Verify that setup.py is valid (including RST check)."""
     session.interpreter = 'python3.6'
-
-    # Set the virtualenv directory name.
-    session.virtualenv_dirname = 'setup'
-
     session.install('docutils', 'pygments')
     session.run('python', 'setup.py', 'check', '--restructuredtext',
                 '--strict')
-
-
-@nox.session
-def cover(session):
-    """Run the final coverage report.
-
-    This outputs the coverage report aggregating coverage from the unit
-    test runs (not system test runs), and then erases coverage data.
-    """
-    session.interpreter = 'python3.6'
-    session.install('coverage', 'pytest-cov')
-    session.run('coverage', 'report', '--show-missing', '--fail-under=100')
-    session.run('coverage', 'erase')

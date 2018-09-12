@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+#
 # Copyright 2018 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,24 +19,15 @@ import os
 
 import setuptools
 
-
-# Package metadata.
-
 name = 'google-cloud-redis'
-description = 'Cloud Redis API client library'
+description = 'Google Cloud Memorystore for Redis API API client library'
 version = '0.1.0'
-# Should be one of:
-# 'Development Status :: 3 - Alpha'
-# 'Development Status :: 4 - Beta'
-# 'Development Status :: 5 - Production/Stable'
 release_status = 'Development Status :: 3 - Alpha'
 dependencies = [
-    'google-api-core[grpc] >= 0.1.0, < 0.2.0dev',
+    'google-api-core[grpc] >= 1.1.0, < 2.0.0dev',
+    'enum34; python_version < "3.4"',
+    'grpc-google-iam-v1<0.12dev,>=0.11.4',
 ]
-extras = {
-}
-
-# Setup boilerplate below this line.
 
 package_root = os.path.abspath(os.path.dirname(__file__))
 
@@ -42,17 +35,14 @@ readme_filename = os.path.join(package_root, 'README.rst')
 with io.open(readme_filename, encoding='utf-8') as readme_file:
     readme = readme_file.read()
 
-# Only include packages under the 'google' namespace. Do not include tests,
-# benchmarks, etc.
 packages = [
     package for package in setuptools.find_packages()
-    if package.startswith('google')]
+    if package.startswith('google')
+]
 
-# Determine which namespaces are needed.
 namespaces = ['google']
 if 'google.cloud' in packages:
     namespaces.append('google.cloud')
-
 
 setuptools.setup(
     name=name,
@@ -81,7 +71,6 @@ setuptools.setup(
     packages=packages,
     namespace_packages=namespaces,
     install_requires=dependencies,
-    extras_require=extras,
     include_package_data=True,
     zip_safe=False,
 )
