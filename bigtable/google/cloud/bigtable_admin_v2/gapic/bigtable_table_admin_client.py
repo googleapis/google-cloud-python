@@ -438,6 +438,7 @@ class BigtableTableAdminClient(object):
     def list_tables(self,
                     parent,
                     view=None,
+                    page_size=None,
                     retry=google.api_core.gapic_v1.method.DEFAULT,
                     timeout=google.api_core.gapic_v1.method.DEFAULT,
                     metadata=None):
@@ -470,6 +471,8 @@ class BigtableTableAdminClient(object):
                 Values are of the form ``projects/<project>/instances/<instance>``.
             view (~google.cloud.bigtable_admin_v2.types.View): The view to be applied to the returned tables' fields.
                 Defaults to ``NAME_ONLY`` if unspecified; no others are currently supported.
+            page_size (int): Maximum number of results per page.
+                CURRENTLY UNIMPLEMENTED AND IGNORED.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -505,6 +508,7 @@ class BigtableTableAdminClient(object):
         request = bigtable_table_admin_pb2.ListTablesRequest(
             parent=parent,
             view=view,
+            page_size=page_size,
         )
         if metadata is None:
             metadata = []
