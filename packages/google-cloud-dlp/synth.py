@@ -50,13 +50,6 @@ s.replace(
     "google.cloud.dlp_v2"
 )
 
-# Add newlines to end of files
-s.replace(
-    ["google/__init__.py", "google/cloud/__init__.py"],
-    "__path__ = pkgutil.extend_path\(__path__, __name__\)",
-    "\g<0>\n"
-)
-
 # Add missing utf-8 marker
 s.replace(
     "google/cloud/dlp_v2/proto/dlp_pb2.py",
