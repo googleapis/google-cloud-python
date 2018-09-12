@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+#
 # Copyright 2018 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,7 +36,6 @@ from google.cloud.kms_v1.proto import resources_pb2
 from google.cloud.kms_v1.proto import service_pb2
 from google.cloud.kms_v1.proto import service_pb2_grpc
 from google.iam.v1 import iam_policy_pb2
-from google.iam.v1 import iam_policy_pb2
 from google.iam.v1 import policy_pb2
 from google.protobuf import field_mask_pb2
 
@@ -52,6 +53,9 @@ class KeyManagementServiceClient(object):
     * ``KeyRing``
     * ``CryptoKey``
     * ``CryptoKeyVersion``
+
+    If you are using manual gRPC libraries, see
+    `Using gRPC with Cloud KMS <https://cloud.google.com/kms/docs/grpc>`_.
     """
 
     SERVICE_ADDRESS = 'cloudkms.googleapis.com:443'
@@ -329,6 +333,7 @@ class KeyManagementServiceClient(object):
     def list_crypto_keys(self,
                          parent,
                          page_size=None,
+                         version_view=None,
                          retry=google.api_core.gapic_v1.method.DEFAULT,
                          timeout=google.api_core.gapic_v1.method.DEFAULT,
                          metadata=None):
@@ -364,6 +369,7 @@ class KeyManagementServiceClient(object):
                 resource, this parameter does not affect the return value. If page
                 streaming is performed per-page, this determines the maximum number
                 of resources in a page.
+            version_view (~google.cloud.kms_v1.types.CryptoKeyVersionView): The fields of the primary version to include in the response.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -400,6 +406,7 @@ class KeyManagementServiceClient(object):
         request = service_pb2.ListCryptoKeysRequest(
             parent=parent,
             page_size=page_size,
+            version_view=version_view,
         )
         if metadata is None:
             metadata = []
@@ -431,6 +438,7 @@ class KeyManagementServiceClient(object):
             self,
             parent,
             page_size=None,
+            view=None,
             retry=google.api_core.gapic_v1.method.DEFAULT,
             timeout=google.api_core.gapic_v1.method.DEFAULT,
             metadata=None):
@@ -466,6 +474,7 @@ class KeyManagementServiceClient(object):
                 resource, this parameter does not affect the return value. If page
                 streaming is performed per-page, this determines the maximum number
                 of resources in a page.
+            view (~google.cloud.kms_v1.types.CryptoKeyVersionView): The fields to include in the response.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -503,6 +512,7 @@ class KeyManagementServiceClient(object):
         request = service_pb2.ListCryptoKeyVersionsRequest(
             parent=parent,
             page_size=page_size,
+            view=view,
         )
         if metadata is None:
             metadata = []
@@ -819,7 +829,9 @@ class KeyManagementServiceClient(object):
         """
         Create a new ``CryptoKey`` within a ``KeyRing``.
 
-        ``CryptoKey.purpose`` is required.
+        ``CryptoKey.purpose`` and
+        ``CryptoKey.version_template.algorithm``
+        are required.
 
         Example:
             >>> from google.cloud import kms_v1
@@ -1154,6 +1166,8 @@ class KeyManagementServiceClient(object):
                 metadata=None):
         """
         Encrypts data, so that it can only be recovered by a call to ``Decrypt``.
+        The ``CryptoKey.purpose`` must be
+        ``ENCRYPT_DECRYPT``.
 
         Example:
             >>> from google.cloud import kms_v1
@@ -1174,9 +1188,22 @@ class KeyManagementServiceClient(object):
                 If a ``CryptoKey`` is specified, the server will use its
                 ``primary version``.
             plaintext (bytes): Required. The data to encrypt. Must be no larger than 64KiB.
+
+                The maximum size depends on the key version's
+                ``protection_level``. For
+                ``SOFTWARE`` keys, the plaintext must be no larger
+                than 64KiB. For ``HSM`` keys, the combined length of the
+                plaintext and additional_authenticated_data fields must be no larger than
+                8KiB.
             additional_authenticated_data (bytes): Optional data that, if specified, must also be provided during decryption
-                through ``DecryptRequest.additional_authenticated_data``.  Must be no
-                larger than 64KiB.
+                through ``DecryptRequest.additional_authenticated_data``.
+
+                The maximum size depends on the key version's
+                ``protection_level``. For
+                ``SOFTWARE`` keys, the AAD must be no larger than
+                64KiB. For ``HSM`` keys, the combined length of the
+                plaintext and additional_authenticated_data fields must be no larger than
+                8KiB.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -1234,7 +1261,8 @@ class KeyManagementServiceClient(object):
                 timeout=google.api_core.gapic_v1.method.DEFAULT,
                 metadata=None):
         """
-        Decrypts data that was protected by ``Encrypt``.
+        Decrypts data that was protected by ``Encrypt``. The ``CryptoKey.purpose``
+        must be ``ENCRYPT_DECRYPT``.
 
         Example:
             >>> from google.cloud import kms_v1
@@ -1312,7 +1340,9 @@ class KeyManagementServiceClient(object):
             timeout=google.api_core.gapic_v1.method.DEFAULT,
             metadata=None):
         """
-        Update the version of a ``CryptoKey`` that will be used in ``Encrypt``
+        Update the version of a ``CryptoKey`` that will be used in ``Encrypt``.
+
+        Returns an error if called on an asymmetric key.
 
         Example:
             >>> from google.cloud import kms_v1
@@ -1465,7 +1495,7 @@ class KeyManagementServiceClient(object):
             metadata=None):
         """
         Restore a ``CryptoKeyVersion`` in the
-        ``DESTROY_SCHEDULED``,
+        ``DESTROY_SCHEDULED``
         state.
 
         Upon restoration of the CryptoKeyVersion, ``state``

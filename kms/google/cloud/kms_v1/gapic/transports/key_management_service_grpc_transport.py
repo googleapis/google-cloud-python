@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+#
 # Copyright 2018 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -191,7 +193,9 @@ class KeyManagementServiceGrpcTransport(object):
 
         Create a new ``CryptoKey`` within a ``KeyRing``.
 
-        ``CryptoKey.purpose`` is required.
+        ``CryptoKey.purpose`` and
+        ``CryptoKey.version_template.algorithm``
+        are required.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -256,6 +260,8 @@ class KeyManagementServiceGrpcTransport(object):
         """Return the gRPC stub for {$apiMethod.name}.
 
         Encrypts data, so that it can only be recovered by a call to ``Decrypt``.
+        The ``CryptoKey.purpose`` must be
+        ``ENCRYPT_DECRYPT``.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -268,7 +274,8 @@ class KeyManagementServiceGrpcTransport(object):
     def decrypt(self):
         """Return the gRPC stub for {$apiMethod.name}.
 
-        Decrypts data that was protected by ``Encrypt``.
+        Decrypts data that was protected by ``Encrypt``. The ``CryptoKey.purpose``
+        must be ``ENCRYPT_DECRYPT``.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -281,7 +288,9 @@ class KeyManagementServiceGrpcTransport(object):
     def update_crypto_key_primary_version(self):
         """Return the gRPC stub for {$apiMethod.name}.
 
-        Update the version of a ``CryptoKey`` that will be used in ``Encrypt``
+        Update the version of a ``CryptoKey`` that will be used in ``Encrypt``.
+
+        Returns an error if called on an asymmetric key.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -321,7 +330,7 @@ class KeyManagementServiceGrpcTransport(object):
         """Return the gRPC stub for {$apiMethod.name}.
 
         Restore a ``CryptoKeyVersion`` in the
-        ``DESTROY_SCHEDULED``,
+        ``DESTROY_SCHEDULED``
         state.
 
         Upon restoration of the CryptoKeyVersion, ``state``
