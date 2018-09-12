@@ -97,6 +97,21 @@ config = {
                     "retry_codes_name": "non_idempotent",
                     "retry_params_name": "default"
                 },
+                "GetPublicKey": {
+                    "timeout_millis": 60000,
+                    "retry_codes_name": "idempotent",
+                    "retry_params_name": "default"
+                },
+                "AsymmetricDecrypt": {
+                    "timeout_millis": 60000,
+                    "retry_codes_name": "non_idempotent",
+                    "retry_params_name": "default"
+                },
+                "AsymmetricSign": {
+                    "timeout_millis": 60000,
+                    "retry_codes_name": "non_idempotent",
+                    "retry_params_name": "default"
+                },
                 "SetIamPolicy": {
                     "timeout_millis": 60000,
                     "retry_codes_name": "non_idempotent",

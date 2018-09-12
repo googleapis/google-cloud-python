@@ -24,7 +24,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='google/cloud/kms_v1/proto/service.proto',
   package='google.cloud.kms.v1',
   syntax='proto3',
-  serialized_pb=_b('\n\'google/cloud/kms_v1/proto/service.proto\x12\x13google.cloud.kms.v1\x1a\x1cgoogle/api/annotations.proto\x1a)google/cloud/kms_v1/proto/resources.proto\x1a google/protobuf/field_mask.proto\x1a\x1cgoogle/protobuf/struct.proto\x1a\x1egoogle/protobuf/wrappers.proto\"L\n\x13ListKeyRingsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x11\n\tpage_size\x18\x02 \x01(\x05\x12\x12\n\npage_token\x18\x03 \x01(\t\"N\n\x15ListCryptoKeysRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x11\n\tpage_size\x18\x02 \x01(\x05\x12\x12\n\npage_token\x18\x03 \x01(\t\"U\n\x1cListCryptoKeyVersionsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x11\n\tpage_size\x18\x02 \x01(\x05\x12\x12\n\npage_token\x18\x03 \x01(\t\"t\n\x14ListKeyRingsResponse\x12/\n\tkey_rings\x18\x01 \x03(\x0b\x32\x1c.google.cloud.kms.v1.KeyRing\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\x12\x12\n\ntotal_size\x18\x03 \x01(\x05\"z\n\x16ListCryptoKeysResponse\x12\x33\n\x0b\x63rypto_keys\x18\x01 \x03(\x0b\x32\x1e.google.cloud.kms.v1.CryptoKey\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\x12\x12\n\ntotal_size\x18\x03 \x01(\x05\"\x90\x01\n\x1dListCryptoKeyVersionsResponse\x12\x42\n\x13\x63rypto_key_versions\x18\x01 \x03(\x0b\x32%.google.cloud.kms.v1.CryptoKeyVersion\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\x12\x12\n\ntotal_size\x18\x03 \x01(\x05\"!\n\x11GetKeyRingRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"#\n\x13GetCryptoKeyRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"*\n\x1aGetCryptoKeyVersionRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"k\n\x14\x43reateKeyRingRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x13\n\x0bkey_ring_id\x18\x02 \x01(\t\x12.\n\x08key_ring\x18\x03 \x01(\x0b\x32\x1c.google.cloud.kms.v1.KeyRing\"s\n\x16\x43reateCryptoKeyRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x15\n\rcrypto_key_id\x18\x02 \x01(\t\x12\x32\n\ncrypto_key\x18\x03 \x01(\x0b\x32\x1e.google.cloud.kms.v1.CryptoKey\"r\n\x1d\x43reateCryptoKeyVersionRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x41\n\x12\x63rypto_key_version\x18\x02 \x01(\x0b\x32%.google.cloud.kms.v1.CryptoKeyVersion\"}\n\x16UpdateCryptoKeyRequest\x12\x32\n\ncrypto_key\x18\x01 \x01(\x0b\x32\x1e.google.cloud.kms.v1.CryptoKey\x12/\n\x0bupdate_mask\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.FieldMask\"\x93\x01\n\x1dUpdateCryptoKeyVersionRequest\x12\x41\n\x12\x63rypto_key_version\x18\x01 \x01(\x0b\x32%.google.cloud.kms.v1.CryptoKeyVersion\x12/\n\x0bupdate_mask\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.FieldMask\"X\n\x0e\x45ncryptRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x11\n\tplaintext\x18\x02 \x01(\x0c\x12%\n\x1d\x61\x64\x64itional_authenticated_data\x18\x03 \x01(\x0c\"Y\n\x0e\x44\x65\x63ryptRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x12\n\nciphertext\x18\x02 \x01(\x0c\x12%\n\x1d\x61\x64\x64itional_authenticated_data\x18\x03 \x01(\x0c\"$\n\x0f\x44\x65\x63ryptResponse\x12\x11\n\tplaintext\x18\x01 \x01(\x0c\"3\n\x0f\x45ncryptResponse\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x12\n\nciphertext\x18\x02 \x01(\x0c\"S\n$UpdateCryptoKeyPrimaryVersionRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x1d\n\x15\x63rypto_key_version_id\x18\x02 \x01(\t\".\n\x1e\x44\x65stroyCryptoKeyVersionRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\".\n\x1eRestoreCryptoKeyVersionRequest\x12\x0c\n\x04name\x18\x01 \x01(\t2\xdb\x17\n\x14KeyManagementService\x12\x99\x01\n\x0cListKeyRings\x12(.google.cloud.kms.v1.ListKeyRingsRequest\x1a).google.cloud.kms.v1.ListKeyRingsResponse\"4\x82\xd3\xe4\x93\x02.\x12,/v1/{parent=projects/*/locations/*}/keyRings\x12\xac\x01\n\x0eListCryptoKeys\x12*.google.cloud.kms.v1.ListCryptoKeysRequest\x1a+.google.cloud.kms.v1.ListCryptoKeysResponse\"A\x82\xd3\xe4\x93\x02;\x12\x39/v1/{parent=projects/*/locations/*/keyRings/*}/cryptoKeys\x12\xd5\x01\n\x15ListCryptoKeyVersions\x12\x31.google.cloud.kms.v1.ListCryptoKeyVersionsRequest\x1a\x32.google.cloud.kms.v1.ListCryptoKeyVersionsResponse\"U\x82\xd3\xe4\x93\x02O\x12M/v1/{parent=projects/*/locations/*/keyRings/*/cryptoKeys/*}/cryptoKeyVersions\x12\x88\x01\n\nGetKeyRing\x12&.google.cloud.kms.v1.GetKeyRingRequest\x1a\x1c.google.cloud.kms.v1.KeyRing\"4\x82\xd3\xe4\x93\x02.\x12,/v1/{name=projects/*/locations/*/keyRings/*}\x12\x9b\x01\n\x0cGetCryptoKey\x12(.google.cloud.kms.v1.GetCryptoKeyRequest\x1a\x1e.google.cloud.kms.v1.CryptoKey\"A\x82\xd3\xe4\x93\x02;\x12\x39/v1/{name=projects/*/locations/*/keyRings/*/cryptoKeys/*}\x12\xc4\x01\n\x13GetCryptoKeyVersion\x12/.google.cloud.kms.v1.GetCryptoKeyVersionRequest\x1a%.google.cloud.kms.v1.CryptoKeyVersion\"U\x82\xd3\xe4\x93\x02O\x12M/v1/{name=projects/*/locations/*/keyRings/*/cryptoKeys/*/cryptoKeyVersions/*}\x12\x98\x01\n\rCreateKeyRing\x12).google.cloud.kms.v1.CreateKeyRingRequest\x1a\x1c.google.cloud.kms.v1.KeyRing\">\x82\xd3\xe4\x93\x02\x38\",/v1/{parent=projects/*/locations/*}/keyRings:\x08key_ring\x12\xad\x01\n\x0f\x43reateCryptoKey\x12+.google.cloud.kms.v1.CreateCryptoKeyRequest\x1a\x1e.google.cloud.kms.v1.CryptoKey\"M\x82\xd3\xe4\x93\x02G\"9/v1/{parent=projects/*/locations/*/keyRings/*}/cryptoKeys:\ncrypto_key\x12\xde\x01\n\x16\x43reateCryptoKeyVersion\x12\x32.google.cloud.kms.v1.CreateCryptoKeyVersionRequest\x1a%.google.cloud.kms.v1.CryptoKeyVersion\"i\x82\xd3\xe4\x93\x02\x63\"M/v1/{parent=projects/*/locations/*/keyRings/*/cryptoKeys/*}/cryptoKeyVersions:\x12\x63rypto_key_version\x12\xb8\x01\n\x0fUpdateCryptoKey\x12+.google.cloud.kms.v1.UpdateCryptoKeyRequest\x1a\x1e.google.cloud.kms.v1.CryptoKey\"X\x82\xd3\xe4\x93\x02R2D/v1/{crypto_key.name=projects/*/locations/*/keyRings/*/cryptoKeys/*}:\ncrypto_key\x12\xf1\x01\n\x16UpdateCryptoKeyVersion\x12\x32.google.cloud.kms.v1.UpdateCryptoKeyVersionRequest\x1a%.google.cloud.kms.v1.CryptoKeyVersion\"|\x82\xd3\xe4\x93\x02v2`/v1/{crypto_key_version.name=projects/*/locations/*/keyRings/*/cryptoKeys/*/cryptoKeyVersions/*}:\x12\x63rypto_key_version\x12\xa3\x01\n\x07\x45ncrypt\x12#.google.cloud.kms.v1.EncryptRequest\x1a$.google.cloud.kms.v1.EncryptResponse\"M\x82\xd3\xe4\x93\x02G\"B/v1/{name=projects/*/locations/*/keyRings/*/cryptoKeys/**}:encrypt:\x01*\x12\xa2\x01\n\x07\x44\x65\x63rypt\x12#.google.cloud.kms.v1.DecryptRequest\x1a$.google.cloud.kms.v1.DecryptResponse\"L\x82\xd3\xe4\x93\x02\x46\"A/v1/{name=projects/*/locations/*/keyRings/*/cryptoKeys/*}:decrypt:\x01*\x12\xd5\x01\n\x1dUpdateCryptoKeyPrimaryVersion\x12\x39.google.cloud.kms.v1.UpdateCryptoKeyPrimaryVersionRequest\x1a\x1e.google.cloud.kms.v1.CryptoKey\"Y\x82\xd3\xe4\x93\x02S\"N/v1/{name=projects/*/locations/*/keyRings/*/cryptoKeys/*}:updatePrimaryVersion:\x01*\x12\xd7\x01\n\x17\x44\x65stroyCryptoKeyVersion\x12\x33.google.cloud.kms.v1.DestroyCryptoKeyVersionRequest\x1a%.google.cloud.kms.v1.CryptoKeyVersion\"`\x82\xd3\xe4\x93\x02Z\"U/v1/{name=projects/*/locations/*/keyRings/*/cryptoKeys/*/cryptoKeyVersions/*}:destroy:\x01*\x12\xd7\x01\n\x17RestoreCryptoKeyVersion\x12\x33.google.cloud.kms.v1.RestoreCryptoKeyVersionRequest\x1a%.google.cloud.kms.v1.CryptoKeyVersion\"`\x82\xd3\xe4\x93\x02Z\"U/v1/{name=projects/*/locations/*/keyRings/*/cryptoKeys/*/cryptoKeyVersions/*}:restore:\x01*B\x8c\x01\n\x17\x63om.google.cloud.kms.v1B\x08KmsProtoP\x01Z6google.golang.org/genproto/googleapis/cloud/kms/v1;kms\xf8\x01\x01\xaa\x02\x13Google.Cloud.Kms.V1\xca\x02\x13Google\\Cloud\\Kms\\V1b\x06proto3')
+  serialized_pb=_b('\n\'google/cloud/kms_v1/proto/service.proto\x12\x13google.cloud.kms.v1\x1a\x1cgoogle/api/annotations.proto\x1a)google/cloud/kms_v1/proto/resources.proto\x1a google/protobuf/field_mask.proto\x1a\x1cgoogle/protobuf/struct.proto\x1a\x1egoogle/protobuf/wrappers.proto\"L\n\x13ListKeyRingsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x11\n\tpage_size\x18\x02 \x01(\x05\x12\x12\n\npage_token\x18\x03 \x01(\t\"\xa0\x01\n\x15ListCryptoKeysRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x11\n\tpage_size\x18\x02 \x01(\x05\x12\x12\n\npage_token\x18\x03 \x01(\t\x12P\n\x0cversion_view\x18\x04 \x01(\x0e\x32:.google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionView\"\x9f\x01\n\x1cListCryptoKeyVersionsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x11\n\tpage_size\x18\x02 \x01(\x05\x12\x12\n\npage_token\x18\x03 \x01(\t\x12H\n\x04view\x18\x04 \x01(\x0e\x32:.google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionView\"t\n\x14ListKeyRingsResponse\x12/\n\tkey_rings\x18\x01 \x03(\x0b\x32\x1c.google.cloud.kms.v1.KeyRing\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\x12\x12\n\ntotal_size\x18\x03 \x01(\x05\"z\n\x16ListCryptoKeysResponse\x12\x33\n\x0b\x63rypto_keys\x18\x01 \x03(\x0b\x32\x1e.google.cloud.kms.v1.CryptoKey\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\x12\x12\n\ntotal_size\x18\x03 \x01(\x05\"\x90\x01\n\x1dListCryptoKeyVersionsResponse\x12\x42\n\x13\x63rypto_key_versions\x18\x01 \x03(\x0b\x32%.google.cloud.kms.v1.CryptoKeyVersion\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\x12\x12\n\ntotal_size\x18\x03 \x01(\x05\"!\n\x11GetKeyRingRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"#\n\x13GetCryptoKeyRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"*\n\x1aGetCryptoKeyVersionRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"#\n\x13GetPublicKeyRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"k\n\x14\x43reateKeyRingRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x13\n\x0bkey_ring_id\x18\x02 \x01(\t\x12.\n\x08key_ring\x18\x03 \x01(\x0b\x32\x1c.google.cloud.kms.v1.KeyRing\"s\n\x16\x43reateCryptoKeyRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x15\n\rcrypto_key_id\x18\x02 \x01(\t\x12\x32\n\ncrypto_key\x18\x03 \x01(\x0b\x32\x1e.google.cloud.kms.v1.CryptoKey\"r\n\x1d\x43reateCryptoKeyVersionRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x41\n\x12\x63rypto_key_version\x18\x02 \x01(\x0b\x32%.google.cloud.kms.v1.CryptoKeyVersion\"}\n\x16UpdateCryptoKeyRequest\x12\x32\n\ncrypto_key\x18\x01 \x01(\x0b\x32\x1e.google.cloud.kms.v1.CryptoKey\x12/\n\x0bupdate_mask\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.FieldMask\"\x93\x01\n\x1dUpdateCryptoKeyVersionRequest\x12\x41\n\x12\x63rypto_key_version\x18\x01 \x01(\x0b\x32%.google.cloud.kms.v1.CryptoKeyVersion\x12/\n\x0bupdate_mask\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.FieldMask\"X\n\x0e\x45ncryptRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x11\n\tplaintext\x18\x02 \x01(\x0c\x12%\n\x1d\x61\x64\x64itional_authenticated_data\x18\x03 \x01(\x0c\"Y\n\x0e\x44\x65\x63ryptRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x12\n\nciphertext\x18\x02 \x01(\x0c\x12%\n\x1d\x61\x64\x64itional_authenticated_data\x18\x03 \x01(\x0c\"R\n\x15\x41symmetricSignRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12+\n\x06\x64igest\x18\x03 \x01(\x0b\x32\x1b.google.cloud.kms.v1.Digest\"<\n\x18\x41symmetricDecryptRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x12\n\nciphertext\x18\x03 \x01(\x0c\"$\n\x0f\x44\x65\x63ryptResponse\x12\x11\n\tplaintext\x18\x01 \x01(\x0c\"3\n\x0f\x45ncryptResponse\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x12\n\nciphertext\x18\x02 \x01(\x0c\"+\n\x16\x41symmetricSignResponse\x12\x11\n\tsignature\x18\x01 \x01(\x0c\".\n\x19\x41symmetricDecryptResponse\x12\x11\n\tplaintext\x18\x01 \x01(\x0c\"S\n$UpdateCryptoKeyPrimaryVersionRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x1d\n\x15\x63rypto_key_version_id\x18\x02 \x01(\t\".\n\x1e\x44\x65stroyCryptoKeyVersionRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\".\n\x1eRestoreCryptoKeyVersionRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"H\n\x06\x44igest\x12\x10\n\x06sha256\x18\x01 \x01(\x0cH\x00\x12\x10\n\x06sha384\x18\x02 \x01(\x0cH\x00\x12\x10\n\x06sha512\x18\x03 \x01(\x0cH\x00\x42\x08\n\x06\x64igest\")\n\x10LocationMetadata\x12\x15\n\rhsm_available\x18\x01 \x01(\x08\x32\xcd\x1c\n\x14KeyManagementService\x12\x99\x01\n\x0cListKeyRings\x12(.google.cloud.kms.v1.ListKeyRingsRequest\x1a).google.cloud.kms.v1.ListKeyRingsResponse\"4\x82\xd3\xe4\x93\x02.\x12,/v1/{parent=projects/*/locations/*}/keyRings\x12\xac\x01\n\x0eListCryptoKeys\x12*.google.cloud.kms.v1.ListCryptoKeysRequest\x1a+.google.cloud.kms.v1.ListCryptoKeysResponse\"A\x82\xd3\xe4\x93\x02;\x12\x39/v1/{parent=projects/*/locations/*/keyRings/*}/cryptoKeys\x12\xd5\x01\n\x15ListCryptoKeyVersions\x12\x31.google.cloud.kms.v1.ListCryptoKeyVersionsRequest\x1a\x32.google.cloud.kms.v1.ListCryptoKeyVersionsResponse\"U\x82\xd3\xe4\x93\x02O\x12M/v1/{parent=projects/*/locations/*/keyRings/*/cryptoKeys/*}/cryptoKeyVersions\x12\x88\x01\n\nGetKeyRing\x12&.google.cloud.kms.v1.GetKeyRingRequest\x1a\x1c.google.cloud.kms.v1.KeyRing\"4\x82\xd3\xe4\x93\x02.\x12,/v1/{name=projects/*/locations/*/keyRings/*}\x12\x9b\x01\n\x0cGetCryptoKey\x12(.google.cloud.kms.v1.GetCryptoKeyRequest\x1a\x1e.google.cloud.kms.v1.CryptoKey\"A\x82\xd3\xe4\x93\x02;\x12\x39/v1/{name=projects/*/locations/*/keyRings/*/cryptoKeys/*}\x12\xc4\x01\n\x13GetCryptoKeyVersion\x12/.google.cloud.kms.v1.GetCryptoKeyVersionRequest\x1a%.google.cloud.kms.v1.CryptoKeyVersion\"U\x82\xd3\xe4\x93\x02O\x12M/v1/{name=projects/*/locations/*/keyRings/*/cryptoKeys/*/cryptoKeyVersions/*}\x12\xb9\x01\n\x0cGetPublicKey\x12(.google.cloud.kms.v1.GetPublicKeyRequest\x1a\x1e.google.cloud.kms.v1.PublicKey\"_\x82\xd3\xe4\x93\x02Y\x12W/v1/{name=projects/*/locations/*/keyRings/*/cryptoKeys/*/cryptoKeyVersions/*}/publicKey\x12\x98\x01\n\rCreateKeyRing\x12).google.cloud.kms.v1.CreateKeyRingRequest\x1a\x1c.google.cloud.kms.v1.KeyRing\">\x82\xd3\xe4\x93\x02\x38\",/v1/{parent=projects/*/locations/*}/keyRings:\x08key_ring\x12\xad\x01\n\x0f\x43reateCryptoKey\x12+.google.cloud.kms.v1.CreateCryptoKeyRequest\x1a\x1e.google.cloud.kms.v1.CryptoKey\"M\x82\xd3\xe4\x93\x02G\"9/v1/{parent=projects/*/locations/*/keyRings/*}/cryptoKeys:\ncrypto_key\x12\xde\x01\n\x16\x43reateCryptoKeyVersion\x12\x32.google.cloud.kms.v1.CreateCryptoKeyVersionRequest\x1a%.google.cloud.kms.v1.CryptoKeyVersion\"i\x82\xd3\xe4\x93\x02\x63\"M/v1/{parent=projects/*/locations/*/keyRings/*/cryptoKeys/*}/cryptoKeyVersions:\x12\x63rypto_key_version\x12\xb8\x01\n\x0fUpdateCryptoKey\x12+.google.cloud.kms.v1.UpdateCryptoKeyRequest\x1a\x1e.google.cloud.kms.v1.CryptoKey\"X\x82\xd3\xe4\x93\x02R2D/v1/{crypto_key.name=projects/*/locations/*/keyRings/*/cryptoKeys/*}:\ncrypto_key\x12\xf1\x01\n\x16UpdateCryptoKeyVersion\x12\x32.google.cloud.kms.v1.UpdateCryptoKeyVersionRequest\x1a%.google.cloud.kms.v1.CryptoKeyVersion\"|\x82\xd3\xe4\x93\x02v2`/v1/{crypto_key_version.name=projects/*/locations/*/keyRings/*/cryptoKeys/*/cryptoKeyVersions/*}:\x12\x63rypto_key_version\x12\xa3\x01\n\x07\x45ncrypt\x12#.google.cloud.kms.v1.EncryptRequest\x1a$.google.cloud.kms.v1.EncryptResponse\"M\x82\xd3\xe4\x93\x02G\"B/v1/{name=projects/*/locations/*/keyRings/*/cryptoKeys/**}:encrypt:\x01*\x12\xa2\x01\n\x07\x44\x65\x63rypt\x12#.google.cloud.kms.v1.DecryptRequest\x1a$.google.cloud.kms.v1.DecryptResponse\"L\x82\xd3\xe4\x93\x02\x46\"A/v1/{name=projects/*/locations/*/keyRings/*/cryptoKeys/*}:decrypt:\x01*\x12\xd2\x01\n\x0e\x41symmetricSign\x12*.google.cloud.kms.v1.AsymmetricSignRequest\x1a+.google.cloud.kms.v1.AsymmetricSignResponse\"g\x82\xd3\xe4\x93\x02\x61\"\\/v1/{name=projects/*/locations/*/keyRings/*/cryptoKeys/*/cryptoKeyVersions/*}:asymmetricSign:\x01*\x12\xde\x01\n\x11\x41symmetricDecrypt\x12-.google.cloud.kms.v1.AsymmetricDecryptRequest\x1a..google.cloud.kms.v1.AsymmetricDecryptResponse\"j\x82\xd3\xe4\x93\x02\x64\"_/v1/{name=projects/*/locations/*/keyRings/*/cryptoKeys/*/cryptoKeyVersions/*}:asymmetricDecrypt:\x01*\x12\xd5\x01\n\x1dUpdateCryptoKeyPrimaryVersion\x12\x39.google.cloud.kms.v1.UpdateCryptoKeyPrimaryVersionRequest\x1a\x1e.google.cloud.kms.v1.CryptoKey\"Y\x82\xd3\xe4\x93\x02S\"N/v1/{name=projects/*/locations/*/keyRings/*/cryptoKeys/*}:updatePrimaryVersion:\x01*\x12\xd7\x01\n\x17\x44\x65stroyCryptoKeyVersion\x12\x33.google.cloud.kms.v1.DestroyCryptoKeyVersionRequest\x1a%.google.cloud.kms.v1.CryptoKeyVersion\"`\x82\xd3\xe4\x93\x02Z\"U/v1/{name=projects/*/locations/*/keyRings/*/cryptoKeys/*/cryptoKeyVersions/*}:destroy:\x01*\x12\xd7\x01\n\x17RestoreCryptoKeyVersion\x12\x33.google.cloud.kms.v1.RestoreCryptoKeyVersionRequest\x1a%.google.cloud.kms.v1.CryptoKeyVersion\"`\x82\xd3\xe4\x93\x02Z\"U/v1/{name=projects/*/locations/*/keyRings/*/cryptoKeys/*/cryptoKeyVersions/*}:restore:\x01*B\x8c\x01\n\x17\x63om.google.cloud.kms.v1B\x08KmsProtoP\x01Z6google.golang.org/genproto/googleapis/cloud/kms/v1;kms\xf8\x01\x01\xaa\x02\x13Google.Cloud.Kms.V1\xca\x02\x13Google\\Cloud\\Kms\\V1b\x06proto3')
   ,
   dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR,google_dot_cloud_dot_kms__v1_dot_proto_dot_resources__pb2.DESCRIPTOR,google_dot_protobuf_dot_field__mask__pb2.DESCRIPTOR,google_dot_protobuf_dot_struct__pb2.DESCRIPTOR,google_dot_protobuf_dot_wrappers__pb2.DESCRIPTOR,])
 
@@ -104,6 +104,13 @@ _LISTCRYPTOKEYSREQUEST = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='version_view', full_name='google.cloud.kms.v1.ListCryptoKeysRequest.version_view', index=3,
+      number=4, type=14, cpp_type=8, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -116,8 +123,8 @@ _LISTCRYPTOKEYSREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=311,
-  serialized_end=389,
+  serialized_start=312,
+  serialized_end=472,
 )
 
 
@@ -149,6 +156,13 @@ _LISTCRYPTOKEYVERSIONSREQUEST = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='view', full_name='google.cloud.kms.v1.ListCryptoKeyVersionsRequest.view', index=3,
+      number=4, type=14, cpp_type=8, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -161,8 +175,8 @@ _LISTCRYPTOKEYVERSIONSREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=391,
-  serialized_end=476,
+  serialized_start=475,
+  serialized_end=634,
 )
 
 
@@ -206,8 +220,8 @@ _LISTKEYRINGSRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=478,
-  serialized_end=594,
+  serialized_start=636,
+  serialized_end=752,
 )
 
 
@@ -251,8 +265,8 @@ _LISTCRYPTOKEYSRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=596,
-  serialized_end=718,
+  serialized_start=754,
+  serialized_end=876,
 )
 
 
@@ -296,8 +310,8 @@ _LISTCRYPTOKEYVERSIONSRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=721,
-  serialized_end=865,
+  serialized_start=879,
+  serialized_end=1023,
 )
 
 
@@ -327,8 +341,8 @@ _GETKEYRINGREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=867,
-  serialized_end=900,
+  serialized_start=1025,
+  serialized_end=1058,
 )
 
 
@@ -358,8 +372,8 @@ _GETCRYPTOKEYREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=902,
-  serialized_end=937,
+  serialized_start=1060,
+  serialized_end=1095,
 )
 
 
@@ -389,8 +403,39 @@ _GETCRYPTOKEYVERSIONREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=939,
-  serialized_end=981,
+  serialized_start=1097,
+  serialized_end=1139,
+)
+
+
+_GETPUBLICKEYREQUEST = _descriptor.Descriptor(
+  name='GetPublicKeyRequest',
+  full_name='google.cloud.kms.v1.GetPublicKeyRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='name', full_name='google.cloud.kms.v1.GetPublicKeyRequest.name', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=1141,
+  serialized_end=1176,
 )
 
 
@@ -434,8 +479,8 @@ _CREATEKEYRINGREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=983,
-  serialized_end=1090,
+  serialized_start=1178,
+  serialized_end=1285,
 )
 
 
@@ -479,8 +524,8 @@ _CREATECRYPTOKEYREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1092,
-  serialized_end=1207,
+  serialized_start=1287,
+  serialized_end=1402,
 )
 
 
@@ -517,8 +562,8 @@ _CREATECRYPTOKEYVERSIONREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1209,
-  serialized_end=1323,
+  serialized_start=1404,
+  serialized_end=1518,
 )
 
 
@@ -555,8 +600,8 @@ _UPDATECRYPTOKEYREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1325,
-  serialized_end=1450,
+  serialized_start=1520,
+  serialized_end=1645,
 )
 
 
@@ -593,8 +638,8 @@ _UPDATECRYPTOKEYVERSIONREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1453,
-  serialized_end=1600,
+  serialized_start=1648,
+  serialized_end=1795,
 )
 
 
@@ -638,8 +683,8 @@ _ENCRYPTREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1602,
-  serialized_end=1690,
+  serialized_start=1797,
+  serialized_end=1885,
 )
 
 
@@ -683,8 +728,84 @@ _DECRYPTREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1692,
-  serialized_end=1781,
+  serialized_start=1887,
+  serialized_end=1976,
+)
+
+
+_ASYMMETRICSIGNREQUEST = _descriptor.Descriptor(
+  name='AsymmetricSignRequest',
+  full_name='google.cloud.kms.v1.AsymmetricSignRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='name', full_name='google.cloud.kms.v1.AsymmetricSignRequest.name', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='digest', full_name='google.cloud.kms.v1.AsymmetricSignRequest.digest', index=1,
+      number=3, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=1978,
+  serialized_end=2060,
+)
+
+
+_ASYMMETRICDECRYPTREQUEST = _descriptor.Descriptor(
+  name='AsymmetricDecryptRequest',
+  full_name='google.cloud.kms.v1.AsymmetricDecryptRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='name', full_name='google.cloud.kms.v1.AsymmetricDecryptRequest.name', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='ciphertext', full_name='google.cloud.kms.v1.AsymmetricDecryptRequest.ciphertext', index=1,
+      number=3, type=12, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b(""),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=2062,
+  serialized_end=2122,
 )
 
 
@@ -714,8 +835,8 @@ _DECRYPTRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1783,
-  serialized_end=1819,
+  serialized_start=2124,
+  serialized_end=2160,
 )
 
 
@@ -752,8 +873,70 @@ _ENCRYPTRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1821,
-  serialized_end=1872,
+  serialized_start=2162,
+  serialized_end=2213,
+)
+
+
+_ASYMMETRICSIGNRESPONSE = _descriptor.Descriptor(
+  name='AsymmetricSignResponse',
+  full_name='google.cloud.kms.v1.AsymmetricSignResponse',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='signature', full_name='google.cloud.kms.v1.AsymmetricSignResponse.signature', index=0,
+      number=1, type=12, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b(""),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=2215,
+  serialized_end=2258,
+)
+
+
+_ASYMMETRICDECRYPTRESPONSE = _descriptor.Descriptor(
+  name='AsymmetricDecryptResponse',
+  full_name='google.cloud.kms.v1.AsymmetricDecryptResponse',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='plaintext', full_name='google.cloud.kms.v1.AsymmetricDecryptResponse.plaintext', index=0,
+      number=1, type=12, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b(""),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=2260,
+  serialized_end=2306,
 )
 
 
@@ -790,8 +973,8 @@ _UPDATECRYPTOKEYPRIMARYVERSIONREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1874,
-  serialized_end=1957,
+  serialized_start=2308,
+  serialized_end=2391,
 )
 
 
@@ -821,8 +1004,8 @@ _DESTROYCRYPTOKEYVERSIONREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1959,
-  serialized_end=2005,
+  serialized_start=2393,
+  serialized_end=2439,
 )
 
 
@@ -852,10 +1035,91 @@ _RESTORECRYPTOKEYVERSIONREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2007,
-  serialized_end=2053,
+  serialized_start=2441,
+  serialized_end=2487,
 )
 
+
+_DIGEST = _descriptor.Descriptor(
+  name='Digest',
+  full_name='google.cloud.kms.v1.Digest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='sha256', full_name='google.cloud.kms.v1.Digest.sha256', index=0,
+      number=1, type=12, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b(""),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='sha384', full_name='google.cloud.kms.v1.Digest.sha384', index=1,
+      number=2, type=12, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b(""),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='sha512', full_name='google.cloud.kms.v1.Digest.sha512', index=2,
+      number=3, type=12, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b(""),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+    _descriptor.OneofDescriptor(
+      name='digest', full_name='google.cloud.kms.v1.Digest.digest',
+      index=0, containing_type=None, fields=[]),
+  ],
+  serialized_start=2489,
+  serialized_end=2561,
+)
+
+
+_LOCATIONMETADATA = _descriptor.Descriptor(
+  name='LocationMetadata',
+  full_name='google.cloud.kms.v1.LocationMetadata',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='hsm_available', full_name='google.cloud.kms.v1.LocationMetadata.hsm_available', index=0,
+      number=1, type=8, cpp_type=7, label=1,
+      has_default_value=False, default_value=False,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=2563,
+  serialized_end=2604,
+)
+
+_LISTCRYPTOKEYSREQUEST.fields_by_name['version_view'].enum_type = google_dot_cloud_dot_kms__v1_dot_proto_dot_resources__pb2._CRYPTOKEYVERSION_CRYPTOKEYVERSIONVIEW
+_LISTCRYPTOKEYVERSIONSREQUEST.fields_by_name['view'].enum_type = google_dot_cloud_dot_kms__v1_dot_proto_dot_resources__pb2._CRYPTOKEYVERSION_CRYPTOKEYVERSIONVIEW
 _LISTKEYRINGSRESPONSE.fields_by_name['key_rings'].message_type = google_dot_cloud_dot_kms__v1_dot_proto_dot_resources__pb2._KEYRING
 _LISTCRYPTOKEYSRESPONSE.fields_by_name['crypto_keys'].message_type = google_dot_cloud_dot_kms__v1_dot_proto_dot_resources__pb2._CRYPTOKEY
 _LISTCRYPTOKEYVERSIONSRESPONSE.fields_by_name['crypto_key_versions'].message_type = google_dot_cloud_dot_kms__v1_dot_proto_dot_resources__pb2._CRYPTOKEYVERSION
@@ -866,6 +1130,16 @@ _UPDATECRYPTOKEYREQUEST.fields_by_name['crypto_key'].message_type = google_dot_c
 _UPDATECRYPTOKEYREQUEST.fields_by_name['update_mask'].message_type = google_dot_protobuf_dot_field__mask__pb2._FIELDMASK
 _UPDATECRYPTOKEYVERSIONREQUEST.fields_by_name['crypto_key_version'].message_type = google_dot_cloud_dot_kms__v1_dot_proto_dot_resources__pb2._CRYPTOKEYVERSION
 _UPDATECRYPTOKEYVERSIONREQUEST.fields_by_name['update_mask'].message_type = google_dot_protobuf_dot_field__mask__pb2._FIELDMASK
+_ASYMMETRICSIGNREQUEST.fields_by_name['digest'].message_type = _DIGEST
+_DIGEST.oneofs_by_name['digest'].fields.append(
+  _DIGEST.fields_by_name['sha256'])
+_DIGEST.fields_by_name['sha256'].containing_oneof = _DIGEST.oneofs_by_name['digest']
+_DIGEST.oneofs_by_name['digest'].fields.append(
+  _DIGEST.fields_by_name['sha384'])
+_DIGEST.fields_by_name['sha384'].containing_oneof = _DIGEST.oneofs_by_name['digest']
+_DIGEST.oneofs_by_name['digest'].fields.append(
+  _DIGEST.fields_by_name['sha512'])
+_DIGEST.fields_by_name['sha512'].containing_oneof = _DIGEST.oneofs_by_name['digest']
 DESCRIPTOR.message_types_by_name['ListKeyRingsRequest'] = _LISTKEYRINGSREQUEST
 DESCRIPTOR.message_types_by_name['ListCryptoKeysRequest'] = _LISTCRYPTOKEYSREQUEST
 DESCRIPTOR.message_types_by_name['ListCryptoKeyVersionsRequest'] = _LISTCRYPTOKEYVERSIONSREQUEST
@@ -875,6 +1149,7 @@ DESCRIPTOR.message_types_by_name['ListCryptoKeyVersionsResponse'] = _LISTCRYPTOK
 DESCRIPTOR.message_types_by_name['GetKeyRingRequest'] = _GETKEYRINGREQUEST
 DESCRIPTOR.message_types_by_name['GetCryptoKeyRequest'] = _GETCRYPTOKEYREQUEST
 DESCRIPTOR.message_types_by_name['GetCryptoKeyVersionRequest'] = _GETCRYPTOKEYVERSIONREQUEST
+DESCRIPTOR.message_types_by_name['GetPublicKeyRequest'] = _GETPUBLICKEYREQUEST
 DESCRIPTOR.message_types_by_name['CreateKeyRingRequest'] = _CREATEKEYRINGREQUEST
 DESCRIPTOR.message_types_by_name['CreateCryptoKeyRequest'] = _CREATECRYPTOKEYREQUEST
 DESCRIPTOR.message_types_by_name['CreateCryptoKeyVersionRequest'] = _CREATECRYPTOKEYVERSIONREQUEST
@@ -882,11 +1157,17 @@ DESCRIPTOR.message_types_by_name['UpdateCryptoKeyRequest'] = _UPDATECRYPTOKEYREQ
 DESCRIPTOR.message_types_by_name['UpdateCryptoKeyVersionRequest'] = _UPDATECRYPTOKEYVERSIONREQUEST
 DESCRIPTOR.message_types_by_name['EncryptRequest'] = _ENCRYPTREQUEST
 DESCRIPTOR.message_types_by_name['DecryptRequest'] = _DECRYPTREQUEST
+DESCRIPTOR.message_types_by_name['AsymmetricSignRequest'] = _ASYMMETRICSIGNREQUEST
+DESCRIPTOR.message_types_by_name['AsymmetricDecryptRequest'] = _ASYMMETRICDECRYPTREQUEST
 DESCRIPTOR.message_types_by_name['DecryptResponse'] = _DECRYPTRESPONSE
 DESCRIPTOR.message_types_by_name['EncryptResponse'] = _ENCRYPTRESPONSE
+DESCRIPTOR.message_types_by_name['AsymmetricSignResponse'] = _ASYMMETRICSIGNRESPONSE
+DESCRIPTOR.message_types_by_name['AsymmetricDecryptResponse'] = _ASYMMETRICDECRYPTRESPONSE
 DESCRIPTOR.message_types_by_name['UpdateCryptoKeyPrimaryVersionRequest'] = _UPDATECRYPTOKEYPRIMARYVERSIONREQUEST
 DESCRIPTOR.message_types_by_name['DestroyCryptoKeyVersionRequest'] = _DESTROYCRYPTOKEYVERSIONREQUEST
 DESCRIPTOR.message_types_by_name['RestoreCryptoKeyVersionRequest'] = _RESTORECRYPTOKEYVERSIONREQUEST
+DESCRIPTOR.message_types_by_name['Digest'] = _DIGEST
+DESCRIPTOR.message_types_by_name['LocationMetadata'] = _LOCATIONMETADATA
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 ListKeyRingsRequest = _reflection.GeneratedProtocolMessageType('ListKeyRingsRequest', (_message.Message,), dict(
@@ -944,6 +1225,8 @@ ListCryptoKeysRequest = _reflection.GeneratedProtocolMessageType('ListCryptoKeys
           Optional pagination token, returned earlier via [ListCryptoKey
           sResponse.next\_page\_token][google.cloud.kms.v1.ListCryptoKey
           sResponse.next\_page\_token].
+      version_view:
+          The fields of the primary version to include in the response.
   """,
   # @@protoc_insertion_point(class_scope:google.cloud.kms.v1.ListCryptoKeysRequest)
   ))
@@ -975,6 +1258,8 @@ ListCryptoKeyVersionsRequest = _reflection.GeneratedProtocolMessageType('ListCry
           Optional pagination token, returned earlier via [ListCryptoKey
           VersionsResponse.next\_page\_token][google.cloud.kms.v1.ListCr
           yptoKeyVersionsResponse.next\_page\_token].
+      view:
+          The fields to include in the response.
   """,
   # @@protoc_insertion_point(class_scope:google.cloud.kms.v1.ListCryptoKeyVersionsRequest)
   ))
@@ -1106,6 +1391,24 @@ GetCryptoKeyVersionRequest = _reflection.GeneratedProtocolMessageType('GetCrypto
   ))
 _sym_db.RegisterMessage(GetCryptoKeyVersionRequest)
 
+GetPublicKeyRequest = _reflection.GeneratedProtocolMessageType('GetPublicKeyRequest', (_message.Message,), dict(
+  DESCRIPTOR = _GETPUBLICKEYREQUEST,
+  __module__ = 'google.cloud.kms_v1.proto.service_pb2'
+  ,
+  __doc__ = """Request message for
+  [KeyManagementService.GetPublicKey][google.cloud.kms.v1.KeyManagementService.GetPublicKey].
+  
+  
+  Attributes:
+      name:
+          The [name][google.cloud.kms.v1.CryptoKeyVersion.name] of the
+          [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
+          public key to get.
+  """,
+  # @@protoc_insertion_point(class_scope:google.cloud.kms.v1.GetPublicKeyRequest)
+  ))
+_sym_db.RegisterMessage(GetPublicKeyRequest)
+
 CreateKeyRingRequest = _reflection.GeneratedProtocolMessageType('CreateKeyRingRequest', (_message.Message,), dict(
   DESCRIPTOR = _CREATEKEYRINGREQUEST,
   __module__ = 'google.cloud.kms_v1.proto.service_pb2'
@@ -1232,11 +1535,28 @@ EncryptRequest = _reflection.GeneratedProtocolMessageType('EncryptRequest', (_me
           version][google.cloud.kms.v1.CryptoKey.primary].
       plaintext:
           Required. The data to encrypt. Must be no larger than 64KiB.
+          The maximum size depends on the key version's [protection\_lev
+          el][google.cloud.kms.v1.CryptoKeyVersionTemplate.protection\_l
+          evel]. For
+          [SOFTWARE][google.cloud.kms.v1.ProtectionLevel.SOFTWARE] keys,
+          the plaintext must be no larger than 64KiB. For
+          [HSM][google.cloud.kms.v1.ProtectionLevel.HSM] keys, the
+          combined length of the plaintext and
+          additional\_authenticated\_data fields must be no larger than
+          8KiB.
       additional_authenticated_data:
           Optional data that, if specified, must also be provided during
           decryption through [DecryptRequest.additional\_authenticated\_
           data][google.cloud.kms.v1.DecryptRequest.additional\_authentic
-          ated\_data]. Must be no larger than 64KiB.
+          ated\_data].  The maximum size depends on the key version's [p
+          rotection\_level][google.cloud.kms.v1.CryptoKeyVersionTemplate
+          .protection\_level]. For
+          [SOFTWARE][google.cloud.kms.v1.ProtectionLevel.SOFTWARE] keys,
+          the AAD must be no larger than 64KiB. For
+          [HSM][google.cloud.kms.v1.ProtectionLevel.HSM] keys, the
+          combined length of the plaintext and
+          additional\_authenticated\_data fields must be no larger than
+          8KiB.
   """,
   # @@protoc_insertion_point(class_scope:google.cloud.kms.v1.EncryptRequest)
   ))
@@ -1267,6 +1587,51 @@ DecryptRequest = _reflection.GeneratedProtocolMessageType('DecryptRequest', (_me
   # @@protoc_insertion_point(class_scope:google.cloud.kms.v1.DecryptRequest)
   ))
 _sym_db.RegisterMessage(DecryptRequest)
+
+AsymmetricSignRequest = _reflection.GeneratedProtocolMessageType('AsymmetricSignRequest', (_message.Message,), dict(
+  DESCRIPTOR = _ASYMMETRICSIGNREQUEST,
+  __module__ = 'google.cloud.kms_v1.proto.service_pb2'
+  ,
+  __doc__ = """Request message for
+  [KeyManagementService.AsymmetricSign][google.cloud.kms.v1.KeyManagementService.AsymmetricSign].
+  
+  
+  Attributes:
+      name:
+          Required. The resource name of the
+          [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] to
+          use for signing.
+      digest:
+          Required. The digest of the data to sign. The digest must be
+          produced with the same digest algorithm as specified by the
+          key version's
+          [algorithm][google.cloud.kms.v1.CryptoKeyVersion.algorithm].
+  """,
+  # @@protoc_insertion_point(class_scope:google.cloud.kms.v1.AsymmetricSignRequest)
+  ))
+_sym_db.RegisterMessage(AsymmetricSignRequest)
+
+AsymmetricDecryptRequest = _reflection.GeneratedProtocolMessageType('AsymmetricDecryptRequest', (_message.Message,), dict(
+  DESCRIPTOR = _ASYMMETRICDECRYPTREQUEST,
+  __module__ = 'google.cloud.kms_v1.proto.service_pb2'
+  ,
+  __doc__ = """Request message for
+  [KeyManagementService.AsymmetricDecrypt][google.cloud.kms.v1.KeyManagementService.AsymmetricDecrypt].
+  
+  
+  Attributes:
+      name:
+          Required. The resource name of the
+          [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] to
+          use for decryption.
+      ciphertext:
+          Required. The data encrypted with the named
+          [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]'s
+          public key using OAEP.
+  """,
+  # @@protoc_insertion_point(class_scope:google.cloud.kms.v1.AsymmetricDecryptRequest)
+  ))
+_sym_db.RegisterMessage(AsymmetricDecryptRequest)
 
 DecryptResponse = _reflection.GeneratedProtocolMessageType('DecryptResponse', (_message.Message,), dict(
   DESCRIPTOR = _DECRYPTRESPONSE,
@@ -1304,6 +1669,39 @@ EncryptResponse = _reflection.GeneratedProtocolMessageType('EncryptResponse', (_
   # @@protoc_insertion_point(class_scope:google.cloud.kms.v1.EncryptResponse)
   ))
 _sym_db.RegisterMessage(EncryptResponse)
+
+AsymmetricSignResponse = _reflection.GeneratedProtocolMessageType('AsymmetricSignResponse', (_message.Message,), dict(
+  DESCRIPTOR = _ASYMMETRICSIGNRESPONSE,
+  __module__ = 'google.cloud.kms_v1.proto.service_pb2'
+  ,
+  __doc__ = """Response message for
+  [KeyManagementService.AsymmetricSign][google.cloud.kms.v1.KeyManagementService.AsymmetricSign].
+  
+  
+  Attributes:
+      signature:
+          The created signature.
+  """,
+  # @@protoc_insertion_point(class_scope:google.cloud.kms.v1.AsymmetricSignResponse)
+  ))
+_sym_db.RegisterMessage(AsymmetricSignResponse)
+
+AsymmetricDecryptResponse = _reflection.GeneratedProtocolMessageType('AsymmetricDecryptResponse', (_message.Message,), dict(
+  DESCRIPTOR = _ASYMMETRICDECRYPTRESPONSE,
+  __module__ = 'google.cloud.kms_v1.proto.service_pb2'
+  ,
+  __doc__ = """Response message for
+  [KeyManagementService.AsymmetricDecrypt][google.cloud.kms.v1.KeyManagementService.AsymmetricDecrypt].
+  
+  
+  Attributes:
+      plaintext:
+          The decrypted data originally encrypted with the matching
+          public key.
+  """,
+  # @@protoc_insertion_point(class_scope:google.cloud.kms.v1.AsymmetricDecryptResponse)
+  ))
+_sym_db.RegisterMessage(AsymmetricDecryptResponse)
 
 UpdateCryptoKeyPrimaryVersionRequest = _reflection.GeneratedProtocolMessageType('UpdateCryptoKeyPrimaryVersionRequest', (_message.Message,), dict(
   DESCRIPTOR = _UPDATECRYPTOKEYPRIMARYVERSIONREQUEST,
@@ -1362,6 +1760,48 @@ RestoreCryptoKeyVersionRequest = _reflection.GeneratedProtocolMessageType('Resto
   ))
 _sym_db.RegisterMessage(RestoreCryptoKeyVersionRequest)
 
+Digest = _reflection.GeneratedProtocolMessageType('Digest', (_message.Message,), dict(
+  DESCRIPTOR = _DIGEST,
+  __module__ = 'google.cloud.kms_v1.proto.service_pb2'
+  ,
+  __doc__ = """A [Digest][google.cloud.kms.v1.Digest] holds a cryptographic message
+  digest.
+  
+  
+  Attributes:
+      digest:
+          Required. The message digest.
+      sha256:
+          A message digest produced with the SHA-256 algorithm.
+      sha384:
+          A message digest produced with the SHA-384 algorithm.
+      sha512:
+          A message digest produced with the SHA-512 algorithm.
+  """,
+  # @@protoc_insertion_point(class_scope:google.cloud.kms.v1.Digest)
+  ))
+_sym_db.RegisterMessage(Digest)
+
+LocationMetadata = _reflection.GeneratedProtocolMessageType('LocationMetadata', (_message.Message,), dict(
+  DESCRIPTOR = _LOCATIONMETADATA,
+  __module__ = 'google.cloud.kms_v1.proto.service_pb2'
+  ,
+  __doc__ = """Cloud KMS metadata for the given
+  [google.cloud.location.Location][google.cloud.location.Location].
+  
+  
+  Attributes:
+      hsm_available:
+          Indicates whether [CryptoKeys][google.cloud.kms.v1.CryptoKey]
+          with [protection\_level][google.cloud.kms.v1.CryptoKeyVersionT
+          emplate.protection\_level]
+          [HSM][google.cloud.kms.v1.ProtectionLevel.HSM] can be created
+          in this location.
+  """,
+  # @@protoc_insertion_point(class_scope:google.cloud.kms.v1.LocationMetadata)
+  ))
+_sym_db.RegisterMessage(LocationMetadata)
+
 
 DESCRIPTOR.has_options = True
 DESCRIPTOR._options = _descriptor._ParseOptions(descriptor_pb2.FileOptions(), _b('\n\027com.google.cloud.kms.v1B\010KmsProtoP\001Z6google.golang.org/genproto/googleapis/cloud/kms/v1;kms\370\001\001\252\002\023Google.Cloud.Kms.V1\312\002\023Google\\Cloud\\Kms\\V1'))
@@ -1372,8 +1812,8 @@ _KEYMANAGEMENTSERVICE = _descriptor.ServiceDescriptor(
   file=DESCRIPTOR,
   index=0,
   options=None,
-  serialized_start=2056,
-  serialized_end=5091,
+  serialized_start=2607,
+  serialized_end=6268,
   methods=[
   _descriptor.MethodDescriptor(
     name='ListKeyRings',
@@ -1430,9 +1870,18 @@ _KEYMANAGEMENTSERVICE = _descriptor.ServiceDescriptor(
     options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002O\022M/v1/{name=projects/*/locations/*/keyRings/*/cryptoKeys/*/cryptoKeyVersions/*}')),
   ),
   _descriptor.MethodDescriptor(
+    name='GetPublicKey',
+    full_name='google.cloud.kms.v1.KeyManagementService.GetPublicKey',
+    index=6,
+    containing_service=None,
+    input_type=_GETPUBLICKEYREQUEST,
+    output_type=google_dot_cloud_dot_kms__v1_dot_proto_dot_resources__pb2._PUBLICKEY,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002Y\022W/v1/{name=projects/*/locations/*/keyRings/*/cryptoKeys/*/cryptoKeyVersions/*}/publicKey')),
+  ),
+  _descriptor.MethodDescriptor(
     name='CreateKeyRing',
     full_name='google.cloud.kms.v1.KeyManagementService.CreateKeyRing',
-    index=6,
+    index=7,
     containing_service=None,
     input_type=_CREATEKEYRINGREQUEST,
     output_type=google_dot_cloud_dot_kms__v1_dot_proto_dot_resources__pb2._KEYRING,
@@ -1441,7 +1890,7 @@ _KEYMANAGEMENTSERVICE = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='CreateCryptoKey',
     full_name='google.cloud.kms.v1.KeyManagementService.CreateCryptoKey',
-    index=7,
+    index=8,
     containing_service=None,
     input_type=_CREATECRYPTOKEYREQUEST,
     output_type=google_dot_cloud_dot_kms__v1_dot_proto_dot_resources__pb2._CRYPTOKEY,
@@ -1450,7 +1899,7 @@ _KEYMANAGEMENTSERVICE = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='CreateCryptoKeyVersion',
     full_name='google.cloud.kms.v1.KeyManagementService.CreateCryptoKeyVersion',
-    index=8,
+    index=9,
     containing_service=None,
     input_type=_CREATECRYPTOKEYVERSIONREQUEST,
     output_type=google_dot_cloud_dot_kms__v1_dot_proto_dot_resources__pb2._CRYPTOKEYVERSION,
@@ -1459,7 +1908,7 @@ _KEYMANAGEMENTSERVICE = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='UpdateCryptoKey',
     full_name='google.cloud.kms.v1.KeyManagementService.UpdateCryptoKey',
-    index=9,
+    index=10,
     containing_service=None,
     input_type=_UPDATECRYPTOKEYREQUEST,
     output_type=google_dot_cloud_dot_kms__v1_dot_proto_dot_resources__pb2._CRYPTOKEY,
@@ -1468,7 +1917,7 @@ _KEYMANAGEMENTSERVICE = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='UpdateCryptoKeyVersion',
     full_name='google.cloud.kms.v1.KeyManagementService.UpdateCryptoKeyVersion',
-    index=10,
+    index=11,
     containing_service=None,
     input_type=_UPDATECRYPTOKEYVERSIONREQUEST,
     output_type=google_dot_cloud_dot_kms__v1_dot_proto_dot_resources__pb2._CRYPTOKEYVERSION,
@@ -1477,7 +1926,7 @@ _KEYMANAGEMENTSERVICE = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='Encrypt',
     full_name='google.cloud.kms.v1.KeyManagementService.Encrypt',
-    index=11,
+    index=12,
     containing_service=None,
     input_type=_ENCRYPTREQUEST,
     output_type=_ENCRYPTRESPONSE,
@@ -1486,16 +1935,34 @@ _KEYMANAGEMENTSERVICE = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='Decrypt',
     full_name='google.cloud.kms.v1.KeyManagementService.Decrypt',
-    index=12,
+    index=13,
     containing_service=None,
     input_type=_DECRYPTREQUEST,
     output_type=_DECRYPTRESPONSE,
     options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002F\"A/v1/{name=projects/*/locations/*/keyRings/*/cryptoKeys/*}:decrypt:\001*')),
   ),
   _descriptor.MethodDescriptor(
+    name='AsymmetricSign',
+    full_name='google.cloud.kms.v1.KeyManagementService.AsymmetricSign',
+    index=14,
+    containing_service=None,
+    input_type=_ASYMMETRICSIGNREQUEST,
+    output_type=_ASYMMETRICSIGNRESPONSE,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002a\"\\/v1/{name=projects/*/locations/*/keyRings/*/cryptoKeys/*/cryptoKeyVersions/*}:asymmetricSign:\001*')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='AsymmetricDecrypt',
+    full_name='google.cloud.kms.v1.KeyManagementService.AsymmetricDecrypt',
+    index=15,
+    containing_service=None,
+    input_type=_ASYMMETRICDECRYPTREQUEST,
+    output_type=_ASYMMETRICDECRYPTRESPONSE,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002d\"_/v1/{name=projects/*/locations/*/keyRings/*/cryptoKeys/*/cryptoKeyVersions/*}:asymmetricDecrypt:\001*')),
+  ),
+  _descriptor.MethodDescriptor(
     name='UpdateCryptoKeyPrimaryVersion',
     full_name='google.cloud.kms.v1.KeyManagementService.UpdateCryptoKeyPrimaryVersion',
-    index=13,
+    index=16,
     containing_service=None,
     input_type=_UPDATECRYPTOKEYPRIMARYVERSIONREQUEST,
     output_type=google_dot_cloud_dot_kms__v1_dot_proto_dot_resources__pb2._CRYPTOKEY,
@@ -1504,7 +1971,7 @@ _KEYMANAGEMENTSERVICE = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='DestroyCryptoKeyVersion',
     full_name='google.cloud.kms.v1.KeyManagementService.DestroyCryptoKeyVersion',
-    index=14,
+    index=17,
     containing_service=None,
     input_type=_DESTROYCRYPTOKEYVERSIONREQUEST,
     output_type=google_dot_cloud_dot_kms__v1_dot_proto_dot_resources__pb2._CRYPTOKEYVERSION,
@@ -1513,7 +1980,7 @@ _KEYMANAGEMENTSERVICE = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='RestoreCryptoKeyVersion',
     full_name='google.cloud.kms.v1.KeyManagementService.RestoreCryptoKeyVersion',
-    index=15,
+    index=18,
     containing_service=None,
     input_type=_RESTORECRYPTOKEYVERSIONREQUEST,
     output_type=google_dot_cloud_dot_kms__v1_dot_proto_dot_resources__pb2._CRYPTOKEYVERSION,
