@@ -1560,6 +1560,232 @@ class KeyManagementServiceClient(object):
         return self._inner_api_calls['restore_crypto_key_version'](
             request, retry=retry, timeout=timeout, metadata=metadata)
 
+    def get_public_key(self,
+                       name,
+                       retry=google.api_core.gapic_v1.method.DEFAULT,
+                       timeout=google.api_core.gapic_v1.method.DEFAULT,
+                       metadata=None):
+        """
+        Returns the public key for the given ``CryptoKeyVersion``. The
+        ``CryptoKey.purpose`` must be
+        ``ASYMMETRIC_SIGN`` or
+        ``ASYMMETRIC_DECRYPT``.
+
+        Example:
+            >>> from google.cloud import kms_v1
+            >>>
+            >>> client = kms_v1.KeyManagementServiceClient()
+            >>>
+            >>> name = client.crypto_key_version_path('[PROJECT]', '[LOCATION]', '[KEY_RING]', '[CRYPTO_KEY]', '[CRYPTO_KEY_VERSION]')
+            >>>
+            >>> response = client.get_public_key(name)
+
+        Args:
+            name (str): The ``name`` of the ``CryptoKeyVersion`` public key to
+                get.
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will not
+                be retried.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Returns:
+            A :class:`~google.cloud.kms_v1.types.PublicKey` instance.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        # Wrap the transport method to add retry and timeout logic.
+        if 'get_public_key' not in self._inner_api_calls:
+            self._inner_api_calls[
+                'get_public_key'] = google.api_core.gapic_v1.method.wrap_method(
+                    self.transport.get_public_key,
+                    default_retry=self._method_configs['GetPublicKey'].retry,
+                    default_timeout=self._method_configs['GetPublicKey']
+                    .timeout,
+                    client_info=self._client_info,
+                )
+
+        request = service_pb2.GetPublicKeyRequest(name=name, )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [('name', name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header)
+            metadata.append(routing_metadata)
+
+        return self._inner_api_calls['get_public_key'](
+            request, retry=retry, timeout=timeout, metadata=metadata)
+
+    def asymmetric_decrypt(self,
+                           name,
+                           ciphertext,
+                           retry=google.api_core.gapic_v1.method.DEFAULT,
+                           timeout=google.api_core.gapic_v1.method.DEFAULT,
+                           metadata=None):
+        """
+        Decrypts data that was encrypted with a public key retrieved from
+        ``GetPublicKey`` corresponding to a ``CryptoKeyVersion`` with
+        ``CryptoKey.purpose`` ASYMMETRIC_DECRYPT.
+
+        Example:
+            >>> from google.cloud import kms_v1
+            >>>
+            >>> client = kms_v1.KeyManagementServiceClient()
+            >>>
+            >>> name = client.crypto_key_version_path('[PROJECT]', '[LOCATION]', '[KEY_RING]', '[CRYPTO_KEY]', '[CRYPTO_KEY_VERSION]')
+            >>>
+            >>> # TODO: Initialize ``ciphertext``:
+            >>> ciphertext = b''
+            >>>
+            >>> response = client.asymmetric_decrypt(name, ciphertext)
+
+        Args:
+            name (str): Required. The resource name of the ``CryptoKeyVersion`` to use for
+                decryption.
+            ciphertext (bytes): Required. The data encrypted with the named ``CryptoKeyVersion``'s public
+                key using OAEP.
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will not
+                be retried.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Returns:
+            A :class:`~google.cloud.kms_v1.types.AsymmetricDecryptResponse` instance.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        # Wrap the transport method to add retry and timeout logic.
+        if 'asymmetric_decrypt' not in self._inner_api_calls:
+            self._inner_api_calls[
+                'asymmetric_decrypt'] = google.api_core.gapic_v1.method.wrap_method(
+                    self.transport.asymmetric_decrypt,
+                    default_retry=self._method_configs[
+                        'AsymmetricDecrypt'].retry,
+                    default_timeout=self._method_configs['AsymmetricDecrypt']
+                    .timeout,
+                    client_info=self._client_info,
+                )
+
+        request = service_pb2.AsymmetricDecryptRequest(
+            name=name,
+            ciphertext=ciphertext,
+        )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [('name', name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header)
+            metadata.append(routing_metadata)
+
+        return self._inner_api_calls['asymmetric_decrypt'](
+            request, retry=retry, timeout=timeout, metadata=metadata)
+
+    def asymmetric_sign(self,
+                        name,
+                        digest,
+                        retry=google.api_core.gapic_v1.method.DEFAULT,
+                        timeout=google.api_core.gapic_v1.method.DEFAULT,
+                        metadata=None):
+        """
+        Signs data using a ``CryptoKeyVersion`` with ``CryptoKey.purpose``
+        ASYMMETRIC_SIGN, producing a signature that can be verified with the public
+        key retrieved from ``GetPublicKey``.
+
+        Example:
+            >>> from google.cloud import kms_v1
+            >>>
+            >>> client = kms_v1.KeyManagementServiceClient()
+            >>>
+            >>> name = client.crypto_key_version_path('[PROJECT]', '[LOCATION]', '[KEY_RING]', '[CRYPTO_KEY]', '[CRYPTO_KEY_VERSION]')
+            >>>
+            >>> # TODO: Initialize ``digest``:
+            >>> digest = {}
+            >>>
+            >>> response = client.asymmetric_sign(name, digest)
+
+        Args:
+            name (str): Required. The resource name of the ``CryptoKeyVersion`` to use for signing.
+            digest (Union[dict, ~google.cloud.kms_v1.types.Digest]): Required. The digest of the data to sign. The digest must be produced with
+                the same digest algorithm as specified by the key version's
+                ``algorithm``.
+                If a dict is provided, it must be of the same form as the protobuf
+                message :class:`~google.cloud.kms_v1.types.Digest`
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will not
+                be retried.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Returns:
+            A :class:`~google.cloud.kms_v1.types.AsymmetricSignResponse` instance.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        # Wrap the transport method to add retry and timeout logic.
+        if 'asymmetric_sign' not in self._inner_api_calls:
+            self._inner_api_calls[
+                'asymmetric_sign'] = google.api_core.gapic_v1.method.wrap_method(
+                    self.transport.asymmetric_sign,
+                    default_retry=self._method_configs['AsymmetricSign'].retry,
+                    default_timeout=self._method_configs['AsymmetricSign']
+                    .timeout,
+                    client_info=self._client_info,
+                )
+
+        request = service_pb2.AsymmetricSignRequest(
+            name=name,
+            digest=digest,
+        )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [('name', name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header)
+            metadata.append(routing_metadata)
+
+        return self._inner_api_calls['asymmetric_sign'](
+            request, retry=retry, timeout=timeout, metadata=metadata)
+
     def set_iam_policy(self,
                        resource,
                        policy,

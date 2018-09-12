@@ -346,6 +346,52 @@ class KeyManagementServiceGrpcTransport(object):
             'key_management_service_stub'].RestoreCryptoKeyVersion
 
     @property
+    def get_public_key(self):
+        """Return the gRPC stub for {$apiMethod.name}.
+
+        Returns the public key for the given ``CryptoKeyVersion``. The
+        ``CryptoKey.purpose`` must be
+        ``ASYMMETRIC_SIGN`` or
+        ``ASYMMETRIC_DECRYPT``.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs['key_management_service_stub'].GetPublicKey
+
+    @property
+    def asymmetric_decrypt(self):
+        """Return the gRPC stub for {$apiMethod.name}.
+
+        Decrypts data that was encrypted with a public key retrieved from
+        ``GetPublicKey`` corresponding to a ``CryptoKeyVersion`` with
+        ``CryptoKey.purpose`` ASYMMETRIC_DECRYPT.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs['key_management_service_stub'].AsymmetricDecrypt
+
+    @property
+    def asymmetric_sign(self):
+        """Return the gRPC stub for {$apiMethod.name}.
+
+        Signs data using a ``CryptoKeyVersion`` with ``CryptoKey.purpose``
+        ASYMMETRIC_SIGN, producing a signature that can be verified with the public
+        key retrieved from ``GetPublicKey``.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs['key_management_service_stub'].AsymmetricSign
+
+    @property
     def set_iam_policy(self):
         """Return the gRPC stub for {$apiMethod.name}.
 
