@@ -22,7 +22,7 @@ import setuptools
 
 name = 'google-cloud-pubsub'
 description = 'Google Cloud Pub/Sub API client library'
-version = '0.37.2'
+version = '0.38.0'
 # Should be one of:
 # 'Development Status :: 3 - Alpha'
 # 'Development Status :: 4 - Beta'
