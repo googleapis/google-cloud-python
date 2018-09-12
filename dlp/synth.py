@@ -40,7 +40,12 @@ s.replace("setup.py", "version = .*", f"version = '{client_library_version}'")
 
 # Fix namespace
 s.replace(
-    "**/*.py",
+    "google/**/*.py",
+    "google\.cloud\.privacy\.dlp_v2",
+    "google.cloud.dlp_v2"
+)
+s.replace(
+    "tests/**/*.py",
     "google\.cloud\.privacy\.dlp_v2",
     "google.cloud.dlp_v2"
 )
