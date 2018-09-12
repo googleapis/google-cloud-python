@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+#
 # Copyright 2018 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -687,6 +689,122 @@ class TestKeyManagementServiceClient(object):
 
         with pytest.raises(CustomException):
             client.restore_crypto_key_version(name)
+
+    def test_get_public_key(self):
+        # Setup Expected Response
+        pem = 'pem110872'
+        expected_response = {'pem': pem}
+        expected_response = resources_pb2.PublicKey(**expected_response)
+
+        # Mock the API response
+        channel = ChannelStub(responses=[expected_response])
+        client = kms_v1.KeyManagementServiceClient(channel=channel)
+
+        # Setup Request
+        name = client.crypto_key_version_path('[PROJECT]', '[LOCATION]',
+                                              '[KEY_RING]', '[CRYPTO_KEY]',
+                                              '[CRYPTO_KEY_VERSION]')
+
+        response = client.get_public_key(name)
+        assert expected_response == response
+
+        assert len(channel.requests) == 1
+        expected_request = service_pb2.GetPublicKeyRequest(name=name)
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_get_public_key_exception(self):
+        # Mock the API response
+        channel = ChannelStub(responses=[CustomException()])
+        client = kms_v1.KeyManagementServiceClient(channel=channel)
+
+        # Setup request
+        name = client.crypto_key_version_path('[PROJECT]', '[LOCATION]',
+                                              '[KEY_RING]', '[CRYPTO_KEY]',
+                                              '[CRYPTO_KEY_VERSION]')
+
+        with pytest.raises(CustomException):
+            client.get_public_key(name)
+
+    def test_asymmetric_decrypt(self):
+        # Setup Expected Response
+        plaintext = b'-9'
+        expected_response = {'plaintext': plaintext}
+        expected_response = service_pb2.AsymmetricDecryptResponse(
+            **expected_response)
+
+        # Mock the API response
+        channel = ChannelStub(responses=[expected_response])
+        client = kms_v1.KeyManagementServiceClient(channel=channel)
+
+        # Setup Request
+        name = client.crypto_key_version_path('[PROJECT]', '[LOCATION]',
+                                              '[KEY_RING]', '[CRYPTO_KEY]',
+                                              '[CRYPTO_KEY_VERSION]')
+        ciphertext = b'-72'
+
+        response = client.asymmetric_decrypt(name, ciphertext)
+        assert expected_response == response
+
+        assert len(channel.requests) == 1
+        expected_request = service_pb2.AsymmetricDecryptRequest(
+            name=name, ciphertext=ciphertext)
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_asymmetric_decrypt_exception(self):
+        # Mock the API response
+        channel = ChannelStub(responses=[CustomException()])
+        client = kms_v1.KeyManagementServiceClient(channel=channel)
+
+        # Setup request
+        name = client.crypto_key_version_path('[PROJECT]', '[LOCATION]',
+                                              '[KEY_RING]', '[CRYPTO_KEY]',
+                                              '[CRYPTO_KEY_VERSION]')
+        ciphertext = b'-72'
+
+        with pytest.raises(CustomException):
+            client.asymmetric_decrypt(name, ciphertext)
+
+    def test_asymmetric_sign(self):
+        # Setup Expected Response
+        signature = b'-100'
+        expected_response = {'signature': signature}
+        expected_response = service_pb2.AsymmetricSignResponse(
+            **expected_response)
+
+        # Mock the API response
+        channel = ChannelStub(responses=[expected_response])
+        client = kms_v1.KeyManagementServiceClient(channel=channel)
+
+        # Setup Request
+        name = client.crypto_key_version_path('[PROJECT]', '[LOCATION]',
+                                              '[KEY_RING]', '[CRYPTO_KEY]',
+                                              '[CRYPTO_KEY_VERSION]')
+        digest = {}
+
+        response = client.asymmetric_sign(name, digest)
+        assert expected_response == response
+
+        assert len(channel.requests) == 1
+        expected_request = service_pb2.AsymmetricSignRequest(
+            name=name, digest=digest)
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_asymmetric_sign_exception(self):
+        # Mock the API response
+        channel = ChannelStub(responses=[CustomException()])
+        client = kms_v1.KeyManagementServiceClient(channel=channel)
+
+        # Setup request
+        name = client.crypto_key_version_path('[PROJECT]', '[LOCATION]',
+                                              '[KEY_RING]', '[CRYPTO_KEY]',
+                                              '[CRYPTO_KEY_VERSION]')
+        digest = {}
+
+        with pytest.raises(CustomException):
+            client.asymmetric_sign(name, digest)
 
     def test_set_iam_policy(self):
         # Setup Expected Response
