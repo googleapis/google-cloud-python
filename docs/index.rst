@@ -31,7 +31,7 @@
   storage/index
   tasks/index
   texttospeech/index
-  translate/usage
+  translate/index
   vision/index
   videointelligence/index
   websecurityscanner/index
