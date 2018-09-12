@@ -32,71 +32,6 @@ class StorageType(enum.IntEnum):
     HDD = 2
 
 
-class Instance(object):
-    class State(enum.IntEnum):
-        """
-        Possible states of an instance.
-
-        Attributes:
-          STATE_NOT_KNOWN (int): The state of the instance could not be determined.
-          READY (int): The instance has been successfully created and can serve requests
-          to its tables.
-          CREATING (int): The instance is currently being created, and may be destroyed
-          if the creation process encounters an error.
-        """
-        STATE_NOT_KNOWN = 0
-        READY = 1
-        CREATING = 2
-
-    class Type(enum.IntEnum):
-        """
-        The type of the instance.
-
-        Attributes:
-          TYPE_UNSPECIFIED (int): The type of the instance is unspecified. If set when creating an
-          instance, a ``PRODUCTION`` instance will be created. If set when updating
-          an instance, the type will be left unchanged.
-          PRODUCTION (int): An instance meant for production use. ``serve_nodes`` must be set
-          on the cluster.
-          DEVELOPMENT (int): The instance is meant for development and testing purposes only; it has
-          no performance or uptime guarantees and is not covered by SLA.
-          After a development instance is created, it can be upgraded by
-          updating the instance to type ``PRODUCTION``. An instance created
-          as a production instance cannot be changed to a development instance.
-          When creating a development instance, ``serve_nodes`` on the cluster must
-          not be set.
-        """
-        TYPE_UNSPECIFIED = 0
-        PRODUCTION = 1
-        DEVELOPMENT = 2
-
-
-class Cluster(object):
-    class State(enum.IntEnum):
-        """
-        Possible states of a cluster.
-
-        Attributes:
-          STATE_NOT_KNOWN (int): The state of the cluster could not be determined.
-          READY (int): The cluster has been successfully created and is ready to serve requests.
-          CREATING (int): The cluster is currently being created, and may be destroyed
-          if the creation process encounters an error.
-          A cluster may not be able to serve requests while being created.
-          RESIZING (int): The cluster is currently being resized, and may revert to its previous
-          node count if the process encounters an error.
-          A cluster is still capable of serving requests while being resized,
-          but may exhibit performance as if its number of allocated nodes is
-          between the starting and requested states.
-          DISABLED (int): The cluster has no backing nodes. The data (tables) still
-          exist, but no operations can be performed on the cluster.
-        """
-        STATE_NOT_KNOWN = 0
-        READY = 1
-        CREATING = 2
-        RESIZING = 3
-        DISABLED = 4
-
-
 class Table(object):
     class TimestampGranularity(enum.IntEnum):
         """
@@ -169,3 +104,68 @@ class Snapshot(object):
         STATE_NOT_KNOWN = 0
         READY = 1
         CREATING = 2
+
+
+class Instance(object):
+    class State(enum.IntEnum):
+        """
+        Possible states of an instance.
+
+        Attributes:
+          STATE_NOT_KNOWN (int): The state of the instance could not be determined.
+          READY (int): The instance has been successfully created and can serve requests
+          to its tables.
+          CREATING (int): The instance is currently being created, and may be destroyed
+          if the creation process encounters an error.
+        """
+        STATE_NOT_KNOWN = 0
+        READY = 1
+        CREATING = 2
+
+    class Type(enum.IntEnum):
+        """
+        The type of the instance.
+
+        Attributes:
+          TYPE_UNSPECIFIED (int): The type of the instance is unspecified. If set when creating an
+          instance, a ``PRODUCTION`` instance will be created. If set when updating
+          an instance, the type will be left unchanged.
+          PRODUCTION (int): An instance meant for production use. ``serve_nodes`` must be set
+          on the cluster.
+          DEVELOPMENT (int): The instance is meant for development and testing purposes only; it has
+          no performance or uptime guarantees and is not covered by SLA.
+          After a development instance is created, it can be upgraded by
+          updating the instance to type ``PRODUCTION``. An instance created
+          as a production instance cannot be changed to a development instance.
+          When creating a development instance, ``serve_nodes`` on the cluster must
+          not be set.
+        """
+        TYPE_UNSPECIFIED = 0
+        PRODUCTION = 1
+        DEVELOPMENT = 2
+
+
+class Cluster(object):
+    class State(enum.IntEnum):
+        """
+        Possible states of a cluster.
+
+        Attributes:
+          STATE_NOT_KNOWN (int): The state of the cluster could not be determined.
+          READY (int): The cluster has been successfully created and is ready to serve requests.
+          CREATING (int): The cluster is currently being created, and may be destroyed
+          if the creation process encounters an error.
+          A cluster may not be able to serve requests while being created.
+          RESIZING (int): The cluster is currently being resized, and may revert to its previous
+          node count if the process encounters an error.
+          A cluster is still capable of serving requests while being resized,
+          but may exhibit performance as if its number of allocated nodes is
+          between the starting and requested states.
+          DISABLED (int): The cluster has no backing nodes. The data (tables) still
+          exist, but no operations can be performed on the cluster.
+        """
+        STATE_NOT_KNOWN = 0
+        READY = 1
+        CREATING = 2
+        RESIZING = 3
+        DISABLED = 4
