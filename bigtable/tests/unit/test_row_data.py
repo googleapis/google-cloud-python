@@ -444,8 +444,6 @@ class TestPartialRowsData(unittest.TestCase):
         result = rows[0]
         self.assertEqual(result.row_key, self.ROW_KEY)
         self.assertEqual(yrd._counter, 1)
-
-        yrd._row = object()
         self.assertEqual(yrd.state, yrd.NEW_ROW)
 
     def test_multiple_chunks(self):
@@ -485,13 +483,7 @@ class TestPartialRowsData(unittest.TestCase):
         result = rows[0]
         self.assertEqual(result.row_key, self.ROW_KEY)
         self.assertEqual(yrd._counter, 1)
-
-        yrd._row = object()
         self.assertEqual(yrd.state, yrd.NEW_ROW)
-
-    def test_multiple_chunks(self):
-        from google.cloud.bigtable_v2.gapic import bigtable_client
-
 
     def test_cancel(self):
         client = _Client()

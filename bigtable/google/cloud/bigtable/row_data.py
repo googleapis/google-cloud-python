@@ -431,7 +431,7 @@ class PartialRowsData(object):
 
             resp_last_key = response.last_scanned_row_key
             if (resp_last_key and
-                resp_last_key > self.last_scanned_row_key):
+                   resp_last_key > self.last_scanned_row_key):
                 self.last_scanned_row_key = resp_last_key
 
     def _process_chunk(self, chunk):
@@ -446,7 +446,7 @@ class PartialRowsData(object):
 
         if self._row is None:
             if (self._previous_row is not None and
-                self._cell.row_key <= self._previous_row.row_key):
+                    self._cell.row_key <= self._previous_row.row_key):
                 raise InvalidChunk()
             self._row = PartialRowData(self._cell.row_key)
 
@@ -488,26 +488,27 @@ class PartialRowsData(object):
             self._cell.append_value(chunk.value)
 
     def _validate_cell_data_new_cell(self):
-        if (not self._cell.row_key or
-            not self._cell.family_name or
-            self._cell.qualifier is None):
+        cell = self._cell
+        if (not cell.row_key or
+                not cell.family_name or
+                cell.qualifier is None):
             raise InvalidChunk()
 
-        if (self._previous_cell and 
-            self._previous_cell.row_key != self._cell.row_key):
+        prev = self._previous_cell
+        if (prev and prev.row_key != cell.row_key:
             raise InvalidChunk()
 
     def _validate_cell_data_cell_in_progress(self, chunk):
         if (chunk.row_key and
-            chunk.row_key != self._cell.row_key):
+                chunk.row_key != self._cell.row_key):
             raise InvalidChunk()
 
         if (chunk.HasField('family_name') and
-            chunk.family_name.value != self._cell.family_name):
+                chunk.family_name.value != self._cell.family_name):
             raise InvalidChunk()
 
         if (chunk.HasField('qualifier') and
-            chunk.qualifier.value != self._cell.qualifier):
+                chunk.qualifier.value != self._cell.qualifier):
             raise InvalidChunk()
 
     def _validate_chunk_reset_row(self, chunk):
