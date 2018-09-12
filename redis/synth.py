@@ -28,7 +28,7 @@ for version in ['v1beta1', 'v1']:
         'redis', version,
         config_path=f'artman_redis_{version}.yaml')
 
-    s.copy(library, excludes=['docs/conf.py', 'docs/index.rst'])
+    s.copy(library, excludes=['nox.py', 'docs/conf.py', 'docs/index.rst'])
 
 
 # Set Release Status
