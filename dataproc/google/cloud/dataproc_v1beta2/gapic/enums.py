@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+#
 # Copyright 2018 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,23 +16,6 @@
 """Wrappers for protocol buffer enum types."""
 
 import enum
-
-
-class ClusterOperationStatus(object):
-    class State(enum.IntEnum):
-        """
-        The operation state.
-
-        Attributes:
-          UNKNOWN (int): Unused.
-          PENDING (int): The operation has been created.
-          RUNNING (int): The operation is running.
-          DONE (int): The operation is done; either cancelled or completed.
-        """
-        UNKNOWN = 0
-        PENDING = 1
-        RUNNING = 2
-        DONE = 3
 
 
 class ClusterStatus(object):
@@ -204,6 +189,23 @@ class ListJobsRequest(object):
         ALL = 0
         ACTIVE = 1
         NON_ACTIVE = 2
+
+
+class ClusterOperationStatus(object):
+    class State(enum.IntEnum):
+        """
+        The operation state.
+
+        Attributes:
+          UNKNOWN (int): Unused.
+          PENDING (int): The operation has been created.
+          RUNNING (int): The operation is running.
+          DONE (int): The operation is done; either cancelled or completed.
+        """
+        UNKNOWN = 0
+        PENDING = 1
+        RUNNING = 2
+        DONE = 3
 
 
 class WorkflowMetadata(object):
