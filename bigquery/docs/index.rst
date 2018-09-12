@@ -1,57 +1,7 @@
-BigQuery
-========
+.. include:: /../bigquery/README.rst
 
-.. toctree::
-  :maxdepth: 2
-  :hidden:
-
-  reference
-  dbapi
-
-.. contents:: :local:
-
-Installation
-------------
-
-Install the ``google-cloud-bigquery`` library using ``pip``:
-
-.. code-block:: console
-
-    $ pip install google-cloud-bigquery
-
-.. note::
-
-    This library changed significantly before the 1.0.0 release, especially
-    between version 0.27 and 0.28. See `Migrating from the BigQuery Python
-    client library version 0.27
-    <https://cloud.google.com/bigquery/docs/python-client-migration>`__ for
-    instructions on how to migrated your code to the most recent version of
-    this library.
-
-Authentication / Configuration
-------------------------------
-
-- Use :class:`Client <google.cloud.bigquery.client.Client>` objects to configure
-  your applications.
-
-- :class:`Client <google.cloud.bigquery.client.Client>` objects hold both a ``project``
-  and an authenticated connection to the BigQuery service.
-
-- The authentication credentials can be implicitly determined from the
-  environment or directly via
-  :meth:`from_service_account_json <google.cloud.bigquery.client.Client.from_service_account_json>`
-  and
-  :meth:`from_service_account_p12 <google.cloud.bigquery.client.Client.from_service_account_p12>`.
-
-- After setting :envvar:`GOOGLE_APPLICATION_CREDENTIALS` and
-  :envvar:`GOOGLE_CLOUD_PROJECT` environment variables, create an instance of
-  :class:`Client <google.cloud.bigquery.client.Client>`.
-
-  .. code-block:: python
-
-     >>> from google.cloud import bigquery
-     >>> client = bigquery.Client()
-
+Using the Library
+=================
 
 Projects
 --------
@@ -68,8 +18,8 @@ To override the project inferred from the environment, pass an explicit
 
 .. code-block:: python
 
-   >>> from google.cloud import bigquery
-   >>> client = bigquery.Client(project='PROJECT_ID')
+   from google.cloud import bigquery
+   client = bigquery.Client(project='PROJECT_ID')
 
 
 Project ACLs
@@ -155,7 +105,7 @@ Tables exist within datasets. See BigQuery documentation for more information
 on `Tables <https://cloud.google.com/bigquery/docs/tables>`_.
 
 Table operations
-~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~
 List tables for the dataset:
 
 .. literalinclude:: snippets.py
@@ -237,7 +187,7 @@ Upload table data from a file:
    :end-before: [END bigquery_load_from_file]
 
 Load table data from Google Cloud Storage
-*****************************************
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 See also: `Loading JSON data from Cloud Storage
 <https://cloud.google.com/bigquery/docs/loading-data-cloud-storage-json>`_.
@@ -324,7 +274,7 @@ Queries
 
 
 Querying data
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~
 
 Run a query and wait for it to finish:
 
@@ -371,8 +321,11 @@ See BigQuery documentation for more information on
    :end-before: [END bigquery_query_params_named]
 
 
+Jobs
+----
+
 List jobs for a project
------------------------
+~~~~~~~~~~~~~~~~~~~~~~~
 
 Jobs describe actions performed on data in BigQuery tables:
 
@@ -451,8 +404,17 @@ and load it into a new table:
    :start-after: [START bigquery_load_table_dataframe]
    :end-before: [END bigquery_load_table_dataframe]
 
+API Reference
+=============
+
+.. toctree::
+  :maxdepth: 2
+
+  reference
+  dbapi
+
 Changelog
----------
+=========
 
 For a list of all ``google-cloud-bigquery`` releases:
 

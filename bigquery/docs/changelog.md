@@ -1,1 +1,1 @@
-../../bigquery/CHANGELOG.md
+../CHANGELOG.md
