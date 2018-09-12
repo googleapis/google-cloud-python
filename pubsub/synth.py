@@ -72,13 +72,6 @@ s.replace(
     '\g<0>import google.api_core.path_template\n'
 )
 
-# Generator is removing ending line of __init__.py
-s.replace(
-    ['google/cloud/__init__.py', 'google/__init__.py'],
-    '__path__ = pkgutil.extend_path\(__path__, __name__\)',
-    '\g<0>\n'
-)
-
 # Doc strings are formatted poorly
 s.replace(
     'google/cloud/pubsub_v1/proto/pubsub_pb2.py',
