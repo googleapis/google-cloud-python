@@ -101,3 +101,17 @@ s.replace(
     "\g<1>    'grpc.max_send_message_length': -1,\n"
     "\g<1>    'grpc.max_receive_message_length': -1,\n"
     "\g<1>}.items(),\n")
+
+# Deal with long lines due to long proto name
+s.replace(
+    ['google/cloud/monitoring_v3/__init__.py'],
+    'from google.cloud.monitoring_v3.gapic import '
+    'notification_channel_service_client\n',
+    'from google.cloud.monitoring_v3.gapic import (\n'
+    '    notification_channel_service_client as notification_client)\n',
+)
+s.replace(
+    ['google/cloud/monitoring_v3/__init__.py'],
+    'notification_channel_service_client.NotificationChannelServiceClient',
+    'notification_client.NotificationChannelServiceClient',
+)
