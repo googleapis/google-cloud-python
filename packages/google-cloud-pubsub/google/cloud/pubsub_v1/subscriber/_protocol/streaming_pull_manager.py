@@ -379,7 +379,9 @@ class StreamingPullManager(object):
         # Any ack IDs that are under lease management need to have their
         # deadline extended immediately.
         if self._leaser is not None:
-            lease_ids = self._leaser.ack_ids
+            # Explicitly copy the list, as it could be modified by another
+            # thread.
+            lease_ids = list(self._leaser.ack_ids)
         else:
             lease_ids = []
 
