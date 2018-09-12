@@ -65,3 +65,12 @@ s.replace(
     "\g<1>    'grpc.max_receive_message_length': -1,\n"
     "\g<1>}.items(),\n"
 )
+
+s.replace(
+    ['google/cloud/bigtable_admin_v2/__init__.py'],
+    '    __doc__ = bigtable_instance_admin_client.'
+    'BigtableInstanceAdminClient.__doc__\n',
+    '    __doc__ = (\n'
+    '        bigtable_instance_admin_client.BigtableInstanceAdminClient.'
+    '__doc__)\n',
+)
