@@ -373,41 +373,21 @@ class TestResumableBidiRpc(object):
         assert bidi_rpc.call == call_2
         assert bidi_rpc.is_active is True
 
-    def test_recv_recover_race_condition(self):
-        # This test checks the race condition where two threads recv() and
-        # encounter an error and must re-open the stream. Only one thread
-        # should succeed in doing so.
-        error = ValueError()
-        call_1 = CallStub([error, error])
-        call_2 = CallStub([1, 2])
+    def test_recv_recover_already_recovered(self):
+        call_1 = CallStub([])
+        call_2 = CallStub([])
         start_rpc = mock.create_autospec(
             grpc.StreamStreamMultiCallable,
             instance=True,
             side_effect=[call_1, call_2])
-        recovered_event = threading.Event()
-
-        def second_thread_main():
-            assert bidi_rpc.recv() == 2
-
-        second_thread = threading.Thread(target=second_thread_main)
-
-        def should_recover(exception):
-            assert exception == error
-            if threading.current_thread() == second_thread:
-                recovered_event.wait()
-            return True
-
-        bidi_rpc = bidi.ResumableBidiRpc(start_rpc, should_recover)
+        bidi_rpc = bidi.ResumableBidiRpc(start_rpc, lambda _: True)
 
         bidi_rpc.open()
-        second_thread.start()
 
-        assert bidi_rpc.recv() == 1
-        recovered_event.set()
+        bidi_rpc._reopen()
 
-        assert bidi_rpc.call == call_2
+        assert bidi_rpc.call is call_1
         assert bidi_rpc.is_active is True
-        second_thread.join()
 
     def test_recv_failure(self):
         error = ValueError()
@@ -455,6 +435,18 @@ class TestResumableBidiRpc(object):
         assert bidi_rpc.call is None
         assert bidi_rpc.is_active is False
         callback.assert_called_once_with(error2)
+
+    def test_send_not_open(self):
+        bidi_rpc = bidi.ResumableBidiRpc(None, lambda _: False)
+
+        with pytest.raises(ValueError):
+            bidi_rpc.send(mock.sentinel.request)
+
+    def test_recv_not_open(self):
+        bidi_rpc = bidi.ResumableBidiRpc(None, lambda _: False)
+
+        with pytest.raises(ValueError):
+            bidi_rpc.recv()
 
     def test_finalize_idempotent(self):
         error1 = ValueError('1')
