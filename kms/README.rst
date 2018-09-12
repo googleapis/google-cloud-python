@@ -65,12 +65,8 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Cloud Key Management Service (KMS) API
-   API to see other available methods on the client.
--  Read the `Cloud Key Management Service (KMS) API Product documentation`_ to learn
-   more about the product and see How-to Guides.
--  View this `repository’s main README`_ to see the full list of Cloud
-   APIs that we cover.
+-  Read the `Client Library Documentation`_ to see other available methods on
+   the client.
+-  Read the `Product Documentation`_ to learn more about the product and see
+   How-to Guides.
 
-.. _Cloud Key Management Service (KMS) API Product documentation:  https://cloud.google.com/kms
-.. _repository’s main README: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/README.rst
