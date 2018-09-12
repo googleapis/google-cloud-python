@@ -483,7 +483,6 @@ class PartialRowsData(object):
             self._copy_from_previous(self._cell)
             self._validate_cell_data_new_cell()
         else:
-            self._validate_cell_data_cell_in_progress(chunk)
             self._cell.append_value(chunk.value)
 
     def _validate_cell_data_new_cell(self):
@@ -495,19 +494,6 @@ class PartialRowsData(object):
 
         prev = self._previous_cell
         if prev and prev.row_key != cell.row_key:
-            raise InvalidChunk()
-
-    def _validate_cell_data_cell_in_progress(self, chunk):
-        if (chunk.row_key and
-                chunk.row_key != self._cell.row_key):
-            raise InvalidChunk()
-
-        if (chunk.HasField('family_name') and
-                chunk.family_name.value != self._cell.family_name):
-            raise InvalidChunk()
-
-        if (chunk.HasField('qualifier') and
-                chunk.qualifier.value != self._cell.qualifier):
             raise InvalidChunk()
 
     def _validate_chunk_reset_row(self, chunk):
