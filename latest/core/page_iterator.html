@@ -6,13 +6,14 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Page Iterators &#8212; google-cloud b4b2e0f7be documentation</title>
+    <title>Page Iterators &#8212; google-cloud 8ebbf3d documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -248,42 +249,90 @@ fetching results from.</li>
 <dl class="attribute">
 <dt id="google.api_core.page_iterator.Iterator.client">
 <code class="descname">client</code><em class="property"> = None</em><a class="headerlink" href="#google.api_core.page_iterator.Iterator.client" title="Permalink to this definition">#</a></dt>
-<dd><p><em>Optional[Any]</em> – The client that created this iterator.</p>
+<dd><p>The client that created this iterator.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">Optional[<a class="reference internal" href="../asset/gapic/v1beta1/types.html#google.cloud.asset_v1beta1.types.Any" title="google.cloud.asset_v1beta1.types.Any">Any</a>]</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.api_core.page_iterator.Iterator.item_to_value">
 <code class="descname">item_to_value</code><em class="property"> = None</em><a class="headerlink" href="#google.api_core.page_iterator.Iterator.item_to_value" title="Permalink to this definition">#</a></dt>
-<dd><p><em>Callable[Iterator, Any]</em> – Callable to convert an item from the type
+<dd><p>Callable to convert an item from the type
 in the raw API response into the native object. Will be called with
 the iterator and a
 single item.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">Callable[<a class="reference internal" href="#google.api_core.page_iterator.Iterator" title="google.api_core.page_iterator.Iterator">Iterator</a>, <a class="reference internal" href="../asset/gapic/v1beta1/types.html#google.cloud.asset_v1beta1.types.Any" title="google.cloud.asset_v1beta1.types.Any">Any</a>]</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.api_core.page_iterator.Iterator.max_results">
 <code class="descname">max_results</code><em class="property"> = None</em><a class="headerlink" href="#google.api_core.page_iterator.Iterator.max_results" title="Permalink to this definition">#</a></dt>
-<dd><p><em>int</em> – The maximum number of results to fetch.</p>
+<dd><p>The maximum number of results to fetch.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)">int</a></td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.api_core.page_iterator.Iterator.next_page_token">
 <code class="descname">next_page_token</code><em class="property"> = None</em><a class="headerlink" href="#google.api_core.page_iterator.Iterator.next_page_token" title="Permalink to this definition">#</a></dt>
-<dd><p><em>str</em> – The token for the next page of results. If this is set before
+<dd><p>The token for the next page of results. If this is set before
 the iterator starts, it effectively offsets the iterator to a
 specific starting point.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a></td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.api_core.page_iterator.Iterator.num_results">
 <code class="descname">num_results</code><em class="property"> = None</em><a class="headerlink" href="#google.api_core.page_iterator.Iterator.num_results" title="Permalink to this definition">#</a></dt>
-<dd><p><em>int</em> – The total number of results fetched so far.</p>
+<dd><p>The total number of results fetched so far.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)">int</a></td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.api_core.page_iterator.Iterator.page_number">
 <code class="descname">page_number</code><em class="property"> = None</em><a class="headerlink" href="#google.api_core.page_iterator.Iterator.page_number" title="Permalink to this definition">#</a></dt>
-<dd><p><em>int</em> – The current page of results.</p>
+<dd><p>The current page of results.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)">int</a></td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="attribute">
@@ -341,13 +390,29 @@ single item.</li>
 <dl class="attribute">
 <dt id="google.api_core.page_iterator.Page.num_items">
 <code class="descname">num_items</code><a class="headerlink" href="#google.api_core.page_iterator.Page.num_items" title="Permalink to this definition">#</a></dt>
-<dd><p><em>int</em> – Total items in the page.</p>
+<dd><p>Total items in the page.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)">int</a></td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.api_core.page_iterator.Page.remaining">
 <code class="descname">remaining</code><a class="headerlink" href="#google.api_core.page_iterator.Page.remaining" title="Permalink to this definition">#</a></dt>
-<dd><p><em>int</em> – Remaining items in the page.</p>
+<dd><p>Remaining items in the page.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)">int</a></td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </dd></dl>
@@ -464,7 +529,7 @@ single item.</li>
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.9</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.11</a>
       
       |

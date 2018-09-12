@@ -6,13 +6,14 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigquery.table.Table &#8212; google-cloud b4b2e0f7be documentation</title>
+    <title>google.cloud.bigquery.table.Table &#8212; google-cloud 8ebbf3d documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="shortcut icon" href="../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -86,88 +87,88 @@
 </colgroup>
 <tbody valign="top">
 <tr class="row-odd"><td><a class="reference internal" href="google.cloud.bigquery.table.Table.clustering_fields.html#google.cloud.bigquery.table.Table.clustering_fields" title="google.cloud.bigquery.table.Table.clustering_fields"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clustering_fields</span></code></a></td>
-<td><em>Union[List[str], None]</em> – Fields defining clustering for the table</td>
+<td>Fields defining clustering for the table</td>
 </tr>
 <tr class="row-even"><td><a class="reference internal" href="google.cloud.bigquery.table.Table.created.html#google.cloud.bigquery.table.Table.created" title="google.cloud.bigquery.table.Table.created"><code class="xref py py-obj docutils literal notranslate"><span class="pre">created</span></code></a></td>
-<td><em>Union[datetime.datetime, None]</em> – Datetime at which the table was created (<a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a> until set from the server).</td>
+<td>Datetime at which the table was created (<a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a> until set from the server).</td>
 </tr>
 <tr class="row-odd"><td><a class="reference internal" href="google.cloud.bigquery.table.Table.dataset_id.html#google.cloud.bigquery.table.Table.dataset_id" title="google.cloud.bigquery.table.Table.dataset_id"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dataset_id</span></code></a></td>
-<td><em>str</em> – ID of dataset containing the table.</td>
+<td>ID of dataset containing the table.</td>
 </tr>
 <tr class="row-even"><td><a class="reference internal" href="google.cloud.bigquery.table.Table.description.html#google.cloud.bigquery.table.Table.description" title="google.cloud.bigquery.table.Table.description"><code class="xref py py-obj docutils literal notranslate"><span class="pre">description</span></code></a></td>
-<td><em>Union[str, None]</em> – Description of the table (defaults to <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a>).</td>
+<td>Description of the table (defaults to <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a>).</td>
 </tr>
 <tr class="row-odd"><td><a class="reference internal" href="google.cloud.bigquery.table.Table.encryption_configuration.html#google.cloud.bigquery.table.Table.encryption_configuration" title="google.cloud.bigquery.table.Table.encryption_configuration"><code class="xref py py-obj docutils literal notranslate"><span class="pre">encryption_configuration</span></code></a></td>
-<td><em>google.cloud.bigquery.table.EncryptionConfiguration</em> – Custom encryption configuration for the table.</td>
+<td>Custom encryption configuration for the table.</td>
 </tr>
 <tr class="row-even"><td><a class="reference internal" href="google.cloud.bigquery.table.Table.etag.html#google.cloud.bigquery.table.Table.etag" title="google.cloud.bigquery.table.Table.etag"><code class="xref py py-obj docutils literal notranslate"><span class="pre">etag</span></code></a></td>
-<td><em>Union[str, None]</em> – ETag for the table resource (<a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a> until set from the server).</td>
+<td>ETag for the table resource (<a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a> until set from the server).</td>
 </tr>
 <tr class="row-odd"><td><a class="reference internal" href="google.cloud.bigquery.table.Table.expires.html#google.cloud.bigquery.table.Table.expires" title="google.cloud.bigquery.table.Table.expires"><code class="xref py py-obj docutils literal notranslate"><span class="pre">expires</span></code></a></td>
-<td><em>Union[datetime.datetime, None]</em> – Datetime at which the table will be deleted.</td>
+<td>Datetime at which the table will be deleted.</td>
 </tr>
 <tr class="row-even"><td><a class="reference internal" href="google.cloud.bigquery.table.Table.external_data_configuration.html#google.cloud.bigquery.table.Table.external_data_configuration" title="google.cloud.bigquery.table.Table.external_data_configuration"><code class="xref py py-obj docutils literal notranslate"><span class="pre">external_data_configuration</span></code></a></td>
-<td><em>Union[google.cloud.bigquery.ExternalConfig, None]</em> – Configuration for an external data source (defaults to <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a>).</td>
+<td>Configuration for an external data source (defaults to <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a>).</td>
 </tr>
 <tr class="row-odd"><td><a class="reference internal" href="google.cloud.bigquery.table.Table.friendly_name.html#google.cloud.bigquery.table.Table.friendly_name" title="google.cloud.bigquery.table.Table.friendly_name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">friendly_name</span></code></a></td>
-<td><em>Union[str, None]</em> – Title of the table (defaults to <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a>).</td>
+<td>Title of the table (defaults to <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a>).</td>
 </tr>
 <tr class="row-even"><td><a class="reference internal" href="google.cloud.bigquery.table.Table.full_table_id.html#google.cloud.bigquery.table.Table.full_table_id" title="google.cloud.bigquery.table.Table.full_table_id"><code class="xref py py-obj docutils literal notranslate"><span class="pre">full_table_id</span></code></a></td>
-<td><em>Union[str, None]</em> – ID for the table (<a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a> until set from the server).</td>
+<td>ID for the table (<a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a> until set from the server).</td>
 </tr>
 <tr class="row-odd"><td><a class="reference internal" href="google.cloud.bigquery.table.Table.labels.html#google.cloud.bigquery.table.Table.labels" title="google.cloud.bigquery.table.Table.labels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">labels</span></code></a></td>
-<td><em>Dict[str, str]</em> – Labels for the table.</td>
+<td>Labels for the table.</td>
 </tr>
 <tr class="row-even"><td><a class="reference internal" href="google.cloud.bigquery.table.Table.location.html#google.cloud.bigquery.table.Table.location" title="google.cloud.bigquery.table.Table.location"><code class="xref py py-obj docutils literal notranslate"><span class="pre">location</span></code></a></td>
-<td><em>Union[str, None]</em> – Location in which the table is hosted</td>
+<td>Location in which the table is hosted</td>
 </tr>
 <tr class="row-odd"><td><a class="reference internal" href="google.cloud.bigquery.table.Table.modified.html#google.cloud.bigquery.table.Table.modified" title="google.cloud.bigquery.table.Table.modified"><code class="xref py py-obj docutils literal notranslate"><span class="pre">modified</span></code></a></td>
-<td><em>Union[datetime.datetime, None]</em> – Datetime at which the table was last modified (<a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a> until set from the server).</td>
+<td>Datetime at which the table was last modified (<a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a> until set from the server).</td>
 </tr>
 <tr class="row-even"><td><a class="reference internal" href="google.cloud.bigquery.table.Table.num_bytes.html#google.cloud.bigquery.table.Table.num_bytes" title="google.cloud.bigquery.table.Table.num_bytes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">num_bytes</span></code></a></td>
-<td><em>Union[int, None]</em> – The size of the table in bytes (<a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a> until set from the server).</td>
+<td>The size of the table in bytes (<a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a> until set from the server).</td>
 </tr>
 <tr class="row-odd"><td><a class="reference internal" href="google.cloud.bigquery.table.Table.num_rows.html#google.cloud.bigquery.table.Table.num_rows" title="google.cloud.bigquery.table.Table.num_rows"><code class="xref py py-obj docutils literal notranslate"><span class="pre">num_rows</span></code></a></td>
-<td><em>Union[int, None]</em> – The number of rows in the table (<a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a> until set from the server).</td>
+<td>The number of rows in the table (<a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a> until set from the server).</td>
 </tr>
 <tr class="row-even"><td><a class="reference internal" href="google.cloud.bigquery.table.Table.partition_expiration.html#google.cloud.bigquery.table.Table.partition_expiration" title="google.cloud.bigquery.table.Table.partition_expiration"><code class="xref py py-obj docutils literal notranslate"><span class="pre">partition_expiration</span></code></a></td>
-<td><em>Union[int, None]</em> – Expiration time in milliseconds for a partition.</td>
+<td>Expiration time in milliseconds for a partition.</td>
 </tr>
 <tr class="row-odd"><td><a class="reference internal" href="google.cloud.bigquery.table.Table.partitioning_type.html#google.cloud.bigquery.table.Table.partitioning_type" title="google.cloud.bigquery.table.Table.partitioning_type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">partitioning_type</span></code></a></td>
-<td><em>Union[str, None]</em> – Time partitioning of the table if it is partitioned (Defaults to <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a>).</td>
+<td>Time partitioning of the table if it is partitioned (Defaults to <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a>).</td>
 </tr>
 <tr class="row-even"><td><a class="reference internal" href="google.cloud.bigquery.table.Table.path.html#google.cloud.bigquery.table.Table.path" title="google.cloud.bigquery.table.Table.path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">path</span></code></a></td>
-<td><em>str</em> – URL path for the table’s APIs.</td>
+<td>URL path for the table’s APIs.</td>
 </tr>
 <tr class="row-odd"><td><a class="reference internal" href="google.cloud.bigquery.table.Table.project.html#google.cloud.bigquery.table.Table.project" title="google.cloud.bigquery.table.Table.project"><code class="xref py py-obj docutils literal notranslate"><span class="pre">project</span></code></a></td>
-<td><em>str</em> – Project bound to the table.</td>
+<td>Project bound to the table.</td>
 </tr>
 <tr class="row-even"><td><a class="reference internal" href="google.cloud.bigquery.table.Table.reference.html#google.cloud.bigquery.table.Table.reference" title="google.cloud.bigquery.table.Table.reference"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reference</span></code></a></td>
 <td>A <a class="reference internal" href="google.cloud.bigquery.table.TableReference.html#google.cloud.bigquery.table.TableReference" title="google.cloud.bigquery.table.TableReference"><code class="xref py py-class docutils literal notranslate"><span class="pre">TableReference</span></code></a> pointing to this table.</td>
 </tr>
 <tr class="row-odd"><td><a class="reference internal" href="google.cloud.bigquery.table.Table.schema.html#google.cloud.bigquery.table.Table.schema" title="google.cloud.bigquery.table.Table.schema"><code class="xref py py-obj docutils literal notranslate"><span class="pre">schema</span></code></a></td>
-<td><em>List[google.cloud.bigquery.schema.SchemaField]</em> – Table’s schema.</td>
+<td>Table’s schema.</td>
 </tr>
 <tr class="row-even"><td><a class="reference internal" href="google.cloud.bigquery.table.Table.self_link.html#google.cloud.bigquery.table.Table.self_link" title="google.cloud.bigquery.table.Table.self_link"><code class="xref py py-obj docutils literal notranslate"><span class="pre">self_link</span></code></a></td>
-<td><em>Union[str, None]</em> – URL for the table resource (<a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a> until set from the server).</td>
+<td>URL for the table resource (<a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a> until set from the server).</td>
 </tr>
 <tr class="row-odd"><td><a class="reference internal" href="google.cloud.bigquery.table.Table.streaming_buffer.html#google.cloud.bigquery.table.Table.streaming_buffer" title="google.cloud.bigquery.table.Table.streaming_buffer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">streaming_buffer</span></code></a></td>
-<td><em>google.cloud.bigquery.StreamingBuffer</em> – Information about a table’s streaming buffer.</td>
+<td>Information about a table’s streaming buffer.</td>
 </tr>
 <tr class="row-even"><td><a class="reference internal" href="google.cloud.bigquery.table.Table.table_id.html#google.cloud.bigquery.table.Table.table_id" title="google.cloud.bigquery.table.Table.table_id"><code class="xref py py-obj docutils literal notranslate"><span class="pre">table_id</span></code></a></td>
-<td><em>str</em> – ID of the table.</td>
+<td>ID of the table.</td>
 </tr>
 <tr class="row-odd"><td><a class="reference internal" href="google.cloud.bigquery.table.Table.table_type.html#google.cloud.bigquery.table.Table.table_type" title="google.cloud.bigquery.table.Table.table_type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">table_type</span></code></a></td>
-<td><em>Union[str, None]</em> – The type of the table (<a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a> until set from the server).</td>
+<td>The type of the table (<a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a> until set from the server).</td>
 </tr>
 <tr class="row-even"><td><a class="reference internal" href="google.cloud.bigquery.table.Table.time_partitioning.html#google.cloud.bigquery.table.Table.time_partitioning" title="google.cloud.bigquery.table.Table.time_partitioning"><code class="xref py py-obj docutils literal notranslate"><span class="pre">time_partitioning</span></code></a></td>
-<td><em>google.cloud.bigquery.table.TimePartitioning</em> – Configures time-based partitioning for a table.</td>
+<td>Configures time-based partitioning for a table.</td>
 </tr>
 <tr class="row-odd"><td><a class="reference internal" href="google.cloud.bigquery.table.Table.view_query.html#google.cloud.bigquery.table.Table.view_query" title="google.cloud.bigquery.table.Table.view_query"><code class="xref py py-obj docutils literal notranslate"><span class="pre">view_query</span></code></a></td>
-<td><em>Union[str, None]</em> – SQL query defining the table as a view (defaults to <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a>).</td>
+<td>SQL query defining the table as a view (defaults to <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a>).</td>
 </tr>
 <tr class="row-even"><td><a class="reference internal" href="google.cloud.bigquery.table.Table.view_use_legacy_sql.html#google.cloud.bigquery.table.Table.view_use_legacy_sql" title="google.cloud.bigquery.table.Table.view_use_legacy_sql"><code class="xref py py-obj docutils literal notranslate"><span class="pre">view_use_legacy_sql</span></code></a></td>
-<td><em>bool</em> – Specifies whether to execute the view with Legacy or Standard SQL.</td>
+<td>Specifies whether to execute the view with Legacy or Standard SQL.</td>
 </tr>
 </tbody>
 </table>
@@ -285,7 +286,7 @@
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.9</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.11</a>
       
       |

@@ -6,13 +6,14 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigquery.retry.DEFAULT_RETRY &#8212; google-cloud b4b2e0f7be documentation</title>
+    <title>google.cloud.bigquery.retry.DEFAULT_RETRY &#8212; google-cloud 8ebbf3d documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="shortcut icon" href="../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -39,28 +40,12 @@
 <dl class="data">
 <dt id="google.cloud.bigquery.retry.DEFAULT_RETRY">
 <code class="descclassname">google.cloud.bigquery.retry.</code><code class="descname">DEFAULT_RETRY</code><em class="property"> = &lt;google.api_core.retry.Retry object&gt;</em><a class="headerlink" href="#google.cloud.bigquery.retry.DEFAULT_RETRY" title="Permalink to this definition">#</a></dt>
-<dd><p>Exponential retry decorator.</p>
-<p>This class is a decorator used to add exponential back-off retry behavior
-to an RPC call.</p>
-<p>Although the default behavior is to retry transient API errors, a
-different predicate can be provided to retry other exceptions.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>predicate</strong> (<em>Callable</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#Exception" title="(in Python v3.7)"><em>Exception</em></a><em>]</em>) – A callable that should return <code class="docutils literal notranslate"><span class="pre">True</span></code>
-if the given exception is retryable.</li>
-<li><strong>initial</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – The minimum about of time to delay in seconds. This
-must be greater than 0.</li>
-<li><strong>maximum</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – The maximum about of time to delay in seconds.</li>
-<li><strong>multiplier</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – The multiplier applied to the delay.</li>
-<li><strong>deadline</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – How long to keep retrying in seconds.</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
+<dd><p>The default retry object.</p>
+<p>Any method with a <code class="docutils literal notranslate"><span class="pre">retry</span></code> parameter will be retried automatically,
+with reasonable defaults. To disable retry, pass <code class="docutils literal notranslate"><span class="pre">retry=None</span></code>.
+To modify the default retry behavior, call a <code class="docutils literal notranslate"><span class="pre">with_XXX</span></code> method
+on <code class="docutils literal notranslate"><span class="pre">DEFAULT_RETRY</span></code>. For example, to change the deadline to 30 seconds,
+pass <code class="docutils literal notranslate"><span class="pre">retry=bigquery.DEFAULT_RETRY.with_deadline(30)</span></code>.</p>
 </dd></dl>
 
 </div>
@@ -175,7 +160,7 @@ must be greater than 0.</li>
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.9</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.11</a>
       
       |

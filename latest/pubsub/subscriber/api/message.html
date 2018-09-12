@@ -6,13 +6,14 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Messages &#8212; google-cloud b4b2e0f7be documentation</title>
+    <title>Messages &#8212; google-cloud 8ebbf3d documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
@@ -49,29 +50,61 @@ implementing a custom subclass to
 <dl class="attribute">
 <dt id="google.cloud.pubsub_v1.subscriber.message.Message.message_id">
 <code class="descname">message_id</code><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.message.Message.message_id" title="Permalink to this definition">#</a></dt>
-<dd><p><em>str</em> – The message ID. In general, you should not need
+<dd><p>The message ID. In general, you should not need
 to use this directly.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a></td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.pubsub_v1.subscriber.message.Message.data">
 <code class="descname">data</code><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.message.Message.data" title="Permalink to this definition">#</a></dt>
-<dd><p><em>bytes</em> – The data in the message. Note that this will be a
+<dd><p>The data in the message. Note that this will be a
 <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></a>, not a text string.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.7)">bytes</a></td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.pubsub_v1.subscriber.message.Message.attributes">
 <code class="descname">attributes</code><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.message.Message.attributes" title="Permalink to this definition">#</a></dt>
-<dd><p><em>.ScalarMapContainer</em> – The attributes sent along with the
+<dd><p>The attributes sent along with the
 message. See <a class="reference internal" href="#google.cloud.pubsub_v1.subscriber.message.Message.attributes" title="google.cloud.pubsub_v1.subscriber.message.Message.attributes"><code class="xref py py-attr docutils literal notranslate"><span class="pre">attributes</span></code></a> for more information on this type.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">ScalarMapContainer</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.pubsub_v1.subscriber.message.Message.publish_time">
 <code class="descname">publish_time</code><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.message.Message.publish_time" title="Permalink to this definition">#</a></dt>
-<dd><p><em>datetime</em> – The time that this message was originally
+<dd><p>The time that this message was originally
 published.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">datetime</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <p>Construct the Message.</p>
@@ -116,7 +149,15 @@ receive any given message more than once.</p>
 <dl class="attribute">
 <dt id="google.cloud.pubsub_v1.subscriber.message.Message.ack_id">
 <code class="descname">ack_id</code><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.message.Message.ack_id" title="Permalink to this definition">#</a></dt>
-<dd><p><em>str</em> – the ID used to ack the message.</p>
+<dd><p>the ID used to ack the message.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a></td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="attribute">
@@ -351,7 +392,7 @@ values below 10 are advised against.</td>
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.9</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.11</a>
       
       |

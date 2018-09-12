@@ -6,13 +6,14 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigquery.job.LoadJobConfig &#8212; google-cloud b4b2e0f7be documentation</title>
+    <title>google.cloud.bigquery.job.LoadJobConfig &#8212; google-cloud 8ebbf3d documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="shortcut icon" href="../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -71,61 +72,61 @@ server defaults.</p>
 </colgroup>
 <tbody valign="top">
 <tr class="row-odd"><td><a class="reference internal" href="google.cloud.bigquery.job.LoadJobConfig.allow_jagged_rows.html#google.cloud.bigquery.job.LoadJobConfig.allow_jagged_rows" title="google.cloud.bigquery.job.LoadJobConfig.allow_jagged_rows"><code class="xref py py-obj docutils literal notranslate"><span class="pre">allow_jagged_rows</span></code></a></td>
-<td><em>bool</em> – Allow missing trailing optional columns (CSV only).</td>
+<td>Allow missing trailing optional columns (CSV only).</td>
 </tr>
 <tr class="row-even"><td><a class="reference internal" href="google.cloud.bigquery.job.LoadJobConfig.allow_quoted_newlines.html#google.cloud.bigquery.job.LoadJobConfig.allow_quoted_newlines" title="google.cloud.bigquery.job.LoadJobConfig.allow_quoted_newlines"><code class="xref py py-obj docutils literal notranslate"><span class="pre">allow_quoted_newlines</span></code></a></td>
-<td><em>bool</em> – Allow quoted data containing newline characters (CSV only).</td>
+<td>Allow quoted data containing newline characters (CSV only).</td>
 </tr>
 <tr class="row-odd"><td><a class="reference internal" href="google.cloud.bigquery.job.LoadJobConfig.autodetect.html#google.cloud.bigquery.job.LoadJobConfig.autodetect" title="google.cloud.bigquery.job.LoadJobConfig.autodetect"><code class="xref py py-obj docutils literal notranslate"><span class="pre">autodetect</span></code></a></td>
-<td><em>bool</em> – Automatically infer the schema from a sample of the data.</td>
+<td>Automatically infer the schema from a sample of the data.</td>
 </tr>
 <tr class="row-even"><td><a class="reference internal" href="google.cloud.bigquery.job.LoadJobConfig.clustering_fields.html#google.cloud.bigquery.job.LoadJobConfig.clustering_fields" title="google.cloud.bigquery.job.LoadJobConfig.clustering_fields"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clustering_fields</span></code></a></td>
-<td><em>Union[List[str], None]</em> – Fields defining clustering for the table</td>
+<td>Fields defining clustering for the table</td>
 </tr>
 <tr class="row-odd"><td><a class="reference internal" href="google.cloud.bigquery.job.LoadJobConfig.create_disposition.html#google.cloud.bigquery.job.LoadJobConfig.create_disposition" title="google.cloud.bigquery.job.LoadJobConfig.create_disposition"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_disposition</span></code></a></td>
-<td><em>google.cloud.bigquery.job.CreateDisposition</em> – Specifies behavior for creating tables.</td>
+<td>Specifies behavior for creating tables.</td>
 </tr>
 <tr class="row-even"><td><a class="reference internal" href="google.cloud.bigquery.job.LoadJobConfig.destination_encryption_configuration.html#google.cloud.bigquery.job.LoadJobConfig.destination_encryption_configuration" title="google.cloud.bigquery.job.LoadJobConfig.destination_encryption_configuration"><code class="xref py py-obj docutils literal notranslate"><span class="pre">destination_encryption_configuration</span></code></a></td>
-<td><em>google.cloud.bigquery.table.EncryptionConfiguration</em> – Custom encryption configuration for the destination table.</td>
+<td>Custom encryption configuration for the destination table.</td>
 </tr>
 <tr class="row-odd"><td><a class="reference internal" href="google.cloud.bigquery.job.LoadJobConfig.encoding.html#google.cloud.bigquery.job.LoadJobConfig.encoding" title="google.cloud.bigquery.job.LoadJobConfig.encoding"><code class="xref py py-obj docutils literal notranslate"><span class="pre">encoding</span></code></a></td>
-<td><em>google.cloud.bigquery.job.Encoding</em> – The character encoding of the data.</td>
+<td>The character encoding of the data.</td>
 </tr>
 <tr class="row-even"><td><a class="reference internal" href="google.cloud.bigquery.job.LoadJobConfig.field_delimiter.html#google.cloud.bigquery.job.LoadJobConfig.field_delimiter" title="google.cloud.bigquery.job.LoadJobConfig.field_delimiter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">field_delimiter</span></code></a></td>
-<td><em>str</em> – The separator for fields in a CSV file.</td>
+<td>The separator for fields in a CSV file.</td>
 </tr>
 <tr class="row-odd"><td><a class="reference internal" href="google.cloud.bigquery.job.LoadJobConfig.ignore_unknown_values.html#google.cloud.bigquery.job.LoadJobConfig.ignore_unknown_values" title="google.cloud.bigquery.job.LoadJobConfig.ignore_unknown_values"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ignore_unknown_values</span></code></a></td>
-<td><em>bool</em> – Ignore extra values not represented in the table schema.</td>
+<td>Ignore extra values not represented in the table schema.</td>
 </tr>
 <tr class="row-even"><td><a class="reference internal" href="google.cloud.bigquery.job.LoadJobConfig.labels.html#google.cloud.bigquery.job.LoadJobConfig.labels" title="google.cloud.bigquery.job.LoadJobConfig.labels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">labels</span></code></a></td>
-<td><em>Dict[str, str]</em> – Labels for the job.</td>
+<td>Labels for the job.</td>
 </tr>
 <tr class="row-odd"><td><a class="reference internal" href="google.cloud.bigquery.job.LoadJobConfig.max_bad_records.html#google.cloud.bigquery.job.LoadJobConfig.max_bad_records" title="google.cloud.bigquery.job.LoadJobConfig.max_bad_records"><code class="xref py py-obj docutils literal notranslate"><span class="pre">max_bad_records</span></code></a></td>
-<td><em>int</em> – Number of invalid rows to ignore.</td>
+<td>Number of invalid rows to ignore.</td>
 </tr>
 <tr class="row-even"><td><a class="reference internal" href="google.cloud.bigquery.job.LoadJobConfig.null_marker.html#google.cloud.bigquery.job.LoadJobConfig.null_marker" title="google.cloud.bigquery.job.LoadJobConfig.null_marker"><code class="xref py py-obj docutils literal notranslate"><span class="pre">null_marker</span></code></a></td>
-<td><em>str</em> – Represents a null value (CSV only).</td>
+<td>Represents a null value (CSV only).</td>
 </tr>
 <tr class="row-odd"><td><a class="reference internal" href="google.cloud.bigquery.job.LoadJobConfig.quote_character.html#google.cloud.bigquery.job.LoadJobConfig.quote_character" title="google.cloud.bigquery.job.LoadJobConfig.quote_character"><code class="xref py py-obj docutils literal notranslate"><span class="pre">quote_character</span></code></a></td>
-<td><em>str</em> – Character used to quote data sections (CSV only).</td>
+<td>Character used to quote data sections (CSV only).</td>
 </tr>
 <tr class="row-even"><td><a class="reference internal" href="google.cloud.bigquery.job.LoadJobConfig.schema.html#google.cloud.bigquery.job.LoadJobConfig.schema" title="google.cloud.bigquery.job.LoadJobConfig.schema"><code class="xref py py-obj docutils literal notranslate"><span class="pre">schema</span></code></a></td>
-<td><em>List[google.cloud.bigquery.schema.SchemaField]</em> – Schema of the destination table.</td>
+<td>Schema of the destination table.</td>
 </tr>
 <tr class="row-odd"><td><a class="reference internal" href="google.cloud.bigquery.job.LoadJobConfig.schema_update_options.html#google.cloud.bigquery.job.LoadJobConfig.schema_update_options" title="google.cloud.bigquery.job.LoadJobConfig.schema_update_options"><code class="xref py py-obj docutils literal notranslate"><span class="pre">schema_update_options</span></code></a></td>
-<td><em>List[google.cloud.bigquery.job.SchemaUpdateOption]</em> – Specifies updates to the destination table schema to allow as a side effect of the load job.</td>
+<td>Specifies updates to the destination table schema to allow as a side effect of the load job.</td>
 </tr>
 <tr class="row-even"><td><a class="reference internal" href="google.cloud.bigquery.job.LoadJobConfig.skip_leading_rows.html#google.cloud.bigquery.job.LoadJobConfig.skip_leading_rows" title="google.cloud.bigquery.job.LoadJobConfig.skip_leading_rows"><code class="xref py py-obj docutils literal notranslate"><span class="pre">skip_leading_rows</span></code></a></td>
-<td><em>int</em> – Number of rows to skip when reading data (CSV only).</td>
+<td>Number of rows to skip when reading data (CSV only).</td>
 </tr>
 <tr class="row-odd"><td><a class="reference internal" href="google.cloud.bigquery.job.LoadJobConfig.source_format.html#google.cloud.bigquery.job.LoadJobConfig.source_format" title="google.cloud.bigquery.job.LoadJobConfig.source_format"><code class="xref py py-obj docutils literal notranslate"><span class="pre">source_format</span></code></a></td>
-<td><em>google.cloud.bigquery.job.SourceFormat</em> – File format of the data.</td>
+<td>File format of the data.</td>
 </tr>
 <tr class="row-even"><td><a class="reference internal" href="google.cloud.bigquery.job.LoadJobConfig.time_partitioning.html#google.cloud.bigquery.job.LoadJobConfig.time_partitioning" title="google.cloud.bigquery.job.LoadJobConfig.time_partitioning"><code class="xref py py-obj docutils literal notranslate"><span class="pre">time_partitioning</span></code></a></td>
-<td><em>google.cloud.bigquery.table.TimePartitioning</em> – Specifies time-based partitioning for the destination table.</td>
+<td>Specifies time-based partitioning for the destination table.</td>
 </tr>
 <tr class="row-odd"><td><a class="reference internal" href="google.cloud.bigquery.job.LoadJobConfig.write_disposition.html#google.cloud.bigquery.job.LoadJobConfig.write_disposition" title="google.cloud.bigquery.job.LoadJobConfig.write_disposition"><code class="xref py py-obj docutils literal notranslate"><span class="pre">write_disposition</span></code></a></td>
-<td><em>google.cloud.bigquery.job.WriteDisposition</em> – Action that occurs if the destination table already exists.</td>
+<td>Action that occurs if the destination table already exists.</td>
 </tr>
 </tbody>
 </table>
@@ -243,7 +244,7 @@ server defaults.</p>
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.9</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.11</a>
       
       |

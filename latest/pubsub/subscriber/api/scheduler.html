@@ -6,13 +6,14 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Scheduler &#8212; google-cloud b4b2e0f7be documentation</title>
+    <title>Scheduler &#8212; google-cloud 8ebbf3d documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
@@ -47,9 +48,17 @@ each message.</p>
 <dl class="attribute">
 <dt id="google.cloud.pubsub_v1.subscriber.scheduler.Scheduler.queue">
 <code class="descname">queue</code><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.scheduler.Scheduler.queue" title="Permalink to this definition">#</a></dt>
-<dd><p><em>Queue</em> – A concurrency-safe queue specific to the underlying
+<dd><p>A concurrency-safe queue specific to the underlying
 concurrency implementation.</p>
 <p>This queue is used to send messages <em>back</em> to the scheduling actor.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference internal" href="../../../tasks/gapic/v2beta2/types.html#google.cloud.tasks_v2beta2.types.Queue" title="google.cloud.tasks_v2beta2.types.Queue">Queue</a></td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -99,8 +108,16 @@ to use. If not specified, a default one will be created.</td>
 <dl class="attribute">
 <dt id="google.cloud.pubsub_v1.subscriber.scheduler.ThreadScheduler.queue">
 <code class="descname">queue</code><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.scheduler.ThreadScheduler.queue" title="Permalink to this definition">#</a></dt>
-<dd><p><em>Queue</em> – A thread-safe queue used for communication between callbacks
+<dd><p>A thread-safe queue used for communication between callbacks
 and the scheduling thread.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference internal" href="../../../tasks/gapic/v2beta2/types.html#google.cloud.tasks_v2beta2.types.Queue" title="google.cloud.tasks_v2beta2.types.Queue">Queue</a></td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -240,7 +257,7 @@ and the scheduling thread.</p>
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.9</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.11</a>
       
       |

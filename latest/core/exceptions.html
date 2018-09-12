@@ -6,13 +6,14 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Exceptions &#8212; google-cloud b4b2e0f7be documentation</title>
+    <title>Exceptions &#8212; google-cloud 8ebbf3d documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -146,10 +147,18 @@ gRPC call metadata.</li>
 <dl class="attribute">
 <dt id="google.api_core.exceptions.GoogleAPICallError.code">
 <code class="descname">code</code><em class="property"> = None</em><a class="headerlink" href="#google.api_core.exceptions.GoogleAPICallError.code" title="Permalink to this definition">#</a></dt>
-<dd><p><em>Optional[int]</em> – The HTTP status code associated with this error.</p>
+<dd><p>The HTTP status code associated with this error.</p>
 <p>This may be <code class="docutils literal notranslate"><span class="pre">None</span></code> if the exception does not have a direct mapping
 to an HTTP error.</p>
 <p>See <a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html">http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">Optional[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)">int</a>]</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="attribute">
@@ -171,22 +180,46 @@ to an HTTP error.</p>
 <dl class="attribute">
 <dt id="google.api_core.exceptions.GoogleAPICallError.grpc_status_code">
 <code class="descname">grpc_status_code</code><em class="property"> = None</em><a class="headerlink" href="#google.api_core.exceptions.GoogleAPICallError.grpc_status_code" title="Permalink to this definition">#</a></dt>
-<dd><p><em>Optional[grpc.StatusCode]</em> – The gRPC status code associated with this
+<dd><p>The gRPC status code associated with this
 error.</p>
 <p>This may be <code class="docutils literal notranslate"><span class="pre">None</span></code> if the exception does not match up to a gRPC error.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">Optional[<a class="reference external" href="https://grpc.io/grpc/python/grpc.html#grpc.StatusCode" title="(in grpcio v1.8.0)">grpc.StatusCode</a>]</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.api_core.exceptions.GoogleAPICallError.message">
 <code class="descname">message</code><em class="property"> = None</em><a class="headerlink" href="#google.api_core.exceptions.GoogleAPICallError.message" title="Permalink to this definition">#</a></dt>
-<dd><p><em>str</em> – The exception message.</p>
+<dd><p>The exception message.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a></td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.api_core.exceptions.GoogleAPICallError.response">
 <code class="descname">response</code><a class="headerlink" href="#google.api_core.exceptions.GoogleAPICallError.response" title="Permalink to this definition">#</a></dt>
-<dd><p><em>Optional[Union[requests.Request, grpc.Call]]</em> – The response or
+<dd><p>The response or
 gRPC call metadata.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">Optional[Union[<a class="reference external" href="http://docs.python-requests.org/en/master/api/#requests.Request" title="(in Requests v2.19.1)">requests.Request</a>, <a class="reference external" href="https://grpc.io/grpc/python/grpc.html#grpc.Call" title="(in grpcio v1.8.0)">grpc.Call</a>]]</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </dd></dl>
@@ -642,7 +675,7 @@ constructor.</li>
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.9</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.11</a>
       
       |
