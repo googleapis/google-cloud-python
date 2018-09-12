@@ -35,15 +35,8 @@ s.move(
               'nox.py', 'setup.py']
 )
 
-# Generator is removing ending line of __init__.py
 s.replace(
-    'google/cloud/__init__.py',
-    '__path__ = pkgutil.extend_path\(__path__, __name__\)',
-    '\g<0>\n'
-)
-
-s.replace(
-    ['google/cloud/bigquery_datatransfer_v1/proto/datatransfer_pb2.py', 
+    ['google/cloud/bigquery_datatransfer_v1/proto/datatransfer_pb2.py',
      'google/cloud/bigquery_datatransfer_v1/proto/datatransfer_pb2_grpc.py'],
     'from google.cloud.bigquery.datatransfer_v1.proto',
     'from google.cloud.bigquery_datatransfer_v1.proto'
