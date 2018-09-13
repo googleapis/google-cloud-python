@@ -293,7 +293,7 @@ class GbqConnector(object):
     def get_elapsed_seconds(self):
         return round(time.time() - self.start, 2)
 
-    def log_elapsed_seconds(self, prefix="Elapsed", postfix="s.", overlong=7):
+    def log_elapsed_seconds(self, prefix="Elapsed", postfix="s.", overlong=6):
         sec = self.get_elapsed_seconds()
         if sec > overlong:
             logger.info("{} {} {}".format(prefix, sec, postfix))
@@ -357,7 +357,7 @@ class GbqConnector(object):
                 job_config=bigquery.QueryJobConfig.from_api_repr(job_config),
                 location=self.location,
             )
-            logger.info("Query running...")
+            logger.debug("Query running...")
         except (RefreshError, ValueError):
             if self.private_key:
                 raise AccessDenied(
