@@ -147,10 +147,7 @@ def snippets(session, py):
 
     # Run py.test against the system tests.
     session.run(
-        'py.test',
-        os.path.join(os.pardir, 'docs', 'bigquery', 'snippets.py'),
-        *session.posargs
-    )
+        'py.test', os.path.join('docs', 'snippets.py'), *session.posargs)
 
 
 @nox.session
@@ -167,7 +164,7 @@ def lint(session):
     session.run('flake8', os.path.join('google', 'cloud', 'bigquery'))
     session.run('flake8', 'tests')
     session.run(
-        'flake8', os.path.join(os.pardir, 'docs', 'bigquery', 'snippets.py'))
+        'flake8', os.path.join('docs', 'snippets.py'))
 
 
 @nox.session

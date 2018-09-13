@@ -26,6 +26,7 @@
 import email
 import os
 import pkg_resources
+import shutil
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
@@ -319,3 +320,21 @@ intersphinx_mapping = {
     'pandas': ('http://pandas.pydata.org/pandas-docs/stable/', None),
     'python': ('https://docs.python.org/3', None),
 }
+
+# Static HTML pages, e.g. to support redirects
+# See: https://tech.signavio.com/2017/managing-sphinx-redirects
+# HTML pages to be copied from source to target
+static_html_pages = [
+    'bigquery/usage.html',
+]
+
+def copy_static_html_pages(app, docname):
+    if app.builder.name == 'html':
+        for static_html_page in static_html_pages:
+            target_path = app.outdir + '/' + static_html_page
+            src_path = app.srcdir + '/' + static_html_page
+        if os.path.isfile(src_path):
+            shutil.copyfile(src_path, target_path)
+
+def setup(app):
+    app.connect('build-finished', copy_static_html_pages)
