@@ -5,7 +5,7 @@
   Core Libraries <core/index>
   Asset Management <asset/index>
   AutoML <automl/index>
-  BigQuery <bigquery/usage>
+  BigQuery <bigquery/index>
   BigQuery Data-Transfer <bigquery_datatransfer/index>
   Bigtable <bigtable/usage>
   Container <container/index>
