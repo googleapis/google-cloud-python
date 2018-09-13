@@ -182,6 +182,12 @@ class Cluster(object):
 
     def exists(self):
         """Check whether the cluster already exists.
+        
+        For example:
+
+        .. literalinclude:: snippets.py
+            :start-after: [START bigtable_check_cluster_exists]
+            :end-before: [END bigtable_check_cluster_exists]
 
         :rtype: bool
         :returns: True if the table exists, else False.
@@ -196,6 +202,12 @@ class Cluster(object):
 
     def create(self):
         """Create this cluster.
+
+        For example:
+
+        .. literalinclude:: snippets.py
+            :start-after: [START bigtable_create_cluster]
+            :end-before: [END bigtable_create_cluster]
 
         .. note::
 
@@ -259,6 +271,12 @@ class Cluster(object):
 
     def delete(self):
         """Delete this cluster.
+        
+        For example:
+
+        .. literalinclude:: snippets.py
+            :start-after: [START bigtable_delete_cluster]
+            :end-before: [END bigtable_delete_cluster]
 
         Marks a cluster and all of its tables for permanent deletion in 7 days.
 

@@ -198,6 +198,12 @@ class Instance(object):
     def exists(self):
         """Check whether the instance already exists.
 
+        For example:
+
+        .. literalinclude:: snippets.py
+            :start-after: [START bigtable_check_instance_exists]
+            :end-before: [END bigtable_check_instance_exists]
+
         :rtype: bool
         :returns: True if the table exists, else False.
         """
@@ -212,6 +218,12 @@ class Instance(object):
                serve_nodes=None,
                default_storage_type=None, clusters=None):
         """Create this instance.
+
+        For example:
+
+        .. literalinclude:: snippets.py
+            :start-after: [START bigtable_create_prod_instance]
+            :end-before: [END bigtable_create_prod_instance]
 
         .. note::
 
@@ -324,6 +336,12 @@ class Instance(object):
     def delete(self):
         """Delete this instance.
 
+        For example:
+
+        .. literalinclude:: snippets.py
+            :start-after: [START bigtable_delete_instance]
+            :end-before: [END bigtable_delete_instance]
+
         Marks an instance and all of its tables for permanent deletion
         in 7 days.
 
@@ -348,6 +366,12 @@ class Instance(object):
     def cluster(self, cluster_id, location_id=None,
                 serve_nodes=None, default_storage_type=None):
         """Factory to create a cluster associated with this instance.
+        
+        For example:
+
+        .. literalinclude:: snippets.py
+            :start-after: [START bigtable_create_cluster]
+            :end-before: [END bigtable_create_cluster]
 
         :type cluster_id: str
         :param cluster_id: The ID of the cluster.
