@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Types for Cloud Data Loss Prevention (DLP) API Client &#8212; google-cloud 8ebbf3d documentation</title>
+    <title>Types for Cloud Data Loss Prevention (DLP) API Client &#8212; google-cloud f074335 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -451,6 +451,24 @@ bucket_value_count:               Total number of distinct equivalence classes i
 <dd></dd></dl>
 
 <dl class="class">
+<dt id="google.cloud.dlp_v2.types.BigQueryField">
+<em class="property">class </em><code class="descclassname">google.cloud.dlp_v2.types.</code><code class="descname">BigQueryField</code><a class="headerlink" href="#google.cloud.dlp_v2.types.BigQueryField" title="Permalink to this definition">#</a></dt>
+<dd><p>Message defining a field of a BigQuery table.</p>
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.BigQueryField.table">
+<code class="descname">table</code><a class="headerlink" href="#google.cloud.dlp_v2.types.BigQueryField.table" title="Permalink to this definition">#</a></dt>
+<dd><p>Source table of the field.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.BigQueryField.field">
+<code class="descname">field</code><a class="headerlink" href="#google.cloud.dlp_v2.types.BigQueryField.field" title="Permalink to this definition">#</a></dt>
+<dd><p>Designated field in the BigQuery table.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="google.cloud.dlp_v2.types.BigQueryKey">
 <em class="property">class </em><code class="descclassname">google.cloud.dlp_v2.types.</code><code class="descname">BigQueryKey</code><a class="headerlink" href="#google.cloud.dlp_v2.types.BigQueryKey" title="Permalink to this definition">#</a></dt>
 <dd><p>Row key for identifying a record in BigQuery table.</p>
@@ -492,8 +510,19 @@ table. Nested fields in the format, like
 <code class="descname">rows_limit</code><a class="headerlink" href="#google.cloud.dlp_v2.types.BigQueryOptions.rows_limit" title="Permalink to this definition">#</a></dt>
 <dd><p>Max number of rows to scan. If the table has more rows than
 this value, the rest of the rows are omitted. If not set, or
-if set to 0, all rows will be scanned. Cannot be used in
+if set to 0, all rows will be scanned. Only one of rows_limit
+and rows_limit_percent can be specified. Cannot be used in
 conjunction with TimespanConfig.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.BigQueryOptions.rows_limit_percent">
+<code class="descname">rows_limit_percent</code><a class="headerlink" href="#google.cloud.dlp_v2.types.BigQueryOptions.rows_limit_percent" title="Permalink to this definition">#</a></dt>
+<dd><p>Max percentage of rows to scan. The rest are omitted. The
+number of rows scanned is rounded down. Must be between 0 and
+100, inclusively. Both 0 and 100 means no limit. Defaults to
+0. Only one of rows_limit and rows_limit_percent can be
+specified. Cannot be used in conjunction with TimespanConfig.</p>
 </dd></dl>
 
 </dd></dl>
@@ -691,6 +720,19 @@ left alone and skipped.</p>
 </dd></dl>
 
 <dl class="class">
+<dt id="google.cloud.dlp_v2.types.CloudStorageFileSet">
+<em class="property">class </em><code class="descclassname">google.cloud.dlp_v2.types.</code><code class="descname">CloudStorageFileSet</code><a class="headerlink" href="#google.cloud.dlp_v2.types.CloudStorageFileSet" title="Permalink to this definition">#</a></dt>
+<dd><p>Message representing a set of files in Cloud Storage.</p>
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.CloudStorageFileSet.url">
+<code class="descname">url</code><a class="headerlink" href="#google.cloud.dlp_v2.types.CloudStorageFileSet.url" title="Permalink to this definition">#</a></dt>
+<dd><p>The url, in the format <code class="docutils literal notranslate"><span class="pre">gs://&lt;bucket&gt;/&lt;path&gt;</span></code>. Trailing
+wildcard in the path is allowed.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="google.cloud.dlp_v2.types.CloudStorageOptions">
 <em class="property">class </em><code class="descclassname">google.cloud.dlp_v2.types.</code><code class="descname">CloudStorageOptions</code><a class="headerlink" href="#google.cloud.dlp_v2.types.CloudStorageOptions" title="Permalink to this definition">#</a></dt>
 <dd><p>Options defining a file or a set of files (path ending with *) within a
@@ -700,7 +742,18 @@ Google Cloud Storage bucket.</p>
 <code class="descname">bytes_limit_per_file</code><a class="headerlink" href="#google.cloud.dlp_v2.types.CloudStorageOptions.bytes_limit_per_file" title="Permalink to this definition">#</a></dt>
 <dd><p>Max number of bytes to scan from a file. If a scanned file’s
 size is bigger than this value then the rest of the bytes are
-omitted.</p>
+omitted. Only one of bytes_limit_per_file and
+bytes_limit_per_file_percent can be specified.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.CloudStorageOptions.bytes_limit_per_file_percent">
+<code class="descname">bytes_limit_per_file_percent</code><a class="headerlink" href="#google.cloud.dlp_v2.types.CloudStorageOptions.bytes_limit_per_file_percent" title="Permalink to this definition">#</a></dt>
+<dd><p>Max percentage of bytes to scan from a file. The rest are
+omitted. The number of bytes scanned is rounded down. Must be
+between 0 and 100, inclusively. Both 0 and 100 means no limit.
+Defaults to 0. Only one of bytes_limit_per_file and
+bytes_limit_per_file_percent can be specified.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -979,6 +1032,35 @@ characters. Can be empty to allow the system to generate one.</p>
 </dd></dl>
 
 <dl class="class">
+<dt id="google.cloud.dlp_v2.types.CreateStoredInfoTypeRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.dlp_v2.types.</code><code class="descname">CreateStoredInfoTypeRequest</code><a class="headerlink" href="#google.cloud.dlp_v2.types.CreateStoredInfoTypeRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request message for CreateStoredInfoType.</p>
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.CreateStoredInfoTypeRequest.parent">
+<code class="descname">parent</code><a class="headerlink" href="#google.cloud.dlp_v2.types.CreateStoredInfoTypeRequest.parent" title="Permalink to this definition">#</a></dt>
+<dd><p>The parent resource name, for example projects/my-project-id
+or organizations/my-org-id.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.CreateStoredInfoTypeRequest.config">
+<code class="descname">config</code><a class="headerlink" href="#google.cloud.dlp_v2.types.CreateStoredInfoTypeRequest.config" title="Permalink to this definition">#</a></dt>
+<dd><p>Configuration of the storedInfoType to create.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.CreateStoredInfoTypeRequest.stored_info_type_id">
+<code class="descname">stored_info_type_id</code><a class="headerlink" href="#google.cloud.dlp_v2.types.CreateStoredInfoTypeRequest.stored_info_type_id" title="Permalink to this definition">#</a></dt>
+<dd><p>The storedInfoType ID can contain uppercase and lowercase
+letters, numbers, and hyphens; that is, it must match the
+regular expression: <code class="docutils literal notranslate"><span class="pre">[a-zA-Z\d-]+</span></code>. The maximum length is
+100 characters. Can be empty to allow the system to generate
+one.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="google.cloud.dlp_v2.types.CryptoHashConfig">
 <em class="property">class </em><code class="descclassname">google.cloud.dlp_v2.types.</code><code class="descname">CryptoHashConfig</code><a class="headerlink" href="#google.cloud.dlp_v2.types.CryptoHashConfig" title="Permalink to this definition">#</a></dt>
 <dd><p>Pseudonymization method that generates surrogates via cryptographic
@@ -1135,6 +1217,14 @@ transformations that support reversing.</p>
 </dd></dl>
 
 <dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.CustomInfoType.stored_type">
+<code class="descname">stored_type</code><a class="headerlink" href="#google.cloud.dlp_v2.types.CustomInfoType.stored_type" title="Permalink to this definition">#</a></dt>
+<dd><p>Load an existing <code class="docutils literal notranslate"><span class="pre">StoredInfoType</span></code> resource for use in
+<code class="docutils literal notranslate"><span class="pre">InspectDataSource</span></code>. Not currently supported in
+<code class="docutils literal notranslate"><span class="pre">InspectContent</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
 <dt id="google.cloud.dlp_v2.types.CustomInfoType.detection_rules">
 <code class="descname">detection_rules</code><a class="headerlink" href="#google.cloud.dlp_v2.types.CustomInfoType.detection_rules" title="Permalink to this definition">#</a></dt>
 <dd><p>Set of detection rules to apply to all findings of this
@@ -1254,7 +1344,11 @@ word “jen” will match the first three letters of the text “jen123” but
 will return no matches for “jennifer”.</p>
 <p>Dictionary words containing a large number of characters that are not
 letters or digits may result in unexpected findings because such
-characters are treated as whitespace.</p>
+characters are treated as whitespace. The
+<a class="reference external" href="https://cloud.google.com/dlp/limits">limits</a> page contains details
+about the size limits of dictionaries. For dictionaries that do not fit
+within these constraints, consider using <code class="docutils literal notranslate"><span class="pre">LargeCustomDictionaryConfig</span></code>
+in the <code class="docutils literal notranslate"><span class="pre">StoredInfoType</span></code> API.</p>
 <dl class="attribute">
 <dt id="google.cloud.dlp_v2.types.CustomInfoType.Dictionary.word_list">
 <code class="descname">word_list</code><a class="headerlink" href="#google.cloud.dlp_v2.types.CustomInfoType.Dictionary.word_list" title="Permalink to this definition">#</a></dt>
@@ -1612,6 +1706,21 @@ projects/project-id/inspectTemplates/432452342.</p>
 <code class="descname">name</code><a class="headerlink" href="#google.cloud.dlp_v2.types.DeleteJobTriggerRequest.name" title="Permalink to this definition">#</a></dt>
 <dd><p>Resource name of the project and the triggeredJob, for example
 <code class="docutils literal notranslate"><span class="pre">projects/dlp-test-project/jobTriggers/53234423</span></code>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.dlp_v2.types.DeleteStoredInfoTypeRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.dlp_v2.types.</code><code class="descname">DeleteStoredInfoTypeRequest</code><a class="headerlink" href="#google.cloud.dlp_v2.types.DeleteStoredInfoTypeRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request message for DeleteStoredInfoType.</p>
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.DeleteStoredInfoTypeRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.dlp_v2.types.DeleteStoredInfoTypeRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Resource name of the organization and storedInfoType to be
+deleted, for example
+<code class="docutils literal notranslate"><span class="pre">organizations/433245324/storedInfoTypes/432452342</span></code> or
+projects/project-id/storedInfoTypes/432452342.</p>
 </dd></dl>
 
 </dd></dl>
@@ -2029,6 +2138,21 @@ projects/project-id/inspectTemplates/432452342.</p>
 </dd></dl>
 
 <dl class="class">
+<dt id="google.cloud.dlp_v2.types.GetStoredInfoTypeRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.dlp_v2.types.</code><code class="descname">GetStoredInfoTypeRequest</code><a class="headerlink" href="#google.cloud.dlp_v2.types.GetStoredInfoTypeRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request message for GetStoredInfoType.</p>
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.GetStoredInfoTypeRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.dlp_v2.types.GetStoredInfoTypeRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Resource name of the organization and storedInfoType to be
+read, for example
+<code class="docutils literal notranslate"><span class="pre">organizations/433245324/storedInfoTypes/432452342</span></code> or
+projects/project-id/storedInfoTypes/432452342.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="google.cloud.dlp_v2.types.Http">
 <em class="property">class </em><code class="descclassname">google.cloud.dlp_v2.types.</code><code class="descname">Http</code><a class="headerlink" href="#google.cloud.dlp_v2.types.Http" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
@@ -2160,7 +2284,12 @@ listed at <a class="reference external" href="https://cloud.google.com/dlp/docs/
 reference.  When no InfoTypes or CustomInfoTypes are specified
 in a request, the system may automatically choose what
 detectors to run. By default this may be all types, but may
-change over time as detectors are updated.</p>
+change over time as detectors are updated.  The special
+InfoType name “ALL_BASIC” can be used to trigger all
+detectors, but may change over time as new InfoTypes are
+added. If you need precise control and predictability as to
+what detectors are run you should specify specific InfoTypes
+listed in the reference.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -2590,6 +2719,40 @@ a crypto transformation using a kms-wrapped crypto key: dlp.kms.encrypt</p>
 </dd></dl>
 
 <dl class="class">
+<dt id="google.cloud.dlp_v2.types.LargeCustomDictionaryConfig">
+<em class="property">class </em><code class="descclassname">google.cloud.dlp_v2.types.</code><code class="descname">LargeCustomDictionaryConfig</code><a class="headerlink" href="#google.cloud.dlp_v2.types.LargeCustomDictionaryConfig" title="Permalink to this definition">#</a></dt>
+<dd><p>Configuration for a custom dictionary created from a data source of any
+size up to the maximum size defined in the
+<a class="reference external" href="https://cloud.google.com/dlp/limits">limits</a> page. The artifacts of
+dictionary creation are stored in the specified Google Cloud Storage
+location. Consider using <code class="docutils literal notranslate"><span class="pre">CustomInfoType.Dictionary</span></code> for smaller
+dictionaries that satisfy the size requirements.</p>
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.LargeCustomDictionaryConfig.output_path">
+<code class="descname">output_path</code><a class="headerlink" href="#google.cloud.dlp_v2.types.LargeCustomDictionaryConfig.output_path" title="Permalink to this definition">#</a></dt>
+<dd><p>Location to store dictionary artifacts in Google Cloud
+Storage. These files will only be accessible by project owners
+and the DLP API. If any of these artifacts are modified, the
+dictionary is considered invalid and can no longer be used.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.LargeCustomDictionaryConfig.cloud_storage_file_set">
+<code class="descname">cloud_storage_file_set</code><a class="headerlink" href="#google.cloud.dlp_v2.types.LargeCustomDictionaryConfig.cloud_storage_file_set" title="Permalink to this definition">#</a></dt>
+<dd><p>Set of files containing newline-delimited lists of dictionary
+phrases.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.LargeCustomDictionaryConfig.big_query_field">
+<code class="descname">big_query_field</code><a class="headerlink" href="#google.cloud.dlp_v2.types.LargeCustomDictionaryConfig.big_query_field" title="Permalink to this definition">#</a></dt>
+<dd><p>Field in a BigQuery table where each cell represents a
+dictionary phrase.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="google.cloud.dlp_v2.types.ListDeidentifyTemplatesRequest">
 <em class="property">class </em><code class="descclassname">google.cloud.dlp_v2.types.</code><code class="descname">ListDeidentifyTemplatesRequest</code><a class="headerlink" href="#google.cloud.dlp_v2.types.ListDeidentifyTemplatesRequest" title="Permalink to this definition">#</a></dt>
 <dd><p>Request message for ListDeidentifyTemplates.</p>
@@ -2844,6 +3007,53 @@ ListJobTriggersRequest.</p>
 <code class="descname">next_page_token</code><a class="headerlink" href="#google.cloud.dlp_v2.types.ListJobTriggersResponse.next_page_token" title="Permalink to this definition">#</a></dt>
 <dd><p>If the next page is available then the next page token to be
 used in following ListJobTriggers request.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.dlp_v2.types.ListStoredInfoTypesRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.dlp_v2.types.</code><code class="descname">ListStoredInfoTypesRequest</code><a class="headerlink" href="#google.cloud.dlp_v2.types.ListStoredInfoTypesRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request message for ListStoredInfoTypes.</p>
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.ListStoredInfoTypesRequest.parent">
+<code class="descname">parent</code><a class="headerlink" href="#google.cloud.dlp_v2.types.ListStoredInfoTypesRequest.parent" title="Permalink to this definition">#</a></dt>
+<dd><p>The parent resource name, for example projects/my-project-id
+or organizations/my-org-id.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.ListStoredInfoTypesRequest.page_token">
+<code class="descname">page_token</code><a class="headerlink" href="#google.cloud.dlp_v2.types.ListStoredInfoTypesRequest.page_token" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional page token to continue retrieval. Comes from previous
+call to <code class="docutils literal notranslate"><span class="pre">ListStoredInfoTypes</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.ListStoredInfoTypesRequest.page_size">
+<code class="descname">page_size</code><a class="headerlink" href="#google.cloud.dlp_v2.types.ListStoredInfoTypesRequest.page_size" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional size of the page, can be limited by server. If zero
+server returns a page of max size 100.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.dlp_v2.types.ListStoredInfoTypesResponse">
+<em class="property">class </em><code class="descclassname">google.cloud.dlp_v2.types.</code><code class="descname">ListStoredInfoTypesResponse</code><a class="headerlink" href="#google.cloud.dlp_v2.types.ListStoredInfoTypesResponse" title="Permalink to this definition">#</a></dt>
+<dd><p>Response message for ListStoredInfoTypes.</p>
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.ListStoredInfoTypesResponse.stored_info_types">
+<code class="descname">stored_info_types</code><a class="headerlink" href="#google.cloud.dlp_v2.types.ListStoredInfoTypesResponse.stored_info_types" title="Permalink to this definition">#</a></dt>
+<dd><p>List of storedInfoTypes, up to page_size in
+ListStoredInfoTypesRequest.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.ListStoredInfoTypesResponse.next_page_token">
+<code class="descname">next_page_token</code><a class="headerlink" href="#google.cloud.dlp_v2.types.ListStoredInfoTypesResponse.next_page_token" title="Permalink to this definition">#</a></dt>
+<dd><p>If the next page is available then the next page token to be
+used in following ListStoredInfoTypes request.</p>
 </dd></dl>
 
 </dd></dl>
@@ -3737,25 +3947,27 @@ BigQuery.</p>
 <dl class="attribute">
 <dt id="google.cloud.dlp_v2.types.StorageConfig.TimespanConfig.start_time">
 <code class="descname">start_time</code><a class="headerlink" href="#google.cloud.dlp_v2.types.StorageConfig.TimespanConfig.start_time" title="Permalink to this definition">#</a></dt>
-<dd><p>Exclude files older than this value.</p>
+<dd><p>Exclude files or rows older than this value.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.dlp_v2.types.StorageConfig.TimespanConfig.end_time">
 <code class="descname">end_time</code><a class="headerlink" href="#google.cloud.dlp_v2.types.StorageConfig.TimespanConfig.end_time" title="Permalink to this definition">#</a></dt>
-<dd><p>Exclude files newer than this value. If set to zero, no upper
-time limit is applied.</p>
+<dd><p>Exclude files or rows newer than this value. If set to zero,
+no upper time limit is applied.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.dlp_v2.types.StorageConfig.TimespanConfig.timestamp_field">
 <code class="descname">timestamp_field</code><a class="headerlink" href="#google.cloud.dlp_v2.types.StorageConfig.TimespanConfig.timestamp_field" title="Permalink to this definition">#</a></dt>
 <dd><p>Specification of the field containing the timestamp of scanned
-items. Required for data sources like Datastore or BigQuery.
-The valid data types of the timestamp field are: for BigQuery
-- timestamp, date, datetime; for Datastore - timestamp.
-Datastore entity will be scanned if the timestamp property
-does not exist or its value is empty or invalid.</p>
+items. Used for data sources like Datastore or BigQuery. If
+not specified for BigQuery, table last modification timestamp
+is checked against given time span. The valid data types of
+the timestamp field are: for BigQuery - timestamp, date,
+datetime; for Datastore - timestamp. Datastore entity will be
+scanned if the timestamp property does not exist or its value
+is empty or invalid.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -3768,6 +3980,124 @@ executed. This will be based on the time of the execution of
 the last run of the JobTrigger.</p>
 </dd></dl>
 
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.dlp_v2.types.StoredInfoType">
+<em class="property">class </em><code class="descclassname">google.cloud.dlp_v2.types.</code><code class="descname">StoredInfoType</code><a class="headerlink" href="#google.cloud.dlp_v2.types.StoredInfoType" title="Permalink to this definition">#</a></dt>
+<dd><p>StoredInfoType resource message that contains information about the
+current version and any pending updates.</p>
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.StoredInfoType.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.dlp_v2.types.StoredInfoType.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Resource name.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.StoredInfoType.current_version">
+<code class="descname">current_version</code><a class="headerlink" href="#google.cloud.dlp_v2.types.StoredInfoType.current_version" title="Permalink to this definition">#</a></dt>
+<dd><p>Current version of the stored info type.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.StoredInfoType.pending_versions">
+<code class="descname">pending_versions</code><a class="headerlink" href="#google.cloud.dlp_v2.types.StoredInfoType.pending_versions" title="Permalink to this definition">#</a></dt>
+<dd><p>Pending versions of the stored info type. Empty if no versions
+are pending.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.dlp_v2.types.StoredInfoTypeConfig">
+<em class="property">class </em><code class="descclassname">google.cloud.dlp_v2.types.</code><code class="descname">StoredInfoTypeConfig</code><a class="headerlink" href="#google.cloud.dlp_v2.types.StoredInfoTypeConfig" title="Permalink to this definition">#</a></dt>
+<dd><p>Configuration for a StoredInfoType.</p>
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.StoredInfoTypeConfig.display_name">
+<code class="descname">display_name</code><a class="headerlink" href="#google.cloud.dlp_v2.types.StoredInfoTypeConfig.display_name" title="Permalink to this definition">#</a></dt>
+<dd><p>Display name of the StoredInfoType (max 256 characters).</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.StoredInfoTypeConfig.description">
+<code class="descname">description</code><a class="headerlink" href="#google.cloud.dlp_v2.types.StoredInfoTypeConfig.description" title="Permalink to this definition">#</a></dt>
+<dd><p>Description of the StoredInfoType (max 256 characters).</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.StoredInfoTypeConfig.large_custom_dictionary">
+<code class="descname">large_custom_dictionary</code><a class="headerlink" href="#google.cloud.dlp_v2.types.StoredInfoTypeConfig.large_custom_dictionary" title="Permalink to this definition">#</a></dt>
+<dd><p>StoredInfoType where findings are defined by a dictionary of
+phrases.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.dlp_v2.types.StoredInfoTypeVersion">
+<em class="property">class </em><code class="descclassname">google.cloud.dlp_v2.types.</code><code class="descname">StoredInfoTypeVersion</code><a class="headerlink" href="#google.cloud.dlp_v2.types.StoredInfoTypeVersion" title="Permalink to this definition">#</a></dt>
+<dd><p>Version of a StoredInfoType, including the configuration used to build
+it, create timestamp, and current state.</p>
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.StoredInfoTypeVersion.config">
+<code class="descname">config</code><a class="headerlink" href="#google.cloud.dlp_v2.types.StoredInfoTypeVersion.config" title="Permalink to this definition">#</a></dt>
+<dd><p>StoredInfoType configuration.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.StoredInfoTypeVersion.create_time">
+<code class="descname">create_time</code><a class="headerlink" href="#google.cloud.dlp_v2.types.StoredInfoTypeVersion.create_time" title="Permalink to this definition">#</a></dt>
+<dd><p>Create timestamp of the version. Read-only, determined by the
+system when the version is created.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.StoredInfoTypeVersion.state">
+<code class="descname">state</code><a class="headerlink" href="#google.cloud.dlp_v2.types.StoredInfoTypeVersion.state" title="Permalink to this definition">#</a></dt>
+<dd><p>Stored info type version state. Read-only, updated by the
+system during dictionary creation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.StoredInfoTypeVersion.errors">
+<code class="descname">errors</code><a class="headerlink" href="#google.cloud.dlp_v2.types.StoredInfoTypeVersion.errors" title="Permalink to this definition">#</a></dt>
+<dd><p>Errors that occurred when creating this storedInfoType
+version, or anomalies detected in the storedInfoType data that
+render it unusable. Only the five most recent errors will be
+displayed, with the most recent error appearing first.  ..
+raw:: html     &lt;p&gt;  For example, some of the data for stored
+custom dictionaries is put in the user’s Google Cloud Storage
+bucket, and if this data is modified or deleted by the user or
+another system, the dictionary becomes invalid.  .. raw:: html
+&lt;p&gt;  If any errors occur, fix the problem indicated by the
+error message and use the UpdateStoredInfoType API method to
+create another version of the storedInfoType to continue using
+it, reusing the same <code class="docutils literal notranslate"><span class="pre">config</span></code> if it was not the source of
+the error.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.dlp_v2.types.StoredType">
+<em class="property">class </em><code class="descclassname">google.cloud.dlp_v2.types.</code><code class="descname">StoredType</code><a class="headerlink" href="#google.cloud.dlp_v2.types.StoredType" title="Permalink to this definition">#</a></dt>
+<dd><p>A reference to a StoredInfoType to use with scanning.</p>
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.StoredType.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.dlp_v2.types.StoredType.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Resource name of the requested <code class="docutils literal notranslate"><span class="pre">StoredInfoType</span></code>, for example
+<code class="docutils literal notranslate"><span class="pre">organizations/433245324/storedInfoTypes/432452342</span></code> or
+<code class="docutils literal notranslate"><span class="pre">projects/project-id/storedInfoTypes/432452342</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.StoredType.create_time">
+<code class="descname">create_time</code><a class="headerlink" href="#google.cloud.dlp_v2.types.StoredType.create_time" title="Permalink to this definition">#</a></dt>
+<dd><p>Timestamp indicating when the version of the
+<code class="docutils literal notranslate"><span class="pre">StoredInfoType</span></code> used for inspection was created. Output-
+only field, populated by the system.</p>
 </dd></dl>
 
 </dd></dl>
@@ -4015,6 +4345,35 @@ projects/project-id/inspectTemplates/432452342.</p>
 </dd></dl>
 
 <dl class="class">
+<dt id="google.cloud.dlp_v2.types.UpdateStoredInfoTypeRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.dlp_v2.types.</code><code class="descname">UpdateStoredInfoTypeRequest</code><a class="headerlink" href="#google.cloud.dlp_v2.types.UpdateStoredInfoTypeRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request message for UpdateStoredInfoType.</p>
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.UpdateStoredInfoTypeRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.dlp_v2.types.UpdateStoredInfoTypeRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Resource name of organization and storedInfoType to be
+updated, for example
+<code class="docutils literal notranslate"><span class="pre">organizations/433245324/storedInfoTypes/432452342</span></code> or
+projects/project-id/storedInfoTypes/432452342.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.UpdateStoredInfoTypeRequest.config">
+<code class="descname">config</code><a class="headerlink" href="#google.cloud.dlp_v2.types.UpdateStoredInfoTypeRequest.config" title="Permalink to this definition">#</a></dt>
+<dd><p>Updated configuration for the storedInfoType. If not provided,
+a new version of the storedInfoType will be created with the
+existing configuration.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.UpdateStoredInfoTypeRequest.update_mask">
+<code class="descname">update_mask</code><a class="headerlink" href="#google.cloud.dlp_v2.types.UpdateStoredInfoTypeRequest.update_mask" title="Permalink to this definition">#</a></dt>
+<dd><p>Mask to control which fields get updated.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="google.cloud.dlp_v2.types.Value">
 <em class="property">class </em><code class="descclassname">google.cloud.dlp_v2.types.</code><code class="descname">Value</code><a class="headerlink" href="#google.cloud.dlp_v2.types.Value" title="Permalink to this definition">#</a></dt>
 <dd><p>Set of primitive values supported by the system. Note that for the
@@ -4072,45 +4431,41 @@ bytes of data.</p>
 
 <h3>Navigation</h3>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../../../releases.html"><code class="docutils literal notranslate"><span class="pre">google-cloud</span></code> Releases</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../core/index.html">Core</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../asset/index.html">Python Client for Cloud Asset API (Alpha)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../automl/index.html">Python Client for Cloud AutoML API (Alpha)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../core/index.html">Core Libraries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../asset/index.html">Asset Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../automl/index.html">AutoML</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../bigquery/usage.html">BigQuery</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../bigquery_datatransfer/index.html">Python Client for BigQuery Data Transfer API (Alpha)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../bigquery_datatransfer/index.html">BigQuery Data-Transfer</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../bigtable/usage.html">Bigtable</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../container/index.html">Python Client for Google Container Engine API (Beta)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../dataproc/index.html">Python Client for Google Cloud Dataproc API (Alpha)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../datastore/index.html">Python Client for Google Cloud Datastore</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Python Client for Cloud Data Loss Prevention (DLP) API (Alpha)</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="../../index.html#quick-start">Quick Start</a></li>
-<li class="toctree-l2 current"><a class="reference internal" href="../../index.html#api-reference">Api Reference</a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../container/index.html">Container</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dataproc/index.html">Dataproc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../datastore/index.html">Datastore</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Data Loss Prevention</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../dns/usage.html">DNS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../firestore/index.html">Firestore</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../iot/index.html">Python Client for Cloud IoT API (Alpha)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../kms/index.html">Python Client for Google Cloud Key Management Service (KMS) API (Alpha)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../language/usage.html">Natural Language</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../pubsub/index.html">Pub/Sub</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../oslogin/index.html">Python Client for Google Cloud OS Login API (Alpha)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../resource-manager/api.html">Resource Manager</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../resource-manager/api.html#installation">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../resource-manager/api.html#usage">Usage</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../runtimeconfig/usage.html">Runtimeconfig</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../spanner/usage.html">Spanner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../iot/index.html">IoT</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../kms/index.html">Key Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../language/index.html">Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pubsub/index.html">PubSub</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../oslogin/index.html">OSLogin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../redis/index.html">Redis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../resource-manager/index.html">Resource Manager</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../runtimeconfig/usage.html">Runtime Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../websecurityscanner/index.html">Security Scanner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../spanner/index.html">Python Client for Cloud Spanner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../spanner/index.html#changelog">Changelog</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../speech/index.html">Speech</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../error-reporting/usage.html">Stackdriver Error Reporting</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../monitoring/index.html">Python Client for Stackdriver Monitoring API (Alpha)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../logging/usage.html">Stackdriver Logging</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../redis/index.html">Python Client for Google Cloud Memorystore for Redis API (Alpha)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../storage/index.html">Python Client for Google Cloud Storage</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../tasks/index.html">Python Client for Cloud Tasks API (Alpha)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../texttospeech/index.html">Python Client for Cloud Text-to-Speech API (Alpha)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../translate/usage.html">Translation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../storage/index.html">Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tasks/index.html">Tasks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../texttospeech/index.html">Text-to-Speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../translate/index.html">Translate</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../vision/index.html">Vision</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../videointelligence/index.html">Video Intelligence</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../websecurityscanner/index.html">Python Client for Web Security Scanner API (Alpha)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../error-reporting/usage.html">Stackdriver Error Reporting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../logging/index.html">Stackdriver Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../monitoring/index.html">Stackdriver Monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../trace/index.html">Stackdriver Trace</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../releases.html">Release History</a></li>
 </ul>
 
 <div class="relations">

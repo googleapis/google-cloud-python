@@ -1,63 +1,6 @@
-Natural Language
-================
+Using the Language Client
+=========================
 
-The `Google Natural Language`_ API can be used to reveal the
-structure and meaning of text via powerful machine
-learning models. You can use it to extract information about
-people, places, events and much more, mentioned in text documents,
-news articles or blog posts. You can use it to understand
-sentiment about your product on social media or parse intent from
-customer conversations happening in a call center or a messaging
-app. You can analyze text uploaded in your request or integrate
-with your document storage on Google Cloud Storage.
-
-.. _Google Natural Language: https://cloud.google.com/natural-language/docs/quickstart-client-libraries
-
-************
-Installation
-************
-
-Install the ``google-cloud-language`` library using ``pip``:
-
-.. code-block:: console
-
-    $ pip install google-cloud-language
-
-
-********************************
-Authentication and Configuration
-********************************
-
-- For an overview of authentication in ``google-cloud-python``,
-  see :doc:`/core/auth`.
-
-- In addition to any authentication configuration, you should also set the
-  :envvar:`GOOGLE_CLOUD_PROJECT` environment variable for the project you'd
-  like to interact with. If the :envvar:`GOOGLE_CLOUD_PROJECT` environment
-  variable is not present, the project ID from JSON file credentials is used.
-
-  If you are using Google App Engine or Google Compute Engine
-  this will be detected automatically.
-
-- After configuring your environment, create a
-  :class:`~google.cloud.language_v1.LanguageServiceClient`.
-
-.. code-block:: python
-
-     >>> from google.cloud import language
-     >>> client = language.LanguageServiceClient()
-
-or pass in ``credentials`` explicitly.
-
-.. code-block:: python
-
-     >>> from google.cloud import language
-     >>> client = language.LanguageServiceClient(
-     ...     credentials=creds,
-     ... )
-
-
-*********
 Documents
 *********
 
@@ -130,7 +73,6 @@ to content stored in `Google Cloud Storage`_.
 .. _classifyText: https://cloud.google.com/natural-language/docs/reference/rest/v1/documents/classifyText
 .. _Google Cloud Storage: https://cloud.google.com/storage/
 
-****************
 Analyze Entities
 ****************
 
@@ -179,7 +121,6 @@ returns a :class:`~.language_v1.types.AnalyzeEntitiesResponse`.
   want ``UTF32``.
 
 
-*****************
 Analyze Sentiment
 *****************
 
@@ -211,7 +152,6 @@ analyzes the sentiment of the provided text. This method returns a
   want ``UTF32``.
 
 
-************************
 Analyze Entity Sentiment
 ************************
 
@@ -250,7 +190,6 @@ This method returns a
     want ``UTF32``.
 
 
-*************
 Annotate Text
 *************
 
@@ -258,43 +197,3 @@ The :meth:`~.language_v1.LanguageServiceClient.annotate_text` method
 analyzes a document and is intended for users who are familiar with
 machine learning and need in-depth text features to build upon. This method
 returns a :class:`~.language_v1.types.AnnotateTextResponse`.
-
-
-*************
-API Reference
-*************
-
-This package includes clients for multiple versions of the Natural Language
-API. By default, you will get ``v1``, the latest GA version.
-
-.. toctree::
-  :maxdepth: 2
-
-  gapic/v1/api
-  gapic/v1/types
-
-If you are interested in beta features ahead of the latest GA, you may
-opt-in to the v1.1 beta, which is spelled ``v1beta2``. In order to do this,
-you will want to import from ``google.cloud.language_v1beta2`` in lieu of
-``google.cloud.language``.
-
-An API and type reference is provided for the v1.1 beta also:
-
-.. toctree::
-  :maxdepth: 2
-
-  gapic/v1beta2/api
-  gapic/v1beta2/types
-
-.. note::
-
-  The client for the beta API is provided on a provisional basis. The API
-  surface is subject to change, and it is possible that this client will be
-  deprecated or removed after its features become GA.
-
-For a list of all ``google-cloud-language`` releases:
-
-.. toctree::
-  :maxdepth: 2
-
-  changelog

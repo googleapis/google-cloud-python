@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Types for Google Cloud Key Management Service (KMS) API Client &#8212; google-cloud 8ebbf3d documentation</title>
+    <title>Types for Cloud Key Management Service (KMS) API Client &#8212; google-cloud f074335 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -17,8 +17,8 @@
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
-    <link rel="next" title="Natural Language" href="../../../language/usage.html" />
-    <link rel="prev" title="Client for Google Cloud Key Management Service (KMS) API" href="api.html" />
+    <link rel="next" title="Python Client for Google Cloud Natural Language" href="../../../language/index.html" />
+    <link rel="prev" title="Client for Cloud Key Management Service (KMS) API" href="api.html" />
    
   <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
   
@@ -36,7 +36,81 @@
           <div class="body" role="main">
             
   <div class="section" id="module-google.cloud.kms_v1.types">
-<span id="types-for-google-cloud-key-management-service-kms-api-client"></span><h1>Types for Google Cloud Key Management Service (KMS) API Client<a class="headerlink" href="#module-google.cloud.kms_v1.types" title="Permalink to this headline">#</a></h1>
+<span id="types-for-cloud-key-management-service-kms-api-client"></span><h1>Types for Cloud Key Management Service (KMS) API Client<a class="headerlink" href="#module-google.cloud.kms_v1.types" title="Permalink to this headline">#</a></h1>
+<dl class="class">
+<dt id="google.cloud.kms_v1.types.AsymmetricDecryptRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.kms_v1.types.</code><code class="descname">AsymmetricDecryptRequest</code><a class="headerlink" href="#google.cloud.kms_v1.types.AsymmetricDecryptRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request message for
+[KeyManagementService.AsymmetricDecrypt][google.cloud.kms.v1.KeyManagementService.AsymmetricDecrypt].</p>
+<dl class="attribute">
+<dt id="google.cloud.kms_v1.types.AsymmetricDecryptRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.kms_v1.types.AsymmetricDecryptRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The resource name of the
+[CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] to
+use for decryption.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.kms_v1.types.AsymmetricDecryptRequest.ciphertext">
+<code class="descname">ciphertext</code><a class="headerlink" href="#google.cloud.kms_v1.types.AsymmetricDecryptRequest.ciphertext" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The data encrypted with the named
+[CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]’s
+public key using OAEP.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.kms_v1.types.AsymmetricDecryptResponse">
+<em class="property">class </em><code class="descclassname">google.cloud.kms_v1.types.</code><code class="descname">AsymmetricDecryptResponse</code><a class="headerlink" href="#google.cloud.kms_v1.types.AsymmetricDecryptResponse" title="Permalink to this definition">#</a></dt>
+<dd><p>Response message for
+[KeyManagementService.AsymmetricDecrypt][google.cloud.kms.v1.KeyManagementService.AsymmetricDecrypt].</p>
+<dl class="attribute">
+<dt id="google.cloud.kms_v1.types.AsymmetricDecryptResponse.plaintext">
+<code class="descname">plaintext</code><a class="headerlink" href="#google.cloud.kms_v1.types.AsymmetricDecryptResponse.plaintext" title="Permalink to this definition">#</a></dt>
+<dd><p>The decrypted data originally encrypted with the matching
+public key.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.kms_v1.types.AsymmetricSignRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.kms_v1.types.</code><code class="descname">AsymmetricSignRequest</code><a class="headerlink" href="#google.cloud.kms_v1.types.AsymmetricSignRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request message for
+[KeyManagementService.AsymmetricSign][google.cloud.kms.v1.KeyManagementService.AsymmetricSign].</p>
+<dl class="attribute">
+<dt id="google.cloud.kms_v1.types.AsymmetricSignRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.kms_v1.types.AsymmetricSignRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The resource name of the
+[CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] to
+use for signing.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.kms_v1.types.AsymmetricSignRequest.digest">
+<code class="descname">digest</code><a class="headerlink" href="#google.cloud.kms_v1.types.AsymmetricSignRequest.digest" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The digest of the data to sign. The digest must be
+produced with the same digest algorithm as specified by the
+key version’s
+[algorithm][google.cloud.kms.v1.CryptoKeyVersion.algorithm].</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.kms_v1.types.AsymmetricSignResponse">
+<em class="property">class </em><code class="descclassname">google.cloud.kms_v1.types.</code><code class="descname">AsymmetricSignResponse</code><a class="headerlink" href="#google.cloud.kms_v1.types.AsymmetricSignResponse" title="Permalink to this definition">#</a></dt>
+<dd><p>Response message for
+[KeyManagementService.AsymmetricSign][google.cloud.kms.v1.KeyManagementService.AsymmetricSign].</p>
+<dl class="attribute">
+<dt id="google.cloud.kms_v1.types.AsymmetricSignResponse.signature">
+<code class="descname">signature</code><a class="headerlink" href="#google.cloud.kms_v1.types.AsymmetricSignResponse.signature" title="Permalink to this definition">#</a></dt>
+<dd><p>The created signature.</p>
+</dd></dl>
+
+</dd></dl>
+
 <dl class="class">
 <dt id="google.cloud.kms_v1.types.AuditData">
 <em class="property">class </em><code class="descclassname">google.cloud.kms_v1.types.</code><code class="descname">AuditData</code><a class="headerlink" href="#google.cloud.kms_v1.types.AuditData" title="Permalink to this definition">#</a></dt>
@@ -233,16 +307,18 @@ in [EncryptRequest.name][google.cloud.kms.v1.EncryptRequest.na
 me].  The [CryptoKey][google.cloud.kms.v1.CryptoKey]’s primary
 version can be updated via [UpdateCryptoKeyPrimaryVersion][goo
 gle.cloud.kms.v1.KeyManagementService.UpdateCryptoKeyPrimaryVe
-rsion].</p>
+rsion].  All keys with
+[purpose][google.cloud.kms.v1.CryptoKey.purpose] [ENCRYPT_DEC
+RYPT][google.cloud.kms.v1.CryptoKey.CryptoKeyPurpose.ENCRYPT_
+DECRYPT] have a primary. For other keys, this field will be
+omitted.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.kms_v1.types.CryptoKey.purpose">
 <code class="descname">purpose</code><a class="headerlink" href="#google.cloud.kms_v1.types.CryptoKey.purpose" title="Permalink to this definition">#</a></dt>
 <dd><p>The immutable purpose of this
-[CryptoKey][google.cloud.kms.v1.CryptoKey]. Currently, the
-only acceptable purpose is [ENCRYPT_DECRYPT][google.cloud.kms
-.v1.CryptoKey.CryptoKeyPurpose.ENCRYPT_DECRYPT].</p>
+[CryptoKey][google.cloud.kms.v1.CryptoKey].</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -264,7 +340,11 @@ ateCryptoKeyVersion][google.cloud.kms.v1.KeyManagementService.
 CreateCryptoKeyVersion] and [UpdateCryptoKeyPrimaryVersion][go
 ogle.cloud.kms.v1.KeyManagementService.UpdateCryptoKeyPrimaryV
 ersion] do not affect [next_rotation_time][google.cloud.kms.
-v1.CryptoKey.next_rotation_time].</p>
+v1.CryptoKey.next_rotation_time].  Keys with
+[purpose][google.cloud.kms.v1.CryptoKey.purpose] [ENCRYPT_DEC
+RYPT][google.cloud.kms.v1.CryptoKey.CryptoKeyPurpose.ENCRYPT_
+DECRYPT] support automatic rotation. For other keys, this
+field must be omitted.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -281,7 +361,23 @@ ation_time] will be advanced by this period when the service
 automatically rotates a key. Must be at least one day.  If [ro
 tation_period][google.cloud.kms.v1.CryptoKey.rotation_period
 ] is set, [next_rotation_time][google.cloud.kms.v1.CryptoKey
-.next_rotation_time] must also be set.</p>
+.next_rotation_time] must also be set.  Keys with
+[purpose][google.cloud.kms.v1.CryptoKey.purpose] [ENCRYPT_DEC
+RYPT][google.cloud.kms.v1.CryptoKey.CryptoKeyPurpose.ENCRYPT_
+DECRYPT] support automatic rotation. For other keys, this
+field must be omitted.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.kms_v1.types.CryptoKey.version_template">
+<code class="descname">version_template</code><a class="headerlink" href="#google.cloud.kms_v1.types.CryptoKey.version_template" title="Permalink to this definition">#</a></dt>
+<dd><p>A template describing settings for new
+[CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
+instances. The properties of new
+[CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
+instances created by either [CreateCryptoKeyVersion][google.cl
+oud.kms.v1.KeyManagementService.CreateCryptoKeyVersion] or
+auto-rotation are controlled by this template.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -303,13 +399,13 @@ tation_period][google.cloud.kms.v1.CryptoKey.rotation_period
 <em class="property">class </em><code class="descclassname">google.cloud.kms_v1.types.</code><code class="descname">CryptoKeyVersion</code><a class="headerlink" href="#google.cloud.kms_v1.types.CryptoKeyVersion" title="Permalink to this definition">#</a></dt>
 <dd><p>A [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] represents an
 individual cryptographic key, and the associated key material.</p>
-<p>It can be used for cryptographic operations either directly, or via its
-parent [CryptoKey][google.cloud.kms.v1.CryptoKey], in which case the
-server will choose the appropriate version for the operation.</p>
+<p>An
+[ENABLED][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionState.ENABLED]
+version can be used for cryptographic operations.</p>
 <p>For security reasons, the raw cryptographic key material represented by
 a [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] can never be
-viewed or exported. It can only be used to encrypt or decrypt data when
-an authorized user or application invokes Cloud KMS.</p>
+viewed or exported. It can only be used to encrypt, decrypt, or sign
+data when an authorized user or application invokes Cloud KMS.</p>
 <dl class="attribute">
 <dt id="google.cloud.kms_v1.types.CryptoKeyVersion.name">
 <code class="descname">name</code><a class="headerlink" href="#google.cloud.kms_v1.types.CryptoKeyVersion.name" title="Permalink to this definition">#</a></dt>
@@ -327,11 +423,48 @@ the format <code class="docutils literal notranslate"><span class="pre">projects
 </dd></dl>
 
 <dl class="attribute">
+<dt id="google.cloud.kms_v1.types.CryptoKeyVersion.protection_level">
+<code class="descname">protection_level</code><a class="headerlink" href="#google.cloud.kms_v1.types.CryptoKeyVersion.protection_level" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. The
+[ProtectionLevel][google.cloud.kms.v1.ProtectionLevel]
+describing how crypto operations are performed with this
+[CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion].</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.kms_v1.types.CryptoKeyVersion.algorithm">
+<code class="descname">algorithm</code><a class="headerlink" href="#google.cloud.kms_v1.types.CryptoKeyVersion.algorithm" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. The [CryptoKeyVersionAlgorithm][google.cloud.kms.
+v1.CryptoKeyVersion.CryptoKeyVersionAlgorithm] that this
+[CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
+supports.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.kms_v1.types.CryptoKeyVersion.attestation">
+<code class="descname">attestation</code><a class="headerlink" href="#google.cloud.kms_v1.types.CryptoKeyVersion.attestation" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. Statement that was generated and signed by the
+HSM at key creation time. Use this statement to verify
+attributes of the key as stored on the HSM, independently of
+Google. Only provided for key versions with [protection_level
+][google.cloud.kms.v1.CryptoKeyVersion.protection_level]
+[HSM][google.cloud.kms.v1.ProtectionLevel.HSM].</p>
+</dd></dl>
+
+<dl class="attribute">
 <dt id="google.cloud.kms_v1.types.CryptoKeyVersion.create_time">
 <code class="descname">create_time</code><a class="headerlink" href="#google.cloud.kms_v1.types.CryptoKeyVersion.create_time" title="Permalink to this definition">#</a></dt>
 <dd><p>Output only. The time at which this
 [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] was
 created.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.kms_v1.types.CryptoKeyVersion.generate_time">
+<code class="descname">generate_time</code><a class="headerlink" href="#google.cloud.kms_v1.types.CryptoKeyVersion.generate_time" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. The time this
+[CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]’s key
+material was generated.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -353,6 +486,42 @@ destroyed. Only present if
 [state][google.cloud.kms.v1.CryptoKeyVersion.state] is [DESTRO
 YED][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionStat
 e.DESTROYED].</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.kms_v1.types.CryptoKeyVersionTemplate">
+<em class="property">class </em><code class="descclassname">google.cloud.kms_v1.types.</code><code class="descname">CryptoKeyVersionTemplate</code><a class="headerlink" href="#google.cloud.kms_v1.types.CryptoKeyVersionTemplate" title="Permalink to this definition">#</a></dt>
+<dd><p>A
+[CryptoKeyVersionTemplate][google.cloud.kms.v1.CryptoKeyVersionTemplate]
+specifies the properties to use when creating a new
+[CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion], either
+manually with
+[CreateCryptoKeyVersion][google.cloud.kms.v1.KeyManagementService.CreateCryptoKeyVersion]
+or automatically as a result of auto-rotation.</p>
+<dl class="attribute">
+<dt id="google.cloud.kms_v1.types.CryptoKeyVersionTemplate.protection_level">
+<code class="descname">protection_level</code><a class="headerlink" href="#google.cloud.kms_v1.types.CryptoKeyVersionTemplate.protection_level" title="Permalink to this definition">#</a></dt>
+<dd><p>[ProtectionLevel][google.cloud.kms.v1.ProtectionLevel] to use
+when creating a
+[CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] based
+on this template. Immutable. Defaults to
+[SOFTWARE][google.cloud.kms.v1.ProtectionLevel.SOFTWARE].</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.kms_v1.types.CryptoKeyVersionTemplate.algorithm">
+<code class="descname">algorithm</code><a class="headerlink" href="#google.cloud.kms_v1.types.CryptoKeyVersionTemplate.algorithm" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. [Algorithm][google.cloud.kms.v1.CryptoKeyVersion.Cry
+ptoKeyVersionAlgorithm] to use when creating a
+[CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] based
+on this template.  For backwards compatibility,
+GOOGLE_SYMMETRIC_ENCRYPTION is implied if both this field is
+omitted and
+[CryptoKey.purpose][google.cloud.kms.v1.CryptoKey.purpose] is
+[ENCRYPT_DECRYPT][google.cloud.kms.v1.CryptoKey.CryptoKeyPurp
+ose.ENCRYPT_DECRYPT].</p>
 </dd></dl>
 
 </dd></dl>
@@ -438,6 +607,37 @@ destroy.</p>
 </dd></dl>
 
 <dl class="class">
+<dt id="google.cloud.kms_v1.types.Digest">
+<em class="property">class </em><code class="descclassname">google.cloud.kms_v1.types.</code><code class="descname">Digest</code><a class="headerlink" href="#google.cloud.kms_v1.types.Digest" title="Permalink to this definition">#</a></dt>
+<dd><p>A [Digest][google.cloud.kms.v1.Digest] holds a cryptographic message
+digest.</p>
+<dl class="attribute">
+<dt id="google.cloud.kms_v1.types.Digest.digest">
+<code class="descname">digest</code><a class="headerlink" href="#google.cloud.kms_v1.types.Digest.digest" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The message digest.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.kms_v1.types.Digest.sha256">
+<code class="descname">sha256</code><a class="headerlink" href="#google.cloud.kms_v1.types.Digest.sha256" title="Permalink to this definition">#</a></dt>
+<dd><p>A message digest produced with the SHA-256 algorithm.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.kms_v1.types.Digest.sha384">
+<code class="descname">sha384</code><a class="headerlink" href="#google.cloud.kms_v1.types.Digest.sha384" title="Permalink to this definition">#</a></dt>
+<dd><p>A message digest produced with the SHA-384 algorithm.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.kms_v1.types.Digest.sha512">
+<code class="descname">sha512</code><a class="headerlink" href="#google.cloud.kms_v1.types.Digest.sha512" title="Permalink to this definition">#</a></dt>
+<dd><p>A message digest produced with the SHA-512 algorithm.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="google.cloud.kms_v1.types.DoubleValue">
 <em class="property">class </em><code class="descclassname">google.cloud.kms_v1.types.</code><code class="descname">DoubleValue</code><a class="headerlink" href="#google.cloud.kms_v1.types.DoubleValue" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
@@ -467,7 +667,16 @@ version][google.cloud.kms.v1.CryptoKey.primary].</p>
 <dl class="attribute">
 <dt id="google.cloud.kms_v1.types.EncryptRequest.plaintext">
 <code class="descname">plaintext</code><a class="headerlink" href="#google.cloud.kms_v1.types.EncryptRequest.plaintext" title="Permalink to this definition">#</a></dt>
-<dd><p>Required. The data to encrypt. Must be no larger than 64KiB.</p>
+<dd><p>Required. The data to encrypt. Must be no larger than 64KiB.
+The maximum size depends on the key version’s [protection_lev
+el][google.cloud.kms.v1.CryptoKeyVersionTemplate.protection_l
+evel]. For
+[SOFTWARE][google.cloud.kms.v1.ProtectionLevel.SOFTWARE] keys,
+the plaintext must be no larger than 64KiB. For
+[HSM][google.cloud.kms.v1.ProtectionLevel.HSM] keys, the
+combined length of the plaintext and
+additional_authenticated_data fields must be no larger than
+8KiB.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -476,7 +685,15 @@ version][google.cloud.kms.v1.CryptoKey.primary].</p>
 <dd><p>Optional data that, if specified, must also be provided during
 decryption through [DecryptRequest.additional_authenticated_
 data][google.cloud.kms.v1.DecryptRequest.additional_authentic
-ated_data]. Must be no larger than 64KiB.</p>
+ated_data].  The maximum size depends on the key version’s [p
+rotection_level][google.cloud.kms.v1.CryptoKeyVersionTemplate
+.protection_level]. For
+[SOFTWARE][google.cloud.kms.v1.ProtectionLevel.SOFTWARE] keys,
+the AAD must be no larger than 64KiB. For
+[HSM][google.cloud.kms.v1.ProtectionLevel.HSM] keys, the
+combined length of the plaintext and
+additional_authenticated_data fields must be no larger than
+8KiB.</p>
 </dd></dl>
 
 </dd></dl>
@@ -636,6 +853,21 @@ example, a Project resource is specified as
 </dd></dl>
 
 <dl class="class">
+<dt id="google.cloud.kms_v1.types.GetPublicKeyRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.kms_v1.types.</code><code class="descname">GetPublicKeyRequest</code><a class="headerlink" href="#google.cloud.kms_v1.types.GetPublicKeyRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request message for
+[KeyManagementService.GetPublicKey][google.cloud.kms.v1.KeyManagementService.GetPublicKey].</p>
+<dl class="attribute">
+<dt id="google.cloud.kms_v1.types.GetPublicKeyRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.kms_v1.types.GetPublicKeyRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>The [name][google.cloud.kms.v1.CryptoKeyVersion.name] of the
+[CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
+public key to get.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="google.cloud.kms_v1.types.Http">
 <em class="property">class </em><code class="descclassname">google.cloud.kms_v1.types.</code><code class="descname">Http</code><a class="headerlink" href="#google.cloud.kms_v1.types.Http" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
@@ -654,6 +886,25 @@ example, a Project resource is specified as
 <dt id="google.cloud.kms_v1.types.Int64Value">
 <em class="property">class </em><code class="descclassname">google.cloud.kms_v1.types.</code><code class="descname">Int64Value</code><a class="headerlink" href="#google.cloud.kms_v1.types.Int64Value" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.kms_v1.types.KeyOperationAttestation">
+<em class="property">class </em><code class="descclassname">google.cloud.kms_v1.types.</code><code class="descname">KeyOperationAttestation</code><a class="headerlink" href="#google.cloud.kms_v1.types.KeyOperationAttestation" title="Permalink to this definition">#</a></dt>
+<dd><p>Contains an HSM-generated attestation about a key operation.</p>
+<dl class="attribute">
+<dt id="google.cloud.kms_v1.types.KeyOperationAttestation.format">
+<code class="descname">format</code><a class="headerlink" href="#google.cloud.kms_v1.types.KeyOperationAttestation.format" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. The format of the attestation data.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.kms_v1.types.KeyOperationAttestation.content">
+<code class="descname">content</code><a class="headerlink" href="#google.cloud.kms_v1.types.KeyOperationAttestation.content" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. The attestation data provided by the HSM when the
+key operation was performed.</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.kms_v1.types.KeyRing">
@@ -709,6 +960,12 @@ If unspecified, the server will pick an appropriate default.</p>
 <dd><p>Optional pagination token, returned earlier via [ListCryptoKey
 VersionsResponse.next_page_token][google.cloud.kms.v1.ListCr
 yptoKeyVersionsResponse.next_page_token].</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.kms_v1.types.ListCryptoKeyVersionsRequest.view">
+<code class="descname">view</code><a class="headerlink" href="#google.cloud.kms_v1.types.ListCryptoKeyVersionsRequest.view" title="Permalink to this definition">#</a></dt>
+<dd><p>The fields to include in the response.</p>
 </dd></dl>
 
 </dd></dl>
@@ -775,6 +1032,12 @@ unspecified, the server will pick an appropriate default.</p>
 <dd><p>Optional pagination token, returned earlier via [ListCryptoKey
 sResponse.next_page_token][google.cloud.kms.v1.ListCryptoKey
 sResponse.next_page_token].</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.kms_v1.types.ListCryptoKeysRequest.version_view">
+<code class="descname">version_view</code><a class="headerlink" href="#google.cloud.kms_v1.types.ListCryptoKeysRequest.version_view" title="Permalink to this definition">#</a></dt>
+<dd><p>The fields of the primary version to include in the response.</p>
 </dd></dl>
 
 </dd></dl>
@@ -878,6 +1141,23 @@ that matched the query.</p>
 <dd></dd></dl>
 
 <dl class="class">
+<dt id="google.cloud.kms_v1.types.LocationMetadata">
+<em class="property">class </em><code class="descclassname">google.cloud.kms_v1.types.</code><code class="descname">LocationMetadata</code><a class="headerlink" href="#google.cloud.kms_v1.types.LocationMetadata" title="Permalink to this definition">#</a></dt>
+<dd><p>Cloud KMS metadata for the given
+[google.cloud.location.Location][google.cloud.location.Location].</p>
+<dl class="attribute">
+<dt id="google.cloud.kms_v1.types.LocationMetadata.hsm_available">
+<code class="descname">hsm_available</code><a class="headerlink" href="#google.cloud.kms_v1.types.LocationMetadata.hsm_available" title="Permalink to this definition">#</a></dt>
+<dd><p>Indicates whether [CryptoKeys][google.cloud.kms.v1.CryptoKey]
+with [protection_level][google.cloud.kms.v1.CryptoKeyVersionT
+emplate.protection_level]
+[HSM][google.cloud.kms.v1.ProtectionLevel.HSM] can be created
+in this location.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="google.cloud.kms_v1.types.MessageOptions">
 <em class="property">class </em><code class="descclassname">google.cloud.kms_v1.types.</code><code class="descname">MessageOptions</code><a class="headerlink" href="#google.cloud.kms_v1.types.MessageOptions" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
@@ -973,6 +1253,31 @@ overwritten blindly.</p>
 <dt id="google.cloud.kms_v1.types.PolicyDelta.binding_deltas">
 <code class="descname">binding_deltas</code><a class="headerlink" href="#google.cloud.kms_v1.types.PolicyDelta.binding_deltas" title="Permalink to this definition">#</a></dt>
 <dd><p>The delta for Bindings between two policies.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.kms_v1.types.PublicKey">
+<em class="property">class </em><code class="descclassname">google.cloud.kms_v1.types.</code><code class="descname">PublicKey</code><a class="headerlink" href="#google.cloud.kms_v1.types.PublicKey" title="Permalink to this definition">#</a></dt>
+<dd><p>The public key for a given
+[CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]. Obtained via
+[GetPublicKey][google.cloud.kms.v1.KeyManagementService.GetPublicKey].</p>
+<dl class="attribute">
+<dt id="google.cloud.kms_v1.types.PublicKey.pem">
+<code class="descname">pem</code><a class="headerlink" href="#google.cloud.kms_v1.types.PublicKey.pem" title="Permalink to this definition">#</a></dt>
+<dd><p>The public key, encoded in PEM format. For more information,
+see the <a class="reference external" href="https://tools.ietf.org/html/rfc7468">RFC 7468</a>
+sections for <a class="reference external" href="https://tools.ietf.org/html/rfc7468#section-2">General Considerations</a> and
+[Textual Encoding of Subject Public Key Info]
+(<a class="reference external" href="https://tools.ietf.org/html/rfc7468#section-13">https://tools.ietf.org/html/rfc7468#section-13</a>).</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.kms_v1.types.PublicKey.algorithm">
+<code class="descname">algorithm</code><a class="headerlink" href="#google.cloud.kms_v1.types.PublicKey.algorithm" title="Permalink to this definition">#</a></dt>
+<dd><p>The [Algorithm][google.cloud.kms.v1.CryptoKeyVersion.CryptoKey
+VersionAlgorithm] associated with this key.</p>
 </dd></dl>
 
 </dd></dl>
@@ -1208,54 +1513,50 @@ updated values.</p>
 
 <h3>Navigation</h3>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../../../releases.html"><code class="docutils literal notranslate"><span class="pre">google-cloud</span></code> Releases</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../core/index.html">Core</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../asset/index.html">Python Client for Cloud Asset API (Alpha)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../automl/index.html">Python Client for Cloud AutoML API (Alpha)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../core/index.html">Core Libraries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../asset/index.html">Asset Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../automl/index.html">AutoML</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../bigquery/usage.html">BigQuery</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../bigquery_datatransfer/index.html">Python Client for BigQuery Data Transfer API (Alpha)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../bigquery_datatransfer/index.html">BigQuery Data-Transfer</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../bigtable/usage.html">Bigtable</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../container/index.html">Python Client for Google Container Engine API (Beta)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../dataproc/index.html">Python Client for Google Cloud Dataproc API (Alpha)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../datastore/index.html">Python Client for Google Cloud Datastore</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../dlp/index.html">Python Client for Cloud Data Loss Prevention (DLP) API (Alpha)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../container/index.html">Container</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dataproc/index.html">Dataproc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../datastore/index.html">Datastore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dlp/index.html">Data Loss Prevention</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../dns/usage.html">DNS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../firestore/index.html">Firestore</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../iot/index.html">Python Client for Cloud IoT API (Alpha)</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Python Client for Google Cloud Key Management Service (KMS) API (Alpha)</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="../../index.html#quick-start">Quick Start</a></li>
-<li class="toctree-l2 current"><a class="reference internal" href="../../index.html#api-reference">Api Reference</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../../../language/usage.html">Natural Language</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../pubsub/index.html">Pub/Sub</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../oslogin/index.html">Python Client for Google Cloud OS Login API (Alpha)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../resource-manager/api.html">Resource Manager</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../resource-manager/api.html#installation">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../resource-manager/api.html#usage">Usage</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../runtimeconfig/usage.html">Runtimeconfig</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../spanner/usage.html">Spanner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../iot/index.html">IoT</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Key Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../language/index.html">Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pubsub/index.html">PubSub</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../oslogin/index.html">OSLogin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../redis/index.html">Redis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../resource-manager/index.html">Resource Manager</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../runtimeconfig/usage.html">Runtime Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../websecurityscanner/index.html">Security Scanner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../spanner/index.html">Python Client for Cloud Spanner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../spanner/index.html#changelog">Changelog</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../speech/index.html">Speech</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../error-reporting/usage.html">Stackdriver Error Reporting</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../monitoring/index.html">Python Client for Stackdriver Monitoring API (Alpha)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../logging/usage.html">Stackdriver Logging</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../redis/index.html">Python Client for Google Cloud Memorystore for Redis API (Alpha)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../storage/index.html">Python Client for Google Cloud Storage</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../tasks/index.html">Python Client for Cloud Tasks API (Alpha)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../texttospeech/index.html">Python Client for Cloud Text-to-Speech API (Alpha)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../translate/usage.html">Translation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../storage/index.html">Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tasks/index.html">Tasks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../texttospeech/index.html">Text-to-Speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../translate/index.html">Translate</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../vision/index.html">Vision</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../videointelligence/index.html">Video Intelligence</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../websecurityscanner/index.html">Python Client for Web Security Scanner API (Alpha)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../error-reporting/usage.html">Stackdriver Error Reporting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../logging/index.html">Stackdriver Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../monitoring/index.html">Stackdriver Monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../trace/index.html">Stackdriver Trace</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../releases.html">Release History</a></li>
 </ul>
 
 <div class="relations">
 <h3>Related Topics</h3>
 <ul>
   <li><a href="../../../index.html">Documentation overview</a><ul>
-  <li><a href="../../index.html">Python Client for Google Cloud Key Management Service (KMS) API (Alpha)</a><ul>
-      <li>Previous: <a href="api.html" title="previous chapter">Client for Google Cloud Key Management Service (KMS) API</a></li>
-      <li>Next: <a href="../../../language/usage.html" title="next chapter">Natural Language</a></li>
+  <li><a href="../../index.html">Python Client for Cloud Key Management Service (KMS) API (Alpha)</a><ul>
+      <li>Previous: <a href="api.html" title="previous chapter">Client for Cloud Key Management Service (KMS) API</a></li>
+      <li>Next: <a href="../../../language/index.html" title="next chapter">Python Client for Google Cloud Natural Language</a></li>
   </ul></li>
   </ul></li>
 </ul>

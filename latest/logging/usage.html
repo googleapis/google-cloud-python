@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Stackdriver Logging &#8212; google-cloud 8ebbf3d documentation</title>
+    <title>Writing log entries &#8212; google-cloud f074335 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -18,7 +18,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Stackdriver Logging Client" href="client.html" />
-    <link rel="prev" title="Types for Stackdriver Monitoring API Client" href="../monitoring/gapic/v3/types.html" />
+    <link rel="prev" title="Python Client for Stackdriver Logging" href="index.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
@@ -35,50 +35,8 @@
 
           <div class="body" role="main">
             
-  <div class="section" id="stackdriver-logging">
-<h1>Stackdriver Logging<a class="headerlink" href="#stackdriver-logging" title="Permalink to this headline">#</a></h1>
-<div class="toctree-wrapper compound">
-</div>
-<div class="section" id="installation">
-<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">#</a></h2>
-<p>Install the <code class="docutils literal notranslate"><span class="pre">google-cloud-logging</span></code> library using <code class="docutils literal notranslate"><span class="pre">pip</span></code>:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> pip install google-cloud-logging
-</pre></div>
-</div>
-</div>
-<div class="section" id="authentication-and-configuration">
-<h2>Authentication and Configuration<a class="headerlink" href="#authentication-and-configuration" title="Permalink to this headline">#</a></h2>
-<ul>
-<li><p class="first">For an overview of authentication in <code class="docutils literal notranslate"><span class="pre">google-cloud-python</span></code>,
-see <a class="reference internal" href="../core/auth.html"><span class="doc">Authentication</span></a>.</p>
-</li>
-<li><p class="first">In addition to any authentication configuration, you should also set the
-<span class="target" id="index-0"></span><code class="xref std std-envvar docutils literal notranslate"><span class="pre">GOOGLE_CLOUD_PROJECT</span></code> environment variable for the project you’d like
-to interact with. If you are using Google App Engine or Google Compute Engine
-this will be detected automatically.</p>
-</li>
-<li><p class="first">The library now enables the <code class="docutils literal notranslate"><span class="pre">gRPC</span></code> transport for the logging API by
-default, assuming that the required dependencies are installed and
-importable.  To <em>disable</em> this transport, set the
-<span class="target" id="index-1"></span><code class="xref std std-envvar docutils literal notranslate"><span class="pre">GOOGLE_CLOUD_DISABLE_GRPC</span></code> environment variable to a
-non-empty string, e.g.:  <code class="docutils literal notranslate"><span class="pre">$</span> <span class="pre">export</span> <span class="pre">GOOGLE_CLOUD_DISABLE_GRPC=true</span></code>.</p>
-</li>
-<li><p class="first">After configuring your environment, create a
-<a class="reference internal" href="client.html#google.cloud.logging.client.Client" title="google.cloud.logging.client.Client"><code class="xref py py-class docutils literal notranslate"><span class="pre">Client</span></code></a></p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">logging</span>
-<span class="n">client</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
-</pre></div>
-</div>
-<p>or pass in <code class="docutils literal notranslate"><span class="pre">credentials</span></code> and <code class="docutils literal notranslate"><span class="pre">project</span></code> explicitly</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">logging</span>
-<span class="n">client</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">Client</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="s1">&#39;my-project&#39;</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="n">credentials</span><span class="p">)</span>
-</pre></div>
-</div>
-</li>
-</ul>
-</div>
-<div class="section" id="writing-log-entries">
-<h2>Writing log entries<a class="headerlink" href="#writing-log-entries" title="Permalink to this headline">#</a></h2>
+  <div class="section" id="writing-log-entries">
+<h1>Writing log entries<a class="headerlink" href="#writing-log-entries" title="Permalink to this headline">#</a></h1>
 <p>To write log entries, first create a
 <a class="reference internal" href="logger.html#google.cloud.logging.logger.Logger" title="google.cloud.logging.logger.Logger"><code class="xref py py-class docutils literal notranslate"><span class="pre">Logger</span></code></a>, passing the “log name” with
 which to associate the entries:</p>
@@ -98,7 +56,7 @@ which to associate the entries:</p>
 </div>
 </div>
 <div class="section" id="retrieving-log-entries">
-<h2>Retrieving log entries<a class="headerlink" href="#retrieving-log-entries" title="Permalink to this headline">#</a></h2>
+<h1>Retrieving log entries<a class="headerlink" href="#retrieving-log-entries" title="Permalink to this headline">#</a></h1>
 <p>Fetch entries for the default project.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_entries</span><span class="p">():</span>  <span class="c1"># API call(s)</span>
     <span class="n">do_something_with</span><span class="p">(</span><span class="n">entry</span><span class="p">)</span>
@@ -154,13 +112,13 @@ will be instances of one of the following classes:</p>
 </div>
 </div>
 <div class="section" id="delete-all-entries-for-a-logger">
-<h2>Delete all entries for a logger<a class="headerlink" href="#delete-all-entries-for-a-logger" title="Permalink to this headline">#</a></h2>
+<h1>Delete all entries for a logger<a class="headerlink" href="#delete-all-entries-for-a-logger" title="Permalink to this headline">#</a></h1>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">logger</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>  <span class="c1"># API call</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="manage-log-metrics">
-<h2>Manage log metrics<a class="headerlink" href="#manage-log-metrics" title="Permalink to this headline">#</a></h2>
+<h1>Manage log metrics<a class="headerlink" href="#manage-log-metrics" title="Permalink to this headline">#</a></h1>
 <p>Metrics are counters of entries which match a given filter.  They can be
 used within Stackdriver Monitoring to create charts and alerts.</p>
 <p>List all metrics for a project:</p>
@@ -193,11 +151,11 @@ used within Stackdriver Monitoring to create charts and alerts.</p>
 </div>
 </div>
 <div class="section" id="export-log-entries-using-sinks">
-<h2>Export log entries using sinks<a class="headerlink" href="#export-log-entries-using-sinks" title="Permalink to this headline">#</a></h2>
+<h1>Export log entries using sinks<a class="headerlink" href="#export-log-entries-using-sinks" title="Permalink to this headline">#</a></h1>
 <p>Sinks allow exporting entries which match a given filter to Cloud Storage
 buckets, BigQuery datasets, or Cloud Pub/Sub topics.</p>
 <div class="section" id="export-to-cloud-storage">
-<h3>Export to Cloud Storage<a class="headerlink" href="#export-to-cloud-storage" title="Permalink to this headline">#</a></h3>
+<h2>Export to Cloud Storage<a class="headerlink" href="#export-to-cloud-storage" title="Permalink to this headline">#</a></h2>
 <p>Make sure that the storage bucket you want to export logs too has
 <code class="docutils literal notranslate"><span class="pre">cloud-logs&#64;google.com</span></code> as the owner. See
 <a class="reference external" href="https://cloud.google.com/logging/docs/export/configure_export_v2#errors_exporting_to_cloud_storage">Setting permissions for Cloud Storage</a>.</p>
@@ -219,7 +177,7 @@ buckets, BigQuery datasets, or Cloud Pub/Sub topics.</p>
 </div>
 </div>
 <div class="section" id="export-to-bigquery">
-<h3>Export to BigQuery<a class="headerlink" href="#export-to-bigquery" title="Permalink to this headline">#</a></h3>
+<h2>Export to BigQuery<a class="headerlink" href="#export-to-bigquery" title="Permalink to this headline">#</a></h2>
 <p>To export logs to BigQuery you must log into the Cloud Platform Console
 and add <code class="docutils literal notranslate"><span class="pre">cloud-logs&#64;google.com</span></code> to a dataset.</p>
 <p>See: <a class="reference external" href="https://cloud.google.com/logging/docs/export/configure_export_v2#errors_exporting_to_bigquery">Setting permissions for BigQuery</a></p>
@@ -241,7 +199,7 @@ and add <code class="docutils literal notranslate"><span class="pre">cloud-logs&
 </div>
 </div>
 <div class="section" id="export-to-pub-sub">
-<h3>Export to Pub/Sub<a class="headerlink" href="#export-to-pub-sub" title="Permalink to this headline">#</a></h3>
+<h2>Export to Pub/Sub<a class="headerlink" href="#export-to-pub-sub" title="Permalink to this headline">#</a></h2>
 <p>To export logs to BigQuery you must log into the Cloud Platform Console
 and add <code class="docutils literal notranslate"><span class="pre">cloud-logs&#64;google.com</span></code> to a topic.</p>
 <p>See: <a class="reference external" href="https://cloud.google.com/logging/docs/export/configure_export_v2#errors_exporting_logs_to_cloud_pubsub">Setting permissions for Pub/Sub</a></p>
@@ -260,7 +218,7 @@ and add <code class="docutils literal notranslate"><span class="pre">cloud-logs&
 </div>
 </div>
 <div class="section" id="manage-sinks">
-<h3>Manage Sinks<a class="headerlink" href="#manage-sinks" title="Permalink to this headline">#</a></h3>
+<h2>Manage Sinks<a class="headerlink" href="#manage-sinks" title="Permalink to this headline">#</a></h2>
 <p>List all sinks for a project:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">sink</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_sinks</span><span class="p">():</span>  <span class="c1"># API call(s)</span>
     <span class="n">do_something_with</span><span class="p">(</span><span class="n">sink</span><span class="p">)</span>
@@ -283,7 +241,7 @@ and add <code class="docutils literal notranslate"><span class="pre">cloud-logs&
 </div>
 </div>
 <div class="section" id="integration-with-python-logging-module">
-<h2>Integration with Python logging module<a class="headerlink" href="#integration-with-python-logging-module" title="Permalink to this headline">#</a></h2>
+<h1>Integration with Python logging module<a class="headerlink" href="#integration-with-python-logging-module" title="Permalink to this headline">#</a></h1>
 <p>It’s possible to tie the Python <a class="reference external" href="https://docs.python.org/3/library/logging.html#module-logging" title="(in Python v3.7)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">logging</span></code></a> module directly into Google
 Stackdriver Logging. There are different handler options to accomplish this.
 To automatically pick the default for your current environment, use
@@ -315,7 +273,7 @@ handlers while testing locally.</p>
 </pre></div>
 </div>
 <div class="section" id="cloud-logging-handler">
-<h3>Cloud Logging Handler<a class="headerlink" href="#cloud-logging-handler" title="Permalink to this headline">#</a></h3>
+<h2>Cloud Logging Handler<a class="headerlink" href="#cloud-logging-handler" title="Permalink to this headline">#</a></h2>
 <p>If you prefer not to use
 <a class="reference internal" href="client.html#google.cloud.logging.client.Client.get_default_handler" title="google.cloud.logging.client.Client.get_default_handler"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_default_handler()</span></code></a>, you can
 directly create a
@@ -344,7 +302,7 @@ of the Python logger will be included in the structured log entry under the
 </div>
 </div>
 <div class="section" id="cloud-logging-handler-transports">
-<h3>Cloud Logging Handler transports<a class="headerlink" href="#cloud-logging-handler-transports" title="Permalink to this headline">#</a></h3>
+<h2>Cloud Logging Handler transports<a class="headerlink" href="#cloud-logging-handler-transports" title="Permalink to this headline">#</a></h2>
 <p>The <a class="reference internal" href="handlers.html#google.cloud.logging.handlers.handlers.CloudLoggingHandler" title="google.cloud.logging.handlers.handlers.CloudLoggingHandler"><code class="xref py py-class docutils literal notranslate"><span class="pre">CloudLoggingHandler</span></code></a>
 logging handler can use different transports. The default is
 <code class="xref py py-class docutils literal notranslate"><span class="pre">BackgroundThreadTransport</span></code>.</p>
@@ -361,7 +319,7 @@ direct API call on each logging statement to write the entry.</li>
 </div></blockquote>
 </div>
 <div class="section" id="fluentd-logging-handlers">
-<h3>fluentd logging handlers<a class="headerlink" href="#fluentd-logging-handlers" title="Permalink to this headline">#</a></h3>
+<h2>fluentd logging handlers<a class="headerlink" href="#fluentd-logging-handlers" title="Permalink to this headline">#</a></h2>
 <p>Besides <a class="reference internal" href="handlers.html#google.cloud.logging.handlers.handlers.CloudLoggingHandler" title="google.cloud.logging.handlers.handlers.CloudLoggingHandler"><code class="xref py py-class docutils literal notranslate"><span class="pre">CloudLoggingHandler</span></code></a>,
 which writes directly to the API, two other handlers are provided.
 <a class="reference internal" href="handlers-app-engine.html#google.cloud.logging.handlers.app_engine.AppEngineHandler" title="google.cloud.logging.handlers.app_engine.AppEngineHandler"><code class="xref py py-class docutils literal notranslate"><span class="pre">AppEngineHandler</span></code></a>, which is
@@ -378,28 +336,6 @@ these platforms and use the appropriate handler.</p>
 in an expected format and forward them to Stackdriver logging. The handlers
 provided help set the correct metadata such as log level so that logs can be
 filtered accordingly.</p>
-</div>
-<div class="section" id="changelog">
-<h3>Changelog<a class="headerlink" href="#changelog" title="Permalink to this headline">#</a></h3>
-<p>For a list of all <code class="docutils literal notranslate"><span class="pre">google-cloud-logging</span></code> releases:</p>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="changelog.html#">1.7.0</a></li>
-<li class="toctree-l2"><a class="reference internal" href="changelog.html#">1.6.0</a></li>
-<li class="toctree-l2"><a class="reference internal" href="changelog.html#">1.5.0</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="changelog.html#new-features">New features</a></li>
-<li class="toctree-l1"><a class="reference internal" href="changelog.html#implementation-changes">Implementation changes</a></li>
-<li class="toctree-l1"><a class="reference internal" href="changelog.html#testing">Testing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="changelog.html#documentation">Documentation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="changelog.html#">1.4.0</a></li>
-</ul>
-</li>
-</ul>
-</div>
-</div>
 </div>
 </div>
 
@@ -430,71 +366,51 @@ filtered accordingly.</p>
 
 <h3>Navigation</h3>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../releases.html"><code class="docutils literal notranslate"><span class="pre">google-cloud</span></code> Releases</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../core/index.html">Core</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../asset/index.html">Python Client for Cloud Asset API (Alpha)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../automl/index.html">Python Client for Cloud AutoML API (Alpha)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core/index.html">Core Libraries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../asset/index.html">Asset Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../automl/index.html">AutoML</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../bigquery/usage.html">BigQuery</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../bigquery_datatransfer/index.html">Python Client for BigQuery Data Transfer API (Alpha)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bigquery_datatransfer/index.html">BigQuery Data-Transfer</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../bigtable/usage.html">Bigtable</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../container/index.html">Python Client for Google Container Engine API (Beta)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../dataproc/index.html">Python Client for Google Cloud Dataproc API (Alpha)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../datastore/index.html">Python Client for Google Cloud Datastore</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../dlp/index.html">Python Client for Cloud Data Loss Prevention (DLP) API (Alpha)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../container/index.html">Container</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dataproc/index.html">Dataproc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../datastore/index.html">Datastore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dlp/index.html">Data Loss Prevention</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../dns/usage.html">DNS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../firestore/index.html">Firestore</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../iot/index.html">Python Client for Cloud IoT API (Alpha)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../kms/index.html">Python Client for Google Cloud Key Management Service (KMS) API (Alpha)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../language/usage.html">Natural Language</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../pubsub/index.html">Pub/Sub</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../oslogin/index.html">Python Client for Google Cloud OS Login API (Alpha)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../resource-manager/api.html">Resource Manager</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../resource-manager/api.html#installation">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../resource-manager/api.html#usage">Usage</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../runtimeconfig/usage.html">Runtimeconfig</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../spanner/usage.html">Spanner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../iot/index.html">IoT</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../kms/index.html">Key Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../language/index.html">Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pubsub/index.html">PubSub</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../oslogin/index.html">OSLogin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../redis/index.html">Redis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../resource-manager/index.html">Resource Manager</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../runtimeconfig/usage.html">Runtime Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../websecurityscanner/index.html">Security Scanner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../spanner/index.html">Python Client for Cloud Spanner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../spanner/index.html#changelog">Changelog</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../speech/index.html">Speech</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../error-reporting/usage.html">Stackdriver Error Reporting</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../monitoring/index.html">Python Client for Stackdriver Monitoring API (Alpha)</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Stackdriver Logging</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="client.html">Stackdriver Logging Client</a></li>
-<li class="toctree-l2"><a class="reference internal" href="logger.html">Logger</a></li>
-<li class="toctree-l2"><a class="reference internal" href="entries.html">Entries</a></li>
-<li class="toctree-l2"><a class="reference internal" href="metric.html">Metrics</a></li>
-<li class="toctree-l2"><a class="reference internal" href="sink.html">Sinks</a></li>
-<li class="toctree-l2"><a class="reference internal" href="stdlib-usage.html">Integration with Python logging module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="handlers.html">Python Logging Module Handler</a></li>
-<li class="toctree-l2"><a class="reference internal" href="handlers-app-engine.html">Google App Engine flexible Log Handler</a></li>
-<li class="toctree-l2"><a class="reference internal" href="handlers-container-engine.html">Google Container Engine Log Handler</a></li>
-<li class="toctree-l2"><a class="reference internal" href="transports-sync.html">Python Logging Handler Sync Transport</a></li>
-<li class="toctree-l2"><a class="reference internal" href="transports-thread.html">Python Logging Handler Threaded Transport</a></li>
-<li class="toctree-l2"><a class="reference internal" href="transports-base.html">Python Logging Handler Sync Transport</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#installation">Installation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#authentication-and-configuration">Authentication and Configuration</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#writing-log-entries">Writing log entries</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#retrieving-log-entries">Retrieving log entries</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#delete-all-entries-for-a-logger">Delete all entries for a logger</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#manage-log-metrics">Manage log metrics</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#export-log-entries-using-sinks">Export log entries using sinks</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#integration-with-python-logging-module">Integration with Python logging module</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../redis/index.html">Python Client for Google Cloud Memorystore for Redis API (Alpha)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../storage/index.html">Python Client for Google Cloud Storage</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../tasks/index.html">Python Client for Cloud Tasks API (Alpha)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../texttospeech/index.html">Python Client for Cloud Text-to-Speech API (Alpha)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../translate/usage.html">Translation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../storage/index.html">Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tasks/index.html">Tasks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../texttospeech/index.html">Text-to-Speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../translate/index.html">Translate</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../vision/index.html">Vision</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../videointelligence/index.html">Video Intelligence</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../websecurityscanner/index.html">Python Client for Web Security Scanner API (Alpha)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../error-reporting/usage.html">Stackdriver Error Reporting</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Stackdriver Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../monitoring/index.html">Stackdriver Monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../trace/index.html">Stackdriver Trace</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases.html">Release History</a></li>
 </ul>
 
 <div class="relations">
 <h3>Related Topics</h3>
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="../monitoring/gapic/v3/types.html" title="previous chapter">Types for Stackdriver Monitoring API Client</a></li>
+  <li><a href="index.html">Python Client for Stackdriver Logging</a><ul>
+      <li>Previous: <a href="index.html" title="previous chapter">Python Client for Stackdriver Logging</a></li>
       <li>Next: <a href="client.html" title="next chapter">Stackdriver Logging Client</a></li>
+  </ul></li>
   </ul></li>
 </ul>
 </div>

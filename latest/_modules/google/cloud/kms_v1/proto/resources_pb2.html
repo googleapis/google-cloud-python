@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.kms_v1.proto.resources_pb2 &#8212; google-cloud 8ebbf3d documentation</title>
+    <title>google.cloud.kms_v1.proto.resources_pb2 &#8212; google-cloud f074335 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -39,6 +39,7 @@
 
 <span class="kn">import</span> <span class="nn">sys</span>
 <span class="n">_b</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">version_info</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">&lt;</span><span class="mi">3</span> <span class="ow">and</span> <span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span><span class="n">x</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span><span class="n">x</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;latin1&#39;</span><span class="p">))</span>
+<span class="kn">from</span> <span class="nn">google.protobuf.internal</span> <span class="k">import</span> <span class="n">enum_type_wrapper</span>
 <span class="kn">from</span> <span class="nn">google.protobuf</span> <span class="k">import</span> <span class="n">descriptor</span> <span class="k">as</span> <span class="n">_descriptor</span>
 <span class="kn">from</span> <span class="nn">google.protobuf</span> <span class="k">import</span> <span class="n">message</span> <span class="k">as</span> <span class="n">_message</span>
 <span class="kn">from</span> <span class="nn">google.protobuf</span> <span class="k">import</span> <span class="n">reflection</span> <span class="k">as</span> <span class="n">_reflection</span>
@@ -58,10 +59,40 @@
   <span class="n">name</span><span class="o">=</span><span class="s1">&#39;google/cloud/kms_v1/proto/resources.proto&#39;</span><span class="p">,</span>
   <span class="n">package</span><span class="o">=</span><span class="s1">&#39;google.cloud.kms.v1&#39;</span><span class="p">,</span>
   <span class="n">syntax</span><span class="o">=</span><span class="s1">&#39;proto3&#39;</span><span class="p">,</span>
-  <span class="n">serialized_pb</span><span class="o">=</span><span class="n">_b</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">)google/cloud/kms_v1/proto/resources.proto</span><span class="se">\x12\x13</span><span class="s1">google.cloud.kms.v1</span><span class="se">\x1a\x1c</span><span class="s1">google/api/annotations.proto</span><span class="se">\x1a\x1e</span><span class="s1">google/protobuf/duration.proto</span><span class="se">\x1a\x1f</span><span class="s1">google/protobuf/timestamp.proto</span><span class="se">\&quot;</span><span class="s1">H</span><span class="se">\n\x07</span><span class="s1">KeyRing</span><span class="se">\x12\x0c\n\x04</span><span class="s1">name</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12</span><span class="s1">/</span><span class="se">\n\x0b\x63</span><span class="s1">reate_time</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x1a</span><span class="s1">.google.protobuf.Timestamp</span><span class="se">\&quot;\xff\x03\n\t</span><span class="s1">CryptoKey</span><span class="se">\x12\x0c\n\x04</span><span class="s1">name</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x36\n\x07</span><span class="s1">primary</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">%.google.cloud.kms.v1.CryptoKeyVersion</span><span class="se">\x12</span><span class="s1">@</span><span class="se">\n\x07</span><span class="s1">purpose</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0e\x32</span><span class="s1">/.google.cloud.kms.v1.CryptoKey.CryptoKeyPurpose</span><span class="se">\x12</span><span class="s1">/</span><span class="se">\n\x0b\x63</span><span class="s1">reate_time</span><span class="se">\x18\x05</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x1a</span><span class="s1">.google.protobuf.Timestamp</span><span class="se">\x12\x36\n\x12</span><span class="s1">next_rotation_time</span><span class="se">\x18\x07</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x1a</span><span class="s1">.google.protobuf.Timestamp</span><span class="se">\x12\x34\n\x0f</span><span class="s1">rotation_period</span><span class="se">\x18\x08</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x19</span><span class="s1">.google.protobuf.DurationH</span><span class="se">\x00\x12</span><span class="s1">:</span><span class="se">\n\x06</span><span class="s1">labels</span><span class="se">\x18\n</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">*.google.cloud.kms.v1.CryptoKey.LabelsEntry</span><span class="se">\x1a</span><span class="s1">-</span><span class="se">\n\x0b</span><span class="s1">LabelsEntry</span><span class="se">\x12\x0b\n\x03</span><span class="s1">key</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\r\n\x05</span><span class="s1">value</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t</span><span class="s1">:</span><span class="se">\x02\x38\x01\&quot;</span><span class="s1">K</span><span class="se">\n\x10\x43</span><span class="s1">ryptoKeyPurpose</span><span class="se">\x12\&quot;\n\x1e\x43</span><span class="s1">RYPTO_KEY_PURPOSE_UNSPECIFIED</span><span class="se">\x10\x00\x12\x13\n\x0f\x45</span><span class="s1">NCRYPT_DECRYPT</span><span class="se">\x10\x01\x42\x13\n\x11</span><span class="s1">rotation_schedule</span><span class="se">\&quot;\x8c\x03\n\x10\x43</span><span class="s1">ryptoKeyVersion</span><span class="se">\x12\x0c\n\x04</span><span class="s1">name</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12</span><span class="s1">J</span><span class="se">\n\x05</span><span class="s1">state</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0e\x32</span><span class="s1">;.google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionState</span><span class="se">\x12</span><span class="s1">/</span><span class="se">\n\x0b\x63</span><span class="s1">reate_time</span><span class="se">\x18\x04</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x1a</span><span class="s1">.google.protobuf.Timestamp</span><span class="se">\x12\x30\n\x0c\x64\x65</span><span class="s1">stroy_time</span><span class="se">\x18\x05</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x1a</span><span class="s1">.google.protobuf.Timestamp</span><span class="se">\x12\x36\n\x12\x64\x65</span><span class="s1">stroy_event_time</span><span class="se">\x18\x06</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x1a</span><span class="s1">.google.protobuf.Timestamp</span><span class="se">\&quot;\x82\x01\n\x15\x43</span><span class="s1">ryptoKeyVersionState</span><span class="se">\x12</span><span class="s1">(</span><span class="se">\n</span><span class="s1">$CRYPTO_KEY_VERSION_STATE_UNSPECIFIED</span><span class="se">\x10\x00\x12\x0b\n\x07\x45</span><span class="s1">NABLED</span><span class="se">\x10\x01\x12\x0c\n\x08\x44</span><span class="s1">ISABLED</span><span class="se">\x10\x02\x12\r\n\t</span><span class="s1">DESTROYED</span><span class="se">\x10\x03\x12\x15\n\x11\x44\x45</span><span class="s1">STROY_SCHEDULED</span><span class="se">\x10\x04\x42\x95\x01\n\x17\x63</span><span class="s1">om.google.cloud.kms.v1B</span><span class="se">\x11</span><span class="s1">KmsResourcesProtoP</span><span class="se">\x01</span><span class="s1">Z6google.golang.org/genproto/googleapis/cloud/kms/v1;kms</span><span class="se">\xf8\x01\x01\xaa\x02\x13</span><span class="s1">Google.Cloud.Kms.V1</span><span class="se">\xca\x02\x13</span><span class="s1">Google</span><span class="se">\\</span><span class="s1">Cloud</span><span class="se">\\</span><span class="s1">Kms</span><span class="se">\\</span><span class="s1">V1b</span><span class="se">\x06</span><span class="s1">proto3&#39;</span><span class="p">)</span>
+  <span class="n">serialized_pb</span><span class="o">=</span><span class="n">_b</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">)google/cloud/kms_v1/proto/resources.proto</span><span class="se">\x12\x13</span><span class="s1">google.cloud.kms.v1</span><span class="se">\x1a\x1c</span><span class="s1">google/api/annotations.proto</span><span class="se">\x1a\x1e</span><span class="s1">google/protobuf/duration.proto</span><span class="se">\x1a\x1f</span><span class="s1">google/protobuf/timestamp.proto</span><span class="se">\&quot;</span><span class="s1">H</span><span class="se">\n\x07</span><span class="s1">KeyRing</span><span class="se">\x12\x0c\n\x04</span><span class="s1">name</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12</span><span class="s1">/</span><span class="se">\n\x0b\x63</span><span class="s1">reate_time</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x1a</span><span class="s1">.google.protobuf.Timestamp</span><span class="se">\&quot;\xf5\x04\n\t</span><span class="s1">CryptoKey</span><span class="se">\x12\x0c\n\x04</span><span class="s1">name</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x36\n\x07</span><span class="s1">primary</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">%.google.cloud.kms.v1.CryptoKeyVersion</span><span class="se">\x12</span><span class="s1">@</span><span class="se">\n\x07</span><span class="s1">purpose</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0e\x32</span><span class="s1">/.google.cloud.kms.v1.CryptoKey.CryptoKeyPurpose</span><span class="se">\x12</span><span class="s1">/</span><span class="se">\n\x0b\x63</span><span class="s1">reate_time</span><span class="se">\x18\x05</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x1a</span><span class="s1">.google.protobuf.Timestamp</span><span class="se">\x12\x36\n\x12</span><span class="s1">next_rotation_time</span><span class="se">\x18\x07</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x1a</span><span class="s1">.google.protobuf.Timestamp</span><span class="se">\x12\x34\n\x0f</span><span class="s1">rotation_period</span><span class="se">\x18\x08</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x19</span><span class="s1">.google.protobuf.DurationH</span><span class="se">\x00\x12</span><span class="s1">G</span><span class="se">\n\x10</span><span class="s1">version_template</span><span class="se">\x18\x0b</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">-.google.cloud.kms.v1.CryptoKeyVersionTemplate</span><span class="se">\x12</span><span class="s1">:</span><span class="se">\n\x06</span><span class="s1">labels</span><span class="se">\x18\n</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">*.google.cloud.kms.v1.CryptoKey.LabelsEntry</span><span class="se">\x1a</span><span class="s1">-</span><span class="se">\n\x0b</span><span class="s1">LabelsEntry</span><span class="se">\x12\x0b\n\x03</span><span class="s1">key</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\r\n\x05</span><span class="s1">value</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t</span><span class="s1">:</span><span class="se">\x02\x38\x01\&quot;</span><span class="s1">x</span><span class="se">\n\x10\x43</span><span class="s1">ryptoKeyPurpose</span><span class="se">\x12\&quot;\n\x1e\x43</span><span class="s1">RYPTO_KEY_PURPOSE_UNSPECIFIED</span><span class="se">\x10\x00\x12\x13\n\x0f\x45</span><span class="s1">NCRYPT_DECRYPT</span><span class="se">\x10\x01\x12\x13\n\x0f\x41</span><span class="s1">SYMMETRIC_SIGN</span><span class="se">\x10\x05\x12\x16\n\x12\x41</span><span class="s1">SYMMETRIC_DECRYPT</span><span class="se">\x10\x06\x42\x13\n\x11</span><span class="s1">rotation_schedule</span><span class="se">\&quot;\xae\x01\n\x18\x43</span><span class="s1">ryptoKeyVersionTemplate</span><span class="se">\x12</span><span class="s1">&gt;</span><span class="se">\n\x10</span><span class="s1">protection_level</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0e\x32</span><span class="s1">$.google.cloud.kms.v1.ProtectionLevel</span><span class="se">\x12</span><span class="s1">R</span><span class="se">\n\t</span><span class="s1">algorithm</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0e\x32</span><span class="s1">?.google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionAlgorithm</span><span class="se">\&quot;\xcd\x01\n\x17</span><span class="s1">KeyOperationAttestation</span><span class="se">\x12</span><span class="s1">N</span><span class="se">\n\x06\x66</span><span class="s1">ormat</span><span class="se">\x18\x04</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0e\x32</span><span class="s1">&gt;.google.cloud.kms.v1.KeyOperationAttestation.AttestationFormat</span><span class="se">\x12\x0f\n\x07\x63</span><span class="s1">ontent</span><span class="se">\x18\x05</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0c\&quot;</span><span class="s1">Q</span><span class="se">\n\x11\x41</span><span class="s1">ttestationFormat</span><span class="se">\x12\&quot;\n\x1e\x41</span><span class="s1">TTESTATION_FORMAT_UNSPECIFIED</span><span class="se">\x10\x00\x12\x18\n\x14\x43\x41</span><span class="s1">VIUM_V1_COMPRESSED</span><span class="se">\x10\x03\&quot;\xb8\t\n\x10\x43</span><span class="s1">ryptoKeyVersion</span><span class="se">\x12\x0c\n\x04</span><span class="s1">name</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12</span><span class="s1">J</span><span class="se">\n\x05</span><span class="s1">state</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0e\x32</span><span class="s1">;.google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionState</span><span class="se">\x12</span><span class="s1">&gt;</span><span class="se">\n\x10</span><span class="s1">protection_level</span><span class="se">\x18\x07</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0e\x32</span><span class="s1">$.google.cloud.kms.v1.ProtectionLevel</span><span class="se">\x12</span><span class="s1">R</span><span class="se">\n\t</span><span class="s1">algorithm</span><span class="se">\x18\n</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0e\x32</span><span class="s1">?.google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionAlgorithm</span><span class="se">\x12\x41\n\x0b\x61</span><span class="s1">ttestation</span><span class="se">\x18\x08</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">,.google.cloud.kms.v1.KeyOperationAttestation</span><span class="se">\x12</span><span class="s1">/</span><span class="se">\n\x0b\x63</span><span class="s1">reate_time</span><span class="se">\x18\x04</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x1a</span><span class="s1">.google.protobuf.Timestamp</span><span class="se">\x12\x31\n\r</span><span class="s1">generate_time</span><span class="se">\x18\x0b</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x1a</span><span class="s1">.google.protobuf.Timestamp</span><span class="se">\x12\x30\n\x0c\x64\x65</span><span class="s1">stroy_time</span><span class="se">\x18\x05</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x1a</span><span class="s1">.google.protobuf.Timestamp</span><span class="se">\x12\x36\n\x12\x64\x65</span><span class="s1">stroy_event_time</span><span class="se">\x18\x06</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x1a</span><span class="s1">.google.protobuf.Timestamp</span><span class="se">\&quot;\xbc\x03\n\x19\x43</span><span class="s1">ryptoKeyVersionAlgorithm</span><span class="se">\x12</span><span class="s1">,</span><span class="se">\n</span><span class="s1">(CRYPTO_KEY_VERSION_ALGORITHM_UNSPECIFIED</span><span class="se">\x10\x00\x12\x1f\n\x1b</span><span class="s1">GOOGLE_SYMMETRIC_ENCRYPTION</span><span class="se">\x10\x01\x12\x1c\n\x18</span><span class="s1">RSA_SIGN_PSS_2048_SHA256</span><span class="se">\x10\x02\x12\x1c\n\x18</span><span class="s1">RSA_SIGN_PSS_3072_SHA256</span><span class="se">\x10\x03\x12\x1c\n\x18</span><span class="s1">RSA_SIGN_PSS_4096_SHA256</span><span class="se">\x10\x04\x12\x1e\n\x1a</span><span class="s1">RSA_SIGN_PKCS1_2048_SHA256</span><span class="se">\x10\x05\x12\x1e\n\x1a</span><span class="s1">RSA_SIGN_PKCS1_3072_SHA256</span><span class="se">\x10\x06\x12\x1e\n\x1a</span><span class="s1">RSA_SIGN_PKCS1_4096_SHA256</span><span class="se">\x10\x07\x12</span><span class="s1"> </span><span class="se">\n\x1c</span><span class="s1">RSA_DECRYPT_OAEP_2048_SHA256</span><span class="se">\x10\x08\x12</span><span class="s1"> </span><span class="se">\n\x1c</span><span class="s1">RSA_DECRYPT_OAEP_3072_SHA256</span><span class="se">\x10\t\x12</span><span class="s1"> </span><span class="se">\n\x1c</span><span class="s1">RSA_DECRYPT_OAEP_4096_SHA256</span><span class="se">\x10\n\x12\x17\n\x13\x45\x43</span><span class="s1">_SIGN_P256_SHA256</span><span class="se">\x10\x0c\x12\x17\n\x13\x45\x43</span><span class="s1">_SIGN_P384_SHA384</span><span class="se">\x10\r\&quot;\x9a\x01\n\x15\x43</span><span class="s1">ryptoKeyVersionState</span><span class="se">\x12</span><span class="s1">(</span><span class="se">\n</span><span class="s1">$CRYPTO_KEY_VERSION_STATE_UNSPECIFIED</span><span class="se">\x10\x00\x12\x16\n\x12</span><span class="s1">PENDING_GENERATION</span><span class="se">\x10\x05\x12\x0b\n\x07\x45</span><span class="s1">NABLED</span><span class="se">\x10\x01\x12\x0c\n\x08\x44</span><span class="s1">ISABLED</span><span class="se">\x10\x02\x12\r\n\t</span><span class="s1">DESTROYED</span><span class="se">\x10\x03\x12\x15\n\x11\x44\x45</span><span class="s1">STROY_SCHEDULED</span><span class="se">\x10\x04\&quot;</span><span class="s1">I</span><span class="se">\n\x14\x43</span><span class="s1">ryptoKeyVersionView</span><span class="se">\x12\&#39;\n</span><span class="s1">#CRYPTO_KEY_VERSION_VIEW_UNSPECIFIED</span><span class="se">\x10\x00\x12\x08\n\x04\x46</span><span class="s1">ULL</span><span class="se">\x10\x01\&quot;</span><span class="s1">l</span><span class="se">\n\t</span><span class="s1">PublicKey</span><span class="se">\x12\x0b\n\x03</span><span class="s1">pem</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12</span><span class="s1">R</span><span class="se">\n\t</span><span class="s1">algorithm</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0e\x32</span><span class="s1">?.google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionAlgorithm*J</span><span class="se">\n\x0f</span><span class="s1">ProtectionLevel</span><span class="se">\x12</span><span class="s1"> </span><span class="se">\n\x1c</span><span class="s1">PROTECTION_LEVEL_UNSPECIFIED</span><span class="se">\x10\x00\x12\x0c\n\x08</span><span class="s1">SOFTWARE</span><span class="se">\x10\x01\x12\x07\n\x03</span><span class="s1">HSM</span><span class="se">\x10\x02\x42\x95\x01\n\x17\x63</span><span class="s1">om.google.cloud.kms.v1B</span><span class="se">\x11</span><span class="s1">KmsResourcesProtoP</span><span class="se">\x01</span><span class="s1">Z6google.golang.org/genproto/googleapis/cloud/kms/v1;kms</span><span class="se">\xf8\x01\x01\xaa\x02\x13</span><span class="s1">Google.Cloud.Kms.V1</span><span class="se">\xca\x02\x13</span><span class="s1">Google</span><span class="se">\\</span><span class="s1">Cloud</span><span class="se">\\</span><span class="s1">Kms</span><span class="se">\\</span><span class="s1">V1b</span><span class="se">\x06</span><span class="s1">proto3&#39;</span><span class="p">)</span>
   <span class="p">,</span>
   <span class="n">dependencies</span><span class="o">=</span><span class="p">[</span><span class="n">google_dot_api_dot_annotations__pb2</span><span class="o">.</span><span class="n">DESCRIPTOR</span><span class="p">,</span><span class="n">google_dot_protobuf_dot_duration__pb2</span><span class="o">.</span><span class="n">DESCRIPTOR</span><span class="p">,</span><span class="n">google_dot_protobuf_dot_timestamp__pb2</span><span class="o">.</span><span class="n">DESCRIPTOR</span><span class="p">,])</span>
 
+<span class="n">_PROTECTIONLEVEL</span> <span class="o">=</span> <span class="n">_descriptor</span><span class="o">.</span><span class="n">EnumDescriptor</span><span class="p">(</span>
+  <span class="n">name</span><span class="o">=</span><span class="s1">&#39;ProtectionLevel&#39;</span><span class="p">,</span>
+  <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;google.cloud.kms.v1.ProtectionLevel&#39;</span><span class="p">,</span>
+  <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+  <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+  <span class="n">values</span><span class="o">=</span><span class="p">[</span>
+    <span class="n">_descriptor</span><span class="o">.</span><span class="n">EnumValueDescriptor</span><span class="p">(</span>
+      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;PROTECTION_LEVEL_UNSPECIFIED&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+      <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+      <span class="nb">type</span><span class="o">=</span><span class="kc">None</span><span class="p">),</span>
+    <span class="n">_descriptor</span><span class="o">.</span><span class="n">EnumValueDescriptor</span><span class="p">(</span>
+      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;SOFTWARE&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+      <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+      <span class="nb">type</span><span class="o">=</span><span class="kc">None</span><span class="p">),</span>
+    <span class="n">_descriptor</span><span class="o">.</span><span class="n">EnumValueDescriptor</span><span class="p">(</span>
+      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;HSM&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+      <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+      <span class="nb">type</span><span class="o">=</span><span class="kc">None</span><span class="p">),</span>
+  <span class="p">],</span>
+  <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+  <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+  <span class="n">serialized_start</span><span class="o">=</span><span class="mi">2573</span><span class="p">,</span>
+  <span class="n">serialized_end</span><span class="o">=</span><span class="mi">2647</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">_sym_db</span><span class="o">.</span><span class="n">RegisterEnumDescriptor</span><span class="p">(</span><span class="n">_PROTECTIONLEVEL</span><span class="p">)</span>
+
+<span class="n">ProtectionLevel</span> <span class="o">=</span> <span class="n">enum_type_wrapper</span><span class="o">.</span><span class="n">EnumTypeWrapper</span><span class="p">(</span><span class="n">_PROTECTIONLEVEL</span><span class="p">)</span>
+<span class="n">PROTECTION_LEVEL_UNSPECIFIED</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">SOFTWARE</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">HSM</span> <span class="o">=</span> <span class="mi">2</span>
 
 
 <span class="n">_CRYPTOKEY_CRYPTOKEYPURPOSE</span> <span class="o">=</span> <span class="n">_descriptor</span><span class="o">.</span><span class="n">EnumDescriptor</span><span class="p">(</span>
@@ -78,13 +109,109 @@
       <span class="n">name</span><span class="o">=</span><span class="s1">&#39;ENCRYPT_DECRYPT&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
       <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
       <span class="nb">type</span><span class="o">=</span><span class="kc">None</span><span class="p">),</span>
+    <span class="n">_descriptor</span><span class="o">.</span><span class="n">EnumValueDescriptor</span><span class="p">(</span>
+      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;ASYMMETRIC_SIGN&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+      <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+      <span class="nb">type</span><span class="o">=</span><span class="kc">None</span><span class="p">),</span>
+    <span class="n">_descriptor</span><span class="o">.</span><span class="n">EnumValueDescriptor</span><span class="p">(</span>
+      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;ASYMMETRIC_DECRYPT&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
+      <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+      <span class="nb">type</span><span class="o">=</span><span class="kc">None</span><span class="p">),</span>
   <span class="p">],</span>
   <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
   <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-  <span class="n">serialized_start</span><span class="o">=</span><span class="mi">651</span><span class="p">,</span>
-  <span class="n">serialized_end</span><span class="o">=</span><span class="mi">726</span><span class="p">,</span>
+  <span class="n">serialized_start</span><span class="o">=</span><span class="mi">724</span><span class="p">,</span>
+  <span class="n">serialized_end</span><span class="o">=</span><span class="mi">844</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="n">_sym_db</span><span class="o">.</span><span class="n">RegisterEnumDescriptor</span><span class="p">(</span><span class="n">_CRYPTOKEY_CRYPTOKEYPURPOSE</span><span class="p">)</span>
+
+<span class="n">_KEYOPERATIONATTESTATION_ATTESTATIONFORMAT</span> <span class="o">=</span> <span class="n">_descriptor</span><span class="o">.</span><span class="n">EnumDescriptor</span><span class="p">(</span>
+  <span class="n">name</span><span class="o">=</span><span class="s1">&#39;AttestationFormat&#39;</span><span class="p">,</span>
+  <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;google.cloud.kms.v1.KeyOperationAttestation.AttestationFormat&#39;</span><span class="p">,</span>
+  <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+  <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+  <span class="n">values</span><span class="o">=</span><span class="p">[</span>
+    <span class="n">_descriptor</span><span class="o">.</span><span class="n">EnumValueDescriptor</span><span class="p">(</span>
+      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;ATTESTATION_FORMAT_UNSPECIFIED&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+      <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+      <span class="nb">type</span><span class="o">=</span><span class="kc">None</span><span class="p">),</span>
+    <span class="n">_descriptor</span><span class="o">.</span><span class="n">EnumValueDescriptor</span><span class="p">(</span>
+      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;CAVIUM_V1_COMPRESSED&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+      <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+      <span class="nb">type</span><span class="o">=</span><span class="kc">None</span><span class="p">),</span>
+  <span class="p">],</span>
+  <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+  <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+  <span class="n">serialized_start</span><span class="o">=</span><span class="mi">1169</span><span class="p">,</span>
+  <span class="n">serialized_end</span><span class="o">=</span><span class="mi">1250</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">_sym_db</span><span class="o">.</span><span class="n">RegisterEnumDescriptor</span><span class="p">(</span><span class="n">_KEYOPERATIONATTESTATION_ATTESTATIONFORMAT</span><span class="p">)</span>
+
+<span class="n">_CRYPTOKEYVERSION_CRYPTOKEYVERSIONALGORITHM</span> <span class="o">=</span> <span class="n">_descriptor</span><span class="o">.</span><span class="n">EnumDescriptor</span><span class="p">(</span>
+  <span class="n">name</span><span class="o">=</span><span class="s1">&#39;CryptoKeyVersionAlgorithm&#39;</span><span class="p">,</span>
+  <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionAlgorithm&#39;</span><span class="p">,</span>
+  <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+  <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+  <span class="n">values</span><span class="o">=</span><span class="p">[</span>
+    <span class="n">_descriptor</span><span class="o">.</span><span class="n">EnumValueDescriptor</span><span class="p">(</span>
+      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;CRYPTO_KEY_VERSION_ALGORITHM_UNSPECIFIED&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+      <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+      <span class="nb">type</span><span class="o">=</span><span class="kc">None</span><span class="p">),</span>
+    <span class="n">_descriptor</span><span class="o">.</span><span class="n">EnumValueDescriptor</span><span class="p">(</span>
+      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;GOOGLE_SYMMETRIC_ENCRYPTION&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+      <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+      <span class="nb">type</span><span class="o">=</span><span class="kc">None</span><span class="p">),</span>
+    <span class="n">_descriptor</span><span class="o">.</span><span class="n">EnumValueDescriptor</span><span class="p">(</span>
+      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;RSA_SIGN_PSS_2048_SHA256&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+      <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+      <span class="nb">type</span><span class="o">=</span><span class="kc">None</span><span class="p">),</span>
+    <span class="n">_descriptor</span><span class="o">.</span><span class="n">EnumValueDescriptor</span><span class="p">(</span>
+      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;RSA_SIGN_PSS_3072_SHA256&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+      <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+      <span class="nb">type</span><span class="o">=</span><span class="kc">None</span><span class="p">),</span>
+    <span class="n">_descriptor</span><span class="o">.</span><span class="n">EnumValueDescriptor</span><span class="p">(</span>
+      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;RSA_SIGN_PSS_4096_SHA256&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+      <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+      <span class="nb">type</span><span class="o">=</span><span class="kc">None</span><span class="p">),</span>
+    <span class="n">_descriptor</span><span class="o">.</span><span class="n">EnumValueDescriptor</span><span class="p">(</span>
+      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;RSA_SIGN_PKCS1_2048_SHA256&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+      <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+      <span class="nb">type</span><span class="o">=</span><span class="kc">None</span><span class="p">),</span>
+    <span class="n">_descriptor</span><span class="o">.</span><span class="n">EnumValueDescriptor</span><span class="p">(</span>
+      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;RSA_SIGN_PKCS1_3072_SHA256&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
+      <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+      <span class="nb">type</span><span class="o">=</span><span class="kc">None</span><span class="p">),</span>
+    <span class="n">_descriptor</span><span class="o">.</span><span class="n">EnumValueDescriptor</span><span class="p">(</span>
+      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;RSA_SIGN_PKCS1_4096_SHA256&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span>
+      <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+      <span class="nb">type</span><span class="o">=</span><span class="kc">None</span><span class="p">),</span>
+    <span class="n">_descriptor</span><span class="o">.</span><span class="n">EnumValueDescriptor</span><span class="p">(</span>
+      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;RSA_DECRYPT_OAEP_2048_SHA256&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span>
+      <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+      <span class="nb">type</span><span class="o">=</span><span class="kc">None</span><span class="p">),</span>
+    <span class="n">_descriptor</span><span class="o">.</span><span class="n">EnumValueDescriptor</span><span class="p">(</span>
+      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;RSA_DECRYPT_OAEP_3072_SHA256&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span>
+      <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+      <span class="nb">type</span><span class="o">=</span><span class="kc">None</span><span class="p">),</span>
+    <span class="n">_descriptor</span><span class="o">.</span><span class="n">EnumValueDescriptor</span><span class="p">(</span>
+      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;RSA_DECRYPT_OAEP_4096_SHA256&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+      <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+      <span class="nb">type</span><span class="o">=</span><span class="kc">None</span><span class="p">),</span>
+    <span class="n">_descriptor</span><span class="o">.</span><span class="n">EnumValueDescriptor</span><span class="p">(</span>
+      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;EC_SIGN_P256_SHA256&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span>
+      <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+      <span class="nb">type</span><span class="o">=</span><span class="kc">None</span><span class="p">),</span>
+    <span class="n">_descriptor</span><span class="o">.</span><span class="n">EnumValueDescriptor</span><span class="p">(</span>
+      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;EC_SIGN_P384_SHA384&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">13</span><span class="p">,</span>
+      <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+      <span class="nb">type</span><span class="o">=</span><span class="kc">None</span><span class="p">),</span>
+  <span class="p">],</span>
+  <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+  <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+  <span class="n">serialized_start</span><span class="o">=</span><span class="mi">1785</span><span class="p">,</span>
+  <span class="n">serialized_end</span><span class="o">=</span><span class="mi">2229</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">_sym_db</span><span class="o">.</span><span class="n">RegisterEnumDescriptor</span><span class="p">(</span><span class="n">_CRYPTOKEYVERSION_CRYPTOKEYVERSIONALGORITHM</span><span class="p">)</span>
 
 <span class="n">_CRYPTOKEYVERSION_CRYPTOKEYVERSIONSTATE</span> <span class="o">=</span> <span class="n">_descriptor</span><span class="o">.</span><span class="n">EnumDescriptor</span><span class="p">(</span>
   <span class="n">name</span><span class="o">=</span><span class="s1">&#39;CryptoKeyVersionState&#39;</span><span class="p">,</span>
@@ -97,28 +224,54 @@
       <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
       <span class="nb">type</span><span class="o">=</span><span class="kc">None</span><span class="p">),</span>
     <span class="n">_descriptor</span><span class="o">.</span><span class="n">EnumValueDescriptor</span><span class="p">(</span>
-      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;ENABLED&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;PENDING_GENERATION&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
       <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
       <span class="nb">type</span><span class="o">=</span><span class="kc">None</span><span class="p">),</span>
     <span class="n">_descriptor</span><span class="o">.</span><span class="n">EnumValueDescriptor</span><span class="p">(</span>
-      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;DISABLED&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;ENABLED&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
       <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
       <span class="nb">type</span><span class="o">=</span><span class="kc">None</span><span class="p">),</span>
     <span class="n">_descriptor</span><span class="o">.</span><span class="n">EnumValueDescriptor</span><span class="p">(</span>
-      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;DESTROYED&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;DISABLED&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
       <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
       <span class="nb">type</span><span class="o">=</span><span class="kc">None</span><span class="p">),</span>
     <span class="n">_descriptor</span><span class="o">.</span><span class="n">EnumValueDescriptor</span><span class="p">(</span>
-      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;DESTROY_SCHEDULED&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;DESTROYED&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+      <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+      <span class="nb">type</span><span class="o">=</span><span class="kc">None</span><span class="p">),</span>
+    <span class="n">_descriptor</span><span class="o">.</span><span class="n">EnumValueDescriptor</span><span class="p">(</span>
+      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;DESTROY_SCHEDULED&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
       <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
       <span class="nb">type</span><span class="o">=</span><span class="kc">None</span><span class="p">),</span>
   <span class="p">],</span>
   <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
   <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-  <span class="n">serialized_start</span><span class="o">=</span><span class="mi">1016</span><span class="p">,</span>
-  <span class="n">serialized_end</span><span class="o">=</span><span class="mi">1146</span><span class="p">,</span>
+  <span class="n">serialized_start</span><span class="o">=</span><span class="mi">2232</span><span class="p">,</span>
+  <span class="n">serialized_end</span><span class="o">=</span><span class="mi">2386</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="n">_sym_db</span><span class="o">.</span><span class="n">RegisterEnumDescriptor</span><span class="p">(</span><span class="n">_CRYPTOKEYVERSION_CRYPTOKEYVERSIONSTATE</span><span class="p">)</span>
+
+<span class="n">_CRYPTOKEYVERSION_CRYPTOKEYVERSIONVIEW</span> <span class="o">=</span> <span class="n">_descriptor</span><span class="o">.</span><span class="n">EnumDescriptor</span><span class="p">(</span>
+  <span class="n">name</span><span class="o">=</span><span class="s1">&#39;CryptoKeyVersionView&#39;</span><span class="p">,</span>
+  <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionView&#39;</span><span class="p">,</span>
+  <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+  <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+  <span class="n">values</span><span class="o">=</span><span class="p">[</span>
+    <span class="n">_descriptor</span><span class="o">.</span><span class="n">EnumValueDescriptor</span><span class="p">(</span>
+      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;CRYPTO_KEY_VERSION_VIEW_UNSPECIFIED&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+      <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+      <span class="nb">type</span><span class="o">=</span><span class="kc">None</span><span class="p">),</span>
+    <span class="n">_descriptor</span><span class="o">.</span><span class="n">EnumValueDescriptor</span><span class="p">(</span>
+      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;FULL&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+      <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+      <span class="nb">type</span><span class="o">=</span><span class="kc">None</span><span class="p">),</span>
+  <span class="p">],</span>
+  <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+  <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+  <span class="n">serialized_start</span><span class="o">=</span><span class="mi">2388</span><span class="p">,</span>
+  <span class="n">serialized_end</span><span class="o">=</span><span class="mi">2461</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">_sym_db</span><span class="o">.</span><span class="n">RegisterEnumDescriptor</span><span class="p">(</span><span class="n">_CRYPTOKEYVERSION_CRYPTOKEYVERSIONVIEW</span><span class="p">)</span>
 
 
 <span class="n">_KEYRING</span> <span class="o">=</span> <span class="n">_descriptor</span><span class="o">.</span><span class="n">Descriptor</span><span class="p">(</span>
@@ -192,8 +345,8 @@
   <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
   <span class="n">oneofs</span><span class="o">=</span><span class="p">[</span>
   <span class="p">],</span>
-  <span class="n">serialized_start</span><span class="o">=</span><span class="mi">604</span><span class="p">,</span>
-  <span class="n">serialized_end</span><span class="o">=</span><span class="mi">649</span><span class="p">,</span>
+  <span class="n">serialized_start</span><span class="o">=</span><span class="mi">677</span><span class="p">,</span>
+  <span class="n">serialized_end</span><span class="o">=</span><span class="mi">722</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="n">_CRYPTOKEY</span> <span class="o">=</span> <span class="n">_descriptor</span><span class="o">.</span><span class="n">Descriptor</span><span class="p">(</span>
@@ -246,7 +399,14 @@
       <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
       <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">),</span>
     <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
-      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;labels&#39;</span><span class="p">,</span> <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;google.cloud.kms.v1.CryptoKey.labels&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
+      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;version_template&#39;</span><span class="p">,</span> <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;google.cloud.kms.v1.CryptoKey.version_template&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
+      <span class="n">number</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span> <span class="n">cpp_type</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+      <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default_value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+      <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+      <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+      <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">),</span>
+    <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
+      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;labels&#39;</span><span class="p">,</span> <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;google.cloud.kms.v1.CryptoKey.labels&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span>
       <span class="n">number</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span> <span class="n">cpp_type</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
       <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default_value</span><span class="o">=</span><span class="p">[],</span>
       <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -269,7 +429,84 @@
       <span class="n">index</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fields</span><span class="o">=</span><span class="p">[]),</span>
   <span class="p">],</span>
   <span class="n">serialized_start</span><span class="o">=</span><span class="mi">236</span><span class="p">,</span>
-  <span class="n">serialized_end</span><span class="o">=</span><span class="mi">747</span><span class="p">,</span>
+  <span class="n">serialized_end</span><span class="o">=</span><span class="mi">865</span><span class="p">,</span>
+<span class="p">)</span>
+
+
+<span class="n">_CRYPTOKEYVERSIONTEMPLATE</span> <span class="o">=</span> <span class="n">_descriptor</span><span class="o">.</span><span class="n">Descriptor</span><span class="p">(</span>
+  <span class="n">name</span><span class="o">=</span><span class="s1">&#39;CryptoKeyVersionTemplate&#39;</span><span class="p">,</span>
+  <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;google.cloud.kms.v1.CryptoKeyVersionTemplate&#39;</span><span class="p">,</span>
+  <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+  <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+  <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+  <span class="n">fields</span><span class="o">=</span><span class="p">[</span>
+    <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
+      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;protection_level&#39;</span><span class="p">,</span> <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;google.cloud.kms.v1.CryptoKeyVersionTemplate.protection_level&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+      <span class="n">number</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span> <span class="n">cpp_type</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+      <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default_value</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+      <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+      <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+      <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">),</span>
+    <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
+      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;algorithm&#39;</span><span class="p">,</span> <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;google.cloud.kms.v1.CryptoKeyVersionTemplate.algorithm&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+      <span class="n">number</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span> <span class="n">cpp_type</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+      <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default_value</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+      <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+      <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+      <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">),</span>
+  <span class="p">],</span>
+  <span class="n">extensions</span><span class="o">=</span><span class="p">[</span>
+  <span class="p">],</span>
+  <span class="n">nested_types</span><span class="o">=</span><span class="p">[],</span>
+  <span class="n">enum_types</span><span class="o">=</span><span class="p">[</span>
+  <span class="p">],</span>
+  <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+  <span class="n">is_extendable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+  <span class="n">syntax</span><span class="o">=</span><span class="s1">&#39;proto3&#39;</span><span class="p">,</span>
+  <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
+  <span class="n">oneofs</span><span class="o">=</span><span class="p">[</span>
+  <span class="p">],</span>
+  <span class="n">serialized_start</span><span class="o">=</span><span class="mi">868</span><span class="p">,</span>
+  <span class="n">serialized_end</span><span class="o">=</span><span class="mi">1042</span><span class="p">,</span>
+<span class="p">)</span>
+
+
+<span class="n">_KEYOPERATIONATTESTATION</span> <span class="o">=</span> <span class="n">_descriptor</span><span class="o">.</span><span class="n">Descriptor</span><span class="p">(</span>
+  <span class="n">name</span><span class="o">=</span><span class="s1">&#39;KeyOperationAttestation&#39;</span><span class="p">,</span>
+  <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;google.cloud.kms.v1.KeyOperationAttestation&#39;</span><span class="p">,</span>
+  <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+  <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+  <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+  <span class="n">fields</span><span class="o">=</span><span class="p">[</span>
+    <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
+      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;format&#39;</span><span class="p">,</span> <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;google.cloud.kms.v1.KeyOperationAttestation.format&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+      <span class="n">number</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span> <span class="n">cpp_type</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+      <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default_value</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+      <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+      <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+      <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">),</span>
+    <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
+      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;content&#39;</span><span class="p">,</span> <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;google.cloud.kms.v1.KeyOperationAttestation.content&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+      <span class="n">number</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">cpp_type</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+      <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default_value</span><span class="o">=</span><span class="n">_b</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">),</span>
+      <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+      <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+      <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">),</span>
+  <span class="p">],</span>
+  <span class="n">extensions</span><span class="o">=</span><span class="p">[</span>
+  <span class="p">],</span>
+  <span class="n">nested_types</span><span class="o">=</span><span class="p">[],</span>
+  <span class="n">enum_types</span><span class="o">=</span><span class="p">[</span>
+    <span class="n">_KEYOPERATIONATTESTATION_ATTESTATIONFORMAT</span><span class="p">,</span>
+  <span class="p">],</span>
+  <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+  <span class="n">is_extendable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+  <span class="n">syntax</span><span class="o">=</span><span class="s1">&#39;proto3&#39;</span><span class="p">,</span>
+  <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
+  <span class="n">oneofs</span><span class="o">=</span><span class="p">[</span>
+  <span class="p">],</span>
+  <span class="n">serialized_start</span><span class="o">=</span><span class="mi">1045</span><span class="p">,</span>
+  <span class="n">serialized_end</span><span class="o">=</span><span class="mi">1250</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -295,21 +532,49 @@
       <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
       <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">),</span>
     <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
-      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;create_time&#39;</span><span class="p">,</span> <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;google.cloud.kms.v1.CryptoKeyVersion.create_time&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;protection_level&#39;</span><span class="p">,</span> <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;google.cloud.kms.v1.CryptoKeyVersion.protection_level&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+      <span class="n">number</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span> <span class="n">cpp_type</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+      <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default_value</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+      <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+      <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+      <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">),</span>
+    <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
+      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;algorithm&#39;</span><span class="p">,</span> <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;google.cloud.kms.v1.CryptoKeyVersion.algorithm&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+      <span class="n">number</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span> <span class="n">cpp_type</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+      <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default_value</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+      <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+      <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+      <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">),</span>
+    <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
+      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;attestation&#39;</span><span class="p">,</span> <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;google.cloud.kms.v1.CryptoKeyVersion.attestation&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+      <span class="n">number</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span> <span class="n">cpp_type</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+      <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default_value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+      <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+      <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+      <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">),</span>
+    <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
+      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;create_time&#39;</span><span class="p">,</span> <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;google.cloud.kms.v1.CryptoKeyVersion.create_time&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
       <span class="n">number</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span> <span class="n">cpp_type</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
       <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default_value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
       <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
       <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
       <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">),</span>
     <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
-      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;destroy_time&#39;</span><span class="p">,</span> <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;google.cloud.kms.v1.CryptoKeyVersion.destroy_time&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;generate_time&#39;</span><span class="p">,</span> <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;google.cloud.kms.v1.CryptoKeyVersion.generate_time&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
+      <span class="n">number</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span> <span class="n">cpp_type</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+      <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default_value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+      <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+      <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+      <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">),</span>
+    <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
+      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;destroy_time&#39;</span><span class="p">,</span> <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;google.cloud.kms.v1.CryptoKeyVersion.destroy_time&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span>
       <span class="n">number</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span> <span class="n">cpp_type</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
       <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default_value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
       <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
       <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
       <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">),</span>
     <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
-      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;destroy_event_time&#39;</span><span class="p">,</span> <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;google.cloud.kms.v1.CryptoKeyVersion.destroy_event_time&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;destroy_event_time&#39;</span><span class="p">,</span> <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;google.cloud.kms.v1.CryptoKeyVersion.destroy_event_time&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span>
       <span class="n">number</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span> <span class="n">cpp_type</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
       <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default_value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
       <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -320,7 +585,9 @@
   <span class="p">],</span>
   <span class="n">nested_types</span><span class="o">=</span><span class="p">[],</span>
   <span class="n">enum_types</span><span class="o">=</span><span class="p">[</span>
+    <span class="n">_CRYPTOKEYVERSION_CRYPTOKEYVERSIONALGORITHM</span><span class="p">,</span>
     <span class="n">_CRYPTOKEYVERSION_CRYPTOKEYVERSIONSTATE</span><span class="p">,</span>
+    <span class="n">_CRYPTOKEYVERSION_CRYPTOKEYVERSIONVIEW</span><span class="p">,</span>
   <span class="p">],</span>
   <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
   <span class="n">is_extendable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
@@ -328,8 +595,46 @@
   <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
   <span class="n">oneofs</span><span class="o">=</span><span class="p">[</span>
   <span class="p">],</span>
-  <span class="n">serialized_start</span><span class="o">=</span><span class="mi">750</span><span class="p">,</span>
-  <span class="n">serialized_end</span><span class="o">=</span><span class="mi">1146</span><span class="p">,</span>
+  <span class="n">serialized_start</span><span class="o">=</span><span class="mi">1253</span><span class="p">,</span>
+  <span class="n">serialized_end</span><span class="o">=</span><span class="mi">2461</span><span class="p">,</span>
+<span class="p">)</span>
+
+
+<span class="n">_PUBLICKEY</span> <span class="o">=</span> <span class="n">_descriptor</span><span class="o">.</span><span class="n">Descriptor</span><span class="p">(</span>
+  <span class="n">name</span><span class="o">=</span><span class="s1">&#39;PublicKey&#39;</span><span class="p">,</span>
+  <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;google.cloud.kms.v1.PublicKey&#39;</span><span class="p">,</span>
+  <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+  <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+  <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+  <span class="n">fields</span><span class="o">=</span><span class="p">[</span>
+    <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
+      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;pem&#39;</span><span class="p">,</span> <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;google.cloud.kms.v1.PublicKey.pem&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+      <span class="n">number</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">cpp_type</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+      <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default_value</span><span class="o">=</span><span class="n">_b</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">),</span>
+      <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+      <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+      <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">),</span>
+    <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
+      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;algorithm&#39;</span><span class="p">,</span> <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;google.cloud.kms.v1.PublicKey.algorithm&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+      <span class="n">number</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span> <span class="n">cpp_type</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+      <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default_value</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+      <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+      <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+      <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">),</span>
+  <span class="p">],</span>
+  <span class="n">extensions</span><span class="o">=</span><span class="p">[</span>
+  <span class="p">],</span>
+  <span class="n">nested_types</span><span class="o">=</span><span class="p">[],</span>
+  <span class="n">enum_types</span><span class="o">=</span><span class="p">[</span>
+  <span class="p">],</span>
+  <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+  <span class="n">is_extendable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+  <span class="n">syntax</span><span class="o">=</span><span class="s1">&#39;proto3&#39;</span><span class="p">,</span>
+  <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
+  <span class="n">oneofs</span><span class="o">=</span><span class="p">[</span>
+  <span class="p">],</span>
+  <span class="n">serialized_start</span><span class="o">=</span><span class="mi">2463</span><span class="p">,</span>
+  <span class="n">serialized_end</span><span class="o">=</span><span class="mi">2571</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="n">_KEYRING</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span><span class="s1">&#39;create_time&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">message_type</span> <span class="o">=</span> <span class="n">google_dot_protobuf_dot_timestamp__pb2</span><span class="o">.</span><span class="n">_TIMESTAMP</span>
@@ -339,19 +644,35 @@
 <span class="n">_CRYPTOKEY</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span><span class="s1">&#39;create_time&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">message_type</span> <span class="o">=</span> <span class="n">google_dot_protobuf_dot_timestamp__pb2</span><span class="o">.</span><span class="n">_TIMESTAMP</span>
 <span class="n">_CRYPTOKEY</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span><span class="s1">&#39;next_rotation_time&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">message_type</span> <span class="o">=</span> <span class="n">google_dot_protobuf_dot_timestamp__pb2</span><span class="o">.</span><span class="n">_TIMESTAMP</span>
 <span class="n">_CRYPTOKEY</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span><span class="s1">&#39;rotation_period&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">message_type</span> <span class="o">=</span> <span class="n">google_dot_protobuf_dot_duration__pb2</span><span class="o">.</span><span class="n">_DURATION</span>
+<span class="n">_CRYPTOKEY</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span><span class="s1">&#39;version_template&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">message_type</span> <span class="o">=</span> <span class="n">_CRYPTOKEYVERSIONTEMPLATE</span>
 <span class="n">_CRYPTOKEY</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span><span class="s1">&#39;labels&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">message_type</span> <span class="o">=</span> <span class="n">_CRYPTOKEY_LABELSENTRY</span>
 <span class="n">_CRYPTOKEY_CRYPTOKEYPURPOSE</span><span class="o">.</span><span class="n">containing_type</span> <span class="o">=</span> <span class="n">_CRYPTOKEY</span>
 <span class="n">_CRYPTOKEY</span><span class="o">.</span><span class="n">oneofs_by_name</span><span class="p">[</span><span class="s1">&#39;rotation_schedule&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">fields</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
   <span class="n">_CRYPTOKEY</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span><span class="s1">&#39;rotation_period&#39;</span><span class="p">])</span>
 <span class="n">_CRYPTOKEY</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span><span class="s1">&#39;rotation_period&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">containing_oneof</span> <span class="o">=</span> <span class="n">_CRYPTOKEY</span><span class="o">.</span><span class="n">oneofs_by_name</span><span class="p">[</span><span class="s1">&#39;rotation_schedule&#39;</span><span class="p">]</span>
+<span class="n">_CRYPTOKEYVERSIONTEMPLATE</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span><span class="s1">&#39;protection_level&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">enum_type</span> <span class="o">=</span> <span class="n">_PROTECTIONLEVEL</span>
+<span class="n">_CRYPTOKEYVERSIONTEMPLATE</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span><span class="s1">&#39;algorithm&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">enum_type</span> <span class="o">=</span> <span class="n">_CRYPTOKEYVERSION_CRYPTOKEYVERSIONALGORITHM</span>
+<span class="n">_KEYOPERATIONATTESTATION</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span><span class="s1">&#39;format&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">enum_type</span> <span class="o">=</span> <span class="n">_KEYOPERATIONATTESTATION_ATTESTATIONFORMAT</span>
+<span class="n">_KEYOPERATIONATTESTATION_ATTESTATIONFORMAT</span><span class="o">.</span><span class="n">containing_type</span> <span class="o">=</span> <span class="n">_KEYOPERATIONATTESTATION</span>
 <span class="n">_CRYPTOKEYVERSION</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span><span class="s1">&#39;state&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">enum_type</span> <span class="o">=</span> <span class="n">_CRYPTOKEYVERSION_CRYPTOKEYVERSIONSTATE</span>
+<span class="n">_CRYPTOKEYVERSION</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span><span class="s1">&#39;protection_level&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">enum_type</span> <span class="o">=</span> <span class="n">_PROTECTIONLEVEL</span>
+<span class="n">_CRYPTOKEYVERSION</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span><span class="s1">&#39;algorithm&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">enum_type</span> <span class="o">=</span> <span class="n">_CRYPTOKEYVERSION_CRYPTOKEYVERSIONALGORITHM</span>
+<span class="n">_CRYPTOKEYVERSION</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span><span class="s1">&#39;attestation&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">message_type</span> <span class="o">=</span> <span class="n">_KEYOPERATIONATTESTATION</span>
 <span class="n">_CRYPTOKEYVERSION</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span><span class="s1">&#39;create_time&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">message_type</span> <span class="o">=</span> <span class="n">google_dot_protobuf_dot_timestamp__pb2</span><span class="o">.</span><span class="n">_TIMESTAMP</span>
+<span class="n">_CRYPTOKEYVERSION</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span><span class="s1">&#39;generate_time&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">message_type</span> <span class="o">=</span> <span class="n">google_dot_protobuf_dot_timestamp__pb2</span><span class="o">.</span><span class="n">_TIMESTAMP</span>
 <span class="n">_CRYPTOKEYVERSION</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span><span class="s1">&#39;destroy_time&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">message_type</span> <span class="o">=</span> <span class="n">google_dot_protobuf_dot_timestamp__pb2</span><span class="o">.</span><span class="n">_TIMESTAMP</span>
 <span class="n">_CRYPTOKEYVERSION</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span><span class="s1">&#39;destroy_event_time&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">message_type</span> <span class="o">=</span> <span class="n">google_dot_protobuf_dot_timestamp__pb2</span><span class="o">.</span><span class="n">_TIMESTAMP</span>
+<span class="n">_CRYPTOKEYVERSION_CRYPTOKEYVERSIONALGORITHM</span><span class="o">.</span><span class="n">containing_type</span> <span class="o">=</span> <span class="n">_CRYPTOKEYVERSION</span>
 <span class="n">_CRYPTOKEYVERSION_CRYPTOKEYVERSIONSTATE</span><span class="o">.</span><span class="n">containing_type</span> <span class="o">=</span> <span class="n">_CRYPTOKEYVERSION</span>
+<span class="n">_CRYPTOKEYVERSION_CRYPTOKEYVERSIONVIEW</span><span class="o">.</span><span class="n">containing_type</span> <span class="o">=</span> <span class="n">_CRYPTOKEYVERSION</span>
+<span class="n">_PUBLICKEY</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span><span class="s1">&#39;algorithm&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">enum_type</span> <span class="o">=</span> <span class="n">_CRYPTOKEYVERSION_CRYPTOKEYVERSIONALGORITHM</span>
 <span class="n">DESCRIPTOR</span><span class="o">.</span><span class="n">message_types_by_name</span><span class="p">[</span><span class="s1">&#39;KeyRing&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_KEYRING</span>
 <span class="n">DESCRIPTOR</span><span class="o">.</span><span class="n">message_types_by_name</span><span class="p">[</span><span class="s1">&#39;CryptoKey&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_CRYPTOKEY</span>
+<span class="n">DESCRIPTOR</span><span class="o">.</span><span class="n">message_types_by_name</span><span class="p">[</span><span class="s1">&#39;CryptoKeyVersionTemplate&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_CRYPTOKEYVERSIONTEMPLATE</span>
+<span class="n">DESCRIPTOR</span><span class="o">.</span><span class="n">message_types_by_name</span><span class="p">[</span><span class="s1">&#39;KeyOperationAttestation&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_KEYOPERATIONATTESTATION</span>
 <span class="n">DESCRIPTOR</span><span class="o">.</span><span class="n">message_types_by_name</span><span class="p">[</span><span class="s1">&#39;CryptoKeyVersion&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_CRYPTOKEYVERSION</span>
+<span class="n">DESCRIPTOR</span><span class="o">.</span><span class="n">message_types_by_name</span><span class="p">[</span><span class="s1">&#39;PublicKey&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_PUBLICKEY</span>
+<span class="n">DESCRIPTOR</span><span class="o">.</span><span class="n">enum_types_by_name</span><span class="p">[</span><span class="s1">&#39;ProtectionLevel&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_PROTECTIONLEVEL</span>
 <span class="n">_sym_db</span><span class="o">.</span><span class="n">RegisterFileDescriptor</span><span class="p">(</span><span class="n">DESCRIPTOR</span><span class="p">)</span>
 
 <span class="n">KeyRing</span> <span class="o">=</span> <span class="n">_reflection</span><span class="o">.</span><span class="n">GeneratedProtocolMessageType</span><span class="p">(</span><span class="s1">&#39;KeyRing&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">_message</span><span class="o">.</span><span class="n">Message</span><span class="p">,),</span> <span class="nb">dict</span><span class="p">(</span>
@@ -409,12 +730,14 @@
 <span class="s2">          me].  The [CryptoKey][google.cloud.kms.v1.CryptoKey]&#39;s primary</span>
 <span class="s2">          version can be updated via [UpdateCryptoKeyPrimaryVersion][goo</span>
 <span class="s2">          gle.cloud.kms.v1.KeyManagementService.UpdateCryptoKeyPrimaryVe</span>
-<span class="s2">          rsion].</span>
+<span class="s2">          rsion].  All keys with</span>
+<span class="s2">          [purpose][google.cloud.kms.v1.CryptoKey.purpose] [ENCRYPT\_DEC</span>
+<span class="s2">          RYPT][google.cloud.kms.v1.CryptoKey.CryptoKeyPurpose.ENCRYPT\_</span>
+<span class="s2">          DECRYPT] have a primary. For other keys, this field will be</span>
+<span class="s2">          omitted.</span>
 <span class="s2">      purpose:</span>
 <span class="s2">          The immutable purpose of this</span>
-<span class="s2">          [CryptoKey][google.cloud.kms.v1.CryptoKey]. Currently, the</span>
-<span class="s2">          only acceptable purpose is [ENCRYPT\_DECRYPT][google.cloud.kms</span>
-<span class="s2">          .v1.CryptoKey.CryptoKeyPurpose.ENCRYPT\_DECRYPT].</span>
+<span class="s2">          [CryptoKey][google.cloud.kms.v1.CryptoKey].</span>
 <span class="s2">      create_time:</span>
 <span class="s2">          Output only. The time at which this</span>
 <span class="s2">          [CryptoKey][google.cloud.kms.v1.CryptoKey] was created.</span>
@@ -428,7 +751,11 @@
 <span class="s2">          CreateCryptoKeyVersion] and [UpdateCryptoKeyPrimaryVersion][go</span>
 <span class="s2">          ogle.cloud.kms.v1.KeyManagementService.UpdateCryptoKeyPrimaryV</span>
 <span class="s2">          ersion] do not affect [next\_rotation\_time][google.cloud.kms.</span>
-<span class="s2">          v1.CryptoKey.next\_rotation\_time].</span>
+<span class="s2">          v1.CryptoKey.next\_rotation\_time].  Keys with</span>
+<span class="s2">          [purpose][google.cloud.kms.v1.CryptoKey.purpose] [ENCRYPT\_DEC</span>
+<span class="s2">          RYPT][google.cloud.kms.v1.CryptoKey.CryptoKeyPurpose.ENCRYPT\_</span>
+<span class="s2">          DECRYPT] support automatic rotation. For other keys, this</span>
+<span class="s2">          field must be omitted.</span>
 <span class="s2">      rotation_schedule:</span>
 <span class="s2">          Controls the rate of automatic rotation.</span>
 <span class="s2">      rotation_period:</span>
@@ -437,7 +764,19 @@
 <span class="s2">          automatically rotates a key. Must be at least one day.  If [ro</span>
 <span class="s2">          tation\_period][google.cloud.kms.v1.CryptoKey.rotation\_period</span>
 <span class="s2">          ] is set, [next\_rotation\_time][google.cloud.kms.v1.CryptoKey</span>
-<span class="s2">          .next\_rotation\_time] must also be set.</span>
+<span class="s2">          .next\_rotation\_time] must also be set.  Keys with</span>
+<span class="s2">          [purpose][google.cloud.kms.v1.CryptoKey.purpose] [ENCRYPT\_DEC</span>
+<span class="s2">          RYPT][google.cloud.kms.v1.CryptoKey.CryptoKeyPurpose.ENCRYPT\_</span>
+<span class="s2">          DECRYPT] support automatic rotation. For other keys, this</span>
+<span class="s2">          field must be omitted.</span>
+<span class="s2">      version_template:</span>
+<span class="s2">          A template describing settings for new</span>
+<span class="s2">          [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]</span>
+<span class="s2">          instances. The properties of new</span>
+<span class="s2">          [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]</span>
+<span class="s2">          instances created by either [CreateCryptoKeyVersion][google.cl</span>
+<span class="s2">          oud.kms.v1.KeyManagementService.CreateCryptoKeyVersion] or</span>
+<span class="s2">          auto-rotation are controlled by this template.</span>
 <span class="s2">      labels:</span>
 <span class="s2">          Labels with user-defined metadata. For more information, see</span>
 <span class="s2">          `Labeling Keys &lt;/kms/docs/labeling-keys&gt;`__.</span>
@@ -447,6 +786,59 @@
 <span class="n">_sym_db</span><span class="o">.</span><span class="n">RegisterMessage</span><span class="p">(</span><span class="n">CryptoKey</span><span class="p">)</span>
 <span class="n">_sym_db</span><span class="o">.</span><span class="n">RegisterMessage</span><span class="p">(</span><span class="n">CryptoKey</span><span class="o">.</span><span class="n">LabelsEntry</span><span class="p">)</span>
 
+<span class="n">CryptoKeyVersionTemplate</span> <span class="o">=</span> <span class="n">_reflection</span><span class="o">.</span><span class="n">GeneratedProtocolMessageType</span><span class="p">(</span><span class="s1">&#39;CryptoKeyVersionTemplate&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">_message</span><span class="o">.</span><span class="n">Message</span><span class="p">,),</span> <span class="nb">dict</span><span class="p">(</span>
+  <span class="n">DESCRIPTOR</span> <span class="o">=</span> <span class="n">_CRYPTOKEYVERSIONTEMPLATE</span><span class="p">,</span>
+  <span class="vm">__module__</span> <span class="o">=</span> <span class="s1">&#39;google.cloud.kms_v1.proto.resources_pb2&#39;</span>
+  <span class="p">,</span>
+  <span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;A</span>
+<span class="s2">  [CryptoKeyVersionTemplate][google.cloud.kms.v1.CryptoKeyVersionTemplate]</span>
+<span class="s2">  specifies the properties to use when creating a new</span>
+<span class="s2">  [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion], either</span>
+<span class="s2">  manually with</span>
+<span class="s2">  [CreateCryptoKeyVersion][google.cloud.kms.v1.KeyManagementService.CreateCryptoKeyVersion]</span>
+<span class="s2">  or automatically as a result of auto-rotation.</span>
+<span class="s2">  </span>
+<span class="s2">  </span>
+<span class="s2">  Attributes:</span>
+<span class="s2">      protection_level:</span>
+<span class="s2">          [ProtectionLevel][google.cloud.kms.v1.ProtectionLevel] to use</span>
+<span class="s2">          when creating a</span>
+<span class="s2">          [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] based</span>
+<span class="s2">          on this template. Immutable. Defaults to</span>
+<span class="s2">          [SOFTWARE][google.cloud.kms.v1.ProtectionLevel.SOFTWARE].</span>
+<span class="s2">      algorithm:</span>
+<span class="s2">          Required. [Algorithm][google.cloud.kms.v1.CryptoKeyVersion.Cry</span>
+<span class="s2">          ptoKeyVersionAlgorithm] to use when creating a</span>
+<span class="s2">          [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] based</span>
+<span class="s2">          on this template.  For backwards compatibility,</span>
+<span class="s2">          GOOGLE\_SYMMETRIC\_ENCRYPTION is implied if both this field is</span>
+<span class="s2">          omitted and</span>
+<span class="s2">          [CryptoKey.purpose][google.cloud.kms.v1.CryptoKey.purpose] is </span>
+<span class="s2">          [ENCRYPT\_DECRYPT][google.cloud.kms.v1.CryptoKey.CryptoKeyPurp</span>
+<span class="s2">          ose.ENCRYPT\_DECRYPT].</span>
+<span class="s2">  &quot;&quot;&quot;</span><span class="p">,</span>
+  <span class="c1"># @@protoc_insertion_point(class_scope:google.cloud.kms.v1.CryptoKeyVersionTemplate)</span>
+  <span class="p">))</span>
+<span class="n">_sym_db</span><span class="o">.</span><span class="n">RegisterMessage</span><span class="p">(</span><span class="n">CryptoKeyVersionTemplate</span><span class="p">)</span>
+
+<span class="n">KeyOperationAttestation</span> <span class="o">=</span> <span class="n">_reflection</span><span class="o">.</span><span class="n">GeneratedProtocolMessageType</span><span class="p">(</span><span class="s1">&#39;KeyOperationAttestation&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">_message</span><span class="o">.</span><span class="n">Message</span><span class="p">,),</span> <span class="nb">dict</span><span class="p">(</span>
+  <span class="n">DESCRIPTOR</span> <span class="o">=</span> <span class="n">_KEYOPERATIONATTESTATION</span><span class="p">,</span>
+  <span class="vm">__module__</span> <span class="o">=</span> <span class="s1">&#39;google.cloud.kms_v1.proto.resources_pb2&#39;</span>
+  <span class="p">,</span>
+  <span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;Contains an HSM-generated attestation about a key operation.</span>
+<span class="s2">  </span>
+<span class="s2">  </span>
+<span class="s2">  Attributes:</span>
+<span class="s2">      format:</span>
+<span class="s2">          Output only. The format of the attestation data.</span>
+<span class="s2">      content:</span>
+<span class="s2">          Output only. The attestation data provided by the HSM when the</span>
+<span class="s2">          key operation was performed.</span>
+<span class="s2">  &quot;&quot;&quot;</span><span class="p">,</span>
+  <span class="c1"># @@protoc_insertion_point(class_scope:google.cloud.kms.v1.KeyOperationAttestation)</span>
+  <span class="p">))</span>
+<span class="n">_sym_db</span><span class="o">.</span><span class="n">RegisterMessage</span><span class="p">(</span><span class="n">KeyOperationAttestation</span><span class="p">)</span>
+
 <span class="n">CryptoKeyVersion</span> <span class="o">=</span> <span class="n">_reflection</span><span class="o">.</span><span class="n">GeneratedProtocolMessageType</span><span class="p">(</span><span class="s1">&#39;CryptoKeyVersion&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">_message</span><span class="o">.</span><span class="n">Message</span><span class="p">,),</span> <span class="nb">dict</span><span class="p">(</span>
   <span class="n">DESCRIPTOR</span> <span class="o">=</span> <span class="n">_CRYPTOKEYVERSION</span><span class="p">,</span>
   <span class="vm">__module__</span> <span class="o">=</span> <span class="s1">&#39;google.cloud.kms_v1.proto.resources_pb2&#39;</span>
@@ -454,14 +846,14 @@
   <span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;A [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] represents an</span>
 <span class="s2">  individual cryptographic key, and the associated key material.</span>
 <span class="s2">  </span>
-<span class="s2">  It can be used for cryptographic operations either directly, or via its</span>
-<span class="s2">  parent [CryptoKey][google.cloud.kms.v1.CryptoKey], in which case the</span>
-<span class="s2">  server will choose the appropriate version for the operation.</span>
+<span class="s2">  An</span>
+<span class="s2">  [ENABLED][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionState.ENABLED]</span>
+<span class="s2">  version can be used for cryptographic operations.</span>
 <span class="s2">  </span>
 <span class="s2">  For security reasons, the raw cryptographic key material represented by</span>
 <span class="s2">  a [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] can never be</span>
-<span class="s2">  viewed or exported. It can only be used to encrypt or decrypt data when</span>
-<span class="s2">  an authorized user or application invokes Cloud KMS.</span>
+<span class="s2">  viewed or exported. It can only be used to encrypt, decrypt, or sign</span>
+<span class="s2">  data when an authorized user or application invokes Cloud KMS.</span>
 <span class="s2">  </span>
 <span class="s2">  </span>
 <span class="s2">  Attributes:</span>
@@ -473,10 +865,31 @@
 <span class="s2">      state:</span>
 <span class="s2">          The current state of the</span>
 <span class="s2">          [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion].</span>
+<span class="s2">      protection_level:</span>
+<span class="s2">          Output only. The</span>
+<span class="s2">          [ProtectionLevel][google.cloud.kms.v1.ProtectionLevel]</span>
+<span class="s2">          describing how crypto operations are performed with this</span>
+<span class="s2">          [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion].</span>
+<span class="s2">      algorithm:</span>
+<span class="s2">          Output only. The [CryptoKeyVersionAlgorithm][google.cloud.kms.</span>
+<span class="s2">          v1.CryptoKeyVersion.CryptoKeyVersionAlgorithm] that this</span>
+<span class="s2">          [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]</span>
+<span class="s2">          supports.</span>
+<span class="s2">      attestation:</span>
+<span class="s2">          Output only. Statement that was generated and signed by the</span>
+<span class="s2">          HSM at key creation time. Use this statement to verify</span>
+<span class="s2">          attributes of the key as stored on the HSM, independently of</span>
+<span class="s2">          Google. Only provided for key versions with [protection\_level</span>
+<span class="s2">          ][google.cloud.kms.v1.CryptoKeyVersion.protection\_level]</span>
+<span class="s2">          [HSM][google.cloud.kms.v1.ProtectionLevel.HSM].</span>
 <span class="s2">      create_time:</span>
 <span class="s2">          Output only. The time at which this</span>
 <span class="s2">          [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] was</span>
 <span class="s2">          created.</span>
+<span class="s2">      generate_time:</span>
+<span class="s2">          Output only. The time this</span>
+<span class="s2">          [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]&#39;s key</span>
+<span class="s2">          material was generated.</span>
 <span class="s2">      destroy_time:</span>
 <span class="s2">          Output only. The time this</span>
 <span class="s2">          [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]&#39;s key</span>
@@ -494,6 +907,31 @@
   <span class="c1"># @@protoc_insertion_point(class_scope:google.cloud.kms.v1.CryptoKeyVersion)</span>
   <span class="p">))</span>
 <span class="n">_sym_db</span><span class="o">.</span><span class="n">RegisterMessage</span><span class="p">(</span><span class="n">CryptoKeyVersion</span><span class="p">)</span>
+
+<span class="n">PublicKey</span> <span class="o">=</span> <span class="n">_reflection</span><span class="o">.</span><span class="n">GeneratedProtocolMessageType</span><span class="p">(</span><span class="s1">&#39;PublicKey&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">_message</span><span class="o">.</span><span class="n">Message</span><span class="p">,),</span> <span class="nb">dict</span><span class="p">(</span>
+  <span class="n">DESCRIPTOR</span> <span class="o">=</span> <span class="n">_PUBLICKEY</span><span class="p">,</span>
+  <span class="vm">__module__</span> <span class="o">=</span> <span class="s1">&#39;google.cloud.kms_v1.proto.resources_pb2&#39;</span>
+  <span class="p">,</span>
+  <span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;The public key for a given</span>
+<span class="s2">  [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]. Obtained via</span>
+<span class="s2">  [GetPublicKey][google.cloud.kms.v1.KeyManagementService.GetPublicKey].</span>
+<span class="s2">  </span>
+<span class="s2">  </span>
+<span class="s2">  Attributes:</span>
+<span class="s2">      pem:</span>
+<span class="s2">          The public key, encoded in PEM format. For more information,</span>
+<span class="s2">          see the `RFC 7468 &lt;https://tools.ietf.org/html/rfc7468&gt;`__</span>
+<span class="s2">          sections for `General Considerations</span>
+<span class="s2">          &lt;https://tools.ietf.org/html/rfc7468#section-2&gt;`__ and</span>
+<span class="s2">          [Textual Encoding of Subject Public Key Info]</span>
+<span class="s2">          (https://tools.ietf.org/html/rfc7468#section-13).</span>
+<span class="s2">      algorithm:</span>
+<span class="s2">          The [Algorithm][google.cloud.kms.v1.CryptoKeyVersion.CryptoKey</span>
+<span class="s2">          VersionAlgorithm] associated with this key.</span>
+<span class="s2">  &quot;&quot;&quot;</span><span class="p">,</span>
+  <span class="c1"># @@protoc_insertion_point(class_scope:google.cloud.kms.v1.PublicKey)</span>
+  <span class="p">))</span>
+<span class="n">_sym_db</span><span class="o">.</span><span class="n">RegisterMessage</span><span class="p">(</span><span class="n">PublicKey</span><span class="p">)</span>
 
 
 <span class="n">DESCRIPTOR</span><span class="o">.</span><span class="n">has_options</span> <span class="o">=</span> <span class="kc">True</span>
@@ -529,41 +967,41 @@
 
 <h3>Navigation</h3>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../../../releases.html"><code class="docutils literal notranslate"><span class="pre">google-cloud</span></code> Releases</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../../core/index.html">Core</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../../asset/index.html">Python Client for Cloud Asset API (Alpha)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../../automl/index.html">Python Client for Cloud AutoML API (Alpha)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../core/index.html">Core Libraries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../asset/index.html">Asset Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../automl/index.html">AutoML</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../bigquery/usage.html">BigQuery</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../../bigquery_datatransfer/index.html">Python Client for BigQuery Data Transfer API (Alpha)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../bigquery_datatransfer/index.html">BigQuery Data-Transfer</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../bigtable/usage.html">Bigtable</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../../container/index.html">Python Client for Google Container Engine API (Beta)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../../dataproc/index.html">Python Client for Google Cloud Dataproc API (Alpha)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../../datastore/index.html">Python Client for Google Cloud Datastore</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../../dlp/index.html">Python Client for Cloud Data Loss Prevention (DLP) API (Alpha)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../container/index.html">Container</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../dataproc/index.html">Dataproc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../datastore/index.html">Datastore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../dlp/index.html">Data Loss Prevention</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../dns/usage.html">DNS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../firestore/index.html">Firestore</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../../iot/index.html">Python Client for Cloud IoT API (Alpha)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../../kms/index.html">Python Client for Google Cloud Key Management Service (KMS) API (Alpha)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../../language/usage.html">Natural Language</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../../pubsub/index.html">Pub/Sub</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../../oslogin/index.html">Python Client for Google Cloud OS Login API (Alpha)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../../resource-manager/api.html">Resource Manager</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../../resource-manager/api.html#installation">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../../resource-manager/api.html#usage">Usage</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../../runtimeconfig/usage.html">Runtimeconfig</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../../spanner/usage.html">Spanner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../iot/index.html">IoT</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../kms/index.html">Key Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../language/index.html">Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pubsub/index.html">PubSub</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../oslogin/index.html">OSLogin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../redis/index.html">Redis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../resource-manager/index.html">Resource Manager</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../runtimeconfig/usage.html">Runtime Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../websecurityscanner/index.html">Security Scanner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../spanner/index.html">Python Client for Cloud Spanner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../spanner/index.html#changelog">Changelog</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../speech/index.html">Speech</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../../error-reporting/usage.html">Stackdriver Error Reporting</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../../monitoring/index.html">Python Client for Stackdriver Monitoring API (Alpha)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../../logging/usage.html">Stackdriver Logging</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../../redis/index.html">Python Client for Google Cloud Memorystore for Redis API (Alpha)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../../storage/index.html">Python Client for Google Cloud Storage</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../../tasks/index.html">Python Client for Cloud Tasks API (Alpha)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../../texttospeech/index.html">Python Client for Cloud Text-to-Speech API (Alpha)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../../translate/usage.html">Translation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../storage/index.html">Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../tasks/index.html">Tasks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../texttospeech/index.html">Text-to-Speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../translate/index.html">Translate</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../vision/index.html">Vision</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../videointelligence/index.html">Video Intelligence</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../../websecurityscanner/index.html">Python Client for Web Security Scanner API (Alpha)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../error-reporting/usage.html">Stackdriver Error Reporting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../logging/index.html">Stackdriver Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../monitoring/index.html">Stackdriver Monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../trace/index.html">Stackdriver Trace</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../releases.html">Release History</a></li>
 </ul>
 
 <div class="relations">
