@@ -334,7 +334,7 @@ class PartialRowsData(object):
                    STATE_CELL_IN_PROGRESS: CELL_IN_PROGRESS}
 
     def __init__(self, read_method, request):
-        # Counter for responses pulled from iterator
+        # Counter for rows returned to the user
         self._counter = 0
         # In-progress row, unset until first response, after commit/reset
         self._row = None
