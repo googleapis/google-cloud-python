@@ -608,6 +608,10 @@ class _ReadRowsRequestManager(object):
         row_ranges = self._filter_row_ranges()
         r_kwargs['rows'] = data_v2_pb2.RowSet(row_keys=row_keys,
                                               row_ranges=row_ranges)
+        if not self.message.HasField('rows'):
+            row_range = data_v2_pb2.RowRange(
+                start_key_open=self.last_scanned_key)
+            r_kwargs['rows'] = data_v2_pb2.RowSet(row_ranges=[row_range])
 
         return data_messages_v2_pb2.ReadRowsRequest(**r_kwargs)
 
