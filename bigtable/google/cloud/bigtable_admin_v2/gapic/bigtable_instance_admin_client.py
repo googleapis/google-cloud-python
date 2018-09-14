@@ -296,8 +296,8 @@ class BigtableInstanceAdminClient(object):
                 'create_instance'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.create_instance,
                     default_retry=self._method_configs['CreateInstance'].retry,
-                    default_timeout=self._method_configs['CreateInstance']
-                    .timeout,
+                    default_timeout=self._method_configs['CreateInstance'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -373,8 +373,8 @@ class BigtableInstanceAdminClient(object):
                 'get_instance'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.get_instance,
                     default_retry=self._method_configs['GetInstance'].retry,
-                    default_timeout=self._method_configs['GetInstance']
-                    .timeout,
+                    default_timeout=self._method_configs['GetInstance'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -441,8 +441,8 @@ class BigtableInstanceAdminClient(object):
                 'list_instances'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.list_instances,
                     default_retry=self._method_configs['ListInstances'].retry,
-                    default_timeout=self._method_configs['ListInstances']
-                    .timeout,
+                    default_timeout=self._method_configs['ListInstances'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -542,8 +542,8 @@ class BigtableInstanceAdminClient(object):
                 'update_instance'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.update_instance,
                     default_retry=self._method_configs['UpdateInstance'].retry,
-                    default_timeout=self._method_configs['UpdateInstance']
-                    .timeout,
+                    default_timeout=self._method_configs['UpdateInstance'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -633,10 +633,10 @@ class BigtableInstanceAdminClient(object):
             self._inner_api_calls[
                 'partial_update_instance'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.partial_update_instance,
-                    default_retry=self._method_configs['PartialUpdateInstance']
-                    .retry,
-                    default_timeout=self._method_configs[
-                        'PartialUpdateInstance'].timeout,
+                    default_retry=self.
+                    _method_configs['PartialUpdateInstance'].retry,
+                    default_timeout=self.
+                    _method_configs['PartialUpdateInstance'].timeout,
                     client_info=self._client_info,
                 )
 
@@ -707,8 +707,8 @@ class BigtableInstanceAdminClient(object):
                 'delete_instance'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.delete_instance,
                     default_retry=self._method_configs['DeleteInstance'].retry,
-                    default_timeout=self._method_configs['DeleteInstance']
-                    .timeout,
+                    default_timeout=self._method_configs['DeleteInstance'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -799,8 +799,8 @@ class BigtableInstanceAdminClient(object):
                 'create_cluster'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.create_cluster,
                     default_retry=self._method_configs['CreateCluster'].retry,
-                    default_timeout=self._method_configs['CreateCluster']
-                    .timeout,
+                    default_timeout=self._method_configs['CreateCluster'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -944,8 +944,8 @@ class BigtableInstanceAdminClient(object):
                 'list_clusters'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.list_clusters,
                     default_retry=self._method_configs['ListClusters'].retry,
-                    default_timeout=self._method_configs['ListClusters']
-                    .timeout,
+                    default_timeout=self._method_configs['ListClusters'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -1042,8 +1042,8 @@ class BigtableInstanceAdminClient(object):
                 'update_cluster'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.update_cluster,
                     default_retry=self._method_configs['UpdateCluster'].retry,
-                    default_timeout=self._method_configs['UpdateCluster']
-                    .timeout,
+                    default_timeout=self._method_configs['UpdateCluster'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -1117,8 +1117,8 @@ class BigtableInstanceAdminClient(object):
                 'delete_cluster'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.delete_cluster,
                     default_retry=self._method_configs['DeleteCluster'].retry,
-                    default_timeout=self._method_configs['DeleteCluster']
-                    .timeout,
+                    default_timeout=self._method_configs['DeleteCluster'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -1200,10 +1200,10 @@ class BigtableInstanceAdminClient(object):
             self._inner_api_calls[
                 'create_app_profile'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.create_app_profile,
-                    default_retry=self._method_configs[
-                        'CreateAppProfile'].retry,
-                    default_timeout=self._method_configs['CreateAppProfile']
-                    .timeout,
+                    default_retry=self._method_configs['CreateAppProfile'].
+                    retry,
+                    default_timeout=self._method_configs['CreateAppProfile'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -1273,8 +1273,8 @@ class BigtableInstanceAdminClient(object):
                 'get_app_profile'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.get_app_profile,
                     default_retry=self._method_configs['GetAppProfile'].retry,
-                    default_timeout=self._method_configs['GetAppProfile']
-                    .timeout,
+                    default_timeout=self._method_configs['GetAppProfile'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -1359,10 +1359,10 @@ class BigtableInstanceAdminClient(object):
             self._inner_api_calls[
                 'list_app_profiles'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.list_app_profiles,
-                    default_retry=self._method_configs[
-                        'ListAppProfiles'].retry,
-                    default_timeout=self._method_configs['ListAppProfiles']
-                    .timeout,
+                    default_retry=self._method_configs['ListAppProfiles'].
+                    retry,
+                    default_timeout=self._method_configs['ListAppProfiles'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -1461,10 +1461,10 @@ class BigtableInstanceAdminClient(object):
             self._inner_api_calls[
                 'update_app_profile'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.update_app_profile,
-                    default_retry=self._method_configs[
-                        'UpdateAppProfile'].retry,
-                    default_timeout=self._method_configs['UpdateAppProfile']
-                    .timeout,
+                    default_retry=self._method_configs['UpdateAppProfile'].
+                    retry,
+                    default_timeout=self._method_configs['UpdateAppProfile'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -1540,10 +1540,10 @@ class BigtableInstanceAdminClient(object):
             self._inner_api_calls[
                 'delete_app_profile'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.delete_app_profile,
-                    default_retry=self._method_configs[
-                        'DeleteAppProfile'].retry,
-                    default_timeout=self._method_configs['DeleteAppProfile']
-                    .timeout,
+                    default_retry=self._method_configs['DeleteAppProfile'].
+                    retry,
+                    default_timeout=self._method_configs['DeleteAppProfile'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -1613,8 +1613,8 @@ class BigtableInstanceAdminClient(object):
                 'get_iam_policy'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.get_iam_policy,
                     default_retry=self._method_configs['GetIamPolicy'].retry,
-                    default_timeout=self._method_configs['GetIamPolicy']
-                    .timeout,
+                    default_timeout=self._method_configs['GetIamPolicy'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -1691,8 +1691,8 @@ class BigtableInstanceAdminClient(object):
                 'set_iam_policy'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.set_iam_policy,
                     default_retry=self._method_configs['SetIamPolicy'].retry,
-                    default_timeout=self._method_configs['SetIamPolicy']
-                    .timeout,
+                    default_timeout=self._method_configs['SetIamPolicy'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -1768,10 +1768,10 @@ class BigtableInstanceAdminClient(object):
             self._inner_api_calls[
                 'test_iam_permissions'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.test_iam_permissions,
-                    default_retry=self._method_configs[
-                        'TestIamPermissions'].retry,
-                    default_timeout=self._method_configs['TestIamPermissions']
-                    .timeout,
+                    default_retry=self._method_configs['TestIamPermissions'].
+                    retry,
+                    default_timeout=self._method_configs['TestIamPermissions'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
