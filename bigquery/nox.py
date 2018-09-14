@@ -96,22 +96,23 @@ def system(session, py):
     # Set the virtualenv dirname.
     session.virtualenv_dirname = 'sys-' + py
 
-    # Use pre-release gRPC for system tests.
-    session.install('--pre', 'grpcio')
+    if 'offline' not in session.posargs:
+      # Use pre-release gRPC for system tests.
+      session.install('--pre', 'grpcio')
 
-    # Install all test dependencies, then install local packages in place.
-    session.install('mock', 'pytest')
-    for local_dep in LOCAL_DEPS:
-        session.install('-e', local_dep)
-    session.install('-e', os.path.join('..', 'storage'))
-    session.install('-e', os.path.join('..', 'test_utils'))
-    session.install('-e', '.[pandas]')
+      # Install all test dependencies, then install local packages in place.
+      session.install('mock', 'pytest')
+      for local_dep in LOCAL_DEPS:
+          session.install('-e', local_dep)
+      session.install('-e', os.path.join('..', 'storage'))
+      session.install('-e', os.path.join('..', 'test_utils'))
+      session.install('-e', '.[pandas]')
 
-    # IPython does not support Python 2 after version 5.x
-    if session.interpreter == 'python2.7':
-        session.install('ipython==5.5')
-    else:
-        session.install('ipython')
+      # IPython does not support Python 2 after version 5.x
+      if session.interpreter == 'python2.7':
+          session.install('ipython==5.5')
+      else:
+          session.install('ipython')
 
     # Run py.test against the system tests.
     session.run(
