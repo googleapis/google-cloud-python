@@ -313,8 +313,8 @@ class BigtableClient(object):
                 'sample_row_keys'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.sample_row_keys,
                     default_retry=self._method_configs['SampleRowKeys'].retry,
-                    default_timeout=self._method_configs['SampleRowKeys']
-                    .timeout,
+                    default_timeout=self._method_configs['SampleRowKeys'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -589,10 +589,10 @@ class BigtableClient(object):
             self._inner_api_calls[
                 'check_and_mutate_row'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.check_and_mutate_row,
-                    default_retry=self._method_configs[
-                        'CheckAndMutateRow'].retry,
-                    default_timeout=self._method_configs['CheckAndMutateRow']
-                    .timeout,
+                    default_retry=self._method_configs['CheckAndMutateRow'].
+                    retry,
+                    default_timeout=self._method_configs['CheckAndMutateRow'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -686,10 +686,10 @@ class BigtableClient(object):
             self._inner_api_calls[
                 'read_modify_write_row'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.read_modify_write_row,
-                    default_retry=self._method_configs[
-                        'ReadModifyWriteRow'].retry,
-                    default_timeout=self._method_configs['ReadModifyWriteRow']
-                    .timeout,
+                    default_retry=self._method_configs['ReadModifyWriteRow'].
+                    retry,
+                    default_timeout=self._method_configs['ReadModifyWriteRow'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
