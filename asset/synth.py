@@ -21,6 +21,11 @@ gapic = gcp.GAPICGenerator()
 
 versions = ["v1beta1"]
 
+excludes = [
+    'setup.py',
+    'README.rst',
+    'docs/index.rst',
+]
 
 for version in versions:
     library = gapic.py_library(
@@ -30,7 +35,7 @@ for version in versions:
         artman_output_name=f"cloudasset-{version}",
     )
 
-    s.move(library, excludes=["setup.py"])
+    s.move(library, excludes=excludes)
 
 s.replace(
     "google/cloud/asset_v1beta1/proto/assets_pb2.py",
