@@ -37,6 +37,61 @@ for version in ['v1beta1', 'v1']:
     s.copy(library, excludes=excludes)
 
 
+# Fix docstrings
+s.replace(
+    'google/cloud/**/cloud_redis_client.py',
+    r'resources of the form:\n      ``',
+    r'resources of the form:\n\n      ``',)
+
+s.replace(
+    'google/cloud/**/cloud_redis_client.py',
+    r"""
+            parent \(str\): Required. The resource name of the instance location using the form:
+                ::
+
+                    `projects/{project_id}/locations/{location_id}`
+                where ``location_id`` refers to a GCP region""",
+
+    r"""
+            parent (str): Required. The resource name of the instance location using the form ``projects/{project_id}/locations/{location_id}``
+                where ``location_id`` refers to a GCP region""",)
+
+
+s.replace(
+    'google/cloud/**/cloud_redis_client.py',
+    r"""
+                with the following restrictions:
+
+                \* Must contain only lowercase letters, numbers, and hyphens\.""",
+    r"""
+                with the following restrictions:
+                * Must contain only lowercase letters, numbers, and hyphens.""")
+
+s.replace(
+    'google/cloud/**/cloud_redis_client.py',
+    r"""
+            name \(str\): Required. Redis instance resource name using the form:
+                ::
+
+                    `projects/{project_id}/locations/{location_id}/instances/{instance_id}`
+                where ``location_id`` refers to a GCP region""",
+    r"""
+            name (str): Required. Redis instance resource name using the form ``projects/{project_id}/locations/{location_id}/instances/{instance_id}```
+                where ``location_id`` refers to a GCP region""")
+
+s.replace(
+    'google/cloud/**/cloud_redis_client.py',
+    r"""
+                fields from ``Instance``:
+
+                 \*   ``displayName``
+                 \*   ``labels``
+                 \*   ``memorySizeGb``
+                 \*   ``redisConfig``""",
+
+    r"""
+                fields from ``Instance``: ``displayName``, ``labels``, ``memorySizeGb``, and ``redisConfig``.""",)
+
 # Set Release Status
 release_status = 'Development Status :: 3 - Alpha'
 s.replace('setup.py',

@@ -56,6 +56,7 @@ class CloudRedisClient(object):
     * Each project has a collection of available locations, named: ``/locations/*``
     * Each location has a collection of Redis instances, named: ``/instances/*``
     * As such, Redis instances are resources of the form:
+
       ``/projects/{project_id}/locations/{location_id}/instances/{instance_id}``
 
     Note that location_id must be refering to a GCP ``region``; for example:
@@ -235,10 +236,7 @@ class CloudRedisClient(object):
             ...         pass
 
         Args:
-            parent (str): Required. The resource name of the instance location using the form:
-                ::
-
-                    `projects/{project_id}/locations/{location_id}`
+            parent (str): Required. The resource name of the instance location using the form ``projects/{project_id}/locations/{location_id}``
                 where ``location_id`` refers to a GCP region
             page_size (int): The maximum number of resources contained in the
                 underlying API response. If page streaming is performed per-
@@ -314,10 +312,7 @@ class CloudRedisClient(object):
             >>> response = client.get_instance(name)
 
         Args:
-            name (str): Required. Redis instance resource name using the form:
-                ::
-
-                    `projects/{project_id}/locations/{location_id}/instances/{instance_id}`
+            name (str): Required. Redis instance resource name using the form ``projects/{project_id}/locations/{location_id}/instances/{instance_id}```
                 where ``location_id`` refers to a GCP region
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
@@ -398,14 +393,10 @@ class CloudRedisClient(object):
             >>> metadata = response.metadata()
 
         Args:
-            parent (str): Required. The resource name of the instance location using the form:
-                ::
-
-                    `projects/{project_id}/locations/{location_id}`
+            parent (str): Required. The resource name of the instance location using the form ``projects/{project_id}/locations/{location_id}``
                 where ``location_id`` refers to a GCP region
             instance_id (str): Required. The logical name of the Redis instance in the customer project
                 with the following restrictions:
-
                 * Must contain only lowercase letters, numbers, and hyphens.
                 * Must start with a letter.
                 * Must be between 1-40 characters.
@@ -498,12 +489,7 @@ class CloudRedisClient(object):
         Args:
             update_mask (Union[dict, ~google.cloud.redis_v1.types.FieldMask]): Required. Mask of fields to update. At least one path must be supplied in
                 this field. The elements of the repeated paths field may only include these
-                fields from ``Instance``:
-
-                 *   ``displayName``
-                 *   ``labels``
-                 *   ``memorySizeGb``
-                 *   ``redisConfig``
+                fields from ``Instance``: ``displayName``, ``labels``, ``memorySizeGb``, and ``redisConfig``.
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.redis_v1.types.FieldMask`
             instance (Union[dict, ~google.cloud.redis_v1.types.Instance]): Required. Update description.
@@ -581,10 +567,7 @@ class CloudRedisClient(object):
             >>> metadata = response.metadata()
 
         Args:
-            name (str): Required. Redis instance resource name using the form:
-                ::
-
-                    `projects/{project_id}/locations/{location_id}/instances/{instance_id}`
+            name (str): Required. Redis instance resource name using the form ``projects/{project_id}/locations/{location_id}/instances/{instance_id}```
                 where ``location_id`` refers to a GCP region
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
