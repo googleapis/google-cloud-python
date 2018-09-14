@@ -813,10 +813,10 @@ class Test_ReadRowsRequestManager(unittest.TestCase):
         expected_result = _ReadRowsRequestPB(table_name=self.table_name,
                                              filter=row_filter.to_pb(),
                                              rows_limit=6)
-        expected_result_row_range = RowRange(last_scanned_key, b"row_key29",
-                                             False)
-        expected_result.rows.row_ranges.add(**expected_result_row_range.
-                                            get_range_kwargs())
+        expected_result.rows.row_ranges.add(
+            start_key_open=last_scanned_key,
+            end_key_open=self.row_range1.end_key
+        )
 
         self.assertEqual(expected_result, result)
 
@@ -827,8 +827,7 @@ class Test_ReadRowsRequestManager(unittest.TestCase):
         request = _ReadRowsRequestPB(filter=row_filter.to_pb(),
                                      rows_limit=8,
                                      table_name=self.table_name)
-        row_range = RowRange(end_key=b"row_key29")
-        request.rows.row_ranges.add(**row_range.get_range_kwargs())
+        request.rows.row_ranges.add(end_key_open=b"row_key29")
 
         request_manager = self._make_one(request, last_scanned_key, 2)
 
@@ -837,10 +836,8 @@ class Test_ReadRowsRequestManager(unittest.TestCase):
         expected_result = _ReadRowsRequestPB(table_name=self.table_name,
                                              filter=row_filter.to_pb(),
                                              rows_limit=6)
-        expected_result_row_range = RowRange(last_scanned_key, b"row_key29",
-                                             False)
-        expected_result.rows.row_ranges.add(**expected_result_row_range.
-                                            get_range_kwargs())
+        expected_result.rows.row_ranges.add(start_key_open=last_scanned_key,
+                                            end_key_open=b"row_key29")
 
         self.assertEqual(expected_result, result)
 
@@ -851,8 +848,7 @@ class Test_ReadRowsRequestManager(unittest.TestCase):
         request = _ReadRowsRequestPB(filter=row_filter.to_pb(),
                                      rows_limit=8,
                                      table_name=self.table_name)
-        row_range = RowRange(start_key=b"row_key20")
-        request.rows.row_ranges.add(**row_range.get_range_kwargs())
+        request.rows.row_ranges.add(start_key_closed=b"row_key20")
 
         request_manager = self._make_one(request, last_scanned_key, 2)
 
@@ -861,10 +857,7 @@ class Test_ReadRowsRequestManager(unittest.TestCase):
         expected_result = _ReadRowsRequestPB(table_name=self.table_name,
                                              filter=row_filter.to_pb(),
                                              rows_limit=6)
-        expected_result_row_range = RowRange(last_scanned_key,
-                                             start_inclusive=False)
-        expected_result.rows.row_ranges.add(**expected_result_row_range.
-                                            get_range_kwargs())
+        expected_result.rows.row_ranges.add(start_key_open=last_scanned_key)
 
         self.assertEqual(expected_result, result)
 
@@ -891,7 +884,7 @@ class Test_ReadRowsRequestManager(unittest.TestCase):
 
         self.assertEqual(expected_result, result)
 
-    def test_buil_updated_request_rows_limit(self):
+    def test_build_updated_request_rows_limit(self):
         last_scanned_key = b"row_key14"
 
         request = _ReadRowsRequestPB(table_name=self.table_name, rows_limit=10)
@@ -901,13 +894,10 @@ class Test_ReadRowsRequestManager(unittest.TestCase):
         expected_result = _ReadRowsRequestPB(table_name=self.table_name,
                                              filter={},
                                              rows_limit=8)
-        expected_result_row_range = RowRange(start_key=last_scanned_key,
-                                             start_inclusive=False)
-        expected_result.rows.row_ranges.add(**expected_result_row_range.
-                                            get_range_kwargs())
+        expected_result.rows.row_ranges.add(start_key_open=last_scanned_key)
         self.assertEqual(expected_result, result)
 
-    def test_buil_updated_request_plain(self):
+    def test_build_updated_request_plain(self):
         last_scanned_key = b"row_key14"
 
         request = _ReadRowsRequestPB(table_name=self.table_name)
@@ -916,10 +906,7 @@ class Test_ReadRowsRequestManager(unittest.TestCase):
         result = request_manager.build_updated_request()
         expected_result = _ReadRowsRequestPB(table_name=self.table_name,
                                              filter={})
-        expected_result_row_range = RowRange(start_key=last_scanned_key,
-                                             start_inclusive=False)
-        expected_result.rows.row_ranges.add(**expected_result_row_range.
-                                            get_range_kwargs())
+        expected_result.rows.row_ranges.add(start_key_open=last_scanned_key)
         self.assertEqual(expected_result, result)
 
     def test__key_already_read(self):

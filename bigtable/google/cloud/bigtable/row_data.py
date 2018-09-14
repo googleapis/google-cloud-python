@@ -630,7 +630,8 @@ class _ReadRowsRequestManager(object):
 
         for row_range in self.message.rows.row_ranges:
             # if current end_key (open or closed) is set, return its value,
-            # if not, set to empty string ('')
+            # if not, set to empty string ('').
+            # NOTE: Empty string in end_key means "end of table"
             end_key = self._end_key_set(row_range)
             # if end_key is already read, skip to the next row_range
             if(end_key and self._key_already_read(end_key)):
@@ -638,6 +639,7 @@ class _ReadRowsRequestManager(object):
 
             # if current start_key (open or closed) is set, return its value,
             # if not, then set to empty string ('')
+            # NOTE: Empty string in start_key means "beginning of table"
             start_key = self._start_key_set(row_range)
 
             # if start_key was already read or doesn't exist,
@@ -657,11 +659,13 @@ class _ReadRowsRequestManager(object):
         """ Helper for :meth:`_filter_row_ranges`"""
         return key <= self.last_scanned_key
 
-    def _start_key_set(self, row_range):
+    @staticmethod
+    def _start_key_set(row_range):
         """ Helper for :meth:`_filter_row_ranges`"""
         return row_range.start_key_open or row_range.start_key_closed
 
-    def _end_key_set(self, row_range):
+    @staticmethod
+    def _end_key_set(row_range):
         """ Helper for :meth:`_filter_row_ranges`"""
         return row_range.end_key_open or row_range.end_key_closed
 
