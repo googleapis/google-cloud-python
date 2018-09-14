@@ -207,10 +207,10 @@ class ImageAnnotatorClient(object):
             self._inner_api_calls[
                 'batch_annotate_images'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.batch_annotate_images,
-                    default_retry=self._method_configs[
-                        'BatchAnnotateImages'].retry,
-                    default_timeout=self._method_configs['BatchAnnotateImages']
-                    .timeout,
+                    default_retry=self._method_configs['BatchAnnotateImages'].
+                    retry,
+                    default_timeout=self.
+                    _method_configs['BatchAnnotateImages'].timeout,
                     client_info=self._client_info,
                 )
 
@@ -280,10 +280,10 @@ class ImageAnnotatorClient(object):
             self._inner_api_calls[
                 'async_batch_annotate_files'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.async_batch_annotate_files,
-                    default_retry=self._method_configs[
-                        'AsyncBatchAnnotateFiles'].retry,
-                    default_timeout=self._method_configs[
-                        'AsyncBatchAnnotateFiles'].timeout,
+                    default_retry=self.
+                    _method_configs['AsyncBatchAnnotateFiles'].retry,
+                    default_timeout=self.
+                    _method_configs['AsyncBatchAnnotateFiles'].timeout,
                     client_info=self._client_info,
                 )
 
