@@ -23,7 +23,7 @@ API Documentation
   advanced-session-pool-topics
 
 Changelog
-=========
+---------
 
 For a list of all ``google-cloud-spanner`` releases:
 
