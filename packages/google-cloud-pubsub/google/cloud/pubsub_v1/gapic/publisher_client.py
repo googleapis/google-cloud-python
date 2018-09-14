@@ -248,8 +248,8 @@ class PublisherClient(object):
                 'create_topic'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.create_topic,
                     default_retry=self._method_configs['CreateTopic'].retry,
-                    default_timeout=self._method_configs['CreateTopic']
-                    .timeout,
+                    default_timeout=self._method_configs['CreateTopic'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -320,8 +320,8 @@ class PublisherClient(object):
                 'update_topic'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.update_topic,
                     default_retry=self._method_configs['UpdateTopic'].retry,
-                    default_timeout=self._method_configs['UpdateTopic']
-                    .timeout,
+                    default_timeout=self._method_configs['UpdateTopic'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -604,10 +604,10 @@ class PublisherClient(object):
             self._inner_api_calls[
                 'list_topic_subscriptions'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.list_topic_subscriptions,
-                    default_retry=self._method_configs[
-                        'ListTopicSubscriptions'].retry,
-                    default_timeout=self._method_configs[
-                        'ListTopicSubscriptions'].timeout,
+                    default_retry=self.
+                    _method_configs['ListTopicSubscriptions'].retry,
+                    default_timeout=self.
+                    _method_configs['ListTopicSubscriptions'].timeout,
                     client_info=self._client_info,
                 )
 
@@ -675,8 +675,8 @@ class PublisherClient(object):
                 'delete_topic'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.delete_topic,
                     default_retry=self._method_configs['DeleteTopic'].retry,
-                    default_timeout=self._method_configs['DeleteTopic']
-                    .timeout,
+                    default_timeout=self._method_configs['DeleteTopic'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -741,8 +741,8 @@ class PublisherClient(object):
                 'set_iam_policy'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.set_iam_policy,
                     default_retry=self._method_configs['SetIamPolicy'].retry,
-                    default_timeout=self._method_configs['SetIamPolicy']
-                    .timeout,
+                    default_timeout=self._method_configs['SetIamPolicy'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -801,8 +801,8 @@ class PublisherClient(object):
                 'get_iam_policy'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.get_iam_policy,
                     default_retry=self._method_configs['GetIamPolicy'].retry,
-                    default_timeout=self._method_configs['GetIamPolicy']
-                    .timeout,
+                    default_timeout=self._method_configs['GetIamPolicy'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -865,10 +865,10 @@ class PublisherClient(object):
             self._inner_api_calls[
                 'test_iam_permissions'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.test_iam_permissions,
-                    default_retry=self._method_configs[
-                        'TestIamPermissions'].retry,
-                    default_timeout=self._method_configs['TestIamPermissions']
-                    .timeout,
+                    default_retry=self._method_configs['TestIamPermissions'].
+                    retry,
+                    default_timeout=self._method_configs['TestIamPermissions'].
+                    timeout,
                     client_info=self._client_info,
                 )
 

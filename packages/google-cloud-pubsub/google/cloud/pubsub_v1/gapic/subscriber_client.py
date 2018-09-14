@@ -321,10 +321,10 @@ class SubscriberClient(object):
             self._inner_api_calls[
                 'create_subscription'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.create_subscription,
-                    default_retry=self._method_configs[
-                        'CreateSubscription'].retry,
-                    default_timeout=self._method_configs['CreateSubscription']
-                    .timeout,
+                    default_retry=self._method_configs['CreateSubscription'].
+                    retry,
+                    default_timeout=self._method_configs['CreateSubscription'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -384,10 +384,10 @@ class SubscriberClient(object):
             self._inner_api_calls[
                 'get_subscription'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.get_subscription,
-                    default_retry=self._method_configs[
-                        'GetSubscription'].retry,
-                    default_timeout=self._method_configs['GetSubscription']
-                    .timeout,
+                    default_retry=self._method_configs['GetSubscription'].
+                    retry,
+                    default_timeout=self._method_configs['GetSubscription'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -451,10 +451,10 @@ class SubscriberClient(object):
             self._inner_api_calls[
                 'update_subscription'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.update_subscription,
-                    default_retry=self._method_configs[
-                        'UpdateSubscription'].retry,
-                    default_timeout=self._method_configs['UpdateSubscription']
-                    .timeout,
+                    default_retry=self._method_configs['UpdateSubscription'].
+                    retry,
+                    default_timeout=self._method_configs['UpdateSubscription'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -530,10 +530,10 @@ class SubscriberClient(object):
             self._inner_api_calls[
                 'list_subscriptions'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.list_subscriptions,
-                    default_retry=self._method_configs[
-                        'ListSubscriptions'].retry,
-                    default_timeout=self._method_configs['ListSubscriptions']
-                    .timeout,
+                    default_retry=self._method_configs['ListSubscriptions'].
+                    retry,
+                    default_timeout=self._method_configs['ListSubscriptions'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -600,10 +600,10 @@ class SubscriberClient(object):
             self._inner_api_calls[
                 'delete_subscription'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.delete_subscription,
-                    default_retry=self._method_configs[
-                        'DeleteSubscription'].retry,
-                    default_timeout=self._method_configs['DeleteSubscription']
-                    .timeout,
+                    default_retry=self._method_configs['DeleteSubscription'].
+                    retry,
+                    default_timeout=self._method_configs['DeleteSubscription'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -673,10 +673,10 @@ class SubscriberClient(object):
             self._inner_api_calls[
                 'modify_ack_deadline'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.modify_ack_deadline,
-                    default_retry=self._method_configs[
-                        'ModifyAckDeadline'].retry,
-                    default_timeout=self._method_configs['ModifyAckDeadline']
-                    .timeout,
+                    default_retry=self._method_configs['ModifyAckDeadline'].
+                    retry,
+                    default_timeout=self._method_configs['ModifyAckDeadline'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -742,8 +742,8 @@ class SubscriberClient(object):
                 'acknowledge'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.acknowledge,
                     default_retry=self._method_configs['Acknowledge'].retry,
-                    default_timeout=self._method_configs['Acknowledge']
-                    .timeout,
+                    default_timeout=self._method_configs['Acknowledge'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -887,8 +887,8 @@ class SubscriberClient(object):
                 'streaming_pull'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.streaming_pull,
                     default_retry=self._method_configs['StreamingPull'].retry,
-                    default_timeout=self._method_configs['StreamingPull']
-                    .timeout,
+                    default_timeout=self._method_configs['StreamingPull'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -953,10 +953,10 @@ class SubscriberClient(object):
             self._inner_api_calls[
                 'modify_push_config'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.modify_push_config,
-                    default_retry=self._method_configs[
-                        'ModifyPushConfig'].retry,
-                    default_timeout=self._method_configs['ModifyPushConfig']
-                    .timeout,
+                    default_retry=self._method_configs['ModifyPushConfig'].
+                    retry,
+                    default_timeout=self._method_configs['ModifyPushConfig'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -1036,8 +1036,8 @@ class SubscriberClient(object):
                 'list_snapshots'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.list_snapshots,
                     default_retry=self._method_configs['ListSnapshots'].retry,
-                    default_timeout=self._method_configs['ListSnapshots']
-                    .timeout,
+                    default_timeout=self._method_configs['ListSnapshots'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -1135,8 +1135,8 @@ class SubscriberClient(object):
                 'create_snapshot'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.create_snapshot,
                     default_retry=self._method_configs['CreateSnapshot'].retry,
-                    default_timeout=self._method_configs['CreateSnapshot']
-                    .timeout,
+                    default_timeout=self._method_configs['CreateSnapshot'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -1208,8 +1208,8 @@ class SubscriberClient(object):
                 'update_snapshot'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.update_snapshot,
                     default_retry=self._method_configs['UpdateSnapshot'].retry,
-                    default_timeout=self._method_configs['UpdateSnapshot']
-                    .timeout,
+                    default_timeout=self._method_configs['UpdateSnapshot'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -1269,8 +1269,8 @@ class SubscriberClient(object):
                 'delete_snapshot'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.delete_snapshot,
                     default_retry=self._method_configs['DeleteSnapshot'].retry,
-                    default_timeout=self._method_configs['DeleteSnapshot']
-                    .timeout,
+                    default_timeout=self._method_configs['DeleteSnapshot'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -1420,8 +1420,8 @@ class SubscriberClient(object):
                 'set_iam_policy'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.set_iam_policy,
                     default_retry=self._method_configs['SetIamPolicy'].retry,
-                    default_timeout=self._method_configs['SetIamPolicy']
-                    .timeout,
+                    default_timeout=self._method_configs['SetIamPolicy'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -1480,8 +1480,8 @@ class SubscriberClient(object):
                 'get_iam_policy'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.get_iam_policy,
                     default_retry=self._method_configs['GetIamPolicy'].retry,
-                    default_timeout=self._method_configs['GetIamPolicy']
-                    .timeout,
+                    default_timeout=self._method_configs['GetIamPolicy'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -1544,10 +1544,10 @@ class SubscriberClient(object):
             self._inner_api_calls[
                 'test_iam_permissions'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.test_iam_permissions,
-                    default_retry=self._method_configs[
-                        'TestIamPermissions'].retry,
-                    default_timeout=self._method_configs['TestIamPermissions']
-                    .timeout,
+                    default_retry=self._method_configs['TestIamPermissions'].
+                    retry,
+                    default_timeout=self._method_configs['TestIamPermissions'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
