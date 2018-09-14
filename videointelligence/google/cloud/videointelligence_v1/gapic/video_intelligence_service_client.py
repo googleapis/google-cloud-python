@@ -246,8 +246,8 @@ class VideoIntelligenceServiceClient(object):
                 'annotate_video'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.annotate_video,
                     default_retry=self._method_configs['AnnotateVideo'].retry,
-                    default_timeout=self._method_configs['AnnotateVideo']
-                    .timeout,
+                    default_timeout=self._method_configs['AnnotateVideo'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
