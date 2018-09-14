@@ -1,0 +1,736 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Types for Google Cloud Memorystore for Redis API Client &#8212; google-cloud b262661 documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Client for Google Cloud Memorystore for Redis API" href="../v1beta1/api.html" />
+    <link rel="prev" title="Client for Google Cloud Memorystore for Redis API" href="api.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="module-google.cloud.redis_v1.types">
+<span id="types-for-google-cloud-memorystore-for-redis-api-client"></span><h1>Types for Google Cloud Memorystore for Redis API Client<a class="headerlink" href="#module-google.cloud.redis_v1.types" title="Permalink to this headline">#</a></h1>
+<dl class="class">
+<dt id="google.cloud.redis_v1.types.Any">
+<em class="property">class </em><code class="descclassname">google.cloud.redis_v1.types.</code><code class="descname">Any</code><a class="headerlink" href="#google.cloud.redis_v1.types.Any" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.redis_v1.types.CancelOperationRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.redis_v1.types.</code><code class="descname">CancelOperationRequest</code><a class="headerlink" href="#google.cloud.redis_v1.types.CancelOperationRequest" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.redis_v1.types.CreateInstanceRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.redis_v1.types.</code><code class="descname">CreateInstanceRequest</code><a class="headerlink" href="#google.cloud.redis_v1.types.CreateInstanceRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request for
+[CreateInstance][google.cloud.redis.v1.CloudRedis.CreateInstance].</p>
+<dl class="attribute">
+<dt id="google.cloud.redis_v1.types.CreateInstanceRequest.parent">
+<code class="descname">parent</code><a class="headerlink" href="#google.cloud.redis_v1.types.CreateInstanceRequest.parent" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The resource name of the instance location using the
+form: <code class="docutils literal notranslate"><span class="pre">projects/{project_id}/locations/{location_id}</span></code> where
+<code class="docutils literal notranslate"><span class="pre">location_id</span></code> refers to a GCP region</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.redis_v1.types.CreateInstanceRequest.instance_id">
+<code class="descname">instance_id</code><a class="headerlink" href="#google.cloud.redis_v1.types.CreateInstanceRequest.instance_id" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The logical name of the Redis instance in the
+customer project with the following restrictions:  -  Must
+contain only lowercase letters, numbers, and hyphens. -  Must
+start with a letter. -  Must be between 1-40 characters. -
+Must end with a number or a letter. -  Must be unique within
+the customer project / location</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.redis_v1.types.CreateInstanceRequest.instance">
+<code class="descname">instance</code><a class="headerlink" href="#google.cloud.redis_v1.types.CreateInstanceRequest.instance" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. A Redis [Instance] resource</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.redis_v1.types.CustomHttpPattern">
+<em class="property">class </em><code class="descclassname">google.cloud.redis_v1.types.</code><code class="descname">CustomHttpPattern</code><a class="headerlink" href="#google.cloud.redis_v1.types.CustomHttpPattern" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.redis_v1.types.DeleteInstanceRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.redis_v1.types.</code><code class="descname">DeleteInstanceRequest</code><a class="headerlink" href="#google.cloud.redis_v1.types.DeleteInstanceRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request for
+[DeleteInstance][google.cloud.redis.v1.CloudRedis.DeleteInstance].</p>
+<dl class="attribute">
+<dt id="google.cloud.redis_v1.types.DeleteInstanceRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.redis_v1.types.DeleteInstanceRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. Redis instance resource name using the form: <code class="docutils literal notranslate"><span class="pre">proje</span>
+<span class="pre">cts/{project_id}/locations/{location_id}/instances/{instance_i</span>
+<span class="pre">d}</span></code> where <code class="docutils literal notranslate"><span class="pre">location_id</span></code> refers to a GCP region</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.redis_v1.types.DeleteOperationRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.redis_v1.types.</code><code class="descname">DeleteOperationRequest</code><a class="headerlink" href="#google.cloud.redis_v1.types.DeleteOperationRequest" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.redis_v1.types.DescriptorProto">
+<em class="property">class </em><code class="descclassname">google.cloud.redis_v1.types.</code><code class="descname">DescriptorProto</code><a class="headerlink" href="#google.cloud.redis_v1.types.DescriptorProto" title="Permalink to this definition">#</a></dt>
+<dd><dl class="class">
+<dt id="google.cloud.redis_v1.types.DescriptorProto.ExtensionRange">
+<em class="property">class </em><code class="descname">ExtensionRange</code><a class="headerlink" href="#google.cloud.redis_v1.types.DescriptorProto.ExtensionRange" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.redis_v1.types.DescriptorProto.ReservedRange">
+<em class="property">class </em><code class="descname">ReservedRange</code><a class="headerlink" href="#google.cloud.redis_v1.types.DescriptorProto.ReservedRange" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.redis_v1.types.Empty">
+<em class="property">class </em><code class="descclassname">google.cloud.redis_v1.types.</code><code class="descname">Empty</code><a class="headerlink" href="#google.cloud.redis_v1.types.Empty" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.redis_v1.types.EnumDescriptorProto">
+<em class="property">class </em><code class="descclassname">google.cloud.redis_v1.types.</code><code class="descname">EnumDescriptorProto</code><a class="headerlink" href="#google.cloud.redis_v1.types.EnumDescriptorProto" title="Permalink to this definition">#</a></dt>
+<dd><dl class="class">
+<dt id="google.cloud.redis_v1.types.EnumDescriptorProto.EnumReservedRange">
+<em class="property">class </em><code class="descname">EnumReservedRange</code><a class="headerlink" href="#google.cloud.redis_v1.types.EnumDescriptorProto.EnumReservedRange" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.redis_v1.types.EnumOptions">
+<em class="property">class </em><code class="descclassname">google.cloud.redis_v1.types.</code><code class="descname">EnumOptions</code><a class="headerlink" href="#google.cloud.redis_v1.types.EnumOptions" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.redis_v1.types.EnumValueDescriptorProto">
+<em class="property">class </em><code class="descclassname">google.cloud.redis_v1.types.</code><code class="descname">EnumValueDescriptorProto</code><a class="headerlink" href="#google.cloud.redis_v1.types.EnumValueDescriptorProto" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.redis_v1.types.EnumValueOptions">
+<em class="property">class </em><code class="descclassname">google.cloud.redis_v1.types.</code><code class="descname">EnumValueOptions</code><a class="headerlink" href="#google.cloud.redis_v1.types.EnumValueOptions" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.redis_v1.types.ExtensionRangeOptions">
+<em class="property">class </em><code class="descclassname">google.cloud.redis_v1.types.</code><code class="descname">ExtensionRangeOptions</code><a class="headerlink" href="#google.cloud.redis_v1.types.ExtensionRangeOptions" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.redis_v1.types.FieldDescriptorProto">
+<em class="property">class </em><code class="descclassname">google.cloud.redis_v1.types.</code><code class="descname">FieldDescriptorProto</code><a class="headerlink" href="#google.cloud.redis_v1.types.FieldDescriptorProto" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.redis_v1.types.FieldMask">
+<em class="property">class </em><code class="descclassname">google.cloud.redis_v1.types.</code><code class="descname">FieldMask</code><a class="headerlink" href="#google.cloud.redis_v1.types.FieldMask" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.redis_v1.types.FieldOptions">
+<em class="property">class </em><code class="descclassname">google.cloud.redis_v1.types.</code><code class="descname">FieldOptions</code><a class="headerlink" href="#google.cloud.redis_v1.types.FieldOptions" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.redis_v1.types.FileDescriptorProto">
+<em class="property">class </em><code class="descclassname">google.cloud.redis_v1.types.</code><code class="descname">FileDescriptorProto</code><a class="headerlink" href="#google.cloud.redis_v1.types.FileDescriptorProto" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.redis_v1.types.FileDescriptorSet">
+<em class="property">class </em><code class="descclassname">google.cloud.redis_v1.types.</code><code class="descname">FileDescriptorSet</code><a class="headerlink" href="#google.cloud.redis_v1.types.FileDescriptorSet" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.redis_v1.types.FileOptions">
+<em class="property">class </em><code class="descclassname">google.cloud.redis_v1.types.</code><code class="descname">FileOptions</code><a class="headerlink" href="#google.cloud.redis_v1.types.FileOptions" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.redis_v1.types.GeneratedCodeInfo">
+<em class="property">class </em><code class="descclassname">google.cloud.redis_v1.types.</code><code class="descname">GeneratedCodeInfo</code><a class="headerlink" href="#google.cloud.redis_v1.types.GeneratedCodeInfo" title="Permalink to this definition">#</a></dt>
+<dd><dl class="class">
+<dt id="google.cloud.redis_v1.types.GeneratedCodeInfo.Annotation">
+<em class="property">class </em><code class="descname">Annotation</code><a class="headerlink" href="#google.cloud.redis_v1.types.GeneratedCodeInfo.Annotation" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.redis_v1.types.GetInstanceRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.redis_v1.types.</code><code class="descname">GetInstanceRequest</code><a class="headerlink" href="#google.cloud.redis_v1.types.GetInstanceRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request for [GetInstance][google.cloud.redis.v1.CloudRedis.GetInstance].</p>
+<dl class="attribute">
+<dt id="google.cloud.redis_v1.types.GetInstanceRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.redis_v1.types.GetInstanceRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. Redis instance resource name using the form: <code class="docutils literal notranslate"><span class="pre">proje</span>
+<span class="pre">cts/{project_id}/locations/{location_id}/instances/{instance_i</span>
+<span class="pre">d}</span></code> where <code class="docutils literal notranslate"><span class="pre">location_id</span></code> refers to a GCP region</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.redis_v1.types.GetOperationRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.redis_v1.types.</code><code class="descname">GetOperationRequest</code><a class="headerlink" href="#google.cloud.redis_v1.types.GetOperationRequest" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.redis_v1.types.Http">
+<em class="property">class </em><code class="descclassname">google.cloud.redis_v1.types.</code><code class="descname">Http</code><a class="headerlink" href="#google.cloud.redis_v1.types.Http" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.redis_v1.types.HttpRule">
+<em class="property">class </em><code class="descclassname">google.cloud.redis_v1.types.</code><code class="descname">HttpRule</code><a class="headerlink" href="#google.cloud.redis_v1.types.HttpRule" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.redis_v1.types.Instance">
+<em class="property">class </em><code class="descclassname">google.cloud.redis_v1.types.</code><code class="descname">Instance</code><a class="headerlink" href="#google.cloud.redis_v1.types.Instance" title="Permalink to this definition">#</a></dt>
+<dd><p>A Google Cloud Redis instance.</p>
+<dl class="attribute">
+<dt id="google.cloud.redis_v1.types.Instance.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.redis_v1.types.Instance.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. Unique name of the resource in this scope including
+project and location using the form: <code class="docutils literal notranslate"><span class="pre">projects/{project_id}/l</span>
+<span class="pre">ocations/{location_id}/instances/{instance_id}</span></code>  Note: Redis
+instances are managed and addressed at regional level so
+location_id here refers to a GCP region; however, users may
+choose which specific zone (or collection of zones for cross-
+zone instances) an instance should be provisioned in. Refer to
+[location_id] and [alternative_location_id] fields for more
+details.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.redis_v1.types.Instance.display_name">
+<code class="descname">display_name</code><a class="headerlink" href="#google.cloud.redis_v1.types.Instance.display_name" title="Permalink to this definition">#</a></dt>
+<dd><p>An arbitrary and optional user-provided name for the instance.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.redis_v1.types.Instance.labels">
+<code class="descname">labels</code><a class="headerlink" href="#google.cloud.redis_v1.types.Instance.labels" title="Permalink to this definition">#</a></dt>
+<dd><p>Resource labels to represent user provided metadata</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.redis_v1.types.Instance.location_id">
+<code class="descname">location_id</code><a class="headerlink" href="#google.cloud.redis_v1.types.Instance.location_id" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional. The zone where the instance will be provisioned. If
+not provided, the service will choose a zone for the instance.
+For STANDARD_HA tier, instances will be created across two
+zones for protection against zonal failures. If
+[alternative_location_id] is also provided, it must be
+different from [location_id].</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.redis_v1.types.Instance.alternative_location_id">
+<code class="descname">alternative_location_id</code><a class="headerlink" href="#google.cloud.redis_v1.types.Instance.alternative_location_id" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional. Only applicable to STANDARD_HA tier which protects
+the instance against zonal failures by provisioning it across
+two zones. If provided, it must be a different zone from the
+one provided in [location_id].</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.redis_v1.types.Instance.redis_version">
+<code class="descname">redis_version</code><a class="headerlink" href="#google.cloud.redis_v1.types.Instance.redis_version" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional. The version of Redis software. If not provided,
+latest supported version will be used. Updating the version
+will perform an upgrade/downgrade to the new version.
+Currently, the supported values are <code class="docutils literal notranslate"><span class="pre">REDIS_3_2</span></code> for Redis
+3.2.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.redis_v1.types.Instance.reserved_ip_range">
+<code class="descname">reserved_ip_range</code><a class="headerlink" href="#google.cloud.redis_v1.types.Instance.reserved_ip_range" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional. The CIDR range of internal addresses that are
+reserved for this instance. If not provided, the service will
+choose an unused /29 block, for example, 10.0.0.0/29 or
+192.168.0.0/29. Ranges must be unique and non-overlapping with
+existing subnets in an authorized network.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.redis_v1.types.Instance.host">
+<code class="descname">host</code><a class="headerlink" href="#google.cloud.redis_v1.types.Instance.host" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. Hostname or IP address of the exposed Redis
+endpoint used by clients to connect to the service.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.redis_v1.types.Instance.port">
+<code class="descname">port</code><a class="headerlink" href="#google.cloud.redis_v1.types.Instance.port" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. The port number of the exposed Redis endpoint.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.redis_v1.types.Instance.current_location_id">
+<code class="descname">current_location_id</code><a class="headerlink" href="#google.cloud.redis_v1.types.Instance.current_location_id" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. The current zone where the Redis endpoint is
+placed. For Basic Tier instances, this will always be the same
+as the [location_id] provided by the user at creation time.
+For Standard Tier instances, this can be either [location_id]
+or [alternative_location_id] and can change after a failover
+event.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.redis_v1.types.Instance.create_time">
+<code class="descname">create_time</code><a class="headerlink" href="#google.cloud.redis_v1.types.Instance.create_time" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. The time the instance was created.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.redis_v1.types.Instance.state">
+<code class="descname">state</code><a class="headerlink" href="#google.cloud.redis_v1.types.Instance.state" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. The current state of this instance.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.redis_v1.types.Instance.status_message">
+<code class="descname">status_message</code><a class="headerlink" href="#google.cloud.redis_v1.types.Instance.status_message" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. Additional information about the current status
+of this instance, if available.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.redis_v1.types.Instance.redis_configs">
+<code class="descname">redis_configs</code><a class="headerlink" href="#google.cloud.redis_v1.types.Instance.redis_configs" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional. Redis configuration parameters, according to
+<a class="reference external" href="http://redis.io/topics/config">http://redis.io/topics/config</a>. Currently, the only supported
+parameters are:  -  maxmemory-policy -  notify-keyspace-events</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.redis_v1.types.Instance.tier">
+<code class="descname">tier</code><a class="headerlink" href="#google.cloud.redis_v1.types.Instance.tier" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The service tier of the instance.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.redis_v1.types.Instance.memory_size_gb">
+<code class="descname">memory_size_gb</code><a class="headerlink" href="#google.cloud.redis_v1.types.Instance.memory_size_gb" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. Redis memory size in GiB.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.redis_v1.types.Instance.authorized_network">
+<code class="descname">authorized_network</code><a class="headerlink" href="#google.cloud.redis_v1.types.Instance.authorized_network" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional. The full name of the Google Compute Engine <a class="reference external" href="/compute/docs/networks-and-firewalls#networks">network</a> to which
+the instance is connected. If left unspecified, the
+<code class="docutils literal notranslate"><span class="pre">default</span></code> network will be used.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.redis_v1.types.Instance.LabelsEntry">
+<em class="property">class </em><code class="descname">LabelsEntry</code><a class="headerlink" href="#google.cloud.redis_v1.types.Instance.LabelsEntry" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.redis_v1.types.Instance.RedisConfigsEntry">
+<em class="property">class </em><code class="descname">RedisConfigsEntry</code><a class="headerlink" href="#google.cloud.redis_v1.types.Instance.RedisConfigsEntry" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.redis_v1.types.ListInstancesRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.redis_v1.types.</code><code class="descname">ListInstancesRequest</code><a class="headerlink" href="#google.cloud.redis_v1.types.ListInstancesRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request for
+[ListInstances][google.cloud.redis.v1.CloudRedis.ListInstances].</p>
+<dl class="attribute">
+<dt id="google.cloud.redis_v1.types.ListInstancesRequest.parent">
+<code class="descname">parent</code><a class="headerlink" href="#google.cloud.redis_v1.types.ListInstancesRequest.parent" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The resource name of the instance location using the
+form: <code class="docutils literal notranslate"><span class="pre">projects/{project_id}/locations/{location_id}</span></code> where
+<code class="docutils literal notranslate"><span class="pre">location_id</span></code> refers to a GCP region</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.redis_v1.types.ListInstancesRequest.page_size">
+<code class="descname">page_size</code><a class="headerlink" href="#google.cloud.redis_v1.types.ListInstancesRequest.page_size" title="Permalink to this definition">#</a></dt>
+<dd><p>The maximum number of items to return.  If not specified, a
+default value of 1000 will be used by the service. Regardless
+of the page_size value, the response may include a partial
+list and a caller should only rely on response’s [next_page_
+token][CloudRedis.ListInstancesResponse.next_page_token] to
+determine if there are more instances left to be queried.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.redis_v1.types.ListInstancesRequest.page_token">
+<code class="descname">page_token</code><a class="headerlink" href="#google.cloud.redis_v1.types.ListInstancesRequest.page_token" title="Permalink to this definition">#</a></dt>
+<dd><p>The next_page_token value returned from a previous List
+request, if any.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.redis_v1.types.ListInstancesResponse">
+<em class="property">class </em><code class="descclassname">google.cloud.redis_v1.types.</code><code class="descname">ListInstancesResponse</code><a class="headerlink" href="#google.cloud.redis_v1.types.ListInstancesResponse" title="Permalink to this definition">#</a></dt>
+<dd><p>Response for
+[ListInstances][google.cloud.redis.v1.CloudRedis.ListInstances].</p>
+<dl class="attribute">
+<dt id="google.cloud.redis_v1.types.ListInstancesResponse.instances">
+<code class="descname">instances</code><a class="headerlink" href="#google.cloud.redis_v1.types.ListInstancesResponse.instances" title="Permalink to this definition">#</a></dt>
+<dd><p>A list of Redis instances in the project in the specified
+location, or across all locations.  If the <code class="docutils literal notranslate"><span class="pre">location_id</span></code> in
+the parent field of the request is “-“, all regions available
+to the project are queried, and the results aggregated. If in
+such an aggregated query a location is unavailable, a dummy
+Redis entry is included in the response with the “name” field
+set to a value of the form
+projects/{project_id}/locations/{location_id}/instances/-
+and the “status” field set to ERROR and “status_message”
+field set to “location not available for ListInstances”.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.redis_v1.types.ListInstancesResponse.next_page_token">
+<code class="descname">next_page_token</code><a class="headerlink" href="#google.cloud.redis_v1.types.ListInstancesResponse.next_page_token" title="Permalink to this definition">#</a></dt>
+<dd><p>Token to retrieve the next page of results, or empty if there
+are no more results in the list.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.redis_v1.types.ListOperationsRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.redis_v1.types.</code><code class="descname">ListOperationsRequest</code><a class="headerlink" href="#google.cloud.redis_v1.types.ListOperationsRequest" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.redis_v1.types.ListOperationsResponse">
+<em class="property">class </em><code class="descclassname">google.cloud.redis_v1.types.</code><code class="descname">ListOperationsResponse</code><a class="headerlink" href="#google.cloud.redis_v1.types.ListOperationsResponse" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.redis_v1.types.LocationMetadata">
+<em class="property">class </em><code class="descclassname">google.cloud.redis_v1.types.</code><code class="descname">LocationMetadata</code><a class="headerlink" href="#google.cloud.redis_v1.types.LocationMetadata" title="Permalink to this definition">#</a></dt>
+<dd><p>This location metadata represents additional configuration options for a
+given location where a Redis instance may be created. All fields are
+output only. It is returned as content of the
+<code class="docutils literal notranslate"><span class="pre">google.cloud.location.Location.metadata</span></code> field.</p>
+<dl class="attribute">
+<dt id="google.cloud.redis_v1.types.LocationMetadata.available_zones">
+<code class="descname">available_zones</code><a class="headerlink" href="#google.cloud.redis_v1.types.LocationMetadata.available_zones" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. The set of available zones in the location. The
+map is keyed by the lowercase ID of each zone, as defined by
+GCE. These keys can be specified in <code class="docutils literal notranslate"><span class="pre">location_id</span></code> or
+<code class="docutils literal notranslate"><span class="pre">alternative_location_id</span></code> fields when creating a Redis
+instance.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.redis_v1.types.LocationMetadata.AvailableZonesEntry">
+<em class="property">class </em><code class="descname">AvailableZonesEntry</code><a class="headerlink" href="#google.cloud.redis_v1.types.LocationMetadata.AvailableZonesEntry" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.redis_v1.types.MessageOptions">
+<em class="property">class </em><code class="descclassname">google.cloud.redis_v1.types.</code><code class="descname">MessageOptions</code><a class="headerlink" href="#google.cloud.redis_v1.types.MessageOptions" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.redis_v1.types.MethodDescriptorProto">
+<em class="property">class </em><code class="descclassname">google.cloud.redis_v1.types.</code><code class="descname">MethodDescriptorProto</code><a class="headerlink" href="#google.cloud.redis_v1.types.MethodDescriptorProto" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.redis_v1.types.MethodOptions">
+<em class="property">class </em><code class="descclassname">google.cloud.redis_v1.types.</code><code class="descname">MethodOptions</code><a class="headerlink" href="#google.cloud.redis_v1.types.MethodOptions" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.redis_v1.types.OneofDescriptorProto">
+<em class="property">class </em><code class="descclassname">google.cloud.redis_v1.types.</code><code class="descname">OneofDescriptorProto</code><a class="headerlink" href="#google.cloud.redis_v1.types.OneofDescriptorProto" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.redis_v1.types.OneofOptions">
+<em class="property">class </em><code class="descclassname">google.cloud.redis_v1.types.</code><code class="descname">OneofOptions</code><a class="headerlink" href="#google.cloud.redis_v1.types.OneofOptions" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.redis_v1.types.Operation">
+<em class="property">class </em><code class="descclassname">google.cloud.redis_v1.types.</code><code class="descname">Operation</code><a class="headerlink" href="#google.cloud.redis_v1.types.Operation" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.redis_v1.types.OperationMetadata">
+<em class="property">class </em><code class="descclassname">google.cloud.redis_v1.types.</code><code class="descname">OperationMetadata</code><a class="headerlink" href="#google.cloud.redis_v1.types.OperationMetadata" title="Permalink to this definition">#</a></dt>
+<dd><p>Represents the v1 metadata of the long-running operation.</p>
+<dl class="attribute">
+<dt id="google.cloud.redis_v1.types.OperationMetadata.create_time">
+<code class="descname">create_time</code><a class="headerlink" href="#google.cloud.redis_v1.types.OperationMetadata.create_time" title="Permalink to this definition">#</a></dt>
+<dd><p>Creation timestamp.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.redis_v1.types.OperationMetadata.end_time">
+<code class="descname">end_time</code><a class="headerlink" href="#google.cloud.redis_v1.types.OperationMetadata.end_time" title="Permalink to this definition">#</a></dt>
+<dd><p>End timestamp.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.redis_v1.types.OperationMetadata.target">
+<code class="descname">target</code><a class="headerlink" href="#google.cloud.redis_v1.types.OperationMetadata.target" title="Permalink to this definition">#</a></dt>
+<dd><p>Operation target.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.redis_v1.types.OperationMetadata.verb">
+<code class="descname">verb</code><a class="headerlink" href="#google.cloud.redis_v1.types.OperationMetadata.verb" title="Permalink to this definition">#</a></dt>
+<dd><p>Operation verb.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.redis_v1.types.OperationMetadata.status_detail">
+<code class="descname">status_detail</code><a class="headerlink" href="#google.cloud.redis_v1.types.OperationMetadata.status_detail" title="Permalink to this definition">#</a></dt>
+<dd><p>Operation status details.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.redis_v1.types.OperationMetadata.cancel_requested">
+<code class="descname">cancel_requested</code><a class="headerlink" href="#google.cloud.redis_v1.types.OperationMetadata.cancel_requested" title="Permalink to this definition">#</a></dt>
+<dd><p>Specifies if cancellation was requested for the operaiton.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.redis_v1.types.OperationMetadata.api_version">
+<code class="descname">api_version</code><a class="headerlink" href="#google.cloud.redis_v1.types.OperationMetadata.api_version" title="Permalink to this definition">#</a></dt>
+<dd><p>API version.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.redis_v1.types.ServiceDescriptorProto">
+<em class="property">class </em><code class="descclassname">google.cloud.redis_v1.types.</code><code class="descname">ServiceDescriptorProto</code><a class="headerlink" href="#google.cloud.redis_v1.types.ServiceDescriptorProto" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.redis_v1.types.ServiceOptions">
+<em class="property">class </em><code class="descclassname">google.cloud.redis_v1.types.</code><code class="descname">ServiceOptions</code><a class="headerlink" href="#google.cloud.redis_v1.types.ServiceOptions" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.redis_v1.types.SourceCodeInfo">
+<em class="property">class </em><code class="descclassname">google.cloud.redis_v1.types.</code><code class="descname">SourceCodeInfo</code><a class="headerlink" href="#google.cloud.redis_v1.types.SourceCodeInfo" title="Permalink to this definition">#</a></dt>
+<dd><dl class="class">
+<dt id="google.cloud.redis_v1.types.SourceCodeInfo.Location">
+<em class="property">class </em><code class="descname">Location</code><a class="headerlink" href="#google.cloud.redis_v1.types.SourceCodeInfo.Location" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.redis_v1.types.Status">
+<em class="property">class </em><code class="descclassname">google.cloud.redis_v1.types.</code><code class="descname">Status</code><a class="headerlink" href="#google.cloud.redis_v1.types.Status" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.redis_v1.types.Timestamp">
+<em class="property">class </em><code class="descclassname">google.cloud.redis_v1.types.</code><code class="descname">Timestamp</code><a class="headerlink" href="#google.cloud.redis_v1.types.Timestamp" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.redis_v1.types.UninterpretedOption">
+<em class="property">class </em><code class="descclassname">google.cloud.redis_v1.types.</code><code class="descname">UninterpretedOption</code><a class="headerlink" href="#google.cloud.redis_v1.types.UninterpretedOption" title="Permalink to this definition">#</a></dt>
+<dd><dl class="class">
+<dt id="google.cloud.redis_v1.types.UninterpretedOption.NamePart">
+<em class="property">class </em><code class="descname">NamePart</code><a class="headerlink" href="#google.cloud.redis_v1.types.UninterpretedOption.NamePart" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.redis_v1.types.UpdateInstanceRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.redis_v1.types.</code><code class="descname">UpdateInstanceRequest</code><a class="headerlink" href="#google.cloud.redis_v1.types.UpdateInstanceRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request for
+[UpdateInstance][google.cloud.redis.v1.CloudRedis.UpdateInstance].</p>
+<dl class="attribute">
+<dt id="google.cloud.redis_v1.types.UpdateInstanceRequest.update_mask">
+<code class="descname">update_mask</code><a class="headerlink" href="#google.cloud.redis_v1.types.UpdateInstanceRequest.update_mask" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. Mask of fields to update. At least one path must be
+supplied in this field. The elements of the repeated paths
+field may only include these fields from
+[Instance][CloudRedis.Instance]:  -  <code class="docutils literal notranslate"><span class="pre">displayName</span></code> -
+<code class="docutils literal notranslate"><span class="pre">labels</span></code> -  <code class="docutils literal notranslate"><span class="pre">memorySizeGb</span></code> -  <code class="docutils literal notranslate"><span class="pre">redisConfig</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.redis_v1.types.UpdateInstanceRequest.instance">
+<code class="descname">instance</code><a class="headerlink" href="#google.cloud.redis_v1.types.UpdateInstanceRequest.instance" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. Update description. Only fields specified in
+update_mask are updated.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.redis_v1.types.ZoneMetadata">
+<em class="property">class </em><code class="descclassname">google.cloud.redis_v1.types.</code><code class="descname">ZoneMetadata</code><a class="headerlink" href="#google.cloud.redis_v1.types.ZoneMetadata" title="Permalink to this definition">#</a></dt>
+<dd><p>Defines specific information for a particular zone. Currently empty and
+reserved for future use only.</p>
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">google-cloud</a></h1>
+
+
+
+<p class="blurb">Google Cloud Client Libraries for Python</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=GoogleCloudPlatform&repo=google-cloud-python&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../core/index.html">Core Libraries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../asset/index.html">Asset Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../automl/index.html">AutoML</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../bigquery/index.html">BigQuery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../bigquery_datatransfer/index.html">BigQuery Data-Transfer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../bigtable/usage.html">Bigtable</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../container/index.html">Container</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dataproc/index.html">Dataproc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../datastore/index.html">Datastore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dlp/index.html">Data Loss Prevention</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dns/usage.html">DNS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../firestore/index.html">Firestore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../iot/index.html">IoT</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../kms/index.html">Key Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../language/index.html">Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pubsub/index.html">PubSub</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../oslogin/index.html">OSLogin</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Redis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../resource-manager/index.html">Resource Manager</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../runtimeconfig/usage.html">Runtime Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../websecurityscanner/index.html">Security Scanner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../spanner/index.html">Spanner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../speech/index.html">Speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../storage/index.html">Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tasks/index.html">Tasks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../texttospeech/index.html">Text-to-Speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../translate/index.html">Translate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../vision/index.html">Vision</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../videointelligence/index.html">Video Intelligence</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../error-reporting/usage.html">Stackdriver Error Reporting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../logging/index.html">Stackdriver Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../monitoring/index.html">Stackdriver Monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../trace/index.html">Stackdriver Trace</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../releases.html">Release History</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Python Client for Google Cloud Memorystore for Redis API (Alpha)</a><ul>
+      <li>Previous: <a href="api.html" title="previous chapter">Client for Google Cloud Memorystore for Redis API</a></li>
+      <li>Next: <a href="../v1beta1/api.html" title="next chapter">Client for Google Cloud Memorystore for Redis API</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2014-2017, Google.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.11</a>
+      
+      |
+      <a href="../../../_sources/redis/gapic/v1/types.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/GoogleCloudPlatform/google-cloud-python" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

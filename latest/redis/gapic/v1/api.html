@@ -1,0 +1,608 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Client for Google Cloud Memorystore for Redis API &#8212; google-cloud b262661 documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Types for Google Cloud Memorystore for Redis API Client" href="types.html" />
+    <link rel="prev" title="Python Client for Google Cloud Memorystore for Redis API (Alpha)" href="../../index.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="module-google.cloud.redis_v1">
+<span id="client-for-google-cloud-memorystore-for-redis-api"></span><h1>Client for Google Cloud Memorystore for Redis API<a class="headerlink" href="#module-google.cloud.redis_v1" title="Permalink to this headline">#</a></h1>
+<dl class="class">
+<dt id="google.cloud.redis_v1.CloudRedisClient">
+<em class="property">class </em><code class="descclassname">google.cloud.redis_v1.</code><code class="descname">CloudRedisClient</code><span class="sig-paren">(</span><em>transport=None, channel=None, credentials=None, client_config={'interfaces': {'google.cloud.redis.v1.CloudRedis': {'methods': {'CreateInstance': {'retry_codes_name': 'non_idempotent', 'retry_params_name': 'default', 'timeout_millis': 60000}, 'DeleteInstance': {'retry_codes_name': 'non_idempotent', 'retry_params_name': 'default', 'timeout_millis': 60000}, 'GetInstance': {'retry_codes_name': 'non_idempotent', 'retry_params_name': 'default', 'timeout_millis': 60000}, 'ListInstances': {'retry_codes_name': 'non_idempotent', 'retry_params_name': 'default', 'timeout_millis': 60000}, 'UpdateInstance': {'retry_codes_name': 'non_idempotent', 'retry_params_name': 'default', 'timeout_millis': 60000}}, 'retry_codes': {'idempotent': ['DEADLINE_EXCEEDED', 'UNAVAILABLE'], 'non_idempotent': []}, 'retry_params': {'default': {'initial_retry_delay_millis': 100, 'initial_rpc_timeout_millis': 20000, 'max_retry_delay_millis': 60000, 'max_rpc_timeout_millis': 20000, 'retry_delay_multiplier': 1.3, 'rpc_timeout_multiplier': 1.0, 'total_timeout_millis': 600000}}}}}, client_info=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/redis_v1.html#CloudRedisClient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.redis_v1.CloudRedisClient" title="Permalink to this definition">#</a></dt>
+<dd><p>Configures and manages Cloud Memorystore for Redis instances</p>
+<p>Google Cloud Memorystore for Redis v1</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">redis.googleapis.com</span></code> service implements the Google Cloud Memorystore
+for Redis API and defines the following resource model for managing Redis
+instances:
+* The service works with a collection of cloud projects, named: <code class="docutils literal notranslate"><span class="pre">/projects/*</span></code>
+* Each project has a collection of available locations, named: <code class="docutils literal notranslate"><span class="pre">/locations/*</span></code>
+* Each location has a collection of Redis instances, named: <code class="docutils literal notranslate"><span class="pre">/instances/*</span></code>
+* As such, Redis instances are resources of the form:</p>
+<blockquote>
+<div><code class="docutils literal notranslate"><span class="pre">/projects/{project_id}/locations/{location_id}/instances/{instance_id}</span></code></div></blockquote>
+<p>Note that location_id must be refering to a GCP <code class="docutils literal notranslate"><span class="pre">region</span></code>; for example:
+* <code class="docutils literal notranslate"><span class="pre">projects/redpepper-1290/locations/us-central1/instances/my-redis</span></code></p>
+<p>Constructor.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>(</strong><strong>Union</strong><strong>[</strong><strong>CloudRedisGrpcTransport</strong><strong>,</strong> (<em>transport</em>) – Callable[[~.Credentials, type], ~.CloudRedisGrpcTransport]): A transport
+instance, responsible for actually making the API calls.
+The default transport uses the gRPC protocol.
+This argument may also be a callable which returns a
+transport instance. Callables will be sent the credentials
+as the first argument and the default transport class as
+the second argument.</li>
+<li><strong>channel</strong> (<a class="reference external" href="https://grpc.io/grpc/python/grpc.html#grpc.Channel" title="(in grpcio v1.8.0)"><em>grpc.Channel</em></a>) – DEPRECATED. A <code class="docutils literal notranslate"><span class="pre">Channel</span></code> instance
+through which to make calls. This argument is mutually exclusive
+with <code class="docutils literal notranslate"><span class="pre">credentials</span></code>; providing both will raise an exception.</li>
+<li><strong>credentials</strong> (<a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.credentials.html#google.auth.credentials.Credentials" title="(in google-auth v1.5.1)"><em>google.auth.credentials.Credentials</em></a>) – The
+authorization credentials to attach to requests. These
+credentials identify this application to the service. If none
+are specified, the client will attempt to ascertain the
+credentials from the environment.
+This argument is mutually exclusive with providing a
+transport instance to <code class="docutils literal notranslate"><span class="pre">transport</span></code>; doing so will raise
+an exception.</li>
+<li><strong>client_config</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – DEPRECATED. A dictionary of call options for
+each method. If not specified, the default configuration is used.</li>
+<li><strong>client_info</strong> (<em>google.api_core.gapic_v1.client_info.ClientInfo</em>) – The client info used to send a user-agent string along with
+API requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code>, then default info will be used.
+Generally, you only need to set this if you’re developing
+your own client library.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="google.cloud.redis_v1.CloudRedisClient.create_instance">
+<code class="descname">create_instance</code><span class="sig-paren">(</span><em>parent</em>, <em>instance_id</em>, <em>instance</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/redis_v1/gapic/cloud_redis_client.html#CloudRedisClient.create_instance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.redis_v1.CloudRedisClient.create_instance" title="Permalink to this definition">#</a></dt>
+<dd><p>Creates a Redis instance based on the specified tier and memory size.</p>
+<p>By default, the instance is accessible from the project’s
+<a class="reference external" href="https://cloud.google.com/compute/docs/networks-and-firewalls#networks">default network</a>.</p>
+<p>The creation is executed asynchronously and callers may check the returned
+operation to track its progress. Once the operation is completed the Redis
+instance will be fully functional. Completed longrunning.Operation will
+contain the new instance object in the response field.</p>
+<p>The returned operation is automatically deleted after a few hours, so there
+is no need to call DeleteOperation.</p>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">redis_v1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud.redis_v1</span> <span class="k">import</span> <span class="n">enums</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">redis_v1</span><span class="o">.</span><span class="n">CloudRedisClient</span><span class="p">()</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">parent</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">location_path</span><span class="p">(</span><span class="s1">&#39;[PROJECT]&#39;</span><span class="p">,</span> <span class="s1">&#39;[LOCATION]&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">instance_id</span> <span class="o">=</span> <span class="s1">&#39;test_instance&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tier</span> <span class="o">=</span> <span class="n">enums</span><span class="o">.</span><span class="n">Instance</span><span class="o">.</span><span class="n">Tier</span><span class="o">.</span><span class="n">BASIC</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">memory_size_gb</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">instance</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;tier&#39;</span><span class="p">:</span> <span class="n">tier</span><span class="p">,</span> <span class="s1">&#39;memory_size_gb&#39;</span><span class="p">:</span> <span class="n">memory_size_gb</span><span class="p">}</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">create_instance</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">instance_id</span><span class="p">,</span> <span class="n">instance</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">callback</span><span class="p">(</span><span class="n">operation_future</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="c1"># Handle result.</span>
+<span class="gp">... </span>    <span class="n">result</span> <span class="o">=</span> <span class="n">operation_future</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">response</span><span class="o">.</span><span class="n">add_done_callback</span><span class="p">(</span><span class="n">callback</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Handle metadata.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">metadata</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">metadata</span><span class="p">()</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Required. The resource name of the instance location using the form <code class="docutils literal notranslate"><span class="pre">projects/{project_id}/locations/{location_id}</span></code>
+where <code class="docutils literal notranslate"><span class="pre">location_id</span></code> refers to a GCP region</li>
+<li><strong>instance_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Required. The logical name of the Redis instance in the customer project
+with the following restrictions:
+* Must contain only lowercase letters, numbers, and hyphens.
+* Must start with a letter.
+* Must be between 1-40 characters.
+* Must end with a number or a letter.
+* Must be unique within the customer project / location</li>
+<li><strong>instance</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.redis_v1.types.Instance" title="google.cloud.redis_v1.types.Instance"><em>Instance</em></a><em>]</em>) – Required. A Redis [Instance] resource
+If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.redis_v1.types.Instance" title="google.cloud.redis_v1.types.Instance"><code class="xref py py-class docutils literal notranslate"><span class="pre">Instance</span></code></a></li>
+<li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
+be retried.</li>
+<li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
+for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
+specified, the timeout applies to each individual attempt.</li>
+<li><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
+that is provided to the method.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <code class="xref py py-class docutils literal notranslate"><span class="pre">_OperationFuture</span></code> instance.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
+failed for any reason.</li>
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
+to a retryable error and retry attempts failed.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.redis_v1.CloudRedisClient.delete_instance">
+<code class="descname">delete_instance</code><span class="sig-paren">(</span><em>name</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/redis_v1/gapic/cloud_redis_client.html#CloudRedisClient.delete_instance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.redis_v1.CloudRedisClient.delete_instance" title="Permalink to this definition">#</a></dt>
+<dd><p>Deletes a specific Redis instance.  Instance stops serving and data is
+deleted.</p>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">redis_v1</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">redis_v1</span><span class="o">.</span><span class="n">CloudRedisClient</span><span class="p">()</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">name</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">instance_path</span><span class="p">(</span><span class="s1">&#39;[PROJECT]&#39;</span><span class="p">,</span> <span class="s1">&#39;[LOCATION]&#39;</span><span class="p">,</span> <span class="s1">&#39;[INSTANCE]&#39;</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">delete_instance</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">callback</span><span class="p">(</span><span class="n">operation_future</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="c1"># Handle result.</span>
+<span class="gp">... </span>    <span class="n">result</span> <span class="o">=</span> <span class="n">operation_future</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">response</span><span class="o">.</span><span class="n">add_done_callback</span><span class="p">(</span><span class="n">callback</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Handle metadata.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">metadata</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">metadata</span><span class="p">()</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Required. Redis instance resource name using the form <code class="docutils literal notranslate"><span class="pre">projects/{project_id}/locations/{location_id}/instances/{instance_id}`</span></code>
+where <code class="docutils literal notranslate"><span class="pre">location_id</span></code> refers to a GCP region</li>
+<li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
+be retried.</li>
+<li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
+for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
+specified, the timeout applies to each individual attempt.</li>
+<li><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
+that is provided to the method.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <code class="xref py py-class docutils literal notranslate"><span class="pre">_OperationFuture</span></code> instance.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
+failed for any reason.</li>
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
+to a retryable error and retry attempts failed.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.redis_v1.CloudRedisClient.enums">
+<code class="descname">enums</code><em class="property"> = &lt;module 'google.cloud.redis_v1.gapic.enums' from '/var/code/gcp/redis/google/cloud/redis_v1/gapic/enums.py'&gt;</em><a class="headerlink" href="#google.cloud.redis_v1.CloudRedisClient.enums" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="classmethod">
+<dt id="google.cloud.redis_v1.CloudRedisClient.from_service_account_file">
+<em class="property">classmethod </em><code class="descname">from_service_account_file</code><span class="sig-paren">(</span><em>filename</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/redis_v1/gapic/cloud_redis_client.html#CloudRedisClient.from_service_account_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.redis_v1.CloudRedisClient.from_service_account_file" title="Permalink to this definition">#</a></dt>
+<dd><p>Creates an instance of this client using the provided credentials
+file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The path to the service account private key json
+file.</li>
+<li><strong>args</strong> – Additional arguments to pass to the constructor.</li>
+<li><strong>kwargs</strong> – Additional arguments to pass to the constructor.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The constructed client.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#google.cloud.redis_v1.CloudRedisClient" title="google.cloud.redis_v1.CloudRedisClient">CloudRedisClient</a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="google.cloud.redis_v1.CloudRedisClient.from_service_account_json">
+<em class="property">classmethod </em><code class="descname">from_service_account_json</code><span class="sig-paren">(</span><em>filename</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.redis_v1.CloudRedisClient.from_service_account_json" title="Permalink to this definition">#</a></dt>
+<dd><p>Creates an instance of this client using the provided credentials
+file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The path to the service account private key json
+file.</li>
+<li><strong>args</strong> – Additional arguments to pass to the constructor.</li>
+<li><strong>kwargs</strong> – Additional arguments to pass to the constructor.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The constructed client.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#google.cloud.redis_v1.CloudRedisClient" title="google.cloud.redis_v1.CloudRedisClient">CloudRedisClient</a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.redis_v1.CloudRedisClient.get_instance">
+<code class="descname">get_instance</code><span class="sig-paren">(</span><em>name</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/redis_v1/gapic/cloud_redis_client.html#CloudRedisClient.get_instance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.redis_v1.CloudRedisClient.get_instance" title="Permalink to this definition">#</a></dt>
+<dd><p>Gets the details of a specific Redis instance.</p>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">redis_v1</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">redis_v1</span><span class="o">.</span><span class="n">CloudRedisClient</span><span class="p">()</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">name</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">instance_path</span><span class="p">(</span><span class="s1">&#39;[PROJECT]&#39;</span><span class="p">,</span> <span class="s1">&#39;[LOCATION]&#39;</span><span class="p">,</span> <span class="s1">&#39;[INSTANCE]&#39;</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_instance</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Required. Redis instance resource name using the form <code class="docutils literal notranslate"><span class="pre">projects/{project_id}/locations/{location_id}/instances/{instance_id}`</span></code>
+where <code class="docutils literal notranslate"><span class="pre">location_id</span></code> refers to a GCP region</li>
+<li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
+be retried.</li>
+<li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
+for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
+specified, the timeout applies to each individual attempt.</li>
+<li><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
+that is provided to the method.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="types.html#google.cloud.redis_v1.types.Instance" title="google.cloud.redis_v1.types.Instance"><code class="xref py py-class docutils literal notranslate"><span class="pre">Instance</span></code></a> instance.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
+failed for any reason.</li>
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
+to a retryable error and retry attempts failed.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="google.cloud.redis_v1.CloudRedisClient.instance_path">
+<em class="property">classmethod </em><code class="descname">instance_path</code><span class="sig-paren">(</span><em>project</em>, <em>location</em>, <em>instance</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/redis_v1/gapic/cloud_redis_client.html#CloudRedisClient.instance_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.redis_v1.CloudRedisClient.instance_path" title="Permalink to this definition">#</a></dt>
+<dd><p>Return a fully-qualified instance string.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.redis_v1.CloudRedisClient.list_instances">
+<code class="descname">list_instances</code><span class="sig-paren">(</span><em>parent</em>, <em>page_size=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/redis_v1/gapic/cloud_redis_client.html#CloudRedisClient.list_instances"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.redis_v1.CloudRedisClient.list_instances" title="Permalink to this definition">#</a></dt>
+<dd><p>Lists all Redis instances owned by a project in either the specified
+location (region) or all locations.</p>
+<p>The location should have the following format:
+* <code class="docutils literal notranslate"><span class="pre">projects/{project_id}/locations/{location_id}</span></code></p>
+<p>If <code class="docutils literal notranslate"><span class="pre">location_id</span></code> is specified as <code class="docutils literal notranslate"><span class="pre">-</span></code> (wildcard), then all regions
+available to the project are queried, and the results are aggregated.</p>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">redis_v1</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">redis_v1</span><span class="o">.</span><span class="n">CloudRedisClient</span><span class="p">()</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">parent</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">location_path</span><span class="p">(</span><span class="s1">&#39;[PROJECT]&#39;</span><span class="p">,</span> <span class="s1">&#39;[LOCATION]&#39;</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Iterate over all results</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_instances</span><span class="p">(</span><span class="n">parent</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="c1"># process element</span>
+<span class="gp">... </span>    <span class="k">pass</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Alternatively:</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Iterate over results one page at a time</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_instances</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">CallOptions</span><span class="p">(</span><span class="n">page_token</span><span class="o">=</span><span class="n">INITIAL_PAGE</span><span class="p">)):</span>
+<span class="gp">... </span>    <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">page</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="c1"># process element</span>
+<span class="gp">... </span>        <span class="k">pass</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Required. The resource name of the instance location using the form <code class="docutils literal notranslate"><span class="pre">projects/{project_id}/locations/{location_id}</span></code>
+where <code class="docutils literal notranslate"><span class="pre">location_id</span></code> refers to a GCP region</li>
+<li><strong>page_size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – The maximum number of resources contained in the
+underlying API response. If page streaming is performed per-
+resource, this parameter does not affect the return value. If page
+streaming is performed per-page, this determines the maximum number
+of resources in a page.</li>
+<li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
+be retried.</li>
+<li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
+for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
+specified, the timeout applies to each individual attempt.</li>
+<li><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
+that is provided to the method.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.html#google.gax.PageIterator" title="(in google-gax v0.16.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">PageIterator</span></code></a> instance. By default, this
+is an iterable of <a class="reference internal" href="types.html#google.cloud.redis_v1.types.Instance" title="google.cloud.redis_v1.types.Instance"><code class="xref py py-class docutils literal notranslate"><span class="pre">Instance</span></code></a> instances.
+This object can also be configured to iterate over the pages
+of the response through the <cite>options</cite> parameter.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
+failed for any reason.</li>
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
+to a retryable error and retry attempts failed.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="google.cloud.redis_v1.CloudRedisClient.location_path">
+<em class="property">classmethod </em><code class="descname">location_path</code><span class="sig-paren">(</span><em>project</em>, <em>location</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/redis_v1/gapic/cloud_redis_client.html#CloudRedisClient.location_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.redis_v1.CloudRedisClient.location_path" title="Permalink to this definition">#</a></dt>
+<dd><p>Return a fully-qualified location string.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.redis_v1.CloudRedisClient.update_instance">
+<code class="descname">update_instance</code><span class="sig-paren">(</span><em>update_mask</em>, <em>instance</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/redis_v1/gapic/cloud_redis_client.html#CloudRedisClient.update_instance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.redis_v1.CloudRedisClient.update_instance" title="Permalink to this definition">#</a></dt>
+<dd><p>Updates the metadata and configuration of a specific Redis instance.</p>
+<p>Completed longrunning.Operation will contain the new instance object
+in the response field. The returned operation is automatically deleted
+after a few hours, so there is no need to call DeleteOperation.</p>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">redis_v1</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">redis_v1</span><span class="o">.</span><span class="n">CloudRedisClient</span><span class="p">()</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">paths_element</span> <span class="o">=</span> <span class="s1">&#39;display_name&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">paths_element_2</span> <span class="o">=</span> <span class="s1">&#39;memory_size_gb&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">paths</span> <span class="o">=</span> <span class="p">[</span><span class="n">paths_element</span><span class="p">,</span> <span class="n">paths_element_2</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">update_mask</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;paths&#39;</span><span class="p">:</span> <span class="n">paths</span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">display_name</span> <span class="o">=</span> <span class="s1">&#39;UpdatedDisplayName&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">memory_size_gb</span> <span class="o">=</span> <span class="mi">4</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">instance</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;display_name&#39;</span><span class="p">:</span> <span class="n">display_name</span><span class="p">,</span> <span class="s1">&#39;memory_size_gb&#39;</span><span class="p">:</span> <span class="n">memory_size_gb</span><span class="p">}</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">update_instance</span><span class="p">(</span><span class="n">update_mask</span><span class="p">,</span> <span class="n">instance</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">callback</span><span class="p">(</span><span class="n">operation_future</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="c1"># Handle result.</span>
+<span class="gp">... </span>    <span class="n">result</span> <span class="o">=</span> <span class="n">operation_future</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">response</span><span class="o">.</span><span class="n">add_done_callback</span><span class="p">(</span><span class="n">callback</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Handle metadata.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">metadata</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">metadata</span><span class="p">()</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>update_mask</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.redis_v1.types.FieldMask" title="google.cloud.redis_v1.types.FieldMask"><em>FieldMask</em></a><em>]</em>) – Required. Mask of fields to update. At least one path must be supplied in
+this field. The elements of the repeated paths field may only include these
+fields from <code class="docutils literal notranslate"><span class="pre">Instance</span></code>: <code class="docutils literal notranslate"><span class="pre">displayName</span></code>, <code class="docutils literal notranslate"><span class="pre">labels</span></code>, <code class="docutils literal notranslate"><span class="pre">memorySizeGb</span></code>, and <code class="docutils literal notranslate"><span class="pre">redisConfig</span></code>.
+If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.redis_v1.types.FieldMask" title="google.cloud.redis_v1.types.FieldMask"><code class="xref py py-class docutils literal notranslate"><span class="pre">FieldMask</span></code></a></li>
+<li><strong>instance</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.redis_v1.types.Instance" title="google.cloud.redis_v1.types.Instance"><em>Instance</em></a><em>]</em>) – Required. Update description.
+Only fields specified in update_mask are updated.
+If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.redis_v1.types.Instance" title="google.cloud.redis_v1.types.Instance"><code class="xref py py-class docutils literal notranslate"><span class="pre">Instance</span></code></a></li>
+<li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
+be retried.</li>
+<li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
+for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
+specified, the timeout applies to each individual attempt.</li>
+<li><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
+that is provided to the method.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <code class="xref py py-class docutils literal notranslate"><span class="pre">_OperationFuture</span></code> instance.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
+failed for any reason.</li>
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
+to a retryable error and retry attempts failed.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">google-cloud</a></h1>
+
+
+
+<p class="blurb">Google Cloud Client Libraries for Python</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=GoogleCloudPlatform&repo=google-cloud-python&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../core/index.html">Core Libraries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../asset/index.html">Asset Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../automl/index.html">AutoML</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../bigquery/index.html">BigQuery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../bigquery_datatransfer/index.html">BigQuery Data-Transfer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../bigtable/usage.html">Bigtable</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../container/index.html">Container</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dataproc/index.html">Dataproc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../datastore/index.html">Datastore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dlp/index.html">Data Loss Prevention</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dns/usage.html">DNS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../firestore/index.html">Firestore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../iot/index.html">IoT</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../kms/index.html">Key Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../language/index.html">Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pubsub/index.html">PubSub</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../oslogin/index.html">OSLogin</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Redis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../resource-manager/index.html">Resource Manager</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../runtimeconfig/usage.html">Runtime Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../websecurityscanner/index.html">Security Scanner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../spanner/index.html">Spanner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../speech/index.html">Speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../storage/index.html">Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tasks/index.html">Tasks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../texttospeech/index.html">Text-to-Speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../translate/index.html">Translate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../vision/index.html">Vision</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../videointelligence/index.html">Video Intelligence</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../error-reporting/usage.html">Stackdriver Error Reporting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../logging/index.html">Stackdriver Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../monitoring/index.html">Stackdriver Monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../trace/index.html">Stackdriver Trace</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../releases.html">Release History</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Python Client for Google Cloud Memorystore for Redis API (Alpha)</a><ul>
+      <li>Previous: <a href="../../index.html" title="previous chapter">Python Client for Google Cloud Memorystore for Redis API (Alpha)</a></li>
+      <li>Next: <a href="types.html" title="next chapter">Types for Google Cloud Memorystore for Redis API Client</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2014-2017, Google.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.11</a>
+      
+      |
+      <a href="../../../_sources/redis/gapic/v1/api.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/GoogleCloudPlatform/google-cloud-python" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>
