@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+#
 # Copyright 2018 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -79,18 +81,15 @@ class TestAssetServiceClient(object):
 
         # Setup Request
         parent = client.project_path('[PROJECT]')
-        content_types = []
         output_config = {}
 
-        response = client.export_assets(parent, content_types, output_config)
+        response = client.export_assets(parent, output_config)
         result = response.result()
         assert expected_response == result
 
         assert len(channel.requests) == 1
         expected_request = asset_service_pb2.ExportAssetsRequest(
-            parent=parent,
-            content_types=content_types,
-            output_config=output_config)
+            parent=parent, output_config=output_config)
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
@@ -107,10 +106,9 @@ class TestAssetServiceClient(object):
 
         # Setup Request
         parent = client.project_path('[PROJECT]')
-        content_types = []
         output_config = {}
 
-        response = client.export_assets(parent, content_types, output_config)
+        response = client.export_assets(parent, output_config)
         exception = response.exception()
         assert exception.errors[0] == error
 
@@ -126,18 +124,16 @@ class TestAssetServiceClient(object):
 
         # Setup Request
         parent = client.project_path('[PROJECT]')
-        asset_names = []
         content_type = enums.ContentType.CONTENT_TYPE_UNSPECIFIED
         read_time_window = {}
 
-        response = client.batch_get_assets_history(
-            parent, asset_names, content_type, read_time_window)
+        response = client.batch_get_assets_history(parent, content_type,
+                                                   read_time_window)
         assert expected_response == response
 
         assert len(channel.requests) == 1
         expected_request = asset_service_pb2.BatchGetAssetsHistoryRequest(
             parent=parent,
-            asset_names=asset_names,
             content_type=content_type,
             read_time_window=read_time_window)
         actual_request = channel.requests[0][1]
@@ -150,10 +146,9 @@ class TestAssetServiceClient(object):
 
         # Setup request
         parent = client.project_path('[PROJECT]')
-        asset_names = []
         content_type = enums.ContentType.CONTENT_TYPE_UNSPECIFIED
         read_time_window = {}
 
         with pytest.raises(CustomException):
-            client.batch_get_assets_history(parent, asset_names, content_type,
+            client.batch_get_assets_history(parent, content_type,
                                             read_time_window)
