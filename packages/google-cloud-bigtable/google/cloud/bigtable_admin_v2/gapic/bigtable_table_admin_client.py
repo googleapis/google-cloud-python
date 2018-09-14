@@ -300,8 +300,8 @@ class BigtableTableAdminClient(object):
                 'create_table'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.create_table,
                     default_retry=self._method_configs['CreateTable'].retry,
-                    default_timeout=self._method_configs['CreateTable']
-                    .timeout,
+                    default_timeout=self._method_configs['CreateTable'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -401,10 +401,10 @@ class BigtableTableAdminClient(object):
             self._inner_api_calls[
                 'create_table_from_snapshot'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.create_table_from_snapshot,
-                    default_retry=self._method_configs[
-                        'CreateTableFromSnapshot'].retry,
-                    default_timeout=self._method_configs[
-                        'CreateTableFromSnapshot'].timeout,
+                    default_retry=self.
+                    _method_configs['CreateTableFromSnapshot'].retry,
+                    default_timeout=self.
+                    _method_configs['CreateTableFromSnapshot'].timeout,
                     client_info=self._client_info,
                 )
 
@@ -651,8 +651,8 @@ class BigtableTableAdminClient(object):
                 'delete_table'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.delete_table,
                     default_retry=self._method_configs['DeleteTable'].retry,
-                    default_timeout=self._method_configs['DeleteTable']
-                    .timeout,
+                    default_timeout=self._method_configs['DeleteTable'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -730,10 +730,10 @@ class BigtableTableAdminClient(object):
             self._inner_api_calls[
                 'modify_column_families'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.modify_column_families,
-                    default_retry=self._method_configs['ModifyColumnFamilies']
-                    .retry,
-                    default_timeout=self._method_configs[
-                        'ModifyColumnFamilies'].timeout,
+                    default_retry=self._method_configs['ModifyColumnFamilies'].
+                    retry,
+                    default_timeout=self.
+                    _method_configs['ModifyColumnFamilies'].timeout,
                     client_info=self._client_info,
                 )
 
@@ -806,8 +806,8 @@ class BigtableTableAdminClient(object):
                 'drop_row_range'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.drop_row_range,
                     default_retry=self._method_configs['DropRowRange'].retry,
-                    default_timeout=self._method_configs['DropRowRange']
-                    .timeout,
+                    default_timeout=self._method_configs['DropRowRange'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -887,10 +887,10 @@ class BigtableTableAdminClient(object):
             self._inner_api_calls[
                 'generate_consistency_token'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.generate_consistency_token,
-                    default_retry=self._method_configs[
-                        'GenerateConsistencyToken'].retry,
-                    default_timeout=self._method_configs[
-                        'GenerateConsistencyToken'].timeout,
+                    default_retry=self.
+                    _method_configs['GenerateConsistencyToken'].retry,
+                    default_timeout=self.
+                    _method_configs['GenerateConsistencyToken'].timeout,
                     client_info=self._client_info,
                 )
 
@@ -963,10 +963,10 @@ class BigtableTableAdminClient(object):
             self._inner_api_calls[
                 'check_consistency'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.check_consistency,
-                    default_retry=self._method_configs[
-                        'CheckConsistency'].retry,
-                    default_timeout=self._method_configs['CheckConsistency']
-                    .timeout,
+                    default_retry=self._method_configs['CheckConsistency'].
+                    retry,
+                    default_timeout=self._method_configs['CheckConsistency'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -1078,8 +1078,8 @@ class BigtableTableAdminClient(object):
                 'snapshot_table'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.snapshot_table,
                     default_retry=self._method_configs['SnapshotTable'].retry,
-                    default_timeout=self._method_configs['SnapshotTable']
-                    .timeout,
+                    default_timeout=self._method_configs['SnapshotTable'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -1163,8 +1163,8 @@ class BigtableTableAdminClient(object):
                 'get_snapshot'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.get_snapshot,
                     default_retry=self._method_configs['GetSnapshot'].retry,
-                    default_timeout=self._method_configs['GetSnapshot']
-                    .timeout,
+                    default_timeout=self._method_configs['GetSnapshot'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -1259,8 +1259,8 @@ class BigtableTableAdminClient(object):
                 'list_snapshots'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.list_snapshots,
                     default_retry=self._method_configs['ListSnapshots'].retry,
-                    default_timeout=self._method_configs['ListSnapshots']
-                    .timeout,
+                    default_timeout=self._method_configs['ListSnapshots'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -1343,8 +1343,8 @@ class BigtableTableAdminClient(object):
                 'delete_snapshot'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.delete_snapshot,
                     default_retry=self._method_configs['DeleteSnapshot'].retry,
-                    default_timeout=self._method_configs['DeleteSnapshot']
-                    .timeout,
+                    default_timeout=self._method_configs['DeleteSnapshot'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
