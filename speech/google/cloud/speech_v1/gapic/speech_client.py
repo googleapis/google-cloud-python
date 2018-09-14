@@ -294,10 +294,10 @@ class SpeechClient(object):
             self._inner_api_calls[
                 'long_running_recognize'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.long_running_recognize,
-                    default_retry=self._method_configs['LongRunningRecognize']
-                    .retry,
-                    default_timeout=self._method_configs[
-                        'LongRunningRecognize'].timeout,
+                    default_retry=self._method_configs['LongRunningRecognize'].
+                    retry,
+                    default_timeout=self.
+                    _method_configs['LongRunningRecognize'].timeout,
                     client_info=self._client_info,
                 )
 
@@ -364,10 +364,10 @@ class SpeechClient(object):
             self._inner_api_calls[
                 'streaming_recognize'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.streaming_recognize,
-                    default_retry=self._method_configs[
-                        'StreamingRecognize'].retry,
-                    default_timeout=self._method_configs['StreamingRecognize']
-                    .timeout,
+                    default_retry=self._method_configs['StreamingRecognize'].
+                    retry,
+                    default_timeout=self._method_configs['StreamingRecognize'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
