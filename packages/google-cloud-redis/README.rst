@@ -24,7 +24,7 @@ In order to use this library, you first need to go through the following steps:
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Google Cloud Memorystore for Redis API.:  https://cloud.google.com/memorystore/
+.. _Enable the Google Cloud Memorystore for Redis API.:  https://console.cloud.google.com/apis/library/redis.googleapis.com
 .. _Setup Authentication.: https://googlecloudplatform.github.io/google-cloud-python/latest/core/auth.html
 
 Installation
@@ -72,5 +72,5 @@ Next Steps
 -  View this `repository’s main README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Google Cloud Memorystore for Redis API Product documentation:  https://cloud.google.com/redis
+.. _Google Cloud Memorystore for Redis API Product documentation:  https://cloud.google.com/memorystore/
 .. _repository’s main README: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/README.rst

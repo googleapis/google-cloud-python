@@ -13,7 +13,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-"""Accesses the google.cloud.redis.v1beta1 CloudRedis API."""
+"""Accesses the google.cloud.redis.v1 CloudRedis API."""
 
 import functools
 import pkg_resources
@@ -30,13 +30,12 @@ import google.api_core.page_iterator
 import google.api_core.path_template
 import grpc
 
-from google.cloud.redis_v1beta1.gapic import cloud_redis_client_config
-from google.cloud.redis_v1beta1.gapic import enums
-from google.cloud.redis_v1beta1.gapic.transports import cloud_redis_grpc_transport
-from google.cloud.redis_v1beta1.proto import cloud_redis_pb2
-from google.cloud.redis_v1beta1.proto import cloud_redis_pb2_grpc
+from google.cloud.redis_v1.gapic import cloud_redis_client_config
+from google.cloud.redis_v1.gapic import enums
+from google.cloud.redis_v1.gapic.transports import cloud_redis_grpc_transport
+from google.cloud.redis_v1.proto import cloud_redis_pb2
+from google.cloud.redis_v1.proto import cloud_redis_pb2_grpc
 from google.longrunning import operations_pb2
-from google.protobuf import any_pb2
 from google.protobuf import empty_pb2
 from google.protobuf import field_mask_pb2
 
@@ -48,7 +47,7 @@ class CloudRedisClient(object):
     """
     Configures and manages Cloud Memorystore for Redis instances
 
-    Google Cloud Memorystore for Redis v1beta1
+    Google Cloud Memorystore for Redis v1
 
     The ``redis.googleapis.com`` service implements the Google Cloud Memorystore
     for Redis API and defines the following resource model for managing Redis
@@ -69,7 +68,7 @@ class CloudRedisClient(object):
 
     # The name of the interface for this client. This is the key used to
     # find the method configuration in the client_config dictionary.
-    _INTERFACE_NAME = 'google.cloud.redis.v1beta1.CloudRedis'
+    _INTERFACE_NAME = 'google.cloud.redis.v1.CloudRedis'
 
     @classmethod
     def from_service_account_file(cls, filename, *args, **kwargs):
@@ -216,9 +215,9 @@ class CloudRedisClient(object):
         available to the project are queried, and the results are aggregated.
 
         Example:
-            >>> from google.cloud import redis_v1beta1
+            >>> from google.cloud import redis_v1
             >>>
-            >>> client = redis_v1beta1.CloudRedisClient()
+            >>> client = redis_v1.CloudRedisClient()
             >>>
             >>> parent = client.location_path('[PROJECT]', '[LOCATION]')
             >>>
@@ -255,7 +254,7 @@ class CloudRedisClient(object):
 
         Returns:
             A :class:`~google.gax.PageIterator` instance. By default, this
-            is an iterable of :class:`~google.cloud.redis_v1beta1.types.Instance` instances.
+            is an iterable of :class:`~google.cloud.redis_v1.types.Instance` instances.
             This object can also be configured to iterate over the pages
             of the response through the `options` parameter.
 
@@ -304,9 +303,9 @@ class CloudRedisClient(object):
         Gets the details of a specific Redis instance.
 
         Example:
-            >>> from google.cloud import redis_v1beta1
+            >>> from google.cloud import redis_v1
             >>>
-            >>> client = redis_v1beta1.CloudRedisClient()
+            >>> client = redis_v1.CloudRedisClient()
             >>>
             >>> name = client.instance_path('[PROJECT]', '[LOCATION]', '[INSTANCE]')
             >>>
@@ -325,7 +324,7 @@ class CloudRedisClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.cloud.redis_v1beta1.types.Instance` instance.
+            A :class:`~google.cloud.redis_v1.types.Instance` instance.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -359,7 +358,7 @@ class CloudRedisClient(object):
         """
         Creates a Redis instance based on the specified tier and memory size.
 
-        By default, the instance is peered to the project's
+        By default, the instance is accessible from the project's
         `default network <https://cloud.google.com/compute/docs/networks-and-firewalls#networks>`_.
 
         The creation is executed asynchronously and callers may check the returned
@@ -371,10 +370,10 @@ class CloudRedisClient(object):
         is no need to call DeleteOperation.
 
         Example:
-            >>> from google.cloud import redis_v1beta1
-            >>> from google.cloud.redis_v1beta1 import enums
+            >>> from google.cloud import redis_v1
+            >>> from google.cloud.redis_v1 import enums
             >>>
-            >>> client = redis_v1beta1.CloudRedisClient()
+            >>> client = redis_v1.CloudRedisClient()
             >>>
             >>> parent = client.location_path('[PROJECT]', '[LOCATION]')
             >>> instance_id = 'test_instance'
@@ -403,9 +402,9 @@ class CloudRedisClient(object):
                 * Must be between 1-40 characters.
                 * Must end with a number or a letter.
                 * Must be unique within the customer project / location
-            instance (Union[dict, ~google.cloud.redis_v1beta1.types.Instance]): Required. A Redis [Instance] resource
+            instance (Union[dict, ~google.cloud.redis_v1.types.Instance]): Required. A Redis [Instance] resource
                 If a dict is provided, it must be of the same form as the protobuf
-                message :class:`~google.cloud.redis_v1beta1.types.Instance`
+                message :class:`~google.cloud.redis_v1.types.Instance`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -416,7 +415,7 @@ class CloudRedisClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.cloud.redis_v1beta1.types._OperationFuture` instance.
+            A :class:`~google.cloud.redis_v1.types._OperationFuture` instance.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -447,7 +446,7 @@ class CloudRedisClient(object):
             operation,
             self.transport._operations_client,
             cloud_redis_pb2.Instance,
-            metadata_type=any_pb2.Any,
+            metadata_type=cloud_redis_pb2.OperationMetadata,
         )
 
     def update_instance(self,
@@ -464,9 +463,9 @@ class CloudRedisClient(object):
         after a few hours, so there is no need to call DeleteOperation.
 
         Example:
-            >>> from google.cloud import redis_v1beta1
+            >>> from google.cloud import redis_v1
             >>>
-            >>> client = redis_v1beta1.CloudRedisClient()
+            >>> client = redis_v1.CloudRedisClient()
             >>>
             >>> paths_element = 'display_name'
             >>> paths_element_2 = 'memory_size_gb'
@@ -488,19 +487,15 @@ class CloudRedisClient(object):
             >>> metadata = response.metadata()
 
         Args:
-            update_mask (Union[dict, ~google.cloud.redis_v1beta1.types.FieldMask]): Required. Mask of fields to update. At least one path must be supplied in
+            update_mask (Union[dict, ~google.cloud.redis_v1.types.FieldMask]): Required. Mask of fields to update. At least one path must be supplied in
                 this field. The elements of the repeated paths field may only include these
-                fields from ``Instance``:
-                * ``display_name``
-                * ``labels``
-                * ``memory_size_gb``
-                * ``redis_config``
+                fields from ``Instance``: ``displayName``, ``labels``, ``memorySizeGb``, and ``redisConfig``.
                 If a dict is provided, it must be of the same form as the protobuf
-                message :class:`~google.cloud.redis_v1beta1.types.FieldMask`
-            instance (Union[dict, ~google.cloud.redis_v1beta1.types.Instance]): Required. Update description.
+                message :class:`~google.cloud.redis_v1.types.FieldMask`
+            instance (Union[dict, ~google.cloud.redis_v1.types.Instance]): Required. Update description.
                 Only fields specified in update_mask are updated.
                 If a dict is provided, it must be of the same form as the protobuf
-                message :class:`~google.cloud.redis_v1beta1.types.Instance`
+                message :class:`~google.cloud.redis_v1.types.Instance`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -511,7 +506,7 @@ class CloudRedisClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.cloud.redis_v1beta1.types._OperationFuture` instance.
+            A :class:`~google.cloud.redis_v1.types._OperationFuture` instance.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -541,7 +536,7 @@ class CloudRedisClient(object):
             operation,
             self.transport._operations_client,
             cloud_redis_pb2.Instance,
-            metadata_type=any_pb2.Any,
+            metadata_type=cloud_redis_pb2.OperationMetadata,
         )
 
     def delete_instance(self,
@@ -554,9 +549,9 @@ class CloudRedisClient(object):
         deleted.
 
         Example:
-            >>> from google.cloud import redis_v1beta1
+            >>> from google.cloud import redis_v1
             >>>
-            >>> client = redis_v1beta1.CloudRedisClient()
+            >>> client = redis_v1.CloudRedisClient()
             >>>
             >>> name = client.instance_path('[PROJECT]', '[LOCATION]', '[INSTANCE]')
             >>>
@@ -584,7 +579,7 @@ class CloudRedisClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.cloud.redis_v1beta1.types._OperationFuture` instance.
+            A :class:`~google.cloud.redis_v1.types._OperationFuture` instance.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -611,5 +606,5 @@ class CloudRedisClient(object):
             operation,
             self.transport._operations_client,
             empty_pb2.Empty,
-            metadata_type=any_pb2.Any,
+            metadata_type=cloud_redis_pb2.OperationMetadata,
         )
