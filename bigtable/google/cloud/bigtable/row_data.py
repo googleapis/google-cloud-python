@@ -406,15 +406,16 @@ class PartialRowsData(object):
         req_manager = _ReadRowsRequestManager(self.request,
                                               self.last_scanned_row_key,
                                               self._counter)
-        self.request = req_manager.build_updated_request()
+        return req_manager.build_updated_request()
 
     def _on_error(self, exc):
         """Helper for :meth:`__iter__`."""
         # restart the read scan from AFTER the last successfully read row
+        retry_request = self.request
         if self.last_scanned_row_key:
-            self._create_retry_request()
+            retry_request = self._create_retry_request()
 
-        self.response_iterator = self.read_method(self.request)
+        self.response_iterator = self.read_method(retry_request)
 
     def _read_next(self):
         """Helper for :meth:`__iter__`."""
