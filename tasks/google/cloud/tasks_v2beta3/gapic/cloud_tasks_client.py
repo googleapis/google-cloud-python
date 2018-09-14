@@ -460,8 +460,8 @@ class CloudTasksClient(object):
                 'create_queue'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.create_queue,
                     default_retry=self._method_configs['CreateQueue'].retry,
-                    default_timeout=self._method_configs['CreateQueue']
-                    .timeout,
+                    default_timeout=self._method_configs['CreateQueue'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -558,8 +558,8 @@ class CloudTasksClient(object):
                 'update_queue'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.update_queue,
                     default_retry=self._method_configs['UpdateQueue'].retry,
-                    default_timeout=self._method_configs['UpdateQueue']
-                    .timeout,
+                    default_timeout=self._method_configs['UpdateQueue'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -637,8 +637,8 @@ class CloudTasksClient(object):
                 'delete_queue'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.delete_queue,
                     default_retry=self._method_configs['DeleteQueue'].retry,
-                    default_timeout=self._method_configs['DeleteQueue']
-                    .timeout,
+                    default_timeout=self._method_configs['DeleteQueue'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -861,8 +861,8 @@ class CloudTasksClient(object):
                 'resume_queue'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.resume_queue,
                     default_retry=self._method_configs['ResumeQueue'].retry,
-                    default_timeout=self._method_configs['ResumeQueue']
-                    .timeout,
+                    default_timeout=self._method_configs['ResumeQueue'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -936,8 +936,8 @@ class CloudTasksClient(object):
                 'get_iam_policy'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.get_iam_policy,
                     default_retry=self._method_configs['GetIamPolicy'].retry,
-                    default_timeout=self._method_configs['GetIamPolicy']
-                    .timeout,
+                    default_timeout=self._method_configs['GetIamPolicy'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -1023,8 +1023,8 @@ class CloudTasksClient(object):
                 'set_iam_policy'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.set_iam_policy,
                     default_retry=self._method_configs['SetIamPolicy'].retry,
-                    default_timeout=self._method_configs['SetIamPolicy']
-                    .timeout,
+                    default_timeout=self._method_configs['SetIamPolicy'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -1106,10 +1106,10 @@ class CloudTasksClient(object):
             self._inner_api_calls[
                 'test_iam_permissions'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.test_iam_permissions,
-                    default_retry=self._method_configs[
-                        'TestIamPermissions'].retry,
-                    default_timeout=self._method_configs['TestIamPermissions']
-                    .timeout,
+                    default_retry=self._method_configs['TestIamPermissions'].
+                    retry,
+                    default_timeout=self._method_configs['TestIamPermissions'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
