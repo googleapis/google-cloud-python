@@ -1088,32 +1088,6 @@ class _Dataset(GbqConnector):
         except self.http_error as ex:
             self.process_http_error(ex)
 
-    def datasets(self):
-        """ Return a list of datasets in Google BigQuery
-
-        Parameters
-        ----------
-        None
-
-        Returns
-        -------
-        list
-            List of datasets under the specific project
-        """
-
-        dataset_list = []
-
-        try:
-            dataset_response = self.client.list_datasets()
-
-            for row in dataset_response:
-                dataset_list.append(row.dataset_id)
-
-        except self.http_error as ex:
-            self.process_http_error(ex)
-
-        return dataset_list
-
     def create(self, dataset_id):
         """ Create a dataset in Google BigQuery
 
@@ -1135,56 +1109,3 @@ class _Dataset(GbqConnector):
             self.client.create_dataset(dataset)
         except self.http_error as ex:
             self.process_http_error(ex)
-
-    def delete(self, dataset_id):
-        """ Delete a dataset in Google BigQuery
-
-        Parameters
-        ----------
-        dataset : str
-            Name of dataset to be deleted
-        """
-        from google.api_core.exceptions import NotFound
-
-        if not self.exists(dataset_id):
-            raise NotFoundException(
-                "Dataset {0} does not exist".format(dataset_id)
-            )
-
-        try:
-            self.client.delete_dataset(self.client.dataset(dataset_id))
-
-        except NotFound:
-            # Ignore 404 error which may occur if dataset already deleted
-            pass
-        except self.http_error as ex:
-            self.process_http_error(ex)
-
-    def tables(self, dataset_id):
-        """ List tables in the specific dataset in Google BigQuery
-
-        Parameters
-        ----------
-        dataset : str
-            Name of dataset to list tables for
-
-        Returns
-        -------
-        list
-            List of tables under the specific dataset
-        """
-
-        table_list = []
-
-        try:
-            table_response = self.client.list_tables(
-                self.client.dataset(dataset_id)
-            )
-
-            for row in table_response:
-                table_list.append(row.table_id)
-
-        except self.http_error as ex:
-            self.process_http_error(ex)
-
-        return table_list

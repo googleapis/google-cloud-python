@@ -8,9 +8,18 @@ Changelog
 
 - Add :class:`pandas_gbq.Context` to cache credentials in-memory, across
   calls to ``read_gbq`` and ``to_gbq``. (:issue:`198`, :issue:`208`)
-- Fast queries now do not log above ``DEBUG`` level. (:issue:`204`).
+- Fast queries now do not log above ``DEBUG`` level. (:issue:`204`)
   With BigQuery's release of `clustering <https://cloud.google.com/bigquery/docs/clustered-tables>`__
   querying smaller samples of data is now faster and cheaper.
+- Don't load credentials from disk if reauth is ``True``. (:issue:`212`)
+  This fixes a bug where pandas-gbq could not refresh credentials if the
+  cached credentials were invalid, revoked, or expired, even when
+  ``reauth=True``.
+
+Internal changes
+~~~~~~~~~~~~~~~~
+
+- Avoid listing datasets and tables in system tests. (:issue:`215`)
 
 .. _changelog-0.6.1:
 

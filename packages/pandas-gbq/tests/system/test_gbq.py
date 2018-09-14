@@ -2,7 +2,7 @@
 
 import sys
 from datetime import datetime
-from random import randint
+import uuid
 
 import numpy as np
 import pandas.util.testing as tm
@@ -14,10 +14,6 @@ from pandas.compat import range, u
 from pandas_gbq import gbq
 
 TABLE_ID = "new_test"
-
-
-def _get_dataset_prefix_random():
-    return "".join(["pandas_gbq_", str(randint(1, 100000))])
 
 
 def test_imports():
@@ -56,20 +52,31 @@ def bigquery_client(project_id, private_key_path):
     )
 
 
-@pytest.fixture(scope="module")
-def tokyo_dataset(bigquery_client):
+@pytest.fixture()
+def random_dataset_id(bigquery_client):
+    import google.api_core.exceptions
+
+    dataset_id = "".join(["pandas_gbq_", str(uuid.uuid4()).replace("-", "_")])
+    dataset_ref = bigquery_client.dataset(dataset_id)
+    yield dataset_id
+    try:
+        bigquery_client.delete_dataset(dataset_ref, delete_contents=True)
+    except google.api_core.exceptions.NotFound:
+        pass  # Not all tests actually create a dataset
+
+
+@pytest.fixture()
+def tokyo_dataset(bigquery_client, random_dataset_id):
     from google.cloud import bigquery
 
-    dataset_id = "tokyo_{}".format(_get_dataset_prefix_random())
-    dataset_ref = bigquery_client.dataset(dataset_id)
+    dataset_ref = bigquery_client.dataset(random_dataset_id)
     dataset = bigquery.Dataset(dataset_ref)
     dataset.location = "asia-northeast1"
     bigquery_client.create_dataset(dataset)
-    yield dataset_id
-    bigquery_client.delete_dataset(dataset_ref, delete_contents=True)
+    return random_dataset_id
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture()
 def tokyo_table(bigquery_client, tokyo_dataset):
     table_id = "tokyo_table"
     # Create a random table using DDL.
@@ -88,11 +95,14 @@ def tokyo_table(bigquery_client, tokyo_dataset):
     return table_id
 
 
-def clean_gbq_environment(dataset_prefix, bigquery_client):
-    for dataset in bigquery_client.list_datasets():
-        if not dataset.dataset_id.startswith(dataset_prefix):
-            continue
-        bigquery_client.delete_dataset(dataset.reference, delete_contents=True)
+@pytest.fixture()
+def gbq_dataset(project, credentials):
+    return gbq._Dataset(project, private_key=credentials)
+
+
+@pytest.fixture()
+def gbq_table(project, credentials, random_dataset_id):
+    return gbq._Table(project, random_dataset_id, private_key=credentials)
 
 
 def make_mixed_dataframe_v2(test_size):
@@ -838,32 +848,16 @@ class TestReadGBQIntegration(object):
 
 
 class TestToGBQIntegration(object):
-    # Changes to BigQuery table schema may take up to 2 minutes as of May 2015
-    # As a workaround to this issue, each test should use a unique table name.
-    # Make sure to modify the for loop range in the autouse fixture when a new
-    # test is added See `Issue 191
-    # <https://code.google.com/p/google-bigquery/issues/detail?id=191>`__
-
     @pytest.fixture(autouse=True, scope="function")
-    def setup(self, project, credentials, bigquery_client):
+    def setup(self, project, credentials, random_dataset_id):
         # - PER-TEST FIXTURES -
         # put here any instruction you want to be run *BEFORE* *EVERY* test is
         # executed.
-
-        self.dataset_prefix = _get_dataset_prefix_random()
-        clean_gbq_environment(self.dataset_prefix, bigquery_client)
-        self.dataset = gbq._Dataset(project, private_key=credentials)
         self.table = gbq._Table(
-            project, self.dataset_prefix + "1", private_key=credentials
+            project, random_dataset_id, private_key=credentials
         )
-        self.sut = gbq.GbqConnector(project, private_key=credentials)
-        self.destination_table = "{0}{1}.{2}".format(
-            self.dataset_prefix, "1", TABLE_ID
-        )
-        self.dataset.create(self.dataset_prefix + "1")
+        self.destination_table = "{}.{}".format(random_dataset_id, TABLE_ID)
         self.credentials = credentials
-        yield
-        clean_gbq_environment(self.dataset_prefix, bigquery_client)
 
     def test_upload_data(self, project_id):
         test_id = "1"
@@ -1167,144 +1161,6 @@ class TestToGBQIntegration(object):
 
         assert len(result_df) == test_size
 
-    # TODO: move generate schema test to unit tests.
-    def test_generate_schema(self):
-        df = tm.makeMixedDataFrame()
-        schema = gbq._generate_bq_schema(df)
-
-        test_schema = {
-            "fields": [
-                {"name": "A", "type": "FLOAT"},
-                {"name": "B", "type": "FLOAT"},
-                {"name": "C", "type": "STRING"},
-                {"name": "D", "type": "TIMESTAMP"},
-            ]
-        }
-
-        assert schema == test_schema
-
-    def test_create_table(self):
-        test_id = "6"
-        schema = gbq._generate_bq_schema(tm.makeMixedDataFrame())
-        self.table.create(TABLE_ID + test_id, schema)
-        assert self.table.exists(TABLE_ID + test_id)
-
-    def test_create_table_already_exists(self):
-        test_id = "6"
-        schema = gbq._generate_bq_schema(tm.makeMixedDataFrame())
-        self.table.create(TABLE_ID + test_id, schema)
-        with pytest.raises(gbq.TableCreationError):
-            self.table.create(TABLE_ID + test_id, schema)
-
-    def test_table_does_not_exist(self):
-        test_id = "7"
-        assert not self.table.exists(TABLE_ID + test_id)
-
-    def test_delete_table(self):
-        test_id = "8"
-        test_schema = {
-            "fields": [
-                {"name": "A", "type": "FLOAT"},
-                {"name": "B", "type": "FLOAT"},
-                {"name": "C", "type": "STRING"},
-                {"name": "D", "type": "TIMESTAMP"},
-            ]
-        }
-        self.table.create(TABLE_ID + test_id, test_schema)
-        self.table.delete(TABLE_ID + test_id)
-        assert not self.table.exists(TABLE_ID + test_id)
-
-    def test_delete_table_not_found(self):
-        with pytest.raises(gbq.NotFoundException):
-            self.table.delete(TABLE_ID + "not_found")
-
-    def test_list_table(self):
-        test_id = "9"
-        test_schema = {
-            "fields": [
-                {"name": "A", "type": "FLOAT"},
-                {"name": "B", "type": "FLOAT"},
-                {"name": "C", "type": "STRING"},
-                {"name": "D", "type": "TIMESTAMP"},
-            ]
-        }
-        self.table.create(TABLE_ID + test_id, test_schema)
-        assert TABLE_ID + test_id in self.dataset.tables(
-            self.dataset_prefix + "1"
-        )
-
-    def test_verify_schema_allows_flexible_column_order(self):
-        test_id = "10"
-        test_schema_1 = {
-            "fields": [
-                {"name": "A", "type": "FLOAT"},
-                {"name": "B", "type": "FLOAT"},
-                {"name": "C", "type": "STRING"},
-                {"name": "D", "type": "TIMESTAMP"},
-            ]
-        }
-        test_schema_2 = {
-            "fields": [
-                {"name": "A", "type": "FLOAT"},
-                {"name": "C", "type": "STRING"},
-                {"name": "B", "type": "FLOAT"},
-                {"name": "D", "type": "TIMESTAMP"},
-            ]
-        }
-
-        self.table.create(TABLE_ID + test_id, test_schema_1)
-        assert self.sut.verify_schema(
-            self.dataset_prefix + "1", TABLE_ID + test_id, test_schema_2
-        )
-
-    def test_verify_schema_fails_different_data_type(self):
-        test_id = "11"
-        test_schema_1 = {
-            "fields": [
-                {"name": "A", "type": "FLOAT"},
-                {"name": "B", "type": "FLOAT"},
-                {"name": "C", "type": "STRING"},
-                {"name": "D", "type": "TIMESTAMP"},
-            ]
-        }
-        test_schema_2 = {
-            "fields": [
-                {"name": "A", "type": "FLOAT"},
-                {"name": "B", "type": "STRING"},
-                {"name": "C", "type": "STRING"},
-                {"name": "D", "type": "TIMESTAMP"},
-            ]
-        }
-
-        self.table.create(TABLE_ID + test_id, test_schema_1)
-        assert not self.sut.verify_schema(
-            self.dataset_prefix + "1", TABLE_ID + test_id, test_schema_2
-        )
-
-    def test_verify_schema_fails_different_structure(self):
-        test_id = "12"
-        test_schema_1 = {
-            "fields": [
-                {"name": "A", "type": "FLOAT"},
-                {"name": "B", "type": "FLOAT"},
-                {"name": "C", "type": "STRING"},
-                {"name": "D", "type": "TIMESTAMP"},
-            ]
-        }
-        test_schema_2 = {
-            "fields": [
-                {"name": "A", "type": "FLOAT"},
-                {"name": "B2", "type": "FLOAT"},
-                {"name": "C", "type": "STRING"},
-                {"name": "D", "type": "TIMESTAMP"},
-            ]
-        }
-
-        self.table.create(TABLE_ID + test_id, test_schema_1)
-        assert not self.sut.verify_schema(
-            self.dataset_prefix + "1", TABLE_ID + test_id, test_schema_2
-        )
-
     def test_upload_data_flexible_column_order(self, project_id):
         test_id = "13"
         test_size = 10
@@ -1327,131 +1183,6 @@ class TestToGBQIntegration(object):
             project_id,
             if_exists="append",
             private_key=self.credentials,
-        )
-
-    def test_verify_schema_ignores_field_mode(self):
-        test_id = "14"
-        test_schema_1 = {
-            "fields": [
-                {"name": "A", "type": "FLOAT", "mode": "NULLABLE"},
-                {"name": "B", "type": "FLOAT", "mode": "NULLABLE"},
-                {"name": "C", "type": "STRING", "mode": "NULLABLE"},
-                {"name": "D", "type": "TIMESTAMP", "mode": "REQUIRED"},
-            ]
-        }
-        test_schema_2 = {
-            "fields": [
-                {"name": "A", "type": "FLOAT"},
-                {"name": "B", "type": "FLOAT"},
-                {"name": "C", "type": "STRING"},
-                {"name": "D", "type": "TIMESTAMP"},
-            ]
-        }
-
-        self.table.create(TABLE_ID + test_id, test_schema_1)
-        assert self.sut.verify_schema(
-            self.dataset_prefix + "1", TABLE_ID + test_id, test_schema_2
-        )
-
-    def test_retrieve_schema(self):
-        # Issue #24 schema function returns the schema in biquery
-        test_id = "15"
-        test_schema = {
-            "fields": [
-                {
-                    "name": "A",
-                    "type": "FLOAT",
-                    "mode": "NULLABLE",
-                    "description": None,
-                },
-                {
-                    "name": "B",
-                    "type": "FLOAT",
-                    "mode": "NULLABLE",
-                    "description": None,
-                },
-                {
-                    "name": "C",
-                    "type": "STRING",
-                    "mode": "NULLABLE",
-                    "description": None,
-                },
-                {
-                    "name": "D",
-                    "type": "TIMESTAMP",
-                    "mode": "NULLABLE",
-                    "description": None,
-                },
-            ]
-        }
-
-        self.table.create(TABLE_ID + test_id, test_schema)
-        actual = self.sut._clean_schema_fields(
-            self.sut.schema(self.dataset_prefix + "1", TABLE_ID + test_id)
-        )
-        expected = [
-            {"name": "A", "type": "FLOAT"},
-            {"name": "B", "type": "FLOAT"},
-            {"name": "C", "type": "STRING"},
-            {"name": "D", "type": "TIMESTAMP"},
-        ]
-        assert expected == actual, "Expected schema used to create table"
-
-    def test_schema_is_subset_passes_if_subset(self):
-        # Issue #24 schema_is_subset indicates whether the schema of the
-        # dataframe is a subset of the schema of the bigquery table
-        test_id = "16"
-
-        table_name = TABLE_ID + test_id
-        dataset = self.dataset_prefix + "1"
-
-        table_schema = {
-            "fields": [
-                {"name": "A", "type": "FLOAT"},
-                {"name": "B", "type": "FLOAT"},
-                {"name": "C", "type": "STRING"},
-            ]
-        }
-        tested_schema = {
-            "fields": [
-                {"name": "A", "type": "FLOAT"},
-                {"name": "B", "type": "FLOAT"},
-            ]
-        }
-
-        self.table.create(table_name, table_schema)
-
-        assert (
-            self.sut.schema_is_subset(dataset, table_name, tested_schema)
-            is True
-        )
-
-    def test_schema_is_subset_fails_if_not_subset(self):
-        # For pull request #24
-        test_id = "17"
-
-        table_name = TABLE_ID + test_id
-        dataset = self.dataset_prefix + "1"
-
-        table_schema = {
-            "fields": [
-                {"name": "A", "type": "FLOAT"},
-                {"name": "B", "type": "FLOAT"},
-                {"name": "C", "type": "STRING"},
-            ]
-        }
-        tested_schema = {
-            "fields": [
-                {"name": "A", "type": "FLOAT"},
-                {"name": "C", "type": "FLOAT"},
-            ]
-        }
-
-        self.table.create(table_name, table_schema)
-
-        assert (
-            self.sut.schema_is_subset(dataset, table_name, tested_schema)
-            is False
         )
 
     def test_upload_data_with_valid_user_schema(self, project_id):
@@ -1594,53 +1325,270 @@ class TestToGBQIntegration(object):
         )
         assert table.num_rows > 0
 
-    def test_list_dataset(self):
-        dataset_id = self.dataset_prefix + "1"
-        assert dataset_id in self.dataset.datasets()
 
-    def test_list_table_zero_results(self, project_id):
-        dataset_id = self.dataset_prefix + "2"
-        self.dataset.create(dataset_id)
-        table_list = gbq._Dataset(
-            project_id, private_key=self.credentials
-        ).tables(dataset_id)
-        assert len(table_list) == 0
+# _Dataset tests
 
-    def test_create_dataset(self):
-        dataset_id = self.dataset_prefix + "3"
-        self.dataset.create(dataset_id)
-        assert dataset_id in self.dataset.datasets()
 
-    def test_create_dataset_already_exists(self):
-        dataset_id = self.dataset_prefix + "3"
-        self.dataset.create(dataset_id)
-        with pytest.raises(gbq.DatasetCreationError):
-            self.dataset.create(dataset_id)
+def test_create_dataset(bigquery_client, gbq_dataset, random_dataset_id):
+    gbq_dataset.create(random_dataset_id)
+    dataset_reference = bigquery_client.dataset(random_dataset_id)
+    assert bigquery_client.get_dataset(dataset_reference) is not None
 
-    def test_delete_dataset(self):
-        dataset_id = self.dataset_prefix + "4"
-        self.dataset.create(dataset_id)
-        self.dataset.delete(dataset_id)
-        assert dataset_id not in self.dataset.datasets()
 
-    def test_delete_dataset_not_found(self):
-        dataset_id = self.dataset_prefix + "not_found"
-        with pytest.raises(gbq.NotFoundException):
-            self.dataset.delete(dataset_id)
+def test_create_dataset_already_exists(gbq_dataset, random_dataset_id):
+    gbq_dataset.create(random_dataset_id)
+    with pytest.raises(gbq.DatasetCreationError):
+        gbq_dataset.create(random_dataset_id)
 
-    def test_dataset_exists(self):
-        dataset_id = self.dataset_prefix + "5"
-        self.dataset.create(dataset_id)
-        assert self.dataset.exists(dataset_id)
 
-    def create_table_data_dataset_does_not_exist(self, project_id):
-        dataset_id = self.dataset_prefix + "6"
-        table_id = TABLE_ID + "1"
-        table_with_new_dataset = gbq._Table(project_id, dataset_id)
-        df = make_mixed_dataframe_v2(10)
-        table_with_new_dataset.create(table_id, gbq._generate_bq_schema(df))
-        assert self.dataset.exists(dataset_id)
-        assert table_with_new_dataset.exists(table_id)
+def test_dataset_exists(gbq_dataset, random_dataset_id):
+    gbq_dataset.create(random_dataset_id)
+    assert gbq_dataset.exists(random_dataset_id)
 
-    def test_dataset_does_not_exist(self):
-        assert not self.dataset.exists(self.dataset_prefix + "_not_found")
+
+def test_dataset_does_not_exist(gbq_dataset, random_dataset_id):
+    assert not gbq_dataset.exists(random_dataset_id)
+
+
+# _Table tests
+
+
+def test_create_table(gbq_table):
+    schema = gbq._generate_bq_schema(tm.makeMixedDataFrame())
+    gbq_table.create("test_create_table", schema)
+    assert gbq_table.exists("test_create_table")
+
+
+def test_create_table_already_exists(gbq_table):
+    schema = gbq._generate_bq_schema(tm.makeMixedDataFrame())
+    gbq_table.create("test_create_table_exists", schema)
+    with pytest.raises(gbq.TableCreationError):
+        gbq_table.create("test_create_table_exists", schema)
+
+
+def test_table_does_not_exist(gbq_table):
+    assert not gbq_table.exists("test_table_does_not_exist")
+
+
+def test_delete_table(gbq_table):
+    test_schema = {
+        "fields": [
+            {"name": "A", "type": "FLOAT"},
+            {"name": "B", "type": "FLOAT"},
+            {"name": "C", "type": "STRING"},
+            {"name": "D", "type": "TIMESTAMP"},
+        ]
+    }
+    gbq_table.create("test_delete_table", test_schema)
+    gbq_table.delete("test_delete_table")
+    assert not gbq_table.exists("test_delete_table")
+
+
+def test_delete_table_not_found(gbq_table):
+    with pytest.raises(gbq.NotFoundException):
+        gbq_table.delete("test_delete_table_not_found")
+
+
+def test_create_table_data_dataset_does_not_exist(
+    project, credentials, gbq_dataset, random_dataset_id
+):
+    table_id = "test_create_table_data_dataset_does_not_exist"
+    table_with_new_dataset = gbq._Table(
+        project, random_dataset_id, private_key=credentials
+    )
+    df = make_mixed_dataframe_v2(10)
+    table_with_new_dataset.create(table_id, gbq._generate_bq_schema(df))
+    assert gbq_dataset.exists(random_dataset_id)
+    assert table_with_new_dataset.exists(table_id)
+
+
+def test_verify_schema_allows_flexible_column_order(gbq_table, gbq_connector):
+    table_id = "test_verify_schema_allows_flexible_column_order"
+    test_schema_1 = {
+        "fields": [
+            {"name": "A", "type": "FLOAT"},
+            {"name": "B", "type": "FLOAT"},
+            {"name": "C", "type": "STRING"},
+            {"name": "D", "type": "TIMESTAMP"},
+        ]
+    }
+    test_schema_2 = {
+        "fields": [
+            {"name": "A", "type": "FLOAT"},
+            {"name": "C", "type": "STRING"},
+            {"name": "B", "type": "FLOAT"},
+            {"name": "D", "type": "TIMESTAMP"},
+        ]
+    }
+
+    gbq_table.create(table_id, test_schema_1)
+    assert gbq_connector.verify_schema(
+        gbq_table.dataset_id, table_id, test_schema_2
+    )
+
+
+def test_verify_schema_fails_different_data_type(gbq_table, gbq_connector):
+    table_id = "test_verify_schema_fails_different_data_type"
+    test_schema_1 = {
+        "fields": [
+            {"name": "A", "type": "FLOAT"},
+            {"name": "B", "type": "FLOAT"},
+            {"name": "C", "type": "STRING"},
+            {"name": "D", "type": "TIMESTAMP"},
+        ]
+    }
+    test_schema_2 = {
+        "fields": [
+            {"name": "A", "type": "FLOAT"},
+            {"name": "B", "type": "STRING"},
+            {"name": "C", "type": "STRING"},
+            {"name": "D", "type": "TIMESTAMP"},
+        ]
+    }
+
+    gbq_table.create(table_id, test_schema_1)
+    assert not gbq_connector.verify_schema(
+        gbq_table.dataset_id, table_id, test_schema_2
+    )
+
+
+def test_verify_schema_fails_different_structure(gbq_table, gbq_connector):
+    table_id = "test_verify_schema_fails_different_structure"
+    test_schema_1 = {
+        "fields": [
+            {"name": "A", "type": "FLOAT"},
+            {"name": "B", "type": "FLOAT"},
+            {"name": "C", "type": "STRING"},
+            {"name": "D", "type": "TIMESTAMP"},
+        ]
+    }
+    test_schema_2 = {
+        "fields": [
+            {"name": "A", "type": "FLOAT"},
+            {"name": "B2", "type": "FLOAT"},
+            {"name": "C", "type": "STRING"},
+            {"name": "D", "type": "TIMESTAMP"},
+        ]
+    }
+
+    gbq_table.create(table_id, test_schema_1)
+    assert not gbq_connector.verify_schema(
+        gbq_table.dataset_id, table_id, test_schema_2
+    )
+
+
+def test_verify_schema_ignores_field_mode(gbq_table, gbq_connector):
+    table_id = "test_verify_schema_ignores_field_mode"
+    test_schema_1 = {
+        "fields": [
+            {"name": "A", "type": "FLOAT", "mode": "NULLABLE"},
+            {"name": "B", "type": "FLOAT", "mode": "NULLABLE"},
+            {"name": "C", "type": "STRING", "mode": "NULLABLE"},
+            {"name": "D", "type": "TIMESTAMP", "mode": "REQUIRED"},
+        ]
+    }
+    test_schema_2 = {
+        "fields": [
+            {"name": "A", "type": "FLOAT"},
+            {"name": "B", "type": "FLOAT"},
+            {"name": "C", "type": "STRING"},
+            {"name": "D", "type": "TIMESTAMP"},
+        ]
+    }
+
+    gbq_table.create(table_id, test_schema_1)
+    assert gbq_connector.verify_schema(
+        gbq_table.dataset_id, table_id, test_schema_2
+    )
+
+
+def test_retrieve_schema(gbq_table, gbq_connector):
+    # Issue #24 schema function returns the schema in biquery
+    table_id = "test_retrieve_schema"
+    test_schema = {
+        "fields": [
+            {
+                "name": "A",
+                "type": "FLOAT",
+                "mode": "NULLABLE",
+                "description": None,
+            },
+            {
+                "name": "B",
+                "type": "FLOAT",
+                "mode": "NULLABLE",
+                "description": None,
+            },
+            {
+                "name": "C",
+                "type": "STRING",
+                "mode": "NULLABLE",
+                "description": None,
+            },
+            {
+                "name": "D",
+                "type": "TIMESTAMP",
+                "mode": "NULLABLE",
+                "description": None,
+            },
+        ]
+    }
+
+    gbq_table.create(table_id, test_schema)
+    actual = gbq_connector._clean_schema_fields(
+        gbq_connector.schema(gbq_table.dataset_id, table_id)
+    )
+    expected = [
+        {"name": "A", "type": "FLOAT"},
+        {"name": "B", "type": "FLOAT"},
+        {"name": "C", "type": "STRING"},
+        {"name": "D", "type": "TIMESTAMP"},
+    ]
+    assert expected == actual, "Expected schema used to create table"
+
+
+def test_schema_is_subset_passes_if_subset(gbq_table, gbq_connector):
+    # Issue #24 schema_is_subset indicates whether the schema of the
+    # dataframe is a subset of the schema of the bigquery table
+    table_id = "test_schema_is_subset_passes_if_subset"
+    table_schema = {
+        "fields": [
+            {"name": "A", "type": "FLOAT"},
+            {"name": "B", "type": "FLOAT"},
+            {"name": "C", "type": "STRING"},
+        ]
+    }
+    tested_schema = {
+        "fields": [
+            {"name": "A", "type": "FLOAT"},
+            {"name": "B", "type": "FLOAT"},
+        ]
+    }
+
+    gbq_table.create(table_id, table_schema)
+    assert gbq_connector.schema_is_subset(
+        gbq_table.dataset_id, table_id, tested_schema
+    )
+
+
+def test_schema_is_subset_fails_if_not_subset(gbq_table, gbq_connector):
+    # For pull request #24
+    table_id = "test_schema_is_subset_fails_if_not_subset"
+    table_schema = {
+        "fields": [
+            {"name": "A", "type": "FLOAT"},
+            {"name": "B", "type": "FLOAT"},
+            {"name": "C", "type": "STRING"},
+        ]
+    }
+    tested_schema = {
+        "fields": [
+            {"name": "A", "type": "FLOAT"},
+            {"name": "C", "type": "FLOAT"},
+        ]
+    }
+
+    gbq_table.create(table_id, table_schema)
+    assert not gbq_connector.schema_is_subset(
+        gbq_table.dataset_id, table_id, tested_schema
+    )
