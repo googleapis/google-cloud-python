@@ -20,7 +20,7 @@ import sys
 from google.api_core.protobuf_helpers import get_messages
 
 from google.api import http_pb2
-from google.cloud.redis_v1beta1.proto import cloud_redis_pb2
+from google.cloud.redis_v1.proto import cloud_redis_pb2
 from google.longrunning import operations_pb2
 from google.protobuf import any_pb2
 from google.protobuf import descriptor_pb2
@@ -52,7 +52,7 @@ for module in _shared_modules:
         names.append(name)
 for module in _local_modules:
     for name, message in get_messages(module).items():
-        message.__module__ = 'google.cloud.redis_v1beta1.types'
+        message.__module__ = 'google.cloud.redis_v1.types'
         setattr(sys.modules[__name__], name, message)
         names.append(name)
 

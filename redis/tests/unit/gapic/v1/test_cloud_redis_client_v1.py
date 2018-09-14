@@ -19,9 +19,9 @@ import pytest
 
 from google.rpc import status_pb2
 
-from google.cloud import redis_v1beta1
-from google.cloud.redis_v1beta1 import enums
-from google.cloud.redis_v1beta1.proto import cloud_redis_pb2
+from google.cloud import redis_v1
+from google.cloud.redis_v1 import enums
+from google.cloud.redis_v1.proto import cloud_redis_pb2
 from google.longrunning import operations_pb2
 from google.protobuf import empty_pb2
 from google.protobuf import field_mask_pb2
@@ -81,7 +81,7 @@ class TestCloudRedisClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = redis_v1beta1.CloudRedisClient(channel=channel)
+        client = redis_v1.CloudRedisClient(channel=channel)
 
         # Setup Request
         parent = client.location_path('[PROJECT]', '[LOCATION]')
@@ -99,7 +99,7 @@ class TestCloudRedisClient(object):
 
     def test_list_instances_exception(self):
         channel = ChannelStub(responses=[CustomException()])
-        client = redis_v1beta1.CloudRedisClient(channel=channel)
+        client = redis_v1.CloudRedisClient(channel=channel)
 
         # Setup request
         parent = client.location_path('[PROJECT]', '[LOCATION]')
@@ -140,7 +140,7 @@ class TestCloudRedisClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = redis_v1beta1.CloudRedisClient(channel=channel)
+        client = redis_v1.CloudRedisClient(channel=channel)
 
         # Setup Request
         name = client.instance_path('[PROJECT]', '[LOCATION]', '[INSTANCE]')
@@ -156,7 +156,7 @@ class TestCloudRedisClient(object):
     def test_get_instance_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = redis_v1beta1.CloudRedisClient(channel=channel)
+        client = redis_v1.CloudRedisClient(channel=channel)
 
         # Setup request
         name = client.instance_path('[PROJECT]', '[LOCATION]', '[INSTANCE]')
@@ -199,7 +199,7 @@ class TestCloudRedisClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[operation])
-        client = redis_v1beta1.CloudRedisClient(channel=channel)
+        client = redis_v1.CloudRedisClient(channel=channel)
 
         # Setup Request
         parent = client.location_path('[PROJECT]', '[LOCATION]')
@@ -227,7 +227,7 @@ class TestCloudRedisClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[operation])
-        client = redis_v1beta1.CloudRedisClient(channel=channel)
+        client = redis_v1.CloudRedisClient(channel=channel)
 
         # Setup Request
         parent = client.location_path('[PROJECT]', '[LOCATION]')
@@ -275,7 +275,7 @@ class TestCloudRedisClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[operation])
-        client = redis_v1beta1.CloudRedisClient(channel=channel)
+        client = redis_v1.CloudRedisClient(channel=channel)
 
         # Setup Request
         paths_element = 'display_name'
@@ -308,7 +308,7 @@ class TestCloudRedisClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[operation])
-        client = redis_v1beta1.CloudRedisClient(channel=channel)
+        client = redis_v1.CloudRedisClient(channel=channel)
 
         # Setup Request
         paths_element = 'display_name'
@@ -336,7 +336,7 @@ class TestCloudRedisClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[operation])
-        client = redis_v1beta1.CloudRedisClient(channel=channel)
+        client = redis_v1.CloudRedisClient(channel=channel)
 
         # Setup Request
         name = client.instance_path('[PROJECT]', '[LOCATION]', '[INSTANCE]')
@@ -359,7 +359,7 @@ class TestCloudRedisClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[operation])
-        client = redis_v1beta1.CloudRedisClient(channel=channel)
+        client = redis_v1.CloudRedisClient(channel=channel)
 
         # Setup Request
         name = client.instance_path('[PROJECT]', '[LOCATION]', '[INSTANCE]')
