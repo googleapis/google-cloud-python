@@ -295,8 +295,8 @@ class KeyManagementServiceClient(object):
                 'list_key_rings'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.list_key_rings,
                     default_retry=self._method_configs['ListKeyRings'].retry,
-                    default_timeout=self._method_configs['ListKeyRings']
-                    .timeout,
+                    default_timeout=self._method_configs['ListKeyRings'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -398,8 +398,8 @@ class KeyManagementServiceClient(object):
                 'list_crypto_keys'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.list_crypto_keys,
                     default_retry=self._method_configs['ListCryptoKeys'].retry,
-                    default_timeout=self._method_configs['ListCryptoKeys']
-                    .timeout,
+                    default_timeout=self._method_configs['ListCryptoKeys'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -502,10 +502,10 @@ class KeyManagementServiceClient(object):
             self._inner_api_calls[
                 'list_crypto_key_versions'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.list_crypto_key_versions,
-                    default_retry=self._method_configs['ListCryptoKeyVersions']
-                    .retry,
-                    default_timeout=self._method_configs[
-                        'ListCryptoKeyVersions'].timeout,
+                    default_retry=self.
+                    _method_configs['ListCryptoKeyVersions'].retry,
+                    default_timeout=self.
+                    _method_configs['ListCryptoKeyVersions'].timeout,
                     client_info=self._client_info,
                 )
 
@@ -649,8 +649,8 @@ class KeyManagementServiceClient(object):
                 'get_crypto_key'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.get_crypto_key,
                     default_retry=self._method_configs['GetCryptoKey'].retry,
-                    default_timeout=self._method_configs['GetCryptoKey']
-                    .timeout,
+                    default_timeout=self._method_configs['GetCryptoKey'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -713,10 +713,10 @@ class KeyManagementServiceClient(object):
             self._inner_api_calls[
                 'get_crypto_key_version'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.get_crypto_key_version,
-                    default_retry=self._method_configs[
-                        'GetCryptoKeyVersion'].retry,
-                    default_timeout=self._method_configs['GetCryptoKeyVersion']
-                    .timeout,
+                    default_retry=self._method_configs['GetCryptoKeyVersion'].
+                    retry,
+                    default_timeout=self.
+                    _method_configs['GetCryptoKeyVersion'].timeout,
                     client_info=self._client_info,
                 )
 
@@ -794,8 +794,8 @@ class KeyManagementServiceClient(object):
                 'create_key_ring'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.create_key_ring,
                     default_retry=self._method_configs['CreateKeyRing'].retry,
-                    default_timeout=self._method_configs['CreateKeyRing']
-                    .timeout,
+                    default_timeout=self._method_configs['CreateKeyRing'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -882,10 +882,10 @@ class KeyManagementServiceClient(object):
             self._inner_api_calls[
                 'create_crypto_key'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.create_crypto_key,
-                    default_retry=self._method_configs[
-                        'CreateCryptoKey'].retry,
-                    default_timeout=self._method_configs['CreateCryptoKey']
-                    .timeout,
+                    default_retry=self._method_configs['CreateCryptoKey'].
+                    retry,
+                    default_timeout=self._method_configs['CreateCryptoKey'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -965,10 +965,10 @@ class KeyManagementServiceClient(object):
             self._inner_api_calls[
                 'create_crypto_key_version'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.create_crypto_key_version,
-                    default_retry=self._method_configs[
-                        'CreateCryptoKeyVersion'].retry,
-                    default_timeout=self._method_configs[
-                        'CreateCryptoKeyVersion'].timeout,
+                    default_retry=self.
+                    _method_configs['CreateCryptoKeyVersion'].retry,
+                    default_timeout=self.
+                    _method_configs['CreateCryptoKeyVersion'].timeout,
                     client_info=self._client_info,
                 )
 
@@ -1044,10 +1044,10 @@ class KeyManagementServiceClient(object):
             self._inner_api_calls[
                 'update_crypto_key'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.update_crypto_key,
-                    default_retry=self._method_configs[
-                        'UpdateCryptoKey'].retry,
-                    default_timeout=self._method_configs['UpdateCryptoKey']
-                    .timeout,
+                    default_retry=self._method_configs['UpdateCryptoKey'].
+                    retry,
+                    default_timeout=self._method_configs['UpdateCryptoKey'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -1130,10 +1130,10 @@ class KeyManagementServiceClient(object):
             self._inner_api_calls[
                 'update_crypto_key_version'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.update_crypto_key_version,
-                    default_retry=self._method_configs[
-                        'UpdateCryptoKeyVersion'].retry,
-                    default_timeout=self._method_configs[
-                        'UpdateCryptoKeyVersion'].timeout,
+                    default_retry=self.
+                    _method_configs['UpdateCryptoKeyVersion'].retry,
+                    default_timeout=self.
+                    _method_configs['UpdateCryptoKeyVersion'].timeout,
                     client_info=self._client_info,
                 )
 
@@ -1383,10 +1383,10 @@ class KeyManagementServiceClient(object):
             self._inner_api_calls[
                 'update_crypto_key_primary_version'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.update_crypto_key_primary_version,
-                    default_retry=self._method_configs[
-                        'UpdateCryptoKeyPrimaryVersion'].retry,
-                    default_timeout=self._method_configs[
-                        'UpdateCryptoKeyPrimaryVersion'].timeout,
+                    default_retry=self.
+                    _method_configs['UpdateCryptoKeyPrimaryVersion'].retry,
+                    default_timeout=self.
+                    _method_configs['UpdateCryptoKeyPrimaryVersion'].timeout,
                     client_info=self._client_info,
                 )
 
@@ -1464,10 +1464,10 @@ class KeyManagementServiceClient(object):
             self._inner_api_calls[
                 'destroy_crypto_key_version'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.destroy_crypto_key_version,
-                    default_retry=self._method_configs[
-                        'DestroyCryptoKeyVersion'].retry,
-                    default_timeout=self._method_configs[
-                        'DestroyCryptoKeyVersion'].timeout,
+                    default_retry=self.
+                    _method_configs['DestroyCryptoKeyVersion'].retry,
+                    default_timeout=self.
+                    _method_configs['DestroyCryptoKeyVersion'].timeout,
                     client_info=self._client_info,
                 )
 
@@ -1537,10 +1537,10 @@ class KeyManagementServiceClient(object):
             self._inner_api_calls[
                 'restore_crypto_key_version'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.restore_crypto_key_version,
-                    default_retry=self._method_configs[
-                        'RestoreCryptoKeyVersion'].retry,
-                    default_timeout=self._method_configs[
-                        'RestoreCryptoKeyVersion'].timeout,
+                    default_retry=self.
+                    _method_configs['RestoreCryptoKeyVersion'].retry,
+                    default_timeout=self.
+                    _method_configs['RestoreCryptoKeyVersion'].timeout,
                     client_info=self._client_info,
                 )
 
@@ -1608,8 +1608,8 @@ class KeyManagementServiceClient(object):
                 'get_public_key'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.get_public_key,
                     default_retry=self._method_configs['GetPublicKey'].retry,
-                    default_timeout=self._method_configs['GetPublicKey']
-                    .timeout,
+                    default_timeout=self._method_configs['GetPublicKey'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -1681,10 +1681,10 @@ class KeyManagementServiceClient(object):
             self._inner_api_calls[
                 'asymmetric_decrypt'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.asymmetric_decrypt,
-                    default_retry=self._method_configs[
-                        'AsymmetricDecrypt'].retry,
-                    default_timeout=self._method_configs['AsymmetricDecrypt']
-                    .timeout,
+                    default_retry=self._method_configs['AsymmetricDecrypt'].
+                    retry,
+                    default_timeout=self._method_configs['AsymmetricDecrypt'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -1762,8 +1762,8 @@ class KeyManagementServiceClient(object):
                 'asymmetric_sign'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.asymmetric_sign,
                     default_retry=self._method_configs['AsymmetricSign'].retry,
-                    default_timeout=self._method_configs['AsymmetricSign']
-                    .timeout,
+                    default_timeout=self._method_configs['AsymmetricSign'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -1843,8 +1843,8 @@ class KeyManagementServiceClient(object):
                 'set_iam_policy'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.set_iam_policy,
                     default_retry=self._method_configs['SetIamPolicy'].retry,
-                    default_timeout=self._method_configs['SetIamPolicy']
-                    .timeout,
+                    default_timeout=self._method_configs['SetIamPolicy'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -1915,8 +1915,8 @@ class KeyManagementServiceClient(object):
                 'get_iam_policy'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.get_iam_policy,
                     default_retry=self._method_configs['GetIamPolicy'].retry,
-                    default_timeout=self._method_configs['GetIamPolicy']
-                    .timeout,
+                    default_timeout=self._method_configs['GetIamPolicy'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -1991,10 +1991,10 @@ class KeyManagementServiceClient(object):
             self._inner_api_calls[
                 'test_iam_permissions'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.test_iam_permissions,
-                    default_retry=self._method_configs[
-                        'TestIamPermissions'].retry,
-                    default_timeout=self._method_configs['TestIamPermissions']
-                    .timeout,
+                    default_retry=self._method_configs['TestIamPermissions'].
+                    retry,
+                    default_timeout=self._method_configs['TestIamPermissions'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
