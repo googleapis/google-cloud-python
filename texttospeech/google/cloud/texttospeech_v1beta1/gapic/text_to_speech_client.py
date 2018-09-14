@@ -274,10 +274,10 @@ class TextToSpeechClient(object):
             self._inner_api_calls[
                 'synthesize_speech'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.synthesize_speech,
-                    default_retry=self._method_configs[
-                        'SynthesizeSpeech'].retry,
-                    default_timeout=self._method_configs['SynthesizeSpeech']
-                    .timeout,
+                    default_retry=self._method_configs['SynthesizeSpeech'].
+                    retry,
+                    default_timeout=self._method_configs['SynthesizeSpeech'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
