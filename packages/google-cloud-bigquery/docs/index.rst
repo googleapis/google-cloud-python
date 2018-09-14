@@ -1,10 +1,10 @@
 .. include:: /../bigquery/README.rst
 
 Using the Library
-=================
+-----------------
 
 Projects
---------
+~~~~~~~~
 
 A project is the top-level container in the ``BigQuery`` API:  it is tied
 closely to billing, and can provide default access control across all its
@@ -23,7 +23,7 @@ To override the project inferred from the environment, pass an explicit
 
 
 Project ACLs
-~~~~~~~~~~~~
+^^^^^^^^^^^^
 
 Each project has an access control list granting reader / writer / owner
 permission to one or more entities.  This list cannot be queried or set
@@ -31,7 +31,7 @@ via the API; it must be managed using the Google Developer Console.
 
 
 Datasets
---------
+~~~~~~~~
 
 A dataset represents a collection of tables, and applies several default
 policies to tables as they are created:
@@ -47,7 +47,7 @@ See BigQuery documentation for more information on
 
 
 Dataset operations
-~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^
 
 List datasets for the client's project:
 
@@ -99,13 +99,13 @@ Delete a dataset:
 
 
 Tables
-------
+~~~~~~
 
 Tables exist within datasets. See BigQuery documentation for more information
 on `Tables <https://cloud.google.com/bigquery/docs/tables>`_.
 
 Table operations
-~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^
 List tables for the dataset:
 
 .. literalinclude:: snippets.py
@@ -187,7 +187,7 @@ Upload table data from a file:
    :end-before: [END bigquery_load_from_file]
 
 Load table data from Google Cloud Storage
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 See also: `Loading JSON data from Cloud Storage
 <https://cloud.google.com/bigquery/docs/loading-data-cloud-storage-json>`_.
@@ -217,7 +217,7 @@ Load a Parquet file from Cloud Storage:
    :end-before: [END bigquery_load_table_gcs_parquet]
 
 Customer Managed Encryption Keys
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Table data is always encrypted at rest, but BigQuery also provides a way for
 you to control what keys it uses to encrypt they data. See `Protecting data
@@ -270,11 +270,11 @@ Cloud KMS for the destination table.
    :end-before: [END bigquery_query_destination_table_cmek]
 
 Queries
--------
+~~~~~~~
 
 
 Querying data
-~~~~~~~~~~~~~
+^^^^^^^^^^^^^
 
 Run a query and wait for it to finish:
 
@@ -286,7 +286,7 @@ Run a query and wait for it to finish:
 
 
 Run a dry run query
-~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^
 
 .. literalinclude:: snippets.py
    :language: python
@@ -296,7 +296,7 @@ Run a dry run query
 
 
 Writing query results to a destination table
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 See BigQuery documentation for more information on
 `writing query results <https://cloud.google.com/bigquery/docs/writing-results>`_.
@@ -309,7 +309,7 @@ See BigQuery documentation for more information on
 
 
 Run a query using a named query parameter
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 See BigQuery documentation for more information on
 `parameterized queries <https://cloud.google.com/bigquery/docs/parameterized-queries>`_.
@@ -322,10 +322,10 @@ See BigQuery documentation for more information on
 
 
 Jobs
-----
+~~~~
 
 List jobs for a project
-~~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^^
 
 Jobs describe actions performed on data in BigQuery tables:
 
@@ -342,10 +342,10 @@ Jobs describe actions performed on data in BigQuery tables:
 
 
 Using BigQuery with Pandas
---------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Retrieve BigQuery data as a Pandas DataFrame
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 As of version 0.29.0, you can use the
 :func:`~google.cloud.bigquery.table.RowIterator.to_dataframe` function to
@@ -381,7 +381,7 @@ To retrieve table rows as a :class:`pandas.DataFrame`:
    :end-before: [END bigquery_list_rows_dataframe]
 
 Load a Pandas DataFrame to a BigQuery Table
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 As of version 1.3.0, you can use the
 :func:`~google.cloud.bigquery.client.Client.load_table_from_dataframe` function
@@ -405,7 +405,7 @@ and load it into a new table:
    :end-before: [END bigquery_load_table_dataframe]
 
 API Reference
-=============
+-------------
 
 .. toctree::
   :maxdepth: 2
@@ -414,7 +414,7 @@ API Reference
   dbapi
 
 Changelog
-=========
+---------
 
 For a list of all ``google-cloud-bigquery`` releases:
 
