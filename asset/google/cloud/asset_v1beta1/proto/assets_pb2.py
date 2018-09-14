@@ -273,10 +273,9 @@ TimeWindow = _reflection.GeneratedProtocolMessageType('TimeWindow', (_message.Me
   
   Attributes:
       start_time:
-          Start time of the time window (inclusive). Infinite past if
-          not specified.
+          Start time of the time window (inclusive).
       end_time:
-          End time of the time window (exclusive). Infinite future if
+          End time of the time window (exclusive). Current timestamp if
           not specified.
   """,
   # @@protoc_insertion_point(class_scope:google.cloud.asset.v1beta1.TimeWindow)
