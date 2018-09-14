@@ -245,8 +245,8 @@ class ClusterControllerClient(object):
                 'create_cluster'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.create_cluster,
                     default_retry=self._method_configs['CreateCluster'].retry,
-                    default_timeout=self._method_configs['CreateCluster']
-                    .timeout,
+                    default_timeout=self._method_configs['CreateCluster'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -406,8 +406,8 @@ class ClusterControllerClient(object):
                 'update_cluster'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.update_cluster,
                     default_retry=self._method_configs['UpdateCluster'].retry,
-                    default_timeout=self._method_configs['UpdateCluster']
-                    .timeout,
+                    default_timeout=self._method_configs['UpdateCluster'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -509,8 +509,8 @@ class ClusterControllerClient(object):
                 'delete_cluster'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.delete_cluster,
                     default_retry=self._method_configs['DeleteCluster'].retry,
-                    default_timeout=self._method_configs['DeleteCluster']
-                    .timeout,
+                    default_timeout=self._method_configs['DeleteCluster'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -690,8 +690,8 @@ class ClusterControllerClient(object):
                 'list_clusters'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.list_clusters,
                     default_retry=self._method_configs['ListClusters'].retry,
-                    default_timeout=self._method_configs['ListClusters']
-                    .timeout,
+                    default_timeout=self._method_configs['ListClusters'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -781,10 +781,10 @@ class ClusterControllerClient(object):
             self._inner_api_calls[
                 'diagnose_cluster'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.diagnose_cluster,
-                    default_retry=self._method_configs[
-                        'DiagnoseCluster'].retry,
-                    default_timeout=self._method_configs['DiagnoseCluster']
-                    .timeout,
+                    default_retry=self._method_configs['DiagnoseCluster'].
+                    retry,
+                    default_timeout=self._method_configs['DiagnoseCluster'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
