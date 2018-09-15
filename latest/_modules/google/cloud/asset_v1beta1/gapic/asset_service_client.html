@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.asset_v1beta1.gapic.asset_service_client &#8212; google-cloud 1508627 documentation</title>
+    <title>google.cloud.asset_v1beta1.gapic.asset_service_client &#8212; google-cloud fa924b1 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -34,7 +34,9 @@
           <div class="body" role="main">
             
   <h1>Source code for google.cloud.asset_v1beta1.gapic.asset_service_client</h1><div class="highlight"><pre>
-<span></span><span class="c1"># Copyright 2018 Google LLC</span>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="c1">#</span>
+<span class="c1"># Copyright 2018 Google LLC</span>
 <span class="c1">#</span>
 <span class="c1"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
 <span class="c1"># you may not use this file except in compliance with the License.</span>
@@ -204,34 +206,30 @@
     <span class="c1"># Service calls</span>
 <div class="viewcode-block" id="AssetServiceClient.export_assets"><a class="viewcode-back" href="../../../../../asset/gapic/v1beta1/api.html#google.cloud.asset_v1beta1.AssetServiceClient.export_assets">[docs]</a>    <span class="k">def</span> <span class="nf">export_assets</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                       <span class="n">parent</span><span class="p">,</span>
-                      <span class="n">content_types</span><span class="p">,</span>
                       <span class="n">output_config</span><span class="p">,</span>
                       <span class="n">read_time</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                       <span class="n">asset_types</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                      <span class="n">content_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                       <span class="n">retry</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
                       <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
                       <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Exports assets with time and resource types to a given Google Cloud Storage</span>
-<span class="sd">        location. The output format is newline delimited JSON.</span>
+<span class="sd">        location. The output format is newline-delimited JSON.</span>
 <span class="sd">        This API implements the ``google.longrunning.Operation`` API allowing users</span>
 <span class="sd">        to keep track of the export.</span>
 
 <span class="sd">        Example:</span>
 <span class="sd">            &gt;&gt;&gt; from google.cloud import asset_v1beta1</span>
-<span class="sd">            &gt;&gt;&gt; from google.cloud.asset_v1beta1 import enums</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; client = asset_v1beta1.AssetServiceClient()</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; parent = client.project_path(&#39;[PROJECT]&#39;)</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``content_types``:</span>
-<span class="sd">            &gt;&gt;&gt; content_types = []</span>
-<span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``output_config``:</span>
 <span class="sd">            &gt;&gt;&gt; output_config = {}</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; response = client.export_assets(parent, content_types, output_config)</span>
+<span class="sd">            &gt;&gt;&gt; response = client.export_assets(parent, output_config)</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; def callback(operation_future):</span>
 <span class="sd">            ...     # Handle result.</span>
@@ -243,23 +241,24 @@
 <span class="sd">            &gt;&gt;&gt; metadata = response.metadata()</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            parent (str): Required. The relative name of the root asset. It can only be an</span>
-<span class="sd">                organization number (e.g. \&quot;organizations/123\&quot;) or a project number</span>
-<span class="sd">                (e.g. \&quot;projects/12345\&quot;).</span>
-<span class="sd">            content_types (list[~google.cloud.asset_v1beta1.types.ContentType]): A list of asset content types. If specified, only matching content will be</span>
-<span class="sd">                returned. Otherwise, no content but the asset name will be returned.</span>
+<span class="sd">            parent (str): Required. The relative name of the root asset. Can only be an organization</span>
+<span class="sd">                number (such as \&quot;organizations/123\&quot;), or a project id (such as</span>
+<span class="sd">                \&quot;projects/my-project-id\&quot;) or a project number (such as \&quot;projects/12345\&quot;).</span>
 <span class="sd">            output_config (Union[dict, ~google.cloud.asset_v1beta1.types.OutputConfig]): Required. Output configuration indicating where the results will be output</span>
 <span class="sd">                to. All results will be in newline delimited JSON format.</span>
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.asset_v1beta1.types.OutputConfig`</span>
-<span class="sd">            read_time (Union[dict, ~google.cloud.asset_v1beta1.types.Timestamp]): Timestamp to take an asset snapshot. This can only be current or past</span>
-<span class="sd">                time. If not specified, the current time will be used. Due to delays in</span>
-<span class="sd">                resource data collection and indexing, there is a volatile window during</span>
-<span class="sd">                which running the same query may get different results.</span>
+<span class="sd">            read_time (Union[dict, ~google.cloud.asset_v1beta1.types.Timestamp]): Timestamp to take an asset snapshot. This can only be set to a timestamp in</span>
+<span class="sd">                the past or of the current time. If not specified, the current time will be</span>
+<span class="sd">                used. Due to delays in resource data collection and indexing, there is a</span>
+<span class="sd">                volatile window during which running the same query may get different</span>
+<span class="sd">                results.</span>
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.asset_v1beta1.types.Timestamp`</span>
-<span class="sd">            asset_types (list[str]): A list of asset types to take a snapshot for. Example:</span>
+<span class="sd">            asset_types (list[str]): A list of asset types of which to take a snapshot for. Example:</span>
 <span class="sd">                \&quot;google.compute.disk\&quot;. If specified, only matching assets will be returned.</span>
+<span class="sd">            content_type (~google.cloud.asset_v1beta1.types.ContentType): Asset content type. If not specified, no content but the asset name will be</span>
+<span class="sd">                returned.</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
 <span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
 <span class="sd">                be retried.</span>
@@ -285,17 +284,17 @@
                 <span class="s1">&#39;export_assets&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">wrap_method</span><span class="p">(</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">export_assets</span><span class="p">,</span>
                     <span class="n">default_retry</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span><span class="s1">&#39;ExportAssets&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">retry</span><span class="p">,</span>
-                    <span class="n">default_timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span><span class="s1">&#39;ExportAssets&#39;</span><span class="p">]</span>
-                    <span class="o">.</span><span class="n">timeout</span><span class="p">,</span>
+                    <span class="n">default_timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span><span class="s1">&#39;ExportAssets&#39;</span><span class="p">]</span><span class="o">.</span>
+                    <span class="n">timeout</span><span class="p">,</span>
                     <span class="n">client_info</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client_info</span><span class="p">,</span>
                 <span class="p">)</span>
 
         <span class="n">request</span> <span class="o">=</span> <span class="n">asset_service_pb2</span><span class="o">.</span><span class="n">ExportAssetsRequest</span><span class="p">(</span>
             <span class="n">parent</span><span class="o">=</span><span class="n">parent</span><span class="p">,</span>
-            <span class="n">content_types</span><span class="o">=</span><span class="n">content_types</span><span class="p">,</span>
             <span class="n">output_config</span><span class="o">=</span><span class="n">output_config</span><span class="p">,</span>
             <span class="n">read_time</span><span class="o">=</span><span class="n">read_time</span><span class="p">,</span>
             <span class="n">asset_types</span><span class="o">=</span><span class="n">asset_types</span><span class="p">,</span>
+            <span class="n">content_type</span><span class="o">=</span><span class="n">content_type</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="n">operation</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span><span class="s1">&#39;export_assets&#39;</span><span class="p">](</span>
             <span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">)</span>
@@ -309,9 +308,9 @@
 <div class="viewcode-block" id="AssetServiceClient.batch_get_assets_history"><a class="viewcode-back" href="../../../../../asset/gapic/v1beta1/api.html#google.cloud.asset_v1beta1.AssetServiceClient.batch_get_assets_history">[docs]</a>    <span class="k">def</span> <span class="nf">batch_get_assets_history</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span>
             <span class="n">parent</span><span class="p">,</span>
-            <span class="n">asset_names</span><span class="p">,</span>
             <span class="n">content_type</span><span class="p">,</span>
             <span class="n">read_time_window</span><span class="p">,</span>
+            <span class="n">asset_names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">retry</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
             <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
             <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -330,33 +329,31 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; parent = client.project_path(&#39;[PROJECT]&#39;)</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``asset_names``:</span>
-<span class="sd">            &gt;&gt;&gt; asset_names = []</span>
-<span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``content_type``:</span>
 <span class="sd">            &gt;&gt;&gt; content_type = enums.ContentType.CONTENT_TYPE_UNSPECIFIED</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``read_time_window``:</span>
 <span class="sd">            &gt;&gt;&gt; read_time_window = {}</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; response = client.batch_get_assets_history(parent, asset_names, content_type, read_time_window)</span>
+<span class="sd">            &gt;&gt;&gt; response = client.batch_get_assets_history(parent, content_type, read_time_window)</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            parent (str): Required. The relative name of the root asset. It can only be an</span>
-<span class="sd">                organization ID (e.g. \&quot;organizations/123\&quot;) or a project ID</span>
-<span class="sd">                (e.g. \&quot;projects/12345\&quot;).</span>
+<span class="sd">                organization number (such as \&quot;organizations/123\&quot;), or a project id (such as</span>
+<span class="sd">                \&quot;projects/my-project-id\&quot;)\&quot;or a project number (such as \&quot;projects/12345\&quot;).</span>
+<span class="sd">            content_type (~google.cloud.asset_v1beta1.types.ContentType): Required. The content type.</span>
+<span class="sd">            read_time_window (Union[dict, ~google.cloud.asset_v1beta1.types.TimeWindow]): Required. The time window for the asset history. The start time is</span>
+<span class="sd">                required. The returned results contain all temporal assets whose time</span>
+<span class="sd">                window overlap with read_time_window.</span>
+<span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
+<span class="sd">                message :class:`~google.cloud.asset_v1beta1.types.TimeWindow`</span>
 <span class="sd">            asset_names (list[str]): A list of the full names of the assets. See:</span>
 <span class="sd">                https://cloud.google.com/apis/design/resource_names#full_resource_name</span>
 <span class="sd">                Example:</span>
 <span class="sd">                \&quot;//compute.googleapis.com/projects/my_project_123/zones/zone1/instances/instance1\&quot;.</span>
 
-<span class="sd">                The request becomes a no-op if the asset name list is empty.</span>
-<span class="sd">            content_type (~google.cloud.asset_v1beta1.types.ContentType): Required. The content type.</span>
-<span class="sd">            read_time_window (Union[dict, ~google.cloud.asset_v1beta1.types.TimeWindow]): Required. The time window for the asset history. The returned results</span>
-<span class="sd">                contain all temporal assets whose time window overlap with</span>
-<span class="sd">                read_time_window.</span>
-<span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
-<span class="sd">                message :class:`~google.cloud.asset_v1beta1.types.TimeWindow`</span>
+<span class="sd">                The request becomes a no-op if the asset name list is empty, and the max</span>
+<span class="sd">                size of the asset name list is 100 in one request.</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
 <span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
 <span class="sd">                be retried.</span>
@@ -381,18 +378,18 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span>
                 <span class="s1">&#39;batch_get_assets_history&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">wrap_method</span><span class="p">(</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">batch_get_assets_history</span><span class="p">,</span>
-                    <span class="n">default_retry</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span><span class="s1">&#39;BatchGetAssetsHistory&#39;</span><span class="p">]</span>
-                    <span class="o">.</span><span class="n">retry</span><span class="p">,</span>
-                    <span class="n">default_timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span>
-                        <span class="s1">&#39;BatchGetAssetsHistory&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">timeout</span><span class="p">,</span>
+                    <span class="n">default_retry</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span>
+                    <span class="n">_method_configs</span><span class="p">[</span><span class="s1">&#39;BatchGetAssetsHistory&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">retry</span><span class="p">,</span>
+                    <span class="n">default_timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span>
+                    <span class="n">_method_configs</span><span class="p">[</span><span class="s1">&#39;BatchGetAssetsHistory&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">timeout</span><span class="p">,</span>
                     <span class="n">client_info</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client_info</span><span class="p">,</span>
                 <span class="p">)</span>
 
         <span class="n">request</span> <span class="o">=</span> <span class="n">asset_service_pb2</span><span class="o">.</span><span class="n">BatchGetAssetsHistoryRequest</span><span class="p">(</span>
             <span class="n">parent</span><span class="o">=</span><span class="n">parent</span><span class="p">,</span>
-            <span class="n">asset_names</span><span class="o">=</span><span class="n">asset_names</span><span class="p">,</span>
             <span class="n">content_type</span><span class="o">=</span><span class="n">content_type</span><span class="p">,</span>
             <span class="n">read_time_window</span><span class="o">=</span><span class="n">read_time_window</span><span class="p">,</span>
+            <span class="n">asset_names</span><span class="o">=</span><span class="n">asset_names</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span><span class="s1">&#39;batch_get_assets_history&#39;</span><span class="p">](</span>
             <span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">)</span></div>
