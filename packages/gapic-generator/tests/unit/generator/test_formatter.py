@@ -88,5 +88,44 @@ def test_fix_whitespace_decorators():
     """)
 
 
+def test_fix_whitespace_intermediate_whitespace():
+    assert formatter.fix_whitespace(textwrap.dedent("""\
+    class JustAClass:
+        def foo(self):
+            pass
+        \
+
+
+        @property
+        def too_far_down(self):
+            return 42
+    """)) == textwrap.dedent("""\
+    class JustAClass:
+        def foo(self):
+            pass
+
+        @property
+        def too_far_down(self):
+            return 42
+    """)
+
+
+def test_fix_whitespace_comment():
+    assert formatter.fix_whitespace(textwrap.dedent("""\
+    def do_something():
+        do_first_thing()
+
+
+        # Something something something.
+        do_second_thing()
+    """)) == textwrap.dedent("""\
+    def do_something():
+        do_first_thing()
+
+        # Something something something.
+        do_second_thing()
+    """)
+
+
 def test_file_newline_ending():
     assert formatter.fix_whitespace('') == '\n'

@@ -32,10 +32,10 @@ def fix_whitespace(code: str) -> str:
     code = re.sub(r'[ ]+\n', '\n', code)
 
     # Ensure at most two blank lines before top level definitions.
-    code = re.sub(r'\s+\n\n\n(class|def|@)', r'\n\n\n\1', code)
+    code = re.sub(r'\s+\n\s*\n\s*\n(class|def|@|#)', r'\n\n\n\1', code)
 
     # Ensure at most one line before nested definitions.
-    code = re.sub(r'\s+\n\n(    )+(class|def|@)', r'\n\n\1\2', code)
+    code = re.sub(r'\s+\n\s*\n(    )+(class|def|@|#)', r'\n\n\1\2', code)
 
     # All files shall end in one and exactly one line break.
     return f'{code.rstrip()}\n'
