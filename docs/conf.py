@@ -325,8 +325,13 @@ intersphinx_mapping = {
 # See: https://tech.signavio.com/2017/managing-sphinx-redirects
 # HTML pages to be copied from source to target
 static_html_pages = [
+    'datastore.usage.html',
     'bigquery/usage.html',
+    'language/usage.html',
+    'logging/usage.html',
     'spanner/usage.html',
+    'storage/client.html',
+    'translate/usage.html',
 ]
 
 def copy_static_html_pages(app, docname):
