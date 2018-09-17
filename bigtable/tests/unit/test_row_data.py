@@ -820,6 +820,18 @@ class Test_ReadRowsRequestManager(unittest.TestCase):
 
         self.assertEqual(expected_result, result)
 
+    def test_build_updated_request_full_table(self):
+        last_scanned_key = b"row_key14"
+
+        request = _ReadRowsRequestPB(table_name=self.table_name)
+        request_manager = self._make_one(request, last_scanned_key, 2)
+
+        result = request_manager.build_updated_request()
+        expected_result = _ReadRowsRequestPB(table_name=self.table_name,
+                                             filter={})
+        expected_result.rows.row_ranges.add(start_key_open=last_scanned_key)
+        self.assertEqual(expected_result, result)
+
     def test_build_updated_request_no_start_key(self):
         from google.cloud.bigtable.row_filters import RowSampleFilter
         row_filter = RowSampleFilter(0.33)
@@ -894,18 +906,6 @@ class Test_ReadRowsRequestManager(unittest.TestCase):
         expected_result = _ReadRowsRequestPB(table_name=self.table_name,
                                              filter={},
                                              rows_limit=8)
-        expected_result.rows.row_ranges.add(start_key_open=last_scanned_key)
-        self.assertEqual(expected_result, result)
-
-    def test_build_updated_request_plain(self):
-        last_scanned_key = b"row_key14"
-
-        request = _ReadRowsRequestPB(table_name=self.table_name)
-        request_manager = self._make_one(request, last_scanned_key, 2)
-
-        result = request_manager.build_updated_request()
-        expected_result = _ReadRowsRequestPB(table_name=self.table_name,
-                                             filter={})
         expected_result.rows.row_ranges.add(start_key_open=last_scanned_key)
         self.assertEqual(expected_result, result)
 
