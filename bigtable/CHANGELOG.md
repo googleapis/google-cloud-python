@@ -6,21 +6,18 @@
 
 ## 0.30.2
 
-### Implementation Changes
-- Fix for smart retry for 'read_rows()' when reading the full table (#5966)
-- Docs: Replace links to '/stable/' with '/latest/'. (#5901)
-
 ### New Features
-- Bigtable: add iam policy implementation for an instance. (#5838)
+- Add iam policy implementation for an instance. (#5838)
 
-### Dependencies
+### Implementation Changes
+- Fix smart retries for 'read_rows()' when reading the full table (#5966)
 
 ### Documentation
+- Replace links to `/stable/` with `/latest/`. (#5901)
 
 ### Internal / Testing Changes
 - Re-generate library using bigtable/synth.py (#5974)
-- Bigtable: refactoring read_rows infrastructure (#5963)
-- Re-generate library using bigtable/synth.py (#5948)
+- Refactor `read_rows` infrastructure (#5963)
 
 ## 0.30.1
 
