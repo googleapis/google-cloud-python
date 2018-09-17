@@ -49,6 +49,7 @@ install:
 test_script:
   # Run the project tests
   - "%PYTHON%\\Scripts\\nox.exe -f api_core\\nox.py -s default"
+  - "%PYTHON%\\Scripts\\nox.exe -f asset\\nox.py -s default"
   - "%PYTHON%\\Scripts\\nox.exe -f bigquery\\nox.py -s default"
   - "%PYTHON%\\Scripts\\nox.exe -f bigquery_datatransfer\\nox.py -s default"
   - "%PYTHON%\\Scripts\\nox.exe -f bigtable\\nox.py -s default"
