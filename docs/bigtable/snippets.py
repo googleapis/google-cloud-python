@@ -37,7 +37,7 @@ def snippet(func):
 def bigtable_create_instance(client, to_delete):
     # [START bigtable_create_prod_instance]
     from google.cloud.bigtable import enums
-    
+
     location_id = 'us-central1-f'
     serve_nodes = 3
     storage_type = enums.StorageType.SSD
@@ -58,11 +58,13 @@ def bigtable_create_instance(client, to_delete):
 @snippet
 def bigtable_create_cluster(client):
     # [START bigtable_create_cluster]
+    from google.cloud.bigtable import enums
+
     instance = client.instance("instance_my1")
     location_id = 'us-central1-a'
     serve_nodes = 3
     storage_type = enums.StorageType.SSD
-    
+
     cluster = instance.cluster("cluster_my2", location_id=location_id,
                                serve_nodes=serve_nodes,
                                default_storage_type=storage_type)
@@ -73,7 +75,6 @@ def bigtable_create_cluster(client):
 @snippet
 def bigtable_list_instances(client):
     # [START bigtable_list_instances]
-    print '\nListing Instances:'
     for instance_local in client.list_instances()[0]:
         print instance_local.instance_id
     # [END bigtable_list_instances]
@@ -88,7 +89,7 @@ def bigtable_list_clusters(client):
     labels = {'prod-label': 'prod-label'}
     instance = client.instance("instance_my1", instance_type=production,
                                labels=labels)
-    
+
     for cluster in instance.list_clusters()[0]:
         print cluster.cluster_id
     # [END bigtable_list_clusters]
@@ -97,10 +98,9 @@ def bigtable_list_clusters(client):
 @snippet
 def bigtable_instance_exists(client):
     # [START bigtable_check_instance_exists]
-    from google.cloud.bigtable import enums
     instance = client.instance("instance_my1")
     if instance.exists():
-        print 'Instance {} exists.'.format(instance_id)
+        print 'Instance {} exists.'.format("instance_my1")
     # [END bigtable_check_instance_exists]
 
 
@@ -108,16 +108,16 @@ def bigtable_instance_exists(client):
 def bigtable_cluster_exists(client):
     from google.cloud.bigtable import enums
     instance = client.instance("instance_my1")
-    
+
     # [START bigtable_check_cluster_exists]
     location_id = 'us-central1-a'
     serve_nodes = 3
-    storage_type = enums.StorageType.SSD    
+    storage_type = enums.StorageType.SSD
     cluster = instance.cluster("ssd-cluster1", location_id=location_id,
                                serve_nodes=serve_nodes,
                                default_storage_type=storage_type)
     if cluster.exists():
-        print '\nCluster {} already exists.'.format(cluster_id)
+        print '\nCluster {} already exists.'.format("ssd-cluster1")
     # [END bigtable_check_cluster_exists]
 
 
@@ -125,12 +125,7 @@ def bigtable_cluster_exists(client):
 def bigtable_delete_instance(client):
     # [START bigtable_delete_instance]
     instance = client.instance("instance_my1")
-    print '\nDeleting Instance'
-    if not instance.exists():
-        print 'Instance {} does not exists.'.format(instance_id)
-    else:
-        instance.delete()
-        print 'Deleted Instance: {}'.format(instance_id)
+    instance.delete()
     # [END bigtable_delete_instance]
 
 
@@ -143,6 +138,25 @@ def bigtable_delete_cluster(client):
     if cluster.exists():
         cluster.delete()
     # [END bigtable_delete_cluster]
+
+
+@snippet
+def bigtable_create_table(client):
+    # [START bigtable_create_table]
+    instance = client.instance("instance_my1")
+    table = instance.table("table_my")
+    table.create()
+    # [END bigtable_create_table]
+
+
+@snippet
+def bigtable_list_tables(client):
+    # [START bigtable_list_tables]
+    instance = client.instance("instance_my1")
+    tables = instance.list_tables()
+    for tbl in tables:
+        print tbl.table_id
+    # [END bigtable_list_tables]
 
 
 def _line_no(func):
@@ -164,14 +178,14 @@ def _name_and_doc(func):
 def main():
     client = bigtable.Client(project='my-project', admin=True)
     for example in _find_examples():
-        to_delete = [] 
-        print('%-25s: %s' % _name_and_doc(example))
+        to_delete = []
+        print '%-25s: %s' % _name_and_doc(example)
         try:
             example(client, to_delete)
         except AssertionError as failure:
-            print('   FAIL: %s' % (failure,))
+            print '   FAIL: %s' % (failure,)
         except Exception as error:  # pylint: disable=broad-except
-            print('  ERROR: %r' % (error,))
+            print '  ERROR: %r' % (error,)
         for item in to_delete:
             item.delete()
 

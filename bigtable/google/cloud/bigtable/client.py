@@ -268,6 +268,12 @@ class Client(ClientWithProject):
     def list_clusters(self):
         """List the clusters in the project.
 
+        For example:
+
+        .. literalinclude:: snippets.py
+            :start-after: [START bigtable_list_clusters]
+            :end-before: [END bigtable_list_clusters]
+
         :rtype: tuple
         :returns:
             (clusters, failed_locations), where 'clusters' is list of

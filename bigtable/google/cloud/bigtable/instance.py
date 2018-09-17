@@ -366,7 +366,7 @@ class Instance(object):
     def cluster(self, cluster_id, location_id=None,
                 serve_nodes=None, default_storage_type=None):
         """Factory to create a cluster associated with this instance.
-        
+
         For example:
 
         .. literalinclude:: snippets.py
@@ -409,6 +409,12 @@ class Instance(object):
     def list_clusters(self):
         """List the clusters in this instance.
 
+        For example:
+
+        .. literalinclude:: snippets.py
+            :start-after: [START bigtable_list_clusters]
+            :end-before: [END bigtable_list_clusters]
+
         :rtype: tuple
         :returns:
             (clusters, failed_locations), where 'clusters' is list of
@@ -424,6 +430,12 @@ class Instance(object):
     def table(self, table_id, app_profile_id=None):
         """Factory to create a table associated with this instance.
 
+        For example:
+
+        .. literalinclude:: snippets.py
+            :start-after: [START bigtable_create_table]
+            :end-before: [END bigtable_create_table]
+
         :type table_id: str
         :param table_id: The ID of the table.
 
@@ -437,6 +449,12 @@ class Instance(object):
 
     def list_tables(self):
         """List the tables in this instance.
+
+        For example:
+
+        .. literalinclude:: snippets.py
+            :start-after: [START bigtable_list_tables]
+            :end-before: [END bigtable_list_tables]
 
         :rtype: list of :class:`Table <google.cloud.bigtable.table.Table>`
         :returns: The list of tables owned by the instance.
