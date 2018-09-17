@@ -1,61 +1,88 @@
 Python Client for Google Cloud Pub / Sub
 ========================================
 
-    Python idiomatic client for `Google Cloud Pub / Sub`_
-
-.. _Google Cloud Pub / Sub: https://cloud.google.com/pubsub/docs
-
 |pypi| |versions|
 
--  `Documentation`_
+`Google Cloud Pub / Sub`_ is a fully-managed real-time messaging service that
+allows you to send and receive messages between independent applications. You
+can leverage Cloud Pub/Sub’s flexibility to decouple systems and components
+hosted on Google Cloud Platform or elsewhere on the Internet. By building on
+the same technology Google uses, Cloud Pub / Sub is designed to provide “at
+least once” delivery at low latency with on-demand scalability to 1 million
+messages per second (and beyond).
 
-.. _Documentation: https://googlecloudplatform.github.io/google-cloud-python/latest/pubsub/
+Publisher applications can send messages to a ``topic`` and other applications
+can subscribe to that topic to receive the messages. By decoupling senders and
+receivers, Google Cloud Pub/Sub allows developers to communicate between
+independently written applications.
+
+- `Product Documentation`_
+- `Client Library Documentation`_
+
+.. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-pubsub.svg
+   :target: https://pypi.org/project/google-cloud-pubsub/
+.. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-pubsub.svg
+   :target: https://pypi.org/project/google-cloud-pubsub/
+.. _Google Cloud Pub / Sub: https://cloud.google.com/pubsub/
+.. _Product Documentation: https://cloud.google.com/pubsub/docs
+.. _Client Library Documentation: https://googlecloudplatform.github.io/google-cloud-python/latest/pubsub/
 
 Quick Start
 -----------
 
+In order to use this library, you first need to go through the following steps:
+
+1. `Select or create a Cloud Platform project.`_
+2. `Enable billing for your project.`_
+3. `Enable the Google Cloud Pub / Sub API.`_
+4. `Setup Authentication.`_
+
+.. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
+.. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
+.. _Enable the Google Cloud Pub / Sub API.:  https://cloud.google.com/pubsub
+.. _Setup Authentication.: https://googlecloudplatform.github.io/google-cloud-python/latest/core/auth.html
+
+Installation
+~~~~~~~~~~~~
+
+Install this library in a `virtualenv`_ using pip. `virtualenv`_ is a tool to
+create isolated Python environments. The basic problem it addresses is one of
+dependencies and versions, and indirectly permissions.
+
+With `virtualenv`_, it's possible to install this library without needing system
+install permissions, and without clashing with the installed system
+dependencies.
+
+.. _`virtualenv`: https://virtualenv.pypa.io/en/latest/
+
+
+Mac/Linux
+^^^^^^^^^
+
 .. code-block:: console
 
-    $ pip install --upgrade google-cloud-pubsub
+    pip install virtualenv
+    virtualenv <your-env>
+    source <your-env>/bin/activate
+    <your-env>/bin/pip install google-cloud-pubsub
 
-For more information on setting up your Python development environment,
-such as installing ``pip`` and ``virtualenv`` on your system, please refer
-to `Python Development Environment Setup Guide`_ for Google Cloud Platform.
 
-.. _Python Development Environment Setup Guide: https://cloud.google.com/python/setup
+Windows
+^^^^^^^
 
-Authentication
---------------
+.. code-block:: console
 
-With ``google-cloud-python`` we try to make authentication as painless as
-possible. Check out the `Authentication section`_ in our documentation to
-learn more. You may also find the `authentication document`_ shared by all
-the ``google-cloud-*`` libraries to be helpful.
+    pip install virtualenv
+    virtualenv <your-env>
+    <your-env>\Scripts\activate
+    <your-env>\Scripts\pip.exe install google-cloud-pubsub
 
-.. _Authentication section: https://google-cloud-python.readthedocs.io/en/latest/core/auth.html
-.. _authentication document: https://github.com/GoogleCloudPlatform/google-cloud-common/tree/master/authentication
 
-Using the API
--------------
-
-Google `Cloud Pub/Sub`_ (`Pub/Sub API docs`_) is designed to provide reliable,
-many-to-many, asynchronous messaging between applications. Publisher
-applications can send messages to a ``topic`` and other applications can
-subscribe to that topic to receive the messages. By decoupling senders and
-receivers, Google Cloud Pub/Sub allows developers to communicate between
-independently written applications.
-
-.. _Cloud Pub/Sub: https://cloud.google.com/pubsub/docs
-.. _Pub/Sub API docs: https://cloud.google.com/pubsub/docs/reference/rest/
-
-See the ``google-cloud-python`` API `Pub/Sub documentation`_ to learn how to connect
-to Cloud Pub/Sub using this Client Library.
-
-.. _Pub/Sub documentation: http://google-cloud-python.readthedocs.io/en/latest/pubsub/index.html
-
+Example Usage
+~~~~~~~~~~~~~
 
 Publishing
-----------
+^^^^^^^^^^
 
 To publish data to Cloud Pub/Sub you must create a topic, and then publish
 messages to it
@@ -79,7 +106,7 @@ To learn more, consult the `publishing documentation`_.
 
 
 Subscribing
------------
+^^^^^^^^^^^
 
 To subscribe to data in Cloud Pub/Sub, you create a subscription based on
 the topic, and subscribe to that.
@@ -115,9 +142,3 @@ use of a callback.
 To learn more, consult the `subscriber documentation`_.
 
 .. _subscriber documentation: http://google-cloud-python.readthedocs.io/en/latest/pubsub/subscriber/index.html
-
-
-.. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-pubsub.svg
-   :target: https://pypi.org/project/google-cloud-pubsub/
-.. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-pubsub.svg
-   :target: https://pypi.org/project/google-cloud-pubsub/
