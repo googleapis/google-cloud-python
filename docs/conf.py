@@ -328,7 +328,6 @@ static_html_pages = [
     'datastore.usage.html',
     'bigquery/usage.html',
     'spanner/usage.html',
-    'storage/client.html',
 ]
 
 def copy_static_html_pages(app, docname):
