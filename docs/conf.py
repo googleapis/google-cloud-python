@@ -326,6 +326,7 @@ intersphinx_mapping = {
 # HTML pages to be copied from source to target
 static_html_pages = [
     'bigquery/usage.html',
+    'spanner/usage.html',
 ]
 
 def copy_static_html_pages(app, docname):
