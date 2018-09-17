@@ -7,7 +7,7 @@
 ## 0.30.2
 
 ### Implementation Changes
-- Bigtable: smart retry for 'read_rows()' and 'read_rows(rows_limit)' requests (#5966)
+- Fix for smart retry for 'read_rows()' when reading the full table (#5966)
 - Docs: Replace links to '/stable/' with '/latest/'. (#5901)
 
 ### New Features
