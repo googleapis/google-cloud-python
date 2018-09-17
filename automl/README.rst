@@ -1,7 +1,10 @@
 Python Client for Cloud AutoML API (`Alpha`_)
 =============================================
 
-`Cloud AutoML API`_: The AutoML project API.
+The `Cloud AutoML API`_ is a suite of machine learning products that enables
+developers with limited machine learning expertise to train high-quality models
+specific to their business needs, by leveraging Google’s state-of-the-art
+transfer learning, and Neural Architecture Search technology.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -61,15 +64,23 @@ Windows
     <your-env>\Scripts\activate
     <your-env>\Scripts\pip.exe install google-cloud-automl
 
+Example Usage
+~~~~~~~~~~~~~
+
+.. code-block:: python
+
+   from google.cloud.automl_v1beta1 import PredictionServiceClient
+
+   client = PredictionServiceClient()
+   model_path = client.model_path('my-project-123', 'us-central', 'model-name')
+   payload = {...}
+   params = {'foo': 1}
+   response = client.predict(model_path, payload, params=params)
+
 Next Steps
 ~~~~~~~~~~
 
 -  Read the `Client Library Documentation`_ for Cloud AutoML API
    API to see other available methods on the client.
--  Read the `Cloud AutoML API Product documentation`_ to learn
+-  Read the `Product documentation`_ to learn
    more about the product and see How-to Guides.
--  View this `repository’s main README`_ to see the full list of Cloud
-   APIs that we cover.
-
-.. _Cloud AutoML API Product documentation:  https://cloud.google.com/automl
-.. _repository’s main README: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/README.rst
