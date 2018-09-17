@@ -388,15 +388,16 @@ class PartialRowsData(object):
         req_manager = _ReadRowsRequestManager(self.request,
                                               self.last_scanned_row_key,
                                               self._counter)
-        self.request = req_manager.build_updated_request()
+        return req_manager.build_updated_request()
 
     def _on_error(self, exc):
         """Helper for :meth:`__iter__`."""
         # restart the read scan from AFTER the last successfully read row
+        retry_request = self.request
         if self.last_scanned_row_key:
-            self._create_retry_request()
+            retry_request = self._create_retry_request()
 
-        self.response_iterator = self.read_method(self.request)
+        self.response_iterator = self.read_method(retry_request)
 
     def _read_next(self):
         """Helper for :meth:`__iter__`."""
@@ -564,11 +565,18 @@ class _ReadRowsRequestManager(object):
             r_kwargs['rows_limit'] = max(1, self.message.rows_limit -
                                          self.rows_read_so_far)
 
-        row_keys = self._filter_rows_keys()
-        row_ranges = self._filter_row_ranges()
-        r_kwargs['rows'] = data_v2_pb2.RowSet(row_keys=row_keys,
-                                              row_ranges=row_ranges)
-
+        # if neither RowSet.row_keys nor RowSet.row_ranges currently exist,
+        # add row_range that starts with last_scanned_key as start_key_open
+        # to request only rows that have not been returned yet
+        if not self.message.HasField('rows'):
+            row_range = data_v2_pb2.RowRange(
+                start_key_open=self.last_scanned_key)
+            r_kwargs['rows'] = data_v2_pb2.RowSet(row_ranges=[row_range])
+        else:
+            row_keys = self._filter_rows_keys()
+            row_ranges = self._filter_row_ranges()
+            r_kwargs['rows'] = data_v2_pb2.RowSet(row_keys=row_keys,
+                                                  row_ranges=row_ranges)
         return data_messages_v2_pb2.ReadRowsRequest(**r_kwargs)
 
     def _filter_rows_keys(self):
@@ -581,28 +589,45 @@ class _ReadRowsRequestManager(object):
         new_row_ranges = []
 
         for row_range in self.message.rows.row_ranges:
-            if((row_range.end_key_open and
-                self._key_already_read(row_range.end_key_open)) or
-                (row_range.end_key_closed and
-                 self._key_already_read(row_range.end_key_closed))):
-                    continue
+            # if current end_key (open or closed) is set, return its value,
+            # if not, set to empty string ('').
+            # NOTE: Empty string in end_key means "end of table"
+            end_key = self._end_key_set(row_range)
+            # if end_key is already read, skip to the next row_range
+            if(end_key and self._key_already_read(end_key)):
+                continue
 
-            if ((row_range.start_key_open and
-                self._key_already_read(row_range.start_key_open)) or
-                (row_range.start_key_closed and
-                 self._key_already_read(row_range.start_key_closed))):
-                row_range.start_key_closed = _to_bytes("")
-                row_range.start_key_open = self.last_scanned_key
+            # if current start_key (open or closed) is set, return its value,
+            # if not, then set to empty string ('')
+            # NOTE: Empty string in start_key means "beginning of table"
+            start_key = self._start_key_set(row_range)
 
-                new_row_ranges.append(row_range)
-            else:
-                new_row_ranges.append(row_range)
+            # if start_key was already read or doesn't exist,
+            # create a row_range with last_scanned_key as start_key_open
+            # to be passed to retry request
+            retry_row_range = row_range
+            if(self._key_already_read(start_key)):
+                retry_row_range = copy.deepcopy(row_range)
+                retry_row_range.start_key_closed = _to_bytes("")
+                retry_row_range.start_key_open = self.last_scanned_key
+
+            new_row_ranges.append(retry_row_range)
 
         return new_row_ranges
 
     def _key_already_read(self, key):
         """ Helper for :meth:`_filter_row_ranges`"""
         return key <= self.last_scanned_key
+
+    @staticmethod
+    def _start_key_set(row_range):
+        """ Helper for :meth:`_filter_row_ranges`"""
+        return row_range.start_key_open or row_range.start_key_closed
+
+    @staticmethod
+    def _end_key_set(row_range):
+        """ Helper for :meth:`_filter_row_ranges`"""
+        return row_range.end_key_open or row_range.end_key_closed
 
 
 def _raise_if(predicate, *args):
