@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigtable.row_data &#8212; google-cloud 935f1d7 documentation</title>
+    <title>google.cloud.bigtable.row_data &#8212; google-cloud 33cd1b9 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -424,15 +424,16 @@
         <span class="n">req_manager</span> <span class="o">=</span> <span class="n">_ReadRowsRequestManager</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="p">,</span>
                                               <span class="bp">self</span><span class="o">.</span><span class="n">last_scanned_row_key</span><span class="p">,</span>
                                               <span class="bp">self</span><span class="o">.</span><span class="n">_counter</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">request</span> <span class="o">=</span> <span class="n">req_manager</span><span class="o">.</span><span class="n">build_updated_request</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">req_manager</span><span class="o">.</span><span class="n">build_updated_request</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">_on_error</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Helper for :meth:`__iter__`.&quot;&quot;&quot;</span>
         <span class="c1"># restart the read scan from AFTER the last successfully read row</span>
+        <span class="n">retry_request</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">request</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_scanned_row_key</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_create_retry_request</span><span class="p">()</span>
+            <span class="n">retry_request</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_retry_request</span><span class="p">()</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">response_iterator</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">read_method</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">response_iterator</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">read_method</span><span class="p">(</span><span class="n">retry_request</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_read_next</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Helper for :meth:`__iter__`.&quot;&quot;&quot;</span>
@@ -600,11 +601,18 @@
             <span class="n">r_kwargs</span><span class="p">[</span><span class="s1">&#39;rows_limit&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">rows_limit</span> <span class="o">-</span>
                                          <span class="bp">self</span><span class="o">.</span><span class="n">rows_read_so_far</span><span class="p">)</span>
 
-        <span class="n">row_keys</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_filter_rows_keys</span><span class="p">()</span>
-        <span class="n">row_ranges</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_filter_row_ranges</span><span class="p">()</span>
-        <span class="n">r_kwargs</span><span class="p">[</span><span class="s1">&#39;rows&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data_v2_pb2</span><span class="o">.</span><span class="n">RowSet</span><span class="p">(</span><span class="n">row_keys</span><span class="o">=</span><span class="n">row_keys</span><span class="p">,</span>
-                                              <span class="n">row_ranges</span><span class="o">=</span><span class="n">row_ranges</span><span class="p">)</span>
-
+        <span class="c1"># if neither RowSet.row_keys nor RowSet.row_ranges currently exist,</span>
+        <span class="c1"># add row_range that starts with last_scanned_key as start_key_open</span>
+        <span class="c1"># to request only rows that have not been returned yet</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">HasField</span><span class="p">(</span><span class="s1">&#39;rows&#39;</span><span class="p">):</span>
+            <span class="n">row_range</span> <span class="o">=</span> <span class="n">data_v2_pb2</span><span class="o">.</span><span class="n">RowRange</span><span class="p">(</span>
+                <span class="n">start_key_open</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">last_scanned_key</span><span class="p">)</span>
+            <span class="n">r_kwargs</span><span class="p">[</span><span class="s1">&#39;rows&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data_v2_pb2</span><span class="o">.</span><span class="n">RowSet</span><span class="p">(</span><span class="n">row_ranges</span><span class="o">=</span><span class="p">[</span><span class="n">row_range</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">row_keys</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_filter_rows_keys</span><span class="p">()</span>
+            <span class="n">row_ranges</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_filter_row_ranges</span><span class="p">()</span>
+            <span class="n">r_kwargs</span><span class="p">[</span><span class="s1">&#39;rows&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data_v2_pb2</span><span class="o">.</span><span class="n">RowSet</span><span class="p">(</span><span class="n">row_keys</span><span class="o">=</span><span class="n">row_keys</span><span class="p">,</span>
+                                                  <span class="n">row_ranges</span><span class="o">=</span><span class="n">row_ranges</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">data_messages_v2_pb2</span><span class="o">.</span><span class="n">ReadRowsRequest</span><span class="p">(</span><span class="o">**</span><span class="n">r_kwargs</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_filter_rows_keys</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -617,28 +625,45 @@
         <span class="n">new_row_ranges</span> <span class="o">=</span> <span class="p">[]</span>
 
         <span class="k">for</span> <span class="n">row_range</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">rows</span><span class="o">.</span><span class="n">row_ranges</span><span class="p">:</span>
-            <span class="k">if</span><span class="p">((</span><span class="n">row_range</span><span class="o">.</span><span class="n">end_key_open</span> <span class="ow">and</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_key_already_read</span><span class="p">(</span><span class="n">row_range</span><span class="o">.</span><span class="n">end_key_open</span><span class="p">))</span> <span class="ow">or</span>
-                <span class="p">(</span><span class="n">row_range</span><span class="o">.</span><span class="n">end_key_closed</span> <span class="ow">and</span>
-                 <span class="bp">self</span><span class="o">.</span><span class="n">_key_already_read</span><span class="p">(</span><span class="n">row_range</span><span class="o">.</span><span class="n">end_key_closed</span><span class="p">))):</span>
-                    <span class="k">continue</span>
+            <span class="c1"># if current end_key (open or closed) is set, return its value,</span>
+            <span class="c1"># if not, set to empty string (&#39;&#39;).</span>
+            <span class="c1"># NOTE: Empty string in end_key means &quot;end of table&quot;</span>
+            <span class="n">end_key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_end_key_set</span><span class="p">(</span><span class="n">row_range</span><span class="p">)</span>
+            <span class="c1"># if end_key is already read, skip to the next row_range</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">end_key</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_key_already_read</span><span class="p">(</span><span class="n">end_key</span><span class="p">)):</span>
+                <span class="k">continue</span>
 
-            <span class="k">if</span> <span class="p">((</span><span class="n">row_range</span><span class="o">.</span><span class="n">start_key_open</span> <span class="ow">and</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_key_already_read</span><span class="p">(</span><span class="n">row_range</span><span class="o">.</span><span class="n">start_key_open</span><span class="p">))</span> <span class="ow">or</span>
-                <span class="p">(</span><span class="n">row_range</span><span class="o">.</span><span class="n">start_key_closed</span> <span class="ow">and</span>
-                 <span class="bp">self</span><span class="o">.</span><span class="n">_key_already_read</span><span class="p">(</span><span class="n">row_range</span><span class="o">.</span><span class="n">start_key_closed</span><span class="p">))):</span>
-                <span class="n">row_range</span><span class="o">.</span><span class="n">start_key_closed</span> <span class="o">=</span> <span class="n">_to_bytes</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
-                <span class="n">row_range</span><span class="o">.</span><span class="n">start_key_open</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_scanned_key</span>
+            <span class="c1"># if current start_key (open or closed) is set, return its value,</span>
+            <span class="c1"># if not, then set to empty string (&#39;&#39;)</span>
+            <span class="c1"># NOTE: Empty string in start_key means &quot;beginning of table&quot;</span>
+            <span class="n">start_key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_start_key_set</span><span class="p">(</span><span class="n">row_range</span><span class="p">)</span>
 
-                <span class="n">new_row_ranges</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row_range</span><span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">new_row_ranges</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row_range</span><span class="p">)</span>
+            <span class="c1"># if start_key was already read or doesn&#39;t exist,</span>
+            <span class="c1"># create a row_range with last_scanned_key as start_key_open</span>
+            <span class="c1"># to be passed to retry request</span>
+            <span class="n">retry_row_range</span> <span class="o">=</span> <span class="n">row_range</span>
+            <span class="k">if</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_key_already_read</span><span class="p">(</span><span class="n">start_key</span><span class="p">)):</span>
+                <span class="n">retry_row_range</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">row_range</span><span class="p">)</span>
+                <span class="n">retry_row_range</span><span class="o">.</span><span class="n">start_key_closed</span> <span class="o">=</span> <span class="n">_to_bytes</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+                <span class="n">retry_row_range</span><span class="o">.</span><span class="n">start_key_open</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_scanned_key</span>
+
+            <span class="n">new_row_ranges</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">retry_row_range</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">new_row_ranges</span>
 
     <span class="k">def</span> <span class="nf">_key_already_read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Helper for :meth:`_filter_row_ranges`&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">key</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_scanned_key</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_start_key_set</span><span class="p">(</span><span class="n">row_range</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Helper for :meth:`_filter_row_ranges`&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">row_range</span><span class="o">.</span><span class="n">start_key_open</span> <span class="ow">or</span> <span class="n">row_range</span><span class="o">.</span><span class="n">start_key_closed</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_end_key_set</span><span class="p">(</span><span class="n">row_range</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Helper for :meth:`_filter_row_ranges`&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">row_range</span><span class="o">.</span><span class="n">end_key_open</span> <span class="ow">or</span> <span class="n">row_range</span><span class="o">.</span><span class="n">end_key_closed</span>
 
 
 <span class="k">def</span> <span class="nf">_raise_if</span><span class="p">(</span><span class="n">predicate</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
