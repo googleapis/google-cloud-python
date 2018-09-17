@@ -272,8 +272,8 @@ class CloudRedisClient(object):
                 'list_instances'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.list_instances,
                     default_retry=self._method_configs['ListInstances'].retry,
-                    default_timeout=self._method_configs['ListInstances']
-                    .timeout,
+                    default_timeout=self._method_configs['ListInstances'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -340,8 +340,8 @@ class CloudRedisClient(object):
                 'get_instance'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.get_instance,
                     default_retry=self._method_configs['GetInstance'].retry,
-                    default_timeout=self._method_configs['GetInstance']
-                    .timeout,
+                    default_timeout=self._method_configs['GetInstance'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -431,8 +431,8 @@ class CloudRedisClient(object):
                 'create_instance'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.create_instance,
                     default_retry=self._method_configs['CreateInstance'].retry,
-                    default_timeout=self._method_configs['CreateInstance']
-                    .timeout,
+                    default_timeout=self._method_configs['CreateInstance'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -526,8 +526,8 @@ class CloudRedisClient(object):
                 'update_instance'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.update_instance,
                     default_retry=self._method_configs['UpdateInstance'].retry,
-                    default_timeout=self._method_configs['UpdateInstance']
-                    .timeout,
+                    default_timeout=self._method_configs['UpdateInstance'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -599,8 +599,8 @@ class CloudRedisClient(object):
                 'delete_instance'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.delete_instance,
                     default_retry=self._method_configs['DeleteInstance'].retry,
-                    default_timeout=self._method_configs['DeleteInstance']
-                    .timeout,
+                    default_timeout=self._method_configs['DeleteInstance'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
