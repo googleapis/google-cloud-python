@@ -85,7 +85,7 @@ def showcase(session):
 def docs(session):
     """Build the docs."""
 
-    session.install('sphinx', 'sphinx_rtd_theme')
+    session.install('sphinx < 1.8', 'sphinx_rtd_theme')
     session.install('.')
 
     # Build the docs!
