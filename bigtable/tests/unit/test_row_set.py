@@ -63,7 +63,7 @@ class TestRowSet(unittest.TestCase):
         row_set1.add_row_key(row_key1)
         row_set1.add_row_key(row_key2)
         row_set2.add_row_key(row_key2)
-        
+
         self.assertNotEqual(row_set1, row_set2)
 
     def test__eq__len_row_ranges_differ(self):
@@ -78,7 +78,7 @@ class TestRowSet(unittest.TestCase):
         row_set2.add_row_range(row_range2)
 
         self.assertNotEqual(row_set1, row_set2)
-    
+
     def test__eq__row_keys_differ(self):
         row_set1 = self._make_one()
         row_set2 = self._make_one()
@@ -93,8 +93,20 @@ class TestRowSet(unittest.TestCase):
         self.assertNotEqual(row_set1, row_set2)
 
     def test__eq__row_ranges_differ(self):
-        pass
-    
+        row_range1 = RowRange(b"row_key4", b"row_key9")
+        row_range2 = RowRange(b"row_key14", b"row_key19")
+        row_range3 = RowRange(b"row_key24", b"row_key29")
+
+        row_set1 = self._make_one()
+        row_set2 = self._make_one()
+
+        row_set1.add_row_range(row_range1)
+        row_set1.add_row_range(row_range2)
+        row_set1.add_row_range(row_range3)
+        row_set2.add_row_range(row_range1)
+        row_set2.add_row_range(row_range2)
+
+        self.assertNotEqual(row_set1, row_set2)
 
     def test__ne__(self):
         row_key1 = b"row_key1"
