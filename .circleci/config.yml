@@ -50,7 +50,7 @@ jobs:
           name: Run tests - google.cloud.asset
           command: |
             if [[ -n $(grep -x asset ~/target_packages) ]]; then
-              nox -f bigquery/nox.py
+              nox -f asset/nox.py
             fi
       - run:
           name: Run tests - google.cloud.bigquery
