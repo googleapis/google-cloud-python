@@ -75,23 +75,15 @@ def bigtable_create_cluster(client):
 @snippet
 def bigtable_list_instances(client):
     # [START bigtable_list_instances]
-    for instance_local in client.list_instances()[0]:
-        print instance_local.instance_id
+    (instances_list, failed_locations_list) = client.list_instances()
     # [END bigtable_list_instances]
 
 
 @snippet
 def bigtable_list_clusters(client):
     # [START bigtable_list_clusters]
-    from google.cloud.bigtable import enums
-
-    production = enums.Instance.Type.PRODUCTION
-    labels = {'prod-label': 'prod-label'}
-    instance = client.instance("instance_my1", instance_type=production,
-                               labels=labels)
-
-    for cluster in instance.list_clusters()[0]:
-        print cluster.cluster_id
+    instance = client.instance("instance_my1")
+    (clusters_list, failed_locations_list) = instance.list_clusters()
     # [END bigtable_list_clusters]
 
 
@@ -99,25 +91,16 @@ def bigtable_list_clusters(client):
 def bigtable_instance_exists(client):
     # [START bigtable_check_instance_exists]
     instance = client.instance("instance_my1")
-    if instance.exists():
-        print 'Instance {} exists.'.format("instance_my1")
+    instance_exists =  instance.exists()
     # [END bigtable_check_instance_exists]
 
 
 @snippet
 def bigtable_cluster_exists(client):
-    from google.cloud.bigtable import enums
-    instance = client.instance("instance_my1")
-
     # [START bigtable_check_cluster_exists]
-    location_id = 'us-central1-a'
-    serve_nodes = 3
-    storage_type = enums.StorageType.SSD
-    cluster = instance.cluster("ssd-cluster1", location_id=location_id,
-                               serve_nodes=serve_nodes,
-                               default_storage_type=storage_type)
-    if cluster.exists():
-        print '\nCluster {} already exists.'.format("ssd-cluster1")
+    instance = client.instance("instance_my1")
+    cluster = instance.cluster("ssd-cluster1")
+    cluster_exists = cluster.exists()
     # [END bigtable_check_cluster_exists]
 
 
@@ -131,21 +114,40 @@ def bigtable_delete_instance(client):
 
 @snippet
 def bigtable_delete_cluster(client):
-    instance = client.instance("instance_my1")
-
     # [START bigtable_delete_cluster]
+    instance = client.instance("instance_my1")
     cluster = instance.cluster("ssd-cluster1")
-    if cluster.exists():
-        cluster.delete()
+    cluster.delete()
     # [END bigtable_delete_cluster]
+
+
+def bigtable_reload_cluster(client):
+    # [START bigtable_reload_cluster]
+    instance = client.instance("instance_my1")
+    cluster = instance.cluster("ssd-cluster1")
+    cluster.reload()
+    # [END bigtable_reload_cluster]
+
+def bigtable_update_cluster(client):
+    # [START bigtable_update_cluster]
+    instance = client.instance("instance_my1")
+    cluster = instance.cluster("ssd-cluster1")
+    cluster.serve_nodes = 8
+    cluster.update()
+    # [END bigtable_update_cluster]
 
 
 @snippet
 def bigtable_create_table(client):
     # [START bigtable_create_table]
+    from google.cloud.bigtable import column_family
+    
     instance = client.instance("instance_my1")
     table = instance.table("table_my")
-    table.create()
+    # Define the GC policy to retain only the most recent 2 versions.
+    max_versions_rule = column_family.MaxVersionsGCRule(2)
+    column_families = {'cf1': max_versions_rule}
+    table.create(column_families=column_families)
     # [END bigtable_create_table]
 
 
@@ -153,9 +155,7 @@ def bigtable_create_table(client):
 def bigtable_list_tables(client):
     # [START bigtable_list_tables]
     instance = client.instance("instance_my1")
-    tables = instance.list_tables()
-    for tbl in tables:
-        print tbl.table_id
+    tables_list = instance.list_tables()
     # [END bigtable_list_tables]
 
 

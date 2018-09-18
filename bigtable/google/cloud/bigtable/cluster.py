@@ -172,7 +172,14 @@ class Cluster(object):
         return not self == other
 
     def reload(self):
-        """Reload the metadata for this cluster."""
+        """Reload the metadata for this cluster.
+
+        For example:
+
+        .. literalinclude:: snippets.py
+            :start-after: [START bigtable_reload_cluster]
+            :end-before: [END bigtable_reload_cluster]
+        """
         cluster_pb = self._instance._client.instance_admin_client.get_cluster(
             self.name)
 
@@ -182,7 +189,7 @@ class Cluster(object):
 
     def exists(self):
         """Check whether the cluster already exists.
-        
+
         For example:
 
         .. literalinclude:: snippets.py
@@ -234,6 +241,12 @@ class Cluster(object):
 
     def update(self):
         """Update this cluster.
+
+        For example:
+
+        .. literalinclude:: snippets.py
+            :start-after: [START bigtable_update_cluster]
+            :end-before: [END bigtable_update_cluster]
 
         .. note::
 
