@@ -24,6 +24,7 @@ versions = ["v1beta1"]
 excludes = [
     'setup.py',
     'README.rst',
+    'docs/conf.py',
     'docs/index.rst',
 ]
 
