@@ -28,6 +28,10 @@ import os
 import pkg_resources
 import shutil
 
+from sphinx.util import logging
+
+logger = logging.getLogger(__name__)
+
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
@@ -325,7 +329,7 @@ intersphinx_mapping = {
 # See: https://tech.signavio.com/2017/managing-sphinx-redirects
 # HTML pages to be copied from source to target
 static_html_pages = [
-    'datastore.usage.html',
+    'datastore/usage.html',
     'bigquery/usage.html',
     'spanner/usage.html',
 ]
@@ -335,8 +339,10 @@ def copy_static_html_pages(app, docname):
         for static_html_page in static_html_pages:
             target_path = app.outdir + '/' + static_html_page
             src_path = app.srcdir + '/' + static_html_page
-        if os.path.isfile(src_path):
-            shutil.copyfile(src_path, target_path)
+            if os.path.isfile(src_path):
+                logger.info(
+                    'Copying static html: %s -> %s', src_path, target_path)
+                shutil.copyfile(src_path, target_path)
 
 def setup(app):
     app.connect('build-finished', copy_static_html_pages)
