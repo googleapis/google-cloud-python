@@ -334,8 +334,8 @@ static_html_pages = [
     'spanner/usage.html',
 ]
 
-def copy_static_html_pages(app, docname):
-    if app.builder.name == 'html':
+def copy_static_html_pages(app, exception):
+    if exception is None and app.builder.name == 'html':
         for static_html_page in static_html_pages:
             target_path = app.outdir + '/' + static_html_page
             src_path = app.srcdir + '/' + static_html_page
