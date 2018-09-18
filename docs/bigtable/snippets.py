@@ -22,6 +22,11 @@ with the API.
 To facilitate running the examples as system tests, each example is also passed
 a ``to_delete`` list;  the function adds to the list any objects created which
 need to be deleted during teardown.
+
+.. note::
+    This file is under progress and will be updated with more guidance from
+    the team. Unit tests will be added with guidance from the team.
+
 """
 
 from google.cloud import bigtable
