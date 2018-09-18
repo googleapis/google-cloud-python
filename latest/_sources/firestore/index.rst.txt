@@ -1,36 +1,28 @@
-Firestore
-=========
+.. include:: /../firestore/README.rst
+
+
+API Reference
+-------------
 
 .. toctree::
   :maxdepth: 2
-  :hidden:
 
-  constants
   client
   collection
   document
   query
   batch
   transaction
+  constants
   types
+
+
+Changelog
+---------
+
+For a list of all ``google-cloud-datastore`` releases:
+
+.. toctree::
+  :maxdepth: 2
+
   changelog
-
-Installation
-------------
-
-Install the ``google-cloud-firestore`` library using ``pip``:
-
-.. code-block:: console
-
-    $ pip install google-cloud-firestore
-
-Usage
------
-
-.. automodule:: google.cloud.firestore_v1beta1
-.. autoclass:: google.cloud.firestore_v1beta1.GeoPoint
-  :members:
-  :show-inheritance:
-.. autoexception:: google.cloud.firestore_v1beta1.ReadAfterWriteError
-  :members:
-  :show-inheritance:

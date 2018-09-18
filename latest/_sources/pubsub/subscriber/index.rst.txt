@@ -61,7 +61,7 @@ each message received.
         callback
     )
 
-This will return a 
+This will return a
 :class:`~.pubsub_v1.subscriber.futures.StreamingPullFuture`. This future allows
 you to control the background thread that is managing the subscription.
 
