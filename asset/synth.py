@@ -38,6 +38,12 @@ for version in versions:
 
     s.move(library, excludes=excludes)
 
+    s.replace(
+        f"google/cloud/asset_{version}/gapic/asset_service_client.py",
+        "'google-cloud-cloudasset', \).version",
+        "'google-cloud-asset', ).version",
+    )
+
 s.replace(
     "google/cloud/asset_v1beta1/proto/assets_pb2.py",
     "from google.iam.v1 import policy_pb2 as",

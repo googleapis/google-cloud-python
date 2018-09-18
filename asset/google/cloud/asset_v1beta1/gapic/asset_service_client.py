@@ -38,7 +38,7 @@ from google.longrunning import operations_pb2
 from google.protobuf import timestamp_pb2
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
-    'google-cloud-cloudasset', ).version
+    'google-cloud-asset', ).version
 
 
 class AssetServiceClient(object):
