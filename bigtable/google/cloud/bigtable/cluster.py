@@ -284,7 +284,7 @@ class Cluster(object):
 
     def delete(self):
         """Delete this cluster.
-        
+
         For example:
 
         .. literalinclude:: snippets.py

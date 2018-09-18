@@ -202,7 +202,7 @@ class Client(ClientWithProject):
     def instance(self, instance_id, display_name=None,
                  instance_type=None, labels=None):
         """Factory to create a instance associated with this client.
-        
+
         For example:
 
         .. literalinclude:: snippets.py
@@ -246,7 +246,7 @@ class Client(ClientWithProject):
 
     def list_instances(self):
         """List instances owned by the project.
-        
+
         For example:
 
         .. literalinclude:: snippets.py
