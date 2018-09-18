@@ -13,15 +13,22 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from google.api_core import exceptions
 from google.api_core import retry
 
 
 _RETRYABLE_REASONS = frozenset([
-    'backendError',
     'rateLimitExceeded',
+    'backendError',
     'internalError',
     'badGateway',
 ])
+
+_UNSTRUCTURED_RETRYABLE_TYPES = (
+    exceptions.TooManyRequests,
+    exceptions.InternalServerError,
+    exceptions.BadGateway,
+)
 
 
 def _should_retry(exc):
@@ -32,8 +39,11 @@ def _should_retry(exc):
     """
     if not hasattr(exc, 'errors'):
         return False
+
     if len(exc.errors) == 0:
-        return False
+        # Check for unstructured error returns, e.g. from GFE
+        return isinstance(exc, _UNSTRUCTURED_RETRYABLE_TYPES)
+
     reason = exc.errors[0]['reason']
     return reason in _RETRYABLE_REASONS
 
