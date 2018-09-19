@@ -127,6 +127,10 @@ class BigQueryCompiler(SQLCompiler):
         args[0].use_labels = True
         return super(BigQueryCompiler, self).visit_select(*args, **kwargs)
 
+    def visit_table(self, table, **kwargs):
+        table.schema = table.bind.url.database
+        return super(BigQueryCompiler, self).visit_table(table, **kwargs)
+
     def visit_column(self, column, add_to_result_map=None,
                      include_table=True, **kwargs):
 
@@ -206,12 +210,16 @@ class BigQueryDialect(DefaultDialect):
         self.credentials_path = credentials_path
         self.credentials_info = credentials_info
         self.location = location
+        self.dataset_id = None
 
     @classmethod
     def dbapi(cls):
         return dbapi
 
     def create_connect_args(self, url):
+        if url.database:
+            self.dataset_id = url.database
+
         if self.credentials_path:
             client = bigquery.Client.from_service_account_json(
                 self.credentials_path, location=self.location)
@@ -253,10 +261,17 @@ class BigQueryDialect(DefaultDialect):
         if isinstance(connection, Engine):
             connection = connection.connect()
 
-        project, dataset, table_name_prepared = self._split_table_name(table_name)
-        if dataset is None and schema is not None:
-            dataset = schema
+        table_name_prepared = dataset = project = None
+        if self.dataset_id:
             table_name_prepared = table_name
+            dataset = self.dataset_id
+            project = None
+
+        else:
+            project, dataset, table_name_prepared = self._split_table_name(table_name)
+            if dataset is None and schema is not None:
+                table_name_prepared = table_name
+                dataset = schema
 
         table = connection.connection._client.dataset(dataset, project=project).table(table_name_prepared)
         try:
