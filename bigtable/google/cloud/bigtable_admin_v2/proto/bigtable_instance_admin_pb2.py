@@ -27,7 +27,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='google/cloud/bigtable/admin_v2/proto/bigtable_instance_admin.proto',
   package='google.bigtable.admin.v2',
   syntax='proto3',
-  serialized_pb=_b('\nBgoogle/cloud/bigtable/admin_v2/proto/bigtable_instance_admin.proto\x12\x18google.bigtable.admin.v2\x1a\x1cgoogle/api/annotations.proto\x1a\x33google/cloud/bigtable/admin_v2/proto/instance.proto\x1a\x1egoogle/iam/v1/iam_policy.proto\x1a\x1agoogle/iam/v1/policy.proto\x1a#google/longrunning/operations.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a google/protobuf/field_mask.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\x97\x02\n\x15\x43reateInstanceRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x13\n\x0binstance_id\x18\x02 \x01(\t\x12\x34\n\x08instance\x18\x03 \x01(\x0b\x32\".google.bigtable.admin.v2.Instance\x12O\n\x08\x63lusters\x18\x04 \x03(\x0b\x32=.google.bigtable.admin.v2.CreateInstanceRequest.ClustersEntry\x1aR\n\rClustersEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\x30\n\x05value\x18\x02 \x01(\x0b\x32!.google.bigtable.admin.v2.Cluster:\x02\x38\x01\"\"\n\x12GetInstanceRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\":\n\x14ListInstancesRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x12\n\npage_token\x18\x02 \x01(\t\"\x81\x01\n\x15ListInstancesResponse\x12\x35\n\tinstances\x18\x01 \x03(\x0b\x32\".google.bigtable.admin.v2.Instance\x12\x18\n\x10\x66\x61iled_locations\x18\x02 \x03(\t\x12\x17\n\x0fnext_page_token\x18\x03 \x01(\t\"\x85\x01\n\x1cPartialUpdateInstanceRequest\x12\x34\n\x08instance\x18\x01 \x01(\x0b\x32\".google.bigtable.admin.v2.Instance\x12/\n\x0bupdate_mask\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.FieldMask\"%\n\x15\x44\x65leteInstanceRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"n\n\x14\x43reateClusterRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x12\n\ncluster_id\x18\x02 \x01(\t\x12\x32\n\x07\x63luster\x18\x03 \x01(\x0b\x32!.google.bigtable.admin.v2.Cluster\"!\n\x11GetClusterRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"9\n\x13ListClustersRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x12\n\npage_token\x18\x02 \x01(\t\"~\n\x14ListClustersResponse\x12\x33\n\x08\x63lusters\x18\x01 \x03(\x0b\x32!.google.bigtable.admin.v2.Cluster\x12\x18\n\x10\x66\x61iled_locations\x18\x02 \x03(\t\x12\x17\n\x0fnext_page_token\x18\x03 \x01(\t\"$\n\x14\x44\x65leteClusterRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"\xc6\x01\n\x16\x43reateInstanceMetadata\x12I\n\x10original_request\x18\x01 \x01(\x0b\x32/.google.bigtable.admin.v2.CreateInstanceRequest\x12\x30\n\x0crequest_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12/\n\x0b\x66inish_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\"\xcd\x01\n\x16UpdateInstanceMetadata\x12P\n\x10original_request\x18\x01 \x01(\x0b\x32\x36.google.bigtable.admin.v2.PartialUpdateInstanceRequest\x12\x30\n\x0crequest_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12/\n\x0b\x66inish_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\"\xc4\x01\n\x15\x43reateClusterMetadata\x12H\n\x10original_request\x18\x01 \x01(\x0b\x32..google.bigtable.admin.v2.CreateClusterRequest\x12\x30\n\x0crequest_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12/\n\x0b\x66inish_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\"\xb7\x01\n\x15UpdateClusterMetadata\x12;\n\x10original_request\x18\x01 \x01(\x0b\x32!.google.bigtable.admin.v2.Cluster\x12\x30\n\x0crequest_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12/\n\x0b\x66inish_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\"\x95\x01\n\x17\x43reateAppProfileRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x16\n\x0e\x61pp_profile_id\x18\x02 \x01(\t\x12\x39\n\x0b\x61pp_profile\x18\x03 \x01(\x0b\x32$.google.bigtable.admin.v2.AppProfile\x12\x17\n\x0fignore_warnings\x18\x04 \x01(\x08\"$\n\x14GetAppProfileRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"<\n\x16ListAppProfilesRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x12\n\npage_token\x18\x02 \x01(\t\"n\n\x17ListAppProfilesResponse\x12:\n\x0c\x61pp_profiles\x18\x01 \x03(\x0b\x32$.google.bigtable.admin.v2.AppProfile\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\"\x9e\x01\n\x17UpdateAppProfileRequest\x12\x39\n\x0b\x61pp_profile\x18\x01 \x01(\x0b\x32$.google.bigtable.admin.v2.AppProfile\x12/\n\x0bupdate_mask\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.FieldMask\x12\x17\n\x0fignore_warnings\x18\x03 \x01(\x08\"@\n\x17\x44\x65leteAppProfileRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x17\n\x0fignore_warnings\x18\x02 \x01(\x08\"\x1a\n\x18UpdateAppProfileMetadata2\xaa\x17\n\x15\x42igtableInstanceAdmin\x12\x8e\x01\n\x0e\x43reateInstance\x12/.google.bigtable.admin.v2.CreateInstanceRequest\x1a\x1d.google.longrunning.Operation\",\x82\xd3\xe4\x93\x02&\"!/v2/{parent=projects/*}/instances:\x01*\x12\x8a\x01\n\x0bGetInstance\x12,.google.bigtable.admin.v2.GetInstanceRequest\x1a\".google.bigtable.admin.v2.Instance\")\x82\xd3\xe4\x93\x02#\x12!/v2/{name=projects/*/instances/*}\x12\x9b\x01\n\rListInstances\x12..google.bigtable.admin.v2.ListInstancesRequest\x1a/.google.bigtable.admin.v2.ListInstancesResponse\")\x82\xd3\xe4\x93\x02#\x12!/v2/{parent=projects/*}/instances\x12\x86\x01\n\x0eUpdateInstance\x12\".google.bigtable.admin.v2.Instance\x1a\".google.bigtable.admin.v2.Instance\",\x82\xd3\xe4\x93\x02&\x1a!/v2/{name=projects/*/instances/*}:\x01*\x12\xac\x01\n\x15PartialUpdateInstance\x12\x36.google.bigtable.admin.v2.PartialUpdateInstanceRequest\x1a\x1d.google.longrunning.Operation\"<\x82\xd3\xe4\x93\x02\x36\x32*/v2/{instance.name=projects/*/instances/*}:\x08instance\x12\x84\x01\n\x0e\x44\x65leteInstance\x12/.google.bigtable.admin.v2.DeleteInstanceRequest\x1a\x16.google.protobuf.Empty\")\x82\xd3\xe4\x93\x02#*!/v2/{name=projects/*/instances/*}\x12\x9d\x01\n\rCreateCluster\x12..google.bigtable.admin.v2.CreateClusterRequest\x1a\x1d.google.longrunning.Operation\"=\x82\xd3\xe4\x93\x02\x37\",/v2/{parent=projects/*/instances/*}/clusters:\x07\x63luster\x12\x92\x01\n\nGetCluster\x12+.google.bigtable.admin.v2.GetClusterRequest\x1a!.google.bigtable.admin.v2.Cluster\"4\x82\xd3\xe4\x93\x02.\x12,/v2/{name=projects/*/instances/*/clusters/*}\x12\xa3\x01\n\x0cListClusters\x12-.google.bigtable.admin.v2.ListClustersRequest\x1a..google.bigtable.admin.v2.ListClustersResponse\"4\x82\xd3\xe4\x93\x02.\x12,/v2/{parent=projects/*/instances/*}/clusters\x12\x8a\x01\n\rUpdateCluster\x12!.google.bigtable.admin.v2.Cluster\x1a\x1d.google.longrunning.Operation\"7\x82\xd3\xe4\x93\x02\x31\x1a,/v2/{name=projects/*/instances/*/clusters/*}:\x01*\x12\x8d\x01\n\rDeleteCluster\x12..google.bigtable.admin.v2.DeleteClusterRequest\x1a\x16.google.protobuf.Empty\"4\x82\xd3\xe4\x93\x02.*,/v2/{name=projects/*/instances/*/clusters/*}\x12\xb1\x01\n\x10\x43reateAppProfile\x12\x31.google.bigtable.admin.v2.CreateAppProfileRequest\x1a$.google.bigtable.admin.v2.AppProfile\"D\x82\xd3\xe4\x93\x02>\"//v2/{parent=projects/*/instances/*}/appProfiles:\x0b\x61pp_profile\x12\x9e\x01\n\rGetAppProfile\x12..google.bigtable.admin.v2.GetAppProfileRequest\x1a$.google.bigtable.admin.v2.AppProfile\"7\x82\xd3\xe4\x93\x02\x31\x12//v2/{name=projects/*/instances/*/appProfiles/*}\x12\xaf\x01\n\x0fListAppProfiles\x12\x30.google.bigtable.admin.v2.ListAppProfilesRequest\x1a\x31.google.bigtable.admin.v2.ListAppProfilesResponse\"7\x82\xd3\xe4\x93\x02\x31\x12//v2/{parent=projects/*/instances/*}/appProfiles\x12\xb6\x01\n\x10UpdateAppProfile\x12\x31.google.bigtable.admin.v2.UpdateAppProfileRequest\x1a\x1d.google.longrunning.Operation\"P\x82\xd3\xe4\x93\x02J2;/v2/{app_profile.name=projects/*/instances/*/appProfiles/*}:\x0b\x61pp_profile\x12\x96\x01\n\x10\x44\x65leteAppProfile\x12\x31.google.bigtable.admin.v2.DeleteAppProfileRequest\x1a\x16.google.protobuf.Empty\"7\x82\xd3\xe4\x93\x02\x31*//v2/{name=projects/*/instances/*/appProfiles/*}\x12\x88\x01\n\x0cGetIamPolicy\x12\".google.iam.v1.GetIamPolicyRequest\x1a\x15.google.iam.v1.Policy\"=\x82\xd3\xe4\x93\x02\x37\"2/v2/{resource=projects/*/instances/*}:getIamPolicy:\x01*\x12\x88\x01\n\x0cSetIamPolicy\x12\".google.iam.v1.SetIamPolicyRequest\x1a\x15.google.iam.v1.Policy\"=\x82\xd3\xe4\x93\x02\x37\"2/v2/{resource=projects/*/instances/*}:setIamPolicy:\x01*\x12\xae\x01\n\x12TestIamPermissions\x12(.google.iam.v1.TestIamPermissionsRequest\x1a).google.iam.v1.TestIamPermissionsResponse\"C\x82\xd3\xe4\x93\x02=\"8/v2/{resource=projects/*/instances/*}:testIamPermissions:\x01*B\xbd\x01\n\x1c\x63om.google.bigtable.admin.v2B\x1a\x42igtableInstanceAdminProtoP\x01Z=google.golang.org/genproto/googleapis/bigtable/admin/v2;admin\xaa\x02\x1eGoogle.Cloud.Bigtable.Admin.V2\xca\x02\x1eGoogle\\Cloud\\Bigtable\\Admin\\V2b\x06proto3')
+  serialized_pb=_b('\nBgoogle/cloud/bigtable/admin_v2/proto/bigtable_instance_admin.proto\x12\x18google.bigtable.admin.v2\x1a\x1cgoogle/api/annotations.proto\x1a\x33google/cloud/bigtable/admin_v2/proto/instance.proto\x1a\x1egoogle/iam/v1/iam_policy.proto\x1a\x1agoogle/iam/v1/policy.proto\x1a#google/longrunning/operations.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a google/protobuf/field_mask.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\x97\x02\n\x15\x43reateInstanceRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x13\n\x0binstance_id\x18\x02 \x01(\t\x12\x34\n\x08instance\x18\x03 \x01(\x0b\x32\".google.bigtable.admin.v2.Instance\x12O\n\x08\x63lusters\x18\x04 \x03(\x0b\x32=.google.bigtable.admin.v2.CreateInstanceRequest.ClustersEntry\x1aR\n\rClustersEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\x30\n\x05value\x18\x02 \x01(\x0b\x32!.google.bigtable.admin.v2.Cluster:\x02\x38\x01\"\"\n\x12GetInstanceRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\":\n\x14ListInstancesRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x12\n\npage_token\x18\x02 \x01(\t\"\x81\x01\n\x15ListInstancesResponse\x12\x35\n\tinstances\x18\x01 \x03(\x0b\x32\".google.bigtable.admin.v2.Instance\x12\x18\n\x10\x66\x61iled_locations\x18\x02 \x03(\t\x12\x17\n\x0fnext_page_token\x18\x03 \x01(\t\"\x85\x01\n\x1cPartialUpdateInstanceRequest\x12\x34\n\x08instance\x18\x01 \x01(\x0b\x32\".google.bigtable.admin.v2.Instance\x12/\n\x0bupdate_mask\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.FieldMask\"%\n\x15\x44\x65leteInstanceRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"n\n\x14\x43reateClusterRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x12\n\ncluster_id\x18\x02 \x01(\t\x12\x32\n\x07\x63luster\x18\x03 \x01(\x0b\x32!.google.bigtable.admin.v2.Cluster\"!\n\x11GetClusterRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"9\n\x13ListClustersRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x12\n\npage_token\x18\x02 \x01(\t\"~\n\x14ListClustersResponse\x12\x33\n\x08\x63lusters\x18\x01 \x03(\x0b\x32!.google.bigtable.admin.v2.Cluster\x12\x18\n\x10\x66\x61iled_locations\x18\x02 \x03(\t\x12\x17\n\x0fnext_page_token\x18\x03 \x01(\t\"$\n\x14\x44\x65leteClusterRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"\xc6\x01\n\x16\x43reateInstanceMetadata\x12I\n\x10original_request\x18\x01 \x01(\x0b\x32/.google.bigtable.admin.v2.CreateInstanceRequest\x12\x30\n\x0crequest_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12/\n\x0b\x66inish_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\"\xcd\x01\n\x16UpdateInstanceMetadata\x12P\n\x10original_request\x18\x01 \x01(\x0b\x32\x36.google.bigtable.admin.v2.PartialUpdateInstanceRequest\x12\x30\n\x0crequest_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12/\n\x0b\x66inish_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\"\xc4\x01\n\x15\x43reateClusterMetadata\x12H\n\x10original_request\x18\x01 \x01(\x0b\x32..google.bigtable.admin.v2.CreateClusterRequest\x12\x30\n\x0crequest_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12/\n\x0b\x66inish_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\"\xb7\x01\n\x15UpdateClusterMetadata\x12;\n\x10original_request\x18\x01 \x01(\x0b\x32!.google.bigtable.admin.v2.Cluster\x12\x30\n\x0crequest_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12/\n\x0b\x66inish_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\"\x95\x01\n\x17\x43reateAppProfileRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x16\n\x0e\x61pp_profile_id\x18\x02 \x01(\t\x12\x39\n\x0b\x61pp_profile\x18\x03 \x01(\x0b\x32$.google.bigtable.admin.v2.AppProfile\x12\x17\n\x0fignore_warnings\x18\x04 \x01(\x08\"$\n\x14GetAppProfileRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"O\n\x16ListAppProfilesRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05\x12\x12\n\npage_token\x18\x02 \x01(\t\"\x88\x01\n\x17ListAppProfilesResponse\x12:\n\x0c\x61pp_profiles\x18\x01 \x03(\x0b\x32$.google.bigtable.admin.v2.AppProfile\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\x12\x18\n\x10\x66\x61iled_locations\x18\x03 \x03(\t\"\x9e\x01\n\x17UpdateAppProfileRequest\x12\x39\n\x0b\x61pp_profile\x18\x01 \x01(\x0b\x32$.google.bigtable.admin.v2.AppProfile\x12/\n\x0bupdate_mask\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.FieldMask\x12\x17\n\x0fignore_warnings\x18\x03 \x01(\x08\"@\n\x17\x44\x65leteAppProfileRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x17\n\x0fignore_warnings\x18\x02 \x01(\x08\"\x1a\n\x18UpdateAppProfileMetadata2\xaa\x17\n\x15\x42igtableInstanceAdmin\x12\x8e\x01\n\x0e\x43reateInstance\x12/.google.bigtable.admin.v2.CreateInstanceRequest\x1a\x1d.google.longrunning.Operation\",\x82\xd3\xe4\x93\x02&\"!/v2/{parent=projects/*}/instances:\x01*\x12\x8a\x01\n\x0bGetInstance\x12,.google.bigtable.admin.v2.GetInstanceRequest\x1a\".google.bigtable.admin.v2.Instance\")\x82\xd3\xe4\x93\x02#\x12!/v2/{name=projects/*/instances/*}\x12\x9b\x01\n\rListInstances\x12..google.bigtable.admin.v2.ListInstancesRequest\x1a/.google.bigtable.admin.v2.ListInstancesResponse\")\x82\xd3\xe4\x93\x02#\x12!/v2/{parent=projects/*}/instances\x12\x86\x01\n\x0eUpdateInstance\x12\".google.bigtable.admin.v2.Instance\x1a\".google.bigtable.admin.v2.Instance\",\x82\xd3\xe4\x93\x02&\x1a!/v2/{name=projects/*/instances/*}:\x01*\x12\xac\x01\n\x15PartialUpdateInstance\x12\x36.google.bigtable.admin.v2.PartialUpdateInstanceRequest\x1a\x1d.google.longrunning.Operation\"<\x82\xd3\xe4\x93\x02\x36\x32*/v2/{instance.name=projects/*/instances/*}:\x08instance\x12\x84\x01\n\x0e\x44\x65leteInstance\x12/.google.bigtable.admin.v2.DeleteInstanceRequest\x1a\x16.google.protobuf.Empty\")\x82\xd3\xe4\x93\x02#*!/v2/{name=projects/*/instances/*}\x12\x9d\x01\n\rCreateCluster\x12..google.bigtable.admin.v2.CreateClusterRequest\x1a\x1d.google.longrunning.Operation\"=\x82\xd3\xe4\x93\x02\x37\",/v2/{parent=projects/*/instances/*}/clusters:\x07\x63luster\x12\x92\x01\n\nGetCluster\x12+.google.bigtable.admin.v2.GetClusterRequest\x1a!.google.bigtable.admin.v2.Cluster\"4\x82\xd3\xe4\x93\x02.\x12,/v2/{name=projects/*/instances/*/clusters/*}\x12\xa3\x01\n\x0cListClusters\x12-.google.bigtable.admin.v2.ListClustersRequest\x1a..google.bigtable.admin.v2.ListClustersResponse\"4\x82\xd3\xe4\x93\x02.\x12,/v2/{parent=projects/*/instances/*}/clusters\x12\x8a\x01\n\rUpdateCluster\x12!.google.bigtable.admin.v2.Cluster\x1a\x1d.google.longrunning.Operation\"7\x82\xd3\xe4\x93\x02\x31\x1a,/v2/{name=projects/*/instances/*/clusters/*}:\x01*\x12\x8d\x01\n\rDeleteCluster\x12..google.bigtable.admin.v2.DeleteClusterRequest\x1a\x16.google.protobuf.Empty\"4\x82\xd3\xe4\x93\x02.*,/v2/{name=projects/*/instances/*/clusters/*}\x12\xb1\x01\n\x10\x43reateAppProfile\x12\x31.google.bigtable.admin.v2.CreateAppProfileRequest\x1a$.google.bigtable.admin.v2.AppProfile\"D\x82\xd3\xe4\x93\x02>\"//v2/{parent=projects/*/instances/*}/appProfiles:\x0b\x61pp_profile\x12\x9e\x01\n\rGetAppProfile\x12..google.bigtable.admin.v2.GetAppProfileRequest\x1a$.google.bigtable.admin.v2.AppProfile\"7\x82\xd3\xe4\x93\x02\x31\x12//v2/{name=projects/*/instances/*/appProfiles/*}\x12\xaf\x01\n\x0fListAppProfiles\x12\x30.google.bigtable.admin.v2.ListAppProfilesRequest\x1a\x31.google.bigtable.admin.v2.ListAppProfilesResponse\"7\x82\xd3\xe4\x93\x02\x31\x12//v2/{parent=projects/*/instances/*}/appProfiles\x12\xb6\x01\n\x10UpdateAppProfile\x12\x31.google.bigtable.admin.v2.UpdateAppProfileRequest\x1a\x1d.google.longrunning.Operation\"P\x82\xd3\xe4\x93\x02J2;/v2/{app_profile.name=projects/*/instances/*/appProfiles/*}:\x0b\x61pp_profile\x12\x96\x01\n\x10\x44\x65leteAppProfile\x12\x31.google.bigtable.admin.v2.DeleteAppProfileRequest\x1a\x16.google.protobuf.Empty\"7\x82\xd3\xe4\x93\x02\x31*//v2/{name=projects/*/instances/*/appProfiles/*}\x12\x88\x01\n\x0cGetIamPolicy\x12\".google.iam.v1.GetIamPolicyRequest\x1a\x15.google.iam.v1.Policy\"=\x82\xd3\xe4\x93\x02\x37\"2/v2/{resource=projects/*/instances/*}:getIamPolicy:\x01*\x12\x88\x01\n\x0cSetIamPolicy\x12\".google.iam.v1.SetIamPolicyRequest\x1a\x15.google.iam.v1.Policy\"=\x82\xd3\xe4\x93\x02\x37\"2/v2/{resource=projects/*/instances/*}:setIamPolicy:\x01*\x12\xae\x01\n\x12TestIamPermissions\x12(.google.iam.v1.TestIamPermissionsRequest\x1a).google.iam.v1.TestIamPermissionsResponse\"C\x82\xd3\xe4\x93\x02=\"8/v2/{resource=projects/*/instances/*}:testIamPermissions:\x01*B\xbd\x01\n\x1c\x63om.google.bigtable.admin.v2B\x1a\x42igtableInstanceAdminProtoP\x01Z=google.golang.org/genproto/googleapis/bigtable/admin/v2;admin\xaa\x02\x1eGoogle.Cloud.Bigtable.Admin.V2\xca\x02\x1eGoogle\\Cloud\\Bigtable\\Admin\\V2b\x06proto3')
   ,
   dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR,google_dot_cloud_dot_bigtable_dot_admin__v2_dot_proto_dot_instance__pb2.DESCRIPTOR,google_dot_iam_dot_v1_dot_iam__policy__pb2.DESCRIPTOR,google_dot_iam_dot_v1_dot_policy__pb2.DESCRIPTOR,google_dot_longrunning_dot_operations__pb2.DESCRIPTOR,google_dot_protobuf_dot_empty__pb2.DESCRIPTOR,google_dot_protobuf_dot_field__mask__pb2.DESCRIPTOR,google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,])
 
@@ -774,7 +774,14 @@ _LISTAPPPROFILESREQUEST = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='page_token', full_name='google.bigtable.admin.v2.ListAppProfilesRequest.page_token', index=1,
+      name='page_size', full_name='google.bigtable.admin.v2.ListAppProfilesRequest.page_size', index=1,
+      number=3, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='page_token', full_name='google.bigtable.admin.v2.ListAppProfilesRequest.page_token', index=2,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
@@ -793,7 +800,7 @@ _LISTAPPPROFILESREQUEST = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=2413,
-  serialized_end=2473,
+  serialized_end=2492,
 )
 
 
@@ -818,6 +825,13 @@ _LISTAPPPROFILESRESPONSE = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='failed_locations', full_name='google.bigtable.admin.v2.ListAppProfilesResponse.failed_locations', index=2,
+      number=3, type=9, cpp_type=9, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -830,8 +844,8 @@ _LISTAPPPROFILESRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2475,
-  serialized_end=2585,
+  serialized_start=2495,
+  serialized_end=2631,
 )
 
 
@@ -875,8 +889,8 @@ _UPDATEAPPPROFILEREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2588,
-  serialized_end=2746,
+  serialized_start=2634,
+  serialized_end=2792,
 )
 
 
@@ -913,8 +927,8 @@ _DELETEAPPPROFILEREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2748,
-  serialized_end=2812,
+  serialized_start=2794,
+  serialized_end=2858,
 )
 
 
@@ -937,8 +951,8 @@ _UPDATEAPPPROFILEMETADATA = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2814,
-  serialized_end=2840,
+  serialized_start=2860,
+  serialized_end=2886,
 )
 
 _CREATEINSTANCEREQUEST_CLUSTERSENTRY.fields_by_name['value'].message_type = google_dot_cloud_dot_bigtable_dot_admin__v2_dot_proto_dot_instance__pb2._CLUSTER
@@ -1019,8 +1033,8 @@ CreateInstanceRequest = _reflection.GeneratedProtocolMessageType('CreateInstance
           The clusters to be created within the instance, mapped by
           desired cluster ID, e.g., just ``mycluster`` rather than ``pro
           jects/myproject/instances/myinstance/clusters/mycluster``.
-          Fields marked ``OutputOnly`` must be left blank. Currently
-          exactly one cluster must be specified.
+          Fields marked ``OutputOnly`` must be left blank. Currently, at
+          most two clusters can be specified.
   """,
   # @@protoc_insertion_point(class_scope:google.bigtable.admin.v2.CreateInstanceRequest)
   ))
@@ -1055,7 +1069,7 @@ ListInstancesRequest = _reflection.GeneratedProtocolMessageType('ListInstancesRe
           The unique name of the project for which a list of instances
           is requested. Values are of the form ``projects/<project>``.
       page_token:
-          The value of ``next_page_token`` returned by a previous call.
+          DEPRECATED: This field is unused and ignored.
   """,
   # @@protoc_insertion_point(class_scope:google.bigtable.admin.v2.ListInstancesRequest)
   ))
@@ -1077,11 +1091,10 @@ ListInstancesResponse = _reflection.GeneratedProtocolMessageType('ListInstancesR
           Instances whose Clusters are all in one of the failed
           locations may be missing from ``instances``, and Instances
           with at least one Cluster in a failed location may only have
-          partial information returned.
+          partial information returned. Values are of the form
+          ``projects/<project>/locations/<zone_id>``
       next_page_token:
-          Set if not all instances could be returned in a single
-          response. Pass this value to ``page_token`` in another request
-          to get the next page of results.
+          DEPRECATED: This field is unused and ignored.
   """,
   # @@protoc_insertion_point(class_scope:google.bigtable.admin.v2.ListInstancesResponse)
   ))
@@ -1177,7 +1190,7 @@ ListClustersRequest = _reflection.GeneratedProtocolMessageType('ListClustersRequ
           = '-'`` to list Clusters for all Instances in a project, e.g.,
           ``projects/myproject/instances/-``.
       page_token:
-          The value of ``next_page_token`` returned by a previous call.
+          DEPRECATED: This field is unused and ignored.
   """,
   # @@protoc_insertion_point(class_scope:google.bigtable.admin.v2.ListClustersRequest)
   ))
@@ -1198,10 +1211,10 @@ ListClustersResponse = _reflection.GeneratedProtocolMessageType('ListClustersRes
           retrieved, due to an outage or some other transient condition.
           Clusters from these locations may be missing from
           ``clusters``, or may only have partial information returned.
+          Values are of the form
+          ``projects/<project>/locations/<zone_id>``
       next_page_token:
-          Set if not all clusters could be returned in a single
-          response. Pass this value to ``page_token`` in another request
-          to get the next page of results.
+          DEPRECATED: This field is unused and ignored.
   """,
   # @@protoc_insertion_point(class_scope:google.bigtable.admin.v2.ListClustersResponse)
   ))
@@ -1312,13 +1325,7 @@ CreateAppProfileRequest = _reflection.GeneratedProtocolMessageType('CreateAppPro
   DESCRIPTOR = _CREATEAPPPROFILEREQUEST,
   __module__ = 'google.cloud.bigtable.admin_v2.proto.bigtable_instance_admin_pb2'
   ,
-  __doc__ = """This is a private alpha release of Cloud Bigtable replication. This
-  feature is not currently available to most Cloud Bigtable customers.
-  This feature might be changed in backward-incompatible ways and is not
-  recommended for production use. It is not subject to any SLA or
-  deprecation policy.
-  
-  Request message for BigtableInstanceAdmin.CreateAppProfile.
+  __doc__ = """Request message for BigtableInstanceAdmin.CreateAppProfile.
   
   
   Attributes:
@@ -1344,13 +1351,7 @@ GetAppProfileRequest = _reflection.GeneratedProtocolMessageType('GetAppProfileRe
   DESCRIPTOR = _GETAPPPROFILEREQUEST,
   __module__ = 'google.cloud.bigtable.admin_v2.proto.bigtable_instance_admin_pb2'
   ,
-  __doc__ = """This is a private alpha release of Cloud Bigtable replication. This
-  feature is not currently available to most Cloud Bigtable customers.
-  This feature might be changed in backward-incompatible ways and is not
-  recommended for production use. It is not subject to any SLA or
-  deprecation policy.
-  
-  Request message for BigtableInstanceAdmin.GetAppProfile.
+  __doc__ = """Request message for BigtableInstanceAdmin.GetAppProfile.
   
   
   Attributes:
@@ -1367,20 +1368,19 @@ ListAppProfilesRequest = _reflection.GeneratedProtocolMessageType('ListAppProfil
   DESCRIPTOR = _LISTAPPPROFILESREQUEST,
   __module__ = 'google.cloud.bigtable.admin_v2.proto.bigtable_instance_admin_pb2'
   ,
-  __doc__ = """This is a private alpha release of Cloud Bigtable replication. This
-  feature is not currently available to most Cloud Bigtable customers.
-  This feature might be changed in backward-incompatible ways and is not
-  recommended for production use. It is not subject to any SLA or
-  deprecation policy.
-  
-  Request message for BigtableInstanceAdmin.ListAppProfiles.
+  __doc__ = """Request message for BigtableInstanceAdmin.ListAppProfiles.
   
   
   Attributes:
       parent:
           The unique name of the instance for which a list of app
           profiles is requested. Values are of the form
-          ``projects/<project>/instances/<instance>``.
+          ``projects/<project>/instances/<instance>``. Use ``<instance>
+          = '-'`` to list AppProfiles for all Instances in a project,
+          e.g., ``projects/myproject/instances/-``.
+      page_size:
+          Maximum number of results per page. CURRENTLY UNIMPLEMENTED
+          AND IGNORED.
       page_token:
           The value of ``next_page_token`` returned by a previous call.
   """,
@@ -1392,13 +1392,7 @@ ListAppProfilesResponse = _reflection.GeneratedProtocolMessageType('ListAppProfi
   DESCRIPTOR = _LISTAPPPROFILESRESPONSE,
   __module__ = 'google.cloud.bigtable.admin_v2.proto.bigtable_instance_admin_pb2'
   ,
-  __doc__ = """This is a private alpha release of Cloud Bigtable replication. This
-  feature is not currently available to most Cloud Bigtable customers.
-  This feature might be changed in backward-incompatible ways and is not
-  recommended for production use. It is not subject to any SLA or
-  deprecation policy.
-  
-  Response message for BigtableInstanceAdmin.ListAppProfiles.
+  __doc__ = """Response message for BigtableInstanceAdmin.ListAppProfiles.
   
   
   Attributes:
@@ -1408,6 +1402,12 @@ ListAppProfilesResponse = _reflection.GeneratedProtocolMessageType('ListAppProfi
           Set if not all app profiles could be returned in a single
           response. Pass this value to ``page_token`` in another request
           to get the next page of results.
+      failed_locations:
+          Locations from which AppProfile information could not be
+          retrieved, due to an outage or some other transient condition.
+          AppProfiles from these locations may be missing from
+          ``app_profiles``. Values are of the form
+          ``projects/<project>/locations/<zone_id>``
   """,
   # @@protoc_insertion_point(class_scope:google.bigtable.admin.v2.ListAppProfilesResponse)
   ))
@@ -1417,13 +1417,7 @@ UpdateAppProfileRequest = _reflection.GeneratedProtocolMessageType('UpdateAppPro
   DESCRIPTOR = _UPDATEAPPPROFILEREQUEST,
   __module__ = 'google.cloud.bigtable.admin_v2.proto.bigtable_instance_admin_pb2'
   ,
-  __doc__ = """This is a private alpha release of Cloud Bigtable replication. This
-  feature is not currently available to most Cloud Bigtable customers.
-  This feature might be changed in backward-incompatible ways and is not
-  recommended for production use. It is not subject to any SLA or
-  deprecation policy.
-  
-  Request message for BigtableInstanceAdmin.UpdateAppProfile.
+  __doc__ = """Request message for BigtableInstanceAdmin.UpdateAppProfile.
   
   
   Attributes:
@@ -1444,13 +1438,7 @@ DeleteAppProfileRequest = _reflection.GeneratedProtocolMessageType('DeleteAppPro
   DESCRIPTOR = _DELETEAPPPROFILEREQUEST,
   __module__ = 'google.cloud.bigtable.admin_v2.proto.bigtable_instance_admin_pb2'
   ,
-  __doc__ = """This is a private alpha release of Cloud Bigtable replication. This
-  feature is not currently available to most Cloud Bigtable customers.
-  This feature might be changed in backward-incompatible ways and is not
-  recommended for production use. It is not subject to any SLA or
-  deprecation policy.
-  
-  Request message for BigtableInstanceAdmin.DeleteAppProfile.
+  __doc__ = """Request message for BigtableInstanceAdmin.DeleteAppProfile.
   
   
   Attributes:
@@ -1469,13 +1457,7 @@ UpdateAppProfileMetadata = _reflection.GeneratedProtocolMessageType('UpdateAppPr
   DESCRIPTOR = _UPDATEAPPPROFILEMETADATA,
   __module__ = 'google.cloud.bigtable.admin_v2.proto.bigtable_instance_admin_pb2'
   ,
-  __doc__ = """This is a private alpha release of Cloud Bigtable replication. This
-  feature is not currently available to most Cloud Bigtable customers.
-  This feature might be changed in backward-incompatible ways and is not
-  recommended for production use. It is not subject to any SLA or
-  deprecation policy.
-  
-  The metadata for the Operation returned by UpdateAppProfile.
+  __doc__ = """The metadata for the Operation returned by UpdateAppProfile.
   """,
   # @@protoc_insertion_point(class_scope:google.bigtable.admin.v2.UpdateAppProfileMetadata)
   ))
@@ -1493,8 +1475,8 @@ _BIGTABLEINSTANCEADMIN = _descriptor.ServiceDescriptor(
   file=DESCRIPTOR,
   index=0,
   options=None,
-  serialized_start=2843,
-  serialized_end=5829,
+  serialized_start=2889,
+  serialized_end=5875,
   methods=[
   _descriptor.MethodDescriptor(
     name='CreateInstance',

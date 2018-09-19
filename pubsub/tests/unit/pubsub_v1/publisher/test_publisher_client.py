@@ -31,7 +31,7 @@ def test_init():
     # A plain client should have an `api` (the underlying GAPIC) and a
     # batch settings object, which should have the defaults.
     assert isinstance(client.api, publisher_client.PublisherClient)
-    assert client.batch_settings.max_bytes == 10 * (2 ** 20)
+    assert client.batch_settings.max_bytes == 10 * 1000 * 1000
     assert client.batch_settings.max_latency == 0.05
     assert client.batch_settings.max_messages == 1000
 
@@ -46,7 +46,7 @@ def test_init_emulator(monkeypatch):
     #
     # Sadly, there seems to be no good way to do this without poking at
     # the private API of gRPC.
-    channel = client.api.publisher_stub.Publish._channel
+    channel = client.api.transport.publish._channel
     assert channel.target().decode('utf8') == '/foo/bar/'
 
 
@@ -216,7 +216,12 @@ def test_gapic_instance_method():
     assert args[0] == types.Topic(name='projects/foo/topics/bar')
 
 
-def test_gapic_class_method():
+def test_gapic_class_method_on_class():
+    answer = publisher.Client.topic_path('foo', 'bar')
+    assert answer == 'projects/foo/topics/bar'
+
+
+def test_gapic_class_method_on_instance():
     creds = mock.Mock(spec=credentials.Credentials)
     client = publisher.Client(credentials=creds)
     answer = client.topic_path('foo', 'bar')

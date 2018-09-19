@@ -19,12 +19,15 @@ import re
 
 from google.cloud.bigtable.table import Table
 from google.cloud.bigtable.cluster import Cluster
+from google.cloud.bigtable.app_profile import AppProfile
 
 from google.protobuf import field_mask_pb2
 
 from google.cloud.bigtable_admin_v2.types import instance_pb2
 
-from google.cloud.bigtable.enums import RoutingPolicyType
+from google.api_core.exceptions import NotFound
+
+from google.cloud.bigtable.policy import Policy
 
 
 _EXISTING_INSTANCE_LOCATION_ID = 'see-existing-cluster'
@@ -191,6 +194,19 @@ class Instance(object):
         # NOTE: _update_from_pb does not check that the project and
         #       instance ID on the response match the request.
         self._update_from_pb(instance_pb)
+
+    def exists(self):
+        """Check whether the instance already exists.
+
+        :rtype: bool
+        :returns: True if the table exists, else False.
+        """
+        try:
+            self._client.instance_admin_client.get_instance(name=self.name)
+            return True
+        # NOTE: There could be other exceptions that are returned to the user.
+        except NotFound:
+            return False
 
     def create(self, location_id=None,
                serve_nodes=None,
@@ -417,13 +433,15 @@ class Instance(object):
 
         return result
 
-    def create_app_profile(self, app_profile_id, routing_policy_type,
-                           description=None, ignore_warnings=None,
-                           cluster_id=None, allow_transactional_writes=False):
-        """Creates an app profile within an instance.
+    def app_profile(self, app_profile_id,
+                    routing_policy_type=None,
+                    description=None, cluster_id=None,
+                    allow_transactional_writes=None):
+        """Factory to create AppProfile associated with this instance.
 
-        :type: app_profile_id: str
-        :param app_profile_id: The unique name for the new app profile.
+        :type app_profile_id: str
+        :param app_profile_id: The ID of the AppProfile. Must be of the form
+                               ``[_a-zA-Z0-9][-_.a-zA-Z0-9]*``.
 
         :type: routing_policy_type: int
         :param: routing_policy_type: The type of the routing policy.
@@ -434,11 +452,7 @@ class Instance(object):
 
         :type: description: str
         :param: description: (Optional) Long form description of the use
-                                case for this AppProfile.
-
-        :type: ignore_warnings: bool
-        :param: ignore_warnings: (Optional) If true, ignore safety checks when
-                                    creating the app profile.
+                             case for this AppProfile.
 
         :type: cluster_id: str
         :param: cluster_id: (Optional) Unique cluster_id which is only required
@@ -450,160 +464,122 @@ class Instance(object):
                                             transactional writes for
                                             ROUTING_POLICY_TYPE_SINGLE.
 
-        :rtype: :class:`~google.cloud.bigtable_admin_v2.types.AppProfile`
-        :return: The AppProfile instance.
-        :raises: :class:`ValueError <exceptions.ValueError>` If routing
-                policy is not set.
+        :rtype: :class:`~google.cloud.bigtable.app_profile.AppProfile>`
+        :returns: AppProfile for this instance.
         """
-        if not routing_policy_type:
-            raise ValueError('AppProfile required routing policy.')
-
-        single_cluster_routing = None
-        multi_cluster_routing_use_any = None
-        instance_admin_client = self._client._instance_admin_client
-        name = instance_admin_client.app_profile_path(
-            self._client.project, self.instance_id, app_profile_id)
-
-        if routing_policy_type == RoutingPolicyType.ANY:
-            multi_cluster_routing_use_any = (
-                instance_pb2.AppProfile.MultiClusterRoutingUseAny())
-
-        if routing_policy_type == RoutingPolicyType.SINGLE:
-            single_cluster_routing = (
-                instance_pb2.AppProfile.SingleClusterRouting(
-                    cluster_id=cluster_id,
-                    allow_transactional_writes=allow_transactional_writes
-                ))
-
-        app_profile = instance_pb2.AppProfile(
-            name=name, description=description,
-            multi_cluster_routing_use_any=multi_cluster_routing_use_any,
-            single_cluster_routing=single_cluster_routing
-        )
-
-        return self._client._instance_admin_client.create_app_profile(
-            parent=self.name, app_profile_id=app_profile_id,
-            app_profile=app_profile, ignore_warnings=ignore_warnings)
-
-    def get_app_profile(self, app_profile_id):
-        """Gets information about an app profile.
-
-        :type: app_profile_id: str
-        :param app_profile_id: The unique name for the app profile.
-
-        :rtype: :class:`~google.cloud.bigtable_admin_v2.types.AppProfile`
-        :return: The AppProfile instance.
-        """
-        instance_admin_client = self._client._instance_admin_client
-        name = instance_admin_client.app_profile_path(
-            self._client.project, self.instance_id, app_profile_id)
-        return self._client._instance_admin_client.get_app_profile(name)
+        return AppProfile(
+            app_profile_id, self, routing_policy_type=routing_policy_type,
+            description=description, cluster_id=cluster_id,
+            allow_transactional_writes=allow_transactional_writes)
 
     def list_app_profiles(self):
-        """Lists information about app profiles in an instance.
+        """Lists information about AppProfiles in an instance.
 
-        :rtype: :list:[`~google.cloud.bigtable_admin_v2.types.AppProfile`]
-        :return: A :list:[`~google.cloud.bigtable_admin_v2.types.AppProfile`].
-                By default, this is a list of
-                :class:`~google.cloud.bigtable_admin_v2.types.AppProfile`
-                instances.
+        :rtype: :list:[`~google.cloud.bigtable.app_profile.AppProfile`]
+        :returns: A :list:[`~google.cloud.bigtable.app_profile.AppProfile`].
+                  By default, this is a list of
+                  :class:`~google.cloud.bigtable.app_profile.AppProfile`
+                  instances.
         """
-        list_app_profiles = list(
-            self._client._instance_admin_client.list_app_profiles(self.name))
-        return list_app_profiles
+        resp = self._client._instance_admin_client.list_app_profiles(self.name)
+        return [AppProfile.from_pb(app_profile, self) for app_profile in resp]
 
-    def update_app_profile(self, app_profile_id,
-                           routing_policy_type, description=None,
-                           ignore_warnings=None,
-                           cluster_id=None,
-                           allow_transactional_writes=False):
-        """Updates an app profile within an instance.
+    def get_iam_policy(self):
+        """Gets the access control policy for an instance resource.
 
-        :type: app_profile_id: str
-        :param app_profile_id: The unique name for the new app profile.
+        .. code-block:: python
 
-        :type: update_mask: list
-        :param: update_mask: Name of the parameters of AppProfiles that
-                                needed to update.
+            from google.cloud.bigtable.client import Client
+            from google.cloud.bigtable.policy import Policy
 
-        :type: routing_policy_type: int
-        :param: routing_policy_type: The type of the routing policy.
-                                     Possible values are represented
-                                     by the following constants:
-                                     :data:`google.cloud.bigtable.enums.RoutingPolicyType.ANY`
-                                     :data:`google.cloud.bigtable.enums.RoutingPolicyType.SINGLE`
+            client = Client(admin=True)
+            instance = client.instance('[INSTANCE_ID]')
+            policy_latest = instance.get_iam_policy()
+            print (policy_latest.bigtable_viewers)
 
-        :type: description: str
-        :param: description: (Optional) Optional long form description of the
-                                use case for this AppProfile.
-
-        :type: ignore_warnings: bool
-        :param: ignore_warnings: (Optional) If true, ignore safety checks when
-                                    creating the app profile.
-
-        :type: cluster_id: str
-        :param: cluster_id: (Optional) Unique cluster_id which is only required
-                            when routing_policy_type is
-                            ROUTING_POLICY_TYPE_SINGLE.
-
-        :type: allow_transactional_writes: bool
-        :param: allow_transactional_writes: (Optional) If true, allow
-                                            transactional writes for
-                                            ROUTING_POLICY_TYPE_SINGLE.
-
-        :rtype: :class:`~google.cloud.bigtable_admin_v2.types.AppProfile`
-        :return: The AppProfile instance.
-        :raises: :class:`ValueError <exceptions.ValueError>` If routing
-                policy is not set.
-        """
-        if not routing_policy_type:
-            raise ValueError('AppProfile required routing policy.')
-
-        update_mask_pb = field_mask_pb2.FieldMask()
-        single_cluster_routing = None
-        multi_cluster_routing_use_any = None
-        instance_admin_client = self._client._instance_admin_client
-        name = instance_admin_client.app_profile_path(
-            self._client.project, self.instance_id, app_profile_id)
-
-        if description is not None:
-            update_mask_pb.paths.append('description')
-
-        if routing_policy_type == RoutingPolicyType.ANY:
-            multi_cluster_routing_use_any = (
-                instance_pb2.AppProfile.MultiClusterRoutingUseAny())
-            update_mask_pb.paths.append('multi_cluster_routing_use_any')
-
-        if routing_policy_type == RoutingPolicyType.SINGLE:
-            single_cluster_routing = (
-                instance_pb2.AppProfile.SingleClusterRouting(
-                    cluster_id=cluster_id,
-                    allow_transactional_writes=allow_transactional_writes
-                ))
-            update_mask_pb.paths.append('single_cluster_routing')
-
-        update_app_profile_pb = instance_pb2.AppProfile(
-            name=name, description=description,
-            multi_cluster_routing_use_any=multi_cluster_routing_use_any,
-            single_cluster_routing=single_cluster_routing
-        )
-        return self._client._instance_admin_client.update_app_profile(
-            app_profile=update_app_profile_pb, update_mask=update_mask_pb,
-            ignore_warnings=ignore_warnings)
-
-    def delete_app_profile(self, app_profile_id, ignore_warnings=False):
-        """Deletes an app profile from an instance.
-
-        :type: app_profile_id: str
-        :param app_profile_id: The unique name for the app profile to delete.
-
-        :raises: google.api_core.exceptions.GoogleAPICallError: If the request
-                failed for any reason. google.api_core.exceptions.RetryError:
-                If the request failed due to a retryable error and retry
-                attempts failed. ValueError: If the parameters are invalid.
+        :rtype: :class:`google.cloud.bigtable.policy.Policy`
+        :returns: The current IAM policy of this instance
         """
         instance_admin_client = self._client._instance_admin_client
-        app_profile_path = instance_admin_client.app_profile_path(
-            self._client.project, self.instance_id, app_profile_id)
-        self._client._instance_admin_client.delete_app_profile(
-            app_profile_path, ignore_warnings)
+        resp = instance_admin_client.get_iam_policy(resource=self.name)
+        return Policy.from_api_repr(self._to_dict_from_policy_pb(resp))
+
+    def set_iam_policy(self, policy):
+        """Sets the access control policy on an instance resource. Replaces any
+        existing policy.
+
+        For more information about policy, please see documentation of
+        class `google.cloud.bigtable.policy.Policy`
+
+        .. code-block:: python
+
+            from google.cloud.bigtable.client import Client
+            from google.cloud.bigtable.policy import Policy
+            from google.cloud.bigtable.policy import BIGTABLE_ADMIN_ROLE
+
+            client = Client(admin=True)
+            instance = client.instance('[INSTANCE_ID]')
+            ins_policy = instance.get_iam_policy()
+            ins_policy[BIGTABLE_ADMIN_ROLE] = [
+                Policy.user("test_iam@test.com"),
+                Policy.service_account("sv_account@gmail.com")]
+
+            policy_latest = instance.set_iam_policy()
+            print (policy_latest.bigtable_admins)
+
+        :type policy: :class:`google.cloud.bigtable.policy.Policy`
+        :param policy: A new IAM policy to replace the current IAM policy
+                       of this instance
+
+        :rtype: :class:`google.cloud.bigtable.policy.Policy`
+        :returns: The current IAM policy of this instance.
+        """
+        instance_admin_client = self._client._instance_admin_client
+        resp = instance_admin_client.set_iam_policy(
+            resource=self.name, policy=policy.to_api_repr())
+        return Policy.from_api_repr(self._to_dict_from_policy_pb(resp))
+
+    def test_iam_permissions(self, permissions):
+        """Returns permissions that the caller has on the specified instance
+        resource.
+
+        .. code-block:: python
+
+            from google.cloud.bigtable.client import Client
+
+            client = Client(admin=True)
+            instance = client.instance('[INSTANCE_ID]')
+            permissions = ["bigtable.tables.create",
+                           "bigtable.clusters.create"]
+            permissions_allowed = instance.test_iam_permissions(permissions)
+            print (permissions_allowed)
+
+        :type permissions: list
+        :param permissions: The set of permissions to check for
+               the ``resource``. Permissions with wildcards (such as '*'
+               or 'storage.*') are not allowed. For more information see
+               `IAM Overview
+               <https://cloud.google.com/iam/docs/overview#permissions>`_.
+               `Bigtable Permissions
+               <https://cloud.google.com/bigtable/docs/access-control>`_.
+
+        :rtype: list
+        :returns: A List(string) of permissions allowed on the instance
+        """
+        instance_admin_client = self._client._instance_admin_client
+        resp = instance_admin_client.test_iam_permissions(
+            resource=self.name, permissions=permissions)
+        return list(resp.permissions)
+
+    def _to_dict_from_policy_pb(self, policy):
+        """Returns a dictionary representation of resource returned from
+        the getIamPolicy API to use as parameter for
+        :meth: google.cloud.iam.Policy.from_api_repr
+        """
+        pb_dict = {}
+        bindings = [{'role': binding.role, 'members': binding.members}
+                    for binding in policy.bindings]
+        pb_dict['etag'] = policy.etag
+        pb_dict['version'] = policy.version
+        pb_dict['bindings'] = bindings
+        return pb_dict

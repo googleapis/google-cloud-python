@@ -1,61 +1,78 @@
 Python Client for Google Cloud Datastore
 ========================================
 
-    Python idiomatic client for `Google Cloud Datastore`_
-
-.. _Google Cloud Datastore: https://cloud.google.com/datastore/docs
-
 |pypi| |versions|
 
--  `Documentation`_
+`Google Cloud Datastore API`_ is a fully managed, schemaless database for
+storing non-relational data. Cloud Datastore automatically scales with your
+users and supports ACID transactions, high availability of reads and writes,
+strong consistency for reads and ancestor queries, and eventual consistency for
+all other queries.
 
-.. _Documentation: https://googlecloudplatform.github.io/google-cloud-python/latest/datastore/client.html
+- `Client Library Documentation`_
+- `Product Documentation`_
+
+.. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-datastore.svg
+   :target: https://pypi.org/project/google-cloud-datastore/
+.. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-datastore.svg
+   :target: https://pypi.org/project/google-cloud-datastore/
+.. _Google Cloud Datastore API: https://cloud.google.com/datastore/docs
+.. _Product Documentation:  https://cloud.google.com/datastore/docs
+.. _Client Library Documentation: https://googlecloudplatform.github.io/google-cloud-python/latest/datastore/index.html
 
 Quick Start
 -----------
 
+In order to use this library, you first need to go through the following steps:
+
+1. `Select or create a Cloud Platform project.`_
+2. `Enable billing for your project.`_
+3. `Enable the Google Cloud Datastore API.`_
+4. `Setup Authentication.`_
+
+.. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
+.. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
+.. _Enable the Google Cloud Datastore API.:  https://cloud.google.com/datastore
+.. _Setup Authentication.: https://googlecloudplatform.github.io/google-cloud-python/latest/core/auth.html
+
+Installation
+~~~~~~~~~~~~
+
+Install this library in a `virtualenv`_ using pip. `virtualenv`_ is a tool to
+create isolated Python environments. The basic problem it addresses is one of
+dependencies and versions, and indirectly permissions.
+
+With `virtualenv`_, it's possible to install this library without needing system
+install permissions, and without clashing with the installed system
+dependencies.
+
+.. _`virtualenv`: https://virtualenv.pypa.io/en/latest/
+
+
+Mac/Linux
+^^^^^^^^^
+
 .. code-block:: console
 
-    $ pip install --upgrade google-cloud-datastore
+    pip install virtualenv
+    virtualenv <your-env>
+    source <your-env>/bin/activate
+    <your-env>/bin/pip install google-cloud-datastore
 
-For more information on setting up your Python development environment,
-such as installing ``pip`` and ``virtualenv`` on your system, please refer
-to `Python Development Environment Setup Guide`_ for Google Cloud Platform.
 
-.. _Python Development Environment Setup Guide: https://cloud.google.com/python/setup
+Windows
+^^^^^^^
 
-Authentication
---------------
+.. code-block:: console
 
-With ``google-cloud-python`` we try to make authentication as painless as
-possible. Check out the `Authentication section`_ in our documentation to
-learn more. You may also find the `authentication document`_ shared by all
-the ``google-cloud-*`` libraries to be helpful.
+    pip install virtualenv
+    virtualenv <your-env>
+    <your-env>\Scripts\activate
+    <your-env>\Scripts\pip.exe install google-cloud-datastore
 
-.. _Authentication section: https://google-cloud-python.readthedocs.io/en/latest/core/auth.html
-.. _authentication document: https://github.com/GoogleCloudPlatform/google-cloud-common/tree/master/authentication
 
-Using the API
--------------
-
-Google `Cloud Datastore`_ (`Datastore API docs`_) is a fully managed,
-schemaless database for storing non-relational data. Cloud Datastore
-automatically scales with your users and supports ACID transactions, high
-availability of reads and writes, strong consistency for reads and ancestor
-queries, and eventual consistency for all other queries.
-
-.. _Cloud Datastore: https://cloud.google.com/datastore/docs
-.. _Datastore API docs: https://cloud.google.com/datastore/docs/
-
-See the ``google-cloud-python`` API `datastore documentation`_ to learn how to
-interact with the Cloud Datastore using this Client Library.
-
-.. _datastore documentation: https://googlecloudplatform.github.io/google-cloud-python/latest/datastore/client.html
-
-See the `official Google Cloud Datastore documentation`_ for more details on
-how to activate Cloud Datastore for your project.
-
-.. _official Google Cloud Datastore documentation: https://cloud.google.com/datastore/docs/activate
+Example Usage
+~~~~~~~~~~~~~
 
 .. code:: python
 
@@ -72,9 +89,12 @@ how to activate Cloud Datastore for your project.
     client.put(entity)
     # Then get by key for this entity
     result = client.get(key)
-    print result
+    print(result)
 
-.. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-datastore.svg
-   :target: https://pypi.org/project/google-cloud-datastore/
-.. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-datastore.svg
-   :target: https://pypi.org/project/google-cloud-datastore/
+Next Steps
+~~~~~~~~~~
+
+-  Read the `Client Library Documentation`_ for Google Cloud Datastore API
+   API to see other available methods on the client.
+-  Read the `Product documentation`_ to learn
+   more about the product and see How-to Guides.

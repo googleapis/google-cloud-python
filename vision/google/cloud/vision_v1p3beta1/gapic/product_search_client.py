@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+#
 # Copyright 2018 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -189,11 +191,12 @@ class ProductSearchClient(object):
                         'Received both a transport instance and '
                         'credentials; these are mutually exclusive.')
                 self.transport = transport
-        self.transport = product_search_grpc_transport.ProductSearchGrpcTransport(
-            address=self.SERVICE_ADDRESS,
-            channel=channel,
-            credentials=credentials,
-        )
+        else:
+            self.transport = product_search_grpc_transport.ProductSearchGrpcTransport(
+                address=self.SERVICE_ADDRESS,
+                channel=channel,
+                credentials=credentials,
+            )
 
         if client_info is None:
             client_info = (
@@ -280,10 +283,10 @@ class ProductSearchClient(object):
             self._inner_api_calls[
                 'create_product_set'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.create_product_set,
-                    default_retry=self._method_configs[
-                        'CreateProductSet'].retry,
-                    default_timeout=self._method_configs['CreateProductSet']
-                    .timeout,
+                    default_retry=self._method_configs['CreateProductSet'].
+                    retry,
+                    default_timeout=self._method_configs['CreateProductSet'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -366,10 +369,10 @@ class ProductSearchClient(object):
             self._inner_api_calls[
                 'list_product_sets'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.list_product_sets,
-                    default_retry=self._method_configs[
-                        'ListProductSets'].retry,
-                    default_timeout=self._method_configs['ListProductSets']
-                    .timeout,
+                    default_retry=self._method_configs['ListProductSets'].
+                    retry,
+                    default_timeout=self._method_configs['ListProductSets'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -442,8 +445,8 @@ class ProductSearchClient(object):
                 'get_product_set'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.get_product_set,
                     default_retry=self._method_configs['GetProductSet'].retry,
-                    default_timeout=self._method_configs['GetProductSet']
-                    .timeout,
+                    default_timeout=self._method_configs['GetProductSet'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -514,10 +517,10 @@ class ProductSearchClient(object):
             self._inner_api_calls[
                 'update_product_set'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.update_product_set,
-                    default_retry=self._method_configs[
-                        'UpdateProductSet'].retry,
-                    default_timeout=self._method_configs['UpdateProductSet']
-                    .timeout,
+                    default_retry=self._method_configs['UpdateProductSet'].
+                    retry,
+                    default_timeout=self._method_configs['UpdateProductSet'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -578,10 +581,10 @@ class ProductSearchClient(object):
             self._inner_api_calls[
                 'delete_product_set'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.delete_product_set,
-                    default_retry=self._method_configs[
-                        'DeleteProductSet'].retry,
-                    default_timeout=self._method_configs['DeleteProductSet']
-                    .timeout,
+                    default_retry=self._method_configs['DeleteProductSet'].
+                    retry,
+                    default_timeout=self._method_configs['DeleteProductSet'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -659,8 +662,8 @@ class ProductSearchClient(object):
                 'create_product'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.create_product,
                     default_retry=self._method_configs['CreateProduct'].retry,
-                    default_timeout=self._method_configs['CreateProduct']
-                    .timeout,
+                    default_timeout=self._method_configs['CreateProduct'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -744,8 +747,8 @@ class ProductSearchClient(object):
                 'list_products'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.list_products,
                     default_retry=self._method_configs['ListProducts'].retry,
-                    default_timeout=self._method_configs['ListProducts']
-                    .timeout,
+                    default_timeout=self._method_configs['ListProducts'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -898,8 +901,8 @@ class ProductSearchClient(object):
                 'update_product'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.update_product,
                     default_retry=self._method_configs['UpdateProduct'].retry,
-                    default_timeout=self._method_configs['UpdateProduct']
-                    .timeout,
+                    default_timeout=self._method_configs['UpdateProduct'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -962,8 +965,8 @@ class ProductSearchClient(object):
                 'delete_product'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.delete_product,
                     default_retry=self._method_configs['DeleteProduct'].retry,
-                    default_timeout=self._method_configs['DeleteProduct']
-                    .timeout,
+                    default_timeout=self._method_configs['DeleteProduct'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -1051,10 +1054,10 @@ class ProductSearchClient(object):
             self._inner_api_calls[
                 'create_reference_image'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.create_reference_image,
-                    default_retry=self._method_configs['CreateReferenceImage']
-                    .retry,
-                    default_timeout=self._method_configs[
-                        'CreateReferenceImage'].timeout,
+                    default_retry=self._method_configs['CreateReferenceImage'].
+                    retry,
+                    default_timeout=self.
+                    _method_configs['CreateReferenceImage'].timeout,
                     client_info=self._client_info,
                 )
 
@@ -1120,10 +1123,10 @@ class ProductSearchClient(object):
             self._inner_api_calls[
                 'delete_reference_image'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.delete_reference_image,
-                    default_retry=self._method_configs['DeleteReferenceImage']
-                    .retry,
-                    default_timeout=self._method_configs[
-                        'DeleteReferenceImage'].timeout,
+                    default_retry=self._method_configs['DeleteReferenceImage'].
+                    retry,
+                    default_timeout=self.
+                    _method_configs['DeleteReferenceImage'].timeout,
                     client_info=self._client_info,
                 )
 
@@ -1205,10 +1208,10 @@ class ProductSearchClient(object):
             self._inner_api_calls[
                 'list_reference_images'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.list_reference_images,
-                    default_retry=self._method_configs[
-                        'ListReferenceImages'].retry,
-                    default_timeout=self._method_configs['ListReferenceImages']
-                    .timeout,
+                    default_retry=self._method_configs['ListReferenceImages'].
+                    retry,
+                    default_timeout=self.
+                    _method_configs['ListReferenceImages'].timeout,
                     client_info=self._client_info,
                 )
 
@@ -1281,10 +1284,10 @@ class ProductSearchClient(object):
             self._inner_api_calls[
                 'get_reference_image'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.get_reference_image,
-                    default_retry=self._method_configs[
-                        'GetReferenceImage'].retry,
-                    default_timeout=self._method_configs['GetReferenceImage']
-                    .timeout,
+                    default_retry=self._method_configs['GetReferenceImage'].
+                    retry,
+                    default_timeout=self._method_configs['GetReferenceImage'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -1352,10 +1355,10 @@ class ProductSearchClient(object):
             self._inner_api_calls[
                 'add_product_to_product_set'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.add_product_to_product_set,
-                    default_retry=self._method_configs[
-                        'AddProductToProductSet'].retry,
-                    default_timeout=self._method_configs[
-                        'AddProductToProductSet'].timeout,
+                    default_retry=self.
+                    _method_configs['AddProductToProductSet'].retry,
+                    default_timeout=self.
+                    _method_configs['AddProductToProductSet'].timeout,
                     client_info=self._client_info,
                 )
 
@@ -1422,10 +1425,10 @@ class ProductSearchClient(object):
             self._inner_api_calls[
                 'remove_product_from_product_set'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.remove_product_from_product_set,
-                    default_retry=self._method_configs[
-                        'RemoveProductFromProductSet'].retry,
-                    default_timeout=self._method_configs[
-                        'RemoveProductFromProductSet'].timeout,
+                    default_retry=self.
+                    _method_configs['RemoveProductFromProductSet'].retry,
+                    default_timeout=self.
+                    _method_configs['RemoveProductFromProductSet'].timeout,
                     client_info=self._client_info,
                 )
 
@@ -1510,10 +1513,10 @@ class ProductSearchClient(object):
             self._inner_api_calls[
                 'list_products_in_product_set'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.list_products_in_product_set,
-                    default_retry=self._method_configs[
-                        'ListProductsInProductSet'].retry,
-                    default_timeout=self._method_configs[
-                        'ListProductsInProductSet'].timeout,
+                    default_retry=self.
+                    _method_configs['ListProductsInProductSet'].retry,
+                    default_timeout=self.
+                    _method_configs['ListProductsInProductSet'].timeout,
                     client_info=self._client_info,
                 )
 
@@ -1606,10 +1609,10 @@ class ProductSearchClient(object):
             self._inner_api_calls[
                 'import_product_sets'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.import_product_sets,
-                    default_retry=self._method_configs[
-                        'ImportProductSets'].retry,
-                    default_timeout=self._method_configs['ImportProductSets']
-                    .timeout,
+                    default_retry=self._method_configs['ImportProductSets'].
+                    retry,
+                    default_timeout=self._method_configs['ImportProductSets'].
+                    timeout,
                     client_info=self._client_info,
                 )
 

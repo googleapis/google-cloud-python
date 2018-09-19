@@ -4,11 +4,49 @@
 
 [1]: https://pypi.org/project/google-cloud-storage/#history
 
+## 1.12.0
+
+### New Features
+- Add support for Python 3.7, drop support for Python 3.4. ([#5942](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/5942))
+- Add lifecycle rules helpers to bucket. ([#5877](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/5877))
+
+### Implementation Changes
+- Add 'stacklevel=2' to deprecation warnings. ([#5897](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/5897))
+
+### Documentation
+- Storage docs: fix typos. ([#5933](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/5933))
+- Prep storage docs for repo split. ([#5923](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/5923))
+
+### Internal / Testing Changes
+- Harden systest teardown further. ([#5900](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/5900))
+- Nox: use inplace installs ([#5865](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/5865))
+
+## 1.11.0
+
+### Implementation Changes
+- Preserve message / args from an `InvalidResponse`. (#5492)
+- Fix generating signed urls for blobs with non-ascii names. (#5625)
+- Move bucket location specification to `Bucket.create`; deprecate `Bucket.location` setter (#5808)
+
+### New Features
+- Add `Client.get_service_account_email`. (#5765)
+
+### Documentation
+- Clarify `None` values for resource-backed properties. (#5509)
+- Elaborate docs for `{Bucket,Blob}.make_{public,private}`; note how to enable anonymous accesss to `Blob.public_url`. (#5767)
+
+### Internal / Testing Changes
+- Harden `create_bucket` systest against 429 responses. (#5535)
+- Add system test: signed URLs w/ non-ASCII blob name. (#5626)
+- Harden `tearDownModule` against 429 TooManyRequests. (#5701)
+- Retry `notification.create()` on `503 ServiceUnavailable`. (#5741)
+- Fix failing KMS system tests. (#5832, #5837, #5860)
+
 ## 1.10.0
 
 ### New Features
 - Add support for KMS keys (#5259)
-- Add '{Blob,Bucket}make_private' method (#5336)
+- Add `{Blob,Bucket}make_private` method (#5336)
 
 ### Internal / Testing Changes
 - Modify system tests to use prerelease versions of grpcio (#5304)

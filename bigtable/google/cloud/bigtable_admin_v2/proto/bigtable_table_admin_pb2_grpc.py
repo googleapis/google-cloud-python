@@ -106,13 +106,14 @@ class BigtableTableAdminServicer(object):
     raise NotImplementedError('Method not implemented!')
 
   def CreateTableFromSnapshot(self, request, context):
-    """This is a private alpha release of Cloud Bigtable snapshots. This feature
-    is not currently available to most Cloud Bigtable customers. This feature
-    might be changed in backward-incompatible ways and is not recommended for
-    production use. It is not subject to any SLA or deprecation policy.
-
-    Creates a new table from the specified snapshot. The target table must
+    """Creates a new table from the specified snapshot. The target table must
     not exist. The snapshot and the table must be in the same instance.
+
+    Note: This is a private alpha release of Cloud Bigtable snapshots. This
+    feature is not currently available to most Cloud Bigtable customers. This
+    feature might be changed in backward-incompatible ways and is not
+    recommended for production use. It is not subject to any SLA or deprecation
+    policy.
     """
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')
@@ -159,12 +160,7 @@ class BigtableTableAdminServicer(object):
     raise NotImplementedError('Method not implemented!')
 
   def GenerateConsistencyToken(self, request, context):
-    """This is a private alpha release of Cloud Bigtable replication. This feature
-    is not currently available to most Cloud Bigtable customers. This feature
-    might be changed in backward-incompatible ways and is not recommended for
-    production use. It is not subject to any SLA or deprecation policy.
-
-    Generates a consistency token for a Table, which can be used in
+    """Generates a consistency token for a Table, which can be used in
     CheckConsistency to check whether mutations to the table that finished
     before this call started have been replicated. The tokens will be available
     for 90 days.
@@ -174,12 +170,7 @@ class BigtableTableAdminServicer(object):
     raise NotImplementedError('Method not implemented!')
 
   def CheckConsistency(self, request, context):
-    """This is a private alpha release of Cloud Bigtable replication. This feature
-    is not currently available to most Cloud Bigtable customers. This feature
-    might be changed in backward-incompatible ways and is not recommended for
-    production use. It is not subject to any SLA or deprecation policy.
-
-    Checks replication consistency based on a consistency token, that is, if
+    """Checks replication consistency based on a consistency token, that is, if
     replication has caught up based on the conditions specified in the token
     and the check request.
     """
@@ -188,49 +179,53 @@ class BigtableTableAdminServicer(object):
     raise NotImplementedError('Method not implemented!')
 
   def SnapshotTable(self, request, context):
-    """This is a private alpha release of Cloud Bigtable snapshots. This feature
-    is not currently available to most Cloud Bigtable customers. This feature
-    might be changed in backward-incompatible ways and is not recommended for
-    production use. It is not subject to any SLA or deprecation policy.
-
-    Creates a new snapshot in the specified cluster from the specified
+    """Creates a new snapshot in the specified cluster from the specified
     source table. The cluster and the table must be in the same instance.
+
+    Note: This is a private alpha release of Cloud Bigtable snapshots. This
+    feature is not currently available to most Cloud Bigtable customers. This
+    feature might be changed in backward-incompatible ways and is not
+    recommended for production use. It is not subject to any SLA or deprecation
+    policy.
     """
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')
     raise NotImplementedError('Method not implemented!')
 
   def GetSnapshot(self, request, context):
-    """This is a private alpha release of Cloud Bigtable snapshots. This feature
-    is not currently available to most Cloud Bigtable customers. This feature
-    might be changed in backward-incompatible ways and is not recommended for
-    production use. It is not subject to any SLA or deprecation policy.
+    """Gets metadata information about the specified snapshot.
 
-    Gets metadata information about the specified snapshot.
+    Note: This is a private alpha release of Cloud Bigtable snapshots. This
+    feature is not currently available to most Cloud Bigtable customers. This
+    feature might be changed in backward-incompatible ways and is not
+    recommended for production use. It is not subject to any SLA or deprecation
+    policy.
     """
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')
     raise NotImplementedError('Method not implemented!')
 
   def ListSnapshots(self, request, context):
-    """This is a private alpha release of Cloud Bigtable snapshots. This feature
-    is not currently available to most Cloud Bigtable customers. This feature
-    might be changed in backward-incompatible ways and is not recommended for
-    production use. It is not subject to any SLA or deprecation policy.
+    """Lists all snapshots associated with the specified cluster.
 
-    Lists all snapshots associated with the specified cluster.
+    Note: This is a private alpha release of Cloud Bigtable snapshots. This
+    feature is not currently available to most Cloud Bigtable customers. This
+    feature might be changed in backward-incompatible ways and is not
+    recommended for production use. It is not subject to any SLA or deprecation
+    policy.
     """
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')
     raise NotImplementedError('Method not implemented!')
 
   def DeleteSnapshot(self, request, context):
-    """This is a private alpha release of Cloud Bigtable snapshots. This feature
-    is not currently available to most Cloud Bigtable customers. This feature
-    might be changed in backward-incompatible ways and is not recommended for
-    production use. It is not subject to any SLA or deprecation policy.
+    """Permanently deletes the specified snapshot.
 
-    Permanently deletes the specified snapshot.
+    Note: This is a private alpha release of Cloud Bigtable snapshots. This
+    feature is not currently available to most Cloud Bigtable customers. This
+    feature might be changed in backward-incompatible ways and is not
+    recommended for production use. It is not subject to any SLA or deprecation
+    policy.
     """
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')

@@ -63,6 +63,16 @@ s.replace(
     'Google Cloud Speech API (`Beta`_)')
 
 
+s.replace(
+    ['README.rst', 'docs/index.rst'],
+    '`Alpha`', '`Beta`')
+
+
+s.replace(
+    ['README.rst', 'docs/index.rst'],
+    '.. _Alpha', '.. _Beta')
+
+
 # Fix bad reference to operations_v1
 s.replace(
     '**/gapic/**/*_transport.py',

@@ -21,6 +21,7 @@ from google.api_core.exceptions import RetryError
 from google.api_core.exceptions import NotFound
 from google.api_core.retry import if_exception_type
 from google.api_core.retry import Retry
+from google.api_core.gapic_v1.method import wrap_method
 from google.cloud._helpers import _to_bytes
 from google.cloud.bigtable.column_family import _gc_rule_from_pb
 from google.cloud.bigtable.column_family import ColumnFamily
@@ -30,10 +31,9 @@ from google.cloud.bigtable.row import AppendRow
 from google.cloud.bigtable.row import ConditionalRow
 from google.cloud.bigtable.row import DirectRow
 from google.cloud.bigtable.row_data import PartialRowsData
-from google.cloud.bigtable.row_data import YieldRowsData
 from google.cloud.bigtable.row_set import RowSet
 from google.cloud.bigtable.row_set import RowRange
-from google.cloud.bigtable_admin_v2 import enums
+from google.cloud.bigtable import enums
 from google.cloud.bigtable_v2.proto import (
     bigtable_pb2 as data_messages_v2_pb2)
 from google.cloud.bigtable_admin_v2.proto import (
@@ -123,7 +123,7 @@ class Table(object):
         """
         project = self._instance._client.project
         instance_id = self._instance.instance_id
-        table_client = self._instance._client.table_admin_client
+        table_client = self._instance._client.table_data_client
         return table_client.table_path(
             project=project, instance=instance_id, table=self.table_id)
 
@@ -257,6 +257,22 @@ class Table(object):
             result[column_family_id] = column_family
         return result
 
+    def get_cluster_states(self):
+        """List the cluster states owned by this table.
+
+        :rtype: dict
+        :returns: Dictionary of cluster states for this table.
+                  Keys are cluster ids and values are
+                  :class: 'ClusterState' instances.
+        """
+
+        REPLICATION_VIEW = enums.Table.View.REPLICATION_VIEW
+        table_client = self._instance._client.table_admin_client
+        table_pb = table_client.get_table(self.name, view=REPLICATION_VIEW)
+
+        return {cluster_id: ClusterState(value_pb.replication_state)
+                for cluster_id, value_pb in table_pb.cluster_states.items()}
+
     def read_row(self, row_key, filter_=None):
         """Read a single row from this table.
 
@@ -277,10 +293,22 @@ class Table(object):
             self.name, row_key=row_key, filter_=filter_,
             app_profile_id=self._app_profile_id)
         data_client = self._instance._client.table_data_client
-        rows_data = PartialRowsData(data_client._read_rows, request_pb)
+        if 'read_rows' not in data_client._inner_api_calls:
+            default_retry = data_client._method_configs['ReadRows'].retry
+            timeout = data_client._method_configs['ReadRows'].timeout
+            data_client._inner_api_calls['read_rows'] = \
+                wrap_method(
+                    data_client.transport.read_rows,
+                    default_retry=default_retry,
+                    default_timeout=timeout,
+                    client_info=data_client._client_info,
+                )
+        rows_data = PartialRowsData(
+            data_client._inner_api_calls['read_rows'],
+            request_pb)
 
         rows_data.consume_all()
-        if rows_data.state not in (rows_data.NEW_ROW, rows_data.START):
+        if rows_data.state != rows_data.NEW_ROW:
             raise ValueError('The row remains partial / is not committed.')
 
         if len(rows_data.rows) == 0:
@@ -289,7 +317,7 @@ class Table(object):
         return rows_data.rows[row_key]
 
     def read_rows(self, start_key=None, end_key=None, limit=None,
-                  filter_=None, end_inclusive=False):
+                  filter_=None, end_inclusive=False, row_set=None):
         """Read rows from this table.
 
         :type start_key: bytes
@@ -316,20 +344,29 @@ class Table(object):
         :param end_inclusive: (Optional) Whether the ``end_key`` should be
                       considered inclusive. The default is False (exclusive).
 
+        :type row_set: :class:`row_set.RowSet`
+        :param filter_: (Optional) The row set containing multiple row keys and
+                        row_ranges.
+
         :rtype: :class:`.PartialRowsData`
-        :returns: A :class:`.PartialRowsData` convenience wrapper for consuming
+        :returns: A :class:`.PartialRowsData` a generator for consuming
                   the streamed results.
         """
         request_pb = _create_row_request(
             self.name, start_key=start_key, end_key=end_key,
             filter_=filter_, limit=limit, end_inclusive=end_inclusive,
-            app_profile_id=self._app_profile_id)
+            app_profile_id=self._app_profile_id, row_set=row_set)
         data_client = self._instance._client.table_data_client
-        return PartialRowsData(data_client._read_rows, request_pb)
+        return PartialRowsData(
+            data_client.transport.read_rows,
+            request_pb)
 
-    def yield_rows(self, start_key=None, end_key=None, limit=None,
-                   filter_=None, row_set=None):
+    def yield_rows(self, **kwargs):
         """Read rows from this table.
+
+        .. warning::
+           This method will be removed in future releases.  Please use
+           ``read_rows`` instead.
 
         :type start_key: bytes
         :param start_key: (Optional) The beginning of a range of row keys to
@@ -358,14 +395,7 @@ class Table(object):
         :rtype: :class:`.PartialRowData`
         :returns: A :class:`.PartialRowData` for each row returned
         """
-        request_pb = _create_row_request(
-            self.name, start_key=start_key, end_key=end_key, filter_=filter_,
-            limit=limit, app_profile_id=self._app_profile_id, row_set=row_set)
-        data_client = self._instance._client.table_data_client
-        generator = YieldRowsData(data_client._read_rows, request_pb)
-
-        for row in generator.read_rows():
-            yield row
+        return self.read_rows(**kwargs)
 
     def mutate_rows(self, rows, retry=DEFAULT_RETRY):
         """Mutates multiple rows in bulk.
@@ -593,7 +623,20 @@ class _RetryableMutateRowsWorker(object):
             self.table_name, retryable_rows,
             app_profile_id=self.app_profile_id)
         data_client = self.client.table_data_client
-        responses = data_client._mutate_rows(mutate_rows_request, retry=None)
+        inner_api_calls = data_client._inner_api_calls
+        if 'mutate_rows' not in inner_api_calls:
+            default_retry = data_client._method_configs['MutateRows'].retry,
+            default_timeout = data_client._method_configs['MutateRows'].timeout
+            data_client._inner_api_calls[
+                'mutate_rows'] = wrap_method(
+                    data_client.transport.mutate_rows,
+                    default_retry=default_retry,
+                    default_timeout=default_timeout,
+                    client_info=data_client._client_info,
+                )
+
+        responses = data_client._inner_api_calls['mutate_rows'](
+            mutate_rows_request, retry=None)
 
         num_responses = 0
         num_retryable_responses = 0
@@ -616,6 +659,83 @@ class _RetryableMutateRowsWorker(object):
             raise _BigtableRetryableError
 
         return self.responses_statuses
+
+
+class ClusterState(object):
+    """Representation of a Cluster State.
+
+    :type replication_state: int
+    :param replication_state: enum value for cluster state
+        Possible replications_state values are
+        0 for STATE_NOT_KNOWN: The replication state of the table is
+        unknown in this cluster.
+        1 for INITIALIZING: The cluster was recently created, and the
+        table must finish copying
+        over pre-existing data from other clusters before it can
+        begin receiving live replication updates and serving
+        ``Data API`` requests.
+        2 for PLANNED_MAINTENANCE: The table is temporarily unable to
+        serve
+        ``Data API`` requests from this
+        cluster due to planned internal maintenance.
+        3 for UNPLANNED_MAINTENANCE: The table is temporarily unable
+        to serve
+        ``Data API`` requests from this
+        cluster due to unplanned or emergency maintenance.
+        4 for READY: The table can serve
+        ``Data API`` requests from this
+        cluster. Depending on replication delay, reads may not
+        immediately reflect the state of the table in other clusters.
+    """
+
+    def __init__(self, replication_state):
+        self.replication_state = replication_state
+
+    def __repr__(self):
+        """Representation of  cluster state instance as string value
+        for cluster state.
+
+        :rtype: ClusterState instance
+        :returns: ClusterState instance as representation of string
+                  value for cluster state.
+        """
+        replication_dict = {
+            enums.Table.ReplicationState.STATE_NOT_KNOWN: "STATE_NOT_KNOWN",
+            enums.Table.ReplicationState.INITIALIZING: "INITIALIZING",
+            enums.Table.ReplicationState.PLANNED_MAINTENANCE:
+                "PLANNED_MAINTENANCE",
+            enums.Table.ReplicationState.UNPLANNED_MAINTENANCE:
+                "UNPLANNED_MAINTENANCE",
+            enums.Table.ReplicationState.READY: "READY"
+        }
+        return replication_dict[self.replication_state]
+
+    def __eq__(self, other):
+        """Checks if two ClusterState instances(self and other) are
+        equal on the basis of instance variable 'replication_state'.
+
+        :type other: ClusterState
+        :param other: ClusterState instance to compare with.
+
+        :rtype: Boolean value
+        :returns: True if  two cluster state instances have same
+                  replication_state.
+        """
+        if not isinstance(other, self.__class__):
+            return False
+        return self.replication_state == other.replication_state
+
+    def __ne__(self, other):
+        """Checks if two ClusterState instances(self and other) are
+        not equal.
+
+        :type other: ClusterState.
+        :param other: ClusterState instance to compare with.
+
+        :rtype: Boolean value.
+        :returns: True if  two cluster state instances are not equal.
+        """
+        return not self == other
 
 
 def _create_row_request(table_name, row_key=None, start_key=None, end_key=None,

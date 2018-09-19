@@ -1,13 +1,13 @@
-Python Client for Google Cloud Speech API (`Beta`_)
-====================================================
+Python Client for Cloud Speech API (`Beta`_)
+=============================================
 
-`Google Cloud Speech API`_: Google Cloud Speech API.
+`Cloud Speech API`_: Converts audio to text by applying powerful neural network models.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
 
-.. _Alpha: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/README.rst
-.. _Google Cloud Speech API: https://cloud.google.com/speech
+.. _Beta: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/README.rst
+.. _Cloud Speech API: https://cloud.google.com/speech
 .. _Client Library Documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/speech/usage.html
 .. _Product Documentation:  https://cloud.google.com/speech
 
@@ -18,12 +18,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Google Cloud Speech API.`_
+3. `Enable the Cloud Speech API.`_
 4. `Setup Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Google Cloud Speech API.:  https://cloud.google.com/speech
+.. _Enable the Cloud Speech API.:  https://cloud.google.com/speech
 .. _Setup Authentication.: https://googlecloudplatform.github.io/google-cloud-python/stable/core/auth.html
 
 Installation
@@ -86,14 +86,14 @@ SpeechClient
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Google Cloud Speech API
+-  Read the `Client Library Documentation`_ for Cloud Speech API
    API to see other available methods on the client.
--  Read the `Google Cloud Speech API Product documentation`_ to learn
+-  Read the `Cloud Speech API Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `repository’s main README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Google Cloud Speech API Product documentation:  https://cloud.google.com/speech
+.. _Cloud Speech API Product documentation:  https://cloud.google.com/speech
 .. _repository’s main README: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/README.rst
 
 Api Reference

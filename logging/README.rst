@@ -1,51 +1,82 @@
 Python Client for Stackdriver Logging
 =====================================
 
-    Python idiomatic client for `Stackdriver Logging`_
-
-.. _Stackdriver Logging: https://cloud.google.com/logging/
-
 |pypi| |versions|
 
--  `Documentation`_
+`Stackdriver Logging API`_: Writes log entries and manages your Stackdriver
+Logging configuration.
 
-.. _Documentation: https://googlecloudplatform.github.io/google-cloud-python/latest/logging/usage.html
+- `Client Library Documentation`_
+- `Product Documentation`_
+
+.. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-logging.svg
+   :target: https://pypi.org/project/google-cloud-logging/
+.. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-logging.svg
+   :target: https://pypi.org/project/google-cloud-logging/
+.. _Stackdriver Logging API: https://cloud.google.com/logging
+.. _Client Library Documentation: https://googlecloudplatform.github.io/google-cloud-python/latest/logging/usage.html
+.. _Product Documentation:  https://cloud.google.com/logging/docs
 
 Quick Start
 -----------
 
+In order to use this library, you first need to go through the following steps:
+
+1. `Select or create a Cloud Platform project.`_
+2. `Enable billing for your project.`_
+3. `Enable the Stackdriver Logging API.`_
+4. `Setup Authentication.`_
+
+.. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
+.. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
+.. _Enable the Stackdriver Logging API.:  https://cloud.google.com/logging
+.. _Setup Authentication.: https://googlecloudplatform.github.io/google-cloud-python/latest/core/auth.html
+
+Installation
+~~~~~~~~~~~~
+
+Install this library in a `virtualenv`_ using pip. `virtualenv`_ is a tool to
+create isolated Python environments. The basic problem it addresses is one of
+dependencies and versions, and indirectly permissions.
+
+With `virtualenv`_, it's possible to install this library without needing system
+install permissions, and without clashing with the installed system
+dependencies.
+
+.. _`virtualenv`: https://virtualenv.pypa.io/en/latest/
+
+
+Mac/Linux
+^^^^^^^^^
+
 .. code-block:: console
 
-    $ pip install --upgrade google-cloud-logging
+    pip install virtualenv
+    virtualenv <your-env>
+    source <your-env>/bin/activate
+    <your-env>/bin/pip install google-cloud-logging
 
-For more information on setting up your Python development environment,
-such as installing ``pip`` and ``virtualenv`` on your system, please refer
-to `Python Development Environment Setup Guide`_ for Google Cloud Platform.
 
-.. _Python Development Environment Setup Guide: https://cloud.google.com/python/setup
+Windows
+^^^^^^^
 
-**Note**: The creation of cross project sinks (log exports) is not currenlty supported. You may only create sinks within the same project set for the client. In other words, the parameter `uniqueWriterIdentity`_ is not yet available.
+.. code-block:: console
 
-.. _uniqueWriterIdentity: https://cloud.google.com/logging/docs/reference/v2/rest/v2/projects.sinks/create
-
-Authentication
---------------
-
-With ``google-cloud-python`` we try to make authentication as painless as
-possible. Check out the `Authentication section`_ in our documentation to
-learn more. You may also find the `authentication document`_ shared by all
-the ``google-cloud-*`` libraries to be helpful.
-
-.. _Authentication section: https://google-cloud-python.readthedocs.io/en/latest/core/auth.html
-.. _authentication document: https://github.com/GoogleCloudPlatform/google-cloud-common/tree/master/authentication
+    pip install virtualenv
+    virtualenv <your-env>
+    <your-env>\Scripts\activate
+    <your-env>\Scripts\pip.exe install google-cloud-logging
 
 Using the API
 -------------
 
-`Stackdriver Logging`_ API (`Logging API docs`_) allows you to store, search,
-analyze, monitor, and alert on log data and events from Google Cloud Platform.
+.. code:: python
 
-.. _Logging API docs: https://cloud.google.com/logging/docs/
+    from google.cloud import logging_v2
+
+    client = logging_v2.LoggingServiceV2Client()
+    entries = []
+    response = client.write_log_entries(entries)
 
 .. code:: python
 
@@ -58,15 +89,16 @@ Example of fetching entries:
 
 .. code:: python
 
+    from google.cloud import logging
+    client = logging.Client()
+    logger = client.logger('log_name')
     for entry in logger.list_entries():
         print(entry.payload)
 
-See the ``google-cloud-python`` API `logging documentation`_ to learn how to
-connect to Stackdriver Logging using this Client Library.
+Next Steps
+~~~~~~~~~~
 
-.. _logging documentation: https://googlecloudplatform.github.io/google-cloud-python/latest/logging/usage.html
-
-.. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-logging.svg
-   :target: https://pypi.org/project/google-cloud-logging/
-.. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-logging.svg
-   :target: https://pypi.org/project/google-cloud-logging/
+-  Read the `Client Library Documentation`_ for to see other available
+   methods on the client.
+-  Read the `Product documentation`_ to learn more about the product and see
+   How-to Guides.

@@ -53,8 +53,6 @@ CELL_VAL3 = b'altcol-cell-val'
 CELL_VAL4 = b'foo'
 ROW_KEY = b'row-key'
 ROW_KEY_ALT = b'row-key-alt'
-ROUTING_POLICY_TYPE_ANY = 1
-ROUTING_POLICY_TYPE_SINGLE = 2
 EXISTING_INSTANCES = []
 LABEL_KEY = u'python-system'
 label_stamp = datetime.datetime.utcnow() \
@@ -211,16 +209,24 @@ class TestInstanceAdminAPI(unittest.TestCase):
         self.assertTrue(cluster.exists())
         self.assertFalse(alt_cluster.exists())
 
+    def test_instance_exists(self):
+        NONEXISTING_INSTANCE_ID = 'instancer-id'
+
+        alt_instance = Config.CLIENT.instance(NONEXISTING_INSTANCE_ID)
+        self.assertTrue(Config.INSTANCE.exists())
+        self.assertFalse(alt_instance.exists())
+
     def test_create_instance_w_two_clusters(self):
         from google.cloud.bigtable import enums
+        from google.cloud.bigtable.table import ClusterState
         _PRODUCTION = enums.Instance.Type.PRODUCTION
         ALT_INSTANCE_ID = 'dif' + unique_resource_id('-')
         instance = Config.CLIENT.instance(ALT_INSTANCE_ID,
                                           instance_type=_PRODUCTION,
                                           labels=LABELS)
 
-        ALT_CLUSTER_ID_1 = ALT_INSTANCE_ID+'-c1'
-        ALT_CLUSTER_ID_2 = ALT_INSTANCE_ID+'-c2'
+        ALT_CLUSTER_ID_1 = ALT_INSTANCE_ID + '-c1'
+        ALT_CLUSTER_ID_2 = ALT_INSTANCE_ID + '-c2'
         LOCATION_ID_2 = 'us-central1-f'
         STORAGE_TYPE = enums.StorageType.HDD
         cluster_1 = instance.cluster(
@@ -268,6 +274,108 @@ class TestInstanceAdminAPI(unittest.TestCase):
         self.assertTrue({alt_cluster_1.name,
                          alt_cluster_2.name,
                          Config.CLUSTER.name}.issubset(found))
+
+        temp_table_id = 'test-get-cluster-states'
+        temp_table = instance.table(temp_table_id)
+        temp_table.create()
+        result = temp_table.get_cluster_states()
+        ReplicationState = enums.Table.ReplicationState
+        expected_results = [
+            ClusterState(ReplicationState.STATE_NOT_KNOWN),
+            ClusterState(ReplicationState.INITIALIZING),
+            ClusterState(ReplicationState.PLANNED_MAINTENANCE),
+            ClusterState(ReplicationState.UNPLANNED_MAINTENANCE),
+            ClusterState(ReplicationState.READY)
+        ]
+        cluster_id_list = result.keys()
+        self.assertEqual(len(cluster_id_list), 2)
+        self.assertIn(ALT_CLUSTER_ID_1, cluster_id_list)
+        self.assertIn(ALT_CLUSTER_ID_2, cluster_id_list)
+        for clusterstate in result.values():
+            self.assertIn(clusterstate, expected_results)
+
+        # Test create app profile with multi_cluster_routing policy
+        app_profiles_to_delete = []
+        description = 'routing policy-multy'
+        app_profile_id_1 = 'app_profile_id_1'
+        routing = enums.RoutingPolicyType.ANY
+        self._test_create_app_profile_helper(
+            app_profile_id_1, instance,
+            routing_policy_type=routing,
+            description=description,
+            ignore_warnings=True
+        )
+        app_profiles_to_delete.append(app_profile_id_1)
+
+        # Test list app profiles
+        self._test_list_app_profiles_helper(instance, [app_profile_id_1])
+
+        # Test modify app profile app_profile_id_1
+        # routing policy to single cluster policy,
+        # cluster -> ALT_CLUSTER_ID_1,
+        # allow_transactional_writes -> disallowed
+        # modify description
+        description = 'to routing policy-single'
+        routing = enums.RoutingPolicyType.SINGLE
+        self._test_modify_app_profile_helper(
+            app_profile_id_1, instance,
+            routing_policy_type=routing,
+            description=description, cluster_id=ALT_CLUSTER_ID_1,
+            allow_transactional_writes=False)
+
+        # Test modify app profile app_profile_id_1
+        # cluster -> ALT_CLUSTER_ID_2,
+        # allow_transactional_writes -> allowed
+        self._test_modify_app_profile_helper(
+            app_profile_id_1, instance,
+            routing_policy_type=routing,
+            description=description,
+            cluster_id=ALT_CLUSTER_ID_2,
+            allow_transactional_writes=True,
+            ignore_warnings=True)
+
+        # Test create app profile with single cluster routing policy
+        description = 'routing policy-single'
+        app_profile_id_2 = 'app_profile_id_2'
+        routing = enums.RoutingPolicyType.SINGLE
+        self._test_create_app_profile_helper(
+            app_profile_id_2, instance,
+            routing_policy_type=routing,
+            description=description, cluster_id=ALT_CLUSTER_ID_2,
+            allow_transactional_writes=False)
+        app_profiles_to_delete.append(app_profile_id_2)
+
+        # Test list app profiles
+        self._test_list_app_profiles_helper(
+            instance, [app_profile_id_1, app_profile_id_2])
+
+        # Test modify app profile app_profile_id_2 to
+        # allow transactional writes
+        # Note: no need to set ``ignore_warnings`` to True
+        # since we are not restrictings anything with this modification.
+        self._test_modify_app_profile_helper(
+            app_profile_id_2, instance,
+            routing_policy_type=routing,
+            description=description,
+            cluster_id=ALT_CLUSTER_ID_2,
+            allow_transactional_writes=True)
+
+        # Test modify app profile app_profile_id_2 routing policy
+        # to multi_cluster_routing policy
+        # modify description
+        description = 'to routing policy-multy'
+        routing = enums.RoutingPolicyType.ANY
+        self._test_modify_app_profile_helper(
+            app_profile_id_2,
+            instance,
+            routing_policy_type=routing,
+            description=description,
+            allow_transactional_writes=False,
+            ignore_warnings=True)
+
+        # Test delete app profiles
+        for app_profile_id in app_profiles_to_delete:
+            self._test_delete_app_profile_helper(app_profile_id, instance)
 
     def test_update_display_name_and_labels(self):
         OLD_DISPLAY_NAME = Config.INSTANCE.display_name
@@ -332,133 +440,6 @@ class TestInstanceAdminAPI(unittest.TestCase):
         instance_alt.reload()
         self.assertEqual(instance_alt.type_, _PRODUCTION)
 
-    def test_create_app_profile_with_multi_routing_policy(self):
-        from google.cloud.bigtable_admin_v2.types import instance_pb2
-
-        description = 'Foo App Profile'
-        instance = Config.INSTANCE
-        ignore_warnings = True
-        app_profile_id = 'app_profile_id_1'
-
-        app_profile = instance.create_app_profile(
-            app_profile_id=app_profile_id,
-            routing_policy_type=ROUTING_POLICY_TYPE_ANY,
-            description=description,
-            ignore_warnings=ignore_warnings
-        )
-
-        # Load a different app_profile objec form the server and
-        # verrify that it is the same
-        alt_app_profile = instance.get_app_profile(app_profile_id)
-        self.assertEqual(app_profile, alt_app_profile)
-
-        # Modify existing app_profile to singly routing policy and confirm
-        new_description = 'To single routing policy'
-        allow_transactional_writes = False
-        operation = instance.update_app_profile(
-            app_profile_id=app_profile_id,
-            routing_policy_type=ROUTING_POLICY_TYPE_SINGLE,
-            description=new_description,
-            cluster_id=CLUSTER_ID,
-            allow_transactional_writes=allow_transactional_writes)
-        operation.result(timeout=10)
-
-        alt_app_profile = instance.get_app_profile(app_profile_id)
-        self.assertEqual(alt_app_profile.description, new_description)
-        self.assertIsInstance(
-            alt_app_profile.single_cluster_routing,
-            instance_pb2.AppProfile.SingleClusterRouting)
-        self.assertEqual(
-            alt_app_profile.single_cluster_routing.cluster_id, CLUSTER_ID)
-        self.assertEqual(
-            alt_app_profile.single_cluster_routing.allow_transactional_writes,
-            allow_transactional_writes)
-
-        # Delete app_profile
-        instance.delete_app_profile(app_profile_id=app_profile_id,
-                                    ignore_warnings=ignore_warnings)
-        self.assertFalse(self._app_profile_exists(app_profile_id))
-
-    def test_create_app_profile_with_single_routing_policy(self):
-        from google.cloud.bigtable_admin_v2.types import instance_pb2
-
-        description = 'Foo App Profile'
-        instance = Config.INSTANCE
-        ignore_warnings = True
-        app_profile_id = 'app_profile_id_2'
-
-        app_profile = instance.create_app_profile(
-            app_profile_id=app_profile_id,
-            routing_policy_type=ROUTING_POLICY_TYPE_SINGLE,
-            description=description,
-            cluster_id=CLUSTER_ID,
-        )
-
-        # Load a different app_profile objec form the server and
-        # verrify that it is the same
-        alt_app_profile = instance.get_app_profile(app_profile_id)
-        self.assertEqual(app_profile, alt_app_profile)
-
-        # Modify existing app_profile to allow_transactional_writes
-        new_description = 'Allow transactional writes'
-        allow_transactional_writes = True
-        # Note: Do not need to ignore warnings when switching
-        # to allow transactional writes.
-        # Do need to set ignore_warnings to True, when switching to
-        # disallow the transactional writes.
-        operation = instance.update_app_profile(
-            app_profile_id=app_profile_id,
-            routing_policy_type=ROUTING_POLICY_TYPE_SINGLE,
-            description=new_description,
-            cluster_id=CLUSTER_ID,
-            allow_transactional_writes=allow_transactional_writes)
-        operation.result(timeout=10)
-
-        alt_app_profile = instance.get_app_profile(app_profile_id)
-        self.assertEqual(alt_app_profile.description, new_description)
-        self.assertEqual(
-            alt_app_profile.single_cluster_routing.allow_transactional_writes,
-            allow_transactional_writes)
-
-        # Modify existing app_proflie to multi cluster routing
-        new_description = 'To multi cluster routing'
-        operation = instance.update_app_profile(
-            app_profile_id=app_profile_id,
-            routing_policy_type=ROUTING_POLICY_TYPE_ANY,
-            description=new_description,
-            ignore_warnings=ignore_warnings)
-        operation.result(timeout=10)
-
-        alt_app_profile = instance.get_app_profile(app_profile_id)
-        self.assertEqual(alt_app_profile.description, new_description)
-        self.assertIsInstance(
-            alt_app_profile.multi_cluster_routing_use_any,
-            instance_pb2.AppProfile.MultiClusterRoutingUseAny)
-
-    def _app_profile_exists(self, app_profile_id):
-        from google.api_core import exceptions
-        try:
-            Config.INSTANCE.get_app_profile(app_profile_id)
-        except exceptions.NotFound:
-            return False
-        else:
-            return True
-
-    def test_reload_cluster(self):
-        from google.cloud.bigtable.enums import StorageType
-        from google.cloud.bigtable.enums import Cluster
-        # Use same arguments as Config.INSTANCE.cluster
-        # (created in `setUpModule`) so we can use reload()
-        # on a fresh cluster.
-        cluster = Config.INSTANCE.cluster(CLUSTER_ID)
-
-        cluster.reload()
-        self.assertEqual(cluster.location_id, LOCATION_ID)
-        self.assertEqual(cluster.state, Cluster.State.READY)
-        self.assertEqual(cluster.serve_nodes, SERVE_NODES)
-        # Make sure that by default an StorageType.SSD storage is used.
-        self.assertEqual(cluster.default_storage_type, StorageType.SSD)
-
     def test_update_cluster(self):
         NEW_SERVE_NODES = 4
 
@@ -513,6 +494,76 @@ class TestInstanceAdminAPI(unittest.TestCase):
         self.assertTrue(cluster_2.exists())
         cluster_2.delete()
         self.assertFalse(cluster_2.exists())
+
+    def _test_create_app_profile_helper(
+            self, app_profile_id, instance, routing_policy_type,
+            description=None, cluster_id=None,
+            allow_transactional_writes=None,
+            ignore_warnings=None):
+
+        app_profile = instance.app_profile(
+            app_profile_id=app_profile_id,
+            routing_policy_type=routing_policy_type,
+            description=description,
+            cluster_id=cluster_id,
+            allow_transactional_writes=allow_transactional_writes
+        )
+        self.assertEqual(app_profile.allow_transactional_writes,
+                         allow_transactional_writes)
+
+        app_profile = app_profile.create(ignore_warnings=ignore_warnings)
+
+        # Load a different app_profile objec form the server and
+        # verrify that it is the same
+        alt_app_profile = instance.app_profile(app_profile_id)
+        alt_app_profile.reload()
+
+        self.assertEqual(app_profile.app_profile_id,
+                         alt_app_profile.app_profile_id)
+        self.assertEqual(app_profile.routing_policy_type,
+                         routing_policy_type)
+        self.assertEqual(alt_app_profile.routing_policy_type,
+                         routing_policy_type)
+        self.assertEqual(app_profile.description,
+                         alt_app_profile.description)
+        self.assertFalse(app_profile.allow_transactional_writes)
+        self.assertFalse(alt_app_profile.allow_transactional_writes)
+
+    def _test_list_app_profiles_helper(self, instance, app_profile_ids):
+        app_profiles = instance.list_app_profiles()
+        found = [app_prof.app_profile_id for app_prof in app_profiles]
+        for app_profile_id in app_profile_ids:
+            self.assertTrue(app_profile_id in found)
+
+    def _test_modify_app_profile_helper(
+            self, app_profile_id, instance, routing_policy_type,
+            description=None, cluster_id=None,
+            allow_transactional_writes=None,
+            ignore_warnings=None):
+        app_profile = instance.app_profile(
+            app_profile_id=app_profile_id,
+            routing_policy_type=routing_policy_type,
+            description=description,
+            cluster_id=cluster_id,
+            allow_transactional_writes=allow_transactional_writes)
+
+        operation = app_profile.update(ignore_warnings)
+        operation.result(timeout=10)
+
+        alt_app_profile = instance.app_profile(app_profile_id)
+        alt_app_profile.reload()
+        self.assertEqual(alt_app_profile.description, description)
+        self.assertEqual(alt_app_profile.routing_policy_type,
+                         routing_policy_type)
+        self.assertEqual(alt_app_profile.cluster_id, cluster_id)
+        self.assertEqual(alt_app_profile.allow_transactional_writes,
+                         allow_transactional_writes)
+
+    def _test_delete_app_profile_helper(self, app_profile_id, instance):
+        app_profile = instance.app_profile(app_profile_id)
+        self.assertTrue(app_profile.exists())
+        app_profile.delete(ignore_warnings=True)
+        self.assertFalse(app_profile.exists())
 
 
 class TestTableAdminAPI(unittest.TestCase):
@@ -825,10 +876,10 @@ class TestDataAPI(unittest.TestCase):
 
         read_rows = self._table.yield_rows(row_set=row_set)
 
-        expected_row_keys = set([b'row_key_1', b'row_key_3', b'row_key_4',
-                                 b'row_key_5', b'row_key_6'])
-        found_row_keys = set([row.row_key for row in read_rows])
-        self.assertEqual(found_row_keys, set(expected_row_keys))
+        expected_row_keys = [b'row_key_1', b'row_key_3', b'row_key_4',
+                             b'row_key_5', b'row_key_6']
+        found_row_keys = [row.row_key for row in read_rows]
+        self.assertEqual(found_row_keys, expected_row_keys)
 
     def test_read_large_cell_limit(self):
         row = self._table.row(ROW_KEY)
@@ -962,3 +1013,9 @@ class TestDataAPI(unittest.TestCase):
         self.assertEqual(cell3_new.timestamp, cell3.timestamp)
         self.assertEqual(cell3.labels, [])
         self.assertEqual(cell3_new.labels, [label2])
+
+    def test_access_with_non_admin_client(self):
+        client = Client(admin=False)
+        instance = client.instance(INSTANCE_ID)
+        table = instance.table(self._table.table_id)
+        self.assertIsNone(table.read_row('nonesuch'))

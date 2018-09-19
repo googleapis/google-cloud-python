@@ -51,6 +51,7 @@ htmlcov
 # Built documentation
 docs/_build
 docs/_build_doc2dash
+bigquery/docs/generated
 
 # Virtual environment
 env/

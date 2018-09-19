@@ -36,7 +36,7 @@ def test_init_emulator(monkeypatch):
     #
     # Sadly, there seems to be no good way to do this without poking at
     # the private API of gRPC.
-    channel = client.api.subscriber_stub.Pull._channel
+    channel = client.api.transport.pull._channel
     assert channel.target().decode('utf8') == '/baz/bacon/'
 
 

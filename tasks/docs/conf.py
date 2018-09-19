@@ -276,7 +276,7 @@ man_pages = [(master_doc, 'google-cloud-tasks',
 texinfo_documents = [
     (master_doc, 'google-cloud-tasks', u'google-cloud-tasks Documentation',
      author, 'google-cloud-tasks',
-     'GAPIC library for the {metadata.shortName} v2beta2 service', 'APIs'),
+     'GAPIC library for the {metadata.shortName} service', 'APIs'),
 ]
 
 # Documents to append as an appendix to all manuals.

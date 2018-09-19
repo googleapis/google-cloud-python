@@ -9,8 +9,8 @@ models.
 
 .. _Alpha: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/README.rst
 .. _Cloud Text-to-Speech API: https://cloud.google.com/texttospeech
-.. _Client Library Documentation: https://google-cloud-python.readthedocs.io/en/latest/texttospeech/index.html
-.. _Product Documentation:  https://cloud.google.com/texttospeech
+.. _Client Library Documentation: https://googlecloudplatform.github.io/google-cloud-python/latest/texttospeech/api.html
+.. _Product Documentation: https://cloud.google.com/texttospeech
 
 Quick Start
 -----------
@@ -25,7 +25,7 @@ In order to use this library, you first need to go through the following steps:
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
 .. _Enable the Cloud Text-to-Speech API.:  https://cloud.google.com/texttospeech
-.. _Setup Authentication.: https://googlecloudplatform.github.io/google-cloud-python/stable/core/auth.html
+.. _Setup Authentication.: https://googlecloudplatform.github.io/google-cloud-python/latest/core/auth.html
 
 Installation
 ~~~~~~~~~~~~

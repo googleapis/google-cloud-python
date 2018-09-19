@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+#
 # Copyright 2018 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,6 +18,7 @@
 import pkg_resources
 import warnings
 
+from google.oauth2 import service_account
 import google.api_core.gapic_v1.client_info
 import google.api_core.gapic_v1.config
 import google.api_core.gapic_v1.method
@@ -45,6 +48,27 @@ class SpeechClient(object):
     # The name of the interface for this client. This is the key used to
     # find the method configuration in the client_config dictionary.
     _INTERFACE_NAME = 'google.cloud.speech.v1p1beta1.Speech'
+
+    @classmethod
+    def from_service_account_file(cls, filename, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials
+        file.
+
+        Args:
+            filename (str): The path to the service account private key json
+                file.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            SpeechClient: The constructed client.
+        """
+        credentials = service_account.Credentials.from_service_account_file(
+            filename)
+        kwargs['credentials'] = credentials
+        return cls(*args, **kwargs)
+
+    from_service_account_json = from_service_account_file
 
     def __init__(self,
                  transport=None,
@@ -106,11 +130,12 @@ class SpeechClient(object):
                         'Received both a transport instance and '
                         'credentials; these are mutually exclusive.')
                 self.transport = transport
-        self.transport = speech_grpc_transport.SpeechGrpcTransport(
-            address=self.SERVICE_ADDRESS,
-            channel=channel,
-            credentials=credentials,
-        )
+        else:
+            self.transport = speech_grpc_transport.SpeechGrpcTransport(
+                address=self.SERVICE_ADDRESS,
+                channel=channel,
+                credentials=credentials,
+            )
 
         if client_info is None:
             client_info = (
@@ -269,10 +294,10 @@ class SpeechClient(object):
             self._inner_api_calls[
                 'long_running_recognize'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.long_running_recognize,
-                    default_retry=self._method_configs['LongRunningRecognize']
-                    .retry,
-                    default_timeout=self._method_configs[
-                        'LongRunningRecognize'].timeout,
+                    default_retry=self._method_configs['LongRunningRecognize'].
+                    retry,
+                    default_timeout=self.
+                    _method_configs['LongRunningRecognize'].timeout,
                     client_info=self._client_info,
                 )
 
@@ -339,10 +364,10 @@ class SpeechClient(object):
             self._inner_api_calls[
                 'streaming_recognize'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.streaming_recognize,
-                    default_retry=self._method_configs[
-                        'StreamingRecognize'].retry,
-                    default_timeout=self._method_configs['StreamingRecognize']
-                    .timeout,
+                    default_retry=self._method_configs['StreamingRecognize'].
+                    retry,
+                    default_timeout=self._method_configs['StreamingRecognize'].
+                    timeout,
                     client_info=self._client_info,
                 )
 

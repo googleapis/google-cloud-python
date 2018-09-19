@@ -47,7 +47,30 @@ class Test_should_retry(unittest.TestCase):
             errors=[{'reason': 'rateLimitExceeded'}], spec=['errors'])
         self.assertTrue(self._call_fut(exc))
 
+    def test_w_unstructured_too_many_requests(self):
+        from google.api_core.exceptions import TooManyRequests
+
+        exc = TooManyRequests('testing')
+        self.assertTrue(self._call_fut(exc))
+
     def test_w_internalError(self):
         exc = mock.Mock(
             errors=[{'reason': 'internalError'}], spec=['errors'])
+        self.assertTrue(self._call_fut(exc))
+
+    def test_w_unstructured_internal_server_error(self):
+        from google.api_core.exceptions import InternalServerError
+
+        exc = InternalServerError('testing')
+        self.assertTrue(self._call_fut(exc))
+
+    def test_w_badGateway(self):
+        exc = mock.Mock(
+            errors=[{'reason': 'badGateway'}], spec=['errors'])
+        self.assertTrue(self._call_fut(exc))
+
+    def test_w_unstructured_bad_gateway(self):
+        from google.api_core.exceptions import BadGateway
+
+        exc = BadGateway('testing')
         self.assertTrue(self._call_fut(exc))

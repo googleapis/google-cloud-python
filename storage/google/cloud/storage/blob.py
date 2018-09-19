@@ -1026,7 +1026,8 @@ class Blob(_PropertyMixin):
         .. _lifecycle: https://cloud.google.com/storage/docs/lifecycle
         """
         if num_retries is not None:
-            warnings.warn(_NUM_RETRIES_MESSAGE, DeprecationWarning)
+            warnings.warn(
+                _NUM_RETRIES_MESSAGE, DeprecationWarning, stacklevel=2)
 
         _maybe_rewind(file_obj, rewind=rewind)
         predefined_acl = ACL.validate_predefined(predefined_acl)
@@ -1373,13 +1374,7 @@ class Blob(_PropertyMixin):
                       ``NoneType``
         :param client: Optional. The client to use.  If not passed, falls back
                        to the ``client`` stored on the blob's bucket.
-
-        :raises: :exc:`ValueError` if this blob does not have its
-                 :attr:`content_type` set.
         """
-        if self.content_type is None:
-            raise ValueError("Destination 'content_type' not set.")
-
         client = self._require_client(client)
         query_params = {}
 

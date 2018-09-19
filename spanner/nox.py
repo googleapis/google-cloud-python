@@ -34,8 +34,10 @@ def default(session):
     Python corresponding to the ``nox`` binary the ``PATH`` can
     run the tests.
     """
-    # Install all test dependencies, then install this package in-place.
-    session.install('mock', 'pytest', 'pytest-cov', *LOCAL_DEPS)
+    # Install all test dependencies, then install local packages in-place.
+    session.install('mock', 'pytest', 'pytest-cov')
+    for local_dep in LOCAL_DEPS:
+        session.install('-e', local_dep)
     session.install('-e', '.')
 
     # Run py.test against the unit tests.
@@ -68,31 +70,15 @@ def unit(session, py):
     default(session)
 
 
-@nox.session
-@nox.parametrize('py', ['2.7', '3.4', '3.5', '3.6', '3.7'])
-def unit_grpc_gcp(session, py):
-    """Run the unit test suite with grpcio-gcp installed."""
-
-    # Run unit tests against all supported versions of Python.
-    session.interpreter = 'python{}'.format(py)
-
-    # Set the virtualenv dirname.
-    session.virtualenv_dirname = 'unit-grpc-gcp-' + py
-
-    # Install grpcio-gcp
-    session.install('grpcio-gcp')
-
-    default(session)
-
-
 def system_common(session):
     # Use pre-release gRPC for system tests.
     session.install('--pre', 'grpcio')
 
-    # Install all test dependencies, then install this package into the
-    # virtualenv's dist-packages.
-    session.install('mock', 'pytest', *LOCAL_DEPS)
-    session.install('../test_utils/')
+    # Install all test dependencies, then install local packages in-place.
+    session.install('mock', 'pytest')
+    for local_dep in LOCAL_DEPS:
+        session.install('-e', local_dep)
+    session.install('-e', '../test_utils/')
     session.install('-e', '.')
 
     # Run py.test against the system tests.

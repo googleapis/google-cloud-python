@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+#
 # Copyright 2018 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -103,6 +105,7 @@ class Feature(object):
           image's dominant colors.
           CROP_HINTS (int): Run crop hints.
           WEB_DETECTION (int): Run web detection.
+          OBJECT_LOCALIZATION (int): Run localizer for object detection.
         """
         TYPE_UNSPECIFIED = 0
         FACE_DETECTION = 1
@@ -115,6 +118,7 @@ class Feature(object):
         IMAGE_PROPERTIES = 7
         CROP_HINTS = 9
         WEB_DETECTION = 10
+        OBJECT_LOCALIZATION = 19
 
 
 class FaceAnnotation(object):

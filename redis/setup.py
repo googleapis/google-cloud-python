@@ -21,8 +21,8 @@ import setuptools
 # Package metadata.
 
 name = 'google-cloud-redis'
-description = 'Cloud Redis API client library'
-version = '0.1.0'
+description = 'Google Cloud Memorystore for Redis API client library'
+version = '0.2.0'
 # Should be one of:
 # 'Development Status :: 3 - Alpha'
 # 'Development Status :: 4 - Beta'
@@ -30,6 +30,7 @@ version = '0.1.0'
 release_status = 'Development Status :: 3 - Alpha'
 dependencies = [
     'google-api-core[grpc] >= 0.1.0, < 0.2.0dev',
+    'enum34; python_version < "3.4"',
 ]
 extras = {
 }

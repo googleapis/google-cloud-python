@@ -298,58 +298,6 @@ class InvalidChunk(RuntimeError):
     """Exception raised to to invalid chunk data from back-end."""
 
 
-class PartialRowsData(object):
-    """Convenience wrapper for consuming a ``ReadRows`` streaming response.
-
-    :type read_method: :class:`client._table_data_client.read_rows`
-    :param read_method: ``ReadRows`` method.
-
-    :type request: :class:`data_messages_v2_pb2.ReadRowsRequest`
-    :param request: The ``ReadRowsRequest`` message used to create a
-                    ReadRowsResponse iterator.
-    """
-
-    START = 'Start'                         # No responses yet processed.
-    NEW_ROW = 'New row'                     # No cells yet complete for row
-    ROW_IN_PROGRESS = 'Row in progress'     # Some cells complete for row
-    CELL_IN_PROGRESS = 'Cell in progress'   # Incomplete cell for row
-
-    def __init__(self, read_method, request):
-        self._generator = YieldRowsData(read_method, request)
-
-        # Fully-processed rows, keyed by `row_key`
-        self.rows = {}
-
-    def __eq__(self, other):
-        if not isinstance(other, self.__class__):
-            return NotImplemented
-        return other._generator == self._generator
-
-    def __ne__(self, other):
-        return not self == other
-
-    @property
-    def state(self):
-        """State machine state.
-
-        :rtype: str
-        :returns:  name of state corresponding to currrent row / chunk
-                   processing.
-        """
-        return self._generator.state
-
-    def consume_all(self, max_loops=None):
-        """Consume the streamed responses until there are no more.
-
-        :type max_loops: int
-        :param max_loops: (Optional) Maximum number of times to try to consume
-                          an additional ``ReadRowsResponse``. You can use this
-                          to avoid long wait times.
-        """
-        for row in self._generator.read_rows():
-            self.rows[row.row_key] = row
-
-
 def _retry_read_rows_exception(exc):
     if isinstance(exc, grpc.RpcError):
         exc = exceptions.from_grpc_error(exc)
@@ -357,7 +305,7 @@ def _retry_read_rows_exception(exc):
                             exceptions.DeadlineExceeded))
 
 
-class YieldRowsData(object):
+class PartialRowsData(object):
     """Convenience wrapper for consuming a ``ReadRows`` streaming response.
 
     :type read_method: :class:`client._table_data_client.read_rows`
@@ -373,22 +321,20 @@ class YieldRowsData(object):
                     expected exceptions during iteration.
     """
 
-    START = 'Start'  # No responses yet processed.
     NEW_ROW = 'New row'  # No cells yet complete for row
     ROW_IN_PROGRESS = 'Row in progress'  # Some cells complete for row
     CELL_IN_PROGRESS = 'Cell in progress'  # Incomplete cell for row
 
-    STATE_START = 0
     STATE_NEW_ROW = 1
     STATE_ROW_IN_PROGRESS = 2
     STATE_CELL_IN_PROGRESS = 3
 
-    read_states = {STATE_START: START, STATE_NEW_ROW: NEW_ROW,
+    read_states = {STATE_NEW_ROW: NEW_ROW,
                    STATE_ROW_IN_PROGRESS: ROW_IN_PROGRESS,
                    STATE_CELL_IN_PROGRESS: CELL_IN_PROGRESS}
 
     def __init__(self, read_method, request):
-        # Counter for responses pulled from iterator
+        # Counter for rows returned to the user
         self._counter = 0
         # In-progress row, unset until first response, after commit/reset
         self._row = None
@@ -405,6 +351,9 @@ class YieldRowsData(object):
         self.request = request
         self.response_iterator = read_method(request)
 
+        self.rows = {}
+        self._state = self.STATE_NEW_ROW
+
     @property
     def state(self):
         """State machine state.
@@ -415,55 +364,54 @@ class YieldRowsData(object):
         """
         return self.read_states[self._state]
 
-    @property
-    def _state(self):
-        """State machine state.
-        :rtype: int
-        :returns:  id of state corresponding to currrent row / chunk
-                   processing.
-        """
-        if self._previous_cell is not None:
-            return self.STATE_ROW_IN_PROGRESS
-        if self.last_scanned_row_key is None:
-            return self.STATE_START
-        if self._row is None:
-            return self.STATE_NEW_ROW
-        if self._cell is not None:
-            return self.STATE_CELL_IN_PROGRESS
-        return self.STATE_NEW_ROW  # row added, no chunk yet processed
-
     def cancel(self):
         """Cancels the iterator, closing the stream."""
         self.response_iterator.cancel()
 
+    def consume_all(self, max_loops=None):
+        """Consume the streamed responses until there are no more.
+
+        .. warning::
+           This method will be removed in future releases.  Please use this
+           class as a generator instead.
+
+        :type max_loops: int
+        :param max_loops: (Optional) Maximum number of times to try to consume
+                          an additional ``ReadRowsResponse``. You can use this
+                          to avoid long wait times.
+        """
+        for row in self:
+            self.rows[row.row_key] = row
+
     def _create_retry_request(self):
-        """Helper for :meth:`read_rows`."""
+        """Helper for :meth:`__iter__`."""
         req_manager = _ReadRowsRequestManager(self.request,
                                               self.last_scanned_row_key,
                                               self._counter)
-        self.request = req_manager.build_updated_request()
+        return req_manager.build_updated_request()
 
     def _on_error(self, exc):
-        """Helper for :meth:`read_rows`."""
+        """Helper for :meth:`__iter__`."""
         # restart the read scan from AFTER the last successfully read row
+        retry_request = self.request
         if self.last_scanned_row_key:
-            self._create_retry_request()
+            retry_request = self._create_retry_request()
 
-        self.response_iterator = self.read_method(self.request)
+        self.response_iterator = self.read_method(retry_request)
 
     def _read_next(self):
-        """Helper for :meth:`read_rows`."""
+        """Helper for :meth:`__iter__`."""
         return six.next(self.response_iterator)
 
     def _read_next_response(self):
-        """Helper for :meth:`read_rows`."""
+        """Helper for :meth:`__iter__`."""
         retry_ = retry.Retry(
             predicate=_retry_read_rows_exception,
             deadline=60)
         return retry_(self._read_next, on_error=self._on_error)()
 
-    def read_rows(self):
-        """Consume the ``ReadRowsResponse's`` from the stream.
+    def __iter__(self):
+        """Consume the ``ReadRowsResponse``s from the stream.
         Read the rows and yield each to the reader
 
         Parse the response and its chunks into a new/existing row in
@@ -475,86 +423,78 @@ class YieldRowsData(object):
             except StopIteration:
                 break
 
-            self._counter += 1
-
-            if self.last_scanned_row_key is None:  # first response
-                if response.last_scanned_row_key:
-                    raise InvalidReadRowsResponse()
-
-            self.last_scanned_row_key = response.last_scanned_row_key
-
-            row = self._row
-            cell = self._cell
-
             for chunk in response.chunks:
-
-                if chunk.reset_row:
-                    self._validate_chunk_reset_row(chunk)
-                    row = self._row = None
-                    cell = self._cell = self._previous_cell = None
-                    continue
-
-                if cell is None:
-                    qualifier = chunk.qualifier.value
-                    if qualifier == b'' and not chunk.HasField('qualifier'):
-                        qualifier = None
-
-                    cell = PartialCellData(
-                        chunk.row_key,
-                        chunk.family_name.value,
-                        qualifier,
-                        chunk.timestamp_micros,
-                        chunk.labels,
-                        chunk.value)
-                    self._validate_cell_data(cell)
-                    self._cell = cell
-                    self._copy_from_previous(cell)
-                else:
-                    cell.append_value(chunk.value)
-
-                if row is None:
-                    row = self._row = PartialRowData(cell.row_key)
-
+                self._process_chunk(chunk)
                 if chunk.commit_row:
-                    if chunk.value_size > 0:
-                        raise InvalidChunk()
+                    self.last_scanned_row_key = self._previous_row.row_key
+                    self._counter += 1
+                    yield self._previous_row
 
-                    self._save_current_cell()
+            resp_last_key = response.last_scanned_row_key
+            if resp_last_key and resp_last_key > self.last_scanned_row_key:
+                self.last_scanned_row_key = resp_last_key
 
-                    yield self._row
+    def _process_chunk(self, chunk):
+        if chunk.reset_row:
+            self._validate_chunk_reset_row(chunk)
+            self._row = None
+            self._cell = self._previous_cell = None
+            self._state = self.STATE_NEW_ROW
+            return
 
-                    self.last_scanned_row_key = self._row.row_key
-                    self._row, self._previous_row = None, self._row
-                    self._previous_cell = None
-                    row = cell = None
-                    continue
+        self._update_cell(chunk)
 
-                if chunk.value_size == 0:
-                    self._save_current_cell()
-                    cell = None
+        if self._row is None:
+            if (self._previous_row is not None and
+                    self._cell.row_key <= self._previous_row.row_key):
+                raise InvalidChunk()
+            self._row = PartialRowData(self._cell.row_key)
 
-    def _validate_cell_data(self, cell):
-        if self._state == self.STATE_ROW_IN_PROGRESS:
-            self._validate_cell_data_row_in_progress(cell)
-        if self._state == self.STATE_NEW_ROW:
-            self._validate_cell_data_new_row(cell)
-        if self._state == self.STATE_CELL_IN_PROGRESS:
-            self._copy_from_current(cell)
+        if chunk.value_size == 0:
+            self._state = self.STATE_ROW_IN_PROGRESS
+            self._save_current_cell()
+        else:
+            self._state = self.STATE_CELL_IN_PROGRESS
 
-    def _validate_cell_data_new_row(self, cell):
+        if chunk.commit_row:
+            if chunk.value_size > 0:
+                raise InvalidChunk()
+
+            self._previous_row = self._row
+            self._row = None
+            self._previous_cell = None
+            self._state = self.STATE_NEW_ROW
+
+    def _update_cell(self, chunk):
+        if self._cell is None:
+            qualifier = None
+            if chunk.HasField('qualifier'):
+                qualifier = chunk.qualifier.value
+            family = None
+            if chunk.HasField('family_name'):
+                family = chunk.family_name.value
+
+            self._cell = PartialCellData(
+                chunk.row_key,
+                family,
+                qualifier,
+                chunk.timestamp_micros,
+                chunk.labels,
+                chunk.value)
+            self._copy_from_previous(self._cell)
+            self._validate_cell_data_new_cell()
+        else:
+            self._cell.append_value(chunk.value)
+
+    def _validate_cell_data_new_cell(self):
+        cell = self._cell
         if (not cell.row_key or
                 not cell.family_name or
                 cell.qualifier is None):
             raise InvalidChunk()
 
-        if (self._previous_row is not None and
-                cell.row_key <= self._previous_row.row_key):
-            raise InvalidChunk()
-
-    def _validate_cell_data_row_in_progress(self, cell):
-        if ((cell.row_key and
-             cell.row_key != self._row.row_key) or
-                (cell.family_name and cell.qualifier is None)):
+        prev = self._previous_cell
+        if prev and prev.row_key != cell.row_key:
             raise InvalidChunk()
 
     def _validate_chunk_reset_row(self, chunk):
@@ -569,6 +509,7 @@ class YieldRowsData(object):
         _raise_if(chunk.labels)
         _raise_if(chunk.value_size)
         _raise_if(chunk.value)
+        _raise_if(chunk.commit_row)
 
     def _save_current_cell(self):
         """Helper for :meth:`consume_next`."""
@@ -579,32 +520,17 @@ class YieldRowsData(object):
         qualified.append(complete)
         self._cell, self._previous_cell = None, cell
 
-    def _copy_from_current(self, cell):
-        current = self._cell
-        if current is not None:
-            if not cell.row_key:
-                cell.row_key = current.row_key
-            if not cell.family_name:
-                cell.family_name = current.family_name
-                # NOTE: ``cell.qualifier`` **can** be empty string.
-            if cell.qualifier is None:
-                cell.qualifier = current.qualifier
-            if not cell.timestamp_micros:
-                cell.timestamp_micros = current.timestamp_micros
-            if not cell.labels:
-                cell.labels.extend(current.labels)
-
     def _copy_from_previous(self, cell):
         """Helper for :meth:`consume_next`."""
         previous = self._previous_cell
         if previous is not None:
             if not cell.row_key:
                 cell.row_key = previous.row_key
-            if not cell.family_name:
-                cell.family_name = previous.family_name
-            # NOTE: ``cell.qualifier`` **can** be empty string.
-            if cell.qualifier is None:
-                cell.qualifier = previous.qualifier
+                if not cell.family_name:
+                    cell.family_name = previous.family_name
+                    # NOTE: ``cell.qualifier`` **can** be empty string.
+                    if cell.qualifier is None:
+                        cell.qualifier = previous.qualifier
 
 
 class _ReadRowsRequestManager(object):
@@ -639,11 +565,18 @@ class _ReadRowsRequestManager(object):
             r_kwargs['rows_limit'] = max(1, self.message.rows_limit -
                                          self.rows_read_so_far)
 
-        row_keys = self._filter_rows_keys()
-        row_ranges = self._filter_row_ranges()
-        r_kwargs['rows'] = data_v2_pb2.RowSet(row_keys=row_keys,
-                                              row_ranges=row_ranges)
-
+        # if neither RowSet.row_keys nor RowSet.row_ranges currently exist,
+        # add row_range that starts with last_scanned_key as start_key_open
+        # to request only rows that have not been returned yet
+        if not self.message.HasField('rows'):
+            row_range = data_v2_pb2.RowRange(
+                start_key_open=self.last_scanned_key)
+            r_kwargs['rows'] = data_v2_pb2.RowSet(row_ranges=[row_range])
+        else:
+            row_keys = self._filter_rows_keys()
+            row_ranges = self._filter_row_ranges()
+            r_kwargs['rows'] = data_v2_pb2.RowSet(row_keys=row_keys,
+                                                  row_ranges=row_ranges)
         return data_messages_v2_pb2.ReadRowsRequest(**r_kwargs)
 
     def _filter_rows_keys(self):
@@ -656,28 +589,45 @@ class _ReadRowsRequestManager(object):
         new_row_ranges = []
 
         for row_range in self.message.rows.row_ranges:
-            if((row_range.end_key_open and
-                self._key_already_read(row_range.end_key_open)) or
-                (row_range.end_key_closed and
-                 self._key_already_read(row_range.end_key_closed))):
-                    continue
+            # if current end_key (open or closed) is set, return its value,
+            # if not, set to empty string ('').
+            # NOTE: Empty string in end_key means "end of table"
+            end_key = self._end_key_set(row_range)
+            # if end_key is already read, skip to the next row_range
+            if(end_key and self._key_already_read(end_key)):
+                continue
 
-            if ((row_range.start_key_open and
-                self._key_already_read(row_range.start_key_open)) or
-                (row_range.start_key_closed and
-                 self._key_already_read(row_range.start_key_closed))):
-                row_range.start_key_closed = _to_bytes("")
-                row_range.start_key_open = self.last_scanned_key
+            # if current start_key (open or closed) is set, return its value,
+            # if not, then set to empty string ('')
+            # NOTE: Empty string in start_key means "beginning of table"
+            start_key = self._start_key_set(row_range)
 
-                new_row_ranges.append(row_range)
-            else:
-                new_row_ranges.append(row_range)
+            # if start_key was already read or doesn't exist,
+            # create a row_range with last_scanned_key as start_key_open
+            # to be passed to retry request
+            retry_row_range = row_range
+            if(self._key_already_read(start_key)):
+                retry_row_range = copy.deepcopy(row_range)
+                retry_row_range.start_key_closed = _to_bytes("")
+                retry_row_range.start_key_open = self.last_scanned_key
+
+            new_row_ranges.append(retry_row_range)
 
         return new_row_ranges
 
     def _key_already_read(self, key):
         """ Helper for :meth:`_filter_row_ranges`"""
         return key <= self.last_scanned_key
+
+    @staticmethod
+    def _start_key_set(row_range):
+        """ Helper for :meth:`_filter_row_ranges`"""
+        return row_range.start_key_open or row_range.start_key_closed
+
+    @staticmethod
+    def _end_key_set(row_range):
+        """ Helper for :meth:`_filter_row_ranges`"""
+        return row_range.end_key_open or row_range.end_key_closed
 
 
 def _raise_if(predicate, *args):

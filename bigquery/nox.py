@@ -34,14 +34,17 @@ def default(session):
     Python corresponding to the ``nox`` binary the ``PATH`` can
     run the tests.
     """
-    # Install all test dependencies, then install this package in-place.
-    session.install('mock', 'pytest', 'pytest-cov', *LOCAL_DEPS)
+    # Install all test dependencies, then install local packages in-place.
+    session.install('mock', 'pytest', 'pytest-cov')
+    for local_dep in LOCAL_DEPS:
+        session.install('-e', local_dep)
 
-    # Pandas does not support Python 3.7
+    # Pyarrow does not support Python 3.7
     if session.interpreter == 'python3.7':
-        session.install('-e', '.')
+        dev_install = '.[pandas]'
     else:
-        session.install('-e', '.[pandas, pyarrow]')
+        dev_install = '.[pandas, pyarrow]'
+    session.install('-e', dev_install)
 
     # IPython does not support Python 2 after version 5.x
     if session.interpreter == 'python2.7':
@@ -96,13 +99,12 @@ def system(session, py):
     # Use pre-release gRPC for system tests.
     session.install('--pre', 'grpcio')
 
-    # Install all test dependencies, then install this package into the
-    # virtualenv's dist-packages.
-    session.install('mock', 'pytest', *LOCAL_DEPS)
-    session.install(
-        os.path.join('..', 'storage'),
-        os.path.join('..', 'test_utils'),
-    )
+    # Install all test dependencies, then install local packages in place.
+    session.install('mock', 'pytest')
+    for local_dep in LOCAL_DEPS:
+        session.install('-e', local_dep)
+    session.install('-e', os.path.join('..', 'storage'))
+    session.install('-e', os.path.join('..', 'test_utils'))
     session.install('-e', '.[pandas]')
 
     # IPython does not support Python 2 after version 5.x
@@ -135,21 +137,17 @@ def snippets(session, py):
     # Set the virtualenv dirname.
     session.virtualenv_dirname = 'snip-' + py
 
-    # Install all test dependencies, then install this package into the
-    # virtualenv's dist-packages.
-    session.install('mock', 'pytest', *LOCAL_DEPS)
-    session.install(
-        os.path.join('..', 'storage'),
-        os.path.join('..', 'test_utils'),
-    )
+    # Install all test dependencies, then install local packages in place.
+    session.install('mock', 'pytest')
+    for local_dep in LOCAL_DEPS:
+        session.install('-e', local_dep)
+    session.install('-e', os.path.join('..', 'storage'))
+    session.install('-e', os.path.join('..', 'test_utils'))
     session.install('-e', '.[pandas, pyarrow]')
 
     # Run py.test against the system tests.
     session.run(
-        'py.test',
-        os.path.join(os.pardir, 'docs', 'bigquery', 'snippets.py'),
-        *session.posargs
-    )
+        'py.test', os.path.join('docs', 'snippets.py'), *session.posargs)
 
 
 @nox.session
@@ -166,7 +164,7 @@ def lint(session):
     session.run('flake8', os.path.join('google', 'cloud', 'bigquery'))
     session.run('flake8', 'tests')
     session.run(
-        'flake8', os.path.join(os.pardir, 'docs', 'bigquery', 'snippets.py'))
+        'flake8', os.path.join('docs', 'snippets.py'))
 
 
 @nox.session

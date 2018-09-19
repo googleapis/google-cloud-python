@@ -3,35 +3,37 @@ sphinx >= 1.6.3
 ipython >= 4
 recommonmark >= 0.4.0
 
-api_core/
-core/
-storage/
-automl/
-bigquery/
-bigquery_datatransfer/
-bigtable/
-container/
-dataproc/
-datastore/
-dlp/
-dns/
-firestore/
-iot/
-kms/
-language/
-logging/
-error_reporting/
-monitoring/
-pubsub/
-oslogin/
-redis/
-resource_manager/
-runtimeconfig/
-spanner/
-speech/
-tasks/
-texttospeech/
-trace/
-translate/
-videointelligence/
-vision/
+-e api_core/
+-e core/
+-e storage/
+-e asset/
+-e automl/
+-e bigquery/
+-e bigquery_datatransfer/
+-e bigtable/
+-e container/
+-e dataproc/
+-e datastore/
+-e dlp/
+-e dns/
+-e firestore/
+-e iot/
+-e kms/
+-e language/
+-e logging/
+-e error_reporting/
+-e monitoring/
+-e pubsub/
+-e oslogin/
+-e redis/
+-e resource_manager/
+-e runtimeconfig/
+-e spanner/
+-e speech/
+-e tasks/
+-e texttospeech/
+-e trace/
+-e translate/
+-e videointelligence/
+-e vision/
+-e websecurityscanner/

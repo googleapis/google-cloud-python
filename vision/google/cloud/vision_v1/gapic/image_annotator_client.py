@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+#
 # Copyright 2018 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -132,11 +134,12 @@ class ImageAnnotatorClient(object):
                         'Received both a transport instance and '
                         'credentials; these are mutually exclusive.')
                 self.transport = transport
-        self.transport = image_annotator_grpc_transport.ImageAnnotatorGrpcTransport(
-            address=self.SERVICE_ADDRESS,
-            channel=channel,
-            credentials=credentials,
-        )
+        else:
+            self.transport = image_annotator_grpc_transport.ImageAnnotatorGrpcTransport(
+                address=self.SERVICE_ADDRESS,
+                channel=channel,
+                credentials=credentials,
+            )
 
         if client_info is None:
             client_info = (
@@ -204,10 +207,10 @@ class ImageAnnotatorClient(object):
             self._inner_api_calls[
                 'batch_annotate_images'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.batch_annotate_images,
-                    default_retry=self._method_configs[
-                        'BatchAnnotateImages'].retry,
-                    default_timeout=self._method_configs['BatchAnnotateImages']
-                    .timeout,
+                    default_retry=self._method_configs['BatchAnnotateImages'].
+                    retry,
+                    default_timeout=self.
+                    _method_configs['BatchAnnotateImages'].timeout,
                     client_info=self._client_info,
                 )
 
@@ -277,10 +280,10 @@ class ImageAnnotatorClient(object):
             self._inner_api_calls[
                 'async_batch_annotate_files'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.async_batch_annotate_files,
-                    default_retry=self._method_configs[
-                        'AsyncBatchAnnotateFiles'].retry,
-                    default_timeout=self._method_configs[
-                        'AsyncBatchAnnotateFiles'].timeout,
+                    default_retry=self.
+                    _method_configs['AsyncBatchAnnotateFiles'].retry,
+                    default_timeout=self.
+                    _method_configs['AsyncBatchAnnotateFiles'].timeout,
                     client_info=self._client_info,
                 )
 
