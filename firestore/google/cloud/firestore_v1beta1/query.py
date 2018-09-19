@@ -627,7 +627,7 @@ class Query(object):
             # Terminate this watch
             query_watch.unsubscribe()
         """
-        Watch.for_query(self,
+        return Watch.for_query(self,
                         callback,
                         document.DocumentSnapshot,
                         document.DocumentReference)
