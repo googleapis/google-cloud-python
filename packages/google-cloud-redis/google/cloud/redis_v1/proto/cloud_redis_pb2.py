@@ -998,7 +998,7 @@ OperationMetadata = _reflection.GeneratedProtocolMessageType('OperationMetadata'
       status_detail:
           Operation status details.
       cancel_requested:
-          Specifies if cancellation was requested for the operaiton.
+          Specifies if cancellation was requested for the operation.
       api_version:
           API version.
   """,
