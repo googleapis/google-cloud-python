@@ -13,12 +13,6 @@
 - Re-generate library using videointelligence/synth.py ([#5982](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/5982))
 - Re-generate library using videointelligence/synth.py ([#5954](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/5954))
 
-### Dependencies
-
-### Documentation
-
-### Internal / Testing Changes
-
 ## 1.3.0
 
 ### Implementation Changes
