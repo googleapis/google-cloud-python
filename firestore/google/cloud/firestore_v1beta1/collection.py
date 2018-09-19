@@ -398,7 +398,7 @@ class CollectionReference(object):
             # Terminate this watch
             collection_watch.unsubscribe()
         """
-        Watch.for_query(query_mod.Query(self),
+        return Watch.for_query(query_mod.Query(self),
                         callback,
                         document.DocumentSnapshot,
                         document.DocumentReference)
