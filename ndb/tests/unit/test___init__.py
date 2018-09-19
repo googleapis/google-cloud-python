@@ -4,7 +4,7 @@
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#     https://www.apache.org/licenses/LICENSE-2.0
+#     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -12,11 +12,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""``ndb`` is a library for Google Cloud Datastore.
+import pkg_resources
 
-It was originally included in the Google App Engine runtime as a "new"
-version of the ``db`` API (hence ``ndb``).
-"""
 
-__version__ = "0.0.1.dev1"
-__all__ = []
+def test___version__():
+    # NOTE: The ``__version__`` is hard-coded in ``__init__.py``.
+    import google.cloud.ndb
+
+    hardcoded_version = google.cloud.ndb.__version__
+    installed_version = pkg_resources.get_distribution(
+        "google-cloud-ndb"
+    ).version
+    assert hardcoded_version == installed_version
