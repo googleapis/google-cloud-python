@@ -1,53 +1,89 @@
 Python Client for Google Cloud Bigtable
 =======================================
 
-    Python idiomatic client for `Google Cloud Bigtable`_
-
-.. _Google Cloud Bigtable: https://cloud.google.com/bigtable/docs/
-
 |pypi| |versions|
 
--  `Documentation`_
 
-.. _Documentation: https://googlecloudplatform.github.io/google-cloud-python/latest/bigtable/usage.html
-
-Quick Start
------------
-
-.. code-block:: console
-
-    $ pip install --upgrade google-cloud-bigtable
-
-For more information on setting up your Python development environment,
-such as installing ``pip`` and ``virtualenv`` on your system, please refer
-to `Python Development Environment Setup Guide`_ for Google Cloud Platform.
-
-.. _Python Development Environment Setup Guide: https://cloud.google.com/python/setup
-
-Authentication
---------------
-
-With ``google-cloud-python`` we try to make authentication as painless as
-possible. Check out the `Authentication section`_ in our documentation to
-learn more. You may also find the `authentication document`_ shared by all
-the ``google-cloud-*`` libraries to be helpful.
-
-.. _Authentication section: https://google-cloud-python.readthedocs.io/en/latest/core/auth.html
-.. _authentication document: https://github.com/GoogleCloudPlatform/google-cloud-common/tree/master/authentication
-
-Using the API
--------------
-
-Cloud `Bigtable`_  is Google's NoSQL Big Data database service. It's the same
-database that powers many core Google services, including Search,
+`Google Cloud Bigtable`_ is Google's NoSQL Big Data database service. It's the
+same database that powers many core Google services, including Search,
 Analytics, Maps, and Gmail.
 
-.. _Bigtable: https://cloud.google.com/bigtable/docs/
-
-See the ``google-cloud-python`` API Bigtable `Documentation`_ to learn
-how to manage your data in Bigtable tables.
+- `Client Library Documentation`_
+- `Product Documentation`_
 
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-bigtable.svg
    :target: https://pypi.org/project/google-cloud-bigtable/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-bigtable.svg
    :target: https://pypi.org/project/google-cloud-bigtable/
+.. _Google Cloud Bigtable: https://cloud.google.com/bigtable
+.. _Client Library Documentation: https://googlecloudplatform.github.io/google-cloud-python/latest/bigtable/usage.html
+.. _Product Documentation:  https://cloud.google.com/bigtable/docs
+
+Quick Start
+-----------
+
+In order to use this library, you first need to go through the following steps:
+
+1. `Select or create a Cloud Platform project.`_
+2. `Enable billing for your project.`_
+3. `Enable the Cloud Bigtable API.`_
+4. `Setup Authentication.`_
+
+.. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
+.. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
+.. _Enable the Cloud Bigtable API.:  https://cloud.google.com/bigtable
+.. _Setup Authentication.: https://googlecloudplatform.github.io/google-cloud-python/latest/core/auth.html
+
+Installation
+~~~~~~~~~~~~
+
+Install this library in a `virtualenv`_ using pip. `virtualenv`_ is a tool to
+create isolated Python environments. The basic problem it addresses is one of
+dependencies and versions, and indirectly permissions.
+
+With `virtualenv`_, it's possible to install this library without needing system
+install permissions, and without clashing with the installed system
+dependencies.
+
+.. _`virtualenv`: https://virtualenv.pypa.io/en/latest/
+
+
+Mac/Linux
+^^^^^^^^^
+
+.. code-block:: console
+
+    pip install virtualenv
+    virtualenv <your-env>
+    source <your-env>/bin/activate
+    <your-env>/bin/pip install google-cloud-bigtable
+
+
+Windows
+^^^^^^^
+
+.. code-block:: console
+
+    pip install virtualenv
+    virtualenv <your-env>
+    <your-env>\Scripts\activate
+    <your-env>\Scripts\pip.exe install google-cloud-bigtable
+
+Next Steps
+~~~~~~~~~~
+
+-  Read the `Client Library Documentation`_ for Cloud Bigtable API
+   API to see other available methods on the client.
+-  Read the `Product documentation`_ to learn
+   more about the product and see How-to Guides.
+
+``google-cloud-happybase``
+--------------------------
+
+In addition to the core ``google-cloud-bigtable``, we provide a
+`google-cloud-happybase
+<http://google-cloud-python-happybase.readthedocs.io/en/latest/>`__ library
+with the same interface as the popular `HappyBase
+<https://happybase.readthedocs.io/en/latest/>`__ library. Unlike HappyBase,
+``google-cloud-happybase`` uses ``google-cloud-bigtable`` under the covers,
+rather than Apache HBase.
