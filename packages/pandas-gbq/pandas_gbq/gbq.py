@@ -1,4 +1,3 @@
-
 import logging
 import os
 import time
@@ -12,7 +11,6 @@ from pandas import DataFrame
 from pandas_gbq.exceptions import AccessDenied
 
 logger = logging.getLogger(__name__)
-
 
 BIGQUERY_INSTALLED_VERSION = None
 SHOW_VERBOSE_DEPRECATION = False
@@ -837,9 +835,13 @@ def to_gbq(
     table_schema : list of dicts, optional
         List of BigQuery table fields to which according DataFrame
         columns conform to, e.g. ``[{'name': 'col1', 'type':
-        'STRING'},...]``. If schema is not provided, it will be
-        generated according to dtypes of DataFrame columns. See
-        BigQuery API documentation on available names of a field.
+        'STRING'},...]``.
+        If schema is not provided, it will be
+        generated according to dtypes of DataFrame columns.
+        If schema is provided, it must contain all DataFrame columns.
+        pandas_gbq.gbq._generate_bq_schema() may be used to create an initial
+        schema, though it doesn't preserve column order.
+        See BigQuery API documentation on available names of a field.
 
         .. versionadded:: 0.3.1
     location : str, optional
