@@ -21,7 +21,7 @@
   OSLogin <oslogin/index>
   Redis <redis/index>
   Resource Manager <resource-manager/index>
-  Runtime Configuration <runtimeconfig/usage>
+  Runtime Configuration <runtimeconfig/index>
   Security Scanner <websecurityscanner/index>
   Spanner <spanner/index>
   Speech <speech/index>
