@@ -1,0 +1,32 @@
+version: 1.0.{build}.{branch}
+
+build: off
+
+matrix:
+  fast_finish: true
+
+# We always use a 64-bit machine, but can build x86 distributions
+# with the PYTHON_ARCH variable.
+platform:
+  - x64
+
+environment:
+
+  matrix:
+
+    # See: https://www.appveyor.com/docs/installed-software/#python
+
+    - NOX_SESSION: "unit-3.5"
+    - NOX_SESSION: "unit-3.6"
+    - NOX_SESSION: "unit-3.7"
+
+install:
+  # Packaging requirements
+  - py -3.7 -m pip install --upgrade pip setuptools
+  - py -3.7 -m pip install --upgrade wheel
+
+  # Install the build dependencies of the project.
+  - py -3.7 -m pip install --upgrade nox
+
+test_script:
+  - "py -3.7 -m nox -s \"%NOX_SESSION%\""
