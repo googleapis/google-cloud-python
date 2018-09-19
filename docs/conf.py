@@ -330,6 +330,7 @@ intersphinx_mapping = {
 # HTML pages to be copied from source to target
 static_html_pages = [
     'datastore/usage.html',
+    'dns/usage.html',
     'bigquery/usage.html',
     'spanner/usage.html',
 ]

@@ -12,7 +12,7 @@
   Dataproc <dataproc/index>
   Datastore <datastore/index>
   Data Loss Prevention <dlp/index>
-  DNS <dns/usage>
+  DNS <dns/index>
   Firestore <firestore/index>
   IoT <iot/index>
   Key Management <kms/index>
