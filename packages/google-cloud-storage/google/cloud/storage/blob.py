@@ -1374,13 +1374,7 @@ class Blob(_PropertyMixin):
                       ``NoneType``
         :param client: Optional. The client to use.  If not passed, falls back
                        to the ``client`` stored on the blob's bucket.
-
-        :raises: :exc:`ValueError` if this blob does not have its
-                 :attr:`content_type` set.
         """
-        if self.content_type is None:
-            raise ValueError("Destination 'content_type' not set.")
-
         client = self._require_client(client)
         query_params = {}
 

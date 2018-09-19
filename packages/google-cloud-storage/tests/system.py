@@ -779,6 +779,26 @@ class TestStorageCompose(TestStorageFiles):
         composed = destination.download_as_string()
         self.assertEqual(composed, SOURCE_1 + SOURCE_2)
 
+    def test_compose_create_new_blob_wo_content_type(self):
+        SOURCE_1 = b'AAA\n'
+        source_1 = self.bucket.blob('source-1')
+        source_1.upload_from_string(SOURCE_1)
+        self.case_blobs_to_delete.append(source_1)
+
+        SOURCE_2 = b'BBB\n'
+        source_2 = self.bucket.blob('source-2')
+        source_2.upload_from_string(SOURCE_2)
+        self.case_blobs_to_delete.append(source_2)
+
+        destination = self.bucket.blob('destination')
+
+        destination.compose([source_1, source_2])
+        self.case_blobs_to_delete.append(destination)
+
+        self.assertIsNone(destination.content_type)
+        composed = destination.download_as_string()
+        self.assertEqual(composed, SOURCE_1 + SOURCE_2)
+
     def test_compose_replace_existing_blob(self):
         BEFORE = b'AAA\n'
         original = self.bucket.blob('original')
