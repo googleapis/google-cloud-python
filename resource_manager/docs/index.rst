@@ -5,7 +5,6 @@ API Reference
 -------------
 .. toctree::
   :maxdepth: 2
-  :hidden:
 
   client
   project
@@ -14,7 +13,7 @@ API Reference
 Changelog
 ---------
 
-For a list of all ``google-cloud-datastore`` releases:
+For a list of all ``google-cloud-resource-manager`` releases:
 
 .. toctree::
   :maxdepth: 2
