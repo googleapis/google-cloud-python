@@ -34,7 +34,7 @@ Google Auth Python Library has usage and reference documentation at `google-auth
 Maintainers
 -----------
 
-- `@jonparrott <https://github.com/jonparrott>`_ (Jon Wayne Parrott)
+- `@theacodes <https://github.com/theacodes>`_ (Thea Flowers)
 - `@dhermes <https://github.com/dhermes>`_ (Danny Hermes)
 - `@lukesneeringer <https://github.com/lukesneeringer>`_ (Luke Sneeringer)
 
