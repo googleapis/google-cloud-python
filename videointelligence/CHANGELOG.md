@@ -4,6 +4,21 @@
 
 [1]: https://pypi.org/project/google-cloud-videointelligence/#history
 
+## 1.4.0
+
+### New Features
+- Add support for 'v1p2beta1' API version ([#6004](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6004))
+
+### Implementation Changes
+- Re-generate library using videointelligence/synth.py ([#5982](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/5982))
+- Re-generate library using videointelligence/synth.py ([#5954](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/5954))
+
+### Dependencies
+
+### Documentation
+
+### Internal / Testing Changes
+
 ## 1.3.0
 
 ### Implementation Changes
