@@ -201,6 +201,20 @@ class TestRowRange(unittest.TestCase):
         self.assertTrue(row_range.start_inclusive)
         self.assertFalse(row_range.end_inclusive)
 
+    def test___hash__set_equality(self):
+        row_range1 = self._make_one('row_key1', 'row_key9')
+        row_range2 = self._make_one('row_key1', 'row_key9')
+        set_one = {row_range1, row_range2}
+        set_two = {row_range1, row_range2}
+        self.assertEqual(set_one, set_two)
+
+    def test___hash__not_equals(self):
+        row_range1 = self._make_one('row_key1', 'row_key9')
+        row_range2 = self._make_one('row_key1', 'row_key19')
+        set_one = {row_range1}
+        set_two = {row_range2}
+        self.assertNotEqual(set_one, set_two)
+
     def test__eq__(self):
         start_key = b"row_key1"
         end_key = b"row_key9"
