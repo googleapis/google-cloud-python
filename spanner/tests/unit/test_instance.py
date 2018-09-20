@@ -502,7 +502,8 @@ class TestInstance(unittest.TestCase):
             ]
         )
 
-        api._list_databases = mock.Mock(return_value=databases_pb)
+        ld_api = api._inner_api_calls['list_databases'] = mock.Mock(
+            return_value=databases_pb)
 
         response = instance.list_databases()
         databases = list(response)
@@ -511,7 +512,7 @@ class TestInstance(unittest.TestCase):
         self.assertTrue(databases[0].name.endswith('/aa'))
         self.assertTrue(databases[1].name.endswith('/bb'))
 
-        api._list_databases.assert_called_once_with(
+        ld_api.assert_called_once_with(
             spanner_database_admin_pb2.ListDatabasesRequest(
                 parent=self.INSTANCE_NAME),
             metadata=[('google-cloud-resource-prefix', instance.name)],
@@ -533,7 +534,8 @@ class TestInstance(unittest.TestCase):
             databases=[]
         )
 
-        api._list_databases = mock.Mock(return_value=databases_pb)
+        ld_api = api._inner_api_calls['list_databases'] = mock.Mock(
+            return_value=databases_pb)
 
         page_size = 42
         page_token = 'token'
@@ -543,7 +545,7 @@ class TestInstance(unittest.TestCase):
 
         self.assertEqual(databases, [])
 
-        api._list_databases.assert_called_once_with(
+        ld_api.assert_called_once_with(
             spanner_database_admin_pb2.ListDatabasesRequest(
                 parent=self.INSTANCE_NAME,
                 page_size=page_size,

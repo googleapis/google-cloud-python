@@ -86,3 +86,31 @@ s.replace(
     'from google\.cloud\.spanner\.admin\.instance_v1.proto',
     'from google.cloud.spanner_admin_instance_v1.proto',
 )
+
+#----------------------------------------------------------------------------
+# Generate database admin client
+#----------------------------------------------------------------------------
+library = gapic.py_library(
+    'spanner_admin_database',
+    'v1',
+    config_path='/google/spanner/admin/database'
+                '/artman_spanner_admin_database.yaml',
+    artman_output_name='spanner-admin-database-v1')
+
+s.move(library / 'google/cloud/spanner_admin_database_v1/gapic')
+s.move(library / 'google/cloud/spanner_admin_database_v1/proto')
+s.move(library / 'tests')
+
+# Fix up the _GAPIC_LIBRARY_VERSION targets
+s.replace(
+    'google/cloud/spanner_admin_database_v1/gapic/database_admin_client.py',
+    "'google-cloud-spanner-admin-database'",
+    "'google-cloud-spanner'",
+)
+
+# Fix up the _GAPIC_LIBRARY_VERSION targets
+s.replace(
+    "google/**/*.py",
+    'from google\.cloud\.spanner\.admin\.database_v1.proto',
+    'from google.cloud.spanner_admin_database_v1.proto',
+)
