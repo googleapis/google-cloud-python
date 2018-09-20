@@ -284,19 +284,26 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
     """
     def __init__(self, job_id, client):
         super(_AsyncJob, self).__init__()
+
+        # The job reference can be either a plain job ID or the full resource.
+        # Populate the properties dictionary consistently depending on what has
+        # been passed in.
         job_ref = job_id
         if not isinstance(job_id, _JobReference):
             job_ref = _JobReference(job_id, client.project, None)
-        self._job_ref = job_ref
+        self._properties = {
+            'jobReference': job_ref._to_api_repr(),
+        }
+
         self._client = client
-        self._properties = {}
         self._result_set = False
         self._completion_lock = threading.Lock()
 
     @property
     def job_id(self):
         """str: ID of the job."""
-        return self._job_ref.job_id
+        return _helpers._get_sub_prop(
+            self._properties, ['jobReference', 'jobId'])
 
     @property
     def project(self):
@@ -305,12 +312,14 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
         :rtype: str
         :returns: the project (derived from the client).
         """
-        return self._job_ref.project
+        return _helpers._get_sub_prop(
+            self._properties, ['jobReference', 'projectId'])
 
     @property
     def location(self):
         """str: Location where the job runs."""
-        return self._job_ref.location
+        return _helpers._get_sub_prop(
+            self._properties, ['jobReference', 'location'])
 
     def _require_client(self, client):
         """Check client or verify over-ride.
@@ -481,7 +490,7 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
 
         self._properties.clear()
         self._properties.update(cleaned)
-        self._copy_configuration_properties(cleaned['configuration'])
+        self._copy_configuration_properties(cleaned.get('configuration', {}))
 
         # For Future interface
         self._set_future_result()
@@ -1337,7 +1346,7 @@ class LoadJob(_AsyncJob):
             self.destination.to_api_repr())
 
         return {
-            'jobReference': self._job_ref._to_api_repr(),
+            'jobReference': self._properties['jobReference'],
             'configuration': configuration,
         }
 
@@ -1523,7 +1532,7 @@ class CopyJob(_AsyncJob):
             })
 
         return {
-            'jobReference': self._job_ref._to_api_repr(),
+            'jobReference': self._properties['jobReference'],
             'configuration': configuration,
         }
 
@@ -1737,7 +1746,7 @@ class ExtractJob(_AsyncJob):
             self.destination_uris)
 
         return {
-            'jobReference': self._job_ref._to_api_repr(),
+            'jobReference': self._properties['jobReference'],
             'configuration': configuration,
         }
 
@@ -2330,7 +2339,7 @@ class QueryJob(_AsyncJob):
         configuration = self._configuration.to_api_repr()
 
         resource = {
-            'jobReference': self._job_ref._to_api_repr(),
+            'jobReference': self._properties['jobReference'],
             'configuration': configuration,
         }
         configuration['query']['query'] = self.query
@@ -3020,8 +3029,13 @@ class UnknownJob(_AsyncJob):
         Returns:
             UnknownJob: Job corresponding to the resource.
         """
-        job_ref = _JobReference._from_api_repr(
-            resource.get('jobReference', {'projectId': client.project}))
+        job_ref_properties = resource.get(
+            'jobReference', {'projectId': client.project})
+        job_ref = _JobReference._from_api_repr(job_ref_properties)
         job = cls(job_ref, client)
+        # Populate the job reference with the project, even if it has been
+        # redacted, because we know it should equal that of the request.
+        resource['jobReference'] = job_ref_properties
         job._properties = resource
         return job
+
