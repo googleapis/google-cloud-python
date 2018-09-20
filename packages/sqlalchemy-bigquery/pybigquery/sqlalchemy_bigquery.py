@@ -128,7 +128,9 @@ class BigQueryCompiler(SQLCompiler):
         return super(BigQueryCompiler, self).visit_select(*args, **kwargs)
 
     def visit_table(self, table, **kwargs):
-        table.schema = table.bind.url.database
+        bind = table.metadata.bind
+        if bind and bind.url:
+            table.schema = bind.url.database
         return super(BigQueryCompiler, self).visit_table(table, **kwargs)
 
     def visit_column(self, column, add_to_result_map=None,
