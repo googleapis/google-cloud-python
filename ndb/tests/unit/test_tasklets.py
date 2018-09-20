@@ -15,12 +15,11 @@
 import pytest
 
 from google.cloud.ndb import tasklets
+import tests.unit.utils
 
 
 def test___all__():
-    expected = [name for name in dir(tasklets) if not name.startswith("_")]
-    expected.sort(key=str.lower)
-    assert sorted(tasklets.__all__, key=str.lower) == expected
+    tests.unit.utils.verify___all__(tasklets)
 
 
 def test_add_flow_exception():
