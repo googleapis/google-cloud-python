@@ -240,7 +240,7 @@ Begin a Transaction
 
    Normally, applications will not construct transactions manually.  Rather,
    consider using :meth:`~Database.run_in_transaction` or the context manager 
-   s described above.
+   as described above.
 
 To begin using a transaction manually:
 
