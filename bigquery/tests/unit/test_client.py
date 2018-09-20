@@ -2741,8 +2741,6 @@ class TestClient(unittest.TestCase):
         )
 
     def test_query_detect_location(self):
-        from google.cloud.bigquery.job import QueryJob
-
         query = 'select count(*) from persons'
         resource_location = 'EU'
         resource = {
