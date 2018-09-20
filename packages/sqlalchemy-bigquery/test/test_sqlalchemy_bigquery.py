@@ -185,7 +185,7 @@ def test_engine_with_dataset(engine_using_test_dataset):
     rows = table_one_row.select().execute().fetchall()
     assert list(rows[0]) == ONE_ROW_CONTENTS_EXPANDED
 
-    # Table name shouldn't be included in the dataset
+    # Table name shouldn't include dataset
     with pytest.raises(Exception):
         table_one_row = Table('test_pybigquery.sample_one_row', MetaData(bind=engine_using_test_dataset), autoload=True)
 
