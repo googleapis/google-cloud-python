@@ -556,8 +556,6 @@ class TestSpannerClient(object):
         with pytest.raises(CustomException):
             client.partition_read(session, table, key_set)
 
-    @pytest.mark.skipif(not spanner_v1.HAS_GRPC_GCP,
-                        reason='grpc_gcp module not available')
     @mock.patch(
         'google.auth.default',
         return_value=(mock.sentinel.credentials, mock.sentinel.projet))

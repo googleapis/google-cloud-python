@@ -16,6 +16,7 @@
 import functools
 import pkg_resources
 
+import grpc_gcp
 import google.api_core.gapic_v1.client_info
 import google.api_core.gapic_v1.config
 import google.api_core.gapic_v1.method
@@ -32,11 +33,6 @@ from google.cloud.spanner_v1.proto import spanner_pb2
 from google.cloud.spanner_v1.proto import transaction_pb2
 from google.protobuf import struct_pb2
 
-try:
-    import grpc_gcp
-    HAS_GRPC_GCP = True
-except ImportError:
-    HAS_GRPC_GCP = False
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
     'google-cloud-spanner', ).version
@@ -120,14 +116,11 @@ class SpannerClient(object):
 
         # Create the channel.
         if channel is None:
-            options = None
-
-            if HAS_GRPC_GCP:
-                # Initialize grpc gcp config for spanner api.
-                grpc_gcp_config = grpc_gcp.api_config_from_text_pb(
-                    pkg_resources.resource_string(__name__,
-                                                  _SPANNER_GRPC_CONFIG))
-                options = [(grpc_gcp.API_CONFIG_CHANNEL_ARG, grpc_gcp_config)]
+            # Initialize grpc gcp config for spanner api.
+            grpc_gcp_config = grpc_gcp.api_config_from_text_pb(
+                pkg_resources.resource_string(__name__,
+                                                _SPANNER_GRPC_CONFIG))
+            options = [(grpc_gcp.API_CONFIG_CHANNEL_ARG, grpc_gcp_config)]
 
             channel = google.api_core.grpc_helpers.create_channel(
                 self.SERVICE_ADDRESS,
