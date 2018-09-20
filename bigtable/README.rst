@@ -1,5 +1,5 @@
-Python Client for Google Cloud Bigtable
-=======================================
+Python Client for Google Cloud Bigtable (`Alpha`_)
+==================================================
 
 |pypi| |versions|
 
@@ -11,6 +11,7 @@ Analytics, Maps, and Gmail.
 - `Client Library Documentation`_
 - `Product Documentation`_
 
+.. _Alpha: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/README.rst
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-bigtable.svg
    :target: https://pypi.org/project/google-cloud-bigtable/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-bigtable.svg
