@@ -876,12 +876,24 @@ def test_watch_collection(client, cleanup):
 
     for _ in range(10):
         if on_snapshot.called_count == 1:
-            return
+            break
         sleep(1)
 
-    if on_snapshot.called_count != 1:
+    # Alter document
+    doc_ref.set({
+        u'first': u'Ada',
+        u'last': u'Lovelace',
+        u'born': 0
+    })
+
+    for _ in range(10):
+        if on_snapshot.called_count == 2:
+            break
+        sleep(1)
+
+    if on_snapshot.called_count != 2:
         raise AssertionError(
-            "Failed to get exactly one document change: count: " +
+            "Failed to get exactly two document changes: count: " +
             str(on_snapshot.called_count))
 
     # CM: had to stop here, this test is totally unfinished, trying to
@@ -907,9 +919,10 @@ def test_watch_query(client, cleanup):
     # Setup listener
     def on_snapshot(docs, changes, read_time):
         on_snapshot.called_count += 1
-        print("docs: " + docs)
-        print("changes: " + changes)
-        print("read_time: " + read_time)
+
+        # A snapshot should return the same thing as if a query ran now.
+        query_ran = db.collection(u'users').where("first", "==", u'Ada').get()
+        assert len(docs) == len([i for i in query_ran])
 
     on_snapshot.called_count = 0
 
