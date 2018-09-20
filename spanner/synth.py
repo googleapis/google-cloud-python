@@ -58,3 +58,31 @@ s.replace(
     '\g<1>options = [(grpc_gcp.API_CONFIG_CHANNEL_ARG, grpc_gcp_config)]'
     '\g<0>',
 )
+
+#----------------------------------------------------------------------------
+# Generate instance admin client
+#----------------------------------------------------------------------------
+library = gapic.py_library(
+    'spanner_admin_instance',
+    'v1',
+    config_path='/google/spanner/admin/instance'
+                '/artman_spanner_admin_instance.yaml',
+    artman_output_name='spanner-admin-instance-v1')
+
+s.move(library / 'google/cloud/spanner_admin_instance_v1/gapic')
+s.move(library / 'google/cloud/spanner_admin_instance_v1/proto')
+s.move(library / 'tests')
+
+# Fix up the _GAPIC_LIBRARY_VERSION targets
+s.replace(
+    'google/cloud/spanner_admin_instance_v1/gapic/instance_admin_client.py',
+    "'google-cloud-spanner-admin-instance'",
+    "'google-cloud-spanner'",
+)
+
+# Fix up generated imports
+s.replace(
+    "google/**/*.py",
+    'from google\.cloud\.spanner\.admin\.instance_v1.proto',
+    'from google.cloud.spanner_admin_instance_v1.proto',
+)
