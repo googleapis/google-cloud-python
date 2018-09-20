@@ -33,7 +33,7 @@ class Connection(_http.JSONConnection):
     API_BASE_URL = 'https://cloudresourcemanager.googleapis.com'
     """The base of the API call URL."""
 
-    API_VERSION = 'v1beta1'
+    API_VERSION = 'v1'
     """The version of the API, used in building the API call's URL."""
 
     API_URL_TEMPLATE = '{api_base_url}/{api_version}{path}'
