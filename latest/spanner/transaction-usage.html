@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Read-write Transactions &#8212; google-cloud d072d0d documentation</title>
+    <title>Read-write Transactions &#8212; google-cloud 16a358e documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -42,13 +42,6 @@ transaction:  when the transaction commits, it will send any accumulated
 mutations to the server.</p>
 <p>To understand more about how transactions work, visit <a class="reference internal" href="gapic/v1/transactions.html#spanner-txn"><span class="std std-ref">Transactions</span></a>.
 To learn more about how to use them in the Python client, continue reading.</p>
-<div class="section" id="begin-a-transaction">
-<h2>Begin a Transaction<a class="headerlink" href="#begin-a-transaction" title="Permalink to this headline">#</a></h2>
-<p>To begin using a transaction:</p>
-<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">transaction</span> <span class="o">=</span> <span class="n">database</span><span class="o">.</span><span class="n">transaction</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
 <div class="section" id="read-table-data">
 <h2>Read Table Data<a class="headerlink" href="#read-table-data" title="Permalink to this headline">#</a></h2>
 <p>Read data for selected rows from a table in the database.  Calls the <code class="docutils literal notranslate"><span class="pre">Read</span></code>
@@ -218,7 +211,7 @@ manager.  The transaction’s <code class="xref py py-meth docutils literal notr
 automatically if the <code class="docutils literal notranslate"><span class="pre">with</span></code> block exits without raising an exception.</p>
 <p>If an exception is raised inside the <code class="docutils literal notranslate"><span class="pre">with</span></code> block, the transaction’s
 <code class="xref py py-meth docutils literal notranslate"><span class="pre">rollback()</span></code> method will automatically be called.</p>
-<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">database</span><span class="o">.</span><span class="n">transaction</span><span class="p">()</span> <span class="k">as</span> <span class="n">transaction</span><span class="p">:</span>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">session</span><span class="o">.</span><span class="n">transaction</span><span class="p">()</span> <span class="k">as</span> <span class="n">transaction</span><span class="p">:</span>
 
     <span class="n">transaction</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span>
         <span class="s1">&#39;citizens&#39;</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;email&#39;</span><span class="p">,</span> <span class="s1">&#39;first_name&#39;</span><span class="p">,</span> <span class="s1">&#39;last_name&#39;</span><span class="p">,</span> <span class="s1">&#39;age&#39;</span><span class="p">],</span>
@@ -241,11 +234,27 @@ automatically if the <code class="docutils literal notranslate"><span class="pre
 </pre></div>
 </div>
 </div>
+<div class="section" id="begin-a-transaction">
+<h2>Begin a Transaction<a class="headerlink" href="#begin-a-transaction" title="Permalink to this headline">#</a></h2>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Normally, applications will not construct transactions manually.  Rather,
+consider using <code class="xref py py-meth docutils literal notranslate"><span class="pre">run_in_transaction()</span></code> or the context manager
+as described above.</p>
+</div>
+<p>To begin using a transaction manually:</p>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">transaction</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">transaction</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
 <div class="section" id="commit-changes-for-a-transaction">
 <h2>Commit changes for a Transaction<a class="headerlink" href="#commit-changes-for-a-transaction" title="Permalink to this headline">#</a></h2>
-<p>This function should not be used manually.  Rather, should consider using
-<code class="xref py py-meth docutils literal notranslate"><span class="pre">run_in_transaction()</span></code> or the context manager as described
-above.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Normally, applications will not commit transactions manually.  Rather,
+consider using <code class="xref py py-meth docutils literal notranslate"><span class="pre">run_in_transaction()</span></code> or the context manager
+as described above.</p>
+</div>
 <p>After  modifications to be made to table data via the
 <code class="xref py py-meth docutils literal notranslate"><span class="pre">Transaction.insert()</span></code>, <code class="xref py py-meth docutils literal notranslate"><span class="pre">Transaction.update()</span></code>,
 <code class="xref py py-meth docutils literal notranslate"><span class="pre">Transaction.insert_or_update()</span></code>, <code class="xref py py-meth docutils literal notranslate"><span class="pre">Transaction.replace()</span></code>, and
@@ -258,9 +267,12 @@ API call.</p>
 </div>
 <div class="section" id="roll-back-changes-for-a-transaction">
 <h2>Roll back changes for a Transaction<a class="headerlink" href="#roll-back-changes-for-a-transaction" title="Permalink to this headline">#</a></h2>
-<p>This function should not be used manually.  Rather, should consider using
-<code class="xref py py-meth docutils literal notranslate"><span class="pre">run_in_transaction()</span></code> or the context manager as described
-above.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Normally, applications will not roll back transactions manually.  Rather,
+consider using <code class="xref py py-meth docutils literal notranslate"><span class="pre">run_in_transaction()</span></code> or the context manager
+as described above.</p>
+</div>
 <p>After describing the modifications to be made to table data via the
 <code class="xref py py-meth docutils literal notranslate"><span class="pre">Transaction.insert()</span></code>, <code class="xref py py-meth docutils literal notranslate"><span class="pre">Transaction.update()</span></code>,
 <code class="xref py py-meth docutils literal notranslate"><span class="pre">Transaction.insert_or_update()</span></code>, <code class="xref py py-meth docutils literal notranslate"><span class="pre">Transaction.replace()</span></code>, and
