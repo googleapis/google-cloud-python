@@ -486,8 +486,10 @@ class Watch(object):
                 # fashion than self._document_reference
                 document_name = document.name
                 db_str = self._firestore._database_string
-                if document_name.startswith(db_str):
-                    document_name = document_name[len(db_str):]
+                db_str_documents = db_str + '/documents/'
+                if document_name.startswith(db_str_documents):
+                    document_name = document_name[len(db_str_documents):]
+
                 document_ref = self._firestore.document(document_name)
 
                 snapshot = self.DocumentSnapshot(
@@ -547,7 +549,6 @@ class Watch(object):
         """
         # TODO: may need to lock here to avoid races on collecting snapshots
         # and sending them to the user.
-
         deletes, adds, updates = Watch._extract_changes(
             self.doc_map,
             self.change_map,
@@ -618,10 +619,10 @@ class Watch(object):
             assert name in updated_map, 'Document to delete does not exist'
             old_document = updated_map.get(name)
             # XXX probably should not expose IndexError when doc doesnt exist
-            existing = updated_tree.find(name)
+            existing = updated_tree.find(old_document)
             old_index = existing.index
             # TODO: was existing.remove returning tree (presumably immuatable?)
-            updated_tree = updated_tree.remove(name)
+            updated_tree = updated_tree.remove(old_document)
             del updated_map[name]
             return (DocumentChange(ChangeType.REMOVED,
                                    old_document,
