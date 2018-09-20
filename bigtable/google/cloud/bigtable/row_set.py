@@ -154,10 +154,7 @@ class RowRange(object):
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
             return NotImplemented
-        return (other.start_key == self.start_key and
-                other.start_inclusive == self.start_inclusive and
-                other.end_key == self.end_key and
-                other.end_inclusive == self.end_inclusive)
+        return self._key() == other._key()
 
     def __ne__(self, other):
         return not self == other
