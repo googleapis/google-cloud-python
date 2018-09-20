@@ -4,7 +4,7 @@
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#     http://www.apache.org/licenses/LICENSE-2.0
+#     https://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -35,14 +35,40 @@ def get_path(*names):
 @nox.session(py=ALL_INTERPRETERS)
 def unit(session):
     # Install all dependencies.
-    session.install("pytest")
+    session.install("pytest", "pytest-cov")
     session.install(".")
     # Run py.test against the unit tests.
-    run_args = ["pytest"] + session.posargs + [get_path("tests", "unit")]
+    run_args = ["pytest"]
+    if session.posargs:
+        run_args.extend(session.posargs)
+    else:
+        run_args.extend(
+            [
+                "--cov=google.cloud.ndb",
+                "--cov=tests",
+                "--cov-config",
+                get_path(".coveragerc"),
+                "--cov-report=",
+            ]
+        )
+    run_args.append(get_path("tests", "unit"))
     session.run(*run_args)
 
+    if not session.posargs:
+        session.notify("cover")
 
-@nox.session(python=DEFAULT_INTERPRETER)
+
+@nox.session(py=DEFAULT_INTERPRETER)
+def cover(session):
+    # Install all dependencies.
+    session.install("coverage")
+    # Run coverage report.
+    session.run("coverage", "report", "--fail-under=100", "--show-missing")
+    # Erase cached coverage data.
+    session.run("coverage", "erase")
+
+
+@nox.session(py=DEFAULT_INTERPRETER)
 def blacken(session):
     # Install all dependencies.
     session.install("black")

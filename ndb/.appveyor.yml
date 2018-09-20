@@ -14,7 +14,7 @@ environment:
 
   matrix:
 
-    # See: https://www.appveyor.com/docs/installed-software/#python
+    # See: https://www.appveyor.com/docs/windows-images-software/#python
 
     - NOX_SESSION: "unit-3.5"
     - NOX_SESSION: "unit-3.6"
