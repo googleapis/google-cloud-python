@@ -412,15 +412,11 @@ class InstanceAdminClient(object):
                   * ``name:HOWL`` --> Equivalent to above.
                   * ``NAME:howl`` --> Equivalent to above.
                   * ``labels.env:*`` --> The instance has the label \"env\".
-                  * ``labels.env:dev`` --> The instance has the label \"env\" and the value of
-                ::
-
-                                       the label contains the string \"dev\".
-                  * ``name:howl labels.env:dev`` --> The instance's name contains \"howl\" and
-                ::
-
-                                                 it has the label \"env\" with its value
-                                                 containing \"dev\".
+                  * ``labels.env:dev`` --> The instance has the label \"env\"
+                    and the value of the label contains the string \"dev\".
+                  * ``name:howl labels.env:dev`` --> The instance's name
+                    contains \"howl\" and it has the label \"env\" with
+                    its value containing \"dev\".
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -545,19 +541,19 @@ class InstanceAdminClient(object):
         Immediately upon completion of this request:
 
         * The instance is readable via the API, with all requested attributes
-        but no allocated resources. Its state is `CREATING`.
+          but no allocated resources. Its state is `CREATING`.
 
         Until completion of the returned operation:
 
         * Cancelling the operation renders the instance immediately unreadable
-        via the API.
+          via the API.
         * The instance can be deleted.
         * All other attempts to modify the instance are rejected.
 
         Upon completion of the returned operation:
 
         * Billing for all successfully-allocated resources begins (some types
-        may have lower than the requested levels).
+          may have lower than the requested levels).
         * Databases can be created in the instance.
         * The instance's allocated resource levels are readable via the API.
         * The instance's state becomes ``READY``.
@@ -664,25 +660,25 @@ class InstanceAdminClient(object):
         Immediately upon completion of this request:
 
         * For resource types for which a decrease in the instance's allocation
-        has been requested, billing is based on the newly-requested level.
+          has been requested, billing is based on the newly-requested level.
 
         Until completion of the returned operation:
 
         * Cancelling the operation sets its metadata's
-        [cancel_time][google.spanner.admin.instance.v1.UpdateInstanceMetadata.cancel_time], and begins
-        restoring resources to their pre-request values. The operation
-        is guaranteed to succeed at undoing all resource changes,
-        after which point it terminates with a `CANCELLED` status.
+          [cancel_time][google.spanner.admin.instance.v1.UpdateInstanceMetadata.cancel_time],
+          and begins restoring resources to their pre-request values.
+          The operation is guaranteed to succeed at undoing all resource
+          changes, after which point it terminates with a `CANCELLED` status.
         * All other attempts to modify the instance are rejected.
         * Reading the instance via the API continues to give the pre-request
-        resource levels.
+          resource levels.
 
         Upon completion of the returned operation:
 
         * Billing begins for all successfully-allocated resources (some types
-        may have lower than the requested levels).
+          may have lower than the requested levels).
         * All newly-reserved resources are available for serving the instance's
-        tables.
+          tables.
         * The instance's new resource levels are readable via the API.
 
         The returned ``long-running operation`` will
@@ -787,8 +783,8 @@ class InstanceAdminClient(object):
         Soon afterward:
 
         * The instance and *all of its databases* immediately and
-        irrevocably disappear from the API. All data in the databases
-        is permanently deleted.
+          irrevocably disappear from the API. All data in the databases
+          is permanently deleted.
 
         Example:
             >>> from google.cloud import spanner_admin_instance_v1

@@ -415,7 +415,7 @@ TransactionOptions = _reflection.GeneratedProtocolMessageType('TransactionOption
   __module__ = 'google.cloud.spanner_v1.proto.transaction_pb2'
   ,
   __doc__ = """Transactions
-  ============
+  
   
   Each session can have at most one active transaction at a time. After
   the active transaction is completed, the session can immediately be
@@ -423,7 +423,7 @@ TransactionOptions = _reflection.GeneratedProtocolMessageType('TransactionOption
   session for each transaction.
   
   Transaction Modes
-  =================
+  
   
   Cloud Spanner supports three transaction modes:
   
@@ -453,7 +453,7 @@ TransactionOptions = _reflection.GeneratedProtocolMessageType('TransactionOption
   however, read/write data in different tables within that database.
   
   Locking Read-Write Transactions
-  -------------------------------
+  
   
   Locking transactions may be used to atomically read-modify-write data
   anywhere in a database. This type of transaction is externally
@@ -475,7 +475,7 @@ TransactionOptions = _reflection.GeneratedProtocolMessageType('TransactionOption
   to abort the transaction.
   
   Semantics
-  ~~~~~~~~~
+  
   
   Cloud Spanner can commit the transaction if all read locks it acquired
   are still valid at commit time, and it is able to acquire write locks
@@ -489,7 +489,7 @@ TransactionOptions = _reflection.GeneratedProtocolMessageType('TransactionOption
   Cloud Spanner transactions themselves.
   
   Retrying Aborted Transactions
-  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  
   
   When a transaction aborts, the application can choose to retry the whole
   transaction again. To maximize the chances of successfully committing
@@ -505,7 +505,7 @@ TransactionOptions = _reflection.GeneratedProtocolMessageType('TransactionOption
   limit the total amount of wall time spent retrying.
   
   Idle Transactions
-  ~~~~~~~~~~~~~~~~~
+  
   
   A transaction is considered idle if it has no outstanding reads or SQL
   queries and has not started a read or SQL query within the last 10
@@ -518,7 +518,7 @@ TransactionOptions = _reflection.GeneratedProtocolMessageType('TransactionOption
   from becoming idle.
   
   Snapshot Read-Only Transactions
-  -------------------------------
+  
   
   Snapshot read-only transactions provides a simpler method than locking
   read-write transactions for doing several consistent reads. However,
@@ -557,7 +557,7 @@ TransactionOptions = _reflection.GeneratedProtocolMessageType('TransactionOption
   Each type of timestamp bound is discussed in detail below.
   
   Strong
-  ~~~~~~
+  
   
   Strong reads are guaranteed to see the effects of all transactions that
   have committed before the start of the read. Furthermore, all rows
@@ -574,7 +574,7 @@ TransactionOptions = _reflection.GeneratedProtocolMessageType('TransactionOption
   [TransactionOptions.ReadOnly.strong][google.spanner.v1.TransactionOptions.ReadOnly.strong].
   
   Exact Staleness
-  ~~~~~~~~~~~~~~~
+  
   
   These timestamp bounds execute reads at a user-specified timestamp.
   Reads at a timestamp are guaranteed to see a consistent prefix of the
@@ -598,7 +598,7 @@ TransactionOptions = _reflection.GeneratedProtocolMessageType('TransactionOption
   [TransactionOptions.ReadOnly.exact\_staleness][google.spanner.v1.TransactionOptions.ReadOnly.exact\_staleness].
   
   Bounded Staleness
-  ~~~~~~~~~~~~~~~~~
+  
   
   Bounded staleness modes allow Cloud Spanner to pick the read timestamp,
   subject to a user-provided staleness bound. Cloud Spanner chooses the
@@ -630,7 +630,7 @@ TransactionOptions = _reflection.GeneratedProtocolMessageType('TransactionOption
   [TransactionOptions.ReadOnly.min\_read\_timestamp][google.spanner.v1.TransactionOptions.ReadOnly.min\_read\_timestamp].
   
   Old Read Timestamps and Garbage Collection
-  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  
   
   Cloud Spanner continuously garbage collects deleted and overwritten data
   in the background to reclaim storage space. This process is known as
@@ -642,7 +642,7 @@ TransactionOptions = _reflection.GeneratedProtocolMessageType('TransactionOption
   timestamps fail with the error ``FAILED_PRECONDITION``.
   
   Partitioned DML Transactions
-  ----------------------------
+  
   
   Partitioned DML transactions are used to execute DML statements with a
   different execution strategy that provides different, and often better,

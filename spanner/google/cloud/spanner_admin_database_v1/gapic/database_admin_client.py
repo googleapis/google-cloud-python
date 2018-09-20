@@ -322,7 +322,7 @@ class DatabaseAdminClient(object):
                 new database.  The database ID must conform to the regular expression
                 ``[a-z][a-z0-9_\-]*[a-z0-9]`` and be between 2 and 30 characters in length.
                 If the database ID is a reserved word or if it contains a hyphen, the
-                database ID must be enclosed in backticks (`` `` ``).
+                database ID must be enclosed in backticks.
             extra_statements (list[str]): An optional list of DDL statements to run inside the newly created
                 database. Statements can create tables, indexes, etc. These
                 statements execute atomically with the creation of the database:
