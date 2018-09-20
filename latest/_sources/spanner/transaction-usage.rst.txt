@@ -9,11 +9,21 @@ To understand more about how transactions work, visit :ref:`spanner-txn`.
 To learn more about how to use them in the Python client, continue reading.
 
 
+Begin a Transaction
+-------------------
+
+To begin using a transaction:
+
+.. code:: python
+
+    transaction = database.transaction()
+
+
 Read Table Data
 ---------------
 
 Read data for selected rows from a table in the database.  Calls the ``Read``
-API, which returns all rows specified in ``key_set``, or else fails if the
+API, which returns all rows specified in ``key_set``, or else fails if the 
 result set is too large,
 
 .. code:: python
@@ -195,7 +205,7 @@ exception.  The function will automatically be retried for
 
         transaction.delete('citizens',
             keyset['bharney@example.com', 'nonesuch@example.com'])
-
+ 
     db.run_in_transaction(_unit_of_work)
 
 
@@ -211,7 +221,7 @@ If an exception is raised inside the ``with`` block, the transaction's
 
 .. code:: python
 
-    with session.transaction() as transaction:
+    with database.transaction() as transaction:
 
         transaction.insert(
             'citizens', columns=['email', 'first_name', 'last_name', 'age'],
@@ -233,30 +243,12 @@ If an exception is raised inside the ``with`` block, the transaction's
             keyset['bharney@example.com', 'nonesuch@example.com'])
 
 
-Begin a Transaction
--------------------
-
-.. note::
-
-   Normally, applications will not construct transactions manually.  Rather,
-   consider using :meth:`~Database.run_in_transaction` or the context manager 
-   as described above.
-
-To begin using a transaction manually:
-
-.. code:: python
-
-    transaction = session.transaction()
-
-
 Commit changes for a Transaction
 --------------------------------
 
-.. note::
-
-   Normally, applications will not commit transactions manually.  Rather,
-   consider using :meth:`~Database.run_in_transaction` or the context manager
-   as described above.
+This function should not be used manually.  Rather, should consider using
+:meth:`~Database.run_in_transaction` or the context manager as described
+above.
 
 After  modifications to be made to table data via the
 :meth:`Transaction.insert`, :meth:`Transaction.update`,
@@ -273,11 +265,9 @@ API call.
 Roll back changes for a Transaction
 -----------------------------------
 
-.. note::
-
-   Normally, applications will not roll back transactions manually.  Rather,
-   consider using :meth:`~Database.run_in_transaction` or the context manager
-   as described above.
+This function should not be used manually.  Rather, should consider using
+:meth:`~Database.run_in_transaction` or the context manager as described
+above.
 
 After describing the modifications to be made to table data via the
 :meth:`Transaction.insert`, :meth:`Transaction.update`,
