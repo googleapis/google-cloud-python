@@ -14,6 +14,7 @@
 
 import collections
 import os
+import re
 from typing import Any, Iterable, Mapping, Sequence, Tuple
 
 import jinja2
@@ -180,12 +181,17 @@ class Generator:
         # Replace the $name and $version variables.
         filename = filename.replace('$name_$version',
                                     self._api.naming.versioned_module_name)
+        filename = filename.replace('$version', self._api.naming.version)
         filename = filename.replace('$name', self._api.naming.module_name)
 
         # Replace the $service variable if applicable.
         if context and 'service' in context:
             filename = filename.replace('$service',
                                         context['service'].module_name)
+
+        # Paths may have empty path segments if components are empty
+        # (e.g. no $version); handle this.
+        filename = re.sub(r'/+', '/', filename)
 
         # Done, return the filename.
         return (filename,)

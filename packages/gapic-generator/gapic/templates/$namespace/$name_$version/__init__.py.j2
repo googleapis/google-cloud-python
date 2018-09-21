@@ -2,7 +2,7 @@
 
 {% block content %}
 {% for service in api.services.values() -%}
-from .{{ service.name|snake_case }} import {{ service.name }}
+from .services.{{ service.name|snake_case }} import {{ service.name }}
 {% endfor %}
 __all__ = (
     {%- for service in api.services.values() %}

@@ -16,7 +16,7 @@ import pytest
 
 from google.auth.credentials import AnonymousCredentials
 from google.showcase import Showcase
-from google.showcase_v1alpha1.showcase.transports.grpc import (
+from google.showcase_v1alpha1.services.showcase.transports.grpc import (
     ShowcaseGrpcTransport,
 )
 
