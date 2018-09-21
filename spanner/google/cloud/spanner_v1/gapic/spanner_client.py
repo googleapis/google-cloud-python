@@ -1,4 +1,6 @@
-# Copyright 2017 Google LLC
+# -*- coding: utf-8 -*-
+#
+# Copyright 2018 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,7 +17,9 @@
 
 import functools
 import pkg_resources
+import warnings
 
+from google.oauth2 import service_account
 import google.api_core.gapic_v1.client_info
 import google.api_core.gapic_v1.config
 import google.api_core.gapic_v1.method
@@ -23,24 +27,22 @@ import google.api_core.grpc_helpers
 import google.api_core.page_iterator
 import google.api_core.path_template
 import google.api_core.protobuf_helpers
+import grpc
 
 from google.cloud.spanner_v1.gapic import enums
 from google.cloud.spanner_v1.gapic import spanner_client_config
+from google.cloud.spanner_v1.gapic.transports import spanner_grpc_transport
 from google.cloud.spanner_v1.proto import keys_pb2
 from google.cloud.spanner_v1.proto import mutation_pb2
+from google.cloud.spanner_v1.proto import result_set_pb2
 from google.cloud.spanner_v1.proto import spanner_pb2
+from google.cloud.spanner_v1.proto import spanner_pb2_grpc
 from google.cloud.spanner_v1.proto import transaction_pb2
+from google.protobuf import empty_pb2
 from google.protobuf import struct_pb2
-
-try:
-    import grpc_gcp
-    HAS_GRPC_GCP = True
-except ImportError:
-    HAS_GRPC_GCP = False
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
     'google-cloud-spanner', ).version
-_SPANNER_GRPC_CONFIG = 'spanner.grpc.config'
 
 
 class SpannerClient(object):
@@ -54,17 +56,30 @@ class SpannerClient(object):
     SERVICE_ADDRESS = 'spanner.googleapis.com:443'
     """The default address of the service."""
 
-    # The scopes needed to make gRPC calls to all of the methods defined in
-    # this service
-    _DEFAULT_SCOPES = (
-        'https://www.googleapis.com/auth/cloud-platform',
-        'https://www.googleapis.com/auth/spanner.admin',
-        'https://www.googleapis.com/auth/spanner.data',
-    )
-
-    # The name of the interface for this client. This is the key used to find
-    # method configuration in the client_config dictionary.
+    # The name of the interface for this client. This is the key used to
+    # find the method configuration in the client_config dictionary.
     _INTERFACE_NAME = 'google.spanner.v1.Spanner'
+
+    @classmethod
+    def from_service_account_file(cls, filename, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials
+        file.
+
+        Args:
+            filename (str): The path to the service account private key json
+                file.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            SpannerClient: The constructed client.
+        """
+        credentials = service_account.Credentials.from_service_account_file(
+            filename)
+        kwargs['credentials'] = credentials
+        return cls(*args, **kwargs)
+
+    from_service_account_json = from_service_account_file
 
     @classmethod
     def database_path(cls, project, instance, database):
@@ -88,6 +103,7 @@ class SpannerClient(object):
         )
 
     def __init__(self,
+                 transport=None,
                  channel=None,
                  credentials=None,
                  client_config=spanner_client_config.config,
@@ -95,144 +111,82 @@ class SpannerClient(object):
         """Constructor.
 
         Args:
-            channel (grpc.Channel): A ``Channel`` instance through
-                which to make calls. This argument is mutually exclusive
+            transport (Union[~.SpannerGrpcTransport,
+                    Callable[[~.Credentials, type], ~.SpannerGrpcTransport]): A transport
+                instance, responsible for actually making the API calls.
+                The default transport uses the gRPC protocol.
+                This argument may also be a callable which returns a
+                transport instance. Callables will be sent the credentials
+                as the first argument and the default transport class as
+                the second argument.
+            channel (grpc.Channel): DEPRECATED. A ``Channel`` instance
+                through which to make calls. This argument is mutually exclusive
                 with ``credentials``; providing both will raise an exception.
             credentials (google.auth.credentials.Credentials): The
                 authorization credentials to attach to requests. These
                 credentials identify this application to the service. If none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            client_config (dict): A dictionary of call options for each
-                method. If not specified, the default configuration is used.
+                This argument is mutually exclusive with providing a
+                transport instance to ``transport``; doing so will raise
+                an exception.
+            client_config (dict): DEPRECATED. A dictionary of call options for
+                each method. If not specified, the default configuration is used.
             client_info (google.api_core.gapic_v1.client_info.ClientInfo):
                 The client info used to send a user-agent string along with
                 API requests. If ``None``, then default info will be used.
                 Generally, you only need to set this if you're developing
                 your own client library.
         """
-        # If both `channel` and `credentials` are specified, raise an
-        # exception (channels come with credentials baked in already).
-        if channel is not None and credentials is not None:
-            raise ValueError(
-                'The `channel` and `credentials` arguments to {} are mutually '
-                'exclusive.'.format(self.__class__.__name__), )
+        # Raise deprecation warnings for things we want to go away.
+        if client_config:
+            warnings.warn('The `client_config` argument is deprecated.',
+                          PendingDeprecationWarning)
+        if channel:
+            warnings.warn(
+                'The `channel` argument is deprecated; use '
+                '`transport` instead.', PendingDeprecationWarning)
 
-        # Create the channel.
-        if channel is None:
-            options = None
-
-            if HAS_GRPC_GCP:
-                # Initialize grpc gcp config for spanner api.
-                grpc_gcp_config = grpc_gcp.api_config_from_text_pb(
-                    pkg_resources.resource_string(__name__,
-                                                  _SPANNER_GRPC_CONFIG))
-                options = [(grpc_gcp.API_CONFIG_CHANNEL_ARG, grpc_gcp_config)]
-
-            channel = google.api_core.grpc_helpers.create_channel(
-                self.SERVICE_ADDRESS,
+        # Instantiate the transport.
+        # The transport is responsible for handling serialization and
+        # deserialization and actually sending data to the service.
+        if transport:
+            if callable(transport):
+                self.transport = transport(
+                    credentials=credentials,
+                    default_class=spanner_grpc_transport.SpannerGrpcTransport,
+                )
+            else:
+                if credentials:
+                    raise ValueError(
+                        'Received both a transport instance and '
+                        'credentials; these are mutually exclusive.')
+                self.transport = transport
+        else:
+            self.transport = spanner_grpc_transport.SpannerGrpcTransport(
+                address=self.SERVICE_ADDRESS,
+                channel=channel,
                 credentials=credentials,
-                scopes=self._DEFAULT_SCOPES,
-                options=options,
             )
-
-        # Create the gRPC stubs.
-        self.spanner_stub = (spanner_pb2.SpannerStub(channel))
 
         if client_info is None:
             client_info = (
                 google.api_core.gapic_v1.client_info.DEFAULT_CLIENT_INFO)
         client_info.gapic_version = _GAPIC_LIBRARY_VERSION
+        self._client_info = client_info
 
         # Parse out the default settings for retry and timeout for each RPC
         # from the client configuration.
         # (Ordinarily, these are the defaults specified in the `*_config.py`
         # file next to this one.)
-        method_configs = google.api_core.gapic_v1.config.parse_method_configs(
+        self._method_configs = google.api_core.gapic_v1.config.parse_method_configs(
             client_config['interfaces'][self._INTERFACE_NAME], )
 
-        # Write the "inner API call" methods to the class.
-        # These are wrapped versions of the gRPC stub methods, with retry and
-        # timeout configuration applied, called by the public methods on
-        # this class.
-        self._create_session = google.api_core.gapic_v1.method.wrap_method(
-            self.spanner_stub.CreateSession,
-            default_retry=method_configs['CreateSession'].retry,
-            default_timeout=method_configs['CreateSession'].timeout,
-            client_info=client_info,
-        )
-        self._get_session = google.api_core.gapic_v1.method.wrap_method(
-            self.spanner_stub.GetSession,
-            default_retry=method_configs['GetSession'].retry,
-            default_timeout=method_configs['GetSession'].timeout,
-            client_info=client_info,
-        )
-        self._list_sessions = google.api_core.gapic_v1.method.wrap_method(
-            self.spanner_stub.ListSessions,
-            default_retry=method_configs['ListSessions'].retry,
-            default_timeout=method_configs['ListSessions'].timeout,
-            client_info=client_info,
-        )
-        self._delete_session = google.api_core.gapic_v1.method.wrap_method(
-            self.spanner_stub.DeleteSession,
-            default_retry=method_configs['DeleteSession'].retry,
-            default_timeout=method_configs['DeleteSession'].timeout,
-            client_info=client_info,
-        )
-        self._execute_sql = google.api_core.gapic_v1.method.wrap_method(
-            self.spanner_stub.ExecuteSql,
-            default_retry=method_configs['ExecuteSql'].retry,
-            default_timeout=method_configs['ExecuteSql'].timeout,
-            client_info=client_info,
-        )
-        self._execute_streaming_sql = google.api_core.gapic_v1.method.wrap_method(
-            self.spanner_stub.ExecuteStreamingSql,
-            default_retry=method_configs['ExecuteStreamingSql'].retry,
-            default_timeout=method_configs['ExecuteStreamingSql'].timeout,
-            client_info=client_info,
-        )
-        self._read = google.api_core.gapic_v1.method.wrap_method(
-            self.spanner_stub.Read,
-            default_retry=method_configs['Read'].retry,
-            default_timeout=method_configs['Read'].timeout,
-            client_info=client_info,
-        )
-        self._streaming_read = google.api_core.gapic_v1.method.wrap_method(
-            self.spanner_stub.StreamingRead,
-            default_retry=method_configs['StreamingRead'].retry,
-            default_timeout=method_configs['StreamingRead'].timeout,
-            client_info=client_info,
-        )
-        self._begin_transaction = google.api_core.gapic_v1.method.wrap_method(
-            self.spanner_stub.BeginTransaction,
-            default_retry=method_configs['BeginTransaction'].retry,
-            default_timeout=method_configs['BeginTransaction'].timeout,
-            client_info=client_info,
-        )
-        self._commit = google.api_core.gapic_v1.method.wrap_method(
-            self.spanner_stub.Commit,
-            default_retry=method_configs['Commit'].retry,
-            default_timeout=method_configs['Commit'].timeout,
-            client_info=client_info,
-        )
-        self._rollback = google.api_core.gapic_v1.method.wrap_method(
-            self.spanner_stub.Rollback,
-            default_retry=method_configs['Rollback'].retry,
-            default_timeout=method_configs['Rollback'].timeout,
-            client_info=client_info,
-        )
-        self._partition_query = google.api_core.gapic_v1.method.wrap_method(
-            self.spanner_stub.PartitionQuery,
-            default_retry=method_configs['PartitionQuery'].retry,
-            default_timeout=method_configs['PartitionQuery'].timeout,
-            client_info=client_info,
-        )
-        self._partition_read = google.api_core.gapic_v1.method.wrap_method(
-            self.spanner_stub.PartitionRead,
-            default_retry=method_configs['PartitionRead'].retry,
-            default_timeout=method_configs['PartitionRead'].timeout,
-            client_info=client_info,
-        )
+        # Save a dictionary of cached API call functions.
+        # These are the actual callables which invoke the proper
+        # transport methods, wrapped with `wrap_method` to add retry,
+        # timeout, and the like.
+        self._inner_api_calls = {}
 
     # Service calls
     def create_session(self,
@@ -282,6 +236,8 @@ class SpannerClient(object):
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
 
         Returns:
             A :class:`~google.cloud.spanner_v1.types.Session` instance.
@@ -293,11 +249,22 @@ class SpannerClient(object):
                     to a retryable error and retry attempts failed.
             ValueError: If the parameters are invalid.
         """
+        # Wrap the transport method to add retry and timeout logic.
+        if 'create_session' not in self._inner_api_calls:
+            self._inner_api_calls[
+                'create_session'] = google.api_core.gapic_v1.method.wrap_method(
+                    self.transport.create_session,
+                    default_retry=self._method_configs['CreateSession'].retry,
+                    default_timeout=self._method_configs['CreateSession'].
+                    timeout,
+                    client_info=self._client_info,
+                )
+
         request = spanner_pb2.CreateSessionRequest(
             database=database,
             session=session,
         )
-        return self._create_session(
+        return self._inner_api_calls['create_session'](
             request, retry=retry, timeout=timeout, metadata=metadata)
 
     def get_session(self,
@@ -327,6 +294,8 @@ class SpannerClient(object):
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
 
         Returns:
             A :class:`~google.cloud.spanner_v1.types.Session` instance.
@@ -338,8 +307,18 @@ class SpannerClient(object):
                     to a retryable error and retry attempts failed.
             ValueError: If the parameters are invalid.
         """
+        # Wrap the transport method to add retry and timeout logic.
+        if 'get_session' not in self._inner_api_calls:
+            self._inner_api_calls[
+                'get_session'] = google.api_core.gapic_v1.method.wrap_method(
+                    self.transport.get_session,
+                    default_retry=self._method_configs['GetSession'].retry,
+                    default_timeout=self._method_configs['GetSession'].timeout,
+                    client_info=self._client_info,
+                )
+
         request = spanner_pb2.GetSessionRequest(name=name, )
-        return self._get_session(
+        return self._inner_api_calls['get_session'](
             request, retry=retry, timeout=timeout, metadata=metadata)
 
     def list_sessions(self,
@@ -359,13 +338,15 @@ class SpannerClient(object):
             >>>
             >>> database = client.database_path('[PROJECT]', '[INSTANCE]', '[DATABASE]')
             >>>
-            >>>
             >>> # Iterate over all results
             >>> for element in client.list_sessions(database):
             ...     # process element
             ...     pass
             >>>
-            >>> # Or iterate over results one page at a time
+            >>>
+            >>> # Alternatively:
+            >>>
+            >>> # Iterate over results one page at a time
             >>> for page in client.list_sessions(database, options=CallOptions(page_token=INITIAL_PAGE)):
             ...     for element in page:
             ...         # process element
@@ -396,6 +377,8 @@ class SpannerClient(object):
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
 
         Returns:
             A :class:`~google.gax.PageIterator` instance. By default, this
@@ -410,6 +393,17 @@ class SpannerClient(object):
                     to a retryable error and retry attempts failed.
             ValueError: If the parameters are invalid.
         """
+        # Wrap the transport method to add retry and timeout logic.
+        if 'list_sessions' not in self._inner_api_calls:
+            self._inner_api_calls[
+                'list_sessions'] = google.api_core.gapic_v1.method.wrap_method(
+                    self.transport.list_sessions,
+                    default_retry=self._method_configs['ListSessions'].retry,
+                    default_timeout=self._method_configs['ListSessions'].
+                    timeout,
+                    client_info=self._client_info,
+                )
+
         request = spanner_pb2.ListSessionsRequest(
             database=database,
             page_size=page_size,
@@ -418,9 +412,10 @@ class SpannerClient(object):
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
             method=functools.partial(
-                self._list_sessions,
-                retry=retry, timeout=timeout, metadata=metadata,
-            ),
+                self._inner_api_calls['list_sessions'],
+                retry=retry,
+                timeout=timeout,
+                metadata=metadata),
             request=request,
             items_field='sessions',
             request_token_field='page_token',
@@ -453,6 +448,8 @@ class SpannerClient(object):
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -461,8 +458,19 @@ class SpannerClient(object):
                     to a retryable error and retry attempts failed.
             ValueError: If the parameters are invalid.
         """
+        # Wrap the transport method to add retry and timeout logic.
+        if 'delete_session' not in self._inner_api_calls:
+            self._inner_api_calls[
+                'delete_session'] = google.api_core.gapic_v1.method.wrap_method(
+                    self.transport.delete_session,
+                    default_retry=self._method_configs['DeleteSession'].retry,
+                    default_timeout=self._method_configs['DeleteSession'].
+                    timeout,
+                    client_info=self._client_info,
+                )
+
         request = spanner_pb2.DeleteSessionRequest(name=name, )
-        self._delete_session(
+        self._inner_api_calls['delete_session'](
             request, retry=retry, timeout=timeout, metadata=metadata)
 
     def execute_sql(self,
@@ -474,16 +482,17 @@ class SpannerClient(object):
                     resume_token=None,
                     query_mode=None,
                     partition_token=None,
+                    seqno=None,
                     retry=google.api_core.gapic_v1.method.DEFAULT,
                     timeout=google.api_core.gapic_v1.method.DEFAULT,
                     metadata=None):
         """
-        Executes an SQL query, returning all rows in a single reply. This
+        Executes an SQL statement, returning all results in a single reply. This
         method cannot be used to return a result set larger than 10 MiB;
         if the query yields more data than that, the query fails with
         a ``FAILED_PRECONDITION`` error.
 
-        Queries inside read-write transactions might return ``ABORTED``. If
+        Operations inside read-write transactions might return ``ABORTED``. If
         this occurs, the application should restart the transaction from
         the beginning. See ``Transaction`` for more details.
 
@@ -496,18 +505,31 @@ class SpannerClient(object):
             >>> client = spanner_v1.SpannerClient()
             >>>
             >>> session = client.session_path('[PROJECT]', '[INSTANCE]', '[DATABASE]', '[SESSION]')
+            >>>
+            >>> # TODO: Initialize ``sql``:
             >>> sql = ''
             >>>
             >>> response = client.execute_sql(session, sql)
 
         Args:
             session (str): Required. The session in which the SQL query should be performed.
-            sql (str): Required. The SQL query string.
+            sql (str): Required. The SQL string.
             transaction (Union[dict, ~google.cloud.spanner_v1.types.TransactionSelector]): The transaction to use. If none is provided, the default is a
                 temporary read-only transaction with strong concurrency.
+
+                The transaction to use.
+
+                For queries, if none is provided, the default is a temporary read-only
+                transaction with strong concurrency.
+
+                Standard DML statements require a ReadWrite transaction. Single-use
+                transactions are not supported (to avoid replay).  The caller must
+                either supply an existing transaction ID or begin a new transaction.
+
+                Partitioned DML requires an existing PartitionedDml transaction ID.
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.spanner_v1.types.TransactionSelector`
-            params (Union[dict, ~google.cloud.spanner_v1.types.Struct]): The SQL query string can contain parameter placeholders. A parameter
+            params (Union[dict, ~google.cloud.spanner_v1.types.Struct]): The SQL string can contain parameter placeholders. A parameter
                 placeholder consists of ``'@'`` followed by the parameter
                 name. Parameter names consist of any combination of letters,
                 numbers, and underscores.
@@ -516,7 +538,7 @@ class SpannerClient(object):
                 parameter name can be used more than once, for example:
                   ``\"WHERE id > @msg_id AND id < @msg_id + 100\"``
 
-                It is an error to execute an SQL query with unbound parameters.
+                It is an error to execute an SQL statement with unbound parameters.
 
                 Parameter values are specified using ``params``, which is a JSON
                 object whose keys are parameter names, and whose values are the
@@ -528,29 +550,42 @@ class SpannerClient(object):
                 of type ``STRING`` both appear in ``params`` as JSON strings.
 
                 In these cases, ``param_types`` can be used to specify the exact
-                SQL type for some or all of the SQL query parameters. See the
+                SQL type for some or all of the SQL statement parameters. See the
                 definition of ``Type`` for more information
                 about SQL types.
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.spanner_v1.types.Type`
-            resume_token (bytes): If this request is resuming a previously interrupted SQL query
+            resume_token (bytes): If this request is resuming a previously interrupted SQL statement
                 execution, ``resume_token`` should be copied from the last
                 ``PartialResultSet`` yielded before the interruption. Doing this
-                enables the new SQL query execution to resume where the last one left
+                enables the new SQL statement execution to resume where the last one left
                 off. The rest of the request parameters must exactly match the
                 request that yielded this token.
             query_mode (~google.cloud.spanner_v1.types.QueryMode): Used to control the amount of debugging information returned in
-                ``ResultSetStats``.
+                ``ResultSetStats``. If ``partition_token`` is set, ``query_mode`` can only
+                be set to ``QueryMode.NORMAL``.
             partition_token (bytes): If present, results will be restricted to the specified partition
                 previously created using PartitionQuery().  There must be an exact
                 match for the values of fields common to this message and the
                 PartitionQueryRequest message used to create this partition_token.
+            seqno (long): A per-transaction sequence number used to identify this request. This
+                makes each request idempotent such that if the request is received multiple
+                times, at most one will succeed.
+
+                The sequence number must be monotonically increasing within the
+                transaction. If a request arrives for the first time with an out-of-order
+                sequence number, the transaction may be aborted. Replays of previously
+                handled requests will yield the same response as the first execution.
+
+                Required for DML statements. Ignored for queries.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
 
         Returns:
             A :class:`~google.cloud.spanner_v1.types.ResultSet` instance.
@@ -562,6 +597,16 @@ class SpannerClient(object):
                     to a retryable error and retry attempts failed.
             ValueError: If the parameters are invalid.
         """
+        # Wrap the transport method to add retry and timeout logic.
+        if 'execute_sql' not in self._inner_api_calls:
+            self._inner_api_calls[
+                'execute_sql'] = google.api_core.gapic_v1.method.wrap_method(
+                    self.transport.execute_sql,
+                    default_retry=self._method_configs['ExecuteSql'].retry,
+                    default_timeout=self._method_configs['ExecuteSql'].timeout,
+                    client_info=self._client_info,
+                )
+
         request = spanner_pb2.ExecuteSqlRequest(
             session=session,
             sql=sql,
@@ -571,8 +616,9 @@ class SpannerClient(object):
             resume_token=resume_token,
             query_mode=query_mode,
             partition_token=partition_token,
+            seqno=seqno,
         )
-        return self._execute_sql(
+        return self._inner_api_calls['execute_sql'](
             request, retry=retry, timeout=timeout, metadata=metadata)
 
     def execute_streaming_sql(self,
@@ -584,6 +630,7 @@ class SpannerClient(object):
                               resume_token=None,
                               query_mode=None,
                               partition_token=None,
+                              seqno=None,
                               retry=google.api_core.gapic_v1.method.DEFAULT,
                               timeout=google.api_core.gapic_v1.method.DEFAULT,
                               metadata=None):
@@ -600,6 +647,8 @@ class SpannerClient(object):
             >>> client = spanner_v1.SpannerClient()
             >>>
             >>> session = client.session_path('[PROJECT]', '[INSTANCE]', '[DATABASE]', '[SESSION]')
+            >>>
+            >>> # TODO: Initialize ``sql``:
             >>> sql = ''
             >>>
             >>> for element in client.execute_streaming_sql(session, sql):
@@ -608,12 +657,23 @@ class SpannerClient(object):
 
         Args:
             session (str): Required. The session in which the SQL query should be performed.
-            sql (str): Required. The SQL query string.
+            sql (str): Required. The SQL string.
             transaction (Union[dict, ~google.cloud.spanner_v1.types.TransactionSelector]): The transaction to use. If none is provided, the default is a
                 temporary read-only transaction with strong concurrency.
+
+                The transaction to use.
+
+                For queries, if none is provided, the default is a temporary read-only
+                transaction with strong concurrency.
+
+                Standard DML statements require a ReadWrite transaction. Single-use
+                transactions are not supported (to avoid replay).  The caller must
+                either supply an existing transaction ID or begin a new transaction.
+
+                Partitioned DML requires an existing PartitionedDml transaction ID.
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.spanner_v1.types.TransactionSelector`
-            params (Union[dict, ~google.cloud.spanner_v1.types.Struct]): The SQL query string can contain parameter placeholders. A parameter
+            params (Union[dict, ~google.cloud.spanner_v1.types.Struct]): The SQL string can contain parameter placeholders. A parameter
                 placeholder consists of ``'@'`` followed by the parameter
                 name. Parameter names consist of any combination of letters,
                 numbers, and underscores.
@@ -622,7 +682,7 @@ class SpannerClient(object):
                 parameter name can be used more than once, for example:
                   ``\"WHERE id > @msg_id AND id < @msg_id + 100\"``
 
-                It is an error to execute an SQL query with unbound parameters.
+                It is an error to execute an SQL statement with unbound parameters.
 
                 Parameter values are specified using ``params``, which is a JSON
                 object whose keys are parameter names, and whose values are the
@@ -634,29 +694,42 @@ class SpannerClient(object):
                 of type ``STRING`` both appear in ``params`` as JSON strings.
 
                 In these cases, ``param_types`` can be used to specify the exact
-                SQL type for some or all of the SQL query parameters. See the
+                SQL type for some or all of the SQL statement parameters. See the
                 definition of ``Type`` for more information
                 about SQL types.
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.spanner_v1.types.Type`
-            resume_token (bytes): If this request is resuming a previously interrupted SQL query
+            resume_token (bytes): If this request is resuming a previously interrupted SQL statement
                 execution, ``resume_token`` should be copied from the last
                 ``PartialResultSet`` yielded before the interruption. Doing this
-                enables the new SQL query execution to resume where the last one left
+                enables the new SQL statement execution to resume where the last one left
                 off. The rest of the request parameters must exactly match the
                 request that yielded this token.
             query_mode (~google.cloud.spanner_v1.types.QueryMode): Used to control the amount of debugging information returned in
-                ``ResultSetStats``.
+                ``ResultSetStats``. If ``partition_token`` is set, ``query_mode`` can only
+                be set to ``QueryMode.NORMAL``.
             partition_token (bytes): If present, results will be restricted to the specified partition
                 previously created using PartitionQuery().  There must be an exact
                 match for the values of fields common to this message and the
                 PartitionQueryRequest message used to create this partition_token.
+            seqno (long): A per-transaction sequence number used to identify this request. This
+                makes each request idempotent such that if the request is received multiple
+                times, at most one will succeed.
+
+                The sequence number must be monotonically increasing within the
+                transaction. If a request arrives for the first time with an out-of-order
+                sequence number, the transaction may be aborted. Replays of previously
+                handled requests will yield the same response as the first execution.
+
+                Required for DML statements. Ignored for queries.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
 
         Returns:
             Iterable[~google.cloud.spanner_v1.types.PartialResultSet].
@@ -668,6 +741,18 @@ class SpannerClient(object):
                     to a retryable error and retry attempts failed.
             ValueError: If the parameters are invalid.
         """
+        # Wrap the transport method to add retry and timeout logic.
+        if 'execute_streaming_sql' not in self._inner_api_calls:
+            self._inner_api_calls[
+                'execute_streaming_sql'] = google.api_core.gapic_v1.method.wrap_method(
+                    self.transport.execute_streaming_sql,
+                    default_retry=self._method_configs['ExecuteStreamingSql'].
+                    retry,
+                    default_timeout=self.
+                    _method_configs['ExecuteStreamingSql'].timeout,
+                    client_info=self._client_info,
+                )
+
         request = spanner_pb2.ExecuteSqlRequest(
             session=session,
             sql=sql,
@@ -677,8 +762,9 @@ class SpannerClient(object):
             resume_token=resume_token,
             query_mode=query_mode,
             partition_token=partition_token,
+            seqno=seqno,
         )
-        return self._execute_streaming_sql(
+        return self._inner_api_calls['execute_streaming_sql'](
             request, retry=retry, timeout=timeout, metadata=metadata)
 
     def read(self,
@@ -715,8 +801,14 @@ class SpannerClient(object):
             >>> client = spanner_v1.SpannerClient()
             >>>
             >>> session = client.session_path('[PROJECT]', '[INSTANCE]', '[DATABASE]', '[SESSION]')
+            >>>
+            >>> # TODO: Initialize ``table``:
             >>> table = ''
+            >>>
+            >>> # TODO: Initialize ``columns``:
             >>> columns = []
+            >>>
+            >>> # TODO: Initialize ``key_set``:
             >>> key_set = {}
             >>>
             >>> response = client.read(session, table, columns, key_set)
@@ -766,6 +858,8 @@ class SpannerClient(object):
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
 
         Returns:
             A :class:`~google.cloud.spanner_v1.types.ResultSet` instance.
@@ -777,6 +871,16 @@ class SpannerClient(object):
                     to a retryable error and retry attempts failed.
             ValueError: If the parameters are invalid.
         """
+        # Wrap the transport method to add retry and timeout logic.
+        if 'read' not in self._inner_api_calls:
+            self._inner_api_calls[
+                'read'] = google.api_core.gapic_v1.method.wrap_method(
+                    self.transport.read,
+                    default_retry=self._method_configs['Read'].retry,
+                    default_timeout=self._method_configs['Read'].timeout,
+                    client_info=self._client_info,
+                )
+
         request = spanner_pb2.ReadRequest(
             session=session,
             table=table,
@@ -788,7 +892,7 @@ class SpannerClient(object):
             resume_token=resume_token,
             partition_token=partition_token,
         )
-        return self._read(
+        return self._inner_api_calls['read'](
             request, retry=retry, timeout=timeout, metadata=metadata)
 
     def streaming_read(self,
@@ -817,8 +921,14 @@ class SpannerClient(object):
             >>> client = spanner_v1.SpannerClient()
             >>>
             >>> session = client.session_path('[PROJECT]', '[INSTANCE]', '[DATABASE]', '[SESSION]')
+            >>>
+            >>> # TODO: Initialize ``table``:
             >>> table = ''
+            >>>
+            >>> # TODO: Initialize ``columns``:
             >>> columns = []
+            >>>
+            >>> # TODO: Initialize ``key_set``:
             >>> key_set = {}
             >>>
             >>> for element in client.streaming_read(session, table, columns, key_set):
@@ -870,6 +980,8 @@ class SpannerClient(object):
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
 
         Returns:
             Iterable[~google.cloud.spanner_v1.types.PartialResultSet].
@@ -881,6 +993,17 @@ class SpannerClient(object):
                     to a retryable error and retry attempts failed.
             ValueError: If the parameters are invalid.
         """
+        # Wrap the transport method to add retry and timeout logic.
+        if 'streaming_read' not in self._inner_api_calls:
+            self._inner_api_calls[
+                'streaming_read'] = google.api_core.gapic_v1.method.wrap_method(
+                    self.transport.streaming_read,
+                    default_retry=self._method_configs['StreamingRead'].retry,
+                    default_timeout=self._method_configs['StreamingRead'].
+                    timeout,
+                    client_info=self._client_info,
+                )
+
         request = spanner_pb2.ReadRequest(
             session=session,
             table=table,
@@ -892,7 +1015,7 @@ class SpannerClient(object):
             resume_token=resume_token,
             partition_token=partition_token,
         )
-        return self._streaming_read(
+        return self._inner_api_calls['streaming_read'](
             request, retry=retry, timeout=timeout, metadata=metadata)
 
     def begin_transaction(self,
@@ -913,6 +1036,8 @@ class SpannerClient(object):
             >>> client = spanner_v1.SpannerClient()
             >>>
             >>> session = client.session_path('[PROJECT]', '[INSTANCE]', '[DATABASE]', '[SESSION]')
+            >>>
+            >>> # TODO: Initialize ``options_``:
             >>> options_ = {}
             >>>
             >>> response = client.begin_transaction(session, options_)
@@ -928,6 +1053,8 @@ class SpannerClient(object):
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
 
         Returns:
             A :class:`~google.cloud.spanner_v1.types.Transaction` instance.
@@ -939,11 +1066,23 @@ class SpannerClient(object):
                     to a retryable error and retry attempts failed.
             ValueError: If the parameters are invalid.
         """
+        # Wrap the transport method to add retry and timeout logic.
+        if 'begin_transaction' not in self._inner_api_calls:
+            self._inner_api_calls[
+                'begin_transaction'] = google.api_core.gapic_v1.method.wrap_method(
+                    self.transport.begin_transaction,
+                    default_retry=self._method_configs['BeginTransaction'].
+                    retry,
+                    default_timeout=self._method_configs['BeginTransaction'].
+                    timeout,
+                    client_info=self._client_info,
+                )
+
         request = spanner_pb2.BeginTransactionRequest(
             session=session,
             options=options_,
         )
-        return self._begin_transaction(
+        return self._inner_api_calls['begin_transaction'](
             request, retry=retry, timeout=timeout, metadata=metadata)
 
     def commit(self,
@@ -970,6 +1109,8 @@ class SpannerClient(object):
             >>> client = spanner_v1.SpannerClient()
             >>>
             >>> session = client.session_path('[PROJECT]', '[INSTANCE]', '[DATABASE]', '[SESSION]')
+            >>>
+            >>> # TODO: Initialize ``mutations``:
             >>> mutations = []
             >>>
             >>> response = client.commit(session, mutations)
@@ -999,6 +1140,8 @@ class SpannerClient(object):
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
 
         Returns:
             A :class:`~google.cloud.spanner_v1.types.CommitResponse` instance.
@@ -1010,6 +1153,16 @@ class SpannerClient(object):
                     to a retryable error and retry attempts failed.
             ValueError: If the parameters are invalid.
         """
+        # Wrap the transport method to add retry and timeout logic.
+        if 'commit' not in self._inner_api_calls:
+            self._inner_api_calls[
+                'commit'] = google.api_core.gapic_v1.method.wrap_method(
+                    self.transport.commit,
+                    default_retry=self._method_configs['Commit'].retry,
+                    default_timeout=self._method_configs['Commit'].timeout,
+                    client_info=self._client_info,
+                )
+
         # Sanity check: We have some fields which are mutually exclusive;
         # raise ValueError if more than one is sent.
         google.api_core.protobuf_helpers.check_oneof(
@@ -1023,7 +1176,7 @@ class SpannerClient(object):
             transaction_id=transaction_id,
             single_use_transaction=single_use_transaction,
         )
-        return self._commit(
+        return self._inner_api_calls['commit'](
             request, retry=retry, timeout=timeout, metadata=metadata)
 
     def rollback(self,
@@ -1048,6 +1201,8 @@ class SpannerClient(object):
             >>> client = spanner_v1.SpannerClient()
             >>>
             >>> session = client.session_path('[PROJECT]', '[INSTANCE]', '[DATABASE]', '[SESSION]')
+            >>>
+            >>> # TODO: Initialize ``transaction_id``:
             >>> transaction_id = b''
             >>>
             >>> client.rollback(session, transaction_id)
@@ -1061,6 +1216,8 @@ class SpannerClient(object):
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -1069,11 +1226,21 @@ class SpannerClient(object):
                     to a retryable error and retry attempts failed.
             ValueError: If the parameters are invalid.
         """
+        # Wrap the transport method to add retry and timeout logic.
+        if 'rollback' not in self._inner_api_calls:
+            self._inner_api_calls[
+                'rollback'] = google.api_core.gapic_v1.method.wrap_method(
+                    self.transport.rollback,
+                    default_retry=self._method_configs['Rollback'].retry,
+                    default_timeout=self._method_configs['Rollback'].timeout,
+                    client_info=self._client_info,
+                )
+
         request = spanner_pb2.RollbackRequest(
             session=session,
             transaction_id=transaction_id,
         )
-        self._rollback(
+        self._inner_api_calls['rollback'](
             request, retry=retry, timeout=timeout, metadata=metadata)
 
     def partition_query(self,
@@ -1093,8 +1260,11 @@ class SpannerClient(object):
         of the query result to read.  The same session and read-only transaction
         must be used by the PartitionQueryRequest used to create the
         partition tokens and the ExecuteSqlRequests that use the partition tokens.
+
         Partition tokens become invalid when the session used to create them
-        is deleted or begins a new transaction.
+        is deleted, is idle for too long, begins a new transaction, or becomes too
+        old.  When any of these happen, it is not possible to resume the query, and
+        the whole operation must be restarted from the beginning.
 
         Example:
             >>> from google.cloud import spanner_v1
@@ -1102,6 +1272,8 @@ class SpannerClient(object):
             >>> client = spanner_v1.SpannerClient()
             >>>
             >>> session = client.session_path('[PROJECT]', '[INSTANCE]', '[DATABASE]', '[SESSION]')
+            >>>
+            >>> # TODO: Initialize ``sql``:
             >>> sql = ''
             >>>
             >>> response = client.partition_query(session, sql)
@@ -1114,6 +1286,10 @@ class SpannerClient(object):
                 union operator conceptually divides one or more tables into multiple
                 splits, remotely evaluates a subquery independently on each split, and
                 then unions all results.
+
+                This must not contain DML commands, such as INSERT, UPDATE, or
+                DELETE. Use ``ExecuteStreamingSql`` with a
+                PartitionedDml transaction for large, partition-friendly DML operations.
             transaction (Union[dict, ~google.cloud.spanner_v1.types.TransactionSelector]): Read only snapshot transactions are supported, read/write and single use
                 transactions are not.
                 If a dict is provided, it must be of the same form as the protobuf
@@ -1153,6 +1329,8 @@ class SpannerClient(object):
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
 
         Returns:
             A :class:`~google.cloud.spanner_v1.types.PartitionResponse` instance.
@@ -1164,6 +1342,17 @@ class SpannerClient(object):
                     to a retryable error and retry attempts failed.
             ValueError: If the parameters are invalid.
         """
+        # Wrap the transport method to add retry and timeout logic.
+        if 'partition_query' not in self._inner_api_calls:
+            self._inner_api_calls[
+                'partition_query'] = google.api_core.gapic_v1.method.wrap_method(
+                    self.transport.partition_query,
+                    default_retry=self._method_configs['PartitionQuery'].retry,
+                    default_timeout=self._method_configs['PartitionQuery'].
+                    timeout,
+                    client_info=self._client_info,
+                )
+
         request = spanner_pb2.PartitionQueryRequest(
             session=session,
             sql=sql,
@@ -1172,7 +1361,7 @@ class SpannerClient(object):
             param_types=param_types,
             partition_options=partition_options,
         )
-        return self._partition_query(
+        return self._inner_api_calls['partition_query'](
             request, retry=retry, timeout=timeout, metadata=metadata)
 
     def partition_read(self,
@@ -1192,9 +1381,14 @@ class SpannerClient(object):
         by ``StreamingRead`` to specify a subset of the read
         result to read.  The same session and read-only transaction must be used by
         the PartitionReadRequest used to create the partition tokens and the
-        ReadRequests that use the partition tokens.
+        ReadRequests that use the partition tokens.  There are no ordering
+        guarantees on rows returned among the returned partition tokens, or even
+        within each individual StreamingRead call issued with a partition_token.
+
         Partition tokens become invalid when the session used to create them
-        is deleted or begins a new transaction.
+        is deleted, is idle for too long, begins a new transaction, or becomes too
+        old.  When any of these happen, it is not possible to resume the read, and
+        the whole operation must be restarted from the beginning.
 
         Example:
             >>> from google.cloud import spanner_v1
@@ -1202,7 +1396,11 @@ class SpannerClient(object):
             >>> client = spanner_v1.SpannerClient()
             >>>
             >>> session = client.session_path('[PROJECT]', '[INSTANCE]', '[DATABASE]', '[SESSION]')
+            >>>
+            >>> # TODO: Initialize ``table``:
             >>> table = ''
+            >>>
+            >>> # TODO: Initialize ``key_set``:
             >>> key_set = {}
             >>>
             >>> response = client.partition_read(session, table, key_set)
@@ -1237,6 +1435,8 @@ class SpannerClient(object):
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
 
         Returns:
             A :class:`~google.cloud.spanner_v1.types.PartitionResponse` instance.
@@ -1248,6 +1448,17 @@ class SpannerClient(object):
                     to a retryable error and retry attempts failed.
             ValueError: If the parameters are invalid.
         """
+        # Wrap the transport method to add retry and timeout logic.
+        if 'partition_read' not in self._inner_api_calls:
+            self._inner_api_calls[
+                'partition_read'] = google.api_core.gapic_v1.method.wrap_method(
+                    self.transport.partition_read,
+                    default_retry=self._method_configs['PartitionRead'].retry,
+                    default_timeout=self._method_configs['PartitionRead'].
+                    timeout,
+                    client_info=self._client_info,
+                )
+
         request = spanner_pb2.PartitionReadRequest(
             session=session,
             table=table,
@@ -1257,5 +1468,5 @@ class SpannerClient(object):
             columns=columns,
             partition_options=partition_options,
         )
-        return self._partition_read(
+        return self._inner_api_calls['partition_read'](
             request, retry=retry, timeout=timeout, metadata=metadata)
