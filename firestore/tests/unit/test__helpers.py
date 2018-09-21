@@ -1393,8 +1393,7 @@ class Test_process_server_timestamp(unittest.TestCase):
         self.assertEqual(
             transform_paths,
             [_helpers.FieldPath('c', 'd', 'e'),
-             _helpers.FieldPath('f', 'g'),
-            ])
+             _helpers.FieldPath('f', 'g')])
 
         expected_data = {'a': {'b': data['a']['b']}, 'h': {}}
         self.assertEqual(actual_data, expected_data)
