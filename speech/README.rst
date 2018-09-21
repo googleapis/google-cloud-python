@@ -1,7 +1,9 @@
 Python Client for Cloud Speech API (`Beta`_)
 =============================================
 
-`Cloud Speech API`_: Converts audio to text by applying powerful neural network models.
+The `Cloud Speech API`_ enables developers to convert audio to text by applying
+powerful neural network models.  The API recognizes over 80 languages and
+variants, to support your global user base.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -61,11 +63,8 @@ Windows
     <your-env>\Scripts\activate
     <your-env>\Scripts\pip.exe install google-cloud-speech
 
-Preview
-~~~~~~~
-
-SpeechClient
-^^^^^^^^^^^^
+Example Usage
+~~~~~~~~~~~~~
 
 .. code:: py
 
@@ -88,10 +87,6 @@ Next Steps
 
 -  Read the `Client Library Documentation`_ for Cloud Speech API
    API to see other available methods on the client.
--  Read the `Cloud Speech API Product documentation`_ to learn
+-  Read the `Product documentation`_ to learn
    more about the product and see How-to Guides.
--  View this `repository’s main README`_ to see the full list of Cloud
    APIs that we cover.
-
-.. _Cloud Speech API Product documentation:  https://cloud.google.com/speech
-.. _repository’s main README: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/README.rst
