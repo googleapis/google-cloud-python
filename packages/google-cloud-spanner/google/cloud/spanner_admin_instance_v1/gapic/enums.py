@@ -1,4 +1,6 @@
-# Copyright 2017 Google LLC
+# -*- coding: utf-8 -*-
+#
+# Copyright 2018 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,9 +15,11 @@
 # limitations under the License.
 """Wrappers for protocol buffer enum types."""
 
+import enum
+
 
 class Instance(object):
-    class State(object):
+    class State(enum.IntEnum):
         """
         Indicates the current state of the instance.
 

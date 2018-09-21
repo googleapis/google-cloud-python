@@ -200,7 +200,7 @@ class TestClient(unittest.TestCase):
             )
         )
 
-        api._list_instance_configs = mock.Mock(
+        lic_api = api._inner_api_calls['list_instance_configs'] = mock.Mock(
             return_value=instance_config_pbs)
 
         response = client.list_instance_configs()
@@ -211,7 +211,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(instance_config.name, self.CONFIGURATION_NAME)
         self.assertEqual(instance_config.display_name, self.DISPLAY_NAME)
 
-        api._list_instance_configs.assert_called_once_with(
+        lic_api.assert_called_once_with(
             spanner_instance_admin_pb2.ListInstanceConfigsRequest(
                 parent=self.PATH),
             metadata=[('google-cloud-resource-prefix', client.project_name)],
@@ -239,14 +239,14 @@ class TestClient(unittest.TestCase):
             )
         )
 
-        api._list_instance_configs = mock.Mock(
+        lic_api = api._inner_api_calls['list_instance_configs'] = mock.Mock(
             return_value=instance_config_pbs)
 
         token = 'token'
         page_size = 42
         list(client.list_instance_configs(page_token=token, page_size=42))
 
-        api._list_instance_configs.assert_called_once_with(
+        lic_api.assert_called_once_with(
             spanner_instance_admin_pb2.ListInstanceConfigsRequest(
                 parent=self.PATH,
                 page_size=page_size,
@@ -312,7 +312,7 @@ class TestClient(unittest.TestCase):
             )
         )
 
-        api._list_instances = mock.Mock(
+        li_api = api._inner_api_calls['list_instances'] = mock.Mock(
             return_value=instance_pbs)
 
         response = client.list_instances()
@@ -325,7 +325,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(instance.display_name, self.DISPLAY_NAME)
         self.assertEqual(instance.node_count, self.NODE_COUNT)
 
-        api._list_instances.assert_called_once_with(
+        li_api.assert_called_once_with(
             spanner_instance_admin_pb2.ListInstancesRequest(
                 parent=self.PATH),
             metadata=[('google-cloud-resource-prefix', client.project_name)],
@@ -349,14 +349,14 @@ class TestClient(unittest.TestCase):
             )
         )
 
-        api._list_instances = mock.Mock(
+        li_api = api._inner_api_calls['list_instances'] = mock.Mock(
             return_value=instance_pbs)
 
         token = 'token'
         page_size = 42
         list(client.list_instances(page_token=token, page_size=42))
 
-        api._list_instances.assert_called_once_with(
+        li_api.assert_called_once_with(
             spanner_instance_admin_pb2.ListInstancesRequest(
                 parent=self.PATH,
                 page_size=page_size,

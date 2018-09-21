@@ -24,7 +24,6 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   serialized_pb=_b('\n(google/cloud/spanner_v1/proto/keys.proto\x12\x11google.spanner.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x1cgoogle/protobuf/struct.proto\"\xf4\x01\n\x08KeyRange\x12\x32\n\x0cstart_closed\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.ListValueH\x00\x12\x30\n\nstart_open\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.ListValueH\x00\x12\x30\n\nend_closed\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.ListValueH\x01\x12.\n\x08\x65nd_open\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.ListValueH\x01\x42\x10\n\x0estart_key_typeB\x0e\n\x0c\x65nd_key_type\"l\n\x06KeySet\x12(\n\x04keys\x18\x01 \x03(\x0b\x32\x1a.google.protobuf.ListValue\x12+\n\x06ranges\x18\x02 \x03(\x0b\x32\x1b.google.spanner.v1.KeyRange\x12\x0b\n\x03\x61ll\x18\x03 \x01(\x08\x42\x92\x01\n\x15\x63om.google.spanner.v1B\tKeysProtoP\x01Z8google.golang.org/genproto/googleapis/spanner/v1;spanner\xaa\x02\x17Google.Cloud.Spanner.V1\xca\x02\x17Google\\Cloud\\Spanner\\V1b\x06proto3')
   ,
   dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR,google_dot_protobuf_dot_struct__pb2.DESCRIPTOR,])
-_sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 
 
@@ -42,28 +41,28 @@ _KEYRANGE = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='start_open', full_name='google.spanner.v1.KeyRange.start_open', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='end_closed', full_name='google.spanner.v1.KeyRange.end_closed', index=2,
       number=3, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='end_open', full_name='google.spanner.v1.KeyRange.end_open', index=3,
       number=4, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -100,21 +99,21 @@ _KEYSET = _descriptor.Descriptor(
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='ranges', full_name='google.spanner.v1.KeySet.ranges', index=1,
       number=2, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='all', full_name='google.spanner.v1.KeySet.all', index=2,
       number=3, type=8, cpp_type=7, label=1,
       has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -151,6 +150,7 @@ _KEYSET.fields_by_name['keys'].message_type = google_dot_protobuf_dot_struct__pb
 _KEYSET.fields_by_name['ranges'].message_type = _KEYRANGE
 DESCRIPTOR.message_types_by_name['KeyRange'] = _KEYRANGE
 DESCRIPTOR.message_types_by_name['KeySet'] = _KEYSET
+_sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 KeyRange = _reflection.GeneratedProtocolMessageType('KeyRange', (_message.Message,), dict(
   DESCRIPTOR = _KEYRANGE,
@@ -330,14 +330,4 @@ _sym_db.RegisterMessage(KeySet)
 
 DESCRIPTOR.has_options = True
 DESCRIPTOR._options = _descriptor._ParseOptions(descriptor_pb2.FileOptions(), _b('\n\025com.google.spanner.v1B\tKeysProtoP\001Z8google.golang.org/genproto/googleapis/spanner/v1;spanner\252\002\027Google.Cloud.Spanner.V1\312\002\027Google\\Cloud\\Spanner\\V1'))
-try:
-  # THESE ELEMENTS WILL BE DEPRECATED.
-  # Please use the generated *_pb2_grpc.py files instead.
-  import grpc
-  from grpc.beta import implementations as beta_implementations
-  from grpc.beta import interfaces as beta_interfaces
-  from grpc.framework.common import cardinality
-  from grpc.framework.interfaces.face import utilities as face_utilities
-except ImportError:
-  pass
 # @@protoc_insertion_point(module_scope)
