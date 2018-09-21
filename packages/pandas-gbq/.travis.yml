@@ -4,7 +4,7 @@ matrix:
   include:
   - os: linux
     python: 2.7
-    env: PYTHON=2.7 PANDAS=0.19.2 COVERAGE='false' LINT='true'
+    env: PYTHON=2.7 PANDAS=0.19.2 COVERAGE='false' LINT='false'
   - os: linux
     python: 3.5
     env: PYTHON=3.5 PANDAS=0.18.1 COVERAGE='true' LINT='false'
@@ -28,7 +28,7 @@ install:
   - pip install --upgrade pip
   - REQ="ci/requirements-${PYTHON}-${PANDAS}" ;
     if [ -f "$REQ.pip" ]; then
-      pip install --upgrade nox-automation ;
+      pip install --upgrade nox ;
     else
       wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh;
       bash miniconda.sh -b -p $HOME/miniconda ;
@@ -49,9 +49,13 @@ install:
     fi
 
 script:
-  - if [[ $PYTHON == '2.7' ]]; then nox -s test27 ; fi
-  - if [[ $PYTHON == '3.5' ]]; then nox -s test35 ; fi
-  - if [[ $PYTHON == '3.6' ]] && [[ "$PANDAS" == "MASTER" ]]; then nox -s test36master ; fi
+  - if [[ $PYTHON == '2.7' ]]; then
+      pip install -r ci/requirements-2.7-0.19.2.pip ;
+      pip install -e . ;
+      pytest tests/unit ;
+    fi
+  - if [[ $PYTHON == '3.5' ]]; then nox -s test_earliest_deps ; fi
+  - if [[ $PYTHON == '3.6' ]] && [[ "$PANDAS" == "MASTER" ]]; then nox -s test_latest_deps ; fi
   - REQ="ci/requirements-${PYTHON}-${PANDAS}" ;
     if [ -f "$REQ.conda" ]; then
       pytest --quiet -m 'not local_auth' -v tests ;

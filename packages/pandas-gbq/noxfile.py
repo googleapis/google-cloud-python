@@ -14,8 +14,11 @@ PANDAS_PRE_WHEELS = (
 )
 
 
+latest_python = "3.6"
+
+
 @nox.session
-def default(session):
+def test(session):
     session.install("mock", "pytest", "pytest-cov")
     session.install("-e", ".")
 
@@ -53,54 +56,38 @@ def unit(session):
 
 
 @nox.session
-def test27(session):
-    session.interpreter = "python2.7"
-    session.install(
-        "-r", os.path.join(".", "ci", "requirements-2.7-0.19.2.pip")
-    )
-    default(session)
-
-
-@nox.session
-def test35(session):
-    session.interpreter = "python3.5"
+def test_earliest_deps(session, python="3.5"):
     session.install(
         "-r", os.path.join(".", "ci", "requirements-3.5-0.18.1.pip")
     )
-    default(session)
+    test(session)
 
 
 @nox.session
-def test36(session):
-    session.interpreter = "python3.6"
-    session.install(
-        "-r", os.path.join(".", "ci", "requirements-3.6-0.20.1.conda")
-    )
-    default(session)
-
-
-@nox.session
-def test36master(session):
-    session.interpreter = "python3.6"
+def test_latest_deps(session, python=latest_python):
     session.install(
         "--pre", "--upgrade", "--timeout=60", "-f", PANDAS_PRE_WHEELS, "pandas"
     )
     session.install(
         "-r", os.path.join(".", "ci", "requirements-3.6-MASTER.pip")
     )
-    default(session)
+    test(session)
 
 
 @nox.session
-def lint(session):
-    session.install("flake8")
-    session.run("flake8", "pandas_gbq", "tests", "-v")
+def lint(session, python=latest_python):
+    session.install("black")
+    session.run(
+        "black",
+        "--check",
+        "--exclude",
+        "(\.git|\.hg|\.mypy_cache|\.tox|\.nox|\.venv|_build|buck-out|build|dist)",
+        ".",
+    )
 
 
 @nox.session
-def cover(session):
-    session.interpreter = "python3.5"
-
+def cover(session, python=latest_python):
     session.install("coverage", "pytest-cov")
     session.run("coverage", "report", "--show-missing", "--fail-under=40")
     session.run("coverage", "erase")
