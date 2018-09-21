@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Bigtable &#8212; google-cloud 1841c7a documentation</title>
+    <title>Using the API &#8212; google-cloud 5241cb4 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -18,7 +18,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Base for Everything" href="client-intro.html" />
-    <link rel="prev" title="Changelog" href="../bigquery_datatransfer/changelog.html" />
+    <link rel="prev" title="Python Client for Google Cloud Bigtable (Alpha)" href="index.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
@@ -35,22 +35,28 @@
 
           <div class="body" role="main">
             
-  <div class="section" id="bigtable">
-<h1>Bigtable<a class="headerlink" href="#bigtable" title="Permalink to this headline">#</a></h1>
+  <div class="section" id="using-the-api">
+<h1>Using the API<a class="headerlink" href="#using-the-api" title="Permalink to this headline">#</a></h1>
 <div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="client-intro.html">Base for Everything</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="client-intro.html#long-lived-defaults">Long-lived Defaults</a></li>
+<li class="toctree-l2"><a class="reference internal" href="client-intro.html#configuration">Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="client-intro.html#admin-api-access">Admin API Access</a></li>
+<li class="toctree-l2"><a class="reference internal" href="client-intro.html#read-only-mode">Read-Only Mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="client-intro.html#next-step">Next Step</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="client.html">Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cluster.html">Cluster</a></li>
+<li class="toctree-l1"><a class="reference internal" href="instance.html">Instance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="table.html">Table</a></li>
+<li class="toctree-l1"><a class="reference internal" href="column-family.html">Column Families</a></li>
+<li class="toctree-l1"><a class="reference internal" href="row.html">Bigtable Row</a></li>
+<li class="toctree-l1"><a class="reference internal" href="row-data.html">Row Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="row-filters.html">Bigtable Row Filters</a></li>
+</ul>
 </div>
-<div class="section" id="installation">
-<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">#</a></h2>
-<p>Install the <code class="docutils literal notranslate"><span class="pre">google-cloud-bigtable</span></code> library using <code class="docutils literal notranslate"><span class="pre">pip</span></code>:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> pip install google-cloud-bigtable
-</pre></div>
-</div>
-<p>API requests are sent to the <a class="reference external" href="https://cloud.google.com/bigtable/docs/">Google Cloud Bigtable</a> API via RPC over HTTP/2.
-In order to support this, we’ll rely on <a class="reference external" href="http://www.grpc.io/">gRPC</a>. We are working with the gRPC
-team to rapidly make the install story more user-friendly.</p>
-<p>Get started by learning about the
-<a class="reference internal" href="client.html#google.cloud.bigtable.client.Client" title="google.cloud.bigtable.client.Client"><code class="xref py py-class docutils literal notranslate"><span class="pre">Client</span></code></a> on the
-<a class="reference internal" href="client-intro.html"><span class="doc">Base for Everything</span></a> page.</p>
 <p>In the hierarchy of API concepts</p>
 <ul class="simple">
 <li>a <a class="reference internal" href="client.html#google.cloud.bigtable.client.Client" title="google.cloud.bigtable.client.Client"><code class="xref py py-class docutils literal notranslate"><span class="pre">Client</span></code></a> owns an
@@ -63,15 +69,6 @@ team to rapidly make the install story more user-friendly.</p>
 <a class="reference internal" href="row.html#google.cloud.bigtable.row.Row" title="google.cloud.bigtable.row.Row"><code class="xref py py-class docutils literal notranslate"><span class="pre">Row</span></code></a>
 (and all the cells in the row)</li>
 </ul>
-<div class="section" id="google-cloud-happybase">
-<h3><code class="docutils literal notranslate"><span class="pre">google-cloud-happybase</span></code><a class="headerlink" href="#google-cloud-happybase" title="Permalink to this headline">#</a></h3>
-<p>In addition to the core <code class="docutils literal notranslate"><span class="pre">google-cloud-bigtable</span></code>, we provide a
-<a class="reference external" href="http://google-cloud-python-happybase.readthedocs.io/en/latest/">google-cloud-happybase</a> library
-with the same interface as the popular <a class="reference external" href="https://happybase.readthedocs.io/en/latest/">HappyBase</a> library. Unlike HappyBase,
-<code class="docutils literal notranslate"><span class="pre">google-cloud-happybase</span></code> uses <code class="docutils literal notranslate"><span class="pre">google-cloud-bigtable</span></code> under the covers,
-rather than Apache HBase.</p>
-</div>
-</div>
 </div>
 
 
@@ -106,12 +103,12 @@ rather than Apache HBase.</p>
 <li class="toctree-l1"><a class="reference internal" href="../automl/index.html">AutoML</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../bigquery/index.html">BigQuery</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../bigquery_datatransfer/index.html">BigQuery Data-Transfer</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Bigtable</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Bigtable</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../container/index.html">Container</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../dataproc/index.html">Dataproc</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../datastore/index.html">Datastore</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../dlp/index.html">Data Loss Prevention</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../dns/usage.html">DNS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dns/index.html">DNS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../firestore/index.html">Firestore</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../iot/index.html">IoT</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../kms/index.html">Key Management</a></li>
@@ -142,8 +139,10 @@ rather than Apache HBase.</p>
 <h3>Related Topics</h3>
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="../bigquery_datatransfer/changelog.html" title="previous chapter">Changelog</a></li>
+  <li><a href="index.html">Python Client for Google Cloud Bigtable (Alpha)</a><ul>
+      <li>Previous: <a href="index.html" title="previous chapter">Python Client for Google Cloud Bigtable (Alpha)</a></li>
       <li>Next: <a href="client-intro.html" title="next chapter">Base for Everything</a></li>
+  </ul></li>
   </ul></li>
 </ul>
 </div>

@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Video Intelligence &#8212; google-cloud 1841c7a documentation</title>
+    <title>Python Client for Google Cloud Video Intelligence &#8212; google-cloud 5241cb4 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -35,8 +35,9 @@
 
           <div class="body" role="main">
             
-  <div class="section" id="video-intelligence">
-<h1>Video Intelligence<a class="headerlink" href="#video-intelligence" title="Permalink to this headline">#</a></h1>
+  <div class="section" id="python-client-for-google-cloud-video-intelligence">
+<h1>Python Client for Google Cloud Video Intelligence<a class="headerlink" href="#python-client-for-google-cloud-video-intelligence" title="Permalink to this headline">#</a></h1>
+<p><a class="reference external" href="https://pypi.org/project/google-cloud-videointelligence/"><img alt="pypi" src="https://img.shields.io/pypi/v/google-cloud-videointelligence.svg" /></a> <a class="reference external" href="https://pypi.org/project/google-cloud-videointelligence/"><img alt="versions" src="https://img.shields.io/pypi/pyversions/google-cloud-videointelligence.svg" /></a></p>
 <p><a class="reference external" href="https://cloud.google.com/video-intelligence/">Google Cloud Video Intelligence</a> API makes videos searchable, and
 discoverable, by extracting metadata with an easy to use API.
 You can now search every moment of every video file in your catalog
@@ -45,58 +46,67 @@ annotates videos stored in <a class="reference external" href="https://cloud.goo
 identify key nouns entities of your video, and when they occur
 within the video. Separate signal from noise, by retrieving
 relevant information at the video, shot or per frame.</p>
-<div class="section" id="installation">
-<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">#</a></h2>
-<p>Install the <code class="docutils literal notranslate"><span class="pre">google-cloud-videointelligence</span></code> library using <code class="docutils literal notranslate"><span class="pre">pip</span></code>:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> pip install google-cloud-videointelligence
-</pre></div>
-</div>
-</div>
-<div class="section" id="authentication-and-configuration">
-<h2>Authentication and Configuration<a class="headerlink" href="#authentication-and-configuration" title="Permalink to this headline">#</a></h2>
-<ul>
-<li><p class="first">For an overview of authentication in <code class="docutils literal notranslate"><span class="pre">google-cloud-python</span></code>,
-see <a class="reference internal" href="../core/auth.html"><span class="doc">Authentication</span></a>.</p>
-</li>
-<li><p class="first">In addition to any authentication configuration, you should also set the
-<span class="target" id="index-0"></span><code class="xref std std-envvar docutils literal notranslate"><span class="pre">GOOGLE_CLOUD_PROJECT</span></code> environment variable for the project you’d
-like to interact with. If the <span class="target" id="index-1"></span><code class="xref std std-envvar docutils literal notranslate"><span class="pre">GOOGLE_CLOUD_PROJECT</span></code> environment
-variable is not present, the project ID from JSON file credentials is used.</p>
-<p>If you are using Google App Engine or Google Compute Engine
-this will be detected automatically.</p>
-</li>
-<li><p class="first">After configuring your environment, create a
-<a class="reference internal" href="gapic/v1/api.html#google.cloud.videointelligence_v1.VideoIntelligenceServiceClient" title="google.cloud.videointelligence_v1.VideoIntelligenceServiceClient"><code class="xref py py-class docutils literal notranslate"><span class="pre">VideoIntelligenceServiceClient</span></code></a>.</p>
-</li>
+<ul class="simple">
+<li><a class="reference external" href="https://googlecloudplatform.github.io/google-cloud-python/latest/datastore/index.html">Client Library Documentation</a></li>
+<li><a class="reference external" href="https://cloud.google.com/video-intelligence/docs/">Product Documentation</a></li>
 </ul>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">videointelligence</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">videointelligence</span><span class="o">.</span><span class="n">VideoIntelligenceServiceClient</span><span class="p">()</span>
+<div class="section" id="quick-start">
+<h2>Quick Start<a class="headerlink" href="#quick-start" title="Permalink to this headline">#</a></h2>
+<p>In order to use this library, you first need to go through the following steps:</p>
+<ol class="arabic simple">
+<li><a class="reference external" href="https://console.cloud.google.com/project">Select or create a Cloud Platform project.</a></li>
+<li><a class="reference external" href="https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project">Enable billing for your project.</a></li>
+<li><a class="reference external" href="https://cloud.google.com/datastore">Enable the Google Cloud Video Intelligence API.</a></li>
+<li><a class="reference external" href="https://googlecloudplatform.github.io/google-cloud-python/latest/core/auth.html">Setup Authentication.</a></li>
+</ol>
+<div class="section" id="installation">
+<h3>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">#</a></h3>
+<p>Install this library in a <a class="reference external" href="https://virtualenv.pypa.io/en/latest/">virtualenv</a> using pip. <a class="reference external" href="https://virtualenv.pypa.io/en/latest/">virtualenv</a> is a tool to
+create isolated Python environments. The basic problem it addresses is one of
+dependencies and versions, and indirectly permissions.</p>
+<p>With <a class="reference external" href="https://virtualenv.pypa.io/en/latest/">virtualenv</a>, it’s possible to install this library without needing system
+install permissions, and without clashing with the installed system
+dependencies.</p>
+<div class="section" id="mac-linux">
+<h4>Mac/Linux<a class="headerlink" href="#mac-linux" title="Permalink to this headline">#</a></h4>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install virtualenv</span>
+<span class="go">virtualenv &lt;your-env&gt;</span>
+<span class="go">source &lt;your-env&gt;/bin/activate</span>
+<span class="go">&lt;your-env&gt;/bin/pip install google-cloud-datastore</span>
 </pre></div>
 </div>
-<p>or pass in <code class="docutils literal notranslate"><span class="pre">credentials</span></code> explicitly.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">videointelligence</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">videointelligence</span><span class="o">.</span><span class="n">VideoIntelligenceServiceClient</span><span class="p">(</span>
-<span class="gp">... </span>    <span class="n">credentials</span><span class="o">=</span><span class="n">creds</span><span class="p">,</span>
-<span class="gp">... </span><span class="p">)</span>
+</div>
+<div class="section" id="windows">
+<h4>Windows<a class="headerlink" href="#windows" title="Permalink to this headline">#</a></h4>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install virtualenv</span>
+<span class="go">virtualenv &lt;your-env&gt;</span>
+<span class="go">&lt;your-env&gt;\Scripts\activate</span>
+<span class="go">&lt;your-env&gt;\Scripts\pip.exe install google-cloud-datastore</span>
 </pre></div>
 </div>
 </div>
-<div class="section" id="annotating-a-video">
-<h2>Annotating a Video<a class="headerlink" href="#annotating-a-video" title="Permalink to this headline">#</a></h2>
-<p>To annotate a video, just determine which annotation features you want, and point
-the API at your video:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">videointelligence</span>
-<span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">videointelligence</span><span class="o">.</span><span class="n">VideoIntelligenceServiceClient</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">annotate_video</span><span class="p">(</span>
-<span class="gp">... </span>    <span class="n">input_uri</span><span class="o">=</span><span class="s1">&#39;gs://cloudmleap/video/next/animals.mp4&#39;</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">features</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;LABEL_DETECTION&#39;</span><span class="p">,</span> <span class="s1">&#39;SHOT_CHANGE_DETECTION&#39;</span><span class="p">],</span>
-<span class="gp">... </span><span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span><span class="o">.</span><span class="n">annotationResults</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">labelAnnotations</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">description</span>
-<span class="go">&#39;Android&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span><span class="o">.</span><span class="n">annotationResults</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">labelAnnotations</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">description</span>
-<span class="go">&#39;Animation&#39;</span>
+</div>
+<div class="section" id="example-usage">
+<h3>Example Usage<a class="headerlink" href="#example-usage" title="Permalink to this headline">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">videointelligence</span>
+
+<span class="n">client</span> <span class="o">=</span> <span class="n">videointelligence</span><span class="o">.</span><span class="n">VideoIntelligenceServiceClient</span><span class="p">()</span>
+<span class="n">job</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">annotate_video</span><span class="p">(</span>
+    <span class="n">input_uri</span><span class="o">=</span><span class="s1">&#39;gs://&lt;bucket-name&gt;/my_video.mp4&#39;</span><span class="p">,</span>
+    <span class="n">features</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;LABEL_DETECTION&#39;</span><span class="p">,</span> <span class="s1">&#39;SHOT_CHANGE_DETECTION&#39;</span><span class="p">],</span>
+<span class="p">)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">job</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
 </pre></div>
+</div>
+</div>
+<div class="section" id="next-steps">
+<h3>Next Steps<a class="headerlink" href="#next-steps" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li>Read the <a class="reference external" href="https://googlecloudplatform.github.io/google-cloud-python/latest/datastore/index.html">Client Library Documentation</a> for Google Cloud Video Intelligence
+API to see other available methods on the client.</li>
+<li>Read the <a class="reference external" href="https://cloud.google.com/video-intelligence/docs/">Product documentation</a> to learn
+more about the product and see How-to Guides.</li>
+</ul>
 </div>
 </div>
 <div class="section" id="api-reference">
@@ -136,6 +146,9 @@ against them. In order to use ththem, you will want to import from e.g.
 <li class="toctree-l1"><a class="reference internal" href="gapic/v1beta2/types.html">Types for Google Cloud Video Intelligence API Client</a></li>
 </ul>
 </div>
+</div>
+<div class="section" id="changelog">
+<h2>Changelog<a class="headerlink" href="#changelog" title="Permalink to this headline">#</a></h2>
 <p>For a list of all <code class="docutils literal notranslate"><span class="pre">google-cloud-videointelligence</span></code> releases:</p>
 <div class="toctree-wrapper compound">
 <ul>
@@ -186,12 +199,12 @@ against them. In order to use ththem, you will want to import from e.g.
 <li class="toctree-l1"><a class="reference internal" href="../automl/index.html">AutoML</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../bigquery/index.html">BigQuery</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../bigquery_datatransfer/index.html">BigQuery Data-Transfer</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../bigtable/usage.html">Bigtable</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bigtable/index.html">Bigtable</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../container/index.html">Container</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../dataproc/index.html">Dataproc</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../datastore/index.html">Datastore</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../dlp/index.html">Data Loss Prevention</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../dns/usage.html">DNS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dns/index.html">DNS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../firestore/index.html">Firestore</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../iot/index.html">IoT</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../kms/index.html">Key Management</a></li>

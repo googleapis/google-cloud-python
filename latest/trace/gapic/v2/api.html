@@ -1,0 +1,364 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Client for Stackdriver Trace API &#8212; google-cloud 5241cb4 documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Types for Stackdriver Trace API Client" href="types.html" />
+    <link rel="prev" title="Python Client for Stackdriver Trace API (Alpha)" href="../../index.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="module-google.cloud.trace_v2">
+<span id="client-for-stackdriver-trace-api"></span><h1>Client for Stackdriver Trace API<a class="headerlink" href="#module-google.cloud.trace_v2" title="Permalink to this headline">#</a></h1>
+<dl class="class">
+<dt id="google.cloud.trace_v2.TraceServiceClient">
+<em class="property">class </em><code class="descclassname">google.cloud.trace_v2.</code><code class="descname">TraceServiceClient</code><span class="sig-paren">(</span><em>channel=None, credentials=None, client_config={'interfaces': {'google.devtools.cloudtrace.v2.TraceService': {'methods': {'BatchWriteSpans': {'retry_codes_name': 'non_idempotent', 'retry_params_name': 'default', 'timeout_millis': 30000}, 'CreateSpan': {'retry_codes_name': 'idempotent', 'retry_params_name': 'default', 'timeout_millis': 30000}}, 'retry_codes': {'idempotent': ['DEADLINE_EXCEEDED', 'UNAVAILABLE'], 'non_idempotent': []}, 'retry_params': {'default': {'initial_retry_delay_millis': 100, 'initial_rpc_timeout_millis': 30000, 'max_retry_delay_millis': 1000, 'max_rpc_timeout_millis': 60000, 'retry_delay_multiplier': 1.2, 'rpc_timeout_multiplier': 1.5, 'total_timeout_millis': 120000}}}}}, client_info=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/trace_v2.html#TraceServiceClient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.trace_v2.TraceServiceClient" title="Permalink to this definition">#</a></dt>
+<dd><p>This file describes an API for collecting and viewing traces and spans
+within a trace.  A Trace is a collection of spans corresponding to a single
+operation or set of operations for an application. A span is an individual
+timed event which forms a node of the trace tree. A single trace may
+contain span(s) from multiple services.</p>
+<p>Constructor.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>channel</strong> (<a class="reference external" href="https://grpc.io/grpc/python/grpc.html#grpc.Channel" title="(in grpcio v1.8.0)"><em>grpc.Channel</em></a>) – A <code class="docutils literal notranslate"><span class="pre">Channel</span></code> instance through
+which to make calls. This argument is mutually exclusive
+with <code class="docutils literal notranslate"><span class="pre">credentials</span></code>; providing both will raise an exception.</li>
+<li><strong>credentials</strong> (<a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.credentials.html#google.auth.credentials.Credentials" title="(in google-auth v1.5.1)"><em>google.auth.credentials.Credentials</em></a>) – The
+authorization credentials to attach to requests. These
+credentials identify this application to the service. If none
+are specified, the client will attempt to ascertain the
+credentials from the environment.</li>
+<li><strong>client_config</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – A dictionary of call options for each
+method. If not specified, the default configuration is used.</li>
+<li><strong>client_info</strong> (<em>google.api_core.gapic_v1.client_info.ClientInfo</em>) – The client info used to send a user-agent string along with
+API requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code>, then default info will be used.
+Generally, you only need to set this if you’re developing
+your own client library.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="google.cloud.trace_v2.TraceServiceClient.batch_write_spans">
+<code class="descname">batch_write_spans</code><span class="sig-paren">(</span><em>name</em>, <em>spans</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/trace_v2/gapic/trace_service_client.html#TraceServiceClient.batch_write_spans"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.trace_v2.TraceServiceClient.batch_write_spans" title="Permalink to this definition">#</a></dt>
+<dd><p>Sends new spans to new or existing traces. You cannot update
+existing spans.</p>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">trace_v2</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">trace_v2</span><span class="o">.</span><span class="n">TraceServiceClient</span><span class="p">()</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">name</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">project_path</span><span class="p">(</span><span class="s1">&#39;[PROJECT]&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">spans</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span><span class="o">.</span><span class="n">batch_write_spans</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">spans</span><span class="p">)</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Required. The name of the project where the spans belong. The format is
+<code class="docutils literal notranslate"><span class="pre">projects/[PROJECT_ID]</span></code>.</li>
+<li><strong>spans</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a><em>[</em><em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.trace_v2.types.Span" title="google.cloud.trace_v2.types.Span"><em>Span</em></a><em>]</em><em>]</em>) – A list of new spans. The span names must not match existing
+spans, or the results are undefined.
+If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.trace_v2.types.Span" title="google.cloud.trace_v2.types.Span"><code class="xref py py-class docutils literal notranslate"><span class="pre">Span</span></code></a></li>
+<li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
+be retried.</li>
+<li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
+for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
+specified, the timeout applies to each individual attempt.</li>
+<li><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
+that is provided to the method.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
+failed for any reason.</li>
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
+to a retryable error and retry attempts failed.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.trace_v2.TraceServiceClient.create_span">
+<code class="descname">create_span</code><span class="sig-paren">(</span><em>name</em>, <em>span_id</em>, <em>display_name</em>, <em>start_time</em>, <em>end_time</em>, <em>parent_span_id=None</em>, <em>attributes=None</em>, <em>stack_trace=None</em>, <em>time_events=None</em>, <em>links=None</em>, <em>status=None</em>, <em>same_process_as_parent_span=None</em>, <em>child_span_count=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/trace_v2/gapic/trace_service_client.html#TraceServiceClient.create_span"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.trace_v2.TraceServiceClient.create_span" title="Permalink to this definition">#</a></dt>
+<dd><p>Creates a new span.</p>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">trace_v2</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">trace_v2</span><span class="o">.</span><span class="n">TraceServiceClient</span><span class="p">()</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">name</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">span_path</span><span class="p">(</span><span class="s1">&#39;[PROJECT]&#39;</span><span class="p">,</span> <span class="s1">&#39;[TRACE]&#39;</span><span class="p">,</span> <span class="s1">&#39;[SPAN]&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">span_id</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">display_name</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">start_time</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">end_time</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">create_span</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">span_id</span><span class="p">,</span> <span class="n">display_name</span><span class="p">,</span> <span class="n">start_time</span><span class="p">,</span> <span class="n">end_time</span><span class="p">)</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>The resource name of the span in the following format:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">projects</span><span class="o">/</span><span class="p">[</span><span class="n">PROJECT_ID</span><span class="p">]</span><span class="o">/</span><span class="n">traces</span><span class="o">/</span><span class="p">[</span><span class="n">TRACE_ID</span><span class="p">]</span><span class="o">/</span><span class="n">spans</span><span class="o">/</span><span class="p">[</span><span class="n">SPAN_ID</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>[TRACE_ID] is a unique identifier for a trace within a project;
+it is a 32-character hexadecimal encoding of a 16-byte array.</p>
+<p>[SPAN_ID] is a unique identifier for a span within a trace; it
+is a 16-character hexadecimal encoding of an 8-byte array.</p>
+</li>
+<li><strong>span_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The [SPAN_ID] portion of the span’s resource name.</li>
+<li><strong>display_name</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.trace_v2.types.TruncatableString" title="google.cloud.trace_v2.types.TruncatableString"><em>TruncatableString</em></a><em>]</em>) – A description of the span’s operation (up to 128 bytes).
+Stackdriver Trace displays the description in the
+{% dynamic print site_values.console_name %}.
+For example, the display name can be a qualified method name or a file name
+and a line number where the operation is called. A best practice is to use
+the same display name within an application and at the same call point.
+This makes it easier to correlate spans in different traces.
+If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.trace_v2.types.TruncatableString" title="google.cloud.trace_v2.types.TruncatableString"><code class="xref py py-class docutils literal notranslate"><span class="pre">TruncatableString</span></code></a></li>
+<li><strong>start_time</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.trace_v2.types.Timestamp" title="google.cloud.trace_v2.types.Timestamp"><em>Timestamp</em></a><em>]</em>) – The start time of the span. On the client side, this is the time kept by
+the local machine where the span execution starts. On the server side, this
+is the time when the server’s application handler starts running.
+If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.trace_v2.types.Timestamp" title="google.cloud.trace_v2.types.Timestamp"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timestamp</span></code></a></li>
+<li><strong>end_time</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.trace_v2.types.Timestamp" title="google.cloud.trace_v2.types.Timestamp"><em>Timestamp</em></a><em>]</em>) – The end time of the span. On the client side, this is the time kept by
+the local machine where the span execution ends. On the server side, this
+is the time when the server application handler stops running.
+If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.trace_v2.types.Timestamp" title="google.cloud.trace_v2.types.Timestamp"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timestamp</span></code></a></li>
+<li><strong>parent_span_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The [SPAN_ID] of this span’s parent span. If this is a root span,
+then this field must be empty.</li>
+<li><strong>attributes</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><em>Attributes</em><em>]</em>) – A set of attributes on the span. You can have up to 32 attributes per
+span.
+If a dict is provided, it must be of the same form as the protobuf
+message <code class="xref py py-class docutils literal notranslate"><span class="pre">Attributes</span></code></li>
+<li><strong>stack_trace</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.trace_v2.types.StackTrace" title="google.cloud.trace_v2.types.StackTrace"><em>StackTrace</em></a><em>]</em>) – Stack trace captured at the start of the span.
+If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.trace_v2.types.StackTrace" title="google.cloud.trace_v2.types.StackTrace"><code class="xref py py-class docutils literal notranslate"><span class="pre">StackTrace</span></code></a></li>
+<li><strong>time_events</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><em>TimeEvents</em><em>]</em>) – A set of time events. You can have up to 32 annotations and 128 message
+events per span.
+If a dict is provided, it must be of the same form as the protobuf
+message <code class="xref py py-class docutils literal notranslate"><span class="pre">TimeEvents</span></code></li>
+<li><strong>links</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><em>Links</em><em>]</em>) – Links associated with the span. You can have up to 128 links per Span.
+If a dict is provided, it must be of the same form as the protobuf
+message <code class="xref py py-class docutils literal notranslate"><span class="pre">Links</span></code></li>
+<li><strong>status</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.trace_v2.types.Status" title="google.cloud.trace_v2.types.Status"><em>Status</em></a><em>]</em>) – An optional final status for this span.
+If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.trace_v2.types.Status" title="google.cloud.trace_v2.types.Status"><code class="xref py py-class docutils literal notranslate"><span class="pre">Status</span></code></a></li>
+<li><strong>same_process_as_parent_span</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.trace_v2.types.BoolValue" title="google.cloud.trace_v2.types.BoolValue"><em>BoolValue</em></a><em>]</em>) – (Optional) Set this parameter to indicate whether this span is in
+the same process as its parent. If you do not set this parameter,
+Stackdriver Trace is unable to take advantage of this helpful
+information.
+If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.trace_v2.types.BoolValue" title="google.cloud.trace_v2.types.BoolValue"><code class="xref py py-class docutils literal notranslate"><span class="pre">BoolValue</span></code></a></li>
+<li><strong>child_span_count</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.trace_v2.types.Int32Value" title="google.cloud.trace_v2.types.Int32Value"><em>Int32Value</em></a><em>]</em>) – An optional number of child spans that were generated while this span
+was active. If set, allows implementation to detect missing child spans.
+If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.trace_v2.types.Int32Value" title="google.cloud.trace_v2.types.Int32Value"><code class="xref py py-class docutils literal notranslate"><span class="pre">Int32Value</span></code></a></li>
+<li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
+be retried.</li>
+<li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
+for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
+specified, the timeout applies to each individual attempt.</li>
+<li><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
+that is provided to the method.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="types.html#google.cloud.trace_v2.types.Span" title="google.cloud.trace_v2.types.Span"><code class="xref py py-class docutils literal notranslate"><span class="pre">Span</span></code></a> instance.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
+failed for any reason.</li>
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
+to a retryable error and retry attempts failed.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.trace_v2.TraceServiceClient.enums">
+<code class="descname">enums</code><em class="property"> = &lt;module 'google.cloud.trace_v2.gapic.enums' from '/var/code/gcp/trace/google/cloud/trace_v2/gapic/enums.py'&gt;</em><a class="headerlink" href="#google.cloud.trace_v2.TraceServiceClient.enums" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="classmethod">
+<dt id="google.cloud.trace_v2.TraceServiceClient.project_path">
+<em class="property">classmethod </em><code class="descname">project_path</code><span class="sig-paren">(</span><em>project</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/trace_v2/gapic/trace_service_client.html#TraceServiceClient.project_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.trace_v2.TraceServiceClient.project_path" title="Permalink to this definition">#</a></dt>
+<dd><p>Return a fully-qualified project string.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="google.cloud.trace_v2.TraceServiceClient.span_path">
+<em class="property">classmethod </em><code class="descname">span_path</code><span class="sig-paren">(</span><em>project</em>, <em>trace</em>, <em>span</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/trace_v2/gapic/trace_service_client.html#TraceServiceClient.span_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.trace_v2.TraceServiceClient.span_path" title="Permalink to this definition">#</a></dt>
+<dd><p>Return a fully-qualified span string.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">google-cloud</a></h1>
+
+
+
+<p class="blurb">Google Cloud Client Libraries for Python</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=GoogleCloudPlatform&repo=google-cloud-python&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../core/index.html">Core Libraries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../asset/index.html">Asset Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../automl/index.html">AutoML</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../bigquery/index.html">BigQuery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../bigquery_datatransfer/index.html">BigQuery Data-Transfer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../bigtable/index.html">Bigtable</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../container/index.html">Container</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dataproc/index.html">Dataproc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../datastore/index.html">Datastore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dlp/index.html">Data Loss Prevention</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dns/index.html">DNS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../firestore/index.html">Firestore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../iot/index.html">IoT</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../kms/index.html">Key Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../language/index.html">Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pubsub/index.html">PubSub</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../oslogin/index.html">OSLogin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../redis/index.html">Redis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../resource-manager/index.html">Resource Manager</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../runtimeconfig/index.html">Python Client for Google Cloud RuntimeConfig</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../runtimeconfig/index.html#api-reference">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../websecurityscanner/index.html">Security Scanner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../spanner/index.html">Spanner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../speech/index.html">Speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../storage/index.html">Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tasks/index.html">Tasks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../texttospeech/index.html">Text-to-Speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../translate/index.html">Translate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../vision/index.html">Vision</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../videointelligence/index.html">Video Intelligence</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../error-reporting/usage.html">Stackdriver Error Reporting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../logging/index.html">Stackdriver Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../monitoring/index.html">Stackdriver Monitoring</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Stackdriver Trace</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../releases.html">Release History</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Python Client for Stackdriver Trace API (Alpha)</a><ul>
+      <li>Previous: <a href="../../index.html" title="previous chapter">Python Client for Stackdriver Trace API (Alpha)</a></li>
+      <li>Next: <a href="types.html" title="next chapter">Types for Stackdriver Trace API Client</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2014-2017, Google.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.11</a>
+      
+      |
+      <a href="../../../_sources/trace/gapic/v2/api.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/GoogleCloudPlatform/google-cloud-python" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

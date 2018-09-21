@@ -1,44 +1,10 @@
-######
-Speech
-######
+.. include:: /../speech/README.rst
 
-The `Google Speech`_ API enables developers to convert audio to text.
-The API recognizes over 80 languages and variants, to support your global user
-base.
-
-.. _Google Speech: https://cloud.google.com/speech/docs/getting-started
-
-Installation
-------------
-
-Install the ``google-cloud-speech`` library using ``pip``:
-
-.. code-block:: console
-
-    $ pip install google-cloud-speech
-
-
-Authentication and Configuration
---------------------------------
-
-:class:`~google.cloud.speech_v1.SpeechClient` objects provide a
-means to configure your application. Each instance holds
-an authenticated connection to the Cloud Speech Service.
-
-For an overview of authentication in ``google-cloud-python``, see
-:doc:`/core/auth`.
-
-Assuming your environment is set up as described in that document,
-create an instance of :class:`~.speech_v1.SpeechClient`.
-
-.. code-block:: python
-
-    >>> from google.cloud import speech
-    >>> client = speech.SpeechClient()
-
+Using the Library
+-----------------
 
 Asynchronous Recognition
-------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~
 
 The :meth:`~.speech_v1.SpeechClient.long_running_recognize` method
 sends audio data to the Speech API and initiates a Long Running Operation.
@@ -75,7 +41,7 @@ See: `Speech Asynchronous Recognize`_
 
 
 Synchronous Recognition
------------------------
+~~~~~~~~~~~~~~~~~~~~~~~
 
 The :meth:`~.speech_v1.SpeechClient.recognize` method converts speech
 data to text and returns alternative text transcriptions.
@@ -168,7 +134,7 @@ words to the vocabulary of the recognizer.
 
 
 Streaming Recognition
----------------------
+~~~~~~~~~~~~~~~~~~~~~
 
 The :meth:`~speech_v1.SpeechClient.streaming_recognize` method converts
 speech data to possible text alternatives on the fly.

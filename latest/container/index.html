@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Python Client for Google Container Engine API (Beta) &#8212; google-cloud 1841c7a documentation</title>
+    <title>Python Client for Google Container Engine API (Alpha) &#8212; google-cloud 5241cb4 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -35,8 +35,9 @@
 
           <div class="body" role="main">
             
-  <div class="section" id="python-client-for-google-container-engine-api-beta">
-<h1>Python Client for Google Container Engine API (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/README.rst">Beta</a>)<a class="headerlink" href="#python-client-for-google-container-engine-api-beta" title="Permalink to this headline">#</a></h1>
+  <div class="section" id="python-client-for-google-container-engine-api-alpha">
+<h1>Python Client for Google Container Engine API (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/README.rst">Alpha</a>)<a class="headerlink" href="#python-client-for-google-container-engine-api-alpha" title="Permalink to this headline">#</a></h1>
+<p><a class="reference external" href="https://pypi.org/project/google-cloud-container/"><img alt="pypi" src="https://img.shields.io/pypi/v/google-cloud-container.svg" /></a> <a class="reference external" href="https://pypi.org/project/google-cloud-container/"><img alt="versions" src="https://img.shields.io/pypi/pyversions/google-cloud-container.svg" /></a></p>
 <p><a class="reference external" href="https://cloud.google.com/container">Google Container Engine API</a>: The Google Kubernetes Engine API is used for building and managing container
 based applications, powered by the open source Kubernetes technology.</p>
 <ul class="simple">
@@ -78,24 +79,43 @@ dependencies.</p>
 </div>
 </div>
 </div>
+<div class="section" id="example-usage">
+<h3>Example Usage<a class="headerlink" href="#example-usage" title="Permalink to this headline">#</a></h3>
+<div class="code py highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">container_v1</span>
+
+<span class="n">client</span> <span class="o">=</span> <span class="n">container_v1</span><span class="o">.</span><span class="n">ClusterManagerClient</span><span class="p">()</span>
+
+<span class="n">project_id</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+<span class="n">zone</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+
+<span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">list_clusters</span><span class="p">(</span><span class="n">project_id</span><span class="p">,</span> <span class="n">zone</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
 <div class="section" id="next-steps">
 <h3>Next Steps<a class="headerlink" href="#next-steps" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li>Read the <a class="reference external" href="https://googlecloudplatform.github.io/google-cloud-python/latest/container/index.html">Client Library Documentation</a> for Google Container Engine API
 API to see other available methods on the client.</li>
-<li>Read the <a class="reference external" href="https://cloud.google.com/container">Google Container Engine API Product documentation</a> to learn
-more about the product and see How-to Guides.</li>
-<li>View this <a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/README.rst">repository’s main README</a> to see the full list of Cloud
-APIs that we cover.</li>
+<li>Read the <a class="reference external" href="https://cloud.google.com/container">Product documentation</a> to learn more about the product and see
+How-to Guides.</li>
 </ul>
 </div>
 </div>
 <div class="section" id="api-reference">
-<h2>Api Reference<a class="headerlink" href="#api-reference" title="Permalink to this headline">#</a></h2>
+<h2>API Reference<a class="headerlink" href="#api-reference" title="Permalink to this headline">#</a></h2>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="gapic/v1/api.html">Client for Google Container Engine API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="gapic/v1/types.html">Types for Google Container Engine API Client</a></li>
+</ul>
+</div>
+</div>
+<div class="section" id="changelog">
+<h2>Changelog<a class="headerlink" href="#changelog" title="Permalink to this headline">#</a></h2>
+<p>For a list of all <code class="docutils literal notranslate"><span class="pre">google-cloud-container</span></code> releases:</p>
+<div class="toctree-wrapper compound">
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="changelog.html#">0.1.1</a></li>
 <li class="toctree-l2"><a class="reference internal" href="changelog.html#">0.1.0</a></li>
@@ -138,12 +158,12 @@ APIs that we cover.</li>
 <li class="toctree-l1"><a class="reference internal" href="../automl/index.html">AutoML</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../bigquery/index.html">BigQuery</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../bigquery_datatransfer/index.html">BigQuery Data-Transfer</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../bigtable/usage.html">Bigtable</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bigtable/index.html">Bigtable</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Container</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../dataproc/index.html">Dataproc</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../datastore/index.html">Datastore</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../dlp/index.html">Data Loss Prevention</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../dns/usage.html">DNS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dns/index.html">DNS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../firestore/index.html">Firestore</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../iot/index.html">IoT</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../kms/index.html">Key Management</a></li>

@@ -1,26 +1,10 @@
-DNS
-===
+.. include:: /../dns/README.rst
 
-.. toctree::
-  :maxdepth: 2
-  :hidden:
-
-  client
-  zone
-  resource-record-set
-  changes
-
-Installation
-------------
-
-Install the ``google-cloud-dns`` library using ``pip``:
-
-.. code-block:: console
-
-    $ pip install google-cloud-dns
+Using the Library
+-----------------
 
 Client
-------
+~~~~~~
 
 :class:`Client <google.cloud.dns.client.Client>` objects provide a means to
 configure your DNS applications.  Each instance holds both a ``project``
@@ -37,7 +21,7 @@ create an instance of :class:`Client <google.cloud.dns.client.Client>`.
      >>> client = dns.Client()
 
 Projects
---------
+~~~~~~~~
 
 A project is the top-level container in the ``DNS`` API:  it is tied
 closely to billing, and can provide default access control across all its
@@ -55,7 +39,7 @@ To override the project inferred from the environment, pass an explicit
      >>> client = dns.Client(project='PROJECT_ID')
 
 Project Quotas
---------------
+~~~~~~~~~~~~~~
 
 Query the quotas for a given project:
 
@@ -75,7 +59,7 @@ Query the quotas for a given project:
 
 
 Project ACLs
-~~~~~~~~~~~~
+^^^^^^^^^^^^
 
 Each project has an access control list granting reader / writer / owner
 permission to one or more entities.  This list cannot be queried or set
@@ -83,7 +67,7 @@ via the API:  it must be managed using the Google Developer Console.
 
 
 Managed Zones
--------------
+~~~~~~~~~~~~~
 
 A "managed zone" is the container for DNS records for the same DNS name
 suffix and has a set of name servers that accept and responds to queries:
@@ -113,7 +97,7 @@ List the zones for a given project:
 
 
 Resource Record Sets
---------------------
+~~~~~~~~~~~~~~~~~~~~
 
 Each managed zone exposes a read-only set of resource records:
 
@@ -145,7 +129,7 @@ Each managed zone exposes a read-only set of resource records:
 
 
 Change requests
----------------
+~~~~~~~~~~~~~~~
 
 Update the resource record set for a zone by creating a change request
 bundling additions to or deletions from the set.
@@ -194,13 +178,24 @@ List changes made to the resource record set for a given zone:
       ...         page_token=page_token)  # API request
       ...     changes.extend(next_batch)
 
+
+API Reference
+-------------
+.. toctree::
+   :maxdepth: 2
+
+   client
+   zone
+   resource-record-set
+   changes
+
 Changelog
 ---------
 
 For a list of all ``google-cloud-dns`` releases:
 
 .. toctree::
-  :maxdepth: 2
+   :maxdepth: 2
 
-  changelog
+   changelog
 
