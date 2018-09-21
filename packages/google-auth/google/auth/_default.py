@@ -41,7 +41,7 @@ _HELP_MESSAGE = """\
 Could not automatically determine credentials. Please set {env} or \
 explicitly create credentials and re-run the application. For more \
 information, please see \
-https://developers.google.com/accounts/docs/application-default-credentials
+https://cloud.google.com/docs/authentication/getting-started
 """.format(env=environment_vars.CREDENTIALS).strip()
 
 # Warning when using Cloud SDK user credentials
