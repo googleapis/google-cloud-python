@@ -666,7 +666,7 @@ class TestBigQuery(unittest.TestCase):
             client.get_job(job_id, location='US')
 
         load_job_us = client.get_job(job_id)
-        load_job_us._job_ref._properties['location'] = 'US'
+        load_job_us._properties['jobReference']['location'] = 'US'
         self.assertFalse(load_job_us.exists())
         with self.assertRaises(NotFound):
             load_job_us.reload()

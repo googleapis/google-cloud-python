@@ -2740,6 +2740,39 @@ class TestClient(unittest.TestCase):
             data=resource,
         )
 
+    def test_query_detect_location(self):
+        query = 'select count(*) from persons'
+        resource_location = 'EU'
+        resource = {
+            'jobReference': {
+                'projectId': self.PROJECT,
+                # Location not set in request, but present in the response.
+                'location': resource_location,
+                'jobId': 'some-random-id',
+            },
+            'configuration': {
+                'query': {
+                    'query': query,
+                    'useLegacySql': False,
+                },
+            },
+        }
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(project=self.PROJECT, credentials=creds,
+                                _http=http)
+        conn = client._connection = _make_connection(resource)
+
+        job = client.query(query)
+
+        self.assertEqual(job.location, resource_location)
+
+        # Check that request did not contain a location.
+        conn.api_request.assert_called_once()
+        _, req = conn.api_request.call_args
+        sent = req['data']
+        self.assertIsNone(sent['jobReference'].get('location'))
+
     def test_query_w_udf_resources(self):
         from google.cloud.bigquery.job import QueryJob
         from google.cloud.bigquery.job import QueryJobConfig
