@@ -36,41 +36,8 @@ for version in versions:
     s.move(library / f'docs/gapic/{version}')
 
 
-# Use the highest version library to generate documentation index, README, and
-# import alias.
+# Use the highest version library to generate documentation import alias.
 s.move(library / 'google/cloud/speech.py')
-s.move(library / 'docs/index.rst')
-s.move(library / 'README.rst')
-
-
-# Make the docs multiversion
-s.replace(
-    'docs/index.rst',
-    r'    gapic/v1/api(.+?)\Z',
-    """\
-    gapic/v1/api
-    gapic/v1/types
-    gapic/v1p1beta1/api
-    gapic/v1p1beta1/types
-    changelog
-""", re.DOTALL | re.MULTILINE)
-
-
-# The release stage is Beta, not Alpha.
-s.replace(
-    ['README.rst', 'docs/index.rst'],
-    r'Google Cloud Speech API \(`Alpha`_\)',
-    'Google Cloud Speech API (`Beta`_)')
-
-
-s.replace(
-    ['README.rst', 'docs/index.rst'],
-    '`Alpha`', '`Beta`')
-
-
-s.replace(
-    ['README.rst', 'docs/index.rst'],
-    '.. _Alpha', '.. _Beta')
 
 
 # Fix bad reference to operations_v1
