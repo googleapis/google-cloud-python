@@ -156,7 +156,15 @@ class Test_AsyncJob(unittest.TestCase):
         self.assertEqual(job.project, self.PROJECT)
         self.assertIsNone(job.location)
         self.assertIs(job._client, client)
-        self.assertEqual(job._properties, {})
+        self.assertEqual(
+            job._properties,
+            {
+                'jobReference': {
+                    'projectId': self.PROJECT,
+                    'jobId': self.JOB_ID,
+                },
+            }
+        )
         self.assertIsInstance(job._completion_lock, type(threading.Lock()))
         self.assertEqual(
             job.path,
@@ -174,7 +182,16 @@ class Test_AsyncJob(unittest.TestCase):
         self.assertEqual(job.project, self.PROJECT)
         self.assertEqual(job.location, self.LOCATION)
         self.assertIs(job._client, client)
-        self.assertEqual(job._properties, {})
+        self.assertEqual(
+            job._properties,
+            {
+                'jobReference': {
+                    'projectId': self.PROJECT,
+                    'location': self.LOCATION,
+                    'jobId': self.JOB_ID,
+                },
+            }
+        )
         self.assertFalse(job._result_set)
         self.assertIsInstance(job._completion_lock, type(threading.Lock()))
         self.assertEqual(
@@ -359,6 +376,7 @@ class Test_AsyncJob(unittest.TestCase):
         job._copy_configuration_properties = mock.Mock()
         job._set_future_result = mock.Mock()
         job._properties = {
+            'jobReference': job._properties['jobReference'],
             'foo': 'bar',
         }
         return job
@@ -577,7 +595,7 @@ class Test_AsyncJob(unittest.TestCase):
         from google.cloud.bigquery.retry import DEFAULT_RETRY
 
         job = self._set_properties_job()
-        job._job_ref._properties['location'] = self.LOCATION
+        job._properties['jobReference']['location'] = self.LOCATION
         call_api = job._client._call_api = mock.Mock()
         call_api.side_effect = NotFound('testing')
 
@@ -636,7 +654,7 @@ class Test_AsyncJob(unittest.TestCase):
             }
         }
         job = self._set_properties_job()
-        job._job_ref._properties['location'] = self.LOCATION
+        job._properties['jobReference']['location'] = self.LOCATION
         call_api = job._client._call_api = mock.Mock()
         call_api.return_value = resource
 
@@ -693,7 +711,7 @@ class Test_AsyncJob(unittest.TestCase):
         }
         response = {'job': resource}
         job = self._set_properties_job()
-        job._job_ref._properties['location'] = self.LOCATION
+        job._properties['jobReference']['location'] = self.LOCATION
         connection = job._client._connection = _make_connection(response)
 
         self.assertTrue(job.cancel())
