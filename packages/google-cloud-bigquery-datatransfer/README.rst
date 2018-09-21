@@ -1,14 +1,20 @@
 Python Client for BigQuery Data Transfer API (`Alpha`_)
 =======================================================
 
-`BigQuery Data Transfer API`_: Transfers data from partner SaaS applications to Google BigQuery on a
-scheduled, managed basis.
+|pypi| |versions|
+
+The `BigQuery Data Transfer API`_ allows users to transfer data from partner
+SaaS applications to Google BigQuery on a scheduled, managed basis.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
 
 .. _Alpha: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/README.rst
-.. _BigQuery Data Transfer API: https://cloud.google.com/bigquery/docs/transfer-service-overview
+.. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-bigquery-datatransfer.svg
+   :target: https://pypi.org/project/google-cloud-bigquery-datatransfer/
+.. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-bigquery-datatransfer.svg
+   :target: https://pypi.org/project/google-cloud-bigquery-datatransfer/
+.. _BigQuery Data Transfer API: https://cloud.google.com/bigquery/transfer
 .. _Client Library Documentation: https://googlecloudplatform.github.io/google-cloud-python/latest/bigquery_datatransfer/index.html
 .. _Product Documentation:  https://cloud.google.com/bigquery/docs/transfer-service-overview
 
@@ -60,8 +66,8 @@ Windows
     <your-env>\Scripts\activate
     <your-env>\Scripts\pip.exe install google-cloud-bigquery-datatransfer
 
-Preview
-~~~~~~~
+Example Usage
+~~~~~~~~~~~~~
 
 DataTransferServiceClient
 ^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -91,10 +97,5 @@ Next Steps
 
 -  Read the `Client Library Documentation`_ for BigQuery Data Transfer API
    API to see other available methods on the client.
--  Read the `BigQuery Data Transfer API Product documentation`_ to learn
+-  Read the `Product documentation`_ to learn
    more about the product and see How-to Guides.
--  View this `repository’s main README`_ to see the full list of Cloud
-   APIs that we cover.
-
-.. _BigQuery Data Transfer API Product documentation:  https://cloud.google.com/bigquery/docs/transfer-service-overview
-.. _repository’s main README: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/README.rst
