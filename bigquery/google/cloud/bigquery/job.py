@@ -819,6 +819,26 @@ class _JobConfig(object):
         """
         return copy.deepcopy(self._properties)
 
+    # BLAINE
+    def merge_job_config(self, other_job_config):
+        """Merge this job config with another one. The other takes precedence with conflicting keys.
+        This is a naive one level merge.
+    
+        :rtype: :class:`google.cloud.bigquery.job._JobConfig`
+        :returns: A new job config.
+        """
+        if self._job_type == other_job_config._job_type:
+            raise TypeError("attempted to merge two incompatible job types: " + repr(self._job_type) + ', ' + repr(other_job_config._job_type))
+
+        new_job_config = self.__class__()
+        new_job_config._properties = copy.deepcopy(self._properties)
+
+        for key in list(other_job_config._properties.keys()):
+            if not self._properties.get(key):
+                new_job_config._properties[key] = other_job_config._properties[key]
+
+        return new_job_config
+
     @classmethod
     def from_api_repr(cls, resource):
         """Factory: construct a job configuration given its API representation

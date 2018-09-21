@@ -122,11 +122,12 @@ class Client(ClientWithProject):
     """The scopes required for authenticating as a BigQuery consumer."""
 
     def __init__(
-            self, project=None, credentials=None, _http=None, location=None):
+            self, project=None, credentials=None, _http=None, location=None, query_job_config=None):
         super(Client, self).__init__(
             project=project, credentials=credentials, _http=_http)
         self._connection = Connection(self)
         self._location = location
+        self._default_query_job_config = query_job_config
 
     @property
     def location(self):
@@ -1187,7 +1188,7 @@ class Client(ClientWithProject):
         return extract_job
 
     def query(
-            self, query, job_config=None, job_id=None, job_id_prefix=None,
+            self, query, job_config=None, override_job_config=False, job_id=None, job_id_prefix=None,
             location=None, project=None, retry=DEFAULT_RETRY):
         """Run a SQL query.
 
@@ -1225,6 +1226,17 @@ class Client(ClientWithProject):
 
         if location is None:
             location = self.location
+
+        # BLAINE
+        # if they don't want to override, we need to merge what they passed
+        if not override_job_config and self._default_query_job_config:
+            if job_config:
+                # anything that's not defined on the incoming, should be filled in with the default
+                job_config = job_config.merge_job_config(self._default_query_job_config)
+            else:
+                job_config = self._default_query_job_config
+        # if they want to override (or if they never passed a default),
+        # we simply send whatever they sent
 
         job_ref = job._JobReference(job_id, project=project, location=location)
         query_job = job.QueryJob(
