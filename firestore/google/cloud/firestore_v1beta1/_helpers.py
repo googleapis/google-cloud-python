@@ -851,6 +851,9 @@ def process_server_timestamp(document_data, split_on_dots=True):
         else:
             top_level_path = FieldPath.from_string(field_name)
         if isinstance(value, dict):
+            if len(value) == 0:
+                actual_data[field_name] = value
+                continue
             sub_transform_paths, sub_data, sub_field_paths = (
                 process_server_timestamp(value, False))
             for sub_transform_path in sub_transform_paths:
