@@ -3,6 +3,7 @@ config = {
         "google.cloud.dataproc.v1beta2.WorkflowTemplateService": {
             "retry_codes": {
                 "idempotent": ["DEADLINE_EXCEEDED", "UNAVAILABLE"],
+                "no_retry": [],
                 "non_idempotent": []
             },
             "retry_params": {
