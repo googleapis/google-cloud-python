@@ -3,11 +3,12 @@ config = {
         "google.pubsub.v1.Publisher": {
             "retry_codes": {
                 "idempotent": ["DEADLINE_EXCEEDED", "UNAVAILABLE"],
+                "http_get": ["DEADLINE_EXCEEDED", "UNAVAILABLE"],
+                "non_idempotent": [],
                 "one_plus_delivery": [
                     "ABORTED", "CANCELLED", "DEADLINE_EXCEEDED", "INTERNAL",
                     "RESOURCE_EXHAUSTED", "UNAVAILABLE", "UNKNOWN"
-                ],
-                "non_idempotent": []
+                ]
             },
             "retry_params": {
                 "default": {
