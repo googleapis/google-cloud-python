@@ -10,7 +10,7 @@ variants, to support your global user base.
 
 .. _Beta: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/README.rst
 .. _Cloud Speech API: https://cloud.google.com/speech
-.. _Client Library Documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/speech/usage.html
+.. _Client Library Documentation: https://googlecloudplatform.github.io/google-cloud-python/latest/speech/index.html
 .. _Product Documentation:  https://cloud.google.com/speech
 
 Quick Start
