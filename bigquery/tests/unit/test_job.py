@@ -931,10 +931,12 @@ class Test_JobConfig(unittest.TestCase):
         # case where job types differ
         basic_job_config = QueryJobConfig()
         conflicting_job_config = self._make_one('conflicting_job_type')
-        self.assertNotEqual(basic_job_config._job_type, conflicting_job_config._job_type)
+        self.assertNotEqual(
+            basic_job_config._job_type, conflicting_job_config._job_type)
 
         with self.assertRaises(TypeError):
-            fail_job_config = basic_job_config.fill_from_default(conflicting_job_config)
+            basic_job_config.fill_from_default(
+                conflicting_job_config)
 
     @mock.patch('google.cloud.bigquery._helpers._get_sub_prop')
     def test__get_sub_prop_wo_default(self, _get_sub_prop):

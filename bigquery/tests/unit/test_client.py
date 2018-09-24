@@ -113,7 +113,7 @@ class TestClient(unittest.TestCase):
         self.assertIs(client._connection.credentials, creds)
         self.assertIs(client._connection.http, http)
         self.assertEqual(client.location, location)
-        
+
         self.assertIsInstance(client._default_query_job_config, QueryJobConfig)
         self.assertTrue(client._default_query_job_config.dry_run)
 
@@ -2756,11 +2756,13 @@ class TestClient(unittest.TestCase):
 
         from google.cloud.bigquery import QueryJobConfig, DatasetReference
         default_job_config = QueryJobConfig()
-        default_job_config.default_dataset = DatasetReference(self.PROJECT, 'some-dataset')
+        default_job_config.default_dataset = DatasetReference(
+            self.PROJECT, 'some-dataset')
         default_job_config.maximum_bytes_billed = 1000
 
         client = self._make_one(
-            project=self.PROJECT, credentials=creds, _http=http, query_job_config=default_job_config)
+            project=self.PROJECT, credentials=creds,
+            _http=http, query_job_config=default_job_config)
         conn = client._connection = _make_connection(resource)
 
         job_config = QueryJobConfig()
@@ -2769,7 +2771,8 @@ class TestClient(unittest.TestCase):
 
         # override_job_config
         client.query(
-            query, job_id=job_id, location=self.LOCATION, job_config=job_config)
+            query, job_id=job_id, location=self.LOCATION,
+            job_config=job_config)
 
         # Check that query actually starts the job.
         conn.api_request.assert_called_once_with(
@@ -2802,11 +2805,13 @@ class TestClient(unittest.TestCase):
 
         from google.cloud.bigquery import QueryJobConfig, DatasetReference
         default_job_config = QueryJobConfig()
-        default_job_config.default_dataset = DatasetReference(self.PROJECT, 'some-dataset')
+        default_job_config.default_dataset = DatasetReference(
+            self.PROJECT, 'some-dataset')
         default_job_config.maximum_bytes_billed = 1000
 
         client = self._make_one(
-            project=self.PROJECT, credentials=creds, _http=http, query_job_config=default_job_config)
+            project=self.PROJECT, credentials=creds, _http=http,
+            query_job_config=default_job_config)
         conn = client._connection = _make_connection(resource)
 
         job_config = QueryJobConfig()
@@ -2815,7 +2820,8 @@ class TestClient(unittest.TestCase):
 
         # override_job_config
         client.query(
-            query, job_id=job_id, location=self.LOCATION, job_config=job_config, override_job_config=True)
+            query, job_id=job_id, location=self.LOCATION,
+            job_config=job_config, override_job_config=True)
 
         # Check that query actually starts the job.
         conn.api_request.assert_called_once_with(

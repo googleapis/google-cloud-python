@@ -122,7 +122,8 @@ class Client(ClientWithProject):
     """The scopes required for authenticating as a BigQuery consumer."""
 
     def __init__(
-            self, project=None, credentials=None, _http=None, location=None, query_job_config=None):
+            self, project=None, credentials=None, _http=None,
+            location=None, query_job_config=None):
         super(Client, self).__init__(
             project=project, credentials=credentials, _http=_http)
         self._connection = Connection(self)
@@ -1188,7 +1189,9 @@ class Client(ClientWithProject):
         return extract_job
 
     def query(
-            self, query, job_config=None, override_job_config=False, job_id=None, job_id_prefix=None,
+            self, query,
+            job_config=None, override_job_config=False,
+            job_id=None, job_id_prefix=None,
             location=None, project=None, retry=DEFAULT_RETRY):
         """Run a SQL query.
 
@@ -1227,13 +1230,16 @@ class Client(ClientWithProject):
         if location is None:
             location = self.location
 
-        # if they don't want to override, we need to merge what they passed
+        # if they don't want to override,
+        # we need to merge what they passed
         if not override_job_config and self._default_query_job_config:
             if job_config:
-                # anything that's not defined on the incoming that is in the default,
+                # anything that's not defined on the incoming
+                # that is in the default,
                 # should be filled in with the default
                 # the incoming therefore has precedence
-                job_config = job_config.fill_from_default(self._default_query_job_config)
+                job_config = job_config.fill_from_default(
+                    self._default_query_job_config)
             else:
                 job_config = self._default_query_job_config
         # if they want to override (or if they never passed a default),
