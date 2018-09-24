@@ -819,7 +819,6 @@ class _JobConfig(object):
         """
         return copy.deepcopy(self._properties)
 
-    # BLAINE
     def fill_from_default(self, default_job_config):
         """Merge this job config with another one. The other takes precedence with conflicting keys.
         This is a naive one level merge.

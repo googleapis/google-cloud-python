@@ -1227,7 +1227,6 @@ class Client(ClientWithProject):
         if location is None:
             location = self.location
 
-        # BLAINE
         # if they don't want to override, we need to merge what they passed
         if not override_job_config and self._default_query_job_config:
             if job_config:

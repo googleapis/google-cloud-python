@@ -96,7 +96,6 @@ class TestClient(unittest.TestCase):
         self.assertIs(client._connection.http, http)
         self.assertEqual(client.location, location)
 
-    # BLAINE
     def test_ctor_w_query_job_config(self):
         from google.cloud.bigquery._http import Connection
         from google.cloud.bigquery import QueryJobConfig
@@ -2754,7 +2753,6 @@ class TestClient(unittest.TestCase):
 
         creds = _make_credentials()
         http = object()
-        # BLAINE
 
         from google.cloud.bigquery import QueryJobConfig, DatasetReference
         default_job_config = QueryJobConfig()
@@ -2801,7 +2799,6 @@ class TestClient(unittest.TestCase):
 
         creds = _make_credentials()
         http = object()
-        # BLAINE
 
         from google.cloud.bigquery import QueryJobConfig, DatasetReference
         default_job_config = QueryJobConfig()
