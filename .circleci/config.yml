@@ -179,12 +179,6 @@ jobs:
               nox -f translate/nox.py
             fi
       - run:
-          name: Run tests - google.cloud.videointelligence
-          command: |
-            if [[ -n $(grep -x videointelligence ~/target_packages) ]]; then
-              nox -f videointelligence/nox.py
-            fi
-      - run:
           name: Make sure google-cloud setup.py is valid
           command: |
             nox -s lint_setup_py
