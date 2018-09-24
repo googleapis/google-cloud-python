@@ -1016,28 +1016,28 @@ _DOCUMENT = _descriptor.Descriptor(
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='content', full_name='google.cloud.language.v1.Document.content', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='gcs_content_uri', full_name='google.cloud.language.v1.Document.gcs_content_uri', index=2,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='language', full_name='google.cloud.language.v1.Document.language', index=3,
       number=4, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -1072,14 +1072,14 @@ _SENTENCE = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='sentiment', full_name='google.cloud.language.v1.Sentence.sentiment', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -1110,14 +1110,14 @@ _ENTITY_METADATAENTRY = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='value', full_name='google.cloud.language.v1.Entity.MetadataEntry.value', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -1147,42 +1147,42 @@ _ENTITY = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='type', full_name='google.cloud.language.v1.Entity.type', index=1,
       number=2, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='metadata', full_name='google.cloud.language.v1.Entity.metadata', index=2,
       number=3, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='salience', full_name='google.cloud.language.v1.Entity.salience', index=3,
       number=4, type=2, cpp_type=6, label=1,
       has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='mentions', full_name='google.cloud.language.v1.Entity.mentions', index=4,
       number=5, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='sentiment', full_name='google.cloud.language.v1.Entity.sentiment', index=5,
       number=6, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -1214,28 +1214,28 @@ _TOKEN = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='part_of_speech', full_name='google.cloud.language.v1.Token.part_of_speech', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='dependency_edge', full_name='google.cloud.language.v1.Token.dependency_edge', index=2,
       number=3, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='lemma', full_name='google.cloud.language.v1.Token.lemma', index=3,
       number=4, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -1266,14 +1266,14 @@ _SENTIMENT = _descriptor.Descriptor(
       has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='score', full_name='google.cloud.language.v1.Sentiment.score', index=1,
       number=3, type=2, cpp_type=6, label=1,
       has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -1304,84 +1304,84 @@ _PARTOFSPEECH = _descriptor.Descriptor(
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='aspect', full_name='google.cloud.language.v1.PartOfSpeech.aspect', index=1,
       number=2, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='case', full_name='google.cloud.language.v1.PartOfSpeech.case', index=2,
       number=3, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='form', full_name='google.cloud.language.v1.PartOfSpeech.form', index=3,
       number=4, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='gender', full_name='google.cloud.language.v1.PartOfSpeech.gender', index=4,
       number=5, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='mood', full_name='google.cloud.language.v1.PartOfSpeech.mood', index=5,
       number=6, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='number', full_name='google.cloud.language.v1.PartOfSpeech.number', index=6,
       number=7, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='person', full_name='google.cloud.language.v1.PartOfSpeech.person', index=7,
       number=8, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='proper', full_name='google.cloud.language.v1.PartOfSpeech.proper', index=8,
       number=9, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='reciprocity', full_name='google.cloud.language.v1.PartOfSpeech.reciprocity', index=9,
       number=10, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='tense', full_name='google.cloud.language.v1.PartOfSpeech.tense', index=10,
       number=11, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='voice', full_name='google.cloud.language.v1.PartOfSpeech.voice', index=11,
       number=12, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -1424,14 +1424,14 @@ _DEPENDENCYEDGE = _descriptor.Descriptor(
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='label', full_name='google.cloud.language.v1.DependencyEdge.label', index=1,
       number=2, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -1463,21 +1463,21 @@ _ENTITYMENTION = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='type', full_name='google.cloud.language.v1.EntityMention.type', index=1,
       number=2, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='sentiment', full_name='google.cloud.language.v1.EntityMention.sentiment', index=2,
       number=3, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -1509,14 +1509,14 @@ _TEXTSPAN = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='begin_offset', full_name='google.cloud.language.v1.TextSpan.begin_offset', index=1,
       number=2, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -1547,14 +1547,14 @@ _CLASSIFICATIONCATEGORY = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='confidence', full_name='google.cloud.language.v1.ClassificationCategory.confidence', index=1,
       number=2, type=2, cpp_type=6, label=1,
       has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -1585,14 +1585,14 @@ _ANALYZESENTIMENTREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='encoding_type', full_name='google.cloud.language.v1.AnalyzeSentimentRequest.encoding_type', index=1,
       number=2, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -1623,21 +1623,21 @@ _ANALYZESENTIMENTRESPONSE = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='language', full_name='google.cloud.language.v1.AnalyzeSentimentResponse.language', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='sentences', full_name='google.cloud.language.v1.AnalyzeSentimentResponse.sentences', index=2,
       number=3, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -1668,14 +1668,14 @@ _ANALYZEENTITYSENTIMENTREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='encoding_type', full_name='google.cloud.language.v1.AnalyzeEntitySentimentRequest.encoding_type', index=1,
       number=2, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -1706,14 +1706,14 @@ _ANALYZEENTITYSENTIMENTRESPONSE = _descriptor.Descriptor(
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='language', full_name='google.cloud.language.v1.AnalyzeEntitySentimentResponse.language', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -1744,14 +1744,14 @@ _ANALYZEENTITIESREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='encoding_type', full_name='google.cloud.language.v1.AnalyzeEntitiesRequest.encoding_type', index=1,
       number=2, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -1782,14 +1782,14 @@ _ANALYZEENTITIESRESPONSE = _descriptor.Descriptor(
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='language', full_name='google.cloud.language.v1.AnalyzeEntitiesResponse.language', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -1820,14 +1820,14 @@ _ANALYZESYNTAXREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='encoding_type', full_name='google.cloud.language.v1.AnalyzeSyntaxRequest.encoding_type', index=1,
       number=2, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -1858,21 +1858,21 @@ _ANALYZESYNTAXRESPONSE = _descriptor.Descriptor(
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='tokens', full_name='google.cloud.language.v1.AnalyzeSyntaxResponse.tokens', index=1,
       number=2, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='language', full_name='google.cloud.language.v1.AnalyzeSyntaxResponse.language', index=2,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -1903,7 +1903,7 @@ _CLASSIFYTEXTREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -1934,7 +1934,7 @@ _CLASSIFYTEXTRESPONSE = _descriptor.Descriptor(
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -1965,35 +1965,35 @@ _ANNOTATETEXTREQUEST_FEATURES = _descriptor.Descriptor(
       has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='extract_entities', full_name='google.cloud.language.v1.AnnotateTextRequest.Features.extract_entities', index=1,
       number=2, type=8, cpp_type=7, label=1,
       has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='extract_document_sentiment', full_name='google.cloud.language.v1.AnnotateTextRequest.Features.extract_document_sentiment', index=2,
       number=3, type=8, cpp_type=7, label=1,
       has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='extract_entity_sentiment', full_name='google.cloud.language.v1.AnnotateTextRequest.Features.extract_entity_sentiment', index=3,
       number=4, type=8, cpp_type=7, label=1,
       has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='classify_text', full_name='google.cloud.language.v1.AnnotateTextRequest.Features.classify_text', index=4,
       number=6, type=8, cpp_type=7, label=1,
       has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -2023,21 +2023,21 @@ _ANNOTATETEXTREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='features', full_name='google.cloud.language.v1.AnnotateTextRequest.features', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='encoding_type', full_name='google.cloud.language.v1.AnnotateTextRequest.encoding_type', index=2,
       number=3, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -2068,42 +2068,42 @@ _ANNOTATETEXTRESPONSE = _descriptor.Descriptor(
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='tokens', full_name='google.cloud.language.v1.AnnotateTextResponse.tokens', index=1,
       number=2, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='entities', full_name='google.cloud.language.v1.AnnotateTextResponse.entities', index=2,
       number=3, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='document_sentiment', full_name='google.cloud.language.v1.AnnotateTextResponse.document_sentiment', index=3,
       number=4, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='language', full_name='google.cloud.language.v1.AnnotateTextResponse.language', index=4,
       number=5, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='categories', full_name='google.cloud.language.v1.AnnotateTextResponse.categories', index=5,
       number=6, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -2767,305 +2767,73 @@ DESCRIPTOR.has_options = True
 DESCRIPTOR._options = _descriptor._ParseOptions(descriptor_pb2.FileOptions(), _b('\n\034com.google.cloud.language.v1B\024LanguageServiceProtoP\001Z@google.golang.org/genproto/googleapis/cloud/language/v1;language'))
 _ENTITY_METADATAENTRY.has_options = True
 _ENTITY_METADATAENTRY._options = _descriptor._ParseOptions(descriptor_pb2.MessageOptions(), _b('8\001'))
-try:
-  # THESE ELEMENTS WILL BE DEPRECATED.
-  # Please use the generated *_pb2_grpc.py files instead.
-  import grpc
-  from grpc.beta import implementations as beta_implementations
-  from grpc.beta import interfaces as beta_interfaces
-  from grpc.framework.common import cardinality
-  from grpc.framework.interfaces.face import utilities as face_utilities
 
+_LANGUAGESERVICE = _descriptor.ServiceDescriptor(
+  name='LanguageService',
+  full_name='google.cloud.language.v1.LanguageService',
+  file=DESCRIPTOR,
+  index=0,
+  options=None,
+  serialized_start=6643,
+  serialized_end=7638,
+  methods=[
+  _descriptor.MethodDescriptor(
+    name='AnalyzeSentiment',
+    full_name='google.cloud.language.v1.LanguageService.AnalyzeSentiment',
+    index=0,
+    containing_service=None,
+    input_type=_ANALYZESENTIMENTREQUEST,
+    output_type=_ANALYZESENTIMENTRESPONSE,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002#\"\036/v1/documents:analyzeSentiment:\001*')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='AnalyzeEntities',
+    full_name='google.cloud.language.v1.LanguageService.AnalyzeEntities',
+    index=1,
+    containing_service=None,
+    input_type=_ANALYZEENTITIESREQUEST,
+    output_type=_ANALYZEENTITIESRESPONSE,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002\"\"\035/v1/documents:analyzeEntities:\001*')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='AnalyzeEntitySentiment',
+    full_name='google.cloud.language.v1.LanguageService.AnalyzeEntitySentiment',
+    index=2,
+    containing_service=None,
+    input_type=_ANALYZEENTITYSENTIMENTREQUEST,
+    output_type=_ANALYZEENTITYSENTIMENTRESPONSE,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002)\"$/v1/documents:analyzeEntitySentiment:\001*')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='AnalyzeSyntax',
+    full_name='google.cloud.language.v1.LanguageService.AnalyzeSyntax',
+    index=3,
+    containing_service=None,
+    input_type=_ANALYZESYNTAXREQUEST,
+    output_type=_ANALYZESYNTAXRESPONSE,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002 \"\033/v1/documents:analyzeSyntax:\001*')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='ClassifyText',
+    full_name='google.cloud.language.v1.LanguageService.ClassifyText',
+    index=4,
+    containing_service=None,
+    input_type=_CLASSIFYTEXTREQUEST,
+    output_type=_CLASSIFYTEXTRESPONSE,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002\037\"\032/v1/documents:classifyText:\001*')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='AnnotateText',
+    full_name='google.cloud.language.v1.LanguageService.AnnotateText',
+    index=5,
+    containing_service=None,
+    input_type=_ANNOTATETEXTREQUEST,
+    output_type=_ANNOTATETEXTRESPONSE,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002\037\"\032/v1/documents:annotateText:\001*')),
+  ),
+])
+_sym_db.RegisterServiceDescriptor(_LANGUAGESERVICE)
 
-  class LanguageServiceStub(object):
-    """Provides text analysis operations such as sentiment analysis and entity
-    recognition.
-    """
+DESCRIPTOR.services_by_name['LanguageService'] = _LANGUAGESERVICE
 
-    def __init__(self, channel):
-      """Constructor.
-
-      Args:
-        channel: A grpc.Channel.
-      """
-      self.AnalyzeSentiment = channel.unary_unary(
-          '/google.cloud.language.v1.LanguageService/AnalyzeSentiment',
-          request_serializer=AnalyzeSentimentRequest.SerializeToString,
-          response_deserializer=AnalyzeSentimentResponse.FromString,
-          )
-      self.AnalyzeEntities = channel.unary_unary(
-          '/google.cloud.language.v1.LanguageService/AnalyzeEntities',
-          request_serializer=AnalyzeEntitiesRequest.SerializeToString,
-          response_deserializer=AnalyzeEntitiesResponse.FromString,
-          )
-      self.AnalyzeEntitySentiment = channel.unary_unary(
-          '/google.cloud.language.v1.LanguageService/AnalyzeEntitySentiment',
-          request_serializer=AnalyzeEntitySentimentRequest.SerializeToString,
-          response_deserializer=AnalyzeEntitySentimentResponse.FromString,
-          )
-      self.AnalyzeSyntax = channel.unary_unary(
-          '/google.cloud.language.v1.LanguageService/AnalyzeSyntax',
-          request_serializer=AnalyzeSyntaxRequest.SerializeToString,
-          response_deserializer=AnalyzeSyntaxResponse.FromString,
-          )
-      self.ClassifyText = channel.unary_unary(
-          '/google.cloud.language.v1.LanguageService/ClassifyText',
-          request_serializer=ClassifyTextRequest.SerializeToString,
-          response_deserializer=ClassifyTextResponse.FromString,
-          )
-      self.AnnotateText = channel.unary_unary(
-          '/google.cloud.language.v1.LanguageService/AnnotateText',
-          request_serializer=AnnotateTextRequest.SerializeToString,
-          response_deserializer=AnnotateTextResponse.FromString,
-          )
-
-
-  class LanguageServiceServicer(object):
-    """Provides text analysis operations such as sentiment analysis and entity
-    recognition.
-    """
-
-    def AnalyzeSentiment(self, request, context):
-      """Analyzes the sentiment of the provided text.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def AnalyzeEntities(self, request, context):
-      """Finds named entities (currently proper names and common nouns) in the text
-      along with entity types, salience, mentions for each entity, and
-      other properties.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def AnalyzeEntitySentiment(self, request, context):
-      """Finds entities, similar to [AnalyzeEntities][google.cloud.language.v1.LanguageService.AnalyzeEntities] in the text and analyzes
-      sentiment associated with each entity and its mentions.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def AnalyzeSyntax(self, request, context):
-      """Analyzes the syntax of the text and provides sentence boundaries and
-      tokenization along with part of speech tags, dependency trees, and other
-      properties.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def ClassifyText(self, request, context):
-      """Classifies a document into categories.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def AnnotateText(self, request, context):
-      """A convenience method that provides all the features that analyzeSentiment,
-      analyzeEntities, and analyzeSyntax provide in one call.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-
-  def add_LanguageServiceServicer_to_server(servicer, server):
-    rpc_method_handlers = {
-        'AnalyzeSentiment': grpc.unary_unary_rpc_method_handler(
-            servicer.AnalyzeSentiment,
-            request_deserializer=AnalyzeSentimentRequest.FromString,
-            response_serializer=AnalyzeSentimentResponse.SerializeToString,
-        ),
-        'AnalyzeEntities': grpc.unary_unary_rpc_method_handler(
-            servicer.AnalyzeEntities,
-            request_deserializer=AnalyzeEntitiesRequest.FromString,
-            response_serializer=AnalyzeEntitiesResponse.SerializeToString,
-        ),
-        'AnalyzeEntitySentiment': grpc.unary_unary_rpc_method_handler(
-            servicer.AnalyzeEntitySentiment,
-            request_deserializer=AnalyzeEntitySentimentRequest.FromString,
-            response_serializer=AnalyzeEntitySentimentResponse.SerializeToString,
-        ),
-        'AnalyzeSyntax': grpc.unary_unary_rpc_method_handler(
-            servicer.AnalyzeSyntax,
-            request_deserializer=AnalyzeSyntaxRequest.FromString,
-            response_serializer=AnalyzeSyntaxResponse.SerializeToString,
-        ),
-        'ClassifyText': grpc.unary_unary_rpc_method_handler(
-            servicer.ClassifyText,
-            request_deserializer=ClassifyTextRequest.FromString,
-            response_serializer=ClassifyTextResponse.SerializeToString,
-        ),
-        'AnnotateText': grpc.unary_unary_rpc_method_handler(
-            servicer.AnnotateText,
-            request_deserializer=AnnotateTextRequest.FromString,
-            response_serializer=AnnotateTextResponse.SerializeToString,
-        ),
-    }
-    generic_handler = grpc.method_handlers_generic_handler(
-        'google.cloud.language.v1.LanguageService', rpc_method_handlers)
-    server.add_generic_rpc_handlers((generic_handler,))
-
-
-  class BetaLanguageServiceServicer(object):
-    """The Beta API is deprecated for 0.15.0 and later.
-
-    It is recommended to use the GA API (classes and functions in this
-    file not marked beta) for all further purposes. This class was generated
-    only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0."""
-    """Provides text analysis operations such as sentiment analysis and entity
-    recognition.
-    """
-    def AnalyzeSentiment(self, request, context):
-      """Analyzes the sentiment of the provided text.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def AnalyzeEntities(self, request, context):
-      """Finds named entities (currently proper names and common nouns) in the text
-      along with entity types, salience, mentions for each entity, and
-      other properties.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def AnalyzeEntitySentiment(self, request, context):
-      """Finds entities, similar to [AnalyzeEntities][google.cloud.language.v1.LanguageService.AnalyzeEntities] in the text and analyzes
-      sentiment associated with each entity and its mentions.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def AnalyzeSyntax(self, request, context):
-      """Analyzes the syntax of the text and provides sentence boundaries and
-      tokenization along with part of speech tags, dependency trees, and other
-      properties.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def ClassifyText(self, request, context):
-      """Classifies a document into categories.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def AnnotateText(self, request, context):
-      """A convenience method that provides all the features that analyzeSentiment,
-      analyzeEntities, and analyzeSyntax provide in one call.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-
-
-  class BetaLanguageServiceStub(object):
-    """The Beta API is deprecated for 0.15.0 and later.
-
-    It is recommended to use the GA API (classes and functions in this
-    file not marked beta) for all further purposes. This class was generated
-    only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0."""
-    """Provides text analysis operations such as sentiment analysis and entity
-    recognition.
-    """
-    def AnalyzeSentiment(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Analyzes the sentiment of the provided text.
-      """
-      raise NotImplementedError()
-    AnalyzeSentiment.future = None
-    def AnalyzeEntities(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Finds named entities (currently proper names and common nouns) in the text
-      along with entity types, salience, mentions for each entity, and
-      other properties.
-      """
-      raise NotImplementedError()
-    AnalyzeEntities.future = None
-    def AnalyzeEntitySentiment(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Finds entities, similar to [AnalyzeEntities][google.cloud.language.v1.LanguageService.AnalyzeEntities] in the text and analyzes
-      sentiment associated with each entity and its mentions.
-      """
-      raise NotImplementedError()
-    AnalyzeEntitySentiment.future = None
-    def AnalyzeSyntax(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Analyzes the syntax of the text and provides sentence boundaries and
-      tokenization along with part of speech tags, dependency trees, and other
-      properties.
-      """
-      raise NotImplementedError()
-    AnalyzeSyntax.future = None
-    def ClassifyText(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Classifies a document into categories.
-      """
-      raise NotImplementedError()
-    ClassifyText.future = None
-    def AnnotateText(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """A convenience method that provides all the features that analyzeSentiment,
-      analyzeEntities, and analyzeSyntax provide in one call.
-      """
-      raise NotImplementedError()
-    AnnotateText.future = None
-
-
-  def beta_create_LanguageService_server(servicer, pool=None, pool_size=None, default_timeout=None, maximum_timeout=None):
-    """The Beta API is deprecated for 0.15.0 and later.
-
-    It is recommended to use the GA API (classes and functions in this
-    file not marked beta) for all further purposes. This function was
-    generated only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0"""
-    request_deserializers = {
-      ('google.cloud.language.v1.LanguageService', 'AnalyzeEntities'): AnalyzeEntitiesRequest.FromString,
-      ('google.cloud.language.v1.LanguageService', 'AnalyzeEntitySentiment'): AnalyzeEntitySentimentRequest.FromString,
-      ('google.cloud.language.v1.LanguageService', 'AnalyzeSentiment'): AnalyzeSentimentRequest.FromString,
-      ('google.cloud.language.v1.LanguageService', 'AnalyzeSyntax'): AnalyzeSyntaxRequest.FromString,
-      ('google.cloud.language.v1.LanguageService', 'AnnotateText'): AnnotateTextRequest.FromString,
-      ('google.cloud.language.v1.LanguageService', 'ClassifyText'): ClassifyTextRequest.FromString,
-    }
-    response_serializers = {
-      ('google.cloud.language.v1.LanguageService', 'AnalyzeEntities'): AnalyzeEntitiesResponse.SerializeToString,
-      ('google.cloud.language.v1.LanguageService', 'AnalyzeEntitySentiment'): AnalyzeEntitySentimentResponse.SerializeToString,
-      ('google.cloud.language.v1.LanguageService', 'AnalyzeSentiment'): AnalyzeSentimentResponse.SerializeToString,
-      ('google.cloud.language.v1.LanguageService', 'AnalyzeSyntax'): AnalyzeSyntaxResponse.SerializeToString,
-      ('google.cloud.language.v1.LanguageService', 'AnnotateText'): AnnotateTextResponse.SerializeToString,
-      ('google.cloud.language.v1.LanguageService', 'ClassifyText'): ClassifyTextResponse.SerializeToString,
-    }
-    method_implementations = {
-      ('google.cloud.language.v1.LanguageService', 'AnalyzeEntities'): face_utilities.unary_unary_inline(servicer.AnalyzeEntities),
-      ('google.cloud.language.v1.LanguageService', 'AnalyzeEntitySentiment'): face_utilities.unary_unary_inline(servicer.AnalyzeEntitySentiment),
-      ('google.cloud.language.v1.LanguageService', 'AnalyzeSentiment'): face_utilities.unary_unary_inline(servicer.AnalyzeSentiment),
-      ('google.cloud.language.v1.LanguageService', 'AnalyzeSyntax'): face_utilities.unary_unary_inline(servicer.AnalyzeSyntax),
-      ('google.cloud.language.v1.LanguageService', 'AnnotateText'): face_utilities.unary_unary_inline(servicer.AnnotateText),
-      ('google.cloud.language.v1.LanguageService', 'ClassifyText'): face_utilities.unary_unary_inline(servicer.ClassifyText),
-    }
-    server_options = beta_implementations.server_options(request_deserializers=request_deserializers, response_serializers=response_serializers, thread_pool=pool, thread_pool_size=pool_size, default_timeout=default_timeout, maximum_timeout=maximum_timeout)
-    return beta_implementations.server(method_implementations, options=server_options)
-
-
-  def beta_create_LanguageService_stub(channel, host=None, metadata_transformer=None, pool=None, pool_size=None):
-    """The Beta API is deprecated for 0.15.0 and later.
-
-    It is recommended to use the GA API (classes and functions in this
-    file not marked beta) for all further purposes. This function was
-    generated only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0"""
-    request_serializers = {
-      ('google.cloud.language.v1.LanguageService', 'AnalyzeEntities'): AnalyzeEntitiesRequest.SerializeToString,
-      ('google.cloud.language.v1.LanguageService', 'AnalyzeEntitySentiment'): AnalyzeEntitySentimentRequest.SerializeToString,
-      ('google.cloud.language.v1.LanguageService', 'AnalyzeSentiment'): AnalyzeSentimentRequest.SerializeToString,
-      ('google.cloud.language.v1.LanguageService', 'AnalyzeSyntax'): AnalyzeSyntaxRequest.SerializeToString,
-      ('google.cloud.language.v1.LanguageService', 'AnnotateText'): AnnotateTextRequest.SerializeToString,
-      ('google.cloud.language.v1.LanguageService', 'ClassifyText'): ClassifyTextRequest.SerializeToString,
-    }
-    response_deserializers = {
-      ('google.cloud.language.v1.LanguageService', 'AnalyzeEntities'): AnalyzeEntitiesResponse.FromString,
-      ('google.cloud.language.v1.LanguageService', 'AnalyzeEntitySentiment'): AnalyzeEntitySentimentResponse.FromString,
-      ('google.cloud.language.v1.LanguageService', 'AnalyzeSentiment'): AnalyzeSentimentResponse.FromString,
-      ('google.cloud.language.v1.LanguageService', 'AnalyzeSyntax'): AnalyzeSyntaxResponse.FromString,
-      ('google.cloud.language.v1.LanguageService', 'AnnotateText'): AnnotateTextResponse.FromString,
-      ('google.cloud.language.v1.LanguageService', 'ClassifyText'): ClassifyTextResponse.FromString,
-    }
-    cardinalities = {
-      'AnalyzeEntities': cardinality.Cardinality.UNARY_UNARY,
-      'AnalyzeEntitySentiment': cardinality.Cardinality.UNARY_UNARY,
-      'AnalyzeSentiment': cardinality.Cardinality.UNARY_UNARY,
-      'AnalyzeSyntax': cardinality.Cardinality.UNARY_UNARY,
-      'AnnotateText': cardinality.Cardinality.UNARY_UNARY,
-      'ClassifyText': cardinality.Cardinality.UNARY_UNARY,
-    }
-    stub_options = beta_implementations.stub_options(host=host, metadata_transformer=metadata_transformer, request_serializers=request_serializers, response_deserializers=response_deserializers, thread_pool=pool, thread_pool_size=pool_size)
-    return beta_implementations.dynamic_stub(channel, 'google.cloud.language.v1.LanguageService', cardinalities, options=stub_options)
-except ImportError:
-  pass
 # @@protoc_insertion_point(module_scope)
