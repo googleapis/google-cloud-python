@@ -104,27 +104,6 @@ def system(session, py):
 
 
 @nox.session
-@nox.parametrize('py', ['2.7', '3.6'])
-def system_grpc_gcp(session, py):
-    """Run the system test suite with grpcio-gcp installed."""
-
-    # Sanity check: Only run system tests if the environment variable is set.
-    if not os.environ.get('GOOGLE_APPLICATION_CREDENTIALS', ''):
-        session.skip('Credentials must be set via environment variable.')
-
-    # Run the system tests against latest Python 2 and Python 3 only.
-    session.interpreter = 'python{}'.format(py)
-
-    # Set the virtualenv dirname.
-    session.virtualenv_dirname = 'sys-grpc-gcp-' + py
-
-    # Install grpcio-gcp
-    session.install('grpcio-gcp')
-
-    system_common(session)
-
-
-@nox.session
 def lint(session):
     """Run linters.
 
