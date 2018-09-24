@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+#
 # Copyright 2018 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,8 +15,10 @@
 # limitations under the License.
 """Wrappers for protocol buffer enum types."""
 
+import enum
 
-class TimedCountAlignment(object):
+
+class TimedCountAlignment(enum.IntEnum):
     """
     Specifies how the time periods of error group counts are aligned.
 
@@ -38,7 +42,7 @@ class TimedCountAlignment(object):
     ALIGNMENT_EQUAL_AT_END = 2
 
 
-class ErrorGroupOrder(object):
+class ErrorGroupOrder(enum.IntEnum):
     """
     A sorting order of error groups.
 
@@ -58,7 +62,7 @@ class ErrorGroupOrder(object):
 
 
 class QueryTimeRange(object):
-    class Period(object):
+    class Period(enum.IntEnum):
         """
         The supported time ranges.
 
