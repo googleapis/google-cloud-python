@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+#
 # Copyright 2018 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,19 +17,25 @@
 
 import functools
 import pkg_resources
+import warnings
 
+from google.oauth2 import service_account
 import google.api_core.gapic_v1.client_info
 import google.api_core.gapic_v1.config
 import google.api_core.gapic_v1.method
 import google.api_core.grpc_helpers
 import google.api_core.page_iterator
 import google.api_core.path_template
+import grpc
 
 from google.api import monitored_resource_pb2
 from google.cloud.logging_v2.gapic import enums
 from google.cloud.logging_v2.gapic import logging_service_v2_client_config
+from google.cloud.logging_v2.gapic.transports import logging_service_v2_grpc_transport
 from google.cloud.logging_v2.proto import log_entry_pb2
 from google.cloud.logging_v2.proto import logging_pb2
+from google.cloud.logging_v2.proto import logging_pb2_grpc
+from google.protobuf import empty_pb2
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
     'google-cloud-logging', ).version
@@ -39,27 +47,30 @@ class LoggingServiceV2Client(object):
     SERVICE_ADDRESS = 'logging.googleapis.com:443'
     """The default address of the service."""
 
-    # The scopes needed to make gRPC calls to all of the methods defined in
-    # this service
-    _DEFAULT_SCOPES = (
-        'https://www.googleapis.com/auth/cloud-platform',
-        'https://www.googleapis.com/auth/cloud-platform.read-only',
-        'https://www.googleapis.com/auth/logging.admin',
-        'https://www.googleapis.com/auth/logging.read',
-        'https://www.googleapis.com/auth/logging.write',
-    )
-
-    # The name of the interface for this client. This is the key used to find
-    # method configuration in the client_config dictionary.
+    # The name of the interface for this client. This is the key used to
+    # find the method configuration in the client_config dictionary.
     _INTERFACE_NAME = 'google.logging.v2.LoggingServiceV2'
 
     @classmethod
-    def project_path(cls, project):
-        """Return a fully-qualified project string."""
-        return google.api_core.path_template.expand(
-            'projects/{project}',
-            project=project,
-        )
+    def from_service_account_file(cls, filename, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials
+        file.
+
+        Args:
+            filename (str): The path to the service account private key json
+                file.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            LoggingServiceV2Client: The constructed client.
+        """
+        credentials = service_account.Credentials.from_service_account_file(
+            filename)
+        kwargs['credentials'] = credentials
+        return cls(*args, **kwargs)
+
+    from_service_account_json = from_service_account_file
 
     @classmethod
     def log_path(cls, project, log):
@@ -70,7 +81,16 @@ class LoggingServiceV2Client(object):
             log=log,
         )
 
+    @classmethod
+    def project_path(cls, project):
+        """Return a fully-qualified project string."""
+        return google.api_core.path_template.expand(
+            'projects/{project}',
+            project=project,
+        )
+
     def __init__(self,
+                 transport=None,
                  channel=None,
                  credentials=None,
                  client_config=logging_service_v2_client_config.config,
@@ -78,89 +98,83 @@ class LoggingServiceV2Client(object):
         """Constructor.
 
         Args:
-            channel (grpc.Channel): A ``Channel`` instance through
-                which to make calls. This argument is mutually exclusive
+            transport (Union[~.LoggingServiceV2GrpcTransport,
+                    Callable[[~.Credentials, type], ~.LoggingServiceV2GrpcTransport]): A transport
+                instance, responsible for actually making the API calls.
+                The default transport uses the gRPC protocol.
+                This argument may also be a callable which returns a
+                transport instance. Callables will be sent the credentials
+                as the first argument and the default transport class as
+                the second argument.
+            channel (grpc.Channel): DEPRECATED. A ``Channel`` instance
+                through which to make calls. This argument is mutually exclusive
                 with ``credentials``; providing both will raise an exception.
             credentials (google.auth.credentials.Credentials): The
                 authorization credentials to attach to requests. These
                 credentials identify this application to the service. If none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            client_config (dict): A dictionary of call options for each
-                method. If not specified, the default configuration is used.
+                This argument is mutually exclusive with providing a
+                transport instance to ``transport``; doing so will raise
+                an exception.
+            client_config (dict): DEPRECATED. A dictionary of call options for
+                each method. If not specified, the default configuration is used.
             client_info (google.api_core.gapic_v1.client_info.ClientInfo):
                 The client info used to send a user-agent string along with
                 API requests. If ``None``, then default info will be used.
                 Generally, you only need to set this if you're developing
                 your own client library.
         """
-        # If both `channel` and `credentials` are specified, raise an
-        # exception (channels come with credentials baked in already).
-        if channel is not None and credentials is not None:
-            raise ValueError(
-                'The `channel` and `credentials` arguments to {} are mutually '
-                'exclusive.'.format(self.__class__.__name__), )
+        # Raise deprecation warnings for things we want to go away.
+        if client_config:
+            warnings.warn('The `client_config` argument is deprecated.',
+                          PendingDeprecationWarning)
+        if channel:
+            warnings.warn(
+                'The `channel` argument is deprecated; use '
+                '`transport` instead.', PendingDeprecationWarning)
 
-        # Create the channel.
-        if channel is None:
-            channel = google.api_core.grpc_helpers.create_channel(
-                self.SERVICE_ADDRESS,
+        # Instantiate the transport.
+        # The transport is responsible for handling serialization and
+        # deserialization and actually sending data to the service.
+        if transport:
+            if callable(transport):
+                self.transport = transport(
+                    credentials=credentials,
+                    default_class=logging_service_v2_grpc_transport.
+                    LoggingServiceV2GrpcTransport,
+                )
+            else:
+                if credentials:
+                    raise ValueError(
+                        'Received both a transport instance and '
+                        'credentials; these are mutually exclusive.')
+                self.transport = transport
+        else:
+            self.transport = logging_service_v2_grpc_transport.LoggingServiceV2GrpcTransport(
+                address=self.SERVICE_ADDRESS,
+                channel=channel,
                 credentials=credentials,
-                scopes=self._DEFAULT_SCOPES,
             )
-
-        # Create the gRPC stubs.
-        self.logging_service_v2_stub = (
-            logging_pb2.LoggingServiceV2Stub(channel))
 
         if client_info is None:
             client_info = (
                 google.api_core.gapic_v1.client_info.DEFAULT_CLIENT_INFO)
         client_info.gapic_version = _GAPIC_LIBRARY_VERSION
+        self._client_info = client_info
 
         # Parse out the default settings for retry and timeout for each RPC
         # from the client configuration.
         # (Ordinarily, these are the defaults specified in the `*_config.py`
         # file next to this one.)
-        method_configs = google.api_core.gapic_v1.config.parse_method_configs(
+        self._method_configs = google.api_core.gapic_v1.config.parse_method_configs(
             client_config['interfaces'][self._INTERFACE_NAME], )
 
-        # Write the "inner API call" methods to the class.
-        # These are wrapped versions of the gRPC stub methods, with retry and
-        # timeout configuration applied, called by the public methods on
-        # this class.
-        self._delete_log = google.api_core.gapic_v1.method.wrap_method(
-            self.logging_service_v2_stub.DeleteLog,
-            default_retry=method_configs['DeleteLog'].retry,
-            default_timeout=method_configs['DeleteLog'].timeout,
-            client_info=client_info,
-        )
-        self._write_log_entries = google.api_core.gapic_v1.method.wrap_method(
-            self.logging_service_v2_stub.WriteLogEntries,
-            default_retry=method_configs['WriteLogEntries'].retry,
-            default_timeout=method_configs['WriteLogEntries'].timeout,
-            client_info=client_info,
-        )
-        self._list_log_entries = google.api_core.gapic_v1.method.wrap_method(
-            self.logging_service_v2_stub.ListLogEntries,
-            default_retry=method_configs['ListLogEntries'].retry,
-            default_timeout=method_configs['ListLogEntries'].timeout,
-            client_info=client_info,
-        )
-        self._list_monitored_resource_descriptors = google.api_core.gapic_v1.method.wrap_method(
-            self.logging_service_v2_stub.ListMonitoredResourceDescriptors,
-            default_retry=method_configs[
-                'ListMonitoredResourceDescriptors'].retry,
-            default_timeout=method_configs['ListMonitoredResourceDescriptors']
-            .timeout,
-            client_info=client_info,
-        )
-        self._list_logs = google.api_core.gapic_v1.method.wrap_method(
-            self.logging_service_v2_stub.ListLogs,
-            default_retry=method_configs['ListLogs'].retry,
-            default_timeout=method_configs['ListLogs'].timeout,
-            client_info=client_info,
-        )
+        # Save a dictionary of cached API call functions.
+        # These are the actual callables which invoke the proper
+        # transport methods, wrapped with `wrap_method` to add retry,
+        # timeout, and the like.
+        self._inner_api_calls = {}
 
     # Service calls
     def delete_log(self,
@@ -214,11 +228,18 @@ class LoggingServiceV2Client(object):
                     to a retryable error and retry attempts failed.
             ValueError: If the parameters are invalid.
         """
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
+        # Wrap the transport method to add retry and timeout logic.
+        if 'delete_log' not in self._inner_api_calls:
+            self._inner_api_calls[
+                'delete_log'] = google.api_core.gapic_v1.method.wrap_method(
+                    self.transport.delete_log,
+                    default_retry=self._method_configs['DeleteLog'].retry,
+                    default_timeout=self._method_configs['DeleteLog'].timeout,
+                    client_info=self._client_info,
+                )
+
         request = logging_pb2.DeleteLogRequest(log_name=log_name, )
-        self._delete_log(
+        self._inner_api_calls['delete_log'](
             request, retry=retry, timeout=timeout, metadata=metadata)
 
     def write_log_entries(self,
@@ -227,33 +248,36 @@ class LoggingServiceV2Client(object):
                           resource=None,
                           labels=None,
                           partial_success=None,
+                          dry_run=None,
                           retry=google.api_core.gapic_v1.method.DEFAULT,
                           timeout=google.api_core.gapic_v1.method.DEFAULT,
                           metadata=None):
         """
-        ## Log entry resources
-
-        Writes log entries to Stackdriver Logging. This API method is the
-        only way to send log entries to Stackdriver Logging. This method
-        is used, directly or indirectly, by the Stackdriver Logging agent
-        (fluentd) and all logging libraries configured to use Stackdriver
-        Logging.
+        Writes log entries to Logging. This API method is the
+        only way to send log entries to Logging. This method
+        is used, directly or indirectly, by the Logging agent
+        (fluentd) and all logging libraries configured to use Logging.
+        A single request may contain log entries for a maximum of 1000
+        different resources (projects, organizations, billing accounts or
+        folders)
 
         Example:
             >>> from google.cloud import logging_v2
             >>>
             >>> client = logging_v2.LoggingServiceV2Client()
             >>>
+            >>> # TODO: Initialize ``entries``:
             >>> entries = []
             >>>
             >>> response = client.write_log_entries(entries)
 
         Args:
-            entries (list[Union[dict, ~google.cloud.logging_v2.types.LogEntry]]): Required. The log entries to send to Stackdriver Logging. The order of log
+            entries (list[Union[dict, ~google.cloud.logging_v2.types.LogEntry]]): Required. The log entries to send to Logging. The order of log
                 entries in this list does not matter. Values supplied in this method's
                 ``log_name``, ``resource``, and ``labels`` fields are copied into those log
                 entries in this list that do not include values for their corresponding
-                fields. For more information, see the ``LogEntry`` type.
+                fields. For more information, see the
+                ``LogEntry`` type.
 
                 If the ``timestamp`` or ``insert_id`` fields are missing in log entries, then
                 this method supplies the current time or a unique identifier, respectively.
@@ -263,8 +287,9 @@ class LoggingServiceV2Client(object):
 
                 Log entries with timestamps that are more than the
                 `logs retention period <https://cloud.google.com/logging/quota-policy>`_ in the past or more than
-                24 hours in the future might be discarded. Discarding does not return
-                an error.
+                24 hours in the future will not be available when calling ``entries.list``.
+                However, those log entries can still be exported with
+                `LogSinks <https://cloud.google.com/logging/docs/api/tasks/exporting-logs>`_.
 
                 To improve throughput and to avoid exceeding the
                 `quota limit <https://cloud.google.com/logging/quota-policy>`_ for calls to ``entries.write``,
@@ -282,11 +307,17 @@ class LoggingServiceV2Client(object):
                     \"billingAccounts/[BILLING_ACCOUNT_ID]/logs/[LOG_ID]\"
                     \"folders/[FOLDER_ID]/logs/[LOG_ID]\"
 
-                ``[LOG_ID]`` must be URL-encoded. For example,
-                ``\"projects/my-project-id/logs/syslog\"`` or
-                ``\"organizations/1234567890/logs/cloudresourcemanager.googleapis.com%2Factivity\"``.
-                For more information about log names, see
-                ``LogEntry``.
+                ``[LOG_ID]`` must be URL-encoded. For example:
+
+                ::
+
+                    \"projects/my-project-id/logs/syslog\"
+                    \"organizations/1234567890/logs/cloudresourcemanager.googleapis.com%2Factivity\"
+
+                The permission <code>logging.logEntries.create</code> is needed on each
+                project, organization, billing account, or folder that is receiving
+                new log entries, whether the resource is specified in
+                <code>logName</code> or in an individual log entry.
             resource (Union[dict, ~google.cloud.logging_v2.types.MonitoredResource]): Optional. A default monitored resource object that is assigned to all log
                 entries in ``entries`` that do not specify a value for ``resource``. Example:
 
@@ -308,6 +339,9 @@ class LoggingServiceV2Client(object):
                 entry is not written, then the response status is the error associated
                 with one of the failed entries and the response includes error details
                 keyed by the entries' zero-based index in the ``entries.write`` method.
+            dry_run (bool): Optional. If true, the request should expect normal response, but the
+                entries won't be persisted nor exported. Useful for checking whether the
+                logging API endpoints are working properly before sending valuable data.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -327,17 +361,27 @@ class LoggingServiceV2Client(object):
                     to a retryable error and retry attempts failed.
             ValueError: If the parameters are invalid.
         """
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
+        # Wrap the transport method to add retry and timeout logic.
+        if 'write_log_entries' not in self._inner_api_calls:
+            self._inner_api_calls[
+                'write_log_entries'] = google.api_core.gapic_v1.method.wrap_method(
+                    self.transport.write_log_entries,
+                    default_retry=self._method_configs['WriteLogEntries'].
+                    retry,
+                    default_timeout=self._method_configs['WriteLogEntries'].
+                    timeout,
+                    client_info=self._client_info,
+                )
+
         request = logging_pb2.WriteLogEntriesRequest(
             entries=entries,
             log_name=log_name,
             resource=resource,
             labels=labels,
             partial_success=partial_success,
+            dry_run=dry_run,
         )
-        return self._write_log_entries(
+        return self._inner_api_calls['write_log_entries'](
             request, retry=retry, timeout=timeout, metadata=metadata)
 
     def list_log_entries(self,
@@ -351,7 +395,7 @@ class LoggingServiceV2Client(object):
                          metadata=None):
         """
         Lists log entries.  Use this method to retrieve log entries from
-        Stackdriver Logging.  For ways to export log entries, see
+        Logging.  For ways to export log entries, see
         `Exporting Logs <https://cloud.google.com/logging/docs/export>`_.
 
         Example:
@@ -359,15 +403,18 @@ class LoggingServiceV2Client(object):
             >>>
             >>> client = logging_v2.LoggingServiceV2Client()
             >>>
+            >>> # TODO: Initialize ``resource_names``:
             >>> resource_names = []
-            >>>
             >>>
             >>> # Iterate over all results
             >>> for element in client.list_log_entries(resource_names):
             ...     # process element
             ...     pass
             >>>
-            >>> # Or iterate over results one page at a time
+            >>>
+            >>> # Alternatively:
+            >>>
+            >>> # Iterate over results one page at a time
             >>> for page in client.list_log_entries(resource_names, options=CallOptions(page_token=INITIAL_PAGE)):
             ...     for element in page:
             ...         # process element
@@ -430,9 +477,17 @@ class LoggingServiceV2Client(object):
                     to a retryable error and retry attempts failed.
             ValueError: If the parameters are invalid.
         """
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
+        # Wrap the transport method to add retry and timeout logic.
+        if 'list_log_entries' not in self._inner_api_calls:
+            self._inner_api_calls[
+                'list_log_entries'] = google.api_core.gapic_v1.method.wrap_method(
+                    self.transport.list_log_entries,
+                    default_retry=self._method_configs['ListLogEntries'].retry,
+                    default_timeout=self._method_configs['ListLogEntries'].
+                    timeout,
+                    client_info=self._client_info,
+                )
+
         request = logging_pb2.ListLogEntriesRequest(
             resource_names=resource_names,
             project_ids=project_ids,
@@ -443,7 +498,7 @@ class LoggingServiceV2Client(object):
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
             method=functools.partial(
-                self._list_log_entries,
+                self._inner_api_calls['list_log_entries'],
                 retry=retry,
                 timeout=timeout,
                 metadata=metadata),
@@ -461,21 +516,22 @@ class LoggingServiceV2Client(object):
             timeout=google.api_core.gapic_v1.method.DEFAULT,
             metadata=None):
         """
-        Lists the descriptors for monitored resource types used by Stackdriver
-        Logging.
+        Lists the descriptors for monitored resource types used by Logging.
 
         Example:
             >>> from google.cloud import logging_v2
             >>>
             >>> client = logging_v2.LoggingServiceV2Client()
             >>>
-            >>>
             >>> # Iterate over all results
             >>> for element in client.list_monitored_resource_descriptors():
             ...     # process element
             ...     pass
             >>>
-            >>> # Or iterate over results one page at a time
+            >>>
+            >>> # Alternatively:
+            >>>
+            >>> # Iterate over results one page at a time
             >>> for page in client.list_monitored_resource_descriptors(options=CallOptions(page_token=INITIAL_PAGE)):
             ...     for element in page:
             ...         # process element
@@ -509,15 +565,24 @@ class LoggingServiceV2Client(object):
                     to a retryable error and retry attempts failed.
             ValueError: If the parameters are invalid.
         """
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
+        # Wrap the transport method to add retry and timeout logic.
+        if 'list_monitored_resource_descriptors' not in self._inner_api_calls:
+            self._inner_api_calls[
+                'list_monitored_resource_descriptors'] = google.api_core.gapic_v1.method.wrap_method(
+                    self.transport.list_monitored_resource_descriptors,
+                    default_retry=self.
+                    _method_configs['ListMonitoredResourceDescriptors'].retry,
+                    default_timeout=self._method_configs[
+                        'ListMonitoredResourceDescriptors'].timeout,
+                    client_info=self._client_info,
+                )
+
         request = logging_pb2.ListMonitoredResourceDescriptorsRequest(
             page_size=page_size, )
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
             method=functools.partial(
-                self._list_monitored_resource_descriptors,
+                self._inner_api_calls['list_monitored_resource_descriptors'],
                 retry=retry,
                 timeout=timeout,
                 metadata=metadata),
@@ -545,13 +610,15 @@ class LoggingServiceV2Client(object):
             >>>
             >>> parent = client.project_path('[PROJECT]')
             >>>
-            >>>
             >>> # Iterate over all results
             >>> for element in client.list_logs(parent):
             ...     # process element
             ...     pass
             >>>
-            >>> # Or iterate over results one page at a time
+            >>>
+            >>> # Alternatively:
+            >>>
+            >>> # Iterate over results one page at a time
             >>> for page in client.list_logs(parent, options=CallOptions(page_token=INITIAL_PAGE)):
             ...     for element in page:
             ...         # process element
@@ -593,9 +660,16 @@ class LoggingServiceV2Client(object):
                     to a retryable error and retry attempts failed.
             ValueError: If the parameters are invalid.
         """
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
+        # Wrap the transport method to add retry and timeout logic.
+        if 'list_logs' not in self._inner_api_calls:
+            self._inner_api_calls[
+                'list_logs'] = google.api_core.gapic_v1.method.wrap_method(
+                    self.transport.list_logs,
+                    default_retry=self._method_configs['ListLogs'].retry,
+                    default_timeout=self._method_configs['ListLogs'].timeout,
+                    client_info=self._client_info,
+                )
+
         request = logging_pb2.ListLogsRequest(
             parent=parent,
             page_size=page_size,
@@ -603,7 +677,7 @@ class LoggingServiceV2Client(object):
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
             method=functools.partial(
-                self._list_logs,
+                self._inner_api_calls['list_logs'],
                 retry=retry,
                 timeout=timeout,
                 metadata=metadata),

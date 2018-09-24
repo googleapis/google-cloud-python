@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+#
 # Copyright 2018 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,8 +15,65 @@
 # limitations under the License.
 """Wrappers for protocol buffer enum types."""
 
+import enum
 
-class LogSeverity(object):
+
+class LaunchStage(enum.IntEnum):
+    """
+    The launch stage as defined by [Google Cloud Platform
+    Launch Stages](http://cloud.google.com/terms/launch-stages).
+
+    Attributes:
+      LAUNCH_STAGE_UNSPECIFIED (int): Do not use this default value.
+      EARLY_ACCESS (int): Early Access features are limited to a closed group of testers. To use
+      these features, you must sign up in advance and sign a Trusted Tester
+      agreement (which includes confidentiality provisions). These features may
+      be unstable, changed in backward-incompatible ways, and are not
+      guaranteed to be released.
+      ALPHA (int): Alpha is a limited availability test for releases before they are cleared
+      for widespread use. By Alpha, all significant design issues are resolved
+      and we are in the process of verifying functionality. Alpha customers
+      need to apply for access, agree to applicable terms, and have their
+      projects whitelisted. Alpha releases don’t have to be feature complete,
+      no SLAs are provided, and there are no technical support obligations, but
+      they will be far enough along that customers can actually use them in
+      test environments or for limited-use tests -- just like they would in
+      normal production cases.
+      BETA (int): Beta is the point at which we are ready to open a release for any
+      customer to use. There are no SLA or technical support obligations in a
+      Beta release. Products will be complete from a feature perspective, but
+      may have some open outstanding issues. Beta releases are suitable for
+      limited production use cases.
+      GA (int): GA features are open to all developers and are considered stable and
+      fully qualified for production use.
+      DEPRECATED (int): Deprecated features are scheduled to be shut down and removed. For more
+      information, see the “Deprecation Policy” section of our [Terms of
+      Service](https://cloud.google.com/terms/)
+      and the [Google Cloud Platform Subject to the Deprecation
+      Policy](https://cloud.google.com/terms/deprecation) documentation.
+    """
+    LAUNCH_STAGE_UNSPECIFIED = 0
+    EARLY_ACCESS = 1
+    ALPHA = 2
+    BETA = 3
+    GA = 4
+    DEPRECATED = 5
+
+
+class NullValue(enum.IntEnum):
+    """
+    ``NullValue`` is a singleton enumeration to represent the null value for the
+    ``Value`` type union.
+
+     The JSON representation for ``NullValue`` is JSON ``null``.
+
+    Attributes:
+      NULL_VALUE (int): Null value.
+    """
+    NULL_VALUE = 0
+
+
+class LogSeverity(enum.IntEnum):
     """
     The severity of the event described in a log entry, expressed as one of the
     standard severity levels listed below.  For your reference, the levels are
@@ -57,21 +116,8 @@ class LogSeverity(object):
     EMERGENCY = 800
 
 
-class NullValue(object):
-    """
-    ``NullValue`` is a singleton enumeration to represent the null value for the
-    ``Value`` type union.
-
-     The JSON representation for ``NullValue`` is JSON ``null``.
-
-    Attributes:
-      NULL_VALUE (int): Null value.
-    """
-    NULL_VALUE = 0
-
-
 class LabelDescriptor(object):
-    class ValueType(object):
+    class ValueType(enum.IntEnum):
         """
         Value types that can be used as label values.
 
@@ -85,25 +131,8 @@ class LabelDescriptor(object):
         INT64 = 2
 
 
-class LogSink(object):
-    class VersionFormat(object):
-        """
-        Available log entry formats. Log entries can be written to Stackdriver
-        Logging in either format and can be exported in either format.
-        Version 2 is the preferred format.
-
-        Attributes:
-          VERSION_FORMAT_UNSPECIFIED (int): An unspecified format version that will default to V2.
-          V2 (int): ``LogEntry`` version 2 format.
-          V1 (int): ``LogEntry`` version 1 format.
-        """
-        VERSION_FORMAT_UNSPECIFIED = 0
-        V2 = 1
-        V1 = 2
-
-
 class MetricDescriptor(object):
-    class MetricKind(object):
+    class MetricKind(enum.IntEnum):
         """
         The kind of measurement. It describes how the data is reported.
 
@@ -122,7 +151,7 @@ class MetricDescriptor(object):
         DELTA = 2
         CUMULATIVE = 3
 
-    class ValueType(object):
+    class ValueType(enum.IntEnum):
         """
         The value type of a metric.
 
@@ -147,13 +176,30 @@ class MetricDescriptor(object):
 
 
 class LogMetric(object):
-    class ApiVersion(object):
+    class ApiVersion(enum.IntEnum):
         """
-        Stackdriver Logging API version.
+        Logging API version.
 
         Attributes:
-          V2 (int): Stackdriver Logging API v2.
-          V1 (int): Stackdriver Logging API v1.
+          V2 (int): Logging API v2.
+          V1 (int): Logging API v1.
         """
         V2 = 0
         V1 = 1
+
+
+class LogSink(object):
+    class VersionFormat(enum.IntEnum):
+        """
+        Available log entry formats. Log entries can be written to
+        Logging in either format and can be exported in either format.
+        Version 2 is the preferred format.
+
+        Attributes:
+          VERSION_FORMAT_UNSPECIFIED (int): An unspecified format version that will default to V2.
+          V2 (int): ``LogEntry`` version 2 format.
+          V1 (int): ``LogEntry`` version 1 format.
+        """
+        VERSION_FORMAT_UNSPECIFIED = 0
+        V2 = 1
+        V1 = 2
