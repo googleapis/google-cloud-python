@@ -321,11 +321,11 @@ class TestBigQuery(unittest.TestCase):
 
     def test_list_partitions(self):
         table_ref = DatasetReference(
-            'bigquery-partition-samples',
-            'samples').table('stackoverflow_comments')
+            'bigquery-public-data',
+            'ethereum_blockchain').table('blocks')
         all_rows = Config.CLIENT.list_partitions(table_ref)
-        self.assertIn('20150508', all_rows)
-        self.assertEquals(2066, len(all_rows))
+        self.assertIn('20180801', all_rows)
+        self.assertGreater(len(all_rows), 1000)
 
     def test_list_tables(self):
         DATASET_ID = _make_dataset_id('list_tables')
@@ -666,7 +666,7 @@ class TestBigQuery(unittest.TestCase):
             client.get_job(job_id, location='US')
 
         load_job_us = client.get_job(job_id)
-        load_job_us._job_ref._properties['location'] = 'US'
+        load_job_us._properties['jobReference']['location'] = 'US'
         self.assertFalse(load_job_us.exists())
         with self.assertRaises(NotFound):
             load_job_us.reload()

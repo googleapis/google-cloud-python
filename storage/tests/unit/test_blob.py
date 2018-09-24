@@ -2113,15 +2113,35 @@ class Test_Blob(unittest.TestCase):
         SOURCE_1 = 'source-1'
         SOURCE_2 = 'source-2'
         DESTINATION = 'destinaton'
-        connection = _Connection()
+        RESOURCE = {}
+        after = ({'status': http_client.OK}, RESOURCE)
+        connection = _Connection(after)
         client = _Client(connection)
         bucket = _Bucket(client=client)
         source_1 = self._make_one(SOURCE_1, bucket=bucket)
         source_2 = self._make_one(SOURCE_2, bucket=bucket)
         destination = self._make_one(DESTINATION, bucket=bucket)
+        # no destination.content_type set
 
-        with self.assertRaises(ValueError):
-            destination.compose(sources=[source_1, source_2])
+        destination.compose(sources=[source_1, source_2])
+
+        self.assertIsNone(destination.content_type)
+
+        kw = connection._requested
+        self.assertEqual(len(kw), 1)
+        self.assertEqual(kw[0], {
+            'method': 'POST',
+            'path': '/b/name/o/%s/compose' % DESTINATION,
+            'query_params': {},
+            'data': {
+                'sourceObjects': [
+                    {'name': source_1.name},
+                    {'name': source_2.name},
+                ],
+                'destination': {},
+            },
+            '_target_object': destination,
+        })
 
     def test_compose_minimal_w_user_project(self):
         SOURCE_1 = 'source-1'

@@ -28,7 +28,6 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   serialized_pb=_b('\nIgoogle/cloud/spanner/admin/database_v1/proto/spanner_database_admin.proto\x12 google.spanner.admin.database.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x1egoogle/iam/v1/iam_policy.proto\x1a\x1agoogle/iam/v1/policy.proto\x1a#google/longrunning/operations.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\x92\x01\n\x08\x44\x61tabase\x12\x0c\n\x04name\x18\x01 \x01(\t\x12?\n\x05state\x18\x02 \x01(\x0e\x32\x30.google.spanner.admin.database.v1.Database.State\"7\n\x05State\x12\x15\n\x11STATE_UNSPECIFIED\x10\x00\x12\x0c\n\x08\x43REATING\x10\x01\x12\t\n\x05READY\x10\x02\"M\n\x14ListDatabasesRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05\x12\x12\n\npage_token\x18\x04 \x01(\t\"o\n\x15ListDatabasesResponse\x12=\n\tdatabases\x18\x01 \x03(\x0b\x32*.google.spanner.admin.database.v1.Database\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\"[\n\x15\x43reateDatabaseRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x18\n\x10\x63reate_statement\x18\x02 \x01(\t\x12\x18\n\x10\x65xtra_statements\x18\x03 \x03(\t\"*\n\x16\x43reateDatabaseMetadata\x12\x10\n\x08\x64\x61tabase\x18\x01 \x01(\t\"\"\n\x12GetDatabaseRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"V\n\x18UpdateDatabaseDdlRequest\x12\x10\n\x08\x64\x61tabase\x18\x01 \x01(\t\x12\x12\n\nstatements\x18\x02 \x03(\t\x12\x14\n\x0coperation_id\x18\x03 \x01(\t\"x\n\x19UpdateDatabaseDdlMetadata\x12\x10\n\x08\x64\x61tabase\x18\x01 \x01(\t\x12\x12\n\nstatements\x18\x02 \x03(\t\x12\x35\n\x11\x63ommit_timestamps\x18\x03 \x03(\x0b\x32\x1a.google.protobuf.Timestamp\"\'\n\x13\x44ropDatabaseRequest\x12\x10\n\x08\x64\x61tabase\x18\x01 \x01(\t\")\n\x15GetDatabaseDdlRequest\x12\x10\n\x08\x64\x61tabase\x18\x01 \x01(\t\",\n\x16GetDatabaseDdlResponse\x12\x12\n\nstatements\x18\x01 \x03(\t2\x95\x0c\n\rDatabaseAdmin\x12\xb7\x01\n\rListDatabases\x12\x36.google.spanner.admin.database.v1.ListDatabasesRequest\x1a\x37.google.spanner.admin.database.v1.ListDatabasesResponse\"5\x82\xd3\xe4\x93\x02/\x12-/v1/{parent=projects/*/instances/*}/databases\x12\xa2\x01\n\x0e\x43reateDatabase\x12\x37.google.spanner.admin.database.v1.CreateDatabaseRequest\x1a\x1d.google.longrunning.Operation\"8\x82\xd3\xe4\x93\x02\x32\"-/v1/{parent=projects/*/instances/*}/databases:\x01*\x12\xa6\x01\n\x0bGetDatabase\x12\x34.google.spanner.admin.database.v1.GetDatabaseRequest\x1a*.google.spanner.admin.database.v1.Database\"5\x82\xd3\xe4\x93\x02/\x12-/v1/{name=projects/*/instances/*/databases/*}\x12\xb0\x01\n\x11UpdateDatabaseDdl\x12:.google.spanner.admin.database.v1.UpdateDatabaseDdlRequest\x1a\x1d.google.longrunning.Operation\"@\x82\xd3\xe4\x93\x02:25/v1/{database=projects/*/instances/*/databases/*}/ddl:\x01*\x12\x98\x01\n\x0c\x44ropDatabase\x12\x35.google.spanner.admin.database.v1.DropDatabaseRequest\x1a\x16.google.protobuf.Empty\"9\x82\xd3\xe4\x93\x02\x33*1/v1/{database=projects/*/instances/*/databases/*}\x12\xc2\x01\n\x0eGetDatabaseDdl\x12\x37.google.spanner.admin.database.v1.GetDatabaseDdlRequest\x1a\x38.google.spanner.admin.database.v1.GetDatabaseDdlResponse\"=\x82\xd3\xe4\x93\x02\x37\x12\x35/v1/{database=projects/*/instances/*/databases/*}/ddl\x12\x94\x01\n\x0cSetIamPolicy\x12\".google.iam.v1.SetIamPolicyRequest\x1a\x15.google.iam.v1.Policy\"I\x82\xd3\xe4\x93\x02\x43\">/v1/{resource=projects/*/instances/*/databases/*}:setIamPolicy:\x01*\x12\x94\x01\n\x0cGetIamPolicy\x12\".google.iam.v1.GetIamPolicyRequest\x1a\x15.google.iam.v1.Policy\"I\x82\xd3\xe4\x93\x02\x43\">/v1/{resource=projects/*/instances/*/databases/*}:getIamPolicy:\x01*\x12\xba\x01\n\x12TestIamPermissions\x12(.google.iam.v1.TestIamPermissionsRequest\x1a).google.iam.v1.TestIamPermissionsResponse\"O\x82\xd3\xe4\x93\x02I\"D/v1/{resource=projects/*/instances/*/databases/*}:testIamPermissions:\x01*B\xdf\x01\n$com.google.spanner.admin.database.v1B\x19SpannerDatabaseAdminProtoP\x01ZHgoogle.golang.org/genproto/googleapis/spanner/admin/database/v1;database\xaa\x02&Google.Cloud.Spanner.Admin.Database.V1\xca\x02&Google\\Cloud\\Spanner\\Admin\\Database\\V1b\x06proto3')
   ,
   dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR,google_dot_iam_dot_v1_dot_iam__policy__pb2.DESCRIPTOR,google_dot_iam_dot_v1_dot_policy__pb2.DESCRIPTOR,google_dot_longrunning_dot_operations__pb2.DESCRIPTOR,google_dot_protobuf_dot_empty__pb2.DESCRIPTOR,google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,])
-_sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 
 
@@ -72,14 +71,14 @@ _DATABASE = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='state', full_name='google.spanner.admin.database.v1.Database.state', index=1,
       number=2, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -111,21 +110,21 @@ _LISTDATABASESREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='page_size', full_name='google.spanner.admin.database.v1.ListDatabasesRequest.page_size', index=1,
       number=3, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='page_token', full_name='google.spanner.admin.database.v1.ListDatabasesRequest.page_token', index=2,
       number=4, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -156,14 +155,14 @@ _LISTDATABASESRESPONSE = _descriptor.Descriptor(
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='next_page_token', full_name='google.spanner.admin.database.v1.ListDatabasesResponse.next_page_token', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -194,21 +193,21 @@ _CREATEDATABASEREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='create_statement', full_name='google.spanner.admin.database.v1.CreateDatabaseRequest.create_statement', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='extra_statements', full_name='google.spanner.admin.database.v1.CreateDatabaseRequest.extra_statements', index=2,
       number=3, type=9, cpp_type=9, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -239,7 +238,7 @@ _CREATEDATABASEMETADATA = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -270,7 +269,7 @@ _GETDATABASEREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -301,21 +300,21 @@ _UPDATEDATABASEDDLREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='statements', full_name='google.spanner.admin.database.v1.UpdateDatabaseDdlRequest.statements', index=1,
       number=2, type=9, cpp_type=9, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='operation_id', full_name='google.spanner.admin.database.v1.UpdateDatabaseDdlRequest.operation_id', index=2,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -346,21 +345,21 @@ _UPDATEDATABASEDDLMETADATA = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='statements', full_name='google.spanner.admin.database.v1.UpdateDatabaseDdlMetadata.statements', index=1,
       number=2, type=9, cpp_type=9, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='commit_timestamps', full_name='google.spanner.admin.database.v1.UpdateDatabaseDdlMetadata.commit_timestamps', index=2,
       number=3, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -391,7 +390,7 @@ _DROPDATABASEREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -422,7 +421,7 @@ _GETDATABASEDDLREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -453,7 +452,7 @@ _GETDATABASEDDLRESPONSE = _descriptor.Descriptor(
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -485,6 +484,7 @@ DESCRIPTOR.message_types_by_name['UpdateDatabaseDdlMetadata'] = _UPDATEDATABASED
 DESCRIPTOR.message_types_by_name['DropDatabaseRequest'] = _DROPDATABASEREQUEST
 DESCRIPTOR.message_types_by_name['GetDatabaseDdlRequest'] = _GETDATABASEDDLREQUEST
 DESCRIPTOR.message_types_by_name['GetDatabaseDdlResponse'] = _GETDATABASEDDLRESPONSE
+_sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 Database = _reflection.GeneratedProtocolMessageType('Database', (_message.Message,), dict(
   DESCRIPTOR = _DATABASE,
@@ -746,479 +746,100 @@ _sym_db.RegisterMessage(GetDatabaseDdlResponse)
 
 DESCRIPTOR.has_options = True
 DESCRIPTOR._options = _descriptor._ParseOptions(descriptor_pb2.FileOptions(), _b('\n$com.google.spanner.admin.database.v1B\031SpannerDatabaseAdminProtoP\001ZHgoogle.golang.org/genproto/googleapis/spanner/admin/database/v1;database\252\002&Google.Cloud.Spanner.Admin.Database.V1\312\002&Google\\Cloud\\Spanner\\Admin\\Database\\V1'))
-try:
-  # THESE ELEMENTS WILL BE DEPRECATED.
-  # Please use the generated *_pb2_grpc.py files instead.
-  import grpc
-  from grpc.beta import implementations as beta_implementations
-  from grpc.beta import interfaces as beta_interfaces
-  from grpc.framework.common import cardinality
-  from grpc.framework.interfaces.face import utilities as face_utilities
 
+_DATABASEADMIN = _descriptor.ServiceDescriptor(
+  name='DatabaseAdmin',
+  full_name='google.spanner.admin.database.v1.DatabaseAdmin',
+  file=DESCRIPTOR,
+  index=0,
+  options=None,
+  serialized_start=1155,
+  serialized_end=2712,
+  methods=[
+  _descriptor.MethodDescriptor(
+    name='ListDatabases',
+    full_name='google.spanner.admin.database.v1.DatabaseAdmin.ListDatabases',
+    index=0,
+    containing_service=None,
+    input_type=_LISTDATABASESREQUEST,
+    output_type=_LISTDATABASESRESPONSE,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002/\022-/v1/{parent=projects/*/instances/*}/databases')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='CreateDatabase',
+    full_name='google.spanner.admin.database.v1.DatabaseAdmin.CreateDatabase',
+    index=1,
+    containing_service=None,
+    input_type=_CREATEDATABASEREQUEST,
+    output_type=google_dot_longrunning_dot_operations__pb2._OPERATION,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\0022\"-/v1/{parent=projects/*/instances/*}/databases:\001*')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='GetDatabase',
+    full_name='google.spanner.admin.database.v1.DatabaseAdmin.GetDatabase',
+    index=2,
+    containing_service=None,
+    input_type=_GETDATABASEREQUEST,
+    output_type=_DATABASE,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002/\022-/v1/{name=projects/*/instances/*/databases/*}')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='UpdateDatabaseDdl',
+    full_name='google.spanner.admin.database.v1.DatabaseAdmin.UpdateDatabaseDdl',
+    index=3,
+    containing_service=None,
+    input_type=_UPDATEDATABASEDDLREQUEST,
+    output_type=google_dot_longrunning_dot_operations__pb2._OPERATION,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002:25/v1/{database=projects/*/instances/*/databases/*}/ddl:\001*')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='DropDatabase',
+    full_name='google.spanner.admin.database.v1.DatabaseAdmin.DropDatabase',
+    index=4,
+    containing_service=None,
+    input_type=_DROPDATABASEREQUEST,
+    output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\0023*1/v1/{database=projects/*/instances/*/databases/*}')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='GetDatabaseDdl',
+    full_name='google.spanner.admin.database.v1.DatabaseAdmin.GetDatabaseDdl',
+    index=5,
+    containing_service=None,
+    input_type=_GETDATABASEDDLREQUEST,
+    output_type=_GETDATABASEDDLRESPONSE,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\0027\0225/v1/{database=projects/*/instances/*/databases/*}/ddl')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='SetIamPolicy',
+    full_name='google.spanner.admin.database.v1.DatabaseAdmin.SetIamPolicy',
+    index=6,
+    containing_service=None,
+    input_type=google_dot_iam_dot_v1_dot_iam__policy__pb2._SETIAMPOLICYREQUEST,
+    output_type=google_dot_iam_dot_v1_dot_policy__pb2._POLICY,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002C\">/v1/{resource=projects/*/instances/*/databases/*}:setIamPolicy:\001*')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='GetIamPolicy',
+    full_name='google.spanner.admin.database.v1.DatabaseAdmin.GetIamPolicy',
+    index=7,
+    containing_service=None,
+    input_type=google_dot_iam_dot_v1_dot_iam__policy__pb2._GETIAMPOLICYREQUEST,
+    output_type=google_dot_iam_dot_v1_dot_policy__pb2._POLICY,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002C\">/v1/{resource=projects/*/instances/*/databases/*}:getIamPolicy:\001*')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='TestIamPermissions',
+    full_name='google.spanner.admin.database.v1.DatabaseAdmin.TestIamPermissions',
+    index=8,
+    containing_service=None,
+    input_type=google_dot_iam_dot_v1_dot_iam__policy__pb2._TESTIAMPERMISSIONSREQUEST,
+    output_type=google_dot_iam_dot_v1_dot_iam__policy__pb2._TESTIAMPERMISSIONSRESPONSE,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002I\"D/v1/{resource=projects/*/instances/*/databases/*}:testIamPermissions:\001*')),
+  ),
+])
+_sym_db.RegisterServiceDescriptor(_DATABASEADMIN)
 
-  class DatabaseAdminStub(object):
-    """Cloud Spanner Database Admin API
+DESCRIPTOR.services_by_name['DatabaseAdmin'] = _DATABASEADMIN
 
-    The Cloud Spanner Database Admin API can be used to create, drop, and
-    list databases. It also enables updating the schema of pre-existing
-    databases.
-    """
-
-    def __init__(self, channel):
-      """Constructor.
-
-      Args:
-        channel: A grpc.Channel.
-      """
-      self.ListDatabases = channel.unary_unary(
-          '/google.spanner.admin.database.v1.DatabaseAdmin/ListDatabases',
-          request_serializer=ListDatabasesRequest.SerializeToString,
-          response_deserializer=ListDatabasesResponse.FromString,
-          )
-      self.CreateDatabase = channel.unary_unary(
-          '/google.spanner.admin.database.v1.DatabaseAdmin/CreateDatabase',
-          request_serializer=CreateDatabaseRequest.SerializeToString,
-          response_deserializer=google_dot_longrunning_dot_operations__pb2.Operation.FromString,
-          )
-      self.GetDatabase = channel.unary_unary(
-          '/google.spanner.admin.database.v1.DatabaseAdmin/GetDatabase',
-          request_serializer=GetDatabaseRequest.SerializeToString,
-          response_deserializer=Database.FromString,
-          )
-      self.UpdateDatabaseDdl = channel.unary_unary(
-          '/google.spanner.admin.database.v1.DatabaseAdmin/UpdateDatabaseDdl',
-          request_serializer=UpdateDatabaseDdlRequest.SerializeToString,
-          response_deserializer=google_dot_longrunning_dot_operations__pb2.Operation.FromString,
-          )
-      self.DropDatabase = channel.unary_unary(
-          '/google.spanner.admin.database.v1.DatabaseAdmin/DropDatabase',
-          request_serializer=DropDatabaseRequest.SerializeToString,
-          response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
-          )
-      self.GetDatabaseDdl = channel.unary_unary(
-          '/google.spanner.admin.database.v1.DatabaseAdmin/GetDatabaseDdl',
-          request_serializer=GetDatabaseDdlRequest.SerializeToString,
-          response_deserializer=GetDatabaseDdlResponse.FromString,
-          )
-      self.SetIamPolicy = channel.unary_unary(
-          '/google.spanner.admin.database.v1.DatabaseAdmin/SetIamPolicy',
-          request_serializer=google_dot_iam_dot_v1_dot_iam__policy__pb2.SetIamPolicyRequest.SerializeToString,
-          response_deserializer=google_dot_iam_dot_v1_dot_policy__pb2.Policy.FromString,
-          )
-      self.GetIamPolicy = channel.unary_unary(
-          '/google.spanner.admin.database.v1.DatabaseAdmin/GetIamPolicy',
-          request_serializer=google_dot_iam_dot_v1_dot_iam__policy__pb2.GetIamPolicyRequest.SerializeToString,
-          response_deserializer=google_dot_iam_dot_v1_dot_policy__pb2.Policy.FromString,
-          )
-      self.TestIamPermissions = channel.unary_unary(
-          '/google.spanner.admin.database.v1.DatabaseAdmin/TestIamPermissions',
-          request_serializer=google_dot_iam_dot_v1_dot_iam__policy__pb2.TestIamPermissionsRequest.SerializeToString,
-          response_deserializer=google_dot_iam_dot_v1_dot_iam__policy__pb2.TestIamPermissionsResponse.FromString,
-          )
-
-
-  class DatabaseAdminServicer(object):
-    """Cloud Spanner Database Admin API
-
-    The Cloud Spanner Database Admin API can be used to create, drop, and
-    list databases. It also enables updating the schema of pre-existing
-    databases.
-    """
-
-    def ListDatabases(self, request, context):
-      """Lists Cloud Spanner databases.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def CreateDatabase(self, request, context):
-      """Creates a new Cloud Spanner database and starts to prepare it for serving.
-      The returned [long-running operation][google.longrunning.Operation] will
-      have a name of the format `<database_name>/operations/<operation_id>` and
-      can be used to track preparation of the database. The
-      [metadata][google.longrunning.Operation.metadata] field type is
-      [CreateDatabaseMetadata][google.spanner.admin.database.v1.CreateDatabaseMetadata]. The
-      [response][google.longrunning.Operation.response] field type is
-      [Database][google.spanner.admin.database.v1.Database], if successful.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def GetDatabase(self, request, context):
-      """Gets the state of a Cloud Spanner database.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def UpdateDatabaseDdl(self, request, context):
-      """Updates the schema of a Cloud Spanner database by
-      creating/altering/dropping tables, columns, indexes, etc. The returned
-      [long-running operation][google.longrunning.Operation] will have a name of
-      the format `<database_name>/operations/<operation_id>` and can be used to
-      track execution of the schema change(s). The
-      [metadata][google.longrunning.Operation.metadata] field type is
-      [UpdateDatabaseDdlMetadata][google.spanner.admin.database.v1.UpdateDatabaseDdlMetadata].  The operation has no response.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def DropDatabase(self, request, context):
-      """Drops (aka deletes) a Cloud Spanner database.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def GetDatabaseDdl(self, request, context):
-      """Returns the schema of a Cloud Spanner database as a list of formatted
-      DDL statements. This method does not show pending schema updates, those may
-      be queried using the [Operations][google.longrunning.Operations] API.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def SetIamPolicy(self, request, context):
-      """Sets the access control policy on a database resource. Replaces any
-      existing policy.
-
-      Authorization requires `spanner.databases.setIamPolicy` permission on
-      [resource][google.iam.v1.SetIamPolicyRequest.resource].
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def GetIamPolicy(self, request, context):
-      """Gets the access control policy for a database resource. Returns an empty
-      policy if a database exists but does not have a policy set.
-
-      Authorization requires `spanner.databases.getIamPolicy` permission on
-      [resource][google.iam.v1.GetIamPolicyRequest.resource].
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def TestIamPermissions(self, request, context):
-      """Returns permissions that the caller has on the specified database resource.
-
-      Attempting this RPC on a non-existent Cloud Spanner database will result in
-      a NOT_FOUND error if the user has `spanner.databases.list` permission on
-      the containing Cloud Spanner instance. Otherwise returns an empty set of
-      permissions.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-
-  def add_DatabaseAdminServicer_to_server(servicer, server):
-    rpc_method_handlers = {
-        'ListDatabases': grpc.unary_unary_rpc_method_handler(
-            servicer.ListDatabases,
-            request_deserializer=ListDatabasesRequest.FromString,
-            response_serializer=ListDatabasesResponse.SerializeToString,
-        ),
-        'CreateDatabase': grpc.unary_unary_rpc_method_handler(
-            servicer.CreateDatabase,
-            request_deserializer=CreateDatabaseRequest.FromString,
-            response_serializer=google_dot_longrunning_dot_operations__pb2.Operation.SerializeToString,
-        ),
-        'GetDatabase': grpc.unary_unary_rpc_method_handler(
-            servicer.GetDatabase,
-            request_deserializer=GetDatabaseRequest.FromString,
-            response_serializer=Database.SerializeToString,
-        ),
-        'UpdateDatabaseDdl': grpc.unary_unary_rpc_method_handler(
-            servicer.UpdateDatabaseDdl,
-            request_deserializer=UpdateDatabaseDdlRequest.FromString,
-            response_serializer=google_dot_longrunning_dot_operations__pb2.Operation.SerializeToString,
-        ),
-        'DropDatabase': grpc.unary_unary_rpc_method_handler(
-            servicer.DropDatabase,
-            request_deserializer=DropDatabaseRequest.FromString,
-            response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
-        ),
-        'GetDatabaseDdl': grpc.unary_unary_rpc_method_handler(
-            servicer.GetDatabaseDdl,
-            request_deserializer=GetDatabaseDdlRequest.FromString,
-            response_serializer=GetDatabaseDdlResponse.SerializeToString,
-        ),
-        'SetIamPolicy': grpc.unary_unary_rpc_method_handler(
-            servicer.SetIamPolicy,
-            request_deserializer=google_dot_iam_dot_v1_dot_iam__policy__pb2.SetIamPolicyRequest.FromString,
-            response_serializer=google_dot_iam_dot_v1_dot_policy__pb2.Policy.SerializeToString,
-        ),
-        'GetIamPolicy': grpc.unary_unary_rpc_method_handler(
-            servicer.GetIamPolicy,
-            request_deserializer=google_dot_iam_dot_v1_dot_iam__policy__pb2.GetIamPolicyRequest.FromString,
-            response_serializer=google_dot_iam_dot_v1_dot_policy__pb2.Policy.SerializeToString,
-        ),
-        'TestIamPermissions': grpc.unary_unary_rpc_method_handler(
-            servicer.TestIamPermissions,
-            request_deserializer=google_dot_iam_dot_v1_dot_iam__policy__pb2.TestIamPermissionsRequest.FromString,
-            response_serializer=google_dot_iam_dot_v1_dot_iam__policy__pb2.TestIamPermissionsResponse.SerializeToString,
-        ),
-    }
-    generic_handler = grpc.method_handlers_generic_handler(
-        'google.spanner.admin.database.v1.DatabaseAdmin', rpc_method_handlers)
-    server.add_generic_rpc_handlers((generic_handler,))
-
-
-  class BetaDatabaseAdminServicer(object):
-    """The Beta API is deprecated for 0.15.0 and later.
-
-    It is recommended to use the GA API (classes and functions in this
-    file not marked beta) for all further purposes. This class was generated
-    only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0."""
-    """Cloud Spanner Database Admin API
-
-    The Cloud Spanner Database Admin API can be used to create, drop, and
-    list databases. It also enables updating the schema of pre-existing
-    databases.
-    """
-    def ListDatabases(self, request, context):
-      """Lists Cloud Spanner databases.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def CreateDatabase(self, request, context):
-      """Creates a new Cloud Spanner database and starts to prepare it for serving.
-      The returned [long-running operation][google.longrunning.Operation] will
-      have a name of the format `<database_name>/operations/<operation_id>` and
-      can be used to track preparation of the database. The
-      [metadata][google.longrunning.Operation.metadata] field type is
-      [CreateDatabaseMetadata][google.spanner.admin.database.v1.CreateDatabaseMetadata]. The
-      [response][google.longrunning.Operation.response] field type is
-      [Database][google.spanner.admin.database.v1.Database], if successful.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def GetDatabase(self, request, context):
-      """Gets the state of a Cloud Spanner database.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def UpdateDatabaseDdl(self, request, context):
-      """Updates the schema of a Cloud Spanner database by
-      creating/altering/dropping tables, columns, indexes, etc. The returned
-      [long-running operation][google.longrunning.Operation] will have a name of
-      the format `<database_name>/operations/<operation_id>` and can be used to
-      track execution of the schema change(s). The
-      [metadata][google.longrunning.Operation.metadata] field type is
-      [UpdateDatabaseDdlMetadata][google.spanner.admin.database.v1.UpdateDatabaseDdlMetadata].  The operation has no response.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def DropDatabase(self, request, context):
-      """Drops (aka deletes) a Cloud Spanner database.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def GetDatabaseDdl(self, request, context):
-      """Returns the schema of a Cloud Spanner database as a list of formatted
-      DDL statements. This method does not show pending schema updates, those may
-      be queried using the [Operations][google.longrunning.Operations] API.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def SetIamPolicy(self, request, context):
-      """Sets the access control policy on a database resource. Replaces any
-      existing policy.
-
-      Authorization requires `spanner.databases.setIamPolicy` permission on
-      [resource][google.iam.v1.SetIamPolicyRequest.resource].
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def GetIamPolicy(self, request, context):
-      """Gets the access control policy for a database resource. Returns an empty
-      policy if a database exists but does not have a policy set.
-
-      Authorization requires `spanner.databases.getIamPolicy` permission on
-      [resource][google.iam.v1.GetIamPolicyRequest.resource].
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def TestIamPermissions(self, request, context):
-      """Returns permissions that the caller has on the specified database resource.
-
-      Attempting this RPC on a non-existent Cloud Spanner database will result in
-      a NOT_FOUND error if the user has `spanner.databases.list` permission on
-      the containing Cloud Spanner instance. Otherwise returns an empty set of
-      permissions.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-
-
-  class BetaDatabaseAdminStub(object):
-    """The Beta API is deprecated for 0.15.0 and later.
-
-    It is recommended to use the GA API (classes and functions in this
-    file not marked beta) for all further purposes. This class was generated
-    only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0."""
-    """Cloud Spanner Database Admin API
-
-    The Cloud Spanner Database Admin API can be used to create, drop, and
-    list databases. It also enables updating the schema of pre-existing
-    databases.
-    """
-    def ListDatabases(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Lists Cloud Spanner databases.
-      """
-      raise NotImplementedError()
-    ListDatabases.future = None
-    def CreateDatabase(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Creates a new Cloud Spanner database and starts to prepare it for serving.
-      The returned [long-running operation][google.longrunning.Operation] will
-      have a name of the format `<database_name>/operations/<operation_id>` and
-      can be used to track preparation of the database. The
-      [metadata][google.longrunning.Operation.metadata] field type is
-      [CreateDatabaseMetadata][google.spanner.admin.database.v1.CreateDatabaseMetadata]. The
-      [response][google.longrunning.Operation.response] field type is
-      [Database][google.spanner.admin.database.v1.Database], if successful.
-      """
-      raise NotImplementedError()
-    CreateDatabase.future = None
-    def GetDatabase(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Gets the state of a Cloud Spanner database.
-      """
-      raise NotImplementedError()
-    GetDatabase.future = None
-    def UpdateDatabaseDdl(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Updates the schema of a Cloud Spanner database by
-      creating/altering/dropping tables, columns, indexes, etc. The returned
-      [long-running operation][google.longrunning.Operation] will have a name of
-      the format `<database_name>/operations/<operation_id>` and can be used to
-      track execution of the schema change(s). The
-      [metadata][google.longrunning.Operation.metadata] field type is
-      [UpdateDatabaseDdlMetadata][google.spanner.admin.database.v1.UpdateDatabaseDdlMetadata].  The operation has no response.
-      """
-      raise NotImplementedError()
-    UpdateDatabaseDdl.future = None
-    def DropDatabase(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Drops (aka deletes) a Cloud Spanner database.
-      """
-      raise NotImplementedError()
-    DropDatabase.future = None
-    def GetDatabaseDdl(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Returns the schema of a Cloud Spanner database as a list of formatted
-      DDL statements. This method does not show pending schema updates, those may
-      be queried using the [Operations][google.longrunning.Operations] API.
-      """
-      raise NotImplementedError()
-    GetDatabaseDdl.future = None
-    def SetIamPolicy(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Sets the access control policy on a database resource. Replaces any
-      existing policy.
-
-      Authorization requires `spanner.databases.setIamPolicy` permission on
-      [resource][google.iam.v1.SetIamPolicyRequest.resource].
-      """
-      raise NotImplementedError()
-    SetIamPolicy.future = None
-    def GetIamPolicy(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Gets the access control policy for a database resource. Returns an empty
-      policy if a database exists but does not have a policy set.
-
-      Authorization requires `spanner.databases.getIamPolicy` permission on
-      [resource][google.iam.v1.GetIamPolicyRequest.resource].
-      """
-      raise NotImplementedError()
-    GetIamPolicy.future = None
-    def TestIamPermissions(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Returns permissions that the caller has on the specified database resource.
-
-      Attempting this RPC on a non-existent Cloud Spanner database will result in
-      a NOT_FOUND error if the user has `spanner.databases.list` permission on
-      the containing Cloud Spanner instance. Otherwise returns an empty set of
-      permissions.
-      """
-      raise NotImplementedError()
-    TestIamPermissions.future = None
-
-
-  def beta_create_DatabaseAdmin_server(servicer, pool=None, pool_size=None, default_timeout=None, maximum_timeout=None):
-    """The Beta API is deprecated for 0.15.0 and later.
-
-    It is recommended to use the GA API (classes and functions in this
-    file not marked beta) for all further purposes. This function was
-    generated only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0"""
-    request_deserializers = {
-      ('google.spanner.admin.database.v1.DatabaseAdmin', 'CreateDatabase'): CreateDatabaseRequest.FromString,
-      ('google.spanner.admin.database.v1.DatabaseAdmin', 'DropDatabase'): DropDatabaseRequest.FromString,
-      ('google.spanner.admin.database.v1.DatabaseAdmin', 'GetDatabase'): GetDatabaseRequest.FromString,
-      ('google.spanner.admin.database.v1.DatabaseAdmin', 'GetDatabaseDdl'): GetDatabaseDdlRequest.FromString,
-      ('google.spanner.admin.database.v1.DatabaseAdmin', 'GetIamPolicy'): google_dot_iam_dot_v1_dot_iam__policy__pb2.GetIamPolicyRequest.FromString,
-      ('google.spanner.admin.database.v1.DatabaseAdmin', 'ListDatabases'): ListDatabasesRequest.FromString,
-      ('google.spanner.admin.database.v1.DatabaseAdmin', 'SetIamPolicy'): google_dot_iam_dot_v1_dot_iam__policy__pb2.SetIamPolicyRequest.FromString,
-      ('google.spanner.admin.database.v1.DatabaseAdmin', 'TestIamPermissions'): google_dot_iam_dot_v1_dot_iam__policy__pb2.TestIamPermissionsRequest.FromString,
-      ('google.spanner.admin.database.v1.DatabaseAdmin', 'UpdateDatabaseDdl'): UpdateDatabaseDdlRequest.FromString,
-    }
-    response_serializers = {
-      ('google.spanner.admin.database.v1.DatabaseAdmin', 'CreateDatabase'): google_dot_longrunning_dot_operations__pb2.Operation.SerializeToString,
-      ('google.spanner.admin.database.v1.DatabaseAdmin', 'DropDatabase'): google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
-      ('google.spanner.admin.database.v1.DatabaseAdmin', 'GetDatabase'): Database.SerializeToString,
-      ('google.spanner.admin.database.v1.DatabaseAdmin', 'GetDatabaseDdl'): GetDatabaseDdlResponse.SerializeToString,
-      ('google.spanner.admin.database.v1.DatabaseAdmin', 'GetIamPolicy'): google_dot_iam_dot_v1_dot_policy__pb2.Policy.SerializeToString,
-      ('google.spanner.admin.database.v1.DatabaseAdmin', 'ListDatabases'): ListDatabasesResponse.SerializeToString,
-      ('google.spanner.admin.database.v1.DatabaseAdmin', 'SetIamPolicy'): google_dot_iam_dot_v1_dot_policy__pb2.Policy.SerializeToString,
-      ('google.spanner.admin.database.v1.DatabaseAdmin', 'TestIamPermissions'): google_dot_iam_dot_v1_dot_iam__policy__pb2.TestIamPermissionsResponse.SerializeToString,
-      ('google.spanner.admin.database.v1.DatabaseAdmin', 'UpdateDatabaseDdl'): google_dot_longrunning_dot_operations__pb2.Operation.SerializeToString,
-    }
-    method_implementations = {
-      ('google.spanner.admin.database.v1.DatabaseAdmin', 'CreateDatabase'): face_utilities.unary_unary_inline(servicer.CreateDatabase),
-      ('google.spanner.admin.database.v1.DatabaseAdmin', 'DropDatabase'): face_utilities.unary_unary_inline(servicer.DropDatabase),
-      ('google.spanner.admin.database.v1.DatabaseAdmin', 'GetDatabase'): face_utilities.unary_unary_inline(servicer.GetDatabase),
-      ('google.spanner.admin.database.v1.DatabaseAdmin', 'GetDatabaseDdl'): face_utilities.unary_unary_inline(servicer.GetDatabaseDdl),
-      ('google.spanner.admin.database.v1.DatabaseAdmin', 'GetIamPolicy'): face_utilities.unary_unary_inline(servicer.GetIamPolicy),
-      ('google.spanner.admin.database.v1.DatabaseAdmin', 'ListDatabases'): face_utilities.unary_unary_inline(servicer.ListDatabases),
-      ('google.spanner.admin.database.v1.DatabaseAdmin', 'SetIamPolicy'): face_utilities.unary_unary_inline(servicer.SetIamPolicy),
-      ('google.spanner.admin.database.v1.DatabaseAdmin', 'TestIamPermissions'): face_utilities.unary_unary_inline(servicer.TestIamPermissions),
-      ('google.spanner.admin.database.v1.DatabaseAdmin', 'UpdateDatabaseDdl'): face_utilities.unary_unary_inline(servicer.UpdateDatabaseDdl),
-    }
-    server_options = beta_implementations.server_options(request_deserializers=request_deserializers, response_serializers=response_serializers, thread_pool=pool, thread_pool_size=pool_size, default_timeout=default_timeout, maximum_timeout=maximum_timeout)
-    return beta_implementations.server(method_implementations, options=server_options)
-
-
-  def beta_create_DatabaseAdmin_stub(channel, host=None, metadata_transformer=None, pool=None, pool_size=None):
-    """The Beta API is deprecated for 0.15.0 and later.
-
-    It is recommended to use the GA API (classes and functions in this
-    file not marked beta) for all further purposes. This function was
-    generated only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0"""
-    request_serializers = {
-      ('google.spanner.admin.database.v1.DatabaseAdmin', 'CreateDatabase'): CreateDatabaseRequest.SerializeToString,
-      ('google.spanner.admin.database.v1.DatabaseAdmin', 'DropDatabase'): DropDatabaseRequest.SerializeToString,
-      ('google.spanner.admin.database.v1.DatabaseAdmin', 'GetDatabase'): GetDatabaseRequest.SerializeToString,
-      ('google.spanner.admin.database.v1.DatabaseAdmin', 'GetDatabaseDdl'): GetDatabaseDdlRequest.SerializeToString,
-      ('google.spanner.admin.database.v1.DatabaseAdmin', 'GetIamPolicy'): google_dot_iam_dot_v1_dot_iam__policy__pb2.GetIamPolicyRequest.SerializeToString,
-      ('google.spanner.admin.database.v1.DatabaseAdmin', 'ListDatabases'): ListDatabasesRequest.SerializeToString,
-      ('google.spanner.admin.database.v1.DatabaseAdmin', 'SetIamPolicy'): google_dot_iam_dot_v1_dot_iam__policy__pb2.SetIamPolicyRequest.SerializeToString,
-      ('google.spanner.admin.database.v1.DatabaseAdmin', 'TestIamPermissions'): google_dot_iam_dot_v1_dot_iam__policy__pb2.TestIamPermissionsRequest.SerializeToString,
-      ('google.spanner.admin.database.v1.DatabaseAdmin', 'UpdateDatabaseDdl'): UpdateDatabaseDdlRequest.SerializeToString,
-    }
-    response_deserializers = {
-      ('google.spanner.admin.database.v1.DatabaseAdmin', 'CreateDatabase'): google_dot_longrunning_dot_operations__pb2.Operation.FromString,
-      ('google.spanner.admin.database.v1.DatabaseAdmin', 'DropDatabase'): google_dot_protobuf_dot_empty__pb2.Empty.FromString,
-      ('google.spanner.admin.database.v1.DatabaseAdmin', 'GetDatabase'): Database.FromString,
-      ('google.spanner.admin.database.v1.DatabaseAdmin', 'GetDatabaseDdl'): GetDatabaseDdlResponse.FromString,
-      ('google.spanner.admin.database.v1.DatabaseAdmin', 'GetIamPolicy'): google_dot_iam_dot_v1_dot_policy__pb2.Policy.FromString,
-      ('google.spanner.admin.database.v1.DatabaseAdmin', 'ListDatabases'): ListDatabasesResponse.FromString,
-      ('google.spanner.admin.database.v1.DatabaseAdmin', 'SetIamPolicy'): google_dot_iam_dot_v1_dot_policy__pb2.Policy.FromString,
-      ('google.spanner.admin.database.v1.DatabaseAdmin', 'TestIamPermissions'): google_dot_iam_dot_v1_dot_iam__policy__pb2.TestIamPermissionsResponse.FromString,
-      ('google.spanner.admin.database.v1.DatabaseAdmin', 'UpdateDatabaseDdl'): google_dot_longrunning_dot_operations__pb2.Operation.FromString,
-    }
-    cardinalities = {
-      'CreateDatabase': cardinality.Cardinality.UNARY_UNARY,
-      'DropDatabase': cardinality.Cardinality.UNARY_UNARY,
-      'GetDatabase': cardinality.Cardinality.UNARY_UNARY,
-      'GetDatabaseDdl': cardinality.Cardinality.UNARY_UNARY,
-      'GetIamPolicy': cardinality.Cardinality.UNARY_UNARY,
-      'ListDatabases': cardinality.Cardinality.UNARY_UNARY,
-      'SetIamPolicy': cardinality.Cardinality.UNARY_UNARY,
-      'TestIamPermissions': cardinality.Cardinality.UNARY_UNARY,
-      'UpdateDatabaseDdl': cardinality.Cardinality.UNARY_UNARY,
-    }
-    stub_options = beta_implementations.stub_options(host=host, metadata_transformer=metadata_transformer, request_serializers=request_serializers, response_deserializers=response_deserializers, thread_pool=pool, thread_pool_size=pool_size)
-    return beta_implementations.dynamic_stub(channel, 'google.spanner.admin.database.v1.DatabaseAdmin', cardinalities, options=stub_options)
-except ImportError:
-  pass
 # @@protoc_insertion_point(module_scope)

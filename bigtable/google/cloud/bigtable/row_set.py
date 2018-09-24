@@ -29,6 +29,27 @@ class RowSet(object):
         self.row_keys = []
         self.row_ranges = []
 
+    def __eq__(self, other):
+        if not isinstance(other, self.__class__):
+            return NotImplemented
+
+        if len(other.row_keys) != len(self.row_keys):
+            return False
+
+        if len(other.row_ranges) != len(self.row_ranges):
+            return False
+
+        if not set(other.row_keys) == set(self.row_keys):
+            return False
+
+        if not set(other.row_ranges) == set(self.row_ranges):
+            return False
+
+        return True
+
+    def __ne__(self, other):
+        return not self == other
+
     def add_row_key(self, row_key):
         """Add row key to row_keys list.
 
@@ -111,6 +132,32 @@ class RowRange(object):
         self.start_inclusive = start_inclusive
         self.end_key = end_key
         self.end_inclusive = end_inclusive
+
+    def _key(self):
+        """A tuple key that uniquely describes this field.
+
+        Used to compute this instance's hashcode and evaluate equality.
+
+        Returns:
+            Tuple[str]: The contents of this :class:`.RowRange`.
+        """
+        return (
+            self.start_key,
+            self.start_inclusive,
+            self.end_key,
+            self.end_inclusive,
+        )
+
+    def __hash__(self):
+        return hash(self._key())
+
+    def __eq__(self, other):
+        if not isinstance(other, self.__class__):
+            return NotImplemented
+        return self._key() == other._key()
+
+    def __ne__(self, other):
+        return not self == other
 
     def get_range_kwargs(self):
         """ Convert row range object to dict which can be passed to

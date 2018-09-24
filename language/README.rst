@@ -1,15 +1,28 @@
 Python Client for Google Cloud Natural Language
 ===============================================
 
-    Python idiomatic client for `Google Cloud Natural Language`_
-
-.. _Google Cloud Natural Language: https://cloud.google.com/natural-language/
-
 |pypi| |versions|
 
--  `Documentation`_
+The `Google Cloud Natural Language`_ API can be used to reveal the
+structure and meaning of text via powerful machine
+learning models. You can use it to extract information about
+people, places, events and much more, mentioned in text documents,
+news articles or blog posts. You can use it to understand
+sentiment about your product on social media or parse intent from
+customer conversations happening in a call center or a messaging
+app. You can analyze text uploaded in your request or integrate
+with your document storage on Google Cloud Storage.
 
-.. _Documentation: https://googlecloudplatform.github.io/google-cloud-python/latest/language/usage.html
+- `Client Library Documentation`_
+- `Product Documentation`_
+
+.. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-language.svg
+   :target: https://pypi.org/project/google-cloud-language/
+.. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-language.svg
+   :target: https://pypi.org/project/google-cloud-language/
+.. _Google Cloud Natural Language: https://cloud.google.com/natural-language/
+.. _Product Documentation:  https://cloud.google.com/language/docs
+.. _Client Library Documentation: https://googlecloudplatform.github.io/google-cloud-python/latest/language/index.html
 
 .. note::
 
@@ -19,44 +32,60 @@ Python Client for Google Cloud Natural Language
 Quick Start
 -----------
 
+In order to use this library, you first need to go through the following steps:
+
+1. `Select or create a Cloud Platform project.`_
+2. `Enable billing for your project.`_
+3. `Enable the Google Cloud Language API.`_
+4. `Setup Authentication.`_
+
+.. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
+.. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
+.. _Enable the Google Cloud Language API.:  https://cloud.google.com/natural-language
+.. _Setup Authentication.: https://googlecloudplatform.github.io/google-cloud-python/latest/core/auth.html
+
+Installation
+~~~~~~~~~~~~
+
+Install this library in a `virtualenv`_ using pip. `virtualenv`_ is a tool to
+create isolated Python environments. The basic problem it addresses is one of
+dependencies and versions, and indirectly permissions.
+
+With `virtualenv`_, it's possible to install this library without needing system
+install permissions, and without clashing with the installed system
+dependencies.
+
+.. _`virtualenv`: https://virtualenv.pypa.io/en/latest/
+
+
+Mac/Linux
+^^^^^^^^^
+
 .. code-block:: console
 
-    $ pip install --upgrade google-cloud-language
-    $ # OR
-    $ pip install --upgrade google-cloud-natural-language
+    pip install virtualenv
+    virtualenv <your-env>
+    source <your-env>/bin/activate
+    <your-env>/bin/pip install google-cloud-language
 
-For more information on setting up your Python development environment,
-such as installing ``pip`` and on your system, please refer to
-`Python Development Environment Setup Guide`_ for Google Cloud Platform.
 
-.. _Python Development Environment Setup Guide: https://cloud.google.com/python/setup
+Windows
+^^^^^^^
 
-Authentication
---------------
+.. code-block:: console
 
-With ``google-cloud-python`` we try to make authentication as painless as
-possible. Check out the `Authentication section`_ in our documentation to
-learn more. You may also find the `authentication document`_ shared by all
-the ``google-cloud-*`` libraries to be helpful.
+    pip install virtualenv
+    virtualenv <your-env>
+    <your-env>\Scripts\activate
+    <your-env>\Scripts\pip.exe install google-cloud-language
 
-.. _Authentication section: https://google-cloud-python.readthedocs.io/en/latest/core/auth.html
-.. _authentication document: https://github.com/GoogleCloudPlatform/google-cloud-common/tree/master/authentication
 
-Using the API
--------------
+Next Steps
+~~~~~~~~~~
 
-The Google Cloud `Natural Language`_ API (`Natural Language API docs`_)
-provides natural language understanding technologies to developers,
-including sentiment analysis, entity recognition, and syntax analysis.
-This API is part of the larger Cloud Machine Learning API.
+-  Read the `Usage documentation`_ for the language client
+   to see available methods on the client.
+-  Read the `Product documentation`_ to learn
+   more about the product and see How-to Guides.
 
-.. _Natural Language: https://cloud.google.com/natural-language/
-.. _Natural Language API docs: https://cloud.google.com/natural-language/reference/rest/
-
-See the ``google-cloud-python`` API Natural Language `Documentation`_ to learn
-how to analyze text with this API.
-
-.. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-language.svg
-   :target: https://pypi.org/project/google-cloud-language/
-.. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-language.svg
-   :target: https://pypi.org/project/google-cloud-language/
+.. _Usage documentation: https://googlecloudplatform.github.io/google-cloud-python/latest/language/usage.html

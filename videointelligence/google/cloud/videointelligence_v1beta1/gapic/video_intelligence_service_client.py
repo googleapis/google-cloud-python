@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+#
 # Copyright 2018 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -128,11 +130,12 @@ class VideoIntelligenceServiceClient(object):
                         'Received both a transport instance and '
                         'credentials; these are mutually exclusive.')
                 self.transport = transport
-        self.transport = video_intelligence_service_grpc_transport.VideoIntelligenceServiceGrpcTransport(
-            address=self.SERVICE_ADDRESS,
-            channel=channel,
-            credentials=credentials,
-        )
+        else:
+            self.transport = video_intelligence_service_grpc_transport.VideoIntelligenceServiceGrpcTransport(
+                address=self.SERVICE_ADDRESS,
+                channel=channel,
+                credentials=credentials,
+            )
 
         if client_info is None:
             client_info = (
@@ -242,8 +245,8 @@ class VideoIntelligenceServiceClient(object):
                 'annotate_video'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.annotate_video,
                     default_retry=self._method_configs['AnnotateVideo'].retry,
-                    default_timeout=self._method_configs['AnnotateVideo']
-                    .timeout,
+                    default_timeout=self._method_configs['AnnotateVideo'].
+                    timeout,
                     client_info=self._client_info,
                 )
 

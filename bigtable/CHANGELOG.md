@@ -4,6 +4,21 @@
 
 [1]: https://pypi.org/project/google-cloud-bigtable/#history
 
+## 0.30.2
+
+### New Features
+- Add iam policy implementation for an instance. (#5838)
+
+### Implementation Changes
+- Fix smart retries for 'read_rows()' when reading the full table (#5966)
+
+### Documentation
+- Replace links to `/stable/` with `/latest/`. (#5901)
+
+### Internal / Testing Changes
+- Re-generate library using bigtable/synth.py (#5974)
+- Refactor `read_rows` infrastructure (#5963)
+
 ## 0.30.1
 
 ### Implementation changes

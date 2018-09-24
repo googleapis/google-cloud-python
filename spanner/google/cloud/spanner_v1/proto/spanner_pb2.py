@@ -28,10 +28,9 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='google/cloud/spanner_v1/proto/spanner.proto',
   package='google.spanner.v1',
   syntax='proto3',
-  serialized_pb=_b('\n+google/cloud/spanner_v1/proto/spanner.proto\x12\x11google.spanner.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1cgoogle/protobuf/struct.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a(google/cloud/spanner_v1/proto/keys.proto\x1a,google/cloud/spanner_v1/proto/mutation.proto\x1a.google/cloud/spanner_v1/proto/result_set.proto\x1a/google/cloud/spanner_v1/proto/transaction.proto\x1a(google/cloud/spanner_v1/proto/type.proto\"U\n\x14\x43reateSessionRequest\x12\x10\n\x08\x64\x61tabase\x18\x01 \x01(\t\x12+\n\x07session\x18\x02 \x01(\x0b\x32\x1a.google.spanner.v1.Session\"\xee\x01\n\x07Session\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x36\n\x06labels\x18\x02 \x03(\x0b\x32&.google.spanner.v1.Session.LabelsEntry\x12/\n\x0b\x63reate_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12=\n\x19\x61pproximate_last_use_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x1a-\n\x0bLabelsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"!\n\x11GetSessionRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"^\n\x13ListSessionsRequest\x12\x10\n\x08\x64\x61tabase\x18\x01 \x01(\t\x12\x11\n\tpage_size\x18\x02 \x01(\x05\x12\x12\n\npage_token\x18\x03 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x04 \x01(\t\"]\n\x14ListSessionsResponse\x12,\n\x08sessions\x18\x01 \x03(\x0b\x32\x1a.google.spanner.v1.Session\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\"$\n\x14\x44\x65leteSessionRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"\xd1\x03\n\x11\x45xecuteSqlRequest\x12\x0f\n\x07session\x18\x01 \x01(\t\x12;\n\x0btransaction\x18\x02 \x01(\x0b\x32&.google.spanner.v1.TransactionSelector\x12\x0b\n\x03sql\x18\x03 \x01(\t\x12\'\n\x06params\x18\x04 \x01(\x0b\x32\x17.google.protobuf.Struct\x12I\n\x0bparam_types\x18\x05 \x03(\x0b\x32\x34.google.spanner.v1.ExecuteSqlRequest.ParamTypesEntry\x12\x14\n\x0cresume_token\x18\x06 \x01(\x0c\x12\x42\n\nquery_mode\x18\x07 \x01(\x0e\x32..google.spanner.v1.ExecuteSqlRequest.QueryMode\x12\x17\n\x0fpartition_token\x18\x08 \x01(\x0c\x1aJ\n\x0fParamTypesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12&\n\x05value\x18\x02 \x01(\x0b\x32\x17.google.spanner.v1.Type:\x02\x38\x01\".\n\tQueryMode\x12\n\n\x06NORMAL\x10\x00\x12\x08\n\x04PLAN\x10\x01\x12\x0b\n\x07PROFILE\x10\x02\"H\n\x10PartitionOptions\x12\x1c\n\x14partition_size_bytes\x18\x01 \x01(\x03\x12\x16\n\x0emax_partitions\x18\x02 \x01(\x03\"\xf6\x02\n\x15PartitionQueryRequest\x12\x0f\n\x07session\x18\x01 \x01(\t\x12;\n\x0btransaction\x18\x02 \x01(\x0b\x32&.google.spanner.v1.TransactionSelector\x12\x0b\n\x03sql\x18\x03 \x01(\t\x12\'\n\x06params\x18\x04 \x01(\x0b\x32\x17.google.protobuf.Struct\x12M\n\x0bparam_types\x18\x05 \x03(\x0b\x32\x38.google.spanner.v1.PartitionQueryRequest.ParamTypesEntry\x12>\n\x11partition_options\x18\x06 \x01(\x0b\x32#.google.spanner.v1.PartitionOptions\x1aJ\n\x0fParamTypesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12&\n\x05value\x18\x02 \x01(\x0b\x32\x17.google.spanner.v1.Type:\x02\x38\x01\"\xff\x01\n\x14PartitionReadRequest\x12\x0f\n\x07session\x18\x01 \x01(\t\x12;\n\x0btransaction\x18\x02 \x01(\x0b\x32&.google.spanner.v1.TransactionSelector\x12\r\n\x05table\x18\x03 \x01(\t\x12\r\n\x05index\x18\x04 \x01(\t\x12\x0f\n\x07\x63olumns\x18\x05 \x03(\t\x12*\n\x07key_set\x18\x06 \x01(\x0b\x32\x19.google.spanner.v1.KeySet\x12>\n\x11partition_options\x18\t \x01(\x0b\x32#.google.spanner.v1.PartitionOptions\"$\n\tPartition\x12\x17\n\x0fpartition_token\x18\x01 \x01(\x0c\"z\n\x11PartitionResponse\x12\x30\n\npartitions\x18\x01 \x03(\x0b\x32\x1c.google.spanner.v1.Partition\x12\x33\n\x0btransaction\x18\x02 \x01(\x0b\x32\x1e.google.spanner.v1.Transaction\"\xf4\x01\n\x0bReadRequest\x12\x0f\n\x07session\x18\x01 \x01(\t\x12;\n\x0btransaction\x18\x02 \x01(\x0b\x32&.google.spanner.v1.TransactionSelector\x12\r\n\x05table\x18\x03 \x01(\t\x12\r\n\x05index\x18\x04 \x01(\t\x12\x0f\n\x07\x63olumns\x18\x05 \x03(\t\x12*\n\x07key_set\x18\x06 \x01(\x0b\x32\x19.google.spanner.v1.KeySet\x12\r\n\x05limit\x18\x08 \x01(\x03\x12\x14\n\x0cresume_token\x18\t \x01(\x0c\x12\x17\n\x0fpartition_token\x18\n \x01(\x0c\"b\n\x17\x42\x65ginTransactionRequest\x12\x0f\n\x07session\x18\x01 \x01(\t\x12\x36\n\x07options\x18\x02 \x01(\x0b\x32%.google.spanner.v1.TransactionOptions\"\xc2\x01\n\rCommitRequest\x12\x0f\n\x07session\x18\x01 \x01(\t\x12\x18\n\x0etransaction_id\x18\x02 \x01(\x0cH\x00\x12G\n\x16single_use_transaction\x18\x03 \x01(\x0b\x32%.google.spanner.v1.TransactionOptionsH\x00\x12.\n\tmutations\x18\x04 \x03(\x0b\x32\x1b.google.spanner.v1.MutationB\r\n\x0btransaction\"F\n\x0e\x43ommitResponse\x12\x34\n\x10\x63ommit_timestamp\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\":\n\x0fRollbackRequest\x12\x0f\n\x07session\x18\x01 \x01(\t\x12\x16\n\x0etransaction_id\x18\x02 \x01(\x0c\x32\x83\x11\n\x07Spanner\x12\x9b\x01\n\rCreateSession\x12\'.google.spanner.v1.CreateSessionRequest\x1a\x1a.google.spanner.v1.Session\"E\x82\xd3\xe4\x93\x02?\":/v1/{database=projects/*/instances/*/databases/*}/sessions:\x01*\x12\x90\x01\n\nGetSession\x12$.google.spanner.v1.GetSessionRequest\x1a\x1a.google.spanner.v1.Session\"@\x82\xd3\xe4\x93\x02:\x12\x38/v1/{name=projects/*/instances/*/databases/*/sessions/*}\x12\xa3\x01\n\x0cListSessions\x12&.google.spanner.v1.ListSessionsRequest\x1a\'.google.spanner.v1.ListSessionsResponse\"B\x82\xd3\xe4\x93\x02<\x12:/v1/{database=projects/*/instances/*/databases/*}/sessions\x12\x92\x01\n\rDeleteSession\x12\'.google.spanner.v1.DeleteSessionRequest\x1a\x16.google.protobuf.Empty\"@\x82\xd3\xe4\x93\x02:*8/v1/{name=projects/*/instances/*/databases/*/sessions/*}\x12\xa3\x01\n\nExecuteSql\x12$.google.spanner.v1.ExecuteSqlRequest\x1a\x1c.google.spanner.v1.ResultSet\"Q\x82\xd3\xe4\x93\x02K\"F/v1/{session=projects/*/instances/*/databases/*/sessions/*}:executeSql:\x01*\x12\xbe\x01\n\x13\x45xecuteStreamingSql\x12$.google.spanner.v1.ExecuteSqlRequest\x1a#.google.spanner.v1.PartialResultSet\"Z\x82\xd3\xe4\x93\x02T\"O/v1/{session=projects/*/instances/*/databases/*/sessions/*}:executeStreamingSql:\x01*0\x01\x12\x91\x01\n\x04Read\x12\x1e.google.spanner.v1.ReadRequest\x1a\x1c.google.spanner.v1.ResultSet\"K\x82\xd3\xe4\x93\x02\x45\"@/v1/{session=projects/*/instances/*/databases/*/sessions/*}:read:\x01*\x12\xac\x01\n\rStreamingRead\x12\x1e.google.spanner.v1.ReadRequest\x1a#.google.spanner.v1.PartialResultSet\"T\x82\xd3\xe4\x93\x02N\"I/v1/{session=projects/*/instances/*/databases/*/sessions/*}:streamingRead:\x01*0\x01\x12\xb7\x01\n\x10\x42\x65ginTransaction\x12*.google.spanner.v1.BeginTransactionRequest\x1a\x1e.google.spanner.v1.Transaction\"W\x82\xd3\xe4\x93\x02Q\"L/v1/{session=projects/*/instances/*/databases/*/sessions/*}:beginTransaction:\x01*\x12\x9c\x01\n\x06\x43ommit\x12 .google.spanner.v1.CommitRequest\x1a!.google.spanner.v1.CommitResponse\"M\x82\xd3\xe4\x93\x02G\"B/v1/{session=projects/*/instances/*/databases/*/sessions/*}:commit:\x01*\x12\x97\x01\n\x08Rollback\x12\".google.spanner.v1.RollbackRequest\x1a\x16.google.protobuf.Empty\"O\x82\xd3\xe4\x93\x02I\"D/v1/{session=projects/*/instances/*/databases/*/sessions/*}:rollback:\x01*\x12\xb7\x01\n\x0ePartitionQuery\x12(.google.spanner.v1.PartitionQueryRequest\x1a$.google.spanner.v1.PartitionResponse\"U\x82\xd3\xe4\x93\x02O\"J/v1/{session=projects/*/instances/*/databases/*/sessions/*}:partitionQuery:\x01*\x12\xb4\x01\n\rPartitionRead\x12\'.google.spanner.v1.PartitionReadRequest\x1a$.google.spanner.v1.PartitionResponse\"T\x82\xd3\xe4\x93\x02N\"I/v1/{session=projects/*/instances/*/databases/*/sessions/*}:partitionRead:\x01*B\x95\x01\n\x15\x63om.google.spanner.v1B\x0cSpannerProtoP\x01Z8google.golang.org/genproto/googleapis/spanner/v1;spanner\xaa\x02\x17Google.Cloud.Spanner.V1\xca\x02\x17Google\\Cloud\\Spanner\\V1b\x06proto3')
+  serialized_pb=_b('\n+google/cloud/spanner_v1/proto/spanner.proto\x12\x11google.spanner.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1cgoogle/protobuf/struct.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a(google/cloud/spanner_v1/proto/keys.proto\x1a,google/cloud/spanner_v1/proto/mutation.proto\x1a.google/cloud/spanner_v1/proto/result_set.proto\x1a/google/cloud/spanner_v1/proto/transaction.proto\x1a(google/cloud/spanner_v1/proto/type.proto\"U\n\x14\x43reateSessionRequest\x12\x10\n\x08\x64\x61tabase\x18\x01 \x01(\t\x12+\n\x07session\x18\x02 \x01(\x0b\x32\x1a.google.spanner.v1.Session\"\xee\x01\n\x07Session\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x36\n\x06labels\x18\x02 \x03(\x0b\x32&.google.spanner.v1.Session.LabelsEntry\x12/\n\x0b\x63reate_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12=\n\x19\x61pproximate_last_use_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x1a-\n\x0bLabelsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"!\n\x11GetSessionRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"^\n\x13ListSessionsRequest\x12\x10\n\x08\x64\x61tabase\x18\x01 \x01(\t\x12\x11\n\tpage_size\x18\x02 \x01(\x05\x12\x12\n\npage_token\x18\x03 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x04 \x01(\t\"]\n\x14ListSessionsResponse\x12,\n\x08sessions\x18\x01 \x03(\x0b\x32\x1a.google.spanner.v1.Session\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\"$\n\x14\x44\x65leteSessionRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"\xe0\x03\n\x11\x45xecuteSqlRequest\x12\x0f\n\x07session\x18\x01 \x01(\t\x12;\n\x0btransaction\x18\x02 \x01(\x0b\x32&.google.spanner.v1.TransactionSelector\x12\x0b\n\x03sql\x18\x03 \x01(\t\x12\'\n\x06params\x18\x04 \x01(\x0b\x32\x17.google.protobuf.Struct\x12I\n\x0bparam_types\x18\x05 \x03(\x0b\x32\x34.google.spanner.v1.ExecuteSqlRequest.ParamTypesEntry\x12\x14\n\x0cresume_token\x18\x06 \x01(\x0c\x12\x42\n\nquery_mode\x18\x07 \x01(\x0e\x32..google.spanner.v1.ExecuteSqlRequest.QueryMode\x12\x17\n\x0fpartition_token\x18\x08 \x01(\x0c\x12\r\n\x05seqno\x18\t \x01(\x03\x1aJ\n\x0fParamTypesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12&\n\x05value\x18\x02 \x01(\x0b\x32\x17.google.spanner.v1.Type:\x02\x38\x01\".\n\tQueryMode\x12\n\n\x06NORMAL\x10\x00\x12\x08\n\x04PLAN\x10\x01\x12\x0b\n\x07PROFILE\x10\x02\"H\n\x10PartitionOptions\x12\x1c\n\x14partition_size_bytes\x18\x01 \x01(\x03\x12\x16\n\x0emax_partitions\x18\x02 \x01(\x03\"\xf6\x02\n\x15PartitionQueryRequest\x12\x0f\n\x07session\x18\x01 \x01(\t\x12;\n\x0btransaction\x18\x02 \x01(\x0b\x32&.google.spanner.v1.TransactionSelector\x12\x0b\n\x03sql\x18\x03 \x01(\t\x12\'\n\x06params\x18\x04 \x01(\x0b\x32\x17.google.protobuf.Struct\x12M\n\x0bparam_types\x18\x05 \x03(\x0b\x32\x38.google.spanner.v1.PartitionQueryRequest.ParamTypesEntry\x12>\n\x11partition_options\x18\x06 \x01(\x0b\x32#.google.spanner.v1.PartitionOptions\x1aJ\n\x0fParamTypesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12&\n\x05value\x18\x02 \x01(\x0b\x32\x17.google.spanner.v1.Type:\x02\x38\x01\"\xff\x01\n\x14PartitionReadRequest\x12\x0f\n\x07session\x18\x01 \x01(\t\x12;\n\x0btransaction\x18\x02 \x01(\x0b\x32&.google.spanner.v1.TransactionSelector\x12\r\n\x05table\x18\x03 \x01(\t\x12\r\n\x05index\x18\x04 \x01(\t\x12\x0f\n\x07\x63olumns\x18\x05 \x03(\t\x12*\n\x07key_set\x18\x06 \x01(\x0b\x32\x19.google.spanner.v1.KeySet\x12>\n\x11partition_options\x18\t \x01(\x0b\x32#.google.spanner.v1.PartitionOptions\"$\n\tPartition\x12\x17\n\x0fpartition_token\x18\x01 \x01(\x0c\"z\n\x11PartitionResponse\x12\x30\n\npartitions\x18\x01 \x03(\x0b\x32\x1c.google.spanner.v1.Partition\x12\x33\n\x0btransaction\x18\x02 \x01(\x0b\x32\x1e.google.spanner.v1.Transaction\"\xf4\x01\n\x0bReadRequest\x12\x0f\n\x07session\x18\x01 \x01(\t\x12;\n\x0btransaction\x18\x02 \x01(\x0b\x32&.google.spanner.v1.TransactionSelector\x12\r\n\x05table\x18\x03 \x01(\t\x12\r\n\x05index\x18\x04 \x01(\t\x12\x0f\n\x07\x63olumns\x18\x05 \x03(\t\x12*\n\x07key_set\x18\x06 \x01(\x0b\x32\x19.google.spanner.v1.KeySet\x12\r\n\x05limit\x18\x08 \x01(\x03\x12\x14\n\x0cresume_token\x18\t \x01(\x0c\x12\x17\n\x0fpartition_token\x18\n \x01(\x0c\"b\n\x17\x42\x65ginTransactionRequest\x12\x0f\n\x07session\x18\x01 \x01(\t\x12\x36\n\x07options\x18\x02 \x01(\x0b\x32%.google.spanner.v1.TransactionOptions\"\xc2\x01\n\rCommitRequest\x12\x0f\n\x07session\x18\x01 \x01(\t\x12\x18\n\x0etransaction_id\x18\x02 \x01(\x0cH\x00\x12G\n\x16single_use_transaction\x18\x03 \x01(\x0b\x32%.google.spanner.v1.TransactionOptionsH\x00\x12.\n\tmutations\x18\x04 \x03(\x0b\x32\x1b.google.spanner.v1.MutationB\r\n\x0btransaction\"F\n\x0e\x43ommitResponse\x12\x34\n\x10\x63ommit_timestamp\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\":\n\x0fRollbackRequest\x12\x0f\n\x07session\x18\x01 \x01(\t\x12\x16\n\x0etransaction_id\x18\x02 \x01(\x0c\x32\x83\x11\n\x07Spanner\x12\x9b\x01\n\rCreateSession\x12\'.google.spanner.v1.CreateSessionRequest\x1a\x1a.google.spanner.v1.Session\"E\x82\xd3\xe4\x93\x02?\":/v1/{database=projects/*/instances/*/databases/*}/sessions:\x01*\x12\x90\x01\n\nGetSession\x12$.google.spanner.v1.GetSessionRequest\x1a\x1a.google.spanner.v1.Session\"@\x82\xd3\xe4\x93\x02:\x12\x38/v1/{name=projects/*/instances/*/databases/*/sessions/*}\x12\xa3\x01\n\x0cListSessions\x12&.google.spanner.v1.ListSessionsRequest\x1a\'.google.spanner.v1.ListSessionsResponse\"B\x82\xd3\xe4\x93\x02<\x12:/v1/{database=projects/*/instances/*/databases/*}/sessions\x12\x92\x01\n\rDeleteSession\x12\'.google.spanner.v1.DeleteSessionRequest\x1a\x16.google.protobuf.Empty\"@\x82\xd3\xe4\x93\x02:*8/v1/{name=projects/*/instances/*/databases/*/sessions/*}\x12\xa3\x01\n\nExecuteSql\x12$.google.spanner.v1.ExecuteSqlRequest\x1a\x1c.google.spanner.v1.ResultSet\"Q\x82\xd3\xe4\x93\x02K\"F/v1/{session=projects/*/instances/*/databases/*/sessions/*}:executeSql:\x01*\x12\xbe\x01\n\x13\x45xecuteStreamingSql\x12$.google.spanner.v1.ExecuteSqlRequest\x1a#.google.spanner.v1.PartialResultSet\"Z\x82\xd3\xe4\x93\x02T\"O/v1/{session=projects/*/instances/*/databases/*/sessions/*}:executeStreamingSql:\x01*0\x01\x12\x91\x01\n\x04Read\x12\x1e.google.spanner.v1.ReadRequest\x1a\x1c.google.spanner.v1.ResultSet\"K\x82\xd3\xe4\x93\x02\x45\"@/v1/{session=projects/*/instances/*/databases/*/sessions/*}:read:\x01*\x12\xac\x01\n\rStreamingRead\x12\x1e.google.spanner.v1.ReadRequest\x1a#.google.spanner.v1.PartialResultSet\"T\x82\xd3\xe4\x93\x02N\"I/v1/{session=projects/*/instances/*/databases/*/sessions/*}:streamingRead:\x01*0\x01\x12\xb7\x01\n\x10\x42\x65ginTransaction\x12*.google.spanner.v1.BeginTransactionRequest\x1a\x1e.google.spanner.v1.Transaction\"W\x82\xd3\xe4\x93\x02Q\"L/v1/{session=projects/*/instances/*/databases/*/sessions/*}:beginTransaction:\x01*\x12\x9c\x01\n\x06\x43ommit\x12 .google.spanner.v1.CommitRequest\x1a!.google.spanner.v1.CommitResponse\"M\x82\xd3\xe4\x93\x02G\"B/v1/{session=projects/*/instances/*/databases/*/sessions/*}:commit:\x01*\x12\x97\x01\n\x08Rollback\x12\".google.spanner.v1.RollbackRequest\x1a\x16.google.protobuf.Empty\"O\x82\xd3\xe4\x93\x02I\"D/v1/{session=projects/*/instances/*/databases/*/sessions/*}:rollback:\x01*\x12\xb7\x01\n\x0ePartitionQuery\x12(.google.spanner.v1.PartitionQueryRequest\x1a$.google.spanner.v1.PartitionResponse\"U\x82\xd3\xe4\x93\x02O\"J/v1/{session=projects/*/instances/*/databases/*/sessions/*}:partitionQuery:\x01*\x12\xb4\x01\n\rPartitionRead\x12\'.google.spanner.v1.PartitionReadRequest\x1a$.google.spanner.v1.PartitionResponse\"T\x82\xd3\xe4\x93\x02N\"I/v1/{session=projects/*/instances/*/databases/*/sessions/*}:partitionRead:\x01*B\x95\x01\n\x15\x63om.google.spanner.v1B\x0cSpannerProtoP\x01Z8google.golang.org/genproto/googleapis/spanner/v1;spanner\xaa\x02\x17Google.Cloud.Spanner.V1\xca\x02\x17Google\\Cloud\\Spanner\\V1b\x06proto3')
   ,
   dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR,google_dot_protobuf_dot_empty__pb2.DESCRIPTOR,google_dot_protobuf_dot_struct__pb2.DESCRIPTOR,google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,google_dot_cloud_dot_spanner__v1_dot_proto_dot_keys__pb2.DESCRIPTOR,google_dot_cloud_dot_spanner__v1_dot_proto_dot_mutation__pb2.DESCRIPTOR,google_dot_cloud_dot_spanner__v1_dot_proto_dot_result__set__pb2.DESCRIPTOR,google_dot_cloud_dot_spanner__v1_dot_proto_dot_transaction__pb2.DESCRIPTOR,google_dot_cloud_dot_spanner__v1_dot_proto_dot_type__pb2.DESCRIPTOR,])
-_sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 
 
@@ -56,8 +55,8 @@ _EXECUTESQLREQUEST_QUERYMODE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=1427,
-  serialized_end=1473,
+  serialized_start=1442,
+  serialized_end=1488,
 )
 _sym_db.RegisterEnumDescriptor(_EXECUTESQLREQUEST_QUERYMODE)
 
@@ -75,14 +74,14 @@ _CREATESESSIONREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='session', full_name='google.spanner.v1.CreateSessionRequest.session', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -113,14 +112,14 @@ _SESSION_LABELSENTRY = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='value', full_name='google.spanner.v1.Session.LabelsEntry.value', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -150,28 +149,28 @@ _SESSION = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='labels', full_name='google.spanner.v1.Session.labels', index=1,
       number=2, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='create_time', full_name='google.spanner.v1.Session.create_time', index=2,
       number=3, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='approximate_last_use_time', full_name='google.spanner.v1.Session.approximate_last_use_time', index=3,
       number=4, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -202,7 +201,7 @@ _GETSESSIONREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -233,28 +232,28 @@ _LISTSESSIONSREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='page_size', full_name='google.spanner.v1.ListSessionsRequest.page_size', index=1,
       number=2, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='page_token', full_name='google.spanner.v1.ListSessionsRequest.page_token', index=2,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='filter', full_name='google.spanner.v1.ListSessionsRequest.filter', index=3,
       number=4, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -285,14 +284,14 @@ _LISTSESSIONSRESPONSE = _descriptor.Descriptor(
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='next_page_token', full_name='google.spanner.v1.ListSessionsResponse.next_page_token', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -323,7 +322,7 @@ _DELETESESSIONREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -354,14 +353,14 @@ _EXECUTESQLREQUEST_PARAMTYPESENTRY = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='value', full_name='google.spanner.v1.ExecuteSqlRequest.ParamTypesEntry.value', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -374,8 +373,8 @@ _EXECUTESQLREQUEST_PARAMTYPESENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1351,
-  serialized_end=1425,
+  serialized_start=1366,
+  serialized_end=1440,
 )
 
 _EXECUTESQLREQUEST = _descriptor.Descriptor(
@@ -391,56 +390,63 @@ _EXECUTESQLREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='transaction', full_name='google.spanner.v1.ExecuteSqlRequest.transaction', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='sql', full_name='google.spanner.v1.ExecuteSqlRequest.sql', index=2,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='params', full_name='google.spanner.v1.ExecuteSqlRequest.params', index=3,
       number=4, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='param_types', full_name='google.spanner.v1.ExecuteSqlRequest.param_types', index=4,
       number=5, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='resume_token', full_name='google.spanner.v1.ExecuteSqlRequest.resume_token', index=5,
       number=6, type=12, cpp_type=9, label=1,
       has_default_value=False, default_value=_b(""),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='query_mode', full_name='google.spanner.v1.ExecuteSqlRequest.query_mode', index=6,
       number=7, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='partition_token', full_name='google.spanner.v1.ExecuteSqlRequest.partition_token', index=7,
       number=8, type=12, cpp_type=9, label=1,
       has_default_value=False, default_value=_b(""),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='seqno', full_name='google.spanner.v1.ExecuteSqlRequest.seqno', index=8,
+      number=9, type=3, cpp_type=2, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -455,7 +461,7 @@ _EXECUTESQLREQUEST = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=1008,
-  serialized_end=1473,
+  serialized_end=1488,
 )
 
 
@@ -472,14 +478,14 @@ _PARTITIONOPTIONS = _descriptor.Descriptor(
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='max_partitions', full_name='google.spanner.v1.PartitionOptions.max_partitions', index=1,
       number=2, type=3, cpp_type=2, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -492,8 +498,8 @@ _PARTITIONOPTIONS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1475,
-  serialized_end=1547,
+  serialized_start=1490,
+  serialized_end=1562,
 )
 
 
@@ -510,14 +516,14 @@ _PARTITIONQUERYREQUEST_PARAMTYPESENTRY = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='value', full_name='google.spanner.v1.PartitionQueryRequest.ParamTypesEntry.value', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -530,8 +536,8 @@ _PARTITIONQUERYREQUEST_PARAMTYPESENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1351,
-  serialized_end=1425,
+  serialized_start=1366,
+  serialized_end=1440,
 )
 
 _PARTITIONQUERYREQUEST = _descriptor.Descriptor(
@@ -547,42 +553,42 @@ _PARTITIONQUERYREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='transaction', full_name='google.spanner.v1.PartitionQueryRequest.transaction', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='sql', full_name='google.spanner.v1.PartitionQueryRequest.sql', index=2,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='params', full_name='google.spanner.v1.PartitionQueryRequest.params', index=3,
       number=4, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='param_types', full_name='google.spanner.v1.PartitionQueryRequest.param_types', index=4,
       number=5, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='partition_options', full_name='google.spanner.v1.PartitionQueryRequest.partition_options', index=5,
       number=6, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -595,8 +601,8 @@ _PARTITIONQUERYREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1550,
-  serialized_end=1924,
+  serialized_start=1565,
+  serialized_end=1939,
 )
 
 
@@ -613,49 +619,49 @@ _PARTITIONREADREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='transaction', full_name='google.spanner.v1.PartitionReadRequest.transaction', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='table', full_name='google.spanner.v1.PartitionReadRequest.table', index=2,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='index', full_name='google.spanner.v1.PartitionReadRequest.index', index=3,
       number=4, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='columns', full_name='google.spanner.v1.PartitionReadRequest.columns', index=4,
       number=5, type=9, cpp_type=9, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='key_set', full_name='google.spanner.v1.PartitionReadRequest.key_set', index=5,
       number=6, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='partition_options', full_name='google.spanner.v1.PartitionReadRequest.partition_options', index=6,
       number=9, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -668,8 +674,8 @@ _PARTITIONREADREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1927,
-  serialized_end=2182,
+  serialized_start=1942,
+  serialized_end=2197,
 )
 
 
@@ -686,7 +692,7 @@ _PARTITION = _descriptor.Descriptor(
       has_default_value=False, default_value=_b(""),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -699,8 +705,8 @@ _PARTITION = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2184,
-  serialized_end=2220,
+  serialized_start=2199,
+  serialized_end=2235,
 )
 
 
@@ -717,14 +723,14 @@ _PARTITIONRESPONSE = _descriptor.Descriptor(
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='transaction', full_name='google.spanner.v1.PartitionResponse.transaction', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -737,8 +743,8 @@ _PARTITIONRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2222,
-  serialized_end=2344,
+  serialized_start=2237,
+  serialized_end=2359,
 )
 
 
@@ -755,63 +761,63 @@ _READREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='transaction', full_name='google.spanner.v1.ReadRequest.transaction', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='table', full_name='google.spanner.v1.ReadRequest.table', index=2,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='index', full_name='google.spanner.v1.ReadRequest.index', index=3,
       number=4, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='columns', full_name='google.spanner.v1.ReadRequest.columns', index=4,
       number=5, type=9, cpp_type=9, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='key_set', full_name='google.spanner.v1.ReadRequest.key_set', index=5,
       number=6, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='limit', full_name='google.spanner.v1.ReadRequest.limit', index=6,
       number=8, type=3, cpp_type=2, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='resume_token', full_name='google.spanner.v1.ReadRequest.resume_token', index=7,
       number=9, type=12, cpp_type=9, label=1,
       has_default_value=False, default_value=_b(""),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='partition_token', full_name='google.spanner.v1.ReadRequest.partition_token', index=8,
       number=10, type=12, cpp_type=9, label=1,
       has_default_value=False, default_value=_b(""),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -824,8 +830,8 @@ _READREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2347,
-  serialized_end=2591,
+  serialized_start=2362,
+  serialized_end=2606,
 )
 
 
@@ -842,14 +848,14 @@ _BEGINTRANSACTIONREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='options', full_name='google.spanner.v1.BeginTransactionRequest.options', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -862,8 +868,8 @@ _BEGINTRANSACTIONREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2593,
-  serialized_end=2691,
+  serialized_start=2608,
+  serialized_end=2706,
 )
 
 
@@ -880,28 +886,28 @@ _COMMITREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='transaction_id', full_name='google.spanner.v1.CommitRequest.transaction_id', index=1,
       number=2, type=12, cpp_type=9, label=1,
       has_default_value=False, default_value=_b(""),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='single_use_transaction', full_name='google.spanner.v1.CommitRequest.single_use_transaction', index=2,
       number=3, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='mutations', full_name='google.spanner.v1.CommitRequest.mutations', index=3,
       number=4, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -917,8 +923,8 @@ _COMMITREQUEST = _descriptor.Descriptor(
       name='transaction', full_name='google.spanner.v1.CommitRequest.transaction',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=2694,
-  serialized_end=2888,
+  serialized_start=2709,
+  serialized_end=2903,
 )
 
 
@@ -935,7 +941,7 @@ _COMMITRESPONSE = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -948,8 +954,8 @@ _COMMITRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2890,
-  serialized_end=2960,
+  serialized_start=2905,
+  serialized_end=2975,
 )
 
 
@@ -966,14 +972,14 @@ _ROLLBACKREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='transaction_id', full_name='google.spanner.v1.RollbackRequest.transaction_id', index=1,
       number=2, type=12, cpp_type=9, label=1,
       has_default_value=False, default_value=_b(""),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -986,8 +992,8 @@ _ROLLBACKREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2962,
-  serialized_end=3020,
+  serialized_start=2977,
+  serialized_end=3035,
 )
 
 _CREATESESSIONREQUEST.fields_by_name['session'].message_type = _SESSION
@@ -1043,6 +1049,7 @@ DESCRIPTOR.message_types_by_name['BeginTransactionRequest'] = _BEGINTRANSACTIONR
 DESCRIPTOR.message_types_by_name['CommitRequest'] = _COMMITREQUEST
 DESCRIPTOR.message_types_by_name['CommitResponse'] = _COMMITRESPONSE
 DESCRIPTOR.message_types_by_name['RollbackRequest'] = _ROLLBACKREQUEST
+_sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 CreateSessionRequest = _reflection.GeneratedProtocolMessageType('CreateSessionRequest', (_message.Message,), dict(
   DESCRIPTOR = _CREATESESSIONREQUEST,
@@ -1204,48 +1211,71 @@ ExecuteSqlRequest = _reflection.GeneratedProtocolMessageType('ExecuteSqlRequest'
           performed.
       transaction:
           The transaction to use. If none is provided, the default is a
-          temporary read-only transaction with strong concurrency.
+          temporary read-only transaction with strong concurrency.  The
+          transaction to use.  For queries, if none is provided, the
+          default is a temporary read-only transaction with strong
+          concurrency.  Standard DML statements require a ReadWrite
+          transaction. Single-use transactions are not supported (to
+          avoid replay). The caller must either supply an existing
+          transaction ID or begin a new transaction.  Partitioned DML
+          requires an existing PartitionedDml transaction ID.
       sql:
-          Required. The SQL query string.
+          Required. The SQL string.
       params:
-          The SQL query string can contain parameter placeholders. A
-          parameter placeholder consists of ``'@'`` followed by the
-          parameter name. Parameter names consist of any combination of
-          letters, numbers, and underscores.  Parameters can appear
-          anywhere that a literal value is expected. The same parameter
-          name can be used more than once, for example: ``"WHERE id >
-          @msg_id AND id < @msg_id + 100"``  It is an error to execute
-          an SQL query with unbound parameters.  Parameter values are
-          specified using ``params``, which is a JSON object whose keys
-          are parameter names, and whose values are the corresponding
-          parameter values.
+          The SQL string can contain parameter placeholders. A parameter
+          placeholder consists of ``'@'`` followed by the parameter
+          name. Parameter names consist of any combination of letters,
+          numbers, and underscores.  Parameters can appear anywhere that
+          a literal value is expected. The same parameter name can be
+          used more than once, for example: ``"WHERE id > @msg_id AND id
+          < @msg_id + 100"``  It is an error to execute an SQL statement
+          with unbound parameters.  Parameter values are specified using
+          ``params``, which is a JSON object whose keys are parameter
+          names, and whose values are the corresponding parameter
+          values.
       param_types:
           It is not always possible for Cloud Spanner to infer the right
           SQL type from a JSON value. For example, values of type
           ``BYTES`` and values of type ``STRING`` both appear in
           [params][google.spanner.v1.ExecuteSqlRequest.params] as JSON
           strings.  In these cases, ``param_types`` can be used to
-          specify the exact SQL type for some or all of the SQL query
-          parameters. See the definition of
+          specify the exact SQL type for some or all of the SQL
+          statement parameters. See the definition of
           [Type][google.spanner.v1.Type] for more information about SQL
           types.
       resume_token:
-          If this request is resuming a previously interrupted SQL query
-          execution, ``resume_token`` should be copied from the last
+          If this request is resuming a previously interrupted SQL
+          statement execution, ``resume_token`` should be copied from
+          the last
           [PartialResultSet][google.spanner.v1.PartialResultSet] yielded
-          before the interruption. Doing this enables the new SQL query
-          execution to resume where the last one left off. The rest of
-          the request parameters must exactly match the request that
-          yielded this token.
+          before the interruption. Doing this enables the new SQL
+          statement execution to resume where the last one left off. The
+          rest of the request parameters must exactly match the request
+          that yielded this token.
       query_mode:
           Used to control the amount of debugging information returned
-          in [ResultSetStats][google.spanner.v1.ResultSetStats].
+          in [ResultSetStats][google.spanner.v1.ResultSetStats]. If [par
+          tition\_token][google.spanner.v1.ExecuteSqlRequest.partition\_
+          token] is set,
+          [query\_mode][google.spanner.v1.ExecuteSqlRequest.query\_mode]
+          can only be set to [QueryMode.NORMAL][google.spanner.v1.Execut
+          eSqlRequest.QueryMode.NORMAL].
       partition_token:
           If present, results will be restricted to the specified
           partition previously created using PartitionQuery(). There
           must be an exact match for the values of fields common to this
           message and the PartitionQueryRequest message used to create
           this partition\_token.
+      seqno:
+          A per-transaction sequence number used to identify this
+          request. This makes each request idempotent such that if the
+          request is received multiple times, at most one will succeed.
+          The sequence number must be monotonically increasing within
+          the transaction. If a request arrives for the first time with
+          an out-of-order sequence number, the transaction may be
+          aborted. Replays of previously handled requests will yield the
+          same response as the first execution.  Required for DML
+          statements. Ignored for queries.
   """,
   # @@protoc_insertion_point(class_scope:google.spanner.v1.ExecuteSqlRequest)
   ))
@@ -1261,17 +1291,19 @@ PartitionOptions = _reflection.GeneratedProtocolMessageType('PartitionOptions', 
   
   Attributes:
       partition_size_bytes:
-          The desired data size for each partition generated. The
-          default for this option is currently 1 GiB. This is only a
-          hint. The actual size of each partition may be smaller or
-          larger than this size request.
+          **Note:** This hint is currently ignored by PartitionQuery and
+          PartitionRead requests.  The desired data size for each
+          partition generated. The default for this option is currently
+          1 GiB. This is only a hint. The actual size of each partition
+          may be smaller or larger than this size request.
       max_partitions:
-          The desired maximum number of partitions to return. For
-          example, this may be set to the number of workers available.
-          The default for this option is currently 10,000. The maximum
-          value is currently 200,000. This is only a hint. The actual
-          number of partitions returned may be smaller than this maximum
-          count request.
+          **Note:** This hint is currently ignored by PartitionQuery and
+          PartitionRead requests.  The desired maximum number of
+          partitions to return. For example, this may be set to the
+          number of workers available. The default for this option is
+          currently 10,000. The maximum value is currently 200,000. This
+          is only a hint. The actual number of partitions returned may
+          be smaller or larger than this maximum count request.
   """,
   # @@protoc_insertion_point(class_scope:google.spanner.v1.PartitionOptions)
   ))
@@ -1305,7 +1337,10 @@ PartitionQueryRequest = _reflection.GeneratedProtocolMessageType('PartitionQuery
           operator. A distributed union operator conceptually divides
           one or more tables into multiple splits, remotely evaluates a
           subquery independently on each split, and then unions all
-          results.
+          results.  This must not contain DML commands, such as INSERT,
+          UPDATE, or DELETE. Use [ExecuteStreamingSql][google.spanner.v1
+          .Spanner.ExecuteStreamingSql] with a PartitionedDml
+          transaction for large, partition-friendly DML operations.
       params:
           The SQL query string can contain parameter placeholders. A
           parameter placeholder consists of ``'@'`` followed by the
@@ -1589,760 +1624,136 @@ _EXECUTESQLREQUEST_PARAMTYPESENTRY.has_options = True
 _EXECUTESQLREQUEST_PARAMTYPESENTRY._options = _descriptor._ParseOptions(descriptor_pb2.MessageOptions(), _b('8\001'))
 _PARTITIONQUERYREQUEST_PARAMTYPESENTRY.has_options = True
 _PARTITIONQUERYREQUEST_PARAMTYPESENTRY._options = _descriptor._ParseOptions(descriptor_pb2.MessageOptions(), _b('8\001'))
-try:
-  # THESE ELEMENTS WILL BE DEPRECATED.
-  # Please use the generated *_pb2_grpc.py files instead.
-  import grpc
-  from grpc.beta import implementations as beta_implementations
-  from grpc.beta import interfaces as beta_interfaces
-  from grpc.framework.common import cardinality
-  from grpc.framework.interfaces.face import utilities as face_utilities
 
+_SPANNER = _descriptor.ServiceDescriptor(
+  name='Spanner',
+  full_name='google.spanner.v1.Spanner',
+  file=DESCRIPTOR,
+  index=0,
+  options=None,
+  serialized_start=3038,
+  serialized_end=5217,
+  methods=[
+  _descriptor.MethodDescriptor(
+    name='CreateSession',
+    full_name='google.spanner.v1.Spanner.CreateSession',
+    index=0,
+    containing_service=None,
+    input_type=_CREATESESSIONREQUEST,
+    output_type=_SESSION,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002?\":/v1/{database=projects/*/instances/*/databases/*}/sessions:\001*')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='GetSession',
+    full_name='google.spanner.v1.Spanner.GetSession',
+    index=1,
+    containing_service=None,
+    input_type=_GETSESSIONREQUEST,
+    output_type=_SESSION,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002:\0228/v1/{name=projects/*/instances/*/databases/*/sessions/*}')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='ListSessions',
+    full_name='google.spanner.v1.Spanner.ListSessions',
+    index=2,
+    containing_service=None,
+    input_type=_LISTSESSIONSREQUEST,
+    output_type=_LISTSESSIONSRESPONSE,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002<\022:/v1/{database=projects/*/instances/*/databases/*}/sessions')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='DeleteSession',
+    full_name='google.spanner.v1.Spanner.DeleteSession',
+    index=3,
+    containing_service=None,
+    input_type=_DELETESESSIONREQUEST,
+    output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002:*8/v1/{name=projects/*/instances/*/databases/*/sessions/*}')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='ExecuteSql',
+    full_name='google.spanner.v1.Spanner.ExecuteSql',
+    index=4,
+    containing_service=None,
+    input_type=_EXECUTESQLREQUEST,
+    output_type=google_dot_cloud_dot_spanner__v1_dot_proto_dot_result__set__pb2._RESULTSET,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002K\"F/v1/{session=projects/*/instances/*/databases/*/sessions/*}:executeSql:\001*')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='ExecuteStreamingSql',
+    full_name='google.spanner.v1.Spanner.ExecuteStreamingSql',
+    index=5,
+    containing_service=None,
+    input_type=_EXECUTESQLREQUEST,
+    output_type=google_dot_cloud_dot_spanner__v1_dot_proto_dot_result__set__pb2._PARTIALRESULTSET,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002T\"O/v1/{session=projects/*/instances/*/databases/*/sessions/*}:executeStreamingSql:\001*')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='Read',
+    full_name='google.spanner.v1.Spanner.Read',
+    index=6,
+    containing_service=None,
+    input_type=_READREQUEST,
+    output_type=google_dot_cloud_dot_spanner__v1_dot_proto_dot_result__set__pb2._RESULTSET,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002E\"@/v1/{session=projects/*/instances/*/databases/*/sessions/*}:read:\001*')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='StreamingRead',
+    full_name='google.spanner.v1.Spanner.StreamingRead',
+    index=7,
+    containing_service=None,
+    input_type=_READREQUEST,
+    output_type=google_dot_cloud_dot_spanner__v1_dot_proto_dot_result__set__pb2._PARTIALRESULTSET,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002N\"I/v1/{session=projects/*/instances/*/databases/*/sessions/*}:streamingRead:\001*')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='BeginTransaction',
+    full_name='google.spanner.v1.Spanner.BeginTransaction',
+    index=8,
+    containing_service=None,
+    input_type=_BEGINTRANSACTIONREQUEST,
+    output_type=google_dot_cloud_dot_spanner__v1_dot_proto_dot_transaction__pb2._TRANSACTION,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002Q\"L/v1/{session=projects/*/instances/*/databases/*/sessions/*}:beginTransaction:\001*')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='Commit',
+    full_name='google.spanner.v1.Spanner.Commit',
+    index=9,
+    containing_service=None,
+    input_type=_COMMITREQUEST,
+    output_type=_COMMITRESPONSE,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002G\"B/v1/{session=projects/*/instances/*/databases/*/sessions/*}:commit:\001*')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='Rollback',
+    full_name='google.spanner.v1.Spanner.Rollback',
+    index=10,
+    containing_service=None,
+    input_type=_ROLLBACKREQUEST,
+    output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002I\"D/v1/{session=projects/*/instances/*/databases/*/sessions/*}:rollback:\001*')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='PartitionQuery',
+    full_name='google.spanner.v1.Spanner.PartitionQuery',
+    index=11,
+    containing_service=None,
+    input_type=_PARTITIONQUERYREQUEST,
+    output_type=_PARTITIONRESPONSE,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002O\"J/v1/{session=projects/*/instances/*/databases/*/sessions/*}:partitionQuery:\001*')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='PartitionRead',
+    full_name='google.spanner.v1.Spanner.PartitionRead',
+    index=12,
+    containing_service=None,
+    input_type=_PARTITIONREADREQUEST,
+    output_type=_PARTITIONRESPONSE,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002N\"I/v1/{session=projects/*/instances/*/databases/*/sessions/*}:partitionRead:\001*')),
+  ),
+])
+_sym_db.RegisterServiceDescriptor(_SPANNER)
+
+DESCRIPTOR.services_by_name['Spanner'] = _SPANNER
 
-  class SpannerStub(object):
-    """Cloud Spanner API
-
-    The Cloud Spanner API can be used to manage sessions and execute
-    transactions on data stored in Cloud Spanner databases.
-    """
-
-    def __init__(self, channel):
-      """Constructor.
-
-      Args:
-        channel: A grpc.Channel.
-      """
-      self.CreateSession = channel.unary_unary(
-          '/google.spanner.v1.Spanner/CreateSession',
-          request_serializer=CreateSessionRequest.SerializeToString,
-          response_deserializer=Session.FromString,
-          )
-      self.GetSession = channel.unary_unary(
-          '/google.spanner.v1.Spanner/GetSession',
-          request_serializer=GetSessionRequest.SerializeToString,
-          response_deserializer=Session.FromString,
-          )
-      self.ListSessions = channel.unary_unary(
-          '/google.spanner.v1.Spanner/ListSessions',
-          request_serializer=ListSessionsRequest.SerializeToString,
-          response_deserializer=ListSessionsResponse.FromString,
-          )
-      self.DeleteSession = channel.unary_unary(
-          '/google.spanner.v1.Spanner/DeleteSession',
-          request_serializer=DeleteSessionRequest.SerializeToString,
-          response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
-          )
-      self.ExecuteSql = channel.unary_unary(
-          '/google.spanner.v1.Spanner/ExecuteSql',
-          request_serializer=ExecuteSqlRequest.SerializeToString,
-          response_deserializer=google_dot_cloud_dot_spanner__v1_dot_proto_dot_result__set__pb2.ResultSet.FromString,
-          )
-      self.ExecuteStreamingSql = channel.unary_stream(
-          '/google.spanner.v1.Spanner/ExecuteStreamingSql',
-          request_serializer=ExecuteSqlRequest.SerializeToString,
-          response_deserializer=google_dot_cloud_dot_spanner__v1_dot_proto_dot_result__set__pb2.PartialResultSet.FromString,
-          )
-      self.Read = channel.unary_unary(
-          '/google.spanner.v1.Spanner/Read',
-          request_serializer=ReadRequest.SerializeToString,
-          response_deserializer=google_dot_cloud_dot_spanner__v1_dot_proto_dot_result__set__pb2.ResultSet.FromString,
-          )
-      self.StreamingRead = channel.unary_stream(
-          '/google.spanner.v1.Spanner/StreamingRead',
-          request_serializer=ReadRequest.SerializeToString,
-          response_deserializer=google_dot_cloud_dot_spanner__v1_dot_proto_dot_result__set__pb2.PartialResultSet.FromString,
-          )
-      self.BeginTransaction = channel.unary_unary(
-          '/google.spanner.v1.Spanner/BeginTransaction',
-          request_serializer=BeginTransactionRequest.SerializeToString,
-          response_deserializer=google_dot_cloud_dot_spanner__v1_dot_proto_dot_transaction__pb2.Transaction.FromString,
-          )
-      self.Commit = channel.unary_unary(
-          '/google.spanner.v1.Spanner/Commit',
-          request_serializer=CommitRequest.SerializeToString,
-          response_deserializer=CommitResponse.FromString,
-          )
-      self.Rollback = channel.unary_unary(
-          '/google.spanner.v1.Spanner/Rollback',
-          request_serializer=RollbackRequest.SerializeToString,
-          response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
-          )
-      self.PartitionQuery = channel.unary_unary(
-          '/google.spanner.v1.Spanner/PartitionQuery',
-          request_serializer=PartitionQueryRequest.SerializeToString,
-          response_deserializer=PartitionResponse.FromString,
-          )
-      self.PartitionRead = channel.unary_unary(
-          '/google.spanner.v1.Spanner/PartitionRead',
-          request_serializer=PartitionReadRequest.SerializeToString,
-          response_deserializer=PartitionResponse.FromString,
-          )
-
-
-  class SpannerServicer(object):
-    """Cloud Spanner API
-
-    The Cloud Spanner API can be used to manage sessions and execute
-    transactions on data stored in Cloud Spanner databases.
-    """
-
-    def CreateSession(self, request, context):
-      """Creates a new session. A session can be used to perform
-      transactions that read and/or modify data in a Cloud Spanner database.
-      Sessions are meant to be reused for many consecutive
-      transactions.
-
-      Sessions can only execute one transaction at a time. To execute
-      multiple concurrent read-write/write-only transactions, create
-      multiple sessions. Note that standalone reads and queries use a
-      transaction internally, and count toward the one transaction
-      limit.
-
-      Cloud Spanner limits the number of sessions that can exist at any given
-      time; thus, it is a good idea to delete idle and/or unneeded sessions.
-      Aside from explicit deletes, Cloud Spanner can delete sessions for which no
-      operations are sent for more than an hour. If a session is deleted,
-      requests to it return `NOT_FOUND`.
-
-      Idle sessions can be kept alive by sending a trivial SQL query
-      periodically, e.g., `"SELECT 1"`.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def GetSession(self, request, context):
-      """Gets a session. Returns `NOT_FOUND` if the session does not exist.
-      This is mainly useful for determining whether a session is still
-      alive.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def ListSessions(self, request, context):
-      """Lists all sessions in a given database.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def DeleteSession(self, request, context):
-      """Ends a session, releasing server resources associated with it.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def ExecuteSql(self, request, context):
-      """Executes an SQL query, returning all rows in a single reply. This
-      method cannot be used to return a result set larger than 10 MiB;
-      if the query yields more data than that, the query fails with
-      a `FAILED_PRECONDITION` error.
-
-      Queries inside read-write transactions might return `ABORTED`. If
-      this occurs, the application should restart the transaction from
-      the beginning. See [Transaction][google.spanner.v1.Transaction] for more details.
-
-      Larger result sets can be fetched in streaming fashion by calling
-      [ExecuteStreamingSql][google.spanner.v1.Spanner.ExecuteStreamingSql] instead.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def ExecuteStreamingSql(self, request, context):
-      """Like [ExecuteSql][google.spanner.v1.Spanner.ExecuteSql], except returns the result
-      set as a stream. Unlike [ExecuteSql][google.spanner.v1.Spanner.ExecuteSql], there
-      is no limit on the size of the returned result set. However, no
-      individual row in the result set can exceed 100 MiB, and no
-      column value can exceed 10 MiB.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def Read(self, request, context):
-      """Reads rows from the database using key lookups and scans, as a
-      simple key/value style alternative to
-      [ExecuteSql][google.spanner.v1.Spanner.ExecuteSql].  This method cannot be used to
-      return a result set larger than 10 MiB; if the read matches more
-      data than that, the read fails with a `FAILED_PRECONDITION`
-      error.
-
-      Reads inside read-write transactions might return `ABORTED`. If
-      this occurs, the application should restart the transaction from
-      the beginning. See [Transaction][google.spanner.v1.Transaction] for more details.
-
-      Larger result sets can be yielded in streaming fashion by calling
-      [StreamingRead][google.spanner.v1.Spanner.StreamingRead] instead.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def StreamingRead(self, request, context):
-      """Like [Read][google.spanner.v1.Spanner.Read], except returns the result set as a
-      stream. Unlike [Read][google.spanner.v1.Spanner.Read], there is no limit on the
-      size of the returned result set. However, no individual row in
-      the result set can exceed 100 MiB, and no column value can exceed
-      10 MiB.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def BeginTransaction(self, request, context):
-      """Begins a new transaction. This step can often be skipped:
-      [Read][google.spanner.v1.Spanner.Read], [ExecuteSql][google.spanner.v1.Spanner.ExecuteSql] and
-      [Commit][google.spanner.v1.Spanner.Commit] can begin a new transaction as a
-      side-effect.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def Commit(self, request, context):
-      """Commits a transaction. The request includes the mutations to be
-      applied to rows in the database.
-
-      `Commit` might return an `ABORTED` error. This can occur at any time;
-      commonly, the cause is conflicts with concurrent
-      transactions. However, it can also happen for a variety of other
-      reasons. If `Commit` returns `ABORTED`, the caller should re-attempt
-      the transaction from the beginning, re-using the same session.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def Rollback(self, request, context):
-      """Rolls back a transaction, releasing any locks it holds. It is a good
-      idea to call this for any transaction that includes one or more
-      [Read][google.spanner.v1.Spanner.Read] or [ExecuteSql][google.spanner.v1.Spanner.ExecuteSql] requests and
-      ultimately decides not to commit.
-
-      `Rollback` returns `OK` if it successfully aborts the transaction, the
-      transaction was already aborted, or the transaction is not
-      found. `Rollback` never returns `ABORTED`.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def PartitionQuery(self, request, context):
-      """Creates a set of partition tokens that can be used to execute a query
-      operation in parallel.  Each of the returned partition tokens can be used
-      by [ExecuteStreamingSql][google.spanner.v1.Spanner.ExecuteStreamingSql] to specify a subset
-      of the query result to read.  The same session and read-only transaction
-      must be used by the PartitionQueryRequest used to create the
-      partition tokens and the ExecuteSqlRequests that use the partition tokens.
-      Partition tokens become invalid when the session used to create them
-      is deleted or begins a new transaction.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def PartitionRead(self, request, context):
-      """Creates a set of partition tokens that can be used to execute a read
-      operation in parallel.  Each of the returned partition tokens can be used
-      by [StreamingRead][google.spanner.v1.Spanner.StreamingRead] to specify a subset of the read
-      result to read.  The same session and read-only transaction must be used by
-      the PartitionReadRequest used to create the partition tokens and the
-      ReadRequests that use the partition tokens.
-      Partition tokens become invalid when the session used to create them
-      is deleted or begins a new transaction.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-
-  def add_SpannerServicer_to_server(servicer, server):
-    rpc_method_handlers = {
-        'CreateSession': grpc.unary_unary_rpc_method_handler(
-            servicer.CreateSession,
-            request_deserializer=CreateSessionRequest.FromString,
-            response_serializer=Session.SerializeToString,
-        ),
-        'GetSession': grpc.unary_unary_rpc_method_handler(
-            servicer.GetSession,
-            request_deserializer=GetSessionRequest.FromString,
-            response_serializer=Session.SerializeToString,
-        ),
-        'ListSessions': grpc.unary_unary_rpc_method_handler(
-            servicer.ListSessions,
-            request_deserializer=ListSessionsRequest.FromString,
-            response_serializer=ListSessionsResponse.SerializeToString,
-        ),
-        'DeleteSession': grpc.unary_unary_rpc_method_handler(
-            servicer.DeleteSession,
-            request_deserializer=DeleteSessionRequest.FromString,
-            response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
-        ),
-        'ExecuteSql': grpc.unary_unary_rpc_method_handler(
-            servicer.ExecuteSql,
-            request_deserializer=ExecuteSqlRequest.FromString,
-            response_serializer=google_dot_cloud_dot_spanner__v1_dot_proto_dot_result__set__pb2.ResultSet.SerializeToString,
-        ),
-        'ExecuteStreamingSql': grpc.unary_stream_rpc_method_handler(
-            servicer.ExecuteStreamingSql,
-            request_deserializer=ExecuteSqlRequest.FromString,
-            response_serializer=google_dot_cloud_dot_spanner__v1_dot_proto_dot_result__set__pb2.PartialResultSet.SerializeToString,
-        ),
-        'Read': grpc.unary_unary_rpc_method_handler(
-            servicer.Read,
-            request_deserializer=ReadRequest.FromString,
-            response_serializer=google_dot_cloud_dot_spanner__v1_dot_proto_dot_result__set__pb2.ResultSet.SerializeToString,
-        ),
-        'StreamingRead': grpc.unary_stream_rpc_method_handler(
-            servicer.StreamingRead,
-            request_deserializer=ReadRequest.FromString,
-            response_serializer=google_dot_cloud_dot_spanner__v1_dot_proto_dot_result__set__pb2.PartialResultSet.SerializeToString,
-        ),
-        'BeginTransaction': grpc.unary_unary_rpc_method_handler(
-            servicer.BeginTransaction,
-            request_deserializer=BeginTransactionRequest.FromString,
-            response_serializer=google_dot_cloud_dot_spanner__v1_dot_proto_dot_transaction__pb2.Transaction.SerializeToString,
-        ),
-        'Commit': grpc.unary_unary_rpc_method_handler(
-            servicer.Commit,
-            request_deserializer=CommitRequest.FromString,
-            response_serializer=CommitResponse.SerializeToString,
-        ),
-        'Rollback': grpc.unary_unary_rpc_method_handler(
-            servicer.Rollback,
-            request_deserializer=RollbackRequest.FromString,
-            response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
-        ),
-        'PartitionQuery': grpc.unary_unary_rpc_method_handler(
-            servicer.PartitionQuery,
-            request_deserializer=PartitionQueryRequest.FromString,
-            response_serializer=PartitionResponse.SerializeToString,
-        ),
-        'PartitionRead': grpc.unary_unary_rpc_method_handler(
-            servicer.PartitionRead,
-            request_deserializer=PartitionReadRequest.FromString,
-            response_serializer=PartitionResponse.SerializeToString,
-        ),
-    }
-    generic_handler = grpc.method_handlers_generic_handler(
-        'google.spanner.v1.Spanner', rpc_method_handlers)
-    server.add_generic_rpc_handlers((generic_handler,))
-
-
-  class BetaSpannerServicer(object):
-    """The Beta API is deprecated for 0.15.0 and later.
-
-    It is recommended to use the GA API (classes and functions in this
-    file not marked beta) for all further purposes. This class was generated
-    only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0."""
-    """Cloud Spanner API
-
-    The Cloud Spanner API can be used to manage sessions and execute
-    transactions on data stored in Cloud Spanner databases.
-    """
-    def CreateSession(self, request, context):
-      """Creates a new session. A session can be used to perform
-      transactions that read and/or modify data in a Cloud Spanner database.
-      Sessions are meant to be reused for many consecutive
-      transactions.
-
-      Sessions can only execute one transaction at a time. To execute
-      multiple concurrent read-write/write-only transactions, create
-      multiple sessions. Note that standalone reads and queries use a
-      transaction internally, and count toward the one transaction
-      limit.
-
-      Cloud Spanner limits the number of sessions that can exist at any given
-      time; thus, it is a good idea to delete idle and/or unneeded sessions.
-      Aside from explicit deletes, Cloud Spanner can delete sessions for which no
-      operations are sent for more than an hour. If a session is deleted,
-      requests to it return `NOT_FOUND`.
-
-      Idle sessions can be kept alive by sending a trivial SQL query
-      periodically, e.g., `"SELECT 1"`.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def GetSession(self, request, context):
-      """Gets a session. Returns `NOT_FOUND` if the session does not exist.
-      This is mainly useful for determining whether a session is still
-      alive.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def ListSessions(self, request, context):
-      """Lists all sessions in a given database.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def DeleteSession(self, request, context):
-      """Ends a session, releasing server resources associated with it.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def ExecuteSql(self, request, context):
-      """Executes an SQL query, returning all rows in a single reply. This
-      method cannot be used to return a result set larger than 10 MiB;
-      if the query yields more data than that, the query fails with
-      a `FAILED_PRECONDITION` error.
-
-      Queries inside read-write transactions might return `ABORTED`. If
-      this occurs, the application should restart the transaction from
-      the beginning. See [Transaction][google.spanner.v1.Transaction] for more details.
-
-      Larger result sets can be fetched in streaming fashion by calling
-      [ExecuteStreamingSql][google.spanner.v1.Spanner.ExecuteStreamingSql] instead.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def ExecuteStreamingSql(self, request, context):
-      """Like [ExecuteSql][google.spanner.v1.Spanner.ExecuteSql], except returns the result
-      set as a stream. Unlike [ExecuteSql][google.spanner.v1.Spanner.ExecuteSql], there
-      is no limit on the size of the returned result set. However, no
-      individual row in the result set can exceed 100 MiB, and no
-      column value can exceed 10 MiB.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def Read(self, request, context):
-      """Reads rows from the database using key lookups and scans, as a
-      simple key/value style alternative to
-      [ExecuteSql][google.spanner.v1.Spanner.ExecuteSql].  This method cannot be used to
-      return a result set larger than 10 MiB; if the read matches more
-      data than that, the read fails with a `FAILED_PRECONDITION`
-      error.
-
-      Reads inside read-write transactions might return `ABORTED`. If
-      this occurs, the application should restart the transaction from
-      the beginning. See [Transaction][google.spanner.v1.Transaction] for more details.
-
-      Larger result sets can be yielded in streaming fashion by calling
-      [StreamingRead][google.spanner.v1.Spanner.StreamingRead] instead.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def StreamingRead(self, request, context):
-      """Like [Read][google.spanner.v1.Spanner.Read], except returns the result set as a
-      stream. Unlike [Read][google.spanner.v1.Spanner.Read], there is no limit on the
-      size of the returned result set. However, no individual row in
-      the result set can exceed 100 MiB, and no column value can exceed
-      10 MiB.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def BeginTransaction(self, request, context):
-      """Begins a new transaction. This step can often be skipped:
-      [Read][google.spanner.v1.Spanner.Read], [ExecuteSql][google.spanner.v1.Spanner.ExecuteSql] and
-      [Commit][google.spanner.v1.Spanner.Commit] can begin a new transaction as a
-      side-effect.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def Commit(self, request, context):
-      """Commits a transaction. The request includes the mutations to be
-      applied to rows in the database.
-
-      `Commit` might return an `ABORTED` error. This can occur at any time;
-      commonly, the cause is conflicts with concurrent
-      transactions. However, it can also happen for a variety of other
-      reasons. If `Commit` returns `ABORTED`, the caller should re-attempt
-      the transaction from the beginning, re-using the same session.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def Rollback(self, request, context):
-      """Rolls back a transaction, releasing any locks it holds. It is a good
-      idea to call this for any transaction that includes one or more
-      [Read][google.spanner.v1.Spanner.Read] or [ExecuteSql][google.spanner.v1.Spanner.ExecuteSql] requests and
-      ultimately decides not to commit.
-
-      `Rollback` returns `OK` if it successfully aborts the transaction, the
-      transaction was already aborted, or the transaction is not
-      found. `Rollback` never returns `ABORTED`.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def PartitionQuery(self, request, context):
-      """Creates a set of partition tokens that can be used to execute a query
-      operation in parallel.  Each of the returned partition tokens can be used
-      by [ExecuteStreamingSql][google.spanner.v1.Spanner.ExecuteStreamingSql] to specify a subset
-      of the query result to read.  The same session and read-only transaction
-      must be used by the PartitionQueryRequest used to create the
-      partition tokens and the ExecuteSqlRequests that use the partition tokens.
-      Partition tokens become invalid when the session used to create them
-      is deleted or begins a new transaction.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def PartitionRead(self, request, context):
-      """Creates a set of partition tokens that can be used to execute a read
-      operation in parallel.  Each of the returned partition tokens can be used
-      by [StreamingRead][google.spanner.v1.Spanner.StreamingRead] to specify a subset of the read
-      result to read.  The same session and read-only transaction must be used by
-      the PartitionReadRequest used to create the partition tokens and the
-      ReadRequests that use the partition tokens.
-      Partition tokens become invalid when the session used to create them
-      is deleted or begins a new transaction.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-
-
-  class BetaSpannerStub(object):
-    """The Beta API is deprecated for 0.15.0 and later.
-
-    It is recommended to use the GA API (classes and functions in this
-    file not marked beta) for all further purposes. This class was generated
-    only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0."""
-    """Cloud Spanner API
-
-    The Cloud Spanner API can be used to manage sessions and execute
-    transactions on data stored in Cloud Spanner databases.
-    """
-    def CreateSession(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Creates a new session. A session can be used to perform
-      transactions that read and/or modify data in a Cloud Spanner database.
-      Sessions are meant to be reused for many consecutive
-      transactions.
-
-      Sessions can only execute one transaction at a time. To execute
-      multiple concurrent read-write/write-only transactions, create
-      multiple sessions. Note that standalone reads and queries use a
-      transaction internally, and count toward the one transaction
-      limit.
-
-      Cloud Spanner limits the number of sessions that can exist at any given
-      time; thus, it is a good idea to delete idle and/or unneeded sessions.
-      Aside from explicit deletes, Cloud Spanner can delete sessions for which no
-      operations are sent for more than an hour. If a session is deleted,
-      requests to it return `NOT_FOUND`.
-
-      Idle sessions can be kept alive by sending a trivial SQL query
-      periodically, e.g., `"SELECT 1"`.
-      """
-      raise NotImplementedError()
-    CreateSession.future = None
-    def GetSession(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Gets a session. Returns `NOT_FOUND` if the session does not exist.
-      This is mainly useful for determining whether a session is still
-      alive.
-      """
-      raise NotImplementedError()
-    GetSession.future = None
-    def ListSessions(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Lists all sessions in a given database.
-      """
-      raise NotImplementedError()
-    ListSessions.future = None
-    def DeleteSession(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Ends a session, releasing server resources associated with it.
-      """
-      raise NotImplementedError()
-    DeleteSession.future = None
-    def ExecuteSql(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Executes an SQL query, returning all rows in a single reply. This
-      method cannot be used to return a result set larger than 10 MiB;
-      if the query yields more data than that, the query fails with
-      a `FAILED_PRECONDITION` error.
-
-      Queries inside read-write transactions might return `ABORTED`. If
-      this occurs, the application should restart the transaction from
-      the beginning. See [Transaction][google.spanner.v1.Transaction] for more details.
-
-      Larger result sets can be fetched in streaming fashion by calling
-      [ExecuteStreamingSql][google.spanner.v1.Spanner.ExecuteStreamingSql] instead.
-      """
-      raise NotImplementedError()
-    ExecuteSql.future = None
-    def ExecuteStreamingSql(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Like [ExecuteSql][google.spanner.v1.Spanner.ExecuteSql], except returns the result
-      set as a stream. Unlike [ExecuteSql][google.spanner.v1.Spanner.ExecuteSql], there
-      is no limit on the size of the returned result set. However, no
-      individual row in the result set can exceed 100 MiB, and no
-      column value can exceed 10 MiB.
-      """
-      raise NotImplementedError()
-    def Read(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Reads rows from the database using key lookups and scans, as a
-      simple key/value style alternative to
-      [ExecuteSql][google.spanner.v1.Spanner.ExecuteSql].  This method cannot be used to
-      return a result set larger than 10 MiB; if the read matches more
-      data than that, the read fails with a `FAILED_PRECONDITION`
-      error.
-
-      Reads inside read-write transactions might return `ABORTED`. If
-      this occurs, the application should restart the transaction from
-      the beginning. See [Transaction][google.spanner.v1.Transaction] for more details.
-
-      Larger result sets can be yielded in streaming fashion by calling
-      [StreamingRead][google.spanner.v1.Spanner.StreamingRead] instead.
-      """
-      raise NotImplementedError()
-    Read.future = None
-    def StreamingRead(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Like [Read][google.spanner.v1.Spanner.Read], except returns the result set as a
-      stream. Unlike [Read][google.spanner.v1.Spanner.Read], there is no limit on the
-      size of the returned result set. However, no individual row in
-      the result set can exceed 100 MiB, and no column value can exceed
-      10 MiB.
-      """
-      raise NotImplementedError()
-    def BeginTransaction(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Begins a new transaction. This step can often be skipped:
-      [Read][google.spanner.v1.Spanner.Read], [ExecuteSql][google.spanner.v1.Spanner.ExecuteSql] and
-      [Commit][google.spanner.v1.Spanner.Commit] can begin a new transaction as a
-      side-effect.
-      """
-      raise NotImplementedError()
-    BeginTransaction.future = None
-    def Commit(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Commits a transaction. The request includes the mutations to be
-      applied to rows in the database.
-
-      `Commit` might return an `ABORTED` error. This can occur at any time;
-      commonly, the cause is conflicts with concurrent
-      transactions. However, it can also happen for a variety of other
-      reasons. If `Commit` returns `ABORTED`, the caller should re-attempt
-      the transaction from the beginning, re-using the same session.
-      """
-      raise NotImplementedError()
-    Commit.future = None
-    def Rollback(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Rolls back a transaction, releasing any locks it holds. It is a good
-      idea to call this for any transaction that includes one or more
-      [Read][google.spanner.v1.Spanner.Read] or [ExecuteSql][google.spanner.v1.Spanner.ExecuteSql] requests and
-      ultimately decides not to commit.
-
-      `Rollback` returns `OK` if it successfully aborts the transaction, the
-      transaction was already aborted, or the transaction is not
-      found. `Rollback` never returns `ABORTED`.
-      """
-      raise NotImplementedError()
-    Rollback.future = None
-    def PartitionQuery(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Creates a set of partition tokens that can be used to execute a query
-      operation in parallel.  Each of the returned partition tokens can be used
-      by [ExecuteStreamingSql][google.spanner.v1.Spanner.ExecuteStreamingSql] to specify a subset
-      of the query result to read.  The same session and read-only transaction
-      must be used by the PartitionQueryRequest used to create the
-      partition tokens and the ExecuteSqlRequests that use the partition tokens.
-      Partition tokens become invalid when the session used to create them
-      is deleted or begins a new transaction.
-      """
-      raise NotImplementedError()
-    PartitionQuery.future = None
-    def PartitionRead(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Creates a set of partition tokens that can be used to execute a read
-      operation in parallel.  Each of the returned partition tokens can be used
-      by [StreamingRead][google.spanner.v1.Spanner.StreamingRead] to specify a subset of the read
-      result to read.  The same session and read-only transaction must be used by
-      the PartitionReadRequest used to create the partition tokens and the
-      ReadRequests that use the partition tokens.
-      Partition tokens become invalid when the session used to create them
-      is deleted or begins a new transaction.
-      """
-      raise NotImplementedError()
-    PartitionRead.future = None
-
-
-  def beta_create_Spanner_server(servicer, pool=None, pool_size=None, default_timeout=None, maximum_timeout=None):
-    """The Beta API is deprecated for 0.15.0 and later.
-
-    It is recommended to use the GA API (classes and functions in this
-    file not marked beta) for all further purposes. This function was
-    generated only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0"""
-    request_deserializers = {
-      ('google.spanner.v1.Spanner', 'BeginTransaction'): BeginTransactionRequest.FromString,
-      ('google.spanner.v1.Spanner', 'Commit'): CommitRequest.FromString,
-      ('google.spanner.v1.Spanner', 'CreateSession'): CreateSessionRequest.FromString,
-      ('google.spanner.v1.Spanner', 'DeleteSession'): DeleteSessionRequest.FromString,
-      ('google.spanner.v1.Spanner', 'ExecuteSql'): ExecuteSqlRequest.FromString,
-      ('google.spanner.v1.Spanner', 'ExecuteStreamingSql'): ExecuteSqlRequest.FromString,
-      ('google.spanner.v1.Spanner', 'GetSession'): GetSessionRequest.FromString,
-      ('google.spanner.v1.Spanner', 'ListSessions'): ListSessionsRequest.FromString,
-      ('google.spanner.v1.Spanner', 'PartitionQuery'): PartitionQueryRequest.FromString,
-      ('google.spanner.v1.Spanner', 'PartitionRead'): PartitionReadRequest.FromString,
-      ('google.spanner.v1.Spanner', 'Read'): ReadRequest.FromString,
-      ('google.spanner.v1.Spanner', 'Rollback'): RollbackRequest.FromString,
-      ('google.spanner.v1.Spanner', 'StreamingRead'): ReadRequest.FromString,
-    }
-    response_serializers = {
-      ('google.spanner.v1.Spanner', 'BeginTransaction'): google_dot_cloud_dot_spanner__v1_dot_proto_dot_transaction__pb2.Transaction.SerializeToString,
-      ('google.spanner.v1.Spanner', 'Commit'): CommitResponse.SerializeToString,
-      ('google.spanner.v1.Spanner', 'CreateSession'): Session.SerializeToString,
-      ('google.spanner.v1.Spanner', 'DeleteSession'): google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
-      ('google.spanner.v1.Spanner', 'ExecuteSql'): google_dot_cloud_dot_spanner__v1_dot_proto_dot_result__set__pb2.ResultSet.SerializeToString,
-      ('google.spanner.v1.Spanner', 'ExecuteStreamingSql'): google_dot_cloud_dot_spanner__v1_dot_proto_dot_result__set__pb2.PartialResultSet.SerializeToString,
-      ('google.spanner.v1.Spanner', 'GetSession'): Session.SerializeToString,
-      ('google.spanner.v1.Spanner', 'ListSessions'): ListSessionsResponse.SerializeToString,
-      ('google.spanner.v1.Spanner', 'PartitionQuery'): PartitionResponse.SerializeToString,
-      ('google.spanner.v1.Spanner', 'PartitionRead'): PartitionResponse.SerializeToString,
-      ('google.spanner.v1.Spanner', 'Read'): google_dot_cloud_dot_spanner__v1_dot_proto_dot_result__set__pb2.ResultSet.SerializeToString,
-      ('google.spanner.v1.Spanner', 'Rollback'): google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
-      ('google.spanner.v1.Spanner', 'StreamingRead'): google_dot_cloud_dot_spanner__v1_dot_proto_dot_result__set__pb2.PartialResultSet.SerializeToString,
-    }
-    method_implementations = {
-      ('google.spanner.v1.Spanner', 'BeginTransaction'): face_utilities.unary_unary_inline(servicer.BeginTransaction),
-      ('google.spanner.v1.Spanner', 'Commit'): face_utilities.unary_unary_inline(servicer.Commit),
-      ('google.spanner.v1.Spanner', 'CreateSession'): face_utilities.unary_unary_inline(servicer.CreateSession),
-      ('google.spanner.v1.Spanner', 'DeleteSession'): face_utilities.unary_unary_inline(servicer.DeleteSession),
-      ('google.spanner.v1.Spanner', 'ExecuteSql'): face_utilities.unary_unary_inline(servicer.ExecuteSql),
-      ('google.spanner.v1.Spanner', 'ExecuteStreamingSql'): face_utilities.unary_stream_inline(servicer.ExecuteStreamingSql),
-      ('google.spanner.v1.Spanner', 'GetSession'): face_utilities.unary_unary_inline(servicer.GetSession),
-      ('google.spanner.v1.Spanner', 'ListSessions'): face_utilities.unary_unary_inline(servicer.ListSessions),
-      ('google.spanner.v1.Spanner', 'PartitionQuery'): face_utilities.unary_unary_inline(servicer.PartitionQuery),
-      ('google.spanner.v1.Spanner', 'PartitionRead'): face_utilities.unary_unary_inline(servicer.PartitionRead),
-      ('google.spanner.v1.Spanner', 'Read'): face_utilities.unary_unary_inline(servicer.Read),
-      ('google.spanner.v1.Spanner', 'Rollback'): face_utilities.unary_unary_inline(servicer.Rollback),
-      ('google.spanner.v1.Spanner', 'StreamingRead'): face_utilities.unary_stream_inline(servicer.StreamingRead),
-    }
-    server_options = beta_implementations.server_options(request_deserializers=request_deserializers, response_serializers=response_serializers, thread_pool=pool, thread_pool_size=pool_size, default_timeout=default_timeout, maximum_timeout=maximum_timeout)
-    return beta_implementations.server(method_implementations, options=server_options)
-
-
-  def beta_create_Spanner_stub(channel, host=None, metadata_transformer=None, pool=None, pool_size=None):
-    """The Beta API is deprecated for 0.15.0 and later.
-
-    It is recommended to use the GA API (classes and functions in this
-    file not marked beta) for all further purposes. This function was
-    generated only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0"""
-    request_serializers = {
-      ('google.spanner.v1.Spanner', 'BeginTransaction'): BeginTransactionRequest.SerializeToString,
-      ('google.spanner.v1.Spanner', 'Commit'): CommitRequest.SerializeToString,
-      ('google.spanner.v1.Spanner', 'CreateSession'): CreateSessionRequest.SerializeToString,
-      ('google.spanner.v1.Spanner', 'DeleteSession'): DeleteSessionRequest.SerializeToString,
-      ('google.spanner.v1.Spanner', 'ExecuteSql'): ExecuteSqlRequest.SerializeToString,
-      ('google.spanner.v1.Spanner', 'ExecuteStreamingSql'): ExecuteSqlRequest.SerializeToString,
-      ('google.spanner.v1.Spanner', 'GetSession'): GetSessionRequest.SerializeToString,
-      ('google.spanner.v1.Spanner', 'ListSessions'): ListSessionsRequest.SerializeToString,
-      ('google.spanner.v1.Spanner', 'PartitionQuery'): PartitionQueryRequest.SerializeToString,
-      ('google.spanner.v1.Spanner', 'PartitionRead'): PartitionReadRequest.SerializeToString,
-      ('google.spanner.v1.Spanner', 'Read'): ReadRequest.SerializeToString,
-      ('google.spanner.v1.Spanner', 'Rollback'): RollbackRequest.SerializeToString,
-      ('google.spanner.v1.Spanner', 'StreamingRead'): ReadRequest.SerializeToString,
-    }
-    response_deserializers = {
-      ('google.spanner.v1.Spanner', 'BeginTransaction'): google_dot_cloud_dot_spanner__v1_dot_proto_dot_transaction__pb2.Transaction.FromString,
-      ('google.spanner.v1.Spanner', 'Commit'): CommitResponse.FromString,
-      ('google.spanner.v1.Spanner', 'CreateSession'): Session.FromString,
-      ('google.spanner.v1.Spanner', 'DeleteSession'): google_dot_protobuf_dot_empty__pb2.Empty.FromString,
-      ('google.spanner.v1.Spanner', 'ExecuteSql'): google_dot_cloud_dot_spanner__v1_dot_proto_dot_result__set__pb2.ResultSet.FromString,
-      ('google.spanner.v1.Spanner', 'ExecuteStreamingSql'): google_dot_cloud_dot_spanner__v1_dot_proto_dot_result__set__pb2.PartialResultSet.FromString,
-      ('google.spanner.v1.Spanner', 'GetSession'): Session.FromString,
-      ('google.spanner.v1.Spanner', 'ListSessions'): ListSessionsResponse.FromString,
-      ('google.spanner.v1.Spanner', 'PartitionQuery'): PartitionResponse.FromString,
-      ('google.spanner.v1.Spanner', 'PartitionRead'): PartitionResponse.FromString,
-      ('google.spanner.v1.Spanner', 'Read'): google_dot_cloud_dot_spanner__v1_dot_proto_dot_result__set__pb2.ResultSet.FromString,
-      ('google.spanner.v1.Spanner', 'Rollback'): google_dot_protobuf_dot_empty__pb2.Empty.FromString,
-      ('google.spanner.v1.Spanner', 'StreamingRead'): google_dot_cloud_dot_spanner__v1_dot_proto_dot_result__set__pb2.PartialResultSet.FromString,
-    }
-    cardinalities = {
-      'BeginTransaction': cardinality.Cardinality.UNARY_UNARY,
-      'Commit': cardinality.Cardinality.UNARY_UNARY,
-      'CreateSession': cardinality.Cardinality.UNARY_UNARY,
-      'DeleteSession': cardinality.Cardinality.UNARY_UNARY,
-      'ExecuteSql': cardinality.Cardinality.UNARY_UNARY,
-      'ExecuteStreamingSql': cardinality.Cardinality.UNARY_STREAM,
-      'GetSession': cardinality.Cardinality.UNARY_UNARY,
-      'ListSessions': cardinality.Cardinality.UNARY_UNARY,
-      'PartitionQuery': cardinality.Cardinality.UNARY_UNARY,
-      'PartitionRead': cardinality.Cardinality.UNARY_UNARY,
-      'Read': cardinality.Cardinality.UNARY_UNARY,
-      'Rollback': cardinality.Cardinality.UNARY_UNARY,
-      'StreamingRead': cardinality.Cardinality.UNARY_STREAM,
-    }
-    stub_options = beta_implementations.stub_options(host=host, metadata_transformer=metadata_transformer, request_serializers=request_serializers, response_deserializers=response_deserializers, thread_pool=pool, thread_pool_size=pool_size)
-    return beta_implementations.dynamic_stub(channel, 'google.spanner.v1.Spanner', cardinalities, options=stub_options)
-except ImportError:
-  pass
 # @@protoc_insertion_point(module_scope)

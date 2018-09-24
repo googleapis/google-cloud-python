@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+#
 # Copyright 2018 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -307,8 +309,8 @@ class DlpServiceClient(object):
                 'inspect_content'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.inspect_content,
                     default_retry=self._method_configs['InspectContent'].retry,
-                    default_timeout=self._method_configs['InspectContent']
-                    .timeout,
+                    default_timeout=self._method_configs['InspectContent'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -387,8 +389,8 @@ class DlpServiceClient(object):
                 'redact_image'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.redact_image,
                     default_retry=self._method_configs['RedactImage'].retry,
-                    default_timeout=self._method_configs['RedactImage']
-                    .timeout,
+                    default_timeout=self._method_configs['RedactImage'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -480,10 +482,10 @@ class DlpServiceClient(object):
             self._inner_api_calls[
                 'deidentify_content'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.deidentify_content,
-                    default_retry=self._method_configs[
-                        'DeidentifyContent'].retry,
-                    default_timeout=self._method_configs['DeidentifyContent']
-                    .timeout,
+                    default_retry=self._method_configs['DeidentifyContent'].
+                    retry,
+                    default_timeout=self._method_configs['DeidentifyContent'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -577,10 +579,10 @@ class DlpServiceClient(object):
             self._inner_api_calls[
                 'reidentify_content'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.reidentify_content,
-                    default_retry=self._method_configs[
-                        'ReidentifyContent'].retry,
-                    default_timeout=self._method_configs['ReidentifyContent']
-                    .timeout,
+                    default_retry=self._method_configs['ReidentifyContent'].
+                    retry,
+                    default_timeout=self._method_configs['ReidentifyContent'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -644,8 +646,8 @@ class DlpServiceClient(object):
                 'list_info_types'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.list_info_types,
                     default_retry=self._method_configs['ListInfoTypes'].retry,
-                    default_timeout=self._method_configs['ListInfoTypes']
-                    .timeout,
+                    default_timeout=self._method_configs['ListInfoTypes'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -712,10 +714,10 @@ class DlpServiceClient(object):
             self._inner_api_calls[
                 'create_inspect_template'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.create_inspect_template,
-                    default_retry=self._method_configs['CreateInspectTemplate']
-                    .retry,
-                    default_timeout=self._method_configs[
-                        'CreateInspectTemplate'].timeout,
+                    default_retry=self.
+                    _method_configs['CreateInspectTemplate'].retry,
+                    default_timeout=self.
+                    _method_configs['CreateInspectTemplate'].timeout,
                     client_info=self._client_info,
                 )
 
@@ -782,10 +784,10 @@ class DlpServiceClient(object):
             self._inner_api_calls[
                 'update_inspect_template'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.update_inspect_template,
-                    default_retry=self._method_configs['UpdateInspectTemplate']
-                    .retry,
-                    default_timeout=self._method_configs[
-                        'UpdateInspectTemplate'].timeout,
+                    default_retry=self.
+                    _method_configs['UpdateInspectTemplate'].retry,
+                    default_timeout=self.
+                    _method_configs['UpdateInspectTemplate'].timeout,
                     client_info=self._client_info,
                 )
 
@@ -841,10 +843,10 @@ class DlpServiceClient(object):
             self._inner_api_calls[
                 'get_inspect_template'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.get_inspect_template,
-                    default_retry=self._method_configs[
-                        'GetInspectTemplate'].retry,
-                    default_timeout=self._method_configs['GetInspectTemplate']
-                    .timeout,
+                    default_retry=self._method_configs['GetInspectTemplate'].
+                    retry,
+                    default_timeout=self._method_configs['GetInspectTemplate'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -918,10 +920,10 @@ class DlpServiceClient(object):
             self._inner_api_calls[
                 'list_inspect_templates'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.list_inspect_templates,
-                    default_retry=self._method_configs['ListInspectTemplates']
-                    .retry,
-                    default_timeout=self._method_configs[
-                        'ListInspectTemplates'].timeout,
+                    default_retry=self._method_configs['ListInspectTemplates'].
+                    retry,
+                    default_timeout=self.
+                    _method_configs['ListInspectTemplates'].timeout,
                     client_info=self._client_info,
                 )
 
@@ -987,10 +989,10 @@ class DlpServiceClient(object):
             self._inner_api_calls[
                 'delete_inspect_template'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.delete_inspect_template,
-                    default_retry=self._method_configs['DeleteInspectTemplate']
-                    .retry,
-                    default_timeout=self._method_configs[
-                        'DeleteInspectTemplate'].timeout,
+                    default_retry=self.
+                    _method_configs['DeleteInspectTemplate'].retry,
+                    default_timeout=self.
+                    _method_configs['DeleteInspectTemplate'].timeout,
                     client_info=self._client_info,
                 )
 
@@ -1055,10 +1057,10 @@ class DlpServiceClient(object):
             self._inner_api_calls[
                 'create_deidentify_template'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.create_deidentify_template,
-                    default_retry=self._method_configs[
-                        'CreateDeidentifyTemplate'].retry,
-                    default_timeout=self._method_configs[
-                        'CreateDeidentifyTemplate'].timeout,
+                    default_retry=self.
+                    _method_configs['CreateDeidentifyTemplate'].retry,
+                    default_timeout=self.
+                    _method_configs['CreateDeidentifyTemplate'].timeout,
                     client_info=self._client_info,
                 )
 
@@ -1126,10 +1128,10 @@ class DlpServiceClient(object):
             self._inner_api_calls[
                 'update_deidentify_template'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.update_deidentify_template,
-                    default_retry=self._method_configs[
-                        'UpdateDeidentifyTemplate'].retry,
-                    default_timeout=self._method_configs[
-                        'UpdateDeidentifyTemplate'].timeout,
+                    default_retry=self.
+                    _method_configs['UpdateDeidentifyTemplate'].retry,
+                    default_timeout=self.
+                    _method_configs['UpdateDeidentifyTemplate'].timeout,
                     client_info=self._client_info,
                 )
 
@@ -1189,10 +1191,10 @@ class DlpServiceClient(object):
             self._inner_api_calls[
                 'get_deidentify_template'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.get_deidentify_template,
-                    default_retry=self._method_configs['GetDeidentifyTemplate']
-                    .retry,
-                    default_timeout=self._method_configs[
-                        'GetDeidentifyTemplate'].timeout,
+                    default_retry=self.
+                    _method_configs['GetDeidentifyTemplate'].retry,
+                    default_timeout=self.
+                    _method_configs['GetDeidentifyTemplate'].timeout,
                     client_info=self._client_info,
                 )
 
@@ -1268,10 +1270,10 @@ class DlpServiceClient(object):
             self._inner_api_calls[
                 'list_deidentify_templates'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.list_deidentify_templates,
-                    default_retry=self._method_configs[
-                        'ListDeidentifyTemplates'].retry,
-                    default_timeout=self._method_configs[
-                        'ListDeidentifyTemplates'].timeout,
+                    default_retry=self.
+                    _method_configs['ListDeidentifyTemplates'].retry,
+                    default_timeout=self.
+                    _method_configs['ListDeidentifyTemplates'].timeout,
                     client_info=self._client_info,
                 )
 
@@ -1338,10 +1340,10 @@ class DlpServiceClient(object):
             self._inner_api_calls[
                 'delete_deidentify_template'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.delete_deidentify_template,
-                    default_retry=self._method_configs[
-                        'DeleteDeidentifyTemplate'].retry,
-                    default_timeout=self._method_configs[
-                        'DeleteDeidentifyTemplate'].timeout,
+                    default_retry=self.
+                    _method_configs['DeleteDeidentifyTemplate'].retry,
+                    default_timeout=self.
+                    _method_configs['DeleteDeidentifyTemplate'].timeout,
                     client_info=self._client_info,
                 )
 
@@ -1410,8 +1412,8 @@ class DlpServiceClient(object):
                 'create_dlp_job'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.create_dlp_job,
                     default_retry=self._method_configs['CreateDlpJob'].retry,
-                    default_timeout=self._method_configs['CreateDlpJob']
-                    .timeout,
+                    default_timeout=self._method_configs['CreateDlpJob'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -1524,8 +1526,8 @@ class DlpServiceClient(object):
                 'list_dlp_jobs'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.list_dlp_jobs,
                     default_retry=self._method_configs['ListDlpJobs'].retry,
-                    default_timeout=self._method_configs['ListDlpJobs']
-                    .timeout,
+                    default_timeout=self._method_configs['ListDlpJobs'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -1648,8 +1650,8 @@ class DlpServiceClient(object):
                 'delete_dlp_job'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.delete_dlp_job,
                     default_retry=self._method_configs['DeleteDlpJob'].retry,
-                    default_timeout=self._method_configs['DeleteDlpJob']
-                    .timeout,
+                    default_timeout=self._method_configs['DeleteDlpJob'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -1702,8 +1704,8 @@ class DlpServiceClient(object):
                 'cancel_dlp_job'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.cancel_dlp_job,
                     default_retry=self._method_configs['CancelDlpJob'].retry,
-                    default_timeout=self._method_configs['CancelDlpJob']
-                    .timeout,
+                    default_timeout=self._method_configs['CancelDlpJob'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -1789,10 +1791,10 @@ class DlpServiceClient(object):
             self._inner_api_calls[
                 'list_job_triggers'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.list_job_triggers,
-                    default_retry=self._method_configs[
-                        'ListJobTriggers'].retry,
-                    default_timeout=self._method_configs['ListJobTriggers']
-                    .timeout,
+                    default_retry=self._method_configs['ListJobTriggers'].
+                    retry,
+                    default_timeout=self._method_configs['ListJobTriggers'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -1861,8 +1863,8 @@ class DlpServiceClient(object):
                 'get_job_trigger'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.get_job_trigger,
                     default_retry=self._method_configs['GetJobTrigger'].retry,
-                    default_timeout=self._method_configs['GetJobTrigger']
-                    .timeout,
+                    default_timeout=self._method_configs['GetJobTrigger'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -1913,10 +1915,10 @@ class DlpServiceClient(object):
             self._inner_api_calls[
                 'delete_job_trigger'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.delete_job_trigger,
-                    default_retry=self._method_configs[
-                        'DeleteJobTrigger'].retry,
-                    default_timeout=self._method_configs['DeleteJobTrigger']
-                    .timeout,
+                    default_retry=self._method_configs['DeleteJobTrigger'].
+                    retry,
+                    default_timeout=self._method_configs['DeleteJobTrigger'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -1977,10 +1979,10 @@ class DlpServiceClient(object):
             self._inner_api_calls[
                 'update_job_trigger'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.update_job_trigger,
-                    default_retry=self._method_configs[
-                        'UpdateJobTrigger'].retry,
-                    default_timeout=self._method_configs['UpdateJobTrigger']
-                    .timeout,
+                    default_retry=self._method_configs['UpdateJobTrigger'].
+                    retry,
+                    default_timeout=self._method_configs['UpdateJobTrigger'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -2046,10 +2048,10 @@ class DlpServiceClient(object):
             self._inner_api_calls[
                 'create_job_trigger'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.create_job_trigger,
-                    default_retry=self._method_configs[
-                        'CreateJobTrigger'].retry,
-                    default_timeout=self._method_configs['CreateJobTrigger']
-                    .timeout,
+                    default_retry=self._method_configs['CreateJobTrigger'].
+                    retry,
+                    default_timeout=self._method_configs['CreateJobTrigger'].
+                    timeout,
                     client_info=self._client_info,
                 )
 

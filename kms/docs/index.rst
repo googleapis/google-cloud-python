@@ -1,9 +1,21 @@
 .. include:: /../kms/README.rst
 
-Api Reference
+
+API Reference
 -------------
 .. toctree::
-    :maxdepth: 2
+   :maxdepth: 2
 
-    gapic/v1/api
-    gapic/v1/types
+   gapic/v1/api
+   gapic/v1/types
+
+
+Changelog
+---------
+
+For a list of all ``google-cloud-kms`` releases:
+
+.. toctree::
+   :maxdepth: 2
+
+   changelog

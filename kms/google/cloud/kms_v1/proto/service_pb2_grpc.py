@@ -14,6 +14,9 @@ class KeyManagementServiceStub(object):
   * [KeyRing][google.cloud.kms.v1.KeyRing]
   * [CryptoKey][google.cloud.kms.v1.CryptoKey]
   * [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
+
+  If you are using manual gRPC libraries, see
+  [Using gRPC with Cloud KMS](https://cloud.google.com/kms/docs/grpc).
   """
 
   def __init__(self, channel):
@@ -52,6 +55,11 @@ class KeyManagementServiceStub(object):
         request_serializer=google_dot_cloud_dot_kms__v1_dot_proto_dot_service__pb2.GetCryptoKeyVersionRequest.SerializeToString,
         response_deserializer=google_dot_cloud_dot_kms__v1_dot_proto_dot_resources__pb2.CryptoKeyVersion.FromString,
         )
+    self.GetPublicKey = channel.unary_unary(
+        '/google.cloud.kms.v1.KeyManagementService/GetPublicKey',
+        request_serializer=google_dot_cloud_dot_kms__v1_dot_proto_dot_service__pb2.GetPublicKeyRequest.SerializeToString,
+        response_deserializer=google_dot_cloud_dot_kms__v1_dot_proto_dot_resources__pb2.PublicKey.FromString,
+        )
     self.CreateKeyRing = channel.unary_unary(
         '/google.cloud.kms.v1.KeyManagementService/CreateKeyRing',
         request_serializer=google_dot_cloud_dot_kms__v1_dot_proto_dot_service__pb2.CreateKeyRingRequest.SerializeToString,
@@ -87,6 +95,16 @@ class KeyManagementServiceStub(object):
         request_serializer=google_dot_cloud_dot_kms__v1_dot_proto_dot_service__pb2.DecryptRequest.SerializeToString,
         response_deserializer=google_dot_cloud_dot_kms__v1_dot_proto_dot_service__pb2.DecryptResponse.FromString,
         )
+    self.AsymmetricSign = channel.unary_unary(
+        '/google.cloud.kms.v1.KeyManagementService/AsymmetricSign',
+        request_serializer=google_dot_cloud_dot_kms__v1_dot_proto_dot_service__pb2.AsymmetricSignRequest.SerializeToString,
+        response_deserializer=google_dot_cloud_dot_kms__v1_dot_proto_dot_service__pb2.AsymmetricSignResponse.FromString,
+        )
+    self.AsymmetricDecrypt = channel.unary_unary(
+        '/google.cloud.kms.v1.KeyManagementService/AsymmetricDecrypt',
+        request_serializer=google_dot_cloud_dot_kms__v1_dot_proto_dot_service__pb2.AsymmetricDecryptRequest.SerializeToString,
+        response_deserializer=google_dot_cloud_dot_kms__v1_dot_proto_dot_service__pb2.AsymmetricDecryptResponse.FromString,
+        )
     self.UpdateCryptoKeyPrimaryVersion = channel.unary_unary(
         '/google.cloud.kms.v1.KeyManagementService/UpdateCryptoKeyPrimaryVersion',
         request_serializer=google_dot_cloud_dot_kms__v1_dot_proto_dot_service__pb2.UpdateCryptoKeyPrimaryVersionRequest.SerializeToString,
@@ -113,6 +131,9 @@ class KeyManagementServiceServicer(object):
   * [KeyRing][google.cloud.kms.v1.KeyRing]
   * [CryptoKey][google.cloud.kms.v1.CryptoKey]
   * [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
+
+  If you are using manual gRPC libraries, see
+  [Using gRPC with Cloud KMS](https://cloud.google.com/kms/docs/grpc).
   """
 
   def ListKeyRings(self, request, context):
@@ -158,6 +179,16 @@ class KeyManagementServiceServicer(object):
     context.set_details('Method not implemented!')
     raise NotImplementedError('Method not implemented!')
 
+  def GetPublicKey(self, request, context):
+    """Returns the public key for the given [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]. The
+    [CryptoKey.purpose][google.cloud.kms.v1.CryptoKey.purpose] must be
+    [ASYMMETRIC_SIGN][google.cloud.kms.v1.CryptoKey.CryptoKeyPurpose.ASYMMETRIC_SIGN] or
+    [ASYMMETRIC_DECRYPT][google.cloud.kms.v1.CryptoKey.CryptoKeyPurpose.ASYMMETRIC_DECRYPT].
+    """
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details('Method not implemented!')
+    raise NotImplementedError('Method not implemented!')
+
   def CreateKeyRing(self, request, context):
     """Create a new [KeyRing][google.cloud.kms.v1.KeyRing] in a given Project and Location.
     """
@@ -168,7 +199,9 @@ class KeyManagementServiceServicer(object):
   def CreateCryptoKey(self, request, context):
     """Create a new [CryptoKey][google.cloud.kms.v1.CryptoKey] within a [KeyRing][google.cloud.kms.v1.KeyRing].
 
-    [CryptoKey.purpose][google.cloud.kms.v1.CryptoKey.purpose] is required.
+    [CryptoKey.purpose][google.cloud.kms.v1.CryptoKey.purpose] and
+    [CryptoKey.version_template.algorithm][google.cloud.kms.v1.CryptoKeyVersionTemplate.algorithm]
+    are required.
     """
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')
@@ -207,20 +240,43 @@ class KeyManagementServiceServicer(object):
 
   def Encrypt(self, request, context):
     """Encrypts data, so that it can only be recovered by a call to [Decrypt][google.cloud.kms.v1.KeyManagementService.Decrypt].
+    The [CryptoKey.purpose][google.cloud.kms.v1.CryptoKey.purpose] must be
+    [ENCRYPT_DECRYPT][google.cloud.kms.v1.CryptoKey.CryptoKeyPurpose.ENCRYPT_DECRYPT].
     """
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')
     raise NotImplementedError('Method not implemented!')
 
   def Decrypt(self, request, context):
-    """Decrypts data that was protected by [Encrypt][google.cloud.kms.v1.KeyManagementService.Encrypt].
+    """Decrypts data that was protected by [Encrypt][google.cloud.kms.v1.KeyManagementService.Encrypt]. The [CryptoKey.purpose][google.cloud.kms.v1.CryptoKey.purpose]
+    must be [ENCRYPT_DECRYPT][google.cloud.kms.v1.CryptoKey.CryptoKeyPurpose.ENCRYPT_DECRYPT].
+    """
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details('Method not implemented!')
+    raise NotImplementedError('Method not implemented!')
+
+  def AsymmetricSign(self, request, context):
+    """Signs data using a [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] with [CryptoKey.purpose][google.cloud.kms.v1.CryptoKey.purpose]
+    ASYMMETRIC_SIGN, producing a signature that can be verified with the public
+    key retrieved from [GetPublicKey][google.cloud.kms.v1.KeyManagementService.GetPublicKey].
+    """
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details('Method not implemented!')
+    raise NotImplementedError('Method not implemented!')
+
+  def AsymmetricDecrypt(self, request, context):
+    """Decrypts data that was encrypted with a public key retrieved from
+    [GetPublicKey][google.cloud.kms.v1.KeyManagementService.GetPublicKey] corresponding to a [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] with
+    [CryptoKey.purpose][google.cloud.kms.v1.CryptoKey.purpose] ASYMMETRIC_DECRYPT.
     """
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')
     raise NotImplementedError('Method not implemented!')
 
   def UpdateCryptoKeyPrimaryVersion(self, request, context):
-    """Update the version of a [CryptoKey][google.cloud.kms.v1.CryptoKey] that will be used in [Encrypt][google.cloud.kms.v1.KeyManagementService.Encrypt]
+    """Update the version of a [CryptoKey][google.cloud.kms.v1.CryptoKey] that will be used in [Encrypt][google.cloud.kms.v1.KeyManagementService.Encrypt].
+
+    Returns an error if called on an asymmetric key.
     """
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')
@@ -246,7 +302,7 @@ class KeyManagementServiceServicer(object):
 
   def RestoreCryptoKeyVersion(self, request, context):
     """Restore a [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] in the
-    [DESTROY_SCHEDULED][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionState.DESTROY_SCHEDULED],
+    [DESTROY_SCHEDULED][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionState.DESTROY_SCHEDULED]
     state.
 
     Upon restoration of the CryptoKeyVersion, [state][google.cloud.kms.v1.CryptoKeyVersion.state]
@@ -290,6 +346,11 @@ def add_KeyManagementServiceServicer_to_server(servicer, server):
           request_deserializer=google_dot_cloud_dot_kms__v1_dot_proto_dot_service__pb2.GetCryptoKeyVersionRequest.FromString,
           response_serializer=google_dot_cloud_dot_kms__v1_dot_proto_dot_resources__pb2.CryptoKeyVersion.SerializeToString,
       ),
+      'GetPublicKey': grpc.unary_unary_rpc_method_handler(
+          servicer.GetPublicKey,
+          request_deserializer=google_dot_cloud_dot_kms__v1_dot_proto_dot_service__pb2.GetPublicKeyRequest.FromString,
+          response_serializer=google_dot_cloud_dot_kms__v1_dot_proto_dot_resources__pb2.PublicKey.SerializeToString,
+      ),
       'CreateKeyRing': grpc.unary_unary_rpc_method_handler(
           servicer.CreateKeyRing,
           request_deserializer=google_dot_cloud_dot_kms__v1_dot_proto_dot_service__pb2.CreateKeyRingRequest.FromString,
@@ -324,6 +385,16 @@ def add_KeyManagementServiceServicer_to_server(servicer, server):
           servicer.Decrypt,
           request_deserializer=google_dot_cloud_dot_kms__v1_dot_proto_dot_service__pb2.DecryptRequest.FromString,
           response_serializer=google_dot_cloud_dot_kms__v1_dot_proto_dot_service__pb2.DecryptResponse.SerializeToString,
+      ),
+      'AsymmetricSign': grpc.unary_unary_rpc_method_handler(
+          servicer.AsymmetricSign,
+          request_deserializer=google_dot_cloud_dot_kms__v1_dot_proto_dot_service__pb2.AsymmetricSignRequest.FromString,
+          response_serializer=google_dot_cloud_dot_kms__v1_dot_proto_dot_service__pb2.AsymmetricSignResponse.SerializeToString,
+      ),
+      'AsymmetricDecrypt': grpc.unary_unary_rpc_method_handler(
+          servicer.AsymmetricDecrypt,
+          request_deserializer=google_dot_cloud_dot_kms__v1_dot_proto_dot_service__pb2.AsymmetricDecryptRequest.FromString,
+          response_serializer=google_dot_cloud_dot_kms__v1_dot_proto_dot_service__pb2.AsymmetricDecryptResponse.SerializeToString,
       ),
       'UpdateCryptoKeyPrimaryVersion': grpc.unary_unary_rpc_method_handler(
           servicer.UpdateCryptoKeyPrimaryVersion,
