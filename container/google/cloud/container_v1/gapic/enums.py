@@ -1,10 +1,12 @@
-# Copyright 2017, Google LLC All rights reserved.
+# -*- coding: utf-8 -*-
+#
+# Copyright 2018 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#     http://www.apache.org/licenses/LICENSE-2.0
+#     https://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,9 +15,11 @@
 # limitations under the License.
 """Wrappers for protocol buffer enum types."""
 
+import enum
+
 
 class NetworkPolicy(object):
-    class Provider(object):
+    class Provider(enum.IntEnum):
         """
         Allowed Network Policy providers.
 
@@ -28,7 +32,7 @@ class NetworkPolicy(object):
 
 
 class Cluster(object):
-    class Status(object):
+    class Status(enum.IntEnum):
         """
         The current status of the cluster.
 
@@ -53,7 +57,7 @@ class Cluster(object):
 
 
 class Operation(object):
-    class Status(object):
+    class Status(enum.IntEnum):
         """
         Current status of the operation.
 
@@ -70,7 +74,7 @@ class Operation(object):
         DONE = 3
         ABORTING = 4
 
-    class Type(object):
+    class Type(enum.IntEnum):
         """
         Operation type.
 
@@ -113,7 +117,7 @@ class Operation(object):
 
 
 class SetMasterAuthRequest(object):
-    class Action(object):
+    class Action(enum.IntEnum):
         """
         Operation type: what type update to perform.
 
@@ -133,7 +137,7 @@ class SetMasterAuthRequest(object):
 
 
 class NodePool(object):
-    class Status(object):
+    class Status(enum.IntEnum):
         """
         The current status of the node pool instance.
 
