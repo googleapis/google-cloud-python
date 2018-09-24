@@ -1231,8 +1231,10 @@ class Client(ClientWithProject):
         # if they don't want to override, we need to merge what they passed
         if not override_job_config and self._default_query_job_config:
             if job_config:
-                # anything that's not defined on the incoming, should be filled in with the default
-                job_config = job_config.merge_job_config(self._default_query_job_config)
+                # anything that's not defined on the incoming that is in the default,
+                # should be filled in with the default
+                # the incoming therefore has precedence
+                job_config = job_config.fill_from_default(self._default_query_job_config)
             else:
                 job_config = self._default_query_job_config
         # if they want to override (or if they never passed a default),

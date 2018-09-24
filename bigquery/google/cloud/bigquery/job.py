@@ -820,22 +820,25 @@ class _JobConfig(object):
         return copy.deepcopy(self._properties)
 
     # BLAINE
-    def merge_job_config(self, other_job_config):
+    def fill_from_default(self, default_job_config):
         """Merge this job config with another one. The other takes precedence with conflicting keys.
         This is a naive one level merge.
     
         :rtype: :class:`google.cloud.bigquery.job._JobConfig`
         :returns: A new job config.
         """
-        if self._job_type == other_job_config._job_type:
-            raise TypeError("attempted to merge two incompatible job types: " + repr(self._job_type) + ', ' + repr(other_job_config._job_type))
+        if self._job_type != default_job_config._job_type:
+            raise TypeError("attempted to merge two incompatible job types: " + repr(self._job_type) + ', ' + repr(default_job_config._job_type))
 
         new_job_config = self.__class__()
         new_job_config._properties = copy.deepcopy(self._properties)
 
-        for key in list(other_job_config._properties.keys()):
-            if not self._properties.get(key):
-                new_job_config._properties[key] = other_job_config._properties[key]
+        self_job_properties = self._properties[self._job_type]
+        new_job_properties = new_job_config._properties[self._job_type]
+        default_job_properties = default_job_config._properties[self._job_type]
+        for key in list(default_job_properties.keys()):
+            if not self_job_properties.get(key):
+                new_job_properties[key] = default_job_properties[key]
 
         return new_job_config
 

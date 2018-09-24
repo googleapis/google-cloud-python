@@ -96,6 +96,28 @@ class TestClient(unittest.TestCase):
         self.assertIs(client._connection.http, http)
         self.assertEqual(client.location, location)
 
+    # BLAINE
+    def test_ctor_w_query_job_config(self):
+        from google.cloud.bigquery._http import Connection
+        from google.cloud.bigquery import QueryJobConfig
+
+        creds = _make_credentials()
+        http = object()
+        location = 'us-central'
+        job_config = QueryJobConfig()
+        job_config.dry_run = True
+
+        client = self._make_one(project=self.PROJECT, credentials=creds,
+                                _http=http, location=location,
+                                query_job_config=job_config)
+        self.assertIsInstance(client._connection, Connection)
+        self.assertIs(client._connection.credentials, creds)
+        self.assertIs(client._connection.http, http)
+        self.assertEqual(client.location, location)
+        
+        self.assertIsInstance(client._default_query_job_config, QueryJobConfig)
+        self.assertTrue(client._default_query_job_config.dry_run)
+
     def test__get_query_results_miss_w_explicit_project_and_timeout(self):
         from google.cloud.exceptions import NotFound
 
@@ -2704,6 +2726,104 @@ class TestClient(unittest.TestCase):
         conn.api_request.assert_called_once_with(
             method='POST',
             path='/projects/other-project/jobs',
+            data=resource,
+        )
+
+    def test_query_w_explicit_job_config(self):
+        job_id = 'some-job-id'
+        query = 'select count(*) from persons'
+        resource = {
+            'jobReference': {
+                'jobId': job_id,
+                'projectId': self.PROJECT,
+                'location': self.LOCATION,
+            },
+            'configuration': {
+                'query': {
+                    'query': query,
+                    'defaultDataset': {
+                        'projectId': self.PROJECT,
+                        'datasetId': 'some-dataset',
+                    },
+                    'useLegacySql': False,
+                    'useQueryCache': True,
+                    'maximumBytesBilled': '2000',
+                },
+            },
+        }
+
+        creds = _make_credentials()
+        http = object()
+        # BLAINE
+
+        from google.cloud.bigquery import QueryJobConfig, DatasetReference
+        default_job_config = QueryJobConfig()
+        default_job_config.default_dataset = DatasetReference(self.PROJECT, 'some-dataset')
+        default_job_config.maximum_bytes_billed = 1000
+
+        client = self._make_one(
+            project=self.PROJECT, credentials=creds, _http=http, query_job_config=default_job_config)
+        conn = client._connection = _make_connection(resource)
+
+        job_config = QueryJobConfig()
+        job_config.use_query_cache = True
+        job_config.maximum_bytes_billed = 2000
+
+        # override_job_config
+        client.query(
+            query, job_id=job_id, location=self.LOCATION, job_config=job_config)
+
+        # Check that query actually starts the job.
+        conn.api_request.assert_called_once_with(
+            method='POST',
+            path='/projects/PROJECT/jobs',
+            data=resource,
+        )
+
+    def test_query_w_explicit_job_config_override(self):
+        job_id = 'some-job-id'
+        query = 'select count(*) from persons'
+        resource = {
+            'jobReference': {
+                'jobId': job_id,
+                'projectId': self.PROJECT,
+                'location': self.LOCATION,
+            },
+            'configuration': {
+                'query': {
+                    'query': query,
+                    'useLegacySql': False,
+                    'useQueryCache': True,
+                    'maximumBytesBilled': '2000',
+                },
+            },
+        }
+
+        creds = _make_credentials()
+        http = object()
+        # BLAINE
+
+        from google.cloud.bigquery import QueryJobConfig, DatasetReference
+        default_job_config = QueryJobConfig()
+        default_job_config.default_dataset = DatasetReference(self.PROJECT, 'some-dataset')
+        default_job_config.maximum_bytes_billed = 1000
+
+        client = self._make_one(
+            project=self.PROJECT, credentials=creds, _http=http, query_job_config=default_job_config)
+        conn = client._connection = _make_connection(resource)
+
+        job_config = QueryJobConfig()
+        job_config.use_query_cache = True
+        job_config.maximum_bytes_billed = 2000
+
+        # override_job_config
+        client.query(
+            query, job_id=job_id, location=self.LOCATION, job_config=job_config, override_job_config=True)
+
+        # Check that query actually starts the job.
+        conn.api_request.assert_called_once_with(
+            method='POST',
+            path='/projects/PROJECT/jobs',
             data=resource,
         )
 
