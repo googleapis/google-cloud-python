@@ -25,7 +25,6 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   serialized_pb=_b('\n/google/cloud/datastore_v1/proto/datastore.proto\x12\x13google.datastore.v1\x1a\x1cgoogle/api/annotations.proto\x1a,google/cloud/datastore_v1/proto/entity.proto\x1a+google/cloud/datastore_v1/proto/query.proto\"\x83\x01\n\rLookupRequest\x12\x12\n\nproject_id\x18\x08 \x01(\t\x12\x36\n\x0cread_options\x18\x01 \x01(\x0b\x32 .google.datastore.v1.ReadOptions\x12&\n\x04keys\x18\x03 \x03(\x0b\x32\x18.google.datastore.v1.Key\"\xa2\x01\n\x0eLookupResponse\x12\x30\n\x05\x66ound\x18\x01 \x03(\x0b\x32!.google.datastore.v1.EntityResult\x12\x32\n\x07missing\x18\x02 \x03(\x0b\x32!.google.datastore.v1.EntityResult\x12*\n\x08\x64\x65\x66\x65rred\x18\x03 \x03(\x0b\x32\x18.google.datastore.v1.Key\"\x84\x02\n\x0fRunQueryRequest\x12\x12\n\nproject_id\x18\x08 \x01(\t\x12\x36\n\x0cpartition_id\x18\x02 \x01(\x0b\x32 .google.datastore.v1.PartitionId\x12\x36\n\x0cread_options\x18\x01 \x01(\x0b\x32 .google.datastore.v1.ReadOptions\x12+\n\x05query\x18\x03 \x01(\x0b\x32\x1a.google.datastore.v1.QueryH\x00\x12\x32\n\tgql_query\x18\x07 \x01(\x0b\x32\x1d.google.datastore.v1.GqlQueryH\x00\x42\x0c\n\nquery_type\"s\n\x10RunQueryResponse\x12\x34\n\x05\x62\x61tch\x18\x01 \x01(\x0b\x32%.google.datastore.v1.QueryResultBatch\x12)\n\x05query\x18\x02 \x01(\x0b\x32\x1a.google.datastore.v1.Query\"s\n\x17\x42\x65ginTransactionRequest\x12\x12\n\nproject_id\x18\x08 \x01(\t\x12\x44\n\x13transaction_options\x18\n \x01(\x0b\x32\'.google.datastore.v1.TransactionOptions\"/\n\x18\x42\x65ginTransactionResponse\x12\x13\n\x0btransaction\x18\x01 \x01(\x0c\":\n\x0fRollbackRequest\x12\x12\n\nproject_id\x18\x08 \x01(\t\x12\x13\n\x0btransaction\x18\x01 \x01(\x0c\"\x12\n\x10RollbackResponse\"\x83\x02\n\rCommitRequest\x12\x12\n\nproject_id\x18\x08 \x01(\t\x12\x35\n\x04mode\x18\x05 \x01(\x0e\x32\'.google.datastore.v1.CommitRequest.Mode\x12\x15\n\x0btransaction\x18\x01 \x01(\x0cH\x00\x12\x30\n\tmutations\x18\x06 \x03(\x0b\x32\x1d.google.datastore.v1.Mutation\"F\n\x04Mode\x12\x14\n\x10MODE_UNSPECIFIED\x10\x00\x12\x11\n\rTRANSACTIONAL\x10\x01\x12\x15\n\x11NON_TRANSACTIONAL\x10\x02\x42\x16\n\x14transaction_selector\"f\n\x0e\x43ommitResponse\x12=\n\x10mutation_results\x18\x03 \x03(\x0b\x32#.google.datastore.v1.MutationResult\x12\x15\n\rindex_updates\x18\x04 \x01(\x05\"P\n\x12\x41llocateIdsRequest\x12\x12\n\nproject_id\x18\x08 \x01(\t\x12&\n\x04keys\x18\x01 \x03(\x0b\x32\x18.google.datastore.v1.Key\"=\n\x13\x41llocateIdsResponse\x12&\n\x04keys\x18\x01 \x03(\x0b\x32\x18.google.datastore.v1.Key\"d\n\x11ReserveIdsRequest\x12\x12\n\nproject_id\x18\x08 \x01(\t\x12\x13\n\x0b\x64\x61tabase_id\x18\t \x01(\t\x12&\n\x04keys\x18\x01 \x03(\x0b\x32\x18.google.datastore.v1.Key\"\x14\n\x12ReserveIdsResponse\"\x87\x02\n\x08Mutation\x12-\n\x06insert\x18\x04 \x01(\x0b\x32\x1b.google.datastore.v1.EntityH\x00\x12-\n\x06update\x18\x05 \x01(\x0b\x32\x1b.google.datastore.v1.EntityH\x00\x12-\n\x06upsert\x18\x06 \x01(\x0b\x32\x1b.google.datastore.v1.EntityH\x00\x12*\n\x06\x64\x65lete\x18\x07 \x01(\x0b\x32\x18.google.datastore.v1.KeyH\x00\x12\x16\n\x0c\x62\x61se_version\x18\x08 \x01(\x03H\x01\x42\x0b\n\toperationB\x1d\n\x1b\x63onflict_detection_strategy\"c\n\x0eMutationResult\x12%\n\x03key\x18\x03 \x01(\x0b\x32\x18.google.datastore.v1.Key\x12\x0f\n\x07version\x18\x04 \x01(\x03\x12\x19\n\x11\x63onflict_detected\x18\x05 \x01(\x08\"\xd5\x01\n\x0bReadOptions\x12L\n\x10read_consistency\x18\x01 \x01(\x0e\x32\x30.google.datastore.v1.ReadOptions.ReadConsistencyH\x00\x12\x15\n\x0btransaction\x18\x02 \x01(\x0cH\x00\"M\n\x0fReadConsistency\x12 \n\x1cREAD_CONSISTENCY_UNSPECIFIED\x10\x00\x12\n\n\x06STRONG\x10\x01\x12\x0c\n\x08\x45VENTUAL\x10\x02\x42\x12\n\x10\x63onsistency_type\"\xe3\x01\n\x12TransactionOptions\x12G\n\nread_write\x18\x01 \x01(\x0b\x32\x31.google.datastore.v1.TransactionOptions.ReadWriteH\x00\x12\x45\n\tread_only\x18\x02 \x01(\x0b\x32\x30.google.datastore.v1.TransactionOptions.ReadOnlyH\x00\x1a)\n\tReadWrite\x12\x1c\n\x14previous_transaction\x18\x01 \x01(\x0c\x1a\n\n\x08ReadOnlyB\x06\n\x04mode2\xec\x07\n\tDatastore\x12~\n\x06Lookup\x12\".google.datastore.v1.LookupRequest\x1a#.google.datastore.v1.LookupResponse\"+\x82\xd3\xe4\x93\x02%\" /v1/projects/{project_id}:lookup:\x01*\x12\x86\x01\n\x08RunQuery\x12$.google.datastore.v1.RunQueryRequest\x1a%.google.datastore.v1.RunQueryResponse\"-\x82\xd3\xe4\x93\x02\'\"\"/v1/projects/{project_id}:runQuery:\x01*\x12\xa6\x01\n\x10\x42\x65ginTransaction\x12,.google.datastore.v1.BeginTransactionRequest\x1a-.google.datastore.v1.BeginTransactionResponse\"5\x82\xd3\xe4\x93\x02/\"*/v1/projects/{project_id}:beginTransaction:\x01*\x12~\n\x06\x43ommit\x12\".google.datastore.v1.CommitRequest\x1a#.google.datastore.v1.CommitResponse\"+\x82\xd3\xe4\x93\x02%\" /v1/projects/{project_id}:commit:\x01*\x12\x86\x01\n\x08Rollback\x12$.google.datastore.v1.RollbackRequest\x1a%.google.datastore.v1.RollbackResponse\"-\x82\xd3\xe4\x93\x02\'\"\"/v1/projects/{project_id}:rollback:\x01*\x12\x92\x01\n\x0b\x41llocateIds\x12\'.google.datastore.v1.AllocateIdsRequest\x1a(.google.datastore.v1.AllocateIdsResponse\"0\x82\xd3\xe4\x93\x02*\"%/v1/projects/{project_id}:allocateIds:\x01*\x12\x8e\x01\n\nReserveIds\x12&.google.datastore.v1.ReserveIdsRequest\x1a\'.google.datastore.v1.ReserveIdsResponse\"/\x82\xd3\xe4\x93\x02)\"$/v1/projects/{project_id}:reserveIds:\x01*B\xa1\x01\n\x17\x63om.google.datastore.v1B\x0e\x44\x61tastoreProtoP\x01Z<google.golang.org/genproto/googleapis/datastore/v1;datastore\xaa\x02\x19Google.Cloud.Datastore.V1\xca\x02\x19Google\\Cloud\\Datastore\\V1b\x06proto3')
   ,
   dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR,google_dot_cloud_dot_datastore__v1_dot_proto_dot_entity__pb2.DESCRIPTOR,google_dot_cloud_dot_datastore__v1_dot_proto_dot_query__pb2.DESCRIPTOR,])
-_sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 
 
@@ -95,21 +94,21 @@ _LOOKUPREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='read_options', full_name='google.datastore.v1.LookupRequest.read_options', index=1,
       number=1, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='keys', full_name='google.datastore.v1.LookupRequest.keys', index=2,
       number=3, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -140,21 +139,21 @@ _LOOKUPRESPONSE = _descriptor.Descriptor(
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='missing', full_name='google.datastore.v1.LookupResponse.missing', index=1,
       number=2, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='deferred', full_name='google.datastore.v1.LookupResponse.deferred', index=2,
       number=3, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -185,35 +184,35 @@ _RUNQUERYREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='partition_id', full_name='google.datastore.v1.RunQueryRequest.partition_id', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='read_options', full_name='google.datastore.v1.RunQueryRequest.read_options', index=2,
       number=1, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='query', full_name='google.datastore.v1.RunQueryRequest.query', index=3,
       number=3, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='gql_query', full_name='google.datastore.v1.RunQueryRequest.gql_query', index=4,
       number=7, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -247,14 +246,14 @@ _RUNQUERYRESPONSE = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='query', full_name='google.datastore.v1.RunQueryResponse.query', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -285,14 +284,14 @@ _BEGINTRANSACTIONREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='transaction_options', full_name='google.datastore.v1.BeginTransactionRequest.transaction_options', index=1,
       number=10, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -323,7 +322,7 @@ _BEGINTRANSACTIONRESPONSE = _descriptor.Descriptor(
       has_default_value=False, default_value=_b(""),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -354,14 +353,14 @@ _ROLLBACKREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='transaction', full_name='google.datastore.v1.RollbackRequest.transaction', index=1,
       number=1, type=12, cpp_type=9, label=1,
       has_default_value=False, default_value=_b(""),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -416,28 +415,28 @@ _COMMITREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='mode', full_name='google.datastore.v1.CommitRequest.mode', index=1,
       number=5, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='transaction', full_name='google.datastore.v1.CommitRequest.transaction', index=2,
       number=1, type=12, cpp_type=9, label=1,
       has_default_value=False, default_value=_b(""),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='mutations', full_name='google.datastore.v1.CommitRequest.mutations', index=3,
       number=6, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -472,14 +471,14 @@ _COMMITRESPONSE = _descriptor.Descriptor(
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='index_updates', full_name='google.datastore.v1.CommitResponse.index_updates', index=1,
       number=4, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -510,14 +509,14 @@ _ALLOCATEIDSREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='keys', full_name='google.datastore.v1.AllocateIdsRequest.keys', index=1,
       number=1, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -548,7 +547,7 @@ _ALLOCATEIDSRESPONSE = _descriptor.Descriptor(
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -579,21 +578,21 @@ _RESERVEIDSREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='database_id', full_name='google.datastore.v1.ReserveIdsRequest.database_id', index=1,
       number=9, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='keys', full_name='google.datastore.v1.ReserveIdsRequest.keys', index=2,
       number=1, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -648,35 +647,35 @@ _MUTATION = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='update', full_name='google.datastore.v1.Mutation.update', index=1,
       number=5, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='upsert', full_name='google.datastore.v1.Mutation.upsert', index=2,
       number=6, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='delete', full_name='google.datastore.v1.Mutation.delete', index=3,
       number=7, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='base_version', full_name='google.datastore.v1.Mutation.base_version', index=4,
       number=8, type=3, cpp_type=2, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -713,21 +712,21 @@ _MUTATIONRESULT = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='version', full_name='google.datastore.v1.MutationResult.version', index=1,
       number=4, type=3, cpp_type=2, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='conflict_detected', full_name='google.datastore.v1.MutationResult.conflict_detected', index=2,
       number=5, type=8, cpp_type=7, label=1,
       has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -758,14 +757,14 @@ _READOPTIONS = _descriptor.Descriptor(
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='transaction', full_name='google.datastore.v1.ReadOptions.transaction', index=1,
       number=2, type=12, cpp_type=9, label=1,
       has_default_value=False, default_value=_b(""),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -800,7 +799,7 @@ _TRANSACTIONOPTIONS_READWRITE = _descriptor.Descriptor(
       has_default_value=False, default_value=_b(""),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -853,14 +852,14 @@ _TRANSACTIONOPTIONS = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='read_only', full_name='google.datastore.v1.TransactionOptions.read_only', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -964,6 +963,7 @@ DESCRIPTOR.message_types_by_name['Mutation'] = _MUTATION
 DESCRIPTOR.message_types_by_name['MutationResult'] = _MUTATIONRESULT
 DESCRIPTOR.message_types_by_name['ReadOptions'] = _READOPTIONS
 DESCRIPTOR.message_types_by_name['TransactionOptions'] = _TRANSACTIONOPTIONS
+_sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 LookupRequest = _reflection.GeneratedProtocolMessageType('LookupRequest', (_message.Message,), dict(
   DESCRIPTOR = _LOOKUPREQUEST,
@@ -1398,348 +1398,82 @@ _sym_db.RegisterMessage(TransactionOptions.ReadOnly)
 
 DESCRIPTOR.has_options = True
 DESCRIPTOR._options = _descriptor._ParseOptions(descriptor_pb2.FileOptions(), _b('\n\027com.google.datastore.v1B\016DatastoreProtoP\001Z<google.golang.org/genproto/googleapis/datastore/v1;datastore\252\002\031Google.Cloud.Datastore.V1\312\002\031Google\\Cloud\\Datastore\\V1'))
-try:
-  # THESE ELEMENTS WILL BE DEPRECATED.
-  # Please use the generated *_pb2_grpc.py files instead.
-  import grpc
-  from grpc.beta import implementations as beta_implementations
-  from grpc.beta import interfaces as beta_interfaces
-  from grpc.framework.common import cardinality
-  from grpc.framework.interfaces.face import utilities as face_utilities
 
+_DATASTORE = _descriptor.ServiceDescriptor(
+  name='Datastore',
+  full_name='google.datastore.v1.Datastore',
+  file=DESCRIPTOR,
+  index=0,
+  options=None,
+  serialized_start=2567,
+  serialized_end=3571,
+  methods=[
+  _descriptor.MethodDescriptor(
+    name='Lookup',
+    full_name='google.datastore.v1.Datastore.Lookup',
+    index=0,
+    containing_service=None,
+    input_type=_LOOKUPREQUEST,
+    output_type=_LOOKUPRESPONSE,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002%\" /v1/projects/{project_id}:lookup:\001*')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='RunQuery',
+    full_name='google.datastore.v1.Datastore.RunQuery',
+    index=1,
+    containing_service=None,
+    input_type=_RUNQUERYREQUEST,
+    output_type=_RUNQUERYRESPONSE,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002\'\"\"/v1/projects/{project_id}:runQuery:\001*')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='BeginTransaction',
+    full_name='google.datastore.v1.Datastore.BeginTransaction',
+    index=2,
+    containing_service=None,
+    input_type=_BEGINTRANSACTIONREQUEST,
+    output_type=_BEGINTRANSACTIONRESPONSE,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002/\"*/v1/projects/{project_id}:beginTransaction:\001*')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='Commit',
+    full_name='google.datastore.v1.Datastore.Commit',
+    index=3,
+    containing_service=None,
+    input_type=_COMMITREQUEST,
+    output_type=_COMMITRESPONSE,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002%\" /v1/projects/{project_id}:commit:\001*')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='Rollback',
+    full_name='google.datastore.v1.Datastore.Rollback',
+    index=4,
+    containing_service=None,
+    input_type=_ROLLBACKREQUEST,
+    output_type=_ROLLBACKRESPONSE,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002\'\"\"/v1/projects/{project_id}:rollback:\001*')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='AllocateIds',
+    full_name='google.datastore.v1.Datastore.AllocateIds',
+    index=5,
+    containing_service=None,
+    input_type=_ALLOCATEIDSREQUEST,
+    output_type=_ALLOCATEIDSRESPONSE,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002*\"%/v1/projects/{project_id}:allocateIds:\001*')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='ReserveIds',
+    full_name='google.datastore.v1.Datastore.ReserveIds',
+    index=6,
+    containing_service=None,
+    input_type=_RESERVEIDSREQUEST,
+    output_type=_RESERVEIDSRESPONSE,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002)\"$/v1/projects/{project_id}:reserveIds:\001*')),
+  ),
+])
+_sym_db.RegisterServiceDescriptor(_DATASTORE)
 
-  class DatastoreStub(object):
-    """Each RPC normalizes the partition IDs of the keys in its input entities,
-    and always returns entities with keys with normalized partition IDs.
-    This applies to all keys and entities, including those in values, except keys
-    with both an empty path and an empty or unset partition ID. Normalization of
-    input keys sets the project ID (if not already set) to the project ID from
-    the request.
+DESCRIPTOR.services_by_name['Datastore'] = _DATASTORE
 
-    """
-
-    def __init__(self, channel):
-      """Constructor.
-
-      Args:
-        channel: A grpc.Channel.
-      """
-      self.Lookup = channel.unary_unary(
-          '/google.datastore.v1.Datastore/Lookup',
-          request_serializer=LookupRequest.SerializeToString,
-          response_deserializer=LookupResponse.FromString,
-          )
-      self.RunQuery = channel.unary_unary(
-          '/google.datastore.v1.Datastore/RunQuery',
-          request_serializer=RunQueryRequest.SerializeToString,
-          response_deserializer=RunQueryResponse.FromString,
-          )
-      self.BeginTransaction = channel.unary_unary(
-          '/google.datastore.v1.Datastore/BeginTransaction',
-          request_serializer=BeginTransactionRequest.SerializeToString,
-          response_deserializer=BeginTransactionResponse.FromString,
-          )
-      self.Commit = channel.unary_unary(
-          '/google.datastore.v1.Datastore/Commit',
-          request_serializer=CommitRequest.SerializeToString,
-          response_deserializer=CommitResponse.FromString,
-          )
-      self.Rollback = channel.unary_unary(
-          '/google.datastore.v1.Datastore/Rollback',
-          request_serializer=RollbackRequest.SerializeToString,
-          response_deserializer=RollbackResponse.FromString,
-          )
-      self.AllocateIds = channel.unary_unary(
-          '/google.datastore.v1.Datastore/AllocateIds',
-          request_serializer=AllocateIdsRequest.SerializeToString,
-          response_deserializer=AllocateIdsResponse.FromString,
-          )
-      self.ReserveIds = channel.unary_unary(
-          '/google.datastore.v1.Datastore/ReserveIds',
-          request_serializer=ReserveIdsRequest.SerializeToString,
-          response_deserializer=ReserveIdsResponse.FromString,
-          )
-
-
-  class DatastoreServicer(object):
-    """Each RPC normalizes the partition IDs of the keys in its input entities,
-    and always returns entities with keys with normalized partition IDs.
-    This applies to all keys and entities, including those in values, except keys
-    with both an empty path and an empty or unset partition ID. Normalization of
-    input keys sets the project ID (if not already set) to the project ID from
-    the request.
-
-    """
-
-    def Lookup(self, request, context):
-      """Looks up entities by key.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def RunQuery(self, request, context):
-      """Queries for entities.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def BeginTransaction(self, request, context):
-      """Begins a new transaction.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def Commit(self, request, context):
-      """Commits a transaction, optionally creating, deleting or modifying some
-      entities.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def Rollback(self, request, context):
-      """Rolls back a transaction.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def AllocateIds(self, request, context):
-      """Allocates IDs for the given keys, which is useful for referencing an entity
-      before it is inserted.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def ReserveIds(self, request, context):
-      """Prevents the supplied keys' IDs from being auto-allocated by Cloud
-      Datastore.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-
-  def add_DatastoreServicer_to_server(servicer, server):
-    rpc_method_handlers = {
-        'Lookup': grpc.unary_unary_rpc_method_handler(
-            servicer.Lookup,
-            request_deserializer=LookupRequest.FromString,
-            response_serializer=LookupResponse.SerializeToString,
-        ),
-        'RunQuery': grpc.unary_unary_rpc_method_handler(
-            servicer.RunQuery,
-            request_deserializer=RunQueryRequest.FromString,
-            response_serializer=RunQueryResponse.SerializeToString,
-        ),
-        'BeginTransaction': grpc.unary_unary_rpc_method_handler(
-            servicer.BeginTransaction,
-            request_deserializer=BeginTransactionRequest.FromString,
-            response_serializer=BeginTransactionResponse.SerializeToString,
-        ),
-        'Commit': grpc.unary_unary_rpc_method_handler(
-            servicer.Commit,
-            request_deserializer=CommitRequest.FromString,
-            response_serializer=CommitResponse.SerializeToString,
-        ),
-        'Rollback': grpc.unary_unary_rpc_method_handler(
-            servicer.Rollback,
-            request_deserializer=RollbackRequest.FromString,
-            response_serializer=RollbackResponse.SerializeToString,
-        ),
-        'AllocateIds': grpc.unary_unary_rpc_method_handler(
-            servicer.AllocateIds,
-            request_deserializer=AllocateIdsRequest.FromString,
-            response_serializer=AllocateIdsResponse.SerializeToString,
-        ),
-        'ReserveIds': grpc.unary_unary_rpc_method_handler(
-            servicer.ReserveIds,
-            request_deserializer=ReserveIdsRequest.FromString,
-            response_serializer=ReserveIdsResponse.SerializeToString,
-        ),
-    }
-    generic_handler = grpc.method_handlers_generic_handler(
-        'google.datastore.v1.Datastore', rpc_method_handlers)
-    server.add_generic_rpc_handlers((generic_handler,))
-
-
-  class BetaDatastoreServicer(object):
-    """The Beta API is deprecated for 0.15.0 and later.
-
-    It is recommended to use the GA API (classes and functions in this
-    file not marked beta) for all further purposes. This class was generated
-    only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0."""
-    """Each RPC normalizes the partition IDs of the keys in its input entities,
-    and always returns entities with keys with normalized partition IDs.
-    This applies to all keys and entities, including those in values, except keys
-    with both an empty path and an empty or unset partition ID. Normalization of
-    input keys sets the project ID (if not already set) to the project ID from
-    the request.
-
-    """
-    def Lookup(self, request, context):
-      """Looks up entities by key.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def RunQuery(self, request, context):
-      """Queries for entities.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def BeginTransaction(self, request, context):
-      """Begins a new transaction.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def Commit(self, request, context):
-      """Commits a transaction, optionally creating, deleting or modifying some
-      entities.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def Rollback(self, request, context):
-      """Rolls back a transaction.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def AllocateIds(self, request, context):
-      """Allocates IDs for the given keys, which is useful for referencing an entity
-      before it is inserted.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def ReserveIds(self, request, context):
-      """Prevents the supplied keys' IDs from being auto-allocated by Cloud
-      Datastore.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-
-
-  class BetaDatastoreStub(object):
-    """The Beta API is deprecated for 0.15.0 and later.
-
-    It is recommended to use the GA API (classes and functions in this
-    file not marked beta) for all further purposes. This class was generated
-    only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0."""
-    """Each RPC normalizes the partition IDs of the keys in its input entities,
-    and always returns entities with keys with normalized partition IDs.
-    This applies to all keys and entities, including those in values, except keys
-    with both an empty path and an empty or unset partition ID. Normalization of
-    input keys sets the project ID (if not already set) to the project ID from
-    the request.
-
-    """
-    def Lookup(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Looks up entities by key.
-      """
-      raise NotImplementedError()
-    Lookup.future = None
-    def RunQuery(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Queries for entities.
-      """
-      raise NotImplementedError()
-    RunQuery.future = None
-    def BeginTransaction(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Begins a new transaction.
-      """
-      raise NotImplementedError()
-    BeginTransaction.future = None
-    def Commit(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Commits a transaction, optionally creating, deleting or modifying some
-      entities.
-      """
-      raise NotImplementedError()
-    Commit.future = None
-    def Rollback(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Rolls back a transaction.
-      """
-      raise NotImplementedError()
-    Rollback.future = None
-    def AllocateIds(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Allocates IDs for the given keys, which is useful for referencing an entity
-      before it is inserted.
-      """
-      raise NotImplementedError()
-    AllocateIds.future = None
-    def ReserveIds(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Prevents the supplied keys' IDs from being auto-allocated by Cloud
-      Datastore.
-      """
-      raise NotImplementedError()
-    ReserveIds.future = None
-
-
-  def beta_create_Datastore_server(servicer, pool=None, pool_size=None, default_timeout=None, maximum_timeout=None):
-    """The Beta API is deprecated for 0.15.0 and later.
-
-    It is recommended to use the GA API (classes and functions in this
-    file not marked beta) for all further purposes. This function was
-    generated only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0"""
-    request_deserializers = {
-      ('google.datastore.v1.Datastore', 'AllocateIds'): AllocateIdsRequest.FromString,
-      ('google.datastore.v1.Datastore', 'BeginTransaction'): BeginTransactionRequest.FromString,
-      ('google.datastore.v1.Datastore', 'Commit'): CommitRequest.FromString,
-      ('google.datastore.v1.Datastore', 'Lookup'): LookupRequest.FromString,
-      ('google.datastore.v1.Datastore', 'ReserveIds'): ReserveIdsRequest.FromString,
-      ('google.datastore.v1.Datastore', 'Rollback'): RollbackRequest.FromString,
-      ('google.datastore.v1.Datastore', 'RunQuery'): RunQueryRequest.FromString,
-    }
-    response_serializers = {
-      ('google.datastore.v1.Datastore', 'AllocateIds'): AllocateIdsResponse.SerializeToString,
-      ('google.datastore.v1.Datastore', 'BeginTransaction'): BeginTransactionResponse.SerializeToString,
-      ('google.datastore.v1.Datastore', 'Commit'): CommitResponse.SerializeToString,
-      ('google.datastore.v1.Datastore', 'Lookup'): LookupResponse.SerializeToString,
-      ('google.datastore.v1.Datastore', 'ReserveIds'): ReserveIdsResponse.SerializeToString,
-      ('google.datastore.v1.Datastore', 'Rollback'): RollbackResponse.SerializeToString,
-      ('google.datastore.v1.Datastore', 'RunQuery'): RunQueryResponse.SerializeToString,
-    }
-    method_implementations = {
-      ('google.datastore.v1.Datastore', 'AllocateIds'): face_utilities.unary_unary_inline(servicer.AllocateIds),
-      ('google.datastore.v1.Datastore', 'BeginTransaction'): face_utilities.unary_unary_inline(servicer.BeginTransaction),
-      ('google.datastore.v1.Datastore', 'Commit'): face_utilities.unary_unary_inline(servicer.Commit),
-      ('google.datastore.v1.Datastore', 'Lookup'): face_utilities.unary_unary_inline(servicer.Lookup),
-      ('google.datastore.v1.Datastore', 'ReserveIds'): face_utilities.unary_unary_inline(servicer.ReserveIds),
-      ('google.datastore.v1.Datastore', 'Rollback'): face_utilities.unary_unary_inline(servicer.Rollback),
-      ('google.datastore.v1.Datastore', 'RunQuery'): face_utilities.unary_unary_inline(servicer.RunQuery),
-    }
-    server_options = beta_implementations.server_options(request_deserializers=request_deserializers, response_serializers=response_serializers, thread_pool=pool, thread_pool_size=pool_size, default_timeout=default_timeout, maximum_timeout=maximum_timeout)
-    return beta_implementations.server(method_implementations, options=server_options)
-
-
-  def beta_create_Datastore_stub(channel, host=None, metadata_transformer=None, pool=None, pool_size=None):
-    """The Beta API is deprecated for 0.15.0 and later.
-
-    It is recommended to use the GA API (classes and functions in this
-    file not marked beta) for all further purposes. This function was
-    generated only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0"""
-    request_serializers = {
-      ('google.datastore.v1.Datastore', 'AllocateIds'): AllocateIdsRequest.SerializeToString,
-      ('google.datastore.v1.Datastore', 'BeginTransaction'): BeginTransactionRequest.SerializeToString,
-      ('google.datastore.v1.Datastore', 'Commit'): CommitRequest.SerializeToString,
-      ('google.datastore.v1.Datastore', 'Lookup'): LookupRequest.SerializeToString,
-      ('google.datastore.v1.Datastore', 'ReserveIds'): ReserveIdsRequest.SerializeToString,
-      ('google.datastore.v1.Datastore', 'Rollback'): RollbackRequest.SerializeToString,
-      ('google.datastore.v1.Datastore', 'RunQuery'): RunQueryRequest.SerializeToString,
-    }
-    response_deserializers = {
-      ('google.datastore.v1.Datastore', 'AllocateIds'): AllocateIdsResponse.FromString,
-      ('google.datastore.v1.Datastore', 'BeginTransaction'): BeginTransactionResponse.FromString,
-      ('google.datastore.v1.Datastore', 'Commit'): CommitResponse.FromString,
-      ('google.datastore.v1.Datastore', 'Lookup'): LookupResponse.FromString,
-      ('google.datastore.v1.Datastore', 'ReserveIds'): ReserveIdsResponse.FromString,
-      ('google.datastore.v1.Datastore', 'Rollback'): RollbackResponse.FromString,
-      ('google.datastore.v1.Datastore', 'RunQuery'): RunQueryResponse.FromString,
-    }
-    cardinalities = {
-      'AllocateIds': cardinality.Cardinality.UNARY_UNARY,
-      'BeginTransaction': cardinality.Cardinality.UNARY_UNARY,
-      'Commit': cardinality.Cardinality.UNARY_UNARY,
-      'Lookup': cardinality.Cardinality.UNARY_UNARY,
-      'ReserveIds': cardinality.Cardinality.UNARY_UNARY,
-      'Rollback': cardinality.Cardinality.UNARY_UNARY,
-      'RunQuery': cardinality.Cardinality.UNARY_UNARY,
-    }
-    stub_options = beta_implementations.stub_options(host=host, metadata_transformer=metadata_transformer, request_serializers=request_serializers, response_deserializers=response_deserializers, thread_pool=pool, thread_pool_size=pool_size)
-    return beta_implementations.dynamic_stub(channel, 'google.datastore.v1.Datastore', cardinalities, options=stub_options)
-except ImportError:
-  pass
 # @@protoc_insertion_point(module_scope)
