@@ -22,7 +22,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='google/cloud/privacy/dlp_v2/proto/storage.proto',
   package='google.privacy.dlp.v2',
   syntax='proto3',
-  serialized_pb=_b('\n/google/cloud/privacy/dlp_v2/proto/storage.proto\x12\x15google.privacy.dlp.v2\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\x18\n\x08InfoType\x12\x0c\n\x04name\x18\x01 \x01(\t\"K\n\nStoredType\x12\x0c\n\x04name\x18\x01 \x01(\t\x12/\n\x0b\x63reate_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\"\x97\n\n\x0e\x43ustomInfoType\x12\x32\n\tinfo_type\x18\x01 \x01(\x0b\x32\x1f.google.privacy.dlp.v2.InfoType\x12\x35\n\nlikelihood\x18\x06 \x01(\x0e\x32!.google.privacy.dlp.v2.Likelihood\x12\x46\n\ndictionary\x18\x02 \x01(\x0b\x32\x30.google.privacy.dlp.v2.CustomInfoType.DictionaryH\x00\x12<\n\x05regex\x18\x03 \x01(\x0b\x32+.google.privacy.dlp.v2.CustomInfoType.RegexH\x00\x12M\n\x0esurrogate_type\x18\x04 \x01(\x0b\x32\x33.google.privacy.dlp.v2.CustomInfoType.SurrogateTypeH\x00\x12\x38\n\x0bstored_type\x18\x05 \x01(\x0b\x32!.google.privacy.dlp.v2.StoredTypeH\x00\x12L\n\x0f\x64\x65tection_rules\x18\x07 \x03(\x0b\x32\x33.google.privacy.dlp.v2.CustomInfoType.DetectionRule\x1a\xc8\x01\n\nDictionary\x12N\n\tword_list\x18\x01 \x01(\x0b\x32\x39.google.privacy.dlp.v2.CustomInfoType.Dictionary.WordListH\x00\x12\x45\n\x12\x63loud_storage_path\x18\x03 \x01(\x0b\x32\'.google.privacy.dlp.v2.CloudStoragePathH\x00\x1a\x19\n\x08WordList\x12\r\n\x05words\x18\x01 \x03(\tB\x08\n\x06source\x1a\x18\n\x05Regex\x12\x0f\n\x07pattern\x18\x01 \x01(\t\x1a\x0f\n\rSurrogateType\x1a\xbe\x04\n\rDetectionRule\x12W\n\x0chotword_rule\x18\x01 \x01(\x0b\x32?.google.privacy.dlp.v2.CustomInfoType.DetectionRule.HotwordRuleH\x00\x1a\x38\n\tProximity\x12\x15\n\rwindow_before\x18\x01 \x01(\x05\x12\x14\n\x0cwindow_after\x18\x02 \x01(\x05\x1a\x82\x01\n\x14LikelihoodAdjustment\x12=\n\x10\x66ixed_likelihood\x18\x01 \x01(\x0e\x32!.google.privacy.dlp.v2.LikelihoodH\x00\x12\x1d\n\x13relative_likelihood\x18\x02 \x01(\x05H\x00\x42\x0c\n\nadjustment\x1a\x8c\x02\n\x0bHotwordRule\x12\x42\n\rhotword_regex\x18\x01 \x01(\x0b\x32+.google.privacy.dlp.v2.CustomInfoType.Regex\x12P\n\tproximity\x18\x02 \x01(\x0b\x32=.google.privacy.dlp.v2.CustomInfoType.DetectionRule.Proximity\x12g\n\x15likelihood_adjustment\x18\x03 \x01(\x0b\x32H.google.privacy.dlp.v2.CustomInfoType.DetectionRule.LikelihoodAdjustmentB\x06\n\x04typeB\x06\n\x04type\"\x17\n\x07\x46ieldId\x12\x0c\n\x04name\x18\x01 \x01(\t\"7\n\x0bPartitionId\x12\x12\n\nproject_id\x18\x02 \x01(\t\x12\x14\n\x0cnamespace_id\x18\x04 \x01(\t\"\x1e\n\x0eKindExpression\x12\x0c\n\x04name\x18\x01 \x01(\t\"\x81\x01\n\x10\x44\x61tastoreOptions\x12\x38\n\x0cpartition_id\x18\x01 \x01(\x0b\x32\".google.privacy.dlp.v2.PartitionId\x12\x33\n\x04kind\x18\x02 \x01(\x0b\x32%.google.privacy.dlp.v2.KindExpression\"\xa3\x03\n\x13\x43loudStorageOptions\x12\x44\n\x08\x66ile_set\x18\x01 \x01(\x0b\x32\x32.google.privacy.dlp.v2.CloudStorageOptions.FileSet\x12\x1c\n\x14\x62ytes_limit_per_file\x18\x04 \x01(\x03\x12$\n\x1c\x62ytes_limit_per_file_percent\x18\x08 \x01(\x05\x12\x33\n\nfile_types\x18\x05 \x03(\x0e\x32\x1f.google.privacy.dlp.v2.FileType\x12N\n\rsample_method\x18\x06 \x01(\x0e\x32\x37.google.privacy.dlp.v2.CloudStorageOptions.SampleMethod\x12\x1b\n\x13\x66iles_limit_percent\x18\x07 \x01(\x05\x1a\x16\n\x07\x46ileSet\x12\x0b\n\x03url\x18\x01 \x01(\t\"H\n\x0cSampleMethod\x12\x1d\n\x19SAMPLE_METHOD_UNSPECIFIED\x10\x00\x12\x07\n\x03TOP\x10\x01\x12\x10\n\x0cRANDOM_START\x10\x02\"\"\n\x13\x43loudStorageFileSet\x12\x0b\n\x03url\x18\x01 \x01(\t\" \n\x10\x43loudStoragePath\x12\x0c\n\x04path\x18\x01 \x01(\t\"\xd2\x02\n\x0f\x42igQueryOptions\x12=\n\x0ftable_reference\x18\x01 \x01(\x0b\x32$.google.privacy.dlp.v2.BigQueryTable\x12:\n\x12identifying_fields\x18\x02 \x03(\x0b\x32\x1e.google.privacy.dlp.v2.FieldId\x12\x12\n\nrows_limit\x18\x03 \x01(\x03\x12\x1a\n\x12rows_limit_percent\x18\x06 \x01(\x05\x12J\n\rsample_method\x18\x04 \x01(\x0e\x32\x33.google.privacy.dlp.v2.BigQueryOptions.SampleMethod\"H\n\x0cSampleMethod\x12\x1d\n\x19SAMPLE_METHOD_UNSPECIFIED\x10\x00\x12\x07\n\x03TOP\x10\x01\x12\x10\n\x0cRANDOM_START\x10\x02\"\x9a\x04\n\rStorageConfig\x12\x44\n\x11\x64\x61tastore_options\x18\x02 \x01(\x0b\x32\'.google.privacy.dlp.v2.DatastoreOptionsH\x00\x12K\n\x15\x63loud_storage_options\x18\x03 \x01(\x0b\x32*.google.privacy.dlp.v2.CloudStorageOptionsH\x00\x12\x43\n\x11\x62ig_query_options\x18\x04 \x01(\x0b\x32&.google.privacy.dlp.v2.BigQueryOptionsH\x00\x12L\n\x0ftimespan_config\x18\x06 \x01(\x0b\x32\x33.google.privacy.dlp.v2.StorageConfig.TimespanConfig\x1a\xda\x01\n\x0eTimespanConfig\x12.\n\nstart_time\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12,\n\x08\x65nd_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x37\n\x0ftimestamp_field\x18\x03 \x01(\x0b\x32\x1e.google.privacy.dlp.v2.FieldId\x12\x31\n)enable_auto_population_of_timespan_config\x18\x04 \x01(\x08\x42\x06\n\x04type\"`\n\x0b\x42igQueryKey\x12=\n\x0ftable_reference\x18\x01 \x01(\x0b\x32$.google.privacy.dlp.v2.BigQueryTable\x12\x12\n\nrow_number\x18\x02 \x01(\x03\">\n\x0c\x44\x61tastoreKey\x12.\n\nentity_key\x18\x01 \x01(\x0b\x32\x1a.google.privacy.dlp.v2.Key\"\xbb\x01\n\x03Key\x12\x38\n\x0cpartition_id\x18\x01 \x01(\x0b\x32\".google.privacy.dlp.v2.PartitionId\x12\x34\n\x04path\x18\x02 \x03(\x0b\x32&.google.privacy.dlp.v2.Key.PathElement\x1a\x44\n\x0bPathElement\x12\x0c\n\x04kind\x18\x01 \x01(\t\x12\x0c\n\x02id\x18\x02 \x01(\x03H\x00\x12\x0e\n\x04name\x18\x03 \x01(\tH\x00\x42\t\n\x07id_type\"\x8e\x01\n\tRecordKey\x12<\n\rdatastore_key\x18\x02 \x01(\x0b\x32#.google.privacy.dlp.v2.DatastoreKeyH\x00\x12;\n\rbig_query_key\x18\x03 \x01(\x0b\x32\".google.privacy.dlp.v2.BigQueryKeyH\x00\x42\x06\n\x04type\"I\n\rBigQueryTable\x12\x12\n\nproject_id\x18\x01 \x01(\t\x12\x12\n\ndataset_id\x18\x02 \x01(\t\x12\x10\n\x08table_id\x18\x03 \x01(\t\"s\n\rBigQueryField\x12\x33\n\x05table\x18\x01 \x01(\x0b\x32$.google.privacy.dlp.v2.BigQueryTable\x12-\n\x05\x66ield\x18\x02 \x01(\x0b\x32\x1e.google.privacy.dlp.v2.FieldId\"9\n\x08\x45ntityId\x12-\n\x05\x66ield\x18\x01 \x01(\x0b\x32\x1e.google.privacy.dlp.v2.FieldId*t\n\nLikelihood\x12\x1a\n\x16LIKELIHOOD_UNSPECIFIED\x10\x00\x12\x11\n\rVERY_UNLIKELY\x10\x01\x12\x0c\n\x08UNLIKELY\x10\x02\x12\x0c\n\x08POSSIBLE\x10\x03\x12\n\n\x06LIKELY\x10\x04\x12\x0f\n\x0bVERY_LIKELY\x10\x05*E\n\x08\x46ileType\x12\x19\n\x15\x46ILE_TYPE_UNSPECIFIED\x10\x00\x12\x0f\n\x0b\x42INARY_FILE\x10\x01\x12\r\n\tTEXT_FILE\x10\x02\x42\x8f\x01\n\x19\x63om.google.privacy.dlp.v2B\nDlpStorageP\x01Z8google.golang.org/genproto/googleapis/privacy/dlp/v2;dlp\xaa\x02\x13Google.Cloud.Dlp.V2\xca\x02\x13Google\\Cloud\\Dlp\\V2b\x06proto3')
+  serialized_pb=_b('\n/google/cloud/privacy/dlp_v2/proto/storage.proto\x12\x15google.privacy.dlp.v2\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\x18\n\x08InfoType\x12\x0c\n\x04name\x18\x01 \x01(\t\"K\n\nStoredType\x12\x0c\n\x04name\x18\x01 \x01(\t\x12/\n\x0b\x63reate_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\"\xb1\x0b\n\x0e\x43ustomInfoType\x12\x32\n\tinfo_type\x18\x01 \x01(\x0b\x32\x1f.google.privacy.dlp.v2.InfoType\x12\x35\n\nlikelihood\x18\x06 \x01(\x0e\x32!.google.privacy.dlp.v2.Likelihood\x12\x46\n\ndictionary\x18\x02 \x01(\x0b\x32\x30.google.privacy.dlp.v2.CustomInfoType.DictionaryH\x00\x12<\n\x05regex\x18\x03 \x01(\x0b\x32+.google.privacy.dlp.v2.CustomInfoType.RegexH\x00\x12M\n\x0esurrogate_type\x18\x04 \x01(\x0b\x32\x33.google.privacy.dlp.v2.CustomInfoType.SurrogateTypeH\x00\x12\x38\n\x0bstored_type\x18\x05 \x01(\x0b\x32!.google.privacy.dlp.v2.StoredTypeH\x00\x12L\n\x0f\x64\x65tection_rules\x18\x07 \x03(\x0b\x32\x33.google.privacy.dlp.v2.CustomInfoType.DetectionRule\x12K\n\x0e\x65xclusion_type\x18\x08 \x01(\x0e\x32\x33.google.privacy.dlp.v2.CustomInfoType.ExclusionType\x1a\xc8\x01\n\nDictionary\x12N\n\tword_list\x18\x01 \x01(\x0b\x32\x39.google.privacy.dlp.v2.CustomInfoType.Dictionary.WordListH\x00\x12\x45\n\x12\x63loud_storage_path\x18\x03 \x01(\x0b\x32\'.google.privacy.dlp.v2.CloudStoragePathH\x00\x1a\x19\n\x08WordList\x12\r\n\x05words\x18\x01 \x03(\tB\x08\n\x06source\x1a\x18\n\x05Regex\x12\x0f\n\x07pattern\x18\x01 \x01(\t\x1a\x0f\n\rSurrogateType\x1a\xbe\x04\n\rDetectionRule\x12W\n\x0chotword_rule\x18\x01 \x01(\x0b\x32?.google.privacy.dlp.v2.CustomInfoType.DetectionRule.HotwordRuleH\x00\x1a\x38\n\tProximity\x12\x15\n\rwindow_before\x18\x01 \x01(\x05\x12\x14\n\x0cwindow_after\x18\x02 \x01(\x05\x1a\x82\x01\n\x14LikelihoodAdjustment\x12=\n\x10\x66ixed_likelihood\x18\x01 \x01(\x0e\x32!.google.privacy.dlp.v2.LikelihoodH\x00\x12\x1d\n\x13relative_likelihood\x18\x02 \x01(\x05H\x00\x42\x0c\n\nadjustment\x1a\x8c\x02\n\x0bHotwordRule\x12\x42\n\rhotword_regex\x18\x01 \x01(\x0b\x32+.google.privacy.dlp.v2.CustomInfoType.Regex\x12P\n\tproximity\x18\x02 \x01(\x0b\x32=.google.privacy.dlp.v2.CustomInfoType.DetectionRule.Proximity\x12g\n\x15likelihood_adjustment\x18\x03 \x01(\x0b\x32H.google.privacy.dlp.v2.CustomInfoType.DetectionRule.LikelihoodAdjustmentB\x06\n\x04type\"K\n\rExclusionType\x12\x1e\n\x1a\x45XCLUSION_TYPE_UNSPECIFIED\x10\x00\x12\x1a\n\x16\x45XCLUSION_TYPE_EXCLUDE\x10\x01\x42\x06\n\x04type\"\x17\n\x07\x46ieldId\x12\x0c\n\x04name\x18\x01 \x01(\t\"7\n\x0bPartitionId\x12\x12\n\nproject_id\x18\x02 \x01(\t\x12\x14\n\x0cnamespace_id\x18\x04 \x01(\t\"\x1e\n\x0eKindExpression\x12\x0c\n\x04name\x18\x01 \x01(\t\"\x81\x01\n\x10\x44\x61tastoreOptions\x12\x38\n\x0cpartition_id\x18\x01 \x01(\x0b\x32\".google.privacy.dlp.v2.PartitionId\x12\x33\n\x04kind\x18\x02 \x01(\x0b\x32%.google.privacy.dlp.v2.KindExpression\"\xa3\x03\n\x13\x43loudStorageOptions\x12\x44\n\x08\x66ile_set\x18\x01 \x01(\x0b\x32\x32.google.privacy.dlp.v2.CloudStorageOptions.FileSet\x12\x1c\n\x14\x62ytes_limit_per_file\x18\x04 \x01(\x03\x12$\n\x1c\x62ytes_limit_per_file_percent\x18\x08 \x01(\x05\x12\x33\n\nfile_types\x18\x05 \x03(\x0e\x32\x1f.google.privacy.dlp.v2.FileType\x12N\n\rsample_method\x18\x06 \x01(\x0e\x32\x37.google.privacy.dlp.v2.CloudStorageOptions.SampleMethod\x12\x1b\n\x13\x66iles_limit_percent\x18\x07 \x01(\x05\x1a\x16\n\x07\x46ileSet\x12\x0b\n\x03url\x18\x01 \x01(\t\"H\n\x0cSampleMethod\x12\x1d\n\x19SAMPLE_METHOD_UNSPECIFIED\x10\x00\x12\x07\n\x03TOP\x10\x01\x12\x10\n\x0cRANDOM_START\x10\x02\"\"\n\x13\x43loudStorageFileSet\x12\x0b\n\x03url\x18\x01 \x01(\t\" \n\x10\x43loudStoragePath\x12\x0c\n\x04path\x18\x01 \x01(\t\"\xd2\x02\n\x0f\x42igQueryOptions\x12=\n\x0ftable_reference\x18\x01 \x01(\x0b\x32$.google.privacy.dlp.v2.BigQueryTable\x12:\n\x12identifying_fields\x18\x02 \x03(\x0b\x32\x1e.google.privacy.dlp.v2.FieldId\x12\x12\n\nrows_limit\x18\x03 \x01(\x03\x12\x1a\n\x12rows_limit_percent\x18\x06 \x01(\x05\x12J\n\rsample_method\x18\x04 \x01(\x0e\x32\x33.google.privacy.dlp.v2.BigQueryOptions.SampleMethod\"H\n\x0cSampleMethod\x12\x1d\n\x19SAMPLE_METHOD_UNSPECIFIED\x10\x00\x12\x07\n\x03TOP\x10\x01\x12\x10\n\x0cRANDOM_START\x10\x02\"\x9a\x04\n\rStorageConfig\x12\x44\n\x11\x64\x61tastore_options\x18\x02 \x01(\x0b\x32\'.google.privacy.dlp.v2.DatastoreOptionsH\x00\x12K\n\x15\x63loud_storage_options\x18\x03 \x01(\x0b\x32*.google.privacy.dlp.v2.CloudStorageOptionsH\x00\x12\x43\n\x11\x62ig_query_options\x18\x04 \x01(\x0b\x32&.google.privacy.dlp.v2.BigQueryOptionsH\x00\x12L\n\x0ftimespan_config\x18\x06 \x01(\x0b\x32\x33.google.privacy.dlp.v2.StorageConfig.TimespanConfig\x1a\xda\x01\n\x0eTimespanConfig\x12.\n\nstart_time\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12,\n\x08\x65nd_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x37\n\x0ftimestamp_field\x18\x03 \x01(\x0b\x32\x1e.google.privacy.dlp.v2.FieldId\x12\x31\n)enable_auto_population_of_timespan_config\x18\x04 \x01(\x08\x42\x06\n\x04type\"`\n\x0b\x42igQueryKey\x12=\n\x0ftable_reference\x18\x01 \x01(\x0b\x32$.google.privacy.dlp.v2.BigQueryTable\x12\x12\n\nrow_number\x18\x02 \x01(\x03\">\n\x0c\x44\x61tastoreKey\x12.\n\nentity_key\x18\x01 \x01(\x0b\x32\x1a.google.privacy.dlp.v2.Key\"\xbb\x01\n\x03Key\x12\x38\n\x0cpartition_id\x18\x01 \x01(\x0b\x32\".google.privacy.dlp.v2.PartitionId\x12\x34\n\x04path\x18\x02 \x03(\x0b\x32&.google.privacy.dlp.v2.Key.PathElement\x1a\x44\n\x0bPathElement\x12\x0c\n\x04kind\x18\x01 \x01(\t\x12\x0c\n\x02id\x18\x02 \x01(\x03H\x00\x12\x0e\n\x04name\x18\x03 \x01(\tH\x00\x42\t\n\x07id_type\"\x8e\x01\n\tRecordKey\x12<\n\rdatastore_key\x18\x02 \x01(\x0b\x32#.google.privacy.dlp.v2.DatastoreKeyH\x00\x12;\n\rbig_query_key\x18\x03 \x01(\x0b\x32\".google.privacy.dlp.v2.BigQueryKeyH\x00\x42\x06\n\x04type\"I\n\rBigQueryTable\x12\x12\n\nproject_id\x18\x01 \x01(\t\x12\x12\n\ndataset_id\x18\x02 \x01(\t\x12\x10\n\x08table_id\x18\x03 \x01(\t\"s\n\rBigQueryField\x12\x33\n\x05table\x18\x01 \x01(\x0b\x32$.google.privacy.dlp.v2.BigQueryTable\x12-\n\x05\x66ield\x18\x02 \x01(\x0b\x32\x1e.google.privacy.dlp.v2.FieldId\"9\n\x08\x45ntityId\x12-\n\x05\x66ield\x18\x01 \x01(\x0b\x32\x1e.google.privacy.dlp.v2.FieldId*t\n\nLikelihood\x12\x1a\n\x16LIKELIHOOD_UNSPECIFIED\x10\x00\x12\x11\n\rVERY_UNLIKELY\x10\x01\x12\x0c\n\x08UNLIKELY\x10\x02\x12\x0c\n\x08POSSIBLE\x10\x03\x12\n\n\x06LIKELY\x10\x04\x12\x0f\n\x0bVERY_LIKELY\x10\x05*E\n\x08\x46ileType\x12\x19\n\x15\x46ILE_TYPE_UNSPECIFIED\x10\x00\x12\x0f\n\x0b\x42INARY_FILE\x10\x01\x12\r\n\tTEXT_FILE\x10\x02\x42\x8f\x01\n\x19\x63om.google.privacy.dlp.v2B\nDlpStorageP\x01Z8google.golang.org/genproto/googleapis/privacy/dlp/v2;dlp\xaa\x02\x13Google.Cloud.Dlp.V2\xca\x02\x13Google\\Cloud\\Dlp\\V2b\x06proto3')
   ,
   dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR,google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,])
 
@@ -59,8 +59,8 @@ _LIKELIHOOD = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=3914,
-  serialized_end=4030,
+  serialized_start=4068,
+  serialized_end=4184,
 )
 _sym_db.RegisterEnumDescriptor(_LIKELIHOOD)
 
@@ -86,8 +86,8 @@ _FILETYPE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=4032,
-  serialized_end=4101,
+  serialized_start=4186,
+  serialized_end=4255,
 )
 _sym_db.RegisterEnumDescriptor(_FILETYPE)
 
@@ -102,6 +102,28 @@ FILE_TYPE_UNSPECIFIED = 0
 BINARY_FILE = 1
 TEXT_FILE = 2
 
+
+_CUSTOMINFOTYPE_EXCLUSIONTYPE = _descriptor.EnumDescriptor(
+  name='ExclusionType',
+  full_name='google.privacy.dlp.v2.CustomInfoType.ExclusionType',
+  filename=None,
+  file=DESCRIPTOR,
+  values=[
+    _descriptor.EnumValueDescriptor(
+      name='EXCLUSION_TYPE_UNSPECIFIED', index=0, number=0,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='EXCLUSION_TYPE_EXCLUDE', index=1, number=1,
+      options=None,
+      type=None),
+  ],
+  containing_type=None,
+  options=None,
+  serialized_start=1615,
+  serialized_end=1690,
+)
+_sym_db.RegisterEnumDescriptor(_CUSTOMINFOTYPE_EXCLUSIONTYPE)
 
 _CLOUDSTORAGEOPTIONS_SAMPLEMETHOD = _descriptor.EnumDescriptor(
   name='SampleMethod',
@@ -124,8 +146,8 @@ _CLOUDSTORAGEOPTIONS_SAMPLEMETHOD = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=2140,
-  serialized_end=2212,
+  serialized_start=2294,
+  serialized_end=2366,
 )
 _sym_db.RegisterEnumDescriptor(_CLOUDSTORAGEOPTIONS_SAMPLEMETHOD)
 
@@ -150,8 +172,8 @@ _BIGQUERYOPTIONS_SAMPLEMETHOD = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=2140,
-  serialized_end=2212,
+  serialized_start=2294,
+  serialized_end=2366,
 )
 _sym_db.RegisterEnumDescriptor(_BIGQUERYOPTIONS_SAMPLEMETHOD)
 
@@ -251,8 +273,8 @@ _CUSTOMINFOTYPE_DICTIONARY_WORDLIST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=881,
-  serialized_end=906,
+  serialized_start=958,
+  serialized_end=983,
 )
 
 _CUSTOMINFOTYPE_DICTIONARY = _descriptor.Descriptor(
@@ -291,8 +313,8 @@ _CUSTOMINFOTYPE_DICTIONARY = _descriptor.Descriptor(
       name='source', full_name='google.privacy.dlp.v2.CustomInfoType.Dictionary.source',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=716,
-  serialized_end=916,
+  serialized_start=793,
+  serialized_end=993,
 )
 
 _CUSTOMINFOTYPE_REGEX = _descriptor.Descriptor(
@@ -321,8 +343,8 @@ _CUSTOMINFOTYPE_REGEX = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=918,
-  serialized_end=942,
+  serialized_start=995,
+  serialized_end=1019,
 )
 
 _CUSTOMINFOTYPE_SURROGATETYPE = _descriptor.Descriptor(
@@ -344,8 +366,8 @@ _CUSTOMINFOTYPE_SURROGATETYPE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=944,
-  serialized_end=959,
+  serialized_start=1021,
+  serialized_end=1036,
 )
 
 _CUSTOMINFOTYPE_DETECTIONRULE_PROXIMITY = _descriptor.Descriptor(
@@ -381,8 +403,8 @@ _CUSTOMINFOTYPE_DETECTIONRULE_PROXIMITY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1068,
-  serialized_end=1124,
+  serialized_start=1145,
+  serialized_end=1201,
 )
 
 _CUSTOMINFOTYPE_DETECTIONRULE_LIKELIHOODADJUSTMENT = _descriptor.Descriptor(
@@ -421,8 +443,8 @@ _CUSTOMINFOTYPE_DETECTIONRULE_LIKELIHOODADJUSTMENT = _descriptor.Descriptor(
       name='adjustment', full_name='google.privacy.dlp.v2.CustomInfoType.DetectionRule.LikelihoodAdjustment.adjustment',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=1127,
-  serialized_end=1257,
+  serialized_start=1204,
+  serialized_end=1334,
 )
 
 _CUSTOMINFOTYPE_DETECTIONRULE_HOTWORDRULE = _descriptor.Descriptor(
@@ -465,8 +487,8 @@ _CUSTOMINFOTYPE_DETECTIONRULE_HOTWORDRULE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1260,
-  serialized_end=1528,
+  serialized_start=1337,
+  serialized_end=1605,
 )
 
 _CUSTOMINFOTYPE_DETECTIONRULE = _descriptor.Descriptor(
@@ -498,8 +520,8 @@ _CUSTOMINFOTYPE_DETECTIONRULE = _descriptor.Descriptor(
       name='type', full_name='google.privacy.dlp.v2.CustomInfoType.DetectionRule.type',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=962,
-  serialized_end=1536,
+  serialized_start=1039,
+  serialized_end=1613,
 )
 
 _CUSTOMINFOTYPE = _descriptor.Descriptor(
@@ -558,11 +580,19 @@ _CUSTOMINFOTYPE = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='exclusion_type', full_name='google.privacy.dlp.v2.CustomInfoType.exclusion_type', index=7,
+      number=8, type=14, cpp_type=8, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
   nested_types=[_CUSTOMINFOTYPE_DICTIONARY, _CUSTOMINFOTYPE_REGEX, _CUSTOMINFOTYPE_SURROGATETYPE, _CUSTOMINFOTYPE_DETECTIONRULE, ],
   enum_types=[
+    _CUSTOMINFOTYPE_EXCLUSIONTYPE,
   ],
   options=None,
   is_extendable=False,
@@ -574,7 +604,7 @@ _CUSTOMINFOTYPE = _descriptor.Descriptor(
       index=0, containing_type=None, fields=[]),
   ],
   serialized_start=241,
-  serialized_end=1544,
+  serialized_end=1698,
 )
 
 
@@ -604,8 +634,8 @@ _FIELDID = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1546,
-  serialized_end=1569,
+  serialized_start=1700,
+  serialized_end=1723,
 )
 
 
@@ -642,8 +672,8 @@ _PARTITIONID = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1571,
-  serialized_end=1626,
+  serialized_start=1725,
+  serialized_end=1780,
 )
 
 
@@ -673,8 +703,8 @@ _KINDEXPRESSION = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1628,
-  serialized_end=1658,
+  serialized_start=1782,
+  serialized_end=1812,
 )
 
 
@@ -711,8 +741,8 @@ _DATASTOREOPTIONS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1661,
-  serialized_end=1790,
+  serialized_start=1815,
+  serialized_end=1944,
 )
 
 
@@ -742,8 +772,8 @@ _CLOUDSTORAGEOPTIONS_FILESET = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2116,
-  serialized_end=2138,
+  serialized_start=2270,
+  serialized_end=2292,
 )
 
 _CLOUDSTORAGEOPTIONS = _descriptor.Descriptor(
@@ -808,8 +838,8 @@ _CLOUDSTORAGEOPTIONS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1793,
-  serialized_end=2212,
+  serialized_start=1947,
+  serialized_end=2366,
 )
 
 
@@ -839,8 +869,8 @@ _CLOUDSTORAGEFILESET = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2214,
-  serialized_end=2248,
+  serialized_start=2368,
+  serialized_end=2402,
 )
 
 
@@ -870,8 +900,8 @@ _CLOUDSTORAGEPATH = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2250,
-  serialized_end=2282,
+  serialized_start=2404,
+  serialized_end=2436,
 )
 
 
@@ -930,8 +960,8 @@ _BIGQUERYOPTIONS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2285,
-  serialized_end=2623,
+  serialized_start=2439,
+  serialized_end=2777,
 )
 
 
@@ -982,8 +1012,8 @@ _STORAGECONFIG_TIMESPANCONFIG = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2938,
-  serialized_end=3156,
+  serialized_start=3092,
+  serialized_end=3310,
 )
 
 _STORAGECONFIG = _descriptor.Descriptor(
@@ -1036,8 +1066,8 @@ _STORAGECONFIG = _descriptor.Descriptor(
       name='type', full_name='google.privacy.dlp.v2.StorageConfig.type',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=2626,
-  serialized_end=3164,
+  serialized_start=2780,
+  serialized_end=3318,
 )
 
 
@@ -1074,8 +1104,8 @@ _BIGQUERYKEY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3166,
-  serialized_end=3262,
+  serialized_start=3320,
+  serialized_end=3416,
 )
 
 
@@ -1105,8 +1135,8 @@ _DATASTOREKEY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3264,
-  serialized_end=3326,
+  serialized_start=3418,
+  serialized_end=3480,
 )
 
 
@@ -1153,8 +1183,8 @@ _KEY_PATHELEMENT = _descriptor.Descriptor(
       name='id_type', full_name='google.privacy.dlp.v2.Key.PathElement.id_type',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=3448,
-  serialized_end=3516,
+  serialized_start=3602,
+  serialized_end=3670,
 )
 
 _KEY = _descriptor.Descriptor(
@@ -1190,8 +1220,8 @@ _KEY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3329,
-  serialized_end=3516,
+  serialized_start=3483,
+  serialized_end=3670,
 )
 
 
@@ -1231,8 +1261,8 @@ _RECORDKEY = _descriptor.Descriptor(
       name='type', full_name='google.privacy.dlp.v2.RecordKey.type',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=3519,
-  serialized_end=3661,
+  serialized_start=3673,
+  serialized_end=3815,
 )
 
 
@@ -1276,8 +1306,8 @@ _BIGQUERYTABLE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3663,
-  serialized_end=3736,
+  serialized_start=3817,
+  serialized_end=3890,
 )
 
 
@@ -1314,8 +1344,8 @@ _BIGQUERYFIELD = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3738,
-  serialized_end=3853,
+  serialized_start=3892,
+  serialized_end=4007,
 )
 
 
@@ -1345,8 +1375,8 @@ _ENTITYID = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3855,
-  serialized_end=3912,
+  serialized_start=4009,
+  serialized_end=4066,
 )
 
 _STOREDTYPE.fields_by_name['create_time'].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
@@ -1387,6 +1417,8 @@ _CUSTOMINFOTYPE.fields_by_name['regex'].message_type = _CUSTOMINFOTYPE_REGEX
 _CUSTOMINFOTYPE.fields_by_name['surrogate_type'].message_type = _CUSTOMINFOTYPE_SURROGATETYPE
 _CUSTOMINFOTYPE.fields_by_name['stored_type'].message_type = _STOREDTYPE
 _CUSTOMINFOTYPE.fields_by_name['detection_rules'].message_type = _CUSTOMINFOTYPE_DETECTIONRULE
+_CUSTOMINFOTYPE.fields_by_name['exclusion_type'].enum_type = _CUSTOMINFOTYPE_EXCLUSIONTYPE
+_CUSTOMINFOTYPE_EXCLUSIONTYPE.containing_type = _CUSTOMINFOTYPE
 _CUSTOMINFOTYPE.oneofs_by_name['type'].fields.append(
   _CUSTOMINFOTYPE.fields_by_name['dictionary'])
 _CUSTOMINFOTYPE.fields_by_name['dictionary'].containing_oneof = _CUSTOMINFOTYPE.oneofs_by_name['type']
@@ -1579,7 +1611,9 @@ CustomInfoType = _reflection.GeneratedProtocolMessageType('CustomInfoType', (_me
     
     Attributes:
         pattern:
-            Pattern defining the regular expression.
+            Pattern defining the regular expression. Its syntax
+            (https://github.com/google/re2/wiki/Syntax) can be found under
+            the google/re2 repository on GitHub.
     """,
     # @@protoc_insertion_point(class_scope:google.privacy.dlp.v2.CustomInfoType.Regex)
     ))
@@ -1702,8 +1736,13 @@ CustomInfoType = _reflection.GeneratedProtocolMessageType('CustomInfoType', (_me
   
   Attributes:
       info_type:
-          All CustomInfoTypes must have a name that does not conflict
-          with built-in InfoTypes or other CustomInfoTypes.
+          CustomInfoType can either be a new infoType, or an extension
+          of built-in infoType, when the name matches one of existing
+          infoTypes and that infoType is specified in
+          ``InspectContent.info_types`` field. Specifying the latter
+          adds findings to the one detected by the system. If built-in
+          info type is not specified in ``InspectContent.info_types``
+          list then the name is treated as a custom info type.
       likelihood:
           Likelihood to return for this CustomInfoType. This base value
           can be altered by a detection rule if the finding meets the
@@ -1725,6 +1764,10 @@ CustomInfoType = _reflection.GeneratedProtocolMessageType('CustomInfoType', (_me
           CustomInfoType. Rules are applied in order that they are
           specified. Not supported for the ``surrogate_type``
           CustomInfoType.
+      exclusion_type:
+          If set to EXCLUSION\_TYPE\_EXCLUDE this infoType will not
+          cause a finding to be returned. It still can be used for rules
+          matching.
   """,
   # @@protoc_insertion_point(class_scope:google.privacy.dlp.v2.CustomInfoType)
   ))
@@ -1820,8 +1863,9 @@ CloudStorageOptions = _reflection.GeneratedProtocolMessageType('CloudStorageOpti
     
     Attributes:
         url:
-            The url, in the format ``gs://<bucket>/<path>``. Trailing
-            wildcard in the path is allowed.
+            The Cloud Storage url of the file(s) to scan, in the format
+            ``gs://<bucket>/<path>``. Trailing wildcard in the path is
+            allowed.
     """,
     # @@protoc_insertion_point(class_scope:google.privacy.dlp.v2.CloudStorageOptions.FileSet)
     ))
@@ -1829,11 +1873,13 @@ CloudStorageOptions = _reflection.GeneratedProtocolMessageType('CloudStorageOpti
   DESCRIPTOR = _CLOUDSTORAGEOPTIONS,
   __module__ = 'google.cloud.dlp_v2.proto.storage_pb2'
   ,
-  __doc__ = """Options defining a file or a set of files (path ending with \*) within a
-  Google Cloud Storage bucket.
+  __doc__ = """Options defining a file or a set of files within a Google Cloud Storage
+  bucket.
   
   
   Attributes:
+      file_set:
+          The set of one or more files to scan.
       bytes_limit_per_file:
           Max number of bytes to scan from a file. If a scanned file's
           size is bigger than this value then the rest of the bytes are
