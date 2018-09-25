@@ -26,7 +26,6 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   serialized_pb=_b('\n+google/cloud/oslogin_v1/proto/oslogin.proto\x12\x17google.cloud.oslogin.v1\x1a\x1cgoogle/api/annotations.proto\x1a(google/cloud/oslogin/common/common.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a google/protobuf/field_mask.proto\"\xa6\x02\n\x0cLoginProfile\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x41\n\x0eposix_accounts\x18\x02 \x03(\x0b\x32).google.cloud.oslogin.common.PosixAccount\x12Q\n\x0fssh_public_keys\x18\x03 \x03(\x0b\x32\x38.google.cloud.oslogin.v1.LoginProfile.SshPublicKeysEntry\x12\x11\n\tsuspended\x18\x04 \x01(\x08\x1a_\n\x12SshPublicKeysEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\x38\n\x05value\x18\x02 \x01(\x0b\x32).google.cloud.oslogin.common.SshPublicKey:\x02\x38\x01\")\n\x19\x44\x65letePosixAccountRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\")\n\x19\x44\x65leteSshPublicKeyRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"&\n\x16GetLoginProfileRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"&\n\x16GetSshPublicKeyRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"\x82\x01\n\x19ImportSshPublicKeyRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x41\n\x0essh_public_key\x18\x02 \x01(\x0b\x32).google.cloud.oslogin.common.SshPublicKey\x12\x12\n\nproject_id\x18\x03 \x01(\t\"Z\n\x1aImportSshPublicKeyResponse\x12<\n\rlogin_profile\x18\x01 \x01(\x0b\x32%.google.cloud.oslogin.v1.LoginProfile\"\x9d\x01\n\x19UpdateSshPublicKeyRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x41\n\x0essh_public_key\x18\x02 \x01(\x0b\x32).google.cloud.oslogin.common.SshPublicKey\x12/\n\x0bupdate_mask\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.FieldMask2\xcd\x07\n\x0eOsLoginService\x12\x87\x01\n\x12\x44\x65letePosixAccount\x12\x32.google.cloud.oslogin.v1.DeletePosixAccountRequest\x1a\x16.google.protobuf.Empty\"%\x82\xd3\xe4\x93\x02\x1f*\x1d/v1/{name=users/*/projects/*}\x12\x8c\x01\n\x12\x44\x65leteSshPublicKey\x12\x32.google.cloud.oslogin.v1.DeleteSshPublicKeyRequest\x1a\x16.google.protobuf.Empty\"*\x82\xd3\xe4\x93\x02$*\"/v1/{name=users/*/sshPublicKeys/*}\x12\x92\x01\n\x0fGetLoginProfile\x12/.google.cloud.oslogin.v1.GetLoginProfileRequest\x1a%.google.cloud.oslogin.v1.LoginProfile\"\'\x82\xd3\xe4\x93\x02!\x12\x1f/v1/{name=users/*}/loginProfile\x12\x99\x01\n\x0fGetSshPublicKey\x12/.google.cloud.oslogin.v1.GetSshPublicKeyRequest\x1a).google.cloud.oslogin.common.SshPublicKey\"*\x82\xd3\xe4\x93\x02$\x12\"/v1/{name=users/*/sshPublicKeys/*}\x12\xbe\x01\n\x12ImportSshPublicKey\x12\x32.google.cloud.oslogin.v1.ImportSshPublicKeyRequest\x1a\x33.google.cloud.oslogin.v1.ImportSshPublicKeyResponse\"?\x82\xd3\xe4\x93\x02\x39\"\'/v1/{parent=users/*}:importSshPublicKey:\x0essh_public_key\x12\xaf\x01\n\x12UpdateSshPublicKey\x12\x32.google.cloud.oslogin.v1.UpdateSshPublicKeyRequest\x1a).google.cloud.oslogin.common.SshPublicKey\":\x82\xd3\xe4\x93\x02\x34\x32\"/v1/{name=users/*/sshPublicKeys/*}:\x0essh_public_keyB\xa1\x01\n\x1b\x63om.google.cloud.oslogin.v1B\x0cOsLoginProtoP\x01Z>google.golang.org/genproto/googleapis/cloud/oslogin/v1;oslogin\xaa\x02\x17Google.Cloud.OsLogin.V1\xca\x02\x17Google\\Cloud\\OsLogin\\V1b\x06proto3')
   ,
   dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR,google_dot_cloud_dot_oslogin_dot_common_dot_common__pb2.DESCRIPTOR,google_dot_protobuf_dot_empty__pb2.DESCRIPTOR,google_dot_protobuf_dot_field__mask__pb2.DESCRIPTOR,])
-_sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 
 
@@ -44,14 +43,14 @@ _LOGINPROFILE_SSHPUBLICKEYSENTRY = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='value', full_name='google.cloud.oslogin.v1.LoginProfile.SshPublicKeysEntry.value', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -81,28 +80,28 @@ _LOGINPROFILE = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='posix_accounts', full_name='google.cloud.oslogin.v1.LoginProfile.posix_accounts', index=1,
       number=2, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='ssh_public_keys', full_name='google.cloud.oslogin.v1.LoginProfile.ssh_public_keys', index=2,
       number=3, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='suspended', full_name='google.cloud.oslogin.v1.LoginProfile.suspended', index=3,
       number=4, type=8, cpp_type=7, label=1,
       has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -133,7 +132,7 @@ _DELETEPOSIXACCOUNTREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -164,7 +163,7 @@ _DELETESSHPUBLICKEYREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -195,7 +194,7 @@ _GETLOGINPROFILEREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -226,7 +225,7 @@ _GETSSHPUBLICKEYREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -257,21 +256,21 @@ _IMPORTSSHPUBLICKEYREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='ssh_public_key', full_name='google.cloud.oslogin.v1.ImportSshPublicKeyRequest.ssh_public_key', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='project_id', full_name='google.cloud.oslogin.v1.ImportSshPublicKeyRequest.project_id', index=2,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -302,7 +301,7 @@ _IMPORTSSHPUBLICKEYRESPONSE = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -333,21 +332,21 @@ _UPDATESSHPUBLICKEYREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='ssh_public_key', full_name='google.cloud.oslogin.v1.UpdateSshPublicKeyRequest.ssh_public_key', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='update_mask', full_name='google.cloud.oslogin.v1.UpdateSshPublicKeyRequest.update_mask', index=2,
       number=3, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -380,6 +379,7 @@ DESCRIPTOR.message_types_by_name['GetSshPublicKeyRequest'] = _GETSSHPUBLICKEYREQ
 DESCRIPTOR.message_types_by_name['ImportSshPublicKeyRequest'] = _IMPORTSSHPUBLICKEYREQUEST
 DESCRIPTOR.message_types_by_name['ImportSshPublicKeyResponse'] = _IMPORTSSHPUBLICKEYRESPONSE
 DESCRIPTOR.message_types_by_name['UpdateSshPublicKeyRequest'] = _UPDATESSHPUBLICKEYREQUEST
+_sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 LoginProfile = _reflection.GeneratedProtocolMessageType('LoginProfile', (_message.Message,), dict(
 
@@ -394,8 +394,8 @@ LoginProfile = _reflection.GeneratedProtocolMessageType('LoginProfile', (_messag
   ,
   __doc__ = """The user profile information used for logging in to a virtual machine on
   Google Compute Engine.
-
-
+  
+  
   Attributes:
       name:
           The primary email address that uniquely identifies the user.
@@ -418,8 +418,8 @@ DeletePosixAccountRequest = _reflection.GeneratedProtocolMessageType('DeletePosi
   __module__ = 'google.cloud.oslogin_v1.proto.oslogin_pb2'
   ,
   __doc__ = """A request message for deleting a POSIX account entry.
-
-
+  
+  
   Attributes:
       name:
           A reference to the POSIX account to update. POSIX accounts are
@@ -436,8 +436,8 @@ DeleteSshPublicKeyRequest = _reflection.GeneratedProtocolMessageType('DeleteSshP
   __module__ = 'google.cloud.oslogin_v1.proto.oslogin_pb2'
   ,
   __doc__ = """A request message for deleting an SSH public key.
-
-
+  
+  
   Attributes:
       name:
           The fingerprint of the public key to update. Public keys are
@@ -455,8 +455,8 @@ GetLoginProfileRequest = _reflection.GeneratedProtocolMessageType('GetLoginProfi
   ,
   __doc__ = """A request message for retrieving the login profile information for a
   user.
-
-
+  
+  
   Attributes:
       name:
           The unique ID for the user in format ``users/{user}``.
@@ -470,8 +470,8 @@ GetSshPublicKeyRequest = _reflection.GeneratedProtocolMessageType('GetSshPublicK
   __module__ = 'google.cloud.oslogin_v1.proto.oslogin_pb2'
   ,
   __doc__ = """A request message for retrieving an SSH public key.
-
-
+  
+  
   Attributes:
       name:
           The fingerprint of the public key to retrieve. Public keys are
@@ -488,8 +488,8 @@ ImportSshPublicKeyRequest = _reflection.GeneratedProtocolMessageType('ImportSshP
   __module__ = 'google.cloud.oslogin_v1.proto.oslogin_pb2'
   ,
   __doc__ = """A request message for importing an SSH public key.
-
-
+  
+  
   Attributes:
       parent:
           The unique ID for the user in format ``users/{user}``.
@@ -507,8 +507,8 @@ ImportSshPublicKeyResponse = _reflection.GeneratedProtocolMessageType('ImportSsh
   __module__ = 'google.cloud.oslogin_v1.proto.oslogin_pb2'
   ,
   __doc__ = """A response message for importing an SSH public key.
-
-
+  
+  
   Attributes:
       login_profile:
           The login profile information for the user.
@@ -522,8 +522,8 @@ UpdateSshPublicKeyRequest = _reflection.GeneratedProtocolMessageType('UpdateSshP
   __module__ = 'google.cloud.oslogin_v1.proto.oslogin_pb2'
   ,
   __doc__ = """A request message for updating an SSH public key.
-
-
+  
+  
   Attributes:
       name:
           The fingerprint of the public key to update. Public keys are
@@ -545,307 +545,73 @@ DESCRIPTOR.has_options = True
 DESCRIPTOR._options = _descriptor._ParseOptions(descriptor_pb2.FileOptions(), _b('\n\033com.google.cloud.oslogin.v1B\014OsLoginProtoP\001Z>google.golang.org/genproto/googleapis/cloud/oslogin/v1;oslogin\252\002\027Google.Cloud.OsLogin.V1\312\002\027Google\\Cloud\\OsLogin\\V1'))
 _LOGINPROFILE_SSHPUBLICKEYSENTRY.has_options = True
 _LOGINPROFILE_SSHPUBLICKEYSENTRY._options = _descriptor._ParseOptions(descriptor_pb2.MessageOptions(), _b('8\001'))
-try:
-  # THESE ELEMENTS WILL BE DEPRECATED.
-  # Please use the generated *_pb2_grpc.py files instead.
-  import grpc
-  from grpc.beta import implementations as beta_implementations
-  from grpc.beta import interfaces as beta_interfaces
-  from grpc.framework.common import cardinality
-  from grpc.framework.interfaces.face import utilities as face_utilities
 
+_OSLOGINSERVICE = _descriptor.ServiceDescriptor(
+  name='OsLoginService',
+  full_name='google.cloud.oslogin.v1.OsLoginService',
+  file=DESCRIPTOR,
+  index=0,
+  options=None,
+  serialized_start=1056,
+  serialized_end=2029,
+  methods=[
+  _descriptor.MethodDescriptor(
+    name='DeletePosixAccount',
+    full_name='google.cloud.oslogin.v1.OsLoginService.DeletePosixAccount',
+    index=0,
+    containing_service=None,
+    input_type=_DELETEPOSIXACCOUNTREQUEST,
+    output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002\037*\035/v1/{name=users/*/projects/*}')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='DeleteSshPublicKey',
+    full_name='google.cloud.oslogin.v1.OsLoginService.DeleteSshPublicKey',
+    index=1,
+    containing_service=None,
+    input_type=_DELETESSHPUBLICKEYREQUEST,
+    output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002$*\"/v1/{name=users/*/sshPublicKeys/*}')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='GetLoginProfile',
+    full_name='google.cloud.oslogin.v1.OsLoginService.GetLoginProfile',
+    index=2,
+    containing_service=None,
+    input_type=_GETLOGINPROFILEREQUEST,
+    output_type=_LOGINPROFILE,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002!\022\037/v1/{name=users/*}/loginProfile')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='GetSshPublicKey',
+    full_name='google.cloud.oslogin.v1.OsLoginService.GetSshPublicKey',
+    index=3,
+    containing_service=None,
+    input_type=_GETSSHPUBLICKEYREQUEST,
+    output_type=google_dot_cloud_dot_oslogin_dot_common_dot_common__pb2._SSHPUBLICKEY,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002$\022\"/v1/{name=users/*/sshPublicKeys/*}')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='ImportSshPublicKey',
+    full_name='google.cloud.oslogin.v1.OsLoginService.ImportSshPublicKey',
+    index=4,
+    containing_service=None,
+    input_type=_IMPORTSSHPUBLICKEYREQUEST,
+    output_type=_IMPORTSSHPUBLICKEYRESPONSE,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\0029\"\'/v1/{parent=users/*}:importSshPublicKey:\016ssh_public_key')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='UpdateSshPublicKey',
+    full_name='google.cloud.oslogin.v1.OsLoginService.UpdateSshPublicKey',
+    index=5,
+    containing_service=None,
+    input_type=_UPDATESSHPUBLICKEYREQUEST,
+    output_type=google_dot_cloud_dot_oslogin_dot_common_dot_common__pb2._SSHPUBLICKEY,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\00242\"/v1/{name=users/*/sshPublicKeys/*}:\016ssh_public_key')),
+  ),
+])
+_sym_db.RegisterServiceDescriptor(_OSLOGINSERVICE)
 
-  class OsLoginServiceStub(object):
-    """Cloud OS Login API
+DESCRIPTOR.services_by_name['OsLoginService'] = _OSLOGINSERVICE
 
-    The Cloud OS Login API allows you to manage users and their associated SSH
-    public keys for logging into virtual machines on Google Cloud Platform.
-    """
-
-    def __init__(self, channel):
-      """Constructor.
-
-      Args:
-        channel: A grpc.Channel.
-      """
-      self.DeletePosixAccount = channel.unary_unary(
-          '/google.cloud.oslogin.v1.OsLoginService/DeletePosixAccount',
-          request_serializer=DeletePosixAccountRequest.SerializeToString,
-          response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
-          )
-      self.DeleteSshPublicKey = channel.unary_unary(
-          '/google.cloud.oslogin.v1.OsLoginService/DeleteSshPublicKey',
-          request_serializer=DeleteSshPublicKeyRequest.SerializeToString,
-          response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
-          )
-      self.GetLoginProfile = channel.unary_unary(
-          '/google.cloud.oslogin.v1.OsLoginService/GetLoginProfile',
-          request_serializer=GetLoginProfileRequest.SerializeToString,
-          response_deserializer=LoginProfile.FromString,
-          )
-      self.GetSshPublicKey = channel.unary_unary(
-          '/google.cloud.oslogin.v1.OsLoginService/GetSshPublicKey',
-          request_serializer=GetSshPublicKeyRequest.SerializeToString,
-          response_deserializer=google_dot_cloud_dot_oslogin_dot_common_dot_common__pb2.SshPublicKey.FromString,
-          )
-      self.ImportSshPublicKey = channel.unary_unary(
-          '/google.cloud.oslogin.v1.OsLoginService/ImportSshPublicKey',
-          request_serializer=ImportSshPublicKeyRequest.SerializeToString,
-          response_deserializer=ImportSshPublicKeyResponse.FromString,
-          )
-      self.UpdateSshPublicKey = channel.unary_unary(
-          '/google.cloud.oslogin.v1.OsLoginService/UpdateSshPublicKey',
-          request_serializer=UpdateSshPublicKeyRequest.SerializeToString,
-          response_deserializer=google_dot_cloud_dot_oslogin_dot_common_dot_common__pb2.SshPublicKey.FromString,
-          )
-
-
-  class OsLoginServiceServicer(object):
-    """Cloud OS Login API
-
-    The Cloud OS Login API allows you to manage users and their associated SSH
-    public keys for logging into virtual machines on Google Cloud Platform.
-    """
-
-    def DeletePosixAccount(self, request, context):
-      """Deletes a POSIX account.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def DeleteSshPublicKey(self, request, context):
-      """Deletes an SSH public key.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def GetLoginProfile(self, request, context):
-      """Retrieves the profile information used for logging in to a virtual machine
-      on Google Compute Engine.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def GetSshPublicKey(self, request, context):
-      """Retrieves an SSH public key.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def ImportSshPublicKey(self, request, context):
-      """Adds an SSH public key and returns the profile information. Default POSIX
-      account information is set when no username and UID exist as part of the
-      login profile.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def UpdateSshPublicKey(self, request, context):
-      """Updates an SSH public key and returns the profile information. This method
-      supports patch semantics.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-
-  def add_OsLoginServiceServicer_to_server(servicer, server):
-    rpc_method_handlers = {
-        'DeletePosixAccount': grpc.unary_unary_rpc_method_handler(
-            servicer.DeletePosixAccount,
-            request_deserializer=DeletePosixAccountRequest.FromString,
-            response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
-        ),
-        'DeleteSshPublicKey': grpc.unary_unary_rpc_method_handler(
-            servicer.DeleteSshPublicKey,
-            request_deserializer=DeleteSshPublicKeyRequest.FromString,
-            response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
-        ),
-        'GetLoginProfile': grpc.unary_unary_rpc_method_handler(
-            servicer.GetLoginProfile,
-            request_deserializer=GetLoginProfileRequest.FromString,
-            response_serializer=LoginProfile.SerializeToString,
-        ),
-        'GetSshPublicKey': grpc.unary_unary_rpc_method_handler(
-            servicer.GetSshPublicKey,
-            request_deserializer=GetSshPublicKeyRequest.FromString,
-            response_serializer=google_dot_cloud_dot_oslogin_dot_common_dot_common__pb2.SshPublicKey.SerializeToString,
-        ),
-        'ImportSshPublicKey': grpc.unary_unary_rpc_method_handler(
-            servicer.ImportSshPublicKey,
-            request_deserializer=ImportSshPublicKeyRequest.FromString,
-            response_serializer=ImportSshPublicKeyResponse.SerializeToString,
-        ),
-        'UpdateSshPublicKey': grpc.unary_unary_rpc_method_handler(
-            servicer.UpdateSshPublicKey,
-            request_deserializer=UpdateSshPublicKeyRequest.FromString,
-            response_serializer=google_dot_cloud_dot_oslogin_dot_common_dot_common__pb2.SshPublicKey.SerializeToString,
-        ),
-    }
-    generic_handler = grpc.method_handlers_generic_handler(
-        'google.cloud.oslogin.v1.OsLoginService', rpc_method_handlers)
-    server.add_generic_rpc_handlers((generic_handler,))
-
-
-  class BetaOsLoginServiceServicer(object):
-    """The Beta API is deprecated for 0.15.0 and later.
-
-    It is recommended to use the GA API (classes and functions in this
-    file not marked beta) for all further purposes. This class was generated
-    only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0."""
-    """Cloud OS Login API
-
-    The Cloud OS Login API allows you to manage users and their associated SSH
-    public keys for logging into virtual machines on Google Cloud Platform.
-    """
-    def DeletePosixAccount(self, request, context):
-      """Deletes a POSIX account.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def DeleteSshPublicKey(self, request, context):
-      """Deletes an SSH public key.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def GetLoginProfile(self, request, context):
-      """Retrieves the profile information used for logging in to a virtual machine
-      on Google Compute Engine.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def GetSshPublicKey(self, request, context):
-      """Retrieves an SSH public key.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def ImportSshPublicKey(self, request, context):
-      """Adds an SSH public key and returns the profile information. Default POSIX
-      account information is set when no username and UID exist as part of the
-      login profile.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def UpdateSshPublicKey(self, request, context):
-      """Updates an SSH public key and returns the profile information. This method
-      supports patch semantics.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-
-
-  class BetaOsLoginServiceStub(object):
-    """The Beta API is deprecated for 0.15.0 and later.
-
-    It is recommended to use the GA API (classes and functions in this
-    file not marked beta) for all further purposes. This class was generated
-    only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0."""
-    """Cloud OS Login API
-
-    The Cloud OS Login API allows you to manage users and their associated SSH
-    public keys for logging into virtual machines on Google Cloud Platform.
-    """
-    def DeletePosixAccount(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Deletes a POSIX account.
-      """
-      raise NotImplementedError()
-    DeletePosixAccount.future = None
-    def DeleteSshPublicKey(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Deletes an SSH public key.
-      """
-      raise NotImplementedError()
-    DeleteSshPublicKey.future = None
-    def GetLoginProfile(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Retrieves the profile information used for logging in to a virtual machine
-      on Google Compute Engine.
-      """
-      raise NotImplementedError()
-    GetLoginProfile.future = None
-    def GetSshPublicKey(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Retrieves an SSH public key.
-      """
-      raise NotImplementedError()
-    GetSshPublicKey.future = None
-    def ImportSshPublicKey(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Adds an SSH public key and returns the profile information. Default POSIX
-      account information is set when no username and UID exist as part of the
-      login profile.
-      """
-      raise NotImplementedError()
-    ImportSshPublicKey.future = None
-    def UpdateSshPublicKey(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Updates an SSH public key and returns the profile information. This method
-      supports patch semantics.
-      """
-      raise NotImplementedError()
-    UpdateSshPublicKey.future = None
-
-
-  def beta_create_OsLoginService_server(servicer, pool=None, pool_size=None, default_timeout=None, maximum_timeout=None):
-    """The Beta API is deprecated for 0.15.0 and later.
-
-    It is recommended to use the GA API (classes and functions in this
-    file not marked beta) for all further purposes. This function was
-    generated only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0"""
-    request_deserializers = {
-      ('google.cloud.oslogin.v1.OsLoginService', 'DeletePosixAccount'): DeletePosixAccountRequest.FromString,
-      ('google.cloud.oslogin.v1.OsLoginService', 'DeleteSshPublicKey'): DeleteSshPublicKeyRequest.FromString,
-      ('google.cloud.oslogin.v1.OsLoginService', 'GetLoginProfile'): GetLoginProfileRequest.FromString,
-      ('google.cloud.oslogin.v1.OsLoginService', 'GetSshPublicKey'): GetSshPublicKeyRequest.FromString,
-      ('google.cloud.oslogin.v1.OsLoginService', 'ImportSshPublicKey'): ImportSshPublicKeyRequest.FromString,
-      ('google.cloud.oslogin.v1.OsLoginService', 'UpdateSshPublicKey'): UpdateSshPublicKeyRequest.FromString,
-    }
-    response_serializers = {
-      ('google.cloud.oslogin.v1.OsLoginService', 'DeletePosixAccount'): google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
-      ('google.cloud.oslogin.v1.OsLoginService', 'DeleteSshPublicKey'): google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
-      ('google.cloud.oslogin.v1.OsLoginService', 'GetLoginProfile'): LoginProfile.SerializeToString,
-      ('google.cloud.oslogin.v1.OsLoginService', 'GetSshPublicKey'): google_dot_cloud_dot_oslogin_dot_common_dot_common__pb2.SshPublicKey.SerializeToString,
-      ('google.cloud.oslogin.v1.OsLoginService', 'ImportSshPublicKey'): ImportSshPublicKeyResponse.SerializeToString,
-      ('google.cloud.oslogin.v1.OsLoginService', 'UpdateSshPublicKey'): google_dot_cloud_dot_oslogin_dot_common_dot_common__pb2.SshPublicKey.SerializeToString,
-    }
-    method_implementations = {
-      ('google.cloud.oslogin.v1.OsLoginService', 'DeletePosixAccount'): face_utilities.unary_unary_inline(servicer.DeletePosixAccount),
-      ('google.cloud.oslogin.v1.OsLoginService', 'DeleteSshPublicKey'): face_utilities.unary_unary_inline(servicer.DeleteSshPublicKey),
-      ('google.cloud.oslogin.v1.OsLoginService', 'GetLoginProfile'): face_utilities.unary_unary_inline(servicer.GetLoginProfile),
-      ('google.cloud.oslogin.v1.OsLoginService', 'GetSshPublicKey'): face_utilities.unary_unary_inline(servicer.GetSshPublicKey),
-      ('google.cloud.oslogin.v1.OsLoginService', 'ImportSshPublicKey'): face_utilities.unary_unary_inline(servicer.ImportSshPublicKey),
-      ('google.cloud.oslogin.v1.OsLoginService', 'UpdateSshPublicKey'): face_utilities.unary_unary_inline(servicer.UpdateSshPublicKey),
-    }
-    server_options = beta_implementations.server_options(request_deserializers=request_deserializers, response_serializers=response_serializers, thread_pool=pool, thread_pool_size=pool_size, default_timeout=default_timeout, maximum_timeout=maximum_timeout)
-    return beta_implementations.server(method_implementations, options=server_options)
-
-
-  def beta_create_OsLoginService_stub(channel, host=None, metadata_transformer=None, pool=None, pool_size=None):
-    """The Beta API is deprecated for 0.15.0 and later.
-
-    It is recommended to use the GA API (classes and functions in this
-    file not marked beta) for all further purposes. This function was
-    generated only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0"""
-    request_serializers = {
-      ('google.cloud.oslogin.v1.OsLoginService', 'DeletePosixAccount'): DeletePosixAccountRequest.SerializeToString,
-      ('google.cloud.oslogin.v1.OsLoginService', 'DeleteSshPublicKey'): DeleteSshPublicKeyRequest.SerializeToString,
-      ('google.cloud.oslogin.v1.OsLoginService', 'GetLoginProfile'): GetLoginProfileRequest.SerializeToString,
-      ('google.cloud.oslogin.v1.OsLoginService', 'GetSshPublicKey'): GetSshPublicKeyRequest.SerializeToString,
-      ('google.cloud.oslogin.v1.OsLoginService', 'ImportSshPublicKey'): ImportSshPublicKeyRequest.SerializeToString,
-      ('google.cloud.oslogin.v1.OsLoginService', 'UpdateSshPublicKey'): UpdateSshPublicKeyRequest.SerializeToString,
-    }
-    response_deserializers = {
-      ('google.cloud.oslogin.v1.OsLoginService', 'DeletePosixAccount'): google_dot_protobuf_dot_empty__pb2.Empty.FromString,
-      ('google.cloud.oslogin.v1.OsLoginService', 'DeleteSshPublicKey'): google_dot_protobuf_dot_empty__pb2.Empty.FromString,
-      ('google.cloud.oslogin.v1.OsLoginService', 'GetLoginProfile'): LoginProfile.FromString,
-      ('google.cloud.oslogin.v1.OsLoginService', 'GetSshPublicKey'): google_dot_cloud_dot_oslogin_dot_common_dot_common__pb2.SshPublicKey.FromString,
-      ('google.cloud.oslogin.v1.OsLoginService', 'ImportSshPublicKey'): ImportSshPublicKeyResponse.FromString,
-      ('google.cloud.oslogin.v1.OsLoginService', 'UpdateSshPublicKey'): google_dot_cloud_dot_oslogin_dot_common_dot_common__pb2.SshPublicKey.FromString,
-    }
-    cardinalities = {
-      'DeletePosixAccount': cardinality.Cardinality.UNARY_UNARY,
-      'DeleteSshPublicKey': cardinality.Cardinality.UNARY_UNARY,
-      'GetLoginProfile': cardinality.Cardinality.UNARY_UNARY,
-      'GetSshPublicKey': cardinality.Cardinality.UNARY_UNARY,
-      'ImportSshPublicKey': cardinality.Cardinality.UNARY_UNARY,
-      'UpdateSshPublicKey': cardinality.Cardinality.UNARY_UNARY,
-    }
-    stub_options = beta_implementations.stub_options(host=host, metadata_transformer=metadata_transformer, request_serializers=request_serializers, response_deserializers=response_deserializers, thread_pool=pool, thread_pool_size=pool_size)
-    return beta_implementations.dynamic_stub(channel, 'google.cloud.oslogin.v1.OsLoginService', cardinalities, options=stub_options)
-except ImportError:
-  pass
 # @@protoc_insertion_point(module_scope)
