@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+#
 # Copyright 2018 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,9 +15,11 @@
 # limitations under the License.
 """Wrappers for protocol buffer enum types."""
 
+import enum
+
 
 class TraceSpan(object):
-    class SpanKind(object):
+    class SpanKind(enum.IntEnum):
         """
         Type of span. Can be used to specify additional relationships between spans
         in addition to a parent/child relationship.
@@ -33,7 +37,7 @@ class TraceSpan(object):
 
 
 class ListTracesRequest(object):
-    class ViewType(object):
+    class ViewType(enum.IntEnum):
         """
         Type of data returned for traces in the list.
 
