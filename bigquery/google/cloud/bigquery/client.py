@@ -108,8 +108,11 @@ class Client(ClientWithProject):
             current object.
             This parameter should be considered private, and could change in
             the future.
-        location str:
+        location (str):
             (Optional) Default location for jobs / datasets / tables.
+        default_query_job_config (google.cloud.bigquery.job.QueryJobConfig):
+            (Optional) Default ``QueryJobConfig``.
+            Will be merged into job configs passed into the ``query`` method.
 
     Raises:
         google.auth.exceptions.DefaultCredentialsError:
@@ -123,12 +126,12 @@ class Client(ClientWithProject):
 
     def __init__(
             self, project=None, credentials=None, _http=None,
-            location=None, query_job_config=None):
+            location=None, default_query_job_config=None):
         super(Client, self).__init__(
             project=project, credentials=credentials, _http=_http)
         self._connection = Connection(self)
         self._location = location
-        self._default_query_job_config = query_job_config
+        self._default_query_job_config = default_query_job_config
 
     @property
     def location(self):
@@ -1190,7 +1193,7 @@ class Client(ClientWithProject):
 
     def query(
             self, query,
-            job_config=None, override_job_config=False,
+            job_config=None, merge_job_config=True,
             job_id=None, job_id_prefix=None,
             location=None, project=None, retry=DEFAULT_RETRY):
         """Run a SQL query.
@@ -1206,6 +1209,12 @@ class Client(ClientWithProject):
         Keyword Arguments:
             job_config (google.cloud.bigquery.job.QueryJobConfig):
                 (Optional) Extra configuration options for the job.
+            merge_job_config (bool):
+                (Optional) Merge the passed ``job_config`` with the
+                ``default_query_job_config`` passed to the ``Client`` constructor.
+                The default value is ``True``, so to instead use only the
+                passed ``job_config`` without any merging,
+                pass ``False`` for this argument.
             job_id (str): (Optional) ID to use for the query job.
             job_id_prefix (str):
                 (Optional) The prefix to use for a randomly generated job ID.
@@ -1232,7 +1241,7 @@ class Client(ClientWithProject):
 
         # if they don't want to override,
         # we need to merge what they passed
-        if not override_job_config and self._default_query_job_config:
+        if merge_job_config and self._default_query_job_config:
             if job_config:
                 # anything that's not defined on the incoming
                 # that is in the default,

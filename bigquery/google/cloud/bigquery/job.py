@@ -824,6 +824,10 @@ class _JobConfig(object):
         The other takes precedence with conflicting keys.
         This is a naive one level merge.
 
+        :type default_job_config: google.cloud.bigquery.job._JobConfig
+        :param default_job_config:
+            The default job config that will be used to fill in self.
+
         :rtype: :class:`google.cloud.bigquery.job._JobConfig`
         :returns: A new job config.
         """
@@ -836,11 +840,10 @@ class _JobConfig(object):
         new_job_config = self.__class__()
         new_job_config._properties = copy.deepcopy(self._properties)
 
-        self_job_properties = self._properties[self._job_type]
         new_job_properties = new_job_config._properties[self._job_type]
         default_job_properties = default_job_config._properties[self._job_type]
-        for key in list(default_job_properties.keys()):
-            if not self_job_properties.get(key):
+        for key in default_job_properties:
+            if key not in new_job_properties:
                 new_job_properties[key] = default_job_properties[key]
 
         return new_job_config

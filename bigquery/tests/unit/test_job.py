@@ -928,7 +928,7 @@ class Test_JobConfig(unittest.TestCase):
         self.assertTrue(final_job_config.use_query_cache)
         self.assertEqual(final_job_config.maximum_bytes_billed, 1000)
 
-        # case where job types differ
+    def test_fill_from_default_conflict(self):
         basic_job_config = QueryJobConfig()
         conflicting_job_config = self._make_one('conflicting_job_type')
         self.assertNotEqual(
