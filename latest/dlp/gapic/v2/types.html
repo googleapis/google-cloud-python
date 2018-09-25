@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Types for Cloud Data Loss Prevention (DLP) API Client &#8212; google-cloud 37922f06cd documentation</title>
+    <title>Types for Cloud Data Loss Prevention (DLP) API Client &#8212; google-cloud 895e14a documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -735,8 +735,14 @@ wildcard in the path is allowed.</p>
 <dl class="class">
 <dt id="google.cloud.dlp_v2.types.CloudStorageOptions">
 <em class="property">class </em><code class="descclassname">google.cloud.dlp_v2.types.</code><code class="descname">CloudStorageOptions</code><a class="headerlink" href="#google.cloud.dlp_v2.types.CloudStorageOptions" title="Permalink to this definition">#</a></dt>
-<dd><p>Options defining a file or a set of files (path ending with *) within a
-Google Cloud Storage bucket.</p>
+<dd><p>Options defining a file or a set of files within a Google Cloud Storage
+bucket.</p>
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.CloudStorageOptions.file_set">
+<code class="descname">file_set</code><a class="headerlink" href="#google.cloud.dlp_v2.types.CloudStorageOptions.file_set" title="Permalink to this definition">#</a></dt>
+<dd><p>The set of one or more files to scan.</p>
+</dd></dl>
+
 <dl class="attribute">
 <dt id="google.cloud.dlp_v2.types.CloudStorageOptions.bytes_limit_per_file">
 <code class="descname">bytes_limit_per_file</code><a class="headerlink" href="#google.cloud.dlp_v2.types.CloudStorageOptions.bytes_limit_per_file" title="Permalink to this definition">#</a></dt>
@@ -780,8 +786,9 @@ limit. Defaults to 0.</p>
 <dl class="attribute">
 <dt id="google.cloud.dlp_v2.types.CloudStorageOptions.FileSet.url">
 <code class="descname">url</code><a class="headerlink" href="#google.cloud.dlp_v2.types.CloudStorageOptions.FileSet.url" title="Permalink to this definition">#</a></dt>
-<dd><p>The url, in the format <code class="docutils literal notranslate"><span class="pre">gs://&lt;bucket&gt;/&lt;path&gt;</span></code>. Trailing
-wildcard in the path is allowed.</p>
+<dd><p>The Cloud Storage url of the file(s) to scan, in the format
+<code class="docutils literal notranslate"><span class="pre">gs://&lt;bucket&gt;/&lt;path&gt;</span></code>. Trailing wildcard in the path is
+allowed.</p>
 </dd></dl>
 
 </dd></dl>
@@ -1184,8 +1191,13 @@ question.</p>
 <dl class="attribute">
 <dt id="google.cloud.dlp_v2.types.CustomInfoType.info_type">
 <code class="descname">info_type</code><a class="headerlink" href="#google.cloud.dlp_v2.types.CustomInfoType.info_type" title="Permalink to this definition">#</a></dt>
-<dd><p>All CustomInfoTypes must have a name that does not conflict
-with built-in InfoTypes or other CustomInfoTypes.</p>
+<dd><p>CustomInfoType can either be a new infoType, or an extension
+of built-in infoType, when the name matches one of existing
+infoTypes and that infoType is specified in
+<code class="docutils literal notranslate"><span class="pre">InspectContent.info_types</span></code> field. Specifying the latter
+adds findings to the one detected by the system. If built-in
+info type is not specified in <code class="docutils literal notranslate"><span class="pre">InspectContent.info_types</span></code>
+list then the name is treated as a custom info type.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1231,6 +1243,14 @@ transformations that support reversing.</p>
 CustomInfoType. Rules are applied in order that they are
 specified. Not supported for the <code class="docutils literal notranslate"><span class="pre">surrogate_type</span></code>
 CustomInfoType.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.CustomInfoType.exclusion_type">
+<code class="descname">exclusion_type</code><a class="headerlink" href="#google.cloud.dlp_v2.types.CustomInfoType.exclusion_type" title="Permalink to this definition">#</a></dt>
+<dd><p>If set to EXCLUSION_TYPE_EXCLUDE this infoType will not
+cause a finding to be returned. It still can be used for rules
+matching.</p>
 </dd></dl>
 
 <dl class="class">
@@ -1385,7 +1405,9 @@ least 2 characters that are letters or digits. [required]</p>
 <dl class="attribute">
 <dt id="google.cloud.dlp_v2.types.CustomInfoType.Regex.pattern">
 <code class="descname">pattern</code><a class="headerlink" href="#google.cloud.dlp_v2.types.CustomInfoType.Regex.pattern" title="Permalink to this definition">#</a></dt>
-<dd><p>Pattern defining the regular expression.</p>
+<dd><p>Pattern defining the regular expression. Its syntax
+(<a class="reference external" href="https://github.com/google/re2/wiki/Syntax">https://github.com/google/re2/wiki/Syntax</a>) can be found under
+the google/re2 repository on GitHub.</p>
 </dd></dl>
 
 </dd></dl>
@@ -1887,6 +1909,58 @@ field.</p>
 </dd></dl>
 
 <dl class="class">
+<dt id="google.cloud.dlp_v2.types.ExcludeInfoTypes">
+<em class="property">class </em><code class="descclassname">google.cloud.dlp_v2.types.</code><code class="descname">ExcludeInfoTypes</code><a class="headerlink" href="#google.cloud.dlp_v2.types.ExcludeInfoTypes" title="Permalink to this definition">#</a></dt>
+<dd><p>List of exclude infoTypes.</p>
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.ExcludeInfoTypes.info_types">
+<code class="descname">info_types</code><a class="headerlink" href="#google.cloud.dlp_v2.types.ExcludeInfoTypes.info_types" title="Permalink to this definition">#</a></dt>
+<dd><p>InfoType list in ExclusionRule rule drops a finding when it
+overlaps or contained within with a finding of an infoType
+from this list. For example, for
+<code class="docutils literal notranslate"><span class="pre">InspectionRuleSet.info_types</span></code> containing
+“PHONE_NUMBER”<code class="docutils literal notranslate"><span class="pre">and</span></code>exclusion_rule<code class="docutils literal notranslate"><span class="pre">containing</span></code>          exclude_info_types.info_types` with “EMAIL_ADDRESS” the
+phone number findings are dropped if they overlap with
+EMAIL_ADDRESS finding. That leads to
+“<a class="reference external" href="mailto:555-222-2222&#37;&#52;&#48;example&#46;org">555-222-2222<span>&#64;</span>example<span>&#46;</span>org</a>” to generate only a single finding,
+namely email address.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.dlp_v2.types.ExclusionRule">
+<em class="property">class </em><code class="descclassname">google.cloud.dlp_v2.types.</code><code class="descname">ExclusionRule</code><a class="headerlink" href="#google.cloud.dlp_v2.types.ExclusionRule" title="Permalink to this definition">#</a></dt>
+<dd><p>The rule that specifies conditions when findings of infoTypes specified
+in <code class="docutils literal notranslate"><span class="pre">InspectionRuleSet</span></code> are removed from results.</p>
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.ExclusionRule.dictionary">
+<code class="descname">dictionary</code><a class="headerlink" href="#google.cloud.dlp_v2.types.ExclusionRule.dictionary" title="Permalink to this definition">#</a></dt>
+<dd><p>Dictionary which defines the rule.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.ExclusionRule.regex">
+<code class="descname">regex</code><a class="headerlink" href="#google.cloud.dlp_v2.types.ExclusionRule.regex" title="Permalink to this definition">#</a></dt>
+<dd><p>Regular expression which defines the rule.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.ExclusionRule.exclude_info_types">
+<code class="descname">exclude_info_types</code><a class="headerlink" href="#google.cloud.dlp_v2.types.ExclusionRule.exclude_info_types" title="Permalink to this definition">#</a></dt>
+<dd><p>Set of infoTypes for which findings would affect this rule.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.ExclusionRule.matching_type">
+<code class="descname">matching_type</code><a class="headerlink" href="#google.cloud.dlp_v2.types.ExclusionRule.matching_type" title="Permalink to this definition">#</a></dt>
+<dd><p>How the rule is applied, see MatchingType documentation for
+details.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="google.cloud.dlp_v2.types.ExtensionRangeOptions">
 <em class="property">class </em><code class="descclassname">google.cloud.dlp_v2.types.</code><code class="descname">ExtensionRangeOptions</code><a class="headerlink" href="#google.cloud.dlp_v2.types.ExtensionRangeOptions" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
@@ -2328,6 +2402,15 @@ learn more.</p>
 images, and other content will be included.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.InspectConfig.rule_set">
+<code class="descname">rule_set</code><a class="headerlink" href="#google.cloud.dlp_v2.types.InspectConfig.rule_set" title="Permalink to this definition">#</a></dt>
+<dd><p>Set of rules to apply to the findings for this InspectConfig.
+Exclusion rules, contained in the set are executed in the end,
+other rules are executed in the order they are specified for
+each info type.</p>
+</dd></dl>
+
 <dl class="class">
 <dt id="google.cloud.dlp_v2.types.InspectConfig.FindingLimits">
 <em class="property">class </em><code class="descname">FindingLimits</code><a class="headerlink" href="#google.cloud.dlp_v2.types.InspectConfig.FindingLimits" title="Permalink to this definition">#</a></dt>
@@ -2524,6 +2607,46 @@ field.</p>
 <code class="descname">inspect_config</code><a class="headerlink" href="#google.cloud.dlp_v2.types.InspectTemplate.inspect_config" title="Permalink to this definition">#</a></dt>
 <dd><p>The core content of the template. Configuration of the
 scanning process.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.dlp_v2.types.InspectionRule">
+<em class="property">class </em><code class="descclassname">google.cloud.dlp_v2.types.</code><code class="descname">InspectionRule</code><a class="headerlink" href="#google.cloud.dlp_v2.types.InspectionRule" title="Permalink to this definition">#</a></dt>
+<dd><p>A single inspection rule to be applied to infoTypes, specified in
+<code class="docutils literal notranslate"><span class="pre">InspectionRuleSet</span></code>.</p>
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.InspectionRule.hotword_rule">
+<code class="descname">hotword_rule</code><a class="headerlink" href="#google.cloud.dlp_v2.types.InspectionRule.hotword_rule" title="Permalink to this definition">#</a></dt>
+<dd><p>Hotword-based detection rule.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.InspectionRule.exclusion_rule">
+<code class="descname">exclusion_rule</code><a class="headerlink" href="#google.cloud.dlp_v2.types.InspectionRule.exclusion_rule" title="Permalink to this definition">#</a></dt>
+<dd><p>Exclusion rule.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.dlp_v2.types.InspectionRuleSet">
+<em class="property">class </em><code class="descclassname">google.cloud.dlp_v2.types.</code><code class="descname">InspectionRuleSet</code><a class="headerlink" href="#google.cloud.dlp_v2.types.InspectionRuleSet" title="Permalink to this definition">#</a></dt>
+<dd><p>Rule set for modifying a set of infoTypes to alter behavior under
+certain circumstances, depending on the specific details of the rules
+within the set.</p>
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.InspectionRuleSet.info_types">
+<code class="descname">info_types</code><a class="headerlink" href="#google.cloud.dlp_v2.types.InspectionRuleSet.info_types" title="Permalink to this definition">#</a></dt>
+<dd><p>List of infoTypes this rule set is applied to.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.InspectionRuleSet.rules">
+<code class="descname">rules</code><a class="headerlink" href="#google.cloud.dlp_v2.types.InspectionRuleSet.rules" title="Permalink to this definition">#</a></dt>
+<dd><p>Set of rules to be applied to infoTypes. The rules are applied
+in order.</p>
 </dd></dl>
 
 </dd></dl>
@@ -2777,6 +2900,20 @@ call to <code class="docutils literal notranslate"><span class="pre">ListDeident
 server returns a page of max size 100.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.ListDeidentifyTemplatesRequest.order_by">
+<code class="descname">order_by</code><a class="headerlink" href="#google.cloud.dlp_v2.types.ListDeidentifyTemplatesRequest.order_by" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional comma separated list of fields to order by, followed
+by <code class="docutils literal notranslate"><span class="pre">asc</span></code> or <code class="docutils literal notranslate"><span class="pre">desc</span></code> postfix. This list is case-insensitive,
+default sorting order is ascending, redundant space characters
+are insignificant.  Example: <code class="docutils literal notranslate"><span class="pre">name</span> <span class="pre">asc,update_time,</span>
+<span class="pre">create_time</span> <span class="pre">desc</span></code>  Supported fields are:  -  <code class="docutils literal notranslate"><span class="pre">create_time</span></code>:
+corresponds to time the template was created. -
+<code class="docutils literal notranslate"><span class="pre">update_time</span></code>: corresponds to time the template was last
+updated. -  <code class="docutils literal notranslate"><span class="pre">name</span></code>: corresponds to template’s name. -
+<code class="docutils literal notranslate"><span class="pre">display_name</span></code>: corresponds to template’s display name.</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -2928,6 +3065,20 @@ call to <code class="docutils literal notranslate"><span class="pre">ListInspect
 server returns a page of max size 100.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.ListInspectTemplatesRequest.order_by">
+<code class="descname">order_by</code><a class="headerlink" href="#google.cloud.dlp_v2.types.ListInspectTemplatesRequest.order_by" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional comma separated list of fields to order by, followed
+by <code class="docutils literal notranslate"><span class="pre">asc</span></code> or <code class="docutils literal notranslate"><span class="pre">desc</span></code> postfix. This list is case-insensitive,
+default sorting order is ascending, redundant space characters
+are insignificant.  Example: <code class="docutils literal notranslate"><span class="pre">name</span> <span class="pre">asc,update_time,</span>
+<span class="pre">create_time</span> <span class="pre">desc</span></code>  Supported fields are:  -  <code class="docutils literal notranslate"><span class="pre">create_time</span></code>:
+corresponds to time the template was created. -
+<code class="docutils literal notranslate"><span class="pre">update_time</span></code>: corresponds to time the template was last
+updated. -  <code class="docutils literal notranslate"><span class="pre">name</span></code>: corresponds to template’s name. -
+<code class="docutils literal notranslate"><span class="pre">display_name</span></code>: corresponds to template’s display name.</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -2983,10 +3134,12 @@ by, followed by <code class="docutils literal notranslate"><span class="pre">asc
 case-insensitive, default sorting order is ascending,
 redundant space characters are insignificant.  Example: <code class="docutils literal notranslate"><span class="pre">name</span>
 <span class="pre">asc,update_time,</span> <span class="pre">create_time</span> <span class="pre">desc</span></code>  Supported fields are:  -
-<code class="docutils literal notranslate"><span class="pre">create_time</span></code>: corresponds to time the triggeredJob was
+<code class="docutils literal notranslate"><span class="pre">create_time</span></code>: corresponds to time the JobTrigger was
 created. -  <code class="docutils literal notranslate"><span class="pre">update_time</span></code>: corresponds to time the
-triggeredJob was last    updated. -  <code class="docutils literal notranslate"><span class="pre">name</span></code>: corresponds to
-JobTrigger’s name.</p>
+JobTrigger was last updated. -  <code class="docutils literal notranslate"><span class="pre">name</span></code>: corresponds to
+JobTrigger’s name. -  <code class="docutils literal notranslate"><span class="pre">display_name</span></code>: corresponds to
+JobTrigger’s display name. -  <code class="docutils literal notranslate"><span class="pre">status</span></code>: corresponds to
+JobTrigger’s status.</p>
 </dd></dl>
 
 </dd></dl>
@@ -3034,6 +3187,20 @@ call to <code class="docutils literal notranslate"><span class="pre">ListStoredI
 <code class="descname">page_size</code><a class="headerlink" href="#google.cloud.dlp_v2.types.ListStoredInfoTypesRequest.page_size" title="Permalink to this definition">#</a></dt>
 <dd><p>Optional size of the page, can be limited by server. If zero
 server returns a page of max size 100.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.ListStoredInfoTypesRequest.order_by">
+<code class="descname">order_by</code><a class="headerlink" href="#google.cloud.dlp_v2.types.ListStoredInfoTypesRequest.order_by" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional comma separated list of fields to order by, followed
+by <code class="docutils literal notranslate"><span class="pre">asc</span></code> or <code class="docutils literal notranslate"><span class="pre">desc</span></code> postfix. This list is case-insensitive,
+default sorting order is ascending, redundant space characters
+are insignificant.  Example: <code class="docutils literal notranslate"><span class="pre">name</span> <span class="pre">asc,</span> <span class="pre">display_name,</span>
+<span class="pre">create_time</span> <span class="pre">desc</span></code>  Supported fields are:  -  <code class="docutils literal notranslate"><span class="pre">create_time</span></code>:
+corresponds to time the most recent version of the    resource
+was created. -  <code class="docutils literal notranslate"><span class="pre">state</span></code>: corresponds to the state of the
+resource. -  <code class="docutils literal notranslate"><span class="pre">name</span></code>: corresponds to resource name. -
+<code class="docutils literal notranslate"><span class="pre">display_name</span></code>: corresponds to info type’s display name.</p>
 </dd></dl>
 
 </dd></dl>

@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.dlp_v2.gapic.dlp_service_client &#8212; google-cloud 37922f06cd documentation</title>
+    <title>google.cloud.dlp_v2.gapic.dlp_service_client &#8212; google-cloud 895e14a documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -893,6 +893,7 @@
 <div class="viewcode-block" id="DlpServiceClient.list_inspect_templates"><a class="viewcode-back" href="../../../../../dlp/gapic/v2/api.html#google.cloud.dlp_v2.DlpServiceClient.list_inspect_templates">[docs]</a>    <span class="k">def</span> <span class="nf">list_inspect_templates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                                <span class="n">parent</span><span class="p">,</span>
                                <span class="n">page_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                               <span class="n">order_by</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                                <span class="n">retry</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
                                <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
                                <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -929,6 +930,19 @@
 <span class="sd">                resource, this parameter does not affect the return value. If page</span>
 <span class="sd">                streaming is performed per-page, this determines the maximum number</span>
 <span class="sd">                of resources in a page.</span>
+<span class="sd">            order_by (str): Optional comma separated list of fields to order by,</span>
+<span class="sd">                followed by ``asc`` or ``desc`` postfix. This list is case-insensitive,</span>
+<span class="sd">                default sorting order is ascending, redundant space characters are</span>
+<span class="sd">                insignificant.</span>
+
+<span class="sd">                Example: ``name asc,update_time, create_time desc``</span>
+
+<span class="sd">                Supported fields are:</span>
+
+<span class="sd">                - ``create_time``: corresponds to time the template was created.</span>
+<span class="sd">                - ``update_time``: corresponds to time the template was last updated.</span>
+<span class="sd">                - ``name``: corresponds to template&#39;s name.</span>
+<span class="sd">                - ``display_name``: corresponds to template&#39;s display name.</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
 <span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
 <span class="sd">                be retried.</span>
@@ -966,6 +980,7 @@
         <span class="n">request</span> <span class="o">=</span> <span class="n">dlp_pb2</span><span class="o">.</span><span class="n">ListInspectTemplatesRequest</span><span class="p">(</span>
             <span class="n">parent</span><span class="o">=</span><span class="n">parent</span><span class="p">,</span>
             <span class="n">page_size</span><span class="o">=</span><span class="n">page_size</span><span class="p">,</span>
+            <span class="n">order_by</span><span class="o">=</span><span class="n">order_by</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="n">iterator</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">page_iterator</span><span class="o">.</span><span class="n">GRPCIterator</span><span class="p">(</span>
             <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -1242,6 +1257,7 @@
             <span class="bp">self</span><span class="p">,</span>
             <span class="n">parent</span><span class="p">,</span>
             <span class="n">page_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">order_by</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">retry</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
             <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
             <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -1279,6 +1295,19 @@
 <span class="sd">                resource, this parameter does not affect the return value. If page</span>
 <span class="sd">                streaming is performed per-page, this determines the maximum number</span>
 <span class="sd">                of resources in a page.</span>
+<span class="sd">            order_by (str): Optional comma separated list of fields to order by,</span>
+<span class="sd">                followed by ``asc`` or ``desc`` postfix. This list is case-insensitive,</span>
+<span class="sd">                default sorting order is ascending, redundant space characters are</span>
+<span class="sd">                insignificant.</span>
+
+<span class="sd">                Example: ``name asc,update_time, create_time desc``</span>
+
+<span class="sd">                Supported fields are:</span>
+
+<span class="sd">                - ``create_time``: corresponds to time the template was created.</span>
+<span class="sd">                - ``update_time``: corresponds to time the template was last updated.</span>
+<span class="sd">                - ``name``: corresponds to template&#39;s name.</span>
+<span class="sd">                - ``display_name``: corresponds to template&#39;s display name.</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
 <span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
 <span class="sd">                be retried.</span>
@@ -1316,6 +1345,7 @@
         <span class="n">request</span> <span class="o">=</span> <span class="n">dlp_pb2</span><span class="o">.</span><span class="n">ListDeidentifyTemplatesRequest</span><span class="p">(</span>
             <span class="n">parent</span><span class="o">=</span><span class="n">parent</span><span class="p">,</span>
             <span class="n">page_size</span><span class="o">=</span><span class="n">page_size</span><span class="p">,</span>
+            <span class="n">order_by</span><span class="o">=</span><span class="n">order_by</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="n">iterator</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">page_iterator</span><span class="o">.</span><span class="n">GRPCIterator</span><span class="p">(</span>
             <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -1797,9 +1827,11 @@
 
 <span class="sd">                Supported fields are:</span>
 
-<span class="sd">                - ``create_time``: corresponds to time the triggeredJob was created.</span>
-<span class="sd">                - ``update_time``: corresponds to time the triggeredJob was last updated.</span>
+<span class="sd">                - ``create_time``: corresponds to time the JobTrigger was created.</span>
+<span class="sd">                - ``update_time``: corresponds to time the JobTrigger was last updated.</span>
 <span class="sd">                - ``name``: corresponds to JobTrigger&#39;s name.</span>
+<span class="sd">                - ``display_name``: corresponds to JobTrigger&#39;s display name.</span>
+<span class="sd">                - ``status``: corresponds to JobTrigger&#39;s status.</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
 <span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
 <span class="sd">                be retried.</span>
