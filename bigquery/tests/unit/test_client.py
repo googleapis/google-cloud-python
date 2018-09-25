@@ -2830,6 +2830,46 @@ class TestClient(unittest.TestCase):
             data=resource,
         )
 
+    def test_query_w_client_default_config_no_incoming(self):
+        job_id = 'some-job-id'
+        query = 'select count(*) from persons'
+        resource = {
+            'jobReference': {
+                'jobId': job_id,
+                'projectId': self.PROJECT,
+                'location': self.LOCATION,
+            },
+            'configuration': {
+                'query': {
+                    'query': query,
+                    'useLegacySql': False,
+                    'maximumBytesBilled': '1000',
+                },
+            },
+        }
+
+        creds = _make_credentials()
+        http = object()
+
+        from google.cloud.bigquery import QueryJobConfig
+        default_job_config = QueryJobConfig()
+        default_job_config.maximum_bytes_billed = 1000
+
+        client = self._make_one(
+            project=self.PROJECT, credentials=creds, _http=http,
+            query_job_config=default_job_config)
+        conn = client._connection = _make_connection(resource)
+
+        client.query(
+            query, job_id=job_id, location=self.LOCATION)
+
+        # Check that query actually starts the job.
+        conn.api_request.assert_called_once_with(
+            method='POST',
+            path='/projects/PROJECT/jobs',
+            data=resource,
+        )
+
     def test_query_w_client_location(self):
         job_id = 'some-job-id'
         query = 'select count(*) from persons'
