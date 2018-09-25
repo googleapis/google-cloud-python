@@ -18,6 +18,7 @@ import os
 
 import unittest
 
+from google.api_core.exceptions import TooManyRequests
 from google.cloud._helpers import _datetime_from_microseconds
 from google.cloud._helpers import _microseconds_from_datetime
 from google.cloud._helpers import UTC
@@ -79,6 +80,9 @@ def _retry_on_unavailable(exc):
     return exc.code() == StatusCode.UNAVAILABLE
 
 
+retry_429 = RetryErrors(TooManyRequests)
+
+
 def setUpModule():
     from google.cloud.exceptions import GrpcRendezvous
 
@@ -111,7 +115,7 @@ def setUpModule():
 
 def tearDownModule():
     if not Config.IN_EMULATOR:
-        Config.INSTANCE.delete()
+        retry_429(Config.INSTANCE.delete)()
 
 
 class TestInstanceAdminAPI(unittest.TestCase):
@@ -124,7 +128,7 @@ class TestInstanceAdminAPI(unittest.TestCase):
 
     def tearDown(self):
         for instance in self.instances_to_delete:
-            instance.delete()
+            retry_429(instance.delete)()
 
     def test_list_instances(self):
         instances, failed_locations = Config.CLIENT.list_instances()
