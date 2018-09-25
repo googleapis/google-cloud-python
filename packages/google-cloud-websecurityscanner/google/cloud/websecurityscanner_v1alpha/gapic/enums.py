@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+#
 # Copyright 2018 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,9 +15,11 @@
 # limitations under the License.
 """Wrappers for protocol buffer enum types."""
 
+import enum
+
 
 class Finding(object):
-    class FindingType(object):
+    class FindingType(enum.IntEnum):
         """
         Types of Findings.
 
@@ -60,7 +64,7 @@ class Finding(object):
 
 
 class ScanConfig(object):
-    class UserAgent(object):
+    class UserAgent(enum.IntEnum):
         """
         Type of user agents used for scanning.
 
@@ -75,7 +79,7 @@ class ScanConfig(object):
         CHROME_ANDROID = 2
         SAFARI_IPHONE = 3
 
-    class TargetPlatform(object):
+    class TargetPlatform(enum.IntEnum):
         """
         Cloud platforms supported by Cloud Web Security Scanner.
 
@@ -91,7 +95,7 @@ class ScanConfig(object):
 
 
 class ScanRun(object):
-    class ExecutionState(object):
+    class ExecutionState(enum.IntEnum):
         """
         Types of ScanRun execution state.
 
@@ -107,7 +111,7 @@ class ScanRun(object):
         SCANNING = 2
         FINISHED = 3
 
-    class ResultState(object):
+    class ResultState(enum.IntEnum):
         """
         Types of ScanRun result state.
 
