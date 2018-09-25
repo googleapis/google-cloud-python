@@ -15,7 +15,8 @@
 from __future__ import absolute_import
 import os
 
-import nox
+# https://github.com/google/importlab/issues/25
+import nox  # pytype: disable=import-error
 
 
 @nox.session
