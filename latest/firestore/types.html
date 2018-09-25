@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Types &#8212; google-cloud 895e14a documentation</title>
+    <title>Types &#8212; google-cloud d0946c6 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -395,9 +395,9 @@ fail if this is set and not met by the target document.</p>
 <dd><p>The document’s fields.  The map keys represent field names.  A
 simple field name contains only characters <code class="docutils literal notranslate"><span class="pre">a</span></code> to <code class="docutils literal notranslate"><span class="pre">z</span></code>,
 <code class="docutils literal notranslate"><span class="pre">A</span></code> to <code class="docutils literal notranslate"><span class="pre">Z</span></code>, <code class="docutils literal notranslate"><span class="pre">0</span></code> to <code class="docutils literal notranslate"><span class="pre">9</span></code>, or <code class="docutils literal notranslate"><span class="pre">_</span></code>, and must not start
-with <code class="docutils literal notranslate"><span class="pre">0</span></code> to <code class="docutils literal notranslate"><span class="pre">9</span></code> or <code class="docutils literal notranslate"><span class="pre">_</span></code>. For example, <code class="docutils literal notranslate"><span class="pre">foo_bar_17</span></code>.
-Field names matching the regular expression <code class="docutils literal notranslate"><span class="pre">__.*__</span></code> are
-reserved. Reserved field names are forbidden except in certain
+with <code class="docutils literal notranslate"><span class="pre">0</span></code> to <code class="docutils literal notranslate"><span class="pre">9</span></code>. For example, <code class="docutils literal notranslate"><span class="pre">foo_bar_17</span></code>.  Field names
+matching the regular expression <code class="docutils literal notranslate"><span class="pre">__.*__</span></code> are reserved.
+Reserved field names are forbidden except in certain
 documented contexts. The map keys, represented as UTF-8, must
 not exceed 1,500 bytes and cannot be empty.  Field paths may
 be used in other contexts to refer to structured fields
@@ -425,7 +425,7 @@ documents and the <code class="docutils literal notranslate"><span class="pre">r
 <dt id="google.cloud.firestore_v1beta1.types.Document.update_time">
 <code class="descname">update_time</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.types.Document.update_time" title="Permalink to this definition">#</a></dt>
 <dd><p>Output only. The time at which the document was last changed.
-This value is initally set to the <code class="docutils literal notranslate"><span class="pre">create_time</span></code> then
+This value is initially set to the <code class="docutils literal notranslate"><span class="pre">create_time</span></code> then
 increases monotonically with each change to the document. It
 can also be compared to values from other documents and the
 <code class="docutils literal notranslate"><span class="pre">read_time</span></code> of a query.</p>
@@ -604,6 +604,33 @@ for the field path syntax reference.</p>
 <dt id="google.cloud.firestore_v1beta1.types.DocumentTransform.FieldTransform.set_to_server_value">
 <code class="descname">set_to_server_value</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.types.DocumentTransform.FieldTransform.set_to_server_value" title="Permalink to this definition">#</a></dt>
 <dd><p>Sets the field to the given server value.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.firestore_v1beta1.types.DocumentTransform.FieldTransform.append_missing_elements">
+<code class="descname">append_missing_elements</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.types.DocumentTransform.FieldTransform.append_missing_elements" title="Permalink to this definition">#</a></dt>
+<dd><p>Append the given elements in order if they are not already
+present in the current field value. If the field is not an
+array, or if the field does not yet exist, it is first set to
+the empty array.  Equivalent numbers of different types (e.g.
+3L and 3.0) are considered equal when checking if a value is
+missing. NaN is equal to NaN, and Null is equal to Null. If
+the input contains multiple equivalent values, only the first
+will be considered.  The corresponding transform_result will
+be the null value.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.firestore_v1beta1.types.DocumentTransform.FieldTransform.remove_all_from_array">
+<code class="descname">remove_all_from_array</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.types.DocumentTransform.FieldTransform.remove_all_from_array" title="Permalink to this definition">#</a></dt>
+<dd><p>Remove all of the given elements from the array in the field.
+If the field is not an array, or if the field does not yet
+exist, it is set to the empty array.  Equivalent numbers of
+the different types (e.g. 3L and 3.0) are considered equal
+when deciding whether an element should be removed. NaN is
+equal to NaN, and Null is equal to Null. This will remove all
+equivalent values if there are duplicates.  The corresponding
+transform_result will be the null value.</p>
 </dd></dl>
 
 </dd></dl>
@@ -1919,7 +1946,8 @@ Earth.</p>
 <dl class="attribute">
 <dt id="google.cloud.firestore_v1beta1.types.Value.array_value">
 <code class="descname">array_value</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.types.Value.array_value" title="Permalink to this definition">#</a></dt>
-<dd><p>An array value.  Cannot contain another array value.</p>
+<dd><p>An array value.  Cannot directly contain another array value,
+though can contain an map which contains another array.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -2004,7 +2032,8 @@ Earth.</p>
 <dl class="attribute">
 <dt>
 <code class="descname">array_value</code></dt>
-<dd><p>An array value.  Cannot contain another array value.</p>
+<dd><p>An array value.  Cannot directly contain another array value,
+though can contain an map which contains another array.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -2052,13 +2081,14 @@ in a given request.</p>
 <dt id="google.cloud.firestore_v1beta1.types.Write.update_mask">
 <code class="descname">update_mask</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.types.Write.update_mask" title="Permalink to this definition">#</a></dt>
 <dd><p>The fields to update in this write.  This field can be set
-only when the operation is <code class="docutils literal notranslate"><span class="pre">update</span></code>. None of the field paths
-in the mask may contain a reserved name. If the document
-exists on the server and has fields not referenced in the
-mask, they are left unchanged. Fields referenced in the mask,
-but not present in the input document, are deleted from the
-document on the server. The field paths in this mask must not
-contain a reserved field name.</p>
+only when the operation is <code class="docutils literal notranslate"><span class="pre">update</span></code>. If the mask is not set
+for an <code class="docutils literal notranslate"><span class="pre">update</span></code> and the document exists, any existing data
+will be overwritten. If the mask is set and the document on
+the server has fields not covered by the mask, they are left
+unchanged. Fields referenced in the mask, but not present in
+the input document, are deleted from the document on the
+server. The field paths in this mask must not contain a
+reserved field name.</p>
 </dd></dl>
 
 <dl class="attribute">
