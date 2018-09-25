@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+#
 # Copyright 2018 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,11 +15,13 @@
 # limitations under the License.
 """Wrappers for protocol buffer enum types."""
 
+import enum
+
 
 class Span(object):
     class TimeEvent(object):
         class MessageEvent(object):
-            class Type(object):
+            class Type(enum.IntEnum):
                 """
                 Indicates whether the message was sent or received.
 
@@ -31,7 +35,7 @@ class Span(object):
                 RECEIVED = 2
 
     class Link(object):
-        class Type(object):
+        class Type(enum.IntEnum):
             """
             The relationship of the current span relative to the linked span: child,
             parent, or unspecified.
