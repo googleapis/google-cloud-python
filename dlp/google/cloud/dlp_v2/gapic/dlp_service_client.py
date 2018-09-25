@@ -857,6 +857,7 @@ class DlpServiceClient(object):
     def list_inspect_templates(self,
                                parent,
                                page_size=None,
+                               order_by=None,
                                retry=google.api_core.gapic_v1.method.DEFAULT,
                                timeout=google.api_core.gapic_v1.method.DEFAULT,
                                metadata=None):
@@ -893,6 +894,19 @@ class DlpServiceClient(object):
                 resource, this parameter does not affect the return value. If page
                 streaming is performed per-page, this determines the maximum number
                 of resources in a page.
+            order_by (str): Optional comma separated list of fields to order by,
+                followed by ``asc`` or ``desc`` postfix. This list is case-insensitive,
+                default sorting order is ascending, redundant space characters are
+                insignificant.
+
+                Example: ``name asc,update_time, create_time desc``
+
+                Supported fields are:
+
+                - ``create_time``: corresponds to time the template was created.
+                - ``update_time``: corresponds to time the template was last updated.
+                - ``name``: corresponds to template's name.
+                - ``display_name``: corresponds to template's display name.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -930,6 +944,7 @@ class DlpServiceClient(object):
         request = dlp_pb2.ListInspectTemplatesRequest(
             parent=parent,
             page_size=page_size,
+            order_by=order_by,
         )
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
@@ -1206,6 +1221,7 @@ class DlpServiceClient(object):
             self,
             parent,
             page_size=None,
+            order_by=None,
             retry=google.api_core.gapic_v1.method.DEFAULT,
             timeout=google.api_core.gapic_v1.method.DEFAULT,
             metadata=None):
@@ -1243,6 +1259,19 @@ class DlpServiceClient(object):
                 resource, this parameter does not affect the return value. If page
                 streaming is performed per-page, this determines the maximum number
                 of resources in a page.
+            order_by (str): Optional comma separated list of fields to order by,
+                followed by ``asc`` or ``desc`` postfix. This list is case-insensitive,
+                default sorting order is ascending, redundant space characters are
+                insignificant.
+
+                Example: ``name asc,update_time, create_time desc``
+
+                Supported fields are:
+
+                - ``create_time``: corresponds to time the template was created.
+                - ``update_time``: corresponds to time the template was last updated.
+                - ``name``: corresponds to template's name.
+                - ``display_name``: corresponds to template's display name.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -1280,6 +1309,7 @@ class DlpServiceClient(object):
         request = dlp_pb2.ListDeidentifyTemplatesRequest(
             parent=parent,
             page_size=page_size,
+            order_by=order_by,
         )
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
@@ -1761,9 +1791,11 @@ class DlpServiceClient(object):
 
                 Supported fields are:
 
-                - ``create_time``: corresponds to time the triggeredJob was created.
-                - ``update_time``: corresponds to time the triggeredJob was last updated.
+                - ``create_time``: corresponds to time the JobTrigger was created.
+                - ``update_time``: corresponds to time the JobTrigger was last updated.
                 - ``name``: corresponds to JobTrigger's name.
+                - ``display_name``: corresponds to JobTrigger's display name.
+                - ``status``: corresponds to JobTrigger's status.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
