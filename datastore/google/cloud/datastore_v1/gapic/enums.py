@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+#
 # Copyright 2018 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,8 +15,10 @@
 # limitations under the License.
 """Wrappers for protocol buffer enum types."""
 
+import enum
 
-class NullValue(object):
+
+class NullValue(enum.IntEnum):
     """
     ``NullValue`` is a singleton enumeration to represent the null value for the
     ``Value`` type union.
@@ -28,7 +32,7 @@ class NullValue(object):
 
 
 class EntityResult(object):
-    class ResultType(object):
+    class ResultType(enum.IntEnum):
         """
         Specifies what data the 'entity' field contains.
         A ``ResultType`` is either implied (for example, in ``LookupResponse.missing``
@@ -49,7 +53,7 @@ class EntityResult(object):
 
 
 class PropertyOrder(object):
-    class Direction(object):
+    class Direction(enum.IntEnum):
         """
         The sort direction.
 
@@ -64,7 +68,7 @@ class PropertyOrder(object):
 
 
 class CompositeFilter(object):
-    class Operator(object):
+    class Operator(enum.IntEnum):
         """
         A composite filter operator.
 
@@ -77,7 +81,7 @@ class CompositeFilter(object):
 
 
 class PropertyFilter(object):
-    class Operator(object):
+    class Operator(enum.IntEnum):
         """
         A property filter operator.
 
@@ -100,7 +104,7 @@ class PropertyFilter(object):
 
 
 class QueryResultBatch(object):
-    class MoreResultsType(object):
+    class MoreResultsType(enum.IntEnum):
         """
         The possible values for the ``more_results`` field.
 
@@ -120,7 +124,7 @@ class QueryResultBatch(object):
 
 
 class CommitRequest(object):
-    class Mode(object):
+    class Mode(enum.IntEnum):
         """
         The modes available for commits.
 
@@ -136,7 +140,7 @@ class CommitRequest(object):
 
 
 class ReadOptions(object):
-    class ReadConsistency(object):
+    class ReadConsistency(enum.IntEnum):
         """
         The possible values for read consistencies.
 
