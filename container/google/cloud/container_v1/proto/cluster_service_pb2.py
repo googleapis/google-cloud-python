@@ -25,7 +25,6 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   serialized_pb=_b('\n5google/cloud/container_v1/proto/cluster_service.proto\x12\x13google.container.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x1bgoogle/protobuf/empty.proto\"\xed\x03\n\nNodeConfig\x12\x14\n\x0cmachine_type\x18\x01 \x01(\t\x12\x14\n\x0c\x64isk_size_gb\x18\x02 \x01(\x05\x12\x14\n\x0coauth_scopes\x18\x03 \x03(\t\x12\x17\n\x0fservice_account\x18\t \x01(\t\x12?\n\x08metadata\x18\x04 \x03(\x0b\x32-.google.container.v1.NodeConfig.MetadataEntry\x12\x12\n\nimage_type\x18\x05 \x01(\t\x12;\n\x06labels\x18\x06 \x03(\x0b\x32+.google.container.v1.NodeConfig.LabelsEntry\x12\x17\n\x0flocal_ssd_count\x18\x07 \x01(\x05\x12\x0c\n\x04tags\x18\x08 \x03(\t\x12\x13\n\x0bpreemptible\x18\n \x01(\x08\x12<\n\x0c\x61\x63\x63\x65lerators\x18\x0b \x03(\x0b\x32&.google.container.v1.AcceleratorConfig\x12\x18\n\x10min_cpu_platform\x18\r \x01(\t\x1a/\n\rMetadataEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x1a-\n\x0bLabelsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"\xd1\x01\n\nMasterAuth\x12\x10\n\x08username\x18\x01 \x01(\t\x12\x10\n\x08password\x18\x02 \x01(\t\x12O\n\x19\x63lient_certificate_config\x18\x03 \x01(\x0b\x32,.google.container.v1.ClientCertificateConfig\x12\x1e\n\x16\x63luster_ca_certificate\x18\x64 \x01(\t\x12\x1a\n\x12\x63lient_certificate\x18\x65 \x01(\t\x12\x12\n\nclient_key\x18\x66 \x01(\t\";\n\x17\x43lientCertificateConfig\x12 \n\x18issue_client_certificate\x18\x01 \x01(\x08\"\xb7\x02\n\x0c\x41\x64\x64onsConfig\x12\x43\n\x13http_load_balancing\x18\x01 \x01(\x0b\x32&.google.container.v1.HttpLoadBalancing\x12Q\n\x1ahorizontal_pod_autoscaling\x18\x02 \x01(\x0b\x32-.google.container.v1.HorizontalPodAutoscaling\x12\x46\n\x14kubernetes_dashboard\x18\x03 \x01(\x0b\x32(.google.container.v1.KubernetesDashboard\x12G\n\x15network_policy_config\x18\x04 \x01(\x0b\x32(.google.container.v1.NetworkPolicyConfig\"%\n\x11HttpLoadBalancing\x12\x10\n\x08\x64isabled\x18\x01 \x01(\x08\",\n\x18HorizontalPodAutoscaling\x12\x10\n\x08\x64isabled\x18\x01 \x01(\x08\"\'\n\x13KubernetesDashboard\x12\x10\n\x08\x64isabled\x18\x01 \x01(\x08\"\'\n\x13NetworkPolicyConfig\x12\x10\n\x08\x64isabled\x18\x01 \x01(\x08\"\xbc\x01\n\x1eMasterAuthorizedNetworksConfig\x12\x0f\n\x07\x65nabled\x18\x01 \x01(\x08\x12R\n\x0b\x63idr_blocks\x18\x02 \x03(\x0b\x32=.google.container.v1.MasterAuthorizedNetworksConfig.CidrBlock\x1a\x35\n\tCidrBlock\x12\x14\n\x0c\x64isplay_name\x18\x01 \x01(\t\x12\x12\n\ncidr_block\x18\x02 \x01(\t\"\x1d\n\nLegacyAbac\x12\x0f\n\x07\x65nabled\x18\x01 \x01(\x08\"\x91\x01\n\rNetworkPolicy\x12=\n\x08provider\x18\x01 \x01(\x0e\x32+.google.container.v1.NetworkPolicy.Provider\x12\x0f\n\x07\x65nabled\x18\x02 \x01(\x08\"0\n\x08Provider\x12\x18\n\x14PROVIDER_UNSPECIFIED\x10\x00\x12\n\n\x06\x43\x41LICO\x10\x01\"\xdd\x02\n\x12IPAllocationPolicy\x12\x16\n\x0euse_ip_aliases\x18\x01 \x01(\x08\x12\x19\n\x11\x63reate_subnetwork\x18\x02 \x01(\x08\x12\x17\n\x0fsubnetwork_name\x18\x03 \x01(\t\x12\x19\n\x11\x63luster_ipv4_cidr\x18\x04 \x01(\t\x12\x16\n\x0enode_ipv4_cidr\x18\x05 \x01(\t\x12\x1a\n\x12services_ipv4_cidr\x18\x06 \x01(\t\x12$\n\x1c\x63luster_secondary_range_name\x18\x07 \x01(\t\x12%\n\x1dservices_secondary_range_name\x18\x08 \x01(\t\x12\x1f\n\x17\x63luster_ipv4_cidr_block\x18\t \x01(\t\x12\x1c\n\x14node_ipv4_cidr_block\x18\n \x01(\t\x12 \n\x18services_ipv4_cidr_block\x18\x0b \x01(\t\"\xaa\x0b\n\x07\x43luster\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x02 \x01(\t\x12\x1a\n\x12initial_node_count\x18\x03 \x01(\x05\x12\x34\n\x0bnode_config\x18\x04 \x01(\x0b\x32\x1f.google.container.v1.NodeConfig\x12\x34\n\x0bmaster_auth\x18\x05 \x01(\x0b\x32\x1f.google.container.v1.MasterAuth\x12\x17\n\x0flogging_service\x18\x06 \x01(\t\x12\x1a\n\x12monitoring_service\x18\x07 \x01(\t\x12\x0f\n\x07network\x18\x08 \x01(\t\x12\x19\n\x11\x63luster_ipv4_cidr\x18\t \x01(\t\x12\x38\n\raddons_config\x18\n \x01(\x0b\x32!.google.container.v1.AddonsConfig\x12\x12\n\nsubnetwork\x18\x0b \x01(\t\x12\x31\n\nnode_pools\x18\x0c \x03(\x0b\x32\x1d.google.container.v1.NodePool\x12\x11\n\tlocations\x18\r \x03(\t\x12\x1f\n\x17\x65nable_kubernetes_alpha\x18\x0e \x01(\x08\x12I\n\x0fresource_labels\x18\x0f \x03(\x0b\x32\x30.google.container.v1.Cluster.ResourceLabelsEntry\x12\x19\n\x11label_fingerprint\x18\x10 \x01(\t\x12\x34\n\x0blegacy_abac\x18\x12 \x01(\x0b\x32\x1f.google.container.v1.LegacyAbac\x12:\n\x0enetwork_policy\x18\x13 \x01(\x0b\x32\".google.container.v1.NetworkPolicy\x12\x45\n\x14ip_allocation_policy\x18\x14 \x01(\x0b\x32\'.google.container.v1.IPAllocationPolicy\x12^\n!master_authorized_networks_config\x18\x16 \x01(\x0b\x32\x33.google.container.v1.MasterAuthorizedNetworksConfig\x12\x42\n\x12maintenance_policy\x18\x17 \x01(\x0b\x32&.google.container.v1.MaintenancePolicy\x12\x11\n\tself_link\x18\x64 \x01(\t\x12\x0c\n\x04zone\x18\x65 \x01(\t\x12\x10\n\x08\x65ndpoint\x18\x66 \x01(\t\x12\x1f\n\x17initial_cluster_version\x18g \x01(\t\x12\x1e\n\x16\x63urrent_master_version\x18h \x01(\t\x12\x1c\n\x14\x63urrent_node_version\x18i \x01(\t\x12\x13\n\x0b\x63reate_time\x18j \x01(\t\x12\x33\n\x06status\x18k \x01(\x0e\x32#.google.container.v1.Cluster.Status\x12\x16\n\x0estatus_message\x18l \x01(\t\x12\x1b\n\x13node_ipv4_cidr_size\x18m \x01(\x05\x12\x1a\n\x12services_ipv4_cidr\x18n \x01(\t\x12\x1b\n\x13instance_group_urls\x18o \x03(\t\x12\x1a\n\x12\x63urrent_node_count\x18p \x01(\x05\x12\x13\n\x0b\x65xpire_time\x18q \x01(\t\x1a\x35\n\x13ResourceLabelsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"i\n\x06Status\x12\x16\n\x12STATUS_UNSPECIFIED\x10\x00\x12\x10\n\x0cPROVISIONING\x10\x01\x12\x0b\n\x07RUNNING\x10\x02\x12\x0f\n\x0bRECONCILING\x10\x03\x12\x0c\n\x08STOPPING\x10\x04\x12\t\n\x05\x45RROR\x10\x05\"\xc1\x03\n\rClusterUpdate\x12\x1c\n\x14\x64\x65sired_node_version\x18\x04 \x01(\t\x12\"\n\x1a\x64\x65sired_monitoring_service\x18\x05 \x01(\t\x12@\n\x15\x64\x65sired_addons_config\x18\x06 \x01(\x0b\x32!.google.container.v1.AddonsConfig\x12\x1c\n\x14\x64\x65sired_node_pool_id\x18\x07 \x01(\t\x12\x1a\n\x12\x64\x65sired_image_type\x18\x08 \x01(\t\x12O\n\x1d\x64\x65sired_node_pool_autoscaling\x18\t \x01(\x0b\x32(.google.container.v1.NodePoolAutoscaling\x12\x19\n\x11\x64\x65sired_locations\x18\n \x03(\t\x12\x66\n)desired_master_authorized_networks_config\x18\x0c \x01(\x0b\x32\x33.google.container.v1.MasterAuthorizedNetworksConfig\x12\x1e\n\x16\x64\x65sired_master_version\x18\x64 \x01(\t\"\xe5\x05\n\tOperation\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0c\n\x04zone\x18\x02 \x01(\t\x12;\n\x0eoperation_type\x18\x03 \x01(\x0e\x32#.google.container.v1.Operation.Type\x12\x35\n\x06status\x18\x04 \x01(\x0e\x32%.google.container.v1.Operation.Status\x12\x0e\n\x06\x64\x65tail\x18\x08 \x01(\t\x12\x16\n\x0estatus_message\x18\x05 \x01(\t\x12\x11\n\tself_link\x18\x06 \x01(\t\x12\x13\n\x0btarget_link\x18\x07 \x01(\t\x12\x12\n\nstart_time\x18\n \x01(\t\x12\x10\n\x08\x65nd_time\x18\x0b \x01(\t\"R\n\x06Status\x12\x16\n\x12STATUS_UNSPECIFIED\x10\x00\x12\x0b\n\x07PENDING\x10\x01\x12\x0b\n\x07RUNNING\x10\x02\x12\x08\n\x04\x44ONE\x10\x03\x12\x0c\n\x08\x41\x42ORTING\x10\x04\"\xfd\x02\n\x04Type\x12\x14\n\x10TYPE_UNSPECIFIED\x10\x00\x12\x12\n\x0e\x43REATE_CLUSTER\x10\x01\x12\x12\n\x0e\x44\x45LETE_CLUSTER\x10\x02\x12\x12\n\x0eUPGRADE_MASTER\x10\x03\x12\x11\n\rUPGRADE_NODES\x10\x04\x12\x12\n\x0eREPAIR_CLUSTER\x10\x05\x12\x12\n\x0eUPDATE_CLUSTER\x10\x06\x12\x14\n\x10\x43REATE_NODE_POOL\x10\x07\x12\x14\n\x10\x44\x45LETE_NODE_POOL\x10\x08\x12\x1c\n\x18SET_NODE_POOL_MANAGEMENT\x10\t\x12\x15\n\x11\x41UTO_REPAIR_NODES\x10\n\x12\x16\n\x12\x41UTO_UPGRADE_NODES\x10\x0b\x12\x0e\n\nSET_LABELS\x10\x0c\x12\x13\n\x0fSET_MASTER_AUTH\x10\r\x12\x16\n\x12SET_NODE_POOL_SIZE\x10\x0e\x12\x16\n\x12SET_NETWORK_POLICY\x10\x0f\x12\x1a\n\x16SET_MAINTENANCE_POLICY\x10\x10\"g\n\x14\x43reateClusterRequest\x12\x12\n\nproject_id\x18\x01 \x01(\t\x12\x0c\n\x04zone\x18\x02 \x01(\t\x12-\n\x07\x63luster\x18\x03 \x01(\x0b\x32\x1c.google.container.v1.Cluster\"I\n\x11GetClusterRequest\x12\x12\n\nproject_id\x18\x01 \x01(\t\x12\x0c\n\x04zone\x18\x02 \x01(\t\x12\x12\n\ncluster_id\x18\x03 \x01(\t\"\x80\x01\n\x14UpdateClusterRequest\x12\x12\n\nproject_id\x18\x01 \x01(\t\x12\x0c\n\x04zone\x18\x02 \x01(\t\x12\x12\n\ncluster_id\x18\x03 \x01(\t\x12\x32\n\x06update\x18\x04 \x01(\x0b\x32\".google.container.v1.ClusterUpdate\"\x8d\x01\n\x15UpdateNodePoolRequest\x12\x12\n\nproject_id\x18\x01 \x01(\t\x12\x0c\n\x04zone\x18\x02 \x01(\t\x12\x12\n\ncluster_id\x18\x03 \x01(\t\x12\x14\n\x0cnode_pool_id\x18\x04 \x01(\t\x12\x14\n\x0cnode_version\x18\x05 \x01(\t\x12\x12\n\nimage_type\x18\x06 \x01(\t\"\xaa\x01\n\x1dSetNodePoolAutoscalingRequest\x12\x12\n\nproject_id\x18\x01 \x01(\t\x12\x0c\n\x04zone\x18\x02 \x01(\t\x12\x12\n\ncluster_id\x18\x03 \x01(\t\x12\x14\n\x0cnode_pool_id\x18\x04 \x01(\t\x12=\n\x0b\x61utoscaling\x18\x05 \x01(\x0b\x32(.google.container.v1.NodePoolAutoscaling\"i\n\x18SetLoggingServiceRequest\x12\x12\n\nproject_id\x18\x01 \x01(\t\x12\x0c\n\x04zone\x18\x02 \x01(\t\x12\x12\n\ncluster_id\x18\x03 \x01(\t\x12\x17\n\x0flogging_service\x18\x04 \x01(\t\"o\n\x1bSetMonitoringServiceRequest\x12\x12\n\nproject_id\x18\x01 \x01(\t\x12\x0c\n\x04zone\x18\x02 \x01(\t\x12\x12\n\ncluster_id\x18\x03 \x01(\t\x12\x1a\n\x12monitoring_service\x18\x04 \x01(\t\"\x88\x01\n\x16SetAddonsConfigRequest\x12\x12\n\nproject_id\x18\x01 \x01(\t\x12\x0c\n\x04zone\x18\x02 \x01(\t\x12\x12\n\ncluster_id\x18\x03 \x01(\t\x12\x38\n\raddons_config\x18\x04 \x01(\x0b\x32!.google.container.v1.AddonsConfig\"^\n\x13SetLocationsRequest\x12\x12\n\nproject_id\x18\x01 \x01(\t\x12\x0c\n\x04zone\x18\x02 \x01(\t\x12\x12\n\ncluster_id\x18\x03 \x01(\t\x12\x11\n\tlocations\x18\x04 \x03(\t\"c\n\x13UpdateMasterRequest\x12\x12\n\nproject_id\x18\x01 \x01(\t\x12\x0c\n\x04zone\x18\x02 \x01(\t\x12\x12\n\ncluster_id\x18\x03 \x01(\t\x12\x16\n\x0emaster_version\x18\x04 \x01(\t\"\x91\x02\n\x14SetMasterAuthRequest\x12\x12\n\nproject_id\x18\x01 \x01(\t\x12\x0c\n\x04zone\x18\x02 \x01(\t\x12\x12\n\ncluster_id\x18\x03 \x01(\t\x12@\n\x06\x61\x63tion\x18\x04 \x01(\x0e\x32\x30.google.container.v1.SetMasterAuthRequest.Action\x12/\n\x06update\x18\x05 \x01(\x0b\x32\x1f.google.container.v1.MasterAuth\"P\n\x06\x41\x63tion\x12\x0b\n\x07UNKNOWN\x10\x00\x12\x10\n\x0cSET_PASSWORD\x10\x01\x12\x15\n\x11GENERATE_PASSWORD\x10\x02\x12\x10\n\x0cSET_USERNAME\x10\x03\"L\n\x14\x44\x65leteClusterRequest\x12\x12\n\nproject_id\x18\x01 \x01(\t\x12\x0c\n\x04zone\x18\x02 \x01(\t\x12\x12\n\ncluster_id\x18\x03 \x01(\t\"7\n\x13ListClustersRequest\x12\x12\n\nproject_id\x18\x01 \x01(\t\x12\x0c\n\x04zone\x18\x02 \x01(\t\"]\n\x14ListClustersResponse\x12.\n\x08\x63lusters\x18\x01 \x03(\x0b\x32\x1c.google.container.v1.Cluster\x12\x15\n\rmissing_zones\x18\x02 \x03(\t\"M\n\x13GetOperationRequest\x12\x12\n\nproject_id\x18\x01 \x01(\t\x12\x0c\n\x04zone\x18\x02 \x01(\t\x12\x14\n\x0coperation_id\x18\x03 \x01(\t\"9\n\x15ListOperationsRequest\x12\x12\n\nproject_id\x18\x01 \x01(\t\x12\x0c\n\x04zone\x18\x02 \x01(\t\"P\n\x16\x43\x61ncelOperationRequest\x12\x12\n\nproject_id\x18\x01 \x01(\t\x12\x0c\n\x04zone\x18\x02 \x01(\t\x12\x14\n\x0coperation_id\x18\x03 \x01(\t\"c\n\x16ListOperationsResponse\x12\x32\n\noperations\x18\x01 \x03(\x0b\x32\x1e.google.container.v1.Operation\x12\x15\n\rmissing_zones\x18\x02 \x03(\t\":\n\x16GetServerConfigRequest\x12\x12\n\nproject_id\x18\x01 \x01(\t\x12\x0c\n\x04zone\x18\x02 \x01(\t\"\xa2\x01\n\x0cServerConfig\x12\x1f\n\x17\x64\x65\x66\x61ult_cluster_version\x18\x01 \x01(\t\x12\x1b\n\x13valid_node_versions\x18\x03 \x03(\t\x12\x1a\n\x12\x64\x65\x66\x61ult_image_type\x18\x04 \x01(\t\x12\x19\n\x11valid_image_types\x18\x05 \x03(\t\x12\x1d\n\x15valid_master_versions\x18\x06 \x03(\t\"\x7f\n\x15\x43reateNodePoolRequest\x12\x12\n\nproject_id\x18\x01 \x01(\t\x12\x0c\n\x04zone\x18\x02 \x01(\t\x12\x12\n\ncluster_id\x18\x03 \x01(\t\x12\x30\n\tnode_pool\x18\x04 \x01(\x0b\x32\x1d.google.container.v1.NodePool\"c\n\x15\x44\x65leteNodePoolRequest\x12\x12\n\nproject_id\x18\x01 \x01(\t\x12\x0c\n\x04zone\x18\x02 \x01(\t\x12\x12\n\ncluster_id\x18\x03 \x01(\t\x12\x14\n\x0cnode_pool_id\x18\x04 \x01(\t\"L\n\x14ListNodePoolsRequest\x12\x12\n\nproject_id\x18\x01 \x01(\t\x12\x0c\n\x04zone\x18\x02 \x01(\t\x12\x12\n\ncluster_id\x18\x03 \x01(\t\"`\n\x12GetNodePoolRequest\x12\x12\n\nproject_id\x18\x01 \x01(\t\x12\x0c\n\x04zone\x18\x02 \x01(\t\x12\x12\n\ncluster_id\x18\x03 \x01(\t\x12\x14\n\x0cnode_pool_id\x18\x04 \x01(\t\"\xf0\x03\n\x08NodePool\x12\x0c\n\x04name\x18\x01 \x01(\t\x12/\n\x06\x63onfig\x18\x02 \x01(\x0b\x32\x1f.google.container.v1.NodeConfig\x12\x1a\n\x12initial_node_count\x18\x03 \x01(\x05\x12\x11\n\tself_link\x18\x64 \x01(\t\x12\x0f\n\x07version\x18\x65 \x01(\t\x12\x1b\n\x13instance_group_urls\x18\x66 \x03(\t\x12\x34\n\x06status\x18g \x01(\x0e\x32$.google.container.v1.NodePool.Status\x12\x16\n\x0estatus_message\x18h \x01(\t\x12=\n\x0b\x61utoscaling\x18\x04 \x01(\x0b\x32(.google.container.v1.NodePoolAutoscaling\x12\x37\n\nmanagement\x18\x05 \x01(\x0b\x32#.google.container.v1.NodeManagement\"\x81\x01\n\x06Status\x12\x16\n\x12STATUS_UNSPECIFIED\x10\x00\x12\x10\n\x0cPROVISIONING\x10\x01\x12\x0b\n\x07RUNNING\x10\x02\x12\x16\n\x12RUNNING_WITH_ERROR\x10\x03\x12\x0f\n\x0bRECONCILING\x10\x04\x12\x0c\n\x08STOPPING\x10\x05\x12\t\n\x05\x45RROR\x10\x06\"}\n\x0eNodeManagement\x12\x14\n\x0c\x61uto_upgrade\x18\x01 \x01(\x08\x12\x13\n\x0b\x61uto_repair\x18\x02 \x01(\x08\x12@\n\x0fupgrade_options\x18\n \x01(\x0b\x32\'.google.container.v1.AutoUpgradeOptions\"J\n\x12\x41utoUpgradeOptions\x12\x1f\n\x17\x61uto_upgrade_start_time\x18\x01 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x02 \x01(\t\"K\n\x11MaintenancePolicy\x12\x36\n\x06window\x18\x01 \x01(\x0b\x32&.google.container.v1.MaintenanceWindow\"n\n\x11MaintenanceWindow\x12O\n\x18\x64\x61ily_maintenance_window\x18\x02 \x01(\x0b\x32+.google.container.v1.DailyMaintenanceWindowH\x00\x42\x08\n\x06policy\">\n\x16\x44\x61ilyMaintenanceWindow\x12\x12\n\nstart_time\x18\x02 \x01(\t\x12\x10\n\x08\x64uration\x18\x03 \x01(\t\"\xa3\x01\n\x1cSetNodePoolManagementRequest\x12\x12\n\nproject_id\x18\x01 \x01(\t\x12\x0c\n\x04zone\x18\x02 \x01(\t\x12\x12\n\ncluster_id\x18\x03 \x01(\t\x12\x14\n\x0cnode_pool_id\x18\x04 \x01(\t\x12\x37\n\nmanagement\x18\x05 \x01(\x0b\x32#.google.container.v1.NodeManagement\"x\n\x16SetNodePoolSizeRequest\x12\x12\n\nproject_id\x18\x01 \x01(\t\x12\x0c\n\x04zone\x18\x02 \x01(\t\x12\x12\n\ncluster_id\x18\x03 \x01(\t\x12\x14\n\x0cnode_pool_id\x18\x04 \x01(\t\x12\x12\n\nnode_count\x18\x05 \x01(\x05\"l\n\x1eRollbackNodePoolUpgradeRequest\x12\x12\n\nproject_id\x18\x01 \x01(\t\x12\x0c\n\x04zone\x18\x02 \x01(\t\x12\x12\n\ncluster_id\x18\x03 \x01(\t\x12\x14\n\x0cnode_pool_id\x18\x04 \x01(\t\"J\n\x15ListNodePoolsResponse\x12\x31\n\nnode_pools\x18\x01 \x03(\x0b\x32\x1d.google.container.v1.NodePool\"V\n\x13NodePoolAutoscaling\x12\x0f\n\x07\x65nabled\x18\x01 \x01(\x08\x12\x16\n\x0emin_node_count\x18\x02 \x01(\x05\x12\x16\n\x0emax_node_count\x18\x03 \x01(\x05\"\xee\x01\n\x10SetLabelsRequest\x12\x12\n\nproject_id\x18\x01 \x01(\t\x12\x0c\n\x04zone\x18\x02 \x01(\t\x12\x12\n\ncluster_id\x18\x03 \x01(\t\x12R\n\x0fresource_labels\x18\x04 \x03(\x0b\x32\x39.google.container.v1.SetLabelsRequest.ResourceLabelsEntry\x12\x19\n\x11label_fingerprint\x18\x05 \x01(\t\x1a\x35\n\x13ResourceLabelsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"]\n\x14SetLegacyAbacRequest\x12\x12\n\nproject_id\x18\x01 \x01(\t\x12\x0c\n\x04zone\x18\x02 \x01(\t\x12\x12\n\ncluster_id\x18\x03 \x01(\t\x12\x0f\n\x07\x65nabled\x18\x04 \x01(\x08\"N\n\x16StartIPRotationRequest\x12\x12\n\nproject_id\x18\x01 \x01(\t\x12\x0c\n\x04zone\x18\x02 \x01(\t\x12\x12\n\ncluster_id\x18\x03 \x01(\t\"Q\n\x19\x43ompleteIPRotationRequest\x12\x12\n\nproject_id\x18\x01 \x01(\t\x12\x0c\n\x04zone\x18\x02 \x01(\t\x12\x12\n\ncluster_id\x18\x03 \x01(\t\"H\n\x11\x41\x63\x63\x65leratorConfig\x12\x19\n\x11\x61\x63\x63\x65lerator_count\x18\x01 \x01(\x03\x12\x18\n\x10\x61\x63\x63\x65lerator_type\x18\x02 \x01(\t\"\x8b\x01\n\x17SetNetworkPolicyRequest\x12\x12\n\nproject_id\x18\x01 \x01(\t\x12\x0c\n\x04zone\x18\x02 \x01(\t\x12\x12\n\ncluster_id\x18\x03 \x01(\t\x12:\n\x0enetwork_policy\x18\x04 \x01(\x0b\x32\".google.container.v1.NetworkPolicy\"\x97\x01\n\x1bSetMaintenancePolicyRequest\x12\x12\n\nproject_id\x18\x01 \x01(\t\x12\x0c\n\x04zone\x18\x02 \x01(\t\x12\x12\n\ncluster_id\x18\x03 \x01(\t\x12\x42\n\x12maintenance_policy\x18\x04 \x01(\x0b\x32&.google.container.v1.MaintenancePolicy2\xe3*\n\x0e\x43lusterManager\x12\x9c\x01\n\x0cListClusters\x12(.google.container.v1.ListClustersRequest\x1a).google.container.v1.ListClustersResponse\"7\x82\xd3\xe4\x93\x02\x31\x12//v1/projects/{project_id}/zones/{zone}/clusters\x12\x98\x01\n\nGetCluster\x12&.google.container.v1.GetClusterRequest\x1a\x1c.google.container.v1.Cluster\"D\x82\xd3\xe4\x93\x02>\x12</v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}\x12\x96\x01\n\rCreateCluster\x12).google.container.v1.CreateClusterRequest\x1a\x1e.google.container.v1.Operation\":\x82\xd3\xe4\x93\x02\x34\"//v1/projects/{project_id}/zones/{zone}/clusters:\x01*\x12\xa3\x01\n\rUpdateCluster\x12).google.container.v1.UpdateClusterRequest\x1a\x1e.google.container.v1.Operation\"G\x82\xd3\xe4\x93\x02\x41\x1a</v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}:\x01*\x12\xc5\x01\n\x0eUpdateNodePool\x12*.google.container.v1.UpdateNodePoolRequest\x1a\x1e.google.container.v1.Operation\"g\x82\xd3\xe4\x93\x02\x61\"\\/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/nodePools/{node_pool_id}/update:\x01*\x12\xda\x01\n\x16SetNodePoolAutoscaling\x12\x32.google.container.v1.SetNodePoolAutoscalingRequest\x1a\x1e.google.container.v1.Operation\"l\x82\xd3\xe4\x93\x02\x66\"a/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/nodePools/{node_pool_id}/autoscaling:\x01*\x12\xb3\x01\n\x11SetLoggingService\x12-.google.container.v1.SetLoggingServiceRequest\x1a\x1e.google.container.v1.Operation\"O\x82\xd3\xe4\x93\x02I\"D/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/logging:\x01*\x12\xbc\x01\n\x14SetMonitoringService\x12\x30.google.container.v1.SetMonitoringServiceRequest\x1a\x1e.google.container.v1.Operation\"R\x82\xd3\xe4\x93\x02L\"G/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/monitoring:\x01*\x12\xae\x01\n\x0fSetAddonsConfig\x12+.google.container.v1.SetAddonsConfigRequest\x1a\x1e.google.container.v1.Operation\"N\x82\xd3\xe4\x93\x02H\"C/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/addons:\x01*\x12\xab\x01\n\x0cSetLocations\x12(.google.container.v1.SetLocationsRequest\x1a\x1e.google.container.v1.Operation\"Q\x82\xd3\xe4\x93\x02K\"F/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/locations:\x01*\x12\xa8\x01\n\x0cUpdateMaster\x12(.google.container.v1.UpdateMasterRequest\x1a\x1e.google.container.v1.Operation\"N\x82\xd3\xe4\x93\x02H\"C/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/master:\x01*\x12\xb1\x01\n\rSetMasterAuth\x12).google.container.v1.SetMasterAuthRequest\x1a\x1e.google.container.v1.Operation\"U\x82\xd3\xe4\x93\x02O\"J/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}:setMasterAuth:\x01*\x12\xa0\x01\n\rDeleteCluster\x12).google.container.v1.DeleteClusterRequest\x1a\x1e.google.container.v1.Operation\"D\x82\xd3\xe4\x93\x02>*</v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}\x12\xa4\x01\n\x0eListOperations\x12*.google.container.v1.ListOperationsRequest\x1a+.google.container.v1.ListOperationsResponse\"9\x82\xd3\xe4\x93\x02\x33\x12\x31/v1/projects/{project_id}/zones/{zone}/operations\x12\xa2\x01\n\x0cGetOperation\x12(.google.container.v1.GetOperationRequest\x1a\x1e.google.container.v1.Operation\"H\x82\xd3\xe4\x93\x02\x42\x12@/v1/projects/{project_id}/zones/{zone}/operations/{operation_id}\x12\xaa\x01\n\x0f\x43\x61ncelOperation\x12+.google.container.v1.CancelOperationRequest\x1a\x16.google.protobuf.Empty\"R\x82\xd3\xe4\x93\x02L\"G/v1/projects/{project_id}/zones/{zone}/operations/{operation_id}:cancel:\x01*\x12\x9e\x01\n\x0fGetServerConfig\x12+.google.container.v1.GetServerConfigRequest\x1a!.google.container.v1.ServerConfig\";\x82\xd3\xe4\x93\x02\x35\x12\x33/v1/projects/{project_id}/zones/{zone}/serverconfig\x12\xb6\x01\n\rListNodePools\x12).google.container.v1.ListNodePoolsRequest\x1a*.google.container.v1.ListNodePoolsResponse\"N\x82\xd3\xe4\x93\x02H\x12\x46/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/nodePools\x12\xb4\x01\n\x0bGetNodePool\x12\'.google.container.v1.GetNodePoolRequest\x1a\x1d.google.container.v1.NodePool\"]\x82\xd3\xe4\x93\x02W\x12U/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/nodePools/{node_pool_id}\x12\xaf\x01\n\x0e\x43reateNodePool\x12*.google.container.v1.CreateNodePoolRequest\x1a\x1e.google.container.v1.Operation\"Q\x82\xd3\xe4\x93\x02K\"F/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/nodePools:\x01*\x12\xbb\x01\n\x0e\x44\x65leteNodePool\x12*.google.container.v1.DeleteNodePoolRequest\x1a\x1e.google.container.v1.Operation\"]\x82\xd3\xe4\x93\x02W*U/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/nodePools/{node_pool_id}\x12\xd9\x01\n\x17RollbackNodePoolUpgrade\x12\x33.google.container.v1.RollbackNodePoolUpgradeRequest\x1a\x1e.google.container.v1.Operation\"i\x82\xd3\xe4\x93\x02\x63\"^/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/nodePools/{node_pool_id}:rollback:\x01*\x12\xda\x01\n\x15SetNodePoolManagement\x12\x31.google.container.v1.SetNodePoolManagementRequest\x1a\x1e.google.container.v1.Operation\"n\x82\xd3\xe4\x93\x02h\"c/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/nodePools/{node_pool_id}/setManagement:\x01*\x12\xaa\x01\n\tSetLabels\x12%.google.container.v1.SetLabelsRequest\x1a\x1e.google.container.v1.Operation\"V\x82\xd3\xe4\x93\x02P\"K/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/resourceLabels:\x01*\x12\xae\x01\n\rSetLegacyAbac\x12).google.container.v1.SetLegacyAbacRequest\x1a\x1e.google.container.v1.Operation\"R\x82\xd3\xe4\x93\x02L\"G/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/legacyAbac:\x01*\x12\xb7\x01\n\x0fStartIPRotation\x12+.google.container.v1.StartIPRotationRequest\x1a\x1e.google.container.v1.Operation\"W\x82\xd3\xe4\x93\x02Q\"L/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}:startIpRotation:\x01*\x12\xc0\x01\n\x12\x43ompleteIPRotation\x12..google.container.v1.CompleteIPRotationRequest\x1a\x1e.google.container.v1.Operation\"Z\x82\xd3\xe4\x93\x02T\"O/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}:completeIpRotation:\x01*\x12\xc8\x01\n\x0fSetNodePoolSize\x12+.google.container.v1.SetNodePoolSizeRequest\x1a\x1e.google.container.v1.Operation\"h\x82\xd3\xe4\x93\x02\x62\"]/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/nodePools/{node_pool_id}/setSize:\x01*\x12\xba\x01\n\x10SetNetworkPolicy\x12,.google.container.v1.SetNetworkPolicyRequest\x1a\x1e.google.container.v1.Operation\"X\x82\xd3\xe4\x93\x02R\"M/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}:setNetworkPolicy:\x01*\x12\xc6\x01\n\x14SetMaintenancePolicy\x12\x30.google.container.v1.SetMaintenancePolicyRequest\x1a\x1e.google.container.v1.Operation\"\\\x82\xd3\xe4\x93\x02V\"Q/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}:setMaintenancePolicy:\x01*B\xa6\x01\n\x17\x63om.google.container.v1B\x13\x43lusterServiceProtoP\x01Z<google.golang.org/genproto/googleapis/container/v1;container\xaa\x02\x19Google.Cloud.Container.V1\xca\x02\x19Google\\Cloud\\Container\\V1b\x06proto3')
   ,
   dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR,google_dot_protobuf_dot_empty__pb2.DESCRIPTOR,])
-_sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 
 
@@ -291,14 +290,14 @@ _NODECONFIG_METADATAENTRY = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='value', full_name='google.container.v1.NodeConfig.MetadataEntry.value', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -328,14 +327,14 @@ _NODECONFIG_LABELSENTRY = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='value', full_name='google.container.v1.NodeConfig.LabelsEntry.value', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -365,84 +364,84 @@ _NODECONFIG = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='disk_size_gb', full_name='google.container.v1.NodeConfig.disk_size_gb', index=1,
       number=2, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='oauth_scopes', full_name='google.container.v1.NodeConfig.oauth_scopes', index=2,
       number=3, type=9, cpp_type=9, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='service_account', full_name='google.container.v1.NodeConfig.service_account', index=3,
       number=9, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='metadata', full_name='google.container.v1.NodeConfig.metadata', index=4,
       number=4, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='image_type', full_name='google.container.v1.NodeConfig.image_type', index=5,
       number=5, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='labels', full_name='google.container.v1.NodeConfig.labels', index=6,
       number=6, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='local_ssd_count', full_name='google.container.v1.NodeConfig.local_ssd_count', index=7,
       number=7, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='tags', full_name='google.container.v1.NodeConfig.tags', index=8,
       number=8, type=9, cpp_type=9, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='preemptible', full_name='google.container.v1.NodeConfig.preemptible', index=9,
       number=10, type=8, cpp_type=7, label=1,
       has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='accelerators', full_name='google.container.v1.NodeConfig.accelerators', index=10,
       number=11, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='min_cpu_platform', full_name='google.container.v1.NodeConfig.min_cpu_platform', index=11,
       number=13, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -473,42 +472,42 @@ _MASTERAUTH = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='password', full_name='google.container.v1.MasterAuth.password', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='client_certificate_config', full_name='google.container.v1.MasterAuth.client_certificate_config', index=2,
       number=3, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='cluster_ca_certificate', full_name='google.container.v1.MasterAuth.cluster_ca_certificate', index=3,
       number=100, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='client_certificate', full_name='google.container.v1.MasterAuth.client_certificate', index=4,
       number=101, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='client_key', full_name='google.container.v1.MasterAuth.client_key', index=5,
       number=102, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -539,7 +538,7 @@ _CLIENTCERTIFICATECONFIG = _descriptor.Descriptor(
       has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -570,28 +569,28 @@ _ADDONSCONFIG = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='horizontal_pod_autoscaling', full_name='google.container.v1.AddonsConfig.horizontal_pod_autoscaling', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='kubernetes_dashboard', full_name='google.container.v1.AddonsConfig.kubernetes_dashboard', index=2,
       number=3, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='network_policy_config', full_name='google.container.v1.AddonsConfig.network_policy_config', index=3,
       number=4, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -622,7 +621,7 @@ _HTTPLOADBALANCING = _descriptor.Descriptor(
       has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -653,7 +652,7 @@ _HORIZONTALPODAUTOSCALING = _descriptor.Descriptor(
       has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -684,7 +683,7 @@ _KUBERNETESDASHBOARD = _descriptor.Descriptor(
       has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -715,7 +714,7 @@ _NETWORKPOLICYCONFIG = _descriptor.Descriptor(
       has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -746,14 +745,14 @@ _MASTERAUTHORIZEDNETWORKSCONFIG_CIDRBLOCK = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='cidr_block', full_name='google.container.v1.MasterAuthorizedNetworksConfig.CidrBlock.cidr_block', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -783,14 +782,14 @@ _MASTERAUTHORIZEDNETWORKSCONFIG = _descriptor.Descriptor(
       has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='cidr_blocks', full_name='google.container.v1.MasterAuthorizedNetworksConfig.cidr_blocks', index=1,
       number=2, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -821,7 +820,7 @@ _LEGACYABAC = _descriptor.Descriptor(
       has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -852,14 +851,14 @@ _NETWORKPOLICY = _descriptor.Descriptor(
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='enabled', full_name='google.container.v1.NetworkPolicy.enabled', index=1,
       number=2, type=8, cpp_type=7, label=1,
       has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -891,77 +890,77 @@ _IPALLOCATIONPOLICY = _descriptor.Descriptor(
       has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='create_subnetwork', full_name='google.container.v1.IPAllocationPolicy.create_subnetwork', index=1,
       number=2, type=8, cpp_type=7, label=1,
       has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='subnetwork_name', full_name='google.container.v1.IPAllocationPolicy.subnetwork_name', index=2,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='cluster_ipv4_cidr', full_name='google.container.v1.IPAllocationPolicy.cluster_ipv4_cidr', index=3,
       number=4, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='node_ipv4_cidr', full_name='google.container.v1.IPAllocationPolicy.node_ipv4_cidr', index=4,
       number=5, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='services_ipv4_cidr', full_name='google.container.v1.IPAllocationPolicy.services_ipv4_cidr', index=5,
       number=6, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='cluster_secondary_range_name', full_name='google.container.v1.IPAllocationPolicy.cluster_secondary_range_name', index=6,
       number=7, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='services_secondary_range_name', full_name='google.container.v1.IPAllocationPolicy.services_secondary_range_name', index=7,
       number=8, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='cluster_ipv4_cidr_block', full_name='google.container.v1.IPAllocationPolicy.cluster_ipv4_cidr_block', index=8,
       number=9, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='node_ipv4_cidr_block', full_name='google.container.v1.IPAllocationPolicy.node_ipv4_cidr_block', index=9,
       number=10, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='services_ipv4_cidr_block', full_name='google.container.v1.IPAllocationPolicy.services_ipv4_cidr_block', index=10,
       number=11, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -992,14 +991,14 @@ _CLUSTER_RESOURCELABELSENTRY = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='value', full_name='google.container.v1.Cluster.ResourceLabelsEntry.value', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -1029,245 +1028,245 @@ _CLUSTER = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='description', full_name='google.container.v1.Cluster.description', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='initial_node_count', full_name='google.container.v1.Cluster.initial_node_count', index=2,
       number=3, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='node_config', full_name='google.container.v1.Cluster.node_config', index=3,
       number=4, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='master_auth', full_name='google.container.v1.Cluster.master_auth', index=4,
       number=5, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='logging_service', full_name='google.container.v1.Cluster.logging_service', index=5,
       number=6, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='monitoring_service', full_name='google.container.v1.Cluster.monitoring_service', index=6,
       number=7, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='network', full_name='google.container.v1.Cluster.network', index=7,
       number=8, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='cluster_ipv4_cidr', full_name='google.container.v1.Cluster.cluster_ipv4_cidr', index=8,
       number=9, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='addons_config', full_name='google.container.v1.Cluster.addons_config', index=9,
       number=10, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='subnetwork', full_name='google.container.v1.Cluster.subnetwork', index=10,
       number=11, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='node_pools', full_name='google.container.v1.Cluster.node_pools', index=11,
       number=12, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='locations', full_name='google.container.v1.Cluster.locations', index=12,
       number=13, type=9, cpp_type=9, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='enable_kubernetes_alpha', full_name='google.container.v1.Cluster.enable_kubernetes_alpha', index=13,
       number=14, type=8, cpp_type=7, label=1,
       has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='resource_labels', full_name='google.container.v1.Cluster.resource_labels', index=14,
       number=15, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='label_fingerprint', full_name='google.container.v1.Cluster.label_fingerprint', index=15,
       number=16, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='legacy_abac', full_name='google.container.v1.Cluster.legacy_abac', index=16,
       number=18, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='network_policy', full_name='google.container.v1.Cluster.network_policy', index=17,
       number=19, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='ip_allocation_policy', full_name='google.container.v1.Cluster.ip_allocation_policy', index=18,
       number=20, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='master_authorized_networks_config', full_name='google.container.v1.Cluster.master_authorized_networks_config', index=19,
       number=22, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='maintenance_policy', full_name='google.container.v1.Cluster.maintenance_policy', index=20,
       number=23, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='self_link', full_name='google.container.v1.Cluster.self_link', index=21,
       number=100, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='zone', full_name='google.container.v1.Cluster.zone', index=22,
       number=101, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='endpoint', full_name='google.container.v1.Cluster.endpoint', index=23,
       number=102, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='initial_cluster_version', full_name='google.container.v1.Cluster.initial_cluster_version', index=24,
       number=103, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='current_master_version', full_name='google.container.v1.Cluster.current_master_version', index=25,
       number=104, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='current_node_version', full_name='google.container.v1.Cluster.current_node_version', index=26,
       number=105, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='create_time', full_name='google.container.v1.Cluster.create_time', index=27,
       number=106, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='status', full_name='google.container.v1.Cluster.status', index=28,
       number=107, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='status_message', full_name='google.container.v1.Cluster.status_message', index=29,
       number=108, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='node_ipv4_cidr_size', full_name='google.container.v1.Cluster.node_ipv4_cidr_size', index=30,
       number=109, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='services_ipv4_cidr', full_name='google.container.v1.Cluster.services_ipv4_cidr', index=31,
       number=110, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='instance_group_urls', full_name='google.container.v1.Cluster.instance_group_urls', index=32,
       number=111, type=9, cpp_type=9, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='current_node_count', full_name='google.container.v1.Cluster.current_node_count', index=33,
       number=112, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='expire_time', full_name='google.container.v1.Cluster.expire_time', index=34,
       number=113, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -1299,63 +1298,63 @@ _CLUSTERUPDATE = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='desired_monitoring_service', full_name='google.container.v1.ClusterUpdate.desired_monitoring_service', index=1,
       number=5, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='desired_addons_config', full_name='google.container.v1.ClusterUpdate.desired_addons_config', index=2,
       number=6, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='desired_node_pool_id', full_name='google.container.v1.ClusterUpdate.desired_node_pool_id', index=3,
       number=7, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='desired_image_type', full_name='google.container.v1.ClusterUpdate.desired_image_type', index=4,
       number=8, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='desired_node_pool_autoscaling', full_name='google.container.v1.ClusterUpdate.desired_node_pool_autoscaling', index=5,
       number=9, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='desired_locations', full_name='google.container.v1.ClusterUpdate.desired_locations', index=6,
       number=10, type=9, cpp_type=9, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='desired_master_authorized_networks_config', full_name='google.container.v1.ClusterUpdate.desired_master_authorized_networks_config', index=7,
       number=12, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='desired_master_version', full_name='google.container.v1.ClusterUpdate.desired_master_version', index=8,
       number=100, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -1386,70 +1385,70 @@ _OPERATION = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='zone', full_name='google.container.v1.Operation.zone', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='operation_type', full_name='google.container.v1.Operation.operation_type', index=2,
       number=3, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='status', full_name='google.container.v1.Operation.status', index=3,
       number=4, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='detail', full_name='google.container.v1.Operation.detail', index=4,
       number=8, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='status_message', full_name='google.container.v1.Operation.status_message', index=5,
       number=5, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='self_link', full_name='google.container.v1.Operation.self_link', index=6,
       number=6, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='target_link', full_name='google.container.v1.Operation.target_link', index=7,
       number=7, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='start_time', full_name='google.container.v1.Operation.start_time', index=8,
       number=10, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='end_time', full_name='google.container.v1.Operation.end_time', index=9,
       number=11, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -1482,21 +1481,21 @@ _CREATECLUSTERREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='zone', full_name='google.container.v1.CreateClusterRequest.zone', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='cluster', full_name='google.container.v1.CreateClusterRequest.cluster', index=2,
       number=3, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -1527,21 +1526,21 @@ _GETCLUSTERREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='zone', full_name='google.container.v1.GetClusterRequest.zone', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='cluster_id', full_name='google.container.v1.GetClusterRequest.cluster_id', index=2,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -1572,28 +1571,28 @@ _UPDATECLUSTERREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='zone', full_name='google.container.v1.UpdateClusterRequest.zone', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='cluster_id', full_name='google.container.v1.UpdateClusterRequest.cluster_id', index=2,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='update', full_name='google.container.v1.UpdateClusterRequest.update', index=3,
       number=4, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -1624,42 +1623,42 @@ _UPDATENODEPOOLREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='zone', full_name='google.container.v1.UpdateNodePoolRequest.zone', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='cluster_id', full_name='google.container.v1.UpdateNodePoolRequest.cluster_id', index=2,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='node_pool_id', full_name='google.container.v1.UpdateNodePoolRequest.node_pool_id', index=3,
       number=4, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='node_version', full_name='google.container.v1.UpdateNodePoolRequest.node_version', index=4,
       number=5, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='image_type', full_name='google.container.v1.UpdateNodePoolRequest.image_type', index=5,
       number=6, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -1690,35 +1689,35 @@ _SETNODEPOOLAUTOSCALINGREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='zone', full_name='google.container.v1.SetNodePoolAutoscalingRequest.zone', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='cluster_id', full_name='google.container.v1.SetNodePoolAutoscalingRequest.cluster_id', index=2,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='node_pool_id', full_name='google.container.v1.SetNodePoolAutoscalingRequest.node_pool_id', index=3,
       number=4, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='autoscaling', full_name='google.container.v1.SetNodePoolAutoscalingRequest.autoscaling', index=4,
       number=5, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -1749,28 +1748,28 @@ _SETLOGGINGSERVICEREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='zone', full_name='google.container.v1.SetLoggingServiceRequest.zone', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='cluster_id', full_name='google.container.v1.SetLoggingServiceRequest.cluster_id', index=2,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='logging_service', full_name='google.container.v1.SetLoggingServiceRequest.logging_service', index=3,
       number=4, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -1801,28 +1800,28 @@ _SETMONITORINGSERVICEREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='zone', full_name='google.container.v1.SetMonitoringServiceRequest.zone', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='cluster_id', full_name='google.container.v1.SetMonitoringServiceRequest.cluster_id', index=2,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='monitoring_service', full_name='google.container.v1.SetMonitoringServiceRequest.monitoring_service', index=3,
       number=4, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -1853,28 +1852,28 @@ _SETADDONSCONFIGREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='zone', full_name='google.container.v1.SetAddonsConfigRequest.zone', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='cluster_id', full_name='google.container.v1.SetAddonsConfigRequest.cluster_id', index=2,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='addons_config', full_name='google.container.v1.SetAddonsConfigRequest.addons_config', index=3,
       number=4, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -1905,28 +1904,28 @@ _SETLOCATIONSREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='zone', full_name='google.container.v1.SetLocationsRequest.zone', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='cluster_id', full_name='google.container.v1.SetLocationsRequest.cluster_id', index=2,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='locations', full_name='google.container.v1.SetLocationsRequest.locations', index=3,
       number=4, type=9, cpp_type=9, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -1957,28 +1956,28 @@ _UPDATEMASTERREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='zone', full_name='google.container.v1.UpdateMasterRequest.zone', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='cluster_id', full_name='google.container.v1.UpdateMasterRequest.cluster_id', index=2,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='master_version', full_name='google.container.v1.UpdateMasterRequest.master_version', index=3,
       number=4, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -2009,35 +2008,35 @@ _SETMASTERAUTHREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='zone', full_name='google.container.v1.SetMasterAuthRequest.zone', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='cluster_id', full_name='google.container.v1.SetMasterAuthRequest.cluster_id', index=2,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='action', full_name='google.container.v1.SetMasterAuthRequest.action', index=3,
       number=4, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='update', full_name='google.container.v1.SetMasterAuthRequest.update', index=4,
       number=5, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -2069,21 +2068,21 @@ _DELETECLUSTERREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='zone', full_name='google.container.v1.DeleteClusterRequest.zone', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='cluster_id', full_name='google.container.v1.DeleteClusterRequest.cluster_id', index=2,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -2114,14 +2113,14 @@ _LISTCLUSTERSREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='zone', full_name='google.container.v1.ListClustersRequest.zone', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -2152,14 +2151,14 @@ _LISTCLUSTERSRESPONSE = _descriptor.Descriptor(
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='missing_zones', full_name='google.container.v1.ListClustersResponse.missing_zones', index=1,
       number=2, type=9, cpp_type=9, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -2190,21 +2189,21 @@ _GETOPERATIONREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='zone', full_name='google.container.v1.GetOperationRequest.zone', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='operation_id', full_name='google.container.v1.GetOperationRequest.operation_id', index=2,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -2235,14 +2234,14 @@ _LISTOPERATIONSREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='zone', full_name='google.container.v1.ListOperationsRequest.zone', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -2273,21 +2272,21 @@ _CANCELOPERATIONREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='zone', full_name='google.container.v1.CancelOperationRequest.zone', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='operation_id', full_name='google.container.v1.CancelOperationRequest.operation_id', index=2,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -2318,14 +2317,14 @@ _LISTOPERATIONSRESPONSE = _descriptor.Descriptor(
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='missing_zones', full_name='google.container.v1.ListOperationsResponse.missing_zones', index=1,
       number=2, type=9, cpp_type=9, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -2356,14 +2355,14 @@ _GETSERVERCONFIGREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='zone', full_name='google.container.v1.GetServerConfigRequest.zone', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -2394,35 +2393,35 @@ _SERVERCONFIG = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='valid_node_versions', full_name='google.container.v1.ServerConfig.valid_node_versions', index=1,
       number=3, type=9, cpp_type=9, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='default_image_type', full_name='google.container.v1.ServerConfig.default_image_type', index=2,
       number=4, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='valid_image_types', full_name='google.container.v1.ServerConfig.valid_image_types', index=3,
       number=5, type=9, cpp_type=9, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='valid_master_versions', full_name='google.container.v1.ServerConfig.valid_master_versions', index=4,
       number=6, type=9, cpp_type=9, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -2453,28 +2452,28 @@ _CREATENODEPOOLREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='zone', full_name='google.container.v1.CreateNodePoolRequest.zone', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='cluster_id', full_name='google.container.v1.CreateNodePoolRequest.cluster_id', index=2,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='node_pool', full_name='google.container.v1.CreateNodePoolRequest.node_pool', index=3,
       number=4, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -2505,28 +2504,28 @@ _DELETENODEPOOLREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='zone', full_name='google.container.v1.DeleteNodePoolRequest.zone', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='cluster_id', full_name='google.container.v1.DeleteNodePoolRequest.cluster_id', index=2,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='node_pool_id', full_name='google.container.v1.DeleteNodePoolRequest.node_pool_id', index=3,
       number=4, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -2557,21 +2556,21 @@ _LISTNODEPOOLSREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='zone', full_name='google.container.v1.ListNodePoolsRequest.zone', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='cluster_id', full_name='google.container.v1.ListNodePoolsRequest.cluster_id', index=2,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -2602,28 +2601,28 @@ _GETNODEPOOLREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='zone', full_name='google.container.v1.GetNodePoolRequest.zone', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='cluster_id', full_name='google.container.v1.GetNodePoolRequest.cluster_id', index=2,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='node_pool_id', full_name='google.container.v1.GetNodePoolRequest.node_pool_id', index=3,
       number=4, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -2654,70 +2653,70 @@ _NODEPOOL = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='config', full_name='google.container.v1.NodePool.config', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='initial_node_count', full_name='google.container.v1.NodePool.initial_node_count', index=2,
       number=3, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='self_link', full_name='google.container.v1.NodePool.self_link', index=3,
       number=100, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='version', full_name='google.container.v1.NodePool.version', index=4,
       number=101, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='instance_group_urls', full_name='google.container.v1.NodePool.instance_group_urls', index=5,
       number=102, type=9, cpp_type=9, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='status', full_name='google.container.v1.NodePool.status', index=6,
       number=103, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='status_message', full_name='google.container.v1.NodePool.status_message', index=7,
       number=104, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='autoscaling', full_name='google.container.v1.NodePool.autoscaling', index=8,
       number=4, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='management', full_name='google.container.v1.NodePool.management', index=9,
       number=5, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -2749,21 +2748,21 @@ _NODEMANAGEMENT = _descriptor.Descriptor(
       has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='auto_repair', full_name='google.container.v1.NodeManagement.auto_repair', index=1,
       number=2, type=8, cpp_type=7, label=1,
       has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='upgrade_options', full_name='google.container.v1.NodeManagement.upgrade_options', index=2,
       number=10, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -2794,14 +2793,14 @@ _AUTOUPGRADEOPTIONS = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='description', full_name='google.container.v1.AutoUpgradeOptions.description', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -2832,7 +2831,7 @@ _MAINTENANCEPOLICY = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -2863,7 +2862,7 @@ _MAINTENANCEWINDOW = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -2897,14 +2896,14 @@ _DAILYMAINTENANCEWINDOW = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='duration', full_name='google.container.v1.DailyMaintenanceWindow.duration', index=1,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -2935,35 +2934,35 @@ _SETNODEPOOLMANAGEMENTREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='zone', full_name='google.container.v1.SetNodePoolManagementRequest.zone', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='cluster_id', full_name='google.container.v1.SetNodePoolManagementRequest.cluster_id', index=2,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='node_pool_id', full_name='google.container.v1.SetNodePoolManagementRequest.node_pool_id', index=3,
       number=4, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='management', full_name='google.container.v1.SetNodePoolManagementRequest.management', index=4,
       number=5, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -2994,35 +2993,35 @@ _SETNODEPOOLSIZEREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='zone', full_name='google.container.v1.SetNodePoolSizeRequest.zone', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='cluster_id', full_name='google.container.v1.SetNodePoolSizeRequest.cluster_id', index=2,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='node_pool_id', full_name='google.container.v1.SetNodePoolSizeRequest.node_pool_id', index=3,
       number=4, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='node_count', full_name='google.container.v1.SetNodePoolSizeRequest.node_count', index=4,
       number=5, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -3053,28 +3052,28 @@ _ROLLBACKNODEPOOLUPGRADEREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='zone', full_name='google.container.v1.RollbackNodePoolUpgradeRequest.zone', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='cluster_id', full_name='google.container.v1.RollbackNodePoolUpgradeRequest.cluster_id', index=2,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='node_pool_id', full_name='google.container.v1.RollbackNodePoolUpgradeRequest.node_pool_id', index=3,
       number=4, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -3105,7 +3104,7 @@ _LISTNODEPOOLSRESPONSE = _descriptor.Descriptor(
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -3136,21 +3135,21 @@ _NODEPOOLAUTOSCALING = _descriptor.Descriptor(
       has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='min_node_count', full_name='google.container.v1.NodePoolAutoscaling.min_node_count', index=1,
       number=2, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='max_node_count', full_name='google.container.v1.NodePoolAutoscaling.max_node_count', index=2,
       number=3, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -3181,14 +3180,14 @@ _SETLABELSREQUEST_RESOURCELABELSENTRY = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='value', full_name='google.container.v1.SetLabelsRequest.ResourceLabelsEntry.value', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -3218,35 +3217,35 @@ _SETLABELSREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='zone', full_name='google.container.v1.SetLabelsRequest.zone', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='cluster_id', full_name='google.container.v1.SetLabelsRequest.cluster_id', index=2,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='resource_labels', full_name='google.container.v1.SetLabelsRequest.resource_labels', index=3,
       number=4, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='label_fingerprint', full_name='google.container.v1.SetLabelsRequest.label_fingerprint', index=4,
       number=5, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -3277,28 +3276,28 @@ _SETLEGACYABACREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='zone', full_name='google.container.v1.SetLegacyAbacRequest.zone', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='cluster_id', full_name='google.container.v1.SetLegacyAbacRequest.cluster_id', index=2,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='enabled', full_name='google.container.v1.SetLegacyAbacRequest.enabled', index=3,
       number=4, type=8, cpp_type=7, label=1,
       has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -3329,21 +3328,21 @@ _STARTIPROTATIONREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='zone', full_name='google.container.v1.StartIPRotationRequest.zone', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='cluster_id', full_name='google.container.v1.StartIPRotationRequest.cluster_id', index=2,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -3374,21 +3373,21 @@ _COMPLETEIPROTATIONREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='zone', full_name='google.container.v1.CompleteIPRotationRequest.zone', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='cluster_id', full_name='google.container.v1.CompleteIPRotationRequest.cluster_id', index=2,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -3419,14 +3418,14 @@ _ACCELERATORCONFIG = _descriptor.Descriptor(
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='accelerator_type', full_name='google.container.v1.AcceleratorConfig.accelerator_type', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -3457,28 +3456,28 @@ _SETNETWORKPOLICYREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='zone', full_name='google.container.v1.SetNetworkPolicyRequest.zone', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='cluster_id', full_name='google.container.v1.SetNetworkPolicyRequest.cluster_id', index=2,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='network_policy', full_name='google.container.v1.SetNetworkPolicyRequest.network_policy', index=3,
       number=4, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -3509,28 +3508,28 @@ _SETMAINTENANCEPOLICYREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='zone', full_name='google.container.v1.SetMaintenancePolicyRequest.zone', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='cluster_id', full_name='google.container.v1.SetMaintenancePolicyRequest.cluster_id', index=2,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='maintenance_policy', full_name='google.container.v1.SetMaintenancePolicyRequest.maintenance_policy', index=3,
       number=4, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -3665,6 +3664,7 @@ DESCRIPTOR.message_types_by_name['CompleteIPRotationRequest'] = _COMPLETEIPROTAT
 DESCRIPTOR.message_types_by_name['AcceleratorConfig'] = _ACCELERATORCONFIG
 DESCRIPTOR.message_types_by_name['SetNetworkPolicyRequest'] = _SETNETWORKPOLICYREQUEST
 DESCRIPTOR.message_types_by_name['SetMaintenancePolicyRequest'] = _SETMAINTENANCEPOLICYREQUEST
+_sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 NodeConfig = _reflection.GeneratedProtocolMessageType('NodeConfig', (_message.Message,), dict(
 
@@ -3685,8 +3685,8 @@ NodeConfig = _reflection.GeneratedProtocolMessageType('NodeConfig', (_message.Me
   __module__ = 'google.cloud.container_v1.proto.cluster_service_pb2'
   ,
   __doc__ = """Parameters that describe the nodes in a cluster.
-
-
+  
+  
   Attributes:
       machine_type:
           The name of a Google Compute Engine `machine type
@@ -3782,8 +3782,8 @@ MasterAuth = _reflection.GeneratedProtocolMessageType('MasterAuth', (_message.Me
   __doc__ = """The authentication information for accessing the master endpoint.
   Authentication can be done using HTTP basic auth or using client
   certificates.
-
-
+  
+  
   Attributes:
       username:
           The username to use for HTTP basic authentication to the
@@ -3817,8 +3817,8 @@ ClientCertificateConfig = _reflection.GeneratedProtocolMessageType('ClientCertif
   __module__ = 'google.cloud.container_v1.proto.cluster_service_pb2'
   ,
   __doc__ = """Configuration for client certificates on the cluster.
-
-
+  
+  
   Attributes:
       issue_client_certificate:
           Issue a client certificate.
@@ -3833,8 +3833,8 @@ AddonsConfig = _reflection.GeneratedProtocolMessageType('AddonsConfig', (_messag
   ,
   __doc__ = """Configuration for the addons that can be automatically spun up in the
   cluster, enabling additional functionality.
-
-
+  
+  
   Attributes:
       http_load_balancing:
           Configuration for the HTTP (L7) load balancing controller
@@ -3863,8 +3863,8 @@ HttpLoadBalancing = _reflection.GeneratedProtocolMessageType('HttpLoadBalancing'
   __doc__ = """Configuration options for the HTTP (L7) load balancing controller addon,
   which makes it easy to set up HTTP load balancers for services in a
   cluster.
-
-
+  
+  
   Attributes:
       disabled:
           Whether the HTTP Load Balancing controller is enabled in the
@@ -3882,8 +3882,8 @@ HorizontalPodAutoscaling = _reflection.GeneratedProtocolMessageType('HorizontalP
   __doc__ = """Configuration options for the horizontal pod autoscaling feature, which
   increases or decreases the number of replica pods a replication
   controller has based on the resource usage of the existing pods.
-
-
+  
+  
   Attributes:
       disabled:
           Whether the Horizontal Pod Autoscaling feature is enabled in
@@ -3900,8 +3900,8 @@ KubernetesDashboard = _reflection.GeneratedProtocolMessageType('KubernetesDashbo
   __module__ = 'google.cloud.container_v1.proto.cluster_service_pb2'
   ,
   __doc__ = """Configuration for the Kubernetes Dashboard.
-
-
+  
+  
   Attributes:
       disabled:
           Whether the Kubernetes Dashboard is enabled for this cluster.
@@ -3917,8 +3917,8 @@ NetworkPolicyConfig = _reflection.GeneratedProtocolMessageType('NetworkPolicyCon
   __doc__ = """Configuration for NetworkPolicy. This only tracks whether the addon is
   enabled or not on the Master, it does not track whether network policy
   is enabled for the nodes.
-
-
+  
+  
   Attributes:
       disabled:
           Whether NetworkPolicy is enabled for this cluster.
@@ -3934,8 +3934,8 @@ MasterAuthorizedNetworksConfig = _reflection.GeneratedProtocolMessageType('Maste
     __module__ = 'google.cloud.container_v1.proto.cluster_service_pb2'
     ,
     __doc__ = """CidrBlock contains an optional name and one CIDR block.
-
-
+    
+    
     Attributes:
         display_name:
             display\_name is an optional field for users to identify CIDR
@@ -3954,8 +3954,8 @@ MasterAuthorizedNetworksConfig = _reflection.GeneratedProtocolMessageType('Maste
   networks will disallow all external traffic to access Kubernetes master
   through HTTPS except traffic from the given CIDR blocks, Google Compute
   Engine Public IPs and Google Prod IPs.
-
-
+  
+  
   Attributes:
       enabled:
           Whether or not master authorized networks is enabled.
@@ -3974,8 +3974,8 @@ LegacyAbac = _reflection.GeneratedProtocolMessageType('LegacyAbac', (_message.Me
   ,
   __doc__ = """Configuration for the legacy Attribute Based Access Control
   authorization mode.
-
-
+  
+  
   Attributes:
       enabled:
           Whether the ABAC authorizer is enabled for this cluster. When
@@ -3994,8 +3994,8 @@ NetworkPolicy = _reflection.GeneratedProtocolMessageType('NetworkPolicy', (_mess
   ,
   __doc__ = """Configuration options for the NetworkPolicy feature.
   https://kubernetes.io/docs/concepts/services-networking/networkpolicies/
-
-
+  
+  
   Attributes:
       provider:
           The selected network policy provider.
@@ -4011,8 +4011,8 @@ IPAllocationPolicy = _reflection.GeneratedProtocolMessageType('IPAllocationPolic
   __module__ = 'google.cloud.container_v1.proto.cluster_service_pb2'
   ,
   __doc__ = """Configuration for controlling how IPs are allocated in the cluster.
-
-
+  
+  
   Attributes:
       use_ip_aliases:
           Whether alias IPs will be used for pod IPs in the cluster.
@@ -4095,8 +4095,8 @@ Cluster = _reflection.GeneratedProtocolMessageType('Cluster', (_message.Message,
   __module__ = 'google.cloud.container_v1.proto.cluster_service_pb2'
   ,
   __doc__ = """A Google Container Engine cluster.
-
-
+  
+  
   Attributes:
       name:
           The name of this cluster. The name must be unique within this
@@ -4256,8 +4256,8 @@ ClusterUpdate = _reflection.GeneratedProtocolMessageType('ClusterUpdate', (_mess
   __doc__ = """ClusterUpdate describes an update to the cluster. Exactly one update can
   be applied to a cluster with each request, so at most one field can be
   provided.
-
-
+  
+  
   Attributes:
       desired_node_version:
           The Kubernetes version to change the nodes to (typically an
@@ -4311,8 +4311,8 @@ Operation = _reflection.GeneratedProtocolMessageType('Operation', (_message.Mess
   ,
   __doc__ = """This operation resource represents operations that may have happened or
   are happening on the cluster. All fields are output only.
-
-
+  
+  
   Attributes:
       name:
           The server-assigned ID for the operation.
@@ -4348,8 +4348,8 @@ CreateClusterRequest = _reflection.GeneratedProtocolMessageType('CreateClusterRe
   __module__ = 'google.cloud.container_v1.proto.cluster_service_pb2'
   ,
   __doc__ = """CreateClusterRequest creates a cluster.
-
-
+  
+  
   Attributes:
       project_id:
           The Google Developers Console `project ID or project number
@@ -4371,8 +4371,8 @@ GetClusterRequest = _reflection.GeneratedProtocolMessageType('GetClusterRequest'
   __module__ = 'google.cloud.container_v1.proto.cluster_service_pb2'
   ,
   __doc__ = """GetClusterRequest gets the settings of a cluster.
-
-
+  
+  
   Attributes:
       project_id:
           The Google Developers Console `project ID or project number
@@ -4393,8 +4393,8 @@ UpdateClusterRequest = _reflection.GeneratedProtocolMessageType('UpdateClusterRe
   __module__ = 'google.cloud.container_v1.proto.cluster_service_pb2'
   ,
   __doc__ = """UpdateClusterRequest updates the settings of a cluster.
-
-
+  
+  
   Attributes:
       project_id:
           The Google Developers Console `project ID or project number
@@ -4417,8 +4417,8 @@ UpdateNodePoolRequest = _reflection.GeneratedProtocolMessageType('UpdateNodePool
   __module__ = 'google.cloud.container_v1.proto.cluster_service_pb2'
   ,
   __doc__ = """UpdateNodePoolRequests update a node pool's image and/or version.
-
-
+  
+  
   Attributes:
       project_id:
           The Google Developers Console `project ID or project number
@@ -4448,8 +4448,8 @@ SetNodePoolAutoscalingRequest = _reflection.GeneratedProtocolMessageType('SetNod
   ,
   __doc__ = """SetNodePoolAutoscalingRequest sets the autoscaler settings of a node
   pool.
-
-
+  
+  
   Attributes:
       project_id:
           The Google Developers Console `project ID or project number
@@ -4474,8 +4474,8 @@ SetLoggingServiceRequest = _reflection.GeneratedProtocolMessageType('SetLoggingS
   __module__ = 'google.cloud.container_v1.proto.cluster_service_pb2'
   ,
   __doc__ = """SetLoggingServiceRequest sets the logging service of a cluster.
-
-
+  
+  
   Attributes:
       project_id:
           The Google Developers Console `project ID or project number
@@ -4501,8 +4501,8 @@ SetMonitoringServiceRequest = _reflection.GeneratedProtocolMessageType('SetMonit
   __module__ = 'google.cloud.container_v1.proto.cluster_service_pb2'
   ,
   __doc__ = """SetMonitoringServiceRequest sets the monitoring service of a cluster.
-
-
+  
+  
   Attributes:
       project_id:
           The Google Developers Console `project ID or project number
@@ -4529,8 +4529,8 @@ SetAddonsConfigRequest = _reflection.GeneratedProtocolMessageType('SetAddonsConf
   __module__ = 'google.cloud.container_v1.proto.cluster_service_pb2'
   ,
   __doc__ = """SetAddonsConfigRequest sets the addons associated with the cluster.
-
-
+  
+  
   Attributes:
       project_id:
           The Google Developers Console `project ID or project number
@@ -4554,8 +4554,8 @@ SetLocationsRequest = _reflection.GeneratedProtocolMessageType('SetLocationsRequ
   __module__ = 'google.cloud.container_v1.proto.cluster_service_pb2'
   ,
   __doc__ = """SetLocationsRequest sets the locations of the cluster.
-
-
+  
+  
   Attributes:
       project_id:
           The Google Developers Console `project ID or project number
@@ -4584,8 +4584,8 @@ UpdateMasterRequest = _reflection.GeneratedProtocolMessageType('UpdateMasterRequ
   __module__ = 'google.cloud.container_v1.proto.cluster_service_pb2'
   ,
   __doc__ = """UpdateMasterRequest updates the master of the cluster.
-
-
+  
+  
   Attributes:
       project_id:
           The Google Developers Console `project ID or project number
@@ -4610,8 +4610,8 @@ SetMasterAuthRequest = _reflection.GeneratedProtocolMessageType('SetMasterAuthRe
   __module__ = 'google.cloud.container_v1.proto.cluster_service_pb2'
   ,
   __doc__ = """SetMasterAuthRequest updates the admin password of a cluster.
-
-
+  
+  
   Attributes:
       project_id:
           The Google Developers Console `project ID or project number
@@ -4636,8 +4636,8 @@ DeleteClusterRequest = _reflection.GeneratedProtocolMessageType('DeleteClusterRe
   __module__ = 'google.cloud.container_v1.proto.cluster_service_pb2'
   ,
   __doc__ = """DeleteClusterRequest deletes a cluster.
-
-
+  
+  
   Attributes:
       project_id:
           The Google Developers Console `project ID or project number
@@ -4658,8 +4658,8 @@ ListClustersRequest = _reflection.GeneratedProtocolMessageType('ListClustersRequ
   __module__ = 'google.cloud.container_v1.proto.cluster_service_pb2'
   ,
   __doc__ = """ListClustersRequest lists clusters.
-
-
+  
+  
   Attributes:
       project_id:
           The Google Developers Console `project ID or project number
@@ -4678,8 +4678,8 @@ ListClustersResponse = _reflection.GeneratedProtocolMessageType('ListClustersRes
   __module__ = 'google.cloud.container_v1.proto.cluster_service_pb2'
   ,
   __doc__ = """ListClustersResponse is the result of ListClustersRequest.
-
-
+  
+  
   Attributes:
       clusters:
           A list of clusters in the project in the specified zone, or
@@ -4697,8 +4697,8 @@ GetOperationRequest = _reflection.GeneratedProtocolMessageType('GetOperationRequ
   __module__ = 'google.cloud.container_v1.proto.cluster_service_pb2'
   ,
   __doc__ = """GetOperationRequest gets a single operation.
-
-
+  
+  
   Attributes:
       project_id:
           The Google Developers Console `project ID or project number
@@ -4719,8 +4719,8 @@ ListOperationsRequest = _reflection.GeneratedProtocolMessageType('ListOperations
   __module__ = 'google.cloud.container_v1.proto.cluster_service_pb2'
   ,
   __doc__ = """ListOperationsRequest lists operations.
-
-
+  
+  
   Attributes:
       project_id:
           The Google Developers Console `project ID or project number
@@ -4739,8 +4739,8 @@ CancelOperationRequest = _reflection.GeneratedProtocolMessageType('CancelOperati
   __module__ = 'google.cloud.container_v1.proto.cluster_service_pb2'
   ,
   __doc__ = """CancelOperationRequest cancels a single operation.
-
-
+  
+  
   Attributes:
       project_id:
           The Google Developers Console `project ID or project number
@@ -4761,8 +4761,8 @@ ListOperationsResponse = _reflection.GeneratedProtocolMessageType('ListOperation
   __module__ = 'google.cloud.container_v1.proto.cluster_service_pb2'
   ,
   __doc__ = """ListOperationsResponse is the result of ListOperationsRequest.
-
-
+  
+  
   Attributes:
       operations:
           A list of operations in the project in the specified zone.
@@ -4779,8 +4779,8 @@ GetServerConfigRequest = _reflection.GeneratedProtocolMessageType('GetServerConf
   __module__ = 'google.cloud.container_v1.proto.cluster_service_pb2'
   ,
   __doc__ = """Gets the current Container Engine service configuration.
-
-
+  
+  
   Attributes:
       project_id:
           The Google Developers Console `project ID or project number
@@ -4798,8 +4798,8 @@ ServerConfig = _reflection.GeneratedProtocolMessageType('ServerConfig', (_messag
   __module__ = 'google.cloud.container_v1.proto.cluster_service_pb2'
   ,
   __doc__ = """Container Engine service configuration.
-
-
+  
+  
   Attributes:
       default_cluster_version:
           Version of Kubernetes the service deploys by default.
@@ -4821,8 +4821,8 @@ CreateNodePoolRequest = _reflection.GeneratedProtocolMessageType('CreateNodePool
   __module__ = 'google.cloud.container_v1.proto.cluster_service_pb2'
   ,
   __doc__ = """CreateNodePoolRequest creates a node pool for a cluster.
-
-
+  
+  
   Attributes:
       project_id:
           The Google Developers Console `project ID or project number <h
@@ -4846,8 +4846,8 @@ DeleteNodePoolRequest = _reflection.GeneratedProtocolMessageType('DeleteNodePool
   __module__ = 'google.cloud.container_v1.proto.cluster_service_pb2'
   ,
   __doc__ = """DeleteNodePoolRequest deletes a node pool for a cluster.
-
-
+  
+  
   Attributes:
       project_id:
           The Google Developers Console `project ID or project number <h
@@ -4871,8 +4871,8 @@ ListNodePoolsRequest = _reflection.GeneratedProtocolMessageType('ListNodePoolsRe
   __module__ = 'google.cloud.container_v1.proto.cluster_service_pb2'
   ,
   __doc__ = """ListNodePoolsRequest lists the node pool(s) for a cluster.
-
-
+  
+  
   Attributes:
       project_id:
           The Google Developers Console `project ID or project number <h
@@ -4894,8 +4894,8 @@ GetNodePoolRequest = _reflection.GeneratedProtocolMessageType('GetNodePoolReques
   __module__ = 'google.cloud.container_v1.proto.cluster_service_pb2'
   ,
   __doc__ = """GetNodePoolRequest retrieves a node pool for a cluster.
-
-
+  
+  
   Attributes:
       project_id:
           The Google Developers Console `project ID or project number <h
@@ -4924,8 +4924,8 @@ NodePool = _reflection.GeneratedProtocolMessageType('NodePool', (_message.Messag
   have a set of Kubernetes labels applied to them, which may be used to
   reference them during pod scheduling. They may also be resized up or
   down, to accommodate the workload.
-
-
+  
+  
   Attributes:
       name:
           The name of the node pool.
@@ -4965,8 +4965,8 @@ NodeManagement = _reflection.GeneratedProtocolMessageType('NodeManagement', (_me
   ,
   __doc__ = """NodeManagement defines the set of node management services turned on for
   the node pool.
-
-
+  
+  
   Attributes:
       auto_upgrade:
           A flag that specifies whether node auto-upgrade is enabled for
@@ -4991,8 +4991,8 @@ AutoUpgradeOptions = _reflection.GeneratedProtocolMessageType('AutoUpgradeOption
   ,
   __doc__ = """AutoUpgradeOptions defines the set of options for the user to control
   how the Auto Upgrades will proceed.
-
-
+  
+  
   Attributes:
       auto_upgrade_start_time:
           [Output only] This field is set when upgrades are about to
@@ -5013,8 +5013,8 @@ MaintenancePolicy = _reflection.GeneratedProtocolMessageType('MaintenancePolicy'
   ,
   __doc__ = """MaintenancePolicy defines the maintenance policy to be used for the
   cluster.
-
-
+  
+  
   Attributes:
       window:
           Specifies the maintenance window in which maintenance may be
@@ -5030,8 +5030,8 @@ MaintenanceWindow = _reflection.GeneratedProtocolMessageType('MaintenanceWindow'
   ,
   __doc__ = """MaintenanceWindow defines the maintenance window to be used for the
   cluster.
-
-
+  
+  
   Attributes:
       daily_maintenance_window:
           DailyMaintenanceWindow specifies a daily maintenance operation
@@ -5046,8 +5046,8 @@ DailyMaintenanceWindow = _reflection.GeneratedProtocolMessageType('DailyMaintena
   __module__ = 'google.cloud.container_v1.proto.cluster_service_pb2'
   ,
   __doc__ = """Time window specified for daily maintenance operations.
-
-
+  
+  
   Attributes:
       start_time:
           Time within the maintenance window to start the maintenance
@@ -5070,8 +5070,8 @@ SetNodePoolManagementRequest = _reflection.GeneratedProtocolMessageType('SetNode
   ,
   __doc__ = """SetNodePoolManagementRequest sets the node management properties of a
   node pool.
-
-
+  
+  
   Attributes:
       project_id:
           The Google Developers Console `project ID or project number
@@ -5096,8 +5096,8 @@ SetNodePoolSizeRequest = _reflection.GeneratedProtocolMessageType('SetNodePoolSi
   __module__ = 'google.cloud.container_v1.proto.cluster_service_pb2'
   ,
   __doc__ = """SetNodePoolSizeRequest sets the size a node pool.
-
-
+  
+  
   Attributes:
       project_id:
           The Google Developers Console `project ID or project number
@@ -5124,8 +5124,8 @@ RollbackNodePoolUpgradeRequest = _reflection.GeneratedProtocolMessageType('Rollb
   __doc__ = """RollbackNodePoolUpgradeRequest rollbacks the previously Aborted or
   Failed NodePool upgrade. This will be an no-op if the last upgrade
   successfully completed.
-
-
+  
+  
   Attributes:
       project_id:
           The Google Developers Console `project ID or project number
@@ -5148,8 +5148,8 @@ ListNodePoolsResponse = _reflection.GeneratedProtocolMessageType('ListNodePoolsR
   __module__ = 'google.cloud.container_v1.proto.cluster_service_pb2'
   ,
   __doc__ = """ListNodePoolsResponse is the result of ListNodePoolsRequest.
-
-
+  
+  
   Attributes:
       node_pools:
           A list of node pools for a cluster.
@@ -5164,8 +5164,8 @@ NodePoolAutoscaling = _reflection.GeneratedProtocolMessageType('NodePoolAutoscal
   ,
   __doc__ = """NodePoolAutoscaling contains information required by cluster autoscaler
   to adjust the size of the node pool to the current cluster usage.
-
-
+  
+  
   Attributes:
       enabled:
           Is autoscaling enabled for this node pool.
@@ -5195,8 +5195,8 @@ SetLabelsRequest = _reflection.GeneratedProtocolMessageType('SetLabelsRequest', 
   __doc__ = """SetLabelsRequest sets the Google Cloud Platform labels on a Google
   Container Engine cluster, which will in turn set them for Google Compute
   Engine resources used by that cluster
-
-
+  
+  
   Attributes:
       project_id:
           The Google Developers Console `project ID or project number <h
@@ -5230,8 +5230,8 @@ SetLegacyAbacRequest = _reflection.GeneratedProtocolMessageType('SetLegacyAbacRe
   ,
   __doc__ = """SetLegacyAbacRequest enables or disables the ABAC authorization
   mechanism for a cluster.
-
-
+  
+  
   Attributes:
       project_id:
           The Google Developers Console `project ID or project number
@@ -5255,8 +5255,8 @@ StartIPRotationRequest = _reflection.GeneratedProtocolMessageType('StartIPRotati
   ,
   __doc__ = """StartIPRotationRequest creates a new IP for the cluster and then
   performs a node upgrade on each node pool to point to the new IP.
-
-
+  
+  
   Attributes:
       project_id:
           The Google Developers Console `project ID or project number <h
@@ -5279,8 +5279,8 @@ CompleteIPRotationRequest = _reflection.GeneratedProtocolMessageType('CompleteIP
   ,
   __doc__ = """CompleteIPRotationRequest moves the cluster master back into single-IP
   mode.
-
-
+  
+  
   Attributes:
       project_id:
           The Google Developers Console `project ID or project number <h
@@ -5302,8 +5302,8 @@ AcceleratorConfig = _reflection.GeneratedProtocolMessageType('AcceleratorConfig'
   __module__ = 'google.cloud.container_v1.proto.cluster_service_pb2'
   ,
   __doc__ = """AcceleratorConfig represents a Hardware Accelerator request.
-
-
+  
+  
   Attributes:
       accelerator_count:
           The number of the accelerator cards exposed to an instance.
@@ -5320,8 +5320,8 @@ SetNetworkPolicyRequest = _reflection.GeneratedProtocolMessageType('SetNetworkPo
   __module__ = 'google.cloud.container_v1.proto.cluster_service_pb2'
   ,
   __doc__ = """SetNetworkPolicyRequest enables/disables network policy for a cluster.
-
-
+  
+  
   Attributes:
       project_id:
           The Google Developers Console `project ID or project number <h
@@ -5345,8 +5345,8 @@ SetMaintenancePolicyRequest = _reflection.GeneratedProtocolMessageType('SetMaint
   __module__ = 'google.cloud.container_v1.proto.cluster_service_pb2'
   ,
   __doc__ = """SetMaintenancePolicyRequest sets the maintenance policy for a cluster.
-
-
+  
+  
   Attributes:
       project_id:
           The Google Developers Console `project ID or project number
@@ -5376,1123 +5376,289 @@ _CLUSTER_RESOURCELABELSENTRY.has_options = True
 _CLUSTER_RESOURCELABELSENTRY._options = _descriptor._ParseOptions(descriptor_pb2.MessageOptions(), _b('8\001'))
 _SETLABELSREQUEST_RESOURCELABELSENTRY.has_options = True
 _SETLABELSREQUEST_RESOURCELABELSENTRY._options = _descriptor._ParseOptions(descriptor_pb2.MessageOptions(), _b('8\001'))
-try:
-  # THESE ELEMENTS WILL BE DEPRECATED.
-  # Please use the generated *_pb2_grpc.py files instead.
-  import grpc
-  from grpc.beta import implementations as beta_implementations
-  from grpc.beta import interfaces as beta_interfaces
-  from grpc.framework.common import cardinality
-  from grpc.framework.interfaces.face import utilities as face_utilities
 
+_CLUSTERMANAGER = _descriptor.ServiceDescriptor(
+  name='ClusterManager',
+  full_name='google.container.v1.ClusterManager',
+  file=DESCRIPTOR,
+  index=0,
+  options=None,
+  serialized_start=9787,
+  serialized_end=15262,
+  methods=[
+  _descriptor.MethodDescriptor(
+    name='ListClusters',
+    full_name='google.container.v1.ClusterManager.ListClusters',
+    index=0,
+    containing_service=None,
+    input_type=_LISTCLUSTERSREQUEST,
+    output_type=_LISTCLUSTERSRESPONSE,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\0021\022//v1/projects/{project_id}/zones/{zone}/clusters')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='GetCluster',
+    full_name='google.container.v1.ClusterManager.GetCluster',
+    index=1,
+    containing_service=None,
+    input_type=_GETCLUSTERREQUEST,
+    output_type=_CLUSTER,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002>\022</v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='CreateCluster',
+    full_name='google.container.v1.ClusterManager.CreateCluster',
+    index=2,
+    containing_service=None,
+    input_type=_CREATECLUSTERREQUEST,
+    output_type=_OPERATION,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\0024\"//v1/projects/{project_id}/zones/{zone}/clusters:\001*')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='UpdateCluster',
+    full_name='google.container.v1.ClusterManager.UpdateCluster',
+    index=3,
+    containing_service=None,
+    input_type=_UPDATECLUSTERREQUEST,
+    output_type=_OPERATION,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002A\032</v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}:\001*')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='UpdateNodePool',
+    full_name='google.container.v1.ClusterManager.UpdateNodePool',
+    index=4,
+    containing_service=None,
+    input_type=_UPDATENODEPOOLREQUEST,
+    output_type=_OPERATION,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002a\"\\/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/nodePools/{node_pool_id}/update:\001*')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='SetNodePoolAutoscaling',
+    full_name='google.container.v1.ClusterManager.SetNodePoolAutoscaling',
+    index=5,
+    containing_service=None,
+    input_type=_SETNODEPOOLAUTOSCALINGREQUEST,
+    output_type=_OPERATION,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002f\"a/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/nodePools/{node_pool_id}/autoscaling:\001*')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='SetLoggingService',
+    full_name='google.container.v1.ClusterManager.SetLoggingService',
+    index=6,
+    containing_service=None,
+    input_type=_SETLOGGINGSERVICEREQUEST,
+    output_type=_OPERATION,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002I\"D/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/logging:\001*')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='SetMonitoringService',
+    full_name='google.container.v1.ClusterManager.SetMonitoringService',
+    index=7,
+    containing_service=None,
+    input_type=_SETMONITORINGSERVICEREQUEST,
+    output_type=_OPERATION,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002L\"G/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/monitoring:\001*')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='SetAddonsConfig',
+    full_name='google.container.v1.ClusterManager.SetAddonsConfig',
+    index=8,
+    containing_service=None,
+    input_type=_SETADDONSCONFIGREQUEST,
+    output_type=_OPERATION,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002H\"C/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/addons:\001*')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='SetLocations',
+    full_name='google.container.v1.ClusterManager.SetLocations',
+    index=9,
+    containing_service=None,
+    input_type=_SETLOCATIONSREQUEST,
+    output_type=_OPERATION,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002K\"F/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/locations:\001*')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='UpdateMaster',
+    full_name='google.container.v1.ClusterManager.UpdateMaster',
+    index=10,
+    containing_service=None,
+    input_type=_UPDATEMASTERREQUEST,
+    output_type=_OPERATION,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002H\"C/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/master:\001*')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='SetMasterAuth',
+    full_name='google.container.v1.ClusterManager.SetMasterAuth',
+    index=11,
+    containing_service=None,
+    input_type=_SETMASTERAUTHREQUEST,
+    output_type=_OPERATION,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002O\"J/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}:setMasterAuth:\001*')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='DeleteCluster',
+    full_name='google.container.v1.ClusterManager.DeleteCluster',
+    index=12,
+    containing_service=None,
+    input_type=_DELETECLUSTERREQUEST,
+    output_type=_OPERATION,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002>*</v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='ListOperations',
+    full_name='google.container.v1.ClusterManager.ListOperations',
+    index=13,
+    containing_service=None,
+    input_type=_LISTOPERATIONSREQUEST,
+    output_type=_LISTOPERATIONSRESPONSE,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\0023\0221/v1/projects/{project_id}/zones/{zone}/operations')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='GetOperation',
+    full_name='google.container.v1.ClusterManager.GetOperation',
+    index=14,
+    containing_service=None,
+    input_type=_GETOPERATIONREQUEST,
+    output_type=_OPERATION,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002B\022@/v1/projects/{project_id}/zones/{zone}/operations/{operation_id}')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='CancelOperation',
+    full_name='google.container.v1.ClusterManager.CancelOperation',
+    index=15,
+    containing_service=None,
+    input_type=_CANCELOPERATIONREQUEST,
+    output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002L\"G/v1/projects/{project_id}/zones/{zone}/operations/{operation_id}:cancel:\001*')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='GetServerConfig',
+    full_name='google.container.v1.ClusterManager.GetServerConfig',
+    index=16,
+    containing_service=None,
+    input_type=_GETSERVERCONFIGREQUEST,
+    output_type=_SERVERCONFIG,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\0025\0223/v1/projects/{project_id}/zones/{zone}/serverconfig')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='ListNodePools',
+    full_name='google.container.v1.ClusterManager.ListNodePools',
+    index=17,
+    containing_service=None,
+    input_type=_LISTNODEPOOLSREQUEST,
+    output_type=_LISTNODEPOOLSRESPONSE,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002H\022F/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/nodePools')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='GetNodePool',
+    full_name='google.container.v1.ClusterManager.GetNodePool',
+    index=18,
+    containing_service=None,
+    input_type=_GETNODEPOOLREQUEST,
+    output_type=_NODEPOOL,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002W\022U/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/nodePools/{node_pool_id}')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='CreateNodePool',
+    full_name='google.container.v1.ClusterManager.CreateNodePool',
+    index=19,
+    containing_service=None,
+    input_type=_CREATENODEPOOLREQUEST,
+    output_type=_OPERATION,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002K\"F/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/nodePools:\001*')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='DeleteNodePool',
+    full_name='google.container.v1.ClusterManager.DeleteNodePool',
+    index=20,
+    containing_service=None,
+    input_type=_DELETENODEPOOLREQUEST,
+    output_type=_OPERATION,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002W*U/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/nodePools/{node_pool_id}')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='RollbackNodePoolUpgrade',
+    full_name='google.container.v1.ClusterManager.RollbackNodePoolUpgrade',
+    index=21,
+    containing_service=None,
+    input_type=_ROLLBACKNODEPOOLUPGRADEREQUEST,
+    output_type=_OPERATION,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002c\"^/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/nodePools/{node_pool_id}:rollback:\001*')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='SetNodePoolManagement',
+    full_name='google.container.v1.ClusterManager.SetNodePoolManagement',
+    index=22,
+    containing_service=None,
+    input_type=_SETNODEPOOLMANAGEMENTREQUEST,
+    output_type=_OPERATION,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002h\"c/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/nodePools/{node_pool_id}/setManagement:\001*')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='SetLabels',
+    full_name='google.container.v1.ClusterManager.SetLabels',
+    index=23,
+    containing_service=None,
+    input_type=_SETLABELSREQUEST,
+    output_type=_OPERATION,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002P\"K/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/resourceLabels:\001*')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='SetLegacyAbac',
+    full_name='google.container.v1.ClusterManager.SetLegacyAbac',
+    index=24,
+    containing_service=None,
+    input_type=_SETLEGACYABACREQUEST,
+    output_type=_OPERATION,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002L\"G/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/legacyAbac:\001*')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='StartIPRotation',
+    full_name='google.container.v1.ClusterManager.StartIPRotation',
+    index=25,
+    containing_service=None,
+    input_type=_STARTIPROTATIONREQUEST,
+    output_type=_OPERATION,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002Q\"L/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}:startIpRotation:\001*')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='CompleteIPRotation',
+    full_name='google.container.v1.ClusterManager.CompleteIPRotation',
+    index=26,
+    containing_service=None,
+    input_type=_COMPLETEIPROTATIONREQUEST,
+    output_type=_OPERATION,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002T\"O/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}:completeIpRotation:\001*')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='SetNodePoolSize',
+    full_name='google.container.v1.ClusterManager.SetNodePoolSize',
+    index=27,
+    containing_service=None,
+    input_type=_SETNODEPOOLSIZEREQUEST,
+    output_type=_OPERATION,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002b\"]/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/nodePools/{node_pool_id}/setSize:\001*')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='SetNetworkPolicy',
+    full_name='google.container.v1.ClusterManager.SetNetworkPolicy',
+    index=28,
+    containing_service=None,
+    input_type=_SETNETWORKPOLICYREQUEST,
+    output_type=_OPERATION,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002R\"M/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}:setNetworkPolicy:\001*')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='SetMaintenancePolicy',
+    full_name='google.container.v1.ClusterManager.SetMaintenancePolicy',
+    index=29,
+    containing_service=None,
+    input_type=_SETMAINTENANCEPOLICYREQUEST,
+    output_type=_OPERATION,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002V\"Q/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}:setMaintenancePolicy:\001*')),
+  ),
+])
+_sym_db.RegisterServiceDescriptor(_CLUSTERMANAGER)
+
+DESCRIPTOR.services_by_name['ClusterManager'] = _CLUSTERMANAGER
 
-  class ClusterManagerStub(object):
-    """Google Container Engine Cluster Manager v1
-    """
-
-    def __init__(self, channel):
-      """Constructor.
-
-      Args:
-        channel: A grpc.Channel.
-      """
-      self.ListClusters = channel.unary_unary(
-          '/google.container.v1.ClusterManager/ListClusters',
-          request_serializer=ListClustersRequest.SerializeToString,
-          response_deserializer=ListClustersResponse.FromString,
-          )
-      self.GetCluster = channel.unary_unary(
-          '/google.container.v1.ClusterManager/GetCluster',
-          request_serializer=GetClusterRequest.SerializeToString,
-          response_deserializer=Cluster.FromString,
-          )
-      self.CreateCluster = channel.unary_unary(
-          '/google.container.v1.ClusterManager/CreateCluster',
-          request_serializer=CreateClusterRequest.SerializeToString,
-          response_deserializer=Operation.FromString,
-          )
-      self.UpdateCluster = channel.unary_unary(
-          '/google.container.v1.ClusterManager/UpdateCluster',
-          request_serializer=UpdateClusterRequest.SerializeToString,
-          response_deserializer=Operation.FromString,
-          )
-      self.UpdateNodePool = channel.unary_unary(
-          '/google.container.v1.ClusterManager/UpdateNodePool',
-          request_serializer=UpdateNodePoolRequest.SerializeToString,
-          response_deserializer=Operation.FromString,
-          )
-      self.SetNodePoolAutoscaling = channel.unary_unary(
-          '/google.container.v1.ClusterManager/SetNodePoolAutoscaling',
-          request_serializer=SetNodePoolAutoscalingRequest.SerializeToString,
-          response_deserializer=Operation.FromString,
-          )
-      self.SetLoggingService = channel.unary_unary(
-          '/google.container.v1.ClusterManager/SetLoggingService',
-          request_serializer=SetLoggingServiceRequest.SerializeToString,
-          response_deserializer=Operation.FromString,
-          )
-      self.SetMonitoringService = channel.unary_unary(
-          '/google.container.v1.ClusterManager/SetMonitoringService',
-          request_serializer=SetMonitoringServiceRequest.SerializeToString,
-          response_deserializer=Operation.FromString,
-          )
-      self.SetAddonsConfig = channel.unary_unary(
-          '/google.container.v1.ClusterManager/SetAddonsConfig',
-          request_serializer=SetAddonsConfigRequest.SerializeToString,
-          response_deserializer=Operation.FromString,
-          )
-      self.SetLocations = channel.unary_unary(
-          '/google.container.v1.ClusterManager/SetLocations',
-          request_serializer=SetLocationsRequest.SerializeToString,
-          response_deserializer=Operation.FromString,
-          )
-      self.UpdateMaster = channel.unary_unary(
-          '/google.container.v1.ClusterManager/UpdateMaster',
-          request_serializer=UpdateMasterRequest.SerializeToString,
-          response_deserializer=Operation.FromString,
-          )
-      self.SetMasterAuth = channel.unary_unary(
-          '/google.container.v1.ClusterManager/SetMasterAuth',
-          request_serializer=SetMasterAuthRequest.SerializeToString,
-          response_deserializer=Operation.FromString,
-          )
-      self.DeleteCluster = channel.unary_unary(
-          '/google.container.v1.ClusterManager/DeleteCluster',
-          request_serializer=DeleteClusterRequest.SerializeToString,
-          response_deserializer=Operation.FromString,
-          )
-      self.ListOperations = channel.unary_unary(
-          '/google.container.v1.ClusterManager/ListOperations',
-          request_serializer=ListOperationsRequest.SerializeToString,
-          response_deserializer=ListOperationsResponse.FromString,
-          )
-      self.GetOperation = channel.unary_unary(
-          '/google.container.v1.ClusterManager/GetOperation',
-          request_serializer=GetOperationRequest.SerializeToString,
-          response_deserializer=Operation.FromString,
-          )
-      self.CancelOperation = channel.unary_unary(
-          '/google.container.v1.ClusterManager/CancelOperation',
-          request_serializer=CancelOperationRequest.SerializeToString,
-          response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
-          )
-      self.GetServerConfig = channel.unary_unary(
-          '/google.container.v1.ClusterManager/GetServerConfig',
-          request_serializer=GetServerConfigRequest.SerializeToString,
-          response_deserializer=ServerConfig.FromString,
-          )
-      self.ListNodePools = channel.unary_unary(
-          '/google.container.v1.ClusterManager/ListNodePools',
-          request_serializer=ListNodePoolsRequest.SerializeToString,
-          response_deserializer=ListNodePoolsResponse.FromString,
-          )
-      self.GetNodePool = channel.unary_unary(
-          '/google.container.v1.ClusterManager/GetNodePool',
-          request_serializer=GetNodePoolRequest.SerializeToString,
-          response_deserializer=NodePool.FromString,
-          )
-      self.CreateNodePool = channel.unary_unary(
-          '/google.container.v1.ClusterManager/CreateNodePool',
-          request_serializer=CreateNodePoolRequest.SerializeToString,
-          response_deserializer=Operation.FromString,
-          )
-      self.DeleteNodePool = channel.unary_unary(
-          '/google.container.v1.ClusterManager/DeleteNodePool',
-          request_serializer=DeleteNodePoolRequest.SerializeToString,
-          response_deserializer=Operation.FromString,
-          )
-      self.RollbackNodePoolUpgrade = channel.unary_unary(
-          '/google.container.v1.ClusterManager/RollbackNodePoolUpgrade',
-          request_serializer=RollbackNodePoolUpgradeRequest.SerializeToString,
-          response_deserializer=Operation.FromString,
-          )
-      self.SetNodePoolManagement = channel.unary_unary(
-          '/google.container.v1.ClusterManager/SetNodePoolManagement',
-          request_serializer=SetNodePoolManagementRequest.SerializeToString,
-          response_deserializer=Operation.FromString,
-          )
-      self.SetLabels = channel.unary_unary(
-          '/google.container.v1.ClusterManager/SetLabels',
-          request_serializer=SetLabelsRequest.SerializeToString,
-          response_deserializer=Operation.FromString,
-          )
-      self.SetLegacyAbac = channel.unary_unary(
-          '/google.container.v1.ClusterManager/SetLegacyAbac',
-          request_serializer=SetLegacyAbacRequest.SerializeToString,
-          response_deserializer=Operation.FromString,
-          )
-      self.StartIPRotation = channel.unary_unary(
-          '/google.container.v1.ClusterManager/StartIPRotation',
-          request_serializer=StartIPRotationRequest.SerializeToString,
-          response_deserializer=Operation.FromString,
-          )
-      self.CompleteIPRotation = channel.unary_unary(
-          '/google.container.v1.ClusterManager/CompleteIPRotation',
-          request_serializer=CompleteIPRotationRequest.SerializeToString,
-          response_deserializer=Operation.FromString,
-          )
-      self.SetNodePoolSize = channel.unary_unary(
-          '/google.container.v1.ClusterManager/SetNodePoolSize',
-          request_serializer=SetNodePoolSizeRequest.SerializeToString,
-          response_deserializer=Operation.FromString,
-          )
-      self.SetNetworkPolicy = channel.unary_unary(
-          '/google.container.v1.ClusterManager/SetNetworkPolicy',
-          request_serializer=SetNetworkPolicyRequest.SerializeToString,
-          response_deserializer=Operation.FromString,
-          )
-      self.SetMaintenancePolicy = channel.unary_unary(
-          '/google.container.v1.ClusterManager/SetMaintenancePolicy',
-          request_serializer=SetMaintenancePolicyRequest.SerializeToString,
-          response_deserializer=Operation.FromString,
-          )
-
-
-  class ClusterManagerServicer(object):
-    """Google Container Engine Cluster Manager v1
-    """
-
-    def ListClusters(self, request, context):
-      """Lists all clusters owned by a project in either the specified zone or all
-      zones.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def GetCluster(self, request, context):
-      """Gets the details of a specific cluster.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def CreateCluster(self, request, context):
-      """Creates a cluster, consisting of the specified number and type of Google
-      Compute Engine instances.
-
-      By default, the cluster is created in the project's
-      [default network](/compute/docs/networks-and-firewalls#networks).
-
-      One firewall is added for the cluster. After cluster creation,
-      the cluster creates routes for each node to allow the containers
-      on that node to communicate with all other instances in the
-      cluster.
-
-      Finally, an entry is added to the project's global metadata indicating
-      which CIDR range is being used by the cluster.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def UpdateCluster(self, request, context):
-      """Updates the settings of a specific cluster.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def UpdateNodePool(self, request, context):
-      """Updates the version and/or image type of a specific node pool.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def SetNodePoolAutoscaling(self, request, context):
-      """Sets the autoscaling settings of a specific node pool.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def SetLoggingService(self, request, context):
-      """Sets the logging service of a specific cluster.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def SetMonitoringService(self, request, context):
-      """Sets the monitoring service of a specific cluster.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def SetAddonsConfig(self, request, context):
-      """Sets the addons of a specific cluster.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def SetLocations(self, request, context):
-      """Sets the locations of a specific cluster.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def UpdateMaster(self, request, context):
-      """Updates the master of a specific cluster.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def SetMasterAuth(self, request, context):
-      """Used to set master auth materials. Currently supports :-
-      Changing the admin password of a specific cluster.
-      This can be either via password generation or explicitly set the password.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def DeleteCluster(self, request, context):
-      """Deletes the cluster, including the Kubernetes endpoint and all worker
-      nodes.
-
-      Firewalls and routes that were configured during cluster creation
-      are also deleted.
-
-      Other Google Compute Engine resources that might be in use by the cluster
-      (e.g. load balancer resources) will not be deleted if they weren't present
-      at the initial create time.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def ListOperations(self, request, context):
-      """Lists all operations in a project in a specific zone or all zones.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def GetOperation(self, request, context):
-      """Gets the specified operation.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def CancelOperation(self, request, context):
-      """Cancels the specified operation.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def GetServerConfig(self, request, context):
-      """Returns configuration info about the Container Engine service.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def ListNodePools(self, request, context):
-      """Lists the node pools for a cluster.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def GetNodePool(self, request, context):
-      """Retrieves the node pool requested.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def CreateNodePool(self, request, context):
-      """Creates a node pool for a cluster.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def DeleteNodePool(self, request, context):
-      """Deletes a node pool from a cluster.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def RollbackNodePoolUpgrade(self, request, context):
-      """Roll back the previously Aborted or Failed NodePool upgrade.
-      This will be an no-op if the last upgrade successfully completed.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def SetNodePoolManagement(self, request, context):
-      """Sets the NodeManagement options for a node pool.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def SetLabels(self, request, context):
-      """Sets labels on a cluster.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def SetLegacyAbac(self, request, context):
-      """Enables or disables the ABAC authorization mechanism on a cluster.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def StartIPRotation(self, request, context):
-      """Start master IP rotation.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def CompleteIPRotation(self, request, context):
-      """Completes master IP rotation.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def SetNodePoolSize(self, request, context):
-      """Sets the size of a specific node pool.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def SetNetworkPolicy(self, request, context):
-      """Enables/Disables Network Policy for a cluster.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def SetMaintenancePolicy(self, request, context):
-      """Sets the maintenance policy for a cluster.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-
-  def add_ClusterManagerServicer_to_server(servicer, server):
-    rpc_method_handlers = {
-        'ListClusters': grpc.unary_unary_rpc_method_handler(
-            servicer.ListClusters,
-            request_deserializer=ListClustersRequest.FromString,
-            response_serializer=ListClustersResponse.SerializeToString,
-        ),
-        'GetCluster': grpc.unary_unary_rpc_method_handler(
-            servicer.GetCluster,
-            request_deserializer=GetClusterRequest.FromString,
-            response_serializer=Cluster.SerializeToString,
-        ),
-        'CreateCluster': grpc.unary_unary_rpc_method_handler(
-            servicer.CreateCluster,
-            request_deserializer=CreateClusterRequest.FromString,
-            response_serializer=Operation.SerializeToString,
-        ),
-        'UpdateCluster': grpc.unary_unary_rpc_method_handler(
-            servicer.UpdateCluster,
-            request_deserializer=UpdateClusterRequest.FromString,
-            response_serializer=Operation.SerializeToString,
-        ),
-        'UpdateNodePool': grpc.unary_unary_rpc_method_handler(
-            servicer.UpdateNodePool,
-            request_deserializer=UpdateNodePoolRequest.FromString,
-            response_serializer=Operation.SerializeToString,
-        ),
-        'SetNodePoolAutoscaling': grpc.unary_unary_rpc_method_handler(
-            servicer.SetNodePoolAutoscaling,
-            request_deserializer=SetNodePoolAutoscalingRequest.FromString,
-            response_serializer=Operation.SerializeToString,
-        ),
-        'SetLoggingService': grpc.unary_unary_rpc_method_handler(
-            servicer.SetLoggingService,
-            request_deserializer=SetLoggingServiceRequest.FromString,
-            response_serializer=Operation.SerializeToString,
-        ),
-        'SetMonitoringService': grpc.unary_unary_rpc_method_handler(
-            servicer.SetMonitoringService,
-            request_deserializer=SetMonitoringServiceRequest.FromString,
-            response_serializer=Operation.SerializeToString,
-        ),
-        'SetAddonsConfig': grpc.unary_unary_rpc_method_handler(
-            servicer.SetAddonsConfig,
-            request_deserializer=SetAddonsConfigRequest.FromString,
-            response_serializer=Operation.SerializeToString,
-        ),
-        'SetLocations': grpc.unary_unary_rpc_method_handler(
-            servicer.SetLocations,
-            request_deserializer=SetLocationsRequest.FromString,
-            response_serializer=Operation.SerializeToString,
-        ),
-        'UpdateMaster': grpc.unary_unary_rpc_method_handler(
-            servicer.UpdateMaster,
-            request_deserializer=UpdateMasterRequest.FromString,
-            response_serializer=Operation.SerializeToString,
-        ),
-        'SetMasterAuth': grpc.unary_unary_rpc_method_handler(
-            servicer.SetMasterAuth,
-            request_deserializer=SetMasterAuthRequest.FromString,
-            response_serializer=Operation.SerializeToString,
-        ),
-        'DeleteCluster': grpc.unary_unary_rpc_method_handler(
-            servicer.DeleteCluster,
-            request_deserializer=DeleteClusterRequest.FromString,
-            response_serializer=Operation.SerializeToString,
-        ),
-        'ListOperations': grpc.unary_unary_rpc_method_handler(
-            servicer.ListOperations,
-            request_deserializer=ListOperationsRequest.FromString,
-            response_serializer=ListOperationsResponse.SerializeToString,
-        ),
-        'GetOperation': grpc.unary_unary_rpc_method_handler(
-            servicer.GetOperation,
-            request_deserializer=GetOperationRequest.FromString,
-            response_serializer=Operation.SerializeToString,
-        ),
-        'CancelOperation': grpc.unary_unary_rpc_method_handler(
-            servicer.CancelOperation,
-            request_deserializer=CancelOperationRequest.FromString,
-            response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
-        ),
-        'GetServerConfig': grpc.unary_unary_rpc_method_handler(
-            servicer.GetServerConfig,
-            request_deserializer=GetServerConfigRequest.FromString,
-            response_serializer=ServerConfig.SerializeToString,
-        ),
-        'ListNodePools': grpc.unary_unary_rpc_method_handler(
-            servicer.ListNodePools,
-            request_deserializer=ListNodePoolsRequest.FromString,
-            response_serializer=ListNodePoolsResponse.SerializeToString,
-        ),
-        'GetNodePool': grpc.unary_unary_rpc_method_handler(
-            servicer.GetNodePool,
-            request_deserializer=GetNodePoolRequest.FromString,
-            response_serializer=NodePool.SerializeToString,
-        ),
-        'CreateNodePool': grpc.unary_unary_rpc_method_handler(
-            servicer.CreateNodePool,
-            request_deserializer=CreateNodePoolRequest.FromString,
-            response_serializer=Operation.SerializeToString,
-        ),
-        'DeleteNodePool': grpc.unary_unary_rpc_method_handler(
-            servicer.DeleteNodePool,
-            request_deserializer=DeleteNodePoolRequest.FromString,
-            response_serializer=Operation.SerializeToString,
-        ),
-        'RollbackNodePoolUpgrade': grpc.unary_unary_rpc_method_handler(
-            servicer.RollbackNodePoolUpgrade,
-            request_deserializer=RollbackNodePoolUpgradeRequest.FromString,
-            response_serializer=Operation.SerializeToString,
-        ),
-        'SetNodePoolManagement': grpc.unary_unary_rpc_method_handler(
-            servicer.SetNodePoolManagement,
-            request_deserializer=SetNodePoolManagementRequest.FromString,
-            response_serializer=Operation.SerializeToString,
-        ),
-        'SetLabels': grpc.unary_unary_rpc_method_handler(
-            servicer.SetLabels,
-            request_deserializer=SetLabelsRequest.FromString,
-            response_serializer=Operation.SerializeToString,
-        ),
-        'SetLegacyAbac': grpc.unary_unary_rpc_method_handler(
-            servicer.SetLegacyAbac,
-            request_deserializer=SetLegacyAbacRequest.FromString,
-            response_serializer=Operation.SerializeToString,
-        ),
-        'StartIPRotation': grpc.unary_unary_rpc_method_handler(
-            servicer.StartIPRotation,
-            request_deserializer=StartIPRotationRequest.FromString,
-            response_serializer=Operation.SerializeToString,
-        ),
-        'CompleteIPRotation': grpc.unary_unary_rpc_method_handler(
-            servicer.CompleteIPRotation,
-            request_deserializer=CompleteIPRotationRequest.FromString,
-            response_serializer=Operation.SerializeToString,
-        ),
-        'SetNodePoolSize': grpc.unary_unary_rpc_method_handler(
-            servicer.SetNodePoolSize,
-            request_deserializer=SetNodePoolSizeRequest.FromString,
-            response_serializer=Operation.SerializeToString,
-        ),
-        'SetNetworkPolicy': grpc.unary_unary_rpc_method_handler(
-            servicer.SetNetworkPolicy,
-            request_deserializer=SetNetworkPolicyRequest.FromString,
-            response_serializer=Operation.SerializeToString,
-        ),
-        'SetMaintenancePolicy': grpc.unary_unary_rpc_method_handler(
-            servicer.SetMaintenancePolicy,
-            request_deserializer=SetMaintenancePolicyRequest.FromString,
-            response_serializer=Operation.SerializeToString,
-        ),
-    }
-    generic_handler = grpc.method_handlers_generic_handler(
-        'google.container.v1.ClusterManager', rpc_method_handlers)
-    server.add_generic_rpc_handlers((generic_handler,))
-
-
-  class BetaClusterManagerServicer(object):
-    """The Beta API is deprecated for 0.15.0 and later.
-
-    It is recommended to use the GA API (classes and functions in this
-    file not marked beta) for all further purposes. This class was generated
-    only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0."""
-    """Google Container Engine Cluster Manager v1
-    """
-    def ListClusters(self, request, context):
-      """Lists all clusters owned by a project in either the specified zone or all
-      zones.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def GetCluster(self, request, context):
-      """Gets the details of a specific cluster.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def CreateCluster(self, request, context):
-      """Creates a cluster, consisting of the specified number and type of Google
-      Compute Engine instances.
-
-      By default, the cluster is created in the project's
-      [default network](/compute/docs/networks-and-firewalls#networks).
-
-      One firewall is added for the cluster. After cluster creation,
-      the cluster creates routes for each node to allow the containers
-      on that node to communicate with all other instances in the
-      cluster.
-
-      Finally, an entry is added to the project's global metadata indicating
-      which CIDR range is being used by the cluster.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def UpdateCluster(self, request, context):
-      """Updates the settings of a specific cluster.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def UpdateNodePool(self, request, context):
-      """Updates the version and/or image type of a specific node pool.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def SetNodePoolAutoscaling(self, request, context):
-      """Sets the autoscaling settings of a specific node pool.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def SetLoggingService(self, request, context):
-      """Sets the logging service of a specific cluster.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def SetMonitoringService(self, request, context):
-      """Sets the monitoring service of a specific cluster.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def SetAddonsConfig(self, request, context):
-      """Sets the addons of a specific cluster.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def SetLocations(self, request, context):
-      """Sets the locations of a specific cluster.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def UpdateMaster(self, request, context):
-      """Updates the master of a specific cluster.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def SetMasterAuth(self, request, context):
-      """Used to set master auth materials. Currently supports :-
-      Changing the admin password of a specific cluster.
-      This can be either via password generation or explicitly set the password.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def DeleteCluster(self, request, context):
-      """Deletes the cluster, including the Kubernetes endpoint and all worker
-      nodes.
-
-      Firewalls and routes that were configured during cluster creation
-      are also deleted.
-
-      Other Google Compute Engine resources that might be in use by the cluster
-      (e.g. load balancer resources) will not be deleted if they weren't present
-      at the initial create time.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def ListOperations(self, request, context):
-      """Lists all operations in a project in a specific zone or all zones.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def GetOperation(self, request, context):
-      """Gets the specified operation.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def CancelOperation(self, request, context):
-      """Cancels the specified operation.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def GetServerConfig(self, request, context):
-      """Returns configuration info about the Container Engine service.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def ListNodePools(self, request, context):
-      """Lists the node pools for a cluster.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def GetNodePool(self, request, context):
-      """Retrieves the node pool requested.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def CreateNodePool(self, request, context):
-      """Creates a node pool for a cluster.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def DeleteNodePool(self, request, context):
-      """Deletes a node pool from a cluster.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def RollbackNodePoolUpgrade(self, request, context):
-      """Roll back the previously Aborted or Failed NodePool upgrade.
-      This will be an no-op if the last upgrade successfully completed.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def SetNodePoolManagement(self, request, context):
-      """Sets the NodeManagement options for a node pool.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def SetLabels(self, request, context):
-      """Sets labels on a cluster.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def SetLegacyAbac(self, request, context):
-      """Enables or disables the ABAC authorization mechanism on a cluster.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def StartIPRotation(self, request, context):
-      """Start master IP rotation.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def CompleteIPRotation(self, request, context):
-      """Completes master IP rotation.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def SetNodePoolSize(self, request, context):
-      """Sets the size of a specific node pool.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def SetNetworkPolicy(self, request, context):
-      """Enables/Disables Network Policy for a cluster.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def SetMaintenancePolicy(self, request, context):
-      """Sets the maintenance policy for a cluster.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-
-
-  class BetaClusterManagerStub(object):
-    """The Beta API is deprecated for 0.15.0 and later.
-
-    It is recommended to use the GA API (classes and functions in this
-    file not marked beta) for all further purposes. This class was generated
-    only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0."""
-    """Google Container Engine Cluster Manager v1
-    """
-    def ListClusters(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Lists all clusters owned by a project in either the specified zone or all
-      zones.
-      """
-      raise NotImplementedError()
-    ListClusters.future = None
-    def GetCluster(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Gets the details of a specific cluster.
-      """
-      raise NotImplementedError()
-    GetCluster.future = None
-    def CreateCluster(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Creates a cluster, consisting of the specified number and type of Google
-      Compute Engine instances.
-
-      By default, the cluster is created in the project's
-      [default network](/compute/docs/networks-and-firewalls#networks).
-
-      One firewall is added for the cluster. After cluster creation,
-      the cluster creates routes for each node to allow the containers
-      on that node to communicate with all other instances in the
-      cluster.
-
-      Finally, an entry is added to the project's global metadata indicating
-      which CIDR range is being used by the cluster.
-      """
-      raise NotImplementedError()
-    CreateCluster.future = None
-    def UpdateCluster(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Updates the settings of a specific cluster.
-      """
-      raise NotImplementedError()
-    UpdateCluster.future = None
-    def UpdateNodePool(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Updates the version and/or image type of a specific node pool.
-      """
-      raise NotImplementedError()
-    UpdateNodePool.future = None
-    def SetNodePoolAutoscaling(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Sets the autoscaling settings of a specific node pool.
-      """
-      raise NotImplementedError()
-    SetNodePoolAutoscaling.future = None
-    def SetLoggingService(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Sets the logging service of a specific cluster.
-      """
-      raise NotImplementedError()
-    SetLoggingService.future = None
-    def SetMonitoringService(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Sets the monitoring service of a specific cluster.
-      """
-      raise NotImplementedError()
-    SetMonitoringService.future = None
-    def SetAddonsConfig(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Sets the addons of a specific cluster.
-      """
-      raise NotImplementedError()
-    SetAddonsConfig.future = None
-    def SetLocations(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Sets the locations of a specific cluster.
-      """
-      raise NotImplementedError()
-    SetLocations.future = None
-    def UpdateMaster(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Updates the master of a specific cluster.
-      """
-      raise NotImplementedError()
-    UpdateMaster.future = None
-    def SetMasterAuth(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Used to set master auth materials. Currently supports :-
-      Changing the admin password of a specific cluster.
-      This can be either via password generation or explicitly set the password.
-      """
-      raise NotImplementedError()
-    SetMasterAuth.future = None
-    def DeleteCluster(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Deletes the cluster, including the Kubernetes endpoint and all worker
-      nodes.
-
-      Firewalls and routes that were configured during cluster creation
-      are also deleted.
-
-      Other Google Compute Engine resources that might be in use by the cluster
-      (e.g. load balancer resources) will not be deleted if they weren't present
-      at the initial create time.
-      """
-      raise NotImplementedError()
-    DeleteCluster.future = None
-    def ListOperations(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Lists all operations in a project in a specific zone or all zones.
-      """
-      raise NotImplementedError()
-    ListOperations.future = None
-    def GetOperation(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Gets the specified operation.
-      """
-      raise NotImplementedError()
-    GetOperation.future = None
-    def CancelOperation(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Cancels the specified operation.
-      """
-      raise NotImplementedError()
-    CancelOperation.future = None
-    def GetServerConfig(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Returns configuration info about the Container Engine service.
-      """
-      raise NotImplementedError()
-    GetServerConfig.future = None
-    def ListNodePools(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Lists the node pools for a cluster.
-      """
-      raise NotImplementedError()
-    ListNodePools.future = None
-    def GetNodePool(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Retrieves the node pool requested.
-      """
-      raise NotImplementedError()
-    GetNodePool.future = None
-    def CreateNodePool(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Creates a node pool for a cluster.
-      """
-      raise NotImplementedError()
-    CreateNodePool.future = None
-    def DeleteNodePool(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Deletes a node pool from a cluster.
-      """
-      raise NotImplementedError()
-    DeleteNodePool.future = None
-    def RollbackNodePoolUpgrade(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Roll back the previously Aborted or Failed NodePool upgrade.
-      This will be an no-op if the last upgrade successfully completed.
-      """
-      raise NotImplementedError()
-    RollbackNodePoolUpgrade.future = None
-    def SetNodePoolManagement(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Sets the NodeManagement options for a node pool.
-      """
-      raise NotImplementedError()
-    SetNodePoolManagement.future = None
-    def SetLabels(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Sets labels on a cluster.
-      """
-      raise NotImplementedError()
-    SetLabels.future = None
-    def SetLegacyAbac(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Enables or disables the ABAC authorization mechanism on a cluster.
-      """
-      raise NotImplementedError()
-    SetLegacyAbac.future = None
-    def StartIPRotation(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Start master IP rotation.
-      """
-      raise NotImplementedError()
-    StartIPRotation.future = None
-    def CompleteIPRotation(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Completes master IP rotation.
-      """
-      raise NotImplementedError()
-    CompleteIPRotation.future = None
-    def SetNodePoolSize(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Sets the size of a specific node pool.
-      """
-      raise NotImplementedError()
-    SetNodePoolSize.future = None
-    def SetNetworkPolicy(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Enables/Disables Network Policy for a cluster.
-      """
-      raise NotImplementedError()
-    SetNetworkPolicy.future = None
-    def SetMaintenancePolicy(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Sets the maintenance policy for a cluster.
-      """
-      raise NotImplementedError()
-    SetMaintenancePolicy.future = None
-
-
-  def beta_create_ClusterManager_server(servicer, pool=None, pool_size=None, default_timeout=None, maximum_timeout=None):
-    """The Beta API is deprecated for 0.15.0 and later.
-
-    It is recommended to use the GA API (classes and functions in this
-    file not marked beta) for all further purposes. This function was
-    generated only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0"""
-    request_deserializers = {
-      ('google.container.v1.ClusterManager', 'CancelOperation'): CancelOperationRequest.FromString,
-      ('google.container.v1.ClusterManager', 'CompleteIPRotation'): CompleteIPRotationRequest.FromString,
-      ('google.container.v1.ClusterManager', 'CreateCluster'): CreateClusterRequest.FromString,
-      ('google.container.v1.ClusterManager', 'CreateNodePool'): CreateNodePoolRequest.FromString,
-      ('google.container.v1.ClusterManager', 'DeleteCluster'): DeleteClusterRequest.FromString,
-      ('google.container.v1.ClusterManager', 'DeleteNodePool'): DeleteNodePoolRequest.FromString,
-      ('google.container.v1.ClusterManager', 'GetCluster'): GetClusterRequest.FromString,
-      ('google.container.v1.ClusterManager', 'GetNodePool'): GetNodePoolRequest.FromString,
-      ('google.container.v1.ClusterManager', 'GetOperation'): GetOperationRequest.FromString,
-      ('google.container.v1.ClusterManager', 'GetServerConfig'): GetServerConfigRequest.FromString,
-      ('google.container.v1.ClusterManager', 'ListClusters'): ListClustersRequest.FromString,
-      ('google.container.v1.ClusterManager', 'ListNodePools'): ListNodePoolsRequest.FromString,
-      ('google.container.v1.ClusterManager', 'ListOperations'): ListOperationsRequest.FromString,
-      ('google.container.v1.ClusterManager', 'RollbackNodePoolUpgrade'): RollbackNodePoolUpgradeRequest.FromString,
-      ('google.container.v1.ClusterManager', 'SetAddonsConfig'): SetAddonsConfigRequest.FromString,
-      ('google.container.v1.ClusterManager', 'SetLabels'): SetLabelsRequest.FromString,
-      ('google.container.v1.ClusterManager', 'SetLegacyAbac'): SetLegacyAbacRequest.FromString,
-      ('google.container.v1.ClusterManager', 'SetLocations'): SetLocationsRequest.FromString,
-      ('google.container.v1.ClusterManager', 'SetLoggingService'): SetLoggingServiceRequest.FromString,
-      ('google.container.v1.ClusterManager', 'SetMaintenancePolicy'): SetMaintenancePolicyRequest.FromString,
-      ('google.container.v1.ClusterManager', 'SetMasterAuth'): SetMasterAuthRequest.FromString,
-      ('google.container.v1.ClusterManager', 'SetMonitoringService'): SetMonitoringServiceRequest.FromString,
-      ('google.container.v1.ClusterManager', 'SetNetworkPolicy'): SetNetworkPolicyRequest.FromString,
-      ('google.container.v1.ClusterManager', 'SetNodePoolAutoscaling'): SetNodePoolAutoscalingRequest.FromString,
-      ('google.container.v1.ClusterManager', 'SetNodePoolManagement'): SetNodePoolManagementRequest.FromString,
-      ('google.container.v1.ClusterManager', 'SetNodePoolSize'): SetNodePoolSizeRequest.FromString,
-      ('google.container.v1.ClusterManager', 'StartIPRotation'): StartIPRotationRequest.FromString,
-      ('google.container.v1.ClusterManager', 'UpdateCluster'): UpdateClusterRequest.FromString,
-      ('google.container.v1.ClusterManager', 'UpdateMaster'): UpdateMasterRequest.FromString,
-      ('google.container.v1.ClusterManager', 'UpdateNodePool'): UpdateNodePoolRequest.FromString,
-    }
-    response_serializers = {
-      ('google.container.v1.ClusterManager', 'CancelOperation'): google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
-      ('google.container.v1.ClusterManager', 'CompleteIPRotation'): Operation.SerializeToString,
-      ('google.container.v1.ClusterManager', 'CreateCluster'): Operation.SerializeToString,
-      ('google.container.v1.ClusterManager', 'CreateNodePool'): Operation.SerializeToString,
-      ('google.container.v1.ClusterManager', 'DeleteCluster'): Operation.SerializeToString,
-      ('google.container.v1.ClusterManager', 'DeleteNodePool'): Operation.SerializeToString,
-      ('google.container.v1.ClusterManager', 'GetCluster'): Cluster.SerializeToString,
-      ('google.container.v1.ClusterManager', 'GetNodePool'): NodePool.SerializeToString,
-      ('google.container.v1.ClusterManager', 'GetOperation'): Operation.SerializeToString,
-      ('google.container.v1.ClusterManager', 'GetServerConfig'): ServerConfig.SerializeToString,
-      ('google.container.v1.ClusterManager', 'ListClusters'): ListClustersResponse.SerializeToString,
-      ('google.container.v1.ClusterManager', 'ListNodePools'): ListNodePoolsResponse.SerializeToString,
-      ('google.container.v1.ClusterManager', 'ListOperations'): ListOperationsResponse.SerializeToString,
-      ('google.container.v1.ClusterManager', 'RollbackNodePoolUpgrade'): Operation.SerializeToString,
-      ('google.container.v1.ClusterManager', 'SetAddonsConfig'): Operation.SerializeToString,
-      ('google.container.v1.ClusterManager', 'SetLabels'): Operation.SerializeToString,
-      ('google.container.v1.ClusterManager', 'SetLegacyAbac'): Operation.SerializeToString,
-      ('google.container.v1.ClusterManager', 'SetLocations'): Operation.SerializeToString,
-      ('google.container.v1.ClusterManager', 'SetLoggingService'): Operation.SerializeToString,
-      ('google.container.v1.ClusterManager', 'SetMaintenancePolicy'): Operation.SerializeToString,
-      ('google.container.v1.ClusterManager', 'SetMasterAuth'): Operation.SerializeToString,
-      ('google.container.v1.ClusterManager', 'SetMonitoringService'): Operation.SerializeToString,
-      ('google.container.v1.ClusterManager', 'SetNetworkPolicy'): Operation.SerializeToString,
-      ('google.container.v1.ClusterManager', 'SetNodePoolAutoscaling'): Operation.SerializeToString,
-      ('google.container.v1.ClusterManager', 'SetNodePoolManagement'): Operation.SerializeToString,
-      ('google.container.v1.ClusterManager', 'SetNodePoolSize'): Operation.SerializeToString,
-      ('google.container.v1.ClusterManager', 'StartIPRotation'): Operation.SerializeToString,
-      ('google.container.v1.ClusterManager', 'UpdateCluster'): Operation.SerializeToString,
-      ('google.container.v1.ClusterManager', 'UpdateMaster'): Operation.SerializeToString,
-      ('google.container.v1.ClusterManager', 'UpdateNodePool'): Operation.SerializeToString,
-    }
-    method_implementations = {
-      ('google.container.v1.ClusterManager', 'CancelOperation'): face_utilities.unary_unary_inline(servicer.CancelOperation),
-      ('google.container.v1.ClusterManager', 'CompleteIPRotation'): face_utilities.unary_unary_inline(servicer.CompleteIPRotation),
-      ('google.container.v1.ClusterManager', 'CreateCluster'): face_utilities.unary_unary_inline(servicer.CreateCluster),
-      ('google.container.v1.ClusterManager', 'CreateNodePool'): face_utilities.unary_unary_inline(servicer.CreateNodePool),
-      ('google.container.v1.ClusterManager', 'DeleteCluster'): face_utilities.unary_unary_inline(servicer.DeleteCluster),
-      ('google.container.v1.ClusterManager', 'DeleteNodePool'): face_utilities.unary_unary_inline(servicer.DeleteNodePool),
-      ('google.container.v1.ClusterManager', 'GetCluster'): face_utilities.unary_unary_inline(servicer.GetCluster),
-      ('google.container.v1.ClusterManager', 'GetNodePool'): face_utilities.unary_unary_inline(servicer.GetNodePool),
-      ('google.container.v1.ClusterManager', 'GetOperation'): face_utilities.unary_unary_inline(servicer.GetOperation),
-      ('google.container.v1.ClusterManager', 'GetServerConfig'): face_utilities.unary_unary_inline(servicer.GetServerConfig),
-      ('google.container.v1.ClusterManager', 'ListClusters'): face_utilities.unary_unary_inline(servicer.ListClusters),
-      ('google.container.v1.ClusterManager', 'ListNodePools'): face_utilities.unary_unary_inline(servicer.ListNodePools),
-      ('google.container.v1.ClusterManager', 'ListOperations'): face_utilities.unary_unary_inline(servicer.ListOperations),
-      ('google.container.v1.ClusterManager', 'RollbackNodePoolUpgrade'): face_utilities.unary_unary_inline(servicer.RollbackNodePoolUpgrade),
-      ('google.container.v1.ClusterManager', 'SetAddonsConfig'): face_utilities.unary_unary_inline(servicer.SetAddonsConfig),
-      ('google.container.v1.ClusterManager', 'SetLabels'): face_utilities.unary_unary_inline(servicer.SetLabels),
-      ('google.container.v1.ClusterManager', 'SetLegacyAbac'): face_utilities.unary_unary_inline(servicer.SetLegacyAbac),
-      ('google.container.v1.ClusterManager', 'SetLocations'): face_utilities.unary_unary_inline(servicer.SetLocations),
-      ('google.container.v1.ClusterManager', 'SetLoggingService'): face_utilities.unary_unary_inline(servicer.SetLoggingService),
-      ('google.container.v1.ClusterManager', 'SetMaintenancePolicy'): face_utilities.unary_unary_inline(servicer.SetMaintenancePolicy),
-      ('google.container.v1.ClusterManager', 'SetMasterAuth'): face_utilities.unary_unary_inline(servicer.SetMasterAuth),
-      ('google.container.v1.ClusterManager', 'SetMonitoringService'): face_utilities.unary_unary_inline(servicer.SetMonitoringService),
-      ('google.container.v1.ClusterManager', 'SetNetworkPolicy'): face_utilities.unary_unary_inline(servicer.SetNetworkPolicy),
-      ('google.container.v1.ClusterManager', 'SetNodePoolAutoscaling'): face_utilities.unary_unary_inline(servicer.SetNodePoolAutoscaling),
-      ('google.container.v1.ClusterManager', 'SetNodePoolManagement'): face_utilities.unary_unary_inline(servicer.SetNodePoolManagement),
-      ('google.container.v1.ClusterManager', 'SetNodePoolSize'): face_utilities.unary_unary_inline(servicer.SetNodePoolSize),
-      ('google.container.v1.ClusterManager', 'StartIPRotation'): face_utilities.unary_unary_inline(servicer.StartIPRotation),
-      ('google.container.v1.ClusterManager', 'UpdateCluster'): face_utilities.unary_unary_inline(servicer.UpdateCluster),
-      ('google.container.v1.ClusterManager', 'UpdateMaster'): face_utilities.unary_unary_inline(servicer.UpdateMaster),
-      ('google.container.v1.ClusterManager', 'UpdateNodePool'): face_utilities.unary_unary_inline(servicer.UpdateNodePool),
-    }
-    server_options = beta_implementations.server_options(request_deserializers=request_deserializers, response_serializers=response_serializers, thread_pool=pool, thread_pool_size=pool_size, default_timeout=default_timeout, maximum_timeout=maximum_timeout)
-    return beta_implementations.server(method_implementations, options=server_options)
-
-
-  def beta_create_ClusterManager_stub(channel, host=None, metadata_transformer=None, pool=None, pool_size=None):
-    """The Beta API is deprecated for 0.15.0 and later.
-
-    It is recommended to use the GA API (classes and functions in this
-    file not marked beta) for all further purposes. This function was
-    generated only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0"""
-    request_serializers = {
-      ('google.container.v1.ClusterManager', 'CancelOperation'): CancelOperationRequest.SerializeToString,
-      ('google.container.v1.ClusterManager', 'CompleteIPRotation'): CompleteIPRotationRequest.SerializeToString,
-      ('google.container.v1.ClusterManager', 'CreateCluster'): CreateClusterRequest.SerializeToString,
-      ('google.container.v1.ClusterManager', 'CreateNodePool'): CreateNodePoolRequest.SerializeToString,
-      ('google.container.v1.ClusterManager', 'DeleteCluster'): DeleteClusterRequest.SerializeToString,
-      ('google.container.v1.ClusterManager', 'DeleteNodePool'): DeleteNodePoolRequest.SerializeToString,
-      ('google.container.v1.ClusterManager', 'GetCluster'): GetClusterRequest.SerializeToString,
-      ('google.container.v1.ClusterManager', 'GetNodePool'): GetNodePoolRequest.SerializeToString,
-      ('google.container.v1.ClusterManager', 'GetOperation'): GetOperationRequest.SerializeToString,
-      ('google.container.v1.ClusterManager', 'GetServerConfig'): GetServerConfigRequest.SerializeToString,
-      ('google.container.v1.ClusterManager', 'ListClusters'): ListClustersRequest.SerializeToString,
-      ('google.container.v1.ClusterManager', 'ListNodePools'): ListNodePoolsRequest.SerializeToString,
-      ('google.container.v1.ClusterManager', 'ListOperations'): ListOperationsRequest.SerializeToString,
-      ('google.container.v1.ClusterManager', 'RollbackNodePoolUpgrade'): RollbackNodePoolUpgradeRequest.SerializeToString,
-      ('google.container.v1.ClusterManager', 'SetAddonsConfig'): SetAddonsConfigRequest.SerializeToString,
-      ('google.container.v1.ClusterManager', 'SetLabels'): SetLabelsRequest.SerializeToString,
-      ('google.container.v1.ClusterManager', 'SetLegacyAbac'): SetLegacyAbacRequest.SerializeToString,
-      ('google.container.v1.ClusterManager', 'SetLocations'): SetLocationsRequest.SerializeToString,
-      ('google.container.v1.ClusterManager', 'SetLoggingService'): SetLoggingServiceRequest.SerializeToString,
-      ('google.container.v1.ClusterManager', 'SetMaintenancePolicy'): SetMaintenancePolicyRequest.SerializeToString,
-      ('google.container.v1.ClusterManager', 'SetMasterAuth'): SetMasterAuthRequest.SerializeToString,
-      ('google.container.v1.ClusterManager', 'SetMonitoringService'): SetMonitoringServiceRequest.SerializeToString,
-      ('google.container.v1.ClusterManager', 'SetNetworkPolicy'): SetNetworkPolicyRequest.SerializeToString,
-      ('google.container.v1.ClusterManager', 'SetNodePoolAutoscaling'): SetNodePoolAutoscalingRequest.SerializeToString,
-      ('google.container.v1.ClusterManager', 'SetNodePoolManagement'): SetNodePoolManagementRequest.SerializeToString,
-      ('google.container.v1.ClusterManager', 'SetNodePoolSize'): SetNodePoolSizeRequest.SerializeToString,
-      ('google.container.v1.ClusterManager', 'StartIPRotation'): StartIPRotationRequest.SerializeToString,
-      ('google.container.v1.ClusterManager', 'UpdateCluster'): UpdateClusterRequest.SerializeToString,
-      ('google.container.v1.ClusterManager', 'UpdateMaster'): UpdateMasterRequest.SerializeToString,
-      ('google.container.v1.ClusterManager', 'UpdateNodePool'): UpdateNodePoolRequest.SerializeToString,
-    }
-    response_deserializers = {
-      ('google.container.v1.ClusterManager', 'CancelOperation'): google_dot_protobuf_dot_empty__pb2.Empty.FromString,
-      ('google.container.v1.ClusterManager', 'CompleteIPRotation'): Operation.FromString,
-      ('google.container.v1.ClusterManager', 'CreateCluster'): Operation.FromString,
-      ('google.container.v1.ClusterManager', 'CreateNodePool'): Operation.FromString,
-      ('google.container.v1.ClusterManager', 'DeleteCluster'): Operation.FromString,
-      ('google.container.v1.ClusterManager', 'DeleteNodePool'): Operation.FromString,
-      ('google.container.v1.ClusterManager', 'GetCluster'): Cluster.FromString,
-      ('google.container.v1.ClusterManager', 'GetNodePool'): NodePool.FromString,
-      ('google.container.v1.ClusterManager', 'GetOperation'): Operation.FromString,
-      ('google.container.v1.ClusterManager', 'GetServerConfig'): ServerConfig.FromString,
-      ('google.container.v1.ClusterManager', 'ListClusters'): ListClustersResponse.FromString,
-      ('google.container.v1.ClusterManager', 'ListNodePools'): ListNodePoolsResponse.FromString,
-      ('google.container.v1.ClusterManager', 'ListOperations'): ListOperationsResponse.FromString,
-      ('google.container.v1.ClusterManager', 'RollbackNodePoolUpgrade'): Operation.FromString,
-      ('google.container.v1.ClusterManager', 'SetAddonsConfig'): Operation.FromString,
-      ('google.container.v1.ClusterManager', 'SetLabels'): Operation.FromString,
-      ('google.container.v1.ClusterManager', 'SetLegacyAbac'): Operation.FromString,
-      ('google.container.v1.ClusterManager', 'SetLocations'): Operation.FromString,
-      ('google.container.v1.ClusterManager', 'SetLoggingService'): Operation.FromString,
-      ('google.container.v1.ClusterManager', 'SetMaintenancePolicy'): Operation.FromString,
-      ('google.container.v1.ClusterManager', 'SetMasterAuth'): Operation.FromString,
-      ('google.container.v1.ClusterManager', 'SetMonitoringService'): Operation.FromString,
-      ('google.container.v1.ClusterManager', 'SetNetworkPolicy'): Operation.FromString,
-      ('google.container.v1.ClusterManager', 'SetNodePoolAutoscaling'): Operation.FromString,
-      ('google.container.v1.ClusterManager', 'SetNodePoolManagement'): Operation.FromString,
-      ('google.container.v1.ClusterManager', 'SetNodePoolSize'): Operation.FromString,
-      ('google.container.v1.ClusterManager', 'StartIPRotation'): Operation.FromString,
-      ('google.container.v1.ClusterManager', 'UpdateCluster'): Operation.FromString,
-      ('google.container.v1.ClusterManager', 'UpdateMaster'): Operation.FromString,
-      ('google.container.v1.ClusterManager', 'UpdateNodePool'): Operation.FromString,
-    }
-    cardinalities = {
-      'CancelOperation': cardinality.Cardinality.UNARY_UNARY,
-      'CompleteIPRotation': cardinality.Cardinality.UNARY_UNARY,
-      'CreateCluster': cardinality.Cardinality.UNARY_UNARY,
-      'CreateNodePool': cardinality.Cardinality.UNARY_UNARY,
-      'DeleteCluster': cardinality.Cardinality.UNARY_UNARY,
-      'DeleteNodePool': cardinality.Cardinality.UNARY_UNARY,
-      'GetCluster': cardinality.Cardinality.UNARY_UNARY,
-      'GetNodePool': cardinality.Cardinality.UNARY_UNARY,
-      'GetOperation': cardinality.Cardinality.UNARY_UNARY,
-      'GetServerConfig': cardinality.Cardinality.UNARY_UNARY,
-      'ListClusters': cardinality.Cardinality.UNARY_UNARY,
-      'ListNodePools': cardinality.Cardinality.UNARY_UNARY,
-      'ListOperations': cardinality.Cardinality.UNARY_UNARY,
-      'RollbackNodePoolUpgrade': cardinality.Cardinality.UNARY_UNARY,
-      'SetAddonsConfig': cardinality.Cardinality.UNARY_UNARY,
-      'SetLabels': cardinality.Cardinality.UNARY_UNARY,
-      'SetLegacyAbac': cardinality.Cardinality.UNARY_UNARY,
-      'SetLocations': cardinality.Cardinality.UNARY_UNARY,
-      'SetLoggingService': cardinality.Cardinality.UNARY_UNARY,
-      'SetMaintenancePolicy': cardinality.Cardinality.UNARY_UNARY,
-      'SetMasterAuth': cardinality.Cardinality.UNARY_UNARY,
-      'SetMonitoringService': cardinality.Cardinality.UNARY_UNARY,
-      'SetNetworkPolicy': cardinality.Cardinality.UNARY_UNARY,
-      'SetNodePoolAutoscaling': cardinality.Cardinality.UNARY_UNARY,
-      'SetNodePoolManagement': cardinality.Cardinality.UNARY_UNARY,
-      'SetNodePoolSize': cardinality.Cardinality.UNARY_UNARY,
-      'StartIPRotation': cardinality.Cardinality.UNARY_UNARY,
-      'UpdateCluster': cardinality.Cardinality.UNARY_UNARY,
-      'UpdateMaster': cardinality.Cardinality.UNARY_UNARY,
-      'UpdateNodePool': cardinality.Cardinality.UNARY_UNARY,
-    }
-    stub_options = beta_implementations.stub_options(host=host, metadata_transformer=metadata_transformer, request_serializers=request_serializers, response_deserializers=response_deserializers, thread_pool=pool, thread_pool_size=pool_size)
-    return beta_implementations.dynamic_stub(channel, 'google.container.v1.ClusterManager', cardinalities, options=stub_options)
-except ImportError:
-  pass
 # @@protoc_insertion_point(module_scope)
