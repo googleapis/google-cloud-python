@@ -24,7 +24,6 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   serialized_pb=_b('\nKgoogle/devtools/clouderrorreporting_v1beta1/proto/error_group_service.proto\x12+google.devtools.clouderrorreporting.v1beta1\x1a\x1cgoogle/api/annotations.proto\x1a>google/devtools/clouderrorreporting_v1beta1/proto/common.proto\"%\n\x0fGetGroupRequest\x12\x12\n\ngroup_name\x18\x01 \x01(\t\"\\\n\x12UpdateGroupRequest\x12\x46\n\x05group\x18\x01 \x01(\x0b\x32\x37.google.devtools.clouderrorreporting.v1beta1.ErrorGroup2\x8e\x03\n\x11\x45rrorGroupService\x12\xb4\x01\n\x08GetGroup\x12<.google.devtools.clouderrorreporting.v1beta1.GetGroupRequest\x1a\x37.google.devtools.clouderrorreporting.v1beta1.ErrorGroup\"1\x82\xd3\xe4\x93\x02+\x12)/v1beta1/{group_name=projects/*/groups/*}\x12\xc1\x01\n\x0bUpdateGroup\x12?.google.devtools.clouderrorreporting.v1beta1.UpdateGroupRequest\x1a\x37.google.devtools.clouderrorreporting.v1beta1.ErrorGroup\"8\x82\xd3\xe4\x93\x02\x32\x1a)/v1beta1/{group.name=projects/*/groups/*}:\x05groupB\xf7\x01\n/com.google.devtools.clouderrorreporting.v1beta1B\x16\x45rrorGroupServiceProtoP\x01Z^google.golang.org/genproto/googleapis/devtools/clouderrorreporting/v1beta1;clouderrorreporting\xaa\x02#Google.Cloud.ErrorReporting.V1Beta1\xca\x02#Google\\Cloud\\ErrorReporting\\V1beta1b\x06proto3')
   ,
   dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR,google_dot_devtools_dot_clouderrorreporting__v1beta1_dot_proto_dot_common__pb2.DESCRIPTOR,])
-_sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 
 
@@ -42,7 +41,7 @@ _GETGROUPREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -73,7 +72,7 @@ _UPDATEGROUPREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -93,6 +92,7 @@ _UPDATEGROUPREQUEST = _descriptor.Descriptor(
 _UPDATEGROUPREQUEST.fields_by_name['group'].message_type = google_dot_devtools_dot_clouderrorreporting__v1beta1_dot_proto_dot_common__pb2._ERRORGROUP
 DESCRIPTOR.message_types_by_name['GetGroupRequest'] = _GETGROUPREQUEST
 DESCRIPTOR.message_types_by_name['UpdateGroupRequest'] = _UPDATEGROUPREQUEST
+_sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 GetGroupRequest = _reflection.GeneratedProtocolMessageType('GetGroupRequest', (_message.Message,), dict(
   DESCRIPTOR = _GETGROUPREQUEST,
@@ -131,158 +131,37 @@ _sym_db.RegisterMessage(UpdateGroupRequest)
 
 DESCRIPTOR.has_options = True
 DESCRIPTOR._options = _descriptor._ParseOptions(descriptor_pb2.FileOptions(), _b('\n/com.google.devtools.clouderrorreporting.v1beta1B\026ErrorGroupServiceProtoP\001Z^google.golang.org/genproto/googleapis/devtools/clouderrorreporting/v1beta1;clouderrorreporting\252\002#Google.Cloud.ErrorReporting.V1Beta1\312\002#Google\\Cloud\\ErrorReporting\\V1beta1'))
-try:
-  # THESE ELEMENTS WILL BE DEPRECATED.
-  # Please use the generated *_pb2_grpc.py files instead.
-  import grpc
-  from grpc.beta import implementations as beta_implementations
-  from grpc.beta import interfaces as beta_interfaces
-  from grpc.framework.common import cardinality
-  from grpc.framework.interfaces.face import utilities as face_utilities
 
+_ERRORGROUPSERVICE = _descriptor.ServiceDescriptor(
+  name='ErrorGroupService',
+  full_name='google.devtools.clouderrorreporting.v1beta1.ErrorGroupService',
+  file=DESCRIPTOR,
+  index=0,
+  options=None,
+  serialized_start=352,
+  serialized_end=750,
+  methods=[
+  _descriptor.MethodDescriptor(
+    name='GetGroup',
+    full_name='google.devtools.clouderrorreporting.v1beta1.ErrorGroupService.GetGroup',
+    index=0,
+    containing_service=None,
+    input_type=_GETGROUPREQUEST,
+    output_type=google_dot_devtools_dot_clouderrorreporting__v1beta1_dot_proto_dot_common__pb2._ERRORGROUP,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002+\022)/v1beta1/{group_name=projects/*/groups/*}')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='UpdateGroup',
+    full_name='google.devtools.clouderrorreporting.v1beta1.ErrorGroupService.UpdateGroup',
+    index=1,
+    containing_service=None,
+    input_type=_UPDATEGROUPREQUEST,
+    output_type=google_dot_devtools_dot_clouderrorreporting__v1beta1_dot_proto_dot_common__pb2._ERRORGROUP,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\0022\032)/v1beta1/{group.name=projects/*/groups/*}:\005group')),
+  ),
+])
+_sym_db.RegisterServiceDescriptor(_ERRORGROUPSERVICE)
 
-  class ErrorGroupServiceStub(object):
-    """Service for retrieving and updating individual error groups.
-    """
+DESCRIPTOR.services_by_name['ErrorGroupService'] = _ERRORGROUPSERVICE
 
-    def __init__(self, channel):
-      """Constructor.
-
-      Args:
-        channel: A grpc.Channel.
-      """
-      self.GetGroup = channel.unary_unary(
-          '/google.devtools.clouderrorreporting.v1beta1.ErrorGroupService/GetGroup',
-          request_serializer=GetGroupRequest.SerializeToString,
-          response_deserializer=google_dot_devtools_dot_clouderrorreporting__v1beta1_dot_proto_dot_common__pb2.ErrorGroup.FromString,
-          )
-      self.UpdateGroup = channel.unary_unary(
-          '/google.devtools.clouderrorreporting.v1beta1.ErrorGroupService/UpdateGroup',
-          request_serializer=UpdateGroupRequest.SerializeToString,
-          response_deserializer=google_dot_devtools_dot_clouderrorreporting__v1beta1_dot_proto_dot_common__pb2.ErrorGroup.FromString,
-          )
-
-
-  class ErrorGroupServiceServicer(object):
-    """Service for retrieving and updating individual error groups.
-    """
-
-    def GetGroup(self, request, context):
-      """Get the specified group.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def UpdateGroup(self, request, context):
-      """Replace the data for the specified group.
-      Fails if the group does not exist.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-
-  def add_ErrorGroupServiceServicer_to_server(servicer, server):
-    rpc_method_handlers = {
-        'GetGroup': grpc.unary_unary_rpc_method_handler(
-            servicer.GetGroup,
-            request_deserializer=GetGroupRequest.FromString,
-            response_serializer=google_dot_devtools_dot_clouderrorreporting__v1beta1_dot_proto_dot_common__pb2.ErrorGroup.SerializeToString,
-        ),
-        'UpdateGroup': grpc.unary_unary_rpc_method_handler(
-            servicer.UpdateGroup,
-            request_deserializer=UpdateGroupRequest.FromString,
-            response_serializer=google_dot_devtools_dot_clouderrorreporting__v1beta1_dot_proto_dot_common__pb2.ErrorGroup.SerializeToString,
-        ),
-    }
-    generic_handler = grpc.method_handlers_generic_handler(
-        'google.devtools.clouderrorreporting.v1beta1.ErrorGroupService', rpc_method_handlers)
-    server.add_generic_rpc_handlers((generic_handler,))
-
-
-  class BetaErrorGroupServiceServicer(object):
-    """The Beta API is deprecated for 0.15.0 and later.
-
-    It is recommended to use the GA API (classes and functions in this
-    file not marked beta) for all further purposes. This class was generated
-    only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0."""
-    """Service for retrieving and updating individual error groups.
-    """
-    def GetGroup(self, request, context):
-      """Get the specified group.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def UpdateGroup(self, request, context):
-      """Replace the data for the specified group.
-      Fails if the group does not exist.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-
-
-  class BetaErrorGroupServiceStub(object):
-    """The Beta API is deprecated for 0.15.0 and later.
-
-    It is recommended to use the GA API (classes and functions in this
-    file not marked beta) for all further purposes. This class was generated
-    only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0."""
-    """Service for retrieving and updating individual error groups.
-    """
-    def GetGroup(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Get the specified group.
-      """
-      raise NotImplementedError()
-    GetGroup.future = None
-    def UpdateGroup(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Replace the data for the specified group.
-      Fails if the group does not exist.
-      """
-      raise NotImplementedError()
-    UpdateGroup.future = None
-
-
-  def beta_create_ErrorGroupService_server(servicer, pool=None, pool_size=None, default_timeout=None, maximum_timeout=None):
-    """The Beta API is deprecated for 0.15.0 and later.
-
-    It is recommended to use the GA API (classes and functions in this
-    file not marked beta) for all further purposes. This function was
-    generated only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0"""
-    request_deserializers = {
-      ('google.devtools.clouderrorreporting.v1beta1.ErrorGroupService', 'GetGroup'): GetGroupRequest.FromString,
-      ('google.devtools.clouderrorreporting.v1beta1.ErrorGroupService', 'UpdateGroup'): UpdateGroupRequest.FromString,
-    }
-    response_serializers = {
-      ('google.devtools.clouderrorreporting.v1beta1.ErrorGroupService', 'GetGroup'): google_dot_devtools_dot_clouderrorreporting__v1beta1_dot_proto_dot_common__pb2.ErrorGroup.SerializeToString,
-      ('google.devtools.clouderrorreporting.v1beta1.ErrorGroupService', 'UpdateGroup'): google_dot_devtools_dot_clouderrorreporting__v1beta1_dot_proto_dot_common__pb2.ErrorGroup.SerializeToString,
-    }
-    method_implementations = {
-      ('google.devtools.clouderrorreporting.v1beta1.ErrorGroupService', 'GetGroup'): face_utilities.unary_unary_inline(servicer.GetGroup),
-      ('google.devtools.clouderrorreporting.v1beta1.ErrorGroupService', 'UpdateGroup'): face_utilities.unary_unary_inline(servicer.UpdateGroup),
-    }
-    server_options = beta_implementations.server_options(request_deserializers=request_deserializers, response_serializers=response_serializers, thread_pool=pool, thread_pool_size=pool_size, default_timeout=default_timeout, maximum_timeout=maximum_timeout)
-    return beta_implementations.server(method_implementations, options=server_options)
-
-
-  def beta_create_ErrorGroupService_stub(channel, host=None, metadata_transformer=None, pool=None, pool_size=None):
-    """The Beta API is deprecated for 0.15.0 and later.
-
-    It is recommended to use the GA API (classes and functions in this
-    file not marked beta) for all further purposes. This function was
-    generated only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0"""
-    request_serializers = {
-      ('google.devtools.clouderrorreporting.v1beta1.ErrorGroupService', 'GetGroup'): GetGroupRequest.SerializeToString,
-      ('google.devtools.clouderrorreporting.v1beta1.ErrorGroupService', 'UpdateGroup'): UpdateGroupRequest.SerializeToString,
-    }
-    response_deserializers = {
-      ('google.devtools.clouderrorreporting.v1beta1.ErrorGroupService', 'GetGroup'): google_dot_devtools_dot_clouderrorreporting__v1beta1_dot_proto_dot_common__pb2.ErrorGroup.FromString,
-      ('google.devtools.clouderrorreporting.v1beta1.ErrorGroupService', 'UpdateGroup'): google_dot_devtools_dot_clouderrorreporting__v1beta1_dot_proto_dot_common__pb2.ErrorGroup.FromString,
-    }
-    cardinalities = {
-      'GetGroup': cardinality.Cardinality.UNARY_UNARY,
-      'UpdateGroup': cardinality.Cardinality.UNARY_UNARY,
-    }
-    stub_options = beta_implementations.stub_options(host=host, metadata_transformer=metadata_transformer, request_serializers=request_serializers, response_deserializers=response_deserializers, thread_pool=pool, thread_pool_size=pool_size)
-    return beta_implementations.dynamic_stub(channel, 'google.devtools.clouderrorreporting.v1beta1.ErrorGroupService', cardinalities, options=stub_options)
-except ImportError:
-  pass
 # @@protoc_insertion_point(module_scope)
