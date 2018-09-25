@@ -40,12 +40,17 @@ except ImportError:  # pragma: NO COVER
     IPython = None
 
 from google.api_core.exceptions import PreconditionFailed
+from google.api_core.exceptions import BadRequest
+from google.api_core.exceptions import Conflict
+from google.api_core.exceptions import Forbidden
+from google.api_core.exceptions import NotFound
+from google.api_core.exceptions import TooManyRequests
 from google.cloud import bigquery
-from google.cloud.bigquery.dataset import Dataset, DatasetReference
+from google.cloud.bigquery.dataset import Dataset
+from google.cloud.bigquery.dataset import DatasetReference
 from google.cloud.bigquery.table import Table
 from google.cloud._helpers import UTC
 from google.cloud.bigquery import dbapi
-from google.cloud.exceptions import BadRequest, Forbidden, NotFound
 from google.cloud import storage
 
 from test_utils.retry import RetryErrors
@@ -135,19 +140,16 @@ class TestBigQuery(unittest.TestCase):
         self.to_delete = []
 
     def tearDown(self):
-        from google.cloud.storage import Bucket
-        from google.cloud.exceptions import BadRequest
-        from google.cloud.exceptions import Conflict
 
         def _still_in_use(bad_request):
             return any(error['reason'] == 'resourceInUse'
                        for error in bad_request._errors)
 
         retry_in_use = RetryErrors(BadRequest, error_predicate=_still_in_use)
-        retry_409 = RetryErrors(Conflict)
+        retry_409_429 = RetryErrors((Conflict, TooManyRequests))
         for doomed in self.to_delete:
-            if isinstance(doomed, Bucket):
-                retry_409(doomed.delete)(force=True)
+            if isinstance(doomed, storage.Bucket):
+                retry_409_429(doomed.delete)(force=True)
             elif isinstance(doomed, (Dataset, bigquery.DatasetReference)):
                 retry_in_use(Config.CLIENT.delete_dataset)(
                     doomed, delete_contents=True)
