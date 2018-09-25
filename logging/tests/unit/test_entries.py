@@ -45,11 +45,11 @@ class Test_BaseEntry(unittest.TestCase):
     LOGGER_NAME = 'LOGGER_NAME'
 
     @staticmethod
-    def _get_target_class():
+    def _get_target_class(payload_key='dummyPayload'):
         from google.cloud.logging.entries import _BaseEntry
 
         class _Dummy(_BaseEntry):
-            _PAYLOAD_KEY = 'dummyPayload'
+            _PAYLOAD_KEY = payload_key
 
         return _Dummy
 
@@ -115,17 +115,15 @@ class Test_BaseEntry(unittest.TestCase):
         self.assertEqual(entry.trace, TRACE)
         self.assertEqual(entry.span_id, SPANID)
 
-    def test_from_api_repr_missing_data_no_loggers(self):
+    def test_from_api_repr_no_payload_missing_data_no_loggers(self):
         client = _Client(self.PROJECT)
-        PAYLOAD = 'PAYLOAD'
         LOG_NAME = 'projects/%s/logs/%s' % (self.PROJECT, self.LOGGER_NAME)
         API_REPR = {
-            'dummyPayload': PAYLOAD,
             'logName': LOG_NAME,
         }
-        klass = self._get_target_class()
+        klass = self._get_target_class(payload_key=None)
         entry = klass.from_api_repr(API_REPR, client)
-        self.assertEqual(entry.payload, PAYLOAD)
+        self.assertIsNone(entry.payload)
         self.assertIsNone(entry.insert_id)
         self.assertIsNone(entry.timestamp)
         self.assertIsNone(entry.severity)
