@@ -1186,7 +1186,7 @@ class TestBigQuery(unittest.TestCase):
         self._fetch_single_page(table)
 
     def test_query_w_dml(self):
-        dataset_name = _make_dataset_id('dml_tests')
+        dataset_name = _make_dataset_id('dml_query')
         table_name = 'test_table'
         self._load_table_for_dml([('Hello World',)], dataset_name, table_name)
         query_template = """UPDATE {}.{}
@@ -1202,7 +1202,7 @@ class TestBigQuery(unittest.TestCase):
         self.assertEqual(query_job.num_dml_affected_rows, 1)
 
     def test_dbapi_w_dml(self):
-        dataset_name = _make_dataset_id('dml_tests')
+        dataset_name = _make_dataset_id('dml_dbapi')
         table_name = 'test_table'
         self._load_table_for_dml([('Hello World',)], dataset_name, table_name)
         query_template = """UPDATE {}.{}
