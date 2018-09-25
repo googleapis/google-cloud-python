@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+#
 # Copyright 2018 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,8 +15,10 @@
 # limitations under the License.
 """Wrappers for protocol buffer enum types."""
 
+import enum
 
-class NullValue(object):
+
+class NullValue(enum.IntEnum):
     """
     ``NullValue`` is a singleton enumeration to represent the null value for the
     ``Value`` type union.
@@ -29,7 +33,7 @@ class NullValue(object):
 
 class DocumentTransform(object):
     class FieldTransform(object):
-        class ServerValue(object):
+        class ServerValue(enum.IntEnum):
             """
             A value that is calculated by the server.
 
@@ -43,7 +47,7 @@ class DocumentTransform(object):
 
 
 class StructuredQuery(object):
-    class Direction(object):
+    class Direction(enum.IntEnum):
         """
         A sort direction.
 
@@ -57,7 +61,7 @@ class StructuredQuery(object):
         DESCENDING = 2
 
     class CompositeFilter(object):
-        class Operator(object):
+        class Operator(enum.IntEnum):
             """
             A composite filter operator.
 
@@ -69,7 +73,7 @@ class StructuredQuery(object):
             AND = 1
 
     class FieldFilter(object):
-        class Operator(object):
+        class Operator(enum.IntEnum):
             """
             A field filter operator.
 
@@ -81,6 +85,7 @@ class StructuredQuery(object):
               GREATER_THAN_OR_EQUAL (int): Greater than or equal. Requires that the field come first in
               ``order_by``.
               EQUAL (int): Equal.
+              ARRAY_CONTAINS (int): Contains. Requires that the field is an array.
             """
             OPERATOR_UNSPECIFIED = 0
             LESS_THAN = 1
@@ -88,9 +93,10 @@ class StructuredQuery(object):
             GREATER_THAN = 3
             GREATER_THAN_OR_EQUAL = 4
             EQUAL = 5
+            ARRAY_CONTAINS = 7
 
     class UnaryFilter(object):
-        class Operator(object):
+        class Operator(enum.IntEnum):
             """
             A unary operator.
 
@@ -105,7 +111,7 @@ class StructuredQuery(object):
 
 
 class TargetChange(object):
-    class TargetChangeType(object):
+    class TargetChangeType(enum.IntEnum):
         """
         The type of change.
 
