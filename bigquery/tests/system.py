@@ -293,10 +293,7 @@ class TestBigQuery(unittest.TestCase):
 
     def test_delete_dataset_delete_contents_false(self):
         from google.api_core import exceptions
-        dataset_id = _make_dataset_id('delete_table_false')
-        dataset = retry_403(Config.CLIENT.create_dataset)(
-            Dataset(Config.CLIENT.dataset(dataset_id)))
-
+        dataset = self.temp_dataset(_make_dataset_id('delete_table_false'))
         table_id = 'test_table'
         table_arg = Table(dataset.table(table_id), schema=SCHEMA)
 
