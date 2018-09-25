@@ -77,12 +77,12 @@ config = {
                     "retry_params_name": "default"
                 },
                 "Write": {
-                    "timeout_millis": 300000,
+                    "timeout_millis": 86400000,
                     "retry_codes_name": "non_idempotent",
                     "retry_params_name": "streaming"
                 },
                 "Listen": {
-                    "timeout_millis": 300000,
+                    "timeout_millis": 86400000,
                     "retry_codes_name": "idempotent",
                     "retry_params_name": "streaming"
                 },
