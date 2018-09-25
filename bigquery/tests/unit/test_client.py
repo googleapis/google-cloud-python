@@ -108,7 +108,7 @@ class TestClient(unittest.TestCase):
 
         client = self._make_one(project=self.PROJECT, credentials=creds,
                                 _http=http, location=location,
-                                query_job_config=job_config)
+                                default_query_job_config=job_config)
         self.assertIsInstance(client._connection, Connection)
         self.assertIs(client._connection.credentials, creds)
         self.assertIs(client._connection.http, http)
@@ -2762,14 +2762,13 @@ class TestClient(unittest.TestCase):
 
         client = self._make_one(
             project=self.PROJECT, credentials=creds,
-            _http=http, query_job_config=default_job_config)
+            _http=http, default_query_job_config=default_job_config)
         conn = client._connection = _make_connection(resource)
 
         job_config = QueryJobConfig()
         job_config.use_query_cache = True
         job_config.maximum_bytes_billed = 2000
 
-        # override_job_config
         client.query(
             query, job_id=job_id, location=self.LOCATION,
             job_config=job_config)
@@ -2811,17 +2810,17 @@ class TestClient(unittest.TestCase):
 
         client = self._make_one(
             project=self.PROJECT, credentials=creds, _http=http,
-            query_job_config=default_job_config)
+            default_query_job_config=default_job_config)
         conn = client._connection = _make_connection(resource)
 
         job_config = QueryJobConfig()
         job_config.use_query_cache = True
         job_config.maximum_bytes_billed = 2000
 
-        # override_job_config
+        # merge_job_config
         client.query(
             query, job_id=job_id, location=self.LOCATION,
-            job_config=job_config, override_job_config=True)
+            job_config=job_config, merge_job_config=False)
 
         # Check that query actually starts the job.
         conn.api_request.assert_called_once_with(
@@ -2857,7 +2856,7 @@ class TestClient(unittest.TestCase):
 
         client = self._make_one(
             project=self.PROJECT, credentials=creds, _http=http,
-            query_job_config=default_job_config)
+            default_query_job_config=default_job_config)
         conn = client._connection = _make_connection(resource)
 
         client.query(

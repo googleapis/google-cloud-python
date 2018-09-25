@@ -929,6 +929,8 @@ class Test_JobConfig(unittest.TestCase):
         self.assertEqual(final_job_config.maximum_bytes_billed, 1000)
 
     def test_fill_from_default_conflict(self):
+        from google.cloud.bigquery import QueryJobConfig
+
         basic_job_config = QueryJobConfig()
         conflicting_job_config = self._make_one('conflicting_job_type')
         self.assertNotEqual(

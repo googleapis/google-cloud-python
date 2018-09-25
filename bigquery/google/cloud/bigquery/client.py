@@ -1210,8 +1210,9 @@ class Client(ClientWithProject):
             job_config (google.cloud.bigquery.job.QueryJobConfig):
                 (Optional) Extra configuration options for the job.
             merge_job_config (bool):
-                (Optional) Merge the passed ``job_config`` with the
-                ``default_query_job_config`` passed to the ``Client`` constructor.
+                (Optional) Merge the passed ``job_config``
+                with the ``default_query_job_config``
+                passed to the ``Client`` constructor.
                 The default value is ``True``, so to instead use only the
                 passed ``job_config`` without any merging,
                 pass ``False`` for this argument.
