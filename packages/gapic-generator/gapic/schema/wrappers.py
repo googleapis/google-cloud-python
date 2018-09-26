@@ -53,23 +53,25 @@ class Field:
     def __getattr__(self, name):
         return getattr(self.field_pb, name)
 
+    @utils.cached_property
+    def ident(self) -> metadata.FieldIdentifier:
+        """Return the identifier to be used in templates."""
+        return metadata.FieldIdentifier(
+            ident=self.type.ident,
+            repeated=self.repeated,
+        )
+
     @property
     def is_primitive(self) -> bool:
         """Return True if the field is a primitive, False otherwise."""
         return isinstance(self.type, PythonType)
 
     @property
-    def python_ident(self) -> str:
-        """Return the identifier to be used in templates.
-
-        Because we import modules as a whole, rather than individual
-        members from modules, this is consistently `module.Name`.
-
-        This property also adds the Sequence[] notation for repeated fields.
-        """
-        if self.repeated:
-            return f'Sequence[{self.type.python_ident}]'
-        return self.type.python_ident
+    def proto_type(self) -> str:
+        """Return the proto type constant to be used in templates."""
+        return descriptor_pb2.FieldDescriptorProto.Type.Name(
+            self.field_pb.type,
+        )[len('TYPE_'):]
 
     @property
     def repeated(self) -> bool:
@@ -89,16 +91,6 @@ class Field:
             bool: Whether this field is required.
         """
         return bool(self.options.Extensions[annotations_pb2.required])
-
-    @property
-    def sphinx_ident(self) -> str:
-        """Return the identifier to be used in templates for Sphinx.
-
-        This property also adds the Sequence[] notation for repeated fields.
-        """
-        if self.repeated:
-            return f'Sequence[{self.type.sphinx_ident}]'
-        return self.type.sphinx_ident
 
     @utils.cached_property
     def type(self) -> Union['MessageType', 'EnumType', 'PythonType']:
@@ -140,6 +132,8 @@ class MessageType:
     """Description of a message (defined with the ``message`` keyword)."""
     message_pb: descriptor_pb2.DescriptorProto
     fields: Mapping[str, Field]
+    nested_enums: Mapping[str, 'EnumType']
+    nested_messages: Mapping[str, 'MessageType']
     meta: metadata.Metadata = dataclasses.field(
         default_factory=metadata.Metadata,
     )
@@ -189,28 +183,9 @@ class MessageType:
         return cursor.message.get_field(*field_path[1:])
 
     @property
-    def proto_path(self) -> str:
-        """Return the fully qualfied proto path as a string."""
-        return f'{str(self.meta.address)}.{self.name}'
-
-    @property
-    def python_ident(self) -> str:
-        """Return the identifier to be used in templates.
-
-        Because we import modules as a whole, rather than individual
-        members from modules, this is consistently `module.Name`.
-        """
-        return f'{self.python_module}.{self.name}'
-
-    @property
-    def python_module(self) -> str:
-        """Return the name of the Python pb2 module."""
-        return f'{self.meta.address.module}_pb2'
-
-    @property
-    def sphinx_ident(self) -> str:
-        """Return the identifier to be used in templates for Sphinx."""
-        return f'~.{self.python_ident}'
+    def ident(self) -> metadata.Address:
+        """Return the identifier data to be used in templates."""
+        return self.meta.address
 
 
 @dataclasses.dataclass(frozen=True)
@@ -238,23 +213,9 @@ class EnumType:
         return getattr(self.enum_pb, name)
 
     @property
-    def python_ident(self) -> str:
-        """Return the identifier to be used in templates.
-
-        Because we import modules as a whole, rather than individual
-        members from modules, this is consistently `module.Name`.
-        """
-        return f'{self.python_module}.{self.name}'
-
-    @property
-    def python_module(self) -> str:
-        """Return the name of the Python pb2 module."""
-        return f'{self.meta.address.module}_pb2'
-
-    @property
-    def sphinx_ident(self) -> str:
-        """Return the identifier to be used in templates for Sphinx."""
-        return f'~.{self.python_ident}'
+    def ident(self) -> metadata.Address:
+        """Return the identifier data to be used in templates."""
+        return self.meta.address
 
 
 @dataclasses.dataclass(frozen=True)
@@ -271,19 +232,14 @@ class PythonType:
     def name(self) -> str:
         return self.python_type.__name__
 
-    @property
-    def python_ident(self) -> str:
+    @utils.cached_property
+    def ident(self) -> metadata.Address:
         """Return the identifier to be used in templates.
 
         Primitives have no import, and no module to reference, so this
         is simply the name of the class (e.g. "int", "str").
         """
-        return self.name
-
-    @property
-    def sphinx_ident(self) -> str:
-        """Return the identifier to be used in templates for Sphinx."""
-        return f'{self.python_ident}'
+        return metadata.Address(name=self.name)
 
 
 @dataclasses.dataclass(frozen=True)
@@ -296,11 +252,16 @@ class OperationType:
     lro_response: MessageType
     lro_metadata: MessageType = None
 
+    @property
+    def ident(self) -> metadata.Address:
+        return self.meta.address
+
     @utils.cached_property
     def meta(self) -> metadata.Metadata:
         """Return a Metadata object."""
         return metadata.Metadata(
             address=metadata.Address(
+                name='Operation',
                 module='operation',
                 package=('google', 'api_core'),
             ),
@@ -308,10 +269,9 @@ class OperationType:
                 leading_comments='An object representing a long-running '
                                  'operation. \n\n'
                                  'The result type for the operation will be '
-                                 ':class:`~.{module}.{name}`: {doc}'.format(
+                                 ':class:`{ident}`: {doc}'.format(
                                      doc=self.lro_response.meta.doc,
-                                     module=self.lro_response.python_module,
-                                     name=self.lro_response.name,
+                                     ident=self.lro_response.ident.sphinx,
                                  ),
             ),
         )
@@ -326,26 +286,6 @@ class OperationType:
         # that this generator is not forced to take an entire dependency
         # on google.api_core just to get these strings.
         return 'Operation'
-
-    @property
-    def python_ident(self) -> str:
-        """Return the identifier to be used in templates."""
-        return f'{self.python_module}.{self.name}'
-
-    @property
-    def python_module(self) -> str:
-        """Return the name of the Python module."""
-        # This is always "operation", because it is always a reference to
-        # `google.api_core.operation.Operation`.
-        #
-        # This is hard-coded rather than subclassing PythonType (above) so
-        # that this generator is not forced to take an entire dependency
-        # on google.api_core just to get these strings.
-        return self.meta.address.module
-
-    @property
-    def sphinx_ident(self) -> str:
-        return f'~.{self.python_ident}'
 
 
 @dataclasses.dataclass(frozen=True)
@@ -450,7 +390,7 @@ class MethodSignatures:
         answer = collections.OrderedDict()
         for sig in [i for i in self.all
                     if isinstance(i.dispatch_field.type, PythonType)]:
-            answer.setdefault(sig.dispatch_field.python_ident, sig)
+            answer.setdefault(sig.dispatch_field.ident, sig)
         return tuple(answer.values())
 
 
@@ -513,12 +453,19 @@ class Service:
             # Add the module containing both the request and response
             # messages. (These are usually the same, but not necessarily.)
             answer.add((
-                '.'.join(method.input.meta.address.package),
-                method.input.python_module,
+                '.'.join(method.input.ident.package),
+                method.input.ident.module + '_pb2',
             ))
             answer.add((
-                '.'.join(method.output.meta.address.package),
-                method.output.python_module,
+                '.'.join(method.output.ident.package),
+                # TODO(#34): This is obviously unacceptable and gross and
+                #            generally vomit-inducing.
+                #
+                #            I am not fixing this right now because *_pb2
+                #            is about to go away.
+                method.output.ident.module + '_pb2'
+                if not getattr(method.output, 'lro_response', None)
+                else method.output.ident.module,
             ))
 
             # If this method has flattening that is honored, add its
@@ -530,21 +477,21 @@ class Service:
                 for field in sig.fields.values():
                     if not isinstance(field.type, PythonType):
                         answer.add((
-                            '.'.join(field.type.meta.address.package),
-                            field.type.python_module,
+                            '.'.join(field.type.ident.package),
+                            field.type.ident.module + '_pb2',
                         ))
 
             # If this method has LRO, it is possible (albeit unlikely) that
             # the LRO messages reside in a different module.
             if getattr(method.output, 'lro_response', None):
                 answer.add((
-                    '.'.join(method.output.lro_response.meta.address.package),
-                    method.output.lro_response.python_module,
+                    '.'.join(method.output.lro_response.ident.package),
+                    method.output.lro_response.ident.module + '_pb2',
                 ))
             if getattr(method.output, 'lro_metadata', None):
                 answer.add((
-                    '.'.join(method.output.lro_metadata.meta.address.package),
-                    method.output.lro_metadata.python_module,
+                    '.'.join(method.output.lro_metadata.ident.package),
+                    method.output.lro_metadata.ident.module + '_pb2',
                 ))
         return tuple(sorted(answer))
 

@@ -189,8 +189,8 @@ def test_messages_reverse_declaration_order():
 
 
 def test_messages_recursive():
-    # Test that if a message is used as a field higher in the same file,
-    # that things still work.
+    # Test that if a message is used inside itself, that things will still
+    # work.
     message_pbs = (
         make_message_pb2(name='Foo', fields=(
             make_field_pb2(name='foo', number=1,
@@ -210,6 +210,36 @@ def test_messages_recursive():
     assert len(proto.messages) == 1
     Foo = proto.messages['google.example.v3.Foo']
     assert Foo.fields['foo'].message == proto.messages['google.example.v3.Foo']
+
+
+def test_messages_nested():
+    # Test that a nested message works properly.
+    message_pbs = (
+        make_message_pb2(name='Foo', nested_type=(
+            make_message_pb2(name='Bar'),
+        )),
+    )
+    fdp = make_file_pb2(
+        messages=message_pbs,
+        package='google.example.v3',
+    )
+
+    # Make the proto object.
+    proto = api.Proto.build(fdp, file_to_generate=True)
+
+    # Set short variables for the names.
+    foo = 'google.example.v3.Foo'
+    bar = 'google.example.v3.Foo.Bar'
+
+    # Get the message.
+    assert len(proto.messages) == 2
+    assert proto.messages[foo].name == 'Foo'
+    assert proto.messages[bar].name == 'Bar'
+
+    # Assert that the `top` shim only shows top-level messages.
+    assert len(proto.top.messages) == 1
+    assert proto.top.messages[foo] is proto.messages[foo]
+    assert bar not in proto.top.messages
 
 
 def test_services():
@@ -411,13 +441,13 @@ def make_file_pb2(name: str = 'my_proto.proto', package: str = 'example.v1', *,
         source_code_info=descriptor_pb2.SourceCodeInfo(location=locations),
     )
 
-    # Make the proto object.
-    proto = api.Proto.build(fdp, file_to_generate=True, prior_protos={
-        'google/longrunning/operations.proto': lro_proto,
-    })
 
-def make_message_pb2(name: str, fields=()) -> descriptor_pb2.DescriptorProto:
-    return descriptor_pb2.DescriptorProto(name=name, field=fields)
+def make_message_pb2(
+        name: str,
+        fields: tuple = (),
+        **kwargs
+        ) -> descriptor_pb2.DescriptorProto:
+    return descriptor_pb2.DescriptorProto(name=name, field=fields, **kwargs)
 
 
 def make_field_pb2(name: str, number: int,

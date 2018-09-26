@@ -18,7 +18,6 @@ from google.api import annotations_pb2
 from google.protobuf import descriptor_pb2
 
 from gapic.schema import wrappers
-from gapic.schema.metadata import Address, Metadata
 
 
 def test_field_properties():
@@ -35,10 +34,18 @@ def test_field_is_primitive():
     assert primitive_field.is_primitive
 
 
+def test_field_proto_type():
+    Type = descriptor_pb2.FieldDescriptorProto.Type
+    primitive_field = make_field(type=Type.Value('TYPE_INT32'))
+    assert primitive_field.proto_type == 'INT32'
+
+
 def test_field_not_primitive():
     Type = descriptor_pb2.FieldDescriptorProto.Type
     message = wrappers.MessageType(
         fields={},
+        nested_messages={},
+        nested_enums={},
         message_pb=descriptor_pb2.DescriptorProto(),
     )
     non_primitive_field = make_field(
@@ -49,17 +56,17 @@ def test_field_not_primitive():
     assert not non_primitive_field.is_primitive
 
 
-def test_python_ident():
+def test_ident():
     Type = descriptor_pb2.FieldDescriptorProto.Type
     field = make_field(type=Type.Value('TYPE_BOOL'))
-    assert field.python_ident == 'bool'
+    assert str(field.ident) == 'bool'
 
 
-def test_python_ident_repeated():
+def test_ident_repeated():
     Type = descriptor_pb2.FieldDescriptorProto.Type
     REP = descriptor_pb2.FieldDescriptorProto.Label.Value('LABEL_REPEATED')
     field = make_field(type=Type.Value('TYPE_BOOL'), label=REP)
-    assert field.python_ident == 'Sequence[bool]'
+    assert str(field.ident) == 'Sequence[bool]'
 
 
 def test_repeated():
@@ -85,17 +92,17 @@ def test_not_required():
     assert not field.required
 
 
-def test_sphinx_ident():
+def test_ident_sphinx():
     Type = descriptor_pb2.FieldDescriptorProto.Type
     field = make_field(type=Type.Value('TYPE_BOOL'))
-    assert field.sphinx_ident == 'bool'
+    assert field.ident.sphinx == 'bool'
 
 
-def test_sphinx_ident_repeated():
+def test_ident_sphinx_repeated():
     Type = descriptor_pb2.FieldDescriptorProto.Type
     REP = descriptor_pb2.FieldDescriptorProto.Label.Value('LABEL_REPEATED')
     field = make_field(type=Type.Value('TYPE_BOOL'), label=REP)
-    assert field.sphinx_ident == 'Sequence[bool]'
+    assert field.ident.sphinx == 'Sequence[bool]'
 
 
 def test_type_primitives():
@@ -111,6 +118,8 @@ def test_type_message():
     T = descriptor_pb2.FieldDescriptorProto.Type
     message = wrappers.MessageType(
         fields={},
+        nested_messages={},
+        nested_enums={},
         message_pb=descriptor_pb2.DescriptorProto(),
     )
     field = make_field(

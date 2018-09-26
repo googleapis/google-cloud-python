@@ -34,29 +34,77 @@ from google.protobuf import descriptor_pb2
 
 @dataclasses.dataclass(frozen=True)
 class Address:
-    package: Tuple[str] = dataclasses.field(default_factory=tuple)
+    name: str = ''
     module: str = ''
+    package: Tuple[str] = dataclasses.field(default_factory=tuple)
     parent: Tuple[str] = dataclasses.field(default_factory=tuple)
 
-    def __str__(self):
-        return '.'.join(tuple(self.package) + tuple(self.parent))
+    def __str__(self) -> str:
+        """Return the Python identifier for this type.
+
+        Because we import modules as a whole, rather than individual
+        members from modules, this is consistently `module.Name`.
+        """
+        # TODO(#34): Special cases are not special enough to break the rules.
+        #            Allowing this temporarily because it will be fixed by
+        #            refactoring proto generation and/or OperationType.
+        if self.package == ('google', 'api_core'):
+            return f'{self.module}.{self.name}'
+        if self.module:
+            return f'{self.module}_pb2.{self.name}'
+        return self.name
+
+    @property
+    def proto(self) -> str:
+        """Return the proto selector for this type."""
+        return '.'.join(self.package + self.parent + (self.name,))
+
+    @property
+    def proto_package(self) -> str:
+        """Return the proto package for this type."""
+        return '.'.join(self.package)
+
+    @property
+    def sphinx(self) -> str:
+        """Return the Sphinx identifier for this type."""
+        if self.module:
+            return f'~.{self}'
+        return self.name
 
     def child(self, child_name: str) -> 'Address':
-        """Return a new Address with ``child_name`` appended to its parent.
+        """Return a new child of the current Address.
 
         Args:
-            child_name (str): The child name to be appended to ``parent``.
-                The period-separator is added automatically if ``parent``
-                is non-empty.
+            child_name (str): The name of the child node.
+                This address' name is appended to ``parent``.
 
         Returns:
             ~.Address: The new address object.
         """
         return type(self)(
+            name=child_name,
             module=self.module,
             package=self.package,
-            parent=self.parent + (child_name,),
+            parent=self.parent + (self.name,) if self.name else self.parent,
         )
+
+    def rel(self, address: 'Address') -> str:
+        """Return an identifier for this type, relative to the given address.
+
+        Similar to :meth:`__str__`, but accepts an address (expected to be the
+        module being written) and truncates the beginning module if the
+        address matches the identifier's address. Templates can use this in
+        situations where otherwise they would refer to themselves.
+
+        Args:
+            address (~.metadata.Address): The address to compare against.
+
+        Returns:
+            str: The appropriate identifier.
+        """
+        if self.package == address.package and self.module == address.module:
+            return self.name
+        return str(self)
 
     def resolve(self, selector: str) -> str:
         """Resolve a potentially-relative protobuf selector.
@@ -104,3 +152,20 @@ class Metadata:
         if self.documentation.leading_detached_comments:
             return '\n\n'.join(self.documentation.leading_detached_comments)
         return ''
+
+
+@dataclasses.dataclass(frozen=True)
+class FieldIdentifier:
+    ident: Address
+    repeated: bool
+
+    def __str__(self) -> str:
+        if self.repeated:
+            return f'Sequence[{self.ident}]'
+        return str(self.ident)
+
+    @property
+    def sphinx(self) -> str:
+        if self.repeated:
+            return f'Sequence[{self.ident.sphinx}]'
+        return self.ident.sphinx

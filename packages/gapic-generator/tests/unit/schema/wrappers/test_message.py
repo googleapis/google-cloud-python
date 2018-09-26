@@ -39,19 +39,10 @@ def test_message_docstring():
     assert message.meta.doc == 'Lorem ipsum'
 
 
-def test_message_python_package():
-    message = make_message('Spam', module='eggs')
-    assert message.python_module == 'eggs_pb2'
-
-
-def test_message_python_ident():
+def test_message_ident():
     message = make_message('Baz', package='foo.v1', module='bar')
-    assert message.python_ident == 'bar_pb2.Baz'
-
-
-def test_message_sphinx_ident():
-    message = make_message('Baz', package='foo.v1', module='bar')
-    assert message.sphinx_ident == '~.bar_pb2.Baz'
+    assert str(message.ident) == 'bar_pb2.Baz'
+    assert message.ident.sphinx == '~.bar_pb2.Baz'
 
 
 def test_get_field():
@@ -102,7 +93,10 @@ def make_message(name: str, package: str = 'foo.bar.v1', module: str = 'baz',
     return wrappers.MessageType(
         message_pb=message_pb,
         fields=collections.OrderedDict((i.name, i) for i in fields),
+        nested_messages={},
+        nested_enums={},
         meta=meta or metadata.Metadata(address=metadata.Address(
+            name=name,
             package=tuple(package.split('.')),
             module=module,
         )),

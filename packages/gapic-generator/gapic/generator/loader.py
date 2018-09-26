@@ -48,15 +48,15 @@ class TemplateLoader(jinja2.FileSystemLoader):
         # Start with the full list of templates, excluding private ones,
         # but exclude templates from other methods on this loader.
         return set(
-            [t for t in self.list_templates() if not t.startswith('_')]
-        ).difference(self.service_templates)
+            [t for t in self.list_templates() if not self.is_private(t)]
+        ).difference(self.service_templates).difference(self.proto_templates)
 
     @cached_property
     def service_templates(self):
         """Return the templates specific to each service.
 
-        This corresponds to all of the templates in a ``$service/``
-        subdirectory (this does _not_ need to be at the top level).
+        This corresponds to all of the templates with ``$service``
+        in the filename or path.
 
         When these templates are rendered, they are expected to be sent
         two variables: an :class:`~.API` object spelled ``api``, and the
@@ -68,5 +68,30 @@ class TemplateLoader(jinja2.FileSystemLoader):
             Set[str]: A list of service templates.
         """
         return set(
-            [t for t in self.list_templates() if '$service/' in t]
+            [t for t in self.list_templates() if '$service' in t]
         )
+
+    @cached_property
+    def proto_templates(self):
+        """Return the templates specific to each proto.
+
+        This corresponds to all of the templates with ``$proto``
+        in the filename or path.
+
+        When these templates are rendered, they are expected to be sent
+        two variables: an :class:`~.API` object spelled ``api``, and the
+        :class:`~.wrappers.Proto` object being iterated over, spelled
+        ``proto``. These templates are rendered once per proto, with
+        a distinct ``proto`` variable each time.
+
+        Returns:
+            Set[str]: A list of proto templates.
+        """
+        return set(
+            [t for t in self.list_templates() if '$proto' in t]
+        )
+
+    def is_private(self, path):
+        """Return True if ``path`` is a private template, False otherwise."""
+        filename = path.split('/')[-1]
+        return filename != '__init__.py.j2' and filename.startswith('_')

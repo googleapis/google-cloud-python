@@ -185,8 +185,8 @@ def get_method(name: str,
     # Define a method descriptor. Set the field headers if appropriate.
     method_pb = descriptor_pb2.MethodDescriptorProto(
         name=name,
-        input_type=input_.proto_path,
-        output_type=output.proto_path,
+        input_type=input_.ident.proto,
+        output_type=output.ident.proto,
     )
     if lro_response_type:
         output = wrappers.OperationType(
@@ -227,9 +227,12 @@ def get_message(dot_path: str, *,
             field_pb=i,
             message=get_message(i.type_name) if i.type_name else None,
         ) for i in fields},
+        nested_messages={},
+        nested_enums={},
         message_pb=descriptor_pb2.DescriptorProto(name=name, field=fields),
         meta=metadata.Metadata(address=metadata.Address(
-            package=pkg,
+            name=name,
+            package=tuple(pkg),
             module=module,
         )),
     )

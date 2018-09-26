@@ -79,8 +79,12 @@ def test_get_response():
 
         # Next, determine that the general API templates and service
         # templates were both called; the method should be called
-        # once per service plus one for the API as a whole.
-        assert _render_templates.call_count == len(file_pb2.service) + 1
+        # once per service, once per proto, plus one for the API as a whole.
+        assert _render_templates.call_count == sum([
+            1,  # for the API as a whole
+            len(api_schema.services),
+            len(api_schema.protos),
+        ])
 
         # The service templates should have been called with the
         # filename transformation and the additional `service` variable.
@@ -90,6 +94,35 @@ def test_get_response():
                 continue
             service = kwargs['additional_context']['service']
             assert isinstance(service, wrappers.Service)
+
+
+def test_get_response_skipped_proto():
+    # Create a generator with mock data.
+    #
+    # We want to ensure that templates are rendered for each service,
+    # which we prove by sending two services.
+    file_pb2 = descriptor_pb2.FileDescriptorProto(
+        name='bacon.proto',
+        package='foo.bar.v1',
+    )
+    api_schema = make_api(make_proto(file_pb2, file_to_generate=False))
+    g = generator.Generator(api_schema=api_schema)
+
+    # Mock all the rendering methods.
+    with mock.patch.object(g, '_render_templates') as _render_templates:
+        _render_templates.return_value = {
+            'template_file': plugin_pb2.CodeGeneratorResponse.File(
+                name='template_file',
+                content='This was a template.',
+            ),
+        }
+
+        # Okay, now run the `get_response` method.
+        g.get_response()
+
+    # Since there are no protos and no services, only the rollup, API-wide
+    # call should have happened.
+    assert _render_templates.call_count == 1
 
 
 def test_render_templates():
@@ -187,6 +220,23 @@ def test_get_filenames_with_service():
             ),
         }
     ) == ('spam/eggs/foo.py',)
+
+
+def test_get_filenames_with_proto():
+    file_pb2 = descriptor_pb2.FileDescriptorProto(
+        name='bacon.proto',
+        package='foo.bar.v1',
+    )
+    api = make_api(
+        make_proto(file_pb2),
+        naming=make_naming(namespace=(), name='Spam', version='v2'),
+    )
+
+    g = generator.Generator(api_schema=api)
+    assert g._get_filenames(
+        '$name/types/$proto.py.j2',
+        context={'proto': api.protos['bacon.proto']},
+    ) == ('spam/types/bacon.py',)
 
 
 def test_get_filenames_with_namespace_init():

@@ -81,6 +81,16 @@ class Generator:
             self._render_templates(self._env.loader.api_templates),
         )
 
+        # Some templates are rendered once per proto (and API may have
+        # one or more protos).
+        for proto in self._api.protos.values():
+            if not proto.file_to_generate:
+                continue
+            output_files.update(self._render_templates(
+                self._env.loader.proto_templates,
+                additional_context={'proto': proto},
+            ))
+
         # Some templates are rendered once per service (an API may have
         # one or more services).
         for service in self._api.services.values():
@@ -186,8 +196,21 @@ class Generator:
 
         # Replace the $service variable if applicable.
         if context and 'service' in context:
-            filename = filename.replace('$service',
-                                        context['service'].module_name)
+            filename = filename.replace(
+                '$service',
+                context['service'].module_name,
+            )
+
+        # Replace the $proto variable if appliable.
+        if context and 'proto' in context:
+            filename = filename.replace(
+                '$proto',
+                context['proto'].module_name,
+            )
+
+        # Paths may have empty path segments if components are empty
+        # (e.g. no $version); handle this.
+        filename = re.sub(r'/+', '/', filename)
 
         # Paths may have empty path segments if components are empty
         # (e.g. no $version); handle this.

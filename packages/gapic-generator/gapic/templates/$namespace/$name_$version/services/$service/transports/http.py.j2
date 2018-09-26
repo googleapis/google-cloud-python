@@ -65,23 +65,23 @@ class {{ service.name }}HttpTransport({{ service.name }}Transport):
     {%- for method in service.methods.values() %}
 
     def {{ method.name|snake_case }}(self,
-            request: {{ method.input.python_module }}.{{ method.input.name }}, *,
+            request: {{ method.input.ident }}, *,
             metadata: Sequence[Tuple[str, str]] = (),
-            ) -> {{ method.output.python_module }}.{{ method.output.name }}:
+            ) -> {{ method.output.ident }}:
         """Call the {{- ' ' -}}
         {{ (method.name|snake_case).replace('_',' ')|wrap(
                 width=70, offset=45, indent=8) }}
         {{- ' ' -}} method over HTTP.
 
         Args:
-            request (~.{{ method.input.python_ident }}):
+            request (~.{{ method.input.ident }}):
                 The request object. {{- ' ' -}}
                 {{ method.input.meta.doc|wrap(width=72, offset=36, indent=16) }}
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent alont with the request as metadata.
 
         Returns:
-            ~.{{ method.output.python_ident }}:
+            ~.{{ method.output.ident }}:
                 {{ method.output.meta.doc|wrap(width=72, indent=16) }}
         """
         # Serialize the input.
@@ -102,7 +102,7 @@ class {{ service.name }}HttpTransport({{ service.name }}Transport):
         )
 
         # Return the response.
-        return {{ method.output.python_ident }}.FromString(
+        return {{ method.output.ident }}.FromString(
             response.content,
         )
     {%- endfor %}

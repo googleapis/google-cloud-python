@@ -20,28 +20,52 @@ from gapic.schema import metadata
 
 
 def test_address_str_no_parent():
-    addr = metadata.Address(package=('foo', 'bar'), module='baz')
-    assert str(addr) == 'foo.bar'
+    addr = metadata.Address(package=('foo', 'bar'), module='baz', name='Bacon')
+    assert str(addr) == 'baz_pb2.Bacon'
 
 
 def test_address_str_parent():
-    addr = metadata.Address(package=('foo', 'bar'), module='baz',
+    addr = metadata.Address(package=('foo', 'bar'), module='baz', name='Bacon',
                             parent=('spam', 'eggs'))
-    assert str(addr) == 'foo.bar.spam.eggs'
+    assert str(addr) == 'baz_pb2.Bacon'
 
 
-def test_address_child():
+def test_address_proto():
+    addr = metadata.Address(package=('foo', 'bar'), module='baz', name='Bacon')
+    assert addr.proto == 'foo.bar.Bacon'
+    assert addr.proto_package == 'foo.bar'
+
+
+def test_address_child_no_parent():
     addr = metadata.Address(package=('foo', 'bar'), module='baz')
-    child = addr.child('bacon')
-    assert child.parent == ('bacon',)
-    assert str(child) == 'foo.bar.bacon'
-    grandchild = child.child('ham')
-    assert grandchild.parent == ('bacon', 'ham')
-    assert str(grandchild) == 'foo.bar.bacon.ham'
+    child = addr.child('Bacon')
+    assert child.name == 'Bacon'
+    assert child.parent == ()
+
+
+def test_address_child_with_parent():
+    addr = metadata.Address(package=('foo', 'bar'), module='baz')
+    child = addr.child('Bacon')
+    grandchild = child.child('Ham')
+    assert grandchild.parent == ('Bacon',)
+    assert grandchild.name == 'Ham'
+
+
+def test_address_rel():
+    addr = metadata.Address(package=('foo', 'bar'), module='baz', name='Bacon')
+    assert addr.rel(
+        metadata.Address(package=('foo', 'bar'), module='baz'),
+    ) == 'Bacon'
+    assert addr.rel(
+        metadata.Address(package=('foo', 'not_bar'), module='baz'),
+    ) == 'baz_pb2.Bacon'
+    assert addr.rel(
+        metadata.Address(package=('foo', 'bar'), module='not_baz'),
+    ) == 'baz_pb2.Bacon'
 
 
 def test_address_resolve():
-    addr = metadata.Address(package=('foo', 'bar'), module='baz')
+    addr = metadata.Address(package=('foo', 'bar'), module='baz', name='Qux')
     assert addr.resolve('Bacon') == 'foo.bar.Bacon'
     assert addr.resolve('foo.bar.Bacon') == 'foo.bar.Bacon'
     assert addr.resolve('google.example.Bacon') == 'google.example.Bacon'

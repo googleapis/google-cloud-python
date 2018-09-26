@@ -82,8 +82,8 @@ class {{ service.name }}GrpcTransport({{ service.name }}Transport):
 
     @property
     def {{ method.name|snake_case }}(self) -> Callable[
-            [{{ method.input.python_ident }}],
-            {{ method.output.python_ident }}]:
+            [{{ method.input.ident }}],
+            {{ method.output.ident }}]:
         """Return a callable for the {{- ' ' -}}
         {{ (method.name|snake_case).replace('_',' ')|wrap(
                 width=70, offset=40, indent=8) }}
@@ -103,8 +103,8 @@ class {{ service.name }}GrpcTransport({{ service.name }}Transport):
         if '{{ method.name|snake_case }}' not in self._stubs:
             self._stubs['{{ method.name|snake_case }}'] = self.grpc_channel.{{ method.grpc_stub_type }}(
                 '/{{ '.'.join(method.meta.address.package) }}.{{ service.name }}/{{ method.name }}',
-                request_serializer={{ method.input.python_module }}.{{ method.input.name }}.SerializeToString,
-                response_deserializer={{ method.output.python_module }}.{{ method.output.name }}.FromString,
+                request_serializer={{ method.input.ident }}.SerializeToString,
+                response_deserializer={{ method.output.ident }}.FromString,
             )
         return self._stubs['{{ method.name|snake_case }}']
     {%- endfor %}

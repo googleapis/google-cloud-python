@@ -21,19 +21,26 @@ from gapic.schema import wrappers
 def test_operation():
     lro_response = wrappers.MessageType(
         fields={},
+        nested_messages={},
+        nested_enums={},
         message_pb=descriptor_pb2.DescriptorProto(name='LroResponse'),
     )
     operation = wrappers.OperationType(lro_response=lro_response)
     assert operation.name == 'Operation'
-    assert operation.python_ident == 'operation.Operation'
-    assert operation.sphinx_ident == '~.operation.Operation'
+    assert str(operation.ident) == 'operation.Operation'
+    assert operation.ident.sphinx == '~.operation.Operation'
 
 
 def test_operation_meta():
     lro_response = wrappers.MessageType(
         fields={},
+        nested_messages={},
+        nested_enums={},
         message_pb=descriptor_pb2.DescriptorProto(name='LroResponse'),
-        meta=metadata.Metadata(address=metadata.Address(module='foo')),
+        meta=metadata.Metadata(address=metadata.Address(
+            name='LroResponse',
+            module='foo',
+        )),
     )
     operation = wrappers.OperationType(lro_response=lro_response)
     assert 'representing a long-running operation' in operation.meta.doc

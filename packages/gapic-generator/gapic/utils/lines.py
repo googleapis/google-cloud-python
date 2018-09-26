@@ -51,8 +51,7 @@ def wrap(text: str, width: int, *, offset: int = None, indent: int = 0) -> str:
     # Re-wrapping causes these to be two spaces; correct for this.
     text = text.replace('\n ', '\n')
 
-    # If the initial width is different (in other words, the initial offset
-    # is non-zero), break off the beginning of the string.
+    # Break off the first line of the string to address non-zero offsets.
     first = ''
     if offset > 0:
         initial = textwrap.wrap(text,

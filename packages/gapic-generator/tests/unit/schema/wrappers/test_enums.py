@@ -34,14 +34,10 @@ def test_enum_value_properties():
         assert ev.name == expected
 
 
-def test_enum_python_ident():
+def test_enum_ident():
     message = make_enum('Baz', package='foo.v1', module='bar')
-    assert message.python_ident == 'bar_pb2.Baz'
-
-
-def test_enum_sphinx_ident():
-    message = make_enum('Baz', package='foo.v1', module='bar')
-    assert message.sphinx_ident == '~.bar_pb2.Baz'
+    assert str(message.ident) == 'bar_pb2.Baz'
+    assert message.ident.sphinx == '~.bar_pb2.Baz'
 
 
 def make_enum(name: str, package: str = 'foo.bar.v1', module: str = 'baz',
@@ -60,6 +56,7 @@ def make_enum(name: str, package: str = 'foo.bar.v1', module: str = 'baz',
         values=[wrappers.EnumValueType(enum_value_pb=evpb)
                 for evpb in enum_value_pbs],
         meta=meta or metadata.Metadata(address=metadata.Address(
+            name=name,
             package=tuple(package.split('.')),
             module=module,
         )),

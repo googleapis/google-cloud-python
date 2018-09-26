@@ -53,6 +53,8 @@ def test_signatures_single_dispatch():
             message=wrappers.MessageType(
                 fields={},
                 message_pb=descriptor_pb2.DescriptorProto(name='Bacon'),
+                nested_enums={},
+                nested_messages={},
             ),
             name='bar',
             type=T.Value('TYPE_MESSAGE'),

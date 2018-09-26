@@ -30,9 +30,7 @@ def test_method_types():
                          package='foo.bar', module='bacon')
     assert method.name == 'DoSomething'
     assert method.input.name == 'Input'
-    assert method.input.python_module == 'baz_pb2'
     assert method.output.name == 'Output'
-    assert method.output.python_module == 'baz_pb2'
 
 
 def test_method_signature():
@@ -110,6 +108,7 @@ def make_method(
         input=input_message,
         output=output_message,
         meta=metadata.Metadata(address=metadata.Address(
+            name=name,
             package=package,
             module=module,
         )),
@@ -125,8 +124,11 @@ def make_message(name: str, package: str = 'foo.bar.v1', module: str = 'baz',
     )
     return wrappers.MessageType(
         message_pb=message_pb,
+        nested_messages={},
+        nested_enums={},
         fields=collections.OrderedDict((i.name, i) for i in fields),
         meta=metadata.Metadata(address=metadata.Address(
+            name=name,
             package=tuple(package.split('.')),
             module=module,
         )),

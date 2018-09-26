@@ -29,6 +29,7 @@ from gapic.schema import metadata
 from gapic.schema import naming
 from gapic.schema import wrappers
 from gapic.utils import cached_property
+from gapic.utils import to_snake_case
 
 
 @dataclasses.dataclass(frozen=True)
@@ -62,6 +63,34 @@ class Proto:
             file_to_generate=file_to_generate,
             prior_protos=prior_protos or {},
         ).proto
+
+    @property
+    def module_name(self) -> str:
+        """Return the appropriate module name for this service.
+
+        Returns:
+            str: The module name for this service (which is the service
+                name in snake case).
+        """
+        return to_snake_case(self.name.split('/')[-1][:-len('.proto')])
+
+    @cached_property
+    def top(self) -> 'Proto':
+        """Return a proto shim which is only aware of top-level objects.
+
+        This is useful in a situation where a template wishes to iterate
+        over only those messages and enums that are at the top level of the
+        file.
+        """
+        return type(self)(
+            file_pb2=self.file_pb2,
+            services=self.services,
+            messages={k: v for k, v in self.messages.items()
+                      if not v.meta.address.parent},
+            enums={k: v for k, v in self.enums.items()
+                   if not v.meta.address.parent},
+            file_to_generate=False,
+        )
 
 
 @dataclasses.dataclass(frozen=True)
@@ -179,7 +208,7 @@ class _ProtoBuilder:
         # for each item as it is loaded.
         address = metadata.Address(
             module=file_descriptor.name.split('/')[-1][:-len('.proto')],
-            package=file_descriptor.package.split('.'),
+            package=tuple(file_descriptor.package.split('.')),
         )
 
         # Now iterate over the FileDescriptorProto and pull out each of
@@ -265,7 +294,7 @@ class _ProtoBuilder:
         )
 
     def _load_children(self, children: Sequence, loader: Callable, *,
-                       address: metadata.Address, path: Tuple[int]) -> None:
+                       address: metadata.Address, path: Tuple[int]) -> Mapping:
         """Return wrapped versions of arbitrary children from a Descriptor.
 
         Args:
@@ -282,11 +311,18 @@ class _ProtoBuilder:
             path (Tuple[int]): The location path up to this point. This is
                 used to correspond to documentation in
                 ``SourceCodeInfo.Location`` in ``descriptor.proto``.
+
+        Return:
+            Mapping[str, Union[~.MessageType, ~.Service, ~.EnumType]]: A
+                sequence of the objects that were loaded.
         """
         # Iterate over the list of children provided and call the
         # applicable loader function on each.
+        answer = {}
         for child, i in zip(children, range(0, sys.maxsize)):
-            loader(child, address=address, path=path + (i,))
+            wrapped = loader(child, address=address, path=path + (i,))
+            answer[wrapped.name] = wrapped
+        return answer
 
     def _get_fields(self, field_pbs: List[descriptor_pb2.FieldDescriptorProto],
                     address: metadata.Address, path: Tuple[int],
@@ -379,11 +415,13 @@ class _ProtoBuilder:
         # Done; return the answer.
         return answer
 
-    def _load_message(self, message_pb: descriptor_pb2.DescriptorProto,
-                      address: metadata.Address, path: Tuple[int]) -> None:
+    def _load_message(self,
+            message_pb: descriptor_pb2.DescriptorProto,
+            address: metadata.Address,
+            path: Tuple[int],
+            ) -> wrappers.MessageType:
         """Load message descriptions from DescriptorProtos."""
-        ident = f'{str(address)}.{message_pb.name}'
-        message_addr = address.child(message_pb.name)
+        address = address.child(message_pb.name)
 
         # Load all nested items.
         #
@@ -392,38 +430,54 @@ class _ProtoBuilder:
         # type of one of this message's fields, and they need to be in
         # the registry for the field's message or enum attributes to be
         # set correctly.
-        self._load_children(message_pb.enum_type, address=message_addr,
-                            loader=self._load_enum, path=path + (4,))
-        self._load_children(message_pb.nested_type, address=message_addr,
-                            loader=self._load_message, path=path + (3,))
+        nested_enums = self._load_children(
+            message_pb.enum_type,
+            address=address,
+            loader=self._load_enum,
+            path=path + (4,),
+        )
+        nested_messages = self._load_children(
+            message_pb.nested_type,
+            address=address,
+            loader=self._load_message,
+            path=path + (3,),
+        )
         # self._load_children(message.oneof_decl, loader=self._load_field,
         #                     address=nested_addr, info=info.get(8, {}))
 
         # Create a dictionary of all the fields for this message.
         fields = self._get_fields(
             message_pb.field,
-            address=message_addr,
+            address=address,
             path=path + (2,),
         )
         fields.update(self._get_fields(
             message_pb.extension,
-            address=message_addr,
+            address=address,
             path=path + (6,),
         ))
 
         # Create a message correspoding to this descriptor.
-        self.messages[ident] = wrappers.MessageType(
+        self.messages[address.proto] = wrappers.MessageType(
             fields=fields,
             message_pb=message_pb,
+            nested_enums=nested_enums,
+            nested_messages=nested_messages,
             meta=metadata.Metadata(
                 address=address,
                 documentation=self.docs.get(path, self.EMPTY),
             ),
         )
+        return self.messages[address.proto]
 
-    def _load_enum(self, enum: descriptor_pb2.EnumDescriptorProto,
-                   address: metadata.Address, path: Tuple[int]) -> None:
+    def _load_enum(self,
+            enum: descriptor_pb2.EnumDescriptorProto,
+            address: metadata.Address,
+            path: Tuple[int],
+            ) -> wrappers.EnumType:
         """Load enum descriptions from EnumDescriptorProtos."""
+        address = address.child(enum.name)
+
         # Put together wrapped objects for the enum values.
         values = []
         for enum_value, i in zip(enum.value, range(0, sys.maxsize)):
@@ -436,8 +490,7 @@ class _ProtoBuilder:
             ))
 
         # Load the enum itself.
-        ident = f'{str(address)}.{enum.name}'
-        self.enums[ident] = wrappers.EnumType(
+        self.enums[address.proto] = wrappers.EnumType(
             enum_pb=enum,
             meta=metadata.Metadata(
                 address=address,
@@ -445,21 +498,25 @@ class _ProtoBuilder:
             ),
             values=values,
         )
+        return self.enums[address.proto]
 
-    def _load_service(self, service: descriptor_pb2.ServiceDescriptorProto,
-                      address: metadata.Address, path: Tuple[int]) -> None:
+    def _load_service(self,
+            service: descriptor_pb2.ServiceDescriptorProto,
+            address: metadata.Address,
+            path: Tuple[int],
+            ) -> wrappers.Service:
         """Load comments for a service and its methods."""
-        service_addr = address.child(service.name)
+        address = address.child(service.name)
 
         # Put together a dictionary of the service's methods.
         methods = self._get_methods(
             service.method,
-            address=service_addr,
+            address=address,
             path=path + (2,),
         )
 
         # Load the comments for the service itself.
-        self.services[f'{str(address)}.{service.name}'] = wrappers.Service(
+        self.services[address.proto] = wrappers.Service(
             meta=metadata.Metadata(
                 address=address,
                 documentation=self.docs.get(path, self.EMPTY),
@@ -467,3 +524,4 @@ class _ProtoBuilder:
             methods=methods,
             service_pb=service,
         )
+        return self.services[address.proto]
