@@ -109,6 +109,20 @@ def lint_setup_py(session):
         'python', 'setup.py', 'check', '--restructuredtext', '--strict')
 
 
+# No 2.7 due to https://github.com/google/importlab/issues/26.
+# No 3.7 because pytype supports up to 3.6 only.
+@nox.session
+@nox.parametrize('py', ['3.5', '3.6'])
+def pytype(session, py):
+  """Run type-checking."""
+  session.interpreter = 'python{}'.format(py)
+  session.install('.',
+                  'grpcio >= 1.8.2',
+                  'grpcio-gcp >= 0.2.2',
+                  'pytype >= 2018.9.26')
+  session.run('pytype', '-V{}'.format(py))
+
+
 @nox.session
 def cover(session):
     """Run the final coverage report.
