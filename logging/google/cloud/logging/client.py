@@ -49,8 +49,8 @@ _USE_GRPC = _HAVE_GRPC and not _DISABLE_GRPC
 _APPENGINE_FLEXIBLE_ENV_VM = 'GAE_APPENGINE_HOSTNAME'
 """Environment variable set in App Engine when vm:true is set."""
 
-_APPENGINE_FLEXIBLE_ENV_FLEX = 'GAE_INSTANCE'
-"""Environment variable set in App Engine when env:flex is set."""
+_APPENGINE_INSTANCE_ID = 'GAE_INSTANCE'
+"""Environment variable set in App Engine standard and flexible environments."""
 
 _GKE_CLUSTER_NAME = 'instance/attributes/cluster-name'
 """Attribute in metadata server when in GKE environment."""
@@ -301,7 +301,7 @@ class Client(ClientWithProject):
         gke_cluster_name = retrieve_metadata_server(_GKE_CLUSTER_NAME)
 
         if (_APPENGINE_FLEXIBLE_ENV_VM in os.environ or
-                _APPENGINE_FLEXIBLE_ENV_FLEX in os.environ):
+                _APPENGINE_INSTANCE_ID in os.environ):
             return AppEngineHandler(self)
         elif gke_cluster_name is not None:
             return ContainerEngineHandler()

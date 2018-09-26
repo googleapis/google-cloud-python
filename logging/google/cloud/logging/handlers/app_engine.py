@@ -27,7 +27,8 @@ from google.cloud.logging.resource import Resource
 
 _DEFAULT_GAE_LOGGER_NAME = 'app'
 
-_GAE_PROJECT_ENV = 'GCLOUD_PROJECT'
+_GAE_PROJECT_ENV_FLEX = 'GCLOUD_PROJECT'
+_GAE_PROJECT_ENV_STANDARD = 'GOOGLE_CLOUD_PROJECT'
 _GAE_SERVICE_ENV = 'GAE_SERVICE'
 _GAE_VERSION_ENV = 'GAE_VERSION'
 
@@ -54,6 +55,8 @@ class AppEngineHandler(logging.StreamHandler):
         self.name = name
         self.client = client
         self.transport = transport(client, name)
+        self.project_id = os.environ.get(_GAE_PROJECT_ENV_FLEX,
+                                         os.environ.get(_GAE_PROJECT_ENV_STANDARD, ''))
         self.resource = self.get_gae_resource()
 
     def get_gae_resource(self):
@@ -65,9 +68,9 @@ class AppEngineHandler(logging.StreamHandler):
         gae_resource = Resource(
             type='gae_app',
             labels={
-                'project_id': os.environ.get(_GAE_PROJECT_ENV),
-                'module_id': os.environ.get(_GAE_SERVICE_ENV),
-                'version_id': os.environ.get(_GAE_VERSION_ENV),
+                'project_id': self.project_id,
+                'module_id': os.environ.get(_GAE_SERVICE_ENV, ''),
+                'version_id': os.environ.get(_GAE_VERSION_ENV, ''),
             },
         )
         return gae_resource
@@ -100,8 +103,14 @@ class AppEngineHandler(logging.StreamHandler):
         :param record: The record to be logged.
         """
         message = super(AppEngineHandler, self).format(record)
+        gae_labels = self.get_gae_labels()
+        trace_id = ('projects/%s/traces/%s' % (self.project_id, gae_labels[_TRACE_ID_LABEL])
+                    if _TRACE_ID_LABEL in gae_labels
+                    else None)
         self.transport.send(
             record,
             message,
             resource=self.resource,
-            labels=self.get_gae_labels())
+            labels=gae_labels,
+            trace=trace_id,
+        )
