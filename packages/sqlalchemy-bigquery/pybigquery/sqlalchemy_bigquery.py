@@ -3,9 +3,11 @@
 from __future__ import absolute_import
 from __future__ import unicode_literals
 
-from google.cloud.bigquery import dbapi
-from google.cloud.bigquery.schema import SchemaField
 from google.cloud import bigquery
+from google.cloud.bigquery import dbapi, QueryJobConfig
+from google.cloud.bigquery.schema import SchemaField
+from google.cloud.bigquery.table import EncryptionConfiguration
+from google.cloud.bigquery.dataset import DatasetReference
 from google.oauth2 import service_account
 from google.api_core.exceptions import NotFound
 from sqlalchemy.exc import NoSuchTableError
@@ -17,8 +19,9 @@ from sqlalchemy.sql.schema import Column
 from sqlalchemy.sql import elements
 import re
 
+from .parse_url import parse_url
 
-FIELD_ILLEGAL_CHARACTERS = re.compile('[^\w]+')
+FIELD_ILLEGAL_CHARACTERS = re.compile(r'[^\w]+')
 
 
 class UniversalSet(object):
@@ -87,7 +90,6 @@ class BigQueryIdentifierPreparer(IdentifierPreparer):
         result = self.quote(name)
         return result
 
-
 _type_map = {
     'STRING': types.String,
     'BOOLEAN': types.Boolean,
@@ -126,13 +128,6 @@ class BigQueryCompiler(SQLCompiler):
 
         args[0].use_labels = True
         return super(BigQueryCompiler, self).visit_select(*args, **kwargs)
-
-    def visit_table(self, table, **kwargs):
-        table.schema = 'blaine'
-        # if bind and bind.url:
-        # bind = table.metadata.bind
-            # table.schema = bind.url.database
-        return super(BigQueryCompiler, self).visit_table(table, **kwargs)
 
     def visit_column(self, column, add_to_result_map=None,
                      include_table=True, **kwargs):
@@ -220,22 +215,40 @@ class BigQueryDialect(DefaultDialect):
         return dbapi
 
     def create_connect_args(self, url):
-        if url.database:
-            self.dataset_id = url.database
+        location, dataset_id, arraysize, credentials_path, default_query_job_config = parse_url(url)
+
+        self.arraysize = self.arraysize or arraysize
+        self.location = location or self.location
+        self.credentials_path = credentials_path or self.credentials_path
+        self.dataset_id = dataset_id
 
         if self.credentials_path:
             client = bigquery.Client.from_service_account_json(
-                self.credentials_path, location=self.location)
+                self.credentials_path,
+                location=self.location,
+                default_query_job_config=default_query_job_config
+            )
         elif self.credentials_info:
             credentials = service_account.Credentials.from_service_account_info(
-                self.credentials_info)
+                self.credentials_info
+            )
             client = bigquery.Client(
+                project=self.credentials_info.get('project_id'),
                 credentials=credentials,
                 location=self.location,
-                project=self.credentials_info.get('project_id'),
+                default_query_job_config=default_query_job_config,
             )
         else:
-            client = bigquery.Client(url.host, location=self.location)
+            client = bigquery.Client(
+                project=url.host,
+                location=self.location,
+                default_query_job_config=default_query_job_config
+            )
+
+        # if dataset_id is set, then we know the job_config isn't None
+        if dataset_id:
+            default_query_job_config.default_dataset = client.dataset(dataset_id)
+
         return ([client], {})
 
     def _json_deserializer(self, row):
