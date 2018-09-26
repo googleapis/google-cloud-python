@@ -161,12 +161,6 @@ jobs:
               nox -f speech/nox.py
             fi
       - run:
-          name: Run tests - google.cloud.storage
-          command: |
-            if [[ -n $(grep -x storage ~/target_packages) ]]; then
-              nox -f storage/nox.py
-            fi
-      - run:
           name: Run tests - google.cloud.trace
           command: |
             if [[ -n $(grep -x trace ~/target_packages) ]]; then
