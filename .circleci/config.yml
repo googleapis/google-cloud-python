@@ -167,12 +167,6 @@ jobs:
               nox -f storage/nox.py
             fi
       - run:
-          name: Run tests - google.cloud.trace
-          command: |
-            if [[ -n $(grep -x trace ~/target_packages) ]]; then
-              nox -f trace/nox.py
-            fi
-      - run:
           name: Run tests - google.cloud.translate
           command: |
             if [[ -n $(grep -x translate ~/target_packages) ]]; then
