@@ -4,6 +4,16 @@
 
 [1]: https://pypi.org/project/google-cloud-dlp/#history
 
+## 0.8.0
+
+### New Features
+- Add support for exclude findings. ([#6091](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6091))
+- Add support for stored info type support. ([#5950](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/5950))
+
+### Documentation
+- Fix docs issue in DLP generation. ([#5668](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/5668), [#5815](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/5815))
+- Docs: Replace links to '/stable/' with '/latest/'. ([#5901](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/5901))
+
 ## 0.7.0
 
 ### New Features
