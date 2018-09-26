@@ -61,7 +61,7 @@ def bigtable_create_instance(client, to_delete):
 
 
 @snippet
-def bigtable_create_cluster(client):
+def bigtable_create_cluster(client, to_delete):
     # [START bigtable_create_cluster]
     from google.cloud.bigtable import enums
 
@@ -78,14 +78,14 @@ def bigtable_create_cluster(client):
 
 
 @snippet
-def bigtable_list_instances(client):
+def bigtable_list_instances(client, to_delete):
     # [START bigtable_list_instances]
     (instances_list, failed_locations_list) = client.list_instances()
     # [END bigtable_list_instances]
 
 
 @snippet
-def bigtable_list_clusters(client):
+def bigtable_list_clusters(client, to_delete):
     # [START bigtable_list_clusters]
     instance = client.instance("instance_my1")
     (clusters_list, failed_locations_list) = instance.list_clusters()
@@ -93,7 +93,7 @@ def bigtable_list_clusters(client):
 
 
 @snippet
-def bigtable_instance_exists(client):
+def bigtable_instance_exists(client, to_delete):
     # [START bigtable_check_instance_exists]
     instance = client.instance("instance_my1")
     instance_exists =  instance.exists()
@@ -101,7 +101,7 @@ def bigtable_instance_exists(client):
 
 
 @snippet
-def bigtable_cluster_exists(client):
+def bigtable_cluster_exists(client, to_delete):
     # [START bigtable_check_cluster_exists]
     instance = client.instance("instance_my1")
     cluster = instance.cluster("ssd-cluster1")
@@ -110,7 +110,7 @@ def bigtable_cluster_exists(client):
 
 
 @snippet
-def bigtable_delete_instance(client):
+def bigtable_delete_instance(client, to_delete):
     # [START bigtable_delete_instance]
     instance = client.instance("instance_my1")
     instance.delete()
@@ -118,7 +118,7 @@ def bigtable_delete_instance(client):
 
 
 @snippet
-def bigtable_delete_cluster(client):
+def bigtable_delete_cluster(client, to_delete):
     # [START bigtable_delete_cluster]
     instance = client.instance("instance_my1")
     cluster = instance.cluster("ssd-cluster1")
@@ -126,14 +126,17 @@ def bigtable_delete_cluster(client):
     # [END bigtable_delete_cluster]
 
 
-def bigtable_reload_cluster(client):
+@snippet
+def bigtable_reload_cluster(client, to_delete):
     # [START bigtable_reload_cluster]
     instance = client.instance("instance_my1")
     cluster = instance.cluster("ssd-cluster1")
     cluster.reload()
     # [END bigtable_reload_cluster]
 
-def bigtable_update_cluster(client):
+
+@snippet
+def bigtable_update_cluster(client, to_delete):
     # [START bigtable_update_cluster]
     instance = client.instance("instance_my1")
     cluster = instance.cluster("ssd-cluster1")
@@ -143,7 +146,7 @@ def bigtable_update_cluster(client):
 
 
 @snippet
-def bigtable_create_table(client):
+def bigtable_create_table(client, to_delete):
     # [START bigtable_create_table]
     from google.cloud.bigtable import column_family
     
@@ -157,7 +160,7 @@ def bigtable_create_table(client):
 
 
 @snippet
-def bigtable_list_tables(client):
+def bigtable_list_tables(client, to_delete):
     # [START bigtable_list_tables]
     instance = client.instance("instance_my1")
     tables_list = instance.list_tables()

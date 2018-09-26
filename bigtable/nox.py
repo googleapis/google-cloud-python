@@ -97,11 +97,40 @@ def system(session, py):
     # Run py.test against the system tests.
     session.run('py.test', '--quiet', 'tests/system.py', *session.posargs)
 
+#'py', ['2.7', '3.6']
+
+@nox.session
+@nox.parametrize('py', ['2.7'])
+def snippets(session, py):
+    """Run the system test suite."""
+
+    # Sanity check: Only run system tests if the environment variable is set.
+    if not os.environ.get('GOOGLE_APPLICATION_CREDENTIALS', ''):
+        session.skip('Credentials must be set via environment variable.')
+
+    # Run the system tests against latest Python 2 and Python 3 only.
+    session.interpreter = 'python{}'.format(py)
+
+    # Set the virtualenv dirname.
+    session.virtualenv_dirname = 'snip-' + py
+
+    # Install all test dependencies, then install local packages in place.
+    session.install('mock', 'pytest')
+    for local_dep in LOCAL_DEPS:
+        session.install('-e', local_dep)
+    session.install('-e', os.path.join('..', 'bigtable'))
+    session.install('-e', '.')
+
+    # Run py.test against the system tests.
+    session.run('py.test', os.path.join('../docs/bigtable', \
+                                        'snippets.py'), *session.posargs)
+
+
 
 @nox.session
 def lint(session):
     """Run linters.
-
+ 
     Returns a failure if the linters find linting errors or sufficiently
     serious code quality issues.
     """
@@ -109,16 +138,16 @@ def lint(session):
     session.install('flake8', *LOCAL_DEPS)
     session.install('.')
     session.run('flake8', 'google', 'tests')
-
-
+ 
+ 
 @nox.session
 def lint_setup_py(session):
     """Verify that setup.py is valid (including RST check)."""
     session.interpreter = 'python3.6'
-
+ 
     # Set the virtualenv dirname.
     session.virtualenv_dirname = 'setup'
-
+ 
     session.install('docutils', 'Pygments')
     session.run(
         'python', 'setup.py', 'check', '--restructuredtext', '--strict')
@@ -127,7 +156,7 @@ def lint_setup_py(session):
 @nox.session
 def cover(session):
     """Run the final coverage report.
-
+ 
     This outputs the coverage report aggregating coverage from the unit
     test runs (not system test runs), and then erases coverage data.
     """
