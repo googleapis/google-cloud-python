@@ -1193,7 +1193,7 @@ class Client(ClientWithProject):
 
     def query(
             self, query,
-            job_config=None, merge_job_config=True,
+            job_config=None,
             job_id=None, job_id_prefix=None,
             location=None, project=None, retry=DEFAULT_RETRY):
         """Run a SQL query.
@@ -1209,13 +1209,10 @@ class Client(ClientWithProject):
         Keyword Arguments:
             job_config (google.cloud.bigquery.job.QueryJobConfig):
                 (Optional) Extra configuration options for the job.
-            merge_job_config (bool):
-                (Optional) Merge the passed ``job_config``
-                with the ``default_query_job_config``
-                passed to the ``Client`` constructor.
-                The default value is ``True``, so to instead use only the
-                passed ``job_config`` without any merging,
-                pass ``False`` for this argument.
+                To override any options that were previously set in
+                the ``default_query_job_config`` given to the
+                ``Client`` constructor, manually set those options to ``None``,
+                or whatever value is preferred.
             job_id (str): (Optional) ID to use for the query job.
             job_id_prefix (str):
                 (Optional) The prefix to use for a randomly generated job ID.
@@ -1240,9 +1237,7 @@ class Client(ClientWithProject):
         if location is None:
             location = self.location
 
-        # if they don't want to override,
-        # we need to merge what they passed
-        if merge_job_config and self._default_query_job_config:
+        if self._default_query_job_config:
             if job_config:
                 # anything that's not defined on the incoming
                 # that is in the default,
@@ -1252,8 +1247,6 @@ class Client(ClientWithProject):
                     self._default_query_job_config)
             else:
                 job_config = self._default_query_job_config
-        # if they want to override (or if they never passed a default),
-        # we simply send whatever they sent
 
         job_ref = job._JobReference(job_id, project=project, location=location)
         query_job = job.QueryJob(

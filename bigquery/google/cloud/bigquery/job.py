@@ -838,13 +838,15 @@ class _JobConfig(object):
                 + repr(default_job_config._job_type))
 
         new_job_config = self.__class__()
-        new_job_config._properties = copy.deepcopy(self._properties)
 
-        new_job_properties = new_job_config._properties[self._job_type]
-        default_job_properties = default_job_config._properties[self._job_type]
-        for key in default_job_properties:
-            if key not in new_job_properties:
-                new_job_properties[key] = default_job_properties[key]
+        default_job_properties = copy.deepcopy(default_job_config._properties)
+        for key in self._properties:
+            if key != self._job_type:
+                default_job_properties[key] = self._properties[key]
+
+        default_job_properties[self._job_type] \
+            .update(self._properties[self._job_type])
+        new_job_config._properties = default_job_properties
 
         return new_job_config
 

@@ -2792,6 +2792,7 @@ class TestClient(unittest.TestCase):
             'configuration': {
                 'query': {
                     'query': query,
+                    'defaultDataset': None,
                     'useLegacySql': False,
                     'useQueryCache': True,
                     'maximumBytesBilled': '2000',
@@ -2816,11 +2817,12 @@ class TestClient(unittest.TestCase):
         job_config = QueryJobConfig()
         job_config.use_query_cache = True
         job_config.maximum_bytes_billed = 2000
+        job_config.default_dataset = None
 
-        # merge_job_config
         client.query(
             query, job_id=job_id, location=self.LOCATION,
-            job_config=job_config, merge_job_config=False)
+            job_config=job_config,
+        )
 
         # Check that query actually starts the job.
         conn.api_request.assert_called_once_with(
