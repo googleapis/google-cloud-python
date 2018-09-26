@@ -278,9 +278,10 @@ class Blob(_PropertyMixin):
         .. note::
 
             If you are on Google Compute Engine, you can't generate a signed
-            URL using GCE service account. Follow `Issue 50`_ for updates on this. If you'd like to
-            be able to generate a signed URL from GCE, you can use a standard
-            service account from a JSON file rather than a GCE service account.
+            URL using GCE service account. Follow `Issue 50`_ for updates on this.
+            If you'd like to be able to generate a signed URL from GCE, you can
+            use a standard service account from a JSON file rather than a GCE
+            service account.
 
         .. _Issue 50: https://github.com/GoogleCloudPlatform/\
                       google-auth-library-python/issues/50
