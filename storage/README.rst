@@ -91,5 +91,3 @@ how to create a bucket.
     blob.upload_from_string('New contents!')
     blob2 = bucket.blob('remote/path/storage.txt')
     blob2.upload_from_filename(filename='/local/path.txt')
-
-REMOVE ME!
