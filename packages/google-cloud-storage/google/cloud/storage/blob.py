@@ -345,9 +345,11 @@ class Blob(_PropertyMixin):
             credentials = client._credentials
 
         return generate_signed_url(
-            credentials, resource=resource,
+            credentials,
+            resource=resource,
             api_access_endpoint=_API_ACCESS_ENDPOINT,
-            expiration=expiration, method=method,
+            expiration=expiration,
+            method=method.upper(),
             content_type=content_type,
             response_type=response_type,
             response_disposition=response_disposition,

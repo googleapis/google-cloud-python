@@ -727,6 +727,16 @@ class TestStorageSignURLs(TestStorageFiles):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.content, self.LOCAL_FILE)
 
+    def test_create_signed_read_url_lowercase_method(self):
+        blob = self.bucket.blob('LogoToSign.jpg')
+        expiration = int(time.time() + 10)
+        signed_url = blob.generate_signed_url(expiration, method='get',
+                                              client=Config.CLIENT)
+
+        response = requests.get(signed_url)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.content, self.LOCAL_FILE)
+
     def test_create_signed_read_url_w_non_ascii_name(self):
         blob = self.bucket.blob(u'Caf\xe9.txt')
         payload = b'Test signed URL for blob w/ non-ASCII name'
