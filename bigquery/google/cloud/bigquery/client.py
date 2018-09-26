@@ -1243,7 +1243,7 @@ class Client(ClientWithProject):
                 # that is in the default,
                 # should be filled in with the default
                 # the incoming therefore has precedence
-                job_config = job_config.fill_from_default(
+                job_config = job_config._fill_from_default(
                     self._default_query_job_config)
             else:
                 job_config = self._default_query_job_config

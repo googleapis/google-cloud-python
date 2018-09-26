@@ -923,7 +923,7 @@ class Test_JobConfig(unittest.TestCase):
         default_job_config.use_query_cache = True
         default_job_config.maximum_bytes_billed = 2000
 
-        final_job_config = job_config.fill_from_default(default_job_config)
+        final_job_config = job_config._fill_from_default(default_job_config)
         self.assertTrue(final_job_config.dry_run)
         self.assertTrue(final_job_config.use_query_cache)
         self.assertEqual(final_job_config.maximum_bytes_billed, 1000)
@@ -937,7 +937,7 @@ class Test_JobConfig(unittest.TestCase):
             basic_job_config._job_type, conflicting_job_config._job_type)
 
         with self.assertRaises(TypeError):
-            basic_job_config.fill_from_default(
+            basic_job_config._fill_from_default(
                 conflicting_job_config)
 
     @mock.patch('google.cloud.bigquery._helpers._get_sub_prop')

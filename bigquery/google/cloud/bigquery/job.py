@@ -819,17 +819,19 @@ class _JobConfig(object):
         """
         return copy.deepcopy(self._properties)
 
-    def fill_from_default(self, default_job_config):
-        """Merge this job config with another one.
-        The other takes precedence with conflicting keys.
-        This is a naive one level merge.
+    def _fill_from_default(self, default_job_config):
+        """Merge this job config with a default job config.
 
-        :type default_job_config: google.cloud.bigquery.job._JobConfig
-        :param default_job_config:
-            The default job config that will be used to fill in self.
+        The keys in this object take precedence over the keys in the default
+        config. The merge is done at the top-level as well as for keys one
+        level below the job type.
 
-        :rtype: :class:`google.cloud.bigquery.job._JobConfig`
-        :returns: A new job config.
+        Arguments:
+            default_job_config (google.cloud.bigquery.job._JobConfig):
+                The default job config that will be used to fill in self.
+
+        Returns:
+            google.cloud.bigquery.job._JobConfig A new (merged) job config.
         """
         if self._job_type != default_job_config._job_type:
             raise TypeError(
