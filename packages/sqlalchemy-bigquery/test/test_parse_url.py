@@ -44,21 +44,8 @@ def url_with_everything():
         '&write_disposition=WRITE_APPEND'
     )
 
-def test_all_values(url_with_everything):
-    value_map = {
-        'clustering_fields': ['a', 'b', 'c'],
-        'create_disposition': 'CREATE_IF_NEEDED',
-        'destination': TableReference(DatasetReference('different-project', 'different-dataset'), 'table'),
-        'destination_encryption_configuration': lambda enc: enc.kms_key_name == EncryptionConfiguration('some-configuration').kms_key_name,
-        'dry_run': True,
-        'labels': { 'a': 'b', 'c': 'd' },
-        'maximum_bytes_billed': 1000,
-        'priority': 'INTERACTIVE',
-        'schema_update_options': ['ALLOW_FIELD_ADDITION', 'ALLOW_FIELD_RELAXATION'],
-        'use_query_cache': True,
-        'write_disposition': 'WRITE_APPEND',
-    }
 
+def test_basic(url_with_everything):
     location, dataset_id, arraysize, credentials_path, job_config = parse_url(url_with_everything)
 
     assert location == 'some-location'
@@ -67,14 +54,27 @@ def test_all_values(url_with_everything):
     assert credentials_path == '/some/path/to.json'
     assert isinstance(job_config, QueryJobConfig)
 
-    for key in value_map:
-        value = value_map[key]
+@pytest.mark.parametrize('param, value', [
+    ('clustering_fields', ['a', 'b', 'c']),
+    ('create_disposition', 'CREATE_IF_NEEDED'),
+    ('destination', TableReference(DatasetReference('different-project', 'different-dataset'), 'table')),
+    ('destination_encryption_configuration', lambda enc: enc.kms_key_name == EncryptionConfiguration('some-configuration').kms_key_name),
+    ('dry_run', True),
+    ('labels', { 'a': 'b', 'c': 'd' }),
+    ('maximum_bytes_billed', 1000),
+    ('priority', 'INTERACTIVE'),
+    ('schema_update_options', ['ALLOW_FIELD_ADDITION', 'ALLOW_FIELD_RELAXATION']),
+    ('use_query_cache', True),
+    ('write_disposition', 'WRITE_APPEND'),
+])
+def test_all_values(url_with_everything, param, value):
+    job_config = parse_url(url_with_everything)[4]
 
-        config_value = getattr(job_config, key)
-        if callable(value):
-            assert value(config_value)
-        else:
-            assert config_value == value
+    config_value = getattr(job_config, param)
+    if callable(value):
+        assert value(config_value)
+    else:
+        assert config_value == value
 
 # def test_malformed():
 #     location, dataset_id, arraysize, credentials_path, job_config = parse_url(make_url('bigquery:///?credentials_path=a'))
@@ -82,27 +82,22 @@ def test_all_values(url_with_everything):
 #     print(credentials_path)
 #     assert False
 
-def test_bad_values():
-    bad_values = {
-        'arraysize': 'not-int',
-        'create_disposition': 'not-attribute',
-        'destination': 'not.fully-qualified',
-        'dry_run': 'not-bool',
-        'labels': 'not-key-value',
-        'maximum_bytes_billed': 'not-int',
-        'priority': 'not-attribute',
-        'schema_update_options': 'not-attribute',
-        'use_query_cache': 'not-bool',
-        'write_disposition': 'not-attribute',
-    }
-
-    for key in bad_values:
-        value = bad_values[key]
-        # TODO make sure the docs specify that you have to have all three slashes
-        url = make_url('bigquery:///?' + key + '=' + value)
-        print(key, value)
-        with pytest.raises(ValueError):
-            parse_url(url)
+@pytest.mark.parametrize("param, value", [
+    ('arraysize', 'not-int'),
+    ('create_disposition', 'not-attribute'),
+    ('destination', 'not.fully-qualified'),
+    ('dry_run', 'not-bool'),
+    ('labels', 'not-key-value'),
+    ('maximum_bytes_billed', 'not-int'),
+    ('priority', 'not-attribute'),
+    ('schema_update_options', 'not-attribute'),
+    ('use_query_cache', 'not-bool'),
+    ('write_disposition', 'not-attribute'),
+])
+def test_bad_values(param, value):
+    url = make_url('bigquery:///?' + param + '=' + value)
+    with pytest.raises(ValueError):
+        parse_url(url)
 
 def test_empty_url():
     for value in parse_url(make_url('bigquery://')):
@@ -133,16 +128,27 @@ def test_only_dataset():
     # we can't actually test that the dataset is on the job_config,
     # since we take care of that afterwards, when we have a client to fill in the project
 
-# TODO see about injecting tests dynamically for each of these, would produce more descriptive output
-def test_disallowed():
-    for disallowed_arg in ['use_legacy_sql', 'allow_large_results', 'flatten_results', 'maximum_billing_tier', 'default_dataset', 'dataset_id', 'project_id']:
-        url = make_url('bigquery://some-project/some-dataset/?' + disallowed_arg + '=' + 'whatever')
-        with pytest.raises(ValueError):
-            parse_url(url)
+@pytest.mark.parametrize('disallowed_arg', [
+    'use_legacy_sql',
+    'allow_large_results',
+    'flatten_results',
+    'maximum_billing_tier',
+    'default_dataset',
+    'dataset_id',
+    'project_id',
+])
+def test_disallowed(disallowed_arg):
+    url = make_url('bigquery://some-project/some-dataset/?' + disallowed_arg + '=' + 'whatever')
+    with pytest.raises(ValueError):
+        parse_url(url)
 
-# TODO see about injecting tests dynamically for each of these, would produce more descriptive output
-def test_not_implemented():
-    for not_implemented_arg in ['query_parameters', 'table_definitions', 'time_partitioning', 'udf_resources']:
-        url = make_url('bigquery://some-project/some-dataset/?' + not_implemented_arg + '=' + 'whatever')
-        with pytest.raises(NotImplementedError):
-            parse_url(url)
+@pytest.mark.parametrize('not_implemented_arg', [
+    'query_parameters',
+    'table_definitions',
+    'time_partitioning',
+    'udf_resources',
+])
+def test_not_implemented(not_implemented_arg):
+    url = make_url('bigquery://some-project/some-dataset/?' + not_implemented_arg + '=' + 'whatever')
+    with pytest.raises(NotImplementedError):
+        parse_url(url)
