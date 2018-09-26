@@ -109,4 +109,3 @@ Example Usage
          'detectedSourceLanguage': 'pl',
          'input': 'koszula',
      }
-REMOVE ME!
