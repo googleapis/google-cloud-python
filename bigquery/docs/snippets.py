@@ -1212,8 +1212,8 @@ def test_table_insert_rows(client, to_delete):
 
 def test_load_table_from_file(client, to_delete):
     """Upload table data from a CSV file."""
-    dataset_id = 'table_upload_from_file_dataset_{}'.format(_millis())
-    table_id = 'table_upload_from_file_table_{}'.format(_millis())
+    dataset_id = 'load_table_from_file_dataset_{}'.format(_millis())
+    table_id = 'load_table_from_file_table_{}'.format(_millis())
     dataset = bigquery.Dataset(client.dataset(dataset_id))
     dataset.location = 'US'
     client.create_dataset(dataset)
@@ -1261,7 +1261,7 @@ def test_load_table_from_file(client, to_delete):
 
 
 def test_load_table_from_uri_csv(client, to_delete, capsys):
-    dataset_id = 'load_table_dataset_{}'.format(_millis())
+    dataset_id = 'load_table_from_uri_csv_{}'.format(_millis())
     dataset = bigquery.Dataset(client.dataset(dataset_id))
     client.create_dataset(dataset)
     to_delete.append(dataset)
@@ -1300,7 +1300,7 @@ def test_load_table_from_uri_csv(client, to_delete, capsys):
 
 
 def test_load_table_from_uri_json(client, to_delete, capsys):
-    dataset_id = 'load_table_dataset_{}'.format(_millis())
+    dataset_id = 'load_table_from_uri_json_{}'.format(_millis())
     dataset = bigquery.Dataset(client.dataset(dataset_id))
     dataset.location = 'US'
     client.create_dataset(dataset)
@@ -1381,7 +1381,7 @@ def test_load_table_from_uri_cmek(client, to_delete):
 
 
 def test_load_table_from_uri_parquet(client, to_delete, capsys):
-    dataset_id = 'load_table_dataset_{}'.format(_millis())
+    dataset_id = 'load_table_from_uri_parquet_{}'.format(_millis())
     dataset = bigquery.Dataset(client.dataset(dataset_id))
     client.create_dataset(dataset)
     to_delete.append(dataset)
@@ -1414,7 +1414,7 @@ def test_load_table_from_uri_parquet(client, to_delete, capsys):
 
 
 def test_load_table_from_uri_orc(client, to_delete, capsys):
-    dataset_id = 'load_table_dataset_{}'.format(_millis())
+    dataset_id = 'load_table_from_uri_orc_{}'.format(_millis())
     dataset = bigquery.Dataset(client.dataset(dataset_id))
     client.create_dataset(dataset)
     to_delete.append(dataset)
@@ -1458,7 +1458,7 @@ def test_load_table_from_uri_autodetect(client, to_delete, capsys):
     followed by more shared code. Note that only the last format in the
     format-specific code section will be tested in this test.
     """
-    dataset_id = 'load_table_dataset_{}'.format(_millis())
+    dataset_id = 'load_table_from_uri_auto_{}'.format(_millis())
     dataset = bigquery.Dataset(client.dataset(dataset_id))
     client.create_dataset(dataset)
     to_delete.append(dataset)
@@ -1512,85 +1512,6 @@ def test_load_table_from_uri_autodetect(client, to_delete, capsys):
     assert 'Loaded 50 rows.' in out
 
 
-def test_load_table_from_uri_append(client, to_delete, capsys):
-    """Appends data to a table from a GCS URI using various formats
-
-    Each file format has its own tested load from URI sample. Because most of
-    the code is common for autodetect, append, and truncate, this sample
-    includes snippets for all supported formats but only calls a single load
-    job.
-
-    This code snippet is made up of shared code, then format-specific code,
-    followed by more shared code. Note that only the last format in the
-    format-specific code section will be tested in this test.
-    """
-    dataset_id = 'load_table_dataset_{}'.format(_millis())
-    dataset = bigquery.Dataset(client.dataset(dataset_id))
-    client.create_dataset(dataset)
-    to_delete.append(dataset)
-
-    job_config = bigquery.LoadJobConfig()
-    job_config.schema = [
-        bigquery.SchemaField('name', 'STRING'),
-        bigquery.SchemaField('post_abbr', 'STRING')
-    ]
-    table_ref = dataset.table('us_states')
-    body = six.BytesIO(b'Washington,WA')
-    client.load_table_from_file(
-        body, table_ref, job_config=job_config).result()
-
-    # SHared code
-    # [START bigquery_load_table_gcs_csv_append]
-    # [START bigquery_load_table_gcs_json_append]
-    # from google.cloud import bigquery
-    # client = bigquery.Client()
-    # table_ref = client.dataset('my_dataset').table('existing_table')
-
-    previous_rows = client.get_table(table_ref).num_rows
-    assert previous_rows > 0
-
-    job_config = bigquery.LoadJobConfig()
-    job_config.write_disposition = bigquery.WriteDisposition.WRITE_APPEND
-    # [END bigquery_load_table_gcs_csv_append]
-    # [END bigquery_load_table_gcs_json_append]
-
-    # Format-specific code
-    # [START bigquery_load_table_gcs_csv_append]
-    job_config.skip_leading_rows = 1
-    # The source format defaults to CSV, so the line below is optional.
-    job_config.source_format = bigquery.SourceFormat.CSV
-    uri = 'gs://cloud-samples-data/bigquery/us-states/us-states.csv'
-    # [END bigquery_load_table_gcs_csv_append]
-    # unset csv-specific attribute
-    del job_config._properties['load']['skipLeadingRows']
-
-    # [START bigquery_load_table_gcs_json_append]
-    job_config.source_format = bigquery.SourceFormat.NEWLINE_DELIMITED_JSON
-    uri = 'gs://cloud-samples-data/bigquery/us-states/us-states.json'
-    # [END bigquery_load_table_gcs_json_append]
-
-    # Shared code
-    # [START bigquery_load_table_gcs_csv_append]
-    # [START bigquery_load_table_gcs_json_append]
-    load_job = client.load_table_from_uri(
-        uri,
-        table_ref,
-        job_config=job_config)  # API request
-    print('Starting job {}'.format(load_job.job_id))
-
-    load_job.result()  # Waits for table load to complete.
-    print('Job finished.')
-
-    destination_table = client.get_table(table_ref)
-    print('Loaded {} rows.'.format(destination_table.num_rows - previous_rows))
-    # [END bigquery_load_table_gcs_csv_append]
-    # [END bigquery_load_table_gcs_json_append]
-
-    out, _ = capsys.readouterr()
-    assert previous_rows == 1
-    assert 'Loaded 50 rows.' in out
-
-
 def test_load_table_from_uri_truncate(client, to_delete, capsys):
     """Replaces table data with data from a GCS URI using various formats
 
@@ -1603,7 +1524,7 @@ def test_load_table_from_uri_truncate(client, to_delete, capsys):
     followed by more shared code. Note that only the last format in the
     format-specific code section will be tested in this test.
     """
-    dataset_id = 'load_table_dataset_{}'.format(_millis())
+    dataset_id = 'load_table_from_uri_trunc_{}'.format(_millis())
     dataset = bigquery.Dataset(client.dataset(dataset_id))
     client.create_dataset(dataset)
     to_delete.append(dataset)
@@ -3051,7 +2972,7 @@ def test_list_rows_as_dataframe(client):
 @pytest.mark.skipif(pandas is None, reason='Requires `pandas`')
 @pytest.mark.skipif(pyarrow is None, reason='Requires `pyarrow`')
 def test_load_table_from_dataframe(client, to_delete):
-    dataset_id = 'load_table_dataframe_dataset_{}'.format(_millis())
+    dataset_id = 'load_table_from_dataframe_{}'.format(_millis())
     dataset = bigquery.Dataset(client.dataset(dataset_id))
     client.create_dataset(dataset)
     to_delete.append(dataset)
