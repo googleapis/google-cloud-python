@@ -108,8 +108,11 @@ class Client(ClientWithProject):
             current object.
             This parameter should be considered private, and could change in
             the future.
-        location str:
+        location (str):
             (Optional) Default location for jobs / datasets / tables.
+        default_query_job_config (google.cloud.bigquery.job.QueryJobConfig):
+            (Optional) Default ``QueryJobConfig``.
+            Will be merged into job configs passed into the ``query`` method.
 
     Raises:
         google.auth.exceptions.DefaultCredentialsError:
@@ -122,11 +125,13 @@ class Client(ClientWithProject):
     """The scopes required for authenticating as a BigQuery consumer."""
 
     def __init__(
-            self, project=None, credentials=None, _http=None, location=None):
+            self, project=None, credentials=None, _http=None,
+            location=None, default_query_job_config=None):
         super(Client, self).__init__(
             project=project, credentials=credentials, _http=_http)
         self._connection = Connection(self)
         self._location = location
+        self._default_query_job_config = default_query_job_config
 
     @property
     def location(self):
@@ -1187,7 +1192,9 @@ class Client(ClientWithProject):
         return extract_job
 
     def query(
-            self, query, job_config=None, job_id=None, job_id_prefix=None,
+            self, query,
+            job_config=None,
+            job_id=None, job_id_prefix=None,
             location=None, project=None, retry=DEFAULT_RETRY):
         """Run a SQL query.
 
@@ -1202,6 +1209,10 @@ class Client(ClientWithProject):
         Keyword Arguments:
             job_config (google.cloud.bigquery.job.QueryJobConfig):
                 (Optional) Extra configuration options for the job.
+                To override any options that were previously set in
+                the ``default_query_job_config`` given to the
+                ``Client`` constructor, manually set those options to ``None``,
+                or whatever value is preferred.
             job_id (str): (Optional) ID to use for the query job.
             job_id_prefix (str):
                 (Optional) The prefix to use for a randomly generated job ID.
@@ -1225,6 +1236,17 @@ class Client(ClientWithProject):
 
         if location is None:
             location = self.location
+
+        if self._default_query_job_config:
+            if job_config:
+                # anything that's not defined on the incoming
+                # that is in the default,
+                # should be filled in with the default
+                # the incoming therefore has precedence
+                job_config = job_config._fill_from_default(
+                    self._default_query_job_config)
+            else:
+                job_config = self._default_query_job_config
 
         job_ref = job._JobReference(job_id, project=project, location=location)
         query_job = job.QueryJob(
