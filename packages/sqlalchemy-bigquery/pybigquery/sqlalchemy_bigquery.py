@@ -369,9 +369,18 @@ class BigQueryDialect(DefaultDialect):
         for d in datasets:
             if schema is not None and d.dataset_id != schema:
                 continue
+
+            if self.dataset_id is not None and d.dataset_id != self.dataset_id:
+                continue
+
             tables = connection.connection._client.list_tables(d.reference)
             for t in tables:
                 result.append(d.dataset_id + '.' + t.table_id)
+                if self.dataset_id is None:
+                    table_name = d.dataset_id + '.' + t.table_id
+                else:
+                    table_name = t.table_id
+                result.append(table_name)
         return result
 
     def do_rollback(self, dbapi_connection):
