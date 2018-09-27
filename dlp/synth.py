@@ -23,20 +23,17 @@ logging.basicConfig(level=logging.DEBUG)
 gapic = gcp.GAPICGenerator()
 common = gcp.CommonTemplates()
 
-client_library_version = "0.7.0"
-
 library = gapic.py_library(
     "dlp", "v2", config_path="/google/privacy/dlp/artman_dlp_v2.yaml"
 )
 
-s.copy(library, excludes=["README.rst", "nox.py", "docs/index.rst"])
-
-# Set Release Status
-release_status = "Development Status :: 3 - Alpha"
-s.replace("setup.py", "(release_status = )(.*)$", f"\\1'{release_status}'")
-
-# Set version
-s.replace("setup.py", "version = .*", f"version = '{client_library_version}'")
+excludes = [
+    "README.rst",
+    "nox.py",
+    "setup.py",
+    "docs/index.rst",
+]
+s.copy(library, excludes=excludes)
 
 # Fix namespace
 s.replace(
