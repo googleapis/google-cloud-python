@@ -57,6 +57,8 @@ class AppEngineHandler(logging.StreamHandler):
         self.transport = transport(client, name)
         self.project_id = os.environ.get(_GAE_PROJECT_ENV_FLEX,
                                          os.environ.get(_GAE_PROJECT_ENV_STANDARD, ''))
+        self.module_id = os.environ.get(_GAE_SERVICE_ENV, '')
+        self.version_id = os.environ.get(_GAE_VERSION_ENV, '')
         self.resource = self.get_gae_resource()
 
     def get_gae_resource(self):
@@ -69,8 +71,8 @@ class AppEngineHandler(logging.StreamHandler):
             type='gae_app',
             labels={
                 'project_id': self.project_id,
-                'module_id': os.environ.get(_GAE_SERVICE_ENV, ''),
-                'version_id': os.environ.get(_GAE_VERSION_ENV, ''),
+                'module_id': self.module_id,
+                'version_id': self.version_id,
             },
         )
         return gae_resource
