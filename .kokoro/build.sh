@@ -25,7 +25,7 @@ export PYTHONUNBUFFERED=1
 env | grep KOKORO
 
 # Setup firestore account credentials
-export FIRESTORE_APPLICATION_CREDENTIALS=${KOKORO_GFILE_DIR}/firestore-credentials.json
+export FIRESTORE_APPLICATION_CREDENTIALS=${KOKORO_GFILE_DIR}/firebase-credentials.json
 
 # Setup service account credentials.
 export GOOGLE_APPLICATION_CREDENTIALS=${KOKORO_GFILE_DIR}/service-account.json
