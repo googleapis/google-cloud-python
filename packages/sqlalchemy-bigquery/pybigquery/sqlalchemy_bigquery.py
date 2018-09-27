@@ -375,7 +375,6 @@ class BigQueryDialect(DefaultDialect):
 
             tables = connection.connection._client.list_tables(d.reference)
             for t in tables:
-                result.append(d.dataset_id + '.' + t.table_id)
                 if self.dataset_id is None:
                     table_name = d.dataset_id + '.' + t.table_id
                 else:
