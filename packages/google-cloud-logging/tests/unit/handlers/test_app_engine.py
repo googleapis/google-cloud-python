@@ -30,15 +30,18 @@ class TestAppEngineHandler(unittest.TestCase):
         return self._get_target_class()(*args, **kw)
 
     def test_constructor(self):
-        from google.cloud.logging.handlers.app_engine import _GAE_PROJECT_ENV
+        from google.cloud.logging.handlers.app_engine import (
+            _GAE_PROJECT_ENV_STANDARD)
         from google.cloud.logging.handlers.app_engine import _GAE_SERVICE_ENV
         from google.cloud.logging.handlers.app_engine import _GAE_VERSION_ENV
 
         client = mock.Mock(project=self.PROJECT, spec=['project'])
 
-        with mock.patch('os.environ', new={_GAE_PROJECT_ENV: 'test_project',
-                                           _GAE_SERVICE_ENV: 'test_service',
-                                           _GAE_VERSION_ENV: 'test_version'}):
+        with mock.patch('os.environ', new={
+            _GAE_PROJECT_ENV_STANDARD: 'test_project',
+            _GAE_SERVICE_ENV: 'test_service',
+            _GAE_VERSION_ENV: 'test_version',
+        }):
             handler = self._make_one(client, transport=_Transport)
         self.assertIs(handler.client, client)
         self.assertEqual(handler.resource.type, 'gae_app')
@@ -51,6 +54,7 @@ class TestAppEngineHandler(unittest.TestCase):
         handler = self._make_one(client, transport=_Transport)
         gae_resource = handler.get_gae_resource()
         gae_labels = handler.get_gae_labels()
+        trace = None
         logname = 'app'
         message = 'hello world'
         record = logging.LogRecord(logname, logging, None, None, message,
@@ -61,7 +65,7 @@ class TestAppEngineHandler(unittest.TestCase):
         self.assertEqual(handler.transport.name, logname)
         self.assertEqual(
             handler.transport.send_called_with,
-            (record, message, gae_resource, gae_labels))
+            (record, message, gae_resource, gae_labels, trace))
 
     def _get_gae_labels_helper(self, trace_id):
         get_trace_patch = mock.patch(
@@ -98,5 +102,5 @@ class _Transport(object):
         self.client = client
         self.name = name
 
-    def send(self, record, message, resource, labels):
-        self.send_called_with = (record, message, resource, labels)
+    def send(self, record, message, resource, labels, trace):
+        self.send_called_with = (record, message, resource, labels, trace)
