@@ -155,12 +155,6 @@ jobs:
               nox -f spanner/nox.py
             fi
       - run:
-          name: Run tests - google.cloud.speech
-          command: |
-            if [[ -n $(grep -x speech ~/target_packages) ]]; then
-              nox -f speech/nox.py
-            fi
-      - run:
           name: Make sure google-cloud setup.py is valid
           command: |
             nox -s lint_setup_py
