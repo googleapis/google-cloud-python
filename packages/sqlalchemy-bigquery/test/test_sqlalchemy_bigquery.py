@@ -141,6 +141,10 @@ def session_using_test_dataset(engine_using_test_dataset):
 def inspector(engine):
     return inspect(engine)
 
+@pytest.fixture(scope='session')
+def inspector_using_test_dataset(engine_using_test_dataset):
+    return inspect(engine_using_test_dataset)
+
 
 @pytest.fixture(scope='session')
 def query():
@@ -177,8 +181,7 @@ def test_dry_run(engine, api_client):
 
 
 def test_engine_with_dataset(engine_using_test_dataset):
-    # Raw queries should always include dataset
-    rows = engine_using_test_dataset.execute('SELECT * FROM test_pybigquery.sample_one_row').fetchall()
+    rows = engine_using_test_dataset.execute('SELECT * FROM sample_one_row').fetchall()
     assert list(rows[0]) == ONE_ROW_CONTENTS
 
     table_one_row = Table('sample_one_row', MetaData(bind=engine_using_test_dataset), autoload=True)
@@ -374,20 +377,29 @@ def test_dml(engine, session, table_dml):
     assert len(result) == 0
 
 
-def test_schemas_names(inspector):
+def test_schemas_names(inspector, inspector_using_test_dataset):
     datasets = inspector.get_schema_names()
     assert 'test_pybigquery' in datasets
 
+    datasets = inspector_using_test_dataset.get_schema_names()
+    assert 'test_pybigquery' in datasets
 
-def test_table_names_in_schema(inspector):
+
+def test_table_names_in_schema(inspector, inspector_using_test_dataset):
     tables = inspector.get_table_names('test_pybigquery')
     assert 'test_pybigquery.sample' in tables
     assert 'test_pybigquery.sample_one_row' in tables
     assert 'test_pybigquery.sample_dml' in tables
     assert len(tables) == 3
 
+    tables = inspector_using_test_dataset.get_table_names()
+    assert 'sample' in tables
+    assert 'sample_one_row' in tables
+    assert 'sample_dml' in tables
+    assert len(tables) == 3
 
-def test_get_columns(inspector):
+
+def test_get_columns(inspector, inspector_using_test_dataset):
     columns_without_schema = inspector.get_columns('test_pybigquery.sample')
     columns_schema = inspector.get_columns('sample', 'test_pybigquery')
     columns_queries = [columns_without_schema, columns_schema]
@@ -399,7 +411,22 @@ def test_get_columns(inspector):
             assert col['default'] == sample_col['default']
             assert col['type'].__class__.__name__ == sample_col['type'].__class__.__name__
 
+    columns_without_schema = inspector_using_test_dataset.get_columns('sample')
+    columns_schema = inspector_using_test_dataset.get_columns('sample', 'test_pybigquery')
+    columns_queries = [columns_without_schema, columns_schema]
+    for columns in columns_queries:
+        for i, col in enumerate(columns):
+            sample_col = SAMPLE_COLUMNS[i]
+            assert col['name'] == sample_col['name']
+            assert col['nullable'] == sample_col['nullable']
+            assert col['default'] == sample_col['default']
+            assert col['type'].__class__.__name__ == sample_col['type'].__class__.__name__
 
-def test_has_table(engine):
+
+def test_has_table(engine, engine_using_test_dataset):
     assert engine.has_table('sample', 'test_pybigquery') is True
     assert engine.has_table('test_pybigquery.sample') is True
+
+    assert engine_using_test_dataset.has_table('sample') is True
+    with pytest.raises(Exception):
+        assert engine_using_test_dataset.has_table('test_pybigquery.sample') is True
