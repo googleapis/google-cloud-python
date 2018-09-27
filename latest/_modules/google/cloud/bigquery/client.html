@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigquery.client &#8212; google-cloud 8671f26 documentation</title>
+    <title>google.cloud.bigquery.client &#8212; google-cloud cf04f6d156 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -144,8 +144,11 @@
 <span class="sd">            current object.</span>
 <span class="sd">            This parameter should be considered private, and could change in</span>
 <span class="sd">            the future.</span>
-<span class="sd">        location str:</span>
+<span class="sd">        location (str):</span>
 <span class="sd">            (Optional) Default location for jobs / datasets / tables.</span>
+<span class="sd">        default_query_job_config (google.cloud.bigquery.job.QueryJobConfig):</span>
+<span class="sd">            (Optional) Default ``QueryJobConfig``.</span>
+<span class="sd">            Will be merged into job configs passed into the ``query`` method.</span>
 
 <span class="sd">    Raises:</span>
 <span class="sd">        google.auth.exceptions.DefaultCredentialsError:</span>
@@ -158,11 +161,13 @@
     <span class="sd">&quot;&quot;&quot;The scopes required for authenticating as a BigQuery consumer.&quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="Client.__init__"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.client.Client.html#google.cloud.bigquery.client.Client.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span>
-            <span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">_http</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">location</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">_http</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">location</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">default_query_job_config</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">Client</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
             <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="n">credentials</span><span class="p">,</span> <span class="n">_http</span><span class="o">=</span><span class="n">_http</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_connection</span> <span class="o">=</span> <span class="n">Connection</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_location</span> <span class="o">=</span> <span class="n">location</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_location</span> <span class="o">=</span> <span class="n">location</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_default_query_job_config</span> <span class="o">=</span> <span class="n">default_query_job_config</span></div>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">location</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -1223,7 +1228,9 @@
         <span class="k">return</span> <span class="n">extract_job</span></div>
 
 <div class="viewcode-block" id="Client.query"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.client.Client.query.html#google.cloud.bigquery.client.Client.query">[docs]</a>    <span class="k">def</span> <span class="nf">query</span><span class="p">(</span>
-            <span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">job_config</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">job_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">job_id_prefix</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span>
+            <span class="n">job_config</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">job_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">job_id_prefix</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">location</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">DEFAULT_RETRY</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Run a SQL query.</span>
 
@@ -1238,6 +1245,10 @@
 <span class="sd">        Keyword Arguments:</span>
 <span class="sd">            job_config (google.cloud.bigquery.job.QueryJobConfig):</span>
 <span class="sd">                (Optional) Extra configuration options for the job.</span>
+<span class="sd">                To override any options that were previously set in</span>
+<span class="sd">                the ``default_query_job_config`` given to the</span>
+<span class="sd">                ``Client`` constructor, manually set those options to ``None``,</span>
+<span class="sd">                or whatever value is preferred.</span>
 <span class="sd">            job_id (str): (Optional) ID to use for the query job.</span>
 <span class="sd">            job_id_prefix (str):</span>
 <span class="sd">                (Optional) The prefix to use for a randomly generated job ID.</span>
@@ -1261,6 +1272,17 @@
 
         <span class="k">if</span> <span class="n">location</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">location</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">location</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_default_query_job_config</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">job_config</span><span class="p">:</span>
+                <span class="c1"># anything that&#39;s not defined on the incoming</span>
+                <span class="c1"># that is in the default,</span>
+                <span class="c1"># should be filled in with the default</span>
+                <span class="c1"># the incoming therefore has precedence</span>
+                <span class="n">job_config</span> <span class="o">=</span> <span class="n">job_config</span><span class="o">.</span><span class="n">_fill_from_default</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_default_query_job_config</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">job_config</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_default_query_job_config</span>
 
         <span class="n">job_ref</span> <span class="o">=</span> <span class="n">job</span><span class="o">.</span><span class="n">_JobReference</span><span class="p">(</span><span class="n">job_id</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span> <span class="n">location</span><span class="o">=</span><span class="n">location</span><span class="p">)</span>
         <span class="n">query_job</span> <span class="o">=</span> <span class="n">job</span><span class="o">.</span><span class="n">QueryJob</span><span class="p">(</span>
