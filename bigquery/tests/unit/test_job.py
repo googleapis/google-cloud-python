@@ -912,6 +912,34 @@ class Test_JobConfig(unittest.TestCase):
         self.assertEqual(job_config._job_type, self.JOB_TYPE)
         self.assertEqual(job_config._properties, {self.JOB_TYPE: {}})
 
+    def test_fill_from_default(self):
+        from google.cloud.bigquery import QueryJobConfig
+
+        job_config = QueryJobConfig()
+        job_config.dry_run = True
+        job_config.maximum_bytes_billed = 1000
+
+        default_job_config = QueryJobConfig()
+        default_job_config.use_query_cache = True
+        default_job_config.maximum_bytes_billed = 2000
+
+        final_job_config = job_config._fill_from_default(default_job_config)
+        self.assertTrue(final_job_config.dry_run)
+        self.assertTrue(final_job_config.use_query_cache)
+        self.assertEqual(final_job_config.maximum_bytes_billed, 1000)
+
+    def test_fill_from_default_conflict(self):
+        from google.cloud.bigquery import QueryJobConfig
+
+        basic_job_config = QueryJobConfig()
+        conflicting_job_config = self._make_one('conflicting_job_type')
+        self.assertNotEqual(
+            basic_job_config._job_type, conflicting_job_config._job_type)
+
+        with self.assertRaises(TypeError):
+            basic_job_config._fill_from_default(
+                conflicting_job_config)
+
     @mock.patch('google.cloud.bigquery._helpers._get_sub_prop')
     def test__get_sub_prop_wo_default(self, _get_sub_prop):
         job_config = self._make_one()
