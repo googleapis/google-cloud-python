@@ -161,12 +161,6 @@ jobs:
               nox -f speech/nox.py
             fi
       - run:
-          name: Run tests - google.cloud.storage
-          command: |
-            if [[ -n $(grep -x storage ~/target_packages) ]]; then
-              nox -f storage/nox.py
-            fi
-      - run:
           name: Make sure google-cloud setup.py is valid
           command: |
             nox -s lint_setup_py
