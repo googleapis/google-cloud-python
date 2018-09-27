@@ -30,15 +30,18 @@ class TestAppEngineHandler(unittest.TestCase):
         return self._get_target_class()(*args, **kw)
 
     def test_constructor(self):
-        from google.cloud.logging.handlers.app_engine import _GAE_PROJECT_ENV_STANDARD
+        from google.cloud.logging.handlers.app_engine import (
+            _GAE_PROJECT_ENV_STANDARD)
         from google.cloud.logging.handlers.app_engine import _GAE_SERVICE_ENV
         from google.cloud.logging.handlers.app_engine import _GAE_VERSION_ENV
 
         client = mock.Mock(project=self.PROJECT, spec=['project'])
 
-        with mock.patch('os.environ', new={_GAE_PROJECT_ENV_STANDARD: 'test_project',
-                                           _GAE_SERVICE_ENV: 'test_service',
-                                           _GAE_VERSION_ENV: 'test_version'}):
+        with mock.patch('os.environ', new={
+            _GAE_PROJECT_ENV_STANDARD: 'test_project',
+            _GAE_SERVICE_ENV: 'test_service',
+            _GAE_VERSION_ENV: 'test_version',
+        }):
             handler = self._make_one(client, transport=_Transport)
         self.assertIs(handler.client, client)
         self.assertEqual(handler.resource.type, 'gae_app')

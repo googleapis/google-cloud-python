@@ -50,7 +50,7 @@ _APPENGINE_FLEXIBLE_ENV_VM = 'GAE_APPENGINE_HOSTNAME'
 """Environment variable set in App Engine when vm:true is set."""
 
 _APPENGINE_INSTANCE_ID = 'GAE_INSTANCE'
-"""Environment variable set in App Engine standard and flexible environments."""
+"""Environment variable set in App Engine standard and flexible environment."""
 
 _GKE_CLUSTER_NAME = 'instance/attributes/cluster-name'
 """Attribute in metadata server when in GKE environment."""

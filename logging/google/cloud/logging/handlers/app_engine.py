@@ -55,8 +55,9 @@ class AppEngineHandler(logging.StreamHandler):
         self.name = name
         self.client = client
         self.transport = transport(client, name)
-        self.project_id = os.environ.get(_GAE_PROJECT_ENV_FLEX,
-                                         os.environ.get(_GAE_PROJECT_ENV_STANDARD, ''))
+        self.project_id = os.environ.get(
+            _GAE_PROJECT_ENV_FLEX,
+            os.environ.get(_GAE_PROJECT_ENV_STANDARD, ''))
         self.module_id = os.environ.get(_GAE_SERVICE_ENV, '')
         self.version_id = os.environ.get(_GAE_VERSION_ENV, '')
         self.resource = self.get_gae_resource()
@@ -106,7 +107,8 @@ class AppEngineHandler(logging.StreamHandler):
         """
         message = super(AppEngineHandler, self).format(record)
         gae_labels = self.get_gae_labels()
-        trace_id = ('projects/%s/traces/%s' % (self.project_id, gae_labels[_TRACE_ID_LABEL])
+        trace_id = ('projects/%s/traces/%s' % (self.project_id,
+                                               gae_labels[_TRACE_ID_LABEL])
                     if _TRACE_ID_LABEL in gae_labels
                     else None)
         self.transport.send(
