@@ -63,37 +63,6 @@ class Finding(object):
         CLEAR_TEXT_PASSWORD = 6
 
 
-class ScanConfig(object):
-    class UserAgent(enum.IntEnum):
-        """
-        Type of user agents used for scanning.
-
-        Attributes:
-          USER_AGENT_UNSPECIFIED (int): The user agent is unknown. Service will default to CHROME_LINUX.
-          CHROME_LINUX (int): Chrome on Linux. This is the service default if unspecified.
-          CHROME_ANDROID (int): Chrome on Android.
-          SAFARI_IPHONE (int): Safari on IPhone.
-        """
-        USER_AGENT_UNSPECIFIED = 0
-        CHROME_LINUX = 1
-        CHROME_ANDROID = 2
-        SAFARI_IPHONE = 3
-
-    class TargetPlatform(enum.IntEnum):
-        """
-        Cloud platforms supported by Cloud Web Security Scanner.
-
-        Attributes:
-          TARGET_PLATFORM_UNSPECIFIED (int): The target platform is unknown. Requests with this enum value will be
-          rejected with INVALID_ARGUMENT error.
-          APP_ENGINE (int): Google App Engine service.
-          COMPUTE (int): Google Compute Engine service.
-        """
-        TARGET_PLATFORM_UNSPECIFIED = 0
-        APP_ENGINE = 1
-        COMPUTE = 2
-
-
 class ScanRun(object):
     class ExecutionState(enum.IntEnum):
         """
@@ -126,3 +95,34 @@ class ScanRun(object):
         SUCCESS = 1
         ERROR = 2
         KILLED = 3
+
+
+class ScanConfig(object):
+    class UserAgent(enum.IntEnum):
+        """
+        Type of user agents used for scanning.
+
+        Attributes:
+          USER_AGENT_UNSPECIFIED (int): The user agent is unknown. Service will default to CHROME_LINUX.
+          CHROME_LINUX (int): Chrome on Linux. This is the service default if unspecified.
+          CHROME_ANDROID (int): Chrome on Android.
+          SAFARI_IPHONE (int): Safari on IPhone.
+        """
+        USER_AGENT_UNSPECIFIED = 0
+        CHROME_LINUX = 1
+        CHROME_ANDROID = 2
+        SAFARI_IPHONE = 3
+
+    class TargetPlatform(enum.IntEnum):
+        """
+        Cloud platforms supported by Cloud Web Security Scanner.
+
+        Attributes:
+          TARGET_PLATFORM_UNSPECIFIED (int): The target platform is unknown. Requests with this enum value will be
+          rejected with INVALID_ARGUMENT error.
+          APP_ENGINE (int): Google App Engine service.
+          COMPUTE (int): Google Compute Engine service.
+        """
+        TARGET_PLATFORM_UNSPECIFIED = 0
+        APP_ENGINE = 1
+        COMPUTE = 2
