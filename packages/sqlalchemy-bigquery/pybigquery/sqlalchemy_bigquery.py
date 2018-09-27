@@ -358,7 +358,10 @@ class BigQueryDialect(DefaultDialect):
             connection = connection.connect()
 
         datasets = connection.connection._client.list_datasets()
-        return [d.dataset_id for d in datasets]
+        if self.dataset_id is not None:
+            return [d.dataset_id for d in datasets if d.dataset_id == self.dataset_id]
+        else:
+            return [d.dataset_id for d in datasets]
 
     def get_table_names(self, connection, schema=None, **kw):
         if isinstance(connection, Engine):
