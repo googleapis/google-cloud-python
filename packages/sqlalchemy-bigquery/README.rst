@@ -79,10 +79,25 @@ If you want to have the ``Client`` use a default dataset, specify it as the "dat
 
     engine = create_engine('bigquery://project/dataset')
 
+When using a default dataset, don't include the dataset name in the table name, e.g.:
+
+.. code-block:: python
+
+    table = Table('table_name')
+
+Note that specyfing a default dataset doesn't restrict execution of queries to that particular dataset when using raw queries, e.g.:
+
+.. code-block:: python
+
+    # Set default dataset to dataset_a
+    engine = create_engine('bigquery://project/dataset_a')
+
+    # This will still execute and return rows from dataset_b
+    engine.execute('SELECT * FROM dataset_b.table').fetchall()
+
 
 Connection String Parameters
 ____________________________
-
 
 There are many situations where you can't call ``create_engine`` directly, such as when using tools like `Flask SQLAlchemy <http://flask-sqlalchemy.pocoo.org/2.3/>`_. For situations like these, or for situations where you want the ``Client`` to have a `default_query_job_config <https://googlecloudplatform.github.io/google-cloud-python/latest/bigquery/generated/google.cloud.bigquery.client.Client.html#google.cloud.bigquery.client.Client>`_, you can pass many arguments in the query of the connection string.
 
