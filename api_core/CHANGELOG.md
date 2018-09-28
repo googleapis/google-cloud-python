@@ -9,7 +9,7 @@
 ### Dependencies
 - Pin minimum protobuf dependency to 3.4.0. ([#6132](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6132))
 
-### Documentation
+### Internal / Testing Changes
 - Add type-checking via pytype to api_core. ([#6116](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6116))
 
 ## 1.4.0
