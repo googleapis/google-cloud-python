@@ -188,6 +188,53 @@ class Logger(object):
 
         return entry
 
+    def log_empty(self, client=None, labels=None, insert_id=None,
+                  severity=None, http_request=None, timestamp=None,
+                  resource=_GLOBAL_RESOURCE, trace=None, span_id=None):
+        """API call:  log an empty message via a POST request
+
+        See
+        https://cloud.google.com/logging/docs/reference/v2/rest/v2/entries/write
+
+        :type client: :class:`~google.cloud.logging.client.Client` or
+                      ``NoneType``
+        :param client: the client to use.  If not passed, falls back to the
+                       ``client`` stored on the current logger.
+
+        :type labels: dict
+        :param labels: (optional) mapping of labels for the entry.
+
+        :type insert_id: str
+        :param insert_id: (optional) unique ID for log entry.
+
+        :type severity: str
+        :param severity: (optional) severity of event being logged.
+
+        :type http_request: dict
+        :param http_request: (optional) info about HTTP request associated with
+                             the entry
+
+        :type timestamp: :class:`datetime.datetime`
+        :param timestamp: (optional) timestamp of event being logged.
+
+        :type resource: :class:`~google.cloud.logging.resource.Resource`
+        :param resource: Monitored resource of the entry, defaults
+                         to the global resource type.
+
+        :type trace: str
+        :param trace: (optional) traceid to apply to the entry.
+
+        :type span_id: str
+        :param span_id: (optional) span_id within the trace for the log entry.
+                        Specify the trace parameter if span_id is set.
+        """
+        client = self._require_client(client)
+        entry_resource = self._make_entry_resource(
+            labels=labels, insert_id=insert_id, severity=severity,
+            http_request=http_request, timestamp=timestamp, resource=resource,
+            trace=trace, span_id=span_id)
+        client.logging_api.write_entries([entry_resource])
+
     def log_text(self, text, client=None, labels=None, insert_id=None,
                  severity=None, http_request=None, timestamp=None,
                  resource=_GLOBAL_RESOURCE, trace=None, span_id=None):
