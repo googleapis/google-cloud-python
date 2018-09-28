@@ -970,7 +970,8 @@ class TestPartialRowsData_JSON_acceptance_tests(unittest.TestCase):
         client._data_stub.ReadRows.side_effect = [iterator]
         request = object()
         prd = self._make_one(client._data_stub.ReadRows, request)
-        prd.consume_all()
+        with self.assertRaises(ValueError):
+            prd.consume_all()
         self.assertEqual(prd.state, prd.ROW_IN_PROGRESS)
         expected_result = self._sort_flattend_cells(
             [result for result in results if not result['error']])
