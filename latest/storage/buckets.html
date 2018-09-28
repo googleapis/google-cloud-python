@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Buckets &#8212; google-cloud 72459cd documentation</title>
+    <title>Buckets &#8212; google-cloud 0928b8e documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -308,6 +308,26 @@ the default location, US, will be used. See
 <code class="xref py py-attr docutils literal notranslate"><span class="pre">project</span></code> is also None.</li>
 </ul>
 </td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.storage.bucket.Bucket.default_event_based_hold">
+<code class="descname">default_event_based_hold</code><a class="headerlink" href="#google.cloud.storage.bucket.Bucket.default_event_based_hold" title="Permalink to this definition">#</a></dt>
+<dd><p>Are uploaded objects automatically placed under an even-based hold?</p>
+<p>If True, uploaded objects will be placed under an event-based hold to
+be released at a future time. When released an object will then begin
+the retention period determined by the policy retention period for the
+object bucket.</p>
+<p>See <a class="reference external" href="https://cloud.google.com/storage/docs/json_api/v1/buckets">https://cloud.google.com/storage/docs/json_api/v1/buckets</a></p>
+<p>If the property is not set locally, returns <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool or <code class="docutils literal notranslate"><span class="pre">NoneType</span></code></td>
 </tr>
 </tbody>
 </table>
@@ -842,6 +862,22 @@ or if the bucket’s resource has not been loaded from the server.
 </dd></dl>
 
 <dl class="method">
+<dt id="google.cloud.storage.bucket.Bucket.lock_retention_policy">
+<code class="descname">lock_retention_policy</code><span class="sig-paren">(</span><em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/storage/bucket.html#Bucket.lock_retention_policy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.storage.bucket.Bucket.lock_retention_policy" title="Permalink to this definition">#</a></dt>
+<dd><p>Lock the bucket’s retention policy.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><strong>ValueError</strong></a> – if the bucket has no metageneration (i.e., new or never reloaded);
+if the bucket has no retention policy assigned;
+if the bucket’s retention policy is already locked.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="google.cloud.storage.bucket.Bucket.make_private">
 <code class="descname">make_private</code><span class="sig-paren">(</span><em>recursive=False</em>, <em>future=False</em>, <em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/storage/bucket.html#Bucket.make_private"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.storage.bucket.Bucket.make_private" title="Permalink to this definition">#</a></dt>
 <dd><p>Update bucket’s ACL, revoking read access for anonymous users.</p>
@@ -1085,6 +1121,60 @@ details.</p>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True if requester pays for API requests for the bucket,
 else False.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.storage.bucket.Bucket.retention_period">
+<code class="descname">retention_period</code><a class="headerlink" href="#google.cloud.storage.bucket.Bucket.retention_period" title="Permalink to this definition">#</a></dt>
+<dd><p>Retrieve or set the retention period for items in the bucket.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">int or <code class="docutils literal notranslate"><span class="pre">NoneType</span></code></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">number of seconds to retain items after upload or release
+from event-based lock, or <code class="docutils literal notranslate"><span class="pre">None</span></code> if the property is not
+set locally.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.storage.bucket.Bucket.retention_policy_effective_time">
+<code class="descname">retention_policy_effective_time</code><a class="headerlink" href="#google.cloud.storage.bucket.Bucket.retention_policy_effective_time" title="Permalink to this definition">#</a></dt>
+<dd><p>Retrieve the effective time of the bucket’s retention policy.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">datetime.datetime or <code class="docutils literal notranslate"><span class="pre">NoneType</span></code></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">point-in time at which the bucket’s retention policy is
+effective, or <code class="docutils literal notranslate"><span class="pre">None</span></code> if the property is not
+set locally.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.storage.bucket.Bucket.retention_policy_locked">
+<code class="descname">retention_policy_locked</code><a class="headerlink" href="#google.cloud.storage.bucket.Bucket.retention_policy_locked" title="Permalink to this definition">#</a></dt>
+<dd><p>Retrieve whthere the bucket’s retention policy is locked.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)">bool</a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True if the bucket’s policy is locked, or else False
+if the policy is not locked, or the property is not
+set locally.</td>
 </tr>
 </tbody>
 </table>

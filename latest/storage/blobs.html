@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Blobs / Objects &#8212; google-cloud 72459cd documentation</title>
+    <title>Blobs / Objects &#8212; google-cloud 0928b8e documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -448,6 +448,22 @@ been loaded from the server.</td>
 </table>
 </dd></dl>
 
+<dl class="attribute">
+<dt id="google.cloud.storage.blob.Blob.event_based_hold">
+<code class="descname">event_based_hold</code><a class="headerlink" href="#google.cloud.storage.blob.Blob.event_based_hold" title="Permalink to this definition">#</a></dt>
+<dd><p>Is an event-based hold active on the object?</p>
+<p>See <a class="reference external" href="https://cloud.google.com/storage/docs/json_api/v1/objects">API reference docs</a>.</p>
+<p>If the property is not set locally, returns <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool or <code class="docutils literal notranslate"><span class="pre">NoneType</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 <dl class="method">
 <dt id="google.cloud.storage.blob.Blob.exists">
 <code class="descname">exists</code><span class="sig-paren">(</span><em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/storage/blob.html#Blob.exists"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.storage.blob.Blob.exists" title="Permalink to this definition">#</a></dt>
@@ -825,6 +841,24 @@ URL.</p>
 </table>
 </dd></dl>
 
+<dl class="attribute">
+<dt id="google.cloud.storage.blob.Blob.retention_expiration_time">
+<code class="descname">retention_expiration_time</code><a class="headerlink" href="#google.cloud.storage.blob.Blob.retention_expiration_time" title="Permalink to this definition">#</a></dt>
+<dd><p>Retrieve timestamp at which the object’s retention period expires.</p>
+<p>See <a class="reference external" href="https://cloud.google.com/storage/docs/json_api/v1/objects">https://cloud.google.com/storage/docs/json_api/v1/objects</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">datetime.datetime</span></code></a> or <code class="docutils literal notranslate"><span class="pre">NoneType</span></code></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Datetime object parsed from RFC3339 valid timestamp, or
+<code class="docutils literal notranslate"><span class="pre">None</span></code> if the property is not set locally.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 <dl class="method">
 <dt id="google.cloud.storage.blob.Blob.rewrite">
 <code class="descname">rewrite</code><span class="sig-paren">(</span><em>source</em>, <em>token=None</em>, <em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/storage/blob.html#Blob.rewrite"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.storage.blob.Blob.rewrite" title="Permalink to this definition">#</a></dt>
@@ -943,6 +977,22 @@ the “storage.objects.rewrite” method).</p>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">If set, one of “MULTI_REGIONAL”, “REGIONAL”,
 “NEARLINE”, “COLDLINE”, “STANDARD”, or
 “DURABLE_REDUCED_AVAILABILITY”, else <code class="docutils literal notranslate"><span class="pre">None</span></code>.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.storage.blob.Blob.temporary_hold">
+<code class="descname">temporary_hold</code><a class="headerlink" href="#google.cloud.storage.blob.Blob.temporary_hold" title="Permalink to this definition">#</a></dt>
+<dd><p>Is a temporary hold active on the object?</p>
+<p>See <a class="reference external" href="https://cloud.google.com/storage/docs/json_api/v1/objects">API reference docs</a>.</p>
+<p>If the property is not set locally, returns <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool or <code class="docutils literal notranslate"><span class="pre">NoneType</span></code></td>
 </tr>
 </tbody>
 </table>
