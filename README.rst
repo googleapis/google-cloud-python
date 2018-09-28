@@ -58,6 +58,7 @@ priority.
 The following client libraries have **beta** support:
 
 -  `Google BigQuery`_ (`BigQuery README`_)
+-  `Google Cloud Bigtable`_ (`Bigtable README`_)
 -  `Google Cloud Firestore`_ (`Firestore README`_)
 -  `Google Cloud Pub/Sub`_ (`Pub/Sub README`_)
 -  `Google Cloud Speech`_ (`Speech README`_)
@@ -70,6 +71,8 @@ against beta libraries are addressed with a higher priority.
 
 .. _Google BigQuery: https://pypi.org/project/google-cloud-bigquery/
 .. _BigQuery README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/bigquery
+.. _Google Cloud Bigtable: https://pypi.org/project/google-cloud-bigtable/
+.. _Bigtable README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/bigtable
 .. _Google Cloud Firestore: https://pypi.org/project/google-cloud-firestore/
 .. _Firestore README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/firestore
 .. _Google Cloud Pub/Sub: https://pypi.org/project/google-cloud-pubsub/
@@ -85,7 +88,6 @@ The following client libraries have **alpha** support:
 
 -  `Google Cloud AutoML`_ (`AutoML README`_)
 -  `Google BigQuery Data Transfer`_ (`BigQuery Data Transfer README`_)
--  `Google Cloud Bigtable`_ (`Bigtable README`_)
 -  `Google Cloud Bigtable - HappyBase`_ (`HappyBase README`_)
 -  `Google Cloud Container`_ (`Container README`_)
 -  `Google Cloud Dataproc`_ (`Dataproc README`_)
@@ -111,8 +113,6 @@ updates. See `versioning`_ for more details.
 .. _AutoML README: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/automl
 .. _Google BigQuery Data Transfer: https://pypi.org/project/google-cloud-bigquery-datatransfer/
 .. _BigQuery Data Transfer README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/bigquery_datatransfer
-.. _Google Cloud Bigtable: https://pypi.org/project/google-cloud-bigtable/
-.. _Bigtable README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/bigtable
 .. _Google Cloud Bigtable - HappyBase: https://pypi.org/project/google-cloud-happybase/
 .. _HappyBase README: https://github.com/GoogleCloudPlatform/google-cloud-python-happybase
 .. _Google Cloud Container: https://pypi.org/project/google-cloud-container/
