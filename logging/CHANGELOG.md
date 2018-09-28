@@ -7,10 +7,10 @@
 ## 1.8.0
 
 ### New Features
-- Logging: support request-correlated logging in App Engine standard python37 runtime ([#6118](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6118))
+- Support request-correlated logging in App Engine standard python37 runtime. ([#6118](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6118))
 
 ### Documentation
-- Translate / Logging / Language: restore detailed usage docs. ([#5999](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/5999))
+- Restore detailed usage docs. ([#5999](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/5999))
 - Redirect renamed 'usage.html'/'client.html' -> 'index.html'. ([#5996](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/5996))
 - Prep logging docs for repo split. ([#5943](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/5943))
 
