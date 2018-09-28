@@ -486,16 +486,13 @@ class TestTable(unittest.TestCase):
         request_pb = object()  # Returned by our mock.
         mock_created = []
 
-        def mock_read_rows():
-            return expected_result
-
         def mock_create_row_request(table_name, **kwargs):
             mock_created.append((table_name, kwargs))
             return request_pb
 
         # Create response_iterator
         if chunks is None:
-            response_iterator = iter([])  # no responses at all
+            response_iterator = iter(())  # no responses at all
         else:
             response_pb = _ReadRowsResponsePB(chunks=chunks)
             response_iterator = iter([response_pb])
