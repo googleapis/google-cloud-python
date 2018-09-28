@@ -88,6 +88,69 @@ class TestLogger(unittest.TestCase):
         self.assertIs(batch.logger, logger)
         self.assertIs(batch.client, client2)
 
+    def test_log_empty_w_default_labels(self):
+        DEFAULT_LABELS = {'foo': 'spam'}
+        ENTRIES = [{
+            'logName': 'projects/%s/logs/%s' % (
+                self.PROJECT, self.LOGGER_NAME),
+            'resource': {
+                'type': 'global',
+                'labels': {},
+            },
+            'labels': DEFAULT_LABELS,
+        }]
+        client = _Client(self.PROJECT)
+        api = client.logging_api = _DummyLoggingAPI()
+        logger = self._make_one(self.LOGGER_NAME, client=client,
+                                labels=DEFAULT_LABELS)
+
+        logger.log_empty()
+
+        self.assertEqual(api._write_entries_called_with,
+                         (ENTRIES, None, None, None))
+
+    def test_log_empty_w_explicit_client_labels_severity_httpreq(self):
+        DEFAULT_LABELS = {'foo': 'spam'}
+        LABELS = {'foo': 'bar', 'baz': 'qux'}
+        IID = 'IID'
+        SEVERITY = 'CRITICAL'
+        METHOD = 'POST'
+        URI = 'https://api.example.com/endpoint'
+        STATUS = '500'
+        TRACE = '12345678-1234-5678-1234-567812345678'
+        SPANID = '000000000000004a'
+        REQUEST = {
+            'requestMethod': METHOD,
+            'requestUrl': URI,
+            'status': STATUS,
+        }
+        ENTRIES = [{
+            'logName': 'projects/%s/logs/%s' % (
+                self.PROJECT, self.LOGGER_NAME),
+            'resource': {
+                'type': 'global',
+                'labels': {},
+            },
+            'labels': LABELS,
+            'insertId': IID,
+            'severity': SEVERITY,
+            'httpRequest': REQUEST,
+            'trace': TRACE,
+            'spanId': SPANID
+        }]
+        client1 = _Client(self.PROJECT)
+        client2 = _Client(self.PROJECT)
+        api = client2.logging_api = _DummyLoggingAPI()
+        logger = self._make_one(self.LOGGER_NAME, client=client1,
+                                labels=DEFAULT_LABELS)
+
+        logger.log_empty(client=client2, labels=LABELS,
+                         insert_id=IID, severity=SEVERITY,
+                         http_request=REQUEST, trace=TRACE, span_id=SPANID)
+
+        self.assertEqual(api._write_entries_called_with,
+                         (ENTRIES, None, None, None))
+
     def test_log_text_w_str_implicit_client(self):
         TEXT = 'TEXT'
         ENTRIES = [{
