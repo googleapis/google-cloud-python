@@ -1270,3 +1270,176 @@ class TestKMSIntegration(TestStorageFiles):
         self.assertEqual(total, len(source_data))
 
         self.assertEqual(dest.download_as_string(), source_data)
+
+
+class TestRetentionPolicy(unittest.TestCase):
+
+    def setUp(self):
+        self.case_buckets_to_delete = []
+
+    def tearDown(self):
+        for bucket_name in self.case_buckets_to_delete:
+            bucket = Config.CLIENT.bucket(bucket_name)
+            retry_429(bucket.delete)()
+
+    def test_bucket_w_retention_period(self):
+        import datetime
+        from google.api_core import exceptions
+
+        period_secs = 10
+
+        new_bucket_name = 'w-retention-period' + unique_resource_id('-')
+        bucket = Config.CLIENT.create_bucket(new_bucket_name)
+        self.case_buckets_to_delete.append(new_bucket_name)
+
+        bucket.retention_period = period_secs
+        bucket.default_event_based_hold = False
+        bucket.patch()
+
+        self.assertEqual(bucket.retention_period, period_secs)
+        self.assertIsInstance(
+            bucket.retention_policy_effective_time, datetime.datetime)
+        self.assertFalse(bucket.default_event_based_hold)
+        self.assertFalse(bucket.retention_policy_locked)
+
+        blob_name = 'test-blob'
+        payload = b'DEADBEEF'
+        blob = bucket.blob(blob_name)
+        blob.upload_from_string(payload)
+
+        other = bucket.get_blob(blob_name)
+
+        self.assertFalse(other.event_based_hold)
+        self.assertFalse(other.temporary_hold)
+        self.assertIsInstance(
+            other.retention_expiration_time, datetime.datetime)
+
+        with self.assertRaises(exceptions.Forbidden):
+            other.delete()
+
+        bucket.retention_period = None
+        bucket.patch()
+
+        self.assertIsNone(bucket.retention_period)
+        self.assertIsNone(bucket.retention_policy_effective_time)
+        self.assertFalse(bucket.default_event_based_hold)
+        self.assertFalse(bucket.retention_policy_locked)
+
+        other.reload()
+
+        self.assertFalse(other.event_based_hold)
+        self.assertFalse(other.temporary_hold)
+        self.assertIsNone(other.retention_expiration_time)
+
+        other.delete()
+
+    def test_bucket_w_default_event_based_hold(self):
+        from google.api_core import exceptions
+
+        new_bucket_name = 'w-def-ebh' + unique_resource_id('-')
+        self.assertRaises(exceptions.NotFound,
+                          Config.CLIENT.get_bucket, new_bucket_name)
+        bucket = Config.CLIENT.create_bucket(new_bucket_name)
+        self.case_buckets_to_delete.append(new_bucket_name)
+
+        bucket.default_event_based_hold = True
+        bucket.patch()
+
+        self.assertTrue(bucket.default_event_based_hold)
+        self.assertIsNone(bucket.retention_period)
+        self.assertIsNone(bucket.retention_policy_effective_time)
+        self.assertFalse(bucket.retention_policy_locked)
+
+        blob_name = 'test-blob'
+        payload = b'DEADBEEF'
+        blob = bucket.blob(blob_name)
+        blob.upload_from_string(payload)
+
+        other = bucket.get_blob(blob_name)
+
+        self.assertTrue(other.event_based_hold)
+        self.assertFalse(other.temporary_hold)
+        self.assertIsNone(other.retention_expiration_time)
+
+        with self.assertRaises(exceptions.Forbidden):
+            other.delete()
+
+        other.event_based_hold = False
+        other.patch()
+
+        other.delete()
+
+        bucket.default_event_based_hold = False
+        bucket.patch()
+
+        self.assertFalse(bucket.default_event_based_hold)
+        self.assertIsNone(bucket.retention_period)
+        self.assertIsNone(bucket.retention_policy_effective_time)
+        self.assertFalse(bucket.retention_policy_locked)
+
+        blob.upload_from_string(payload)
+        self.assertFalse(other.event_based_hold)
+        self.assertFalse(other.temporary_hold)
+        self.assertIsNone(other.retention_expiration_time)
+
+        blob.delete()
+
+    def test_blob_w_temporary_hold(self):
+        from google.api_core import exceptions
+
+        new_bucket_name = 'w-tmp-hold' + unique_resource_id('-')
+        self.assertRaises(exceptions.NotFound,
+                          Config.CLIENT.get_bucket, new_bucket_name)
+        bucket = Config.CLIENT.create_bucket(new_bucket_name)
+        self.case_buckets_to_delete.append(new_bucket_name)
+
+        blob_name = 'test-blob'
+        payload = b'DEADBEEF'
+        blob = bucket.blob(blob_name)
+        blob.upload_from_string(payload)
+
+        other = bucket.get_blob(blob_name)
+        other.temporary_hold = True
+        other.patch()
+
+        self.assertTrue(other.temporary_hold)
+        self.assertFalse(other.event_based_hold)
+        self.assertIsNone(other.retention_expiration_time)
+
+        with self.assertRaises(exceptions.Forbidden):
+            other.delete()
+
+        other.temporary_hold = False
+        other.patch()
+
+        other.delete()
+
+    def test_bucket_lock_retention_policy(self):
+        import datetime
+        from google.api_core import exceptions
+
+        period_secs = 10
+
+        new_bucket_name = 'loc-ret-policy' + unique_resource_id('-')
+        self.assertRaises(exceptions.NotFound,
+                          Config.CLIENT.get_bucket, new_bucket_name)
+        bucket = Config.CLIENT.create_bucket(new_bucket_name)
+        self.case_buckets_to_delete.append(new_bucket_name)
+
+        bucket.retention_period = period_secs
+        bucket.patch()
+
+        self.assertEqual(bucket.retention_period, period_secs)
+        self.assertIsInstance(
+            bucket.retention_policy_effective_time, datetime.datetime)
+        self.assertFalse(bucket.default_event_based_hold)
+        self.assertFalse(bucket.retention_policy_locked)
+
+        bucket.lock_retention_policy()
+
+        bucket.reload()
+        self.assertTrue(bucket.retention_policy_locked)
+
+        bucket.retention_period = None
+        with self.assertRaises(exceptions.Forbidden):
+            bucket.patch()
