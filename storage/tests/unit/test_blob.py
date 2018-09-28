@@ -2719,6 +2719,35 @@ class Test_Blob(unittest.TestCase):
         blob = self._make_one(BLOB_NAME, bucket=bucket, properties=properties)
         self.assertEqual(blob.etag, ETAG)
 
+    def test_event_based_hold_getter_missing(self):
+        BLOB_NAME = 'blob-name'
+        bucket = _Bucket()
+        properties = {}
+        blob = self._make_one(BLOB_NAME, bucket=bucket, properties=properties)
+        self.assertIsNone(blob.event_based_hold)
+
+    def test_event_based_hold_getter_false(self):
+        BLOB_NAME = 'blob-name'
+        bucket = _Bucket()
+        properties = {'eventBasedHold': False}
+        blob = self._make_one(BLOB_NAME, bucket=bucket, properties=properties)
+        self.assertFalse(blob.event_based_hold)
+
+    def test_event_based_hold_getter_true(self):
+        BLOB_NAME = 'blob-name'
+        bucket = _Bucket()
+        properties = {'eventBasedHold': True}
+        blob = self._make_one(BLOB_NAME, bucket=bucket, properties=properties)
+        self.assertTrue(blob.event_based_hold)
+
+    def test_event_based_hold_setter(self):
+        BLOB_NAME = 'blob-name'
+        bucket = _Bucket()
+        blob = self._make_one(BLOB_NAME, bucket=bucket)
+        self.assertIsNone(blob.event_based_hold)
+        blob.event_based_hold = True
+        self.assertEqual(blob.event_based_hold, True)
+
     def test_generation(self):
         BUCKET = object()
         GENERATION = 42
@@ -2818,6 +2847,23 @@ class Test_Blob(unittest.TestCase):
         self.assertEqual(owner['entity'], 'project-owner-12345')
         self.assertEqual(owner['entityId'], '23456')
 
+    def test_retention_expiration_time(self):
+        from google.cloud._helpers import _RFC3339_MICROS
+        from google.cloud._helpers import UTC
+
+        BLOB_NAME = 'blob-name'
+        bucket = _Bucket()
+        TIMESTAMP = datetime.datetime(2014, 11, 5, 20, 34, 37, tzinfo=UTC)
+        TIME_CREATED = TIMESTAMP.strftime(_RFC3339_MICROS)
+        properties = {'retentionExpirationTime': TIME_CREATED}
+        blob = self._make_one(BLOB_NAME, bucket=bucket, properties=properties)
+        self.assertEqual(blob.retention_expiration_time, TIMESTAMP)
+
+    def test_retention_expiration_time_unset(self):
+        BUCKET = object()
+        blob = self._make_one('blob-name', bucket=BUCKET)
+        self.assertIsNone(blob.retention_expiration_time)
+
     def test_self_link(self):
         BLOB_NAME = 'blob-name'
         bucket = _Bucket()
@@ -2862,6 +2908,35 @@ class Test_Blob(unittest.TestCase):
         blob.storage_class = storage_class
         self.assertEqual(blob.storage_class, storage_class)
         self.assertEqual(blob._properties, {'storageClass': storage_class})
+
+    def test_temporary_hold_getter_missing(self):
+        BLOB_NAME = 'blob-name'
+        bucket = _Bucket()
+        properties = {}
+        blob = self._make_one(BLOB_NAME, bucket=bucket, properties=properties)
+        self.assertIsNone(blob.temporary_hold)
+
+    def test_temporary_hold_getter_false(self):
+        BLOB_NAME = 'blob-name'
+        bucket = _Bucket()
+        properties = {'temporaryHold': False}
+        blob = self._make_one(BLOB_NAME, bucket=bucket, properties=properties)
+        self.assertFalse(blob.temporary_hold)
+
+    def test_temporary_hold_getter_true(self):
+        BLOB_NAME = 'blob-name'
+        bucket = _Bucket()
+        properties = {'temporaryHold': True}
+        blob = self._make_one(BLOB_NAME, bucket=bucket, properties=properties)
+        self.assertTrue(blob.temporary_hold)
+
+    def test_temporary_hold_setter(self):
+        BLOB_NAME = 'blob-name'
+        bucket = _Bucket()
+        blob = self._make_one(BLOB_NAME, bucket=bucket)
+        self.assertIsNone(blob.temporary_hold)
+        blob.temporary_hold = True
+        self.assertEqual(blob.temporary_hold, True)
 
     def test_time_deleted(self):
         from google.cloud._helpers import _RFC3339_MICROS
