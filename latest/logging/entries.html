@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Entries &#8212; google-cloud c8098c9 documentation</title>
+    <title>Entries &#8212; google-cloud 72459cd documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -38,6 +38,15 @@
   <div class="section" id="module-google.cloud.logging.entries">
 <span id="entries"></span><h1>Entries<a class="headerlink" href="#module-google.cloud.logging.entries" title="Permalink to this headline">#</a></h1>
 <p>Log entries within the Google Stackdriver Logging API.</p>
+<dl class="class">
+<dt id="google.cloud.logging.entries.EmptyEntry">
+<em class="property">class </em><code class="descclassname">google.cloud.logging.entries.</code><code class="descname">EmptyEntry</code><span class="sig-paren">(</span><em>payload</em>, <em>logger</em>, <em>insert_id=None</em>, <em>timestamp=None</em>, <em>labels=None</em>, <em>severity=None</em>, <em>http_request=None</em>, <em>resource=None</em>, <em>trace=None</em>, <em>span_id=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/logging/entries.html#EmptyEntry"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.logging.entries.EmptyEntry" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.logging.entries._BaseEntry</span></code></p>
+<p>Entry created with no payload.</p>
+<p>See
+<a class="reference external" href="https://cloud.google.com/logging/docs/reference/v2/rest/v2/LogEntry">https://cloud.google.com/logging/docs/reference/v2/rest/v2/LogEntry</a></p>
+</dd></dl>
+
 <dl class="class">
 <dt id="google.cloud.logging.entries.ProtobufEntry">
 <em class="property">class </em><code class="descclassname">google.cloud.logging.entries.</code><code class="descname">ProtobufEntry</code><span class="sig-paren">(</span><em>payload</em>, <em>logger</em>, <em>insert_id=None</em>, <em>timestamp=None</em>, <em>labels=None</em>, <em>severity=None</em>, <em>http_request=None</em>, <em>resource=None</em>, <em>trace=None</em>, <em>span_id=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/logging/entries.html#ProtobufEntry"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.logging.entries.ProtobufEntry" title="Permalink to this definition">#</a></dt>

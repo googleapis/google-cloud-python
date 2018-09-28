@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.logging.logger &#8212; google-cloud c8098c9 documentation</title>
+    <title>google.cloud.logging.logger &#8212; google-cloud 72459cd documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -223,6 +223,53 @@
             <span class="n">entry</span><span class="p">[</span><span class="s1">&#39;spanId&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">span_id</span>
 
         <span class="k">return</span> <span class="n">entry</span>
+
+<div class="viewcode-block" id="Logger.log_empty"><a class="viewcode-back" href="../../../../logging/logger.html#google.cloud.logging.logger.Logger.log_empty">[docs]</a>    <span class="k">def</span> <span class="nf">log_empty</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">insert_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                  <span class="n">severity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">http_request</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">timestamp</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                  <span class="n">resource</span><span class="o">=</span><span class="n">_GLOBAL_RESOURCE</span><span class="p">,</span> <span class="n">trace</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">span_id</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;API call:  log an empty message via a POST request</span>
+
+<span class="sd">        See</span>
+<span class="sd">        https://cloud.google.com/logging/docs/reference/v2/rest/v2/entries/write</span>
+
+<span class="sd">        :type client: :class:`~google.cloud.logging.client.Client` or</span>
+<span class="sd">                      ``NoneType``</span>
+<span class="sd">        :param client: the client to use.  If not passed, falls back to the</span>
+<span class="sd">                       ``client`` stored on the current logger.</span>
+
+<span class="sd">        :type labels: dict</span>
+<span class="sd">        :param labels: (optional) mapping of labels for the entry.</span>
+
+<span class="sd">        :type insert_id: str</span>
+<span class="sd">        :param insert_id: (optional) unique ID for log entry.</span>
+
+<span class="sd">        :type severity: str</span>
+<span class="sd">        :param severity: (optional) severity of event being logged.</span>
+
+<span class="sd">        :type http_request: dict</span>
+<span class="sd">        :param http_request: (optional) info about HTTP request associated with</span>
+<span class="sd">                             the entry</span>
+
+<span class="sd">        :type timestamp: :class:`datetime.datetime`</span>
+<span class="sd">        :param timestamp: (optional) timestamp of event being logged.</span>
+
+<span class="sd">        :type resource: :class:`~google.cloud.logging.resource.Resource`</span>
+<span class="sd">        :param resource: Monitored resource of the entry, defaults</span>
+<span class="sd">                         to the global resource type.</span>
+
+<span class="sd">        :type trace: str</span>
+<span class="sd">        :param trace: (optional) traceid to apply to the entry.</span>
+
+<span class="sd">        :type span_id: str</span>
+<span class="sd">        :param span_id: (optional) span_id within the trace for the log entry.</span>
+<span class="sd">                        Specify the trace parameter if span_id is set.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
+        <span class="n">entry_resource</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_entry_resource</span><span class="p">(</span>
+            <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">,</span> <span class="n">insert_id</span><span class="o">=</span><span class="n">insert_id</span><span class="p">,</span> <span class="n">severity</span><span class="o">=</span><span class="n">severity</span><span class="p">,</span>
+            <span class="n">http_request</span><span class="o">=</span><span class="n">http_request</span><span class="p">,</span> <span class="n">timestamp</span><span class="o">=</span><span class="n">timestamp</span><span class="p">,</span> <span class="n">resource</span><span class="o">=</span><span class="n">resource</span><span class="p">,</span>
+            <span class="n">trace</span><span class="o">=</span><span class="n">trace</span><span class="p">,</span> <span class="n">span_id</span><span class="o">=</span><span class="n">span_id</span><span class="p">)</span>
+        <span class="n">client</span><span class="o">.</span><span class="n">logging_api</span><span class="o">.</span><span class="n">write_entries</span><span class="p">([</span><span class="n">entry_resource</span><span class="p">])</span></div>
 
 <div class="viewcode-block" id="Logger.log_text"><a class="viewcode-back" href="../../../../logging/logger.html#google.cloud.logging.logger.Logger.log_text">[docs]</a>    <span class="k">def</span> <span class="nf">log_text</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">insert_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">severity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">http_request</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">timestamp</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
