@@ -15,7 +15,8 @@
 from typing import Sequence
 from unittest import mock
 
-from google.longrunning import operations_pb2
+from google.api import annotations_pb2
+from google.api import longrunning_pb2
 from google.protobuf import descriptor_pb2
 
 from gapic.schema import api
@@ -361,10 +362,10 @@ def test_lro():
         input_type='google.example.v3.AsyncDoThingRequest',
         output_type='google.longrunning.Operation',
     )
-    method_pb2.options.Extensions[operations_pb2.operation_types].MergeFrom(
-        operations_pb2.OperationTypes(
-            response='google.example.v3.AsyncDoThingResponse',
-            metadata='google.example.v3.AsyncDoThingMetadata',
+    method_pb2.options.Extensions[annotations_pb2.operation].MergeFrom(
+        longrunning_pb2.OperationData(
+            response_type='google.example.v3.AsyncDoThingResponse',
+            metadata_type='google.example.v3.AsyncDoThingMetadata',
         ),
     )
 

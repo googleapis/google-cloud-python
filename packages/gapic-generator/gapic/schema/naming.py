@@ -120,7 +120,7 @@ class Naming:
                 name=meta.package_name or meta.product_name,
                 namespace=tuple(meta.package_namespace),
                 product_name=meta.product_name,
-                product_url=meta.product_url,
+                product_url=meta.product_uri,
                 version='',
             )
             if naming:

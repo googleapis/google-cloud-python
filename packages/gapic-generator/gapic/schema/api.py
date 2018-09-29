@@ -22,7 +22,7 @@ import dataclasses
 import sys
 from typing import Callable, List, Mapping, Sequence, Tuple
 
-from google.longrunning import operations_pb2
+from google.api import annotations_pb2
 from google.protobuf import descriptor_pb2
 
 from gapic.schema import metadata
@@ -386,7 +386,7 @@ class _ProtoBuilder:
         # Iterate over the methods and collect them into a dictionary.
         answer = collections.OrderedDict()
         for meth_pb, i in zip(methods, range(0, sys.maxsize)):
-            types = meth_pb.options.Extensions[operations_pb2.operation_types]
+            lro = meth_pb.options.Extensions[annotations_pb2.operation]
 
             # If the output type is google.longrunning.Operation, we use
             # a specialized object in its place.
@@ -394,10 +394,10 @@ class _ProtoBuilder:
             if meth_pb.output_type.endswith('google.longrunning.Operation'):
                 output_type = self._get_operation_type(
                     response_type=self.all_messages[
-                        address.resolve(types.response)
+                        address.resolve(lro.response_type)
                     ],
                     metadata_type=self.all_messages.get(
-                        address.resolve(types.metadata),
+                        address.resolve(lro.metadata_type),
                     ),
                 )
 
