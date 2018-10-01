@@ -15,7 +15,7 @@
 """Model classes for datastore objects and properties for models."""
 
 
-import google.cloud.ndb.key
+from google.cloud.ndb import key
 
 
 __all__ = [
@@ -203,7 +203,7 @@ class JsonProperty:
         raise NotImplementedError
 
 
-Key = google.cloud.ndb.key.Key
+Key = key.Key
 
 
 class KeyProperty:
