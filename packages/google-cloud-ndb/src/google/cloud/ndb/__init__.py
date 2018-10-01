@@ -25,6 +25,7 @@ __all__ = [
     "ContextOptions",
     "EVENTUAL_CONSISTENCY",
     "TransactionOptions",
+    "Key",
     "BlobKey",
     "BlobKeyProperty",
     "BlobProperty",
@@ -52,7 +53,6 @@ __all__ = [
     "InvalidPropertyError",
     "BadProjectionError",
     "JsonProperty",
-    "Key",
     "KeyProperty",
     "KindError",
     "LocalStructuredProperty",
@@ -121,6 +121,7 @@ from google.cloud.ndb.context import Context
 from google.cloud.ndb.context import ContextOptions
 from google.cloud.ndb.context import EVENTUAL_CONSISTENCY
 from google.cloud.ndb.context import TransactionOptions
+from google.cloud.ndb.key import Key
 from google.cloud.ndb.model import BlobKey
 from google.cloud.ndb.model import BlobKeyProperty
 from google.cloud.ndb.model import BlobProperty
