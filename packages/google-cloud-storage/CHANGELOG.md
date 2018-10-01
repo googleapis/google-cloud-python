@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-storage/#history
 
+## 1.13.0
+
+### New Features
+- Add support for bucket retention policies ([#5534](https://github.com/googleapis/google-cloud-python/pull/5534))
+- Allow `destination.content_type` to be None in `Blob.compose`. ([#6031](https://github.com/googleapis/google-cloud-python/pull/6031))
+
+### Implementation Changes
+- Ensure that `method` for `Blob.generate_signed_url` is uppercase. ([#6110](https://github.com/googleapis/google-cloud-python/pull/6110))
+
+### Documentation
+- Clarify GCS URL signing limitations on GCE ([#6104](https://github.com/googleapis/google-cloud-python/pull/6104))
+- Redirect renamed 'usage.html'/'client.html' -> 'index.html'. ([#5996](https://github.com/googleapis/google-cloud-python/pull/5996))
+
 ## 1.12.0
 
 ### New Features

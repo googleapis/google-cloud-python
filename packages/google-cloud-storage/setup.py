@@ -22,7 +22,7 @@ import setuptools
 
 name = 'google-cloud-storage'
 description = 'Google Cloud Storage API client library'
-version = '1.12.0'
+version = '1.13.0'
 # Should be one of:
 # 'Development Status :: 3 - Alpha'
 # 'Development Status :: 4 - Beta'
