@@ -185,6 +185,7 @@ class Test_BaseEntry(unittest.TestCase):
         self.assertEqual(entry.payload, PAYLOAD)
         self.assertEqual(entry.insert_id, IID)
         self.assertEqual(entry.timestamp, NOW)
+        self.assertIsNone(entry.received_timestamp)
         self.assertEqual(entry.labels, LABELS)
         self.assertEqual(entry.severity, SEVERITY)
         self.assertEqual(entry.http_request['requestMethod'], METHOD)
@@ -201,13 +202,16 @@ class Test_BaseEntry(unittest.TestCase):
 
     def test_from_api_repr_w_loggers_w_logger_match(self):
         from datetime import datetime
+        from datetime import timedelta
         from google.cloud._helpers import UTC
 
         client = _Client(self.PROJECT)
         PAYLOAD = 'PAYLOAD'
         IID = 'IID'
         NOW = datetime.utcnow().replace(tzinfo=UTC)
+        LATER = NOW + timedelta(seconds=1)
         TIMESTAMP = _datetime_to_rfc3339_w_nanos(NOW)
+        RECEIVED = _datetime_to_rfc3339_w_nanos(LATER)
         LOG_NAME = 'projects/%s/logs/%s' % (self.PROJECT, self.LOGGER_NAME)
         LABELS = {'foo': 'bar', 'baz': 'qux'}
         TRACE = '12345678-1234-5678-1234-567812345678'
@@ -217,6 +221,7 @@ class Test_BaseEntry(unittest.TestCase):
             'logName': LOG_NAME,
             'insertId': IID,
             'timestamp': TIMESTAMP,
+            'receiveTimestamp': RECEIVED,
             'labels': LABELS,
             'trace': TRACE,
             'spanId': SPANID
@@ -228,6 +233,7 @@ class Test_BaseEntry(unittest.TestCase):
         self.assertEqual(entry.payload, PAYLOAD)
         self.assertEqual(entry.insert_id, IID)
         self.assertEqual(entry.timestamp, NOW)
+        self.assertEqual(entry.received_timestamp, LATER)
         self.assertEqual(entry.labels, LABELS)
         self.assertEqual(entry.trace, TRACE)
         self.assertEqual(entry.span_id, SPANID)
