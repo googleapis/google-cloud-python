@@ -334,6 +334,7 @@ static_html_pages = [
     'bigquery/usage.html',
     'runtimeconfig/usage.html',
     'spanner/usage.html',
+    'trace/starting.html',
 ]
 
 def copy_static_html_pages(app, exception):
