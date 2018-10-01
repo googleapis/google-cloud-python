@@ -20,6 +20,11 @@ version of the ``db`` API (hence ``ndb``).
 
 __version__ = "0.0.1.dev1"
 __all__ = [
+    "AutoBatcher",
+    "Context",
+    "ContextOptions",
+    "EVENTUAL_CONSISTENCY",
+    "TransactionOptions",
     "add_flow_exception",
     "Future",
     "get_context",
@@ -38,7 +43,11 @@ __all__ = [
     "toplevel",
 ]
 
-
+from google.cloud.ndb.context import AutoBatcher
+from google.cloud.ndb.context import Context
+from google.cloud.ndb.context import ContextOptions
+from google.cloud.ndb.context import EVENTUAL_CONSISTENCY
+from google.cloud.ndb.context import TransactionOptions
 from google.cloud.ndb.tasklets import add_flow_exception
 from google.cloud.ndb.tasklets import Future
 from google.cloud.ndb.tasklets import get_context
