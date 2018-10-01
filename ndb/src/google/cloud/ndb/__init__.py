@@ -25,6 +25,61 @@ __all__ = [
     "ContextOptions",
     "EVENTUAL_CONSISTENCY",
     "TransactionOptions",
+    "BlobKey",
+    "BlobKeyProperty",
+    "BlobProperty",
+    "BooleanProperty",
+    "ComputedProperty",
+    "ComputedPropertyError",
+    "DateProperty",
+    "DateTimeProperty",
+    "delete_multi",
+    "delete_multi_async",
+    "Expando",
+    "FloatProperty",
+    "GenericProperty",
+    "GeoPt",
+    "GeoPtProperty",
+    "get_indexes",
+    "get_indexes_async",
+    "get_multi",
+    "get_multi_async",
+    "in_transaction",
+    "Index",
+    "IndexProperty",
+    "IndexState",
+    "IntegerProperty",
+    "InvalidPropertyError",
+    "BadProjectionError",
+    "JsonProperty",
+    "Key",
+    "KeyProperty",
+    "KindError",
+    "LocalStructuredProperty",
+    "make_connection",
+    "MetaModel",
+    "Model",
+    "ModelAdapter",
+    "ModelAttribute",
+    "ModelKey",
+    "non_transactional",
+    "PickleProperty",
+    "Property",
+    "put_multi",
+    "put_multi_async",
+    "ReadonlyPropertyError",
+    "Rollback",
+    "StringProperty",
+    "StructuredProperty",
+    "TextProperty",
+    "TimeProperty",
+    "transaction",
+    "transaction_async",
+    "transactional",
+    "transactional_async",
+    "transactional_tasklet",
+    "UnprojectedPropertyError",
+    "UserProperty",
     "ConjunctionNode",
     "AND",
     "Cursor",
@@ -66,6 +121,61 @@ from google.cloud.ndb.context import Context
 from google.cloud.ndb.context import ContextOptions
 from google.cloud.ndb.context import EVENTUAL_CONSISTENCY
 from google.cloud.ndb.context import TransactionOptions
+from google.cloud.ndb.model import BlobKey
+from google.cloud.ndb.model import BlobKeyProperty
+from google.cloud.ndb.model import BlobProperty
+from google.cloud.ndb.model import BooleanProperty
+from google.cloud.ndb.model import ComputedProperty
+from google.cloud.ndb.model import ComputedPropertyError
+from google.cloud.ndb.model import DateProperty
+from google.cloud.ndb.model import DateTimeProperty
+from google.cloud.ndb.model import delete_multi
+from google.cloud.ndb.model import delete_multi_async
+from google.cloud.ndb.model import Expando
+from google.cloud.ndb.model import FloatProperty
+from google.cloud.ndb.model import GenericProperty
+from google.cloud.ndb.model import GeoPt
+from google.cloud.ndb.model import GeoPtProperty
+from google.cloud.ndb.model import get_indexes
+from google.cloud.ndb.model import get_indexes_async
+from google.cloud.ndb.model import get_multi
+from google.cloud.ndb.model import get_multi_async
+from google.cloud.ndb.model import in_transaction
+from google.cloud.ndb.model import Index
+from google.cloud.ndb.model import IndexProperty
+from google.cloud.ndb.model import IndexState
+from google.cloud.ndb.model import IntegerProperty
+from google.cloud.ndb.model import InvalidPropertyError
+from google.cloud.ndb.model import BadProjectionError
+from google.cloud.ndb.model import JsonProperty
+from google.cloud.ndb.model import Key
+from google.cloud.ndb.model import KeyProperty
+from google.cloud.ndb.model import KindError
+from google.cloud.ndb.model import LocalStructuredProperty
+from google.cloud.ndb.model import make_connection
+from google.cloud.ndb.model import MetaModel
+from google.cloud.ndb.model import Model
+from google.cloud.ndb.model import ModelAdapter
+from google.cloud.ndb.model import ModelAttribute
+from google.cloud.ndb.model import ModelKey
+from google.cloud.ndb.model import non_transactional
+from google.cloud.ndb.model import PickleProperty
+from google.cloud.ndb.model import Property
+from google.cloud.ndb.model import put_multi
+from google.cloud.ndb.model import put_multi_async
+from google.cloud.ndb.model import ReadonlyPropertyError
+from google.cloud.ndb.model import Rollback
+from google.cloud.ndb.model import StringProperty
+from google.cloud.ndb.model import StructuredProperty
+from google.cloud.ndb.model import TextProperty
+from google.cloud.ndb.model import TimeProperty
+from google.cloud.ndb.model import transaction
+from google.cloud.ndb.model import transaction_async
+from google.cloud.ndb.model import transactional
+from google.cloud.ndb.model import transactional_async
+from google.cloud.ndb.model import transactional_tasklet
+from google.cloud.ndb.model import UnprojectedPropertyError
+from google.cloud.ndb.model import UserProperty
 from google.cloud.ndb.query import ConjunctionNode
 from google.cloud.ndb.query import AND
 from google.cloud.ndb.query import Cursor
