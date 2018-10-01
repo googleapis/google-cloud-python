@@ -25,6 +25,24 @@ __all__ = [
     "ContextOptions",
     "EVENTUAL_CONSISTENCY",
     "TransactionOptions",
+    "ConjunctionNode",
+    "AND",
+    "Cursor",
+    "DisjunctionNode",
+    "OR",
+    "FalseNode",
+    "FilterNode",
+    "gql",
+    "Node",
+    "Parameter",
+    "ParameterizedFunction",
+    "ParameterizedThing",
+    "ParameterNode",
+    "PostFilterNode",
+    "Query",
+    "QueryIterator",
+    "QueryOptions",
+    "RepeatedStructuredPropertyPredicate",
     "add_flow_exception",
     "Future",
     "get_context",
@@ -48,6 +66,24 @@ from google.cloud.ndb.context import Context
 from google.cloud.ndb.context import ContextOptions
 from google.cloud.ndb.context import EVENTUAL_CONSISTENCY
 from google.cloud.ndb.context import TransactionOptions
+from google.cloud.ndb.query import ConjunctionNode
+from google.cloud.ndb.query import AND
+from google.cloud.ndb.query import Cursor
+from google.cloud.ndb.query import DisjunctionNode
+from google.cloud.ndb.query import OR
+from google.cloud.ndb.query import FalseNode
+from google.cloud.ndb.query import FilterNode
+from google.cloud.ndb.query import gql
+from google.cloud.ndb.query import Node
+from google.cloud.ndb.query import Parameter
+from google.cloud.ndb.query import ParameterizedFunction
+from google.cloud.ndb.query import ParameterizedThing
+from google.cloud.ndb.query import ParameterNode
+from google.cloud.ndb.query import PostFilterNode
+from google.cloud.ndb.query import Query
+from google.cloud.ndb.query import QueryIterator
+from google.cloud.ndb.query import QueryOptions
+from google.cloud.ndb.query import RepeatedStructuredPropertyPredicate
 from google.cloud.ndb.tasklets import add_flow_exception
 from google.cloud.ndb.tasklets import Future
 from google.cloud.ndb.tasklets import get_context
