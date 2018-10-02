@@ -1019,6 +1019,10 @@ class TestBigQuery(unittest.TestCase):
                 'sql': 'SELECT ARRAY(SELECT STRUCT([1, 2]))',
                 'expected': [{u'_field_1': [1, 2]}],
             },
+            {
+                'sql': 'SELECT ST_GeogPoint(1, 2)',
+                'expected': 'POINT(1 2)',
+            },
         ]
 
     def test_query_w_standard_sql_types(self):

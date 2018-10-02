@@ -18,23 +18,19 @@
 class SchemaField(object):
     """Describe a single field within a table schema.
 
-    :type name: str
-    :param name: the name of the field.
+    Args:
+        name (str): the name of the field.
 
-    :type field_type: str
-    :param field_type: the type of the field (one of 'STRING', 'INTEGER',
-                       'FLOAT', 'NUMERIC', 'BOOLEAN', 'TIMESTAMP' or
-                       'RECORD').
+        field_type (str): the type of the field. See
+            https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#schema.fields.type
 
-    :type mode: str
-    :param mode: the mode of the field (one of 'NULLABLE', 'REQUIRED',
-                 or 'REPEATED').
+        mode (str): the mode of the field.  See
+            https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#schema.fields.mode
 
-    :type description: str
-    :param description: optional description for the field.
+        description (Optional[str]):description for the field.
 
-    :type fields: tuple of :class:`~google.cloud.bigquery.schema.SchemaField`
-    :param fields: subfields (requires ``field_type`` of 'RECORD').
+        fields (Tuple[:class:`~google.cloud.bigquery.schema.SchemaField`]):
+            subfields (requires ``field_type`` of 'RECORD').
     """
     def __init__(self, name, field_type, mode='NULLABLE',
                  description=None, fields=()):
@@ -78,8 +74,8 @@ class SchemaField(object):
     def field_type(self):
         """str: The type of the field.
 
-        Will be one of 'STRING', 'INTEGER', 'FLOAT', 'NUMERIC',
-        'BOOLEAN', 'TIMESTAMP' or 'RECORD'.
+        See:
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#schema.fields.type
         """
         return self._field_type
 
@@ -87,26 +83,26 @@ class SchemaField(object):
     def mode(self):
         """str: The mode of the field.
 
-        Will be one of 'NULLABLE', 'REQUIRED', or 'REPEATED'.
+        See:
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#schema.fields.mode
         """
         return self._mode
 
     @property
     def is_nullable(self):
-        """Check whether 'mode' is 'nullable'."""
+        """bool: whether 'mode' is 'nullable'."""
         return self._mode == 'NULLABLE'
 
     @property
     def description(self):
-        """Optional[str]: Description for the field."""
+        """Optional[str]: description for the field."""
         return self._description
 
     @property
     def fields(self):
         """tuple: Subfields contained in this field.
 
-        If ``field_type`` is not 'RECORD', this property must be
-        empty / unset.
+        Must be empty unset if ``field_type`` is not 'RECORD'.
         """
         return self._fields
 
@@ -168,14 +164,12 @@ class SchemaField(object):
 def _parse_schema_resource(info):
     """Parse a resource fragment into a schema field.
 
-    :type info: mapping
-    :param info: should contain a "fields" key to be parsed
+    Args:
+        info: (Mapping[str->dict]): should contain a "fields" key to be parsed
 
-    :rtype:
-        list of :class:`google.cloud.bigquery.schema.SchemaField`, or
-        ``NoneType``
-    :returns: a list of parsed fields, or ``None`` if no "fields" key is
-                present in ``info``.
+    Returns:
+        (Union[Sequence[:class:`google.cloud.bigquery.schema.SchemaField`],None])
+            a list of parsed fields, or ``None`` if no "fields" key found.
     """
     if 'fields' not in info:
         return ()
@@ -195,11 +189,11 @@ def _parse_schema_resource(info):
 def _build_schema_resource(fields):
     """Generate a resource fragment for a schema.
 
-    :type fields:
-        sequence of :class:`~google.cloud.bigquery.schema.SchemaField`
-    :param fields: schema to be dumped
+    Args:
+        fields [Sequence[:class:`~google.cloud.bigquery.schema.SchemaField`]):
+            schema to be dumped
 
-    :rtype: mapping
-    :returns: a mapping describing the schema of the supplied fields.
+    Returns: (Sequence[dict])
+        mappings describing the schema of the supplied fields.
     """
     return [field.to_api_repr() for field in fields]
