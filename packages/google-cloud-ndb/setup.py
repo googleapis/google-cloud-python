@@ -23,6 +23,7 @@ def main():
     readme_filename = os.path.join(package_root, "README.md")
     with io.open(readme_filename, encoding="utf-8") as readme_file:
         readme = readme_file.read()
+    dependencies = ["google-cloud-datastore >= 1.7.0"]
 
     setuptools.setup(
         name="google-cloud-ndb",
@@ -49,7 +50,7 @@ def main():
         packages=setuptools.find_packages("src"),
         namespace_packages=["google", "google.cloud"],
         package_dir={"": "src"},
-        install_requires=[],
+        install_requires=dependencies,
         extras_require={},
         include_package_data=True,
         zip_safe=False,

@@ -12,18 +12,24 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import google.cloud.datastore
 import pytest
 
-from google.cloud.ndb import key
+from google.cloud.ndb import key as key_module
 import tests.unit.utils
 
 
 def test___all__():
-    tests.unit.utils.verify___all__(key)
+    tests.unit.utils.verify___all__(key_module)
 
 
 class TestKey:
     @staticmethod
     def test_constructor():
-        with pytest.raises(NotImplementedError):
-            key.Key()
+        key = key_module.Key("Kind", project="foo")
+        ds_key = key._key
+        assert isinstance(ds_key, google.cloud.datastore.Key)
+        assert ds_key._flat_path == ("Kind",)
+        assert ds_key._namespace is None
+        assert ds_key._project == "foo"
+        assert ds_key._path == [{"kind": "Kind"}]
