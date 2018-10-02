@@ -4,6 +4,23 @@
 
 [1]: https://pypi.org/project/google-cloud-spanner/#history
 
+## 1.6.0
+
+### New Features
+- Add DML / PDML support ([#6048](https://github.com/googleapis/google-cloud-python/pull/6048))
+
+### Implementation Changes
+- Add `synth.py` for the three protos and regen ([#6040](https://github.com/googleapis/google-cloud-python/pull/6040))
+
+### Documentation
+- Remove bogus examples of `database.transaction()`. ([#6032](https://github.com/googleapis/google-cloud-python/pull/6032))
+- Redirect renamed `usage.html`/`client.html` -> `index.html`. ([#5996](https://github.com/googleapis/google-cloud-python/pull/5996))
+- Fix leakage of sections into docs sidebar menu. ([#5986](https://github.com/googleapis/google-cloud-python/pull/5986))
+- Prep docs for repo split. ([#5938](https://github.com/googleapis/google-cloud-python/pull/5938))
+
+### Internal / Testing Changes
+- Remove redundant `grpc_gcp` system tests. ([#6049](https://github.com/googleapis/google-cloud-python/pull/6049))
+
 ## 1.5.0
 
 ### New Features
