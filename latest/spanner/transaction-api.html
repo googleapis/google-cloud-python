@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Transaction API &#8212; google-cloud 524f99e8df documentation</title>
+    <title>Transaction API &#8212; google-cloud ecc3845 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -93,6 +93,35 @@
 <dt id="google.cloud.spanner_v1.transaction.Transaction.committed">
 <code class="descname">committed</code><em class="property"> = None</em><a class="headerlink" href="#google.cloud.spanner_v1.transaction.Transaction.committed" title="Permalink to this definition">#</a></dt>
 <dd><p>Timestamp at which the transaction was successfully committed.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.spanner_v1.transaction.Transaction.execute_update">
+<code class="descname">execute_update</code><span class="sig-paren">(</span><em>dml</em>, <em>params=None</em>, <em>param_types=None</em>, <em>query_mode=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner_v1/transaction.html#Transaction.execute_update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_v1.transaction.Transaction.execute_update" title="Permalink to this definition">#</a></dt>
+<dd><p>Perform an <code class="docutils literal notranslate"><span class="pre">ExecuteSql</span></code> API request with DML.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>dml</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – SQL DML statement</li>
+<li><strong>params</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><em>{str -&gt; column value}</em>) – values for parameter replacement.  Keys must match
+the names used in <code class="docutils literal notranslate"><span class="pre">dml</span></code>.</li>
+<li><strong>param_types</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>[</em><em>str -&gt; Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="gapic/v1/types.html#google.cloud.spanner_v1.types.Type" title="google.cloud.spanner_v1.types.Type"><em>types.Type</em></a><em>]</em><em>]</em>) – (Optional) maps explicit types for one or more param values;
+required if parameters are passed.</li>
+<li><strong>query_mode</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.spanner_v1.proto.ExecuteSqlRequest.QueryMode</span></code>) – Mode governing return of results / query plan. See
+<a class="reference external" href="https://cloud.google.com/spanner/reference/rpc/google.spanner.v1#google.spanner.v1.ExecuteSqlRequest.QueryMode1">https://cloud.google.com/spanner/reference/rpc/google.spanner.v1#google.spanner.v1.ExecuteSqlRequest.QueryMode1</a></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)">int</a></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Count of rows affected by the DML statement.</p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
