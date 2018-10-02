@@ -29,17 +29,25 @@ need to be deleted during teardown.
 
 """
 
+import pytest
+
 from google.cloud import bigtable
 
 
-def snippet(func):
-    """Mark ``func`` as a snippet example function."""
-    func._snippet = True
-    return func
+@pytest.fixture(scope='module')
+def client():
+    return bigtable.Client(project='my-project', admin=True)
 
 
-@snippet
-def bigtable_create_instance(client, to_delete):
+@pytest.fixture
+def to_delete():
+    doomed = []
+    yield doomed
+    for item in doomed:
+        item.delete()
+
+
+def test_bigtable_create_instance(client, to_delete):
     # [START bigtable_create_prod_instance]
     from google.cloud.bigtable import enums
 
@@ -57,11 +65,11 @@ def bigtable_create_instance(client, to_delete):
     instance.create(clusters=[cluster])
     # [END bigtable_create_prod_instance]
 
+    assert instance is not None
     to_delete.append(instance)
 
 
-@snippet
-def bigtable_create_cluster(client, to_delete):
+def test_bigtable_create_cluster(client):
     # [START bigtable_create_cluster]
     from google.cloud.bigtable import enums
 
@@ -75,81 +83,83 @@ def bigtable_create_cluster(client, to_delete):
                                default_storage_type=storage_type)
     cluster.create()
     # [END bigtable_create_cluster]
+    assert cluster is not None
 
 
-@snippet
-def bigtable_list_instances(client, to_delete):
+def test_bigtable_list_instances(client):
     # [START bigtable_list_instances]
     (instances_list, failed_locations_list) = client.list_instances()
     # [END bigtable_list_instances]
 
+    assert instances_list.__len__() is not 0
 
-@snippet
-def bigtable_list_clusters(client, to_delete):
+
+def test_bigtable_list_clusters(client):
     # [START bigtable_list_clusters]
     instance = client.instance("instance_my1")
     (clusters_list, failed_locations_list) = instance.list_clusters()
     # [END bigtable_list_clusters]
 
+    assert clusters_list.__len__() is not 0
 
-@snippet
-def bigtable_instance_exists(client, to_delete):
+
+def test_bigtable_instance_exists(client):
     # [START bigtable_check_instance_exists]
     instance = client.instance("instance_my1")
-    instance_exists =  instance.exists()
+    instance_exists = instance.exists()
     # [END bigtable_check_instance_exists]
+    assert instance_exists
 
 
-@snippet
-def bigtable_cluster_exists(client, to_delete):
+def test_bigtable_cluster_exists(client):
     # [START bigtable_check_cluster_exists]
     instance = client.instance("instance_my1")
     cluster = instance.cluster("ssd-cluster1")
     cluster_exists = cluster.exists()
     # [END bigtable_check_cluster_exists]
+    assert cluster_exists
 
 
-@snippet
-def bigtable_delete_instance(client, to_delete):
+def test_bigtable_delete_instance(client):
     # [START bigtable_delete_instance]
     instance = client.instance("instance_my1")
     instance.delete()
     # [END bigtable_delete_instance]
+    assert instance is None
 
 
-@snippet
-def bigtable_delete_cluster(client, to_delete):
+def test_bigtable_delete_cluster(client):
     # [START bigtable_delete_cluster]
     instance = client.instance("instance_my1")
     cluster = instance.cluster("ssd-cluster1")
     cluster.delete()
     # [END bigtable_delete_cluster]
+    assert cluster is None
 
 
-@snippet
-def bigtable_reload_cluster(client, to_delete):
+def test_bigtable_reload_cluster(client):
     # [START bigtable_reload_cluster]
     instance = client.instance("instance_my1")
     cluster = instance.cluster("ssd-cluster1")
     cluster.reload()
     # [END bigtable_reload_cluster]
+    assert cluster is not None
 
 
-@snippet
-def bigtable_update_cluster(client, to_delete):
+def test_bigtable_update_cluster(client):
     # [START bigtable_update_cluster]
     instance = client.instance("instance_my1")
     cluster = instance.cluster("ssd-cluster1")
     cluster.serve_nodes = 8
     cluster.update()
     # [END bigtable_update_cluster]
+    assert cluster is not None
 
 
-@snippet
-def bigtable_create_table(client, to_delete):
+def test_bigtable_create_table(client):
     # [START bigtable_create_table]
     from google.cloud.bigtable import column_family
-    
+
     instance = client.instance("instance_my1")
     table = instance.table("table_my")
     # Define the GC policy to retain only the most recent 2 versions.
@@ -157,46 +167,16 @@ def bigtable_create_table(client, to_delete):
     column_families = {'cf1': max_versions_rule}
     table.create(column_families=column_families)
     # [END bigtable_create_table]
+    assert table is not None
 
 
-@snippet
-def bigtable_list_tables(client, to_delete):
+def test_bigtable_list_tables(client):
     # [START bigtable_list_tables]
     instance = client.instance("instance_my1")
     tables_list = instance.list_tables()
     # [END bigtable_list_tables]
-
-
-def _line_no(func):
-    code = getattr(func, '__code__', None) or getattr(func, 'func_code')
-    return code.co_firstlineno
-
-
-def _find_examples():
-    funcs = [obj for obj in globals().values()
-             if getattr(obj, '_snippet', False)]
-    for func in sorted(funcs, key=_line_no):
-        yield func
-
-
-def _name_and_doc(func):
-    return func.__name__, func.__doc__
-
-
-def main():
-    client = bigtable.Client(project='my-project', admin=True)
-    for example in _find_examples():
-        to_delete = []
-        print '%-25s: %s' % _name_and_doc(example)
-        try:
-            example(client, to_delete)
-        except AssertionError as failure:
-            print '   FAIL: %s' % (failure,)
-        except Exception as error:  # pylint: disable=broad-except
-            print '  ERROR: %r' % (error,)
-        for item in to_delete:
-            item.delete()
+    assert tables_list.__len__() is not 0
 
 
 if __name__ == '__main__':
-    main()
+    pytest.main()
