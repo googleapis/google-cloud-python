@@ -14,20 +14,17 @@
 
 """User friendly container for Cloud Spanner Database."""
 
-import copy
-import functools
 import re
 import threading
+import copy
 
 from google.api_core.gapic_v1 import client_info
 import google.auth.credentials
-from google.protobuf.struct_pb2 import Struct
 from google.cloud.exceptions import NotFound
 import six
 
 # pylint: disable=ungrouped-imports
 from google.cloud.spanner_v1 import __version__
-from google.cloud.spanner_v1._helpers import _make_value_pb
 from google.cloud.spanner_v1._helpers import _metadata_with_prefix
 from google.cloud.spanner_v1.batch import Batch
 from google.cloud.spanner_v1.gapic.spanner_client import SpannerClient
@@ -35,11 +32,7 @@ from google.cloud.spanner_v1.keyset import KeySet
 from google.cloud.spanner_v1.pool import BurstyPool
 from google.cloud.spanner_v1.pool import SessionCheckout
 from google.cloud.spanner_v1.session import Session
-from google.cloud.spanner_v1.snapshot import _restart_on_unavailable
 from google.cloud.spanner_v1.snapshot import Snapshot
-from google.cloud.spanner_v1.streamed import StreamedResultSet
-from google.cloud.spanner_v1.proto.transaction_pb2 import (
-    TransactionSelector, TransactionOptions)
 # pylint: enable=ungrouped-imports
 
 
@@ -278,64 +271,6 @@ class Database(object):
         api = self._instance._client.database_admin_api
         metadata = _metadata_with_prefix(self.name)
         api.drop_database(self.name, metadata=metadata)
-
-    def execute_partitioned_dml(
-            self, dml, params=None, param_types=None):
-        """Execute a partitionable DML statement.
-
-        :type dml: str
-        :param dml: DML statement
-
-        :type params: dict, {str -> column value}
-        :param params: values for parameter replacement.  Keys must match
-                       the names used in ``dml``.
-
-        :type param_types: dict[str -> Union[dict, .types.Type]]
-        :param param_types:
-            (Optional) maps explicit types for one or more param values;
-            required if parameters are passed.
-
-        :rtype: int
-        :returns: Count of rows affected by the DML statement.
-        """
-        if params is not None:
-            if param_types is None:
-                raise ValueError(
-                    "Specify 'param_types' when passing 'params'.")
-            params_pb = Struct(fields={
-                key: _make_value_pb(value) for key, value in params.items()})
-        else:
-            params_pb = None
-
-        api = self.spanner_api
-
-        txn_options = TransactionOptions(
-            partitioned_dml=TransactionOptions.PartitionedDml())
-
-        metadata = _metadata_with_prefix(self.name)
-
-        with SessionCheckout(self._pool) as session:
-
-            txn = api.begin_transaction(
-                session.name, txn_options, metadata=metadata)
-
-            txn_selector = TransactionSelector(id=txn.id)
-
-            restart = functools.partial(
-                api.execute_streaming_sql,
-                session.name,
-                dml,
-                transaction=txn_selector,
-                params=params_pb,
-                param_types=param_types,
-                metadata=metadata)
-
-            iterator = _restart_on_unavailable(restart)
-
-            result_set = StreamedResultSet(iterator)
-            list(result_set)  # consume all partials
-
-            return result_set.stats.row_count_lower_bound
 
     def session(self, labels=None):
         """Factory to create a session for this database.
