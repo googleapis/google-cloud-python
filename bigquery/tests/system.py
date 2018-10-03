@@ -175,17 +175,27 @@ class TestBigQuery(unittest.TestCase):
         self.assertEqual(dataset.project, Config.CLIENT.project)
 
     def test_get_dataset(self):
-        DATASET_ID = _make_dataset_id('get_dataset')
+        dataset_id = _make_dataset_id('get_dataset')
         client = Config.CLIENT
-        dataset_arg = Dataset(client.dataset(DATASET_ID))
+        dataset_arg = Dataset(client.dataset(dataset_id))
         dataset_arg.friendly_name = 'Friendly'
         dataset_arg.description = 'Description'
         dataset = retry_403(client.create_dataset)(dataset_arg)
         self.to_delete.append(dataset)
-        dataset_ref = client.dataset(DATASET_ID)
+        dataset_ref = client.dataset(dataset_id)
 
+        # Get with a reference.
         got = client.get_dataset(dataset_ref)
+        self.assertEqual(got.friendly_name, 'Friendly')
+        self.assertEqual(got.description, 'Description')
 
+        # Get with a string.
+        got = client.get_dataset(dataset_id)
+        self.assertEqual(got.friendly_name, 'Friendly')
+        self.assertEqual(got.description, 'Description')
+
+        # Get with a fully-qualified string.
+        got = client.get_dataset('{}.{}'.format(client.project, dataset_id))
         self.assertEqual(got.friendly_name, 'Friendly')
         self.assertEqual(got.description, 'Description')
 
@@ -281,6 +291,14 @@ class TestBigQuery(unittest.TestCase):
         self.assertEqual(time_partitioning.field, 'transaction_time')
         self.assertEqual(table.clustering_fields, ['user_email', 'store_code'])
 
+    def test_delete_dataset_with_string(self):
+        dataset_id = _make_dataset_id('delete_table_true')
+        dataset_ref = Config.CLIENT.dataset(dataset_id)
+        retry_403(Config.CLIENT.create_dataset)(Dataset(dataset_ref))
+        self.assertTrue(_dataset_exists(dataset_ref))
+        Config.CLIENT.delete_dataset(dataset_id)
+        self.assertFalse(_dataset_exists(dataset_ref))
+
     def test_delete_dataset_delete_contents_true(self):
         dataset_id = _make_dataset_id('delete_table_true')
         dataset = retry_403(Config.CLIENT.create_dataset)(
@@ -304,19 +322,26 @@ class TestBigQuery(unittest.TestCase):
             Config.CLIENT.delete_dataset(dataset)
 
     def test_get_table_w_public_dataset(self):
-        PUBLIC = 'bigquery-public-data'
-        DATASET_ID = 'samples'
-        TABLE_ID = 'shakespeare'
-        table_ref = DatasetReference(PUBLIC, DATASET_ID).table(TABLE_ID)
+        public = 'bigquery-public-data'
+        dataset_id = 'samples'
+        table_id = 'shakespeare'
+        table_ref = DatasetReference(public, dataset_id).table(table_id)
 
+        # Get table with reference.
         table = Config.CLIENT.get_table(table_ref)
-
-        self.assertEqual(table.table_id, TABLE_ID)
-        self.assertEqual(table.dataset_id, DATASET_ID)
-        self.assertEqual(table.project, PUBLIC)
+        self.assertEqual(table.table_id, table_id)
+        self.assertEqual(table.dataset_id, dataset_id)
+        self.assertEqual(table.project, public)
         schema_names = [field.name for field in table.schema]
         self.assertEqual(
             schema_names, ['word', 'word_count', 'corpus', 'corpus_date'])
+
+        # Get table with string.
+        table = Config.CLIENT.get_table(
+            '{}.{}.{}'.format(public, dataset_id, table_id))
+        self.assertEqual(table.table_id, table_id)
+        self.assertEqual(table.dataset_id, dataset_id)
+        self.assertEqual(table.project, public)
 
     def test_list_partitions(self):
         table_ref = DatasetReference(
@@ -327,8 +352,8 @@ class TestBigQuery(unittest.TestCase):
         self.assertGreater(len(all_rows), 1000)
 
     def test_list_tables(self):
-        DATASET_ID = _make_dataset_id('list_tables')
-        dataset = self.temp_dataset(DATASET_ID)
+        dataset_id = _make_dataset_id('list_tables')
+        dataset = self.temp_dataset(dataset_id)
         # Retrieve tables before any are created for the dataset.
         iterator = Config.CLIENT.list_tables(dataset)
         all_tables = list(iterator)
@@ -352,8 +377,17 @@ class TestBigQuery(unittest.TestCase):
         self.assertIsNone(iterator.next_page_token)
         created = [table for table in all_tables
                    if (table.table_id in tables_to_create and
-                       table.dataset_id == DATASET_ID)]
+                       table.dataset_id == dataset_id)]
         self.assertEqual(len(created), len(tables_to_create))
+
+        # List tables with a string ID.
+        iterator = Config.CLIENT.list_tables(dataset_id)
+        self.assertGreater(len(list(iterator)), 0)
+
+        # List tables with a fully-qualified string ID.
+        iterator = Config.CLIENT.list_tables(
+            '{}.{}'.format(Config.CLIENT.project, dataset_id))
+        self.assertGreater(len(list(iterator)), 0)
 
     def test_update_table(self):
         dataset = self.temp_dataset(_make_dataset_id('update_table'))
