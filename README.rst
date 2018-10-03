@@ -18,27 +18,8 @@ Python idiomatic clients for `Google Cloud Platform`_ services.
 .. _Python 3 runtime: https://cloud.google.com/appengine/docs/standard/python3
 .. _Python 2 runtime: https://cloud.google.com/appengine/docs/standard/python
 
-The following client libraries have **GA** support:
-
--  `Google Cloud Datastore`_ (`Datastore README`_)
--  `Google Cloud Natural Language`_ (`Natural Language README`_)
--  `Google Cloud Spanner`_ (`Spanner README`_)
--  `Google Cloud Storage`_ (`Storage README`_)
--  `Google Cloud Translation`_ (`Translation README`_)
--  `Stackdriver Logging`_ (`Logging README`_)
-
-.. _Google Cloud Datastore: https://pypi.org/project/google-cloud-datastore/
-.. _Datastore README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/datastore
-.. _Google Cloud Natural Language: https://pypi.org/project/google-cloud-language/
-.. _Natural Language README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/language
-.. _Google Cloud Spanner: https://pypi.org/project/google-cloud-spanner
-.. _Spanner README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/spanner
-.. _Google Cloud Storage: https://pypi.org/project/google-cloud-storage/
-.. _Storage README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/storage
-.. _Google Cloud Translation: https://pypi.org/project/google-cloud-translate/
-.. _Translation README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/translate
-.. _Stackdriver Logging: https://pypi.org/project/google-cloud-logging/
-.. _Logging README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/logging
+Generally Available Support
+----------------------------
 
 **GA** (general availability) indicates that the client library for a
 particular service is stable, and that the code surface will not change in
@@ -53,9 +34,40 @@ priority.
     import path (e.g. ``google.cloud.language_v1beta2``) should be considered
     to be beta.
 
-The following client libraries have **beta** support:
+The following client libraries have **GA** support:
 
 -  `Google BigQuery`_ (`BigQuery README`_)
+-  `Google Cloud Datastore`_ (`Datastore README`_)
+-  `Google Cloud Natural Language`_ (`Natural Language README`_)
+-  `Google Cloud Spanner`_ (`Spanner README`_)
+-  `Google Cloud Storage`_ (`Storage README`_)
+-  `Google Cloud Translation`_ (`Translation README`_)
+-  `Stackdriver Logging`_ (`Logging README`_)
+
+.. _Google BigQuery: https://pypi.org/project/google-cloud-bigquery/
+.. _BigQuery README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/bigquery
+.. _Google Cloud Datastore: https://pypi.org/project/google-cloud-datastore/
+.. _Datastore README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/datastore
+.. _Google Cloud Natural Language: https://pypi.org/project/google-cloud-language/
+.. _Natural Language README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/language
+.. _Google Cloud Spanner: https://pypi.org/project/google-cloud-spanner
+.. _Spanner README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/spanner
+.. _Google Cloud Storage: https://pypi.org/project/google-cloud-storage/
+.. _Storage README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/storage
+.. _Google Cloud Translation: https://pypi.org/project/google-cloud-translate/
+.. _Translation README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/translate
+.. _Stackdriver Logging: https://pypi.org/project/google-cloud-logging/
+.. _Logging README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/logging
+
+Beta Support
+------------
+
+**Beta** indicates that the client library for a particular service is
+mostly stable and is being prepared for release. Issues and requests
+against beta libraries are addressed with a higher priority.
+
+The following client libraries have **beta** support:
+
 -  `Google Cloud Bigtable`_ (`Bigtable README`_)
 -  `Google Cloud Firestore`_ (`Firestore README`_)
 -  `Google Cloud Pub/Sub`_ (`Pub/Sub README`_)
@@ -63,12 +75,6 @@ The following client libraries have **beta** support:
 -  `Google Cloud Video Intelligence`_ (`Video Intelligence README`_)
 -  `Google Cloud Vision`_ (`Vision README`_)
 
-**Beta** indicates that the client library for a particular service is
-mostly stable and is being prepared for release. Issues and requests
-against beta libraries are addressed with a higher priority.
-
-.. _Google BigQuery: https://pypi.org/project/google-cloud-bigquery/
-.. _BigQuery README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/bigquery
 .. _Google Cloud Bigtable: https://pypi.org/project/google-cloud-bigtable/
 .. _Bigtable README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/bigtable
 .. _Google Cloud Firestore: https://pypi.org/project/google-cloud-firestore/
@@ -82,8 +88,17 @@ against beta libraries are addressed with a higher priority.
 .. _Google Cloud Vision: https://pypi.org/project/google-cloud-vision/
 .. _Vision README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/vision
 
+
+Alpha Support
+-------------
+
+**Alpha** indicates that the client library for a particular service is
+still a work-in-progress and is more likely to get backwards-incompatible
+updates. See `versioning`_ for more details.
+
 The following client libraries have **alpha** support:
 
+-  `Google Cloud Asset`_ (`Asset README`_)
 -  `Google Cloud AutoML`_ (`AutoML README`_)
 -  `Google BigQuery Data Transfer`_ (`BigQuery Data Transfer README`_)
 -  `Google Cloud Bigtable - HappyBase`_ (`HappyBase README`_)
@@ -103,10 +118,8 @@ The following client libraries have **alpha** support:
 -  `Stackdriver Error Reporting`_ (`Error Reporting README`_)
 -  `Stackdriver Monitoring`_ (`Monitoring README`_)
 
-**Alpha** indicates that the client library for a particular service is
-still a work-in-progress and is more likely to get backwards-incompatible
-updates. See `versioning`_ for more details.
-
+.. _Google Cloud Asset: https://pypi.org/project/google-cloud-asset/
+.. _Asset README: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/asset
 .. _Google Cloud AutoML: https://pypi.org/project/google-cloud-automl/
 .. _AutoML README: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/automl
 .. _Google BigQuery Data Transfer: https://pypi.org/project/google-cloud-bigquery-datatransfer/
