@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.spanner_v1.transaction &#8212; google-cloud 0745165 documentation</title>
+    <title>google.cloud.spanner_v1.transaction &#8212; google-cloud 8ae4732 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -50,13 +50,11 @@
 
 <span class="sd">&quot;&quot;&quot;Spanner read-write transaction support.&quot;&quot;&quot;</span>
 
-<span class="kn">from</span> <span class="nn">google.protobuf.struct_pb2</span> <span class="k">import</span> <span class="n">Struct</span>
-
-<span class="kn">from</span> <span class="nn">google.cloud._helpers</span> <span class="k">import</span> <span class="n">_pb_timestamp_to_datetime</span>
-<span class="kn">from</span> <span class="nn">google.cloud.spanner_v1._helpers</span> <span class="k">import</span> <span class="n">_make_value_pb</span>
-<span class="kn">from</span> <span class="nn">google.cloud.spanner_v1._helpers</span> <span class="k">import</span> <span class="n">_metadata_with_prefix</span>
 <span class="kn">from</span> <span class="nn">google.cloud.spanner_v1.proto.transaction_pb2</span> <span class="k">import</span> <span class="n">TransactionSelector</span>
 <span class="kn">from</span> <span class="nn">google.cloud.spanner_v1.proto.transaction_pb2</span> <span class="k">import</span> <span class="n">TransactionOptions</span>
+
+<span class="kn">from</span> <span class="nn">google.cloud._helpers</span> <span class="k">import</span> <span class="n">_pb_timestamp_to_datetime</span>
+<span class="kn">from</span> <span class="nn">google.cloud.spanner_v1._helpers</span> <span class="k">import</span> <span class="n">_metadata_with_prefix</span>
 <span class="kn">from</span> <span class="nn">google.cloud.spanner_v1.snapshot</span> <span class="k">import</span> <span class="n">_SnapshotBase</span>
 <span class="kn">from</span> <span class="nn">google.cloud.spanner_v1.batch</span> <span class="k">import</span> <span class="n">_BatchBase</span>
 
@@ -73,7 +71,6 @@
     <span class="sd">&quot;&quot;&quot;Timestamp at which the transaction was successfully committed.&quot;&quot;&quot;</span>
     <span class="n">_rolled_back</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="n">_multi_use</span> <span class="o">=</span> <span class="kc">True</span>
-    <span class="n">_execute_sql_count</span> <span class="o">=</span> <span class="mi">0</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">session</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">session</span><span class="o">.</span><span class="n">_transaction</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -153,6 +150,9 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_check_state</span><span class="p">()</span>
 
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mutations</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;No mutations to commit&quot;</span><span class="p">)</span>
+
         <span class="n">database</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_session</span><span class="o">.</span><span class="n">_database</span>
         <span class="n">api</span> <span class="o">=</span> <span class="n">database</span><span class="o">.</span><span class="n">spanner_api</span>
         <span class="n">metadata</span> <span class="o">=</span> <span class="n">_metadata_with_prefix</span><span class="p">(</span><span class="n">database</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
@@ -163,58 +163,6 @@
             <span class="n">response</span><span class="o">.</span><span class="n">commit_timestamp</span><span class="p">)</span>
         <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_session</span><span class="o">.</span><span class="n">_transaction</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">committed</span></div>
-
-<div class="viewcode-block" id="Transaction.execute_update"><a class="viewcode-back" href="../../../../spanner/transaction-api.html#google.cloud.spanner_v1.transaction.Transaction.execute_update">[docs]</a>    <span class="k">def</span> <span class="nf">execute_update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dml</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">param_types</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                       <span class="n">query_mode</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Perform an ``ExecuteSql`` API request with DML.</span>
-
-<span class="sd">        :type dml: str</span>
-<span class="sd">        :param dml: SQL DML statement</span>
-
-<span class="sd">        :type params: dict, {str -&gt; column value}</span>
-<span class="sd">        :param params: values for parameter replacement.  Keys must match</span>
-<span class="sd">                       the names used in ``dml``.</span>
-
-<span class="sd">        :type param_types: dict[str -&gt; Union[dict, .types.Type]]</span>
-<span class="sd">        :param param_types:</span>
-<span class="sd">            (Optional) maps explicit types for one or more param values;</span>
-<span class="sd">            required if parameters are passed.</span>
-
-<span class="sd">        :type query_mode:</span>
-<span class="sd">            :class:`google.cloud.spanner_v1.proto.ExecuteSqlRequest.QueryMode`</span>
-<span class="sd">        :param query_mode: Mode governing return of results / query plan. See</span>
-<span class="sd">            https://cloud.google.com/spanner/reference/rpc/google.spanner.v1#google.spanner.v1.ExecuteSqlRequest.QueryMode1</span>
-
-<span class="sd">        :rtype: int</span>
-<span class="sd">        :returns: Count of rows affected by the DML statement.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">params</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">param_types</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                    <span class="s2">&quot;Specify &#39;param_types&#39; when passing &#39;params&#39;.&quot;</span><span class="p">)</span>
-            <span class="n">params_pb</span> <span class="o">=</span> <span class="n">Struct</span><span class="p">(</span><span class="n">fields</span><span class="o">=</span><span class="p">{</span>
-                <span class="n">key</span><span class="p">:</span> <span class="n">_make_value_pb</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">params</span><span class="o">.</span><span class="n">items</span><span class="p">()})</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">params_pb</span> <span class="o">=</span> <span class="kc">None</span>
-
-        <span class="n">database</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_session</span><span class="o">.</span><span class="n">_database</span>
-        <span class="n">metadata</span> <span class="o">=</span> <span class="n">_metadata_with_prefix</span><span class="p">(</span><span class="n">database</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-        <span class="n">transaction</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_txn_selector</span><span class="p">()</span>
-        <span class="n">api</span> <span class="o">=</span> <span class="n">database</span><span class="o">.</span><span class="n">spanner_api</span>
-
-        <span class="n">response</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">execute_sql</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_session</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
-            <span class="n">dml</span><span class="p">,</span>
-            <span class="n">transaction</span><span class="o">=</span><span class="n">transaction</span><span class="p">,</span>
-            <span class="n">params</span><span class="o">=</span><span class="n">params_pb</span><span class="p">,</span>
-            <span class="n">param_types</span><span class="o">=</span><span class="n">param_types</span><span class="p">,</span>
-            <span class="n">query_mode</span><span class="o">=</span><span class="n">query_mode</span><span class="p">,</span>
-            <span class="n">seqno</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_execute_sql_count</span><span class="p">,</span>
-            <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">,</span>
-        <span class="p">)</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">_execute_sql_count</span> <span class="o">+=</span> <span class="mi">1</span>
-        <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">row_count_exact</span></div>
 
     <span class="k">def</span> <span class="nf">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Begin ``with`` block.&quot;&quot;&quot;</span>
@@ -322,7 +270,7 @@
       
       |
       Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.1</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.11</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>
 

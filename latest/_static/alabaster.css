@@ -166,6 +166,19 @@ div.sphinxsidebar hr {
     width: 50%;
 }
 
+div.sphinxsidebar .badge {
+    border-bottom: none;
+}
+
+div.sphinxsidebar .badge:hover {
+    border-bottom: none;
+}
+
+/* To address an issue with donation coming after search */
+div.sphinxsidebar h3.donation {
+    margin-top: 10px;
+}
+
 /* -- body styles ----------------------------------------------------------- */
 
 a {
