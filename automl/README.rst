@@ -1,6 +1,8 @@
 Python Client for Cloud AutoML API (`Alpha`_)
 =============================================
 
+|pypi| |versions|
+
 The `Cloud AutoML API`_ is a suite of machine learning products that enables
 developers with limited machine learning expertise to train high-quality models
 specific to their business needs, by leveraging Google’s state-of-the-art
@@ -10,6 +12,10 @@ transfer learning, and Neural Architecture Search technology.
 - `Product Documentation`_
 
 .. _Alpha: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/README.rst
+.. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-automl.svg
+   :target: https://pypi.org/project/google-cloud-automl/
+.. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-automl.svg
+   :target: https://pypi.org/project/google-cloud-automl/
 .. _Cloud AutoML API: https://cloud.google.com/automl
 .. _Client Library Documentation: https://googlecloudplatform.github.io/google-cloud-python/latest/automl/index.html
 .. _Product Documentation:  https://cloud.google.com/automl

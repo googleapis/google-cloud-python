@@ -1,13 +1,19 @@
 Python Client for Cloud IoT API (`Alpha`_)
 ==========================================
 
-`Cloud IoT API`_: Registers and manages IoT (Internet of Things) devices that connect to the
-Google Cloud Platform.
+|pypi| |versions|
+
+`Cloud IoT API`_: Registers and manages IoT (Internet of Things) devices that
+connect to the Google Cloud Platform.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
 
 .. _Alpha: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/README.rst
+.. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-iot.svg
+   :target: https://pypi.org/project/google-cloud-iot/
+.. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-iot.svg
+   :target: https://pypi.org/project/google-cloud-iot/
 .. _Cloud IoT API: https://cloud.google.com/iot
 .. _Client Library Documentation: https://googlecloudplatform.github.io/google-cloud-python/latest/iot/index.html
 .. _Product Documentation:  https://cloud.google.com/iot
@@ -92,11 +98,6 @@ Next Steps
 ~~~~~~~~~~
 
 -  Read the `Client Library Documentation`_ for Cloud IoT API
-   API to see other available methods on the client.
--  Read the `Cloud IoT API Product documentation`_ to learn
+   to see other available methods on the client.
+-  Read the `Product documentation`_ to learn
    more about the product and see How-to Guides.
--  View this `repository’s main README`_ to see the full list of Cloud
-   APIs that we cover.
-
-.. _Cloud IoT API Product documentation:  https://cloud.google.com/iot
-.. _repository’s main README: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/README.rst
