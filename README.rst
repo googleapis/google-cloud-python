@@ -1,11 +1,9 @@
 Google Cloud Python Client
 ==========================
 
-    Python idiomatic client for `Google Cloud Platform`_ services.
+Python idiomatic clients for `Google Cloud Platform`_ services.
 
 .. _Google Cloud Platform: https://cloud.google.com/
-
-|circleci| |appveyor| |coverage|
 
 -  `Homepage`_
 -  `API Documentation`_
@@ -164,6 +162,7 @@ Example Applications
 .. _tutorial: https://cloud.google.com/python
 .. _google-cloud-python-expenses-demo: https://github.com/GoogleCloudPlatform/google-cloud-python-expenses-demo
 
+
 Authentication
 --------------
 
@@ -184,15 +183,16 @@ See the `CONTRIBUTING doc`_ for more information on how to get started.
 
 .. _CONTRIBUTING doc: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/CONTRIBUTING.rst
 
+
 Community
 ---------
 
 Google Cloud Platform Python developers hang out in `Slack`_ in the ``#python``
 channel, click here to `get an invitation`_.
 
-
 .. _Slack: https://googlecloud-community.slack.com
 .. _get an invitation: https://gcp-slack.appspot.com/
+
 
 License
 -------
@@ -200,10 +200,3 @@ License
 Apache 2.0 - See `the LICENSE`_ for more information.
 
 .. _the LICENSE: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/LICENSE
-
-.. |circleci| image:: https://circleci.com/gh/GoogleCloudPlatform/google-cloud-python.svg?style=shield
-   :target: https://circleci.com/gh/GoogleCloudPlatform/google-cloud-python
-.. |appveyor| image:: https://ci.appveyor.com/api/projects/status/github/googlecloudplatform/google-cloud-python?branch=master&svg=true
-   :target: https://ci.appveyor.com/project/GoogleCloudPlatform/google-cloud-python
-.. |coverage| image:: https://coveralls.io/repos/GoogleCloudPlatform/google-cloud-python/badge.svg?branch=master
-   :target: https://coveralls.io/r/GoogleCloudPlatform/google-cloud-python?branch=master
