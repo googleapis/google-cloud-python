@@ -31,8 +31,6 @@ SELECT image_name FROM images WHERE @bytes IN image_data"""
 PARAMS_WITH_BYTES = {'bytes': b'FACEDACE'}
 RESUME_TOKEN = b'DEADBEEF'
 TXN_ID = b'DEAFBEAD'
-SECONDS = 3
-MICROS = 123456
 
 
 class Test_restart_on_unavailable(unittest.TestCase):
@@ -178,7 +176,6 @@ class Test_SnapshotBase(unittest.TestCase):
         session = _Session()
         base = self._make_one(session)
         self.assertIs(base._session, session)
-        self.assertEqual(base._execute_sql_count, 0)
 
     def test__make_txn_selector_virtual(self):
         session = _Session()
@@ -204,7 +201,7 @@ class Test_SnapshotBase(unittest.TestCase):
         from google.cloud.spanner_v1.proto.result_set_pb2 import (
             PartialResultSet, ResultSetMetadata, ResultSetStats)
         from google.cloud.spanner_v1.proto.transaction_pb2 import (
-            TransactionSelector, TransactionOptions)
+            TransactionSelector)
         from google.cloud.spanner_v1.proto.type_pb2 import Type, StructType
         from google.cloud.spanner_v1.proto.type_pb2 import STRING, INT64
         from google.cloud.spanner_v1.keyset import KeySet
@@ -231,13 +228,13 @@ class Test_SnapshotBase(unittest.TestCase):
             PartialResultSet(values=VALUE_PBS[0], metadata=metadata_pb),
             PartialResultSet(values=VALUE_PBS[1], stats=stats_pb),
         ]
-        KEYS = [['bharney@example.com'], ['phred@example.com']]
+        KEYS = ['bharney@example.com', 'phred@example.com']
         keyset = KeySet(keys=KEYS)
         INDEX = 'email-address-index'
         LIMIT = 20
         database = _Database()
-        api = database.spanner_api = self._make_spanner_api()
-        api.streaming_read.return_value = _MockIterator(*result_sets)
+        api = database.spanner_api = _FauxSpannerAPI(
+            _streaming_read_response=_MockIterator(*result_sets))
         session = _Session(database)
         derived = self._makeDerived(session)
         derived._multi_use = multi_use
@@ -265,33 +262,31 @@ class Test_SnapshotBase(unittest.TestCase):
         self.assertEqual(result_set.metadata, metadata_pb)
         self.assertEqual(result_set.stats, stats_pb)
 
-        txn_options = TransactionOptions(
-            read_only=TransactionOptions.ReadOnly(strong=True))
+        (r_session, table, columns, key_set, transaction, index, limit,
+         resume_token, r_partition, metadata) = api._streaming_read_with
 
+        self.assertEqual(r_session, self.SESSION_NAME)
+        self.assertEqual(table, TABLE_NAME)
+        self.assertEqual(columns, COLUMNS)
+        self.assertEqual(key_set, keyset._to_pb())
+        self.assertIsInstance(transaction, TransactionSelector)
         if multi_use:
             if first:
-                expected_transaction = TransactionSelector(begin=txn_options)
+                self.assertTrue(transaction.begin.read_only.strong)
             else:
-                expected_transaction = TransactionSelector(id=TXN_ID)
+                self.assertEqual(transaction.id, TXN_ID)
         else:
-            expected_transaction = TransactionSelector(single_use=txn_options)
-
+            self.assertTrue(transaction.single_use.read_only.strong)
+        self.assertEqual(index, INDEX)
         if partition is not None:
-            expected_limit = 0
+            self.assertEqual(limit, 0)
+            self.assertEqual(r_partition, partition)
         else:
-            expected_limit = LIMIT
-
-        api.streaming_read.assert_called_once_with(
-            self.SESSION_NAME,
-            TABLE_NAME,
-            COLUMNS,
-            keyset._to_pb(),
-            transaction=expected_transaction,
-            index=INDEX,
-            limit=expected_limit,
-            partition_token=partition,
-            metadata=[('google-cloud-resource-prefix', database.name)],
-        )
+            self.assertEqual(limit, LIMIT)
+            self.assertIsNone(r_partition)
+        self.assertEqual(resume_token, b'')
+        self.assertEqual(
+            metadata, [('google-cloud-resource-prefix', database.name)])
 
     def test_read_wo_multi_use(self):
         self._read_helper(multi_use=False)
@@ -333,12 +328,12 @@ class Test_SnapshotBase(unittest.TestCase):
             derived.execute_sql(SQL_QUERY_WITH_PARAM, PARAMS)
 
     def _execute_sql_helper(
-            self, multi_use, first=True, count=0, partition=None, sql_count=0):
+            self, multi_use, first=True, count=0, partition=None):
         from google.protobuf.struct_pb2 import Struct
         from google.cloud.spanner_v1.proto.result_set_pb2 import (
             PartialResultSet, ResultSetMetadata, ResultSetStats)
         from google.cloud.spanner_v1.proto.transaction_pb2 import (
-            TransactionSelector, TransactionOptions)
+            TransactionSelector)
         from google.cloud.spanner_v1.proto.type_pb2 import Type, StructType
         from google.cloud.spanner_v1.proto.type_pb2 import STRING, INT64
         from google.cloud.spanner_v1._helpers import _make_value_pb
@@ -368,13 +363,12 @@ class Test_SnapshotBase(unittest.TestCase):
         ]
         iterator = _MockIterator(*result_sets)
         database = _Database()
-        api = database.spanner_api = self._make_spanner_api()
-        api.execute_streaming_sql.return_value = iterator
+        api = database.spanner_api = _FauxSpannerAPI(
+            _execute_streaming_sql_response=iterator)
         session = _Session(database)
         derived = self._makeDerived(session)
         derived._multi_use = multi_use
         derived._read_request_count = count
-        derived._execute_sql_count = sql_count
         if not first:
             derived._transaction_id = TXN_ID
 
@@ -393,33 +387,29 @@ class Test_SnapshotBase(unittest.TestCase):
         self.assertEqual(result_set.metadata, metadata_pb)
         self.assertEqual(result_set.stats, stats_pb)
 
-        txn_options = TransactionOptions(
-            read_only=TransactionOptions.ReadOnly(strong=True))
+        (r_session, sql, transaction, params, param_types,
+         resume_token, query_mode, partition_token,
+         metadata) = api._executed_streaming_sql_with
 
+        self.assertEqual(r_session, self.SESSION_NAME)
+        self.assertEqual(sql, SQL_QUERY_WITH_PARAM)
+        self.assertIsInstance(transaction, TransactionSelector)
         if multi_use:
             if first:
-                expected_transaction = TransactionSelector(begin=txn_options)
+                self.assertTrue(transaction.begin.read_only.strong)
             else:
-                expected_transaction = TransactionSelector(id=TXN_ID)
+                self.assertEqual(transaction.id, TXN_ID)
         else:
-            expected_transaction = TransactionSelector(single_use=txn_options)
-
+            self.assertTrue(transaction.single_use.read_only.strong)
         expected_params = Struct(fields={
             key: _make_value_pb(value) for (key, value) in PARAMS.items()})
-
-        api.execute_streaming_sql.assert_called_once_with(
-            self.SESSION_NAME,
-            SQL_QUERY_WITH_PARAM,
-            transaction=expected_transaction,
-            params=expected_params,
-            param_types=PARAM_TYPES,
-            query_mode=MODE,
-            partition_token=partition,
-            seqno=sql_count,
-            metadata=[('google-cloud-resource-prefix', database.name)],
-        )
-
-        self.assertEqual(derived._execute_sql_count, sql_count + 1)
+        self.assertEqual(params, expected_params)
+        self.assertEqual(param_types, PARAM_TYPES)
+        self.assertEqual(query_mode, MODE)
+        self.assertEqual(resume_token, b'')
+        self.assertEqual(partition_token, partition)
+        self.assertEqual(
+            metadata, [('google-cloud-resource-prefix', database.name)])
 
     def test_execute_sql_wo_multi_use(self):
         self._execute_sql_helper(multi_use=False)
@@ -429,7 +419,7 @@ class Test_SnapshotBase(unittest.TestCase):
             self._execute_sql_helper(multi_use=False, count=1)
 
     def test_execute_sql_w_multi_use_wo_first(self):
-        self._execute_sql_helper(multi_use=True, first=False, sql_count=1)
+        self._execute_sql_helper(multi_use=True, first=False)
 
     def test_execute_sql_w_multi_use_wo_first_w_count_gt_0(self):
         self._execute_sql_helper(multi_use=True, first=False, count=1)
@@ -464,8 +454,8 @@ class Test_SnapshotBase(unittest.TestCase):
             transaction=Transaction(id=new_txn_id),
         )
         database = _Database()
-        api = database.spanner_api = self._make_spanner_api()
-        api.partition_read.return_value = response
+        api = database.spanner_api = _FauxSpannerAPI(
+            _partition_read_response=response)
         session = _Session(database)
         derived = self._makeDerived(session)
         derived._multi_use = multi_use
@@ -481,21 +471,23 @@ class Test_SnapshotBase(unittest.TestCase):
 
         self.assertEqual(tokens, [token_1, token_2])
 
-        expected_txn_selector = TransactionSelector(id=TXN_ID)
+        (r_session, table, key_set, transaction, r_index, columns,
+            partition_options, metadata) = api._partition_read_with
 
-        expected_partition_options = PartitionOptions(
-                partition_size_bytes=size, max_partitions=max_partitions)
-
-        api.partition_read.assert_called_once_with(
-            session=self.SESSION_NAME,
-            table=TABLE_NAME,
-            columns=COLUMNS,
-            key_set=keyset._to_pb(),
-            transaction=expected_txn_selector,
-            index=index,
-            partition_options=expected_partition_options,
-            metadata=[('google-cloud-resource-prefix', database.name)],
-        )
+        self.assertEqual(r_session, self.SESSION_NAME)
+        self.assertEqual(table, TABLE_NAME)
+        self.assertEqual(key_set, keyset._to_pb())
+        self.assertIsInstance(transaction, TransactionSelector)
+        self.assertEqual(transaction.id, TXN_ID)
+        self.assertFalse(transaction.HasField('begin'))
+        self.assertEqual(r_index, index)
+        self.assertEqual(columns, COLUMNS)
+        self.assertEqual(
+            partition_options,
+            PartitionOptions(
+                partition_size_bytes=size, max_partitions=max_partitions))
+        self.assertEqual(
+            metadata, [('google-cloud-resource-prefix', database.name)])
 
     def test_partition_read_single_use_raises(self):
         with self.assertRaises(ValueError):
@@ -552,8 +544,8 @@ class Test_SnapshotBase(unittest.TestCase):
             transaction=Transaction(id=new_txn_id),
         )
         database = _Database()
-        api = database.spanner_api = self._make_spanner_api()
-        api.partition_query.return_value = response
+        api = database.spanner_api = _FauxSpannerAPI(
+            _partition_query_response=response)
         session = _Session(database)
         derived = self._makeDerived(session)
         derived._multi_use = multi_use
@@ -568,23 +560,24 @@ class Test_SnapshotBase(unittest.TestCase):
 
         self.assertEqual(tokens, [token_1, token_2])
 
+        (r_session, sql, transaction, params, param_types,
+         partition_options, metadata) = api._partition_query_with
+
+        self.assertEqual(r_session, self.SESSION_NAME)
+        self.assertEqual(sql, SQL_QUERY_WITH_PARAM)
+        self.assertIsInstance(transaction, TransactionSelector)
+        self.assertEqual(transaction.id, TXN_ID)
+        self.assertFalse(transaction.HasField('begin'))
         expected_params = Struct(fields={
             key: _make_value_pb(value) for (key, value) in PARAMS.items()})
-
-        expected_txn_selector = TransactionSelector(id=TXN_ID)
-
-        expected_partition_options = PartitionOptions(
-                partition_size_bytes=size, max_partitions=max_partitions)
-
-        api.partition_query.assert_called_once_with(
-            session=self.SESSION_NAME,
-            sql=SQL_QUERY_WITH_PARAM,
-            transaction=expected_txn_selector,
-            params=expected_params,
-            param_types=PARAM_TYPES,
-            partition_options=expected_partition_options,
-            metadata=[('google-cloud-resource-prefix', database.name)],
-        )
+        self.assertEqual(params, expected_params)
+        self.assertEqual(param_types, PARAM_TYPES)
+        self.assertEqual(
+            partition_options,
+            PartitionOptions(
+                partition_size_bytes=size, max_partitions=max_partitions))
+        self.assertEqual(
+            metadata, [('google-cloud-resource-prefix', database.name)])
 
     def test_partition_query_other_error(self):
         database = _Database()
@@ -901,15 +894,14 @@ class TestSnapshot(unittest.TestCase):
             snapshot.begin()
 
     def test_begin_ok_exact_staleness(self):
-        from google.protobuf.duration_pb2 import Duration
         from google.cloud.spanner_v1.proto.transaction_pb2 import (
-            Transaction as TransactionPB, TransactionOptions)
+            Transaction as TransactionPB)
 
         transaction_pb = TransactionPB(id=TXN_ID)
         database = _Database()
-        api = database.spanner_api = self._make_spanner_api()
-        api.begin_transaction.return_value = transaction_pb
-        duration = self._makeDuration(seconds=SECONDS, microseconds=MICROS)
+        api = database.spanner_api = _FauxSpannerAPI(
+            _begin_transaction_response=transaction_pb)
+        duration = self._makeDuration(seconds=3, microseconds=123456)
         session = _Session(database)
         snapshot = self._make_one(
             session, exact_staleness=duration, multi_use=True)
@@ -919,25 +911,22 @@ class TestSnapshot(unittest.TestCase):
         self.assertEqual(txn_id, TXN_ID)
         self.assertEqual(snapshot._transaction_id, TXN_ID)
 
-        expected_duration = Duration(
-            seconds=SECONDS, nanos=MICROS * 1000)
-        expected_txn_options = TransactionOptions(
-            read_only=TransactionOptions.ReadOnly(
-                exact_staleness=expected_duration))
-
-        api.begin_transaction.assert_called_once_with(
-            session.name,
-            expected_txn_options,
-            metadata=[('google-cloud-resource-prefix', database.name)])
+        session_id, txn_options, metadata = api._begun
+        self.assertEqual(session_id, session.name)
+        read_only = txn_options.read_only
+        self.assertEqual(read_only.exact_staleness.seconds, 3)
+        self.assertEqual(read_only.exact_staleness.nanos, 123456000)
+        self.assertEqual(
+            metadata, [('google-cloud-resource-prefix', database.name)])
 
     def test_begin_ok_exact_strong(self):
         from google.cloud.spanner_v1.proto.transaction_pb2 import (
-            Transaction as TransactionPB, TransactionOptions)
+            Transaction as TransactionPB)
 
         transaction_pb = TransactionPB(id=TXN_ID)
         database = _Database()
-        api = database.spanner_api = self._make_spanner_api()
-        api.begin_transaction.return_value = transaction_pb
+        api = database.spanner_api = _FauxSpannerAPI(
+            _begin_transaction_response=transaction_pb)
         session = _Session(database)
         snapshot = self._make_one(session, multi_use=True)
 
@@ -946,13 +935,11 @@ class TestSnapshot(unittest.TestCase):
         self.assertEqual(txn_id, TXN_ID)
         self.assertEqual(snapshot._transaction_id, TXN_ID)
 
-        expected_txn_options = TransactionOptions(
-            read_only=TransactionOptions.ReadOnly(strong=True))
-
-        api.begin_transaction.assert_called_once_with(
-            session.name,
-            expected_txn_options,
-            metadata=[('google-cloud-resource-prefix', database.name)])
+        session_id, txn_options, metadata = api._begun
+        self.assertEqual(session_id, session.name)
+        self.assertTrue(txn_options.read_only.strong)
+        self.assertEqual(
+            metadata, [('google-cloud-resource-prefix', database.name)])
 
 
 class _Session(object):
@@ -964,6 +951,63 @@ class _Session(object):
 
 class _Database(object):
     name = 'testing'
+
+
+class _FauxSpannerAPI(object):
+
+    _read_with = _begin = None
+
+    def __init__(self, **kwargs):
+        self.__dict__.update(**kwargs)
+
+    def begin_transaction(self, session, options_, metadata=None):
+        self._begun = (session, options_, metadata)
+        return self._begin_transaction_response
+
+    # pylint: disable=too-many-arguments
+    def streaming_read(self, session, table, columns, key_set,
+                       transaction=None, index='', limit=0,
+                       resume_token=b'', partition_token=None, metadata=None):
+        self._streaming_read_with = (
+            session, table, columns, key_set, transaction, index,
+            limit, resume_token, partition_token, metadata)
+        return self._streaming_read_response
+    # pylint: enable=too-many-arguments
+
+    def execute_streaming_sql(self, session, sql, transaction=None,
+                              params=None, param_types=None,
+                              resume_token=b'', query_mode=None,
+                              partition_token=None, metadata=None):
+        self._executed_streaming_sql_with = (
+            session, sql, transaction, params, param_types, resume_token,
+            query_mode, partition_token, metadata)
+        return self._execute_streaming_sql_response
+
+    # pylint: disable=too-many-arguments
+    def partition_read(self, session, table, key_set,
+                       transaction=None,
+                       index='',
+                       columns=None,
+                       partition_options=None,
+                       metadata=None):
+        self._partition_read_with = (
+            session, table, key_set, transaction, index, columns,
+            partition_options, metadata)
+        return self._partition_read_response
+    # pylint: enable=too-many-arguments
+
+    # pylint: disable=too-many-arguments
+    def partition_query(self, session, sql,
+                        transaction=None,
+                        params=None,
+                        param_types=None,
+                        partition_options=None,
+                        metadata=None):
+        self._partition_query_with = (
+            session, sql, transaction, params, param_types,
+            partition_options, metadata)
+        return self._partition_query_response
+    # pylint: enable=too-many-arguments
 
 
 class _MockIterator(object):
