@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
+## 1.6.0
+
+### New Features
+- Add support for `GEOGRAPHY` type ([#6147](https://github.com/googleapis/google-cloud-python/pull/6147))
+- Add default QueryJobConfig to Client ([#6088](https://github.com/googleapis/google-cloud-python/pull/6088))
+
+### Documentation
+- Remove unused "append" samples ([#6100](https://github.com/googleapis/google-cloud-python/pull/6100))
+
+### Internal / Testing Changes
+- Address dataset leaks, conflicts in systests ([#6099](https://github.com/googleapis/google-cloud-python/pull/6099))
+- Harden bucket teardown against `429 Too Many Requests`. ([#6101](https://github.com/googleapis/google-cloud-python/pull/6101))
+
 ## 1.5.1
 
 ### Implementation Changes
