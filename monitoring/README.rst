@@ -1,14 +1,20 @@
 Python Client for Stackdriver Monitoring API (`Alpha`_)
 =======================================================
 
-`Stackdriver Monitoring API`_: Manages your Stackdriver Monitoring data and configurations. Most projects
-must be associated with a Stackdriver account, with a few exceptions as
-noted on the individual method pages.
+|pypi| |versions|
+
+`Stackdriver Monitoring API`_: Manages your Stackdriver Monitoring data and
+configurations. Most projects must be associated with a Stackdriver account,
+with a few exceptions as noted on the individual method pages.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
 
 .. _Alpha: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/README.rst
+.. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-monitoring.svg
+   :target: https://pypi.org/project/google-cloud-monitoring/
+.. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-monitoring.svg
+   :target: https://pypi.org/project/google-cloud-monitoring/
 .. _Stackdriver Monitoring API: https://cloud.google.com/monitoring/api/ref_v3/rest/
 .. _Client Library Documentation: https://google-cloud-python.readthedocs.io/en/latest/monitoring/
 .. _Product Documentation:  https://cloud.google.com/monitoring/docs
@@ -92,10 +98,8 @@ MetricServiceClient
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Stackdriver Monitoring API Product documentation`_ to learn
-   more about the product and see How-to Guides.
--  View this `repository’s main README`_ to see the full list of Cloud
-   APIs that we cover.
 
-.. _Stackdriver Monitoring API Product documentation:  https://cloud.google.com/monitoring
-.. _repository’s main README: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/README.rst
+-  Read the `Client Library Documentation`_ for Stackdriver Monitoring API
+   to see other available methods on the client.
+-  Read the `Product documentation`_ to learn more about the product and see
+   How-to Guides.
