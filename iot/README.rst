@@ -1,7 +1,7 @@
-Python Client for Cloud IoT API (`Alpha`_)
-==========================================
+Python Client for Cloud IoT API
+===============================
 
-|pypi| |versions|
+|alpha| |pypi| |versions|
 
 `Cloud IoT API`_: Registers and manages IoT (Internet of Things) devices that
 connect to the Google Cloud Platform.
@@ -9,7 +9,8 @@ connect to the Google Cloud Platform.
 - `Client Library Documentation`_
 - `Product Documentation`_
 
-.. _Alpha: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/README.rst
+.. |alpha| image:: https://img.shields.io/badge/support-alpha-orange.svg
+   :target: https://github.com/googleapis/google-cloud-python/README.rst#alpha-support
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-iot.svg
    :target: https://pypi.org/project/google-cloud-iot/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-iot.svg

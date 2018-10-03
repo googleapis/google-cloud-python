@@ -1,7 +1,7 @@
 Python Client for Google Cloud DNS
 ==================================
 
-|pypi| |versions|
+|alpha| |pypi| |versions|
 
 The `Google Cloud DNS`_ API provides methods that you can use to
 manage DNS for your applications.
@@ -9,6 +9,8 @@ manage DNS for your applications.
 - `Client Library Documentation`_
 - `Product Documentation`_
 
+.. |alpha| image:: https://img.shields.io/badge/support-alpha-orange.svg
+   :target: https://github.com/googleapis/google-cloud-python/README.rst#alpha-support
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-dns.svg
    :target: https://pypi.org/project/google-cloud-dns/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-dns.svg

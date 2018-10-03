@@ -1,14 +1,15 @@
-Python Client for Cloud Asset API (`Alpha`_)
-============================================
+Python Client for Cloud Asset API
+=================================
 
-|pypi| |versions|
+|alpha| |pypi| |versions|
 
 `Cloud Asset API`_: The cloud asset API manages the history and inventory of cloud resources.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
 
-.. _Alpha: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/README.rst
+.. |alpha| image:: https://img.shields.io/badge/support-alpha-orange.svg
+   :target: https://github.com/googleapis/google-cloud-python/README.rst#alpha-support
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-asset.svg
    :target: https://pypi.org/project/google-cloud-asset/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-asset.svg

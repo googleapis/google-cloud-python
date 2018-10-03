@@ -1,7 +1,7 @@
 Python Client for Google Cloud Datastore
 ========================================
 
-|pypi| |versions|
+|GA| |pypi| |versions|
 
 `Google Cloud Datastore API`_ is a fully managed, schemaless database for
 storing non-relational data. Cloud Datastore automatically scales with your
@@ -12,6 +12,8 @@ all other queries.
 - `Client Library Documentation`_
 - `Product Documentation`_
 
+.. |GA| image:: https://img.shields.io/badge/support-GA-gold.svg
+   :target: https://github.com/googleapis/google-cloud-python/README.rst#generally-available-support
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-datastore.svg
    :target: https://pypi.org/project/google-cloud-datastore/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-datastore.svg

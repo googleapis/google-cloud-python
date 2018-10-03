@@ -1,7 +1,7 @@
-Python Client for BigQuery Data Transfer API (`Alpha`_)
-=======================================================
+Python Client for BigQuery Data Transfer API
+============================================
 
-|pypi| |versions|
+|alpha| |pypi| |versions|
 
 The `BigQuery Data Transfer API`_ allows users to transfer data from partner
 SaaS applications to Google BigQuery on a scheduled, managed basis.
@@ -9,7 +9,8 @@ SaaS applications to Google BigQuery on a scheduled, managed basis.
 - `Client Library Documentation`_
 - `Product Documentation`_
 
-.. _Alpha: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/README.rst
+.. |alpha| image:: https://img.shields.io/badge/support-alpha-orange.svg
+   :target: https://github.com/googleapis/google-cloud-python/README.rst#alpha-support
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-bigquery-datatransfer.svg
    :target: https://pypi.org/project/google-cloud-bigquery-datatransfer/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-bigquery-datatransfer.svg

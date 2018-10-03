@@ -1,7 +1,7 @@
-Python Client for Cloud Key Management Service (KMS) API (`Alpha`_)
-===================================================================
+Python Client for Cloud Key Management Service (KMS) API
+========================================================
 
-|pypi| |versions|
+|alpha| |pypi| |versions|
 
 `Cloud Key Management Service (KMS) API`_: Manages keys and performs
 cryptographic operations in a central cloud service, for direct use by other
@@ -10,7 +10,8 @@ cloud resources and applications.
 - `Client Library Documentation`_
 - `Product Documentation`_
 
-.. _Alpha: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/README.rst
+.. |alpha| image:: https://img.shields.io/badge/support-alpha-orange.svg
+   :target: https://github.com/googleapis/google-cloud-python/README.rst#alpha-support
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-kms.svg
    :target: https://pypi.org/project/google-cloud-kms/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-kms.svg

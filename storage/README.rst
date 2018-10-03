@@ -1,7 +1,7 @@
 Python Client for Google Cloud Storage
 ======================================
 
-|pypi| |versions|
+|GA| |pypi| |versions|
 
 `Google Cloud Storage`_ allows you to store data on
 Google infrastructure with very high reliability, performance and
@@ -11,6 +11,8 @@ via direct download.
 - `Client Library Documentation`_
 - `Storage API docs`_
 
+.. |GA| image:: https://img.shields.io/badge/support-GA-gold.svg
+   :target: https://github.com/googleapis/google-cloud-python/README.rst#generally-available-support
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-storage.svg
    :target: https://pypi.org/project/google-cloud-storage
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-storage.svg

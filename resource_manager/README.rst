@@ -1,7 +1,7 @@
 Python Client for Google Cloud Resource Manager
 ===============================================
 
-|pypi| |versions|
+|alpha| |pypi| |versions|
 
 `Google Cloud Resource Manager`_ API provides methods that you can use
 to programmatically manage your projects in the Google Cloud Platform.
@@ -17,6 +17,8 @@ With this API, you can do the following:
 - `Product Documentation`_
 
 
+.. |alpha| image:: https://img.shields.io/badge/support-alpha-orange.svg
+   :target: https://github.com/googleapis/google-cloud-python/README.rst#alpha-support
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-resource-manager.svg
    :target: https://pypi.org/project/google-cloud-resource-manager/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-resource-manager.svg

@@ -1,5 +1,5 @@
-Python Client for Stackdriver Trace API (`Alpha`_)
-==================================================
+Python Client for Stackdriver Trace API
+=======================================
 
 |alpha| |pypi| |versions|
 
@@ -10,8 +10,7 @@ default. Trace data from other applications can be provided using this API.
 - `Client Library Documentation`_
 - `Product Documentation`_
 
-.. _Alpha: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/README.rst
-.. |alpha| image:: https://img.shields.io/badge/status-alpha-orange.svg
+.. |alpha| image:: https://img.shields.io/badge/support-alpha-orange.svg
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-trace.svg
    :target: https://pypi.org/project/google-cloud-trace/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-trace.svg

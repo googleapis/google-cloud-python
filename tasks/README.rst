@@ -1,7 +1,7 @@
-Python Client for Cloud Tasks API (`Alpha`_)
-============================================
+Python Client for Cloud Tasks API
+=================================
 
-|pypi| |versions|
+|alpha| |pypi| |versions|
 
 `Cloud Tasks API`_: Manages the execution of large numbers of distributed
 requests.
@@ -9,7 +9,8 @@ requests.
 - `Client Library Documentation`_
 - `Product Documentation`_
 
-.. _Alpha: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/README.rst
+.. |alpha| image:: https://img.shields.io/badge/support-alpha-orange.svg
+   :target: https://github.com/googleapis/google-cloud-python/README.rst#alpha-support
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-tasks.svg
    :target: https://pypi.org/project/google-cloud-tasks/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-tasks.svg

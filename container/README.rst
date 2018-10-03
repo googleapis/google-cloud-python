@@ -1,7 +1,7 @@
-Python Client for Google Container Engine API (`Alpha`_)
-========================================================
+Python Client for Google Container Engine API
+=============================================
 
-|pypi| |versions|
+|alpha| |pypi| |versions|
 
 `Google Container Engine API`_: The Google Kubernetes Engine API is used for building and managing container
 based applications, powered by the open source Kubernetes technology.
@@ -9,7 +9,8 @@ based applications, powered by the open source Kubernetes technology.
 - `Client Library Documentation`_
 - `Product Documentation`_
 
-.. _Alpha: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/README.rst
+.. |alpha| image:: https://img.shields.io/badge/support-alpha-orange.svg
+   :target: https://github.com/googleapis/google-cloud-python/README.rst#alpha-support
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-container.svg
    :target: https://pypi.org/project/google-cloud-container/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-container.svg
