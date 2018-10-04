@@ -149,7 +149,30 @@ class TestTableReference(unittest.TestCase):
     def test_from_string_not_fully_qualified(self):
         cls = self._get_target_class()
         with self.assertRaises(ValueError):
+            cls.from_string('string_table')
+
+        with self.assertRaises(ValueError):
             cls.from_string('string_dataset.string_table')
+
+        with self.assertRaises(ValueError):
+            cls.from_string('a.b.c.d')
+
+    def test_from_string_with_default_project(self):
+        cls = self._get_target_class()
+        got = cls.from_string(
+            'string_dataset.string_table', default_project='default-project')
+        self.assertEqual(got.project, 'default-project')
+        self.assertEqual(got.dataset_id, 'string_dataset')
+        self.assertEqual(got.table_id, 'string_table')
+
+    def test_from_string_ignores_default_project(self):
+        cls = self._get_target_class()
+        got = cls.from_string(
+            'string-project.string_dataset.string_table',
+            default_project='default-project')
+        self.assertEqual(got.project, 'string-project')
+        self.assertEqual(got.dataset_id, 'string_dataset')
+        self.assertEqual(got.table_id, 'string_table')
 
     def test___eq___wrong_type(self):
         from google.cloud.bigquery.dataset import DatasetReference
