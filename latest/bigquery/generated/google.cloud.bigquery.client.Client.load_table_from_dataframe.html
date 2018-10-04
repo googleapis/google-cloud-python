@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigquery.client.Client.load_table_from_dataframe &#8212; google-cloud cbe9c69bcf documentation</title>
+    <title>google.cloud.bigquery.client.Client.load_table_from_dataframe &#8212; google-cloud 93d5ea2 documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -49,11 +49,15 @@ returns a <a class="reference internal" href="google.cloud.bigquery.job.LoadJob.
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>dataframe</strong> (<a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.23.4)"><em>pandas.DataFrame</em></a>) – A <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.23.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code></a> containing the data to load.</li>
-<li><strong>destination</strong> (<a class="reference internal" href="google.cloud.bigquery.table.TableReference.html#google.cloud.bigquery.table.TableReference" title="google.cloud.bigquery.table.TableReference"><em>google.cloud.bigquery.table.TableReference</em></a>) – The destination table to use for loading the data. If it is an
+<li><strong>destination</strong> (<a class="reference internal" href="google.cloud.bigquery.table.TableReference.html#google.cloud.bigquery.table.TableReference" title="google.cloud.bigquery.table.TableReference"><em>google.cloud.bigquery.table.TableReference</em></a>) – <p>The destination table to use for loading the data. If it is an
 existing table, the schema of the <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.23.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code></a>
 must match the schema of the destination table. If the table
 does not yet exist, the schema is inferred from the
-<a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.23.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code></a>.</li>
+<a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.23.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code></a>.</p>
+<p>If a string is passed in, this method attempts to create a
+table reference from a string using
+<a class="reference internal" href="google.cloud.bigquery.table.TableReference.from_string.html#google.cloud.bigquery.table.TableReference.from_string" title="google.cloud.bigquery.table.TableReference.from_string"><code class="xref py py-func docutils literal notranslate"><span class="pre">google.cloud.bigquery.table.TableReference.from_string()</span></code></a>.</p>
+</li>
 </ul>
 </td>
 </tr>

@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigquery.dataset &#8212; google-cloud cbe9c69bcf documentation</title>
+    <title>google.cloud.bigquery.dataset &#8212; google-cloud 93d5ea2 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -247,18 +247,21 @@
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">project</span><span class="p">,</span> <span class="n">dataset_id</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="DatasetReference.from_string"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.dataset.DatasetReference.from_string.html#google.cloud.bigquery.dataset.DatasetReference.from_string">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">from_string</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">full_dataset_id</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Construct a dataset reference from fully-qualified dataset ID.</span>
+    <span class="k">def</span> <span class="nf">from_string</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">dataset_id</span><span class="p">,</span> <span class="n">default_project</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Construct a dataset reference from dataset ID string.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            full_dataset_id (str):</span>
-<span class="sd">                A fully-qualified dataset ID in standard SQL format. Must</span>
-<span class="sd">                included both the project ID and the dataset ID, separated by</span>
-<span class="sd">                ``.``.</span>
+<span class="sd">            dataset_id (str):</span>
+<span class="sd">                A dataset ID in standard SQL format. If ``default_project``</span>
+<span class="sd">                is not specified, this must included both the project ID and</span>
+<span class="sd">                the dataset ID, separated by ``.``.</span>
+<span class="sd">            default_project (str):</span>
+<span class="sd">                Optional. The project ID to use when ``dataset_id`` does not</span>
+<span class="sd">                include a project ID.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            DatasetReference:</span>
-<span class="sd">                Dataset reference parsed from ``full_dataset_id``.</span>
+<span class="sd">                Dataset reference parsed from ``dataset_id``.</span>
 
 <span class="sd">        Examples:</span>
 <span class="sd">            &gt;&gt;&gt; DatasetReference.from_string(&#39;my-project-id.some_dataset&#39;)</span>
@@ -266,16 +269,27 @@
 
 <span class="sd">        Raises:</span>
 <span class="sd">            ValueError:</span>
-<span class="sd">                If ``full_dataset_id`` is not a fully-qualified dataset ID in</span>
+<span class="sd">                If ``dataset_id`` is not a fully-qualified dataset ID in</span>
 <span class="sd">                standard SQL format.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">parts</span> <span class="o">=</span> <span class="n">full_dataset_id</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="n">output_dataset_id</span> <span class="o">=</span> <span class="n">dataset_id</span>
+        <span class="n">output_project_id</span> <span class="o">=</span> <span class="n">default_project</span>
+        <span class="n">parts</span> <span class="o">=</span> <span class="n">dataset_id</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">default_project</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="s1">&#39;full_dataset_id must be a fully-qualified dataset ID in &#39;</span>
-                <span class="s1">&#39;standard SQL format. e.g. &quot;project.dataset_id&quot;, got &#39;</span>
-                <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">full_dataset_id</span><span class="p">))</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="o">*</span><span class="n">parts</span><span class="p">)</span></div>
+                <span class="s1">&#39;When default_project is not set, dataset_id must be a &#39;</span>
+                <span class="s1">&#39;fully-qualified dataset ID in standard SQL format. &#39;</span>
+                <span class="s1">&#39;e.g. &quot;project.dataset_id&quot;, got </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">dataset_id</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="n">output_project_id</span><span class="p">,</span> <span class="n">output_dataset_id</span> <span class="o">=</span> <span class="n">parts</span>
+        <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s1">&#39;Too many parts in dataset_id. Expected a fully-qualified &#39;</span>
+                <span class="s1">&#39;dataset ID in standard SQL format. e.g. &#39;</span>
+                <span class="s1">&#39;&quot;project.dataset_id&quot;, got </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">dataset_id</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">output_project_id</span><span class="p">,</span> <span class="n">output_dataset_id</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="DatasetReference.to_api_repr"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.dataset.DatasetReference.to_api_repr.html#google.cloud.bigquery.dataset.DatasetReference.to_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">to_api_repr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Construct the API resource representation of this dataset reference</span>

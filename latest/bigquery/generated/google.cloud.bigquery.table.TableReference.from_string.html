@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigquery.table.TableReference.from_string &#8212; google-cloud cbe9c69bcf documentation</title>
+    <title>google.cloud.bigquery.table.TableReference.from_string &#8212; google-cloud 93d5ea2 documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -39,19 +39,26 @@
 <h1>google.cloud.bigquery.table.TableReference.from_string<a class="headerlink" href="#google-cloud-bigquery-table-tablereference-from-string" title="Permalink to this headline">#</a></h1>
 <dl class="classmethod">
 <dt id="google.cloud.bigquery.table.TableReference.from_string">
-<em class="property">classmethod </em><code class="descclassname">TableReference.</code><code class="descname">from_string</code><span class="sig-paren">(</span><em>full_table_id</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/google/cloud/bigquery/table.html#TableReference.from_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.table.TableReference.from_string" title="Permalink to this definition">#</a></dt>
-<dd><p>Construct a table reference from fully-qualified table ID.</p>
+<em class="property">classmethod </em><code class="descclassname">TableReference.</code><code class="descname">from_string</code><span class="sig-paren">(</span><em>table_id</em>, <em>default_project=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/google/cloud/bigquery/table.html#TableReference.from_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.table.TableReference.from_string" title="Permalink to this definition">#</a></dt>
+<dd><p>Construct a table reference from table ID string.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>full_table_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – A fully-qualified table ID in standard SQL format. Must
-included a project ID, dataset ID, and table ID, each
-separated by <code class="docutils literal notranslate"><span class="pre">.</span></code>.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>table_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – A table ID in standard SQL format. If <code class="docutils literal notranslate"><span class="pre">default_project</span></code>
+is not specified, this must included a project ID, dataset
+ID, and table ID, each separated by <code class="docutils literal notranslate"><span class="pre">.</span></code>.</li>
+<li><strong>default_project</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Optional. The project ID to use when <code class="docutils literal notranslate"><span class="pre">table_id</span></code> does not
+include a project ID.</li>
+</ul>
+</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Table reference parsed from <code class="docutils literal notranslate"><span class="pre">full_table_id</span></code>.</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Table reference parsed from <code class="docutils literal notranslate"><span class="pre">table_id</span></code>.</p>
+</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="google.cloud.bigquery.table.TableReference.html#google.cloud.bigquery.table.TableReference" title="google.cloud.bigquery.table.TableReference">TableReference</a></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="google.cloud.bigquery.table.TableReference.html#google.cloud.bigquery.table.TableReference" title="google.cloud.bigquery.table.TableReference">TableReference</a></p>
+</td>
 </tr>
 </tbody>
 </table>
@@ -64,7 +71,7 @@ separated by <code class="docutils literal notranslate"><span class="pre">.</spa
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If <code class="docutils literal notranslate"><span class="pre">full_table_id</span></code> is not a fully-qualified table ID in
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If <code class="docutils literal notranslate"><span class="pre">table_id</span></code> is not a fully-qualified table ID in
 standard SQL format.</td>
 </tr>
 </tbody>

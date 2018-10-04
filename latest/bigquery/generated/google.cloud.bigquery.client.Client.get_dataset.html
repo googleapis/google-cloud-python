@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigquery.client.Client.get_dataset &#8212; google-cloud cbe9c69bcf documentation</title>
+    <title>google.cloud.bigquery.client.Client.get_dataset &#8212; google-cloud 93d5ea2 documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -46,15 +46,18 @@
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>dataset_ref</strong> (<a class="reference internal" href="google.cloud.bigquery.dataset.DatasetReference.html#google.cloud.bigquery.dataset.DatasetReference" title="google.cloud.bigquery.dataset.DatasetReference"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.bigquery.dataset.DatasetReference</span></code></a>) – the dataset to use.</li>
+<li><strong>dataset_ref</strong> (Union[                 <a class="reference internal" href="google.cloud.bigquery.dataset.DatasetReference.html#google.cloud.bigquery.dataset.DatasetReference" title="google.cloud.bigquery.dataset.DatasetReference"><code class="xref py py-class docutils literal notranslate"><span class="pre">DatasetReference</span></code></a>,                 str,             ]) – A reference to the dataset to fetch from the BigQuery API.
+If a string is passed in, this method attempts to create a
+dataset reference from a string using
+<a class="reference internal" href="google.cloud.bigquery.dataset.DatasetReference.from_string.html#google.cloud.bigquery.dataset.DatasetReference.from_string" title="google.cloud.bigquery.dataset.DatasetReference.from_string"><code class="xref py py-func docutils literal notranslate"><span class="pre">from_string()</span></code></a>.</li>
 <li><strong>retry</strong> (<a class="reference internal" href="../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.api_core.retry.Retry</span></code></a>) – (Optional) How to retry the RPC.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="google.cloud.bigquery.dataset.Dataset.html#google.cloud.bigquery.dataset.Dataset" title="google.cloud.bigquery.dataset.Dataset"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.bigquery.dataset.Dataset</span></code></a></p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <code class="docutils literal notranslate"><span class="pre">Dataset</span></code> instance.</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">a <code class="docutils literal notranslate"><span class="pre">Dataset</span></code> instance</p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="google.cloud.bigquery.dataset.Dataset.html#google.cloud.bigquery.dataset.Dataset" title="google.cloud.bigquery.dataset.Dataset">google.cloud.bigquery.dataset.Dataset</a></p>
 </td>
 </tr>
 </tbody>
