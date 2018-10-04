@@ -24,8 +24,11 @@ uniquely designate a (possible) entity in Google Cloud Datastore:
 """
 
 
+import base64
 import os
 
+from google.cloud.datastore import _app_engine_key_pb2
+from google.cloud.datastore import key as _key_module
 import google.cloud.datastore
 
 
@@ -208,3 +211,81 @@ def _project_from_app(app):
     #       ``google.cloud.datastore.key._clean_app()``.
     parts = app.split("~", 1)
     return parts[-1]
+
+
+def _from_reference(reference):
+    """Convert Reference protobuf to :class:`~google.cloud.datastore.key.Key`.
+
+    This is intended to work with the "legacy" representation of a
+    datastore "Key" used within Google App Engine (a so-called
+    "Reference"). This assumes that ``serialized`` was created within an App
+    Engine app via something like ``ndb.Key(...).reference()``.
+
+    However, the actual type used here is different since this code will not
+    run in the App Engine standard environment where the type was
+    ``google.appengine.datastore.entity_pb.Reference``.
+
+    Args:
+        serialized (bytes): A reference protobuf serialized to bytes.
+
+    Returns:
+        google.cloud.datastore.key.Key: The key corresponding to
+        ``serialized``.
+    """
+    project = _key_module._clean_app(reference.app)
+    namespace = _key_module._get_empty(reference.name_space, "")
+    _key_module._check_database_id(reference.database_id)
+    flat_path = _key_module._get_flat_path(reference.path)
+    return google.cloud.datastore.Key(
+        *flat_path, project=project, namespace=namespace
+    )
+
+
+def _from_serialized(serialized):
+    """Convert serialized protobuf to :class:`~google.cloud.datastore.key.Key`.
+
+    This is intended to work with the "legacy" representation of a
+    datastore "Key" used within Google App Engine (a so-called
+    "Reference"). This assumes that ``serialized`` was created within an App
+    Engine app via something like ``ndb.Key(...).serialized()``.
+
+    Args:
+        serialized (bytes): A reference protobuf serialized to bytes.
+
+    Returns:
+        google.cloud.datastore.key.Key: The key corresponding to
+        ``serialized``.
+    """
+    reference = _app_engine_key_pb2.Reference()
+    reference.ParseFromString(serialized)
+    return _from_reference(reference)
+
+
+def _from_urlsafe(urlsafe):
+    """Convert urlsafe string to :class:`~google.cloud.datastore.key.Key`.
+
+    .. note::
+
+       This is borrowed from
+       :meth:`~google.cloud.datastore.key.Key.from_legacy_urlsafe`.
+       It is provided here, rather than calling that method, since component
+       parts need to be re-used.
+
+    This is intended to work with the "legacy" representation of a
+    datastore "Key" used within Google App Engine (a so-called
+    "Reference"). This assumes that ``urlsafe`` was created within an App
+    Engine app via something like ``ndb.Key(...).urlsafe()``.
+
+    Args:
+        urlsafe (Union[bytes, str]): The base64 encoded (ASCII) string
+            corresponding to a datastore "Key" / "Reference".
+
+    Returns:
+        google.cloud.datastore.key.Key: The key corresponding to ``urlsafe``.
+    """
+    if isinstance(urlsafe, str):
+        urlsafe = urlsafe.encode("ascii")
+    padding = b"=" * (-len(urlsafe) % 4)
+    urlsafe += padding
+    raw_bytes = base64.urlsafe_b64decode(urlsafe)
+    return _from_serialized(raw_bytes)

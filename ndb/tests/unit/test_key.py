@@ -14,6 +14,7 @@
 
 import unittest.mock
 
+from google.cloud.datastore import _app_engine_key_pb2
 import google.cloud.datastore
 import pytest
 
@@ -115,3 +116,91 @@ class Test__project_from_app:
     )
     def test_app_fallback():
         assert key_module._project_from_app(None) == "jectpro"
+
+
+def test__from_reference():
+    reference = _app_engine_key_pb2.Reference(
+        app="s~sample-app",
+        path=_app_engine_key_pb2.Path(
+            element=[
+                _app_engine_key_pb2.Path.Element(type="Parent", id=59),
+                _app_engine_key_pb2.Path.Element(type="Child", name="Feather"),
+            ]
+        ),
+        name_space="space",
+    )
+    ds_key = key_module._from_reference(reference)
+    assert isinstance(ds_key, google.cloud.datastore.Key)
+    assert ds_key._flat_path == ("Parent", 59, "Child", "Feather")
+    assert ds_key._namespace == "space"
+    assert ds_key._parent is None
+    assert ds_key._project == "sample-app"
+    assert ds_key._path == [
+        {"kind": "Parent", "id": 59},
+        {"kind": "Child", "name": "Feather"},
+    ]
+
+
+class Test__from_serialized:
+    @staticmethod
+    def test_basic():
+        serialized = (
+            b"j\x0cs~sample-appr\x1e\x0b\x12\x06Parent\x18;\x0c\x0b\x12\x05"
+            b'Child"\x07Feather\x0c\xa2\x01\x05space'
+        )
+        ds_key = key_module._from_serialized(serialized)
+        assert isinstance(ds_key, google.cloud.datastore.Key)
+        assert ds_key._flat_path == ("Parent", 59, "Child", "Feather")
+        assert ds_key._namespace == "space"
+        assert ds_key._parent is None
+        assert ds_key._project == "sample-app"
+        assert ds_key._path == [
+            {"kind": "Parent", "id": 59},
+            {"kind": "Child", "name": "Feather"},
+        ]
+
+    @staticmethod
+    def test_no_app_prefix():
+        serialized = (
+            b"j\x18s~sample-app-no-locationr\n\x0b\x12\x04Zorp\x18X\x0c"
+        )
+        ds_key = key_module._from_serialized(serialized)
+        assert isinstance(ds_key, google.cloud.datastore.Key)
+        assert ds_key._flat_path == ("Zorp", 88)
+        assert ds_key._namespace is None
+        assert ds_key._parent is None
+        assert ds_key._project == "sample-app-no-location"
+        assert ds_key._path == [{"kind": "Zorp", "id": 88}]
+
+
+class Test__from_urlsafe:
+    @staticmethod
+    def test_basic():
+        urlsafe = (
+            "agxzfnNhbXBsZS1hcHByHgsSBlBhcmVudBg7DAsSBUNoaWxkIgdGZ"
+            "WF0aGVyDKIBBXNwYWNl"
+        )
+        urlsafe_bytes = urlsafe.encode("ascii")
+        for value in (urlsafe, urlsafe_bytes):
+            ds_key = key_module._from_urlsafe(value)
+            assert isinstance(ds_key, google.cloud.datastore.Key)
+            assert ds_key._flat_path == ("Parent", 59, "Child", "Feather")
+            assert ds_key._namespace == "space"
+            assert ds_key._parent is None
+            assert ds_key._project == "sample-app"
+            assert ds_key._path == [
+                {"kind": "Parent", "id": 59},
+                {"kind": "Child", "name": "Feather"},
+            ]
+
+    @staticmethod
+    def test_needs_padding():
+        urlsafe = b"agZzfmZpcmVyDwsSBEtpbmQiBVRoaW5nDA"
+
+        ds_key = key_module._from_urlsafe(urlsafe)
+        assert isinstance(ds_key, google.cloud.datastore.Key)
+        assert ds_key._flat_path == ("Kind", "Thing")
+        assert ds_key._namespace is None
+        assert ds_key._parent is None
+        assert ds_key._project == "fire"
+        assert ds_key._path == [{"kind": "Kind", "name": "Thing"}]
