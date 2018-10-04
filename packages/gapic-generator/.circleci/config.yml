@@ -18,6 +18,11 @@ jobs:
     steps:
       - checkout
       - run:
+          name: Install pandoc
+          command: |
+            apt-get update
+            apt-get install -y pandoc
+      - run:
           name: Install nox and codecov.
           command: |
             pip install --pre nox-automation
@@ -34,6 +39,11 @@ jobs:
       - image: 'python:3.7'
     steps:
       - checkout
+      - run:
+          name: Install pandoc
+          command: |
+            apt-get update
+            apt-get install -y pandoc
       - run:
           name: Install nox and codecov.
           command: |
@@ -55,10 +65,10 @@ jobs:
           name: Install nox.
           command: pip install --pre nox-automation
       - run:
-          name: Install unzip.
+          name: Install pandoc and unzip.
           command: |
             apt-get update
-            apt-get install unzip
+            apt-get install -y pandoc unzip
       - run:
           name: Install protoc 3.6.1.
           command: |

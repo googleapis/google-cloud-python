@@ -52,23 +52,42 @@ def wrap(text: str, width: int, *, offset: int = None, indent: int = 0) -> str:
     text = text.replace('\n ', '\n')
 
     # Break off the first line of the string to address non-zero offsets.
-    first = ''
-    if offset > 0:
-        initial = textwrap.wrap(text,
+    first = text.split('\n')[0] + '\n'
+    if len(first) > width - offset:
+        initial = textwrap.wrap(first,
             break_long_words=False,
             width=width - offset,
         )
+        # Strip the first \n from the text so it is not misidentified as an
+        # intentionally short line below.
+        text = text.replace('\n', ' ', 1)
+
+        # Save the new `first` line.
         first = f'{initial[0]}\n'
-        text = ' '.join(initial[1:])
+    text = text[len(first):].strip()
+    if not text:
+        return first.strip()
+
+    # Tokenize the rest of the text to try to preserve line breaks
+    # that semantically matter.
+    tokens = []
+    token = ''
+    for line in text.split('\n'):
+        token += line + '\n'
+        if len(line) < width * 0.75:
+            tokens.append(token)
+            token = ''
+    if token:
+        tokens.append(token)
 
     # Wrap the remainder of the string at the desired width.
     return '{first}{text}'.format(
         first=first,
-        text=textwrap.fill(
+        text='\n'.join([textwrap.fill(
             break_long_words=False,
-            initial_indent=' ' * indent if first else '',
+            initial_indent=' ' * indent,
             subsequent_indent=' ' * indent,
-            text=text,
+            text=token,
             width=width,
-        ),
+        ) for token in tokens]),
     ).rstrip('\n')

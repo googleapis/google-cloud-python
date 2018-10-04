@@ -1,6 +1,5 @@
 class {{ message.name }}(_.proto.Message):
-    """{{ message.meta.doc|wrap(width=72, indent=4) }}
-    """
+    """{{ message.meta.doc|rst(indent=4) }}"""
     {# Iterate over nested enums. -#}
     {% for enum in message.nested_enums.values() %}{% filter indent -%}
         {% include '$namespace/$name_$version/types/_enum.py.j2' %}
@@ -19,7 +18,7 @@ class {{ message.name }}(_.proto.Message):
     {%- if field.enum or field.message %},
         {{ field.proto_type.lower() }}={{ field.type.ident.rel(message.ident) }},
     {% endif %})
-    """{{ field.meta.doc|wrap(width=72, offset=4, indent=4) }}"""
+    """{{ field.meta.doc|rst(indent=4) }}"""
     {% endfor %}
 
     class Meta:

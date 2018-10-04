@@ -21,7 +21,7 @@ from .base import {{ service.name }}Transport
 class {{ service.name }}GrpcTransport({{ service.name }}Transport):
     """gRPC backend transport for {{ service.name }}.
 
-    {{ service.meta.doc|wrap(width=72, indent=4) }}
+    {{ service.meta.doc|rst(width=72, indent=4) }}
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -90,12 +90,12 @@ class {{ service.name }}GrpcTransport({{ service.name }}Transport):
                 width=70, offset=40, indent=8) }}
         {{- ' ' -}} method over gRPC.
 
-        {{ method.meta.doc|wrap(width=72, indent=8) }}
+        {{ method.meta.doc|rst(width=72, indent=8) }}
 
         Returns:
             Callable[[~.{{ method.input.name }}],
                     ~.{{ method.output.name }}]:
-                {{ method.output.meta.doc|wrap(width=72, indent=16) }}
+                {{ method.output.meta.doc|rst(width=72, indent=16) }}
         """
         # Generate a "stub function" on-the-fly which will actually make
         # the request.

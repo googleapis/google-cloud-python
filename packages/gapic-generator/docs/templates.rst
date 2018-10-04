@@ -71,6 +71,9 @@ writing properly formatted templates.
 
 These are:
 
+* ``rst`` (:meth:`~.utils.rst.rst`): Converts a string to ReStructured Text.
+  If the string appears not to be formatted (contains no obvious Markdown
+  syntax characters), then this method forwards to ``wrap``.
 * ``snake_case`` (:meth:`~.utils.case.to_snake_case`): Converts a string in
   any sane case system to snake case.
 * ``wrap`` (:meth:`~.utils.lines.wrap`): Wraps arbitrary text. Keyword

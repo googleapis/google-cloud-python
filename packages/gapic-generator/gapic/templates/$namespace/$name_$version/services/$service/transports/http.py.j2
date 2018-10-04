@@ -18,7 +18,7 @@ from .base import {{ service.name }}Transport
 class {{ service.name }}HttpTransport({{ service.name }}Transport):
     """HTTP backend transport for {{ service.name }}.
 
-    {{ service.meta.doc|wrap(width=72, indent=4) }}
+    {{ service.meta.doc|rst(width=72, indent=4) }}
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -76,14 +76,14 @@ class {{ service.name }}HttpTransport({{ service.name }}Transport):
 
         Args:
             request (~.{{ method.input.ident }}):
-                The request object. {{- ' ' -}}
-                {{ method.input.meta.doc|wrap(width=72, offset=36, indent=16) }}
+                The request object.
+                {{ method.input.meta.doc|rst(width=72, indent=16) }}
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent alont with the request as metadata.
 
         Returns:
             ~.{{ method.output.ident }}:
-                {{ method.output.meta.doc|wrap(width=72, indent=16) }}
+                {{ method.output.meta.doc|rst(width=72, indent=16) }}
         """
         # Serialize the input.
         data = request.SerializeToString()

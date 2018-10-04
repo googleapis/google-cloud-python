@@ -18,11 +18,13 @@ from gapic.utils.filename import to_valid_filename
 from gapic.utils.filename import to_valid_module_name
 from gapic.utils.lines import wrap
 from gapic.utils.placeholder import Placeholder
+from gapic.utils.rst import rst
 
 
 __all__ = (
     'cached_property',
     'Placeholder',
+    'rst',
     'to_snake_case',
     'to_valid_filename',
     'to_valid_module_name',

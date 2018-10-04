@@ -18,8 +18,7 @@ from .transports import {{ service.name }}Transport
 
 
 class {{ service.name }}:
-    """{{ service.meta.doc|wrap(width=72, offset=7, indent=4) }}
-    """
+    """{{ service.meta.doc|rst(width=72, indent=4) }}"""
     def __init__(self, *,
             credentials: credentials.Credentials = None,
             transport: Union[str, {{ service.name }}Transport] = None,
@@ -58,7 +57,7 @@ class {{ service.name }}:
             timeout: float = None,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> {{ method.output.ident }}:
-        """{{ method.meta.doc|wrap(width=72, offset=11, indent=8) }}
+        """{{ method.meta.doc|rst(width=72, indent=8) }}
 
         Args:
             request ({{ method.input.ident.sphinx }}):
@@ -129,7 +128,7 @@ class {{ service.name }}:
             timeout: float = None,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> {{ method.output.ident }}:
-        """{{ method.meta.doc|wrap(width=72, offset=11, indent=8) }}
+        """{{ method.meta.doc|rst(width=72, indent=8) }}
 
         Args:
             {%- for field in signature.fields.values() %}

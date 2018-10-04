@@ -46,3 +46,7 @@ def test_wrap_initial_offset():
 
 def test_wrap_indent_short():
     assert lines.wrap('foo bar', width=30, indent=10) == 'foo bar'
+
+
+def test_wrap_short_line_preserved():
+    assert lines.wrap('foo\nbar\nbaz', width=80) == 'foo\nbar\nbaz'
