@@ -23,7 +23,6 @@ from gapic.utils.placeholder import Placeholder
 __all__ = (
     'cached_property',
     'Placeholder',
-    'subsequent_indent',
     'to_snake_case',
     'to_valid_filename',
     'to_valid_module_name',
