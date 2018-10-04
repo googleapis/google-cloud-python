@@ -107,17 +107,6 @@ def test_service_has_lro():
     assert service.has_lro
 
 
-def test_service_no_field_headers():
-    service = make_service()
-    assert service.has_field_headers is False
-
-
-def test_service_has_field_headers():
-    http_rule = http_pb2.HttpRule(get='/v1/{parent=projects/*}/topics')
-    service = make_service_with_method_options(http_rule=http_rule)
-    assert service.has_field_headers
-
-
 def test_module_name():
     service = make_service(name='MyService')
     assert service.module_name == 'my_service'

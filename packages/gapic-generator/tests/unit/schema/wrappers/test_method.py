@@ -16,6 +16,7 @@ import collections
 from typing import Sequence
 
 from google.api import annotations_pb2
+from google.api import http_pb2
 from google.api import signature_pb2
 from google.protobuf import descriptor_pb2
 
@@ -60,9 +61,15 @@ def test_method_no_signature():
     assert len(make_method('Ping').signatures) == 0
 
 
-def test_method_field_headers():
+def test_method_field_headers_none():
     method = make_method('DoSomething')
     assert isinstance(method.field_headers, collections.Sequence)
+
+
+def test_service_field_headers_present():
+    http_rule = http_pb2.HttpRule(get='/v1/{parent=projects/*}/topics')
+    service = make_method('DoSomething', http_rule=http_rule)
+    assert service.field_headers == ('parent',)
 
 
 def test_method_unary_unary():
@@ -89,6 +96,7 @@ def make_method(
         name: str, input_message: wrappers.MessageType = None,
         output_message: wrappers.MessageType = None,
         package: str = 'foo.bar.v1', module: str = 'baz',
+        http_rule: http_pb2.HttpRule = None,
         **kwargs) -> wrappers.Method:
     # Use default input and output messages if they are not provided.
     input_message = input_message or make_message('MethodInput')
@@ -101,6 +109,11 @@ def make_method(
         output_type=str(output_message.meta.address),
         **kwargs
     )
+
+    # If there is an HTTP rule, process it.
+    if http_rule:
+        ext_key = annotations_pb2.http
+        method_pb.options.Extensions[ext_key].MergeFrom(http_rule)
 
     # Instantiate the wrapper class.
     return wrappers.Method(

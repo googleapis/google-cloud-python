@@ -500,8 +500,3 @@ class Service:
         """Return whether the service has a long-running method."""
         return any([getattr(m.output, 'lro_response', None)
                     for m in self.methods.values()])
-
-    @property
-    def has_field_headers(self) -> bool:
-        """Return whether the service has a method containing field headers."""
-        return any([m.field_headers for m in self.methods.values()])
