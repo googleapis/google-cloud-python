@@ -19,7 +19,8 @@ It is split into three main sections:
 
 .. note::
 
-    Templates are housed within the ``generator`` module's directory.
+    Templates are housed in the ``templates`` directory, which is a sibling
+    to the modules listed above.
 
 .. toctree::
    :maxdepth: 4
