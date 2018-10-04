@@ -74,8 +74,8 @@ These are:
 * ``snake_case`` (:meth:`~.utils.case.to_snake_case`): Converts a string in
   any sane case system to snake case.
 * ``wrap`` (:meth:`~.utils.lines.wrap`): Wraps arbitrary text. Keyword
-  arguments on this method such as ``subsequent_indent`` and ``initial_width``
-  should make it relatively easy to take an arbitrary string and make it
-  wrap to 79 characters appropriately.
+  arguments on this method such as ``offset`` and ``indent`` should make it
+  relatively easy to take an arbitrary string and make it wrap to 79
+  characters appropriately.
 
 .. _Jinja: http://jinja.pocoo.org/docs/2.10/
