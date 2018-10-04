@@ -187,6 +187,27 @@ class TestDatasetReference(unittest.TestCase):
         with self.assertRaises(ValueError):
             cls.from_string('string-project:string_dataset')
 
+    def test_from_string_not_fully_qualified(self):
+        cls = self._get_target_class()
+        with self.assertRaises(ValueError):
+            cls.from_string('string_dataset')
+        with self.assertRaises(ValueError):
+            cls.from_string('a.b.c')
+
+    def test_from_string_with_default_project(self):
+        cls = self._get_target_class()
+        got = cls.from_string(
+            'string_dataset', default_project='default-project')
+        self.assertEqual(got.project, 'default-project')
+        self.assertEqual(got.dataset_id, 'string_dataset')
+
+    def test_from_string_ignores_default_project(self):
+        cls = self._get_target_class()
+        got = cls.from_string(
+            'string-project.string_dataset', default_project='default-project')
+        self.assertEqual(got.project, 'string-project')
+        self.assertEqual(got.dataset_id, 'string_dataset')
+
     def test___eq___wrong_type(self):
         dataset = self._make_one('project_1', 'dataset_1')
         other = object()
