@@ -741,12 +741,12 @@ class TestReadGBQIntegration(object):
         assert self.gbq_connector.sizeof_fmt(1048576) == "1.0 MB"
         assert self.gbq_connector.sizeof_fmt(1048576000) == "1000.0 MB"
         assert self.gbq_connector.sizeof_fmt(1073741824) == "1.0 GB"
-        assert self.gbq_connector.sizeof_fmt(1.099512E12) == "1.0 TB"
-        assert self.gbq_connector.sizeof_fmt(1.125900E15) == "1.0 PB"
-        assert self.gbq_connector.sizeof_fmt(1.152922E18) == "1.0 EB"
-        assert self.gbq_connector.sizeof_fmt(1.180592E21) == "1.0 ZB"
-        assert self.gbq_connector.sizeof_fmt(1.208926E24) == "1.0 YB"
-        assert self.gbq_connector.sizeof_fmt(1.208926E28) == "10000.0 YB"
+        assert self.gbq_connector.sizeof_fmt(1.099512e12) == "1.0 TB"
+        assert self.gbq_connector.sizeof_fmt(1.125900e15) == "1.0 PB"
+        assert self.gbq_connector.sizeof_fmt(1.152922e18) == "1.0 EB"
+        assert self.gbq_connector.sizeof_fmt(1.180592e21) == "1.0 ZB"
+        assert self.gbq_connector.sizeof_fmt(1.208926e24) == "1.0 YB"
+        assert self.gbq_connector.sizeof_fmt(1.208926e28) == "10000.0 YB"
 
     def test_struct(self, project_id):
         query = """SELECT 1 int_field,
@@ -1322,6 +1322,32 @@ class TestToGBQIntegration(object):
 
         table = bigquery_client.get_table(
             bigquery_client.dataset(tokyo_dataset).table("to_gbq_test")
+        )
+        assert table.num_rows > 0
+
+    def test_upload_data_tokyo_non_existing_dataset(
+        self, project_id, random_dataset_id, bigquery_client
+    ):
+        test_size = 10
+        df = make_mixed_dataframe_v2(test_size)
+        non_existing_tokyo_dataset = random_dataset_id
+        non_existing_tokyo_destination = "{}.to_gbq_test".format(
+            non_existing_tokyo_dataset
+        )
+
+        # Initialize table with sample data
+        gbq.to_gbq(
+            df,
+            non_existing_tokyo_destination,
+            project_id,
+            private_key=self.credentials,
+            location="asia-northeast1",
+        )
+
+        table = bigquery_client.get_table(
+            bigquery_client.dataset(non_existing_tokyo_dataset).table(
+                "to_gbq_test"
+            )
         )
         assert table.num_rows > 0
 

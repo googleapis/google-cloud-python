@@ -283,7 +283,7 @@ class GbqConnector(object):
 
         # BQ Queries costs $5 per TB. First 1 TB per month is free
         # see here for more: https://cloud.google.com/bigquery/pricing
-        self.query_price_for_TB = 5. / 2 ** 40  # USD/TB
+        self.query_price_for_TB = 5.0 / 2 ** 40  # USD/TB
 
     def _start_timer(self):
         self.start = time.time()
@@ -895,7 +895,11 @@ def to_gbq(
     dataset_id, table_id = destination_table.rsplit(".", 1)
 
     table = _Table(
-        project_id, dataset_id, reauth=reauth, private_key=private_key
+        project_id,
+        dataset_id,
+        reauth=reauth,
+        private_key=private_key,
+        location=location,
     )
 
     if not table_schema:
@@ -967,9 +971,18 @@ def _generate_bq_schema(df, default_type="STRING"):
 
 
 class _Table(GbqConnector):
-    def __init__(self, project_id, dataset_id, reauth=False, private_key=None):
+    def __init__(
+        self,
+        project_id,
+        dataset_id,
+        reauth=False,
+        private_key=None,
+        location=None,
+    ):
         self.dataset_id = dataset_id
-        super(_Table, self).__init__(project_id, reauth, private_key)
+        super(_Table, self).__init__(
+            project_id, reauth, private_key, location=location
+        )
 
     def exists(self, table_id):
         """ Check if a table exists in Google BigQuery
@@ -1017,9 +1030,11 @@ class _Table(GbqConnector):
         if not _Dataset(self.project_id, private_key=self.private_key).exists(
             self.dataset_id
         ):
-            _Dataset(self.project_id, private_key=self.private_key).create(
-                self.dataset_id
-            )
+            _Dataset(
+                self.project_id,
+                private_key=self.private_key,
+                location=self.location,
+            ).create(self.dataset_id)
 
         table_ref = self.client.dataset(self.dataset_id).table(table_id)
         table = Table(table_ref)
@@ -1064,8 +1079,12 @@ class _Table(GbqConnector):
 
 
 class _Dataset(GbqConnector):
-    def __init__(self, project_id, reauth=False, private_key=None):
-        super(_Dataset, self).__init__(project_id, reauth, private_key)
+    def __init__(
+        self, project_id, reauth=False, private_key=None, location=None
+    ):
+        super(_Dataset, self).__init__(
+            project_id, reauth, private_key, location=location
+        )
 
     def exists(self, dataset_id):
         """ Check if a dataset exists in Google BigQuery
@@ -1106,6 +1125,9 @@ class _Dataset(GbqConnector):
             )
 
         dataset = Dataset(self.client.dataset(dataset_id))
+
+        if self.location is not None:
+            dataset.location = self.location
 
         try:
             self.client.create_dataset(dataset)
