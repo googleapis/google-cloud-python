@@ -172,17 +172,20 @@ class TableReference(object):
             self._project, self._dataset_id, self._table_id)
 
     @classmethod
-    def from_string(cls, full_table_id):
-        """Construct a table reference from fully-qualified table ID.
+    def from_string(cls, table_id, default_project=None):
+        """Construct a table reference from table ID string.
 
         Args:
-            full_table_id (str):
-                A fully-qualified table ID in standard SQL format. Must
-                included a project ID, dataset ID, and table ID, each
-                separated by ``.``.
+            table_id (str):
+                A table ID in standard SQL format. If ``default_project``
+                is not specified, this must included a project ID, dataset
+                ID, and table ID, each separated by ``.``.
+            default_project (str):
+                Optional. The project ID to use when ``table_id`` does not
+                include a project ID.
 
         Returns:
-            TableReference: Table reference parsed from ``full_table_id``.
+            TableReference: Table reference parsed from ``table_id``.
 
         Examples:
             >>> TableReference.from_string('my-project.mydataset.mytable')
@@ -190,19 +193,41 @@ class TableReference(object):
 
         Raises:
             ValueError:
-                If ``full_table_id`` is not a fully-qualified table ID in
+                If ``table_id`` is not a fully-qualified table ID in
                 standard SQL format.
         """
         from google.cloud.bigquery.dataset import DatasetReference
 
-        parts = full_table_id.split('.')
-        if len(parts) != 3:
-            raise ValueError(
-                'full_table_id must be a fully-qualified table ID in '
-                'standard SQL format. e.g. "project.dataset.table", got '
-                '{}'.format(full_table_id))
+        output_project_id = default_project
+        output_dataset_id = None
+        output_table_id = None
+        parts = table_id.split('.')
 
-        return cls(DatasetReference(parts[0], parts[1]), parts[2])
+        if len(parts) < 2:
+            raise ValueError(
+                'table_id must be a fully-qualified table ID in '
+                'standard SQL format. e.g. "project.dataset.table", got '
+                '{}'.format(table_id))
+        elif len(parts) == 2:
+            if not default_project:
+                raise ValueError(
+                    'When default_project is not set, table_id must be a '
+                    'fully-qualified table ID in standard SQL format. '
+                    'e.g. "project.dataset_id.table_id", got {}'.format(
+                        table_id))
+            output_dataset_id, output_table_id = parts
+        elif len(parts) == 3:
+            output_project_id, output_dataset_id, output_table_id = parts
+        if len(parts) > 3:
+            raise ValueError(
+                'Too many parts in table_id. Must be a fully-qualified table '
+                'ID in standard SQL format. e.g. "project.dataset.table", '
+                'got {}'.format(table_id))
+
+        return cls(
+            DatasetReference(output_project_id, output_dataset_id),
+            output_table_id,
+        )
 
     @classmethod
     def from_api_repr(cls, resource):

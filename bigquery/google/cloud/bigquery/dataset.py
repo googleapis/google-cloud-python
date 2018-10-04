@@ -211,18 +211,21 @@ class DatasetReference(object):
         return cls(project, dataset_id)
 
     @classmethod
-    def from_string(cls, full_dataset_id):
-        """Construct a dataset reference from fully-qualified dataset ID.
+    def from_string(cls, dataset_id, default_project=None):
+        """Construct a dataset reference from dataset ID string.
 
         Args:
-            full_dataset_id (str):
-                A fully-qualified dataset ID in standard SQL format. Must
-                included both the project ID and the dataset ID, separated by
-                ``.``.
+            dataset_id (str):
+                A dataset ID in standard SQL format. If ``default_project``
+                is not specified, this must included both the project ID and
+                the dataset ID, separated by ``.``.
+            default_project (str):
+                Optional. The project ID to use when ``dataset_id`` does not
+                include a project ID.
 
         Returns:
             DatasetReference:
-                Dataset reference parsed from ``full_dataset_id``.
+                Dataset reference parsed from ``dataset_id``.
 
         Examples:
             >>> DatasetReference.from_string('my-project-id.some_dataset')
@@ -230,16 +233,27 @@ class DatasetReference(object):
 
         Raises:
             ValueError:
-                If ``full_dataset_id`` is not a fully-qualified dataset ID in
+                If ``dataset_id`` is not a fully-qualified dataset ID in
                 standard SQL format.
         """
-        parts = full_dataset_id.split('.')
-        if len(parts) != 2:
+        output_dataset_id = dataset_id
+        output_project_id = default_project
+        parts = dataset_id.split('.')
+
+        if len(parts) == 1 and not default_project:
             raise ValueError(
-                'full_dataset_id must be a fully-qualified dataset ID in '
-                'standard SQL format. e.g. "project.dataset_id", got '
-                '{}'.format(full_dataset_id))
-        return cls(*parts)
+                'When default_project is not set, dataset_id must be a '
+                'fully-qualified dataset ID in standard SQL format. '
+                'e.g. "project.dataset_id", got {}'.format(dataset_id))
+        elif len(parts) == 2:
+            output_project_id, output_dataset_id = parts
+        elif len(parts) > 2:
+            raise ValueError(
+                'Too many parts in dataset_id. Expected a fully-qualified '
+                'dataset ID in standard SQL format. e.g. '
+                '"project.dataset_id", got {}'.format(dataset_id))
+
+        return cls(output_project_id, output_dataset_id)
 
     def to_api_repr(self):
         """Construct the API resource representation of this dataset reference
