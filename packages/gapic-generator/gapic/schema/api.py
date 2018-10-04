@@ -26,8 +26,8 @@ from google.api import annotations_pb2
 from google.protobuf import descriptor_pb2
 
 from gapic.schema import metadata
-from gapic.schema import naming
 from gapic.schema import wrappers
+from gapic.schema import naming as api_naming
 from gapic.utils import cached_property
 from gapic.utils import to_snake_case
 
@@ -41,13 +41,17 @@ class Proto:
     messages: Mapping[str, wrappers.MessageType]
     enums: Mapping[str, wrappers.EnumType]
     file_to_generate: bool
+    meta: metadata.Metadata = dataclasses.field(
+        default_factory=metadata.Metadata,
+    )
 
     def __getattr__(self, name: str):
         return getattr(self.file_pb2, name)
 
     @classmethod
     def build(cls, file_descriptor: descriptor_pb2.FileDescriptorProto,
-            file_to_generate: bool, prior_protos: Mapping[str, 'Proto'] = None,
+            file_to_generate: bool, naming: api_naming.Naming,
+            prior_protos: Mapping[str, 'Proto'] = None,
             ) -> 'Proto':
         """Build and return a Proto instance.
 
@@ -56,11 +60,14 @@ class Proto:
                 object describing the proto file.
             file_to_generate (bool): Whether this is a file which is
                 to be directly generated, or a dependency.
+            naming (~.Naming): The :class:`~.Naming` instance associated
+                with the API.
             prior_protos (~.Proto): Previous, already processed protos.
                 These are needed to look up messages in imported protos.
         """
         return _ProtoBuilder(file_descriptor,
             file_to_generate=file_to_generate,
+            naming=naming,
             prior_protos=prior_protos or {},
         ).proto
 
@@ -73,6 +80,36 @@ class Proto:
                 name in snake case).
         """
         return to_snake_case(self.name.split('/')[-1][:-len('.proto')])
+
+    @cached_property
+    def python_modules(self) -> Sequence[Tuple[str, str]]:
+        """Return a sequence of Python modules, for import.
+
+        The results of this method are in alphabetical order (by package,
+        then module), and do not contain duplicates.
+
+        Returns:
+            Sequence[Tuple[str, str]]: The package and module pair, intended
+            for use in a ``from package import module`` type
+            of statement.
+        """
+        answer = set()
+        for message in self.messages.values():
+            for field in message.fields.values():
+                # We only need to add imports for fields that
+                # are messages or enums.
+                if not field.message and not field.enum:
+                    continue
+
+                # Add the appropriate Python import for the field.
+                answer.add(field.type.ident.python_import)
+
+        # We may have gotten an import for this proto.
+        # Obviously no Python module may import itself; get rid of that.
+        answer = answer.difference({self.meta.address.python_import})
+
+        # Done; return the sorted sequence.
+        return tuple(sorted(list(answer)))
 
     @cached_property
     def top(self) -> 'Proto':
@@ -90,6 +127,7 @@ class Proto:
             enums={k: v for k, v in self.enums.items()
                    if not v.meta.address.parent},
             file_to_generate=False,
+            meta=self.meta,
         )
 
 
@@ -105,7 +143,7 @@ class API:
     An instance of this object is made available to every template
     (as ``api``).
     """
-    naming: naming.Naming
+    naming: api_naming.Naming
     protos: Mapping[str, Proto]
 
     @classmethod
@@ -124,7 +162,7 @@ class API:
                 rather than explicit targets.
         """
         # Save information about the overall naming for this API.
-        n = naming.Naming.build(*filter(
+        naming = api_naming.Naming.build(*filter(
             lambda fd: fd.package.startswith(package),
             file_descriptors,
         ))
@@ -136,11 +174,12 @@ class API:
             protos[fd.name] = _ProtoBuilder(
                 file_descriptor=fd,
                 file_to_generate=fd.package.startswith(package),
+                naming=naming,
                 prior_protos=protos,
             ).proto
 
         # Done; return the API.
-        return cls(naming=n, protos=protos)
+        return cls(naming=naming, protos=protos)
 
     @cached_property
     def enums(self) -> Mapping[str, wrappers.EnumType]:
@@ -182,6 +221,7 @@ class _ProtoBuilder:
 
     def __init__(self, file_descriptor: descriptor_pb2.FileDescriptorProto,
                  file_to_generate: bool,
+                 naming: api_naming.Naming,
                  prior_protos: Mapping[str, Proto] = None):
         self.messages = {}
         self.enums = {}
@@ -206,7 +246,8 @@ class _ProtoBuilder:
         # We put this together by a baton pass of sorts: everything in
         # this file *starts with* this address, which is appended to
         # for each item as it is loaded.
-        address = metadata.Address(
+        self.address = metadata.Address(
+            api_naming=naming,
             module=file_descriptor.name.split('/')[-1][:-len('.proto')],
             package=tuple(file_descriptor.package.split('.')),
         )
@@ -220,9 +261,9 @@ class _ProtoBuilder:
         # below is because `repeated DescriptorProto message_type = 4;` in
         # descriptor.proto itself).
         self._load_children(file_descriptor.enum_type, self._load_enum,
-                            address=address, path=(5,))
+                            address=self.address, path=(5,))
         self._load_children(file_descriptor.message_type, self._load_message,
-                            address=address, path=(4,))
+                            address=self.address, path=(4,))
 
         # Edge case: Protocol buffers is not particularly picky about
         # ordering, and it is possible that a message will have had a field
@@ -246,7 +287,7 @@ class _ProtoBuilder:
         # same files.
         if file_to_generate:
             self._load_children(file_descriptor.service, self._load_service,
-                                address=address, path=(6,))
+                                address=self.address, path=(6,))
         # TODO(lukesneeringer): oneofs are on path 7.
 
     @property
@@ -258,6 +299,9 @@ class _ProtoBuilder:
             file_to_generate=self.file_to_generate,
             messages=self.messages,
             services=self.services,
+            meta=metadata.Metadata(
+                address=self.address,
+            ),
         )
 
     @cached_property
@@ -358,7 +402,7 @@ class _ProtoBuilder:
                 enum=self.all_enums.get(field_pb.type_name.lstrip('.')),
                 message=self.all_messages.get(field_pb.type_name.lstrip('.')),
                 meta=metadata.Metadata(
-                    address=address,
+                    address=address.child(field_pb.name, path + (i,)),
                     documentation=self.docs.get(path + (i,), self.EMPTY),
                 ),
             )
@@ -406,7 +450,7 @@ class _ProtoBuilder:
                 input=self.all_messages[meth_pb.input_type.lstrip('.')],
                 method_pb=meth_pb,
                 meta=metadata.Metadata(
-                    address=address,
+                    address=address.child(meth_pb.name, path + (i,)),
                     documentation=self.docs.get(path + (i,), self.EMPTY),
                 ),
                 output=output_type,
@@ -421,7 +465,7 @@ class _ProtoBuilder:
             path: Tuple[int],
             ) -> wrappers.MessageType:
         """Load message descriptions from DescriptorProtos."""
-        address = address.child(message_pb.name)
+        address = address.child(message_pb.name, path)
 
         # Load all nested items.
         #
@@ -476,7 +520,7 @@ class _ProtoBuilder:
             path: Tuple[int],
             ) -> wrappers.EnumType:
         """Load enum descriptions from EnumDescriptorProtos."""
-        address = address.child(enum.name)
+        address = address.child(enum.name, path)
 
         # Put together wrapped objects for the enum values.
         values = []
@@ -506,7 +550,7 @@ class _ProtoBuilder:
             path: Tuple[int],
             ) -> wrappers.Service:
         """Load comments for a service and its methods."""
-        address = address.child(service.name)
+        address = address.child(service.name, path)
 
         # Put together a dictionary of the service's methods.
         methods = self._get_methods(

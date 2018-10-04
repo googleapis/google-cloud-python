@@ -15,7 +15,7 @@
 import dataclasses
 import os
 import re
-from typing import Iterable, Tuple
+from typing import Iterable, Sequence, Tuple
 
 from google.api import annotations_pb2
 from google.protobuf import descriptor_pb2
@@ -33,17 +33,18 @@ class Naming:
     An instance of this object is made available to every template
     (as ``api.naming``).
     """
-    name: str
-    namespace: Tuple[str]
-    version: str
-    product_name: str
-    product_url: str
+    name: str = ''
+    namespace: Tuple[str] = dataclasses.field(default_factory=tuple)
+    version: str = ''
+    product_name: str = ''
+    product_url: str = ''
+    proto_package: str = ''
 
     @classmethod
     def build(cls,
             *file_descriptors: Iterable[descriptor_pb2.FileDescriptorProto]
             ) -> 'Naming':
-        """Return a full APINaming instance based on these file descriptors.
+        """Return a full Naming instance based on these file descriptors.
 
         This is pieced together from the proto package names as well as the
         ``google.api.metadata`` file annotation. This information may be
@@ -86,7 +87,7 @@ class Naming:
         # This code may look counter-intuitive (why not use ? to make it
         # optional), but the engine's greediness routine will decide that
         # the version is the name, which is not what we want.
-        version = r'\.(?P<version>v[0-9]+(p[0-9]+)?((alpha|beta|test)[0-9]*)?)'
+        version = r'\.(?P<version>v[0-9]+(p[0-9]+)?((alpha|beta)[0-9]+)?)'
         if re.search(version, root_package):
             pattern += version
 
@@ -98,7 +99,7 @@ class Naming:
             namespace=tuple([i.capitalize()
                              for i in match['namespace'].split('.') if i]),
             product_name=match['name'].capitalize(),
-            product_url='',
+            proto_package=root_package,
             version=match.get('version', ''),
         )
 
@@ -161,6 +162,11 @@ class Naming:
     def module_name(self) -> str:
         """Return the appropriate Python module name."""
         return utils.to_valid_module_name(self.name)
+
+    @property
+    def module_namespace(self) -> Sequence[str]:
+        """Return the appropriate Python module namespace as a tuple."""
+        return tuple(utils.to_valid_module_name(i) for i in self.namespace)
 
     @property
     def namespace_packages(self) -> Tuple[str]:

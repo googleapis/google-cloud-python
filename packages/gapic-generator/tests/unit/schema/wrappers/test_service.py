@@ -57,20 +57,20 @@ def test_service_python_modules():
         get_method('Yawn', 'a.b.v1.c.YawnRequest', 'x.y.v1.z.YawnResponse'),
     ))
     assert service.python_modules == (
-        ('a.b.v1', 'c_pb2'),
-        ('foo', 'bacon_pb2'),
-        ('foo', 'bar_pb2'),
-        ('foo', 'baz_pb2'),
-        ('x.y.v1', 'z_pb2'),
+        ('a.b.v1', 'c'),
+        ('foo', 'bacon'),
+        ('foo', 'bar'),
+        ('foo', 'baz'),
+        ('x.y.v1', 'z'),
     )
 
 
 def test_service_python_modules_lro():
     service = make_service_with_method_options()
     assert service.python_modules == (
-        ('foo', 'bar_pb2'),
-        ('foo', 'baz_pb2'),
-        ('foo', 'qux_pb2'),
+        ('foo', 'bar'),
+        ('foo', 'baz'),
+        ('foo', 'qux'),
         ('google.api_core', 'operation'),
     )
 
@@ -89,10 +89,10 @@ def test_service_python_modules_signature():
     )
     # type=5 is int, so nothing is added.
     assert service.python_modules == (
-        ('a.b.c', 'v2_pb2'),
-        ('foo', 'bar_pb2'),
-        ('foo', 'baz_pb2'),
-        ('foo', 'qux_pb2'),
+        ('a.b.c', 'v2'),
+        ('foo', 'bar'),
+        ('foo', 'baz'),
+        ('foo', 'qux'),
         ('google.api_core', 'operation'),
     )
 

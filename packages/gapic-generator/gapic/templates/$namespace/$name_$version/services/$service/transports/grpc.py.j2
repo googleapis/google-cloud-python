@@ -13,6 +13,7 @@ import grpc
 
 {% for package, python_module in service.python_modules -%}
 from {{ package }} import {{ python_module }}
+{%- if python_module.endswith('_pb2') %} as {{ python_module[:-4] }}{% endif %}
 {% endfor %}
 from .base import {{ service.name }}Transport
 
@@ -103,9 +104,14 @@ class {{ service.name }}GrpcTransport({{ service.name }}Transport):
         if '{{ method.name|snake_case }}' not in self._stubs:
             self._stubs['{{ method.name|snake_case }}'] = self.grpc_channel.{{ method.grpc_stub_type }}(
                 '/{{ '.'.join(method.meta.address.package) }}.{{ service.name }}/{{ method.name }}',
-                request_serializer={{ method.input.ident }}.SerializeToString,
-                response_deserializer={{ method.output.ident }}.FromString,
+                request_serializer={{ method.input.ident }}.serialize,
+                response_deserializer={{ method.output.ident }}.deserialize,
             )
         return self._stubs['{{ method.name|snake_case }}']
     {%- endfor %}
+
+
+__all__ = (
+    '{{ service.name }}GrpcTransport',
+)
 {%- endblock -%}

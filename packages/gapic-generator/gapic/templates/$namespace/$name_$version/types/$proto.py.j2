@@ -1,0 +1,33 @@
+{% extends "_base.py.j2" %}
+
+{% block content %}
+class _:
+    # Note: This strange "import within the `_` class" is to avoid potential
+    # naming collisions; since we can not control the names chosen for
+    # fields, we do this instead.
+    import enum
+    import proto
+
+    {% for package, python_module in proto.python_modules -%}
+    from {{ package }} import {{ python_module }}
+    {%- if python_module.endswith('_pb2') %} as {{ python_module[:-4] }}{% endif %}
+    {% endfor %}
+
+
+{% for enum in proto.top.enums.values() -%}
+    {% include '$namespace/$name_$version/types/_enum.py.j2' %}
+{% endfor %}
+
+{% for message in proto.top.messages.values() -%}
+    {% include "$namespace/$name_$version/types/_message.py.j2" %}
+{% endfor %}
+
+__all__ = (
+    {%- for enum in proto.top.enums.values() %}
+    '{{ enum.name }}',
+    {%- endfor -%}
+    {%- for message in proto.top.messages.values() %}
+    '{{ message.name }}',
+    {%- endfor %}
+)
+{% endblock %}

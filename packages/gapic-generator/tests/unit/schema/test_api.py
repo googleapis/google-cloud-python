@@ -40,6 +40,7 @@ def test_api_build():
                 make_message_pb2(name='GetFooRequest', fields=(
                     make_field_pb2(name='imported_message', number=1,
                                    type_name='.google.dep.ImportedMessage'),
+                    make_field_pb2(name='primitive', number=2, type=1),
                 )),
                 make_message_pb2(name='GetFooResponse', fields=(
                     make_field_pb2(name='foo', number=1,
@@ -71,6 +72,9 @@ def test_api_build():
     assert 'google.example.v1.GetFooResponse' in api_schema.messages
     assert 'google.example.v1.FooService' in api_schema.services
     assert len(api_schema.enums) == 0
+    assert api_schema.protos['foo.proto'].python_modules == (
+        ('google.dep', 'dep_pb2'),
+    )
 
 
 def test_proto_build():
@@ -78,7 +82,7 @@ def test_proto_build():
         name='my_proto_file.proto',
         package='google.example.v1',
     )
-    proto = api.Proto.build(fdp, file_to_generate=True)
+    proto = api.Proto.build(fdp, file_to_generate=True, naming=make_naming())
     assert isinstance(proto, api.Proto)
 
 
@@ -98,7 +102,10 @@ def test_proto_builder_constructor():
 
     # Test the load function.
     with mock.patch.object(api._ProtoBuilder, '_load_children') as lc:
-        pb = api._ProtoBuilder(fdp, file_to_generate=True)
+        pb = api._ProtoBuilder(fdp,
+            file_to_generate=True,
+            naming=make_naming(),
+        )
 
         # There should be three total calls to load the different types
         # of children.
@@ -129,7 +136,7 @@ def test_not_target_file():
     fdp = make_file_pb2(messages=(message_pb,), services=(service_pb,))
 
     # Actually make the proto object.
-    proto = api.Proto.build(fdp, file_to_generate=False)
+    proto = api.Proto.build(fdp, file_to_generate=False, naming=make_naming())
 
     # The proto object should have the message, but no service.
     assert len(proto.messages) == 1
@@ -153,7 +160,7 @@ def test_messages():
     )
 
     # Make the proto object.
-    proto = api.Proto.build(fdp, file_to_generate=True)
+    proto = api.Proto.build(fdp, file_to_generate=True, naming=make_naming())
 
     # Get the message.
     assert len(proto.messages) == 1
@@ -181,7 +188,7 @@ def test_messages_reverse_declaration_order():
     )
 
     # Make the proto object.
-    proto = api.Proto.build(fdp, file_to_generate=True)
+    proto = api.Proto.build(fdp, file_to_generate=True, naming=make_naming())
 
     # Get the message.
     assert len(proto.messages) == 2
@@ -205,7 +212,7 @@ def test_messages_recursive():
     )
 
     # Make the proto object.
-    proto = api.Proto.build(fdp, file_to_generate=True)
+    proto = api.Proto.build(fdp, file_to_generate=True, naming=make_naming())
 
     # Get the message.
     assert len(proto.messages) == 1
@@ -226,7 +233,7 @@ def test_messages_nested():
     )
 
     # Make the proto object.
-    proto = api.Proto.build(fdp, file_to_generate=True)
+    proto = api.Proto.build(fdp, file_to_generate=True, naming=make_naming())
 
     # Set short variables for the names.
     foo = 'google.example.v3.Foo'
@@ -279,7 +286,7 @@ def test_services():
     )
 
     # Make the proto object.
-    proto = api.Proto.build(fdp, file_to_generate=True)
+    proto = api.Proto.build(fdp, file_to_generate=True, naming=make_naming())
 
     # Establish that our data looks correct.
     assert len(proto.services) == 1
@@ -304,7 +311,7 @@ def test_prior_protos():
     empty_proto = api.Proto.build(make_file_pb2(
         name='empty.proto', package='google.protobuf',
         messages=(make_message_pb2(name='Empty'),),
-    ), file_to_generate=False)
+    ), file_to_generate=False, naming=make_naming())
 
     # Set up the service with an RPC.
     service_pb = descriptor_pb2.ServiceDescriptorProto(
@@ -332,7 +339,7 @@ def test_prior_protos():
     # Make the proto object.
     proto = api.Proto.build(fdp, file_to_generate=True, prior_protos={
         'google/protobuf/empty.proto': empty_proto,
-    })
+    }, naming=make_naming())
 
     # Establish that our data looks correct.
     assert len(proto.services) == 1
@@ -354,7 +361,7 @@ def test_lro():
     lro_proto = api.Proto.build(make_file_pb2(
         name='operations.proto', package='google.longrunning',
         messages=(make_message_pb2(name='Operation'),),
-    ), file_to_generate=False)
+    ), file_to_generate=False, naming=make_naming())
 
     # Set up a method with LRO annotations.
     method_pb2 = descriptor_pb2.MethodDescriptorProto(
@@ -392,7 +399,7 @@ def test_lro():
     # Make the proto object.
     proto = api.Proto.build(fdp, file_to_generate=True, prior_protos={
         'google/longrunning/operations.proto': lro_proto,
-    })
+    }, naming=make_naming())
 
     # Establish that our data looks correct.
     assert len(proto.services) == 1
@@ -412,7 +419,7 @@ def test_enums():
         L(path=(5, 0, 2, 0), leading_comments='This is the zero value.'),
         L(path=(5, 0, 2, 1), leading_comments='This is the one value.'),
     ))
-    proto = api.Proto.build(fdp, file_to_generate=True)
+    proto = api.Proto.build(fdp, file_to_generate=True, naming=make_naming())
     assert len(proto.enums) == 1
     enum = proto.enums['google.enum.v1.Silly']
     assert enum.meta.doc == 'This is the Silly enum.'

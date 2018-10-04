@@ -1,15 +1,15 @@
 {% extends '_base.py.j2' %}
 
 {% block content %}
-# Import each service from {{ api.naming.version }} into the unversioned namespace.
+from ..{{ api.naming.versioned_module_name }} import types
 {% for service in api.services.values() -%}
 from ..{{ api.naming.versioned_module_name }}.services.{{ service.name|snake_case }} import {{ service.name }}
 {% endfor %}
 
 __all__ = (
-    '{{ api.naming.version }}',
     {%- for service in api.services.values() %}
     '{{ service.name }}',
     {%- endfor %}
+    'types',
 )
 {% endblock %}

@@ -10,6 +10,7 @@ from google.auth.transport.requests import AuthorizedSession
 
 {% for package, python_module in service.python_modules -%}
 from {{ package }} import {{ python_module }}
+{%- if python_module.endswith('_pb2') %} as {{ python_module[:-4] }}{% endif %}
 {% endfor %}
 from .base import {{ service.name }}Transport
 
@@ -106,4 +107,9 @@ class {{ service.name }}HttpTransport({{ service.name }}Transport):
             response.content,
         )
     {%- endfor %}
+
+
+__all__ = (
+    '{{ service.name }}HttpTransport',
+)
 {% endblock %}

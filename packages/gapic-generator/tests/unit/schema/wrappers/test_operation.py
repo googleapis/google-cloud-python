@@ -44,4 +44,4 @@ def test_operation_meta():
     )
     operation = wrappers.OperationType(lro_response=lro_response)
     assert 'representing a long-running operation' in operation.meta.doc
-    assert ':class:`~.foo_pb2.LroResponse`' in operation.meta.doc
+    assert ':class:`~.foo.LroResponse`' in operation.meta.doc

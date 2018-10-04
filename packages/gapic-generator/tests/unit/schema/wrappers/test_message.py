@@ -41,8 +41,8 @@ def test_message_docstring():
 
 def test_message_ident():
     message = make_message('Baz', package='foo.v1', module='bar')
-    assert str(message.ident) == 'bar_pb2.Baz'
-    assert message.ident.sphinx == '~.bar_pb2.Baz'
+    assert str(message.ident) == 'bar.Baz'
+    assert message.ident.sphinx == '~.bar.Baz'
 
 
 def test_get_field():

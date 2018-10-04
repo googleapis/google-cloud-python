@@ -444,7 +444,7 @@ class Service:
         then module), and do not contain duplicates.
 
         Returns:
-            Sequence[str, str]: The package and module pair, intended
+            Sequence[Tuple[str, str]]: The package and module pair, intended
             for use in a ``from package import module`` type
             of statement.
         """
@@ -452,21 +452,8 @@ class Service:
         for method in self.methods.values():
             # Add the module containing both the request and response
             # messages. (These are usually the same, but not necessarily.)
-            answer.add((
-                '.'.join(method.input.ident.package),
-                method.input.ident.module + '_pb2',
-            ))
-            answer.add((
-                '.'.join(method.output.ident.package),
-                # TODO(#34): This is obviously unacceptable and gross and
-                #            generally vomit-inducing.
-                #
-                #            I am not fixing this right now because *_pb2
-                #            is about to go away.
-                method.output.ident.module + '_pb2'
-                if not getattr(method.output, 'lro_response', None)
-                else method.output.ident.module,
-            ))
+            answer.add(method.input.ident.python_import)
+            answer.add(method.output.ident.python_import)
 
             # If this method has flattening that is honored, add its
             # modules.
@@ -476,23 +463,14 @@ class Service:
             for sig in method.signatures.single_dispatch:
                 for field in sig.fields.values():
                     if not isinstance(field.type, PythonType):
-                        answer.add((
-                            '.'.join(field.type.ident.package),
-                            field.type.ident.module + '_pb2',
-                        ))
+                        answer.add(field.type.ident.python_import)
 
             # If this method has LRO, it is possible (albeit unlikely) that
             # the LRO messages reside in a different module.
             if getattr(method.output, 'lro_response', None):
-                answer.add((
-                    '.'.join(method.output.lro_response.ident.package),
-                    method.output.lro_response.ident.module + '_pb2',
-                ))
+                answer.add(method.output.lro_response.ident.python_import)
             if getattr(method.output, 'lro_metadata', None):
-                answer.add((
-                    '.'.join(method.output.lro_metadata.ident.package),
-                    method.output.lro_metadata.ident.module + '_pb2',
-                ))
+                answer.add(method.output.lro_metadata.ident.python_import)
         return tuple(sorted(answer))
 
     @property

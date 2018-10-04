@@ -12,6 +12,7 @@ from google.auth import credentials
 
 {% for package, python_module in service.python_modules -%}
 from {{ package }} import {{ python_module }}
+{%- if python_module.endswith('_pb2') %} as {{ python_module[:-4] }}{% endif %}
 {% endfor %}
 
 class {{ service.name }}Transport(metaclass=abc.ABCMeta):
@@ -61,4 +62,9 @@ class {{ service.name }}Transport(metaclass=abc.ABCMeta):
             ) -> {{ method.output.ident }}:
         raise NotImplementedError
     {%- endfor %}
+
+
+__all__ = (
+    '{{ service.name }}Transport',
+)
 {% endblock %}

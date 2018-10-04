@@ -27,17 +27,23 @@ with the things they describe for easy access in templates.
 """
 
 import dataclasses
-from typing import Tuple
+from typing import Sequence, Tuple
 
 from google.protobuf import descriptor_pb2
+
+from gapic.schema import naming
 
 
 @dataclasses.dataclass(frozen=True)
 class Address:
     name: str = ''
     module: str = ''
+    module_path: Tuple[int] = dataclasses.field(default_factory=tuple)
     package: Tuple[str] = dataclasses.field(default_factory=tuple)
     parent: Tuple[str] = dataclasses.field(default_factory=tuple)
+    api_naming: naming.Naming = dataclasses.field(
+        default_factory=naming.Naming,
+    )
 
     def __str__(self) -> str:
         """Return the Python identifier for this type.
@@ -45,14 +51,9 @@ class Address:
         Because we import modules as a whole, rather than individual
         members from modules, this is consistently `module.Name`.
         """
-        # TODO(#34): Special cases are not special enough to break the rules.
-        #            Allowing this temporarily because it will be fixed by
-        #            refactoring proto generation and/or OperationType.
-        if self.package == ('google', 'api_core'):
-            return f'{self.module}.{self.name}'
         if self.module:
-            return f'{self.module}_pb2.{self.name}'
-        return self.name
+            return '.'.join((self.module,) + self.parent + (self.name,))
+        return '.'.join(self.parent + (self.name,))
 
     @property
     def proto(self) -> str:
@@ -65,13 +66,35 @@ class Address:
         return '.'.join(self.package)
 
     @property
+    def python_import(self) -> Tuple[Sequence[str], str]:
+        """Return the Python import for this type."""
+        # If there is no naming object, this is a special case for operation.
+        # FIXME(#34): OperationType does not work well. Fix or expunge it.
+        if not self.api_naming:
+            return ('.'.join(self.package), self.module)
+
+        # If this is part of the proto package that we are generating,
+        # rewrite the package to our structure.
+        if self.proto_package.startswith(self.api_naming.proto_package):
+            return (
+                '.'.join(self.api_naming.module_namespace + (
+                    self.api_naming.versioned_module_name,
+                    'types',
+                )),
+                self.module,
+            )
+
+        # Return the standard import.
+        return ('.'.join(self.package), f'{self.module}_pb2')
+
+    @property
     def sphinx(self) -> str:
         """Return the Sphinx identifier for this type."""
         if self.module:
             return f'~.{self}'
         return self.name
 
-    def child(self, child_name: str) -> 'Address':
+    def child(self, child_name: str, path: Tuple[int]) -> 'Address':
         """Return a new child of the current Address.
 
         Args:
@@ -82,8 +105,10 @@ class Address:
             ~.Address: The new address object.
         """
         return type(self)(
-            name=child_name,
+            api_naming=self.api_naming,
             module=self.module,
+            module_path=self.module_path + path,
+            name=child_name,
             package=self.package,
             parent=self.parent + (self.name,) if self.name else self.parent,
         )
@@ -102,9 +127,41 @@ class Address:
         Returns:
             str: The appropriate identifier.
         """
+        # Is this referencing a message in the same proto file?
         if self.package == address.package and self.module == address.module:
-            return self.name
-        return str(self)
+            # It is possible that a field references a message that has
+            # not yet been declared. If so, send its name enclosed in quotes
+            # (a string) instead.
+            if (len(self.module_path) == len(address.module_path) and
+                    self.module_path > address.module_path or
+                    self == address):
+                return f"'{self.name}'"
+
+            # Edge case: If two (or more) messages are nested under a common
+            # parent message, and one references another, then return that
+            # enclosed in quotes.
+            #
+            # The reason for this is that each nested class creates a new
+            # scope in Python, without reference to the parent class being
+            # created, so there is no way for one nested class to reference
+            # another at class instantiation time.
+            if (self.parent and address.parent and
+                    self.parent[0] == address.parent[0]):
+                return f"'{'.'.join(self.parent)}.{self.name}'"
+
+            # Edge case: Similar to above, if this is a message that is
+            # referencing a nested message that it contains, we need
+            # the message to be referenced relative to this message's
+            # namespace.
+            if self.parent and self.parent[0] == address.name:
+                return '.'.join(self.parent[1:] + (self.name,))
+
+            # This is a message in the same module, already declared.
+            # Send its name.
+            return '.'.join(self.parent + (self.name,))
+
+        # Return the usual `module.Name`.
+        return f'_.{str(self)}'
 
     def resolve(self, selector: str) -> str:
         """Resolve a potentially-relative protobuf selector.

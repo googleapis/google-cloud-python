@@ -1,0 +1,7 @@
+class {{ enum.name }}(_.enum.IntEnum):
+    """{{ enum.meta.doc|wrap(width=72, indent=4) }}
+    """
+    {% for enum_value in enum.values -%}
+    {{ enum_value.name }} = {{ enum_value.number }}
+    {% endfor -%}
+{{ '\n\n' }}

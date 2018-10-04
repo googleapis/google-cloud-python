@@ -259,6 +259,7 @@ def make_proto(file_pb: descriptor_pb2.FileDescriptorProto,
     prior_protos = prior_protos or {}
     return api._ProtoBuilder(file_pb,
         file_to_generate=file_to_generate,
+        naming=make_naming(),
         prior_protos=prior_protos,
     ).proto
 

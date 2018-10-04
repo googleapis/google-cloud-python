@@ -21,13 +21,13 @@ from gapic.schema import metadata
 
 def test_address_str_no_parent():
     addr = metadata.Address(package=('foo', 'bar'), module='baz', name='Bacon')
-    assert str(addr) == 'baz_pb2.Bacon'
+    assert str(addr) == 'baz.Bacon'
 
 
 def test_address_str_parent():
     addr = metadata.Address(package=('foo', 'bar'), module='baz', name='Bacon',
                             parent=('spam', 'eggs'))
-    assert str(addr) == 'baz_pb2.Bacon'
+    assert str(addr) == 'baz.spam.eggs.Bacon'
 
 
 def test_address_proto():
@@ -38,17 +38,19 @@ def test_address_proto():
 
 def test_address_child_no_parent():
     addr = metadata.Address(package=('foo', 'bar'), module='baz')
-    child = addr.child('Bacon')
+    child = addr.child('Bacon', path=(4, 0))
     assert child.name == 'Bacon'
     assert child.parent == ()
+    assert child.module_path == (4, 0)
 
 
 def test_address_child_with_parent():
     addr = metadata.Address(package=('foo', 'bar'), module='baz')
-    child = addr.child('Bacon')
-    grandchild = child.child('Ham')
+    child = addr.child('Bacon', path=(4, 0))
+    grandchild = child.child('Ham', path=(2, 0))
     assert grandchild.parent == ('Bacon',)
     assert grandchild.name == 'Ham'
+    assert grandchild.module_path == (4, 0, 2, 0)
 
 
 def test_address_rel():
@@ -56,12 +58,49 @@ def test_address_rel():
     assert addr.rel(
         metadata.Address(package=('foo', 'bar'), module='baz'),
     ) == 'Bacon'
+
+
+def test_address_rel_other():
+    addr = metadata.Address(package=('foo', 'bar'), module='baz', name='Bacon')
     assert addr.rel(
         metadata.Address(package=('foo', 'not_bar'), module='baz'),
-    ) == 'baz_pb2.Bacon'
+    ) == '_.baz.Bacon'
     assert addr.rel(
         metadata.Address(package=('foo', 'bar'), module='not_baz'),
-    ) == 'baz_pb2.Bacon'
+    ) == '_.baz.Bacon'
+
+
+def test_address_rel_later():
+    addr = metadata.Address(
+        module='baz', module_path=(4, 1),
+        name='Bacon', package=('foo', 'bar'),
+    )
+    other = metadata.Address(
+        module='baz', module_path=(4, 0),
+        name='Ham', package=('foo', 'bar'),
+    )
+    assert addr.rel(other) == "'Bacon'"
+
+
+def test_address_rel_nested_sibling():
+    addr = metadata.Address(
+        module='baz', name='Bacon',
+        package=('foo', 'bar'), parent=('Spam',)
+    )
+    other = metadata.Address(
+        module='baz', name='Ham',
+        package=('foo', 'bar'), parent=('Spam',)
+    )
+    assert addr.rel(other) == "'Spam.Bacon'"
+
+
+def test_address_rel_nested_parent():
+    parent = metadata.Address(module='baz', name='Ham', package=('foo', 'bar'))
+    child = metadata.Address(
+        module='baz', name='Bacon',
+        package=('foo', 'bar'), parent=('Ham',)
+    )
+    assert child.rel(parent) == 'Bacon'
 
 
 def test_address_resolve():

@@ -10,6 +10,7 @@ from google.auth import credentials
 
 {% for package, python_module in service.python_modules -%}
 from {{ package }} import {{ python_module }}
+{%- if python_module.endswith('_pb2') %} as {{ python_module[:-4] }}{% endif %}
 {% endfor %}
 from ...utils import dispatch
 from .transports import get_transport_class
@@ -167,4 +168,9 @@ class {{ service.name }}:
                 client library.
         """
         return gapic_v1.client_info.ClientInfo()
+
+
+__all__ = (
+    '{{ service.name }}',
+)
 {% endblock %}
