@@ -11,12 +11,11 @@ Nice things this client does:
 
 As this is experimental work, please note the following limitations:
 
-- The output only works on Python 3.4 and above.
+- The output only works on Python 3.5 and above.
 - The configuration annotations are experimental and provided in
   `an awkward location`_.
 - gRPC must be installed even if you are not using it (this is due to
   some minor issues in ``api-core``).
-- Only unary calls are implemented at this point.
 - No support for samples yet.
 
 .. _an awkward location: https://github.com/googleapis/api-common-protos/blob/input-contract/google/api/
