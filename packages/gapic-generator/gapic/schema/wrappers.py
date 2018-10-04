@@ -498,7 +498,7 @@ class Service:
     @property
     def has_lro(self) -> bool:
         """Return whether the service has a long-running method."""
-        return any([hasattr(m.output, 'lro_response')
+        return any([getattr(m.output, 'lro_response', None)
                     for m in self.methods.values()])
 
     @property
