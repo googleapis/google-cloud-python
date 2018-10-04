@@ -30,6 +30,9 @@ export FIRESTORE_APPLICATION_CREDENTIALS=${KOKORO_GFILE_DIR}/firebase-credential
 # Setup service account credentials.
 export GOOGLE_APPLICATION_CREDENTIALS=${KOKORO_GFILE_DIR}/service-account.json
 
+# Setup project id.
+export PROJECT_ID=$(cat "${KOKORO_GFILE_DIR}/project-id.json")
+
 # Find out if this package was modified.
 # Temporarily use Thea's fork of ci-diff-helper w/ Kokoro support.
 python3.6 -m pip install --quiet git+https://github.com/theacodes/ci-diff-helper.git
