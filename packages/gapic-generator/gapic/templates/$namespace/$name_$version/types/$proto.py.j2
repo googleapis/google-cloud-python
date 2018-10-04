@@ -8,7 +8,7 @@ class _:
     import enum
     import proto
 
-    {% for package, python_module in proto.python_modules -%}
+    {% for package, python_module in proto.python_modules|sort -%}
     from {{ package }} import {{ python_module }}
     {%- if python_module.endswith('_pb2') %} as {{ python_module[:-4] }}{% endif %}
     {% endfor %}

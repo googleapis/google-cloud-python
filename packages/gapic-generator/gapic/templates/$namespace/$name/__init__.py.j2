@@ -2,12 +2,12 @@
 
 {% block content %}
 from ..{{ api.naming.versioned_module_name }} import types
-{% for service in api.services.values() -%}
+{% for service in api.services.values()|sort(attribute='name') -%}
 from ..{{ api.naming.versioned_module_name }}.services.{{ service.name|snake_case }} import {{ service.name }}
 {% endfor %}
 
 __all__ = (
-    {%- for service in api.services.values() %}
+    {%- for service in api.services.values()|sort(attribute='name') %}
     '{{ service.name }}',
     {%- endfor %}
     'types',

@@ -1,11 +1,11 @@
 {% extends '_base.py.j2' %}
 
 {% block content %}
-{% for service in api.services.values() -%}
+{% for service in api.services.values()|sort(attribute='name') -%}
 from .services.{{ service.name|snake_case }} import {{ service.name }}
 {% endfor %}
 __all__ = (
-    {%- for service in api.services.values() %}
+    {%- for service in api.services.values()|sort(attribute='name') %}
     '{{ service.name }}',
     {%- endfor %}
 )
