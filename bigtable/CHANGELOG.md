@@ -6,22 +6,19 @@
 
 ## 0.31.0
 
+### New Features
+- Upgrade support level from `alpha` to `beta`.  ([#6129](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6129))
+
 ### Implementation Changes
 - Improve admin operation timeouts. ([#6010](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6010))
 
-### New Features
-
-### Dependencies
-
 ### Documentation
-- Cloud Bigable readiness upgraded from alpha to beta.
+- Prepare docs for repo split. ([#6014](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6014))
 
 ### Internal / Testing Changes
-- Preparing Cloud Bigtable for beta ([#6129](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6129))
 - Harden instance teardown against '429 Too Many Requests'. ([#6102](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6102))
-- Bigtable: prep docs for repo split. ([#6014](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6014))
-- Bigtable: Add '{RowSet,RowRange}.{__eq__,.__ne__}' ([#6025](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6025))
-- Re-generate library using bigtable/synth.py ([#6036](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6036))
+- Add `{RowSet,RowRange}.{__eq__,.__ne__}` ([#6025](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6025))
+- Regenerate low-level GAPIC code ([#6036](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6036))
 
 ## 0.30.2
 
