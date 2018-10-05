@@ -27,6 +27,7 @@
 # import javax.annotation.Nonnull;
 from enum import Enum
 from google.cloud.firestore_v1beta1._helpers import decode_value
+import math
 
 class TypeOrder(Enum):
         # NOTE: This order is defined by the backend and cannot be changed.
@@ -45,17 +46,17 @@ class TypeOrder(Enum):
             v = value.WhichOneof('value_type')
 
             lut = {
-                'null_value': NULL,
-                'boolean_value': BOOLEAN,
-                'integer_value': NUMBER,
-                'double_value': NUMBER,
-                'timestamp_value': TIMESTAMP,
-                'string_value': STRING,
-                'bytes_value': BLOB,
-                'reference_value': REF,
-                'geo_point_value': GEO_POINT,
-                'array_value': ARRAY,
-                'map_value': OBJECT,
+                'null_value': TypeOrder.NULL,
+                'boolean_value': TypeOrder.BOOLEAN,
+                'integer_value': TypeOrder.NUMBER,
+                'double_value': TypeOrder.NUMBER,
+                'timestamp_value': TypeOrder.TIMESTAMP,
+                'string_value': TypeOrder.STRING,
+                'bytes_value': TypeOrder.BLOB,
+                'reference_value': TypeOrder.REF,
+                'geo_point_value': TypeOrder.GEO_POINT,
+                'array_value': TypeOrder.ARRAY,
+                'map_value': TypeOrder.OBJECT,
             }
 
             if v not in lut:
@@ -68,10 +69,10 @@ class Order(object):
     '''
     Order implements the ordering semantics of the backend.
     '''
-    def __init__():
+    def __init__(self):
         pass
-
-    def compare(left, right):
+    
+    def compare(self, left, right):
         '''
         Main comparison function for all Firestore types.
         
@@ -79,8 +80,8 @@ class Order(object):
         '''
 
         # First compare the types.
-        leftType = TypeOrder.from_value(left)
-        rightType = TypeOrder.from_value(right)
+        leftType = TypeOrder.from_value(left).value
+        rightType = TypeOrder.from_value(right).value
 
         if leftType != rightType:
             if leftType < rightType:
@@ -89,203 +90,245 @@ class Order(object):
 
         # TODO: may be able to use helpers.decode_value and do direct compares
         # after converting to python types
-        value_type = value.WhichOneof('value_type')
+        value_type = left.WhichOneof('value_type')
 
         if value_type == 'null_value':
-            return 0 # nulls are all equal
+            return 0  # nulls are all equal
         elif value_type == 'boolean_value':
-            return _compareTo(decode_value(left), decode_value(right))
+            return self._compareTo(left.boolean_value, right.boolean_value)
         elif value_type == 'integer_value':
-            return compare_numbers(left, right)
+            return self.compare_numbers(left, right)
         elif value_type == 'double_value':
-            return compare_numbers(left, right)
+            return self.compare_numbers(left, right)
         elif value_type == 'timestamp_value':
-            # NOTE: This conversion is "lossy", Python ``datetime.datetime``
-            #       has microsecond precision but ``timestamp_value`` has
-            #       nanosecond precision.
-            #return _pb_timestamp_to_datetime(value.timestamp_value)
-            return compare_timestamps(left, right)
+            return self.compare_timestamps(left, right)
         elif value_type == 'string_value':
-            #return value.string_value
-            return compare_strings(left, right)
+            return self._compareTo(left.string_value, right.string_value)
         elif value_type == 'bytes_value':
-            #return value.bytes_value
-            return compare_blobs(left, right)
+            return self.compare_blobs(left, right)
         elif value_type == 'reference_value':
-            #return reference_value_to_document(value.reference_value, client)
-            return compare_resource_paths(left, right)
+            return self.compare_resource_paths(left, right)
         elif value_type == 'geo_point_value':
-            #return GeoPoint(
-            #    value.geo_point_value.latitude,
-            #    value.geo_point_value.longitude)
-            return compare_geo_points(left, right)
+            return self.compare_geo_points(left, right)
         elif value_type == 'array_value':
-            #return [decode_value(element, client)
-            #        for element in value.array_value.values]
-            return compare_arrays(left, right)
+            return self.compare_arrays(left, right)
         elif value_type == 'map_value':
-            #return decode_dict(value.map_value.fields, client)
-            return compare_objects(left, right)
+            return self.compare_objects(left, right)
         else:
             raise ValueError('Unknown ``value_type``', value_type)
 
 
-def compare_strings(left, right):
-    left_value = decode_value(left)
-    right_value = decode_value(right)
-    return _compareTo(left_value, right_value)
+    #   private int compareBlobs(Value left, Value right) {
+    #     ByteString leftBytes = left.getBytesValue();
+    #     ByteString rightBytes = right.getBytesValue();
 
+    #     int size = Math.min(leftBytes.size(), rightBytes.size());
+    #     for (int i = 0; i < size; i++) {
+    #       // Make sure the bytes are unsigned
+    #       int thisByte = leftBytes.byteAt(i) & 0xff;
+    #       int otherByte = rightBytes.byteAt(i) & 0xff;
+    #       if (thisByte < otherByte) {
+    #         return -1;
+    #       } else if (thisByte > otherByte) {
+    #         return 1;
+    #       }
+    #       // Byte values are equal, continue with comparison
+    #     }
+    #     return Integer.compare(leftBytes.size(), rightBytes.size());
+    #   }
+    @staticmethod
+    def compare_blobs(left, right):
+        left_bytes = left.bytes_value
+        right_bytes = right.bytes_value
+        
+        # TODO: verify this is okay. python can compare bytes so *shrugs*
+        return Order._compareTo(left_bytes, right_bytes)
 
-#   private int compareBlobs(Value left, Value right) {
-#     ByteString leftBytes = left.getBytesValue();
-#     ByteString rightBytes = right.getBytesValue();
+    @staticmethod
+    def compare_timestamps(left, right):
+        left = left.timestamp_value
+        right = right.timestamp_value
 
-#     int size = Math.min(leftBytes.size(), rightBytes.size());
-#     for (int i = 0; i < size; i++) {
-#       // Make sure the bytes are unsigned
-#       int thisByte = leftBytes.byteAt(i) & 0xff;
-#       int otherByte = rightBytes.byteAt(i) & 0xff;
-#       if (thisByte < otherByte) {
-#         return -1;
-#       } else if (thisByte > otherByte) {
-#         return 1;
-#       }
-#       // Byte values are equal, continue with comparison
-#     }
-#     return Integer.compare(leftBytes.size(), rightBytes.size());
-#   }
-def compare_blobs(left, right):
-    raise NotImplementedError()
+        seconds = Order._compareTo(left.seconds or 0, right.seconds or 0)
+        if seconds != 0:
+            return seconds
+        
+        return Order._compareTo(left.nanos or 0, right.nanos or 0)
 
+        # cmp = 0
+        # if left_value.seconds < right_value.seconds:
+        #     cmp = -1
+        # elif left_value.seconds == right_value.seconds:
+        #     cmp = 0
+        # else:
+        #     cmp = 0
 
-def compare_timestamps(left, right):
-    left_value = left.timestamp_value
-    right_value = right.timestamp_value
+        # if cmp != 0:
+        #     return cmp
+        # else:
+        #     if left_value.nanos < right_value.nanos:
+        #         cmp = -1
+        #     elif left_value.nanos == right_value.nanos:
+        #         cmp = 0
+        #     else:
+        #         cmp = 1
+        #     return cmp
 
-    cmp = 0
-    if left_value.seconds < right_value.seconds:
-        cmp = -1
-    elif left_value.seconds == right_value.seconds:
+    @staticmethod
+    def compare_geo_points(left, right):
+        left_value = decode_value(left, None)
+        right_value = decode_value(right, None)
         cmp = 0
-    else:
-        cmp = 0
-
-    if cmp != 0:
-        return cmp
-    else:
-        if left_value.nanos < right_value.nanos:
+        if left_value.latitude < right_value.latitude:
             cmp = -1
-        elif left_value.nanos == right_value.nanos:
+        elif left_value.latitude == right_value.latitude:
             cmp = 0
         else:
             cmp = 1
-        return cmp
 
-
-def compare_geo_points(left, right):
-    left_value = decode_value(left)
-    right_value = decode_value(right)
-    cmp = 0
-    if left_value.latitude < right_value.latitude:
-        cmp = -1
-    elif left_value.latitude == right_value.latitude:
-        cmp = 0
-    else:
-        cmp = 1
-
-    if cmp != 0:
-        return cmp
-    else:
-        if left.longitude < right.longitude:
-            cmp = -1
-        elif left.longitude == right.longitude:
-            cmp = 0
+        if cmp != 0:
+            return cmp
         else:
-            cmp = 1
-        return cmp
+            if left_value.longitude < right_value.longitude:
+                cmp = -1
+            elif left_value.longitude == right_value.longitude:
+                cmp = 0
+            else:
+                cmp = 1
+            return cmp
 
-#   private int compareResourcePaths(Value left, Value right) {
-#     ResourcePath leftPath = ResourcePath.create(left.getReferenceValue());
-#     ResourcePath rightPath = ResourcePath.create(right.getReferenceValue());
-#     return leftPath.compareTo(rightPath);
-#   }
-def compare_resource_paths(left, right):
-    raise NotImplementedError()
-
-
-#   private int compareArrays(Value left, Value right) {
-#     List<Value> leftValue = left.getArrayValue().getValuesList();
-#     List<Value> rightValue = right.getArrayValue().getValuesList();
-
-#     int minLength = Math.min(leftValue.size(), rightValue.size());
-#     for (int i = 0; i < minLength; i++) {
-#       int cmp = compare(leftValue.get(i), rightValue.get(i));
-#       if (cmp != 0) {
-#         return cmp;
-#       }
-#     }
-#     return Integer.compare(leftValue.size(), rightValue.size());
-#   }
-def compare_arrays(left, right):
-    raise NotImplementedError()
-
-
-
-#   private int compareObjects(Value left, Value right) {
-#     // This requires iterating over the keys in the object in order and doing a
-#     // deep comparison.
-#     SortedMap<String, Value> leftMap = new TreeMap<>();
-#     leftMap.putAll(left.getMapValue().getFieldsMap());
-#     SortedMap<String, Value> rightMap = new TreeMap<>();
-#     rightMap.putAll(right.getMapValue().getFieldsMap());
-
-#     Iterator<Entry<String, Value>> leftIterator = leftMap.entrySet().iterator();
-#     Iterator<Entry<String, Value>> rightIterator = rightMap.entrySet().iterator();
-
-#     while (leftIterator.hasNext() && rightIterator.hasNext()) {
-#       Entry<String, Value> leftEntry = leftIterator.next();
-#       Entry<String, Value> rightEntry = rightIterator.next();
-#       int keyCompare = leftEntry.getKey().compareTo(rightEntry.getKey());
-#       if (keyCompare != 0) {
-#         return keyCompare;
-#       }
-#       int valueCompare = compare(leftEntry.getValue(), rightEntry.getValue());
-#       if (valueCompare != 0) {
-#         return valueCompare;
-#       }
-#     }
-
-#     // Only equal if both iterators are exhausted.
-#     return Boolean.compare(leftIterator.hasNext(), rightIterator.hasNext());
-#   }
-def compare_objects(left, right):
-    raise NotImplementedError()
-
-def compare_numbers(left, right):
-    left_value = decode_value(left)
-    right_value = decode_value(right)
-    return compare_doubles(left_value, right_value)
-
-def compare_doubles(left, right):
-    if math.isnan(left):
-        if math.isnan(right):
-            return 0
-        return -1
-    if math.isnan(right):
-        return 1
-
-    if left == -0.0:
-        left = 0
-    if right == -0.0:
-        right = 0
-
-    return _compareTo(left, right)
+    #   private int compareResourcePaths(Value left, Value right) {
+    #     ResourcePath leftPath = ResourcePath.create(left.getReferenceValue());
+    #     ResourcePath rightPath = ResourcePath.create(right.getReferenceValue());
+    #     return leftPath.compareTo(rightPath);
+    #   }
+    @staticmethod
+    def compare_resource_paths(left, right):
+        """
+        compareTo(other: Path<T>): number {
+        const len = Math.min(left.segments.length, right.segments.length);
+        for (let i = 0; i < len; i++) {
+        if (left.segments[i] < right.segments[i]) {
+            return -1;
+        }
+        if (left.segments[i] > right.segments[i]) {
+            return 1;
+        }
+        }
+        if (left.segments.length < right.segments.length) {
+        return -1;
+        }
+        if (left.segments.length > right.segments.length) {
+        return 1;
+        }
+        return 0;
+    }
+    """ 
+        left = left.reference_value
+        right = right.reference_value
 
 
-def _compareTo(left, right):
-    if left < right:
-        return -1
-    elif left == right:
+        left_segments = left.split('/')
+        right_segments = right.split('/')
+        shorter = min(len(left_segments), len(right_segments))
+        # compare segments
+        for i in range(shorter):
+            if (left_segments[i] < right_segments[i]):
+                return -1
+            
+            if (left_segments[i] > right_segments[i]):
+                return 1
+            
+
+
+        left_length = len(left)
+        right_length = len(right)
+        if left_length < right_length:
+            return -1
+        if left_length > right_length:
+            return 1
+
         return 0
-    # left > right
-    return 1
+        #raise NotImplementedError()
+
+
+    #   private int compareArrays(Value left, Value right) {
+    #     List<Value> leftValue = left.getArrayValue().getValuesList();
+    #     List<Value> rightValue = right.getArrayValue().getValuesList();
+
+    #     int minLength = Math.min(leftValue.size(), rightValue.size());
+    #     for (int i = 0; i < minLength; i++) {
+    #       int cmp = compare(leftValue.get(i), rightValue.get(i));
+    #       if (cmp != 0) {
+    #         return cmp;
+    #       }
+    #     }
+    #     return Integer.compare(leftValue.size(), rightValue.size());
+    #   }
+    @staticmethod
+    def compare_arrays(left, right):
+        raise NotImplementedError()
+
+
+
+    #   private int compareObjects(Value left, Value right) {
+    #     // This requires iterating over the keys in the object in order and doing a
+    #     // deep comparison.
+    #     SortedMap<String, Value> leftMap = new TreeMap<>();
+    #     leftMap.putAll(left.getMapValue().getFieldsMap());
+    #     SortedMap<String, Value> rightMap = new TreeMap<>();
+    #     rightMap.putAll(right.getMapValue().getFieldsMap());
+
+    #     Iterator<Entry<String, Value>> leftIterator = leftMap.entrySet().iterator();
+    #     Iterator<Entry<String, Value>> rightIterator = rightMap.entrySet().iterator();
+
+    #     while (leftIterator.hasNext() && rightIterator.hasNext()) {
+    #       Entry<String, Value> leftEntry = leftIterator.next();
+    #       Entry<String, Value> rightEntry = rightIterator.next();
+    #       int keyCompare = leftEntry.getKey().compareTo(rightEntry.getKey());
+    #       if (keyCompare != 0) {
+    #         return keyCompare;
+    #       }
+    #       int valueCompare = compare(leftEntry.getValue(), rightEntry.getValue());
+    #       if (valueCompare != 0) {
+    #         return valueCompare;
+    #       }
+    #     }
+
+    #     // Only equal if both iterators are exhausted.
+    #     return Boolean.compare(leftIterator.hasNext(), rightIterator.hasNext());
+    #   }
+    @staticmethod
+    def compare_objects(left, right):
+        raise NotImplementedError()
+
+    @staticmethod
+    def compare_numbers(left, right):
+        left_value = decode_value(left, None)
+        right_value = decode_value(right, None)
+        return Order.compare_doubles(left_value, right_value)
+
+    @staticmethod
+    def compare_doubles(left, right):
+        if math.isnan(left):
+            if math.isnan(right):
+                return 0
+            return -1
+        if math.isnan(right):
+            return 1
+
+        if left == -0.0:
+            left = 0
+        if right == -0.0:
+            right = 0
+
+        return Order._compareTo(left, right)
+
+    @staticmethod
+    def _compareTo(left, right):
+        if left < right:
+            return -1
+        elif left == right:
+            return 0
+        # left > right
+        return 1
