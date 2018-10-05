@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Changelog &#8212; google-cloud e0130f5 documentation</title>
+    <title>Changelog &#8212; google-cloud fec01d8 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -39,27 +39,57 @@
 <span id="changelog"></span><h1>Changelog<a class="headerlink" href="#changelog" title="Permalink to this headline">#</a></h1>
 <p><a class="reference external" href="https://pypi.org/project/google-cloud-bigtable/#history">PyPI History</a></p>
 <div class="section" id="">
-<span id="id1"></span><h2>0.30.2<a class="headerlink" href="#" title="Permalink to this headline">#</a></h2>
+<span id="id1"></span><h2>0.31.0<a class="headerlink" href="#" title="Permalink to this headline">#</a></h2>
 <div class="section" id="new-features">
 <span id="new-features"></span><h3>New Features<a class="headerlink" href="#new-features" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Add iam policy implementation for an instance. (#5838)</li>
+<li>Upgrade support level from <code class="docutils literal notranslate"><span class="pre">alpha</span></code> to <code class="docutils literal notranslate"><span class="pre">beta</span></code>.  (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6129">#6129</a>)</li>
 </ul>
 </div>
 <div class="section" id="implementation-changes">
 <span id="implementation-changes"></span><h3>Implementation Changes<a class="headerlink" href="#implementation-changes" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Fix smart retries for ‘read_rows()’ when reading the full table (#5966)</li>
+<li>Improve admin operation timeouts. (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6010">#6010</a>)</li>
 </ul>
 </div>
 <div class="section" id="documentation">
 <span id="documentation"></span><h3>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Replace links to <code class="docutils literal notranslate"><span class="pre">/stable/</span></code> with <code class="docutils literal notranslate"><span class="pre">/latest/</span></code>. (#5901)</li>
+<li>Prepare docs for repo split. (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6014">#6014</a>)</li>
 </ul>
 </div>
 <div class="section" id="internal-testing-changes">
 <span id="internal-testing-changes"></span><h3>Internal / Testing Changes<a class="headerlink" href="#internal-testing-changes" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li>Refactor ‘read_row’ to call ‘read_rows’ (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6102">#6137</a>)</li>
+<li>Harden instance teardown against ‘429 Too Many Requests’. (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6102">#6102</a>)</li>
+<li>Add <code class="docutils literal notranslate"><span class="pre">{RowSet,RowRange}.{__eq__,.__ne__}</span></code> (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6025">#6025</a>)</li>
+<li>Regenerate low-level GAPIC code (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6036">#6036</a>)</li>
+</ul>
+</div>
+</div>
+<div class="section" id="">
+<span id="id2"></span><h2>0.30.2<a class="headerlink" href="#" title="Permalink to this headline">#</a></h2>
+<div class="section" id="new-features">
+<span id="id3"></span><h3>New Features<a class="headerlink" href="#new-features" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li>Add iam policy implementation for an instance. (#5838)</li>
+</ul>
+</div>
+<div class="section" id="implementation-changes">
+<span id="id4"></span><h3>Implementation Changes<a class="headerlink" href="#implementation-changes" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li>Fix smart retries for ‘read_rows()’ when reading the full table (#5966)</li>
+</ul>
+</div>
+<div class="section" id="documentation">
+<span id="id5"></span><h3>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li>Replace links to <code class="docutils literal notranslate"><span class="pre">/stable/</span></code> with <code class="docutils literal notranslate"><span class="pre">/latest/</span></code>. (#5901)</li>
+</ul>
+</div>
+<div class="section" id="internal-testing-changes">
+<span id="id6"></span><h3>Internal / Testing Changes<a class="headerlink" href="#internal-testing-changes" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li>Re-generate library using bigtable/synth.py (#5974)</li>
 <li>Refactor <code class="docutils literal notranslate"><span class="pre">read_rows</span></code> infrastructure (#5963)</li>
@@ -67,9 +97,9 @@
 </div>
 </div>
 <div class="section" id="">
-<span id="id2"></span><h2>0.30.1<a class="headerlink" href="#" title="Permalink to this headline">#</a></h2>
+<span id="id7"></span><h2>0.30.1<a class="headerlink" href="#" title="Permalink to this headline">#</a></h2>
 <div class="section" id="implementation-changes">
-<span id="id3"></span><h3>Implementation changes<a class="headerlink" href="#implementation-changes" title="Permalink to this headline">#</a></h3>
+<span id="id8"></span><h3>Implementation changes<a class="headerlink" href="#implementation-changes" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li>Fix non-admin access to table data. (#5875)</li>
 <li>Synth bigtable and bigtable admin GAPIC clients. (#5867)</li>
@@ -83,9 +113,9 @@
 </div>
 </div>
 <div class="section" id="">
-<span id="id4"></span><h2>0.30.0<a class="headerlink" href="#" title="Permalink to this headline">#</a></h2>
+<span id="id9"></span><h2>0.30.0<a class="headerlink" href="#" title="Permalink to this headline">#</a></h2>
 <div class="section" id="new-features">
-<span id="id5"></span><h3>New Features<a class="headerlink" href="#new-features" title="Permalink to this headline">#</a></h3>
+<span id="id10"></span><h3>New Features<a class="headerlink" href="#new-features" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li>Improve performance and capabilities of reads.  <code class="docutils literal notranslate"><span class="pre">read_rows</span></code> now returns a generator; has automatic retries; and can read an arbitrary set of keys and ranges<ul>
 <li>Consolidate read_rows and yield_rows (#5840)</li>
@@ -133,7 +163,7 @@
 </ul>
 </div>
 <div class="section" id="internal-testing-changes">
-<span id="id6"></span><h3>Internal / Testing Changes<a class="headerlink" href="#internal-testing-changes" title="Permalink to this headline">#</a></h3>
+<span id="id11"></span><h3>Internal / Testing Changes<a class="headerlink" href="#internal-testing-changes" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li>Rename releases to changelog and include from CHANGELOG.md (#5191)</li>
 <li>Fix bad trove classifier</li>
@@ -158,16 +188,16 @@
 </div>
 </div>
 <div class="section" id="">
-<span id="id7"></span><h2>0.29.0<a class="headerlink" href="#" title="Permalink to this headline">#</a></h2>
+<span id="id12"></span><h2>0.29.0<a class="headerlink" href="#" title="Permalink to this headline">#</a></h2>
 <div class="section" id="new-features">
-<span id="id8"></span><h3>New features<a class="headerlink" href="#new-features" title="Permalink to this headline">#</a></h3>
+<span id="id13"></span><h3>New features<a class="headerlink" href="#new-features" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li>Use <code class="docutils literal notranslate"><span class="pre">api_core.retry</span></code> for <code class="docutils literal notranslate"><span class="pre">mutate_row</span></code> (#4665, #4341)</li>
 <li>Added a row generator on a table. (#4679)</li>
 </ul>
 </div>
 <div class="section" id="implementation-changes">
-<span id="id9"></span><h3>Implementation changes<a class="headerlink" href="#implementation-changes" title="Permalink to this headline">#</a></h3>
+<span id="id14"></span><h3>Implementation changes<a class="headerlink" href="#implementation-changes" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li>Remove gax usage from BigTable (#4873)</li>
 <li>BigTable: Cell.from_pb() performance improvement (#4745)</li>
@@ -180,7 +210,7 @@
 </ul>
 </div>
 <div class="section" id="documentation">
-<span id="id10"></span><h3>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">#</a></h3>
+<span id="id15"></span><h3>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li>Minor typo (#4758)</li>
 <li>Row filter end points documentation error (#4667)</li>
@@ -189,7 +219,7 @@
 </ul>
 </div>
 <div class="section" id="testing-and-internal-changes">
-<span id="id11"></span><h3>Testing and internal changes<a class="headerlink" href="#testing-and-internal-changes" title="Permalink to this headline">#</a></h3>
+<span id="id16"></span><h3>Testing and internal changes<a class="headerlink" href="#testing-and-internal-changes" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li>Install local dependencies when running lint (#4936)</li>
 <li>Re-enable lint for tests, remove usage of pylint (#4921)</li>
@@ -199,9 +229,9 @@
 </div>
 </div>
 <div class="section" id="">
-<span id="id12"></span><h2>0.28.1<a class="headerlink" href="#" title="Permalink to this headline">#</a></h2>
+<span id="id17"></span><h2>0.28.1<a class="headerlink" href="#" title="Permalink to this headline">#</a></h2>
 <div class="section" id="implementation-changes">
-<span id="id13"></span><h3>Implementation Changes<a class="headerlink" href="#implementation-changes" title="Permalink to this headline">#</a></h3>
+<span id="id18"></span><h3>Implementation Changes<a class="headerlink" href="#implementation-changes" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li>Bugfix: Distinguish between an unset column qualifier and an empty string
 column qualifier while parsing a <code class="docutils literal notranslate"><span class="pre">ReadRows</span></code> response (#4252)</li>
@@ -218,9 +248,9 @@ in <code class="docutils literal notranslate"><span class="pre">Table.mutate_row
 </div>
 </div>
 <div class="section" id="">
-<span id="id14"></span><h2>0.28.0<a class="headerlink" href="#" title="Permalink to this headline">#</a></h2>
+<span id="id19"></span><h2>0.28.0<a class="headerlink" href="#" title="Permalink to this headline">#</a></h2>
 <div class="section" id="documentation">
-<span id="id15"></span><h3>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">#</a></h3>
+<span id="id20"></span><h3>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li>Fixed referenced types in <code class="docutils literal notranslate"><span class="pre">Table.row</span></code> docstring (#3934, h/t to
 &#64;MichaelTamm)</li>
@@ -229,7 +259,7 @@ project README (#4187, h/t to &#64;michaelawyu)</li>
 </ul>
 </div>
 <div class="section" id="dependencies">
-<span id="id16"></span><h3>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline">#</a></h3>
+<span id="id21"></span><h3>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li>Upgrading to <code class="docutils literal notranslate"><span class="pre">google-cloud-core</span> <span class="pre">&gt;=</span> <span class="pre">0.28.0</span></code> and adding dependency
 on <code class="docutils literal notranslate"><span class="pre">google-api-core</span></code> (#4221, #4280)</li>
