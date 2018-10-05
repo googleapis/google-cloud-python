@@ -22,6 +22,8 @@ matrix:
     env: TOXENV=py36-system SYSTEM_TEST=1 SKIP_APP_ENGINE_SYSTEM_TEST=1
   - python: 2.7
     env: TOXENV=py27-system SYSTEM_TEST=1 SKIP_APP_ENGINE_SYSTEM_TEST=1
+  - python: 3.6
+    env: TOXENV=pytype
 cache:
   directories:
   - ${HOME}/.cache

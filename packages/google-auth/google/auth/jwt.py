@@ -738,7 +738,7 @@ class OnDemandCredentials(
         parts = urllib.parse.urlsplit(url)
         # Strip query string and fragment
         audience = urllib.parse.urlunsplit(
-            (parts.scheme, parts.netloc, parts.path, None, None))
+            (parts.scheme, parts.netloc, parts.path, "", ""))
         token = self._get_jwt_for_audience(audience)
         self.apply(headers, token=token)
 

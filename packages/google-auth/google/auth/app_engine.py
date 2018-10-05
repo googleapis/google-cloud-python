@@ -28,10 +28,12 @@ from google.auth import _helpers
 from google.auth import credentials
 from google.auth import crypt
 
+# pytype: disable=import-error
 try:
     from google.appengine.api import app_identity
 except ImportError:
     app_identity = None
+# pytype: enable=import-error
 
 
 class Signer(crypt.Signer):
