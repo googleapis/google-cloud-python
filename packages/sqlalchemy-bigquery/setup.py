@@ -25,7 +25,7 @@ setup(
     ],
     install_requires=[
         'sqlalchemy>=1.1.9',
-        'google-cloud-bigquery>=1.5.0',
+        'google-cloud-bigquery>=1.6.0',
         'future',
     ],
     tests_require=[

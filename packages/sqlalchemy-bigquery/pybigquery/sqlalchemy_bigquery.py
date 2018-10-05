@@ -3,9 +3,11 @@
 from __future__ import absolute_import
 from __future__ import unicode_literals
 
-from google.cloud.bigquery import dbapi
-from google.cloud.bigquery.schema import SchemaField
 from google.cloud import bigquery
+from google.cloud.bigquery import dbapi, QueryJobConfig
+from google.cloud.bigquery.schema import SchemaField
+from google.cloud.bigquery.table import EncryptionConfiguration
+from google.cloud.bigquery.dataset import DatasetReference
 from google.oauth2 import service_account
 from google.api_core.exceptions import NotFound
 from sqlalchemy.exc import NoSuchTableError
@@ -17,8 +19,9 @@ from sqlalchemy.sql.schema import Column
 from sqlalchemy.sql import elements
 import re
 
+from .parse_url import parse_url
 
-FIELD_ILLEGAL_CHARACTERS = re.compile('[^\w]+')
+FIELD_ILLEGAL_CHARACTERS = re.compile(r'[^\w]+')
 
 
 class UniversalSet(object):
@@ -86,7 +89,6 @@ class BigQueryIdentifierPreparer(IdentifierPreparer):
 
         result = self.quote(name)
         return result
-
 
 _type_map = {
     'STRING': types.String,
@@ -207,25 +209,47 @@ class BigQueryDialect(DefaultDialect):
         self.credentials_path = credentials_path
         self.credentials_info = credentials_info
         self.location = location
+        self.dataset_id = None
 
     @classmethod
     def dbapi(cls):
         return dbapi
 
     def create_connect_args(self, url):
+        location, dataset_id, arraysize, credentials_path, default_query_job_config = parse_url(url)
+
+        self.arraysize = self.arraysize or arraysize
+        self.location = location or self.location
+        self.credentials_path = credentials_path or self.credentials_path
+        self.dataset_id = dataset_id
+
         if self.credentials_path:
             client = bigquery.Client.from_service_account_json(
-                self.credentials_path, location=self.location)
+                self.credentials_path,
+                location=self.location,
+                default_query_job_config=default_query_job_config
+            )
         elif self.credentials_info:
             credentials = service_account.Credentials.from_service_account_info(
-                self.credentials_info)
+                self.credentials_info
+            )
             client = bigquery.Client(
+                project=self.credentials_info.get('project_id'),
                 credentials=credentials,
                 location=self.location,
-                project=self.credentials_info.get('project_id'),
+                default_query_job_config=default_query_job_config,
             )
         else:
-            client = bigquery.Client(url.host, location=self.location)
+            client = bigquery.Client(
+                project=url.host,
+                location=self.location,
+                default_query_job_config=default_query_job_config
+            )
+
+        # if dataset_id is set, then we know the job_config isn't None
+        if dataset_id:
+            default_query_job_config.default_dataset = client.dataset(dataset_id)
+
         return ([client], {})
 
     def _json_deserializer(self, row):
@@ -254,10 +278,17 @@ class BigQueryDialect(DefaultDialect):
         if isinstance(connection, Engine):
             connection = connection.connect()
 
-        project, dataset, table_name_prepared = self._split_table_name(table_name)
-        if dataset is None and schema is not None:
-            dataset = schema
+        table_name_prepared = dataset = project = None
+        if self.dataset_id:
             table_name_prepared = table_name
+            dataset = self.dataset_id
+            project = None
+
+        else:
+            project, dataset, table_name_prepared = self._split_table_name(table_name)
+            if dataset is None and schema is not None:
+                table_name_prepared = table_name
+                dataset = schema
 
         table = connection.connection._client.dataset(dataset, project=project).table(table_name_prepared)
         try:
@@ -328,7 +359,10 @@ class BigQueryDialect(DefaultDialect):
             connection = connection.connect()
 
         datasets = connection.connection._client.list_datasets()
-        return [d.dataset_id for d in datasets]
+        if self.dataset_id is not None:
+            return [d.dataset_id for d in datasets if d.dataset_id == self.dataset_id]
+        else:
+            return [d.dataset_id for d in datasets]
 
     def get_table_names(self, connection, schema=None, **kw):
         if isinstance(connection, Engine):
@@ -339,9 +373,17 @@ class BigQueryDialect(DefaultDialect):
         for d in datasets:
             if schema is not None and d.dataset_id != schema:
                 continue
+
+            if self.dataset_id is not None and d.dataset_id != self.dataset_id:
+                continue
+
             tables = connection.connection._client.list_tables(d.reference)
             for t in tables:
-                result.append(d.dataset_id + '.' + t.table_id)
+                if self.dataset_id is None:
+                    table_name = d.dataset_id + '.' + t.table_id
+                else:
+                    table_name = t.table_id
+                result.append(table_name)
         return result
 
     def do_rollback(self, dbapi_connection):
