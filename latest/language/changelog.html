@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Changelog &#8212; google-cloud fec01d8 documentation</title>
+    <title>Changelog &#8212; google-cloud 67e0286 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -39,7 +39,35 @@
 <span id="changelog"></span><h1>Changelog<a class="headerlink" href="#changelog" title="Permalink to this headline">#</a></h1>
 <p><a class="reference external" href="https://pypi.org/project/google-cloud-language/#history">PyPI History</a></p>
 <div class="section" id="">
-<span id="id1"></span><h2>1.0.2<a class="headerlink" href="#" title="Permalink to this headline">#</a></h2>
+<span id="id1"></span><h2>1.1.0<a class="headerlink" href="#" title="Permalink to this headline">#</a></h2>
+<p>10-05-2018 13:52 PDT</p>
+<div class="section" id="implementation-changes">
+<span id="implementation-changes"></span><h3>Implementation Changes<a class="headerlink" href="#implementation-changes" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li>The library has been regenerated to pick up changes in the underlying API.</li>
+<li>Add Test runs for Python 3.7 and remove 3.4 (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/5295">#5295</a>)</li>
+</ul>
+</div>
+<div class="section" id="documentation">
+<span id="documentation"></span><h3>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li>Translate / Logging / Language: restore detailed usage docs. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/5999">#5999</a>)</li>
+<li>Redirect renamed ‘usage.html’/’client.html’ -&gt; ‘index.html’. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/5996">#5996</a>)</li>
+<li>Prep language docs for repo split. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/5932">#5932</a>)</li>
+</ul>
+</div>
+<div class="section" id="internal-testing-changes">
+<span id="internal-testing-changes"></span><h3>Internal / Testing Changes<a class="headerlink" href="#internal-testing-changes" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li>Language: add ‘synth.py’. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6080">#6080</a>)</li>
+<li>Nox: use inplace installs (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/5865">#5865</a>)</li>
+<li>Avoid overwriting ‘<strong>module</strong>’ of messages from shared modules. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/5364">#5364</a>)</li>
+<li>Modify system tests to use prerelease versions of grpcio (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/5304">#5304</a>)</li>
+</ul>
+</div>
+</div>
+<div class="section" id="">
+<span id="id2"></span><h2>1.0.2<a class="headerlink" href="#" title="Permalink to this headline">#</a></h2>
 <div class="section" id="packaging">
 <span id="packaging"></span><h3>Packaging<a class="headerlink" href="#packaging" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
@@ -50,7 +78,7 @@
 </div>
 </div>
 <div class="section" id="">
-<span id="id2"></span><h2>1.0.1<a class="headerlink" href="#" title="Permalink to this headline">#</a></h2>
+<span id="id3"></span><h2>1.0.1<a class="headerlink" href="#" title="Permalink to this headline">#</a></h2>
 <div class="section" id="dependencies">
 <span id="dependencies"></span><h3>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
@@ -68,7 +96,7 @@
 </div>
 </div>
 <div class="section" id="">
-<span id="id3"></span><h2>1.0.0<a class="headerlink" href="#" title="Permalink to this headline">#</a></h2>
+<span id="id4"></span><h2>1.0.0<a class="headerlink" href="#" title="Permalink to this headline">#</a></h2>
 <p><a class="reference external" href="https://cloud.google.com/terms/launch-stages"><img alt="release level" src="https://img.shields.io/badge/release%20level-general%20availability%20%28GA%29-brightgreen.svg?style&amp;#x3D;flat" /></a></p>
 <div class="section" id="features">
 <span id="features"></span><h3>Features<a class="headerlink" href="#features" title="Permalink to this headline">#</a></h3>
@@ -80,7 +108,7 @@
 </div>
 </div>
 <div class="section" id="">
-<span id="id4"></span><h2>0.31.0<a class="headerlink" href="#" title="Permalink to this headline">#</a></h2>
+<span id="id5"></span><h2>0.31.0<a class="headerlink" href="#" title="Permalink to this headline">#</a></h2>
 <div class="section" id="release-candidate">
 <span id="release-candidate"></span><h3>Release Candidate<a class="headerlink" href="#release-candidate" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
@@ -103,23 +131,23 @@ will represent a breaking change.<ul>
 </ul>
 </div>
 <div class="section" id="features">
-<span id="id5"></span><h3>Features<a class="headerlink" href="#features" title="Permalink to this headline">#</a></h3>
+<span id="id6"></span><h3>Features<a class="headerlink" href="#features" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li>Added the <code class="docutils literal notranslate"><span class="pre">classify_text</span></code> method on the primary (<code class="docutils literal notranslate"><span class="pre">v1</span></code>) endpoint. (#4283)</li>
 </ul>
 </div>
 </div>
 <div class="section" id="">
-<span id="id6"></span><h2>0.30.0<a class="headerlink" href="#" title="Permalink to this headline">#</a></h2>
+<span id="id7"></span><h2>0.30.0<a class="headerlink" href="#" title="Permalink to this headline">#</a></h2>
 <div class="section" id="documentation">
-<span id="documentation"></span><h3>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">#</a></h3>
+<span id="id8"></span><h3>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li>Added link to “Python Development Environment Setup Guide” in
 project README (#4187, h/t to &#64;michaelawyu)</li>
 </ul>
 </div>
 <div class="section" id="dependencies">
-<span id="id7"></span><h3>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline">#</a></h3>
+<span id="id9"></span><h3>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li>Upgrading to <code class="docutils literal notranslate"><span class="pre">google-cloud-core</span> <span class="pre">&gt;=</span> <span class="pre">0.28.0</span></code> and adding dependency
 on <code class="docutils literal notranslate"><span class="pre">google-api-core</span></code> (#4221, #4280)</li>
