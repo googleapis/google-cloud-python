@@ -421,6 +421,9 @@ class PartialRowsData(object):
             try:
                 response = self._read_next_response()
             except StopIteration:
+                if self.state != self.NEW_ROW:
+                    raise ValueError(
+                        'The row remains partial / is not committed.')
                 break
 
             for chunk in response.chunks:
