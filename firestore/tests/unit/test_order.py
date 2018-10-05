@@ -14,11 +14,13 @@
 
 import unittest
 import mock
-from google.cloud.firestore_v1beta1._helpers import encode_value
+from google.cloud.firestore_v1beta1._helpers import encode_value, GeoPoint
 from google.protobuf import timestamp_pb2
 from google.type import latlng_pb2
 import math
-
+from google.cloud.firestore_v1beta1.document import DocumentReference
+from google.cloud.firestore_v1beta1.order import Order
+from google.cloud.firestore_v1beta1.proto import document_pb2
 
 class TestOrder(unittest.TestCase):
     @staticmethod
@@ -33,9 +35,10 @@ class TestOrder(unittest.TestCase):
 
     def test_order(self):
         
-        int_max_value = 10 ** 1000
-        int_min_value = -10 ** 1000
-        float_min_value = -10.0 ** 1000
+        # Constants used to represent min/max values of storage types.
+        int_max_value = 2 ** 31 - 1
+        int_min_value = -(2 ** 31)
+        float_min_value = 1.175494351 ** -38
         float_nan = float('nan')
 
         groups = [None] * 65
@@ -71,14 +74,14 @@ class TestOrder(unittest.TestCase):
         # strings
         groups[20] = [_stringValue("")]
         groups[21] = [_stringValue("\u0000\ud7ff\ue000\uffff")]
-        groups[22] = [_stringValue("(╯°□°）╯︵ ┻━┻")]
+        groups[22] = [_stringValue(u"(╯°□°）╯︵ ┻━┻")]
         groups[23] = [_stringValue("a")]
         groups[24] = [_stringValue("abc def")]
         # latin small letter e + combining acute accent + latin small letter b
         groups[25] = [_stringValue("e\u0301b")]
-        groups[26] = [_stringValue("æ")]
+        groups[26] = [_stringValue(u"æ")]
         # latin small letter e with acute accent + latin small letter a
-        groups[27] = [_stringValue("\u00e9a")]
+        groups[27] = [_stringValue(u"\u00e9a")]
 
         # blobs
         groups[28] = [_blobValue(bytes())]
@@ -124,38 +127,58 @@ class TestOrder(unittest.TestCase):
         groups[53] = [_geoPointValue(90, 180)]
 
         # arrays
+        # groups[54] = [_arrayValue()]
+        # groups[55] = [_arrayValue([_stringValue("bar"))]
+        # groups[56] = [_arrayValue(_stringValue("foo"))]
+        # groups[57] = [_arrayValue(_stringValue("foo"), _intValue(0))]
+        # groups[58] = [_arrayValue(_stringValue("foo"), _intValue(1))]
+        # groups[59] = [_arrayValue(_stringValue("foo"), _stringValue("0"))]
         groups[54] = [_arrayValue()]
-        groups[55] = [_arrayValue(_stringValue("bar"))]
-        groups[56] = [_arrayValue(_stringValue("foo"))]
-        groups[57] = [_arrayValue(_stringValue("foo"), _intValue(0))]
-        groups[58] = [_arrayValue(_stringValue("foo"), _intValue(1))]
-        groups[59] = [_arrayValue(_stringValue("foo"), _stringValue("0"))]
+        groups[55] = [_arrayValue(["bar"])]
+        groups[56] = [_arrayValue(["foo"])]
+        groups[57] = [_arrayValue(["foo", 0])]
+        groups[58] = [_arrayValue(["foo", 1])]
+        groups[59] = [_arrayValue(["foo", "0"])]
 
         # objects
-        groups[60] = [_objectValue({"bar": _intValue(0)})]
+        # groups[60] = [_objectValue({"bar": _intValue(0)})]
+        # groups[61] = [_objectValue({
+        #     "bar": _intValue(0),
+        #     "foo": _intValue(1)
+        # })]
+        # groups[62] = [_objectValue({"bar": _intValue(1)})]
+        # groups[63] = [_objectValue({"bar": _intValue(2)})]
+        # groups[64] = [_objectValue({"bar": _stringValue("0")})]
+
+        groups[60] = [_objectValue({"bar": 0})]  
         groups[61] = [_objectValue({
-            "bar": _intValue(0),
-            "foo": _intValue(1)
+            "bar":0,
+            "foo": 1
         })]
-        groups[62] = [_objectValue({"bar": _intValue(1)})]
-        groups[63] = [_objectValue({"bar": _intValue(2)})]
-        groups[64] = [_objectValue({"bar": _stringValue("0")})]
+        groups[62] = [_objectValue({"bar": 1})]
+        groups[63] = [_objectValue({"bar": 2})]
+        groups[64] = [_objectValue({"bar": "0"})]
 
         target = self._make_one()
-        for left in groups:
-            for right in groups:
-                for i in groups[left]:
-                    for j in groups[right]:
-                        self.assertEqual(
-                            _compare(left, right),
-                            _compare(
-                                target.compare(
-                                    groups[left][i],
-                                    groups[right][j]), 0),
-                            "Order does not match for: groups[%d][%d] "
-                            "and groups[%d][%d]".format(left, i, right, j)
-                        )
 
+        for i in range(len(groups)):
+            for left in groups[i]:
+                for j in range(len(groups)):
+                    for right in groups[j]:
+                        expected = Order._compareTo(i,j)
+                        
+                        self.assertEqual(
+                            target.compare(left, right), expected,
+                            "comparing L->R {} ({}) to {} ({})".format(i, left, j, right)
+                        )
+                            
+                        expected = Order._compareTo(j, i);
+                        self.assertEqual(
+                            target.compare(right, left), expected,
+                            #"comparing R->L {} to {}".format(right, left)
+                            "comparing R->L {} ({}) to {} ({})".format(j, right, i, left)
+
+                        )
 
 def _compare(left, right):
     if left < right:
@@ -182,7 +205,7 @@ def _stringValue(s):
 
 
 def _referenceValue(r):
-    return encode_value(r)
+    return document_pb2.Value(reference_value=r)
 
 
 def _blobValue(b):
@@ -194,15 +217,15 @@ def nullValue():
 
 
 def _timestampValue(seconds, nanos):
-    return timestamp_pb2.Timestamp(seconds=seconds, nanos=nanos)
+    return document_pb2.Value(
+        timestamp_value=timestamp_pb2.Timestamp(seconds=seconds, nanos=nanos))
 
 
 def _geoPointValue(latitude, longitude):
-    return latlng_pb2.LatLng(latitude=latitude,
-                             longitude=longitude)
+    return encode_value(GeoPoint(latitude,longitude))
 
 
-def _arrayValue(values):
+def _arrayValue(values=[]):
     return encode_value(values)
 
 
