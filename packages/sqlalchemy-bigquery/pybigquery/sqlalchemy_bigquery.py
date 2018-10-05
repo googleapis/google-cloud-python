@@ -101,6 +101,7 @@ _type_map = {
     'BYTES': types.BINARY,
     'TIME': types.TIME,
     'RECORD': types.JSON,
+    'NUMERIC': types.DECIMAL,
 }
 
 
