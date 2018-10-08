@@ -60,9 +60,16 @@ class TestKey:
             key_module.Key(pairs=[("Kind", 1)])
 
     @staticmethod
+    @unittest.mock.patch("os.environ", new={})
     def test_constructor_with_flat():
-        with pytest.raises(NotImplementedError):
-            key_module.Key(flat=["Kind", 1])
+        key = key_module.Key(flat=["Kind", 1])
+        ds_key = key._key
+        assert isinstance(ds_key, google.cloud.datastore.Key)
+        assert ds_key._flat_path == ("Kind", 1)
+        assert ds_key._namespace is None
+        assert ds_key._parent is None
+        assert ds_key._project == key_module._APP_ID_DEFAULT
+        assert ds_key._path == [{"kind": "Kind", "id": 1}]
 
     @staticmethod
     def test_constructor_with_app():
@@ -204,3 +211,33 @@ class Test__from_urlsafe:
         assert ds_key._parent is None
         assert ds_key._project == "fire"
         assert ds_key._path == [{"kind": "Kind", "name": "Thing"}]
+
+
+class Test__constructor_handle_positional:
+    @staticmethod
+    def test_with_path():
+        args = ("Kind", 1)
+        kwargs = {}
+        key_module._constructor_handle_positional(args, kwargs)
+        assert kwargs == {"flat": args}
+
+    @staticmethod
+    def test_path_collide_flat():
+        args = ("Kind", 1)
+        kwargs = {"flat": ("OtherKind", "Cheese")}
+        with pytest.raises(TypeError):
+            key_module._constructor_handle_positional(args, kwargs)
+
+    @staticmethod
+    def test_dict_positional():
+        args = ({"flat": ("OtherKind", "Cheese"), "app": "ehp"},)
+        kwargs = {}
+        key_module._constructor_handle_positional(args, kwargs)
+        assert kwargs == args[0]
+
+    @staticmethod
+    def test_dict_positional_with_other_kwargs():
+        args = ({"flat": ("OtherKind", "Cheese"), "app": "ehp"},)
+        kwargs = {"namespace": "over-here"}
+        with pytest.raises(TypeError):
+            key_module._constructor_handle_positional(args, kwargs)
