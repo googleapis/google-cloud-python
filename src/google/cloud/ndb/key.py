@@ -24,10 +24,14 @@ uniquely designate a (possible) entity in Google Cloud Datastore:
 """
 
 
+import os
+
 import google.cloud.datastore
 
 
 __all__ = ["Key"]
+_APP_ID_ENVIRONMENT = "APPLICATION_ID"
+_APP_ID_DEFAULT = "_"
 
 
 class Key:
@@ -74,12 +78,6 @@ class Key:
     ``Reference``, but it's best to think of it as just an opaque unique
     string.
 
-    Additional constructor keyword arguments:
-
-    * ``app=<string>``: specify the Google Cloud Platform project (previously
-      on Google App Engine, this was called the Application ID)
-    * ``namespace=<string>``: specify the namespace
-
     If a ``Reference`` is passed (using one of the ``reference``,
     ``serialized`` or ``urlsafe`` keywords), the positional arguments and
     ``namespace`` must match what is already present in the ``Reference``
@@ -110,9 +108,12 @@ class Key:
     * ``key.integer_id()``: the integer ID in the last ``(kind, id)`` pair,
       or :data:`None` if the key has a string ID or is incomplete
     * ``key.namespace()``: the namespace
-    * ``key.kind()``: a shortcut for ``key.pairs()[-1][0]``
+    * ``key.kind()``: The "kind" of the key, from the last of the
+      ``(kind, id)`` pairs
     * ``key.parent()``: a key constructed from all but the last ``(kind, id)``
-      pairs
+      pairs. For example, the parent of
+      ``[("Purchase", "Food"), ("Type", "Drink"), ("Coffee", 11)]`` is
+      ``[("Purchase", "Food"), ("Type", "Drink")]``.
     * ``key.urlsafe()``: a websafe-base64-encoded serialized ``Reference``
     * ``key.serialized()``: a serialized ``Reference``
     * ``key.reference()``: a ``Reference`` object (the caller promises not to
@@ -131,9 +132,79 @@ class Key:
     Keys may be pickled.
 
     Subclassing Key is best avoided; it would be hard to get right.
+
+    Args:
+        path_args (Union[Tuple[str, ...], Tuple[Dict]]): Either a tuple of
+            (kind, ID) pairs or a single dictionary containing only keyword
+            arguments.
+        reference (Optional[\
+            ~google.cloud.datastore._app_engine_key_pb2.Reference]): A
+            reference protobuf representing a key.
+        serialized (Optional[bytes]): A reference protobuf serialized to bytes.
+        urlsafe (Optional[str]): A reference protobuf serialized to bytes. The
+            raw bytes are then converted to a websafe base64-encoded string.
+        pairs (Optional[str]): An iterable of (kind, ID) pairs. If this
+            argument is used, then ``path_args`` should be empty.
+        flat (Optional[str]): An iterable of the (kind, ID) pairs but flattened
+            into a single value. For example, the pairs
+            ``[("Parent", 1), ("Child", "a")]`` would be flattened to
+            ``["Parent", 1, "Child", "a"]``.
+        app (Optional[str]): The Google Cloud Platform project (previously
+            on Google App Engine, this was called the Application ID).
+        namespace (Optional[str]): The namespace for the key.
+        parent (Optional[~.ndb.key.Key]): The parent of the key being
+            constructed. If provided, the key path will be **relative** to the
+            parent key's path.
     """
 
     __slots__ = ("_key",)
 
-    def __init__(self, *path_args, **kwargs):
-        self._key = google.cloud.datastore.Key(*path_args, **kwargs)
+    def __init__(
+        self,
+        *path_args,
+        reference=None,
+        serialized=None,
+        urlsafe=None,
+        pairs=None,
+        flat=None,
+        app=None,
+        namespace=None,
+        parent=None
+    ):
+        if reference is not None:
+            raise NotImplementedError
+        if serialized is not None:
+            raise NotImplementedError
+        if urlsafe is not None:
+            raise NotImplementedError
+        if pairs is not None:
+            raise NotImplementedError
+        if flat is not None:
+            raise NotImplementedError
+        if parent is not None:
+            raise NotImplementedError
+
+        project = _project_from_app(app)
+        self._key = google.cloud.datastore.Key(
+            *path_args, project=project, namespace=namespace
+        )
+
+
+def _project_from_app(app):
+    """Convert a legacy Google App Engine app string to a project.
+
+    Args:
+        app (str): The application value to be used. If the caller passes
+            :data:`None` then this will use the ``APPLICATION_ID`` environment
+            variable to determine the running application.
+
+    Returns:
+        str: The cleaned project.
+    """
+    if app is None:
+        app = os.environ.get(_APP_ID_ENVIRONMENT, _APP_ID_DEFAULT)
+
+    # NOTE: This is the same behavior as in the helper
+    #       ``google.cloud.datastore.key._clean_app()``.
+    parts = app.split("~", 1)
+    return parts[-1]
