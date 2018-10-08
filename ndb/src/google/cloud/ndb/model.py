@@ -234,6 +234,16 @@ class Model:
     def __init__(self, *args, **kwargs):
         raise NotImplementedError
 
+    @classmethod
+    def _get_kind(cls):
+        """Return the kind name for this class.
+
+        This defaults to ``cls.__name__``; users may override this to give a
+        class a different name when stored in Google Cloud Datastore than the
+        name of the class.
+        """
+        return cls.__name__
+
 
 class ModelAdapter:
     def __init__(self, *args, **kwargs):
