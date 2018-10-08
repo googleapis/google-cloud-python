@@ -162,18 +162,17 @@ class Key:
 
     __slots__ = ("_key",)
 
-    def __init__(
-        self,
-        *path_args,
-        reference=None,
-        serialized=None,
-        urlsafe=None,
-        pairs=None,
-        flat=None,
-        app=None,
-        namespace=None,
-        parent=None
-    ):
+    def __init__(self, *path_args, **kwargs):
+        _constructor_handle_positional(path_args, kwargs)
+        reference = kwargs.pop("reference", None)
+        serialized = kwargs.pop("serialized", None)
+        urlsafe = kwargs.pop("urlsafe", None)
+        pairs = kwargs.pop("pairs", None)
+        flat = kwargs.pop("flat", None)
+        app = kwargs.pop("app", None)
+        namespace = kwargs.pop("namespace", None)
+        parent = kwargs.pop("parent", None)
+
         if reference is not None:
             raise NotImplementedError
         if serialized is not None:
@@ -183,13 +182,13 @@ class Key:
         if pairs is not None:
             raise NotImplementedError
         if flat is not None:
-            raise NotImplementedError
+            pass
         if parent is not None:
             raise NotImplementedError
 
         project = _project_from_app(app)
         self._key = google.cloud.datastore.Key(
-            *path_args, project=project, namespace=namespace
+            *flat, project=project, namespace=namespace
         )
 
 
@@ -289,3 +288,46 @@ def _from_urlsafe(urlsafe):
     urlsafe += padding
     raw_bytes = base64.urlsafe_b64decode(urlsafe)
     return _from_serialized(raw_bytes)
+
+
+def _constructor_handle_positional(path_args, kwargs):
+    """Properly handle positional arguments to Key constructor.
+
+    This will modify ``kwargs`` in a few cases:
+
+    * The constructor was called with a dictionary as the only
+      positional argument (and no keyword arguments were passed). In
+      this case, the contents of the dictionary passed in will be copied
+      into ``kwargs``.
+    * The constructor was called with at least one (non-dictionary)
+      positional argument. In this case all of the positional arguments
+      will be added to ``kwargs`` for the key ``flat``.
+
+    Args:
+        path_args (Tuple): The positional arguments.
+        kwargs (Dict[str, Any]): The keyword arguments.
+
+    Raises:
+        TypeError: If keyword arguments were used while the first and
+            only positional argument was a dictionary.
+        TypeError: If positional arguments were provided and the keyword
+            ``flat`` was used.
+    """
+    if not path_args:
+        return
+
+    if len(path_args) == 1 and isinstance(path_args[0], dict):
+        if kwargs:
+            raise TypeError(
+                "Key() takes no keyword arguments when a dict is the "
+                "the first and only non-keyword argument (for "
+                "unpickling)."
+            )
+        kwargs.update(path_args[0])
+    else:
+        if "flat" in kwargs:
+            raise TypeError(
+                "Key() with positional arguments "
+                "cannot accept flat as a keyword argument."
+            )
+        kwargs["flat"] = path_args
