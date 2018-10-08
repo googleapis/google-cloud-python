@@ -17,9 +17,15 @@ import os
 import nox
 
 
-@nox.session(python='3.6')
+@nox.session
 def docs(session):
     """Build the docs."""
+
+    # Build docs against the latest version of Python, because we can.
+    session.interpreter = 'python3.6'
+
+    # Set the virtualenv dirname.
+    session.virtualenv_dirname = 'docs'
 
     # Install Sphinx and also all of the google-cloud-* packages.
     session.chdir(os.path.realpath(os.path.dirname(__file__)))
@@ -30,9 +36,13 @@ def docs(session):
         'bash', os.path.join('.', 'test_utils', 'scripts', 'update_docs.sh'))
 
 
-@nox.session(python='3.6')
+@nox.session
 def lint_setup_py(session):
     """Verify that setup.py is valid (including RST check)."""
+    session.interpreter = 'python3.6'
+
+    # Set the virtualenv dirname.
+    session.virtualenv_dirname = 'setup'
 
     session.install('docutils', 'Pygments')
     session.run(
