@@ -71,6 +71,7 @@ class _SnapshotBase(_SessionWrapper):
     _multi_use = False
     _transaction_id = None
     _read_request_count = 0
+    _execute_sql_count = 0
 
     def _make_txn_selector(self):  # pylint: disable=redundant-returns-doc
         """Helper for :meth:`read` / :meth:`execute_sql`.
@@ -195,14 +196,20 @@ class _SnapshotBase(_SessionWrapper):
 
         restart = functools.partial(
             api.execute_streaming_sql,
-            self._session.name, sql,
-            transaction=transaction, params=params_pb, param_types=param_types,
-            query_mode=query_mode, partition_token=partition,
+            self._session.name,
+            sql,
+            transaction=transaction,
+            params=params_pb,
+            param_types=param_types,
+            query_mode=query_mode,
+            partition_token=partition,
+            seqno=self._execute_sql_count,
             metadata=metadata)
 
         iterator = _restart_on_unavailable(restart)
 
         self._read_request_count += 1
+        self._execute_sql_count += 1
 
         if self._multi_use:
             return StreamedResultSet(iterator, source=self)
