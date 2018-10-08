@@ -238,6 +238,15 @@ class TestModel:
         with pytest.raises(NotImplementedError):
             model.Model()
 
+    @staticmethod
+    def test__get_kind():
+        assert model.Model._get_kind() == "Model"
+
+        class Simple(model.Model):
+            pass
+
+        assert Simple._get_kind() == "Simple"
+
 
 class TestModelAdapter:
     @staticmethod
