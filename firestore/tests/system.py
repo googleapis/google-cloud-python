@@ -895,3 +895,84 @@ def test_watch_query(client, cleanup):
         raise AssertionError(
             "Failed to get exactly two document changes: count: " +
             str(on_snapshot.called_count))
+
+
+def test_watch_query_order(client, cleanup):
+    db = client
+    unique_id = unique_resource_id()
+    doc_ref = db.collection(u'users').document(
+        u'alovelace' + unique_id)
+    query_ref = db.collection(u'users').where(
+        "first", "==", u'Ada' + unique_id).order_by("last")
+
+
+    # Setup listener
+    def on_snapshot(docs, changes, read_time):
+        try:
+            on_snapshot.called_count += 1
+
+            # A snapshot should return the same thing as if a query ran now.
+            query_ran = query_ref.get()
+            query_ran_results = [i for i in query_ran]
+            assert len(docs) == len(query_ran_results)
+            print("doc length: {}".format(len(docs)))
+            print("changes length: {}".format(len(changes)))
+            print("readtime: {}".format(read_time))
+
+            # compare the order things are returned
+            for snapshot, query in zip(docs, query_ran_results):
+                assert snapshot.get('last')['stringValue'] == query.get(
+                        'last'), "expect the sort order to match"
+
+        except Exception as e:
+            pytest.fail(e)
+
+    on_snapshot.called_count = 0
+
+    # Initial setting
+    doc_ref.set({
+        u'first': u'Jane',
+        u'last': u'Doe',
+        u'born': 1900
+    })
+
+    sleep(1)
+
+    query_ref.on_snapshot(on_snapshot)
+
+    # Alter document
+    doc_ref.set({
+        u'first': u'Ada' + unique_id,
+        u'last': u'Lovelace',
+        u'born': 1815
+    })
+
+    for _ in range(10):
+        if on_snapshot.called_count == 1:
+            break
+        sleep(1)
+
+    if on_snapshot.called_count != 1:
+        raise AssertionError(
+            "Initial set should have called on_snapshot 1 time: " +
+            str(on_snapshot.called_count))
+
+    # Create new document
+    doc_ref_2 = db.collection(u'users').document(
+        u'alovelace' + unique_resource_id())
+    doc_ref_2.set({
+        u'first': u'Ada' + unique_id,
+        u'last': u'ASecondLovelace',
+        u'born': 1815
+    })
+
+    for _ in range(10):
+        if on_snapshot.called_count == 2:
+            break
+        sleep(1)
+    
+
+    if on_snapshot.called_count != 2:
+        raise AssertionError(
+            "After new add on_snapshot should be called 2 times: " +
+            str(on_snapshot.called_count))
