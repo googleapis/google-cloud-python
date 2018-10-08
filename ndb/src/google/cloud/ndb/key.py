@@ -44,6 +44,15 @@ _REFERENCE_NAMESPACE_MISMATCH = (
     "Key reference constructed uses a different namespace {!r} than "
     "the one specified {!r}"
 )
+_INVALID_ID_TYPE = "Key id must be a string or a number; received {!r}"
+
+
+class _BadArgumentError(Exception):
+    """Placeholder exception for ``datastore_errors.BadArgumentError``."""
+
+
+class _BadValueError(Exception):
+    """Placeholder exception for ``datastore_errors.BadValueError``."""
 
 
 class Key:
@@ -155,11 +164,12 @@ class Key:
         serialized (Optional[bytes]): A reference protobuf serialized to bytes.
         urlsafe (Optional[str]): A reference protobuf serialized to bytes. The
             raw bytes are then converted to a websafe base64-encoded string.
-        pairs (Optional[str]): An iterable of (kind, ID) pairs. If this
-            argument is used, then ``path_args`` should be empty.
-        flat (Optional[str]): An iterable of the (kind, ID) pairs but flattened
-            into a single value. For example, the pairs
-            ``[("Parent", 1), ("Child", "a")]`` would be flattened to
+        pairs (Optional[Iterable[Tuple[str, Union[str, int]]]]): An iterable
+            of (kind, ID) pairs. If this argument is used, then ``path_args``
+            should be empty.
+        flat (Optional[Iterable[Union[str, int]]]): An iterable of the
+            (kind, ID) pairs but flattened into a single value. For example,
+            the pairs ``[("Parent", 1), ("Child", "a")]`` would be flattened to
             ``["Parent", 1, "Child", "a"]``.
         app (Optional[str]): The Google Cloud Platform project (previously
             on Google App Engine, this was called the Application ID).
@@ -183,31 +193,35 @@ class Key:
             or "serialized" in kwargs
             or "urlsafe" in kwargs
         ):
-            parsed = _parse_from_ref(type(self), **kwargs)
+            ds_key, reference = _parse_from_ref(type(self), **kwargs)
         elif "pairs" in kwargs or "flat" in kwargs:
-            parsed = _parse_from_args(**kwargs)
+            ds_key = _parse_from_args(**kwargs)
+            reference = None
         else:
             raise TypeError(
                 "Key() cannot create a Key instance without arguments."
             )
 
-        ds_key, reference = parsed
         self._key = ds_key
         self._reference = reference
 
 
-def _project_from_app(app):
+def _project_from_app(app, allow_empty=False):
     """Convert a legacy Google App Engine app string to a project.
 
     Args:
         app (str): The application value to be used. If the caller passes
             :data:`None` then this will use the ``APPLICATION_ID`` environment
             variable to determine the running application.
+        allow_empty (bool): Flag determining if an empty (i.e. :data:`None`)
+            project is allowed. Defaults to :data:`False`.
 
     Returns:
         str: The cleaned project.
     """
     if app is None:
+        if allow_empty:
+            return None
         app = os.environ.get(_APP_ID_ENVIRONMENT, _APP_ID_DEFAULT)
 
     # NOTE: This is the same behavior as in the helper
@@ -414,7 +428,8 @@ def _parse_from_ref(
             if ``parent`` and ``urlsafe`` were used together.
 
     Returns:
-        Tuple[.Key, ~google.cloud.datastore._app_engine_key_pb2.Reference]:
+        Tuple[~.datastore.Key, \
+            ~google.cloud.datastore._app_engine_key_pb2.Reference]:
         A pair of the constructed key and the reference that was serialized
         in one of the arguments.
 
@@ -446,6 +461,131 @@ def _parse_from_ref(
 
 
 def _parse_from_args(
-    pairs=None, flat=None, parent=None, app=None, namespace=None
+    pairs=None, flat=None, app=None, namespace=None, parent=None
 ):
-    raise NotImplementedError
+    """Construct a key the path (and possibly a parent key).
+
+    Args:
+        pairs (Optional[Iterable[Tuple[str, Union[str, int]]]]): An iterable
+            of (kind, ID) pairs.
+        flat (Optional[Iterable[Union[str, int]]]): An iterable of the
+            (kind, ID) pairs but flattened into a single value. For example,
+            the pairs ``[("Parent", 1), ("Child", "a")]`` would be flattened to
+            ``["Parent", 1, "Child", "a"]``.
+        app (Optional[str]): The Google Cloud Platform project (previously
+            on Google App Engine, this was called the Application ID).
+        namespace (Optional[str]): The namespace for the key.
+        parent (Optional[~.ndb.key.Key]): The parent of the key being
+            constructed. If provided, the key path will be **relative** to the
+            parent key's path.
+
+    Returns:
+        ~.datastore.Key: The constructed key.
+
+    Raises:
+        ._BadValueError: If ``parent`` is passed but is not a ``Key``.
+    """
+    flat = _get_path(flat, pairs)
+    _clean_flat_path(flat)
+
+    parent_ds_key = None
+    if parent is None:
+        project = _project_from_app(app)
+    else:
+        project = _project_from_app(app, allow_empty=True)
+        if not isinstance(parent, Key):
+            raise _BadValueError(
+                "Expected Key instance, got {!r}".format(parent)
+            )
+        # Offload verification of parent to ``google.cloud.datastore.Key()``.
+        parent_ds_key = parent._key
+
+    return google.cloud.datastore.Key(
+        *flat, parent=parent_ds_key, project=project, namespace=namespace
+    )
+
+
+def _get_path(flat, pairs):
+    """Get a flat path of key arguments.
+
+    Does this from exactly one of ``flat`` or ``pairs``.
+
+    Args:
+        pairs (Optional[Iterable[Tuple[str, Union[str, int]]]]): An iterable
+            of (kind, ID) pairs.
+        flat (Optional[Iterable[Union[str, int]]]): An iterable of the
+            (kind, ID) pairs but flattened into a single value. For example,
+            the pairs ``[("Parent", 1), ("Child", "a")]`` would be flattened to
+            ``["Parent", 1, "Child", "a"]``.
+
+    Returns:
+        List[Union[str, int]]: The flattened path as a list.
+
+    Raises:
+        TypeError: If both ``flat`` and ``pairs`` are provided.
+        ValueError: If the ``flat`` path does not have an even number of
+            elements.
+        TypeError: If the paths are both empty.
+    """
+    if flat:
+        if pairs is not None:
+            raise TypeError(
+                "Key() cannot accept both flat and pairs arguments."
+            )
+        if len(flat) % 2:
+            raise ValueError(
+                "Key() must have an even number of positional arguments."
+            )
+        flat = list(flat)
+    else:
+        flat = []
+        for kind, id_ in pairs:
+            flat.extend((kind, id_))
+
+    if not flat:
+        raise TypeError("Key must consist of at least one pair.")
+
+    return flat
+
+
+def _clean_flat_path(flat):
+    """Verify and convert the flat path for a key.
+
+    This may modify ``flat`` in place. In particular, if the last element is
+    :data:`None` (for a partial key), this will pop it off the end. Also
+    if some of the kinds are instance of :class:`.Model`, they will be
+    converted to strings in ``flat``.
+
+    Args:
+        flat (List[Union[str, int]]): The flattened path as a list.
+
+    Raises:
+        TypeError: If the kind in a pair is an invalid type.
+        ._BadArgumentError: If a key ID is :data:`None` (indicating a partial
+           key), but in a pair other than the last one.
+        TypeError: If a key ID is not a string or integer.
+    """
+    # Verify the inputs in ``flat``.
+    for i in range(0, len(flat), 2):
+        # Make sure the ``kind`` is either a string or a Model.
+        kind = flat[i]
+        if isinstance(kind, type):
+            kind = kind._get_kind()
+            flat[i] = kind
+        if not isinstance(kind, str):
+            raise TypeError(
+                "Key kind must be a string or Model class; "
+                "received {!r}".format(kind)
+            )
+        # Make sure the ``id_`` is either a string or int. In the special case
+        # of a partial key, ``id_`` can be ``None`` for the last pair.
+        id_ = flat[i + 1]
+        if id_ is None:
+            if i + 2 < len(flat):
+                raise _BadArgumentError("Incomplete Key entry must be last")
+        elif not isinstance(id_, (str, int)):
+            raise TypeError(_INVALID_ID_TYPE.format(id_))
+
+    # Remove trailing ``None`` for a partial key.
+    if flat[-1] is None:
+        flat.pop()
