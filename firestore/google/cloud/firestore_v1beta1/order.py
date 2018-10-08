@@ -165,8 +165,6 @@ class Order(object):
             
             if (left_segments[i] > right_segments[i]):
                 return 1
-            
-
 
         left_length = len(left)
         right_length = len(right)
@@ -197,23 +195,16 @@ class Order(object):
         left_fields = left.map_value.fields
         right_fields = right.map_value.fields
 
-        l_iter = left_fields.__iter__()
-        r_iter = right_fields.__iter__()
-        try:
-            while True:
-                left_key = l_iter.__next__()
-                right_key = r_iter.__next__()
-                
-                keyCompare = Order._compare_to(left_key, right_key)
-                if keyCompare != 0:
-                    return keyCompare
+        for left_key, right_key in zip(left_fields, right_fields):
+            keyCompare = Order._compare_to(left_key, right_key)
+            if keyCompare != 0:
+                return keyCompare
 
-                value_compare = Order().compare(
-                    left_fields[left_key], right_fields[right_key])
-                if value_compare != 0:
+            value_compare = Order().compare(
+                left_fields[left_key], right_fields[right_key])
+            if value_compare != 0:
                     return value_compare
-        except StopIteration:
-            pass
+
             
         return Order._compare_to(len(left_fields), len(right_fields))
 
