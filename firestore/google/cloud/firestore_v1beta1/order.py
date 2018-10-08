@@ -12,19 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
-# package com.google.cloud.firestore;
-
-# import com.google.firestore.v1beta1.Value;
-# import com.google.firestore.v1beta1.Value.ValueTypeCase;
-# import com.google.protobuf.ByteString;
-# import java.util.Comparator;
-# import java.util.Iterator;
-# import java.util.List;
-# import java.util.Map.Entry;
-# import java.util.SortedMap;
-# import java.util.TreeMap;
-# import javax.annotation.Nonnull;
 from enum import Enum
 from google.cloud.firestore_v1beta1._helpers import decode_value
 import math
@@ -118,24 +105,6 @@ class Order(object):
             raise ValueError('Unknown ``value_type``', value_type)
 
 
-    #   private int compareBlobs(Value left, Value right) {
-    #     ByteString leftBytes = left.getBytesValue();
-    #     ByteString rightBytes = right.getBytesValue();
-
-    #     int size = Math.min(leftBytes.size(), rightBytes.size());
-    #     for (int i = 0; i < size; i++) {
-    #       // Make sure the bytes are unsigned
-    #       int thisByte = leftBytes.byteAt(i) & 0xff;
-    #       int otherByte = rightBytes.byteAt(i) & 0xff;
-    #       if (thisByte < otherByte) {
-    #         return -1;
-    #       } else if (thisByte > otherByte) {
-    #         return 1;
-    #       }
-    #       // Byte values are equal, continue with comparison
-    #     }
-    #     return Integer.compare(leftBytes.size(), rightBytes.size());
-    #   }
     @staticmethod
     def compare_blobs(left, right):
         left_bytes = left.bytes_value
@@ -155,24 +124,6 @@ class Order(object):
         
         return Order._compareTo(left.nanos or 0, right.nanos or 0)
 
-        # cmp = 0
-        # if left_value.seconds < right_value.seconds:
-        #     cmp = -1
-        # elif left_value.seconds == right_value.seconds:
-        #     cmp = 0
-        # else:
-        #     cmp = 0
-
-        # if cmp != 0:
-        #     return cmp
-        # else:
-        #     if left_value.nanos < right_value.nanos:
-        #         cmp = -1
-        #     elif left_value.nanos == right_value.nanos:
-        #         cmp = 0
-        #     else:
-        #         cmp = 1
-        #     return cmp
 
     @staticmethod
     def compare_geo_points(left, right):
@@ -197,33 +148,9 @@ class Order(object):
                 cmp = 1
             return cmp
 
-    #   private int compareResourcePaths(Value left, Value right) {
-    #     ResourcePath leftPath = ResourcePath.create(left.getReferenceValue());
-    #     ResourcePath rightPath = ResourcePath.create(right.getReferenceValue());
-    #     return leftPath.compareTo(rightPath);
-    #   }
+
     @staticmethod
     def compare_resource_paths(left, right):
-        """
-        compareTo(other: Path<T>): number {
-        const len = Math.min(left.segments.length, right.segments.length);
-        for (let i = 0; i < len; i++) {
-        if (left.segments[i] < right.segments[i]) {
-            return -1;
-        }
-        if (left.segments[i] > right.segments[i]) {
-            return 1;
-        }
-        }
-        if (left.segments.length < right.segments.length) {
-        return -1;
-        }
-        if (left.segments.length > right.segments.length) {
-        return 1;
-        }
-        return 0;
-    }
-    """ 
         left = left.reference_value
         right = right.reference_value
 
