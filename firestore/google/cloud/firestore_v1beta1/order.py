@@ -249,58 +249,46 @@ class Order(object):
             return 1
 
         return 0
-        #raise NotImplementedError()
 
 
-    #   private int compareArrays(Value left, Value right) {
-    #     List<Value> leftValue = left.getArrayValue().getValuesList();
-    #     List<Value> rightValue = right.getArrayValue().getValuesList();
-
-    #     int minLength = Math.min(leftValue.size(), rightValue.size());
-    #     for (int i = 0; i < minLength; i++) {
-    #       int cmp = compare(leftValue.get(i), rightValue.get(i));
-    #       if (cmp != 0) {
-    #         return cmp;
-    #       }
-    #     }
-    #     return Integer.compare(leftValue.size(), rightValue.size());
-    #   }
     @staticmethod
     def compare_arrays(left, right):
-        raise NotImplementedError()
+        l_values = left.array_value.values#.keys()
+        r_values = right.array_value.values#.keys()
+
+        length = min(len(l_values), len(r_values))
+        for i in range(length):
+            cmp = Order().compare(l_values[i], r_values[i])
+            if cmp != 0:
+                return cmp
+            
+        return Order._compareTo(len(l_values), len(r_values))
 
 
-
-    #   private int compareObjects(Value left, Value right) {
-    #     // This requires iterating over the keys in the object in order and doing a
-    #     // deep comparison.
-    #     SortedMap<String, Value> leftMap = new TreeMap<>();
-    #     leftMap.putAll(left.getMapValue().getFieldsMap());
-    #     SortedMap<String, Value> rightMap = new TreeMap<>();
-    #     rightMap.putAll(right.getMapValue().getFieldsMap());
-
-    #     Iterator<Entry<String, Value>> leftIterator = leftMap.entrySet().iterator();
-    #     Iterator<Entry<String, Value>> rightIterator = rightMap.entrySet().iterator();
-
-    #     while (leftIterator.hasNext() && rightIterator.hasNext()) {
-    #       Entry<String, Value> leftEntry = leftIterator.next();
-    #       Entry<String, Value> rightEntry = rightIterator.next();
-    #       int keyCompare = leftEntry.getKey().compareTo(rightEntry.getKey());
-    #       if (keyCompare != 0) {
-    #         return keyCompare;
-    #       }
-    #       int valueCompare = compare(leftEntry.getValue(), rightEntry.getValue());
-    #       if (valueCompare != 0) {
-    #         return valueCompare;
-    #       }
-    #     }
-
-    #     // Only equal if both iterators are exhausted.
-    #     return Boolean.compare(leftIterator.hasNext(), rightIterator.hasNext());
-    #   }
     @staticmethod
     def compare_objects(left, right):
-        raise NotImplementedError()
+        left_fields = left.map_value.fields
+        right_fields = right.map_value.fields
+
+        l_iter = left_fields.__iter__()
+        r_iter = right_fields.__iter__()
+        try:
+            while True:
+                left_key = l_iter.__next__()
+                right_key = r_iter.__next__()
+                
+                keyCompare = Order._compareTo(left_key, right_key)
+                if keyCompare != 0:
+                    return keyCompare
+
+                value_compare = Order().compare(
+                    left_fields[left_key], right_fields[right_key])
+                if value_compare != 0:
+                    return value_compare
+        except StopIteration:
+            pass
+            
+        return Order._compareTo(len(left_fields), len(right_fields))
 
     @staticmethod
     def compare_numbers(left, right):
