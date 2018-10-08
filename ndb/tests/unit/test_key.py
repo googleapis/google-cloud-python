@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import base64
 import unittest.mock
 
 from google.cloud.datastore import _app_engine_key_pb2
@@ -27,32 +28,64 @@ def test___all__():
 
 
 class TestKey:
+    URLSAFE = b"agZzfmZpcmVyDwsSBEtpbmQiBVRoaW5nDA"
+
     @staticmethod
     @unittest.mock.patch("os.environ", new={})
     def test_constructor_default():
-        key = key_module.Key("Kind")
-        ds_key = key._key
-        assert isinstance(ds_key, google.cloud.datastore.Key)
-        assert ds_key._flat_path == ("Kind",)
-        assert ds_key._namespace is None
-        assert ds_key._parent is None
-        assert ds_key._project == key_module._APP_ID_DEFAULT
-        assert ds_key._path == [{"kind": "Kind"}]
+        with pytest.raises(NotImplementedError):
+            key_module.Key("Kind")
 
     @staticmethod
     def test_constructor_with_reference():
-        with pytest.raises(NotImplementedError):
-            key_module.Key(reference=unittest.mock.sentinel.ref)
+        reference = make_reference()
+        key = key_module.Key(reference=reference)
+        ds_key = key._key
+        assert isinstance(ds_key, google.cloud.datastore.Key)
+        assert ds_key._flat_path == ("Parent", 59, "Child", "Feather")
+        assert ds_key._namespace == "space"
+        assert ds_key._parent is None
+        assert ds_key._project == "sample-app"
+        assert ds_key._path == [
+            {"kind": "Parent", "id": 59},
+            {"kind": "Child", "name": "Feather"},
+        ]
+
+        assert key._reference is reference
 
     @staticmethod
     def test_constructor_with_serialized():
-        with pytest.raises(NotImplementedError):
-            key_module.Key(serialized=b"foo")
+        serialized = (
+            b"j\x18s~sample-app-no-locationr\n\x0b\x12\x04Zorp\x18X\x0c"
+        )
+        key = key_module.Key(serialized=serialized)
+        ds_key = key._key
+        assert isinstance(ds_key, google.cloud.datastore.Key)
+        assert ds_key._flat_path == ("Zorp", 88)
+        assert ds_key._namespace is None
+        assert ds_key._parent is None
+        assert ds_key._project == "sample-app-no-location"
+        assert ds_key._path == [{"kind": "Zorp", "id": 88}]
+        assert key._reference == make_reference(
+            path=({"type": "Zorp", "id": 88},),
+            app="s~sample-app-no-location",
+            namespace=None,
+        )
 
-    @staticmethod
-    def test_constructor_with_urlsafe():
-        with pytest.raises(NotImplementedError):
-            key_module.Key(urlsafe="foo")
+    def test_constructor_with_urlsafe(self):
+        key = key_module.Key(urlsafe=self.URLSAFE)
+        ds_key = key._key
+        assert isinstance(ds_key, google.cloud.datastore.Key)
+        assert ds_key._flat_path == ("Kind", "Thing")
+        assert ds_key._namespace is None
+        assert ds_key._parent is None
+        assert ds_key._project == "fire"
+        assert ds_key._path == [{"kind": "Kind", "name": "Thing"}]
+        assert key._reference == make_reference(
+            path=({"type": "Kind", "name": "Thing"},),
+            app="s~fire",
+            namespace=None,
+        )
 
     @staticmethod
     def test_constructor_with_pairs():
@@ -62,41 +95,48 @@ class TestKey:
     @staticmethod
     @unittest.mock.patch("os.environ", new={})
     def test_constructor_with_flat():
-        key = key_module.Key(flat=["Kind", 1])
-        ds_key = key._key
-        assert isinstance(ds_key, google.cloud.datastore.Key)
-        assert ds_key._flat_path == ("Kind", 1)
-        assert ds_key._namespace is None
-        assert ds_key._parent is None
-        assert ds_key._project == key_module._APP_ID_DEFAULT
-        assert ds_key._path == [{"kind": "Kind", "id": 1}]
+        with pytest.raises(NotImplementedError):
+            key_module.Key(flat=["Kind", 1])
 
     @staticmethod
     def test_constructor_with_app():
-        key = key_module.Key("Kind", app="foo")
-        ds_key = key._key
-        assert isinstance(ds_key, google.cloud.datastore.Key)
-        assert ds_key._flat_path == ("Kind",)
-        assert ds_key._namespace is None
-        assert ds_key._parent is None
-        assert ds_key._project == "foo"
-        assert ds_key._path == [{"kind": "Kind"}]
+        with pytest.raises(NotImplementedError):
+            key_module.Key("Kind", 10, app="foo")
 
     @staticmethod
     def test_constructor_with_namespace():
-        key = key_module.Key("Kind", namespace="foo", app="bar")
-        ds_key = key._key
-        assert isinstance(ds_key, google.cloud.datastore.Key)
-        assert ds_key._flat_path == ("Kind",)
-        assert ds_key._namespace == "foo"
-        assert ds_key._parent is None
-        assert ds_key._project == "bar"
-        assert ds_key._path == [{"kind": "Kind"}]
+        with pytest.raises(NotImplementedError):
+            key_module.Key("Kind", 1337, namespace="foo", app="bar")
+
+    def test_constructor_with_parent(self):
+        parent = key_module.Key(urlsafe=self.URLSAFE)
+        with pytest.raises(NotImplementedError):
+            key_module.Key("Kind", 10, parent=parent)
 
     @staticmethod
-    def test_constructor_with_parent():
-        with pytest.raises(NotImplementedError):
-            key_module.Key(parent=unittest.mock.sentinel.key)
+    def test_constructor_insufficient_args():
+        with pytest.raises(TypeError):
+            key_module.Key(app="foo")
+
+    def test_no_subclass_for_reference(self):
+        class KeySubclass(key_module.Key):
+            pass
+
+        with pytest.raises(TypeError):
+            KeySubclass(urlsafe=self.URLSAFE)
+
+    @staticmethod
+    def test_invalid_argument_combination():
+        with pytest.raises(TypeError):
+            key_module.Key(flat=["a", "b"], urlsafe=b"foo")
+
+    def test_colliding_reference_arguments(self):
+        urlsafe = self.URLSAFE
+        padding = b"=" * (-len(urlsafe) % 4)
+        serialized = base64.urlsafe_b64decode(urlsafe + padding)
+
+        with pytest.raises(TypeError):
+            key_module.Key(urlsafe=urlsafe, serialized=serialized)
 
 
 class Test__project_from_app:
@@ -125,37 +165,10 @@ class Test__project_from_app:
         assert key_module._project_from_app(None) == "jectpro"
 
 
-def test__from_reference():
-    reference = _app_engine_key_pb2.Reference(
-        app="s~sample-app",
-        path=_app_engine_key_pb2.Path(
-            element=[
-                _app_engine_key_pb2.Path.Element(type="Parent", id=59),
-                _app_engine_key_pb2.Path.Element(type="Child", name="Feather"),
-            ]
-        ),
-        name_space="space",
-    )
-    ds_key = key_module._from_reference(reference)
-    assert isinstance(ds_key, google.cloud.datastore.Key)
-    assert ds_key._flat_path == ("Parent", 59, "Child", "Feather")
-    assert ds_key._namespace == "space"
-    assert ds_key._parent is None
-    assert ds_key._project == "sample-app"
-    assert ds_key._path == [
-        {"kind": "Parent", "id": 59},
-        {"kind": "Child", "name": "Feather"},
-    ]
-
-
-class Test__from_serialized:
-    @staticmethod
-    def test_basic():
-        serialized = (
-            b"j\x0cs~sample-appr\x1e\x0b\x12\x06Parent\x18;\x0c\x0b\x12\x05"
-            b'Child"\x07Feather\x0c\xa2\x01\x05space'
-        )
-        ds_key = key_module._from_serialized(serialized)
+class Test__from_reference:
+    def test_basic(self):
+        reference = make_reference()
+        ds_key = key_module._from_reference(reference, None, None)
         assert isinstance(ds_key, google.cloud.datastore.Key)
         assert ds_key._flat_path == ("Parent", 59, "Child", "Feather")
         assert ds_key._namespace == "space"
@@ -166,18 +179,79 @@ class Test__from_serialized:
             {"kind": "Child", "name": "Feather"},
         ]
 
+    def test_matching_app(self):
+        reference = make_reference()
+        ds_key = key_module._from_reference(reference, "s~sample-app", None)
+        assert isinstance(ds_key, google.cloud.datastore.Key)
+        assert ds_key._flat_path == ("Parent", 59, "Child", "Feather")
+        assert ds_key._namespace == "space"
+        assert ds_key._parent is None
+        assert ds_key._project == "sample-app"
+        assert ds_key._path == [
+            {"kind": "Parent", "id": 59},
+            {"kind": "Child", "name": "Feather"},
+        ]
+
+    def test_differing_app(self):
+        reference = make_reference()
+        with pytest.raises(RuntimeError):
+            key_module._from_reference(reference, "pickles", None)
+
+    def test_matching_namespace(self):
+        reference = make_reference()
+        ds_key = key_module._from_reference(reference, None, "space")
+        assert isinstance(ds_key, google.cloud.datastore.Key)
+        assert ds_key._flat_path == ("Parent", 59, "Child", "Feather")
+        assert ds_key._namespace == "space"
+        assert ds_key._parent is None
+        assert ds_key._project == "sample-app"
+        assert ds_key._path == [
+            {"kind": "Parent", "id": 59},
+            {"kind": "Child", "name": "Feather"},
+        ]
+
+    def test_differing_namespace(self):
+        reference = make_reference()
+        with pytest.raises(RuntimeError):
+            key_module._from_reference(reference, None, "pickles")
+
+
+class Test__from_serialized:
+    @staticmethod
+    def test_basic():
+        serialized = (
+            b"j\x0cs~sample-appr\x1e\x0b\x12\x06Parent\x18;\x0c\x0b\x12\x05"
+            b'Child"\x07Feather\x0c\xa2\x01\x05space'
+        )
+        ds_key, reference = key_module._from_serialized(serialized, None, None)
+        assert isinstance(ds_key, google.cloud.datastore.Key)
+        assert ds_key._flat_path == ("Parent", 59, "Child", "Feather")
+        assert ds_key._namespace == "space"
+        assert ds_key._parent is None
+        assert ds_key._project == "sample-app"
+        assert ds_key._path == [
+            {"kind": "Parent", "id": 59},
+            {"kind": "Child", "name": "Feather"},
+        ]
+        assert reference == make_reference()
+
     @staticmethod
     def test_no_app_prefix():
         serialized = (
             b"j\x18s~sample-app-no-locationr\n\x0b\x12\x04Zorp\x18X\x0c"
         )
-        ds_key = key_module._from_serialized(serialized)
+        ds_key, reference = key_module._from_serialized(serialized, None, None)
         assert isinstance(ds_key, google.cloud.datastore.Key)
         assert ds_key._flat_path == ("Zorp", 88)
         assert ds_key._namespace is None
         assert ds_key._parent is None
         assert ds_key._project == "sample-app-no-location"
         assert ds_key._path == [{"kind": "Zorp", "id": 88}]
+        assert reference == make_reference(
+            path=({"type": "Zorp", "id": 88},),
+            app="s~sample-app-no-location",
+            namespace=None,
+        )
 
 
 class Test__from_urlsafe:
@@ -189,7 +263,7 @@ class Test__from_urlsafe:
         )
         urlsafe_bytes = urlsafe.encode("ascii")
         for value in (urlsafe, urlsafe_bytes):
-            ds_key = key_module._from_urlsafe(value)
+            ds_key, reference = key_module._from_urlsafe(value, None, None)
             assert isinstance(ds_key, google.cloud.datastore.Key)
             assert ds_key._flat_path == ("Parent", 59, "Child", "Feather")
             assert ds_key._namespace == "space"
@@ -199,18 +273,24 @@ class Test__from_urlsafe:
                 {"kind": "Parent", "id": 59},
                 {"kind": "Child", "name": "Feather"},
             ]
+            assert reference == make_reference()
 
     @staticmethod
     def test_needs_padding():
         urlsafe = b"agZzfmZpcmVyDwsSBEtpbmQiBVRoaW5nDA"
 
-        ds_key = key_module._from_urlsafe(urlsafe)
+        ds_key, reference = key_module._from_urlsafe(urlsafe, None, None)
         assert isinstance(ds_key, google.cloud.datastore.Key)
         assert ds_key._flat_path == ("Kind", "Thing")
         assert ds_key._namespace is None
         assert ds_key._parent is None
         assert ds_key._project == "fire"
         assert ds_key._path == [{"kind": "Kind", "name": "Thing"}]
+        assert reference == make_reference(
+            path=({"type": "Kind", "name": "Thing"},),
+            app="s~fire",
+            namespace=None,
+        )
 
 
 class Test__constructor_handle_positional:
@@ -241,3 +321,18 @@ class Test__constructor_handle_positional:
         kwargs = {"namespace": "over-here"}
         with pytest.raises(TypeError):
             key_module._constructor_handle_positional(args, kwargs)
+
+
+def make_reference(
+    path=({"type": "Parent", "id": 59}, {"type": "Child", "name": "Feather"}),
+    app="s~sample-app",
+    namespace="space",
+):
+    elements = [
+        _app_engine_key_pb2.Path.Element(**element) for element in path
+    ]
+    return _app_engine_key_pb2.Reference(
+        app=app,
+        path=_app_engine_key_pb2.Path(element=elements),
+        name_space=namespace,
+    )

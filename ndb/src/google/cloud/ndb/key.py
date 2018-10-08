@@ -35,6 +35,15 @@ import google.cloud.datastore
 __all__ = ["Key"]
 _APP_ID_ENVIRONMENT = "APPLICATION_ID"
 _APP_ID_DEFAULT = "_"
+_WRONG_TYPE = "Cannot construct Key reference on non-Key class; received {!r}"
+_REFERENCE_APP_MISMATCH = (
+    "Key reference constructed uses a different app {!r} than "
+    "the one specified {!r}"
+)
+_REFERENCE_NAMESPACE_MISMATCH = (
+    "Key reference constructed uses a different namespace {!r} than "
+    "the one specified {!r}"
+)
 
 
 class Key:
@@ -158,38 +167,33 @@ class Key:
         parent (Optional[~.ndb.key.Key]): The parent of the key being
             constructed. If provided, the key path will be **relative** to the
             parent key's path.
+
+    Raises:
+        TypeError: If none of ``reference``, ``serialized``, ``urlsafe``,
+            ``pairs`` or ``flat`` is provided as an argument and no positional
+            arguments were given with the path.
     """
 
-    __slots__ = ("_key",)
+    __slots__ = ("_key", "_reference")
 
     def __init__(self, *path_args, **kwargs):
         _constructor_handle_positional(path_args, kwargs)
-        reference = kwargs.pop("reference", None)
-        serialized = kwargs.pop("serialized", None)
-        urlsafe = kwargs.pop("urlsafe", None)
-        pairs = kwargs.pop("pairs", None)
-        flat = kwargs.pop("flat", None)
-        app = kwargs.pop("app", None)
-        namespace = kwargs.pop("namespace", None)
-        parent = kwargs.pop("parent", None)
+        if (
+            "reference" in kwargs
+            or "serialized" in kwargs
+            or "urlsafe" in kwargs
+        ):
+            parsed = _parse_from_ref(type(self), **kwargs)
+        elif "pairs" in kwargs or "flat" in kwargs:
+            parsed = _parse_from_args(**kwargs)
+        else:
+            raise TypeError(
+                "Key() cannot create a Key instance without arguments."
+            )
 
-        if reference is not None:
-            raise NotImplementedError
-        if serialized is not None:
-            raise NotImplementedError
-        if urlsafe is not None:
-            raise NotImplementedError
-        if pairs is not None:
-            raise NotImplementedError
-        if flat is not None:
-            pass
-        if parent is not None:
-            raise NotImplementedError
-
-        project = _project_from_app(app)
-        self._key = google.cloud.datastore.Key(
-            *flat, project=project, namespace=namespace
-        )
+        ds_key, reference = parsed
+        self._key = ds_key
+        self._reference = reference
 
 
 def _project_from_app(app):
@@ -212,7 +216,7 @@ def _project_from_app(app):
     return parts[-1]
 
 
-def _from_reference(reference):
+def _from_reference(reference, app, namespace):
     """Convert Reference protobuf to :class:`~google.cloud.datastore.key.Key`.
 
     This is intended to work with the "legacy" representation of a
@@ -226,21 +230,44 @@ def _from_reference(reference):
 
     Args:
         serialized (bytes): A reference protobuf serialized to bytes.
+        app (Optional[str]): The application ID / project ID for the
+            constructed key.
+        namespace (Optional[str]): The namespace for the constructed key.
 
     Returns:
         google.cloud.datastore.key.Key: The key corresponding to
         ``serialized``.
+
+    Raises:
+        RuntimeError: If ``app`` is not :data:`None`, but not the same as
+            ``reference.app``.
+        RuntimeError: If ``namespace`` is not :data:`None`, but not the same as
+            ``reference.name_space``.
     """
-    project = _key_module._clean_app(reference.app)
-    namespace = _key_module._get_empty(reference.name_space, "")
+    project = _project_from_app(reference.app)
+    if app is not None:
+        if _project_from_app(app) != project:
+            raise RuntimeError(
+                _REFERENCE_APP_MISMATCH.format(reference.app, app)
+            )
+
+    parsed_namespace = _key_module._get_empty(reference.name_space, "")
+    if namespace is not None:
+        if namespace != parsed_namespace:
+            raise RuntimeError(
+                _REFERENCE_NAMESPACE_MISMATCH.format(
+                    reference.name_space, namespace
+                )
+            )
+
     _key_module._check_database_id(reference.database_id)
     flat_path = _key_module._get_flat_path(reference.path)
     return google.cloud.datastore.Key(
-        *flat_path, project=project, namespace=namespace
+        *flat_path, project=project, namespace=parsed_namespace
     )
 
 
-def _from_serialized(serialized):
+def _from_serialized(serialized, app, namespace):
     """Convert serialized protobuf to :class:`~google.cloud.datastore.key.Key`.
 
     This is intended to work with the "legacy" representation of a
@@ -250,17 +277,20 @@ def _from_serialized(serialized):
 
     Args:
         serialized (bytes): A reference protobuf serialized to bytes.
+        app (Optional[str]): The application ID / project ID for the
+            constructed key.
+        namespace (Optional[str]): The namespace for the constructed key.
 
     Returns:
-        google.cloud.datastore.key.Key: The key corresponding to
-        ``serialized``.
+        Tuple[google.cloud.datastore.key.Key, .Reference]: The key
+        corresponding to ``serialized`` and the Reference protobuf.
     """
     reference = _app_engine_key_pb2.Reference()
     reference.ParseFromString(serialized)
-    return _from_reference(reference)
+    return _from_reference(reference, app, namespace), reference
 
 
-def _from_urlsafe(urlsafe):
+def _from_urlsafe(urlsafe, app, namespace):
     """Convert urlsafe string to :class:`~google.cloud.datastore.key.Key`.
 
     .. note::
@@ -278,16 +308,20 @@ def _from_urlsafe(urlsafe):
     Args:
         urlsafe (Union[bytes, str]): The base64 encoded (ASCII) string
             corresponding to a datastore "Key" / "Reference".
+        app (Optional[str]): The application ID / project ID for the
+            constructed key.
+        namespace (Optional[str]): The namespace for the constructed key.
 
     Returns:
-        google.cloud.datastore.key.Key: The key corresponding to ``urlsafe``.
+        Tuple[google.cloud.datastore.key.Key, .Reference]: The key
+        corresponding to ``urlsafe`` and the Reference protobuf.
     """
     if isinstance(urlsafe, str):
         urlsafe = urlsafe.encode("ascii")
     padding = b"=" * (-len(urlsafe) % 4)
     urlsafe += padding
     raw_bytes = base64.urlsafe_b64decode(urlsafe)
-    return _from_serialized(raw_bytes)
+    return _from_serialized(raw_bytes, app, namespace)
 
 
 def _constructor_handle_positional(path_args, kwargs):
@@ -331,3 +365,87 @@ def _constructor_handle_positional(path_args, kwargs):
                 "cannot accept flat as a keyword argument."
             )
         kwargs["flat"] = path_args
+
+
+def _exactly_one_specified(*values):
+    """Make sure exactly one of ``values`` is truthy.
+
+    Args:
+        values (Tuple[Any, ...]): Some values to be checked.
+
+    Returns:
+        bool: Indicating if exactly one of ``values`` was truthy.
+    """
+    count = sum(1 for value in values if value)
+    return count == 1
+
+
+def _parse_from_ref(
+    klass,
+    reference=None,
+    serialized=None,
+    urlsafe=None,
+    app=None,
+    namespace=None,
+    **kwargs
+):
+    """Construct a key from a Reference.
+
+    This makes sure that **exactly** one of ``reference``, ``serialized`` and
+    ``urlsafe`` is specified (all three are different representations of a
+    ``Reference`` protobuf).
+
+    Args:
+        klass (type): The class of the instance being constructed. It must
+            be :class:`.Key`; we do not allow constructing :class:`.Key`
+            subclasses from a serialized Reference protobuf.
+        reference (Optional[\
+            ~google.cloud.datastore._app_engine_key_pb2.Reference]): A
+            reference protobuf representing a key.
+        serialized (Optional[bytes]): A reference protobuf serialized to bytes.
+        urlsafe (Optional[str]): A reference protobuf serialized to bytes. The
+            raw bytes are then converted to a websafe base64-encoded string.
+        app (Optional[str]): The Google Cloud Platform project (previously
+            on Google App Engine, this was called the Application ID).
+        namespace (Optional[str]): The namespace for the key.
+        kwargs (Dict[str, Any]): Any extra keyword arguments not covered by
+            the explicitly provided ones. These are passed through to indicate
+            to the user that the wrong combination of arguments was used, e.g.
+            if ``parent`` and ``urlsafe`` were used together.
+
+    Returns:
+        Tuple[.Key, ~google.cloud.datastore._app_engine_key_pb2.Reference]:
+        A pair of the constructed key and the reference that was serialized
+        in one of the arguments.
+
+    Raises:
+        TypeError: If ``klass`` is not :class:`.Key`.
+        TypeError: If ``kwargs`` isn't empty.
+        TypeError: If any number other than exactly one of ``reference``,
+            ``serialized`` or ``urlsafe`` is provided.
+    """
+    if klass is not Key:
+        raise TypeError(_WRONG_TYPE.format(klass))
+
+    if kwargs or not _exactly_one_specified(reference, serialized, urlsafe):
+        raise TypeError(
+            "Cannot construct Key reference from incompatible "
+            "keyword arguments."
+        )
+
+    if reference:
+        ds_key = _from_reference(reference, app, namespace)
+    elif serialized:
+        ds_key, reference = _from_serialized(serialized, app, namespace)
+    else:
+        # NOTE: We know here that ``urlsafe`` is truth-y;
+        #       ``_exactly_one_specified()`` guarantees this.
+        ds_key, reference = _from_urlsafe(urlsafe, app, namespace)
+
+    return ds_key, reference
+
+
+def _parse_from_args(
+    pairs=None, flat=None, parent=None, app=None, namespace=None
+):
+    raise NotImplementedError
