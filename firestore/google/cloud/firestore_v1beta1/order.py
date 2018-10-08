@@ -82,7 +82,7 @@ class Order(object):
         if value_type == 'null_value':
             return 0  # nulls are all equal
         elif value_type == 'boolean_value':
-            return self._compareTo(left.boolean_value, right.boolean_value)
+            return self._compare_to(left.boolean_value, right.boolean_value)
         elif value_type == 'integer_value':
             return self.compare_numbers(left, right)
         elif value_type == 'double_value':
@@ -90,7 +90,7 @@ class Order(object):
         elif value_type == 'timestamp_value':
             return self.compare_timestamps(left, right)
         elif value_type == 'string_value':
-            return self._compareTo(left.string_value, right.string_value)
+            return self._compare_to(left.string_value, right.string_value)
         elif value_type == 'bytes_value':
             return self.compare_blobs(left, right)
         elif value_type == 'reference_value':
@@ -111,18 +111,18 @@ class Order(object):
         right_bytes = right.bytes_value
         
         # TODO: verify this is okay. python can compare bytes so *shrugs*
-        return Order._compareTo(left_bytes, right_bytes)
+        return Order._compare_to(left_bytes, right_bytes)
 
     @staticmethod
     def compare_timestamps(left, right):
         left = left.timestamp_value
         right = right.timestamp_value
 
-        seconds = Order._compareTo(left.seconds or 0, right.seconds or 0)
+        seconds = Order._compare_to(left.seconds or 0, right.seconds or 0)
         if seconds != 0:
             return seconds
         
-        return Order._compareTo(left.nanos or 0, right.nanos or 0)
+        return Order._compare_to(left.nanos or 0, right.nanos or 0)
 
 
     @staticmethod
@@ -189,7 +189,7 @@ class Order(object):
             if cmp != 0:
                 return cmp
             
-        return Order._compareTo(len(l_values), len(r_values))
+        return Order._compare_to(len(l_values), len(r_values))
 
 
     @staticmethod
@@ -204,7 +204,7 @@ class Order(object):
                 left_key = l_iter.__next__()
                 right_key = r_iter.__next__()
                 
-                keyCompare = Order._compareTo(left_key, right_key)
+                keyCompare = Order._compare_to(left_key, right_key)
                 if keyCompare != 0:
                     return keyCompare
 
@@ -215,7 +215,7 @@ class Order(object):
         except StopIteration:
             pass
             
-        return Order._compareTo(len(left_fields), len(right_fields))
+        return Order._compare_to(len(left_fields), len(right_fields))
 
     @staticmethod
     def compare_numbers(left, right):
@@ -237,10 +237,10 @@ class Order(object):
         if right == -0.0:
             right = 0
 
-        return Order._compareTo(left, right)
+        return Order._compare_to(left, right)
 
     @staticmethod
-    def _compareTo(left, right):
+    def _compare_to(left, right):
         if left < right:
             return -1
         elif left == right:

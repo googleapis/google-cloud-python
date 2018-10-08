@@ -45,119 +45,104 @@ class TestOrder(unittest.TestCase):
 
         groups[0] = [nullValue()]
 
-        groups[1] = [_booleanValue(False)]
-        groups[2] = [_booleanValue(True)]
+        groups[1] = [_boolean_value(False)]
+        groups[2] = [_boolean_value(True)]
 
         # numbers
-        groups[3] = [_doubleValue(float_nan), _doubleValue(float_nan)]
-        groups[4] = [_doubleValue(-math.inf)]
-        groups[5] = [_intValue(int_min_value - 1)]
-        groups[6] = [_intValue(int_min_value)]
-        groups[7] = [_doubleValue(-1.1)]
+        groups[3] = [_double_value(float_nan), _double_value(float_nan)]
+        groups[4] = [_double_value(-math.inf)]
+        groups[5] = [_int_value(int_min_value - 1)]
+        groups[6] = [_int_value(int_min_value)]
+        groups[7] = [_double_value(-1.1)]
         # Integers and Doubles order the same.
-        groups[8] = [_intValue(-1), _doubleValue(-1.0)]
-        groups[9] = [_doubleValue(-float_min_value)]
+        groups[8] = [_int_value(-1), _double_value(-1.0)]
+        groups[9] = [_double_value(-float_min_value)]
         # zeros all compare the same.
-        groups[10] = [_intValue(0), _doubleValue(-0.0),
-                      _doubleValue(0.0), _doubleValue(+0.0)]
-        groups[11] = [_doubleValue(float_min_value)]
-        groups[12] = [_intValue(1), _doubleValue(1.0)]
-        groups[13] = [_doubleValue(1.1)]
-        groups[14] = [_intValue(int_max_value)]
-        groups[15] = [_intValue(int_max_value + 1)]
-        groups[16] = [_doubleValue(math.inf)]
+        groups[10] = [_int_value(0), _double_value(-0.0),
+                      _double_value(0.0), _double_value(+0.0)]
+        groups[11] = [_double_value(float_min_value)]
+        groups[12] = [_int_value(1), _double_value(1.0)]
+        groups[13] = [_double_value(1.1)]
+        groups[14] = [_int_value(int_max_value)]
+        groups[15] = [_int_value(int_max_value + 1)]
+        groups[16] = [_double_value(math.inf)]
 
-        groups[17] = [_timestampValue(123, 0)]
-        groups[18] = [_timestampValue(123, 123)]
-        groups[19] = [_timestampValue(345, 0)]
+        groups[17] = [_timestamp_value(123, 0)]
+        groups[18] = [_timestamp_value(123, 123)]
+        groups[19] = [_timestamp_value(345, 0)]
 
         # strings
-        groups[20] = [_stringValue("")]
-        groups[21] = [_stringValue("\u0000\ud7ff\ue000\uffff")]
-        groups[22] = [_stringValue(u"(╯°□°）╯︵ ┻━┻")]
-        groups[23] = [_stringValue("a")]
-        groups[24] = [_stringValue("abc def")]
+        groups[20] = [_string_value("")]
+        groups[21] = [_string_value("\u0000\ud7ff\ue000\uffff")]
+        groups[22] = [_string_value(u"(╯°□°）╯︵ ┻━┻")]
+        groups[23] = [_string_value("a")]
+        groups[24] = [_string_value("abc def")]
         # latin small letter e + combining acute accent + latin small letter b
-        groups[25] = [_stringValue("e\u0301b")]
-        groups[26] = [_stringValue(u"æ")]
+        groups[25] = [_string_value("e\u0301b")]
+        groups[26] = [_string_value(u"æ")]
         # latin small letter e with acute accent + latin small letter a
-        groups[27] = [_stringValue(u"\u00e9a")]
+        groups[27] = [_string_value(u"\u00e9a")]
 
         # blobs
-        groups[28] = [_blobValue(bytes())]
-        groups[29] = [_blobValue(bytes([0]))]
-        groups[30] = [_blobValue(bytes([0, 1, 2, 3, 4]))]
-        groups[31] = [_blobValue(bytes([0, 1, 2, 4, 3]))]
-        groups[32] = [_blobValue(bytes([127]))]
+        groups[28] = [_blob_value(bytes())]
+        groups[29] = [_blob_value(bytes([0]))]
+        groups[30] = [_blob_value(bytes([0, 1, 2, 3, 4]))]
+        groups[31] = [_blob_value(bytes([0, 1, 2, 4, 3]))]
+        groups[32] = [_blob_value(bytes([127]))]
 
         # resource names
         groups[33] = [
-            _referenceValue("projects/p1/databases/d1/documents/c1/doc1")]
+            _reference_value("projects/p1/databases/d1/documents/c1/doc1")]
         groups[34] = [
-            _referenceValue("projects/p1/databases/d1/documents/c1/doc2")]
+            _reference_value("projects/p1/databases/d1/documents/c1/doc2")]
         groups[35] = [
-            _referenceValue(
+            _reference_value(
                 "projects/p1/databases/d1/documents/c1/doc2/c2/doc1")]
         groups[36] = [
-            _referenceValue(
+            _reference_value(
                 "projects/p1/databases/d1/documents/c1/doc2/c2/doc2")]
         groups[37] = [
-            _referenceValue("projects/p1/databases/d1/documents/c10/doc1")]
+            _reference_value("projects/p1/databases/d1/documents/c10/doc1")]
         groups[38] = [
-            _referenceValue("projects/p1/databases/d1/documents/c2/doc1")]
+            _reference_value("projects/p1/databases/d1/documents/c2/doc1")]
         groups[39] = [
-            _referenceValue("projects/p2/databases/d2/documents/c1/doc1")]
+            _reference_value("projects/p2/databases/d2/documents/c1/doc1")]
         groups[40] = [
-            _referenceValue("projects/p2/databases/d2/documents/c1-/doc1")]
+            _reference_value("projects/p2/databases/d2/documents/c1-/doc1")]
         groups[41] = [
-            _referenceValue("projects/p2/databases/d3/documents/c1-/doc1")]
+            _reference_value("projects/p2/databases/d3/documents/c1-/doc1")]
 
         # geo points
-        groups[42] = [_geoPointValue(-90, -180)]
-        groups[43] = [_geoPointValue(-90, 0)]
-        groups[44] = [_geoPointValue(-90, 180)]
-        groups[45] = [_geoPointValue(0, -180)]
-        groups[46] = [_geoPointValue(0, 0)]
-        groups[47] = [_geoPointValue(0, 180)]
-        groups[48] = [_geoPointValue(1, -180)]
-        groups[49] = [_geoPointValue(1, 0)]
-        groups[50] = [_geoPointValue(1, 180)]
-        groups[51] = [_geoPointValue(90, -180)]
-        groups[52] = [_geoPointValue(90, 0)]
-        groups[53] = [_geoPointValue(90, 180)]
+        groups[42] = [_geoPoint_value(-90, -180)]
+        groups[43] = [_geoPoint_value(-90, 0)]
+        groups[44] = [_geoPoint_value(-90, 180)]
+        groups[45] = [_geoPoint_value(0, -180)]
+        groups[46] = [_geoPoint_value(0, 0)]
+        groups[47] = [_geoPoint_value(0, 180)]
+        groups[48] = [_geoPoint_value(1, -180)]
+        groups[49] = [_geoPoint_value(1, 0)]
+        groups[50] = [_geoPoint_value(1, 180)]
+        groups[51] = [_geoPoint_value(90, -180)]
+        groups[52] = [_geoPoint_value(90, 0)]
+        groups[53] = [_geoPoint_value(90, 180)]
 
         # arrays
-        # groups[54] = [_arrayValue()]
-        # groups[55] = [_arrayValue([_stringValue("bar"))]
-        # groups[56] = [_arrayValue(_stringValue("foo"))]
-        # groups[57] = [_arrayValue(_stringValue("foo"), _intValue(0))]
-        # groups[58] = [_arrayValue(_stringValue("foo"), _intValue(1))]
-        # groups[59] = [_arrayValue(_stringValue("foo"), _stringValue("0"))]
-        groups[54] = [_arrayValue()]
-        groups[55] = [_arrayValue(["bar"])]
-        groups[56] = [_arrayValue(["foo"])]
-        groups[57] = [_arrayValue(["foo", 0])]
-        groups[58] = [_arrayValue(["foo", 1])]
-        groups[59] = [_arrayValue(["foo", "0"])]
+        groups[54] = [_array_value()]
+        groups[55] = [_array_value(["bar"])]
+        groups[56] = [_array_value(["foo"])]
+        groups[57] = [_array_value(["foo", 0])]
+        groups[58] = [_array_value(["foo", 1])]
+        groups[59] = [_array_value(["foo", "0"])]
 
         # objects
-        # groups[60] = [_objectValue({"bar": _intValue(0)})]
-        # groups[61] = [_objectValue({
-        #     "bar": _intValue(0),
-        #     "foo": _intValue(1)
-        # })]
-        # groups[62] = [_objectValue({"bar": _intValue(1)})]
-        # groups[63] = [_objectValue({"bar": _intValue(2)})]
-        # groups[64] = [_objectValue({"bar": _stringValue("0")})]
-
-        groups[60] = [_objectValue({"bar": 0})]  
-        groups[61] = [_objectValue({
+        groups[60] = [_object_value({"bar": 0})]  
+        groups[61] = [_object_value({
             "bar":0,
             "foo": 1
         })]
-        groups[62] = [_objectValue({"bar": 1})]
-        groups[63] = [_objectValue({"bar": 2})]
-        groups[64] = [_objectValue({"bar": "0"})]
+        groups[62] = [_object_value({"bar": 1})]
+        groups[63] = [_object_value({"bar": 2})]
+        groups[64] = [_object_value({"bar": "0"})]
 
         target = self._make_one()
 
@@ -165,50 +150,44 @@ class TestOrder(unittest.TestCase):
             for left in groups[i]:
                 for j in range(len(groups)):
                     for right in groups[j]:
-                        expected = Order._compareTo(i,j)
+                        expected = Order._compare_to(i,j)
                         
                         self.assertEqual(
                             target.compare(left, right), expected,
-                            "comparing L->R {} ({}) to {} ({})".format(i, left, j, right)
+                            "comparing L->R {} ({}) to {} ({})".format(
+                                i, left, j, right)
                         )
                             
-                        expected = Order._compareTo(j, i);
+                        expected = Order._compare_to(j, i);
                         self.assertEqual(
                             target.compare(right, left), expected,
-                            #"comparing R->L {} to {}".format(right, left)
-                            "comparing R->L {} ({}) to {} ({})".format(j, right, i, left)
+                            "comparing R->L {} ({}) to {} ({})".format(
+                                j, right, i, left)
 
                         )
 
-def _compare(left, right):
-    if left < right:
-        return -1
-    elif left == right:
-        return 0
-    return 1
 
-
-def _booleanValue(b):
+def _boolean_value(b):
     return encode_value(b)
 
 
-def _doubleValue(d):
+def _double_value(d):
     return encode_value(d)
 
 
-def _intValue(l):
+def _int_value(l):
     return encode_value(l)
 
 
-def _stringValue(s):
+def _string_value(s):
     return encode_value(s)
 
 
-def _referenceValue(r):
+def _reference_value(r):
     return document_pb2.Value(reference_value=r)
 
 
-def _blobValue(b):
+def _blob_value(b):
     return encode_value(b)
 
 
@@ -216,18 +195,18 @@ def nullValue():
     return encode_value(None)
 
 
-def _timestampValue(seconds, nanos):
+def _timestamp_value(seconds, nanos):
     return document_pb2.Value(
         timestamp_value=timestamp_pb2.Timestamp(seconds=seconds, nanos=nanos))
 
 
-def _geoPointValue(latitude, longitude):
+def _geoPoint_value(latitude, longitude):
     return encode_value(GeoPoint(latitude,longitude))
 
 
-def _arrayValue(values=[]):
+def _array_value(values=[]):
     return encode_value(values)
 
 
-def _objectValue(keysAndValues):
+def _object_value(keysAndValues):
     return encode_value(keysAndValues)
