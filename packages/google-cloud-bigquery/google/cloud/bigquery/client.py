@@ -949,7 +949,7 @@ class Client(ClientWithProject):
 
         job_ref = job._JobReference(job_id, project=project, location=location)
         load_job = job.LoadJob(job_ref, None, destination, self, job_config)
-        job_resource = load_job._build_resource()
+        job_resource = load_job.to_api_repr()
 
         if rewind:
             file_obj.seek(0, os.SEEK_SET)
