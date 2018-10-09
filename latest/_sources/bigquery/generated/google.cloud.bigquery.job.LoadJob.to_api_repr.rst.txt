@@ -1,0 +1,6 @@
+google.cloud.bigquery.job.LoadJob.to\_api\_repr
+===============================================
+
+.. currentmodule:: google.cloud.bigquery.job
+
+.. automethod:: LoadJob.to_api_repr

@@ -52,6 +52,9 @@ google.cloud.bigquery.job.UnknownJob
       
       ~UnknownJob.set_result
       
+      
+      ~UnknownJob.to_api_repr
+      
    
    
 

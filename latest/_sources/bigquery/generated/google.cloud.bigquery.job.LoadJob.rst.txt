@@ -52,6 +52,9 @@ google.cloud.bigquery.job.LoadJob
       
       ~LoadJob.set_result
       
+      
+      ~LoadJob.to_api_repr
+      
    
    
 

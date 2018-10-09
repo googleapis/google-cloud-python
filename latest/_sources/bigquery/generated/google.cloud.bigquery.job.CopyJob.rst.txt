@@ -52,6 +52,9 @@ google.cloud.bigquery.job.CopyJob
       
       ~CopyJob.set_result
       
+      
+      ~CopyJob.to_api_repr
+      
    
    
 

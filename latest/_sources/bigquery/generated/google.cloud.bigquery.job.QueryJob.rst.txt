@@ -53,6 +53,9 @@ google.cloud.bigquery.job.QueryJob
       ~QueryJob.set_result
       
       
+      ~QueryJob.to_api_repr
+      
+      
       ~QueryJob.to_dataframe
       
    

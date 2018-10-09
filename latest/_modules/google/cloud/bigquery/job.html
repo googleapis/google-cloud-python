@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigquery.job &#8212; google-cloud a39348a documentation</title>
+    <title>google.cloud.bigquery.job &#8212; google-cloud dd1714b documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -555,9 +555,11 @@
                            <span class="s1">&#39;[&quot;configuration&quot;][&quot;</span><span class="si">%s</span><span class="s1">&quot;]&#39;</span> <span class="o">%</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_JOB_TYPE</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">job_id</span><span class="p">,</span> <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;configuration&#39;</span><span class="p">]</span>
 
-    <span class="k">def</span> <span class="nf">_build_resource</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Helper:  Generate a resource for :meth:`_begin`.&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">to_api_repr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Generate a resource for the job.&quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Abstract&quot;</span><span class="p">)</span>
+
+    <span class="n">_build_resource</span> <span class="o">=</span> <span class="n">to_api_repr</span>  <span class="c1"># backward-compatibility alias</span>
 
     <span class="k">def</span> <span class="nf">_begin</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">DEFAULT_RETRY</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;API call:  begin the job via a POST request</span>
@@ -585,7 +587,7 @@
         <span class="c1"># job has an ID.</span>
         <span class="n">api_response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">_call_api</span><span class="p">(</span>
             <span class="n">retry</span><span class="p">,</span>
-            <span class="n">method</span><span class="o">=</span><span class="s1">&#39;POST&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_build_resource</span><span class="p">())</span>
+            <span class="n">method</span><span class="o">=</span><span class="s1">&#39;POST&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">to_api_repr</span><span class="p">())</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_set_properties</span><span class="p">(</span><span class="n">api_response</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">exists</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">DEFAULT_RETRY</span><span class="p">):</span>
@@ -1403,7 +1405,7 @@
         <span class="k">if</span> <span class="n">statistics</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">statistics</span><span class="p">[</span><span class="s1">&#39;load&#39;</span><span class="p">][</span><span class="s1">&#39;outputRows&#39;</span><span class="p">])</span>
 
-    <span class="k">def</span> <span class="nf">_build_resource</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="LoadJob.to_api_repr"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.job.LoadJob.to_api_repr.html#google.cloud.bigquery.job.LoadJob.to_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">to_api_repr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Generate a resource for :meth:`_begin`.&quot;&quot;&quot;</span>
         <span class="n">configuration</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_configuration</span><span class="o">.</span><span class="n">to_api_repr</span><span class="p">()</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">source_uris</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -1417,7 +1419,7 @@
         <span class="k">return</span> <span class="p">{</span>
             <span class="s1">&#39;jobReference&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s1">&#39;jobReference&#39;</span><span class="p">],</span>
             <span class="s1">&#39;configuration&#39;</span><span class="p">:</span> <span class="n">configuration</span><span class="p">,</span>
-        <span class="p">}</span>
+        <span class="p">}</span></div>
 
     <span class="k">def</span> <span class="nf">_copy_configuration_properties</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">configuration</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Helper:  assign subclass configuration properties in cleaned.&quot;&quot;&quot;</span>
@@ -1579,7 +1581,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_configuration</span><span class="o">.</span><span class="n">destination_encryption_configuration</span>
 
-    <span class="k">def</span> <span class="nf">_build_resource</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="CopyJob.to_api_repr"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.job.CopyJob.to_api_repr.html#google.cloud.bigquery.job.CopyJob.to_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">to_api_repr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Generate a resource for :meth:`_begin`.&quot;&quot;&quot;</span>
 
         <span class="n">source_refs</span> <span class="o">=</span> <span class="p">[{</span>
@@ -1603,7 +1605,7 @@
         <span class="k">return</span> <span class="p">{</span>
             <span class="s1">&#39;jobReference&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s1">&#39;jobReference&#39;</span><span class="p">],</span>
             <span class="s1">&#39;configuration&#39;</span><span class="p">:</span> <span class="n">configuration</span><span class="p">,</span>
-        <span class="p">}</span>
+        <span class="p">}</span></div>
 
     <span class="k">def</span> <span class="nf">_copy_configuration_properties</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">configuration</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Helper:  assign subclass configuration properties in cleaned.&quot;&quot;&quot;</span>
@@ -1797,7 +1799,7 @@
             <span class="k">return</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">count</span><span class="p">)</span> <span class="k">for</span> <span class="n">count</span> <span class="ow">in</span> <span class="n">counts</span><span class="p">]</span>
         <span class="k">return</span> <span class="kc">None</span>
 
-    <span class="k">def</span> <span class="nf">_build_resource</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="ExtractJob.to_api_repr"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.job.ExtractJob.to_api_repr.html#google.cloud.bigquery.job.ExtractJob.to_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">to_api_repr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Generate a resource for :meth:`_begin`.&quot;&quot;&quot;</span>
 
         <span class="n">source_ref</span> <span class="o">=</span> <span class="p">{</span>
@@ -1817,7 +1819,7 @@
         <span class="k">return</span> <span class="p">{</span>
             <span class="s1">&#39;jobReference&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s1">&#39;jobReference&#39;</span><span class="p">],</span>
             <span class="s1">&#39;configuration&#39;</span><span class="p">:</span> <span class="n">configuration</span><span class="p">,</span>
-        <span class="p">}</span>
+        <span class="p">}</span></div>
 
     <span class="k">def</span> <span class="nf">_copy_configuration_properties</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">configuration</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Helper:  assign subclass configuration properties in cleaned.&quot;&quot;&quot;</span>
@@ -2403,7 +2405,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_configuration</span><span class="o">.</span><span class="n">schema_update_options</span>
 
-    <span class="k">def</span> <span class="nf">_build_resource</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="QueryJob.to_api_repr"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.job.QueryJob.to_api_repr.html#google.cloud.bigquery.job.QueryJob.to_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">to_api_repr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Generate a resource for :meth:`_begin`.&quot;&quot;&quot;</span>
         <span class="n">configuration</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_configuration</span><span class="o">.</span><span class="n">to_api_repr</span><span class="p">()</span>
 
@@ -2413,7 +2415,7 @@
         <span class="p">}</span>
         <span class="n">configuration</span><span class="p">[</span><span class="s1">&#39;query&#39;</span><span class="p">][</span><span class="s1">&#39;query&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">query</span>
 
-        <span class="k">return</span> <span class="n">resource</span>
+        <span class="k">return</span> <span class="n">resource</span></div>
 
     <span class="k">def</span> <span class="nf">_copy_configuration_properties</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">configuration</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Helper:  assign subclass configuration properties in cleaned.&quot;&quot;&quot;</span>

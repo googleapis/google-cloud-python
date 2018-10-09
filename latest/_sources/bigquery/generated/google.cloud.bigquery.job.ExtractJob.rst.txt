@@ -52,6 +52,9 @@ google.cloud.bigquery.job.ExtractJob
       
       ~ExtractJob.set_result
       
+      
+      ~ExtractJob.to_api_repr
+      
    
    
 
