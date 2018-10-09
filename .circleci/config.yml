@@ -25,3 +25,6 @@ jobs:
       - run:
           name: Build docs
           command: python3.7 -m nox -s docs
+      - run:
+          name: Run / verify doctests
+          command: python3.7 -m nox -s doctest

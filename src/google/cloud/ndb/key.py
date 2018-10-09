@@ -12,15 +12,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Provides a ``Key`` class for Google Cloud Datastore.
+"""Provides a :class:`.Key` for Google Cloud Datastore.
 
-A Key encapsulates the following pieces of information, which together
+A key encapsulates the following pieces of information, which together
 uniquely designate a (possible) entity in Google Cloud Datastore:
 
 * a Google Cloud Platform project (a string)
+* a list of one or more ``(kind, id)`` pairs where ``kind`` is a string
+  and ``id`` is either a string or an integer
 * an optional namespace (a string)
-* a list of one or more (``kind``, ``id_``) pairs where ``kind`` is a string
-  and ``id_`` is either a string or an integer
 """
 
 
@@ -63,37 +63,79 @@ class Key:
 
     The primary way to construct a key is using positional arguments:
 
-    .. code-block:: python
+    .. testsetup:: *
 
-        ndb.Key(kind1, id1, kind2, id2, ...)
+        from google.cloud import ndb
+        kind1, id1 = "Parent", "C"
+        kind2, id2 = "Child", 42
+
+    .. doctest:: key-constructor-primary
+
+        >>> ndb.Key(kind1, id1, kind2, id2)
+        <google.cloud.ndb.key.Key object at 0x...>
 
     This is shorthand for either of the following two longer forms:
 
-    .. code-block:: python
+    .. doctest:: key-constructor-flat-or-pairs
 
-        ndb.Key(pairs=[(kind1, id1), (kind2, id2), ...])
-        ndb.Key(flat=[kind1, id1, kind2, id2, ...])
+        >>> ndb.Key(pairs=[(kind1, id1), (kind2, id2)])
+        <google.cloud.ndb.key.Key object at 0x...>
+        >>> ndb.Key(flat=[kind1, id1, kind2, id2])
+        <google.cloud.ndb.key.Key object at 0x...>
 
     Either of the above constructor forms can additionally pass in another
     key using ``parent=<key>``. The ``(kind, id)`` pairs of the parent key are
     inserted before the ``(kind, id)`` pairs passed explicitly.
 
+    .. doctest:: key-constructor-parent
+
+        >>> parent = ndb.Key(kind1, id1)
+        >>> ndb.Key(kind2, id2, parent=parent)
+        <google.cloud.ndb.key.Key object at 0x...>
+
     You can also construct a Key from a "url-safe" encoded string:
 
-    .. code-block:: python
+    .. doctest:: key-constructor-urlsafe
 
-        ndb.Key(urlsafe=<string>)
+        >>> ndb.Key(urlsafe=b"agdleGFtcGxlcgsLEgRLaW5kGLkKDA")
+        <google.cloud.ndb.key.Key object at 0x...>
 
     For rare use cases the following constructors exist:
 
-    .. code-block:: python
+    .. testsetup:: key-constructor-rare
 
-        # Passing in a low-level Reference object
-        ndb.Key(reference=<reference>)
-        # Passing in a serialized low-level Reference
-        ndb.Key(serialized=<string>)
-        # For unpickling, the same as ndb.Key(**<dict>)
-        ndb.Key(<dict>)
+        from google.cloud.datastore import _app_engine_key_pb2
+        reference = _app_engine_key_pb2.Reference(
+            app="example",
+            path=_app_engine_key_pb2.Path(element=[
+                _app_engine_key_pb2.Path.Element(type="Kind", id=1337),
+            ]),
+        )
+
+    .. doctest:: key-constructor-rare
+
+        >>> # Passing in a low-level Reference object
+        >>> reference
+        app: "example"
+        path {
+          Element {
+            type: "Kind"
+            id: 1337
+          }
+        }
+        <BLANKLINE>
+        >>> ndb.Key(reference=reference)
+        <google.cloud.ndb.key.Key object at 0x...>
+        >>> # Passing in a serialized low-level Reference
+        >>> serialized = reference.SerializeToString()
+        >>> serialized
+        b'j\\x07exampler\\x0b\\x0b\\x12\\x04Kind\\x18\\xb9\\n\\x0c'
+        >>> ndb.Key(serialized=serialized)
+        <google.cloud.ndb.key.Key object at 0x...>
+        >>> # For unpickling, the same as ndb.Key(**kwargs)
+        >>> kwargs = {"pairs": [("Cheese", "Cheddar")], "namespace": "good"}
+        >>> ndb.Key(kwargs)
+        <google.cloud.ndb.key.Key object at 0x...>
 
     The "url-safe" string is really a websafe-base64-encoded serialized
     ``Reference``, but it's best to think of it as just an opaque unique
@@ -142,7 +184,7 @@ class Key:
 
     Keys also support interaction with the datastore; these methods are
     the only ones that engage in any kind of I/O activity. For ``Future``
-    objects, see the document for :mod:`google.cloud.ndb.tasklets`.
+    objects, see the documentation for :mod:`google.cloud.ndb.tasklets`.
 
     * ``key.get()``: return the entity for the key
     * ``key.get_async()``: return a future whose eventual result is
@@ -156,7 +198,7 @@ class Key:
 
     Args:
         path_args (Union[Tuple[str, ...], Tuple[Dict]]): Either a tuple of
-            (kind, ID) pairs or a single dictionary containing only keyword
+            ``(kind, id)`` pairs or a single dictionary containing only keyword
             arguments.
         reference (Optional[\
             ~google.cloud.datastore._app_engine_key_pb2.Reference]): A
@@ -165,16 +207,16 @@ class Key:
         urlsafe (Optional[str]): A reference protobuf serialized to bytes. The
             raw bytes are then converted to a websafe base64-encoded string.
         pairs (Optional[Iterable[Tuple[str, Union[str, int]]]]): An iterable
-            of (kind, ID) pairs. If this argument is used, then ``path_args``
-            should be empty.
+            of ``(kind, id)`` pairs. If this argument is used, then
+            ``path_args`` should be empty.
         flat (Optional[Iterable[Union[str, int]]]): An iterable of the
-            (kind, ID) pairs but flattened into a single value. For example,
-            the pairs ``[("Parent", 1), ("Child", "a")]`` would be flattened to
-            ``["Parent", 1, "Child", "a"]``.
+            ``(kind, id)`` pairs but flattened into a single value. For
+            example, the pairs ``[("Parent", 1), ("Child", "a")]`` would be
+            flattened to ``["Parent", 1, "Child", "a"]``.
         app (Optional[str]): The Google Cloud Platform project (previously
             on Google App Engine, this was called the Application ID).
         namespace (Optional[str]): The namespace for the key.
-        parent (Optional[~.ndb.key.Key]): The parent of the key being
+        parent (Optional[Key]): The parent of the key being
             constructed. If provided, the key path will be **relative** to the
             parent key's path.
 
