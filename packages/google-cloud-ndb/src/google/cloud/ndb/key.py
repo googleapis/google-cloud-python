@@ -163,8 +163,6 @@ class Key:
     * ``hash(key)``: a hash value sufficient for storing keys in a dictionary
     * ``key.urlsafe()``: a websafe-base64-encoded serialized ``Reference``
     * ``key.serialized()``: a serialized ``Reference``
-    * ``key.reference()``: a ``Reference`` object (the caller promises not to
-      mutate it)
 
     Keys also support interaction with the datastore; these methods are
     the only ones that engage in any kind of I/O activity. For ``Future``
@@ -478,6 +476,34 @@ class Key:
             'Known'
         """
         return self._key.kind
+
+    def reference(self):
+        """The ``Reference`` protobuf object for this key.
+
+        The return value will be stored on the current key, so the caller
+        promises not to mutate it.
+
+        .. doctest:: key-reference
+
+            >>> key = ndb.Key("Trampoline", 88, app="xy", namespace="zt")
+            >>> key.reference()
+            app: "xy"
+            path {
+              Element {
+                type: "Trampoline"
+                id: 88
+              }
+            }
+            name_space: "zt"
+            <BLANKLINE>
+        """
+        if self._reference is None:
+            self._reference = _app_engine_key_pb2.Reference(
+                app=self._key.project,
+                path=_key_module._to_legacy_path(self._key.path),
+                name_space=self._key.namespace,
+            )
+        return self._reference
 
 
 def _project_from_app(app, allow_empty=False):
