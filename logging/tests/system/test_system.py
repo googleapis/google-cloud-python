@@ -132,7 +132,10 @@ class TestLogging(unittest.TestCase):
         filter_ = self.TYPE_FILTER.format(type_url)
         entry_iter = iter(
             Config.CLIENT.list_entries(page_size=1, filter_=filter_))
-        protobuf_entry = next(entry_iter)
+
+        retry = RetryErrors(TooManyRequests)
+        protobuf_entry = retry(lambda: next(entry_iter))()
+
         self.assertIsInstance(protobuf_entry, entries.ProtobufEntry)
         if Config.CLIENT._use_grpc:
             self.assertIsNone(protobuf_entry.payload)
