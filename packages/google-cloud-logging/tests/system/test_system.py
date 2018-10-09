@@ -64,7 +64,7 @@ def _list_entries(logger):
     :rtype: list
     :returns: List of all entries consumed.
     """
-    inner = RetryResult(_has_entries)(_consume_entries)
+    inner = RetryResult(_has_entries, max_tries=9)(_consume_entries)
     outer = RetryErrors(
         (ServiceUnavailable, ResourceExhausted), max_tries=9)(inner)
     return outer(logger)
@@ -114,8 +114,8 @@ class TestLogging(unittest.TestCase):
         logging.getLogger().handlers = self._handlers_cache[:]
 
     @staticmethod
-    def _logger_name():
-        return 'system-tests-logger' + unique_resource_id('-')
+    def _logger_name(prefix):
+        return prefix + unique_resource_id('-')
 
     def test_list_entry_with_unregistered(self):
         from google.protobuf import any_pb2
@@ -144,7 +144,7 @@ class TestLogging(unittest.TestCase):
 
     def test_log_text(self):
         TEXT_PAYLOAD = 'System test: test_log_text'
-        logger = Config.CLIENT.logger(self._logger_name())
+        logger = Config.CLIENT.logger(self._logger_name('log_text'))
         self.to_delete.append(logger)
         logger.log_text(TEXT_PAYLOAD)
         entries = _list_entries(logger)
@@ -153,7 +153,7 @@ class TestLogging(unittest.TestCase):
 
     def test_log_text_with_timestamp(self):
         text_payload = 'System test: test_log_text_with_timestamp'
-        logger = Config.CLIENT.logger(self._logger_name())
+        logger = Config.CLIENT.logger(self._logger_name('log_text_ts'))
         now = datetime.datetime.utcnow()
 
         self.to_delete.append(logger)
@@ -167,7 +167,7 @@ class TestLogging(unittest.TestCase):
     def test_log_text_with_resource(self):
         text_payload = 'System test: test_log_text_with_timestamp'
 
-        logger = Config.CLIENT.logger(self._logger_name())
+        logger = Config.CLIENT.logger(self._logger_name('log_text_res'))
         now = datetime.datetime.utcnow()
         resource = Resource(
             type='gae_app',
@@ -199,7 +199,7 @@ class TestLogging(unittest.TestCase):
             'requestUrl': URI,
             'status': STATUS,
         }
-        logger = Config.CLIENT.logger(self._logger_name())
+        logger = Config.CLIENT.logger(self._logger_name('log_text_md'))
         self.to_delete.append(logger)
 
         logger.log_text(TEXT_PAYLOAD, insert_id=INSERT_ID, severity=SEVERITY,
@@ -219,7 +219,7 @@ class TestLogging(unittest.TestCase):
         self.assertEqual(request['status'], STATUS)
 
     def test_log_struct(self):
-        logger = Config.CLIENT.logger(self._logger_name())
+        logger = Config.CLIENT.logger(self._logger_name('log_struct'))
         self.to_delete.append(logger)
 
         logger.log_struct(self.JSON_PAYLOAD)
@@ -228,10 +228,37 @@ class TestLogging(unittest.TestCase):
         self.assertEqual(len(entries), 1)
         self.assertEqual(entries[0].payload, self.JSON_PAYLOAD)
 
+    def test_log_struct_w_metadata(self):
+        INSERT_ID = 'INSERTID'
+        SEVERITY = 'INFO'
+        METHOD = 'POST'
+        URI = 'https://api.example.com/endpoint'
+        STATUS = 500
+        REQUEST = {
+            'requestMethod': METHOD,
+            'requestUrl': URI,
+            'status': STATUS,
+        }
+        logger = Config.CLIENT.logger(self._logger_name('log_struct_md'))
+        self.to_delete.append(logger)
+
+        logger.log_struct(self.JSON_PAYLOAD, insert_id=INSERT_ID,
+                          severity=SEVERITY, http_request=REQUEST)
+        entries = _list_entries(logger)
+
+        self.assertEqual(len(entries), 1)
+        self.assertEqual(entries[0].payload, self.JSON_PAYLOAD)
+        self.assertEqual(entries[0].insert_id, INSERT_ID)
+        self.assertEqual(entries[0].severity, SEVERITY)
+        request = entries[0].http_request
+        self.assertEqual(request['requestMethod'], METHOD)
+        self.assertEqual(request['requestUrl'], URI)
+        self.assertEqual(request['status'], STATUS)
+
     def test_log_handler_async(self):
         LOG_MESSAGE = 'It was the worst of times'
 
-        handler_name = 'gcp-async' + unique_resource_id('-')
+        handler_name = self._logger_name('handler_async')
         handler = CloudLoggingHandler(Config.CLIENT, name=handler_name)
         # only create the logger to delete, hidden otherwise
         logger = Config.CLIENT.logger(handler_name)
@@ -252,8 +279,9 @@ class TestLogging(unittest.TestCase):
     def test_log_handler_sync(self):
         LOG_MESSAGE = 'It was the best of times.'
 
+        handler_name = self._logger_name('handler_sync')
         handler = CloudLoggingHandler(Config.CLIENT,
-                                      name=self._logger_name(),
+                                      name=handler_name,
                                       transport=SyncTransport)
 
         # only create the logger to delete, hidden otherwise
@@ -276,7 +304,8 @@ class TestLogging(unittest.TestCase):
     def test_log_root_handler(self):
         LOG_MESSAGE = 'It was the best of times.'
 
-        handler = CloudLoggingHandler(Config.CLIENT, name=self._logger_name())
+        handler = CloudLoggingHandler(
+            Config.CLIENT, name=self._logger_name('handler_root'))
         # only create the logger to delete, hidden otherwise
         logger = Config.CLIENT.logger(handler.name)
         self.to_delete.append(logger)
@@ -292,33 +321,6 @@ class TestLogging(unittest.TestCase):
 
         self.assertEqual(len(entries), 1)
         self.assertEqual(entries[0].payload, expected_payload)
-
-    def test_log_struct_w_metadata(self):
-        INSERT_ID = 'INSERTID'
-        SEVERITY = 'INFO'
-        METHOD = 'POST'
-        URI = 'https://api.example.com/endpoint'
-        STATUS = 500
-        REQUEST = {
-            'requestMethod': METHOD,
-            'requestUrl': URI,
-            'status': STATUS,
-        }
-        logger = Config.CLIENT.logger(self._logger_name())
-        self.to_delete.append(logger)
-
-        logger.log_struct(self.JSON_PAYLOAD, insert_id=INSERT_ID,
-                          severity=SEVERITY, http_request=REQUEST)
-        entries = _list_entries(logger)
-
-        self.assertEqual(len(entries), 1)
-        self.assertEqual(entries[0].payload, self.JSON_PAYLOAD)
-        self.assertEqual(entries[0].insert_id, INSERT_ID)
-        self.assertEqual(entries[0].severity, SEVERITY)
-        request = entries[0].http_request
-        self.assertEqual(request['requestMethod'], METHOD)
-        self.assertEqual(request['requestUrl'], URI)
-        self.assertEqual(request['status'], STATUS)
 
     def test_create_metric(self):
         METRIC_NAME = 'test-create-metric%s' % (_RESOURCE_ID,)
