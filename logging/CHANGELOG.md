@@ -4,6 +4,16 @@
 
 [1]: https://pypi.org/project/google-cloud-logging/#history
 
+## 1.8.0
+
+### New Features
+- Support request-correlated logging in App Engine standard python37 runtime. ([#6118](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6118))
+
+### Documentation
+- Restore detailed usage docs. ([#5999](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/5999))
+- Redirect renamed 'usage.html'/'client.html' -> 'index.html'. ([#5996](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/5996))
+- Prep logging docs for repo split. ([#5943](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/5943))
+
 ## 1.7.0
 
 ### Implementation Changes
