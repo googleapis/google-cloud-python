@@ -22,3 +22,6 @@ jobs:
       - run:
           name: Unit tests in pypy3
           command: python3.7 -m nox -s unit-pypy3
+      - run:
+          name: Build docs
+          command: python3.7 -m nox -s docs
