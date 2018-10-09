@@ -286,8 +286,15 @@ class Key:
             >>> key = ndb.Key("Satellite", "Moon", "Space", "Dust")
             >>> key.flat()
             ('Satellite', 'Moon', 'Space', 'Dust')
+            >>>
+            >>> partial_key = ndb.Key("Known", None)
+            >>> partial_key.flat()
+            ('Known', None)
         """
-        return self._key.flat_path
+        flat_path = self._key.flat_path
+        if len(flat_path) % 2 == 1:
+            flat_path += (None,)
+        return flat_path
 
     def app(self):
         """Return the project ID for the key.
