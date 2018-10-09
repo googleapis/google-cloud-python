@@ -522,6 +522,12 @@ class Test_AsyncJob(unittest.TestCase):
         with self.assertRaises(NotImplementedError):
             job._build_resource()
 
+    def test_to_api_repr(self):
+        client = _make_client(project=self.PROJECT)
+        job = self._make_one(self.JOB_ID, client)
+        with self.assertRaises(NotImplementedError):
+            job.to_api_repr()
+
     def test__begin_already(self):
         job = self._set_properties_job()
         job._properties['status'] = {'state': 'WHATEVER'}
@@ -543,7 +549,7 @@ class Test_AsyncJob(unittest.TestCase):
             }
         }
         job = self._set_properties_job()
-        builder = job._build_resource = mock.Mock()
+        builder = job.to_api_repr = mock.Mock()
         builder.return_value = resource
         call_api = job._client._call_api = mock.Mock()
         call_api.return_value = resource
@@ -573,7 +579,7 @@ class Test_AsyncJob(unittest.TestCase):
             }
         }
         job = self._set_properties_job()
-        builder = job._build_resource = mock.Mock()
+        builder = job.to_api_repr = mock.Mock()
         builder.return_value = resource
         client = _make_client(project=other_project)
         call_api = client._call_api = mock.Mock()
