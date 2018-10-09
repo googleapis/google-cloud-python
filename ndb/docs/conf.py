@@ -46,6 +46,7 @@ extensions = [
     "sphinx.ext.coverage",
     "sphinx.ext.napoleon",
     "sphinx.ext.viewcode",
+    "sphinx_docstring_typing",
 ]
 
 # autodoc/autosummary flags

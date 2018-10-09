@@ -86,10 +86,10 @@ def blacken(session):
 @nox.session(py=DEFAULT_INTERPRETER)
 def docs(session):
     # Install all dependencies.
-    session.install("Sphinx")
+    session.install("Sphinx", "sphinx-docstring-typing")
     session.install(".")
     # Building the docs.
-    command = [
+    run_args = [
         "sphinx-build",
         "-W",
         "-b",
@@ -99,4 +99,23 @@ def docs(session):
         "docs",
         get_path("docs", "_build", "html"),
     ]
-    session.run(*command)
+    session.run(*run_args)
+
+
+@nox.session(py=DEFAULT_INTERPRETER)
+def doctest(session):
+    # Install all dependencies.
+    session.install("Sphinx")
+    session.install(".")
+    # Run the script for building docs and running doctests.
+    run_args = [
+        "sphinx-build",
+        "-W",
+        "-b",
+        "doctest",
+        "-d",
+        get_path("docs", "_build", "doctrees"),
+        get_path("docs"),
+        get_path("docs", "_build", "doctest"),
+    ]
+    session.run(*run_args)
