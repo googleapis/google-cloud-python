@@ -21,6 +21,7 @@ from google.api_core.exceptions import Conflict
 from google.api_core.exceptions import NotFound
 from google.api_core.exceptions import TooManyRequests
 from google.api_core.exceptions import ResourceExhausted
+from google.api_core.exceptions import RetryError
 from google.api_core.exceptions import ServiceUnavailable
 from google.cloud._helpers import UTC
 import google.cloud.logging
@@ -104,7 +105,8 @@ class TestLogging(unittest.TestCase):
         self._handlers_cache = logging.getLogger().handlers[:]
 
     def tearDown(self):
-        retry = RetryErrors((NotFound, TooManyRequests), max_tries=9)
+        retry = RetryErrors(
+            (NotFound, TooManyRequests, RetryError), max_tries=9)
         for doomed in self.to_delete:
             try:
                 retry(doomed.delete)()
