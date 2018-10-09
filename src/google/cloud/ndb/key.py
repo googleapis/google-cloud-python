@@ -162,12 +162,6 @@ class Key:
     * ``key1 == key2``, ``key1 != key2``: comparison for equality between keys
     * ``hash(key)``: a hash value sufficient for storing keys in a dictionary
     * ``key.pairs()``: a tuple of ``(kind, id)`` pairs
-    * ``key.id()``: the string or integer ID in the last ``(kind, id)`` pair,
-      or :data:`None` if the key is incomplete
-    * ``key.string_id()``: the string ID in the last ``(kind, id)`` pair,
-      or :data:`None` if the key has an integer ID or is incomplete
-    * ``key.integer_id()``: the integer ID in the last ``(kind, id)`` pair,
-      or :data:`None` if the key has a string ID or is incomplete
     * ``key.kind()``: The "kind" of the key, from the last of the
       ``(kind, id)`` pairs
     * ``key.urlsafe()``: a websafe-base64-encoded serialized ``Reference``
@@ -382,6 +376,57 @@ class Key:
             'example'
         """
         return self._key.project
+
+    def id(self):
+        """The string or integer ID in the last ``(kind, id)`` pair, if any.
+
+        .. doctest:: key-id
+
+            >>> key_int = ndb.Key("A", 37)
+            >>> key_int.id()
+            37
+            >>> key_str = ndb.Key("A", "B")
+            >>> key_str.id()
+            'B'
+            >>> key_partial = ndb.Key("A", None)
+            >>> key_partial.id() is None
+            True
+        """
+        return self._key.id_or_name
+
+    def string_id(self):
+        """The string ID in the last ``(kind, id)`` pair, if any.
+
+        .. doctest:: key-string-id
+
+            >>> key_int = ndb.Key("A", 37)
+            >>> key_int.string_id() is None
+            True
+            >>> key_str = ndb.Key("A", "B")
+            >>> key_str.string_id()
+            'B'
+            >>> key_partial = ndb.Key("A", None)
+            >>> key_partial.string_id() is None
+            True
+        """
+        return self._key.name
+
+    def integer_id(self):
+        """The string ID in the last ``(kind, id)`` pair, if any.
+
+        .. doctest:: key-integer-id
+
+            >>> key_int = ndb.Key("A", 37)
+            >>> key_int.integer_id()
+            37
+            >>> key_str = ndb.Key("A", "B")
+            >>> key_str.integer_id() is None
+            True
+            >>> key_partial = ndb.Key("A", None)
+            >>> key_partial.integer_id() is None
+            True
+        """
+        return self._key.id
 
     def flat(self):
         """The flat path for the key.

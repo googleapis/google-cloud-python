@@ -261,14 +261,10 @@ class TestKey:
         assert key.root() is key
 
     @staticmethod
-    def test_flat():
-        key = key_module.Key("This", "key")
-        assert key.flat() == ("This", "key")
-
-    @staticmethod
-    def test_flat_partial_key():
-        key = key_module.Key("Kind", None)
-        assert key.flat() == ("Kind", None)
+    def test_namespace():
+        namespace = "my-space"
+        key = key_module.Key("abc", 1, namespace=namespace)
+        assert key.namespace() == namespace
 
     @staticmethod
     def test_app():
@@ -278,10 +274,34 @@ class TestKey:
         assert key.app() == app[2:]
 
     @staticmethod
-    def test_namespace():
-        namespace = "my-space"
-        key = key_module.Key("abc", 1, namespace=namespace)
-        assert key.namespace() == namespace
+    def test_id():
+        for id_or_name in ("x", 11, None):
+            key = key_module.Key("Kind", id_or_name)
+            assert key.id() == id_or_name
+
+    @staticmethod
+    def test_string_id():
+        pairs = (("x", "x"), (11, None), (None, None))
+        for id_or_name, expected in pairs:
+            key = key_module.Key("Kind", id_or_name)
+            assert key.string_id() == expected
+
+    @staticmethod
+    def test_integer_id():
+        pairs = (("x", None), (11, 11), (None, None))
+        for id_or_name, expected in pairs:
+            key = key_module.Key("Kind", id_or_name)
+            assert key.integer_id() == expected
+
+    @staticmethod
+    def test_flat():
+        key = key_module.Key("This", "key")
+        assert key.flat() == ("This", "key")
+
+    @staticmethod
+    def test_flat_partial_key():
+        key = key_module.Key("Kind", None)
+        assert key.flat() == ("Kind", None)
 
 
 class Test__project_from_app:
