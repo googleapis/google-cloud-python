@@ -341,7 +341,7 @@ class TestLogging(unittest.TestCase):
         self.assertFalse(metric.exists())
         before_metrics = list(Config.CLIENT.list_metrics())
         before_names = set(before.name for before in before_metrics)
-        self.failIf(metric.name in before_names)
+        self.assertFalse(metric.name in before_names)
         metric.create()
         self.to_delete.append(metric)
         self.assertTrue(metric.exists())
@@ -406,9 +406,10 @@ class TestLogging(unittest.TestCase):
         uri = self._init_storage_bucket()
         SINK_NAME = 'test-create-sink-bucket%s' % (_RESOURCE_ID,)
 
+        retry = RetryErrors((Conflict, ServiceUnavailable), max_tries=10)
         sink = Config.CLIENT.sink(SINK_NAME, DEFAULT_FILTER, uri)
         self.assertFalse(sink.exists())
-        sink.create()
+        retry(sink.create)()
         self.to_delete.append(sink)
         self.assertTrue(sink.exists())
 
@@ -434,9 +435,10 @@ class TestLogging(unittest.TestCase):
 
         TOPIC_URI = 'pubsub.googleapis.com/%s' % (topic_path,)
 
+        retry = RetryErrors((Conflict, ServiceUnavailable), max_tries=10)
         sink = Config.CLIENT.sink(SINK_NAME, DEFAULT_FILTER, TOPIC_URI)
         self.assertFalse(sink.exists())
-        sink.create()
+        retry(sink.create)()
         self.to_delete.append(sink)
         self.assertTrue(sink.exists())
 
@@ -465,22 +467,24 @@ class TestLogging(unittest.TestCase):
 
     def test_create_sink_bigquery_dataset(self):
         SINK_NAME = 'test-create-sink-dataset%s' % (_RESOURCE_ID,)
+        retry = RetryErrors((Conflict, ServiceUnavailable), max_tries=10)
         uri = self._init_bigquery_dataset()
         sink = Config.CLIENT.sink(SINK_NAME, DEFAULT_FILTER, uri)
         self.assertFalse(sink.exists())
-        sink.create()
+        retry(sink.create)()
         self.to_delete.append(sink)
         self.assertTrue(sink.exists())
 
     def test_list_sinks(self):
         SINK_NAME = 'test-list-sinks%s' % (_RESOURCE_ID,)
         uri = self._init_storage_bucket()
+        retry = RetryErrors((Conflict, ServiceUnavailable), max_tries=10)
         sink = Config.CLIENT.sink(SINK_NAME, DEFAULT_FILTER, uri)
         self.assertFalse(sink.exists())
         before_sinks = list(Config.CLIENT.list_sinks())
         before_names = set(before.name for before in before_sinks)
-        self.failIf(sink.name in before_names)
-        sink.create()
+        self.assertFalse(sink.name in before_names)
+        retry(sink.create)()
         self.to_delete.append(sink)
         self.assertTrue(sink.exists())
         after_sinks = list(Config.CLIENT.list_sinks())
@@ -489,7 +493,7 @@ class TestLogging(unittest.TestCase):
 
     def test_reload_sink(self):
         SINK_NAME = 'test-reload-sink%s' % (_RESOURCE_ID,)
-        retry = RetryErrors(Conflict)
+        retry = RetryErrors((Conflict, ServiceUnavailable), max_tries=10)
         uri = self._init_bigquery_dataset()
         sink = Config.CLIENT.sink(SINK_NAME, DEFAULT_FILTER, uri)
         self.assertFalse(sink.exists())
@@ -503,7 +507,7 @@ class TestLogging(unittest.TestCase):
 
     def test_update_sink(self):
         SINK_NAME = 'test-update-sink%s' % (_RESOURCE_ID,)
-        retry = RetryErrors(Conflict, max_tries=10)
+        retry = RetryErrors((Conflict, ServiceUnavailable), max_tries=10)
         bucket_uri = self._init_storage_bucket()
         dataset_uri = self._init_bigquery_dataset()
         UPDATED_FILTER = 'logName:syslog'
