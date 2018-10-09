@@ -345,23 +345,20 @@ class Key:
 
         return Key._from_ds_key(root_key)
 
-    def flat(self):
-        """The flat path for the key.
+    def namespace(self):
+        """The namespace for the key, if set.
 
-        .. doctest:: key-flat
+        .. doctest:: key-namespace
 
-            >>> key = ndb.Key("Satellite", "Moon", "Space", "Dust")
-            >>> key.flat()
-            ('Satellite', 'Moon', 'Space', 'Dust')
+            >>> key = ndb.Key("A", "B")
+            >>> key.namespace() is None
+            True
             >>>
-            >>> partial_key = ndb.Key("Known", None)
-            >>> partial_key.flat()
-            ('Known', None)
+            >>> key = ndb.Key("A", "B", namespace="rock")
+            >>> key.namespace()
+            'rock'
         """
-        flat_path = self._key.flat_path
-        if len(flat_path) % 2 == 1:
-            flat_path += (None,)
-        return flat_path
+        return self._key.namespace
 
     def app(self):
         """The project ID for the key.
@@ -386,20 +383,23 @@ class Key:
         """
         return self._key.project
 
-    def namespace(self):
-        """The namespace for the key, if set.
+    def flat(self):
+        """The flat path for the key.
 
-        .. doctest:: key-namespace
+        .. doctest:: key-flat
 
-            >>> key = ndb.Key("A", "B")
-            >>> key.namespace() is None
-            True
+            >>> key = ndb.Key("Satellite", "Moon", "Space", "Dust")
+            >>> key.flat()
+            ('Satellite', 'Moon', 'Space', 'Dust')
             >>>
-            >>> key = ndb.Key("A", "B", namespace="rock")
-            >>> key.namespace()
-            'rock'
+            >>> partial_key = ndb.Key("Known", None)
+            >>> partial_key.flat()
+            ('Known', None)
         """
-        return self._key.namespace
+        flat_path = self._key.flat_path
+        if len(flat_path) % 2 == 1:
+            flat_path += (None,)
+        return flat_path
 
 
 def _project_from_app(app, allow_empty=False):
