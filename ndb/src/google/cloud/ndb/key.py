@@ -170,10 +170,6 @@ class Key:
       or :data:`None` if the key has a string ID or is incomplete
     * ``key.kind()``: The "kind" of the key, from the last of the
       ``(kind, id)`` pairs
-    * ``key.parent()``: a key constructed from all but the last ``(kind, id)``
-      pairs. For example, the parent of
-      ``[("Purchase", "Food"), ("Type", "Drink"), ("Coffee", 11)]`` is
-      ``[("Purchase", "Food"), ("Type", "Drink")]``.
     * ``key.urlsafe()``: a websafe-base64-encoded serialized ``Reference``
     * ``key.serialized()``: a serialized ``Reference``
     * ``key.reference()``: a ``Reference`` object (the caller promises not to
@@ -297,8 +293,37 @@ class Key:
         """Alias for :meth:`__repr__`."""
         return self.__repr__()
 
+    def parent(self):
+        """Parent key constructed from all but the last ``(kind, id)`` pairs.
+
+        If there is only one ``(kind, id)`` pair, return :data:`None`.
+
+        .. doctest:: key-parent
+
+            >>> key = ndb.Key(
+            ...     pairs=[
+            ...         ("Purchase", "Food"),
+            ...         ("Type", "Drink"),
+            ...         ("Coffee", 11),
+            ...     ]
+            ... )
+            >>> parent = key.parent()
+            >>> parent
+            Key('Purchase', 'Food', 'Type', 'Drink')
+            >>>
+            >>> grandparent = parent.parent()
+            >>> grandparent
+            Key('Purchase', 'Food')
+            >>>
+            >>> grandparent.parent() is None
+            True
+        """
+        if self._key.parent is None:
+            return None
+        return Key._from_ds_key(self._key.parent)
+
     def flat(self):
-        """Get the flat path for the key.
+        """The flat path for the key.
 
         .. doctest:: key-flat
 
@@ -316,7 +341,7 @@ class Key:
         return flat_path
 
     def app(self):
-        """Return the project ID for the key.
+        """The project ID for the key.
 
         .. warning::
 
@@ -339,7 +364,7 @@ class Key:
         return self._key.project
 
     def namespace(self):
-        """Return the namespace for the key, if set.
+        """The namespace for the key, if set.
 
         .. doctest:: key-namespace
 
