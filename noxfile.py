@@ -105,7 +105,7 @@ def docs(session):
 @nox.session(py=DEFAULT_INTERPRETER)
 def doctest(session):
     # Install all dependencies.
-    session.install("Sphinx")
+    session.install("Sphinx", "sphinx-docstring-typing")
     session.install(".")
     # Run the script for building docs and running doctests.
     run_args = [
