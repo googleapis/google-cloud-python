@@ -19,6 +19,8 @@ environment:
     - NOX_SESSION: "unit-3.5"
     - NOX_SESSION: "unit-3.6"
     - NOX_SESSION: "unit-3.7"
+    - NOX_SESSION: "docs"
+    - NOX_SESSION: "doctest"
 
 install:
   # Packaging requirements
