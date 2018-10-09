@@ -14,6 +14,10 @@
 
 """Provides a :class:`.Key` for Google Cloud Datastore.
 
+.. testsetup:: *
+
+    from google.cloud import ndb
+
 A key encapsulates the following pieces of information, which together
 uniquely designate a (possible) entity in Google Cloud Datastore:
 
@@ -65,23 +69,22 @@ class Key:
 
     .. testsetup:: *
 
-        from google.cloud import ndb
         kind1, id1 = "Parent", "C"
         kind2, id2 = "Child", 42
 
     .. doctest:: key-constructor-primary
 
         >>> ndb.Key(kind1, id1, kind2, id2)
-        <google.cloud.ndb.key.Key object at 0x...>
+        Key('Parent', 'C', 'Child', 42)
 
     This is shorthand for either of the following two longer forms:
 
     .. doctest:: key-constructor-flat-or-pairs
 
         >>> ndb.Key(pairs=[(kind1, id1), (kind2, id2)])
-        <google.cloud.ndb.key.Key object at 0x...>
+        Key('Parent', 'C', 'Child', 42)
         >>> ndb.Key(flat=[kind1, id1, kind2, id2])
-        <google.cloud.ndb.key.Key object at 0x...>
+        Key('Parent', 'C', 'Child', 42)
 
     Either of the above constructor forms can additionally pass in another
     key using ``parent=<key>``. The ``(kind, id)`` pairs of the parent key are
@@ -90,15 +93,17 @@ class Key:
     .. doctest:: key-constructor-parent
 
         >>> parent = ndb.Key(kind1, id1)
+        >>> parent
+        Key('Parent', 'C')
         >>> ndb.Key(kind2, id2, parent=parent)
-        <google.cloud.ndb.key.Key object at 0x...>
+        Key('Parent', 'C', 'Child', 42)
 
     You can also construct a Key from a "url-safe" encoded string:
 
     .. doctest:: key-constructor-urlsafe
 
         >>> ndb.Key(urlsafe=b"agdleGFtcGxlcgsLEgRLaW5kGLkKDA")
-        <google.cloud.ndb.key.Key object at 0x...>
+        Key('Kind', 1337, app='example')
 
     For rare use cases the following constructors exist:
 
@@ -125,17 +130,17 @@ class Key:
         }
         <BLANKLINE>
         >>> ndb.Key(reference=reference)
-        <google.cloud.ndb.key.Key object at 0x...>
+        Key('Kind', 1337, app='example')
         >>> # Passing in a serialized low-level Reference
         >>> serialized = reference.SerializeToString()
         >>> serialized
         b'j\\x07exampler\\x0b\\x0b\\x12\\x04Kind\\x18\\xb9\\n\\x0c'
         >>> ndb.Key(serialized=serialized)
-        <google.cloud.ndb.key.Key object at 0x...>
+        Key('Kind', 1337, app='example')
         >>> # For unpickling, the same as ndb.Key(**kwargs)
         >>> kwargs = {"pairs": [("Cheese", "Cheddar")], "namespace": "good"}
         >>> ndb.Key(kwargs)
-        <google.cloud.ndb.key.Key object at 0x...>
+        Key('Cheese', 'Cheddar', namespace='good')
 
     The "url-safe" string is really a websafe-base64-encoded serialized
     ``Reference``, but it's best to think of it as just an opaque unique
@@ -154,23 +159,15 @@ class Key:
     For access to the contents of a key, the following methods and
     operations are supported:
 
-    * ``repr(key)``, ``str(key)``: return a string representation resembling
-      the shortest constructor form, omitting the app and namespace
-      unless they differ from the default value
     * ``key1 == key2``, ``key1 != key2``: comparison for equality between keys
     * ``hash(key)``: a hash value sufficient for storing keys in a dictionary
     * ``key.pairs()``: a tuple of ``(kind, id)`` pairs
-    * ``key.flat()``: a tuple of flattened kind and ID values, i.e.
-      ``(kind1, id1, kind2, id2, ...)``
-    * ``key.app()``: the Google Cloud Platform project (formerly called the
-      application ID)
     * ``key.id()``: the string or integer ID in the last ``(kind, id)`` pair,
       or :data:`None` if the key is incomplete
     * ``key.string_id()``: the string ID in the last ``(kind, id)`` pair,
       or :data:`None` if the key has an integer ID or is incomplete
     * ``key.integer_id()``: the integer ID in the last ``(kind, id)`` pair,
       or :data:`None` if the key has a string ID or is incomplete
-    * ``key.namespace()``: the namespace
     * ``key.kind()``: The "kind" of the key, from the last of the
       ``(kind, id)`` pairs
     * ``key.parent()``: a key constructed from all but the last ``(kind, id)``
@@ -246,6 +243,89 @@ class Key:
 
         self._key = ds_key
         self._reference = reference
+
+    def __repr__(self):
+        """String representation used by :class:`str() <str>` and :func:`repr`.
+
+        We produce a short string that conveys all relevant information,
+        suppressing app and namespace when they are equal to the default.
+        In many cases, this string should be able to be used to invoke the
+        constructor.
+
+        For example:
+
+        .. doctest:: key-repr
+
+            >>> key = ndb.Key("hi", 100)
+            >>> repr(key)
+            "Key('hi', 100)"
+            >>>
+            >>> key = ndb.Key(
+            ...     "bye", "hundred", app="specific", namespace="space"
+            ... )
+            >>> str(key)
+            "Key('bye', 'hundred', app='specific', namespace='space')"
+        """
+        args = ["{!r}".format(item) for item in self.flat()]
+        if self.app() != _project_from_app(None):
+            args.append("app={!r}".format(self.app()))
+        if self.namespace() is not None:
+            args.append("namespace={!r}".format(self.namespace()))
+
+        return "Key({})".format(", ".join(args))
+
+    def __str__(self):
+        """Alias for :meth:`__repr__`."""
+        return self.__repr__()
+
+    def flat(self):
+        """Get the flat path for the key.
+
+        .. doctest:: key-flat
+
+            >>> key = ndb.Key("Satellite", "Moon", "Space", "Dust")
+            >>> key.flat()
+            ('Satellite', 'Moon', 'Space', 'Dust')
+        """
+        return self._key.flat_path
+
+    def app(self):
+        """Return the project ID for the key.
+
+        .. warning::
+
+            This **may** differ from the original ``app`` passed in to the
+            constructor. This is because prefixed application IDs like
+            ``s~example`` are "legacy" identifiers from Google App Engine.
+            They have been replaced by equivalent project IDs, e.g. here it
+            would be ``example``.
+
+        .. doctest:: key-app
+
+            >>> key = ndb.Key("A", "B", app="s~example")
+            >>> key.app()
+            'example'
+            >>>
+            >>> key = ndb.Key("A", "B", app="example")
+            >>> key.app()
+            'example'
+        """
+        return self._key.project
+
+    def namespace(self):
+        """Return the namespace for the key, if set.
+
+        .. doctest:: key-namespace
+
+            >>> key = ndb.Key("A", "B")
+            >>> key.namespace() is None
+            True
+            >>>
+            >>> key = ndb.Key("A", "B", namespace="rock")
+            >>> key.namespace()
+            'rock'
+        """
+        return self._key.namespace
 
 
 def _project_from_app(app, allow_empty=False):

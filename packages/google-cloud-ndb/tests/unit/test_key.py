@@ -212,6 +212,36 @@ class TestKey:
         with pytest.raises(TypeError):
             key_module.Key(urlsafe=urlsafe, serialized=serialized)
 
+    @staticmethod
+    @unittest.mock.patch("os.environ", new={})
+    def test___repr__defaults():
+        key = key_module.Key("a", "b")
+        assert repr(key) == "Key('a', 'b')"
+
+    @staticmethod
+    @unittest.mock.patch("os.environ", new={})
+    def test___repr__non_defaults():
+        key = key_module.Key("X", 11, app="foo", namespace="bar")
+        assert repr(key) == "Key('X', 11, app='foo', namespace='bar')"
+
+    @staticmethod
+    def test_flat():
+        key = key_module.Key("This", "key")
+        assert key.flat() == ("This", "key")
+
+    @staticmethod
+    def test_app():
+        app = "s~example"
+        key = key_module.Key("X", 100, app=app)
+        assert key.app() != app
+        assert key.app() == app[2:]
+
+    @staticmethod
+    def test_namespace():
+        namespace = "my-space"
+        key = key_module.Key("abc", 1, namespace=namespace)
+        assert key.namespace() == namespace
+
 
 class Test__project_from_app:
     @staticmethod
