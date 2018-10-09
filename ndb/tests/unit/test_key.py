@@ -294,6 +294,16 @@ class TestKey:
             assert key.integer_id() == expected
 
     @staticmethod
+    def test_pairs():
+        key = key_module.Key("This", "key", "that", None)
+        assert key.pairs() == [("This", "key"), ("that", None)]
+
+    @staticmethod
+    def test_pairs_partial_key():
+        key = key_module.Key("a", "b")
+        assert key.pairs() == [("a", "b")]
+
+    @staticmethod
     def test_flat():
         key = key_module.Key("This", "key")
         assert key.flat() == ("This", "key")

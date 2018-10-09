@@ -161,7 +161,6 @@ class Key:
 
     * ``key1 == key2``, ``key1 != key2``: comparison for equality between keys
     * ``hash(key)``: a hash value sufficient for storing keys in a dictionary
-    * ``key.pairs()``: a tuple of ``(kind, id)`` pairs
     * ``key.kind()``: The "kind" of the key, from the last of the
       ``(kind, id)`` pairs
     * ``key.urlsafe()``: a websafe-base64-encoded serialized ``Reference``
@@ -427,6 +426,25 @@ class Key:
             True
         """
         return self._key.id
+
+    def pairs(self):
+        """The ``(kind, id)`` pairs for the key.
+
+        .. doctest:: key-pairs
+
+            >>> key = ndb.Key("Satellite", "Moon", "Space", "Dust")
+            >>> key.pairs()
+            [('Satellite', 'Moon'), ('Space', 'Dust')]
+            >>>
+            >>> partial_key = ndb.Key("Known", None)
+            >>> partial_key.pairs()
+            [('Known', None)]
+        """
+        flat = self.flat()
+        pairs = []
+        for i in range(0, len(flat), 2):
+            pairs.append(flat[i : i + 2])
+        return pairs
 
     def flat(self):
         """The flat path for the key.
