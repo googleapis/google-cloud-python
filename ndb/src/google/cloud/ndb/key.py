@@ -161,8 +161,6 @@ class Key:
 
     * ``key1 == key2``, ``key1 != key2``: comparison for equality between keys
     * ``hash(key)``: a hash value sufficient for storing keys in a dictionary
-    * ``key.urlsafe()``: a websafe-base64-encoded serialized ``Reference``
-    * ``key.serialized()``: a serialized ``Reference``
 
     Keys also support interaction with the datastore; these methods are
     the only ones that engage in any kind of I/O activity. For ``Future``
@@ -504,6 +502,30 @@ class Key:
                 name_space=self._key.namespace,
             )
         return self._reference
+
+    def serialized(self):
+        """A ``Reference`` protobuf serialized to bytes.
+
+        .. doctest:: key-serialized
+
+            >>> key = ndb.Key("Kind", 1337, app="example")
+            >>> key.serialized()
+            b'j\\x07exampler\\x0b\\x0b\\x12\\x04Kind\\x18\\xb9\\n\\x0c'
+        """
+        reference = self.reference()
+        return reference.SerializeToString()
+
+    def urlsafe(self):
+        """A ``Reference`` protobuf encoded as urlsafe base 64.
+
+        .. doctest:: key-urlsafe
+
+            >>> key = ndb.Key("Kind", 1337, app="example")
+            >>> key.urlsafe()
+            b'agdleGFtcGxlcgsLEgRLaW5kGLkKDA'
+        """
+        raw_bytes = self.serialized()
+        return base64.urlsafe_b64encode(raw_bytes).strip(b"=")
 
 
 def _project_from_app(app, allow_empty=False):

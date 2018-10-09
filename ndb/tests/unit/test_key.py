@@ -333,6 +333,16 @@ class TestKey:
         key._reference = unittest.mock.sentinel.reference
         assert key.reference() is unittest.mock.sentinel.reference
 
+    @staticmethod
+    def test_serialized():
+        key = key_module.Key("a", "b", app="c")
+        assert key.serialized() == b'j\x01cr\x08\x0b\x12\x01a"\x01b\x0c'
+
+    @staticmethod
+    def test_urlsafe():
+        key = key_module.Key("d", "e", app="f")
+        assert key.urlsafe() == b"agFmcggLEgFkIgFlDA"
+
 
 class Test__project_from_app:
     @staticmethod
