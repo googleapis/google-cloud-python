@@ -322,6 +322,29 @@ class Key:
             return None
         return Key._from_ds_key(self._key.parent)
 
+    def root(self):
+        """The root key.
+
+        This is either the current key or the highest parent.
+
+        .. doctest:: key-root
+
+            >>> key = ndb.Key("a", 1, "steak", "sauce")
+            >>> root_key = key.root()
+            >>> root_key
+            Key('a', 1)
+            >>> root_key.root() is root_key
+            True
+        """
+        root_key = self._key
+        while root_key.parent is not None:
+            root_key = root_key.parent
+
+        if root_key is self._key:
+            return self
+
+        return Key._from_ds_key(root_key)
+
     def flat(self):
         """The flat path for the key.
 

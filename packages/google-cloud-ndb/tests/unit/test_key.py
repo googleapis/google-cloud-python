@@ -249,6 +249,18 @@ class TestKey:
         assert key.parent() is None
 
     @staticmethod
+    def test_root():
+        key = key_module.Key("a", "b", "c", "d")
+        root = key.root()
+        assert root._key == key._key.parent
+        assert root._reference is None
+
+    @staticmethod
+    def test_root_top_level():
+        key = key_module.Key("This", "key")
+        assert key.root() is key
+
+    @staticmethod
     def test_flat():
         key = key_module.Key("This", "key")
         assert key.flat() == ("This", "key")
