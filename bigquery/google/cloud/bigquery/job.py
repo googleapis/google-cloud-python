@@ -519,9 +519,11 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
                            '["configuration"]["%s"]' % cls._JOB_TYPE)
         return job_id, resource['configuration']
 
-    def _build_resource(self):
-        """Helper:  Generate a resource for :meth:`_begin`."""
+    def to_api_repr(self):
+        """Generate a resource for the job."""
         raise NotImplementedError("Abstract")
+
+    _build_resource = to_api_repr  # backward-compatibility alias
 
     def _begin(self, client=None, retry=DEFAULT_RETRY):
         """API call:  begin the job via a POST request
@@ -549,7 +551,7 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
         # job has an ID.
         api_response = client._call_api(
             retry,
-            method='POST', path=path, data=self._build_resource())
+            method='POST', path=path, data=self.to_api_repr())
         self._set_properties(api_response)
 
     def exists(self, client=None, retry=DEFAULT_RETRY):
@@ -1367,7 +1369,7 @@ class LoadJob(_AsyncJob):
         if statistics is not None:
             return int(statistics['load']['outputRows'])
 
-    def _build_resource(self):
+    def to_api_repr(self):
         """Generate a resource for :meth:`_begin`."""
         configuration = self._configuration.to_api_repr()
         if self.source_uris is not None:
@@ -1543,7 +1545,7 @@ class CopyJob(_AsyncJob):
         """
         return self._configuration.destination_encryption_configuration
 
-    def _build_resource(self):
+    def to_api_repr(self):
         """Generate a resource for :meth:`_begin`."""
 
         source_refs = [{
@@ -1761,7 +1763,7 @@ class ExtractJob(_AsyncJob):
             return [int(count) for count in counts]
         return None
 
-    def _build_resource(self):
+    def to_api_repr(self):
         """Generate a resource for :meth:`_begin`."""
 
         source_ref = {
@@ -2367,7 +2369,7 @@ class QueryJob(_AsyncJob):
         """
         return self._configuration.schema_update_options
 
-    def _build_resource(self):
+    def to_api_repr(self):
         """Generate a resource for :meth:`_begin`."""
         configuration = self._configuration.to_api_repr()
 

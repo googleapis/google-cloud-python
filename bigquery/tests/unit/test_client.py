@@ -2214,7 +2214,7 @@ class TestClient(unittest.TestCase):
         config = LoadJobConfig()
         config.source_format = SourceFormat.CSV
         job = LoadJob(None, None, self.TABLE_REF, client, job_config=config)
-        metadata = job._build_resource()
+        metadata = job.to_api_repr()
         upload, transport = client._initiate_resumable_upload(
             stream, metadata, num_retries)
 
@@ -2279,7 +2279,7 @@ class TestClient(unittest.TestCase):
         config = LoadJobConfig()
         config.source_format = SourceFormat.CSV
         job = LoadJob(None, None, self.TABLE_REF, client, job_config=config)
-        metadata = job._build_resource()
+        metadata = job.to_api_repr()
         size = len(data)
         response = client._do_multipart_upload(
             stream, metadata, size, num_retries)
