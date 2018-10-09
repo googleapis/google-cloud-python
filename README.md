@@ -39,6 +39,14 @@ the rewrite.
 - There is no replacement for `google.appengine.api.namespace_manager` which is
   used to determine the default namespace when not passed in to `Key()`
 
+## Differences (between old and new implementations)
+
+- The `Key()` constructor (and helpers) make a distinction between `unicode`
+  and `str` types (in Python 2). These are now `unicode->str` and `str->bytes`.
+  However, `google.cloud.datastore.Key()` (the actual type we use under the
+  covers), only allows the `str` type in Python 3, so much of the "type-check
+  and branch" from the original implementation is gone. This **may** cause
+  some slight differences.
 
 [0]: https://cloud.google.com/datastore
 [1]: https://cloud.google.com/appengine
