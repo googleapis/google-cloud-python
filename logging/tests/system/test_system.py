@@ -330,7 +330,10 @@ class TestLogging(unittest.TestCase):
         metric = Config.CLIENT.metric(
             METRIC_NAME, DEFAULT_FILTER, DEFAULT_DESCRIPTION)
         self.assertFalse(metric.exists())
-        metric.create()
+        retry = RetryErrors(Conflict)
+
+        retry(metric.create)()
+
         self.to_delete.append(metric)
         self.assertTrue(metric.exists())
 
@@ -342,10 +345,13 @@ class TestLogging(unittest.TestCase):
         before_metrics = list(Config.CLIENT.list_metrics())
         before_names = set(before.name for before in before_metrics)
         self.assertFalse(metric.name in before_names)
-        metric.create()
+        retry = RetryErrors(Conflict)
+        retry(metric.create)()
         self.to_delete.append(metric)
         self.assertTrue(metric.exists())
+
         after_metrics = list(Config.CLIENT.list_metrics())
+
         after_names = set(after.name for after in after_metrics)
         self.assertTrue(metric.name in after_names)
 
@@ -359,7 +365,9 @@ class TestLogging(unittest.TestCase):
         self.to_delete.append(metric)
         metric.filter_ = 'logName:other'
         metric.description = 'local changes'
+
         metric.reload()
+
         self.assertEqual(metric.filter_, DEFAULT_FILTER)
         self.assertEqual(metric.description, DEFAULT_DESCRIPTION)
 
@@ -375,7 +383,9 @@ class TestLogging(unittest.TestCase):
         self.to_delete.append(metric)
         metric.filter_ = NEW_FILTER
         metric.description = NEW_DESCRIPTION
+
         metric.update()
+
         after_metrics = list(Config.CLIENT.list_metrics())
         after_info = {metric.name: metric for metric in after_metrics}
         after = after_info[METRIC_NAME]
@@ -409,7 +419,9 @@ class TestLogging(unittest.TestCase):
         retry = RetryErrors((Conflict, ServiceUnavailable), max_tries=10)
         sink = Config.CLIENT.sink(SINK_NAME, DEFAULT_FILTER, uri)
         self.assertFalse(sink.exists())
+
         retry(sink.create)()
+
         self.to_delete.append(sink)
         self.assertTrue(sink.exists())
 
@@ -438,7 +450,9 @@ class TestLogging(unittest.TestCase):
         retry = RetryErrors((Conflict, ServiceUnavailable), max_tries=10)
         sink = Config.CLIENT.sink(SINK_NAME, DEFAULT_FILTER, TOPIC_URI)
         self.assertFalse(sink.exists())
+
         retry(sink.create)()
+
         self.to_delete.append(sink)
         self.assertTrue(sink.exists())
 
@@ -471,7 +485,9 @@ class TestLogging(unittest.TestCase):
         uri = self._init_bigquery_dataset()
         sink = Config.CLIENT.sink(SINK_NAME, DEFAULT_FILTER, uri)
         self.assertFalse(sink.exists())
+
         retry(sink.create)()
+
         self.to_delete.append(sink)
         self.assertTrue(sink.exists())
 
@@ -487,7 +503,9 @@ class TestLogging(unittest.TestCase):
         retry(sink.create)()
         self.to_delete.append(sink)
         self.assertTrue(sink.exists())
+
         after_sinks = list(Config.CLIENT.list_sinks())
+
         after_names = set(after.name for after in after_sinks)
         self.assertTrue(sink.name in after_names)
 
@@ -501,7 +519,9 @@ class TestLogging(unittest.TestCase):
         self.to_delete.append(sink)
         sink.filter_ = 'BOGUS FILTER'
         sink.destination = 'BOGUS DESTINATION'
+
         sink.reload()
+
         self.assertEqual(sink.filter_, DEFAULT_FILTER)
         self.assertEqual(sink.destination, uri)
 
@@ -517,7 +537,9 @@ class TestLogging(unittest.TestCase):
         self.to_delete.append(sink)
         sink.filter_ = UPDATED_FILTER
         sink.destination = dataset_uri
+
         sink.update()
+
         self.assertEqual(sink.filter_, UPDATED_FILTER)
         self.assertEqual(sink.destination, dataset_uri)
 
