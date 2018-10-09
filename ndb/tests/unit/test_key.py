@@ -237,6 +237,18 @@ class TestKey:
         assert str(key) == "Key('X', 11, app='foo', namespace='bar')"
 
     @staticmethod
+    def test_parent():
+        key = key_module.Key("a", "b", "c", "d")
+        parent = key.parent()
+        assert parent._key == key._key.parent
+        assert parent._reference is None
+
+    @staticmethod
+    def test_parent_top_level():
+        key = key_module.Key("This", "key")
+        assert key.parent() is None
+
+    @staticmethod
     def test_flat():
         key = key_module.Key("This", "key")
         assert key.flat() == ("This", "key")
