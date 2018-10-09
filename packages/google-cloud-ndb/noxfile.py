@@ -76,7 +76,27 @@ def blacken(session):
     session.run(
         "black",
         "--line-length=79",
+        get_path("docs"),
         get_path("noxfile.py"),
         get_path("src"),
         get_path("tests"),
     )
+
+
+@nox.session(py=DEFAULT_INTERPRETER)
+def docs(session):
+    # Install all dependencies.
+    session.install("Sphinx")
+    session.install(".")
+    # Building the docs.
+    command = [
+        "sphinx-build",
+        "-W",
+        "-b",
+        "html",
+        "-d",
+        get_path("docs", "_build", "doctrees"),
+        "docs",
+        get_path("docs", "_build", "html"),
+    ]
+    session.run(*command)
