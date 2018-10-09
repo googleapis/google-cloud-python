@@ -232,6 +232,11 @@ class TestKey:
         assert key.flat() == ("This", "key")
 
     @staticmethod
+    def test_flat_partial_key():
+        key = key_module.Key("Kind", None)
+        assert key.flat() == ("Kind", None)
+
+    @staticmethod
     def test_app():
         app = "s~example"
         key = key_module.Key("X", 100, app=app)
