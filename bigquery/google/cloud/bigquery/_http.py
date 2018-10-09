@@ -41,3 +41,9 @@ class Connection(_http.JSONConnection):
     _EXTRA_HEADERS = {
         _http.CLIENT_INFO_HEADER: _CLIENT_INFO,
     }
+
+    _USER_AGENT_TEMPLATE = (
+        'gcloud-python/{core_version} '
+        'google-cloud-bigquery/{bq_version}{application_name}'
+    )
+

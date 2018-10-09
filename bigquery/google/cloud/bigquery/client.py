@@ -22,6 +22,7 @@ import gzip
 import os
 import uuid
 
+import pkg_resources
 import six
 
 from google import resumable_media
@@ -133,10 +134,27 @@ class Client(ClientWithProject):
         self._location = location
         self._default_query_job_config = default_query_job_config
 
+        # Set the USER_AGENT with the property handler for application_name.
+        self.application_name = ''
+
     @property
     def location(self):
         """Default location for jobs / datasets / tables."""
         return self._location
+
+    @property
+    def application_name(self):
+        """Application name for user agent in requests to Google APIs."""
+        return self._application_name
+
+    @application_name.setter
+    def application_name(self, value):
+        self._application_name = value
+        self._connection.USER_AGENT = Connection._USER_AGENT_TEMPLATE.format(
+            core_version=pkg_resources.get_distribution('google-cloud-core').version,
+            bq_version=pkg_resources.get_distribution('google-cloud-bigquery').version,
+            application_name=' ' + value,
+        )
 
     def get_service_account_email(self, project=None):
         """Get the email address of the project's BigQuery service account

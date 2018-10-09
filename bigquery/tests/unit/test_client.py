@@ -209,6 +209,32 @@ class TestClient(unittest.TestCase):
         self.assertEqual(query_results.total_rows, 10)
         self.assertTrue(query_results.complete)
 
+    def test_application_name_sets_user_agent(self):
+        creds = _make_credentials()
+        http = mock.Mock()
+        response = mock.Mock()
+        resource = {'email': 'test@example.com'}
+        http.request.return_value = response
+        response.status_code = 200
+        response.json.return_value = resource
+        client = self._make_one(
+            project=self.PROJECT, credentials=creds, _http=http)
+
+        # Check default user agent.
+        client.get_service_account_email()
+        args, kwargs = http.request.call_args
+        self.assertRegex(
+            kwargs['headers']['User-Agent'],
+            'gcloud-python/.+ google-cloud-bigquery/.+')
+
+        # Check amended user agent.
+        client.application_name = 'pandas-gbq/0.6.0'
+        client.get_service_account_email()
+        args, kwargs = http.request.call_args
+        self.assertRegex(
+            kwargs['headers']['User-Agent'],
+            'gcloud-python/.+ google-cloud-bigquery/.+ pandas-gbq/0\.6\.0')
+
     def test_get_service_account_email(self):
         path = '/projects/%s/serviceAccount' % (self.PROJECT,)
         creds = _make_credentials()
@@ -3640,7 +3666,7 @@ class TestClient(unittest.TestCase):
         partition_list = client.list_partitions(
             '{}.{}'.format(self.DS_ID, self.TABLE_ID))
 
-        self.assertEquals(len(partition_list), 0)
+        self.assertEqual(len(partition_list), 0)
 
     def test_list_rows(self):
         import datetime
