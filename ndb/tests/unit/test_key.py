@@ -320,6 +320,19 @@ class TestKey:
         key = key_module.Key("a", "b", "c", "d")
         assert key.kind() == "c"
 
+    @staticmethod
+    def test_reference():
+        key = key_module.Key("This", "key", app="fire")
+        assert key.reference() == make_reference(
+            path=({"type": "This", "name": "key"},), app="fire", namespace=None
+        )
+
+    @staticmethod
+    def test_reference_cached():
+        key = key_module.Key("This", "key")
+        key._reference = unittest.mock.sentinel.reference
+        assert key.reference() is unittest.mock.sentinel.reference
+
 
 class Test__project_from_app:
     @staticmethod
