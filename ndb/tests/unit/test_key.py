@@ -217,12 +217,14 @@ class TestKey:
     def test___repr__defaults():
         key = key_module.Key("a", "b")
         assert repr(key) == "Key('a', 'b')"
+        assert str(key) == "Key('a', 'b')"
 
     @staticmethod
     @unittest.mock.patch("os.environ", new={})
     def test___repr__non_defaults():
         key = key_module.Key("X", 11, app="foo", namespace="bar")
         assert repr(key) == "Key('X', 11, app='foo', namespace='bar')"
+        assert str(key) == "Key('X', 11, app='foo', namespace='bar')"
 
     @staticmethod
     def test_flat():
