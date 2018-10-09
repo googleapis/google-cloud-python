@@ -30,6 +30,7 @@ class TestAppEngineHandler(unittest.TestCase):
         return self._get_target_class()(*args, **kw)
 
     def test_constructor(self):
+        from google.cloud.logging.handlers.app_engine import _GAE_PROJECT_ENV_FLEX
         from google.cloud.logging.handlers.app_engine import (
             _GAE_PROJECT_ENV_STANDARD)
         from google.cloud.logging.handlers.app_engine import _GAE_SERVICE_ENV
@@ -37,6 +38,7 @@ class TestAppEngineHandler(unittest.TestCase):
 
         client = mock.Mock(project=self.PROJECT, spec=['project'])
 
+        # Verify that project/service/version are picked up from the environment.
         with mock.patch('os.environ', new={
             _GAE_PROJECT_ENV_STANDARD: 'test_project',
             _GAE_SERVICE_ENV: 'test_service',
@@ -48,6 +50,21 @@ class TestAppEngineHandler(unittest.TestCase):
         self.assertEqual(handler.resource.labels['project_id'], 'test_project')
         self.assertEqual(handler.resource.labels['module_id'], 'test_service')
         self.assertEqual(handler.resource.labels['version_id'], 'test_version')
+
+        # Verify that _GAE_PROJECT_ENV_FLEX environment variable takes precedence
+        # over _GAE_PROJECT_ENV_STANDARD.
+        with mock.patch('os.environ', new={
+            _GAE_PROJECT_ENV_FLEX: 'test_project_2',
+            _GAE_PROJECT_ENV_STANDARD: 'test_project_should_be_overridden',
+            _GAE_SERVICE_ENV: 'test_service_2',
+            _GAE_VERSION_ENV: 'test_version_2',
+        }):
+            handler = self._make_one(client, transport=_Transport)
+        self.assertIs(handler.client, client)
+        self.assertEqual(handler.resource.type, 'gae_app')
+        self.assertEqual(handler.resource.labels['project_id'], 'test_project_2')
+        self.assertEqual(handler.resource.labels['module_id'], 'test_service_2')
+        self.assertEqual(handler.resource.labels['version_id'], 'test_version_2')
 
     def test_emit(self):
         client = mock.Mock(project=self.PROJECT, spec=['project'])
