@@ -161,8 +161,6 @@ class Key:
 
     * ``key1 == key2``, ``key1 != key2``: comparison for equality between keys
     * ``hash(key)``: a hash value sufficient for storing keys in a dictionary
-    * ``key.kind()``: The "kind" of the key, from the last of the
-      ``(kind, id)`` pairs
     * ``key.urlsafe()``: a websafe-base64-encoded serialized ``Reference``
     * ``key.serialized()``: a serialized ``Reference``
     * ``key.reference()``: a ``Reference`` object (the caller promises not to
@@ -463,6 +461,23 @@ class Key:
         if len(flat_path) % 2 == 1:
             flat_path += (None,)
         return flat_path
+
+    def kind(self):
+        """The kind of the entity referenced.
+
+        This comes from the last ``(kind, id)`` pair.
+
+        .. doctest:: key-kind
+
+            >>> key = ndb.Key("Satellite", "Moon", "Space", "Dust")
+            >>> key.kind()
+            'Space'
+            >>>
+            >>> partial_key = ndb.Key("Known", None)
+            >>> partial_key.kind()
+            'Known'
+        """
+        return self._key.kind
 
 
 def _project_from_app(app, allow_empty=False):
