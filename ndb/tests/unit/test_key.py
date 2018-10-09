@@ -313,6 +313,13 @@ class TestKey:
         key = key_module.Key("Kind", None)
         assert key.flat() == ("Kind", None)
 
+    @staticmethod
+    def test_kind():
+        key = key_module.Key("This", "key")
+        assert key.kind() == "This"
+        key = key_module.Key("a", "b", "c", "d")
+        assert key.kind() == "c"
+
 
 class Test__project_from_app:
     @staticmethod
