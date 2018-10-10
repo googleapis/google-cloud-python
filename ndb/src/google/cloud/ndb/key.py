@@ -244,6 +244,25 @@ class Key:
         self._key = ds_key
         self._reference = reference
 
+    @classmethod
+    def _from_ds_key(cls, ds_key):
+        """Factory constructor for a :class:`~google.cloud.datastore.key.Key`.
+
+        This bypasses the actual constructor and directly sets the ``_key``
+        attribute to ``ds_key``.
+
+        Args:
+            ds_key (~google.cloud.datastore.key.Key): A key from
+                ``google-cloud-datastore``.
+
+        Returns:
+            Key: The constructed :class:`Key`.
+        """
+        key = cls.__new__(cls)
+        key._key = ds_key
+        key._reference = None
+        return key
+
     def __repr__(self):
         """String representation used by :class:`str() <str>` and :func:`repr`.
 
