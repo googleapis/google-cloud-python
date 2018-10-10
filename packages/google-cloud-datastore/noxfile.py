@@ -25,7 +25,6 @@ LOCAL_DEPS = (
 )
 
 
-@nox.session
 def default(session):
     """Default unit test session.
 
@@ -55,34 +54,19 @@ def default(session):
     )
 
 
-@nox.session
-@nox.parametrize('py', ['2.7', '3.5', '3.6', '3.7'])
-def unit(session, py):
+@nox.session(python=['2.7', '3.5', '3.6', '3.7'])
+def unit(session):
     """Run the unit test suite."""
-
-    # Run unit tests against all supported versions of Python.
-    session.interpreter = 'python{}'.format(py)
-
-    # Set the virtualenv dirname.
-    session.virtualenv_dirname = 'unit-' + py
-
     default(session)
 
 
-@nox.session
-@nox.parametrize('py', ['2.7', '3.6'])
-def system(session, py):
+@nox.session(python=['2.7', '3.6'])
+def system(session):
     """Run the system test suite."""
 
     # Sanity check: Only run system tests if the environment variable is set.
     if not os.environ.get('GOOGLE_APPLICATION_CREDENTIALS', ''):
         session.skip('Credentials must be set via environment variable.')
-
-    # Run the system tests against latest Python 2 and Python 3 only.
-    session.interpreter = 'python{}'.format(py)
-
-    # Set the virtualenv dirname.
-    session.virtualenv_dirname = 'sys-' + py
 
     # Use pre-release gRPC for system tests.
     session.install('--pre', 'grpcio')
@@ -98,19 +82,18 @@ def system(session, py):
     session.run('py.test', '--quiet', 'tests/system', *session.posargs)
 
 
-@nox.session
+@nox.session(python='3.6')
 def doctests(session):
     """Run the system test suite."""
+    # Doctests run against Python 3.6 only.
+    # It is difficult to make doctests run against both Python 2 and Python 3
+    # because they test string output equivalence, which is difficult to
+    # make match (e.g. unicode literals starting with "u").
 
     # Sanity check: Only run system tests if the environment variable is set.
     if not os.environ.get('GOOGLE_APPLICATION_CREDENTIALS', ''):
         session.skip('Credentials must be set via environment variable.')
 
-    # Doctests run against Python 3.6 only.
-    # It is difficult to make doctests run against both Python 2 and Python 3
-    # because they test string output equivalence, which is difficult to
-    # make match (e.g. unicode literals starting with "u").
-    session.interpreter = 'python3.6'
 
     # Install all test dependencies, then install this package into the
     # virtualenv's dist-packages.
@@ -124,40 +107,34 @@ def doctests(session):
     session.run('py.test', '--quiet', 'tests/doctests.py')
 
 
-@nox.session
+@nox.session(python='3.6')
 def lint(session):
     """Run linters.
 
     Returns a failure if the linters find linting errors or sufficiently
     serious code quality issues.
     """
-    session.interpreter = 'python3.6'
     session.install('flake8', *LOCAL_DEPS)
     session.install('.')
     session.run('flake8', 'google', 'tests')
 
 
-@nox.session
+@nox.session(python='3.6')
 def lint_setup_py(session):
     """Verify that setup.py is valid (including RST check)."""
-    session.interpreter = 'python3.6'
-
-    # Set the virtualenv dirname.
-    session.virtualenv_dirname = 'setup'
 
     session.install('docutils', 'Pygments')
     session.run(
         'python', 'setup.py', 'check', '--restructuredtext', '--strict')
 
 
-@nox.session
+@nox.session(python='3.6')
 def cover(session):
     """Run the final coverage report.
 
     This outputs the coverage report aggregating coverage from the unit
     test runs (not system test runs), and then erases coverage data.
     """
-    session.interpreter = 'python3.6'
     session.install('coverage', 'pytest-cov')
     session.run('coverage', 'report', '--show-missing', '--fail-under=100')
     session.run('coverage', 'erase')
