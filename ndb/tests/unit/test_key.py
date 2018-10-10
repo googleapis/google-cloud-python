@@ -238,6 +238,19 @@ class TestKey:
         assert str(key) == "Key('X', 11, app='foo', namespace='bar')"
 
     @staticmethod
+    def test___hash__():
+        key1 = key_module.Key("a", 1)
+        assert hash(key1) == hash(key1)
+        assert hash(key1) == hash(key1.pairs())
+        key2 = key_module.Key("a", 2)
+        assert hash(key1) != hash(key2)
+
+    @staticmethod
+    def test__tuple():
+        key = key_module.Key("X", 11, app="foo", namespace="n")
+        assert key._tuple() == ("foo", "n", (("X", 11),))
+
+    @staticmethod
     def test___eq__():
         key1 = key_module.Key("X", 11, app="foo", namespace="n")
         key2 = key_module.Key("Y", 12, app="foo", namespace="n")
@@ -249,6 +262,75 @@ class TestKey:
         assert not key1 == key3
         assert not key1 == key4
         assert not key1 == key5
+
+    @staticmethod
+    def test___ne__():
+        key1 = key_module.Key("X", 11, app="foo", namespace="n")
+        key2 = key_module.Key("Y", 12, app="foo", namespace="n")
+        key3 = key_module.Key("X", 11, app="bar", namespace="n")
+        key4 = key_module.Key("X", 11, app="foo", namespace="m")
+        key5 = unittest.mock.sentinel.key
+        assert not key1 != key1
+        assert key1 != key2
+        assert key1 != key3
+        assert key1 != key4
+        assert key1 != key5
+
+    @staticmethod
+    def test___lt__():
+        key1 = key_module.Key("X", 11, app="foo", namespace="n")
+        key2 = key_module.Key("Y", 12, app="foo", namespace="n")
+        key3 = key_module.Key("X", 11, app="goo", namespace="n")
+        key4 = key_module.Key("X", 11, app="foo", namespace="o")
+        key5 = unittest.mock.sentinel.key
+        assert not key1 < key1
+        assert key1 < key2
+        assert key1 < key3
+        assert key1 < key4
+        with pytest.raises(TypeError):
+            key1 < key5
+
+    @staticmethod
+    def test___le__():
+        key1 = key_module.Key("X", 11, app="foo", namespace="n")
+        key2 = key_module.Key("Y", 12, app="foo", namespace="n")
+        key3 = key_module.Key("X", 11, app="goo", namespace="n")
+        key4 = key_module.Key("X", 11, app="foo", namespace="o")
+        key5 = unittest.mock.sentinel.key
+        assert key1 <= key1
+        assert key1 <= key2
+        assert key1 <= key3
+        assert key1 <= key4
+        with pytest.raises(TypeError):
+            key1 <= key5
+
+    @staticmethod
+    def test___gt__():
+        key1 = key_module.Key("X", 11, app="foo", namespace="n")
+        key2 = key_module.Key("M", 10, app="foo", namespace="n")
+        key3 = key_module.Key("X", 11, app="boo", namespace="n")
+        key4 = key_module.Key("X", 11, app="foo", namespace="a")
+        key5 = unittest.mock.sentinel.key
+        assert not key1 > key1
+        assert key1 > key2
+        assert key1 > key3
+        assert key1 > key4
+        with pytest.raises(TypeError):
+            key1 > key5
+
+    @staticmethod
+    def test___ge__():
+        key1 = key_module.Key("X", 11, app="foo", namespace="n")
+        key2 = key_module.Key("M", 10, app="foo", namespace="n")
+        key3 = key_module.Key("X", 11, app="boo", namespace="n")
+        key4 = key_module.Key("X", 11, app="foo", namespace="a")
+        key5 = unittest.mock.sentinel.key
+        assert key1 >= key1
+        assert key1 >= key2
+        assert key1 >= key3
+        assert key1 >= key4
+        with pytest.raises(TypeError):
+            key1 >= key5
 
     @staticmethod
     def test_pickling():
@@ -328,13 +410,13 @@ class TestKey:
 
     @staticmethod
     def test_pairs():
-        key = key_module.Key("This", "key", "that", None)
-        assert key.pairs() == [("This", "key"), ("that", None)]
+        key = key_module.Key("a", "b")
+        assert key.pairs() == (("a", "b"),)
 
     @staticmethod
     def test_pairs_partial_key():
-        key = key_module.Key("a", "b")
-        assert key.pairs() == [("a", "b")]
+        key = key_module.Key("This", "key", "that", None)
+        assert key.pairs() == (("This", "key"), ("that", None))
 
     @staticmethod
     def test_flat():
