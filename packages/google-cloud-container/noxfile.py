@@ -23,17 +23,13 @@ LOCAL_DEPS = (
     os.path.join('..', 'api_core'),
 )
 
-
-@nox.session
 def default(session):
     """Default unit test session.
-
     This is intended to be run **without** an interpreter set, so
     that the current ``python`` (on the ``PATH``) or the version of
     Python corresponding to the ``nox`` binary on the ``PATH`` can
     run the tests.
     """
-    # Install all test dependencies, then install local packages in-place.
     session.install('mock', 'pytest', 'pytest-cov')
     for local_dep in LOCAL_DEPS:
         session.install('-e', local_dep)
@@ -53,31 +49,19 @@ def default(session):
         *session.posargs
     )
 
-
-@nox.session
-@nox.parametrize('py', ['2.7', '3.5', '3.6', '3.7'])
-def unit(session, py):
-    """Run the unit test suite."""
-
-    session.interpreter = 'python{}'.format(py)
-    session.virtualenv_dirname = 'unit-' + py
+@nox.session(python=['2.7', '3.5', '3.6', '3.7'])
+def unit(session):
+    """Default unit test session."""
+    # Install all test dependencies, then install local packages in-place.
     default(session)
 
-
-@nox.session
-@nox.parametrize('py', ['2.7', '3.6'])
-def system(session, py):
+@nox.session(python=['2.7', '3.6'])
+def system(session):
     """Run the system test suite."""
 
     # Sanity check: Only run system tests if the environment variable is set.
     if not os.environ.get('GOOGLE_APPLICATION_CREDENTIALS', ''):
         session.skip('Credentials must be set via environment variable.')
-
-    # Run the system tests against latest Python 2 and Python 3 only.
-    session.interpreter = 'python{}'.format(py)
-
-    # Set the virtualenv dirname.
-    session.virtualenv_dirname = 'sys-' + py
 
     # Use pre-release gRPC for system tests.
     session.install('--pre', 'grpcio')
@@ -94,10 +78,9 @@ def system(session, py):
     session.run('py.test', '--quiet', 'tests/system/')
 
 
-@nox.session
+@nox.session(python='3.6')
 def lint_setup_py(session):
     """Verify that setup.py is valid (including RST check)."""
-    session.interpreter = 'python3.6'
     session.install('docutils', 'pygments')
     session.run('python', 'setup.py', 'check', '--restructuredtext',
                 '--strict')
