@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
 import sys
-from datetime import datetime
 import uuid
+from datetime import datetime
 
 import numpy as np
 import pandas.util.testing as tm
@@ -200,9 +200,7 @@ class TestReadGBQIntegration(object):
             private_key=self.credentials,
             dialect="legacy",
         )
-        tm.assert_frame_equal(
-            df, DataFrame({"nullable_integer": [1, None]}).astype(object)
-        )
+        tm.assert_frame_equal(df, DataFrame({"nullable_integer": [1, None]}))
 
     def test_should_properly_handle_valid_longs(self, project_id):
         query = "SELECT 1 << 62 AS valid_long"
@@ -225,7 +223,7 @@ class TestReadGBQIntegration(object):
             dialect="legacy",
         )
         tm.assert_frame_equal(
-            df, DataFrame({"nullable_long": [1 << 62, None]}).astype(object)
+            df, DataFrame({"nullable_long": [1 << 62, None]})
         )
 
     def test_should_properly_handle_null_integers(self, project_id):
@@ -338,6 +336,34 @@ class TestReadGBQIntegration(object):
             ),
         )
 
+    @pytest.mark.parametrize(
+        "expression, type_",
+        [
+            ("current_date()", "<M8[ns]"),
+            ("current_timestamp()", "<M8[ns]"),
+            ("current_datetime()", "<M8[ns]"),
+            ("TRUE", bool),
+            ("FALSE", bool),
+        ],
+    )
+    def test_return_correct_types(self, project_id, expression, type_):
+        """
+        All type checks can be added to this function using additional
+        parameters, rather than creating additional functions.
+        We can consolidate the existing functions here in time
+
+        TODO: time doesn't currently parse
+        ("time(12,30,00)", "<M8[ns]"),
+        """
+        query = "SELECT {} AS _".format(expression)
+        df = gbq.read_gbq(
+            query,
+            project_id=project_id,
+            private_key=self.credentials,
+            dialect="standard",
+        )
+        assert df["_"].dtype == type_
+
     def test_should_properly_handle_null_timestamp(self, project_id):
         query = "SELECT TIMESTAMP(NULL) AS null_timestamp"
         df = gbq.read_gbq(
@@ -347,26 +373,6 @@ class TestReadGBQIntegration(object):
             dialect="legacy",
         )
         tm.assert_frame_equal(df, DataFrame({"null_timestamp": [NaT]}))
-
-    def test_should_properly_handle_true_boolean(self, project_id):
-        query = "SELECT BOOLEAN(TRUE) AS true_boolean"
-        df = gbq.read_gbq(
-            query,
-            project_id=project_id,
-            private_key=self.credentials,
-            dialect="legacy",
-        )
-        tm.assert_frame_equal(df, DataFrame({"true_boolean": [True]}))
-
-    def test_should_properly_handle_false_boolean(self, project_id):
-        query = "SELECT BOOLEAN(FALSE) AS false_boolean"
-        df = gbq.read_gbq(
-            query,
-            project_id=project_id,
-            private_key=self.credentials,
-            dialect="legacy",
-        )
-        tm.assert_frame_equal(df, DataFrame({"false_boolean": [False]}))
 
     def test_should_properly_handle_null_boolean(self, project_id):
         query = "SELECT BOOLEAN(NULL) AS null_boolean"

@@ -6,6 +6,10 @@ Changelog
 0.7.0 / [unreleased]
 --------------------
 
+- `int` columns which contain `NULL` are now cast to `float`, rather than
+  `object` type. (:issue:`174`)
+- `DATE`, `DATETIME` and `TIMESTAMP` columns are now parsed as pandas' `timestamp`
+  objects (:issue:`224`)
 - Add :class:`pandas_gbq.Context` to cache credentials in-memory, across
   calls to ``read_gbq`` and ``to_gbq``. (:issue:`198`, :issue:`208`)
 - Fast queries now do not log above ``DEBUG`` level. (:issue:`204`)
@@ -20,6 +24,8 @@ Internal changes
 ~~~~~~~~~~~~~~~~
 
 - Avoid listing datasets and tables in system tests. (:issue:`215`)
+- Improved performance from eliminating some duplicative parsing steps
+  (:issue:`224`)
 
 .. _changelog-0.6.1:
 

@@ -77,13 +77,7 @@ def test_latest_deps(session, python=latest_python):
 @nox.session
 def lint(session, python=latest_python):
     session.install("black")
-    session.run(
-        "black",
-        "--check",
-        "--exclude",
-        "(\.git|\.hg|\.mypy_cache|\.tox|\.nox|\.venv|_build|buck-out|build|dist)",
-        ".",
-    )
+    session.run("black", "--check", ".")
 
 
 @nox.session

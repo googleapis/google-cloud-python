@@ -577,24 +577,41 @@ def _parse_schema(schema_fields):
     # see:
     # http://pandas.pydata.org/pandas-docs/dev/missing_data.html
     # #missing-data-casting-rules-and-indexing
-    dtype_map = {"FLOAT": np.dtype(float), "TIMESTAMP": "M8[ns]"}
+    dtype_map = {
+        "FLOAT": np.dtype(float),
+        "TIMESTAMP": "datetime64[ns]",
+        "TIME": "datetime64[ns]",
+        "DATE": "datetime64[ns]",
+        "DATETIME": "datetime64[ns]",
+        "BOOLEAN": bool,
+        "INTEGER": np.int64,
+    }
 
     for field in schema_fields:
         name = str(field["name"])
         if field["mode"].upper() == "REPEATED":
             yield name, object
         else:
-            dtype = dtype_map.get(field["type"].upper(), object)
+            dtype = dtype_map.get(field["type"].upper())
             yield name, dtype
 
 
 def _parse_data(schema, rows):
 
     column_dtypes = OrderedDict(_parse_schema(schema["fields"]))
-
     df = DataFrame(data=(iter(r) for r in rows), columns=column_dtypes.keys())
+
     for column in df:
-        df[column] = df[column].astype(column_dtypes[column])
+        dtype = column_dtypes[column]
+        null_safe = (
+            df[column].notnull().all()
+            or dtype == float
+            or dtype == "datetime64[ns]"
+        )
+        if dtype and null_safe:
+            df[column] = df[column].astype(
+                column_dtypes[column], errors="ignore"
+            )
     return df
 
 
@@ -745,19 +762,6 @@ def read_gbq(
         else:
             raise InvalidColumnOrder(
                 "Column order does not match this DataFrame."
-            )
-
-    # cast BOOLEAN and INTEGER columns from object to bool/int
-    # if they dont have any nulls AND field mode is not repeated (i.e., array)
-    type_map = {"BOOLEAN": bool, "INTEGER": np.int64}
-    for field in schema["fields"]:
-        if (
-            field["type"].upper() in type_map
-            and final_df[field["name"]].notnull().all()
-            and field["mode"].lower() != "repeated"
-        ):
-            final_df[field["name"]] = final_df[field["name"]].astype(
-                type_map[field["type"].upper()]
             )
 
     connector.log_elapsed_seconds(

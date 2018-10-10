@@ -22,6 +22,7 @@
 .pytest_cache
 .testmon*
 .vscode/
+.env
 
 # Docs #
 ########
