@@ -628,8 +628,8 @@ class TestWatch(unittest.TestCase):
         added_doc._document_path = '/added'
         updated_doc = DummyDoc()
         updated_doc._document_path = '/updated'
-        doc_tree = doc_tree.insert('/deleted', deleted_doc)
-        doc_tree = doc_tree.insert('/updated', updated_doc)
+        doc_tree = doc_tree.insert(deleted_doc, None)
+        doc_tree = doc_tree.insert(updated_doc, None)
         doc_map = {'/deleted': deleted_doc, '/updated': updated_doc}
         added_snapshot = DummyDocumentSnapshot(added_doc, None, True,
                                                None, None, None)
@@ -734,6 +734,12 @@ class DummyQuery(object):  # pragma: NO COVER
             self._client = DummyFirestore()
         else:
             self._client = kw['client']
+
+        if 'comparator' not in kw:
+            # don't really do the comparison, just return 0 (equal) for all
+            self._comparator = lambda x,y: 1
+        else:
+            self._comparator = kw['comparator']
 
     def _to_protobuf(self):
         return ''

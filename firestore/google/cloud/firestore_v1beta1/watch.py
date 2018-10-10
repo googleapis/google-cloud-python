@@ -356,7 +356,7 @@ class Watch(object):
                        'query': query_target,
                        'target_id': WATCH_TARGET_ID
                    },
-                   query.comparator,
+                   query._comparator,
                    snapshot_callback,
                    snapshot_class_instance,
                    reference_class_instance)

@@ -633,7 +633,7 @@ class Query(object):
                         document.DocumentSnapshot,
                         document.DocumentReference)
 
-    def comparator(self, doc1, doc2):
+    def _comparator(self, doc1, doc2):
         _orders = self._orders
 
         # Add implicit sorting by name, using the last specified direction.
@@ -664,9 +664,10 @@ class Query(object):
                 if orderBy.field.field_path not in doc1._data or \
                     orderBy.field.field_path not in doc2._data:
                     raise Exception(
-                    "Can only compare fields that exist in the "
-                    "DocumentSnapshot. Please include the fields you are "
-                    " ordering on in your select() call.")
+                        "Can only compare fields that exist in the "
+                        "DocumentSnapshot. Please include the fields you are "
+                        "ordering on in your select() call."
+                    )
                 v1 = doc1._data[orderBy.field.field_path]
                 v2 = doc2._data[orderBy.field.field_path]
                 encoded_v1 = _helpers.encode_value(v1)
