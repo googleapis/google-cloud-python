@@ -23,15 +23,10 @@ import pytz
 
 from google.cloud.firestore_v1beta1.bidi import ResumableBidiRpc
 from google.cloud.firestore_v1beta1.bidi import BackgroundConsumer
-from google.cloud.firestore_v1beta1._helpers import encode_value
 from google.cloud.firestore_v1beta1.proto import firestore_pb2
-from google.cloud.firestore_v1beta1.order import Order
 from google.api_core import exceptions
 from google.protobuf import json_format
 
-
-
-# from bidi import BidiRpc, ResumableBidiRpc
 import grpc
 
 """Python client for Google Cloud Firestore Watch."""
@@ -348,7 +343,7 @@ class Watch(object):
         query_target = firestore_pb2.Target.QueryTarget(
             parent=query._client._database_string,
             structured_query=query._to_protobuf(),
-        )       
+        )
 
         return cls(query,
                    query._client,
@@ -570,7 +565,7 @@ class Watch(object):
 
         if not self.has_pushed or len(appliedChanges):
             # TODO: the tree should be ordered. Sort here for now.
-            key = functools.cmp_to_key(self._comparator)        
+            key = functools.cmp_to_key(self._comparator)
             keys = sorted(updated_tree.keys(), key=key)
 
             self._snapshot_callback(
@@ -689,7 +684,6 @@ class Watch(object):
             change, updated_tree, updated_map = delete_doc(
                 name, updated_tree, updated_map)
             appliedChanges.append(change)
-
 
         add_changes = sorted(add_changes, key=key)
         _LOGGER.debug('walk over add_changes')

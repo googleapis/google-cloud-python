@@ -809,12 +809,9 @@ def test_watch_collection(client, cleanup):
 
     on_snapshot.called_count = 0
 
-    # def on_snapshot(docs, changes, read_time):
-    #     for doc in docs:
-    #         print(u'{} => {}'.format(doc.id, doc.to_dict()))
-
     collection_ref.on_snapshot(on_snapshot)
 
+    # delay here so initial on_snapshot occurs and isn't combined with set
     sleep(1)
 
     doc_ref.set({
@@ -823,21 +820,15 @@ def test_watch_collection(client, cleanup):
         u'born': 1815
     })
 
-    sleep(1)
-
     for _ in range(10):
         if on_snapshot.called_count == 1:
-            return
+            break
         sleep(1)
 
-    if on_snapshot.called_count != 1:
+    if on_snapshot.called_count != 2:
         raise AssertionError(
-            "Failed to get exactly one document change: count: " +
+            "Expected 2 snapshots, initial, and change: " +
             str(on_snapshot.called_count))
-
-    # CM: had to stop here, this test is totally unfinished, trying to
-    # formalize
-    # https://gist.github.com/crwilcox/ce05f3857adc7a0ed86ffbd039b1a035
 
 
 def test_watch_query(client, cleanup):
@@ -905,15 +896,14 @@ def test_watch_query_order(client, cleanup):
     doc_ref2 = db.collection(u'users').document(
         u'asecondlovelace' + unique_id)
     doc_ref3 = db.collection(u'users').document(
-        u'athirdlovelace' + unique_id)  
+        u'athirdlovelace' + unique_id)
     doc_ref4 = db.collection(u'users').document(
         u'afourthlovelace' + unique_id)
     doc_ref5 = db.collection(u'users').document(
-        u'afifthlovelace' + unique_id)  
+        u'afifthlovelace' + unique_id)
 
     query_ref = db.collection(u'users').where(
         "first", "==", u'Ada' + unique_id).order_by("last")
-
 
     # Setup listener
     def on_snapshot(docs, changes, read_time):
@@ -935,7 +925,7 @@ def test_watch_query_order(client, cleanup):
             on_snapshot.failed = e
 
     on_snapshot.called_count = 0
-    on_snapshot.last_doc_count = 0 
+    on_snapshot.last_doc_count = 0
     on_snapshot.failed = None
     query_ref.on_snapshot(on_snapshot)
 

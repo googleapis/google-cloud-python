@@ -29,8 +29,8 @@ from google.cloud.firestore_v1beta1 import _helpers
 from google.cloud.firestore_v1beta1 import document
 from google.cloud.firestore_v1beta1.gapic import enums
 from google.cloud.firestore_v1beta1.proto import query_pb2
+from google.cloud.firestore_v1beta1.order import Order
 from google.cloud.firestore_v1beta1.watch import Watch
-from google.cloud.firestore_v1beta1.watch import Order
 
 _EQ_OP = '=='
 _COMPARISON_OPERATORS = {
@@ -629,9 +629,9 @@ class Query(object):
             query_watch.unsubscribe()
         """
         return Watch.for_query(self,
-                        callback,
-                        document.DocumentSnapshot,
-                        document.DocumentReference)
+                               callback,
+                               document.DocumentSnapshot,
+                               document.DocumentReference)
 
     def _comparator(self, doc1, doc2):
         _orders = self._orders
@@ -662,7 +662,7 @@ class Query(object):
                     doc1.reference._path, doc2.reference._path)
             else:
                 if orderBy.field.field_path not in doc1._data or \
-                    orderBy.field.field_path not in doc2._data:
+                   orderBy.field.field_path not in doc2._data:
                     raise Exception(
                         "Can only compare fields that exist in the "
                         "DocumentSnapshot. Please include the fields you are "

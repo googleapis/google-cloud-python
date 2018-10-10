@@ -18,51 +18,50 @@ import math
 
 
 class TypeOrder(Enum):
-        # NOTE: This order is defined by the backend and cannot be changed.
-        NULL = 0
-        BOOLEAN = 1
-        NUMBER = 2
-        TIMESTAMP = 3
-        STRING = 4
-        BLOB = 5
-        REF = 6
-        GEO_POINT = 7
-        ARRAY = 8
-        OBJECT = 9
-    
-        def from_value(value):
-            v = value.WhichOneof('value_type')
+    # NOTE: This order is defined by the backend and cannot be changed.
+    NULL = 0
+    BOOLEAN = 1
+    NUMBER = 2
+    TIMESTAMP = 3
+    STRING = 4
+    BLOB = 5
+    REF = 6
+    GEO_POINT = 7
+    ARRAY = 8
+    OBJECT = 9
 
-            lut = {
-                'null_value': TypeOrder.NULL,
-                'boolean_value': TypeOrder.BOOLEAN,
-                'integer_value': TypeOrder.NUMBER,
-                'double_value': TypeOrder.NUMBER,
-                'timestamp_value': TypeOrder.TIMESTAMP,
-                'string_value': TypeOrder.STRING,
-                'bytes_value': TypeOrder.BLOB,
-                'reference_value': TypeOrder.REF,
-                'geo_point_value': TypeOrder.GEO_POINT,
-                'array_value': TypeOrder.ARRAY,
-                'map_value': TypeOrder.OBJECT,
-            }
+    def from_value(value):
+        v = value.WhichOneof('value_type')
 
-            if v not in lut:
-                raise ArgumentException(
-                    "Could not detect value type for " + value)
-            return lut[v]
+        lut = {
+            'null_value': TypeOrder.NULL,
+            'boolean_value': TypeOrder.BOOLEAN,
+            'integer_value': TypeOrder.NUMBER,
+            'double_value': TypeOrder.NUMBER,
+            'timestamp_value': TypeOrder.TIMESTAMP,
+            'string_value': TypeOrder.STRING,
+            'bytes_value': TypeOrder.BLOB,
+            'reference_value': TypeOrder.REF,
+            'geo_point_value': TypeOrder.GEO_POINT,
+            'array_value': TypeOrder.ARRAY,
+            'map_value': TypeOrder.OBJECT,
+        }
+
+        if v not in lut:
+            raise ValueError(
+                "Could not detect value type for " + value)
+        return lut[v]
 
 
 class Order(object):
     '''
     Order implements the ordering semantics of the backend.
     '''
-    
+
     @classmethod
     def compare(cls, left, right):
         '''
         Main comparison function for all Firestore types.
-        
         @return -1 is left < right, 0 if left == right, otherwise 1
         '''
         # First compare the types.
@@ -103,12 +102,11 @@ class Order(object):
         else:
             raise ValueError('Unknown ``value_type``', value_type)
 
-
     @staticmethod
     def compare_blobs(left, right):
         left_bytes = left.bytes_value
         right_bytes = right.bytes_value
-        
+
         # TODO: Should verify bytes comparisons in python work as expected
         return Order._compare_to(left_bytes, right_bytes)
 
@@ -120,9 +118,8 @@ class Order(object):
         seconds = Order._compare_to(left.seconds or 0, right.seconds or 0)
         if seconds != 0:
             return seconds
-        
-        return Order._compare_to(left.nanos or 0, right.nanos or 0)
 
+        return Order._compare_to(left.nanos or 0, right.nanos or 0)
 
     @staticmethod
     def compare_geo_points(left, right):
@@ -147,12 +144,10 @@ class Order(object):
                 cmp = 1
             return cmp
 
-
     @staticmethod
     def compare_resource_paths(left, right):
         left = left.reference_value
         right = right.reference_value
-
 
         left_segments = left.split('/')
         right_segments = right.split('/')
@@ -161,7 +156,6 @@ class Order(object):
         for i in range(shorter):
             if (left_segments[i] < right_segments[i]):
                 return -1
-            
             if (left_segments[i] > right_segments[i]):
                 return 1
 
@@ -174,20 +168,18 @@ class Order(object):
 
         return 0
 
-
     @staticmethod
     def compare_arrays(left, right):
-        l_values = left.array_value.values#.keys()
-        r_values = right.array_value.values#.keys()
+        l_values = left.array_value.values
+        r_values = right.array_value.values
 
         length = min(len(l_values), len(r_values))
         for i in range(length):
             cmp = Order.compare(l_values[i], r_values[i])
             if cmp != 0:
                 return cmp
-            
-        return Order._compare_to(len(l_values), len(r_values))
 
+        return Order._compare_to(len(l_values), len(r_values))
 
     @staticmethod
     def compare_objects(left, right):
@@ -204,7 +196,6 @@ class Order(object):
             if value_compare != 0:
                     return value_compare
 
-            
         return Order._compare_to(len(left_fields), len(right_fields))
 
     @staticmethod
