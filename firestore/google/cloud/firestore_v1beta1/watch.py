@@ -17,14 +17,18 @@ import collections
 import threading
 import datetime
 from enum import Enum
+import functools
 
 import pytz
 
 from google.cloud.firestore_v1beta1.bidi import ResumableBidiRpc
 from google.cloud.firestore_v1beta1.bidi import BackgroundConsumer
+from google.cloud.firestore_v1beta1._helpers import encode_value
 from google.cloud.firestore_v1beta1.proto import firestore_pb2
+from google.cloud.firestore_v1beta1.order import Order
 from google.api_core import exceptions
 from google.protobuf import json_format
+
 
 
 # from bidi import BidiRpc, ResumableBidiRpc
@@ -344,14 +348,15 @@ class Watch(object):
         query_target = firestore_pb2.Target.QueryTarget(
             parent=query._client._database_string,
             structured_query=query._to_protobuf(),
-        )
+        )       
+
         return cls(query,
                    query._client,
                    {
                        'query': query_target,
                        'target_id': WATCH_TARGET_ID
                    },
-                   document_watch_comparator,
+                   query.comparator,
                    snapshot_callback,
                    snapshot_class_instance,
                    reference_class_instance)
@@ -555,17 +560,21 @@ class Watch(object):
             read_time,
             )
 
-        updated_tree, updated_map, appliedChanges = Watch._compute_snapshot(
+        updated_tree, updated_map, appliedChanges = self._compute_snapshot(
             self.doc_tree,
             self.doc_map,
             deletes,
             adds,
             updates,
-            )
+        )
 
         if not self.has_pushed or len(appliedChanges):
+            # TODO: the tree should be ordered. Sort here for now.
+            key = functools.cmp_to_key(self._comparator)        
+            keys = sorted(updated_tree.keys(), key=key)
+
             self._snapshot_callback(
-                updated_tree.keys(),
+                keys,
                 appliedChanges,
                 datetime.datetime.fromtimestamp(read_time.seconds, pytz.utc)
             )
@@ -597,13 +606,11 @@ class Watch(object):
 
         return (deletes, adds, updates)
 
-    @staticmethod
-    def _compute_snapshot(doc_tree, doc_map, delete_changes, add_changes,
+    def _compute_snapshot(self, doc_tree, doc_map, delete_changes, add_changes,
                           update_changes):
         # TODO: ACTUALLY NEED TO CALCULATE
         # return {updated_tree, updated_map, appliedChanges};
         # return doc_tree, doc_map, changes
-
         updated_tree = doc_tree
         updated_map = doc_map
 
@@ -674,20 +681,17 @@ class Watch(object):
         # keep incrementing.
         appliedChanges = []
 
+        key = functools.cmp_to_key(self._comparator)
+
         # Deletes are sorted based on the order of the existing document.
-
-        # TODO: SORT
-        # delete_changes.sort(
-        #     lambda name1, name2:
-        #     self._comparator(updated_map.get(name1), updated_map.get(name2)))
-
+        delete_changes = sorted(delete_changes, key=key)
         for name in delete_changes:
             change, updated_tree, updated_map = delete_doc(
                 name, updated_tree, updated_map)
             appliedChanges.append(change)
 
-        # TODO: SORT
-        # add_changes.sort(self._comparator)
+
+        add_changes = sorted(add_changes, key=key)
         _LOGGER.debug('walk over add_changes')
         for snapshot in add_changes:
             _LOGGER.debug('in add_changes')
@@ -695,8 +699,7 @@ class Watch(object):
                 snapshot, updated_tree, updated_map)
             appliedChanges.append(change)
 
-        # TODO: SORT
-        # update_changes.sort(self._comparator)
+        update_changes = sorted(update_changes, key=key)
         for snapshot in update_changes:
             change, updated_tree, updated_map = modify_doc(
                 snapshot, updated_tree, updated_map)
