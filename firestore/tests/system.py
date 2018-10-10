@@ -855,8 +855,11 @@ def test_watch_collection(client, cleanup):
     # Setup listener
     def on_snapshot(docs, changes, read_time):
         on_snapshot.called_count += 1
+        for doc in [doc for doc in docs if doc.id == doc_ref.id]:
+            on_snapshot.born = doc._data['born']['integerValue']
 
     on_snapshot.called_count = 0
+    on_snapshot.born = 0
 
     collection_ref.on_snapshot(on_snapshot)
 
@@ -870,14 +873,14 @@ def test_watch_collection(client, cleanup):
     })
 
     for _ in range(10):
-        if on_snapshot.called_count == 1:
+        if on_snapshot.born == '1815':
             break
         sleep(1)
 
-    if on_snapshot.called_count != 2:
+    if on_snapshot.born != '1815':
         raise AssertionError(
-            "Expected 2 snapshots, initial, and change: " +
-            str(on_snapshot.called_count))
+            "Expected the last document update to update born: " +
+            str(on_snapshot.born))
 
 
 def test_watch_query(client, cleanup):
