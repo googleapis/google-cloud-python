@@ -153,8 +153,8 @@ class Cursor(object):
         # Wait for the query to finish.
         try:
             self._query_job.result()
-        except google.cloud.exceptions.GoogleCloudError as e:
-            raise exceptions.DatabaseError(self._query_job.errors or e)
+        except google.cloud.exceptions.GoogleCloudError as exc:
+            raise exceptions.DatabaseError(exc)
 
         query_results = self._query_job._query_results
         self._set_rowcount(query_results)
