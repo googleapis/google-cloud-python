@@ -34,22 +34,13 @@ UNIT_TEST_DEPS = (
 )
 
 
-@nox.session
 def default(session, django_dep=('django',)):
     """Default unit test session.
-
-    This is intended to be run **without** an interpreter set, so
-    that the current ``python`` (on the ``PATH``) or the version of
-    Python corresponding to the ``nox`` binary the ``PATH`` can
-    run the tests.
     """
+  
     # Install all test dependencies, then install this package in-place.
     deps = UNIT_TEST_DEPS
-
-    if session.interpreter is None and sys.version_info[:2] == (2, 7):
-        deps += ('django >= 1.11.0, < 2.0.0dev',)
-    else:
-        deps += django_dep
+    deps += django_dep
 
     session.install(*deps)
     for local_dep in LOCAL_DEPS:
@@ -71,16 +62,9 @@ def default(session, django_dep=('django',)):
     )
 
 
-@nox.session
-@nox.parametrize('py', ['2.7', '3.5', '3.6', '3.7'])
-def unit(session, py):
+@nox.session(python=['2.7', '3.5', '3.6', '3.7'])
+def unit(session):
     """Run the unit test suite."""
-
-    # Run unit tests against all supported versions of Python.
-    session.interpreter = 'python{}'.format(py)
-
-    # Set the virtualenv dirname.
-    session.virtualenv_dirname = 'unit-' + py
 
     # Testing multiple version of django
     # See https://www.djangoproject.com/download/ for supported version
@@ -89,26 +73,19 @@ def unit(session, py):
         ('django >= 1.11.0, < 2.0.0dev',),
     ]
 
-    if session.interpreter == 'python2.7':
+    if session.virtualenv.interpreter == '2.7':
         [default(session, django_dep=django) for django in django_deps_27]
     else:
         default(session)
 
 
-@nox.session
-@nox.parametrize('py', ['2.7', '3.6'])
-def system(session, py):
+@nox.session(python=['2.7', '3.6'])
+def system(session):
     """Run the system test suite."""
 
     # Sanity check: Only run system tests if the environment variable is set.
     if not os.environ.get('GOOGLE_APPLICATION_CREDENTIALS', ''):
         session.skip('Credentials must be set via environment variable.')
-
-    # Run the system tests against latest Python 2 and Python 3 only.
-    session.interpreter = 'python{}'.format(py)
-
-    # Set the virtualenv dirname.
-    session.virtualenv_dirname = 'sys-' + py
 
     # Use pre-release gRPC for system tests.
     session.install('--pre', 'grpcio')
@@ -137,40 +114,34 @@ def system(session, py):
         *session.posargs)
 
 
-@nox.session
+@nox.session(python='3.6')
 def lint(session):
     """Run linters.
 
     Returns a failure if the linters find linting errors or sufficiently
     serious code quality issues.
     """
-    session.interpreter = 'python3.6'
     session.install('flake8', *LOCAL_DEPS)
     session.install('.')
     session.run('flake8', 'google', 'tests')
 
 
-@nox.session
+@nox.session(python='3.6')
 def lint_setup_py(session):
     """Verify that setup.py is valid (including RST check)."""
-    session.interpreter = 'python3.6'
-
-    # Set the virtualenv dirname.
-    session.virtualenv_dirname = 'setup'
 
     session.install('docutils', 'Pygments')
     session.run(
         'python', 'setup.py', 'check', '--restructuredtext', '--strict')
 
 
-@nox.session
+@nox.session(python='3.6')
 def cover(session):
     """Run the final coverage report.
 
     This outputs the coverage report aggregating coverage from the unit
     test runs (not system test runs), and then erases coverage data.
     """
-    session.interpreter = 'python3.6'
     session.install('coverage', 'pytest-cov')
     session.run('coverage', 'report', '--show-missing', '--fail-under=100')
     session.run('coverage', 'erase')
