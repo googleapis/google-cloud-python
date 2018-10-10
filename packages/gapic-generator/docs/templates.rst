@@ -51,17 +51,25 @@ the following string replacements applied:
 Context (Variables)
 ~~~~~~~~~~~~~~~~~~~
 
-Every template receives **one** variable, spelled ``api``. It is the
+Every template receives one variable, spelled ``api``. It is the
 :class:`~.schema.api.API` object that was pieced together in the parsing step.
 
-APIs can (and often do) have more than one service. Therefore, templates
-with ``$service/`` in their name are a special case. These files are
-rendered *once per service*, with the ``$service`` directory name changed to
-the name of the service itself (in snake case, because this is Python).
-Additionally, these templates receive two variables: the ``api`` variable
-discussed above, as well as a variable spelled ``service``, which corresponds
-to the :class:`~.schema.wrappers.Service` currently being iterated over.
+Most APIs also receive one additional variable depending on what piece of the
+API structure is being iterated over:
 
+  * **Services.** APIs can (and often do) have more than one service.
+    Therefore, templates with ``$service`` in their name are
+    rendered *once per service*, with the ``$service`` string changed to
+    the name of the service itself (in snake case, because this is Python).
+    These templates receive a ``service`` variable (an instance of
+    :class:`~.schema.wrappers.Service`) corresponding to the service currently
+    being iterated over.
+  * **Protos.** Similarly, APIs can (and often do) have more than one proto
+    file containing messages. Therefore, templates with ``$proto`` in their
+    name are rendered *once per proto*, with the ``$proto``string changed to
+    the name of the proto file. These templates receive a ``proto`` variable
+    (an instance of :class:`~.schema.api.Proto`) corresponding to the proto
+    currently being iterated over.
 
 Filters
 ~~~~~~~

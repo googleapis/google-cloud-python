@@ -33,6 +33,20 @@ To ensure it is installed propertly:
   libprotoc 3.6.0
 
 
+pandoc
+~~~~~~
+
+This generator relies on `pandoc`_ to convert from Markdown (the *lingua
+franca* for documentation in protocol buffers) into ReStructured Text (the
+*lingua franca* for documentation in Python).
+
+Install this using an appropriate mechanism for your operating system.
+Multiple installation paths are documented on the `pandoc installation page`_.
+
+.. _pandoc: https://pandoc.org/
+.. _pandoc installation page: https://pandoc.org/installing.html
+
+
 API Generator for Python
 ~~~~~~~~~~~~~~~~~~~~~~~~
 

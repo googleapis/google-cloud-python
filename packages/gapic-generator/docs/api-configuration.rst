@@ -160,28 +160,18 @@ so that client libraries are able to deserialize the message.
 
 .. code-block:: protobuf
 
-  import "google/longrunning/operations.proto";
+  import "google/api/annotations.proto";
 
   package acme.anvils.v1;
 
   service AnvilService {
     rpc DeliverAnvil(DeliverAnvilRequest)
         returns (google.longrunning.Operation) {
-      option (google.longrunning.operation_types) = {
-        response: "acme.anvils.v1.DeliverAnvilResponse"
-        metadata: "acme.anvils.v1.DeliverAnvilMetadata"
+      option (google.api.operation) = {
+        response_type: "acme.anvils.v1.DeliverAnvilResponse"
+        metadata_type: "acme.anvils.v1.DeliverAnvilMetadata"
       };
     }
   }
 
-The ``response`` field here is mandatory; the ``metadata`` field is optional,
-and ``google.longrunning.OperationMetadata`` is assumed if it is not set.
-
 .. _google/longrunning/operations.proto: https://github.com/googleapis/api-common-protos/blob/input-contract/google/longrunning/operations.proto
-
-
-Future Work
-~~~~~~~~~~~
-
-Support for other annotated behavior, such as overloads, samples, and
-header values is a work in progress.
