@@ -24,7 +24,6 @@ LOCAL_DEPS = (
 )
 
 
-@nox.session
 def default(session):
     """Default unit test session.
 
@@ -52,28 +51,18 @@ def default(session):
     )
 
 
-@nox.session
-@nox.parametrize('py', ['2.7', '3.5', '3.6', '3.7'])
-def unit(session, py):
+@nox.session(python=['2.7', '3.5', '3.6', '3.7'])
+def unit(session):
     """Run the unit test suite."""
-
-    session.interpreter = 'python{}'.format(py)
-    session.virtualenv_dirname = 'unit-' + py
     default(session)
 
 
-@nox.session
-@nox.parametrize('py', ['2.7', '3.7'])
-def system(session, py):
+@nox.session(python=['2.7', '3.7'])
+def system(session):
     """Run the system test suite."""
 
     if not os.environ.get('GOOGLE_APPLICATION_CREDENTIALS', ''):
         session.skip('Credentials must be set via environment variable.')
-
-    session.interpreter = 'python{}'.format(py)
-
-    session.virtualenv_dirname = 'sys-' + py
-
     # Use pre-release gRPC for system tests.
     session.install('--pre', 'grpcio')
 
@@ -84,10 +73,9 @@ def system(session, py):
                 *session.posargs)
 
 
-@nox.session
+@nox.session(python='3.6')
 def lint_setup_py(session):
     """Verify that setup.py is valid (including RST check)."""
-    session.interpreter = 'python3.6'
     session.install('docutils', 'pygments')
     session.run('python', 'setup.py', 'check', '--restructuredtext',
                 '--strict')
