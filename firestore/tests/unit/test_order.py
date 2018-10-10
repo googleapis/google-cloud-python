@@ -14,9 +14,13 @@
 
 import unittest
 import math
+import mock
+
 
 from google.cloud.firestore_v1beta1._helpers import encode_value, GeoPoint
 from google.cloud.firestore_v1beta1.order import Order
+from google.cloud.firestore_v1beta1.order import TypeOrder
+
 from google.cloud.firestore_v1beta1.proto import document_pb2
 
 from google.protobuf import timestamp_pb2
@@ -164,6 +168,18 @@ class TestOrder(unittest.TestCase):
                                 j, right, i, left)
 
                         )
+
+    def test_failure_to_find_type(self):
+        target = self._make_one()
+        left = mock.Mock()
+        left.WhichOneOf.return_value = "imaginary-type"
+        right = mock.Mock()
+        # Patch from value to get to the deep compare. Since left is a bad type
+        # expect this to fail with value error.
+        with mock.patch.object(TypeOrder, 'from_value',) as to:
+            to.value = None
+            with self.assertRaisesRegex(ValueError, "'Unknown ``value_type``"):
+                target.compare(left, right)
 
 
 def _boolean_value(b):

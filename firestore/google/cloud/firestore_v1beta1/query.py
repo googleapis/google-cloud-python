@@ -663,7 +663,7 @@ class Query(object):
             else:
                 if orderBy.field.field_path not in doc1._data or \
                    orderBy.field.field_path not in doc2._data:
-                    raise Exception(
+                    raise ValueError(
                         "Can only compare fields that exist in the "
                         "DocumentSnapshot. Please include the fields you are "
                         "ordering on in your select() call."

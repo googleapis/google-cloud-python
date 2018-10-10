@@ -394,14 +394,15 @@ class TestWatch(unittest.TestCase):
         proto.document_change.target_ids = [WATCH_TARGET_ID]
 
         class DummyDocument:
-            name = 'abc://foo/fred'
+            name = 'abc://foo/documents/fred'
             create_time = None
             update_time = None
 
         proto.document_change.document = DummyDocument()
-        inst._firestore._database_string = 'abc://foo/'
+        inst._firestore._database_string = 'abc://foo'
         inst.on_snapshot(proto)
-        self.assertEqual(inst.change_map['abc://foo/fred'].data, None)
+        self.assertEqual(inst.change_map['abc://foo/documents/fred'].data,
+                         None)
 
     def test_on_snapshot_document_change_neither_changed_nor_removed(self):
         inst = self._makeOne()

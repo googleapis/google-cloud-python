@@ -866,6 +866,68 @@ class TestQuery(unittest.TestCase):
         query.on_snapshot(None)
         watch.for_query.assert_called_once()
 
+    def test_comparator_no_ordering(self):
+        query = self._make_one(mock.sentinel.parent)
+        query._orders = []
+        doc1 = mock.Mock()
+        doc1.reference._path = ('col', 'adocument1')
+
+        doc2 = mock.Mock()
+        doc2.reference._path = ('col', 'adocument2')
+
+        sort = query._comparator(doc1, doc2)
+        self.assertEqual(sort, -1)
+
+    def test_comparator_no_ordering_same_id(self):
+        query = self._make_one(mock.sentinel.parent)
+        query._orders = []
+        doc1 = mock.Mock()
+        doc1.reference._path = ('col', 'adocument1')
+
+        doc2 = mock.Mock()
+        doc2.reference._path = ('col', 'adocument1')
+
+        sort = query._comparator(doc1, doc2)
+        self.assertEqual(sort, 0)
+
+    def test_comparator_ordering(self):
+        query = self._make_one(mock.sentinel.parent)
+        orderByMock = mock.Mock()
+        orderByMock.field.field_path = 'last'
+        orderByMock.direction = 1  # ascending
+        query._orders = [orderByMock]
+
+        doc1 = mock.Mock()
+        doc1.reference._path = ('col', 'adocument1')
+        doc1._data = {'first': {'stringValue': 'Ada'},
+                      'last': {'stringValue': 'secondlovelace'}}
+        doc2 = mock.Mock()
+        doc2.reference._path = ('col', 'adocument2')
+        doc2._data = {'first': {'stringValue': 'Ada'},
+                      'last': {'stringValue': 'lovelace'}}
+
+        sort = query._comparator(doc1, doc2)
+        self.assertEqual(sort, 1)
+
+    def test_comparator_missing_order_by_field_in_data_raises(self):
+        query = self._make_one(mock.sentinel.parent)
+        orderByMock = mock.Mock()
+        orderByMock.field.field_path = 'last'
+        orderByMock.direction = 1  # ascending
+        query._orders = [orderByMock]
+
+        doc1 = mock.Mock()
+        doc1.reference._path = ('col', 'adocument1')
+        doc1._data = {}
+        doc2 = mock.Mock()
+        doc2.reference._path = ('col', 'adocument2')
+        doc2._data = {'first': {'stringValue': 'Ada'},
+                      'last': {'stringValue': 'lovelace'}}
+
+        with self.assertRaisesRegex(ValueError,
+                                    "Can only compare fields "):
+            query._comparator(doc1, doc2)
+
 
 class Test__enum_from_op_string(unittest.TestCase):
 
