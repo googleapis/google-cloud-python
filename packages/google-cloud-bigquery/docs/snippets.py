@@ -39,8 +39,11 @@ except (ImportError, AttributeError):
     pyarrow = None
 
 from google.api_core import datetime_helpers
+from google.api_core.exceptions import InternalServerError
+from google.api_core.exceptions import ServiceUnavailable
 from google.api_core.exceptions import TooManyRequests
 from google.cloud import bigquery
+from google.cloud import storage
 from test_utils.retry import RetryErrors
 
 ORIGINAL_FRIENDLY_NAME = 'Original friendly name'
@@ -68,6 +71,8 @@ QUERY = (
 
 
 retry_429 = RetryErrors(TooManyRequests)
+retry_storage_errors = RetryErrors(
+    (TooManyRequests, InternalServerError, ServiceUnavailable))
 
 
 @pytest.fixture(scope='module')
@@ -82,6 +87,8 @@ def to_delete(client):
     for item in doomed:
         if isinstance(item, (bigquery.Dataset, bigquery.DatasetReference)):
             retry_429(client.delete_dataset)(item, delete_contents=True)
+        elif isinstance(item, storage.Bucket):
+            retry_storage_errors(item.delete)()
         else:
             retry_429(item.delete)()
 
@@ -1880,11 +1887,9 @@ def test_copy_table_cmek(client, to_delete):
 
 
 def test_extract_table(client, to_delete):
-    from google.cloud import storage
-
     bucket_name = 'extract_shakespeare_{}'.format(_millis())
     storage_client = storage.Client()
-    bucket = retry_429(storage_client.create_bucket)(bucket_name)
+    bucket = retry_storage_errors(storage_client.create_bucket)(bucket_name)
     to_delete.append(bucket)
 
     # [START bigquery_extract_table]
@@ -1910,18 +1915,16 @@ def test_extract_table(client, to_delete):
         project, dataset_id, table_id, destination_uri))
     # [END bigquery_extract_table]
 
-    blob = bucket.get_blob('shakespeare.csv')
+    blob = retry_storage_errors(bucket.get_blob)('shakespeare.csv')
     assert blob.exists
     assert blob.size > 0
     to_delete.insert(0, blob)
 
 
 def test_extract_table_json(client, to_delete):
-    from google.cloud import storage
-
     bucket_name = 'extract_shakespeare_json_{}'.format(_millis())
     storage_client = storage.Client()
-    bucket = retry_429(storage_client.create_bucket)(bucket_name)
+    bucket = retry_storage_errors(storage_client.create_bucket)(bucket_name)
     to_delete.append(bucket)
 
     # [START bigquery_extract_table_json]
@@ -1945,18 +1948,16 @@ def test_extract_table_json(client, to_delete):
     extract_job.result()  # Waits for job to complete.
     # [END bigquery_extract_table_json]
 
-    blob = bucket.get_blob('shakespeare.json')
+    blob = retry_storage_errors(bucket.get_blob)('shakespeare.json')
     assert blob.exists
     assert blob.size > 0
     to_delete.insert(0, blob)
 
 
 def test_extract_table_compressed(client, to_delete):
-    from google.cloud import storage
-
     bucket_name = 'extract_shakespeare_compress_{}'.format(_millis())
     storage_client = storage.Client()
-    bucket = retry_429(storage_client.create_bucket)(bucket_name)
+    bucket = retry_storage_errors(storage_client.create_bucket)(bucket_name)
     to_delete.append(bucket)
 
     # [START bigquery_extract_table_compressed]
@@ -1979,7 +1980,7 @@ def test_extract_table_compressed(client, to_delete):
     extract_job.result()  # Waits for job to complete.
     # [END bigquery_extract_table_compressed]
 
-    blob = bucket.get_blob('shakespeare.csv.gz')
+    blob = retry_storage_errors(bucket.get_blob)('shakespeare.csv.gz')
     assert blob.exists
     assert blob.size > 0
     to_delete.insert(0, blob)
