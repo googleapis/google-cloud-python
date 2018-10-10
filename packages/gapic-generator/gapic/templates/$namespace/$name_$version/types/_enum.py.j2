@@ -1,4 +1,4 @@
-class {{ enum.name }}(_.enum.IntEnum):
+class {{ enum.name }}({{ e }}.IntEnum):
     """{{ enum.meta.doc|rst(width=72, indent=4) }}"""
     {% for enum_value in enum.values -%}
     {{ enum_value.name }} = {{ enum_value.number }}

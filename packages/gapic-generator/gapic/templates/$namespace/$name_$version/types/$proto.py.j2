@@ -1,25 +1,26 @@
 {% extends "_base.py.j2" %}
 
-{% block content %}
-class _:
-    # Note: This strange "import within the `_` class" is to avoid potential
-    # naming collisions; since we can not control the names chosen for
-    # fields, we do this instead.
-    import enum
-    import proto
+{% block content -%}
+{% with e = proto.disambiguate('enum'), p = proto.disambiguate('proto') %}
+{% if proto.enums|length -%}
+import enum{% if e != 'enum' %} as {{ e }}{% endif %}
 
-    {% for package, python_module in proto.python_modules|sort -%}
-    from {{ package }} import {{ python_module }}
-    {%- if python_module.endswith('_pb2') %} as {{ python_module[:-4] }}{% endif %}
-    {% endfor %}
+{% endif -%}
+{% if proto.messages|length -%}
+import proto{% if p != 'proto' %} as {{ p }}{% endif -%}
+{% endif %}
+
+{% for import_ in proto.python_modules -%}
+{{ import_ }}
+{% endfor %}
 
 
 {% for enum in proto.top.enums.values() -%}
-    {% include '$namespace/$name_$version/types/_enum.py.j2' %}
+    {% include '$namespace/$name_$version/types/_enum.py.j2' with context %}
 {% endfor %}
 
 {% for message in proto.top.messages.values() -%}
-    {% include "$namespace/$name_$version/types/_message.py.j2" %}
+    {% include "$namespace/$name_$version/types/_message.py.j2" with context %}
 {% endfor %}
 
 __all__ = (
@@ -30,4 +31,4 @@ __all__ = (
     '{{ message.name }}',
     {%- endfor %}
 )
-{% endblock %}
+{% endwith %}{% endblock %}

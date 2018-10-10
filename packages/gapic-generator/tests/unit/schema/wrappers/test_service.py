@@ -19,6 +19,7 @@ from google.api import http_pb2
 from google.api import signature_pb2
 from google.protobuf import descriptor_pb2
 
+from gapic.schema import imp
 from gapic.schema import metadata
 from gapic.schema import wrappers
 
@@ -45,6 +46,24 @@ def test_service_scopes():
     assert 'https://foo/admin/' in service.oauth_scopes
 
 
+def test_service_names():
+    service = make_service(name='ThingDoer', methods=(
+        get_method('DoThing', 'foo.bar.ThingRequest', 'foo.baz.ThingResponse'),
+        get_method('Jump', 'foo.bacon.JumpRequest', 'foo.bacon.JumpResponse'),
+        get_method('Yawn', 'a.b.v1.c.YawnRequest', 'x.y.v1.z.YawnResponse'),
+    ))
+    assert service.names == {'ThingDoer', 'do_thing', 'jump', 'yawn'}
+
+
+def test_service_name_colliding_modules():
+    service = make_service(name='ThingDoer', methods=(
+        get_method('DoThing', 'foo.bar.ThingRequest', 'foo.bar.ThingResponse'),
+        get_method('Jump', 'bacon.bar.JumpRequest', 'bacon.bar.JumpResponse'),
+        get_method('Yawn', 'a.b.v1.c.YawnRequest', 'a.b.v1.c.YawnResponse'),
+    ))
+    assert service.names == {'ThingDoer', 'do_thing', 'jump', 'yawn', 'bar'}
+
+
 def test_service_no_scopes():
     service = make_service()
     assert len(service.oauth_scopes) == 0
@@ -57,21 +76,21 @@ def test_service_python_modules():
         get_method('Yawn', 'a.b.v1.c.YawnRequest', 'x.y.v1.z.YawnResponse'),
     ))
     assert service.python_modules == (
-        ('a.b.v1', 'c'),
-        ('foo', 'bacon'),
-        ('foo', 'bar'),
-        ('foo', 'baz'),
-        ('x.y.v1', 'z'),
+        imp.Import(package=('a', 'b', 'v1'), module='c'),
+        imp.Import(package=('foo',), module='bacon'),
+        imp.Import(package=('foo',), module='bar'),
+        imp.Import(package=('foo',), module='baz'),
+        imp.Import(package=('x', 'y', 'v1'), module='z'),
     )
 
 
 def test_service_python_modules_lro():
     service = make_service_with_method_options()
     assert service.python_modules == (
-        ('foo', 'bar'),
-        ('foo', 'baz'),
-        ('foo', 'qux'),
-        ('google.api_core', 'operation'),
+        imp.Import(package=('foo',), module='bar'),
+        imp.Import(package=('foo',), module='baz'),
+        imp.Import(package=('foo',), module='qux'),
+        imp.Import(package=('google', 'api_core'), module='operation'),
     )
 
 
@@ -89,11 +108,11 @@ def test_service_python_modules_signature():
     )
     # type=5 is int, so nothing is added.
     assert service.python_modules == (
-        ('a.b.c', 'v2'),
-        ('foo', 'bar'),
-        ('foo', 'baz'),
-        ('foo', 'qux'),
-        ('google.api_core', 'operation'),
+        imp.Import(package=('a', 'b', 'c'), module='v2'),
+        imp.Import(package=('foo',), module='bar'),
+        imp.Import(package=('foo',), module='baz'),
+        imp.Import(package=('foo',), module='qux'),
+        imp.Import(package=('google', 'api_core'), module='operation'),
     )
 
 

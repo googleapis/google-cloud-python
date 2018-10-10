@@ -30,13 +30,15 @@ Documentation is consistently at ``{thing}.meta.doc``.
 import collections
 import dataclasses
 import re
-from typing import Iterable, List, Mapping, Sequence, Tuple, Union
+from itertools import chain
+from typing import Iterable, List, Mapping, Sequence, Set, Tuple, Union
 
 from google.api import annotations_pb2
 from google.api import signature_pb2
 from google.protobuf import descriptor_pb2
 
 from gapic import utils
+from gapic.schema import imp
 from gapic.schema import metadata
 
 
@@ -140,6 +142,15 @@ class MessageType:
 
     def __getattr__(self, name):
         return getattr(self.message_pb, name)
+
+    @utils.cached_property
+    def field_types(self) -> Sequence[Union['MessageType', 'EnumType']]:
+        """Return all composite fields used in this proto's messages."""
+        answer = []
+        for field in self.fields.values():
+            if field.message or field.enum:
+                answer.append(field.type)
+        return tuple(answer)
 
     def get_field(self, *field_path: Sequence[str]) -> Field:
         """Return a field arbitrarily deep in this message's structure.
@@ -318,6 +329,30 @@ class Method:
         )
 
     @utils.cached_property
+    def ref_types(self) -> Sequence[Union[MessageType, EnumType]]:
+        """Return types referenced by this method."""
+        # Begin with the input (request) and output (response) messages.
+        answer = [self.input, self.output]
+
+        # If this method has flattening that is honored, add its
+        # composite types.
+        #
+        # This entails adding the module for any field on the signature
+        # unless the field is a primitive.
+        for sig in self.signatures.single_dispatch:
+            answer += sig.composite_types
+
+        # If this method has LRO, it is possible (albeit unlikely) that
+        # the LRO messages reside in a different module.
+        if getattr(self.output, 'lro_response', None):
+            answer.append(self.output.lro_response)
+        if getattr(self.output, 'lro_metadata', None):
+            answer.append(self.output.lro_metadata)
+
+        # Done; return the answer.
+        return tuple(answer)
+
+    @utils.cached_property
     def signatures(self) -> Tuple[signature_pb2.MethodSignature]:
         """Return the signature defined for this method."""
         sig_pb2 = self.options.Extensions[annotations_pb2.method_signature]
@@ -358,6 +393,15 @@ class MethodSignature:
 
         This is what is used for `functools.singledispatch`."""
         return next(iter(self.fields.values()))
+
+    @utils.cached_property
+    def composite_types(self) -> Sequence[Union[MessageType, EnumType]]:
+        """Return all composite types used in this signature."""
+        answer = []
+        for field in self.fields.values():
+            if field.message or field.enum:
+                answer.append(field.type)
+        return answer
 
 
 @dataclasses.dataclass(frozen=True)
@@ -436,42 +480,47 @@ class Service:
         """
         return utils.to_snake_case(self.name)
 
-    @property
-    def python_modules(self) -> Sequence[Tuple[str, str]]:
+    @utils.cached_property
+    def names(self) -> Set[str]:
+        """Return a set of names used in this service.
+
+        This is used for detecting naming collisions in the module names
+        used for imports.
+        """
+        # Put together a set of the service and method names.
+        answer = {self.name}.union(
+            {utils.to_snake_case(i.name) for i in self.methods.values()}
+        )
+
+        # Identify any import module names where the same module name is used
+        # from distinct packages.
+        modules = {}
+        for t in chain(*[m.ref_types for m in self.methods.values()]):
+            modules.setdefault(t.ident.module, set())
+            modules[t.ident.module].add(t.ident.package)
+        for module_name, packages in modules.items():
+            if len(packages) > 1:
+                answer.add(module_name)
+
+        # Done; return the answer.
+        return frozenset(answer)
+
+    @utils.cached_property
+    def python_modules(self) -> Sequence[imp.Import]:
         """Return a sequence of Python modules, for import.
 
         The results of this method are in alphabetical order (by package,
         then module), and do not contain duplicates.
 
         Returns:
-            Sequence[Tuple[str, str]]: The package and module pair, intended
-            for use in a ``from package import module`` type
-            of statement.
+            Sequence[~.imp.Import]: The package and module, intended for
+                use in templates.
         """
         answer = set()
         for method in self.methods.values():
-            # Add the module containing both the request and response
-            # messages. (These are usually the same, but not necessarily.)
-            answer.add(method.input.ident.python_import)
-            answer.add(method.output.ident.python_import)
-
-            # If this method has flattening that is honored, add its
-            # modules.
-            #
-            # This entails adding the module for any field on the signature
-            # unless the field is a primitive.
-            for sig in method.signatures.single_dispatch:
-                for field in sig.fields.values():
-                    if not isinstance(field.type, PythonType):
-                        answer.add(field.type.ident.python_import)
-
-            # If this method has LRO, it is possible (albeit unlikely) that
-            # the LRO messages reside in a different module.
-            if getattr(method.output, 'lro_response', None):
-                answer.add(method.output.lro_response.ident.python_import)
-            if getattr(method.output, 'lro_metadata', None):
-                answer.add(method.output.lro_metadata.ident.python_import)
-        return tuple(sorted(answer))
+            for t in method.ref_types:
+                answer.add(t.ident.context(self).python_import)
+        return tuple(sorted(list(answer)))
 
     @property
     def has_lro(self) -> bool:

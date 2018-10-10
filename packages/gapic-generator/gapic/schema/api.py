@@ -20,7 +20,8 @@ through an :class:`~.API` object.
 import collections
 import dataclasses
 import sys
-from typing import Callable, List, Mapping, Sequence, Tuple
+from itertools import chain
+from typing import Callable, List, Mapping, Sequence, Set, Tuple
 
 from google.api import annotations_pb2
 from google.protobuf import descriptor_pb2
@@ -82,6 +83,32 @@ class Proto:
         return to_snake_case(self.name.split('/')[-1][:-len('.proto')])
 
     @cached_property
+    def names(self) -> Set[str]:
+        """Return a set of names used by this proto.
+
+        This is used for detecting naming collisions in the module names
+        used for imports.
+        """
+        # Add names of all enums, messages, and fields.
+        answer = {e.name for e in self.enums.values()}
+        for message in self.messages.values():
+            answer = answer.union({f.name for f in message.fields.values()})
+            answer.add(message.name)
+
+        # Identify any import module names where the same module name is used
+        # from distinct packages.
+        modules = {}
+        for t in chain(*[m.field_types for m in self.messages.values()]):
+            modules.setdefault(t.ident.module, set())
+            modules[t.ident.module].add(t.ident.package)
+        for module_name, packages in modules.items():
+            if len(packages) > 1:
+                answer.add(module_name)
+
+        # Return the set of collision names.
+        return frozenset(answer)
+
+    @cached_property
     def python_modules(self) -> Sequence[Tuple[str, str]]:
         """Return a sequence of Python modules, for import.
 
@@ -94,19 +121,14 @@ class Proto:
             of statement.
         """
         answer = set()
-        for message in self.messages.values():
-            for field in message.fields.values():
-                # We only need to add imports for fields that
-                # are messages or enums.
-                if not field.message and not field.enum:
-                    continue
-
-                # Add the appropriate Python import for the field.
-                answer.add(field.type.ident.python_import)
-
-        # We may have gotten an import for this proto.
-        # Obviously no Python module may import itself; get rid of that.
-        answer = answer.difference({self.meta.address.python_import})
+        self_reference = self.meta.address.context(self).python_import
+        for t in chain(*[m.field_types for m in self.messages.values()]):
+            # Add the appropriate Python import for the field.
+            # Sanity check: We do make sure that we are not trying to have
+            # a module import itself.
+            imp = t.ident.context(self).python_import
+            if imp != self_reference:
+                answer.add(imp)
 
         # Done; return the sorted sequence.
         return tuple(sorted(list(answer)))
@@ -129,6 +151,17 @@ class Proto:
             file_to_generate=False,
             meta=self.meta,
         )
+
+    def disambiguate(self, string: str) -> str:
+        """Return a disambiguated string for the context of this proto.
+
+        This is used for avoiding naming collisions. Generally, this method
+        returns the same string, but it returns a modified version if
+        it will cause a naming collision with messages or fields in this proto.
+        """
+        if string in self.names:
+            return self.disambiguate(f'_{string}')
+        return string
 
 
 @dataclasses.dataclass(frozen=True)

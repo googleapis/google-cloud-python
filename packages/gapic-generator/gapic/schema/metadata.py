@@ -27,11 +27,13 @@ with the things they describe for easy access in templates.
 """
 
 import dataclasses
-from typing import Sequence, Tuple
+from typing import Tuple, Set
 
 from google.protobuf import descriptor_pb2
 
+from gapic.schema import imp
 from gapic.schema import naming
+from gapic.utils import cached_property
 
 
 @dataclasses.dataclass(frozen=True)
@@ -44,6 +46,11 @@ class Address:
     api_naming: naming.Naming = dataclasses.field(
         default_factory=naming.Naming,
     )
+    collisions: Set[str] = dataclasses.field(default_factory=frozenset)
+
+    def __eq__(self, other) -> bool:
+        return all([getattr(self, i) == getattr(other, i) for i
+                    in ('name', 'module', 'module_path', 'package', 'parent')])
 
     def __str__(self) -> str:
         """Return the Python identifier for this type.
@@ -52,8 +59,35 @@ class Address:
         members from modules, this is consistently `module.Name`.
         """
         if self.module:
-            return '.'.join((self.module,) + self.parent + (self.name,))
+            # If collisions are registered and conflict with our module,
+            # use the module alias instead.
+            module_name = self.module
+            if self.module_alias:
+                module_name = self.module_alias
+
+            # Return the dot-separated Python identifier.
+            return '.'.join((module_name,) + self.parent + (self.name,))
+
+        # Return the Python identifier for this module-less identifier.
         return '.'.join(self.parent + (self.name,))
+
+    @property
+    def module_alias(self) -> str:
+        """Return an appropriate module alias if necessary.
+
+        If the module name is not a collision, return empty string.
+
+        This method provides a mechanism for resolving naming conflicts,
+        while still providing names that are fundamentally readable
+        to users (albeit looking auto-generated).
+        """
+        if self.module in self.collisions:
+            return '_'.join((
+                ''.join([i[0] for i in self.package
+                         if i != self.api_naming.version]),
+                self.module,
+            ))
+        return ''
 
     @property
     def proto(self) -> str:
@@ -65,27 +99,36 @@ class Address:
         """Return the proto package for this type."""
         return '.'.join(self.package)
 
-    @property
-    def python_import(self) -> Tuple[Sequence[str], str]:
+    @cached_property
+    def python_import(self) -> imp.Import:
         """Return the Python import for this type."""
         # If there is no naming object, this is a special case for operation.
         # FIXME(#34): OperationType does not work well. Fix or expunge it.
         if not self.api_naming:
-            return ('.'.join(self.package), self.module)
+            return imp.Import(
+                package=self.package,
+                module=self.module,
+                alias=self.module_alias,
+            )
 
         # If this is part of the proto package that we are generating,
         # rewrite the package to our structure.
         if self.proto_package.startswith(self.api_naming.proto_package):
-            return (
-                '.'.join(self.api_naming.module_namespace + (
+            return imp.Import(
+                package=self.api_naming.module_namespace + (
                     self.api_naming.versioned_module_name,
                     'types',
-                )),
-                self.module,
+                ),
+                module=self.module,
+                alias=self.module_alias,
             )
 
         # Return the standard import.
-        return ('.'.join(self.package), f'{self.module}_pb2')
+        return imp.Import(
+            package=self.package,
+            module=f'{self.module}_pb2',
+            alias=self.module_alias if self.module_alias else self.module,
+        )
 
     @property
     def sphinx(self) -> str:
@@ -104,14 +147,20 @@ class Address:
         Returns:
             ~.Address: The new address object.
         """
-        return type(self)(
-            api_naming=self.api_naming,
-            module=self.module,
+        return dataclasses.replace(self,
             module_path=self.module_path + path,
             name=child_name,
-            package=self.package,
             parent=self.parent + (self.name,) if self.name else self.parent,
         )
+
+    def context(self, context) -> 'Address':
+        """Return a derivative of this address with the provided context.
+
+        This method is used to address naming collisions. The returned
+        ``Address`` object aliases module names to avoid naming collisions in
+        the file being written.
+        """
+        return dataclasses.replace(self, collisions=frozenset(context.names))
 
     def rel(self, address: 'Address') -> str:
         """Return an identifier for this type, relative to the given address.
@@ -161,7 +210,7 @@ class Address:
             return '.'.join(self.parent + (self.name,))
 
         # Return the usual `module.Name`.
-        return f'_.{str(self)}'
+        return str(self)
 
     def resolve(self, selector: str) -> str:
         """Resolve a potentially-relative protobuf selector.
@@ -226,3 +275,7 @@ class FieldIdentifier:
         if self.repeated:
             return f'Sequence[{self.ident.sphinx}]'
         return self.ident.sphinx
+
+    def context(self, arg) -> 'FieldIdentifier':
+        """Return self. Provided for compatibility with Address."""
+        return self

@@ -13,7 +13,7 @@
 # limitations under the License.
 
 import collections
-from typing import Sequence
+from typing import Sequence, Tuple
 
 import pytest
 
@@ -51,6 +51,25 @@ def test_get_field():
     field_one = message.get_field('field_one')
     assert isinstance(field_one, wrappers.Field)
     assert field_one.name == 'field_one'
+
+
+def test_field_types():
+    # Create the inner message.
+    inner_msg = make_message('InnerMessage', fields=())
+    inner_enum = make_enum('InnerEnum')
+
+    # Create the outer message, which contains an Inner as a field.
+    fields = (
+        make_field('inner_message', message=inner_msg),
+        make_field('inner_enum', enum=inner_enum),
+        make_field('not_interesting'),
+    )
+    outer = make_message('Outer', fields=fields)
+
+    # Assert that composite field types are recognized but primitives are not.
+    assert len(outer.field_types) == 2
+    assert inner_msg in outer.field_types
+    assert inner_enum in outer.field_types
 
 
 def test_get_field_recursive():
@@ -105,16 +124,43 @@ def make_message(name: str, package: str = 'foo.bar.v1', module: str = 'baz',
 
 def make_field(name: str, repeated: bool = False,
                message: wrappers.MessageType = None,
+               enum: wrappers.EnumType = None,
                meta: metadata.Metadata = None, **kwargs) -> wrappers.Method:
     if message:
         kwargs['type_name'] = str(message.meta.address)
+    if enum:
+        kwargs['type_name'] = str(enum.meta.address)
     field_pb = descriptor_pb2.FieldDescriptorProto(
         name=name,
         label=3 if repeated else 1,
         **kwargs
     )
     return wrappers.Field(
+        enum=enum,
         field_pb=field_pb,
         message=message,
         meta=meta or metadata.Metadata(),
+    )
+
+
+def make_enum(name: str, package: str = 'foo.bar.v1', module: str = 'baz',
+        values: Tuple[str, int] = (), meta: metadata.Metadata = None,
+        ) -> wrappers.EnumType:
+    enum_value_pbs = [
+        descriptor_pb2.EnumValueDescriptorProto(name=i[0], number=i[1])
+        for i in values
+    ]
+    enum_pb = descriptor_pb2.EnumDescriptorProto(
+        name=name,
+        value=enum_value_pbs,
+    )
+    return wrappers.EnumType(
+        enum_pb=enum_pb,
+        values=[wrappers.EnumValueType(enum_value_pb=evpb)
+                for evpb in enum_value_pbs],
+        meta=meta or metadata.Metadata(address=metadata.Address(
+            name=name,
+            package=tuple(package.split('.')),
+            module=module,
+        )),
     )

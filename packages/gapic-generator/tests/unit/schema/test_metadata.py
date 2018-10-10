@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import collections
 import typing
 
 from google.protobuf import descriptor_pb2
@@ -19,9 +20,19 @@ from google.protobuf import descriptor_pb2
 from gapic.schema import metadata
 
 
-def test_address_str_no_parent():
+def test_address_str():
     addr = metadata.Address(package=('foo', 'bar'), module='baz', name='Bacon')
     assert str(addr) == 'baz.Bacon'
+
+
+def test_address_str_context():
+    Names = collections.namedtuple('Names', ['names'])
+    addr = metadata.Address(
+        package=('foo', 'bar'),
+        module='baz',
+        name='Bacon',
+    ).context(Names(names={'baz'}))
+    assert str(addr) == 'fb_baz.Bacon'
 
 
 def test_address_str_parent():
@@ -64,10 +75,10 @@ def test_address_rel_other():
     addr = metadata.Address(package=('foo', 'bar'), module='baz', name='Bacon')
     assert addr.rel(
         metadata.Address(package=('foo', 'not_bar'), module='baz'),
-    ) == '_.baz.Bacon'
+    ) == 'baz.Bacon'
     assert addr.rel(
         metadata.Address(package=('foo', 'bar'), module='not_baz'),
-    ) == '_.baz.Bacon'
+    ) == 'baz.Bacon'
 
 
 def test_address_rel_later():
@@ -128,6 +139,11 @@ def test_doc_trailing_trumps_detached():
 def test_doc_detached_joined():
     meta = make_doc_meta(detached=['foo', 'bar'])
     assert meta.doc == 'foo\n\nbar'
+
+
+def test_field_identifier_context():
+    fi = metadata.FieldIdentifier(ident=metadata.Address(), repeated=False)
+    assert fi.context(None) is fi
 
 
 def make_doc_meta(

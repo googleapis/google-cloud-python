@@ -1,4 +1,4 @@
-class {{ message.name }}(_.proto.Message):
+class {{ message.name }}({{ p }}.Message):
     """{{ message.meta.doc|rst(indent=4) }}"""
     {# Iterate over nested enums. -#}
     {% for enum in message.nested_enums.values() %}{% filter indent -%}
@@ -14,9 +14,9 @@ class {{ message.name }}(_.proto.Message):
 
     {# Iterate over fields. -#}
     {%- for field in message.fields.values() %}
-    {{ field.name }} = _.proto.{% if field.repeated %}Repeated{% endif %}Field(_.proto.{{ field.proto_type }}, number={{ field.number }}
+    {{ field.name }} = {{ p }}.{% if field.repeated %}Repeated{% endif %}Field({{ p }}.{{ field.proto_type }}, number={{ field.number }}
     {%- if field.enum or field.message %},
-        {{ field.proto_type.lower() }}={{ field.type.ident.rel(message.ident) }},
+        {{ field.proto_type.lower() }}={{ field.type.ident.context(proto).rel(message.ident) }},
     {% endif %})
     """{{ field.meta.doc|rst(indent=4) }}"""
     {% endfor %}

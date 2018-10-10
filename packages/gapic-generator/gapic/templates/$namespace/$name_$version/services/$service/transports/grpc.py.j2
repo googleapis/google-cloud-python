@@ -11,9 +11,8 @@ from google.auth import credentials
 
 import grpc
 
-{% for package, python_module in service.python_modules -%}
-from {{ package }} import {{ python_module }}
-{%- if python_module.endswith('_pb2') %} as {{ python_module[:-4] }}{% endif %}
+{% for import_ in service.python_modules -%}
+{{ import_ }}
 {% endfor %}
 from .base import {{ service.name }}Transport
 
@@ -83,8 +82,8 @@ class {{ service.name }}GrpcTransport({{ service.name }}Transport):
 
     @property
     def {{ method.name|snake_case }}(self) -> Callable[
-            [{{ method.input.ident }}],
-            {{ method.output.ident }}]:
+            [{{ method.input.ident.context(service) }}],
+            {{ method.output.ident.context(service) }}]:
         """Return a callable for the {{- ' ' -}}
         {{ (method.name|snake_case).replace('_',' ')|wrap(
                 width=70, offset=40, indent=8) }}
@@ -104,8 +103,8 @@ class {{ service.name }}GrpcTransport({{ service.name }}Transport):
         if '{{ method.name|snake_case }}' not in self._stubs:
             self._stubs['{{ method.name|snake_case }}'] = self.grpc_channel.{{ method.grpc_stub_type }}(
                 '/{{ '.'.join(method.meta.address.package) }}.{{ service.name }}/{{ method.name }}',
-                request_serializer={{ method.input.ident }}.serialize,
-                response_deserializer={{ method.output.ident }}.deserialize,
+                request_serializer={{ method.input.ident.context(service) }}.serialize,
+                response_deserializer={{ method.output.ident.context(service) }}.deserialize,
             )
         return self._stubs['{{ method.name|snake_case }}']
     {%- endfor %}

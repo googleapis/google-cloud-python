@@ -20,6 +20,7 @@ from google.api import longrunning_pb2
 from google.protobuf import descriptor_pb2
 
 from gapic.schema import api
+from gapic.schema import imp
 from gapic.schema import naming
 from gapic.schema import wrappers
 
@@ -73,7 +74,7 @@ def test_api_build():
     assert 'google.example.v1.FooService' in api_schema.services
     assert len(api_schema.enums) == 0
     assert api_schema.protos['foo.proto'].python_modules == (
-        ('google.dep', 'dep_pb2'),
+        imp.Import(package=('google', 'dep'), module='dep_pb2'),
     )
 
 
@@ -84,6 +85,81 @@ def test_proto_build():
     )
     proto = api.Proto.build(fdp, file_to_generate=True, naming=make_naming())
     assert isinstance(proto, api.Proto)
+
+
+def test_proto_names():
+    # Put together a couple of minimal protos.
+    fd = (
+        make_file_pb2(
+            name='dep.proto',
+            package='google.dep',
+            messages=(make_message_pb2(name='ImportedMessage', fields=()),),
+        ),
+        make_file_pb2(
+            name='foo.proto',
+            package='google.example.v1',
+            messages=(
+                make_message_pb2(name='Foo', fields=()),
+                make_message_pb2(name='Bar', fields=(
+                    make_field_pb2(name='imported_message', number=1,
+                                   type_name='.google.dep.ImportedMessage'),
+                    make_field_pb2(name='primitive', number=2, type=1),
+                )),
+                make_message_pb2(name='Baz', fields=(
+                    make_field_pb2(name='foo', number=1,
+                                   type_name='.google.example.v1.Foo'),
+                )),
+            ),
+        ),
+    )
+
+    # Create an API with those protos.
+    api_schema = api.API.build(fd, package='google.example.v1')
+    proto = api_schema.protos['foo.proto']
+    assert proto.names == {'Foo', 'Bar', 'Baz', 'foo', 'imported_message',
+                           'primitive'}
+    assert proto.disambiguate('enum') == 'enum'
+    assert proto.disambiguate('foo') == '_foo'
+
+
+def test_proto_names_import_collision():
+    # Put together a couple of minimal protos.
+    fd = (
+        make_file_pb2(
+            name='a/b/c/spam.proto',
+            package='a.b.c',
+            messages=(make_message_pb2(name='ImportedMessage', fields=()),),
+        ),
+        make_file_pb2(
+            name='x/y/z/spam.proto',
+            package='x.y.z',
+            messages=(make_message_pb2(name='OtherMessage', fields=()),),
+        ),
+        make_file_pb2(
+            name='foo.proto',
+            package='google.example.v1',
+            messages=(
+                make_message_pb2(name='Foo', fields=()),
+                make_message_pb2(name='Bar', fields=(
+                    make_field_pb2(name='imported_message', number=1,
+                                   type_name='.a.b.c.ImportedMessage'),
+                    make_field_pb2(name='other_message', number=2,
+                                   type_name='.x.y.z.OtherMessage'),
+                    make_field_pb2(name='primitive', number=3, type=1),
+                )),
+                make_message_pb2(name='Baz', fields=(
+                    make_field_pb2(name='foo', number=1,
+                                   type_name='.google.example.v1.Foo'),
+                )),
+            ),
+        ),
+    )
+
+    # Create an API with those protos.
+    api_schema = api.API.build(fd, package='google.example.v1')
+    proto = api_schema.protos['foo.proto']
+    assert proto.names == {'Foo', 'Bar', 'Baz', 'foo', 'imported_message',
+                           'other_message', 'primitive', 'spam'}
 
 
 def test_proto_builder_constructor():
