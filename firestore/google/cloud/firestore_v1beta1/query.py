@@ -30,6 +30,7 @@ from google.cloud.firestore_v1beta1 import document
 from google.cloud.firestore_v1beta1.gapic import enums
 from google.cloud.firestore_v1beta1.proto import query_pb2
 from google.cloud.firestore_v1beta1.watch import Watch
+from google.cloud.firestore_v1beta1.watch import Order
 
 _EQ_OP = '=='
 _COMPARISON_OPERATORS = {
@@ -631,6 +632,52 @@ class Query(object):
                         callback,
                         document.DocumentSnapshot,
                         document.DocumentReference)
+
+    def comparator(self, doc1, doc2):
+        _orders = self._orders
+
+        # Add implicit sorting by name, using the last specified direction.
+        if len(_orders) == 0:
+            lastDirection = Query.ASCENDING
+        else:
+            if _orders[-1].direction == 1:
+                lastDirection = Query.ASCENDING
+            else:
+                lastDirection = Query.DESCENDING
+
+        orderBys = list(_orders)
+
+        order_pb = query_pb2.StructuredQuery.Order(
+            field=query_pb2.StructuredQuery.FieldReference(
+                field_path='id',
+            ),
+            direction=_enum_from_direction(lastDirection),
+        )
+        orderBys.append(order_pb)
+
+        for orderBy in orderBys:
+            if orderBy.field.field_path == 'id':
+                # If ordering by docuent id, compare resource paths.
+                comp = Order()._compare_to(
+                    doc1.reference._path, doc2.reference._path)
+            else:
+                if orderBy.field.field_path not in doc1._data or \
+                    orderBy.field.field_path not in doc2._data:
+                    raise Exception(
+                    "Can only compare fields that exist in the "
+                    "DocumentSnapshot. Please include the fields you are "
+                    " ordering on in your select() call.")
+                v1 = doc1._data[orderBy.field.field_path]
+                v2 = doc2._data[orderBy.field.field_path]
+                encoded_v1 = _helpers.encode_value(v1)
+                encoded_v2 = _helpers.encode_value(v2)
+                comp = Order().compare(encoded_v1, encoded_v2)
+
+            if (comp != 0):
+                # 1 == Ascending, -1 == Descending
+                return orderBy.direction * comp
+
+        return 0
 
 
 def _enum_from_op_string(op_string):

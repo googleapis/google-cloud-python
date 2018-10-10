@@ -16,6 +16,7 @@ from enum import Enum
 from google.cloud.firestore_v1beta1._helpers import decode_value
 import math
 
+
 class TypeOrder(Enum):
         # NOTE: This order is defined by the backend and cannot be changed.
         NULL = 0
@@ -56,16 +57,14 @@ class Order(object):
     '''
     Order implements the ordering semantics of the backend.
     '''
-    def __init__(self):
-        pass
     
-    def compare(self, left, right):
+    @classmethod
+    def compare(cls, left, right):
         '''
         Main comparison function for all Firestore types.
         
         @return -1 is left < right, 0 if left == right, otherwise 1
         '''
-
         # First compare the types.
         leftType = TypeOrder.from_value(left).value
         rightType = TypeOrder.from_value(right).value
@@ -82,25 +81,25 @@ class Order(object):
         if value_type == 'null_value':
             return 0  # nulls are all equal
         elif value_type == 'boolean_value':
-            return self._compare_to(left.boolean_value, right.boolean_value)
+            return cls._compare_to(left.boolean_value, right.boolean_value)
         elif value_type == 'integer_value':
-            return self.compare_numbers(left, right)
+            return cls.compare_numbers(left, right)
         elif value_type == 'double_value':
-            return self.compare_numbers(left, right)
+            return cls.compare_numbers(left, right)
         elif value_type == 'timestamp_value':
-            return self.compare_timestamps(left, right)
+            return cls.compare_timestamps(left, right)
         elif value_type == 'string_value':
-            return self._compare_to(left.string_value, right.string_value)
+            return cls._compare_to(left.string_value, right.string_value)
         elif value_type == 'bytes_value':
-            return self.compare_blobs(left, right)
+            return cls.compare_blobs(left, right)
         elif value_type == 'reference_value':
-            return self.compare_resource_paths(left, right)
+            return cls.compare_resource_paths(left, right)
         elif value_type == 'geo_point_value':
-            return self.compare_geo_points(left, right)
+            return cls.compare_geo_points(left, right)
         elif value_type == 'array_value':
-            return self.compare_arrays(left, right)
+            return cls.compare_arrays(left, right)
         elif value_type == 'map_value':
-            return self.compare_objects(left, right)
+            return cls.compare_objects(left, right)
         else:
             raise ValueError('Unknown ``value_type``', value_type)
 
@@ -110,7 +109,7 @@ class Order(object):
         left_bytes = left.bytes_value
         right_bytes = right.bytes_value
         
-        # TODO: verify this is okay. python can compare bytes so *shrugs*
+        # TODO: Should verify bytes comparisons in python work as expected
         return Order._compare_to(left_bytes, right_bytes)
 
     @staticmethod
@@ -183,7 +182,7 @@ class Order(object):
 
         length = min(len(l_values), len(r_values))
         for i in range(length):
-            cmp = Order().compare(l_values[i], r_values[i])
+            cmp = Order.compare(l_values[i], r_values[i])
             if cmp != 0:
                 return cmp
             
@@ -200,7 +199,7 @@ class Order(object):
             if keyCompare != 0:
                 return keyCompare
 
-            value_compare = Order().compare(
+            value_compare = Order.compare(
                 left_fields[left_key], right_fields[right_key])
             if value_compare != 0:
                     return value_compare
