@@ -18,16 +18,16 @@ from google.api_core import exceptions
 from google.rpc import code_pb2
 
 
-def test_unary(showcase):
-    response = showcase.echo({
+def test_unary(echo):
+    response = echo.echo({
         'content': 'The hail in Wales falls mainly on the snails.',
     })
     assert response.content == 'The hail in Wales falls mainly on the snails.'
 
 
-def test_unary_error(showcase):
+def test_unary_error(echo):
     with pytest.raises(exceptions.InvalidArgument) as exc:
-        showcase.echo({
+        echo.echo({
             'error': {
                 'code': code_pb2.Code.Value('INVALID_ARGUMENT'),
                 'message': 'Bad things! Bad things!',

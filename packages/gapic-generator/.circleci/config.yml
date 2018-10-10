@@ -78,13 +78,16 @@ jobs:
             unzip protoc-3.6.1.zip
             ln -s /usr/src/protoc/bin/protoc /usr/local/bin/protoc
       - run:
-          name: Download Showcase.
+          name: Download and extract Showcase.
           command: |
-            curl --location https://github.com/googleapis/gapic-showcase/releases/download/v0.0.3/gapic-showcase-v1alpha1-0.0.3-linux-amd64 --output /usr/local/bin/showcase
+            curl --location https://github.com/googleapis/gapic-showcase/releases/download/v0.0.7/gapic-showcase-0.0.7-linux-amd64.tar.gz --output /tmp/gapic-showcase.tar.gz
+            cd /tmp
+            tar xvfz /tmp/gapic-showcase.tar.gz
+            mv /tmp/gapic-showcase /usr/local/bin/showcase
             chmod a+x /usr/local/bin/showcase
       - run:
           name: Run Showcase.
-          command: /usr/local/bin/showcase
+          command: /usr/local/bin/showcase start
           background: true
       - run:
           name: Run showcase tests.

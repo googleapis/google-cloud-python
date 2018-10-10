@@ -57,13 +57,13 @@ def showcase(session):
 
     # Install a client library for Showcase.
     with tempfile.TemporaryDirectory() as tmp_dir:
-        showcase_version = '0.0.3'
+        showcase_version = '0.0.7'
 
         # Download the Showcase descriptor.
         session.run(
             'curl', 'https://github.com/googleapis/gapic-showcase/releases/'
                     f'download/v{showcase_version}/'
-                    f'gapic-showcase-v1alpha1-{showcase_version}.desc',
+                    f'gapic-showcase-{showcase_version}.desc',
             '-L', '--output', os.path.join(tmp_dir, 'showcase.desc'),
             silent=True,
         )
@@ -72,7 +72,7 @@ def showcase(session):
         session.run('protoc',
             f'--descriptor_set_in={tmp_dir}{os.path.sep}showcase.desc',
             f'--pyclient_out={tmp_dir}',
-            'google/showcase/v1alpha1/showcase.proto',
+            'google/showcase/v1alpha2/echo.proto',
         )
 
         # Install the library.
