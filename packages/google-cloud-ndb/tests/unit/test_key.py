@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import base64
+import pickle
 import unittest.mock
 
 from google.cloud.datastore import _app_engine_key_pb2
@@ -235,6 +236,38 @@ class TestKey:
         key = key_module.Key("X", 11, app="foo", namespace="bar")
         assert repr(key) == "Key('X', 11, app='foo', namespace='bar')"
         assert str(key) == "Key('X', 11, app='foo', namespace='bar')"
+
+    @staticmethod
+    def test___eq__():
+        key1 = key_module.Key("X", 11, app="foo", namespace="n")
+        key2 = key_module.Key("Y", 12, app="foo", namespace="n")
+        key3 = key_module.Key("X", 11, app="bar", namespace="n")
+        key4 = key_module.Key("X", 11, app="foo", namespace="m")
+        key5 = unittest.mock.sentinel.key
+        assert key1 == key1
+        assert not key1 == key2
+        assert not key1 == key3
+        assert not key1 == key4
+        assert not key1 == key5
+
+    @staticmethod
+    def test_pickling():
+        key = key_module.Key("a", "b", app="c", namespace="d")
+        pickled = pickle.dumps(key)
+        unpickled = pickle.loads(pickled)
+        assert key == unpickled
+
+    @staticmethod
+    def test___setstate__bad_state():
+        key = key_module.Key("a", "b")
+
+        state = ("not", "length", "one")
+        with pytest.raises(TypeError):
+            key.__setstate__(state)
+
+        state = ("not-a-dict",)
+        with pytest.raises(TypeError):
+            key.__setstate__(state)
 
     @staticmethod
     def test_parent():
