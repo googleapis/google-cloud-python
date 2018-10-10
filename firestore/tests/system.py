@@ -900,8 +900,17 @@ def test_watch_query(client, cleanup):
 def test_watch_query_order(client, cleanup):
     db = client
     unique_id = unique_resource_id()
-    doc_ref = db.collection(u'users').document(
+    doc_ref1 = db.collection(u'users').document(
         u'alovelace' + unique_id)
+    doc_ref2 = db.collection(u'users').document(
+        u'asecondlovelace' + unique_id)
+    doc_ref3 = db.collection(u'users').document(
+        u'athirdlovelace' + unique_id)  
+    doc_ref4 = db.collection(u'users').document(
+        u'afourthlovelace' + unique_id)
+    doc_ref5 = db.collection(u'users').document(
+        u'afifthlovelace' + unique_id)  
+
     query_ref = db.collection(u'users').where(
         "first", "==", u'Ada' + unique_id).order_by("last")
 
@@ -909,6 +918,8 @@ def test_watch_query_order(client, cleanup):
     # Setup listener
     def on_snapshot(docs, changes, read_time):
         try:
+            if len(docs) != 5:
+                return
             # A snapshot should return the same thing as if a query ran now.
             query_ran = query_ref.get()
             query_ran_results = [i for i in query_ran]
@@ -916,66 +927,50 @@ def test_watch_query_order(client, cleanup):
 
             # compare the order things are returned
             for snapshot, query in zip(docs, query_ran_results):
-                print("snapshot: " + snapshot.get('last')['stringValue'] + ", " + "query: " + query.get('last'))
-
                 assert snapshot.get('last')['stringValue'] == query.get(
                     'last'), "expect the sort order to match"
             on_snapshot.called_count += 1
+            on_snapshot.last_doc_count = len(docs)
         except Exception as e:
             on_snapshot.failed = e
 
     on_snapshot.called_count = 0
+    on_snapshot.last_doc_count = 0 
     on_snapshot.failed = None
-
-    # Initial setting
-    doc_ref.set({
-        u'first': u'Jane',
-        u'last': u'Doe',
-        u'born': 1900
-    })
-
-    sleep(1)
-
     query_ref.on_snapshot(on_snapshot)
 
-    # Alter document
-    doc_ref.set({
+    doc_ref1.set({
         u'first': u'Ada' + unique_id,
         u'last': u'Lovelace',
         u'born': 1815
     })
-
-    for _ in range(10):
-        if on_snapshot.called_count == 1:
-            break
-        sleep(1)
-
-    if on_snapshot.called_count != 1:
-        raise AssertionError(
-            "Initial set should have called on_snapshot 1 time: " +
-            str(on_snapshot.called_count))
-
-    # Create new document
-    doc_ref_2 = db.collection(u'users').document(
-        u'asecondlovelace' + unique_id)
-    doc_ref_2.set({
+    doc_ref2.set({
         u'first': u'Ada' + unique_id,
-        u'last': u'ASecondLovelace',
+        u'last': u'SecondLovelace',
+        u'born': 1815
+    })
+    doc_ref3.set({
+        u'first': u'Ada' + unique_id,
+        u'last': u'ThirdLovelace',
+        u'born': 1815
+    })
+    doc_ref4.set({
+        u'first': u'Ada' + unique_id,
+        u'last': u'FourthLovelace',
+        u'born': 1815
+    })
+    doc_ref5.set({
+        u'first': u'Ada' + unique_id,
+        u'last': u'lovelace',
         u'born': 1815
     })
 
     for _ in range(10):
-        if on_snapshot.called_count == 2:
+        if on_snapshot.last_doc_count == 5:
             break
         sleep(1)
-    
 
-    if on_snapshot.called_count != 2:
+    if on_snapshot.last_doc_count != 5:
         raise AssertionError(
-            "After new add on_snapshot should be called 2 times: " +
-            str(on_snapshot.called_count))
-    if on_snapshot.failed:
-        raise AssertionError(
-            "on_snapshot failed while trying to compare sort order: " + str(
-                on_snapshot.failed)
-        )
+            "5 docs expected in snapshot method " +
+            str(on_snapshot.last_doc_count))
