@@ -24,7 +24,6 @@ LOCAL_DEPS = (
 )
 
 
-@nox.session
 def default(session):
     """Default unit test session.
 
@@ -52,55 +51,41 @@ def default(session):
     )
 
 
-@nox.session
-@nox.parametrize('py', ['2.7', '3.5', '3.6', '3.7'])
-def unit(session, py):
+@nox.session(python=['2.7', '3.5', '3.6', '3.7'])
+def unit(session):
     """Run the unit test suite."""
-
-    # Run unit tests against all supported versions of Python.
-    if py != 'default':
-        session.interpreter = 'python{}'.format(py)
-
-    # Set the virtualenv directory name.
-    session.virtualenv_dirname = 'unit-' + py
 
     default(session)
 
 
-@nox.session
+@nox.session(python='3.6')
 def lint(session):
     """Run linters.
 
     Returns a failure if the linters find linting errors or sufficiently
     serious code quality issues.
     """
-    session.interpreter = 'python3.6'
     session.install('flake8', *LOCAL_DEPS)
     session.install('.')
     session.run('flake8', 'google', 'tests')
 
 
-@nox.session
+@nox.session(python='3.6')
 def lint_setup_py(session):
     """Verify that setup.py is valid (including RST check)."""
-    session.interpreter = 'python3.6'
-
-    # Set the virtualenv directory name.
-    session.virtualenv_dirname = 'setup'
 
     session.install('docutils', 'pygments')
     session.run('python', 'setup.py', 'check', '--restructuredtext',
                 '--strict')
 
 
-@nox.session
+@nox.session(python='3.6')
 def cover(session):
     """Run the final coverage report.
 
     This outputs the coverage report aggregating coverage from the unit
     test runs (not system test runs), and then erases coverage data.
     """
-    session.interpreter = 'python3.6'
     session.install('coverage', 'pytest-cov')
     session.run('coverage', 'report', '--show-missing', '--fail-under=100')
     session.run('coverage', 'erase')
