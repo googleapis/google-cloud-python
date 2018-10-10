@@ -47,6 +47,10 @@ the rewrite.
   covers), only allows the `str` type in Python 3, so much of the "type-check
   and branch" from the original implementation is gone. This **may** cause
   some slight differences.
+- `Key.from_old_key()` and `Key.to_old_key()` always raise
+  `NotImplementedError`. Without the actual types from the legacy runtime,
+  these methods are impossible to implement. Also, since this code won't
+  run on legacy Google App Engine, these methods aren't needed.
 
 [0]: https://cloud.google.com/datastore
 [1]: https://cloud.google.com/appengine
