@@ -399,9 +399,9 @@ class CollectionReference(object):
             collection_watch.unsubscribe()
         """
         return Watch.for_query(query_mod.Query(self),
-                        callback,
-                        document.DocumentSnapshot,
-                        document.DocumentReference)
+                               callback,
+                               document.DocumentSnapshot,
+                               document.DocumentReference)
 
 
 def _auto_id():

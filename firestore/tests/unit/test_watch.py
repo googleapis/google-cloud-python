@@ -737,7 +737,7 @@ class DummyQuery(object):  # pragma: NO COVER
 
         if 'comparator' not in kw:
             # don't really do the comparison, just return 0 (equal) for all
-            self._comparator = lambda x,y: 1
+            self._comparator = lambda x, y: 1
         else:
             self._comparator = kw['comparator']
 

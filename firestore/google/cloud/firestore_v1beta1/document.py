@@ -475,7 +475,8 @@ class DocumentReference(object):
             # Terminate this watch
             doc_watch.unsubscribe()
         """
-        return Watch.for_document(self, callback, DocumentSnapshot, DocumentReference)
+        return Watch.for_document(self, callback, DocumentSnapshot,
+                                  DocumentReference)
 
 
 class DocumentSnapshot(object):

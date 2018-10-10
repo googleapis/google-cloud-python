@@ -13,14 +13,14 @@
 # limitations under the License.
 
 import unittest
-import mock
-from google.cloud.firestore_v1beta1._helpers import encode_value, GeoPoint
-from google.protobuf import timestamp_pb2
-from google.type import latlng_pb2
 import math
-from google.cloud.firestore_v1beta1.document import DocumentReference
+
+from google.cloud.firestore_v1beta1._helpers import encode_value, GeoPoint
 from google.cloud.firestore_v1beta1.order import Order
 from google.cloud.firestore_v1beta1.proto import document_pb2
+
+from google.protobuf import timestamp_pb2
+
 
 class TestOrder(unittest.TestCase):
     @staticmethod
@@ -34,7 +34,6 @@ class TestOrder(unittest.TestCase):
         return klass(*args, **kwargs)
 
     def test_order(self):
-        
         # Constants used to represent min/max values of storage types.
         int_max_value = 2 ** 31 - 1
         int_min_value = -(2 ** 31)
@@ -135,9 +134,9 @@ class TestOrder(unittest.TestCase):
         groups[59] = [_array_value(["foo", "0"])]
 
         # objects
-        groups[60] = [_object_value({"bar": 0})]  
+        groups[60] = [_object_value({"bar": 0})]
         groups[61] = [_object_value({
-            "bar":0,
+            "bar": 0,
             "foo": 1
         })]
         groups[62] = [_object_value({"bar": 1})]
@@ -150,15 +149,15 @@ class TestOrder(unittest.TestCase):
             for left in groups[i]:
                 for j in range(len(groups)):
                     for right in groups[j]:
-                        expected = Order._compare_to(i,j)
-                        
+                        expected = Order._compare_to(i, j)
+
                         self.assertEqual(
                             target.compare(left, right), expected,
                             "comparing L->R {} ({}) to {} ({})".format(
                                 i, left, j, right)
                         )
-                            
-                        expected = Order._compare_to(j, i);
+
+                        expected = Order._compare_to(j, i)
                         self.assertEqual(
                             target.compare(right, left), expected,
                             "comparing R->L {} ({}) to {} ({})".format(
@@ -201,7 +200,7 @@ def _timestamp_value(seconds, nanos):
 
 
 def _geoPoint_value(latitude, longitude):
-    return encode_value(GeoPoint(latitude,longitude))
+    return encode_value(GeoPoint(latitude, longitude))
 
 
 def _array_value(values=[]):
