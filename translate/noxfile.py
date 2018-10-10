@@ -25,15 +25,8 @@ LOCAL_DEPS = (
 )
 
 
-@nox.session
 def default(session):
-    """Default unit test session.
-
-    This is intended to be run **without** an interpreter set, so
-    that the current ``python`` (on the ``PATH``) or the version of
-    Python corresponding to the ``nox`` binary the ``PATH`` can
-    run the tests.
-    """
+    """Default unit test session."""
     # Install all test dependencies, then install local packages in-place.
     session.install('mock', 'pytest', 'pytest-cov')
     for local_dep in LOCAL_DEPS:

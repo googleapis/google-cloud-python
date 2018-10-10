@@ -20,7 +20,6 @@ import os
 import nox
 
 
-@nox.session
 def default(session):
     # Install all test dependencies, then install this package in-place.
     session.install('pytest')
@@ -28,7 +27,6 @@ def default(session):
 
     # Run py.test against the unit tests.
     session.run('py.test', '--quiet', os.path.join('tests', 'unit'))
-  
 
 @nox.session(python=['2.7', '3.5', '3.6', '3.7'])
 def unit(session):

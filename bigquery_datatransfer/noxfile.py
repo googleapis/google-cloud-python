@@ -24,7 +24,6 @@ LOCAL_DEPS = (
 )
 
 
-@nox.session
 def default(session):
     """Default unit test session.
 
@@ -73,7 +72,7 @@ def system(session):
     # Sanity check: Only run system tests if the environment variable is set.
     if not os.environ.get('GOOGLE_APPLICATION_CREDENTIALS', ''):
         session.skip('Credentials must be set via environment variable.')
-  
+
     # Use pre-release gRPC for system tests.
     session.install('--pre', 'grpcio')
 

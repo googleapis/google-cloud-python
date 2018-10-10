@@ -18,7 +18,6 @@ import os
 import nox
 
 
-@nox.session
 def default(session):
   # Install all test dependencies, then install this package in-place.
   session.install('pytest')

@@ -25,7 +25,6 @@ LOCAL_DEPS = (
 )
 
 
-@nox.session
 def default(session):
     """Default unit test session.
 
@@ -40,14 +39,14 @@ def default(session):
         session.install('-e', local_dep)
 
     # Pyarrow does not support Python 3.7
-    if session.virtualenv.interpreter == '3.7':
+    if session.python == '3.7':
         dev_install = '.[pandas]'
     else:
         dev_install = '.[pandas, pyarrow]'
     session.install('-e', dev_install)
 
     # IPython does not support Python 2 after version 5.x
-    if session.virtualenv.interpreter == 'python2.7':
+    if session.python == '2.7':
         session.install('ipython==5.5')
     else:
         session.install('ipython')
@@ -93,7 +92,7 @@ def system(session):
     session.install('-e', '.[pandas]')
 
     # IPython does not support Python 2 after version 5.x
-    if session.virtualenv.interpreter == '2.7':
+    if session.python == '2.7':
         session.install('ipython==5.5')
     else:
         session.install('ipython')

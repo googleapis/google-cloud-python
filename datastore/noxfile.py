@@ -25,7 +25,6 @@ LOCAL_DEPS = (
 )
 
 
-@nox.session
 def default(session):
     """Default unit test session.
 
@@ -90,7 +89,7 @@ def doctests(session):
     # It is difficult to make doctests run against both Python 2 and Python 3
     # because they test string output equivalence, which is difficult to
     # make match (e.g. unicode literals starting with "u").
-  
+
     # Sanity check: Only run system tests if the environment variable is set.
     if not os.environ.get('GOOGLE_APPLICATION_CREDENTIALS', ''):
         session.skip('Credentials must be set via environment variable.')

@@ -22,7 +22,6 @@ LOCAL_DEPS = (
     os.path.join('..', 'api_core'),
 )
 
-@nox.session
 def default(session):
     """Default unit test session.
     This is intended to be run **without** an interpreter set, so

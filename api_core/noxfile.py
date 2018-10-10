@@ -19,7 +19,6 @@ import os
 import nox  # pytype: disable=import-error
 
 
-@nox.session
 def default(session):
     """Default unit test session.
 

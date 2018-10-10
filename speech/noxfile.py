@@ -24,7 +24,6 @@ LOCAL_DEPS = (
 )
 
 
-@nox.session
 def default(session):
     """Default unit test session.
 
@@ -53,7 +52,6 @@ def default(session):
 @nox.session(python=['2.7', '3.5', '3.6', '3.7'])
 def unit(session):
     """Run the unit test suite."""
-
     default(session)
 
 
@@ -84,7 +82,7 @@ def lint(session):
 
     Returns a failure if the linters find linting errors or sufficiently
     serious code quality issues.
-    """ 
+    """
     session.install('flake8', *LOCAL_DEPS)
     session.install('.')
     session.run('flake8', 'google', 'tests')

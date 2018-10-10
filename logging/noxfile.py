@@ -34,22 +34,13 @@ UNIT_TEST_DEPS = (
 )
 
 
-@nox.session
 def default(session, django_dep=('django',)):
     """Default unit test session.
-
-    This is intended to be run **without** an interpreter set, so
-    that the current ``python`` (on the ``PATH``) or the version of
-    Python corresponding to the ``nox`` binary the ``PATH`` can
-    run the tests.
     """
+  
     # Install all test dependencies, then install this package in-place.
     deps = UNIT_TEST_DEPS
-
-    if session.virtualenv.interpreter is None and sys.version_info[:2] == (2, 7):
-        deps += ('django >= 1.11.0, < 2.0.0dev',)
-    else:
-        deps += django_dep
+    deps += django_dep
 
     session.install(*deps)
     for local_dep in LOCAL_DEPS:
