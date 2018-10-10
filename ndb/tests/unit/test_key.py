@@ -213,6 +213,16 @@ class TestKey:
             key_module.Key(urlsafe=urlsafe, serialized=serialized)
 
     @staticmethod
+    @unittest.mock.patch("google.cloud.ndb.key.Key.__init__")
+    def test__from_ds_key(key_init):
+        ds_key = google.cloud.datastore.Key("a", "b", project="c")
+        key = key_module.Key._from_ds_key(ds_key)
+        assert key._key is ds_key
+        assert key._reference is None
+
+        key_init.assert_not_called()
+
+    @staticmethod
     @unittest.mock.patch("os.environ", new={})
     def test___repr__defaults():
         key = key_module.Key("a", "b")
