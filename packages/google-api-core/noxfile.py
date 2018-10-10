@@ -19,7 +19,6 @@ import os
 import nox  # pytype: disable=import-error
 
 
-@nox.session
 def default(session):
     """Default unit test session.
 
@@ -52,30 +51,15 @@ def default(session):
     )
 
 
-@nox.session
-@nox.parametrize('py', ['2.7', '3.5', '3.6', '3.7'])
-def unit(session, py):
+@nox.session(python=['2.7', '3.5', '3.6', '3.7'])
+def unit(session):
     """Run the unit test suite."""
-
-    # Run unit tests against all supported versions of Python.
-    session.interpreter = 'python{}'.format(py)
-
-    # Set the virtualenv dirname.
-    session.virtualenv_dirname = 'unit-' + py
-
     default(session)
 
 
-@nox.session
-@nox.parametrize('py', ['2.7', '3.5', '3.6', '3.7'])
-def unit_grpc_gcp(session, py):
+@nox.session(python=['2.7', '3.5', '3.6', '3.7'])
+def unit_grpc_gcp(session):
     """Run the unit test suite with grpcio-gcp installed."""
-
-    # Run unit tests against all supported versions of Python.
-    session.interpreter = 'python{}'.format(py)
-
-    # Set the virtualenv dirname.
-    session.virtualenv_dirname = 'unit-grpc-gcp-' + py
 
     # Install grpcio-gcp
     session.install('grpcio-gcp')
@@ -83,26 +67,21 @@ def unit_grpc_gcp(session, py):
     default(session)
 
 
-@nox.session
+@nox.session(python='3.6')
 def lint(session):
     """Run linters.
 
     Returns a failure if the linters find linting errors or sufficiently
     serious code quality issues.
     """
-    session.interpreter = 'python3.6'
     session.install('flake8', 'flake8-import-order')
     session.install('.')
     session.run('flake8', 'google', 'tests')
 
 
-@nox.session
+@nox.session(python='3.6')
 def lint_setup_py(session):
     """Verify that setup.py is valid (including RST check)."""
-    session.interpreter = 'python3.6'
-
-    # Set the virtualenv dirname.
-    session.virtualenv_dirname = 'setup'
 
     session.install('docutils', 'Pygments')
     session.run(
@@ -111,10 +90,9 @@ def lint_setup_py(session):
 
 # No 2.7 due to https://github.com/google/importlab/issues/26.
 # No 3.7 because pytype supports up to 3.6 only.
-@nox.session
+@nox.session(python='3.6')
 def pytype(session):
   """Run type-checking."""
-  session.interpreter = 'python3.6'
   session.install('.',
                   'grpcio >= 1.8.2',
                   'grpcio-gcp >= 0.2.2',
@@ -122,14 +100,13 @@ def pytype(session):
   session.run('pytype')
 
 
-@nox.session
+@nox.session(python='3.6')
 def cover(session):
     """Run the final coverage report.
 
     This outputs the coverage report aggregating coverage from the unit
     test runs (not system test runs), and then erases coverage data.
     """
-    session.interpreter = 'python3.6'
     session.install('coverage', 'pytest-cov')
     session.run('coverage', 'report', '--show-missing', '--fail-under=100')
     session.run('coverage', 'erase')
