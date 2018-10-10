@@ -49,6 +49,7 @@ _REFERENCE_NAMESPACE_MISMATCH = (
     "the one specified {!r}"
 )
 _INVALID_ID_TYPE = "Key id must be a string or a number; received {!r}"
+_NO_LEGACY = "The `google.appengine.ext.db` module is not available."
 
 
 class _BadArgumentError(Exception):
@@ -526,6 +527,32 @@ class Key:
         """
         raw_bytes = self.serialized()
         return base64.urlsafe_b64encode(raw_bytes).strip(b"=")
+
+    @classmethod
+    def from_old_key(cls, old_key):
+        """Factory constructor to convert from an "old"-style datastore key.
+
+        The ``old_key`` was expected to be a ``google.appengine.ext.db.Key``
+        (which was an alias for ``google.appengine.api.datastore_types.Key``).
+
+        However, the ``google.appengine.ext.db`` module was part of the legacy
+        Google App Engine runtime and is not generally available.
+
+        Raises:
+            NotImplementedError: Always.
+        """
+        raise NotImplementedError(_NO_LEGACY)
+
+    def to_old_key(self):
+        """Convert to an "old"-style datastore key.
+
+        See :meth:`from_old_key` for more information on why this method
+        is not supported.
+
+        Raises:
+            NotImplementedError: Always.
+        """
+        raise NotImplementedError(_NO_LEGACY)
 
 
 def _project_from_app(app, allow_empty=False):

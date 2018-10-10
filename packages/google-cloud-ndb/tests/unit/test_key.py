@@ -343,6 +343,17 @@ class TestKey:
         key = key_module.Key("d", "e", app="f")
         assert key.urlsafe() == b"agFmcggLEgFkIgFlDA"
 
+    @staticmethod
+    def test_from_old_key():
+        with pytest.raises(NotImplementedError):
+            key_module.Key.from_old_key(None)
+
+    @staticmethod
+    def test_to_old_key():
+        key = key_module.Key("a", "b")
+        with pytest.raises(NotImplementedError):
+            key.to_old_key()
+
 
 class Test__project_from_app:
     @staticmethod
