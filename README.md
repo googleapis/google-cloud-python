@@ -51,6 +51,26 @@ the rewrite.
   `NotImplementedError`. Without the actual types from the legacy runtime,
   these methods are impossible to implement. Also, since this code won't
   run on legacy Google App Engine, these methods aren't needed.
+- `Key.app()` may not preserve the prefix from the constructor (this is noted
+  in the docstring)
+- `Key.__eq__` previously claimed to be "performance-conscious" and directly
+  used `self.__app == other.__app` and similar comparisons. We don't store the
+  same data on our `Key` (we just make a wrapper around
+  `google.cloud.datastore.Key`), so these are replaced by functions calls
+  `self.app() == self.app()` which incur some overhead.
+
+## Comments
+
+- The `Key.__getnewargs__()` method isn't needed. For pickle protocols 0 and 1,
+  `__new__` is not invoked on a class during unpickling; the state "unpacking"
+  is handled solely via `__setstate__`. However, for pickle protocols 2, 3
+  and 4, during unpickling an instance will first be created via
+  `Key.__new__()` and then `__setstate__` would be called on that instance.
+  The addition of the `__getnewargs__` allows the (positional) arguments to be
+  stored in the pickled bytes. The original `ndb` implementation did **all** of
+  the work of the constructor in `__new__`, so the call to `__setstate__` was
+  redundant. In our implementation `__setstate__` is succifient and `__new__`
+  isn't implemented, hence `__getnewargs__` isn't needed.
 
 [0]: https://cloud.google.com/datastore
 [1]: https://cloud.google.com/appengine

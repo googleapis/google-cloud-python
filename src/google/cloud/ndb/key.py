@@ -281,6 +281,87 @@ class Key:
         """Alias for :meth:`__repr__`."""
         return self.__repr__()
 
+    def __eq__(self, other):
+        """Equality comparison operation."""
+        if not isinstance(other, Key):
+            return NotImplemented
+
+        return (
+            self.pairs() == other.pairs()
+            and self.app() == other.app()
+            and self.namespace() == other.namespace()
+        )
+
+    def __getstate__(self):
+        """Private API used for pickling.
+
+        Returns:
+            Tuple[Dict[str, Any]]: A tuple containing a single dictionary of
+            state to pickle. The dictionary has three keys ``pairs``, ``app``
+            and ``namespace``.
+        """
+        return (
+            {
+                "pairs": self.pairs(),
+                "app": self.app(),
+                "namespace": self.namespace(),
+            },
+        )
+
+    def __setstate__(self, state):
+        """Private API used for unpickling.
+
+        Args:
+            state (Tuple[Dict[str, Any]]): A tuple containing a single
+                dictionary of pickled state. This should match the signature
+                returned from :func:`__getstate__`, in particular, it should
+                have three keys ``pairs``, ``app`` and ``namespace``.
+
+        Raises:
+            TypeError: If the ``state`` does not have length 1.
+            TypeError: If the single element in ``state`` is not a dictionary.
+        """
+        if len(state) != 1:
+            msg = "Invalid state length, expected 1; received {:d}".format(
+                len(state)
+            )
+            raise TypeError(msg)
+
+        kwargs = state[0]
+        if not isinstance(kwargs, dict):
+            raise TypeError(
+                "Key accepts a dict of keyword arguments as state; "
+                "received {!r}".format(kwargs)
+            )
+
+        flat = _get_path(None, kwargs["pairs"])
+        project = _project_from_app(kwargs["app"])
+        self._key = _key_module.Key(
+            *flat, project=project, namespace=kwargs["namespace"]
+        )
+        self._reference = None
+
+    def __getnewargs__(self):
+        """Private API used to specify ``__new__`` arguments when unpickling.
+
+        .. note::
+
+            This method is provided for backwards compatibility, though it
+            isn't needed.
+
+        Returns:
+            Tuple[Dict[str, Any]]: A tuple containing a single dictionary of
+            state to pickle. The dictionary has three keys ``pairs``, ``app``
+            and ``namespace``.
+        """
+        return (
+            {
+                "pairs": self.pairs(),
+                "app": self.app(),
+                "namespace": self.namespace(),
+            },
+        )
+
     def parent(self):
         """Parent key constructed from all but the last ``(kind, id)`` pairs.
 
