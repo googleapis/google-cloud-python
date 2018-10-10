@@ -18,35 +18,24 @@ import os
 import nox
 
 
-@nox.session
 def default(session):
-    return unit(session, 'default')
+  # Install all test dependencies, then install this package in-place.
+  session.install('pytest')
+  session.install('-e', '.')
+
+  # Run py.test against the unit tests.
+  session.run('py.test', '--quiet', os.path.join('tests', 'unit'))
 
 
-@nox.session
-@nox.parametrize('py', ['2.7', '3.5', '3.6', '3.7'])
-def unit(session, py):
+@nox.session(python=['2.7', '3.5', '3.6', '3.7'])
+def unit(session):
     """Run the unit test suite."""
-
-    # Run unit tests against all supported versions of Python.
-    if py != 'default':
-        session.interpreter = 'python{}'.format(py)
-
-    # Set the virtualenv directory name.
-    session.virtualenv_dirname = 'unit-' + py
-
-    # Install all test dependencies, then install this package in-place.
-    session.install('pytest')
-    session.install('-e', '.')
-
-    # Run py.test against the unit tests.
-    session.run('py.test', '--quiet', os.path.join('tests', 'unit'))
+    default(session)
 
 
-@nox.session
+@nox.session(python='3.6')
 def lint_setup_py(session):
     """Verify that setup.py is valid (including RST check)."""
-    session.interpreter = 'python3.6'
     session.install('docutils', 'pygments')
     session.run('python', 'setup.py', 'check', '--restructuredtext',
                 '--strict')
