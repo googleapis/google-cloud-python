@@ -71,6 +71,10 @@ the rewrite.
   the work of the constructor in `__new__`, so the call to `__setstate__` was
   redundant. In our implementation `__setstate__` is succifient and `__new__`
   isn't implemented, hence `__getnewargs__` isn't needed.
+- Since we no longer use `__new__` as the constructor / utilize the
+  `__getnewargs__` value, the extra support for
+  `Key({"flat": ("a", "b"), ...})` as an alternative to
+  `Key(flat=("a", "b"), ...)` can be retired
 
 [0]: https://cloud.google.com/datastore
 [1]: https://cloud.google.com/appengine
