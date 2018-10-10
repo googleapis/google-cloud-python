@@ -88,7 +88,7 @@ class Key:
         Key('Parent', 'C', 'Child', 42)
 
     Either of the above constructor forms can additionally pass in another
-    key using ``parent=<key>``. The ``(kind, id)`` pairs of the parent key are
+    key the ``parent`` keyword. The ``(kind, id)`` pairs of the parent key are
     inserted before the ``(kind, id)`` pairs passed explicitly.
 
     .. doctest:: key-constructor-parent
@@ -156,12 +156,6 @@ class Key:
     Keys are immutable, which means that a Key object cannot be modified
     once it has been created. This is enforced by the implementation as
     well as Python allows.
-
-    For access to the contents of a key, the following methods and
-    operations are supported:
-
-    * ``key1 == key2``, ``key1 != key2``: comparison for equality between keys
-    * ``hash(key)``: a hash value sufficient for storing keys in a dictionary
 
     Keys also support interaction with the datastore; these methods are
     the only ones that engage in any kind of I/O activity. For ``Future``
@@ -281,16 +275,53 @@ class Key:
         """Alias for :meth:`__repr__`."""
         return self.__repr__()
 
+    def __hash__(self):
+        """Hash value, for use in dictionary lookups.
+
+        .. note::
+
+            This ignores ``app`` and ``namespace``. Since :func:`hash` isn't
+            expected to return a unique value (it just reduces the chance of
+            collision), this doesn't try to increase entropy by including other
+            values. The primary concern is that hashes of equal keys are
+            equal, not the other way around.
+        """
+        return hash(self.pairs())
+
+    def _tuple(self):
+        """Helper to return an orderable tuple."""
+        return (self.app(), self.namespace(), self.pairs())
+
     def __eq__(self, other):
         """Equality comparison operation."""
         if not isinstance(other, Key):
             return NotImplemented
 
-        return (
-            self.pairs() == other.pairs()
-            and self.app() == other.app()
-            and self.namespace() == other.namespace()
-        )
+        return self._tuple() == other._tuple()
+
+    def __ne__(self, other):
+        """Inequality comparison operation."""
+        return not self == other
+
+    def __lt__(self, other):
+        """Less than ordering."""
+        if not isinstance(other, Key):
+            return NotImplemented
+        return self._tuple() < other._tuple()
+
+    def __le__(self, other):
+        """Less than or equal ordering."""
+        if not isinstance(other, Key):
+            return NotImplemented
+        return self._tuple() <= other._tuple()
+
+    def __gt__(self, other):
+        """Greater than ordering."""
+        return not self <= other
+
+    def __ge__(self, other):
+        """Greater than or equal ordering."""
+        return not self < other
 
     def __getstate__(self):
         """Private API used for pickling.
@@ -510,17 +541,17 @@ class Key:
 
             >>> key = ndb.Key("Satellite", "Moon", "Space", "Dust")
             >>> key.pairs()
-            [('Satellite', 'Moon'), ('Space', 'Dust')]
+            (('Satellite', 'Moon'), ('Space', 'Dust'))
             >>>
             >>> partial_key = ndb.Key("Known", None)
             >>> partial_key.pairs()
-            [('Known', None)]
+            (('Known', None),)
         """
         flat = self.flat()
         pairs = []
         for i in range(0, len(flat), 2):
             pairs.append(flat[i : i + 2])
-        return pairs
+        return tuple(pairs)
 
     def flat(self):
         """The flat path for the key.
