@@ -46,6 +46,11 @@ fi
 
 cd "$PACKAGE"
 
-python3.6 -m pip install --quiet nox-automation
+# Remove old nox
+python3.6 -m pip uninstall --yes --quiet nox-automation
 
-nox
+# Install nox
+python3.6 -m pip install --upgrade --quiet nox
+python3.6 -m nox --version
+
+python3.6 -m nox
