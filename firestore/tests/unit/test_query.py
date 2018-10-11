@@ -909,6 +909,25 @@ class TestQuery(unittest.TestCase):
         sort = query._comparator(doc1, doc2)
         self.assertEqual(sort, 1)
 
+    def test_comparator_ordering_descending(self):
+        query = self._make_one(mock.sentinel.parent)
+        orderByMock = mock.Mock()
+        orderByMock.field.field_path = 'last'
+        orderByMock.direction = -1  # descending
+        query._orders = [orderByMock]
+
+        doc1 = mock.Mock()
+        doc1.reference._path = ('col', 'adocument1')
+        doc1._data = {'first': {'stringValue': 'Ada'},
+                      'last': {'stringValue': 'secondlovelace'}}
+        doc2 = mock.Mock()
+        doc2.reference._path = ('col', 'adocument2')
+        doc2._data = {'first': {'stringValue': 'Ada'},
+                      'last': {'stringValue': 'lovelace'}}
+
+        sort = query._comparator(doc1, doc2)
+        self.assertEqual(sort, -1)
+
     def test_comparator_missing_order_by_field_in_data_raises(self):
         query = self._make_one(mock.sentinel.parent)
         orderByMock = mock.Mock()
