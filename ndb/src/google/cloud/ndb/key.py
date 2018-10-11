@@ -92,6 +92,8 @@ from google.cloud.datastore import _app_engine_key_pb2
 from google.cloud.datastore import key as _key_module
 import google.cloud.datastore
 
+from google.cloud.ndb import _exceptions
+
 
 __all__ = ["Key"]
 _APP_ID_ENVIRONMENT = "APPLICATION_ID"
@@ -118,14 +120,6 @@ _BAD_INTEGER_ID = (
 _BAD_STRING_ID = (
     "Key name strings must be non-empty strings up to {:d} bytes; received {}"
 )
-
-
-class _BadArgumentError(Exception):
-    """Placeholder exception for ``datastore_errors.BadArgumentError``."""
-
-
-class _BadValueError(Exception):
-    """Placeholder exception for ``datastore_errors.BadValueError``."""
 
 
 class Key:
@@ -1070,7 +1064,7 @@ def _parse_from_args(
         ~.datastore.Key: The constructed key.
 
     Raises:
-        ._BadValueError: If ``parent`` is passed but is not a ``Key``.
+        .BadValueError: If ``parent`` is passed but is not a ``Key``.
     """
     flat = _get_path(flat, pairs)
     _clean_flat_path(flat)
@@ -1081,7 +1075,7 @@ def _parse_from_args(
     else:
         project = _project_from_app(app, allow_empty=True)
         if not isinstance(parent, Key):
-            raise _BadValueError(
+            raise _exceptions.BadValueError(
                 "Expected Key instance, got {!r}".format(parent)
             )
         # Offload verification of parent to ``google.cloud.datastore.Key()``.
@@ -1148,7 +1142,7 @@ def _clean_flat_path(flat):
 
     Raises:
         TypeError: If the kind in a pair is an invalid type.
-        ._BadArgumentError: If a key ID is :data:`None` (indicating a partial
+        .BadArgumentError: If a key ID is :data:`None` (indicating a partial
            key), but in a pair other than the last one.
         TypeError: If a key ID is not a string or integer.
     """
@@ -1169,7 +1163,9 @@ def _clean_flat_path(flat):
         id_ = flat[i + 1]
         if id_ is None:
             if i + 2 < len(flat):
-                raise _BadArgumentError("Incomplete Key entry must be last")
+                raise _exceptions.BadArgumentError(
+                    "Incomplete Key entry must be last"
+                )
         elif not isinstance(id_, (str, int)):
             raise TypeError(_INVALID_ID_TYPE.format(id_))
 
