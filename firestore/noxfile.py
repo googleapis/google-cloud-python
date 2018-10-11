@@ -56,9 +56,8 @@ def default(session):
     )
 
 
-@nox.session
-@nox.parametrize('py', ['2.7', '3.5', '3.6', '3.7'])
-def unit(session, py):
+@nox.session(python=['2.7', '3.5', '3.6', '3.7'])
+def unit(session):
     """Run the unit test suite."""
 
     default(session)
