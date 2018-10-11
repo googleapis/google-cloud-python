@@ -20,61 +20,61 @@ from google.cloud.ndb import key as key_module
 
 
 __all__ = [
+    "Key",
     "BlobKey",
-    "BlobKeyProperty",
-    "BlobProperty",
-    "BooleanProperty",
-    "ComputedProperty",
-    "ComputedPropertyError",
-    "DateProperty",
-    "DateTimeProperty",
-    "delete_multi",
-    "delete_multi_async",
-    "Expando",
-    "FloatProperty",
-    "GenericProperty",
     "GeoPt",
-    "GeoPtProperty",
-    "get_indexes",
-    "get_indexes_async",
-    "get_multi",
-    "get_multi_async",
-    "in_transaction",
-    "Index",
-    "IndexProperty",
-    "IndexState",
-    "IntegerProperty",
+    "Rollback",
+    "KindError",
     "InvalidPropertyError",
     "BadProjectionError",
-    "JsonProperty",
-    "Key",
-    "KeyProperty",
-    "KindError",
-    "LocalStructuredProperty",
+    "UnprojectedPropertyError",
+    "ReadonlyPropertyError",
+    "ComputedPropertyError",
+    "IndexProperty",
+    "Index",
+    "IndexState",
+    "ModelAdapter",
     "make_connection",
+    "ModelAttribute",
+    "Property",
+    "ModelKey",
+    "BooleanProperty",
+    "IntegerProperty",
+    "FloatProperty",
+    "BlobProperty",
+    "TextProperty",
+    "StringProperty",
+    "GeoPtProperty",
+    "PickleProperty",
+    "JsonProperty",
+    "UserProperty",
+    "KeyProperty",
+    "BlobKeyProperty",
+    "DateTimeProperty",
+    "DateProperty",
+    "TimeProperty",
+    "StructuredProperty",
+    "LocalStructuredProperty",
+    "GenericProperty",
+    "ComputedProperty",
     "MetaModel",
     "Model",
-    "ModelAdapter",
-    "ModelAttribute",
-    "ModelKey",
-    "non_transactional",
-    "PickleProperty",
-    "Property",
-    "put_multi",
-    "put_multi_async",
-    "ReadonlyPropertyError",
-    "Rollback",
-    "StringProperty",
-    "StructuredProperty",
-    "TextProperty",
-    "TimeProperty",
+    "Expando",
     "transaction",
     "transaction_async",
+    "in_transaction",
     "transactional",
     "transactional_async",
     "transactional_tasklet",
-    "UnprojectedPropertyError",
-    "UserProperty",
+    "non_transactional",
+    "get_multi_async",
+    "get_multi",
+    "put_multi_async",
+    "put_multi",
+    "delete_multi_async",
+    "delete_multi",
+    "get_indexes_async",
+    "get_indexes",
 ]
 
 
@@ -115,90 +115,12 @@ class ComputedPropertyError(ReadonlyPropertyError):
     """Raised when attempting to set or delete a computed property."""
 
 
-class BlobKeyProperty:
+class IndexProperty:
     def __init__(self, *args, **kwargs):
         raise NotImplementedError
-
-
-class BlobProperty:
-    def __init__(self, *args, **kwargs):
-        raise NotImplementedError
-
-
-class BooleanProperty:
-    def __init__(self, *args, **kwargs):
-        raise NotImplementedError
-
-
-class ComputedProperty:
-    def __init__(self, *args, **kwargs):
-        raise NotImplementedError
-
-
-class DateProperty:
-    def __init__(self, *args, **kwargs):
-        raise NotImplementedError
-
-
-class DateTimeProperty:
-    def __init__(self, *args, **kwargs):
-        raise NotImplementedError
-
-
-def delete_multi(*args, **kwargs):
-    raise NotImplementedError
-
-
-def delete_multi_async(*args, **kwargs):
-    raise NotImplementedError
-
-
-class Expando:
-    def __init__(self, *args, **kwargs):
-        raise NotImplementedError
-
-
-class FloatProperty:
-    def __init__(self, *args, **kwargs):
-        raise NotImplementedError
-
-
-class GenericProperty:
-    def __init__(self, *args, **kwargs):
-        raise NotImplementedError
-
-
-class GeoPtProperty:
-    def __init__(self, *args, **kwargs):
-        raise NotImplementedError
-
-
-def get_indexes(*args, **kwargs):
-    raise NotImplementedError
-
-
-def get_indexes_async(*args, **kwargs):
-    raise NotImplementedError
-
-
-def get_multi(*args, **kwargs):
-    raise NotImplementedError
-
-
-def get_multi_async(*args, **kwargs):
-    raise NotImplementedError
-
-
-def in_transaction(*args, **kwargs):
-    raise NotImplementedError
 
 
 class Index:
-    def __init__(self, *args, **kwargs):
-        raise NotImplementedError
-
-
-class IndexProperty:
     def __init__(self, *args, **kwargs):
         raise NotImplementedError
 
@@ -208,22 +130,7 @@ class IndexState:
         raise NotImplementedError
 
 
-class IntegerProperty:
-    def __init__(self, *args, **kwargs):
-        raise NotImplementedError
-
-
-class JsonProperty:
-    def __init__(self, *args, **kwargs):
-        raise NotImplementedError
-
-
-class KeyProperty:
-    def __init__(self, *args, **kwargs):
-        raise NotImplementedError
-
-
-class LocalStructuredProperty:
+class ModelAdapter:
     def __init__(self, *args, **kwargs):
         raise NotImplementedError
 
@@ -232,8 +139,125 @@ def make_connection(*args, **kwargs):
     raise NotImplementedError
 
 
-class MetaModel:
+class ModelAttribute:
+    """Base for :meth:`_fix_up` implementing classes."""
+
+    def _fix_up(self, cls, code_name):
+        """Fix-up property name. To be implemented by subclasses.
+
+        Args:
+            cls (type): The model class that owns the property.
+            code_name (str): The name of the :class:`Property` being fixed up.
+        """
+
+
+class Property(ModelAttribute):
     def __init__(self, *args, **kwargs):
+        raise NotImplementedError
+
+
+class ModelKey(Property):
+    def __init__(self, *args, **kwargs):
+        raise NotImplementedError
+
+
+class BooleanProperty(Property):
+    def __init__(self, *args, **kwargs):
+        raise NotImplementedError
+
+
+class IntegerProperty(Property):
+    def __init__(self, *args, **kwargs):
+        raise NotImplementedError
+
+
+class FloatProperty(Property):
+    def __init__(self, *args, **kwargs):
+        raise NotImplementedError
+
+
+class BlobProperty(Property):
+    def __init__(self, *args, **kwargs):
+        raise NotImplementedError
+
+
+class TextProperty(BlobProperty):
+    def __init__(self, *args, **kwargs):
+        raise NotImplementedError
+
+
+class StringProperty(TextProperty):
+    def __init__(self, *args, **kwargs):
+        raise NotImplementedError
+
+
+class GeoPtProperty(Property):
+    def __init__(self, *args, **kwargs):
+        raise NotImplementedError
+
+
+class PickleProperty(BlobProperty):
+    def __init__(self, *args, **kwargs):
+        raise NotImplementedError
+
+
+class JsonProperty(BlobProperty):
+    def __init__(self, *args, **kwargs):
+        raise NotImplementedError
+
+
+class UserProperty(Property):
+    def __init__(self, *args, **kwargs):
+        raise NotImplementedError
+
+
+class KeyProperty(Property):
+    def __init__(self, *args, **kwargs):
+        raise NotImplementedError
+
+
+class BlobKeyProperty(Property):
+    def __init__(self, *args, **kwargs):
+        raise NotImplementedError
+
+
+class DateTimeProperty(Property):
+    def __init__(self, *args, **kwargs):
+        raise NotImplementedError
+
+
+class DateProperty(DateTimeProperty):
+    def __init__(self, *args, **kwargs):
+        raise NotImplementedError
+
+
+class TimeProperty(DateTimeProperty):
+    def __init__(self, *args, **kwargs):
+        raise NotImplementedError
+
+
+class StructuredProperty(Property):
+    def __init__(self, *args, **kwargs):
+        raise NotImplementedError
+
+
+class LocalStructuredProperty(BlobProperty):
+    def __init__(self, *args, **kwargs):
+        raise NotImplementedError
+
+
+class GenericProperty(Property):
+    def __init__(self, *args, **kwargs):
+        raise NotImplementedError
+
+
+class ComputedProperty(GenericProperty):
+    def __init__(self, *args, **kwargs):
+        raise NotImplementedError
+
+
+class MetaModel(type):
+    def __new__(self, *args, **kwargs):
         raise NotImplementedError
 
 
@@ -252,59 +276,7 @@ class Model:
         return cls.__name__
 
 
-class ModelAdapter:
-    def __init__(self, *args, **kwargs):
-        raise NotImplementedError
-
-
-class ModelAttribute:
-    def __init__(self, *args, **kwargs):
-        raise NotImplementedError
-
-
-class ModelKey:
-    def __init__(self, *args, **kwargs):
-        raise NotImplementedError
-
-
-def non_transactional(*args, **kwargs):
-    raise NotImplementedError
-
-
-class PickleProperty:
-    def __init__(self, *args, **kwargs):
-        raise NotImplementedError
-
-
-class Property:
-    def __init__(self, *args, **kwargs):
-        raise NotImplementedError
-
-
-def put_multi(*args, **kwargs):
-    raise NotImplementedError
-
-
-def put_multi_async(*args, **kwargs):
-    raise NotImplementedError
-
-
-class StringProperty:
-    def __init__(self, *args, **kwargs):
-        raise NotImplementedError
-
-
-class StructuredProperty:
-    def __init__(self, *args, **kwargs):
-        raise NotImplementedError
-
-
-class TextProperty:
-    def __init__(self, *args, **kwargs):
-        raise NotImplementedError
-
-
-class TimeProperty:
+class Expando(Model):
     def __init__(self, *args, **kwargs):
         raise NotImplementedError
 
@@ -314,6 +286,10 @@ def transaction(*args, **kwargs):
 
 
 def transaction_async(*args, **kwargs):
+    raise NotImplementedError
+
+
+def in_transaction(*args, **kwargs):
     raise NotImplementedError
 
 
@@ -329,6 +305,37 @@ def transactional_tasklet(*args, **kwargs):
     raise NotImplementedError
 
 
-class UserProperty:
-    def __init__(self, *args, **kwargs):
-        raise NotImplementedError
+def non_transactional(*args, **kwargs):
+    raise NotImplementedError
+
+
+def get_multi_async(*args, **kwargs):
+    raise NotImplementedError
+
+
+def get_multi(*args, **kwargs):
+    raise NotImplementedError
+
+
+def put_multi_async(*args, **kwargs):
+    raise NotImplementedError
+
+
+def put_multi(*args, **kwargs):
+    raise NotImplementedError
+
+
+def delete_multi_async(*args, **kwargs):
+    raise NotImplementedError
+
+
+def delete_multi(*args, **kwargs):
+    raise NotImplementedError
+
+
+def get_indexes_async(*args, **kwargs):
+    raise NotImplementedError
+
+
+def get_indexes(*args, **kwargs):
+    raise NotImplementedError
