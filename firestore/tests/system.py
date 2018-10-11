@@ -856,7 +856,7 @@ def test_watch_collection(client, cleanup):
     def on_snapshot(docs, changes, read_time):
         on_snapshot.called_count += 1
         for doc in [doc for doc in docs if doc.id == doc_ref.id]:
-            on_snapshot.born = doc._data['born']['integerValue']
+            on_snapshot.born = doc.get('born')
 
     on_snapshot.called_count = 0
     on_snapshot.born = 0
@@ -873,11 +873,11 @@ def test_watch_collection(client, cleanup):
     })
 
     for _ in range(10):
-        if on_snapshot.born == '1815':
+        if on_snapshot.born == 1815:
             break
         sleep(1)
 
-    if on_snapshot.born != '1815':
+    if on_snapshot.born != 1815:
         raise AssertionError(
             "Expected the last document update to update born: " +
             str(on_snapshot.born))
@@ -957,8 +957,10 @@ def test_watch_query_order(client, cleanup):
 
             # compare the order things are returned
             for snapshot, query in zip(docs, query_ran_results):
-                assert snapshot.get('last')['stringValue'] == query.get(
-                    'last'), "expect the sort order to match"
+                assert snapshot.get('last') == query.get(
+                   'last'), "expect the sort order to match, last"
+                assert snapshot.get('born') == query.get(
+                   'born'), "expect the sort order to match, born"
             on_snapshot.called_count += 1
             on_snapshot.last_doc_count = len(docs)
         except Exception as e:
@@ -999,6 +1001,9 @@ def test_watch_query_order(client, cleanup):
         if on_snapshot.last_doc_count == 5:
             break
         sleep(1)
+
+    if on_snapshot.failed:
+        raise on_snapshot.failed
 
     if on_snapshot.last_doc_count != 5:
         raise AssertionError(
