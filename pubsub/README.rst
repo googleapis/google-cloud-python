@@ -109,7 +109,7 @@ Subscribing
 ^^^^^^^^^^^
 
 To subscribe to data in Cloud Pub/Sub, you create a subscription based on
-the topic, and subscribe to that.
+the topic, and subscribe to that, passing a callback function.
 
 .. code-block:: python
 
@@ -127,17 +127,22 @@ the topic, and subscribe to that.
     )
     subscriber.create_subscription(
         name=subscription_name, topic=topic_name)
-    subscription = subscriber.subscribe(subscription_name)
-
-The subscription is opened asychronously, and messages are processed by
-use of a callback.
-
-.. code-block:: python
 
     def callback(message):
         print(message.data)
         message.ack()
-    subscription.open(callback)
+
+    future = subscriber.subscribe(subscription_name, callback)
+
+The future returned by the call to ``subscriber.subscribe`` can be used to
+block the current thread until a given condition obtains:
+
+.. code-block:: python
+
+    try:
+        future.result()
+    except KeyboardInterrupt:
+        future.cancel()
 
 To learn more, consult the `subscriber documentation`_.
 
