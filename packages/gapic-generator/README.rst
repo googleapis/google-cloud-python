@@ -24,7 +24,7 @@ regarding:
 Documentation
 -------------
 
-To learn more, consult the `documentation`_.
+`Documentation`_ is available on Read the Docs.
 
 .. _documentation: https://gapic-generator-python.readthedocs.io/
 
