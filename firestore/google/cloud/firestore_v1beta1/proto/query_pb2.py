@@ -22,10 +22,9 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='google/cloud/firestore_v1beta1/proto/query.proto',
   package='google.firestore.v1beta1',
   syntax='proto3',
-  serialized_pb=_b('\n0google/cloud/firestore_v1beta1/proto/query.proto\x12\x18google.firestore.v1beta1\x1a\x1cgoogle/api/annotations.proto\x1a\x33google/cloud/firestore_v1beta1/proto/document.proto\x1a\x1egoogle/protobuf/wrappers.proto\"\xa5\x0f\n\x0fStructuredQuery\x12\x44\n\x06select\x18\x01 \x01(\x0b\x32\x34.google.firestore.v1beta1.StructuredQuery.Projection\x12J\n\x04\x66rom\x18\x02 \x03(\x0b\x32<.google.firestore.v1beta1.StructuredQuery.CollectionSelector\x12?\n\x05where\x18\x03 \x01(\x0b\x32\x30.google.firestore.v1beta1.StructuredQuery.Filter\x12\x41\n\x08order_by\x18\x04 \x03(\x0b\x32/.google.firestore.v1beta1.StructuredQuery.Order\x12\x32\n\x08start_at\x18\x07 \x01(\x0b\x32 .google.firestore.v1beta1.Cursor\x12\x30\n\x06\x65nd_at\x18\x08 \x01(\x0b\x32 .google.firestore.v1beta1.Cursor\x12\x0e\n\x06offset\x18\x06 \x01(\x05\x12*\n\x05limit\x18\x05 \x01(\x0b\x32\x1b.google.protobuf.Int32Value\x1a\x44\n\x12\x43ollectionSelector\x12\x15\n\rcollection_id\x18\x02 \x01(\t\x12\x17\n\x0f\x61ll_descendants\x18\x03 \x01(\x08\x1a\x8c\x02\n\x06\x46ilter\x12U\n\x10\x63omposite_filter\x18\x01 \x01(\x0b\x32\x39.google.firestore.v1beta1.StructuredQuery.CompositeFilterH\x00\x12M\n\x0c\x66ield_filter\x18\x02 \x01(\x0b\x32\x35.google.firestore.v1beta1.StructuredQuery.FieldFilterH\x00\x12M\n\x0cunary_filter\x18\x03 \x01(\x0b\x32\x35.google.firestore.v1beta1.StructuredQuery.UnaryFilterH\x00\x42\r\n\x0b\x66ilter_type\x1a\xd3\x01\n\x0f\x43ompositeFilter\x12N\n\x02op\x18\x01 \x01(\x0e\x32\x42.google.firestore.v1beta1.StructuredQuery.CompositeFilter.Operator\x12\x41\n\x07\x66ilters\x18\x02 \x03(\x0b\x32\x30.google.firestore.v1beta1.StructuredQuery.Filter\"-\n\x08Operator\x12\x18\n\x14OPERATOR_UNSPECIFIED\x10\x00\x12\x07\n\x03\x41ND\x10\x01\x1a\xd8\x02\n\x0b\x46ieldFilter\x12G\n\x05\x66ield\x18\x01 \x01(\x0b\x32\x38.google.firestore.v1beta1.StructuredQuery.FieldReference\x12J\n\x02op\x18\x02 \x01(\x0e\x32>.google.firestore.v1beta1.StructuredQuery.FieldFilter.Operator\x12.\n\x05value\x18\x03 \x01(\x0b\x32\x1f.google.firestore.v1beta1.Value\"\x83\x01\n\x08Operator\x12\x18\n\x14OPERATOR_UNSPECIFIED\x10\x00\x12\r\n\tLESS_THAN\x10\x01\x12\x16\n\x12LESS_THAN_OR_EQUAL\x10\x02\x12\x10\n\x0cGREATER_THAN\x10\x03\x12\x19\n\x15GREATER_THAN_OR_EQUAL\x10\x04\x12\t\n\x05\x45QUAL\x10\x05\x1a\xf3\x01\n\x0bUnaryFilter\x12J\n\x02op\x18\x01 \x01(\x0e\x32>.google.firestore.v1beta1.StructuredQuery.UnaryFilter.Operator\x12I\n\x05\x66ield\x18\x02 \x01(\x0b\x32\x38.google.firestore.v1beta1.StructuredQuery.FieldReferenceH\x00\"=\n\x08Operator\x12\x18\n\x14OPERATOR_UNSPECIFIED\x10\x00\x12\n\n\x06IS_NAN\x10\x02\x12\x0b\n\x07IS_NULL\x10\x03\x42\x0e\n\x0coperand_type\x1a\x98\x01\n\x05Order\x12G\n\x05\x66ield\x18\x01 \x01(\x0b\x32\x38.google.firestore.v1beta1.StructuredQuery.FieldReference\x12\x46\n\tdirection\x18\x02 \x01(\x0e\x32\x33.google.firestore.v1beta1.StructuredQuery.Direction\x1a$\n\x0e\x46ieldReference\x12\x12\n\nfield_path\x18\x02 \x01(\t\x1aV\n\nProjection\x12H\n\x06\x66ields\x18\x02 \x03(\x0b\x32\x38.google.firestore.v1beta1.StructuredQuery.FieldReference\"E\n\tDirection\x12\x19\n\x15\x44IRECTION_UNSPECIFIED\x10\x00\x12\r\n\tASCENDING\x10\x01\x12\x0e\n\nDESCENDING\x10\x02\"I\n\x06\x43ursor\x12/\n\x06values\x18\x01 \x03(\x0b\x32\x1f.google.firestore.v1beta1.Value\x12\x0e\n\x06\x62\x65\x66ore\x18\x02 \x01(\x08\x42\xb8\x01\n\x1c\x63om.google.firestore.v1beta1B\nQueryProtoP\x01ZAgoogle.golang.org/genproto/googleapis/firestore/v1beta1;firestore\xa2\x02\x04GCFS\xaa\x02\x1eGoogle.Cloud.Firestore.V1Beta1\xca\x02\x1eGoogle\\Cloud\\Firestore\\V1beta1b\x06proto3')
+  serialized_pb=_b('\n0google/cloud/firestore_v1beta1/proto/query.proto\x12\x18google.firestore.v1beta1\x1a\x1cgoogle/api/annotations.proto\x1a\x33google/cloud/firestore_v1beta1/proto/document.proto\x1a\x1egoogle/protobuf/wrappers.proto\"\xb9\x0f\n\x0fStructuredQuery\x12\x44\n\x06select\x18\x01 \x01(\x0b\x32\x34.google.firestore.v1beta1.StructuredQuery.Projection\x12J\n\x04\x66rom\x18\x02 \x03(\x0b\x32<.google.firestore.v1beta1.StructuredQuery.CollectionSelector\x12?\n\x05where\x18\x03 \x01(\x0b\x32\x30.google.firestore.v1beta1.StructuredQuery.Filter\x12\x41\n\x08order_by\x18\x04 \x03(\x0b\x32/.google.firestore.v1beta1.StructuredQuery.Order\x12\x32\n\x08start_at\x18\x07 \x01(\x0b\x32 .google.firestore.v1beta1.Cursor\x12\x30\n\x06\x65nd_at\x18\x08 \x01(\x0b\x32 .google.firestore.v1beta1.Cursor\x12\x0e\n\x06offset\x18\x06 \x01(\x05\x12*\n\x05limit\x18\x05 \x01(\x0b\x32\x1b.google.protobuf.Int32Value\x1a\x44\n\x12\x43ollectionSelector\x12\x15\n\rcollection_id\x18\x02 \x01(\t\x12\x17\n\x0f\x61ll_descendants\x18\x03 \x01(\x08\x1a\x8c\x02\n\x06\x46ilter\x12U\n\x10\x63omposite_filter\x18\x01 \x01(\x0b\x32\x39.google.firestore.v1beta1.StructuredQuery.CompositeFilterH\x00\x12M\n\x0c\x66ield_filter\x18\x02 \x01(\x0b\x32\x35.google.firestore.v1beta1.StructuredQuery.FieldFilterH\x00\x12M\n\x0cunary_filter\x18\x03 \x01(\x0b\x32\x35.google.firestore.v1beta1.StructuredQuery.UnaryFilterH\x00\x42\r\n\x0b\x66ilter_type\x1a\xd3\x01\n\x0f\x43ompositeFilter\x12N\n\x02op\x18\x01 \x01(\x0e\x32\x42.google.firestore.v1beta1.StructuredQuery.CompositeFilter.Operator\x12\x41\n\x07\x66ilters\x18\x02 \x03(\x0b\x32\x30.google.firestore.v1beta1.StructuredQuery.Filter\"-\n\x08Operator\x12\x18\n\x14OPERATOR_UNSPECIFIED\x10\x00\x12\x07\n\x03\x41ND\x10\x01\x1a\xec\x02\n\x0b\x46ieldFilter\x12G\n\x05\x66ield\x18\x01 \x01(\x0b\x32\x38.google.firestore.v1beta1.StructuredQuery.FieldReference\x12J\n\x02op\x18\x02 \x01(\x0e\x32>.google.firestore.v1beta1.StructuredQuery.FieldFilter.Operator\x12.\n\x05value\x18\x03 \x01(\x0b\x32\x1f.google.firestore.v1beta1.Value\"\x97\x01\n\x08Operator\x12\x18\n\x14OPERATOR_UNSPECIFIED\x10\x00\x12\r\n\tLESS_THAN\x10\x01\x12\x16\n\x12LESS_THAN_OR_EQUAL\x10\x02\x12\x10\n\x0cGREATER_THAN\x10\x03\x12\x19\n\x15GREATER_THAN_OR_EQUAL\x10\x04\x12\t\n\x05\x45QUAL\x10\x05\x12\x12\n\x0e\x41RRAY_CONTAINS\x10\x07\x1a\xf3\x01\n\x0bUnaryFilter\x12J\n\x02op\x18\x01 \x01(\x0e\x32>.google.firestore.v1beta1.StructuredQuery.UnaryFilter.Operator\x12I\n\x05\x66ield\x18\x02 \x01(\x0b\x32\x38.google.firestore.v1beta1.StructuredQuery.FieldReferenceH\x00\"=\n\x08Operator\x12\x18\n\x14OPERATOR_UNSPECIFIED\x10\x00\x12\n\n\x06IS_NAN\x10\x02\x12\x0b\n\x07IS_NULL\x10\x03\x42\x0e\n\x0coperand_type\x1a\x98\x01\n\x05Order\x12G\n\x05\x66ield\x18\x01 \x01(\x0b\x32\x38.google.firestore.v1beta1.StructuredQuery.FieldReference\x12\x46\n\tdirection\x18\x02 \x01(\x0e\x32\x33.google.firestore.v1beta1.StructuredQuery.Direction\x1a$\n\x0e\x46ieldReference\x12\x12\n\nfield_path\x18\x02 \x01(\t\x1aV\n\nProjection\x12H\n\x06\x66ields\x18\x02 \x03(\x0b\x32\x38.google.firestore.v1beta1.StructuredQuery.FieldReference\"E\n\tDirection\x12\x19\n\x15\x44IRECTION_UNSPECIFIED\x10\x00\x12\r\n\tASCENDING\x10\x01\x12\x0e\n\nDESCENDING\x10\x02\"I\n\x06\x43ursor\x12/\n\x06values\x18\x01 \x03(\x0b\x32\x1f.google.firestore.v1beta1.Value\x12\x0e\n\x06\x62\x65\x66ore\x18\x02 \x01(\x08\x42\xb8\x01\n\x1c\x63om.google.firestore.v1beta1B\nQueryProtoP\x01ZAgoogle.golang.org/genproto/googleapis/firestore/v1beta1;firestore\xa2\x02\x04GCFS\xaa\x02\x1eGoogle.Cloud.Firestore.V1Beta1\xca\x02\x1eGoogle\\Cloud\\Firestore\\V1beta1b\x06proto3')
   ,
   dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR,google_dot_cloud_dot_firestore__v1beta1_dot_proto_dot_document__pb2.DESCRIPTOR,google_dot_protobuf_dot_wrappers__pb2.DESCRIPTOR,])
-_sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 
 
@@ -81,11 +80,15 @@ _STRUCTUREDQUERY_FIELDFILTER_OPERATOR = _descriptor.EnumDescriptor(
       name='EQUAL', index=5, number=5,
       options=None,
       type=None),
+    _descriptor.EnumValueDescriptor(
+      name='ARRAY_CONTAINS', index=6, number=7,
+      options=None,
+      type=None),
   ],
   containing_type=None,
   options=None,
   serialized_start=1422,
-  serialized_end=1553,
+  serialized_end=1573,
 )
 _sym_db.RegisterEnumDescriptor(_STRUCTUREDQUERY_FIELDFILTER_OPERATOR)
 
@@ -110,8 +113,8 @@ _STRUCTUREDQUERY_UNARYFILTER_OPERATOR = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=1722,
-  serialized_end=1783,
+  serialized_start=1742,
+  serialized_end=1803,
 )
 _sym_db.RegisterEnumDescriptor(_STRUCTUREDQUERY_UNARYFILTER_OPERATOR)
 
@@ -136,8 +139,8 @@ _STRUCTUREDQUERY_DIRECTION = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=2082,
-  serialized_end=2151,
+  serialized_start=2102,
+  serialized_end=2171,
 )
 _sym_db.RegisterEnumDescriptor(_STRUCTUREDQUERY_DIRECTION)
 
@@ -155,14 +158,14 @@ _STRUCTUREDQUERY_COLLECTIONSELECTOR = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='all_descendants', full_name='google.firestore.v1beta1.StructuredQuery.CollectionSelector.all_descendants', index=1,
       number=3, type=8, cpp_type=7, label=1,
       has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -192,21 +195,21 @@ _STRUCTUREDQUERY_FILTER = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='field_filter', full_name='google.firestore.v1beta1.StructuredQuery.Filter.field_filter', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='unary_filter', full_name='google.firestore.v1beta1.StructuredQuery.Filter.unary_filter', index=2,
       number=3, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -239,14 +242,14 @@ _STRUCTUREDQUERY_COMPOSITEFILTER = _descriptor.Descriptor(
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='filters', full_name='google.firestore.v1beta1.StructuredQuery.CompositeFilter.filters', index=1,
       number=2, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -277,21 +280,21 @@ _STRUCTUREDQUERY_FIELDFILTER = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='op', full_name='google.firestore.v1beta1.StructuredQuery.FieldFilter.op', index=1,
       number=2, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='value', full_name='google.firestore.v1beta1.StructuredQuery.FieldFilter.value', index=2,
       number=3, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -306,7 +309,7 @@ _STRUCTUREDQUERY_FIELDFILTER = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=1209,
-  serialized_end=1553,
+  serialized_end=1573,
 )
 
 _STRUCTUREDQUERY_UNARYFILTER = _descriptor.Descriptor(
@@ -322,14 +325,14 @@ _STRUCTUREDQUERY_UNARYFILTER = _descriptor.Descriptor(
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='field', full_name='google.firestore.v1beta1.StructuredQuery.UnaryFilter.field', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -346,8 +349,8 @@ _STRUCTUREDQUERY_UNARYFILTER = _descriptor.Descriptor(
       name='operand_type', full_name='google.firestore.v1beta1.StructuredQuery.UnaryFilter.operand_type',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=1556,
-  serialized_end=1799,
+  serialized_start=1576,
+  serialized_end=1819,
 )
 
 _STRUCTUREDQUERY_ORDER = _descriptor.Descriptor(
@@ -363,14 +366,14 @@ _STRUCTUREDQUERY_ORDER = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='direction', full_name='google.firestore.v1beta1.StructuredQuery.Order.direction', index=1,
       number=2, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -383,8 +386,8 @@ _STRUCTUREDQUERY_ORDER = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1802,
-  serialized_end=1954,
+  serialized_start=1822,
+  serialized_end=1974,
 )
 
 _STRUCTUREDQUERY_FIELDREFERENCE = _descriptor.Descriptor(
@@ -400,7 +403,7 @@ _STRUCTUREDQUERY_FIELDREFERENCE = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -413,8 +416,8 @@ _STRUCTUREDQUERY_FIELDREFERENCE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1956,
-  serialized_end=1992,
+  serialized_start=1976,
+  serialized_end=2012,
 )
 
 _STRUCTUREDQUERY_PROJECTION = _descriptor.Descriptor(
@@ -430,7 +433,7 @@ _STRUCTUREDQUERY_PROJECTION = _descriptor.Descriptor(
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -443,8 +446,8 @@ _STRUCTUREDQUERY_PROJECTION = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1994,
-  serialized_end=2080,
+  serialized_start=2014,
+  serialized_end=2100,
 )
 
 _STRUCTUREDQUERY = _descriptor.Descriptor(
@@ -460,56 +463,56 @@ _STRUCTUREDQUERY = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='from', full_name='google.firestore.v1beta1.StructuredQuery.from', index=1,
       number=2, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='where', full_name='google.firestore.v1beta1.StructuredQuery.where', index=2,
       number=3, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='order_by', full_name='google.firestore.v1beta1.StructuredQuery.order_by', index=3,
       number=4, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='start_at', full_name='google.firestore.v1beta1.StructuredQuery.start_at', index=4,
       number=7, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='end_at', full_name='google.firestore.v1beta1.StructuredQuery.end_at', index=5,
       number=8, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='offset', full_name='google.firestore.v1beta1.StructuredQuery.offset', index=6,
       number=6, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='limit', full_name='google.firestore.v1beta1.StructuredQuery.limit', index=7,
       number=5, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -524,7 +527,7 @@ _STRUCTUREDQUERY = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=194,
-  serialized_end=2151,
+  serialized_end=2171,
 )
 
 
@@ -541,14 +544,14 @@ _CURSOR = _descriptor.Descriptor(
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='before', full_name='google.firestore.v1beta1.Cursor.before', index=1,
       number=2, type=8, cpp_type=7, label=1,
       has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -561,8 +564,8 @@ _CURSOR = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2153,
-  serialized_end=2226,
+  serialized_start=2173,
+  serialized_end=2246,
 )
 
 _STRUCTUREDQUERY_COLLECTIONSELECTOR.containing_type = _STRUCTUREDQUERY
@@ -612,6 +615,7 @@ _STRUCTUREDQUERY_DIRECTION.containing_type = _STRUCTUREDQUERY
 _CURSOR.fields_by_name['values'].message_type = google_dot_cloud_dot_firestore__v1beta1_dot_proto_dot_document__pb2._VALUE
 DESCRIPTOR.message_types_by_name['StructuredQuery'] = _STRUCTUREDQUERY
 DESCRIPTOR.message_types_by_name['Cursor'] = _CURSOR
+_sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 StructuredQuery = _reflection.GeneratedProtocolMessageType('StructuredQuery', (_message.Message,), dict(
 
@@ -829,14 +833,4 @@ _sym_db.RegisterMessage(Cursor)
 
 DESCRIPTOR.has_options = True
 DESCRIPTOR._options = _descriptor._ParseOptions(descriptor_pb2.FileOptions(), _b('\n\034com.google.firestore.v1beta1B\nQueryProtoP\001ZAgoogle.golang.org/genproto/googleapis/firestore/v1beta1;firestore\242\002\004GCFS\252\002\036Google.Cloud.Firestore.V1Beta1\312\002\036Google\\Cloud\\Firestore\\V1beta1'))
-try:
-  # THESE ELEMENTS WILL BE DEPRECATED.
-  # Please use the generated *_pb2_grpc.py files instead.
-  import grpc
-  from grpc.beta import implementations as beta_implementations
-  from grpc.beta import interfaces as beta_interfaces
-  from grpc.framework.common import cardinality
-  from grpc.framework.interfaces.face import utilities as face_utilities
-except ImportError:
-  pass
 # @@protoc_insertion_point(module_scope)

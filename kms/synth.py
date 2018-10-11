@@ -33,13 +33,7 @@ library = gapic.py_library(
 s.move(
     library,
     excludes=[
+        'setup.py',
         'docs/**/*',
         'README.rst',
     ])
-
-# Set Release Status
-release_status = 'Development Status :: 3 - Alpha'
-s.replace('setup.py',
-          '(release_status = )(.*)$',
-          f"\\1'{release_status}'")
-s.replace('setup.py', 'version = .*', f"version = '{client_library_version}'")

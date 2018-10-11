@@ -25,7 +25,6 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   serialized_pb=_b('\nMgoogle/devtools/clouderrorreporting_v1beta1/proto/report_errors_service.proto\x12+google.devtools.clouderrorreporting.v1beta1\x1a\x1cgoogle/api/annotations.proto\x1a>google/devtools/clouderrorreporting_v1beta1/proto/common.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\x7f\n\x17ReportErrorEventRequest\x12\x14\n\x0cproject_name\x18\x01 \x01(\t\x12N\n\x05\x65vent\x18\x02 \x01(\x0b\x32?.google.devtools.clouderrorreporting.v1beta1.ReportedErrorEvent\"\x1a\n\x18ReportErrorEventResponse\"\xf7\x01\n\x12ReportedErrorEvent\x12.\n\nevent_time\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12T\n\x0fservice_context\x18\x02 \x01(\x0b\x32;.google.devtools.clouderrorreporting.v1beta1.ServiceContext\x12\x0f\n\x07message\x18\x03 \x01(\t\x12J\n\x07\x63ontext\x18\x04 \x01(\x0b\x32\x39.google.devtools.clouderrorreporting.v1beta1.ErrorContext2\xf8\x01\n\x13ReportErrorsService\x12\xe0\x01\n\x10ReportErrorEvent\x12\x44.google.devtools.clouderrorreporting.v1beta1.ReportErrorEventRequest\x1a\x45.google.devtools.clouderrorreporting.v1beta1.ReportErrorEventResponse\"?\x82\xd3\xe4\x93\x02\x39\"0/v1beta1/{project_name=projects/*}/events:report:\x05\x65ventB\xf9\x01\n/com.google.devtools.clouderrorreporting.v1beta1B\x18ReportErrorsServiceProtoP\x01Z^google.golang.org/genproto/googleapis/devtools/clouderrorreporting/v1beta1;clouderrorreporting\xaa\x02#Google.Cloud.ErrorReporting.V1Beta1\xca\x02#Google\\Cloud\\ErrorReporting\\V1beta1b\x06proto3')
   ,
   dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR,google_dot_devtools_dot_clouderrorreporting__v1beta1_dot_proto_dot_common__pb2.DESCRIPTOR,google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,])
-_sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 
 
@@ -43,14 +42,14 @@ _REPORTERROREVENTREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='event', full_name='google.devtools.clouderrorreporting.v1beta1.ReportErrorEventRequest.event', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -105,28 +104,28 @@ _REPORTEDERROREVENT = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='service_context', full_name='google.devtools.clouderrorreporting.v1beta1.ReportedErrorEvent.service_context', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='message', full_name='google.devtools.clouderrorreporting.v1beta1.ReportedErrorEvent.message', index=2,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='context', full_name='google.devtools.clouderrorreporting.v1beta1.ReportedErrorEvent.context', index=3,
       number=4, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -150,6 +149,7 @@ _REPORTEDERROREVENT.fields_by_name['context'].message_type = google_dot_devtools
 DESCRIPTOR.message_types_by_name['ReportErrorEventRequest'] = _REPORTERROREVENTREQUEST
 DESCRIPTOR.message_types_by_name['ReportErrorEventResponse'] = _REPORTERROREVENTRESPONSE
 DESCRIPTOR.message_types_by_name['ReportedErrorEvent'] = _REPORTEDERROREVENT
+_sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 ReportErrorEventRequest = _reflection.GeneratedProtocolMessageType('ReportErrorEventRequest', (_message.Message,), dict(
   DESCRIPTOR = _REPORTERROREVENTREQUEST,
@@ -215,144 +215,28 @@ _sym_db.RegisterMessage(ReportedErrorEvent)
 
 DESCRIPTOR.has_options = True
 DESCRIPTOR._options = _descriptor._ParseOptions(descriptor_pb2.FileOptions(), _b('\n/com.google.devtools.clouderrorreporting.v1beta1B\030ReportErrorsServiceProtoP\001Z^google.golang.org/genproto/googleapis/devtools/clouderrorreporting/v1beta1;clouderrorreporting\252\002#Google.Cloud.ErrorReporting.V1Beta1\312\002#Google\\Cloud\\ErrorReporting\\V1beta1'))
-try:
-  # THESE ELEMENTS WILL BE DEPRECATED.
-  # Please use the generated *_pb2_grpc.py files instead.
-  import grpc
-  from grpc.beta import implementations as beta_implementations
-  from grpc.beta import interfaces as beta_interfaces
-  from grpc.framework.common import cardinality
-  from grpc.framework.interfaces.face import utilities as face_utilities
 
+_REPORTERRORSSERVICE = _descriptor.ServiceDescriptor(
+  name='ReportErrorsService',
+  full_name='google.devtools.clouderrorreporting.v1beta1.ReportErrorsService',
+  file=DESCRIPTOR,
+  index=0,
+  options=None,
+  serialized_start=661,
+  serialized_end=909,
+  methods=[
+  _descriptor.MethodDescriptor(
+    name='ReportErrorEvent',
+    full_name='google.devtools.clouderrorreporting.v1beta1.ReportErrorsService.ReportErrorEvent',
+    index=0,
+    containing_service=None,
+    input_type=_REPORTERROREVENTREQUEST,
+    output_type=_REPORTERROREVENTRESPONSE,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\0029\"0/v1beta1/{project_name=projects/*}/events:report:\005event')),
+  ),
+])
+_sym_db.RegisterServiceDescriptor(_REPORTERRORSSERVICE)
 
-  class ReportErrorsServiceStub(object):
-    """An API for reporting error events.
-    """
+DESCRIPTOR.services_by_name['ReportErrorsService'] = _REPORTERRORSSERVICE
 
-    def __init__(self, channel):
-      """Constructor.
-
-      Args:
-        channel: A grpc.Channel.
-      """
-      self.ReportErrorEvent = channel.unary_unary(
-          '/google.devtools.clouderrorreporting.v1beta1.ReportErrorsService/ReportErrorEvent',
-          request_serializer=ReportErrorEventRequest.SerializeToString,
-          response_deserializer=ReportErrorEventResponse.FromString,
-          )
-
-
-  class ReportErrorsServiceServicer(object):
-    """An API for reporting error events.
-    """
-
-    def ReportErrorEvent(self, request, context):
-      """Report an individual error event.
-
-      This endpoint accepts <strong>either</strong> an OAuth token,
-      <strong>or</strong> an
-      <a href="https://support.google.com/cloud/answer/6158862">API key</a>
-      for authentication. To use an API key, append it to the URL as the value of
-      a `key` parameter. For example:
-      <pre>POST https://clouderrorreporting.googleapis.com/v1beta1/projects/example-project/events:report?key=123ABC456</pre>
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-
-  def add_ReportErrorsServiceServicer_to_server(servicer, server):
-    rpc_method_handlers = {
-        'ReportErrorEvent': grpc.unary_unary_rpc_method_handler(
-            servicer.ReportErrorEvent,
-            request_deserializer=ReportErrorEventRequest.FromString,
-            response_serializer=ReportErrorEventResponse.SerializeToString,
-        ),
-    }
-    generic_handler = grpc.method_handlers_generic_handler(
-        'google.devtools.clouderrorreporting.v1beta1.ReportErrorsService', rpc_method_handlers)
-    server.add_generic_rpc_handlers((generic_handler,))
-
-
-  class BetaReportErrorsServiceServicer(object):
-    """The Beta API is deprecated for 0.15.0 and later.
-
-    It is recommended to use the GA API (classes and functions in this
-    file not marked beta) for all further purposes. This class was generated
-    only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0."""
-    """An API for reporting error events.
-    """
-    def ReportErrorEvent(self, request, context):
-      """Report an individual error event.
-
-      This endpoint accepts <strong>either</strong> an OAuth token,
-      <strong>or</strong> an
-      <a href="https://support.google.com/cloud/answer/6158862">API key</a>
-      for authentication. To use an API key, append it to the URL as the value of
-      a `key` parameter. For example:
-      <pre>POST https://clouderrorreporting.googleapis.com/v1beta1/projects/example-project/events:report?key=123ABC456</pre>
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-
-
-  class BetaReportErrorsServiceStub(object):
-    """The Beta API is deprecated for 0.15.0 and later.
-
-    It is recommended to use the GA API (classes and functions in this
-    file not marked beta) for all further purposes. This class was generated
-    only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0."""
-    """An API for reporting error events.
-    """
-    def ReportErrorEvent(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Report an individual error event.
-
-      This endpoint accepts <strong>either</strong> an OAuth token,
-      <strong>or</strong> an
-      <a href="https://support.google.com/cloud/answer/6158862">API key</a>
-      for authentication. To use an API key, append it to the URL as the value of
-      a `key` parameter. For example:
-      <pre>POST https://clouderrorreporting.googleapis.com/v1beta1/projects/example-project/events:report?key=123ABC456</pre>
-      """
-      raise NotImplementedError()
-    ReportErrorEvent.future = None
-
-
-  def beta_create_ReportErrorsService_server(servicer, pool=None, pool_size=None, default_timeout=None, maximum_timeout=None):
-    """The Beta API is deprecated for 0.15.0 and later.
-
-    It is recommended to use the GA API (classes and functions in this
-    file not marked beta) for all further purposes. This function was
-    generated only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0"""
-    request_deserializers = {
-      ('google.devtools.clouderrorreporting.v1beta1.ReportErrorsService', 'ReportErrorEvent'): ReportErrorEventRequest.FromString,
-    }
-    response_serializers = {
-      ('google.devtools.clouderrorreporting.v1beta1.ReportErrorsService', 'ReportErrorEvent'): ReportErrorEventResponse.SerializeToString,
-    }
-    method_implementations = {
-      ('google.devtools.clouderrorreporting.v1beta1.ReportErrorsService', 'ReportErrorEvent'): face_utilities.unary_unary_inline(servicer.ReportErrorEvent),
-    }
-    server_options = beta_implementations.server_options(request_deserializers=request_deserializers, response_serializers=response_serializers, thread_pool=pool, thread_pool_size=pool_size, default_timeout=default_timeout, maximum_timeout=maximum_timeout)
-    return beta_implementations.server(method_implementations, options=server_options)
-
-
-  def beta_create_ReportErrorsService_stub(channel, host=None, metadata_transformer=None, pool=None, pool_size=None):
-    """The Beta API is deprecated for 0.15.0 and later.
-
-    It is recommended to use the GA API (classes and functions in this
-    file not marked beta) for all further purposes. This function was
-    generated only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0"""
-    request_serializers = {
-      ('google.devtools.clouderrorreporting.v1beta1.ReportErrorsService', 'ReportErrorEvent'): ReportErrorEventRequest.SerializeToString,
-    }
-    response_deserializers = {
-      ('google.devtools.clouderrorreporting.v1beta1.ReportErrorsService', 'ReportErrorEvent'): ReportErrorEventResponse.FromString,
-    }
-    cardinalities = {
-      'ReportErrorEvent': cardinality.Cardinality.UNARY_UNARY,
-    }
-    stub_options = beta_implementations.stub_options(host=host, metadata_transformer=metadata_transformer, request_serializers=request_serializers, response_deserializers=response_deserializers, thread_pool=pool, thread_pool_size=pool_size)
-    return beta_implementations.dynamic_stub(channel, 'google.devtools.clouderrorreporting.v1beta1.ReportErrorsService', cardinalities, options=stub_options)
-except ImportError:
-  pass
 # @@protoc_insertion_point(module_scope)

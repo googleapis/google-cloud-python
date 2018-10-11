@@ -4,6 +4,23 @@
 
 [1]: https://pypi.org/project/google-cloud-bigtable/#history
 
+## 0.31.0
+
+### New Features
+- Upgrade support level from `alpha` to `beta`.  ([#6129](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6129))
+
+### Implementation Changes
+- Improve admin operation timeouts. ([#6010](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6010))
+
+### Documentation
+- Prepare docs for repo split. ([#6014](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6014))
+
+### Internal / Testing Changes
+- Refactor 'read_row' to call 'read_rows' ([#6137](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6102))
+- Harden instance teardown against '429 Too Many Requests'. ([#6102](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6102))
+- Add `{RowSet,RowRange}.{__eq__,.__ne__}` ([#6025](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6025))
+- Regenerate low-level GAPIC code ([#6036](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6036))
+
 ## 0.30.2
 
 ### New Features

@@ -1,12 +1,21 @@
 Python Client for Stackdriver Trace API (`Alpha`_)
-==================================================================================================
+==================================================
 
-Idiomatic Python client for `Stackdriver Trace API`_
+|alpha| |pypi| |versions|
+
+The `Stackdriver Trace API`_ sends application trace data to Stackdriver Trace
+for viewing. Trace data is collected for all App Engine applications by
+default. Trace data from other applications can be provided using this API.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
 
 .. _Alpha: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/README.rst
+.. |alpha| image:: https://img.shields.io/badge/status-alpha-orange.svg
+.. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-trace.svg
+   :target: https://pypi.org/project/google-cloud-trace/
+.. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-trace.svg
+   :target: https://pypi.org/project/google-cloud-trace/
 .. _Stackdriver Trace API: https://cloud.google.com/trace
 .. _Client Library Documentation: https://googlecloudplatform.github.io/google-cloud-python/latest/trace/starting.html
 .. _Product Documentation:  https://cloud.google.com/trace
@@ -65,42 +74,25 @@ to `Python Development Environment Setup Guide`_ for Google Cloud Platform.
 
 .. _Python Development Environment Setup Guide: https://cloud.google.com/python/setup
 
-Preview
-~~~~~~~
-
-TraceServiceClient
-^^^^^^^^^^^^^^^^^^^^^^
+Example Usage
+~~~~~~~~~~~~~
 
 .. code-block:: python
 
   from google.cloud.gapic.trace.v1 import trace_service_client
-  from google.gax import CallOptions
-  from google.gax import INITIAL_PAGE
 
   client = trace_service_client.TraceServiceClient()
-  project_id = ''
+  project_id = 'your-project-123'
 
   # Iterate over all results
   for element in client.list_traces(project_id):
       # process element
       pass
 
-  # Or iterate over results one page at a time
-  options = CallOptions(page_token=INITIAL_PAGE)
-  for page in client.list_traces(project_id, options=options):
-      for element in page:
-          # process element
-          pass
-
 Next Steps
 ~~~~~~~~~~
 
 -  Read the `Client Library Documentation`_ for Stackdriver Trace API
-   API to see other available methods on the client.
--  Read the `Stackdriver Trace API Product documentation`_ to learn
-   more about the product and see How-to Guides.
--  View this `repository’s main README`_ to see the full list of Cloud
-   APIs that we cover.
-
-.. _Stackdriver Trace API Product documentation:  https://cloud.google.com/trace
-.. _repository’s main README: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/README.rst
+   to see other available methods on the client.
+-  Read the `Product documentation`_ to learn more about the product and see
+   How-to Guides.

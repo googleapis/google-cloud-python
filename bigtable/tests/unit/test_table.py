@@ -462,13 +462,15 @@ class TestTable(unittest.TestCase):
         result = table.get_cluster_states()
         self.assertEqual(result, expected_result)
 
-    def _read_row_helper(self, chunks, expected_result, app_profile_id=None,
-                         initialized_read_row=True):
+    def _read_row_helper(self, chunks, expected_result, app_profile_id=None):
+
         from google.cloud._testing import _Monkey
         from google.cloud.bigtable import table as MUT
+        from google.cloud.bigtable.row_set import RowSet
         from google.cloud.bigtable_v2.gapic import bigtable_client
         from google.cloud.bigtable_admin_v2.gapic import (
             bigtable_table_admin_client)
+        from google.cloud.bigtable.row_filters import RowSampleFilter
 
         data_api = bigtable_client.BigtableClient(mock.Mock())
         table_api = mock.create_autospec(
@@ -484,9 +486,8 @@ class TestTable(unittest.TestCase):
         request_pb = object()  # Returned by our mock.
         mock_created = []
 
-        def mock_create_row_request(table_name, row_key, filter_,
-                                    app_profile_id=app_profile_id):
-            mock_created.append((table_name, row_key, filter_, app_profile_id))
+        def mock_create_row_request(table_name, **kwargs):
+            mock_created.append((table_name, kwargs))
             return request_pb
 
         # Create response_iterator
@@ -499,21 +500,23 @@ class TestTable(unittest.TestCase):
         # Patch the stub used by the API method.
         client._table_data_client = data_api
         client._table_admin_client = table_api
-
-        inner_api_calls = client._table_data_client._inner_api_calls
-        if initialized_read_row:
-            inner_api_calls['read_rows'] = mock.Mock(
-                side_effect=[response_iterator])
+        client._table_data_client.transport.read_rows = mock.Mock(
+            side_effect=[response_iterator])
 
         # Perform the method and check the result.
-        filter_obj = object()
+        filter_obj = RowSampleFilter(0.33)
+        result = None
         with _Monkey(MUT, _create_row_request=mock_create_row_request):
             result = table.read_row(self.ROW_KEY, filter_=filter_obj)
-
+        row_set = RowSet()
+        row_set.add_row_key(self.ROW_KEY)
+        expected_request = [(table.name, {
+            'end_inclusive': False, 'row_set': row_set,
+            'app_profile_id': app_profile_id, 'end_key': None,
+            'limit': None, 'start_key': None, 'filter_': filter_obj
+        })]
         self.assertEqual(result, expected_result)
-        self.assertEqual(mock_created,
-                         [(table.name, self.ROW_KEY, filter_obj,
-                           app_profile_id)])
+        self.assertEqual(mock_created, expected_request)
 
     def test_read_row_miss_no__responses(self):
         self._read_row_helper(None, None)
@@ -542,6 +545,29 @@ class TestTable(unittest.TestCase):
         column.append(Cell.from_pb(chunk))
         self._read_row_helper(chunks, expected_result, app_profile_id)
 
+    def test_read_row_more_than_one_row_returned(self):
+        app_profile_id = 'app-profile-id'
+        chunk_1 = _ReadRowsResponseCellChunkPB(
+            row_key=self.ROW_KEY,
+            family_name=self.FAMILY_NAME,
+            qualifier=self.QUALIFIER,
+            timestamp_micros=self.TIMESTAMP_MICROS,
+            value=self.VALUE,
+            commit_row=True,
+        )
+        chunk_2 = _ReadRowsResponseCellChunkPB(
+            row_key=self.ROW_KEY_2,
+            family_name=self.FAMILY_NAME,
+            qualifier=self.QUALIFIER,
+            timestamp_micros=self.TIMESTAMP_MICROS,
+            value=self.VALUE,
+            commit_row=True
+        )
+
+        chunks = [chunk_1, chunk_2]
+        with self.assertRaises(ValueError):
+            self._read_row_helper(chunks, None, app_profile_id)
+
     def test_read_row_still_partial(self):
         chunk = _ReadRowsResponseCellChunkPB(
             row_key=self.ROW_KEY,
@@ -554,14 +580,6 @@ class TestTable(unittest.TestCase):
         chunks = [chunk]
         with self.assertRaises(ValueError):
             self._read_row_helper(chunks, None)
-
-    def test_read_row_no_inner_api(self):
-        chunks = []
-        with mock.patch(
-                'google.cloud.bigtable.table.wrap_method') as patched:
-            patched.return_value = mock.Mock(
-                return_value=iter(()))
-            self._read_row_helper(chunks, None, initialized_read_row=False)
 
     def test_mutate_rows(self):
         from google.rpc.status_pb2 import Status
@@ -1475,13 +1493,14 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
 
 class Test__create_row_request(unittest.TestCase):
 
-    def _call_fut(self, table_name, row_key=None, start_key=None, end_key=None,
+    def _call_fut(self, table_name, start_key=None, end_key=None,
                   filter_=None, limit=None, end_inclusive=False,
                   app_profile_id=None, row_set=None):
+
         from google.cloud.bigtable.table import _create_row_request
 
         return _create_row_request(
-            table_name, row_key=row_key, start_key=start_key, end_key=end_key,
+            table_name, start_key=start_key, end_key=end_key,
             filter_=filter_, limit=limit, end_inclusive=end_inclusive,
             app_profile_id=app_profile_id, row_set=row_set)
 
@@ -1492,27 +1511,9 @@ class Test__create_row_request(unittest.TestCase):
             table_name=table_name)
         self.assertEqual(result, expected_result)
 
-    def test_row_key_row_range_conflict(self):
-        with self.assertRaises(ValueError):
-            self._call_fut(None, row_key=object(), end_key=object())
-
-    def test_row_key_row_set_conflict(self):
-        with self.assertRaises(ValueError):
-            self._call_fut(None, row_key=object(), row_set=object())
-
     def test_row_range_row_set_conflict(self):
         with self.assertRaises(ValueError):
             self._call_fut(None, end_key=object(), row_set=object())
-
-    def test_row_key(self):
-        table_name = 'table_name'
-        row_key = b'row_key'
-        result = self._call_fut(table_name, row_key=row_key)
-        expected_result = _ReadRowsRequestPB(
-            table_name=table_name,
-        )
-        expected_result.rows.row_keys.append(row_key)
-        self.assertEqual(result, expected_result)
 
     def test_row_range_start_key(self):
         table_name = 'table_name'

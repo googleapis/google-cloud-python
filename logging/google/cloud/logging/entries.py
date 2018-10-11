@@ -84,6 +84,7 @@ class _BaseEntry(object):
     :param span_id: (optional) span_id within the trace for the log entry.
                     Specify the trace parameter if span_id is set.
     """
+
     def __init__(self, payload, logger, insert_id=None, timestamp=None,
                  labels=None, severity=None, http_request=None, resource=None,
                  trace=None, span_id=None):
@@ -125,7 +126,10 @@ class _BaseEntry(object):
         if logger is None:
             logger_name = logger_name_from_path(logger_fullname)
             logger = loggers[logger_fullname] = client.logger(logger_name)
-        payload = resource[cls._PAYLOAD_KEY]
+        if cls._PAYLOAD_KEY is not None:
+            payload = resource[cls._PAYLOAD_KEY]
+        else:
+            payload = None
         insert_id = resource.get('insertId')
         timestamp = resource.get('timestamp')
         if timestamp is not None:
@@ -144,6 +148,15 @@ class _BaseEntry(object):
         return cls(payload, logger, insert_id=insert_id, timestamp=timestamp,
                    labels=labels, severity=severity, http_request=http_request,
                    resource=monitored_resource, trace=trace, span_id=span_id)
+
+
+class EmptyEntry(_BaseEntry):
+    """Entry created with no payload.
+
+    See
+    https://cloud.google.com/logging/docs/reference/v2/rest/v2/LogEntry
+    """
+    _PAYLOAD_KEY = None
 
 
 class TextEntry(_BaseEntry):

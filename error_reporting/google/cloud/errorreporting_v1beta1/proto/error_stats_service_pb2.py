@@ -27,7 +27,6 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   serialized_pb=_b('\nKgoogle/devtools/clouderrorreporting_v1beta1/proto/error_stats_service.proto\x12+google.devtools.clouderrorreporting.v1beta1\x1a\x1cgoogle/api/annotations.proto\x1a>google/devtools/clouderrorreporting_v1beta1/proto/common.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xa1\x04\n\x15ListGroupStatsRequest\x12\x14\n\x0cproject_name\x18\x01 \x01(\t\x12\x10\n\x08group_id\x18\x02 \x03(\t\x12Y\n\x0eservice_filter\x18\x03 \x01(\x0b\x32\x41.google.devtools.clouderrorreporting.v1beta1.ServiceContextFilter\x12O\n\ntime_range\x18\x05 \x01(\x0b\x32;.google.devtools.clouderrorreporting.v1beta1.QueryTimeRange\x12\x37\n\x14timed_count_duration\x18\x06 \x01(\x0b\x32\x19.google.protobuf.Duration\x12S\n\talignment\x18\x07 \x01(\x0e\x32@.google.devtools.clouderrorreporting.v1beta1.TimedCountAlignment\x12\x32\n\x0e\x61lignment_time\x18\x08 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12K\n\x05order\x18\t \x01(\x0e\x32<.google.devtools.clouderrorreporting.v1beta1.ErrorGroupOrder\x12\x11\n\tpage_size\x18\x0b \x01(\x05\x12\x12\n\npage_token\x18\x0c \x01(\t\"\xc0\x01\n\x16ListGroupStatsResponse\x12W\n\x11\x65rror_group_stats\x18\x01 \x03(\x0b\x32<.google.devtools.clouderrorreporting.v1beta1.ErrorGroupStats\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\x12\x34\n\x10time_range_begin\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\"\x86\x04\n\x0f\x45rrorGroupStats\x12\x46\n\x05group\x18\x01 \x01(\x0b\x32\x37.google.devtools.clouderrorreporting.v1beta1.ErrorGroup\x12\r\n\x05\x63ount\x18\x02 \x01(\x03\x12\x1c\n\x14\x61\x66\x66\x65\x63ted_users_count\x18\x03 \x01(\x03\x12M\n\x0ctimed_counts\x18\x04 \x03(\x0b\x32\x37.google.devtools.clouderrorreporting.v1beta1.TimedCount\x12\x33\n\x0f\x66irst_seen_time\x18\x05 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x32\n\x0elast_seen_time\x18\x06 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12V\n\x11\x61\x66\x66\x65\x63ted_services\x18\x07 \x03(\x0b\x32;.google.devtools.clouderrorreporting.v1beta1.ServiceContext\x12\x1d\n\x15num_affected_services\x18\x08 \x01(\x05\x12O\n\x0erepresentative\x18\t \x01(\x0b\x32\x37.google.devtools.clouderrorreporting.v1beta1.ErrorEvent\"y\n\nTimedCount\x12\r\n\x05\x63ount\x18\x01 \x01(\x03\x12.\n\nstart_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12,\n\x08\x65nd_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\"\x8e\x02\n\x11ListEventsRequest\x12\x14\n\x0cproject_name\x18\x01 \x01(\t\x12\x10\n\x08group_id\x18\x02 \x01(\t\x12Y\n\x0eservice_filter\x18\x03 \x01(\x0b\x32\x41.google.devtools.clouderrorreporting.v1beta1.ServiceContextFilter\x12O\n\ntime_range\x18\x04 \x01(\x0b\x32;.google.devtools.clouderrorreporting.v1beta1.QueryTimeRange\x12\x11\n\tpage_size\x18\x06 \x01(\x05\x12\x12\n\npage_token\x18\x07 \x01(\t\"\xb2\x01\n\x12ListEventsResponse\x12M\n\x0c\x65rror_events\x18\x01 \x03(\x0b\x32\x37.google.devtools.clouderrorreporting.v1beta1.ErrorEvent\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\x12\x34\n\x10time_range_begin\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\"\xe7\x01\n\x0eQueryTimeRange\x12R\n\x06period\x18\x01 \x01(\x0e\x32\x42.google.devtools.clouderrorreporting.v1beta1.QueryTimeRange.Period\"\x80\x01\n\x06Period\x12\x16\n\x12PERIOD_UNSPECIFIED\x10\x00\x12\x11\n\rPERIOD_1_HOUR\x10\x01\x12\x12\n\x0ePERIOD_6_HOURS\x10\x02\x12\x10\n\x0cPERIOD_1_DAY\x10\x03\x12\x11\n\rPERIOD_1_WEEK\x10\x04\x12\x12\n\x0ePERIOD_30_DAYS\x10\x05\"O\n\x14ServiceContextFilter\x12\x0f\n\x07service\x18\x02 \x01(\t\x12\x0f\n\x07version\x18\x03 \x01(\t\x12\x15\n\rresource_type\x18\x04 \x01(\t\"+\n\x13\x44\x65leteEventsRequest\x12\x14\n\x0cproject_name\x18\x01 \x01(\t\"\x16\n\x14\x44\x65leteEventsResponse*u\n\x13TimedCountAlignment\x12%\n!ERROR_COUNT_ALIGNMENT_UNSPECIFIED\x10\x00\x12\x1b\n\x17\x41LIGNMENT_EQUAL_ROUNDED\x10\x01\x12\x1a\n\x16\x41LIGNMENT_EQUAL_AT_END\x10\x02*}\n\x0f\x45rrorGroupOrder\x12\x1b\n\x17GROUP_ORDER_UNSPECIFIED\x10\x00\x12\x0e\n\nCOUNT_DESC\x10\x01\x12\x12\n\x0eLAST_SEEN_DESC\x10\x02\x12\x10\n\x0c\x43REATED_DESC\x10\x03\x12\x17\n\x13\x41\x46\x46\x45\x43TED_USERS_DESC\x10\x04\x32\xf2\x04\n\x11\x45rrorStatsService\x12\xd0\x01\n\x0eListGroupStats\x12\x42.google.devtools.clouderrorreporting.v1beta1.ListGroupStatsRequest\x1a\x43.google.devtools.clouderrorreporting.v1beta1.ListGroupStatsResponse\"5\x82\xd3\xe4\x93\x02/\x12-/v1beta1/{project_name=projects/*}/groupStats\x12\xc0\x01\n\nListEvents\x12>.google.devtools.clouderrorreporting.v1beta1.ListEventsRequest\x1a?.google.devtools.clouderrorreporting.v1beta1.ListEventsResponse\"1\x82\xd3\xe4\x93\x02+\x12)/v1beta1/{project_name=projects/*}/events\x12\xc6\x01\n\x0c\x44\x65leteEvents\x12@.google.devtools.clouderrorreporting.v1beta1.DeleteEventsRequest\x1a\x41.google.devtools.clouderrorreporting.v1beta1.DeleteEventsResponse\"1\x82\xd3\xe4\x93\x02+*)/v1beta1/{project_name=projects/*}/eventsB\xf7\x01\n/com.google.devtools.clouderrorreporting.v1beta1B\x16\x45rrorStatsServiceProtoP\x01Z^google.golang.org/genproto/googleapis/devtools/clouderrorreporting/v1beta1;clouderrorreporting\xaa\x02#Google.Cloud.ErrorReporting.V1Beta1\xca\x02#Google\\Cloud\\ErrorReporting\\V1beta1b\x06proto3')
   ,
   dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR,google_dot_devtools_dot_clouderrorreporting__v1beta1_dot_proto_dot_common__pb2.DESCRIPTOR,google_dot_protobuf_dot_duration__pb2.DESCRIPTOR,google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,])
-_sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 _TIMEDCOUNTALIGNMENT = _descriptor.EnumDescriptor(
   name='TimedCountAlignment',
@@ -153,70 +152,70 @@ _LISTGROUPSTATSREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='group_id', full_name='google.devtools.clouderrorreporting.v1beta1.ListGroupStatsRequest.group_id', index=1,
       number=2, type=9, cpp_type=9, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='service_filter', full_name='google.devtools.clouderrorreporting.v1beta1.ListGroupStatsRequest.service_filter', index=2,
       number=3, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='time_range', full_name='google.devtools.clouderrorreporting.v1beta1.ListGroupStatsRequest.time_range', index=3,
       number=5, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='timed_count_duration', full_name='google.devtools.clouderrorreporting.v1beta1.ListGroupStatsRequest.timed_count_duration', index=4,
       number=6, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='alignment', full_name='google.devtools.clouderrorreporting.v1beta1.ListGroupStatsRequest.alignment', index=5,
       number=7, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='alignment_time', full_name='google.devtools.clouderrorreporting.v1beta1.ListGroupStatsRequest.alignment_time', index=6,
       number=8, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='order', full_name='google.devtools.clouderrorreporting.v1beta1.ListGroupStatsRequest.order', index=7,
       number=9, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='page_size', full_name='google.devtools.clouderrorreporting.v1beta1.ListGroupStatsRequest.page_size', index=8,
       number=11, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='page_token', full_name='google.devtools.clouderrorreporting.v1beta1.ListGroupStatsRequest.page_token', index=9,
       number=12, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -247,21 +246,21 @@ _LISTGROUPSTATSRESPONSE = _descriptor.Descriptor(
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='next_page_token', full_name='google.devtools.clouderrorreporting.v1beta1.ListGroupStatsResponse.next_page_token', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='time_range_begin', full_name='google.devtools.clouderrorreporting.v1beta1.ListGroupStatsResponse.time_range_begin', index=2,
       number=4, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -292,63 +291,63 @@ _ERRORGROUPSTATS = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='count', full_name='google.devtools.clouderrorreporting.v1beta1.ErrorGroupStats.count', index=1,
       number=2, type=3, cpp_type=2, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='affected_users_count', full_name='google.devtools.clouderrorreporting.v1beta1.ErrorGroupStats.affected_users_count', index=2,
       number=3, type=3, cpp_type=2, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='timed_counts', full_name='google.devtools.clouderrorreporting.v1beta1.ErrorGroupStats.timed_counts', index=3,
       number=4, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='first_seen_time', full_name='google.devtools.clouderrorreporting.v1beta1.ErrorGroupStats.first_seen_time', index=4,
       number=5, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='last_seen_time', full_name='google.devtools.clouderrorreporting.v1beta1.ErrorGroupStats.last_seen_time', index=5,
       number=6, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='affected_services', full_name='google.devtools.clouderrorreporting.v1beta1.ErrorGroupStats.affected_services', index=6,
       number=7, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='num_affected_services', full_name='google.devtools.clouderrorreporting.v1beta1.ErrorGroupStats.num_affected_services', index=7,
       number=8, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='representative', full_name='google.devtools.clouderrorreporting.v1beta1.ErrorGroupStats.representative', index=8,
       number=9, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -379,21 +378,21 @@ _TIMEDCOUNT = _descriptor.Descriptor(
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='start_time', full_name='google.devtools.clouderrorreporting.v1beta1.TimedCount.start_time', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='end_time', full_name='google.devtools.clouderrorreporting.v1beta1.TimedCount.end_time', index=2,
       number=3, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -424,42 +423,42 @@ _LISTEVENTSREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='group_id', full_name='google.devtools.clouderrorreporting.v1beta1.ListEventsRequest.group_id', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='service_filter', full_name='google.devtools.clouderrorreporting.v1beta1.ListEventsRequest.service_filter', index=2,
       number=3, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='time_range', full_name='google.devtools.clouderrorreporting.v1beta1.ListEventsRequest.time_range', index=3,
       number=4, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='page_size', full_name='google.devtools.clouderrorreporting.v1beta1.ListEventsRequest.page_size', index=4,
       number=6, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='page_token', full_name='google.devtools.clouderrorreporting.v1beta1.ListEventsRequest.page_token', index=5,
       number=7, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -490,21 +489,21 @@ _LISTEVENTSRESPONSE = _descriptor.Descriptor(
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='next_page_token', full_name='google.devtools.clouderrorreporting.v1beta1.ListEventsResponse.next_page_token', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='time_range_begin', full_name='google.devtools.clouderrorreporting.v1beta1.ListEventsResponse.time_range_begin', index=2,
       number=4, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -535,7 +534,7 @@ _QUERYTIMERANGE = _descriptor.Descriptor(
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -567,21 +566,21 @@ _SERVICECONTEXTFILTER = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='version', full_name='google.devtools.clouderrorreporting.v1beta1.ServiceContextFilter.version', index=1,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='resource_type', full_name='google.devtools.clouderrorreporting.v1beta1.ServiceContextFilter.resource_type', index=2,
       number=4, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -612,7 +611,7 @@ _DELETEEVENTSREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -687,6 +686,7 @@ DESCRIPTOR.message_types_by_name['DeleteEventsRequest'] = _DELETEEVENTSREQUEST
 DESCRIPTOR.message_types_by_name['DeleteEventsResponse'] = _DELETEEVENTSRESPONSE
 DESCRIPTOR.enum_types_by_name['TimedCountAlignment'] = _TIMEDCOUNTALIGNMENT
 DESCRIPTOR.enum_types_by_name['ErrorGroupOrder'] = _ERRORGROUPORDER
+_sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 ListGroupStatsRequest = _reflection.GeneratedProtocolMessageType('ListGroupStatsRequest', (_message.Message,), dict(
   DESCRIPTOR = _LISTGROUPSTATSREQUEST,
@@ -975,191 +975,46 @@ _sym_db.RegisterMessage(DeleteEventsResponse)
 
 DESCRIPTOR.has_options = True
 DESCRIPTOR._options = _descriptor._ParseOptions(descriptor_pb2.FileOptions(), _b('\n/com.google.devtools.clouderrorreporting.v1beta1B\026ErrorStatsServiceProtoP\001Z^google.golang.org/genproto/googleapis/devtools/clouderrorreporting/v1beta1;clouderrorreporting\252\002#Google.Cloud.ErrorReporting.V1Beta1\312\002#Google\\Cloud\\ErrorReporting\\V1beta1'))
-try:
-  # THESE ELEMENTS WILL BE DEPRECATED.
-  # Please use the generated *_pb2_grpc.py files instead.
-  import grpc
-  from grpc.beta import implementations as beta_implementations
-  from grpc.beta import interfaces as beta_interfaces
-  from grpc.framework.common import cardinality
-  from grpc.framework.interfaces.face import utilities as face_utilities
 
+_ERRORSTATSSERVICE = _descriptor.ServiceDescriptor(
+  name='ErrorStatsService',
+  full_name='google.devtools.clouderrorreporting.v1beta1.ErrorStatsService',
+  file=DESCRIPTOR,
+  index=0,
+  options=None,
+  serialized_start=2755,
+  serialized_end=3381,
+  methods=[
+  _descriptor.MethodDescriptor(
+    name='ListGroupStats',
+    full_name='google.devtools.clouderrorreporting.v1beta1.ErrorStatsService.ListGroupStats',
+    index=0,
+    containing_service=None,
+    input_type=_LISTGROUPSTATSREQUEST,
+    output_type=_LISTGROUPSTATSRESPONSE,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002/\022-/v1beta1/{project_name=projects/*}/groupStats')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='ListEvents',
+    full_name='google.devtools.clouderrorreporting.v1beta1.ErrorStatsService.ListEvents',
+    index=1,
+    containing_service=None,
+    input_type=_LISTEVENTSREQUEST,
+    output_type=_LISTEVENTSRESPONSE,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002+\022)/v1beta1/{project_name=projects/*}/events')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='DeleteEvents',
+    full_name='google.devtools.clouderrorreporting.v1beta1.ErrorStatsService.DeleteEvents',
+    index=2,
+    containing_service=None,
+    input_type=_DELETEEVENTSREQUEST,
+    output_type=_DELETEEVENTSRESPONSE,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002+*)/v1beta1/{project_name=projects/*}/events')),
+  ),
+])
+_sym_db.RegisterServiceDescriptor(_ERRORSTATSSERVICE)
 
-  class ErrorStatsServiceStub(object):
-    """An API for retrieving and managing error statistics as well as data for
-    individual events.
-    """
+DESCRIPTOR.services_by_name['ErrorStatsService'] = _ERRORSTATSSERVICE
 
-    def __init__(self, channel):
-      """Constructor.
-
-      Args:
-        channel: A grpc.Channel.
-      """
-      self.ListGroupStats = channel.unary_unary(
-          '/google.devtools.clouderrorreporting.v1beta1.ErrorStatsService/ListGroupStats',
-          request_serializer=ListGroupStatsRequest.SerializeToString,
-          response_deserializer=ListGroupStatsResponse.FromString,
-          )
-      self.ListEvents = channel.unary_unary(
-          '/google.devtools.clouderrorreporting.v1beta1.ErrorStatsService/ListEvents',
-          request_serializer=ListEventsRequest.SerializeToString,
-          response_deserializer=ListEventsResponse.FromString,
-          )
-      self.DeleteEvents = channel.unary_unary(
-          '/google.devtools.clouderrorreporting.v1beta1.ErrorStatsService/DeleteEvents',
-          request_serializer=DeleteEventsRequest.SerializeToString,
-          response_deserializer=DeleteEventsResponse.FromString,
-          )
-
-
-  class ErrorStatsServiceServicer(object):
-    """An API for retrieving and managing error statistics as well as data for
-    individual events.
-    """
-
-    def ListGroupStats(self, request, context):
-      """Lists the specified groups.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def ListEvents(self, request, context):
-      """Lists the specified events.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def DeleteEvents(self, request, context):
-      """Deletes all error events of a given project.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-
-  def add_ErrorStatsServiceServicer_to_server(servicer, server):
-    rpc_method_handlers = {
-        'ListGroupStats': grpc.unary_unary_rpc_method_handler(
-            servicer.ListGroupStats,
-            request_deserializer=ListGroupStatsRequest.FromString,
-            response_serializer=ListGroupStatsResponse.SerializeToString,
-        ),
-        'ListEvents': grpc.unary_unary_rpc_method_handler(
-            servicer.ListEvents,
-            request_deserializer=ListEventsRequest.FromString,
-            response_serializer=ListEventsResponse.SerializeToString,
-        ),
-        'DeleteEvents': grpc.unary_unary_rpc_method_handler(
-            servicer.DeleteEvents,
-            request_deserializer=DeleteEventsRequest.FromString,
-            response_serializer=DeleteEventsResponse.SerializeToString,
-        ),
-    }
-    generic_handler = grpc.method_handlers_generic_handler(
-        'google.devtools.clouderrorreporting.v1beta1.ErrorStatsService', rpc_method_handlers)
-    server.add_generic_rpc_handlers((generic_handler,))
-
-
-  class BetaErrorStatsServiceServicer(object):
-    """The Beta API is deprecated for 0.15.0 and later.
-
-    It is recommended to use the GA API (classes and functions in this
-    file not marked beta) for all further purposes. This class was generated
-    only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0."""
-    """An API for retrieving and managing error statistics as well as data for
-    individual events.
-    """
-    def ListGroupStats(self, request, context):
-      """Lists the specified groups.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def ListEvents(self, request, context):
-      """Lists the specified events.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def DeleteEvents(self, request, context):
-      """Deletes all error events of a given project.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-
-
-  class BetaErrorStatsServiceStub(object):
-    """The Beta API is deprecated for 0.15.0 and later.
-
-    It is recommended to use the GA API (classes and functions in this
-    file not marked beta) for all further purposes. This class was generated
-    only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0."""
-    """An API for retrieving and managing error statistics as well as data for
-    individual events.
-    """
-    def ListGroupStats(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Lists the specified groups.
-      """
-      raise NotImplementedError()
-    ListGroupStats.future = None
-    def ListEvents(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Lists the specified events.
-      """
-      raise NotImplementedError()
-    ListEvents.future = None
-    def DeleteEvents(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Deletes all error events of a given project.
-      """
-      raise NotImplementedError()
-    DeleteEvents.future = None
-
-
-  def beta_create_ErrorStatsService_server(servicer, pool=None, pool_size=None, default_timeout=None, maximum_timeout=None):
-    """The Beta API is deprecated for 0.15.0 and later.
-
-    It is recommended to use the GA API (classes and functions in this
-    file not marked beta) for all further purposes. This function was
-    generated only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0"""
-    request_deserializers = {
-      ('google.devtools.clouderrorreporting.v1beta1.ErrorStatsService', 'DeleteEvents'): DeleteEventsRequest.FromString,
-      ('google.devtools.clouderrorreporting.v1beta1.ErrorStatsService', 'ListEvents'): ListEventsRequest.FromString,
-      ('google.devtools.clouderrorreporting.v1beta1.ErrorStatsService', 'ListGroupStats'): ListGroupStatsRequest.FromString,
-    }
-    response_serializers = {
-      ('google.devtools.clouderrorreporting.v1beta1.ErrorStatsService', 'DeleteEvents'): DeleteEventsResponse.SerializeToString,
-      ('google.devtools.clouderrorreporting.v1beta1.ErrorStatsService', 'ListEvents'): ListEventsResponse.SerializeToString,
-      ('google.devtools.clouderrorreporting.v1beta1.ErrorStatsService', 'ListGroupStats'): ListGroupStatsResponse.SerializeToString,
-    }
-    method_implementations = {
-      ('google.devtools.clouderrorreporting.v1beta1.ErrorStatsService', 'DeleteEvents'): face_utilities.unary_unary_inline(servicer.DeleteEvents),
-      ('google.devtools.clouderrorreporting.v1beta1.ErrorStatsService', 'ListEvents'): face_utilities.unary_unary_inline(servicer.ListEvents),
-      ('google.devtools.clouderrorreporting.v1beta1.ErrorStatsService', 'ListGroupStats'): face_utilities.unary_unary_inline(servicer.ListGroupStats),
-    }
-    server_options = beta_implementations.server_options(request_deserializers=request_deserializers, response_serializers=response_serializers, thread_pool=pool, thread_pool_size=pool_size, default_timeout=default_timeout, maximum_timeout=maximum_timeout)
-    return beta_implementations.server(method_implementations, options=server_options)
-
-
-  def beta_create_ErrorStatsService_stub(channel, host=None, metadata_transformer=None, pool=None, pool_size=None):
-    """The Beta API is deprecated for 0.15.0 and later.
-
-    It is recommended to use the GA API (classes and functions in this
-    file not marked beta) for all further purposes. This function was
-    generated only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0"""
-    request_serializers = {
-      ('google.devtools.clouderrorreporting.v1beta1.ErrorStatsService', 'DeleteEvents'): DeleteEventsRequest.SerializeToString,
-      ('google.devtools.clouderrorreporting.v1beta1.ErrorStatsService', 'ListEvents'): ListEventsRequest.SerializeToString,
-      ('google.devtools.clouderrorreporting.v1beta1.ErrorStatsService', 'ListGroupStats'): ListGroupStatsRequest.SerializeToString,
-    }
-    response_deserializers = {
-      ('google.devtools.clouderrorreporting.v1beta1.ErrorStatsService', 'DeleteEvents'): DeleteEventsResponse.FromString,
-      ('google.devtools.clouderrorreporting.v1beta1.ErrorStatsService', 'ListEvents'): ListEventsResponse.FromString,
-      ('google.devtools.clouderrorreporting.v1beta1.ErrorStatsService', 'ListGroupStats'): ListGroupStatsResponse.FromString,
-    }
-    cardinalities = {
-      'DeleteEvents': cardinality.Cardinality.UNARY_UNARY,
-      'ListEvents': cardinality.Cardinality.UNARY_UNARY,
-      'ListGroupStats': cardinality.Cardinality.UNARY_UNARY,
-    }
-    stub_options = beta_implementations.stub_options(host=host, metadata_transformer=metadata_transformer, request_serializers=request_serializers, response_deserializers=response_deserializers, thread_pool=pool, thread_pool_size=pool_size)
-    return beta_implementations.dynamic_stub(channel, 'google.devtools.clouderrorreporting.v1beta1.ErrorStatsService', cardinalities, options=stub_options)
-except ImportError:
-  pass
 # @@protoc_insertion_point(module_scope)

@@ -108,8 +108,11 @@ class Client(ClientWithProject):
             current object.
             This parameter should be considered private, and could change in
             the future.
-        location str:
+        location (str):
             (Optional) Default location for jobs / datasets / tables.
+        default_query_job_config (google.cloud.bigquery.job.QueryJobConfig):
+            (Optional) Default ``QueryJobConfig``.
+            Will be merged into job configs passed into the ``query`` method.
 
     Raises:
         google.auth.exceptions.DefaultCredentialsError:
@@ -122,11 +125,13 @@ class Client(ClientWithProject):
     """The scopes required for authenticating as a BigQuery consumer."""
 
     def __init__(
-            self, project=None, credentials=None, _http=None, location=None):
+            self, project=None, credentials=None, _http=None,
+            location=None, default_query_job_config=None):
         super(Client, self).__init__(
             project=project, credentials=credentials, _http=_http)
         self._connection = Connection(self)
         self._location = location
+        self._default_query_job_config = default_query_job_config
 
     @property
     def location(self):
@@ -333,34 +338,53 @@ class Client(ClientWithProject):
     def get_dataset(self, dataset_ref, retry=DEFAULT_RETRY):
         """Fetch the dataset referenced by ``dataset_ref``
 
-        :type dataset_ref:
-            :class:`google.cloud.bigquery.dataset.DatasetReference`
-        :param dataset_ref: the dataset to use.
+        Args:
+            dataset_ref (Union[ \
+                :class:`~google.cloud.bigquery.dataset.DatasetReference`, \
+                str, \
+            ]):
+                A reference to the dataset to fetch from the BigQuery API.
+                If a string is passed in, this method attempts to create a
+                dataset reference from a string using
+                :func:`~google.cloud.bigquery.dataset.DatasetReference.from_string`.
+            retry (:class:`google.api_core.retry.Retry`):
+                (Optional) How to retry the RPC.
 
-        :type retry: :class:`google.api_core.retry.Retry`
-        :param retry: (Optional) How to retry the RPC.
-
-        :rtype: :class:`google.cloud.bigquery.dataset.Dataset`
-        :returns: a ``Dataset`` instance
+        Returns:
+            google.cloud.bigquery.dataset.Dataset:
+                A ``Dataset`` instance.
         """
-        api_response = self._call_api(retry,
-                                      method='GET',
-                                      path=dataset_ref.path)
+        if isinstance(dataset_ref, str):
+            dataset_ref = DatasetReference.from_string(
+                dataset_ref, default_project=self.project)
+
+        api_response = self._call_api(
+            retry, method='GET', path=dataset_ref.path)
         return Dataset.from_api_repr(api_response)
 
     def get_table(self, table_ref, retry=DEFAULT_RETRY):
-        """Fetch the table referenced by ``table_ref``
+        """Fetch the table referenced by ``table_ref``.
 
-        :type table_ref:
-            :class:`google.cloud.bigquery.table.TableReference`
-        :param table_ref: the table to use.
+        Args:
+            table_ref (Union[ \
+                :class:`~google.cloud.bigquery.table.TableReference`, \
+                str, \
+            ]):
+                A reference to the table to fetch from the BigQuery API.
+                If a string is passed in, this method attempts to create a
+                table reference from a string using
+                :func:`google.cloud.bigquery.table.TableReference.from_string`.
+            retry (:class:`google.api_core.retry.Retry`):
+                (Optional) How to retry the RPC.
 
-        :type retry: :class:`google.api_core.retry.Retry`
-        :param retry: (Optional) How to retry the RPC.
-
-        :rtype: :class:`google.cloud.bigquery.table.Table`
-        :returns: a ``Table`` instance
+        Returns:
+            google.cloud.bigquery.table.Table:
+                A ``Table`` instance.
         """
+        if isinstance(table_ref, str):
+            table_ref = TableReference.from_string(
+                table_ref, default_project=self.project)
+
         api_response = self._call_api(retry, method='GET', path=table_ref.path)
         return Table.from_api_repr(api_response)
 
@@ -445,34 +469,43 @@ class Client(ClientWithProject):
         See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/tables/list
 
-        :type dataset: One of:
-                       :class:`~google.cloud.bigquery.dataset.Dataset`
-                       :class:`~google.cloud.bigquery.dataset.DatasetReference`
-        :param dataset: the dataset whose tables to list, or a reference to it.
+        Args:
+            dataset (Union[ \
+                :class:`~google.cloud.bigquery.dataset.Dataset`, \
+                :class:`~google.cloud.bigquery.dataset.DatasetReference`, \
+                str, \
+            ]):
+                A reference to the dataset whose tables to list from the
+                BigQuery API. If a string is passed in, this method attempts
+                to create a dataset reference from a string using
+                :func:`google.cloud.bigquery.dataset.DatasetReference.from_string`.
+            max_results (int):
+                (Optional) Maximum number of tables to return. If not passed,
+                defaults to a value set by the API.
+            page_token (str):
+                (Optional) Token representing a cursor into the tables. If
+                not passed, the API will return the first page of tables. The
+                token marks the beginning of the iterator to be returned and
+                the value of the ``page_token`` can be accessed at
+                ``next_page_token`` of the
+                :class:`~google.api_core.page_iterator.HTTPIterator`.
+            retry (:class:`google.api_core.retry.Retry`):
+                (Optional) How to retry the RPC.
 
-        :type max_results: int
-        :param max_results: (Optional) Maximum number of tables to return.
-                            If not passed, defaults to a value set by the API.
-
-        :type page_token: str
-        :param page_token:
-            (Optional) Token representing a cursor into the tables. If not
-            passed, the API will return the first page of tables. The
-            token marks the beginning of the iterator to be returned and
-            the value of the ``page_token`` can be accessed at
-            ``next_page_token`` of the
-            :class:`~google.api_core.page_iterator.HTTPIterator`.
-
-        :type retry: :class:`google.api_core.retry.Retry`
-        :param retry: (Optional) How to retry the RPC.
-
-        :rtype: :class:`~google.api_core.page_iterator.Iterator`
-        :returns:
-            Iterator of :class:`~google.cloud.bigquery.table.TableListItem`
-            contained within the current dataset.
+        Returns:
+            google.api_core.page_iterator.Iterator:
+                Iterator of
+                :class:`~google.cloud.bigquery.table.TableListItem` contained
+                within the requested dataset.
         """
+        if isinstance(dataset, str):
+            dataset = DatasetReference.from_string(
+                dataset, default_project=self.project)
+
         if not isinstance(dataset, (Dataset, DatasetReference)):
-            raise TypeError('dataset must be a Dataset or a DatasetReference')
+            raise TypeError(
+                'dataset must be a Dataset, DatasetReference, or string')
+
         path = '%s/tables' % dataset.path
         result = page_iterator.HTTPIterator(
             client=self,
@@ -492,19 +525,27 @@ class Client(ClientWithProject):
         See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets/delete
 
-        :type dataset: One of:
-                       :class:`~google.cloud.bigquery.dataset.Dataset`
-                       :class:`~google.cloud.bigquery.dataset.DatasetReference`
-        :param dataset: the dataset to delete, or a reference to it.
-
-        :type retry: :class:`google.api_core.retry.Retry`
-        :param retry: (Optional) How to retry the RPC.
-
-        :type delete_contents: boolean
-        :param delete_contents: (Optional) If True, delete all the tables
-             in the dataset. If False and the dataset contains tables, the
-             request will fail. Default is False
+        Args
+            dataset (Union[ \
+                :class:`~google.cloud.bigquery.dataset.Dataset`, \
+                :class:`~google.cloud.bigquery.dataset.DatasetReference`, \
+                str, \
+            ]):
+                A reference to the dataset to delete. If a string is passed
+                in, this method attempts to create a dataset reference from a
+                string using
+                :func:`google.cloud.bigquery.dataset.DatasetReference.from_string`.
+            retry (:class:`google.api_core.retry.Retry`):
+                (Optional) How to retry the RPC.
+            delete_contents (boolean):
+                (Optional) If True, delete all the tables in the dataset. If
+                False and the dataset contains tables, the request will fail.
+                Default is False.
         """
+        if isinstance(dataset, str):
+            dataset = DatasetReference.from_string(
+                dataset, default_project=self.project)
+
         if not isinstance(dataset, (Dataset, DatasetReference)):
             raise TypeError('dataset must be a Dataset or a DatasetReference')
 
@@ -523,14 +564,23 @@ class Client(ClientWithProject):
         See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/tables/delete
 
-        :type table: One of:
-                     :class:`~google.cloud.bigquery.table.Table`
-                     :class:`~google.cloud.bigquery.table.TableReference`
-        :param table: the table to delete, or a reference to it.
-
-        :type retry: :class:`google.api_core.retry.Retry`
-        :param retry: (Optional) How to retry the RPC.
+        Args:
+            table (Union[ \
+                :class:`~google.cloud.bigquery.table.Table`, \
+                :class:`~google.cloud.bigquery.table.TableReference`, \
+                str, \
+            ]):
+                A reference to the table to delete. If a string is passed in,
+                this method attempts to create a table reference from a
+                string using
+                :func:`google.cloud.bigquery.table.TableReference.from_string`.
+            retry (:class:`google.api_core.retry.Retry`):
+                (Optional) How to retry the RPC.
         """
+        if isinstance(table, str):
+            table = TableReference.from_string(
+                table, default_project=self.project)
+
         if not isinstance(table, (Table, TableReference)):
             raise TypeError('table must be a Table or a TableReference')
         self._call_api(retry, method='DELETE', path=table.path)
@@ -780,8 +830,14 @@ class Client(ClientWithProject):
             source_uris (Union[str, Sequence[str]]):
                 URIs of data files to be loaded; in format
                 ``gs://<bucket_name>/<object_name_or_glob>``.
-            destination (google.cloud.bigquery.table.TableReference):
-                Table into which data is to be loaded.
+            destination (Union[ \
+                :class:`~google.cloud.bigquery.table.TableReference`, \
+                str, \
+            ]):
+                Table into which data is to be loaded. If a string is passed
+                in, this method attempts to create a table reference from a
+                string using
+                :func:`google.cloud.bigquery.table.TableReference.from_string`.
 
         Keyword Arguments:
             job_id (str): (Optional) Name of the job.
@@ -816,6 +872,10 @@ class Client(ClientWithProject):
         if isinstance(source_uris, six.string_types):
             source_uris = [source_uris]
 
+        if isinstance(destination, str):
+            destination = TableReference.from_string(
+                destination, default_project=self.project)
+
         load_job = job.LoadJob(
             job_ref, source_uris, destination, self, job_config)
         load_job._begin(retry=retry)
@@ -834,8 +894,14 @@ class Client(ClientWithProject):
 
         Arguments:
             file_obj (file): A file handle opened in binary mode for reading.
-            destination (google.cloud.bigquery.table.TableReference):
-                Table into which data is to be loaded.
+            destination (Union[ \
+                :class:`~google.cloud.bigquery.table.TableReference`, \
+                str, \
+            ]):
+                Table into which data is to be loaded. If a string is passed
+                in, this method attempts to create a table reference from a
+                string using
+                :func:`google.cloud.bigquery.table.TableReference.from_string`.
 
         Keyword Arguments:
             rewind (bool):
@@ -877,9 +943,13 @@ class Client(ClientWithProject):
         if location is None:
             location = self.location
 
+        if isinstance(destination, str):
+            destination = TableReference.from_string(
+                destination, default_project=self.project)
+
         job_ref = job._JobReference(job_id, project=project, location=location)
         load_job = job.LoadJob(job_ref, None, destination, self, job_config)
-        job_resource = load_job._build_resource()
+        job_resource = load_job.to_api_repr()
 
         if rewind:
             file_obj.seek(0, os.SEEK_SET)
@@ -917,6 +987,10 @@ class Client(ClientWithProject):
                 must match the schema of the destination table. If the table
                 does not yet exist, the schema is inferred from the
                 :class:`~pandas.DataFrame`.
+
+                If a string is passed in, this method attempts to create a
+                table reference from a string using
+                :func:`google.cloud.bigquery.table.TableReference.from_string`.
 
         Keyword Arguments:
             num_retries (int, optional): Number of upload retries.
@@ -1080,10 +1154,17 @@ class Client(ClientWithProject):
         https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.copy
 
         Arguments:
-            sources (Union[google.cloud.bigquery.table.TableReference, \
-            Sequence[google.cloud.bigquery.table.TableReference]]):
+            sources (Union[ \
+                :class:`~google.cloud.bigquery.table.TableReference`, \
+                str, \
+                Sequence[ \
+                    :class:`~google.cloud.bigquery.table.TableReference`], \
+            ]):
                 Table or tables to be copied.
-            destination (google.cloud.bigquery.table.TableReference):
+            destination (Union[
+                :class:`~google.cloud.bigquery.table.TableReference`, \
+                str, \
+            ]):
                 Table into which data is to be copied.
 
         Keyword Arguments:
@@ -1116,6 +1197,14 @@ class Client(ClientWithProject):
 
         job_ref = job._JobReference(job_id, project=project, location=location)
 
+        if isinstance(sources, str):
+            sources = TableReference.from_string(
+                sources, default_project=self.project)
+
+        if isinstance(destination, str):
+            destination = TableReference.from_string(
+                destination, default_project=self.project)
+
         if not isinstance(sources, collections.Sequence):
             sources = [sources]
 
@@ -1136,7 +1225,10 @@ class Client(ClientWithProject):
         https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.extract
 
         Arguments:
-            source (google.cloud.bigquery.table.TableReference):
+            source (Union[ \
+                :class:`google.cloud.bigquery.table.TableReference`, \
+                src, \
+            ]):
                 Table to be extracted.
             destination_uris (Union[str, Sequence[str]]):
                 URIs of Cloud Storage file(s) into which table data is to be
@@ -1176,6 +1268,10 @@ class Client(ClientWithProject):
 
         job_ref = job._JobReference(job_id, project=project, location=location)
 
+        if isinstance(source, str):
+            source = TableReference.from_string(
+                source, default_project=self.project)
+
         if isinstance(destination_uris, six.string_types):
             destination_uris = [destination_uris]
 
@@ -1187,7 +1283,9 @@ class Client(ClientWithProject):
         return extract_job
 
     def query(
-            self, query, job_config=None, job_id=None, job_id_prefix=None,
+            self, query,
+            job_config=None,
+            job_id=None, job_id_prefix=None,
             location=None, project=None, retry=DEFAULT_RETRY):
         """Run a SQL query.
 
@@ -1202,6 +1300,10 @@ class Client(ClientWithProject):
         Keyword Arguments:
             job_config (google.cloud.bigquery.job.QueryJobConfig):
                 (Optional) Extra configuration options for the job.
+                To override any options that were previously set in
+                the ``default_query_job_config`` given to the
+                ``Client`` constructor, manually set those options to ``None``,
+                or whatever value is preferred.
             job_id (str): (Optional) ID to use for the query job.
             job_id_prefix (str):
                 (Optional) The prefix to use for a randomly generated job ID.
@@ -1226,6 +1328,17 @@ class Client(ClientWithProject):
         if location is None:
             location = self.location
 
+        if self._default_query_job_config:
+            if job_config:
+                # anything that's not defined on the incoming
+                # that is in the default,
+                # should be filled in with the default
+                # the incoming therefore has precedence
+                job_config = job_config._fill_from_default(
+                    self._default_query_job_config)
+            else:
+                job_config = self._default_query_job_config
+
         job_ref = job._JobReference(job_id, project=project, location=location)
         query_job = job.QueryJob(
             job_ref, query, client=self, job_config=job_config)
@@ -1239,40 +1352,45 @@ class Client(ClientWithProject):
         See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/tabledata/insertAll
 
-        :type table: One of:
-                     :class:`~google.cloud.bigquery.table.Table`
-                     :class:`~google.cloud.bigquery.table.TableReference`
-        :param table: the destination table for the row data, or a reference
-                      to it.
+        Args:
+            table (Union[ \
+                :class:`~google.cloud.bigquery.table.Table`, \
+                :class:`~google.cloud.bigquery.table.TableReference`, \
+                str, \
+            ]):
+                The destination table for the row data, or a reference to it.
+            rows (Union[ \
+                Sequence[Tuple], \
+                Sequence[dict], \
+            ]):
+                Row data to be inserted. If a list of tuples is given, each
+                tuple should contain data for each schema field on the
+                current table and in the same order as the schema fields. If
+                a list of dictionaries is given, the keys must include all
+                required fields in the schema. Keys which do not correspond
+                to a field in the schema are ignored.
+            selected_fields (Sequence[ \
+                :class:`~google.cloud.bigquery.schema.SchemaField`, \
+            ]):
+                The fields to return. Required if ``table`` is a
+                :class:`~google.cloud.bigquery.table.TableReference`.
+            kwargs (dict):
+                Keyword arguments to
+                :meth:`~google.cloud.bigquery.client.Client.insert_rows_json`.
 
-        :type rows: One of:
-                    list of tuples
-                    list of dictionaries
-        :param rows: Row data to be inserted. If a list of tuples is given,
-                     each tuple should contain data for each schema field on
-                     the current table and in the same order as the schema
-                     fields.  If a list of dictionaries is given, the keys must
-                     include all required fields in the schema.  Keys which do
-                     not correspond to a field in the schema are ignored.
+        Returns:
+            Sequence[Mappings]:
+                One mapping per row with insert errors: the "index" key
+                identifies the row, and the "errors" key contains a list of
+                the mappings describing one or more problems with the row.
 
-        :type selected_fields:
-            list of :class:`~google.cloud.bigquery.schema.SchemaField`
-        :param selected_fields:
-            The fields to return. Required if ``table`` is a
-            :class:`~google.cloud.bigquery.table.TableReference`.
-
-        :type kwargs: dict
-        :param kwargs:
-            Keyword arguments to
-            :meth:`~google.cloud.bigquery.client.Client.insert_rows_json`
-
-        :rtype: list of mappings
-        :returns: One mapping per row with insert errors:  the "index" key
-                  identifies the row, and the "errors" key contains a list
-                  of the mappings describing one or more problems with the
-                  row.
-        :raises: ValueError if table's schema is not set
+        Raises:
+            ValueError: if table's schema is not set
         """
+        if isinstance(table, str):
+            table = TableReference.from_string(
+                table, default_project=self.project)
+
         if selected_fields is not None:
             schema = selected_fields
         elif isinstance(table, TableReference):
@@ -1309,51 +1427,44 @@ class Client(ClientWithProject):
         See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/tabledata/insertAll
 
-        :type table: One of:
-                     :class:`~google.cloud.bigquery.table.Table`
-                     :class:`~google.cloud.bigquery.table.TableReference`
-        :param table: the destination table for the row data, or a reference
-                      to it.
-
-        :type json_rows: list of dictionaries
-        :param json_rows: Row data to be inserted. Keys must match the table
-                          schema fields and values must be JSON-compatible
-                          representations.
-
-        :type row_ids: list of string
-        :param row_ids: (Optional)  Unique ids, one per row being inserted.
-                        If omitted, unique IDs are created.
-
-        :type skip_invalid_rows: bool
-        :param skip_invalid_rows: (Optional)  Insert all valid rows of a
-                                  request, even if invalid rows exist.
-                                  The default value is False, which causes
-                                  the entire request to fail if any invalid
-                                  rows exist.
-
-        :type ignore_unknown_values: bool
-        :param ignore_unknown_values: (Optional) Accept rows that contain
-                                      values that do not match the schema.
-                                      The unknown values are ignored. Default
-                                      is False, which treats unknown values as
-                                      errors.
-
-        :type template_suffix: str
-        :param template_suffix:
+        table (Union[ \
+            :class:`~google.cloud.bigquery.table.Table` \
+            :class:`~google.cloud.bigquery.table.TableReference`, \
+            str, \
+        ]):
+            The destination table for the row data, or a reference to it.
+        json_rows (Sequence[dict]):
+            Row data to be inserted. Keys must match the table schema fields
+            and values must be JSON-compatible representations.
+        row_ids (Sequence[str]):
+            (Optional) Unique ids, one per row being inserted. If omitted,
+            unique IDs are created.
+        skip_invalid_rows (bool):
+            (Optional) Insert all valid rows of a request, even if invalid
+            rows exist. The default value is False, which causes the entire
+            request to fail if any invalid rows exist.
+        ignore_unknown_values (bool):
+            (Optional) Accept rows that contain values that do not match the
+            schema. The unknown values are ignored. Default is False, which
+            treats unknown values as errors.
+        template_suffix (str):
             (Optional) treat ``name`` as a template table and provide a suffix.
             BigQuery will create the table ``<name> + <template_suffix>`` based
             on the schema of the template table. See
             https://cloud.google.com/bigquery/streaming-data-into-bigquery#template-tables
+        retry (:class:`google.api_core.retry.Retry`):
+            (Optional) How to retry the RPC.
 
-        :type retry: :class:`google.api_core.retry.Retry`
-        :param retry: (Optional) How to retry the RPC.
-
-        :rtype: list of mappings
-        :returns: One mapping per row with insert errors:  the "index" key
-                  identifies the row, and the "errors" key contains a list
-                  of the mappings describing one or more problems with the
-                  row.
+        Returns:
+            Sequence[Mappings]:
+                One mapping per row with insert errors: the "index" key
+                identifies the row, and the "errors" key contains a list of
+                the mappings describing one or more problems with the row.
         """
+        if isinstance(table, str):
+            table = TableReference.from_string(
+                table, default_project=self.project)
+
         rows_info = []
         data = {'rows': rows_info}
 
@@ -1392,8 +1503,11 @@ class Client(ClientWithProject):
         """List the partitions in a table.
 
         Arguments:
-            table (Union[google.cloud.bigquery.table.Table,
-                    google.cloud.bigquery.table.TableReference]):
+            table (Union[ \
+                :class:`~google.cloud.bigquery.table.Table`, \
+                :class:`~google.cloud.bigquery.table.TableReference`, \
+                str, \
+            ]):
                 The table or reference from which to get partition info
             retry (google.api_core.retry.Retry):
                 (Optional) How to retry the RPC.
@@ -1402,6 +1516,10 @@ class Client(ClientWithProject):
             List[str]:
                 A list of the partition ids present in the partitioned table
         """
+        if isinstance(table, str):
+            table = TableReference.from_string(
+                table, default_project=self.project)
+
         meta_table = self.get_table(
             TableReference(
                 self.dataset(table.dataset_id, project=table.project),
@@ -1428,49 +1546,48 @@ class Client(ClientWithProject):
            identical, the values returned may be incomplete. To ensure that the
            local copy of the schema is up-to-date, call ``client.get_table``.
 
-        :type table: One of:
-                     :class:`~google.cloud.bigquery.table.Table`
-                     :class:`~google.cloud.bigquery.table.TableReference`
-        :param table: the table to list, or a reference to it.
+        Args:
+            table (Union[ \
+                :class:`~google.cloud.bigquery.table.Table`, \
+                :class:`~google.cloud.bigquery.table.TableReference`, \
+                str, \
+            ]):
+                The table to list, or a reference to it.
+            selected_fields (Sequence[ \
+                :class:`~google.cloud.bigquery.schema.SchemaField` \
+            ]):
+                The fields to return. Required if ``table`` is a
+                :class:`~google.cloud.bigquery.table.TableReference`.
+            max_results (int):
+                (Optional) maximum number of rows to return.
+            page_token (str):
+                (Optional) Token representing a cursor into the table's rows.
+                If not passed, the API will return the first page of the
+                rows. The token marks the beginning of the iterator to be
+                returned and the value of the ``page_token`` can be accessed
+                at ``next_page_token`` of the
+                :class:`~google.cloud.bigquery.table.RowIterator`.
+            start_index (int):
+                (Optional) The zero-based index of the starting row to read.
+            page_size (int):
+                (Optional) The maximum number of items to return per page in
+                the iterator.
+            retry (:class:`google.api_core.retry.Retry`):
+                (Optional) How to retry the RPC.
 
-        :type selected_fields:
-            list of :class:`~google.cloud.bigquery.schema.SchemaField`
-        :param selected_fields:
-            The fields to return. Required if ``table`` is a
-            :class:`~google.cloud.bigquery.table.TableReference`.
-
-        :type max_results: int
-        :param max_results: (Optional) maximum number of rows to return.
-
-        :type page_token: str
-        :param page_token: (Optional) Token representing a cursor into the
-                           table's rows. If not passed, the API will return
-                           the first page of the rows. The token marks the
-                           beginning of the iterator to be returned and the
-                           value of the ``page_token`` can be accessed at
-                           ``next_page_token`` of the
-                           :class:`~google.cloud.bigquery.table.RowIterator`.
-
-        :type start_index: int
-        :param start_index: (Optional) The zero-based index of the starting
-                           row to read.
-
-        :type page_size: int
-        :param page_size: (Optional) The maximum number of items to return
-                          per page in the iterator.
-
-        :type retry: :class:`google.api_core.retry.Retry`
-        :param retry: (Optional) How to retry the RPC.
-
-        :rtype: :class:`~google.cloud.bigquery.table.RowIterator`
-        :returns: Iterator of row data
-                  :class:`~google.cloud.bigquery.table.Row`-s. During each
-                  page, the iterator will have the ``total_rows`` attribute
-                  set, which counts the total number of rows **in the table**
-                  (this is distinct from the total number of rows in the
-                  current page: ``iterator.page.num_items``).
-
+        Returns:
+            google.cloud.bigquery.table.RowIterator:
+                Iterator of row data
+                :class:`~google.cloud.bigquery.table.Row`-s. During each
+                page, the iterator will have the ``total_rows`` attribute
+                set, which counts the total number of rows **in the table**
+                (this is distinct from the total number of rows in the
+                current page: ``iterator.page.num_items``).
         """
+        if isinstance(table, str):
+            table = TableReference.from_string(
+                table, default_project=self.project)
+
         if selected_fields is not None:
             schema = selected_fields
         elif isinstance(table, TableReference):

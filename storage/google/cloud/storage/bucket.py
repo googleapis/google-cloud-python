@@ -972,6 +972,21 @@ class Bucket(_PropertyMixin):
         """
         self._patch_property('cors', entries)
 
+    default_event_based_hold = _scalar_property('defaultEventBasedHold')
+    """Are uploaded objects automatically placed under an even-based hold?
+
+    If True, uploaded objects will be placed under an event-based hold to
+    be released at a future time. When released an object will then begin
+    the retention period determined by the policy retention period for the
+    object bucket.
+
+    See https://cloud.google.com/storage/docs/json_api/v1/buckets
+
+    If the property is not set locally, returns ``None``.
+
+    :rtype: bool or ``NoneType``
+    """
+
     @property
     def default_kms_key_name(self):
         """Retrieve / set default KMS encryption key for objects in the bucket.
@@ -1275,6 +1290,66 @@ class Bucket(_PropertyMixin):
         project_number = self._properties.get('projectNumber')
         if project_number is not None:
             return int(project_number)
+
+    @property
+    def retention_policy_effective_time(self):
+        """Retrieve the effective time of the bucket's retention policy.
+
+        :rtype: datetime.datetime or ``NoneType``
+        :returns: point-in time at which the bucket's retention policy is
+                  effective, or ``None`` if the property is not
+                  set locally.
+        """
+        policy = self._properties.get('retentionPolicy')
+        if policy is not None:
+            timestamp = policy.get('effectiveTime')
+            if timestamp is not None:
+                return _rfc3339_to_datetime(timestamp)
+
+    @property
+    def retention_policy_locked(self):
+        """Retrieve whthere the bucket's retention policy is locked.
+
+        :rtype: bool
+        :returns: True if the bucket's policy is locked, or else False
+                  if the policy is not locked, or the property is not
+                  set locally.
+        """
+        policy = self._properties.get('retentionPolicy')
+        if policy is not None:
+            return policy.get('isLocked')
+
+    @property
+    def retention_period(self):
+        """Retrieve or set the retention period for items in the bucket.
+
+        :rtype: int or ``NoneType``
+        :returns: number of seconds to retain items after upload or release
+                  from event-based lock, or ``None`` if the property is not
+                  set locally.
+        """
+        policy = self._properties.get('retentionPolicy')
+        if policy is not None:
+            period = policy.get('retentionPeriod')
+            if period is not None:
+                return int(period)
+
+    @retention_period.setter
+    def retention_period(self, value):
+        """Set the retention period for items in the bucket.
+
+        :type value: int
+        :param value:
+            number of seconds to retain items after upload or release from
+            event-based lock.
+
+        :raises ValueError: if the bucket's retention policy is locked.
+        """
+        policy = self._properties.setdefault('retentionPolicy', {})
+        if value is not None:
+            value = str(value)
+        policy['retentionPeriod'] = value
+        self._patch_property('retentionPolicy', policy)
 
     @property
     def self_link(self):
@@ -1708,3 +1783,37 @@ class Bucket(_PropertyMixin):
         }
 
         return fields
+
+    def lock_retention_policy(self, client=None):
+        """Lock the bucket's retention policy.
+
+        :raises ValueError:
+            if the bucket has no metageneration (i.e., new or never reloaded);
+            if the bucket has no retention policy assigned;
+            if the bucket's retention policy is already locked.
+        """
+        if 'metageneration' not in self._properties:
+            raise ValueError(
+                "Bucket has no retention policy assigned: try 'reload'?")
+
+        policy = self._properties.get('retentionPolicy')
+
+        if policy is None:
+            raise ValueError(
+                "Bucket has no retention policy assigned: try 'reload'?")
+
+        if policy.get('isLocked'):
+            raise ValueError("Bucket's retention policy is already locked.")
+
+        client = self._require_client(client)
+
+        query_params = {'ifMetagenerationMatch': self.metageneration}
+
+        if self.user_project is not None:
+            query_params['userProject'] = self.user_project
+
+        path = '/b/{}/lockRetentionPolicy'.format(self.name)
+        api_response = client._connection.api_request(
+            method='POST', path=path, query_params=query_params,
+            _target_object=self)
+        self._set_properties(api_response)

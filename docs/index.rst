@@ -7,12 +7,12 @@
   AutoML <automl/index>
   BigQuery <bigquery/index>
   BigQuery Data-Transfer <bigquery_datatransfer/index>
-  Bigtable <bigtable/usage>
+  Bigtable <bigtable/index>
   Container <container/index>
   Dataproc <dataproc/index>
   Datastore <datastore/index>
   Data Loss Prevention <dlp/index>
-  DNS <dns/usage>
+  DNS <dns/index>
   Firestore <firestore/index>
   IoT <iot/index>
   Key Management <kms/index>
@@ -21,7 +21,7 @@
   OSLogin <oslogin/index>
   Redis <redis/index>
   Resource Manager <resource-manager/index>
-  Runtime Configuration <runtimeconfig/usage>
+  Runtime Configuration <runtimeconfig/index>
   Security Scanner <websecurityscanner/index>
   Spanner <spanner/index>
   Speech <speech/index>

@@ -1,1 +1,1 @@
-../../dataproc/CHANGELOG.md
+../CHANGELOG.md

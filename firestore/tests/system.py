@@ -249,6 +249,55 @@ def test_document_set_merge(client, cleanup):
     assert snapshot2.update_time == write_result2.update_time
 
 
+def test_document_set_w_int_field(client, cleanup):
+    document_id = 'set-int-key' + unique_resource_id('-')
+    document = client.document('i-did-it', document_id)
+    # Add to clean-up before API request (in case ``set()`` fails).
+    cleanup(document)
+
+    # 0. Make sure the document doesn't exist yet
+    snapshot = document.get()
+    assert not snapshot.exists
+
+    # 1. Use ``create()`` to create the document.
+    before = {'testing': '1'}
+    document.create(before)
+
+    # 2. Replace using ``set()``.
+    data = {'14': {'status': 'active'}}
+    document.set(data)
+
+    # 3. Verify replaced data.
+    snapshot1 = document.get()
+    assert snapshot1.to_dict() == data
+
+
+def test_document_update_w_int_field(client, cleanup):
+    # Attempt to reproduce #5489.
+    document_id = 'update-int-key' + unique_resource_id('-')
+    document = client.document('i-did-it', document_id)
+    # Add to clean-up before API request (in case ``set()`` fails).
+    cleanup(document)
+
+    # 0. Make sure the document doesn't exist yet
+    snapshot = document.get()
+    assert not snapshot.exists
+
+    # 1. Use ``create()`` to create the document.
+    before = {'testing': '1'}
+    document.create(before)
+
+    # 2. Add values using ``update()``.
+    data = {'14': {'status': 'active'}}
+    document.update(data)
+
+    # 3. Verify updated data.
+    expected = before.copy()
+    expected.update(data)
+    snapshot1 = document.get()
+    assert snapshot1.to_dict() == expected
+
+
 def test_update_document(client, cleanup):
     document_id = 'for-update' + unique_resource_id('-')
     document = client.document('made', document_id)

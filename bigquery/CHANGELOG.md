@@ -4,6 +4,39 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
+## 1.6.0
+
+### New Features
+- Add support for `GEOGRAPHY` type ([#6147](https://github.com/googleapis/google-cloud-python/pull/6147))
+- Add default QueryJobConfig to Client ([#6088](https://github.com/googleapis/google-cloud-python/pull/6088))
+
+### Documentation
+- Remove unused "append" samples ([#6100](https://github.com/googleapis/google-cloud-python/pull/6100))
+
+### Internal / Testing Changes
+- Address dataset leaks, conflicts in systests ([#6099](https://github.com/googleapis/google-cloud-python/pull/6099))
+- Harden bucket teardown against `429 Too Many Requests`. ([#6101](https://github.com/googleapis/google-cloud-python/pull/6101))
+
+## 1.5.1
+
+### Implementation Changes
+
+- Retry '502 Bad Gateway' errors by default. (#5930)
+- Avoid pulling entire result set into memory when constructing dataframe. (#5870)
+- Add support for retrying unstructured 429 / 500 / 502 responses. (#6011)
+- Populate the jobReference from the API response. (#6044)
+
+### Documentation
+
+- Prepare documentation for repo split (#5955)
+- Fix leakage of bigquery/spanner sections into sidebar menu. (#5986)
+
+### Internal / Testing Changes
+
+- Test pandas support under Python 3.7. (#5857)
+- Nox: use inplace installs (#5865)
+- Update system test to use test data in bigquery-public-data. (#5965)
+
 ## 1.5.0
 
 ### Implementation Changes

@@ -1,10 +1,12 @@
-# Copyright 2017, Google LLC All rights reserved.
+# -*- coding: utf-8 -*-
+#
+# Copyright 2018 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#     http://www.apache.org/licenses/LICENSE-2.0
+#     https://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,8 +15,10 @@
 # limitations under the License.
 """Wrappers for protocol buffer enum types."""
 
+import enum
 
-class EncodingType(object):
+
+class EncodingType(enum.IntEnum):
     """
     Represents the text encoding that the caller uses to process the output.
     Providing an ``EncodingType`` is recommended because the API provides the
@@ -42,7 +46,7 @@ class EncodingType(object):
 
 
 class Document(object):
-    class Type(object):
+    class Type(enum.IntEnum):
         """
         The document types enum.
 
@@ -57,7 +61,7 @@ class Document(object):
 
 
 class Entity(object):
-    class Type(object):
+    class Type(enum.IntEnum):
         """
         The type of the entity.
 
@@ -82,7 +86,7 @@ class Entity(object):
 
 
 class PartOfSpeech(object):
-    class Tag(object):
+    class Tag(enum.IntEnum):
         """
         The part of speech tags enum.
 
@@ -117,7 +121,7 @@ class PartOfSpeech(object):
         X = 12
         AFFIX = 13
 
-    class Aspect(object):
+    class Aspect(enum.IntEnum):
         """
         The characteristic of a verb that expresses time flow during an event.
 
@@ -132,7 +136,7 @@ class PartOfSpeech(object):
         IMPERFECTIVE = 2
         PROGRESSIVE = 3
 
-    class Case(object):
+    class Case(enum.IntEnum):
         """
         The grammatical function performed by a noun or pronoun in a phrase,
         clause, or sentence. In some languages, other parts of speech, such as
@@ -171,7 +175,7 @@ class PartOfSpeech(object):
         RELATIVE_CASE = 13
         VOCATIVE = 14
 
-    class Form(object):
+    class Form(enum.IntEnum):
         """
         Depending on the language, Form can be categorizing different forms of
         verbs, adjectives, adverbs, etc. For example, categorizing inflected
@@ -205,7 +209,7 @@ class PartOfSpeech(object):
         ORDER = 10
         SPECIFIC = 11
 
-    class Gender(object):
+    class Gender(enum.IntEnum):
         """
         Gender classes of nouns reflected in the behaviour of associated words.
 
@@ -220,7 +224,7 @@ class PartOfSpeech(object):
         MASCULINE = 2
         NEUTER = 3
 
-    class Mood(object):
+    class Mood(enum.IntEnum):
         """
         The grammatical feature of verbs, used for showing modality and attitude.
 
@@ -241,7 +245,7 @@ class PartOfSpeech(object):
         JUSSIVE = 5
         SUBJUNCTIVE = 6
 
-    class Number(object):
+    class Number(enum.IntEnum):
         """
         Count distinctions.
 
@@ -256,7 +260,7 @@ class PartOfSpeech(object):
         PLURAL = 2
         DUAL = 3
 
-    class Person(object):
+    class Person(enum.IntEnum):
         """
         The distinction between the speaker, second person, third person, etc.
 
@@ -273,7 +277,7 @@ class PartOfSpeech(object):
         THIRD = 3
         REFLEXIVE_PERSON = 4
 
-    class Proper(object):
+    class Proper(enum.IntEnum):
         """
         This category shows if the token is part of a proper name.
 
@@ -286,7 +290,7 @@ class PartOfSpeech(object):
         PROPER = 1
         NOT_PROPER = 2
 
-    class Reciprocity(object):
+    class Reciprocity(enum.IntEnum):
         """
         Reciprocal features of a pronoun.
 
@@ -300,7 +304,7 @@ class PartOfSpeech(object):
         RECIPROCAL = 1
         NON_RECIPROCAL = 2
 
-    class Tense(object):
+    class Tense(enum.IntEnum):
         """
         Time reference.
 
@@ -321,7 +325,7 @@ class PartOfSpeech(object):
         IMPERFECT = 5
         PLUPERFECT = 6
 
-    class Voice(object):
+    class Voice(enum.IntEnum):
         """
         The relationship between the action that a verb expresses and the
         participants identified by its arguments.
@@ -339,7 +343,7 @@ class PartOfSpeech(object):
 
 
 class DependencyEdge(object):
-    class Label(object):
+    class Label(enum.IntEnum):
         """
         The parse label enum for the token.
 
@@ -514,7 +518,7 @@ class DependencyEdge(object):
 
 
 class EntityMention(object):
-    class Type(object):
+    class Type(enum.IntEnum):
         """
         The supported types of mentions.
 

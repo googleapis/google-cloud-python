@@ -1,12 +1,18 @@
 Python Client for Google Cloud Dataproc API (`Alpha`_)
 ======================================================
 
+|pypi| |versions|
+
 `Google Cloud Dataproc API`_: Manages Hadoop-based clusters and jobs on Google Cloud Platform.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
 
 .. _Alpha: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/README.rst
+.. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-dataproc.svg
+   :target: https://pypi.org/project/google-cloud-dataproc/
+.. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-dataproc.svg
+   :target: https://pypi.org/project/google-cloud-dataproc/
 .. _Google Cloud Dataproc API: https://cloud.google.com/dataproc
 .. _Client Library Documentation: https://googlecloudplatform.github.io/google-cloud-python/latest/dataproc/usage.html
 .. _Product Documentation:  https://cloud.google.com/dataproc
@@ -61,11 +67,8 @@ Windows
     <your-env>\Scripts\activate
     <your-env>\Scripts\pip.exe install google-cloud-dataproc
 
-Preview
-~~~~~~~
-
-ClusterControllerClient
-^^^^^^^^^^^^^^^^^^^^^^^
+Example Usage
+~~~~~~~~~~~~~
 
 .. code:: py
 
@@ -93,10 +96,5 @@ Next Steps
 
 -  Read the `Client Library Documentation`_ for Google Cloud Dataproc API
    API to see other available methods on the client.
--  Read the `Google Cloud Dataproc API Product documentation`_ to learn
-   more about the product and see How-to Guides.
--  View this `repository’s main README`_ to see the full list of Cloud
-   APIs that we cover.
-
-.. _Google Cloud Dataproc API Product documentation:  https://cloud.google.com/dataproc
-.. _repository’s main README: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/README.rst
+-  Read the `Product documentation`_ to learn more about the product and see
+   How-to Guides.
