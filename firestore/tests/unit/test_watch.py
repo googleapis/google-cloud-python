@@ -361,22 +361,19 @@ class TestWatch(unittest.TestCase):
         from google.cloud.firestore_v1beta1.watch import WATCH_TARGET_ID
         inst = self._makeOne()
 
-        def message_to_dict(document):
-            return {'fields': None}
-
-        inst.MessageToDict = message_to_dict
         proto = DummyProto()
         proto.target_change = ''
         proto.document_change.target_ids = [WATCH_TARGET_ID]
 
         class DummyDocument:
             name = 'fred'
+            fields = {}
             create_time = None
             update_time = None
 
         proto.document_change.document = DummyDocument()
         inst.on_snapshot(proto)
-        self.assertEqual(inst.change_map['fred'].data, None)
+        self.assertEqual(inst.change_map['fred'].data, {})
 
     def test_on_snapshot_document_change_changed_docname_db_prefix(self):
         # XXX This test asserts the current behavior, but I have no level
@@ -385,16 +382,13 @@ class TestWatch(unittest.TestCase):
         from google.cloud.firestore_v1beta1.watch import WATCH_TARGET_ID
         inst = self._makeOne()
 
-        def message_to_dict(document):
-            return {'fields': None}
-
-        inst.MessageToDict = message_to_dict
         proto = DummyProto()
         proto.target_change = ''
         proto.document_change.target_ids = [WATCH_TARGET_ID]
 
         class DummyDocument:
             name = 'abc://foo/documents/fred'
+            fields = {}
             create_time = None
             update_time = None
 
@@ -402,7 +396,7 @@ class TestWatch(unittest.TestCase):
         inst._firestore._database_string = 'abc://foo'
         inst.on_snapshot(proto)
         self.assertEqual(inst.change_map['abc://foo/documents/fred'].data,
-                         None)
+                         {})
 
     def test_on_snapshot_document_change_neither_changed_nor_removed(self):
         inst = self._makeOne()

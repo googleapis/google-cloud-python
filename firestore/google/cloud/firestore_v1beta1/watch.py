@@ -24,8 +24,9 @@ import pytz
 from google.cloud.firestore_v1beta1.bidi import ResumableBidiRpc
 from google.cloud.firestore_v1beta1.bidi import BackgroundConsumer
 from google.cloud.firestore_v1beta1.proto import firestore_pb2
+from google.cloud.firestore_v1beta1 import _helpers
+
 from google.api_core import exceptions
-from google.protobuf import json_format
 
 import grpc
 
@@ -156,7 +157,6 @@ class Watch(object):
 
     BackgroundConsumer = BackgroundConsumer  # FBO unit tests
     ResumableBidiRpc = ResumableBidiRpc  # FBO unit tests
-    MessageToDict = staticmethod(json_format.MessageToDict)  # FBO unit tests
 
     def __init__(self,
                  document_reference,
@@ -479,7 +479,7 @@ class Watch(object):
                 # google.cloud.firestore_v1beta1.types.Document
                 document = document_change.document
 
-                data = self.MessageToDict(document)
+                data = _helpers.decode_dict(document.fields, self._firestore)
 
                 # Create a snapshot. As Document and Query objects can be
                 # passed we need to get a Document Reference in a more manual
@@ -494,7 +494,7 @@ class Watch(object):
 
                 snapshot = self.DocumentSnapshot(
                     reference=document_ref,
-                    data=data['fields'],
+                    data=data,
                     exists=True,
                     read_time=None,
                     create_time=document.create_time,
