@@ -52,7 +52,8 @@ API Generator for Python
 
 This package is provided as a standard Python library, and can be installed
 the usual ways. It fundamentally provides a CLI command,
-``protoc-gen-pyclient``, so you will want to install using a mechanism
+``protoc-gen-python_gapic``, (yes, the mismatch of ``kebob-case`` and
+``snake_case`` is weird, sorry), so you will want to install using a mechanism
 that is conducive to making CLI commands available.
 
 Additionally, this program currently only runs against Python 3.6 or
@@ -81,8 +82,8 @@ To ensure the tool is installed properly:
 
 .. code-block:: shell
 
-  $ which protoc-gen-pyclient
-  /path/to/protoc-gen-pyclient
+  $ which protoc-gen-python_gapic
+  /path/to/protoc-gen-python_gapic
 
 .. _pyenv: https://github.com/pyenv/pyenv
 .. _pipsi: https://github.com/mitsuhiko/pipsi

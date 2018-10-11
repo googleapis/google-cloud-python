@@ -59,7 +59,7 @@ for each plugin invoked; you just want these to match:
   # assume that api-common-protos is next to it.
   $ protoc google/cloud/vision/v1/*.proto \
       --proto_path=../api-common-protos/ --proto_path=. \
-      --python_out=/dest/ --pyclient_out=/dest/
+      --python_out=/dest/ --python_gapic_out=/dest/
 
 .. note::
 

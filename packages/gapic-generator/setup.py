@@ -36,7 +36,7 @@ setup(
     long_description=README,
     entry_points="""[console_scripts]
         protoc-gen-dump=gapic.cli.dump:dump
-        protoc-gen-pyclient=gapic.cli.generate:generate
+        protoc-gen-python_gapic=gapic.cli.generate:generate
     """,
     platforms='Posix; MacOS X',
     include_package_data=True,

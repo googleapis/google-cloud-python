@@ -71,7 +71,7 @@ def showcase(session):
         # Write out a client library for Showcase.
         session.run('protoc',
             f'--descriptor_set_in={tmp_dir}{os.path.sep}showcase.desc',
-            f'--pyclient_out={tmp_dir}',
+            f'--python_gapic_out={tmp_dir}',
             'google/showcase/v1alpha2/echo.proto',
         )
 
