@@ -285,8 +285,14 @@ class Client(ClientWithProject):
         https://cloud.google.com/bigquery/docs/reference/rest/v2/tables/insert
 
         Args:
-            dataset (google.cloud.bigquery.dataset.Dataset):
-                A ``Dataset`` populated with the desired initial state.
+            dataset (Union[ \
+                :class:`~google.cloud.bigquery.dataset.Dataset`, \
+                :class:`~google.cloud.bigquery.dataset.DatasetReference`, \
+                str, \
+            ]):
+                A :class:`~google.cloud.bigquery.dataset.Dataset` to create.
+                If ``dataset`` is a reference, an empty dataset is created
+                with the specified ID and client's default location.
 
         Returns:
             google.cloud.bigquery.dataset.Dataset:
@@ -300,6 +306,12 @@ class Client(ClientWithProject):
             >>> dataset = client.create_dataset(dataset)
 
         """
+        if isinstance(dataset, str):
+            dataset = DatasetReference.from_string(
+                dataset, default_project=self.project)
+        if isinstance(dataset, DatasetReference):
+            dataset = Dataset(dataset)
+
         path = '/projects/%s/datasets' % (dataset.project,)
 
         data = dataset.to_api_repr()
@@ -317,12 +329,27 @@ class Client(ClientWithProject):
         See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/tables/insert
 
-        :type table: :class:`~google.cloud.bigquery.table.Table`
-        :param table: A ``Table`` populated with the desired initial state.
+        Args:
+            table (Union[ \
+                :class:`~google.cloud.bigquery.table.Table`, \
+                :class:`~google.cloud.bigquery.table.TableReference`, \
+                str, \
+            ]):
+                A :class:`~google.cloud.bigquery.table.Table` to create.
+                If ``table`` is a reference, an empty table is created
+                with the specified ID. The dataset that the table belongs to
+                must already exist.
 
-        :rtype: ":class:`~google.cloud.bigquery.table.Table`"
-        :returns: a new ``Table`` returned from the service.
+        Returns:
+            google.cloud.bigquery.table.Table:
+                A new ``Table`` returned from the service.
         """
+        if isinstance(table, str):
+            table = TableReference.from_string(
+                table, default_project=self.project)
+        if isinstance(table, TableReference):
+            table = Table(table)
+
         path = '/projects/%s/datasets/%s/tables' % (
             table.project, table.dataset_id)
         api_response = self._connection.api_request(
