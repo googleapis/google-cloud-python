@@ -3,7 +3,10 @@ version: 2
 jobs:
   build:
     docker:
-      - image: googleapis/nox:0.18.2
+      - image: gcr.io/cloud-devrel-kokoro-resources/python:latest
+        auth:
+            username: _json_key
+            password: $GCR_CREDENTIALS
     steps:
       - checkout
       - run:
