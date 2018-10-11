@@ -35,109 +35,11 @@ def test_GeoPt():
     assert model.GeoPt is NotImplemented
 
 
-class TestBlobKeyProperty:
+class TestIndexProperty:
     @staticmethod
     def test_constructor():
         with pytest.raises(NotImplementedError):
-            model.BlobKeyProperty()
-
-
-class TestBlobProperty:
-    @staticmethod
-    def test_constructor():
-        with pytest.raises(NotImplementedError):
-            model.BlobProperty()
-
-
-class TestBooleanProperty:
-    @staticmethod
-    def test_constructor():
-        with pytest.raises(NotImplementedError):
-            model.BooleanProperty()
-
-
-class TestComputedProperty:
-    @staticmethod
-    def test_constructor():
-        with pytest.raises(NotImplementedError):
-            model.ComputedProperty()
-
-
-class TestDateProperty:
-    @staticmethod
-    def test_constructor():
-        with pytest.raises(NotImplementedError):
-            model.DateProperty()
-
-
-class TestDateTimeProperty:
-    @staticmethod
-    def test_constructor():
-        with pytest.raises(NotImplementedError):
-            model.DateTimeProperty()
-
-
-def test_delete_multi():
-    with pytest.raises(NotImplementedError):
-        model.delete_multi()
-
-
-def test_delete_multi_async():
-    with pytest.raises(NotImplementedError):
-        model.delete_multi_async()
-
-
-class TestExpando:
-    @staticmethod
-    def test_constructor():
-        with pytest.raises(NotImplementedError):
-            model.Expando()
-
-
-class TestFloatProperty:
-    @staticmethod
-    def test_constructor():
-        with pytest.raises(NotImplementedError):
-            model.FloatProperty()
-
-
-class TestGenericProperty:
-    @staticmethod
-    def test_constructor():
-        with pytest.raises(NotImplementedError):
-            model.GenericProperty()
-
-
-class TestGeoPtProperty:
-    @staticmethod
-    def test_constructor():
-        with pytest.raises(NotImplementedError):
-            model.GeoPtProperty()
-
-
-def test_get_indexes():
-    with pytest.raises(NotImplementedError):
-        model.get_indexes()
-
-
-def test_get_indexes_async():
-    with pytest.raises(NotImplementedError):
-        model.get_indexes_async()
-
-
-def test_get_multi():
-    with pytest.raises(NotImplementedError):
-        model.get_multi()
-
-
-def test_get_multi_async():
-    with pytest.raises(NotImplementedError):
-        model.get_multi_async()
-
-
-def test_in_transaction():
-    with pytest.raises(NotImplementedError):
-        model.in_transaction()
+            model.IndexProperty()
 
 
 class TestIndex:
@@ -147,18 +49,56 @@ class TestIndex:
             model.Index()
 
 
-class TestIndexProperty:
-    @staticmethod
-    def test_constructor():
-        with pytest.raises(NotImplementedError):
-            model.IndexProperty()
-
-
 class TestIndexState:
     @staticmethod
     def test_constructor():
         with pytest.raises(NotImplementedError):
             model.IndexState()
+
+
+class TestModelAdapter:
+    @staticmethod
+    def test_constructor():
+        with pytest.raises(NotImplementedError):
+            model.ModelAdapter()
+
+
+def test_make_connection():
+    with pytest.raises(NotImplementedError):
+        model.make_connection()
+
+
+class TestModelAttribute:
+    @staticmethod
+    def test_constructor():
+        attr = model.ModelAttribute()
+        assert isinstance(attr, model.ModelAttribute)
+
+    @staticmethod
+    def test__fix_up():
+        attr = model.ModelAttribute()
+        assert attr._fix_up(model.Model, "birthdate") is None
+
+
+class TestProperty:
+    @staticmethod
+    def test_constructor():
+        with pytest.raises(NotImplementedError):
+            model.Property()
+
+
+class TestModelKey:
+    @staticmethod
+    def test_constructor():
+        with pytest.raises(NotImplementedError):
+            model.ModelKey()
+
+
+class TestBooleanProperty:
+    @staticmethod
+    def test_constructor():
+        with pytest.raises(NotImplementedError):
+            model.BooleanProperty()
 
 
 class TestIntegerProperty:
@@ -168,11 +108,60 @@ class TestIntegerProperty:
             model.IntegerProperty()
 
 
+class TestFloatProperty:
+    @staticmethod
+    def test_constructor():
+        with pytest.raises(NotImplementedError):
+            model.FloatProperty()
+
+
+class TestBlobProperty:
+    @staticmethod
+    def test_constructor():
+        with pytest.raises(NotImplementedError):
+            model.BlobProperty()
+
+
+class TestTextProperty:
+    @staticmethod
+    def test_constructor():
+        with pytest.raises(NotImplementedError):
+            model.TextProperty()
+
+
+class TestStringProperty:
+    @staticmethod
+    def test_constructor():
+        with pytest.raises(NotImplementedError):
+            model.StringProperty()
+
+
+class TestGeoPtProperty:
+    @staticmethod
+    def test_constructor():
+        with pytest.raises(NotImplementedError):
+            model.GeoPtProperty()
+
+
+class TestPickleProperty:
+    @staticmethod
+    def test_constructor():
+        with pytest.raises(NotImplementedError):
+            model.PickleProperty()
+
+
 class TestJsonProperty:
     @staticmethod
     def test_constructor():
         with pytest.raises(NotImplementedError):
             model.JsonProperty()
+
+
+class TestUserProperty:
+    @staticmethod
+    def test_constructor():
+        with pytest.raises(NotImplementedError):
+            model.UserProperty()
 
 
 class TestKeyProperty:
@@ -182,6 +171,41 @@ class TestKeyProperty:
             model.KeyProperty()
 
 
+class TestBlobKeyProperty:
+    @staticmethod
+    def test_constructor():
+        with pytest.raises(NotImplementedError):
+            model.BlobKeyProperty()
+
+
+class TestDateTimeProperty:
+    @staticmethod
+    def test_constructor():
+        with pytest.raises(NotImplementedError):
+            model.DateTimeProperty()
+
+
+class TestDateProperty:
+    @staticmethod
+    def test_constructor():
+        with pytest.raises(NotImplementedError):
+            model.DateProperty()
+
+
+class TestTimeProperty:
+    @staticmethod
+    def test_constructor():
+        with pytest.raises(NotImplementedError):
+            model.TimeProperty()
+
+
+class TestStructuredProperty:
+    @staticmethod
+    def test_constructor():
+        with pytest.raises(NotImplementedError):
+            model.StructuredProperty()
+
+
 class TestLocalStructuredProperty:
     @staticmethod
     def test_constructor():
@@ -189,9 +213,18 @@ class TestLocalStructuredProperty:
             model.LocalStructuredProperty()
 
 
-def test_make_connection():
-    with pytest.raises(NotImplementedError):
-        model.make_connection()
+class TestGenericProperty:
+    @staticmethod
+    def test_constructor():
+        with pytest.raises(NotImplementedError):
+            model.GenericProperty()
+
+
+class TestComputedProperty:
+    @staticmethod
+    def test_constructor():
+        with pytest.raises(NotImplementedError):
+            model.ComputedProperty()
 
 
 class TestMetaModel:
@@ -217,82 +250,11 @@ class TestModel:
         assert Simple._get_kind() == "Simple"
 
 
-class TestModelAdapter:
+class TestExpando:
     @staticmethod
     def test_constructor():
         with pytest.raises(NotImplementedError):
-            model.ModelAdapter()
-
-
-class TestModelAttribute:
-    @staticmethod
-    def test_constructor():
-        with pytest.raises(NotImplementedError):
-            model.ModelAttribute()
-
-
-class TestModelKey:
-    @staticmethod
-    def test_constructor():
-        with pytest.raises(NotImplementedError):
-            model.ModelKey()
-
-
-def test_non_transactional():
-    with pytest.raises(NotImplementedError):
-        model.non_transactional()
-
-
-class TestPickleProperty:
-    @staticmethod
-    def test_constructor():
-        with pytest.raises(NotImplementedError):
-            model.PickleProperty()
-
-
-class TestProperty:
-    @staticmethod
-    def test_constructor():
-        with pytest.raises(NotImplementedError):
-            model.Property()
-
-
-def test_put_multi():
-    with pytest.raises(NotImplementedError):
-        model.put_multi()
-
-
-def test_put_multi_async():
-    with pytest.raises(NotImplementedError):
-        model.put_multi_async()
-
-
-class TestStringProperty:
-    @staticmethod
-    def test_constructor():
-        with pytest.raises(NotImplementedError):
-            model.StringProperty()
-
-
-class TestStructuredProperty:
-    @staticmethod
-    def test_constructor():
-        with pytest.raises(NotImplementedError):
-            model.StructuredProperty()
-
-
-class TestTextProperty:
-    @staticmethod
-    def test_constructor():
-        with pytest.raises(NotImplementedError):
-            model.TextProperty()
-
-
-class TestTimeProperty:
-    @staticmethod
-    def test_constructor():
-        with pytest.raises(NotImplementedError):
-            model.TimeProperty()
+            model.Expando()
 
 
 def test_transaction():
@@ -303,6 +265,11 @@ def test_transaction():
 def test_transaction_async():
     with pytest.raises(NotImplementedError):
         model.transaction_async()
+
+
+def test_in_transaction():
+    with pytest.raises(NotImplementedError):
+        model.in_transaction()
 
 
 def test_transactional():
@@ -320,8 +287,46 @@ def test_transactional_tasklet():
         model.transactional_tasklet()
 
 
-class TestUserProperty:
-    @staticmethod
-    def test_constructor():
-        with pytest.raises(NotImplementedError):
-            model.UserProperty()
+def test_non_transactional():
+    with pytest.raises(NotImplementedError):
+        model.non_transactional()
+
+
+def test_get_multi_async():
+    with pytest.raises(NotImplementedError):
+        model.get_multi_async()
+
+
+def test_get_multi():
+    with pytest.raises(NotImplementedError):
+        model.get_multi()
+
+
+def test_put_multi_async():
+    with pytest.raises(NotImplementedError):
+        model.put_multi_async()
+
+
+def test_put_multi():
+    with pytest.raises(NotImplementedError):
+        model.put_multi()
+
+
+def test_delete_multi_async():
+    with pytest.raises(NotImplementedError):
+        model.delete_multi_async()
+
+
+def test_delete_multi():
+    with pytest.raises(NotImplementedError):
+        model.delete_multi()
+
+
+def test_get_indexes_async():
+    with pytest.raises(NotImplementedError):
+        model.get_indexes_async()
+
+
+def test_get_indexes():
+    with pytest.raises(NotImplementedError):
+        model.get_indexes()
