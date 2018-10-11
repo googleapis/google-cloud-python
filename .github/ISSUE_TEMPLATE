@@ -12,8 +12,8 @@ will help us identify the cause of your issue more quickly.
 1. Specify the API at the beginning of the title (for example, "BigQuery: ...")
    General, Core, and Other are also allowed as types
 2. OS type and version
-3. Python version and virtual environment information `python --version`
-4. google-cloud-python version `pip show google-cloud`, `pip show google-<service>` or `pip freeze`
+3. Python version and virtual environment information: `python --version`
+4. google-cloud-<service> version:  `pip show google-<service>` or `pip freeze`
 5. Stacktrace if available
 6. Steps to reproduce
 7. Code example
