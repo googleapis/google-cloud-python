@@ -169,10 +169,18 @@ class TestOrder(unittest.TestCase):
 
                         )
 
+    def test_typeorder_type_failure(self):
+        target = self._make_one()
+        left = mock.Mock()
+        left.WhichOneof.return_value = "imaginary-type"
+
+        with self.assertRaisesRegex(ValueError, "Could not detect value"):
+            target.compare(left, mock.Mock())
+
     def test_failure_to_find_type(self):
         target = self._make_one()
         left = mock.Mock()
-        left.WhichOneOf.return_value = "imaginary-type"
+        left.WhichOneof.return_value = "imaginary-type"
         right = mock.Mock()
         # Patch from value to get to the deep compare. Since left is a bad type
         # expect this to fail with value error.
@@ -180,6 +188,13 @@ class TestOrder(unittest.TestCase):
             to.value = None
             with self.assertRaisesRegex(ValueError, "'Unknown ``value_type``"):
                 target.compare(left, right)
+
+    def test_compare_objects_different_keys(self):
+        left = _object_value({"foo": 0})
+        right = _object_value({"bar": 0})
+
+        target = self._make_one()
+        target.compare(left, right)
 
 
 def _boolean_value(b):

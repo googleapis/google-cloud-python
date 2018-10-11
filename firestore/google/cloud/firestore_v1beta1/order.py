@@ -49,7 +49,7 @@ class TypeOrder(Enum):
 
         if v not in lut:
             raise ValueError(
-                "Could not detect value type for " + value)
+                "Could not detect value type for " + v)
         return lut[v]
 
 
