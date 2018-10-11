@@ -15,7 +15,8 @@
 """Model classes for datastore objects and properties for models."""
 
 
-from google.cloud.ndb import key
+from google.cloud.ndb import _exceptions
+from google.cloud.ndb import key as key_module
 
 
 __all__ = [
@@ -77,9 +78,41 @@ __all__ = [
 ]
 
 
-class BlobKey:
-    def __init__(self, *args, **kwargs):
-        raise NotImplementedError
+Key = key_module.Key
+BlobKey = NotImplemented  # From `google.appengine.api.datastore_types`
+GeoPt = NotImplemented  # From `google.appengine.api.datastore_types`
+Rollback = _exceptions.Rollback
+
+
+class KindError(_exceptions.BadValueError):
+    """Raised when an implementation for a kind can't be found.
+
+    May also be raised when the kind is not a byte string.
+    """
+
+
+class InvalidPropertyError(_exceptions.Error):
+    """Raised when a property is not applicable to a given use.
+
+    For example, a property must exist and be indexed to be used in a query's
+    projection or group by clause.
+    """
+
+
+BadProjectionError = InvalidPropertyError
+"""This alias for :class:`InvalidPropertyError` is for legacy support."""
+
+
+class UnprojectedPropertyError(_exceptions.Error):
+    """Raised when getting a property value that's not in the projection."""
+
+
+class ReadonlyPropertyError(_exceptions.Error):
+    """Raised when attempting to set a property value that is read-only."""
+
+
+class ComputedPropertyError(ReadonlyPropertyError):
+    """Raised when attempting to set or delete a computed property."""
 
 
 class BlobKeyProperty:
@@ -98,11 +131,6 @@ class BooleanProperty:
 
 
 class ComputedProperty:
-    def __init__(self, *args, **kwargs):
-        raise NotImplementedError
-
-
-class ComputedPropertyError:
     def __init__(self, *args, **kwargs):
         raise NotImplementedError
 
@@ -136,11 +164,6 @@ class FloatProperty:
 
 
 class GenericProperty:
-    def __init__(self, *args, **kwargs):
-        raise NotImplementedError
-
-
-class GeoPt:
     def __init__(self, *args, **kwargs):
         raise NotImplementedError
 
@@ -190,28 +213,12 @@ class IntegerProperty:
         raise NotImplementedError
 
 
-class InvalidPropertyError:
-    def __init__(self, *args, **kwargs):
-        raise NotImplementedError
-
-
-BadProjectionError = InvalidPropertyError
-
-
 class JsonProperty:
     def __init__(self, *args, **kwargs):
         raise NotImplementedError
 
 
-Key = key.Key
-
-
 class KeyProperty:
-    def __init__(self, *args, **kwargs):
-        raise NotImplementedError
-
-
-class KindError:
     def __init__(self, *args, **kwargs):
         raise NotImplementedError
 
@@ -282,16 +289,6 @@ def put_multi_async(*args, **kwargs):
     raise NotImplementedError
 
 
-class ReadonlyPropertyError:
-    def __init__(self, *args, **kwargs):
-        raise NotImplementedError
-
-
-class Rollback:
-    def __init__(self, *args, **kwargs):
-        raise NotImplementedError
-
-
 class StringProperty:
     def __init__(self, *args, **kwargs):
         raise NotImplementedError
@@ -330,11 +327,6 @@ def transactional_async(*args, **kwargs):
 
 def transactional_tasklet(*args, **kwargs):
     raise NotImplementedError
-
-
-class UnprojectedPropertyError:
-    def __init__(self, *args, **kwargs):
-        raise NotImplementedError
 
 
 class UserProperty:
