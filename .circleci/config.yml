@@ -3,7 +3,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: googleapis/nox:0.18.2
+      - image: gcr.io/cloud-devrel-public-resources/python:latest
     steps:
       - checkout
       - run:
