@@ -60,7 +60,7 @@ Mac/Linux
     pip install virtualenv
     virtualenv <your-env>
     source <your-env>/bin/activate
-    <your-env>/bin/pip install google-cloud-datastore
+    <your-env>/bin/pip install google-cloud-videointelligence
 
 Windows
 ^^^^^^^
@@ -70,7 +70,7 @@ Windows
     pip install virtualenv
     virtualenv <your-env>
     <your-env>\Scripts\activate
-    <your-env>\Scripts\pip.exe install google-cloud-datastore
+    <your-env>\Scripts\pip.exe install google-cloud-videointelligence
 
 Example Usage
 ~~~~~~~~~~~~~
