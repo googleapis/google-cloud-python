@@ -30,12 +30,9 @@ the rewrite.
   The correct fallback is likely different than this and should probably cache
   the output of `google.cloud.datastore.client._determine_default_project()`
   on the `ndb.Key` class or `ndb.key` module (at import time)
-- The "standard" exception from App Engine are no longer available. Instead,
-  we'll create "shims" for them to emulate behavior. For example, the `Key()`
-  constructor used to raise the `BadArgumentError` exception from
-  `google.appengine.api.datastore_errors` in some cases. Currently shims are
-  - `ndb.key._BadArgumentError`
-  - `ndb.key._BadValueError`
+- The "standard" exceptions from App Engine are no longer available. Instead,
+  we'll create "shims" for them in `google.cloud.ndb._exceptions` to match the
+  class names and emulate behavior.
 - There is no replacement for `google.appengine.api.namespace_manager` which is
   used to determine the default namespace when not passed in to `Key()`
 
