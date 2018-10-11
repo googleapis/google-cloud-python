@@ -23,11 +23,16 @@ def test___all__():
     tests.unit.utils.verify___all__(model)
 
 
-class TestBlobKey:
-    @staticmethod
-    def test_constructor():
-        with pytest.raises(NotImplementedError):
-            model.BlobKey()
+def test_Key():
+    assert model.Key is key.Key
+
+
+def test_BlobKey():
+    assert model.BlobKey is NotImplemented
+
+
+def test_GeoPt():
+    assert model.GeoPt is NotImplemented
 
 
 class TestBlobKeyProperty:
@@ -56,13 +61,6 @@ class TestComputedProperty:
     def test_constructor():
         with pytest.raises(NotImplementedError):
             model.ComputedProperty()
-
-
-class TestComputedPropertyError:
-    @staticmethod
-    def test_constructor():
-        with pytest.raises(NotImplementedError):
-            model.ComputedPropertyError()
 
 
 class TestDateProperty:
@@ -108,13 +106,6 @@ class TestGenericProperty:
     def test_constructor():
         with pytest.raises(NotImplementedError):
             model.GenericProperty()
-
-
-class TestGeoPt:
-    @staticmethod
-    def test_constructor():
-        with pytest.raises(NotImplementedError):
-            model.GeoPt()
 
 
 class TestGeoPtProperty:
@@ -177,17 +168,6 @@ class TestIntegerProperty:
             model.IntegerProperty()
 
 
-class TestInvalidPropertyError:
-    @staticmethod
-    def test_constructor():
-        with pytest.raises(NotImplementedError):
-            model.InvalidPropertyError()
-
-
-def test_BadProjectionError():
-    assert model.BadProjectionError is model.InvalidPropertyError
-
-
 class TestJsonProperty:
     @staticmethod
     def test_constructor():
@@ -195,22 +175,11 @@ class TestJsonProperty:
             model.JsonProperty()
 
 
-def test_Key():
-    assert model.Key is key.Key
-
-
 class TestKeyProperty:
     @staticmethod
     def test_constructor():
         with pytest.raises(NotImplementedError):
             model.KeyProperty()
-
-
-class TestKindError:
-    @staticmethod
-    def test_constructor():
-        with pytest.raises(NotImplementedError):
-            model.KindError()
 
 
 class TestLocalStructuredProperty:
@@ -298,20 +267,6 @@ def test_put_multi_async():
         model.put_multi_async()
 
 
-class TestReadonlyPropertyError:
-    @staticmethod
-    def test_constructor():
-        with pytest.raises(NotImplementedError):
-            model.ReadonlyPropertyError()
-
-
-class TestRollback:
-    @staticmethod
-    def test_constructor():
-        with pytest.raises(NotImplementedError):
-            model.Rollback()
-
-
 class TestStringProperty:
     @staticmethod
     def test_constructor():
@@ -363,13 +318,6 @@ def test_transactional_async():
 def test_transactional_tasklet():
     with pytest.raises(NotImplementedError):
         model.transactional_tasklet()
-
-
-class TestUnprojectedPropertyError:
-    @staticmethod
-    def test_constructor():
-        with pytest.raises(NotImplementedError):
-            model.UnprojectedPropertyError()
 
 
 class TestUserProperty:
