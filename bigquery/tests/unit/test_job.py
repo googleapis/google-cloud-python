@@ -1251,6 +1251,23 @@ class TestLoadJobConfig(unittest.TestCase, _Base):
         self.assertEqual(
             config._properties['load']['encoding'], encoding)
 
+    def test_field_delimiter_missing(self):
+        config = self._get_target_class()()
+        self.assertIsNone(config.field_delimiter)
+
+    def test_field_delimiter_hit(self):
+        field_delimiter = '|'
+        config = self._get_target_class()()
+        config._properties['load']['fieldDelimiter'] = field_delimiter
+        self.assertEqual(config.field_delimiter, field_delimiter)
+
+    def test_field_delimiter_setter(self):
+        field_delimiter = '|'
+        config = self._get_target_class()()
+        config.field_delimiter = field_delimiter
+        self.assertEqual(
+            config._properties['load']['fieldDelimiter'], field_delimiter)
+
     def test_schema(self):
         from google.cloud.bigquery.schema import SchemaField
         config = self._get_target_class()()
