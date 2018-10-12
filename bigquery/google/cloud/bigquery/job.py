@@ -921,6 +921,34 @@ class LoadJobConfig(_JobConfig):
         self._set_sub_prop('autodetect', value)
 
     @property
+    def clustering_fields(self):
+        """Union[List[str], None]: Fields defining clustering for the table
+
+        (Defaults to :data:`None`).
+
+        Clustering fields are immutable after table creation.
+
+        .. note::
+
+           As of 2018-06-29, clustering fields cannot be set on a table
+           which does not also have time partioning defined.
+        """
+        prop = self._get_sub_prop('clustering')
+        if prop is not None:
+            return list(prop.get('fields', ()))
+
+    @clustering_fields.setter
+    def clustering_fields(self, value):
+        """Union[List[str], None]: Fields defining clustering for the table
+
+        (Defaults to :data:`None`).
+        """
+        if value is not None:
+            self._set_sub_prop('clustering', {'fields': value})
+        else:
+            self._del_sub_prop('clustering')
+
+    @property
     def create_disposition(self):
         """google.cloud.bigquery.job.CreateDisposition: Specifies behavior
         for creating tables.
@@ -933,6 +961,29 @@ class LoadJobConfig(_JobConfig):
     @create_disposition.setter
     def create_disposition(self, value):
         self._set_sub_prop('createDisposition', value)
+
+    @property
+    def destination_encryption_configuration(self):
+        """google.cloud.bigquery.table.EncryptionConfiguration: Custom
+        encryption configuration for the destination table.
+
+        Custom encryption configuration (e.g., Cloud KMS keys) or ``None``
+        if using default encryption.
+
+        See
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.destinationEncryptionConfiguration
+        """
+        prop = self._get_sub_prop('destinationEncryptionConfiguration')
+        if prop is not None:
+            prop = EncryptionConfiguration.from_api_repr(prop)
+        return prop
+
+    @destination_encryption_configuration.setter
+    def destination_encryption_configuration(self, value):
+        api_repr = value
+        if value is not None:
+            api_repr = value.to_api_repr()
+        self._set_sub_prop('destinationEncryptionConfiguration', api_repr)
 
     @property
     def encoding(self):
@@ -1016,6 +1067,41 @@ class LoadJobConfig(_JobConfig):
         self._set_sub_prop('quote', value)
 
     @property
+    def schema(self):
+        """List[google.cloud.bigquery.schema.SchemaField]: Schema of the
+        destination table.
+
+        See
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.schema
+        """
+        schema = _helpers._get_sub_prop(
+            self._properties, ['load', 'schema', 'fields'])
+        if schema is None:
+            return
+        return [SchemaField.from_api_repr(field) for field in schema]
+
+    @schema.setter
+    def schema(self, value):
+        if not all(hasattr(field, 'to_api_repr') for field in value):
+            raise ValueError('Schema items must be fields')
+        _helpers._set_sub_prop(
+            self._properties,
+            ['load', 'schema', 'fields'],
+            [field.to_api_repr() for field in value])
+
+    @property
+    def schema_update_options(self):
+        """List[google.cloud.bigquery.job.SchemaUpdateOption]: Specifies
+        updates to the destination table schema to allow as a side effect of
+        the load job.
+        """
+        return self._get_sub_prop('schemaUpdateOptions')
+
+    @schema_update_options.setter
+    def schema_update_options(self, values):
+        self._set_sub_prop('schemaUpdateOptions', values)
+
+    @property
     def skip_leading_rows(self):
         """int: Number of rows to skip when reading data (CSV only).
 
@@ -1042,66 +1128,6 @@ class LoadJobConfig(_JobConfig):
         self._set_sub_prop('sourceFormat', value)
 
     @property
-    def write_disposition(self):
-        """google.cloud.bigquery.job.WriteDisposition: Action that occurs if
-        the destination table already exists.
-
-        See
-        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.writeDisposition
-        """
-        return self._get_sub_prop('writeDisposition')
-
-    @write_disposition.setter
-    def write_disposition(self, value):
-        self._set_sub_prop('writeDisposition', value)
-
-    @property
-    def schema(self):
-        """List[google.cloud.bigquery.schema.SchemaField]: Schema of the
-        destination table.
-
-        See
-        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.schema
-        """
-        schema = _helpers._get_sub_prop(
-            self._properties, ['load', 'schema', 'fields'])
-        if schema is None:
-            return
-        return [SchemaField.from_api_repr(field) for field in schema]
-
-    @schema.setter
-    def schema(self, value):
-        if not all(hasattr(field, 'to_api_repr') for field in value):
-            raise ValueError('Schema items must be fields')
-        _helpers._set_sub_prop(
-            self._properties,
-            ['load', 'schema', 'fields'],
-            [field.to_api_repr() for field in value])
-
-    @property
-    def destination_encryption_configuration(self):
-        """google.cloud.bigquery.table.EncryptionConfiguration: Custom
-        encryption configuration for the destination table.
-
-        Custom encryption configuration (e.g., Cloud KMS keys) or ``None``
-        if using default encryption.
-
-        See
-        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.destinationEncryptionConfiguration
-        """
-        prop = self._get_sub_prop('destinationEncryptionConfiguration')
-        if prop is not None:
-            prop = EncryptionConfiguration.from_api_repr(prop)
-        return prop
-
-    @destination_encryption_configuration.setter
-    def destination_encryption_configuration(self, value):
-        api_repr = value
-        if value is not None:
-            api_repr = value.to_api_repr()
-        self._set_sub_prop('destinationEncryptionConfiguration', api_repr)
-
-    @property
     def time_partitioning(self):
         """google.cloud.bigquery.table.TimePartitioning: Specifies time-based
         partitioning for the destination table.
@@ -1121,44 +1147,18 @@ class LoadJobConfig(_JobConfig):
             self._del_sub_prop('timePartitioning')
 
     @property
-    def clustering_fields(self):
-        """Union[List[str], None]: Fields defining clustering for the table
+    def write_disposition(self):
+        """google.cloud.bigquery.job.WriteDisposition: Action that occurs if
+        the destination table already exists.
 
-        (Defaults to :data:`None`).
-
-        Clustering fields are immutable after table creation.
-
-        .. note::
-
-           As of 2018-06-29, clustering fields cannot be set on a table
-           which does not also have time partioning defined.
+        See
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.writeDisposition
         """
-        prop = self._get_sub_prop('clustering')
-        if prop is not None:
-            return list(prop.get('fields', ()))
+        return self._get_sub_prop('writeDisposition')
 
-    @clustering_fields.setter
-    def clustering_fields(self, value):
-        """Union[List[str], None]: Fields defining clustering for the table
-
-        (Defaults to :data:`None`).
-        """
-        if value is not None:
-            self._set_sub_prop('clustering', {'fields': value})
-        else:
-            self._del_sub_prop('clustering')
-
-    @property
-    def schema_update_options(self):
-        """List[google.cloud.bigquery.job.SchemaUpdateOption]: Specifies
-        updates to the destination table schema to allow as a side effect of
-        the load job.
-        """
-        return self._get_sub_prop('schemaUpdateOptions')
-
-    @schema_update_options.setter
-    def schema_update_options(self, values):
-        self._set_sub_prop('schemaUpdateOptions', values)
+    @write_disposition.setter
+    def write_disposition(self, value):
+        self._set_sub_prop('writeDisposition', value)
 
 
 class LoadJob(_AsyncJob):

@@ -1209,6 +1209,35 @@ class TestLoadJobConfig(unittest.TestCase, _Base):
         config.autodetect = True
         self.assertTrue(config._properties['load']['autodetect'])
 
+    def test_clustering_fields_miss(self):
+        config = self._get_target_class()()
+        self.assertIsNone(config.clustering_fields)
+
+    def test_clustering_fields_hit(self):
+        config = self._get_target_class()()
+        fields = ['email', 'postal_code']
+        config._properties['load']['clustering'] = {
+            'fields': fields,
+        }
+        self.assertEqual(config.clustering_fields, fields)
+
+    def test_clustering_fields_setter(self):
+        fields = ['email', 'postal_code']
+        config = self._get_target_class()()
+        config.clustering_fields = fields
+        self.assertEqual(
+            config._properties['load']['clustering'], {'fields': fields})
+
+    def test_clustering_fields_setter_w_none(self):
+        config = self._get_target_class()()
+        fields = ['email', 'postal_code']
+        config._properties['load']['clustering'] = {
+            'fields': fields,
+        }
+        config.clustering_fields = None
+        self.assertIsNone(config.clustering_fields)
+        self.assertNotIn('clustering', config._properties['load'])
+
     def test_create_disposition_missing(self):
         config = self._get_target_class()()
         self.assertIsNone(config.create_disposition)
@@ -1229,6 +1258,37 @@ class TestLoadJobConfig(unittest.TestCase, _Base):
         config.create_disposition = disposition
         self.assertEqual(
             config._properties['load']['createDisposition'], disposition)
+
+    def test_destination_encryption_configuration_missing(self):
+        config = self._get_target_class()()
+        self.assertIsNone(config.destination_encryption_configuration)
+
+    def test_destination_encryption_configuration_hit(self):
+        from google.cloud.bigquery.table import EncryptionConfiguration
+
+        kms_key_name = 'kms-key-name'
+        encryption_configuration = EncryptionConfiguration(kms_key_name)
+        config = self._get_target_class()()
+        config._properties['load']['destinationEncryptionConfiguration'] = {
+            'kmsKeyName': kms_key_name,
+        }
+        self.assertEqual(
+            config.destination_encryption_configuration,
+            encryption_configuration)
+
+    def test_destination_encryption_configuration_setter(self):
+        from google.cloud.bigquery.table import EncryptionConfiguration
+
+        kms_key_name = 'kms-key-name'
+        encryption_configuration = EncryptionConfiguration(kms_key_name)
+        config = self._get_target_class()()
+        config.destination_encryption_configuration = encryption_configuration
+        expected = {
+            'kmsKeyName': kms_key_name,
+        }
+        self.assertEqual(
+            config._properties['load']['destinationEncryptionConfiguration'],
+            expected)
 
     def test_encoding_missing(self):
         config = self._get_target_class()()
@@ -1333,73 +1393,6 @@ class TestLoadJobConfig(unittest.TestCase, _Base):
         self.assertEqual(
             config._properties['load']['quote'], quote_character)
 
-    def test_skip_leading_rows_missing(self):
-        config = self._get_target_class()()
-        self.assertIsNone(config.skip_leading_rows)
-
-    def test_skip_leading_rows_hit_w_str(self):
-        skip_leading_rows = 1
-        config = self._get_target_class()()
-        config._properties['load']['skipLeadingRows'] = str(skip_leading_rows)
-        self.assertEqual(config.skip_leading_rows, skip_leading_rows)
-
-    def test_skip_leading_rows_hit_w_integer(self):
-        skip_leading_rows = 1
-        config = self._get_target_class()()
-        config._properties['load']['skipLeadingRows'] = skip_leading_rows
-        self.assertEqual(config.skip_leading_rows, skip_leading_rows)
-
-    def test_skip_leading_rows_setter(self):
-        skip_leading_rows = 1
-        config = self._get_target_class()()
-        config.skip_leading_rows = skip_leading_rows
-        self.assertEqual(
-            config._properties['load']['skipLeadingRows'],
-            # XXX: Should this really be a str?
-            str(skip_leading_rows))
-
-    def test_source_format_missing(self):
-        config = self._get_target_class()()
-        self.assertIsNone(config.source_format)
-
-    def test_source_format_hit(self):
-        from google.cloud.bigquery.job import SourceFormat
-
-        source_format = SourceFormat.CSV
-        config = self._get_target_class()()
-        config._properties['load']['sourceFormat'] = source_format
-        self.assertEqual(config.source_format, source_format)
-
-    def test_source_format_setter(self):
-        from google.cloud.bigquery.job import SourceFormat
-
-        source_format = SourceFormat.CSV
-        config = self._get_target_class()()
-        config.source_format = source_format
-        self.assertEqual(
-            config._properties['load']['sourceFormat'], source_format)
-
-    def test_write_disposition_missing(self):
-        config = self._get_target_class()()
-        self.assertIsNone(config.write_disposition)
-
-    def test_write_disposition_hit(self):
-        from google.cloud.bigquery.job import WriteDisposition
-
-        write_disposition = WriteDisposition.WRITE_TRUNCATE
-        config = self._get_target_class()()
-        config._properties['load']['writeDisposition'] = write_disposition
-        self.assertEqual(config.write_disposition, write_disposition)
-
-    def test_write_disposition_setter(self):
-        from google.cloud.bigquery.job import WriteDisposition
-
-        write_disposition = WriteDisposition.WRITE_TRUNCATE
-        config = self._get_target_class()()
-        config.write_disposition = write_disposition
-        self.assertEqual(
-            config._properties['load']['writeDisposition'], write_disposition)
-
     def test_schema_missing(self):
         config = self._get_target_class()()
         self.assertIsNone(config.schema)
@@ -1448,36 +1441,78 @@ class TestLoadJobConfig(unittest.TestCase, _Base):
             config._properties['load']['schema'],
             {'fields': [full_name_repr, age_repr]})
 
-    def test_destination_encryption_configuration_missing(self):
+    def test_schema_update_options_missing(self):
         config = self._get_target_class()()
-        self.assertIsNone(config.destination_encryption_configuration)
+        self.assertIsNone(config.schema_update_options)
 
-    def test_destination_encryption_configuration_hit(self):
-        from google.cloud.bigquery.table import EncryptionConfiguration
+    def test_schema_update_options_hit(self):
+        from google.cloud.bigquery.job import SchemaUpdateOption
 
-        kms_key_name = 'kms-key-name'
-        encryption_configuration = EncryptionConfiguration(kms_key_name)
+        options = [
+            SchemaUpdateOption.ALLOW_FIELD_ADDITION,
+            SchemaUpdateOption.ALLOW_FIELD_RELAXATION,
+        ]
         config = self._get_target_class()()
-        config._properties['load']['destinationEncryptionConfiguration'] = {
-            'kmsKeyName': kms_key_name,
-        }
+        config._properties['load']['schemaUpdateOptions'] = options
+        self.assertEqual(config.schema_update_options, options)
+
+    def test_schema_update_options_setter(self):
+        from google.cloud.bigquery.job import SchemaUpdateOption
+
+        options = [
+            SchemaUpdateOption.ALLOW_FIELD_ADDITION,
+            SchemaUpdateOption.ALLOW_FIELD_RELAXATION,
+        ]
+        config = self._get_target_class()()
+        config.schema_update_options = options
         self.assertEqual(
-            config.destination_encryption_configuration,
-            encryption_configuration)
+            config._properties['load']['schemaUpdateOptions'], options)
 
-    def test_destination_encryption_configuration_setter(self):
-        from google.cloud.bigquery.table import EncryptionConfiguration
-
-        kms_key_name = 'kms-key-name'
-        encryption_configuration = EncryptionConfiguration(kms_key_name)
+    def test_skip_leading_rows_missing(self):
         config = self._get_target_class()()
-        config.destination_encryption_configuration = encryption_configuration
-        expected = {
-            'kmsKeyName': kms_key_name,
-        }
+        self.assertIsNone(config.skip_leading_rows)
+
+    def test_skip_leading_rows_hit_w_str(self):
+        skip_leading_rows = 1
+        config = self._get_target_class()()
+        config._properties['load']['skipLeadingRows'] = str(skip_leading_rows)
+        self.assertEqual(config.skip_leading_rows, skip_leading_rows)
+
+    def test_skip_leading_rows_hit_w_integer(self):
+        skip_leading_rows = 1
+        config = self._get_target_class()()
+        config._properties['load']['skipLeadingRows'] = skip_leading_rows
+        self.assertEqual(config.skip_leading_rows, skip_leading_rows)
+
+    def test_skip_leading_rows_setter(self):
+        skip_leading_rows = 1
+        config = self._get_target_class()()
+        config.skip_leading_rows = skip_leading_rows
         self.assertEqual(
-            config._properties['load']['destinationEncryptionConfiguration'],
-            expected)
+            config._properties['load']['skipLeadingRows'],
+            # XXX: Should this really be a str?
+            str(skip_leading_rows))
+
+    def test_source_format_missing(self):
+        config = self._get_target_class()()
+        self.assertIsNone(config.source_format)
+
+    def test_source_format_hit(self):
+        from google.cloud.bigquery.job import SourceFormat
+
+        source_format = SourceFormat.CSV
+        config = self._get_target_class()()
+        config._properties['load']['sourceFormat'] = source_format
+        self.assertEqual(config.source_format, source_format)
+
+    def test_source_format_setter(self):
+        from google.cloud.bigquery.job import SourceFormat
+
+        source_format = SourceFormat.CSV
+        config = self._get_target_class()()
+        config.source_format = source_format
+        self.assertEqual(
+            config._properties['load']['sourceFormat'], source_format)
 
     def test_time_partitioning_miss(self):
         config = self._get_target_class()()
@@ -1543,61 +1578,26 @@ class TestLoadJobConfig(unittest.TestCase, _Base):
         self.assertIsNone(config.time_partitioning)
         self.assertNotIn('timePartitioning', config._properties['load'])
 
-    def test_clustering_fields_miss(self):
+    def test_write_disposition_missing(self):
         config = self._get_target_class()()
-        self.assertIsNone(config.clustering_fields)
+        self.assertIsNone(config.write_disposition)
 
-    def test_clustering_fields_hit(self):
-        config = self._get_target_class()()
-        fields = ['email', 'postal_code']
-        config._properties['load']['clustering'] = {
-            'fields': fields,
-        }
-        self.assertEqual(config.clustering_fields, fields)
+    def test_write_disposition_hit(self):
+        from google.cloud.bigquery.job import WriteDisposition
 
-    def test_clustering_fields_setter(self):
-        fields = ['email', 'postal_code']
+        write_disposition = WriteDisposition.WRITE_TRUNCATE
         config = self._get_target_class()()
-        config.clustering_fields = fields
+        config._properties['load']['writeDisposition'] = write_disposition
+        self.assertEqual(config.write_disposition, write_disposition)
+
+    def test_write_disposition_setter(self):
+        from google.cloud.bigquery.job import WriteDisposition
+
+        write_disposition = WriteDisposition.WRITE_TRUNCATE
+        config = self._get_target_class()()
+        config.write_disposition = write_disposition
         self.assertEqual(
-            config._properties['load']['clustering'], {'fields': fields})
-
-    def test_clustering_fields_setter_w_none(self):
-        config = self._get_target_class()()
-        fields = ['email', 'postal_code']
-        config._properties['load']['clustering'] = {
-            'fields': fields,
-        }
-        config.clustering_fields = None
-        self.assertIsNone(config.clustering_fields)
-        self.assertNotIn('clustering', config._properties['load'])
-
-    def test_schema_update_options_missing(self):
-        config = self._get_target_class()()
-        self.assertIsNone(config.schema_update_options)
-
-    def test_schema_update_options_hit(self):
-        from google.cloud.bigquery.job import SchemaUpdateOption
-
-        options = [
-            SchemaUpdateOption.ALLOW_FIELD_ADDITION,
-            SchemaUpdateOption.ALLOW_FIELD_RELAXATION,
-        ]
-        config = self._get_target_class()()
-        config._properties['load']['schemaUpdateOptions'] = options
-        self.assertEqual(config.schema_update_options, options)
-
-    def test_schema_update_options_setter(self):
-        from google.cloud.bigquery.job import SchemaUpdateOption
-
-        options = [
-            SchemaUpdateOption.ALLOW_FIELD_ADDITION,
-            SchemaUpdateOption.ALLOW_FIELD_RELAXATION,
-        ]
-        config = self._get_target_class()()
-        config.schema_update_options = options
-        self.assertEqual(
-            config._properties['load']['schemaUpdateOptions'], options)
+            config._properties['load']['writeDisposition'], write_disposition)
 
     def test_from_api_repr(self):
         resource = self._make_resource()
