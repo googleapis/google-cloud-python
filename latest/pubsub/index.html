@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Python Client for Google Cloud Pub / Sub &#8212; google-cloud 8f63393 documentation</title>
+    <title>Python Client for Google Cloud Pub / Sub &#8212; google-cloud 987d410 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -96,9 +96,9 @@ dependencies.</p>
 <p>To publish data to Cloud Pub/Sub you must create a topic, and then publish
 messages to it</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">pubsub</span>
+<span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">pubsub_v1</span>
 
-<span class="n">publisher</span> <span class="o">=</span> <span class="n">pubsub</span><span class="o">.</span><span class="n">PublisherClient</span><span class="p">()</span>
+<span class="n">publisher</span> <span class="o">=</span> <span class="n">pubsub_v1</span><span class="o">.</span><span class="n">PublisherClient</span><span class="p">()</span>
 <span class="n">topic_name</span> <span class="o">=</span> <span class="s1">&#39;projects/{project_id}/topics/{topic}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
     <span class="n">project_id</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;GOOGLE_CLOUD_PROJECT&#39;</span><span class="p">),</span>
     <span class="n">topic</span><span class="o">=</span><span class="s1">&#39;MY_TOPIC_NAME&#39;</span><span class="p">,</span>  <span class="c1"># Set this to something appropriate.</span>
@@ -112,11 +112,11 @@ messages to it</p>
 <div class="section" id="subscribing">
 <h4>Subscribing<a class="headerlink" href="#subscribing" title="Permalink to this headline">#</a></h4>
 <p>To subscribe to data in Cloud Pub/Sub, you create a subscription based on
-the topic, and subscribe to that.</p>
+the topic, and subscribe to that, passing a callback function.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">pubsub</span>
+<span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">pubsub_v1</span>
 
-<span class="n">subscriber</span> <span class="o">=</span> <span class="n">pubsub</span><span class="o">.</span><span class="n">SubscriberClient</span><span class="p">()</span>
+<span class="n">subscriber</span> <span class="o">=</span> <span class="n">pubsub_v1</span><span class="o">.</span><span class="n">SubscriberClient</span><span class="p">()</span>
 <span class="n">topic_name</span> <span class="o">=</span> <span class="s1">&#39;projects/{project_id}/topics/{topic}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
     <span class="n">project_id</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;GOOGLE_CLOUD_PROJECT&#39;</span><span class="p">),</span>
     <span class="n">topic</span><span class="o">=</span><span class="s1">&#39;MY_TOPIC_NAME&#39;</span><span class="p">,</span>  <span class="c1"># Set this to something appropriate.</span>
@@ -127,15 +127,20 @@ the topic, and subscribe to that.</p>
 <span class="p">)</span>
 <span class="n">subscriber</span><span class="o">.</span><span class="n">create_subscription</span><span class="p">(</span>
     <span class="n">name</span><span class="o">=</span><span class="n">subscription_name</span><span class="p">,</span> <span class="n">topic</span><span class="o">=</span><span class="n">topic_name</span><span class="p">)</span>
-<span class="n">subscription</span> <span class="o">=</span> <span class="n">subscriber</span><span class="o">.</span><span class="n">subscribe</span><span class="p">(</span><span class="n">subscription_name</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>The subscription is opened asychronously, and messages are processed by
-use of a callback.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">callback</span><span class="p">(</span><span class="n">message</span><span class="p">):</span>
+
+<span class="k">def</span> <span class="nf">callback</span><span class="p">(</span><span class="n">message</span><span class="p">):</span>
     <span class="k">print</span><span class="p">(</span><span class="n">message</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
     <span class="n">message</span><span class="o">.</span><span class="n">ack</span><span class="p">()</span>
-<span class="n">subscription</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">callback</span><span class="p">)</span>
+
+<span class="n">future</span> <span class="o">=</span> <span class="n">subscriber</span><span class="o">.</span><span class="n">subscribe</span><span class="p">(</span><span class="n">subscription_name</span><span class="p">,</span> <span class="n">callback</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The future returned by the call to <code class="docutils literal notranslate"><span class="pre">subscriber.subscribe</span></code> can be used to
+block the current thread until a given condition obtains:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">try</span><span class="p">:</span>
+    <span class="n">future</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
+<span class="k">except</span> <span class="ne">KeyboardInterrupt</span><span class="p">:</span>
+    <span class="n">future</span><span class="o">.</span><span class="n">cancel</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>To learn more, consult the <a class="reference external" href="http://google-cloud-python.readthedocs.io/en/latest/pubsub/subscriber/index.html">subscriber documentation</a>.</p>
