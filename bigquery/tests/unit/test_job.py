@@ -1209,6 +1209,27 @@ class TestLoadJobConfig(unittest.TestCase, _Base):
         config.autodetect = True
         self.assertTrue(config._properties['load']['autodetect'])
 
+    def test_create_disposition_missing(self):
+        config = self._get_target_class()()
+        self.assertIsNone(config.create_disposition)
+
+    def test_create_disposition_hit(self):
+        from google.cloud.bigquery.job import CreateDisposition
+
+        disposition = CreateDisposition.CREATE_IF_NEEDED
+        config = self._get_target_class()()
+        config._properties['load']['createDisposition'] = disposition
+        self.assertEqual(config.create_disposition, disposition)
+
+    def test_create_disposition_setter(self):
+        from google.cloud.bigquery.job import CreateDisposition
+
+        disposition = CreateDisposition.CREATE_IF_NEEDED
+        config = self._get_target_class()()
+        config.create_disposition = disposition
+        self.assertEqual(
+            config._properties['load']['createDisposition'], disposition)
+
     def test_schema(self):
         from google.cloud.bigquery.schema import SchemaField
         config = self._get_target_class()()
