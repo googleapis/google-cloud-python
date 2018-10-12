@@ -1282,6 +1282,23 @@ class TestLoadJobConfig(unittest.TestCase, _Base):
         config.ignore_unknown_values = True
         self.assertTrue(config._properties['load']['ignoreUnknownValues'])
 
+    def test_max_bad_records_missing(self):
+        config = self._get_target_class()()
+        self.assertIsNone(config.max_bad_records)
+
+    def test_max_bad_records_hit(self):
+        max_bad_records = 13
+        config = self._get_target_class()()
+        config._properties['load']['maxBadRecords'] = max_bad_records
+        self.assertEqual(config.max_bad_records, max_bad_records)
+
+    def test_max_bad_records_setter(self):
+        max_bad_records = 13
+        config = self._get_target_class()()
+        config.max_bad_records = max_bad_records
+        self.assertEqual(
+            config._properties['load']['maxBadRecords'], max_bad_records)
+
     def test_schema(self):
         from google.cloud.bigquery.schema import SchemaField
         config = self._get_target_class()()
