@@ -40,8 +40,50 @@ def test_GeoPt():
 class TestIndexProperty:
     @staticmethod
     def test_constructor():
-        with pytest.raises(NotImplementedError):
-            model.IndexProperty()
+        index_prop = model.IndexProperty(name="a", direction="asc")
+        assert index_prop._name == "a"
+        assert index_prop._direction == "asc"
+
+    @staticmethod
+    def test_name():
+        index_prop = model.IndexProperty(name="b", direction="asc")
+        assert index_prop.name == "b"
+
+    @staticmethod
+    def test_direction():
+        index_prop = model.IndexProperty(name="a", direction="desc")
+        assert index_prop.direction == "desc"
+
+    @staticmethod
+    def test___repr__():
+        index_prop = model.IndexProperty(name="c", direction="asc")
+        assert repr(index_prop) == "IndexProperty(name='c', direction='asc')"
+
+    @staticmethod
+    def test___eq__():
+        index_prop1 = model.IndexProperty(name="d", direction="asc")
+        index_prop2 = model.IndexProperty(name="d", direction="desc")
+        index_prop3 = unittest.mock.sentinel.index_prop
+        assert index_prop1 == index_prop1
+        assert not index_prop1 == index_prop2
+        assert not index_prop1 == index_prop3
+
+    @staticmethod
+    def test___ne__():
+        index_prop1 = model.IndexProperty(name="d", direction="asc")
+        index_prop2 = model.IndexProperty(name="d", direction="desc")
+        index_prop3 = unittest.mock.sentinel.index_prop
+        assert not index_prop1 != index_prop1
+        assert index_prop1 != index_prop2
+        assert index_prop1 != index_prop3
+
+    @staticmethod
+    def test___hash__():
+        index_prop1 = model.IndexProperty(name="zip", direction="asc")
+        index_prop2 = model.IndexProperty(name="zip", direction="asc")
+        assert index_prop1 is not index_prop2
+        assert hash(index_prop1) == hash(index_prop2)
+        assert hash(index_prop1) == hash(("zip", "asc"))
 
 
 class TestIndex:
