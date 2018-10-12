@@ -1195,6 +1195,20 @@ class TestLoadJobConfig(unittest.TestCase, _Base):
         config.allow_quoted_newlines = True
         self.assertTrue(config._properties['load']['allowQuotedNewlines'])
 
+    def test_autodetect_missing(self):
+        config = self._get_target_class()()
+        self.assertIsNone(config.autodetect)
+
+    def test_autodetect_hit(self):
+        config = self._get_target_class()()
+        config._properties['load']['autodetect'] = True
+        self.assertTrue(config.autodetect)
+
+    def test_autodetect_setter(self):
+        config = self._get_target_class()()
+        config.autodetect = True
+        self.assertTrue(config._properties['load']['autodetect'])
+
     def test_schema(self):
         from google.cloud.bigquery.schema import SchemaField
         config = self._get_target_class()()
