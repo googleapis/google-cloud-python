@@ -1448,6 +1448,37 @@ class TestLoadJobConfig(unittest.TestCase, _Base):
             config._properties['load']['schema'],
             {'fields': [full_name_repr, age_repr]})
 
+    def test_destination_encryption_configuration_missing(self):
+        config = self._get_target_class()()
+        self.assertIsNone(config.destination_encryption_configuration)
+
+    def test_destination_encryption_configuration_hit(self):
+        from google.cloud.bigquery.table import EncryptionConfiguration
+
+        kms_key_name = 'kms-key-name'
+        encryption_configuration = EncryptionConfiguration(kms_key_name)
+        config = self._get_target_class()()
+        config._properties['load']['destinationEncryptionConfiguration'] = {
+            'kmsKeyName': kms_key_name,
+        }
+        self.assertEqual(
+            config.destination_encryption_configuration,
+            encryption_configuration)
+
+    def test_destination_encryption_configuration_setter(self):
+        from google.cloud.bigquery.table import EncryptionConfiguration
+
+        kms_key_name = 'kms-key-name'
+        encryption_configuration = EncryptionConfiguration(kms_key_name)
+        config = self._get_target_class()()
+        config.destination_encryption_configuration = encryption_configuration
+        expected = {
+            'kmsKeyName': kms_key_name,
+        }
+        self.assertEqual(
+            config._properties['load']['destinationEncryptionConfiguration'],
+            expected)
+
     def test_time_partitioning(self):
         from google.cloud.bigquery import table
 
