@@ -1230,6 +1230,27 @@ class TestLoadJobConfig(unittest.TestCase, _Base):
         self.assertEqual(
             config._properties['load']['createDisposition'], disposition)
 
+    def test_encoding_missing(self):
+        config = self._get_target_class()()
+        self.assertIsNone(config.encoding)
+
+    def test_encoding_hit(self):
+        from google.cloud.bigquery.job import Encoding
+
+        encoding = Encoding.UTF_8
+        config = self._get_target_class()()
+        config._properties['load']['encoding'] = encoding
+        self.assertEqual(config.encoding, encoding)
+
+    def test_encoding_setter(self):
+        from google.cloud.bigquery.job import Encoding
+
+        encoding = Encoding.UTF_8
+        config = self._get_target_class()()
+        config.encoding = encoding
+        self.assertEqual(
+            config._properties['load']['encoding'], encoding)
+
     def test_schema(self):
         from google.cloud.bigquery.schema import SchemaField
         config = self._get_target_class()()
