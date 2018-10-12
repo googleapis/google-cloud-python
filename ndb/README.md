@@ -59,6 +59,8 @@ the rewrite.
   original implementation didn't allow in excess of 500 bytes, but it seems
   the limit has been raised by the backend. (FWIW, Danny's opinion is that
   the backend should enforce these limits, not the library.)
+- I renamed `Property.__creation_counter_global` to
+  `Property._CREATION_COUNTER`.
 
 ## Comments
 
@@ -81,6 +83,10 @@ the rewrite.
   protobuf for the underlying `google.cloud.datastore.Key` is created. This
   is because the `Reference` is a legacy protobuf message type from App
   Engine, while the latest (`google/datastore/v1`) RPC definition uses a `Key`.
+- There is a `Property._CREATION_COUNTER` that gets incremented every time
+  a new `Property()` instance is created. This increment is not threadsafe.
+  However, `ndb` was designed for `Property()` instances to be created at
+  import time, so this may not be an issue.
 
 [0]: https://cloud.google.com/datastore
 [1]: https://cloud.google.com/appengine
