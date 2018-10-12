@@ -150,8 +150,8 @@ class Key:
         Key('Parent', 'C', 'Child', 42)
 
     Either of the above constructor forms can additionally pass in another
-    key the ``parent`` keyword. The ``(kind, id)`` pairs of the parent key are
-    inserted before the ``(kind, id)`` pairs passed explicitly.
+    key via the ``parent`` keyword. The ``(kind, id)`` pairs of the parent key
+    are inserted before the ``(kind, id)`` pairs passed explicitly.
 
     .. doctest:: key-constructor-parent
 
