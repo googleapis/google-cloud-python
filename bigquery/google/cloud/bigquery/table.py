@@ -1356,6 +1356,24 @@ class TimePartitioning(object):
         """
         return self._properties
 
+    def _key(self):
+        return tuple(sorted(self._properties.items()))
+
+    def __eq__(self, other):
+        if not isinstance(other, TimePartitioning):
+            return NotImplemented
+        return self._key() == other._key()
+
+    def __ne__(self, other):
+        return not self == other
+
+    def __hash__(self):
+        return hash(self._key())
+
+    def __repr__(self):
+        key_vals = ['{}={}'.format(key, val) for key, val in self._key()]
+        return 'TimePartitioning({})'.format(','.join(key_vals))
+
 
 def _item_to_row(iterator, resource):
     """Convert a JSON row to the native object.

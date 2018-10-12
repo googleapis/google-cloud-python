@@ -1493,33 +1493,26 @@ class TestRowIterator(unittest.TestCase):
 
 class TestTimePartitioning(unittest.TestCase):
 
-    def test_constructor_defaults(self):
+    def _get_target_class(self):
         from google.cloud.bigquery.table import TimePartitioning
 
-        time_partitioning = TimePartitioning()
+        return TimePartitioning
+
+    def _make_one(self, *args, **kw):
+        return self._get_target_class()(*args, **kw)
+
+    def test_constructor_defaults(self):
+        time_partitioning = self._make_one()
 
         self.assertEqual(time_partitioning.type_, 'DAY')
         self.assertIsNone(time_partitioning.field)
         self.assertIsNone(time_partitioning.expiration_ms)
         self.assertIsNone(time_partitioning.require_partition_filter)
 
-        api_repr = time_partitioning.to_api_repr()
-
-        exp_api_repr = {'type': 'DAY'}
-        self.assertEqual(api_repr, exp_api_repr)
-
-        tp_from_api_repr = TimePartitioning.from_api_repr(api_repr)
-
-        self.assertEqual(tp_from_api_repr.type_, 'DAY')
-        self.assertIsNone(tp_from_api_repr.field)
-        self.assertIsNone(tp_from_api_repr.expiration_ms)
-        self.assertIsNone(tp_from_api_repr.require_partition_filter)
-
-    def test_constructor_properties(self):
-        from google.cloud.bigquery.table import TimePartitioning
+    def test_constructor_explicit(self):
         from google.cloud.bigquery.table import TimePartitioningType
 
-        time_partitioning = TimePartitioning(
+        time_partitioning = self._make_one(
             type_=TimePartitioningType.DAY,
             field='name',
             expiration_ms=10000,
@@ -1531,19 +1524,143 @@ class TestTimePartitioning(unittest.TestCase):
         self.assertEqual(time_partitioning.expiration_ms, 10000)
         self.assertTrue(time_partitioning.require_partition_filter)
 
-        api_repr = time_partitioning.to_api_repr()
+    def test_from_api_repr_minimal(self):
+        from google.cloud.bigquery.table import TimePartitioningType
 
-        exp_api_repr = {
+        klass = self._get_target_class()
+        api_repr = {'type': 'DAY'}
+        time_partitioning = klass.from_api_repr(api_repr)
+
+        self.assertEqual(time_partitioning.type_, TimePartitioningType.DAY)
+        self.assertIsNone(time_partitioning.field)
+        self.assertIsNone(time_partitioning.expiration_ms)
+        self.assertIsNone(time_partitioning.require_partition_filter)
+
+    def test_from_api_repr_explicit(self):
+        from google.cloud.bigquery.table import TimePartitioningType
+
+        klass = self._get_target_class()
+        api_repr = {
             'type': 'DAY',
             'field': 'name',
             'expirationMs': '10000',
             'requirePartitionFilter': True,
         }
-        self.assertEqual(api_repr, exp_api_repr)
+        time_partitioning = klass.from_api_repr(api_repr)
 
-        tp_from_api_repr = TimePartitioning.from_api_repr(api_repr)
-
-        self.assertEqual(tp_from_api_repr.type_, 'DAY')
-        self.assertEqual(tp_from_api_repr.field, 'name')
-        self.assertEqual(tp_from_api_repr.expiration_ms, 10000)
+        self.assertEqual(time_partitioning.type_, TimePartitioningType.DAY)
+        self.assertEqual(time_partitioning.field, 'name')
+        self.assertEqual(time_partitioning.expiration_ms, 10000)
         self.assertTrue(time_partitioning.require_partition_filter)
+
+    def test_to_api_repr_defaults(self):
+        time_partitioning = self._make_one()
+        expected = {'type': 'DAY'}
+        self.assertEqual(time_partitioning.to_api_repr(), expected)
+
+    def test_to_api_repr_explicit(self):
+        from google.cloud.bigquery.table import TimePartitioningType
+
+        time_partitioning = self._make_one(
+            type_=TimePartitioningType.DAY,
+            field='name',
+            expiration_ms=10000,
+            require_partition_filter=True
+        )
+
+        expected = {
+            'type': 'DAY',
+            'field': 'name',
+            'expirationMs': '10000',
+            'requirePartitionFilter': True,
+        }
+        self.assertEqual(time_partitioning.to_api_repr(), expected)
+
+    def test___eq___wrong_type(self):
+        time_partitioning = self._make_one()
+        other = object()
+        self.assertNotEqual(time_partitioning, other)
+        self.assertEqual(time_partitioning, mock.ANY)
+
+    def test___eq___type__mismatch(self):
+        time_partitioning = self._make_one()
+        other = self._make_one(type_='HOUR')
+        self.assertNotEqual(time_partitioning, other)
+
+    def test___eq___field_mismatch(self):
+        time_partitioning = self._make_one(field='foo')
+        other = self._make_one(field='bar')
+        self.assertNotEqual(time_partitioning, other)
+
+    def test___eq___expiration_ms_mismatch(self):
+        time_partitioning = self._make_one(field='foo', expiration_ms=100000)
+        other = self._make_one(field='foo', expiration_ms=200000)
+        self.assertNotEqual(time_partitioning, other)
+
+    def test___eq___require_partition_filter_mismatch(self):
+        time_partitioning = self._make_one(
+            field='foo', expiration_ms=100000, require_partition_filter=True)
+        other = self._make_one(
+            field='foo', expiration_ms=100000, require_partition_filter=False)
+        self.assertNotEqual(time_partitioning, other)
+
+    def test___eq___hit(self):
+        time_partitioning = self._make_one(
+            field='foo', expiration_ms=100000, require_partition_filter=True)
+        other = self._make_one(
+            field='foo', expiration_ms=100000, require_partition_filter=True)
+        self.assertEqual(time_partitioning, other)
+
+    def test___ne___wrong_type(self):
+        time_partitioning = self._make_one()
+        other = object()
+        self.assertNotEqual(time_partitioning, other)
+        self.assertEqual(time_partitioning, mock.ANY)
+
+    def test___ne___same_value(self):
+        time_partitioning1 = self._make_one()
+        time_partitioning2 = self._make_one()
+        # unittest ``assertEqual`` uses ``==`` not ``!=``.
+        comparison_val = (time_partitioning1 != time_partitioning2)
+        self.assertFalse(comparison_val)
+
+    def test___ne___different_values(self):
+        time_partitioning1 = self._make_one()
+        time_partitioning2 = self._make_one(type_='HOUR')
+        self.assertNotEqual(time_partitioning1, time_partitioning2)
+
+    def test___hash__set_equality(self):
+        time_partitioning1 = self._make_one(field='foo')
+        time_partitioning2 = self._make_one(field='foo')
+        set_one = {time_partitioning1, time_partitioning2}
+        set_two = {time_partitioning1, time_partitioning2}
+        self.assertEqual(set_one, set_two)
+
+    def test___hash__not_equals(self):
+        time_partitioning1 = self._make_one(field='foo')
+        time_partitioning2 = self._make_one(field='bar')
+        set_one = {time_partitioning1}
+        set_two = {time_partitioning2}
+        self.assertNotEqual(set_one, set_two)
+
+    def test___repr___minimal(self):
+        time_partitioning = self._make_one()
+        expected = "TimePartitioning(type=DAY)"
+        self.assertEqual(repr(time_partitioning), expected)
+
+    def test___repr___explicit(self):
+        from google.cloud.bigquery.table import TimePartitioningType
+
+        time_partitioning = self._make_one(
+            type_=TimePartitioningType.DAY,
+            field='name',
+            expiration_ms=10000,
+            require_partition_filter=True
+        )
+        expected = (
+            "TimePartitioning("
+            "expirationMs=10000,"
+            "field=name,"
+            "requirePartitionFilter=True,"
+            "type=DAY)")
+        self.assertEqual(repr(time_partitioning), expected)
