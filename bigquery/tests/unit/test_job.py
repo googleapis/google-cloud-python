@@ -1479,32 +1479,69 @@ class TestLoadJobConfig(unittest.TestCase, _Base):
             config._properties['load']['destinationEncryptionConfiguration'],
             expected)
 
-    def test_time_partitioning(self):
-        from google.cloud.bigquery import table
-
-        time_partitioning = table.TimePartitioning(
-            type_=table.TimePartitioningType.DAY, field='name')
+    def test_time_partitioning_miss(self):
         config = self._get_target_class()()
-        config.time_partitioning = time_partitioning
-        # TimePartitioning should be configurable after assigning
-        time_partitioning.expiration_ms = 10000
-        self.assertEqual(
-            config.time_partitioning.type_,
-            table.TimePartitioningType.DAY)
-        self.assertEqual(config.time_partitioning.field, 'name')
-        self.assertEqual(config.time_partitioning.expiration_ms, 10000)
-
-        config.time_partitioning = None
         self.assertIsNone(config.time_partitioning)
 
-    def test_clustering_fields(self):
-        fields = ['email', 'postal_code']
-        config = self._get_target_class()()
-        config.clustering_fields = fields
-        self.assertEqual(config.clustering_fields, fields)
+    def test_time_partitioning_hit(self):
+        from google.cloud.bigquery.table import TimePartitioning
+        from google.cloud.bigquery.table import TimePartitioningType
 
-        config.clustering_fields = None
-        self.assertIsNone(config.clustering_fields)
+        field = 'creation_date'
+        year_ms = 86400 * 1000 * 365
+        config = self._get_target_class()()
+        config._properties['load']['timePartitioning'] = {
+            'type': TimePartitioningType.DAY,
+            'field': field,
+            'expirationMs': str(year_ms),
+            'requirePartitionFilter': False,
+        }
+        expected = TimePartitioning(
+            type_=TimePartitioningType.DAY,
+            field=field,
+            expiration_ms=year_ms,
+            require_partition_filter=False,
+        )
+        self.assertEqual(config.time_partitioning, expected)
+
+    def test_time_partitioning_setter(self):
+        from google.cloud.bigquery.table import TimePartitioning
+        from google.cloud.bigquery.table import TimePartitioningType
+
+        field = 'creation_date'
+        year_ms = 86400 * 1000 * 365
+        time_partitioning = TimePartitioning(
+            type_=TimePartitioningType.DAY,
+            field=field,
+            expiration_ms=year_ms,
+            require_partition_filter=False,
+        )
+        config = self._get_target_class()()
+        config.time_partitioning = time_partitioning
+        expected = {
+            'type': TimePartitioningType.DAY,
+            'field': field,
+            'expirationMs': str(year_ms),
+            'requirePartitionFilter': False,
+        }
+        self.assertEqual(
+            config._properties['load']['timePartitioning'], expected)
+
+    def test_time_partitioning_setter_w_none(self):
+        from google.cloud.bigquery.table import TimePartitioningType
+
+        field = 'creation_date'
+        year_ms = 86400 * 1000 * 365
+        config = self._get_target_class()()
+        config._properties['load']['timePartitioning'] = {
+            'type': TimePartitioningType.DAY,
+            'field': field,
+            'expirationMs': str(year_ms),
+            'requirePartitionFilter': False,
+        }
+        config.time_partitioning = None
+        self.assertIsNone(config.time_partitioning)
+        self.assertIsNone(config._properties['load']['timePartitioning'])
 
     def test_api_repr(self):
         resource = self._make_resource()
