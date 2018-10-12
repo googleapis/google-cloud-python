@@ -205,8 +205,57 @@ class Index:
 
 
 class IndexState:
-    def __init__(self, *args, **kwargs):
-        raise NotImplementedError
+    """Immutable object representing an index and its state."""
+
+    __slots__ = ("_definition", "_state", "_id")
+
+    def __init__(self, *, definition, state, id):
+        self._definition = definition
+        self._state = state
+        self._id = id
+
+    @property
+    def definition(self):
+        """Index: The index corresponding to the tracked state."""
+        return self._definition
+
+    @property
+    def state(self):
+        """str: The index state.
+
+        Possible values are ``error``, ``deleting``, ``serving`` or
+        ``building``.
+        """
+        return self._state
+
+    @property
+    def id(self):
+        """int: The index ID."""
+        return self._id
+
+    def __repr__(self):
+        """Return a string representation."""
+        return "{}(definition={!r}, state={!r}, id={:d})".format(
+            self.__class__.__name__, self.definition, self.state, self.id
+        )
+
+    def __eq__(self, other):
+        """Compare two indexes."""
+        if not isinstance(other, IndexState):
+            return NotImplemented
+
+        return (
+            self.definition == other.definition
+            and self.state == other.state
+            and self.id == other.id
+        )
+
+    def __ne__(self, other):
+        """Inequality comparison operation."""
+        return not self == other
+
+    def __hash__(self):
+        return hash((self.definition, self.state, self.id))
 
 
 class ModelAdapter:

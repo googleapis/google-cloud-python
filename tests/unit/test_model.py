@@ -165,10 +165,99 @@ class TestIndex:
 
 
 class TestIndexState:
+
+    INDEX = unittest.mock.sentinel.index
+
+    def test_constructor(self):
+        index_state = model.IndexState(
+            definition=self.INDEX, state="error", id=42
+        )
+        assert index_state._definition is self.INDEX
+        assert index_state._state == "error"
+        assert index_state._id == 42
+
+    def test_definition(self):
+        index_state = model.IndexState(
+            definition=self.INDEX, state="serving", id=1
+        )
+        assert index_state.definition is self.INDEX
+
     @staticmethod
-    def test_constructor():
-        with pytest.raises(NotImplementedError):
-            model.IndexState()
+    def test_state():
+        index_state = model.IndexState(definition=None, state="deleting", id=1)
+        assert index_state.state == "deleting"
+
+    @staticmethod
+    def test_id():
+        index_state = model.IndexState(definition=None, state="error", id=1001)
+        assert index_state.id == 1001
+
+    @staticmethod
+    def test___repr__():
+        index_prop = model.IndexProperty(name="a", direction="asc")
+        index = model.Index(
+            kind="IndK", properties=[index_prop], ancestor=False
+        )
+        index_state = model.IndexState(
+            definition=index, state="building", id=1337
+        )
+        expected = (
+            "IndexState(definition=Index(kind='IndK', properties=["
+            "IndexProperty(name='a', direction='asc')], ancestor=False), "
+            "state='building', id=1337)"
+        )
+        assert repr(index_state) == expected
+
+    def test___eq__(self):
+        index_state1 = model.IndexState(
+            definition=self.INDEX, state="error", id=20
+        )
+        index_state2 = model.IndexState(
+            definition=unittest.mock.sentinel.not_index, state="error", id=20
+        )
+        index_state3 = model.IndexState(
+            definition=self.INDEX, state="serving", id=20
+        )
+        index_state4 = model.IndexState(
+            definition=self.INDEX, state="error", id=80
+        )
+        index_state5 = unittest.mock.sentinel.index_state
+        assert index_state1 == index_state1
+        assert not index_state1 == index_state2
+        assert not index_state1 == index_state3
+        assert not index_state1 == index_state4
+        assert not index_state1 == index_state5
+
+    def test___ne__(self):
+        index_state1 = model.IndexState(
+            definition=self.INDEX, state="error", id=20
+        )
+        index_state2 = model.IndexState(
+            definition=unittest.mock.sentinel.not_index, state="error", id=20
+        )
+        index_state3 = model.IndexState(
+            definition=self.INDEX, state="serving", id=20
+        )
+        index_state4 = model.IndexState(
+            definition=self.INDEX, state="error", id=80
+        )
+        index_state5 = unittest.mock.sentinel.index_state
+        assert not index_state1 != index_state1
+        assert index_state1 != index_state2
+        assert index_state1 != index_state3
+        assert index_state1 != index_state4
+        assert index_state1 != index_state5
+
+    def test___hash__(self):
+        index_state1 = model.IndexState(
+            definition=self.INDEX, state="error", id=88
+        )
+        index_state2 = model.IndexState(
+            definition=self.INDEX, state="error", id=88
+        )
+        assert index_state1 is not index_state2
+        assert hash(index_state1) == hash(index_state2)
+        assert hash(index_state1) == hash((self.INDEX, "error", 88))
 
 
 class TestModelAdapter:
