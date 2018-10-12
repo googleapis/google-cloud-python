@@ -155,8 +155,53 @@ class IndexProperty:
 
 
 class Index:
-    def __init__(self, *args, **kwargs):
-        raise NotImplementedError
+    """Immutable object representing an index."""
+
+    __slots__ = ("_kind", "_properties", "_ancestor")
+
+    def __init__(self, *, kind, properties, ancestor):
+        self._kind = kind
+        self._properties = properties
+        self._ancestor = ancestor
+
+    @property
+    def kind(self):
+        """str: The kind being indexed."""
+        return self._kind
+
+    @property
+    def properties(self):
+        """List[IndexProperty]: The properties being indexed."""
+        return self._properties
+
+    @property
+    def ancestor(self):
+        """bool: Indicates if this is an ancestor index."""
+        return self._ancestor
+
+    def __repr__(self):
+        """Return a string representation."""
+        return "{}(kind={!r}, properties={!r}, ancestor={})".format(
+            self.__class__.__name__, self.kind, self.properties, self.ancestor
+        )
+
+    def __eq__(self, other):
+        """Compare two indexes."""
+        if not isinstance(other, Index):
+            return NotImplemented
+
+        return (
+            self.kind == other.kind
+            and self.properties == other.properties
+            and self.ancestor == other.ancestor
+        )
+
+    def __ne__(self, other):
+        """Inequality comparison operation."""
+        return not self == other
+
+    def __hash__(self):
+        return hash((self.kind, self.properties, self.ancestor))
 
 
 class IndexState:
