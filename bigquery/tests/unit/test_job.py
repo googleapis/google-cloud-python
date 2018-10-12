@@ -1400,13 +1400,53 @@ class TestLoadJobConfig(unittest.TestCase, _Base):
         self.assertEqual(
             config._properties['load']['writeDisposition'], write_disposition)
 
-    def test_schema(self):
+    def test_schema_missing(self):
+        config = self._get_target_class()()
+        self.assertIsNone(config.schema)
+
+    def test_schema_hit(self):
         from google.cloud.bigquery.schema import SchemaField
+
+        config = self._get_target_class()()
+        all_props_repr = {
+            'mode': 'REQUIRED',
+            'name': 'foo',
+            'type': 'INTEGER',
+            'description':  'Foo',
+        }
+        minimal_repr = {
+            'name': 'bar',
+            'type': 'STRING',
+        }
+        config._properties['load']['schema'] = {
+            'fields': [all_props_repr, minimal_repr],
+        }
+        all_props, minimal = config.schema
+        self.assertEqual(all_props, SchemaField.from_api_repr(all_props_repr))
+        self.assertEqual(minimal, SchemaField.from_api_repr(minimal_repr))
+
+    def test_schema_setter(self):
+        from google.cloud.bigquery.schema import SchemaField
+
         config = self._get_target_class()()
         full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
         age = SchemaField('age', 'INTEGER', mode='REQUIRED')
         config.schema = [full_name, age]
-        self.assertEqual(config.schema, [full_name, age])
+        full_name_repr = {
+            'name': 'full_name',
+            'type': 'STRING',
+            'mode': 'REQUIRED',
+            'description': None,
+        }
+        age_repr = {
+            'name': 'age',
+            'type': 'INTEGER',
+            'mode': 'REQUIRED',
+            'description': None,
+        }
+        self.assertEqual(
+            config._properties['load']['schema'],
+            {'fields': [full_name_repr, age_repr]})
 
     def test_time_partitioning(self):
         from google.cloud.bigquery import table
