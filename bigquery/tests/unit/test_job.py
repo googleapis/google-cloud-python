@@ -1572,7 +1572,34 @@ class TestLoadJobConfig(unittest.TestCase, _Base):
         self.assertIsNone(config.clustering_fields)
         self.assertNotIn('clustering', config._properties['load'])
 
-    def test_api_repr(self):
+    def test_schema_update_options_missing(self):
+        config = self._get_target_class()()
+        self.assertIsNone(config.schema_update_options)
+
+    def test_schema_update_options_hit(self):
+        from google.cloud.bigquery.job import SchemaUpdateOption
+
+        options = [
+            SchemaUpdateOption.ALLOW_FIELD_ADDITION,
+            SchemaUpdateOption.ALLOW_FIELD_RELAXATION,
+        ]
+        config = self._get_target_class()()
+        config._properties['load']['schemaUpdateOptions'] = options
+        self.assertEqual(config.schema_update_options, options)
+
+    def test_schema_update_options_setter(self):
+        from google.cloud.bigquery.job import SchemaUpdateOption
+
+        options = [
+            SchemaUpdateOption.ALLOW_FIELD_ADDITION,
+            SchemaUpdateOption.ALLOW_FIELD_RELAXATION,
+        ]
+        config = self._get_target_class()()
+        config.schema_update_options = options
+        self.assertEqual(
+            config._properties['load']['schemaUpdateOptions'], options)
+
+    def test_from_api_repr(self):
         resource = self._make_resource()
         config = self._get_target_class().from_api_repr(resource)
         self.assertEqual(config.to_api_repr(), resource)
