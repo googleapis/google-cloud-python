@@ -152,8 +152,158 @@ class ModelAttribute:
 
 
 class Property(ModelAttribute):
-    def __init__(self, *args, **kwargs):
-        raise NotImplementedError
+    # Instance default fallbacks provided by class.
+    _name = None
+    _indexed = True
+    _repeated = False
+    _required = False
+    _default = None
+    _choices = None
+    _validator = None
+    _verbose_name = None
+    _write_empty_list = False
+    # Non-public class attributes.
+    _CREATION_COUNTER = 0
+
+    def __init__(
+        self,
+        name=None,
+        *,
+        indexed=None,
+        repeated=None,
+        required=None,
+        default=None,
+        choices=None,
+        validator=None,
+        verbose_name=None,
+        write_empty_list=None
+    ):
+        # NOTE: These explicitly avoid setting the values so that the
+        #       instances will fall back to the class on lookup.
+        if name is not None:
+            self._name = self._verify_name(name)
+        if indexed is not None:
+            self._indexed = indexed
+        if repeated is not None:
+            self._repeated = repeated
+        if required is not None:
+            self._required = required
+        if default is not None:
+            self._default = default
+        self._verify_repeated()
+        if choices is not None:
+            self._choices = self._verify_choices(choices)
+        if validator is not None:
+            self._validator = self._verify_validator(validator)
+        if verbose_name is not None:
+            self._verbose_name = verbose_name
+        if write_empty_list is not None:
+            self._write_empty_list = write_empty_list
+        # Keep a unique creation counter. Note that this is not threadsafe.
+        Property._CREATION_COUNTER += 1
+        self._creation_counter = Property._CREATION_COUNTER
+
+    @staticmethod
+    def _verify_name(name):
+        """Verify the name of the property.
+
+        Args:
+            name (Union[str, bytes]): The name of the property.
+
+        Returns:
+            bytes: The UTF-8 encoded version of the ``name``, if not already
+            passed in as bytes.
+
+        Raises:
+            TypeError: If the ``name`` is not a string or bytes.
+            ValueError: If the name contains a ``.``.
+        """
+        if isinstance(name, str):
+            name = name.encode("utf-8")
+
+        if not isinstance(name, bytes):
+            raise TypeError(
+                "Name {!r} is not a string or byte string".format(name)
+            )
+
+        if b"." in name:
+            raise ValueError(
+                "Name {!r} cannot contain period characters".format(name)
+            )
+
+        return name
+
+    def _verify_repeated(self):
+        """Checks if the repeated / required / default values are compatible.
+
+        Raises:
+            ValueError: If ``repeated`` is :data:`True` but one of
+                ``required`` or ``default`` is set.
+        """
+        if self._repeated and (self._required or self._default is not None):
+            raise ValueError(
+                "repeated is incompatible with required or default"
+            )
+
+    @staticmethod
+    def _verify_choices(choices):
+        """Verify the choices for a property with a limited set of values.
+
+        Args:
+            choices (Union[list, tuple, set, frozenset]): An iterable of
+                allowed values for the property.
+
+        Returns:
+            frozenset: The ``choices`` cast to a frozen set.
+
+        Raises:
+            TypeError: If ``choices`` is not one of the expected container
+                types.
+        """
+        if not isinstance(choices, (list, tuple, set, frozenset)):
+            raise TypeError(
+                "choices must be a list, tuple or set; received {!r}".format(
+                    choices
+                )
+            )
+        return frozenset(choices)
+
+    @staticmethod
+    def _verify_validator(validator):
+        """Verify the validator for a property.
+
+        The validator will be called as follows:
+
+        .. code-block:: python
+
+            value = validator(prop, value)
+
+        The ``validator`` should be idempotent, i.e. calling it a second time
+        should not further modify the value. So a validator that returns e.g.
+        ``value.lower()`` or ``value.strip()`` is fine, but one that returns
+        ``value + "$"`` is not.
+
+        Args:
+            validator (Callable[[.Property, Any], bool]): A callable that can
+                validate a property value.
+
+        Returns:
+            Callable[[.Property, Any], bool]: The ``validator``.
+
+        Raises:
+            TypeError: If ``validator`` is not callable. This is determined by
+                checking is the attribute ``__call__`` is defined.
+        """
+        # NOTE: Checking for ``_call__`` is done to match the original
+        #       implementation. It's not clear why ``callable()`` was not used.
+        if getattr(validator, "__call__", None) is None:
+            raise TypeError(
+                "validator must be callable or None; received {!r}".format(
+                    validator
+                )
+            )
+
+        return validator
 
 
 class ModelKey(Property):
