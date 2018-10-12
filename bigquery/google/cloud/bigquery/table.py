@@ -132,6 +132,20 @@ class EncryptionConfiguration(object):
         """
         return copy.deepcopy(self._properties)
 
+    def __eq__(self, other):
+        if not isinstance(other, EncryptionConfiguration):
+            return NotImplemented
+        return self.kms_key_name == other.kms_key_name
+
+    def __ne__(self, other):
+        return not self == other
+
+    def __hash__(self):
+        return hash(self.kms_key_name)
+
+    def __repr__(self):
+        return 'EncryptionConfiguration({})'.format(self.kms_key_name)
+
 
 class TableReference(object):
     """TableReferences are pointers to tables.

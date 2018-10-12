@@ -84,6 +84,59 @@ class TestEncryptionConfiguration(unittest.TestCase):
                 'kmsKeyName': self.KMS_KEY_NAME,
             })
 
+    def test___eq___wrong_type(self):
+        encryption_config = self._make_one()
+        other = object()
+        self.assertNotEqual(encryption_config, other)
+        self.assertEqual(encryption_config, mock.ANY)
+
+    def test___eq___kms_key_name_mismatch(self):
+        encryption_config = self._make_one()
+        other = self._make_one(self.KMS_KEY_NAME)
+        self.assertNotEqual(encryption_config, other)
+
+    def test___eq___hit(self):
+        encryption_config = self._make_one(self.KMS_KEY_NAME)
+        other = self._make_one(self.KMS_KEY_NAME)
+        self.assertEqual(encryption_config, other)
+
+    def test___ne___wrong_type(self):
+        encryption_config = self._make_one()
+        other = object()
+        self.assertNotEqual(encryption_config, other)
+        self.assertEqual(encryption_config, mock.ANY)
+
+    def test___ne___same_value(self):
+        encryption_config1 = self._make_one(self.KMS_KEY_NAME)
+        encryption_config2 = self._make_one(self.KMS_KEY_NAME)
+        # unittest ``assertEqual`` uses ``==`` not ``!=``.
+        comparison_val = (encryption_config1 != encryption_config2)
+        self.assertFalse(comparison_val)
+
+    def test___ne___different_values(self):
+        encryption_config1 = self._make_one()
+        encryption_config2 = self._make_one(self.KMS_KEY_NAME)
+        self.assertNotEqual(encryption_config1, encryption_config2)
+
+    def test___hash__set_equality(self):
+        encryption_config1 = self._make_one(self.KMS_KEY_NAME)
+        encryption_config2 = self._make_one(self.KMS_KEY_NAME)
+        set_one = {encryption_config1, encryption_config2}
+        set_two = {encryption_config1, encryption_config2}
+        self.assertEqual(set_one, set_two)
+
+    def test___hash__not_equals(self):
+        encryption_config1 = self._make_one()
+        encryption_config2 = self._make_one(self.KMS_KEY_NAME)
+        set_one = {encryption_config1}
+        set_two = {encryption_config2}
+        self.assertNotEqual(set_one, set_two)
+
+    def test___repr__(self):
+        encryption_config = self._make_one(self.KMS_KEY_NAME)
+        expected = "EncryptionConfiguration({})".format(self.KMS_KEY_NAME)
+        self.assertEqual(repr(encryption_config), expected)
+
 
 class TestTableReference(unittest.TestCase):
 
