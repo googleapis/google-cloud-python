@@ -89,8 +89,79 @@ class TestIndexProperty:
 class TestIndex:
     @staticmethod
     def test_constructor():
-        with pytest.raises(NotImplementedError):
-            model.Index()
+        index_prop = model.IndexProperty(name="a", direction="asc")
+        index = model.Index(
+            kind="IndK", properties=(index_prop,), ancestor=False
+        )
+        assert index._kind == "IndK"
+        assert index._properties == (index_prop,)
+        assert not index._ancestor
+
+    @staticmethod
+    def test_kind():
+        index = model.Index(kind="OK", properties=(), ancestor=False)
+        assert index.kind == "OK"
+
+    @staticmethod
+    def test_properties():
+        index_prop1 = model.IndexProperty(name="a", direction="asc")
+        index_prop2 = model.IndexProperty(name="b", direction="desc")
+        index = model.Index(
+            kind="F", properties=(index_prop1, index_prop2), ancestor=False
+        )
+        assert index.properties == (index_prop1, index_prop2)
+
+    @staticmethod
+    def test_ancestor():
+        index = model.Index(kind="LK", properties=(), ancestor=True)
+        assert index.ancestor
+
+    @staticmethod
+    def test___repr__():
+        index_prop = model.IndexProperty(name="a", direction="asc")
+        index = model.Index(
+            kind="IndK", properties=[index_prop], ancestor=False
+        )
+        expected = "Index(kind='IndK', properties=[{!r}], ancestor=False)"
+        expected = expected.format(index_prop)
+        assert repr(index) == expected
+
+    @staticmethod
+    def test___eq__():
+        index_props = (model.IndexProperty(name="a", direction="asc"),)
+        index1 = model.Index(kind="d", properties=index_props, ancestor=False)
+        index2 = model.Index(kind="d", properties=(), ancestor=False)
+        index3 = model.Index(kind="d", properties=index_props, ancestor=True)
+        index4 = model.Index(kind="e", properties=index_props, ancestor=False)
+        index5 = unittest.mock.sentinel.index
+        assert index1 == index1
+        assert not index1 == index2
+        assert not index1 == index3
+        assert not index1 == index4
+        assert not index1 == index5
+
+    @staticmethod
+    def test___ne__():
+        index_props = (model.IndexProperty(name="a", direction="asc"),)
+        index1 = model.Index(kind="d", properties=index_props, ancestor=False)
+        index2 = model.Index(kind="d", properties=(), ancestor=False)
+        index3 = model.Index(kind="d", properties=index_props, ancestor=True)
+        index4 = model.Index(kind="e", properties=index_props, ancestor=False)
+        index5 = unittest.mock.sentinel.index
+        assert not index1 != index1
+        assert index1 != index2
+        assert index1 != index3
+        assert index1 != index4
+        assert index1 != index5
+
+    @staticmethod
+    def test___hash__():
+        index_props = (model.IndexProperty(name="a", direction="asc"),)
+        index1 = model.Index(kind="d", properties=index_props, ancestor=False)
+        index2 = model.Index(kind="d", properties=index_props, ancestor=False)
+        assert index1 is not index2
+        assert hash(index1) == hash(index2)
+        assert hash(index1) == hash(("d", index_props, False))
 
 
 class TestIndexState:
