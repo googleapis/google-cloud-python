@@ -1316,6 +1316,23 @@ class TestLoadJobConfig(unittest.TestCase, _Base):
         self.assertEqual(
             config._properties['load']['nullMarker'], null_marker)
 
+    def test_quote_character_missing(self):
+        config = self._get_target_class()()
+        self.assertIsNone(config.quote_character)
+
+    def test_quote_character_hit(self):
+        quote_character = "'"
+        config = self._get_target_class()()
+        config._properties['load']['quote'] = quote_character
+        self.assertEqual(config.quote_character, quote_character)
+
+    def test_quote_character_setter(self):
+        quote_character = "'"
+        config = self._get_target_class()()
+        config.quote_character = quote_character
+        self.assertEqual(
+            config._properties['load']['quote'], quote_character)
+
     def test_schema(self):
         from google.cloud.bigquery.schema import SchemaField
         config = self._get_target_class()()
