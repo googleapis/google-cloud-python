@@ -988,6 +988,25 @@ class LoadJobConfig(_JobConfig):
             self._del_sub_prop('destinationEncryptionConfiguration')
 
     @property
+    def destination_table_description(self):
+        """Union[str, None] name given to destination table.
+
+        See:
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.destinationTableProperties.description
+        """
+        prop = self._get_sub_prop('destinationTableProperties')
+        if prop is not None:
+            return prop['description']
+
+    @destination_table_description.setter
+    def destination_table_description(self, value):
+        keys = [self._job_type, 'destinationTableProperties', 'description']
+        if value is not None:
+            _helpers._set_sub_prop(self._properties, keys, value)
+        else:
+            _helpers._del_sub_prop(self._properties, keys)
+
+    @property
     def encoding(self):
         """google.cloud.bigquery.job.Encoding: The character encoding of the
         data.
