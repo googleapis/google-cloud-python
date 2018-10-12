@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import unittest.mock
+
 import pytest
 
 from google.cloud.ndb import key
@@ -80,11 +82,94 @@ class TestModelAttribute:
         assert attr._fix_up(model.Model, "birthdate") is None
 
 
+@pytest.fixture
+def zero_prop_counter():
+    counter_val = model.Property._CREATION_COUNTER
+    model.Property._CREATION_COUNTER = 0
+    try:
+        yield
+    finally:
+        model.Property._CREATION_COUNTER = counter_val
+
+
 class TestProperty:
     @staticmethod
-    def test_constructor():
-        with pytest.raises(NotImplementedError):
-            model.Property()
+    def test_constructor_defaults(zero_prop_counter):
+        prop = model.Property()
+        # Check that the creation counter was updated.
+        assert model.Property._CREATION_COUNTER == 1
+        assert prop._creation_counter == 1
+        # Check that none of the constructor defaults were used.
+        assert prop.__dict__ == {"_creation_counter": 1}
+
+    @staticmethod
+    def _example_validator(prop, value):
+        return value.lower()
+
+    def test__example_validator(self):
+        value = "AbCde"
+        validated = self._example_validator(None, value)
+        assert validated == "abcde"
+        assert self._example_validator(None, validated) == "abcde"
+
+    def test_constructor_explicit(self, zero_prop_counter):
+        prop = model.Property(
+            name="val",
+            indexed=False,
+            repeated=False,
+            required=True,
+            default="zorp",
+            choices=("zorp", "zap", "zip"),
+            validator=self._example_validator,
+            verbose_name="VALUE FOR READING",
+            write_empty_list=False,
+        )
+        assert prop._name == b"val" and prop._name != "val"
+        assert not prop._indexed
+        assert not prop._repeated
+        assert prop._required
+        assert prop._default == "zorp"
+        assert prop._choices == frozenset(("zorp", "zap", "zip"))
+        assert prop._validator is self._example_validator
+        assert prop._verbose_name == "VALUE FOR READING"
+        assert not prop._write_empty_list
+        # Check that the creation counter was updated.
+        assert model.Property._CREATION_COUNTER == 1
+        assert prop._creation_counter == 1
+
+    @staticmethod
+    def test_constructor_invalid_name(zero_prop_counter):
+        with pytest.raises(TypeError):
+            model.Property(name=["not", "a", "string"])
+        with pytest.raises(ValueError):
+            model.Property(name="has.a.dot")
+        # Check that the creation counter was not updated.
+        assert model.Property._CREATION_COUNTER == 0
+
+    @staticmethod
+    def test_constructor_repeated_not_allowed(zero_prop_counter):
+        with pytest.raises(ValueError):
+            model.Property(name="a", repeated=True, required=True)
+        with pytest.raises(ValueError):
+            model.Property(name="b", repeated=True, default="zim")
+        # Check that the creation counter was not updated.
+        assert model.Property._CREATION_COUNTER == 0
+
+    @staticmethod
+    def test_constructor_invalid_choices(zero_prop_counter):
+        with pytest.raises(TypeError):
+            model.Property(name="a", choices={"wrong": "container"})
+        # Check that the creation counter was not updated.
+        assert model.Property._CREATION_COUNTER == 0
+
+    @staticmethod
+    def test_constructor_invalid_validator(zero_prop_counter):
+        with pytest.raises(TypeError):
+            model.Property(
+                name="a", validator=unittest.mock.sentinel.validator
+            )
+        # Check that the creation counter was not updated.
+        assert model.Property._CREATION_COUNTER == 0
 
 
 class TestModelKey:
