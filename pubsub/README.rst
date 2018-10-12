@@ -114,9 +114,9 @@ the topic, and subscribe to that, passing a callback function.
 .. code-block:: python
 
     import os
-    from google.cloud import pubsub
+    from google.cloud import pubsub_v1
 
-    subscriber = pubsub.SubscriberClient()
+    subscriber = pubsub_v1.SubscriberClient()
     topic_name = 'projects/{project_id}/topics/{topic}'.format(
         project_id=os.getenv('GOOGLE_CLOUD_PROJECT'),
         topic='MY_TOPIC_NAME',  # Set this to something appropriate.
