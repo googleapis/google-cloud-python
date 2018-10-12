@@ -1541,7 +1541,7 @@ class TestLoadJobConfig(unittest.TestCase, _Base):
         }
         config.time_partitioning = None
         self.assertIsNone(config.time_partitioning)
-        self.assertIsNone(config._properties['load']['timePartitioning'])
+        self.assertNotIn('timePartitioning', config._properties['load'])
 
     def test_api_repr(self):
         resource = self._make_resource()
