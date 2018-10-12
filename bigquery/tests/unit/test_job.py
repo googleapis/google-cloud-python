@@ -1358,6 +1358,27 @@ class TestLoadJobConfig(unittest.TestCase, _Base):
             # XXX: Should this really be a str?
             str(skip_leading_rows))
 
+    def test_source_format_missing(self):
+        config = self._get_target_class()()
+        self.assertIsNone(config.source_format)
+
+    def test_source_format_hit(self):
+        from google.cloud.bigquery.job import SourceFormat
+
+        source_format = SourceFormat.CSV
+        config = self._get_target_class()()
+        config._properties['load']['sourceFormat'] = source_format
+        self.assertEqual(config.source_format, source_format)
+
+    def test_source_format_setter(self):
+        from google.cloud.bigquery.job import SourceFormat
+
+        source_format = SourceFormat.CSV
+        config = self._get_target_class()()
+        config.source_format = source_format
+        self.assertEqual(
+            config._properties['load']['sourceFormat'], source_format)
+
     def test_schema(self):
         from google.cloud.bigquery.schema import SchemaField
         config = self._get_target_class()()
