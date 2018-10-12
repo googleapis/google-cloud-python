@@ -1268,6 +1268,20 @@ class TestLoadJobConfig(unittest.TestCase, _Base):
         self.assertEqual(
             config._properties['load']['fieldDelimiter'], field_delimiter)
 
+    def test_ignore_unknown_values_missing(self):
+        config = self._get_target_class()()
+        self.assertIsNone(config.ignore_unknown_values)
+
+    def test_ignore_unknown_values_hit(self):
+        config = self._get_target_class()()
+        config._properties['load']['ignoreUnknownValues'] = True
+        self.assertTrue(config.ignore_unknown_values)
+
+    def test_ignore_unknown_values_setter(self):
+        config = self._get_target_class()()
+        config.ignore_unknown_values = True
+        self.assertTrue(config._properties['load']['ignoreUnknownValues'])
+
     def test_schema(self):
         from google.cloud.bigquery.schema import SchemaField
         config = self._get_target_class()()
