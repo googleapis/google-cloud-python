@@ -1543,6 +1543,35 @@ class TestLoadJobConfig(unittest.TestCase, _Base):
         self.assertIsNone(config.time_partitioning)
         self.assertNotIn('timePartitioning', config._properties['load'])
 
+    def test_clustering_fields_miss(self):
+        config = self._get_target_class()()
+        self.assertIsNone(config.clustering_fields)
+
+    def test_clustering_fields_hit(self):
+        config = self._get_target_class()()
+        fields = ['email', 'postal_code']
+        config._properties['load']['clustering'] = {
+            'fields': fields,
+        }
+        self.assertEqual(config.clustering_fields, fields)
+
+    def test_clustering_fields_setter(self):
+        fields = ['email', 'postal_code']
+        config = self._get_target_class()()
+        config.clustering_fields = fields
+        self.assertEqual(
+            config._properties['load']['clustering'], {'fields': fields})
+
+    def test_clustering_fields_setter_w_none(self):
+        config = self._get_target_class()()
+        fields = ['email', 'postal_code']
+        config._properties['load']['clustering'] = {
+            'fields': fields,
+        }
+        config.clustering_fields = None
+        self.assertIsNone(config.clustering_fields)
+        self.assertNotIn('clustering', config._properties['load'])
+
     def test_api_repr(self):
         resource = self._make_resource()
         config = self._get_target_class().from_api_repr(resource)
