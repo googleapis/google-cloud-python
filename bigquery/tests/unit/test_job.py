@@ -1379,6 +1379,27 @@ class TestLoadJobConfig(unittest.TestCase, _Base):
         self.assertEqual(
             config._properties['load']['sourceFormat'], source_format)
 
+    def test_write_disposition_missing(self):
+        config = self._get_target_class()()
+        self.assertIsNone(config.write_disposition)
+
+    def test_write_disposition_hit(self):
+        from google.cloud.bigquery.job import WriteDisposition
+
+        write_disposition = WriteDisposition.WRITE_TRUNCATE
+        config = self._get_target_class()()
+        config._properties['load']['writeDisposition'] = write_disposition
+        self.assertEqual(config.write_disposition, write_disposition)
+
+    def test_write_disposition_setter(self):
+        from google.cloud.bigquery.job import WriteDisposition
+
+        write_disposition = WriteDisposition.WRITE_TRUNCATE
+        config = self._get_target_class()()
+        config.write_disposition = write_disposition
+        self.assertEqual(
+            config._properties['load']['writeDisposition'], write_disposition)
+
     def test_schema(self):
         from google.cloud.bigquery.schema import SchemaField
         config = self._get_target_class()()
