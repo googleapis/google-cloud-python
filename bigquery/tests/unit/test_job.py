@@ -1167,6 +1167,20 @@ class TestLoadJobConfig(unittest.TestCase, _Base):
         from google.cloud.bigquery.job import LoadJobConfig
         return LoadJobConfig
 
+    def test_allow_jagged_rows_missing(self):
+        config = self._get_target_class()()
+        self.assertIsNone(config.allow_jagged_rows)
+
+    def test_allow_jagged_rows_hit(self):
+        config = self._get_target_class()()
+        config._properties['load']['allowJaggedRows'] = True
+        self.assertTrue(config.allow_jagged_rows)
+
+    def test_allow_jagged_rows_setter(self):
+        config = self._get_target_class()()
+        config.allow_jagged_rows = True
+        self.assertTrue(config._properties['load']['allowJaggedRows'])
+
     def test_schema(self):
         from google.cloud.bigquery.schema import SchemaField
         config = self._get_target_class()()
