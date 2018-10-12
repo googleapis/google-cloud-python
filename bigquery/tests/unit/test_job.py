@@ -1181,6 +1181,20 @@ class TestLoadJobConfig(unittest.TestCase, _Base):
         config.allow_jagged_rows = True
         self.assertTrue(config._properties['load']['allowJaggedRows'])
 
+    def test_allow_quoted_newlines_missing(self):
+        config = self._get_target_class()()
+        self.assertIsNone(config.allow_quoted_newlines)
+
+    def test_allow_quoted_newlines_hit(self):
+        config = self._get_target_class()()
+        config._properties['load']['allowQuotedNewlines'] = True
+        self.assertTrue(config.allow_quoted_newlines)
+
+    def test_allow_quoted_newlines_setter(self):
+        config = self._get_target_class()()
+        config.allow_quoted_newlines = True
+        self.assertTrue(config._properties['load']['allowQuotedNewlines'])
+
     def test_schema(self):
         from google.cloud.bigquery.schema import SchemaField
         config = self._get_target_class()()
