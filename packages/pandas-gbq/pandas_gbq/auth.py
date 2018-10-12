@@ -297,6 +297,7 @@ def save_user_account_credentials(credentials, credentials_path):
 def _try_credentials(project_id, credentials):
     from google.cloud import bigquery
     import google.api_core.exceptions
+    import google.auth.exceptions
 
     if not credentials:
         return None
@@ -309,4 +310,10 @@ def _try_credentials(project_id, credentials):
         client.query("SELECT 1").result()
         return credentials
     except google.api_core.exceptions.GoogleAPIError:
+        return None
+    except google.auth.exceptions.RefreshError:
+        # Sometimes (such as on Travis) google-auth returns GCE credentials,
+        # but fetching the token for those credentials doesn't actually work.
+        # See:
+        # https://github.com/googleapis/google-auth-library-python/issues/287
         return None

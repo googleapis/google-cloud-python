@@ -19,6 +19,7 @@ Changelog
   This fixes a bug where pandas-gbq could not refresh credentials if the
   cached credentials were invalid, revoked, or expired, even when
   ``reauth=True``.
+- Catch RefreshError when trying credentials. (:issue:`226`)
 
 Internal changes
 ~~~~~~~~~~~~~~~~
