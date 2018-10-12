@@ -983,7 +983,9 @@ class LoadJobConfig(_JobConfig):
         api_repr = value
         if value is not None:
             api_repr = value.to_api_repr()
-        self._set_sub_prop('destinationEncryptionConfiguration', api_repr)
+            self._set_sub_prop('destinationEncryptionConfiguration', api_repr)
+        else:
+            self._del_sub_prop('destinationEncryptionConfiguration')
 
     @property
     def encoding(self):

@@ -1147,21 +1147,6 @@ class _Base(object):
 class TestLoadJobConfig(unittest.TestCase, _Base):
     JOB_TYPE = 'load'
 
-    def _make_resource(self, started=False, ended=False):
-        resource = super(TestLoadJobConfig, self)._make_resource(
-            started, ended)
-        config = resource['configuration']['load']
-        config['sourceUris'] = [self.SOURCE1]
-        config['destinationTable'] = {
-            'projectId': self.PROJECT,
-            'datasetId': self.DS_ID,
-            'tableId': self.TABLE_ID,
-        }
-        config['destinationEncryptionConfiguration'] = {
-            'kmsKeyName': self.KMS_KEY_NAME}
-
-        return resource
-
     @staticmethod
     def _get_target_class():
         from google.cloud.bigquery.job import LoadJobConfig
@@ -1289,6 +1274,17 @@ class TestLoadJobConfig(unittest.TestCase, _Base):
         self.assertEqual(
             config._properties['load']['destinationEncryptionConfiguration'],
             expected)
+
+    def test_destination_encryption_configuration_setter_w_none(self):
+        kms_key_name = 'kms-key-name'
+        config = self._get_target_class()()
+        config._properties['load']['destinationEncryptionConfiguration'] = {
+            'kmsKeyName': kms_key_name,
+        }
+        config.destination_encryption_configuration = None
+        self.assertIsNone(config.destination_encryption_configuration)
+        self.assertNotIn(
+            'destinationEncryptionConfiguration', config._properties['load'])
 
     def test_encoding_missing(self):
         config = self._get_target_class()()
@@ -1598,40 +1594,6 @@ class TestLoadJobConfig(unittest.TestCase, _Base):
         config.write_disposition = write_disposition
         self.assertEqual(
             config._properties['load']['writeDisposition'], write_disposition)
-
-    def test_from_api_repr(self):
-        resource = self._make_resource()
-        config = self._get_target_class().from_api_repr(resource)
-        self.assertEqual(config.to_api_repr(), resource)
-
-    def test_to_api_repr_with_encryption(self):
-        from google.cloud.bigquery.table import EncryptionConfiguration
-
-        config = self._make_one()
-        config.destination_encryption_configuration = EncryptionConfiguration(
-            kms_key_name=self.KMS_KEY_NAME)
-        resource = config.to_api_repr()
-        self.assertEqual(
-            resource,
-            {
-                'load': {
-                    'destinationEncryptionConfiguration': {
-                        'kmsKeyName': self.KMS_KEY_NAME,
-                    },
-                },
-            })
-
-    def test_to_api_repr_with_encryption_none(self):
-        config = self._make_one()
-        config.destination_encryption_configuration = None
-        resource = config.to_api_repr()
-        self.assertEqual(
-            resource,
-            {
-                'load': {
-                    'destinationEncryptionConfiguration': None,
-                },
-            })
 
 
 class TestLoadJob(unittest.TestCase, _Base):
