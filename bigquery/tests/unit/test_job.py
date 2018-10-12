@@ -1333,6 +1333,31 @@ class TestLoadJobConfig(unittest.TestCase, _Base):
         self.assertEqual(
             config._properties['load']['quote'], quote_character)
 
+    def test_skip_leading_rows_missing(self):
+        config = self._get_target_class()()
+        self.assertIsNone(config.skip_leading_rows)
+
+    def test_skip_leading_rows_hit_w_str(self):
+        skip_leading_rows = 1
+        config = self._get_target_class()()
+        config._properties['load']['skipLeadingRows'] = str(skip_leading_rows)
+        self.assertEqual(config.skip_leading_rows, skip_leading_rows)
+
+    def test_skip_leading_rows_hit_w_integer(self):
+        skip_leading_rows = 1
+        config = self._get_target_class()()
+        config._properties['load']['skipLeadingRows'] = skip_leading_rows
+        self.assertEqual(config.skip_leading_rows, skip_leading_rows)
+
+    def test_skip_leading_rows_setter(self):
+        skip_leading_rows = 1
+        config = self._get_target_class()()
+        config.skip_leading_rows = skip_leading_rows
+        self.assertEqual(
+            config._properties['load']['skipLeadingRows'],
+            # XXX: Should this really be a str?
+            str(skip_leading_rows))
+
     def test_schema(self):
         from google.cloud.bigquery.schema import SchemaField
         config = self._get_target_class()()
