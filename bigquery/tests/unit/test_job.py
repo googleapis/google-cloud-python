@@ -1299,6 +1299,23 @@ class TestLoadJobConfig(unittest.TestCase, _Base):
         self.assertEqual(
             config._properties['load']['maxBadRecords'], max_bad_records)
 
+    def test_null_marker_missing(self):
+        config = self._get_target_class()()
+        self.assertIsNone(config.null_marker)
+
+    def test_null_marker_hit(self):
+        null_marker = 'XXX'
+        config = self._get_target_class()()
+        config._properties['load']['nullMarker'] = null_marker
+        self.assertEqual(config.null_marker, null_marker)
+
+    def test_null_marker_setter(self):
+        null_marker = 'XXX'
+        config = self._get_target_class()()
+        config.null_marker = null_marker
+        self.assertEqual(
+            config._properties['load']['nullMarker'], null_marker)
+
     def test_schema(self):
         from google.cloud.bigquery.schema import SchemaField
         config = self._get_target_class()()
