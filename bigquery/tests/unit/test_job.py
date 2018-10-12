@@ -1339,6 +1339,59 @@ class TestLoadJobConfig(unittest.TestCase, _Base):
         self.assertEqual(
             config._properties['load']['destinationTableProperties'], expected)
 
+    def test_destination_table_friendly_name_missing(self):
+        config = self._get_target_class()()
+        self.assertIsNone(config.destination_table_friendly_name)
+
+    def test_destination_table_friendly_name_hit(self):
+        friendly_name = 'Friendly Name'
+        config = self._get_target_class()()
+        config._properties['load']['destinationTableProperties'] = {
+            'friendlyName': friendly_name,
+        }
+        self.assertEqual(
+            config.destination_table_friendly_name, friendly_name)
+
+    def test_destination_table_friendly_name_setter(self):
+        friendly_name = 'Friendly Name'
+        config = self._get_target_class()()
+        config.destination_table_friendly_name = friendly_name
+        expected = {
+            'friendlyName': friendly_name,
+        }
+        self.assertEqual(
+            config._properties['load']['destinationTableProperties'], expected)
+
+    def test_destination_table_friendly_name_setter_w_descr_already(self):
+        friendly_name = 'Friendly Name'
+        description = 'Description'
+        config = self._get_target_class()()
+        config._properties['load']['destinationTableProperties'] = {
+            'description': description,
+        }
+        config.destination_table_friendly_name = friendly_name
+        expected = {
+            'friendlyName': friendly_name,
+            'description': description,
+        }
+        self.assertEqual(
+            config._properties['load']['destinationTableProperties'], expected)
+
+    def test_destination_table_friendly_name_w_none(self):
+        friendly_name = 'Friendly Name'
+        description = 'Description'
+        config = self._get_target_class()()
+        config._properties['load']['destinationTableProperties'] = {
+            'description': description,
+            'friendlyName': friendly_name,
+        }
+        config.destination_table_friendly_name = None
+        expected = {
+            'description': description,
+        }
+        self.assertEqual(
+            config._properties['load']['destinationTableProperties'], expected)
+
     def test_encoding_missing(self):
         config = self._get_target_class()()
         self.assertIsNone(config.encoding)
