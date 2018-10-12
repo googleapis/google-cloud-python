@@ -116,8 +116,42 @@ class ComputedPropertyError(ReadonlyPropertyError):
 
 
 class IndexProperty:
-    def __init__(self, *args, **kwargs):
-        raise NotImplementedError
+    """Immutable object representing a single property in an index."""
+
+    __slots__ = ("_name", "_direction")
+
+    def __init__(self, *, name, direction):
+        self._name = name
+        self._direction = direction
+
+    @property
+    def name(self):
+        """str: The property name being indexed."""
+        return self._name
+
+    @property
+    def direction(self):
+        """str: The direction in the index, ``asc`` or ``desc``."""
+        return self._direction
+
+    def __repr__(self):
+        """Return a string representation."""
+        return "{}(name={!r}, direction={!r})".format(
+            self.__class__.__name__, self.name, self.direction
+        )
+
+    def __eq__(self, other):
+        """Compare two index properties for equality."""
+        if not isinstance(other, IndexProperty):
+            return NotImplemented
+        return self.name == other.name and self.direction == other.direction
+
+    def __ne__(self, other):
+        """Inequality comparison operation."""
+        return not self == other
+
+    def __hash__(self):
+        return hash((self.name, self.direction))
 
 
 class Index:
