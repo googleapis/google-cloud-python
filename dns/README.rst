@@ -30,7 +30,7 @@ In order to use this library, you first need to go through the following steps:
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Google Cloud Datastore API.:  https://cloud.google.com/datastore
+.. _Enable the Google Cloud Datastore API.:  https://cloud.google.com/dns
 .. _Setup Authentication.: https://googlecloudplatform.github.io/google-cloud-python/latest/core/auth.html
 
 Installation
@@ -55,7 +55,7 @@ Mac/Linux
     pip install virtualenv
     virtualenv <your-env>
     source <your-env>/bin/activate
-    <your-env>/bin/pip install google-cloud-datastore
+    <your-env>/bin/pip install google-cloud-dns
 
 
 Windows
@@ -66,7 +66,7 @@ Windows
     pip install virtualenv
     virtualenv <your-env>
     <your-env>\Scripts\activate
-    <your-env>\Scripts\pip.exe install google-cloud-datastore
+    <your-env>\Scripts\pip.exe install google-cloud-dns
 
 
 Next Steps
