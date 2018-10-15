@@ -12,8 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import unittest.mock
+
 import pytest
 
+from google.cloud.ndb import _exceptions
 from google.cloud.ndb import query
 import tests.unit.utils
 
@@ -57,8 +60,61 @@ class TestParameterizedThing:
 class TestParameter:
     @staticmethod
     def test_constructor():
-        with pytest.raises(NotImplementedError):
-            query.Parameter()
+        for key in (88, b"abc", "def"):
+            parameter = query.Parameter(key)
+            assert parameter._key == key
+
+    @staticmethod
+    def test_constructor_invalid():
+        with pytest.raises(TypeError):
+            query.Parameter(None)
+
+    @staticmethod
+    def test___repr__():
+        parameter = query.Parameter("ghi")
+        assert repr(parameter) == "Parameter('ghi')"
+
+    @staticmethod
+    def test___eq__():
+        parameter1 = query.Parameter("yep")
+        parameter2 = query.Parameter("nope")
+        parameter3 = unittest.mock.sentinel.parameter
+        assert parameter1 == parameter1
+        assert not parameter1 == parameter2
+        assert not parameter1 == parameter3
+
+    @staticmethod
+    def test___ne__():
+        parameter1 = query.Parameter("yep")
+        parameter2 = query.Parameter("nope")
+        parameter3 = unittest.mock.sentinel.parameter
+        assert not parameter1 != parameter1
+        assert parameter1 != parameter2
+        assert parameter1 != parameter3
+
+    @staticmethod
+    def test_key():
+        parameter = query.Parameter(9000)
+        assert parameter.key == 9000
+
+    @staticmethod
+    def test_resolve():
+        key = 9000
+        bound_value = "resoolt"
+        parameter = query.Parameter(key)
+        used = {}
+        result = parameter.resolve({key: bound_value}, used)
+        assert result == bound_value
+        assert used == {key: True}
+
+    @staticmethod
+    def test_resolve_missing_key():
+        parameter = query.Parameter(9000)
+        used = {}
+        with pytest.raises(_exceptions.BadArgumentError):
+            parameter.resolve({}, used)
+
+        assert used == {}
 
 
 class TestParameterizedFunction:
