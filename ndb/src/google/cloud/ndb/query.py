@@ -205,8 +205,33 @@ class Node:
 
 
 class FalseNode(Node):
-    def __init__(self, *args, **kwargs):
-        raise NotImplementedError
+    """Tree node for an always-failing filter."""
+
+    def __eq__(self, other):
+        """Equality check.
+
+        An instance will always equal another :class:`FalseNode` instance. This
+        is because they hold no state.
+        """
+        if not isinstance(other, FalseNode):
+            return NotImplemented
+        return True
+
+    def _to_filter(self, post=False):
+        """(Attempt to) convert to a low-level filter instance.
+
+        Args:
+            post (bool): Indicates if this is a post-filter node.
+
+        Raises:
+            .BadQueryError: If ``post`` is :data:`False`, because there's no
+                point submitting a query that will never return anything.
+        """
+        if post:
+            return None
+        raise _exceptions.BadQueryError(
+            "Cannot convert FalseNode to predicate"
+        )
 
 
 class ParameterNode(Node):

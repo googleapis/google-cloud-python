@@ -193,9 +193,24 @@ class TestNode:
 
 class TestFalseNode:
     @staticmethod
-    def test_constructor():
-        with pytest.raises(NotImplementedError):
-            query.FalseNode()
+    def test___eq__():
+        false_node1 = query.FalseNode()
+        false_node2 = query.FalseNode()
+        false_node3 = unittest.mock.sentinel.false_node
+        assert false_node1 == false_node1
+        assert false_node1 == false_node2
+        assert not false_node1 == false_node3
+
+    @staticmethod
+    def test__to_filter():
+        false_node = query.FalseNode()
+        with pytest.raises(_exceptions.BadQueryError):
+            false_node._to_filter()
+
+    @staticmethod
+    def test__to_filter_post():
+        false_node = query.FalseNode()
+        assert false_node._to_filter(post=True) is None
 
 
 class TestParameterNode:
