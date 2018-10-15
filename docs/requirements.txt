@@ -2,6 +2,7 @@ setuptools >= 36.4.0
 sphinx >= 1.6.3
 ipython >= 4
 recommonmark >= 0.4.0
+grpcio-gcp >= 0.2.2
 
 -e api_core/
 -e core/
@@ -36,3 +37,4 @@ recommonmark >= 0.4.0
 -e translate/
 -e videointelligence/
 -e vision/
+-e websecurityscanner/

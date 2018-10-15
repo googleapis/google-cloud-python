@@ -1,68 +1,10 @@
-######
-Vision
-######
+.. include:: /../vision/README.rst
 
-The Google Cloud `Vision`_ (`Vision API docs`_) API enables developers to
-understand the content of an image by encapsulating powerful machine
-learning models in an easy to use REST API. It quickly classifies images
-into thousands of categories (e.g., "sailboat", "lion", "Eiffel Tower"),
-detects individual objects and faces within images, and finds and reads
-printed words contained within images. You can build metadata on your
-image catalog, moderate offensive content, or enable new marketing
-scenarios through image sentiment analysis. Analyze images uploaded
-in the request or integrate with your image storage on Google Cloud
-Storage.
+Using the Library
+-----------------
 
-.. _Vision: https://cloud.google.com/vision/
-.. _Vision API docs: https://cloud.google.com/vision/reference/rest/
-
-************
-Installation
-************
-
-Install the ``google-cloud-vision`` library using ``pip``:
-
-.. code-block:: console
-
-    $ pip install google-cloud-vision
-
-
-********************************
-Authentication and Configuration
-********************************
-
-- For an overview of authentication in ``google-cloud-python``,
-  see :doc:`/core/auth`.
-
-- In addition to any authentication configuration, you should also set the
-  :envvar:`GOOGLE_CLOUD_PROJECT` environment variable for the project you'd
-  like to interact with. If the :envvar:`GOOGLE_CLOUD_PROJECT` environment
-  variable is not present, the project ID from JSON file credentials is used.
-
-  If you are using Google App Engine or Google Compute Engine
-  this will be detected automatically.
-
-- After configuring your environment, create a
-  :class:`~google.cloud.vision_v1.ImageAnnotatorClient`.
-
-.. code-block:: python
-
-     >>> from google.cloud import vision
-     >>> client = vision.ImageAnnotatorClient()
-
-or pass in ``credentials`` explicitly.
-
-.. code-block:: python
-
-     >>> from google.cloud import vision
-     >>> client = vision.ImageAnnotatorClient(
-     ...     credentials=creds,
-     ... )
-
-
-*****************
 Annotate an Image
-*****************
+~~~~~~~~~~~~~~~~~
 
 You can call the :meth:`annotate_image` method directly:
 
@@ -87,9 +29,8 @@ You can call the :meth:`annotate_image` method directly:
     'github'
 
 
-************************
 Single-feature Shortcuts
-************************
+~~~~~~~~~~~~~~~~~~~~~~~~
 
 If you are only requesting a single feature, you may find it easier to ask
 for it using our direct methods:
@@ -110,9 +51,8 @@ for it using our direct methods:
     Likelihood.VERY_LIKELY
 
 
-****************
 No results found
-****************
+~~~~~~~~~~~~~~~~
 
 If no results for the detection performed can be extracted from the image, then
 an empty list is returned. This behavior is similar with all detection types.
@@ -132,9 +72,8 @@ Example with :meth:`~google.cloud.vision.ImageAnnotatorClient.logo_detection`:
     >>> len(response.annotations)
     0
 
-*************
 API Reference
-*************
+-------------
 
 This package includes clients for multiple versions of the Vision
 API. By default, you will get ``v1``, the latest stable version.
@@ -169,9 +108,8 @@ An API and type reference is provided for this beta:
     gapic/v1p2beta1/api
     gapic/v1p2beta1/types
 
-*********
 Changelog
-*********
+---------
 
 For a list of all ``google-cloud-vision`` releases:
 

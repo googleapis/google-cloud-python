@@ -23,10 +23,9 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='google/cloud/firestore_v1beta1/proto/write.proto',
   package='google.firestore.v1beta1',
   syntax='proto3',
-  serialized_pb=_b('\n0google/cloud/firestore_v1beta1/proto/write.proto\x12\x18google.firestore.v1beta1\x1a\x1cgoogle/api/annotations.proto\x1a\x31google/cloud/firestore_v1beta1/proto/common.proto\x1a\x33google/cloud/firestore_v1beta1/proto/document.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\x9d\x02\n\x05Write\x12\x34\n\x06update\x18\x01 \x01(\x0b\x32\".google.firestore.v1beta1.DocumentH\x00\x12\x10\n\x06\x64\x65lete\x18\x02 \x01(\tH\x00\x12@\n\ttransform\x18\x06 \x01(\x0b\x32+.google.firestore.v1beta1.DocumentTransformH\x00\x12;\n\x0bupdate_mask\x18\x03 \x01(\x0b\x32&.google.firestore.v1beta1.DocumentMask\x12@\n\x10\x63urrent_document\x18\x04 \x01(\x0b\x32&.google.firestore.v1beta1.PreconditionB\x0b\n\toperation\"\xda\x02\n\x11\x44ocumentTransform\x12\x10\n\x08\x64ocument\x18\x01 \x01(\t\x12T\n\x10\x66ield_transforms\x18\x02 \x03(\x0b\x32:.google.firestore.v1beta1.DocumentTransform.FieldTransform\x1a\xdc\x01\n\x0e\x46ieldTransform\x12\x12\n\nfield_path\x18\x01 \x01(\t\x12\x65\n\x13set_to_server_value\x18\x02 \x01(\x0e\x32\x46.google.firestore.v1beta1.DocumentTransform.FieldTransform.ServerValueH\x00\"=\n\x0bServerValue\x12\x1c\n\x18SERVER_VALUE_UNSPECIFIED\x10\x00\x12\x10\n\x0cREQUEST_TIME\x10\x01\x42\x10\n\x0etransform_type\"z\n\x0bWriteResult\x12/\n\x0bupdate_time\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12:\n\x11transform_results\x18\x02 \x03(\x0b\x32\x1f.google.firestore.v1beta1.Value\"v\n\x0e\x44ocumentChange\x12\x34\n\x08\x64ocument\x18\x01 \x01(\x0b\x32\".google.firestore.v1beta1.Document\x12\x12\n\ntarget_ids\x18\x05 \x03(\x05\x12\x1a\n\x12removed_target_ids\x18\x06 \x03(\x05\"m\n\x0e\x44ocumentDelete\x12\x10\n\x08\x64ocument\x18\x01 \x01(\t\x12\x1a\n\x12removed_target_ids\x18\x06 \x03(\x05\x12-\n\tread_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\"m\n\x0e\x44ocumentRemove\x12\x10\n\x08\x64ocument\x18\x01 \x01(\t\x12\x1a\n\x12removed_target_ids\x18\x02 \x03(\x05\x12-\n\tread_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\"3\n\x0f\x45xistenceFilter\x12\x11\n\ttarget_id\x18\x01 \x01(\x05\x12\r\n\x05\x63ount\x18\x02 \x01(\x05\x42\xb8\x01\n\x1c\x63om.google.firestore.v1beta1B\nWriteProtoP\x01ZAgoogle.golang.org/genproto/googleapis/firestore/v1beta1;firestore\xa2\x02\x04GCFS\xaa\x02\x1eGoogle.Cloud.Firestore.V1Beta1\xca\x02\x1eGoogle\\Cloud\\Firestore\\V1beta1b\x06proto3')
+  serialized_pb=_b('\n0google/cloud/firestore_v1beta1/proto/write.proto\x12\x18google.firestore.v1beta1\x1a\x1cgoogle/api/annotations.proto\x1a\x31google/cloud/firestore_v1beta1/proto/common.proto\x1a\x33google/cloud/firestore_v1beta1/proto/document.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\x9d\x02\n\x05Write\x12\x34\n\x06update\x18\x01 \x01(\x0b\x32\".google.firestore.v1beta1.DocumentH\x00\x12\x10\n\x06\x64\x65lete\x18\x02 \x01(\tH\x00\x12@\n\ttransform\x18\x06 \x01(\x0b\x32+.google.firestore.v1beta1.DocumentTransformH\x00\x12;\n\x0bupdate_mask\x18\x03 \x01(\x0b\x32&.google.firestore.v1beta1.DocumentMask\x12@\n\x10\x63urrent_document\x18\x04 \x01(\x0b\x32&.google.firestore.v1beta1.PreconditionB\x0b\n\toperation\"\xea\x03\n\x11\x44ocumentTransform\x12\x10\n\x08\x64ocument\x18\x01 \x01(\t\x12T\n\x10\x66ield_transforms\x18\x02 \x03(\x0b\x32:.google.firestore.v1beta1.DocumentTransform.FieldTransform\x1a\xec\x02\n\x0e\x46ieldTransform\x12\x12\n\nfield_path\x18\x01 \x01(\t\x12\x65\n\x13set_to_server_value\x18\x02 \x01(\x0e\x32\x46.google.firestore.v1beta1.DocumentTransform.FieldTransform.ServerValueH\x00\x12G\n\x17\x61ppend_missing_elements\x18\x06 \x01(\x0b\x32$.google.firestore.v1beta1.ArrayValueH\x00\x12\x45\n\x15remove_all_from_array\x18\x07 \x01(\x0b\x32$.google.firestore.v1beta1.ArrayValueH\x00\"=\n\x0bServerValue\x12\x1c\n\x18SERVER_VALUE_UNSPECIFIED\x10\x00\x12\x10\n\x0cREQUEST_TIME\x10\x01\x42\x10\n\x0etransform_type\"z\n\x0bWriteResult\x12/\n\x0bupdate_time\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12:\n\x11transform_results\x18\x02 \x03(\x0b\x32\x1f.google.firestore.v1beta1.Value\"v\n\x0e\x44ocumentChange\x12\x34\n\x08\x64ocument\x18\x01 \x01(\x0b\x32\".google.firestore.v1beta1.Document\x12\x12\n\ntarget_ids\x18\x05 \x03(\x05\x12\x1a\n\x12removed_target_ids\x18\x06 \x03(\x05\"m\n\x0e\x44ocumentDelete\x12\x10\n\x08\x64ocument\x18\x01 \x01(\t\x12\x1a\n\x12removed_target_ids\x18\x06 \x03(\x05\x12-\n\tread_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\"m\n\x0e\x44ocumentRemove\x12\x10\n\x08\x64ocument\x18\x01 \x01(\t\x12\x1a\n\x12removed_target_ids\x18\x02 \x03(\x05\x12-\n\tread_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\"3\n\x0f\x45xistenceFilter\x12\x11\n\ttarget_id\x18\x01 \x01(\x05\x12\r\n\x05\x63ount\x18\x02 \x01(\x05\x42\xb8\x01\n\x1c\x63om.google.firestore.v1beta1B\nWriteProtoP\x01ZAgoogle.golang.org/genproto/googleapis/firestore/v1beta1;firestore\xa2\x02\x04GCFS\xaa\x02\x1eGoogle.Cloud.Firestore.V1Beta1\xca\x02\x1eGoogle\\Cloud\\Firestore\\V1beta1b\x06proto3')
   ,
   dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR,google_dot_cloud_dot_firestore__v1beta1_dot_proto_dot_common__pb2.DESCRIPTOR,google_dot_cloud_dot_firestore__v1beta1_dot_proto_dot_document__pb2.DESCRIPTOR,google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,])
-_sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 
 
@@ -47,8 +46,8 @@ _DOCUMENTTRANSFORM_FIELDTRANSFORM_SERVERVALUE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=801,
-  serialized_end=862,
+  serialized_start=945,
+  serialized_end=1006,
 )
 _sym_db.RegisterEnumDescriptor(_DOCUMENTTRANSFORM_FIELDTRANSFORM_SERVERVALUE)
 
@@ -66,35 +65,35 @@ _WRITE = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='delete', full_name='google.firestore.v1beta1.Write.delete', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='transform', full_name='google.firestore.v1beta1.Write.transform', index=2,
       number=6, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='update_mask', full_name='google.firestore.v1beta1.Write.update_mask', index=3,
       number=3, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='current_document', full_name='google.firestore.v1beta1.Write.current_document', index=4,
       number=4, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -128,14 +127,28 @@ _DOCUMENTTRANSFORM_FIELDTRANSFORM = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='set_to_server_value', full_name='google.firestore.v1beta1.DocumentTransform.FieldTransform.set_to_server_value', index=1,
       number=2, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='append_missing_elements', full_name='google.firestore.v1beta1.DocumentTransform.FieldTransform.append_missing_elements', index=2,
+      number=6, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='remove_all_from_array', full_name='google.firestore.v1beta1.DocumentTransform.FieldTransform.remove_all_from_array', index=3,
+      number=7, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -153,7 +166,7 @@ _DOCUMENTTRANSFORM_FIELDTRANSFORM = _descriptor.Descriptor(
       index=0, containing_type=None, fields=[]),
   ],
   serialized_start=660,
-  serialized_end=880,
+  serialized_end=1024,
 )
 
 _DOCUMENTTRANSFORM = _descriptor.Descriptor(
@@ -169,14 +182,14 @@ _DOCUMENTTRANSFORM = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='field_transforms', full_name='google.firestore.v1beta1.DocumentTransform.field_transforms', index=1,
       number=2, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -190,7 +203,7 @@ _DOCUMENTTRANSFORM = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=534,
-  serialized_end=880,
+  serialized_end=1024,
 )
 
 
@@ -207,14 +220,14 @@ _WRITERESULT = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='transform_results', full_name='google.firestore.v1beta1.WriteResult.transform_results', index=1,
       number=2, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -227,8 +240,8 @@ _WRITERESULT = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=882,
-  serialized_end=1004,
+  serialized_start=1026,
+  serialized_end=1148,
 )
 
 
@@ -245,21 +258,21 @@ _DOCUMENTCHANGE = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='target_ids', full_name='google.firestore.v1beta1.DocumentChange.target_ids', index=1,
       number=5, type=5, cpp_type=1, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='removed_target_ids', full_name='google.firestore.v1beta1.DocumentChange.removed_target_ids', index=2,
       number=6, type=5, cpp_type=1, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -272,8 +285,8 @@ _DOCUMENTCHANGE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1006,
-  serialized_end=1124,
+  serialized_start=1150,
+  serialized_end=1268,
 )
 
 
@@ -290,21 +303,21 @@ _DOCUMENTDELETE = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='removed_target_ids', full_name='google.firestore.v1beta1.DocumentDelete.removed_target_ids', index=1,
       number=6, type=5, cpp_type=1, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='read_time', full_name='google.firestore.v1beta1.DocumentDelete.read_time', index=2,
       number=4, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -317,8 +330,8 @@ _DOCUMENTDELETE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1126,
-  serialized_end=1235,
+  serialized_start=1270,
+  serialized_end=1379,
 )
 
 
@@ -335,21 +348,21 @@ _DOCUMENTREMOVE = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='removed_target_ids', full_name='google.firestore.v1beta1.DocumentRemove.removed_target_ids', index=1,
       number=2, type=5, cpp_type=1, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='read_time', full_name='google.firestore.v1beta1.DocumentRemove.read_time', index=2,
       number=4, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -362,8 +375,8 @@ _DOCUMENTREMOVE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1237,
-  serialized_end=1346,
+  serialized_start=1381,
+  serialized_end=1490,
 )
 
 
@@ -380,14 +393,14 @@ _EXISTENCEFILTER = _descriptor.Descriptor(
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='count', full_name='google.firestore.v1beta1.ExistenceFilter.count', index=1,
       number=2, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -400,8 +413,8 @@ _EXISTENCEFILTER = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1348,
-  serialized_end=1399,
+  serialized_start=1492,
+  serialized_end=1543,
 )
 
 _WRITE.fields_by_name['update'].message_type = google_dot_cloud_dot_firestore__v1beta1_dot_proto_dot_document__pb2._DOCUMENT
@@ -418,11 +431,19 @@ _WRITE.oneofs_by_name['operation'].fields.append(
   _WRITE.fields_by_name['transform'])
 _WRITE.fields_by_name['transform'].containing_oneof = _WRITE.oneofs_by_name['operation']
 _DOCUMENTTRANSFORM_FIELDTRANSFORM.fields_by_name['set_to_server_value'].enum_type = _DOCUMENTTRANSFORM_FIELDTRANSFORM_SERVERVALUE
+_DOCUMENTTRANSFORM_FIELDTRANSFORM.fields_by_name['append_missing_elements'].message_type = google_dot_cloud_dot_firestore__v1beta1_dot_proto_dot_document__pb2._ARRAYVALUE
+_DOCUMENTTRANSFORM_FIELDTRANSFORM.fields_by_name['remove_all_from_array'].message_type = google_dot_cloud_dot_firestore__v1beta1_dot_proto_dot_document__pb2._ARRAYVALUE
 _DOCUMENTTRANSFORM_FIELDTRANSFORM.containing_type = _DOCUMENTTRANSFORM
 _DOCUMENTTRANSFORM_FIELDTRANSFORM_SERVERVALUE.containing_type = _DOCUMENTTRANSFORM_FIELDTRANSFORM
 _DOCUMENTTRANSFORM_FIELDTRANSFORM.oneofs_by_name['transform_type'].fields.append(
   _DOCUMENTTRANSFORM_FIELDTRANSFORM.fields_by_name['set_to_server_value'])
 _DOCUMENTTRANSFORM_FIELDTRANSFORM.fields_by_name['set_to_server_value'].containing_oneof = _DOCUMENTTRANSFORM_FIELDTRANSFORM.oneofs_by_name['transform_type']
+_DOCUMENTTRANSFORM_FIELDTRANSFORM.oneofs_by_name['transform_type'].fields.append(
+  _DOCUMENTTRANSFORM_FIELDTRANSFORM.fields_by_name['append_missing_elements'])
+_DOCUMENTTRANSFORM_FIELDTRANSFORM.fields_by_name['append_missing_elements'].containing_oneof = _DOCUMENTTRANSFORM_FIELDTRANSFORM.oneofs_by_name['transform_type']
+_DOCUMENTTRANSFORM_FIELDTRANSFORM.oneofs_by_name['transform_type'].fields.append(
+  _DOCUMENTTRANSFORM_FIELDTRANSFORM.fields_by_name['remove_all_from_array'])
+_DOCUMENTTRANSFORM_FIELDTRANSFORM.fields_by_name['remove_all_from_array'].containing_oneof = _DOCUMENTTRANSFORM_FIELDTRANSFORM.oneofs_by_name['transform_type']
 _DOCUMENTTRANSFORM.fields_by_name['field_transforms'].message_type = _DOCUMENTTRANSFORM_FIELDTRANSFORM
 _WRITERESULT.fields_by_name['update_time'].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
 _WRITERESULT.fields_by_name['transform_results'].message_type = google_dot_cloud_dot_firestore__v1beta1_dot_proto_dot_document__pb2._VALUE
@@ -436,6 +457,7 @@ DESCRIPTOR.message_types_by_name['DocumentChange'] = _DOCUMENTCHANGE
 DESCRIPTOR.message_types_by_name['DocumentDelete'] = _DOCUMENTDELETE
 DESCRIPTOR.message_types_by_name['DocumentRemove'] = _DOCUMENTREMOVE
 DESCRIPTOR.message_types_by_name['ExistenceFilter'] = _EXISTENCEFILTER
+_sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 Write = _reflection.GeneratedProtocolMessageType('Write', (_message.Message,), dict(
   DESCRIPTOR = _WRITE,
@@ -459,13 +481,14 @@ Write = _reflection.GeneratedProtocolMessageType('Write', (_message.Message,), d
           in a given request.
       update_mask:
           The fields to update in this write.  This field can be set
-          only when the operation is ``update``. None of the field paths
-          in the mask may contain a reserved name. If the document
-          exists on the server and has fields not referenced in the
-          mask, they are left unchanged. Fields referenced in the mask,
-          but not present in the input document, are deleted from the
-          document on the server. The field paths in this mask must not
-          contain a reserved field name.
+          only when the operation is ``update``. If the mask is not set
+          for an ``update`` and the document exists, any existing data
+          will be overwritten. If the mask is set and the document on
+          the server has fields not covered by the mask, they are left
+          unchanged. Fields referenced in the mask, but not present in
+          the input document, are deleted from the document on the
+          server. The field paths in this mask must not contain a
+          reserved field name.
       current_document:
           An optional precondition on the document.  The write will fail
           if this is set and not met by the target document.
@@ -492,6 +515,25 @@ DocumentTransform = _reflection.GeneratedProtocolMessageType('DocumentTransform'
             The transformation to apply on the field.
         set_to_server_value:
             Sets the field to the given server value.
+        append_missing_elements:
+            Append the given elements in order if they are not already
+            present in the current field value. If the field is not an
+            array, or if the field does not yet exist, it is first set to
+            the empty array.  Equivalent numbers of different types (e.g.
+            3L and 3.0) are considered equal when checking if a value is
+            missing. NaN is equal to NaN, and Null is equal to Null. If
+            the input contains multiple equivalent values, only the first
+            will be considered.  The corresponding transform\_result will
+            be the null value.
+        remove_all_from_array:
+            Remove all of the given elements from the array in the field.
+            If the field is not an array, or if the field does not yet
+            exist, it is set to the empty array.  Equivalent numbers of
+            the different types (e.g. 3L and 3.0) are considered equal
+            when deciding whether an element should be removed. NaN is
+            equal to NaN, and Null is equal to Null. This will remove all
+            equivalent values if there are duplicates.  The corresponding
+            transform\_result will be the null value.
     """,
     # @@protoc_insertion_point(class_scope:google.firestore.v1beta1.DocumentTransform.FieldTransform)
     ))
@@ -652,14 +694,4 @@ _sym_db.RegisterMessage(ExistenceFilter)
 
 DESCRIPTOR.has_options = True
 DESCRIPTOR._options = _descriptor._ParseOptions(descriptor_pb2.FileOptions(), _b('\n\034com.google.firestore.v1beta1B\nWriteProtoP\001ZAgoogle.golang.org/genproto/googleapis/firestore/v1beta1;firestore\242\002\004GCFS\252\002\036Google.Cloud.Firestore.V1Beta1\312\002\036Google\\Cloud\\Firestore\\V1beta1'))
-try:
-  # THESE ELEMENTS WILL BE DEPRECATED.
-  # Please use the generated *_pb2_grpc.py files instead.
-  import grpc
-  from grpc.beta import implementations as beta_implementations
-  from grpc.beta import interfaces as beta_interfaces
-  from grpc.framework.common import cardinality
-  from grpc.framework.interfaces.face import utilities as face_utilities
-except ImportError:
-  pass
 # @@protoc_insertion_point(module_scope)

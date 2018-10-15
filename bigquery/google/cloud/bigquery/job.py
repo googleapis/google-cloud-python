@@ -284,19 +284,26 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
     """
     def __init__(self, job_id, client):
         super(_AsyncJob, self).__init__()
+
+        # The job reference can be either a plain job ID or the full resource.
+        # Populate the properties dictionary consistently depending on what has
+        # been passed in.
         job_ref = job_id
         if not isinstance(job_id, _JobReference):
             job_ref = _JobReference(job_id, client.project, None)
-        self._job_ref = job_ref
+        self._properties = {
+            'jobReference': job_ref._to_api_repr(),
+        }
+
         self._client = client
-        self._properties = {}
         self._result_set = False
         self._completion_lock = threading.Lock()
 
     @property
     def job_id(self):
         """str: ID of the job."""
-        return self._job_ref.job_id
+        return _helpers._get_sub_prop(
+            self._properties, ['jobReference', 'jobId'])
 
     @property
     def project(self):
@@ -305,12 +312,14 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
         :rtype: str
         :returns: the project (derived from the client).
         """
-        return self._job_ref.project
+        return _helpers._get_sub_prop(
+            self._properties, ['jobReference', 'projectId'])
 
     @property
     def location(self):
         """str: Location where the job runs."""
-        return self._job_ref.location
+        return _helpers._get_sub_prop(
+            self._properties, ['jobReference', 'location'])
 
     def _require_client(self, client):
         """Check client or verify over-ride.
@@ -481,7 +490,7 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
 
         self._properties.clear()
         self._properties.update(cleaned)
-        self._copy_configuration_properties(cleaned['configuration'])
+        self._copy_configuration_properties(cleaned.get('configuration', {}))
 
         # For Future interface
         self._set_future_result()
@@ -510,9 +519,11 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
                            '["configuration"]["%s"]' % cls._JOB_TYPE)
         return job_id, resource['configuration']
 
-    def _build_resource(self):
-        """Helper:  Generate a resource for :meth:`_begin`."""
+    def to_api_repr(self):
+        """Generate a resource for the job."""
         raise NotImplementedError("Abstract")
+
+    _build_resource = to_api_repr  # backward-compatibility alias
 
     def _begin(self, client=None, retry=DEFAULT_RETRY):
         """API call:  begin the job via a POST request
@@ -540,7 +551,7 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
         # job has an ID.
         api_response = client._call_api(
             retry,
-            method='POST', path=path, data=self._build_resource())
+            method='POST', path=path, data=self.to_api_repr())
         self._set_properties(api_response)
 
     def exists(self, client=None, retry=DEFAULT_RETRY):
@@ -809,6 +820,39 @@ class _JobConfig(object):
         :returns: A dictionary in the format used by the BigQuery API.
         """
         return copy.deepcopy(self._properties)
+
+    def _fill_from_default(self, default_job_config):
+        """Merge this job config with a default job config.
+
+        The keys in this object take precedence over the keys in the default
+        config. The merge is done at the top-level as well as for keys one
+        level below the job type.
+
+        Arguments:
+            default_job_config (google.cloud.bigquery.job._JobConfig):
+                The default job config that will be used to fill in self.
+
+        Returns:
+            google.cloud.bigquery.job._JobConfig A new (merged) job config.
+        """
+        if self._job_type != default_job_config._job_type:
+            raise TypeError(
+                "attempted to merge two incompatible job types: "
+                + repr(self._job_type) + ', '
+                + repr(default_job_config._job_type))
+
+        new_job_config = self.__class__()
+
+        default_job_properties = copy.deepcopy(default_job_config._properties)
+        for key in self._properties:
+            if key != self._job_type:
+                default_job_properties[key] = self._properties[key]
+
+        default_job_properties[self._job_type] \
+            .update(self._properties[self._job_type])
+        new_job_config._properties = default_job_properties
+
+        return new_job_config
 
     @classmethod
     def from_api_repr(cls, resource):
@@ -1325,7 +1369,7 @@ class LoadJob(_AsyncJob):
         if statistics is not None:
             return int(statistics['load']['outputRows'])
 
-    def _build_resource(self):
+    def to_api_repr(self):
         """Generate a resource for :meth:`_begin`."""
         configuration = self._configuration.to_api_repr()
         if self.source_uris is not None:
@@ -1337,7 +1381,7 @@ class LoadJob(_AsyncJob):
             self.destination.to_api_repr())
 
         return {
-            'jobReference': self._job_ref._to_api_repr(),
+            'jobReference': self._properties['jobReference'],
             'configuration': configuration,
         }
 
@@ -1501,7 +1545,7 @@ class CopyJob(_AsyncJob):
         """
         return self._configuration.destination_encryption_configuration
 
-    def _build_resource(self):
+    def to_api_repr(self):
         """Generate a resource for :meth:`_begin`."""
 
         source_refs = [{
@@ -1523,7 +1567,7 @@ class CopyJob(_AsyncJob):
             })
 
         return {
-            'jobReference': self._job_ref._to_api_repr(),
+            'jobReference': self._properties['jobReference'],
             'configuration': configuration,
         }
 
@@ -1719,7 +1763,7 @@ class ExtractJob(_AsyncJob):
             return [int(count) for count in counts]
         return None
 
-    def _build_resource(self):
+    def to_api_repr(self):
         """Generate a resource for :meth:`_begin`."""
 
         source_ref = {
@@ -1737,7 +1781,7 @@ class ExtractJob(_AsyncJob):
             self.destination_uris)
 
         return {
-            'jobReference': self._job_ref._to_api_repr(),
+            'jobReference': self._properties['jobReference'],
             'configuration': configuration,
         }
 
@@ -2325,12 +2369,12 @@ class QueryJob(_AsyncJob):
         """
         return self._configuration.schema_update_options
 
-    def _build_resource(self):
+    def to_api_repr(self):
         """Generate a resource for :meth:`_begin`."""
         configuration = self._configuration.to_api_repr()
 
         resource = {
-            'jobReference': self._job_ref._to_api_repr(),
+            'jobReference': self._properties['jobReference'],
             'configuration': configuration,
         }
         configuration['query']['query'] = self.query
@@ -3020,8 +3064,12 @@ class UnknownJob(_AsyncJob):
         Returns:
             UnknownJob: Job corresponding to the resource.
         """
-        job_ref = _JobReference._from_api_repr(
-            resource.get('jobReference', {'projectId': client.project}))
+        job_ref_properties = resource.get(
+            'jobReference', {'projectId': client.project})
+        job_ref = _JobReference._from_api_repr(job_ref_properties)
         job = cls(job_ref, client)
+        # Populate the job reference with the project, even if it has been
+        # redacted, because we know it should equal that of the request.
+        resource['jobReference'] = job_ref_properties
         job._properties = resource
         return job

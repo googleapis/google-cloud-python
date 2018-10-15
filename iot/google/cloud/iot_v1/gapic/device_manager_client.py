@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+#
 # Copyright 2018 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,7 +17,9 @@
 
 import functools
 import pkg_resources
+import warnings
 
+from google.oauth2 import service_account
 import google.api_core.gapic_v1.client_info
 import google.api_core.gapic_v1.config
 import google.api_core.gapic_v1.method
@@ -27,6 +31,7 @@ import grpc
 
 from google.cloud.iot_v1.gapic import device_manager_client_config
 from google.cloud.iot_v1.gapic import enums
+from google.cloud.iot_v1.gapic.transports import device_manager_grpc_transport
 from google.cloud.iot_v1.proto import device_manager_pb2
 from google.cloud.iot_v1.proto import device_manager_pb2_grpc
 from google.cloud.iot_v1.proto import resources_pb2
@@ -48,16 +53,30 @@ class DeviceManagerClient(object):
     SERVICE_ADDRESS = 'cloudiot.googleapis.com:443'
     """The default address of the service."""
 
-    # The scopes needed to make gRPC calls to all of the methods defined in
-    # this service
-    _DEFAULT_SCOPES = (
-        'https://www.googleapis.com/auth/cloud-platform',
-        'https://www.googleapis.com/auth/cloudiot',
-    )
-
-    # The name of the interface for this client. This is the key used to find
-    # method configuration in the client_config dictionary.
+    # The name of the interface for this client. This is the key used to
+    # find the method configuration in the client_config dictionary.
     _INTERFACE_NAME = 'google.cloud.iot.v1.DeviceManager'
+
+    @classmethod
+    def from_service_account_file(cls, filename, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials
+        file.
+
+        Args:
+            filename (str): The path to the service account private key json
+                file.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            DeviceManagerClient: The constructed client.
+        """
+        credentials = service_account.Credentials.from_service_account_file(
+            filename)
+        kwargs['credentials'] = credentials
+        return cls(*args, **kwargs)
+
+    from_service_account_json = from_service_account_file
 
     @classmethod
     def location_path(cls, project, location):
@@ -90,6 +109,7 @@ class DeviceManagerClient(object):
         )
 
     def __init__(self,
+                 transport=None,
                  channel=None,
                  credentials=None,
                  client_config=device_manager_client_config.config,
@@ -97,41 +117,64 @@ class DeviceManagerClient(object):
         """Constructor.
 
         Args:
-            channel (grpc.Channel): A ``Channel`` instance through
-                which to make calls. This argument is mutually exclusive
+            transport (Union[~.DeviceManagerGrpcTransport,
+                    Callable[[~.Credentials, type], ~.DeviceManagerGrpcTransport]): A transport
+                instance, responsible for actually making the API calls.
+                The default transport uses the gRPC protocol.
+                This argument may also be a callable which returns a
+                transport instance. Callables will be sent the credentials
+                as the first argument and the default transport class as
+                the second argument.
+            channel (grpc.Channel): DEPRECATED. A ``Channel`` instance
+                through which to make calls. This argument is mutually exclusive
                 with ``credentials``; providing both will raise an exception.
             credentials (google.auth.credentials.Credentials): The
                 authorization credentials to attach to requests. These
                 credentials identify this application to the service. If none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            client_config (dict): A dictionary of call options for each
-                method. If not specified, the default configuration is used.
+                This argument is mutually exclusive with providing a
+                transport instance to ``transport``; doing so will raise
+                an exception.
+            client_config (dict): DEPRECATED. A dictionary of call options for
+                each method. If not specified, the default configuration is used.
             client_info (google.api_core.gapic_v1.client_info.ClientInfo):
                 The client info used to send a user-agent string along with
                 API requests. If ``None``, then default info will be used.
                 Generally, you only need to set this if you're developing
                 your own client library.
         """
-        # If both `channel` and `credentials` are specified, raise an
-        # exception (channels come with credentials baked in already).
-        if channel is not None and credentials is not None:
-            raise ValueError(
-                'The `channel` and `credentials` arguments to {} are mutually '
-                'exclusive.'.format(self.__class__.__name__), )
+        # Raise deprecation warnings for things we want to go away.
+        if client_config:
+            warnings.warn('The `client_config` argument is deprecated.',
+                          PendingDeprecationWarning)
+        if channel:
+            warnings.warn(
+                'The `channel` argument is deprecated; use '
+                '`transport` instead.', PendingDeprecationWarning)
 
-        # Create the channel.
-        self.channel = channel
-        if self.channel is None:
-            self.channel = google.api_core.grpc_helpers.create_channel(
-                self.SERVICE_ADDRESS,
+        # Instantiate the transport.
+        # The transport is responsible for handling serialization and
+        # deserialization and actually sending data to the service.
+        if transport:
+            if callable(transport):
+                self.transport = transport(
+                    credentials=credentials,
+                    default_class=device_manager_grpc_transport.
+                    DeviceManagerGrpcTransport,
+                )
+            else:
+                if credentials:
+                    raise ValueError(
+                        'Received both a transport instance and '
+                        'credentials; these are mutually exclusive.')
+                self.transport = transport
+        else:
+            self.transport = device_manager_grpc_transport.DeviceManagerGrpcTransport(
+                address=self.SERVICE_ADDRESS,
+                channel=channel,
                 credentials=credentials,
-                scopes=self._DEFAULT_SCOPES,
             )
-
-        # Create the gRPC stubs.
-        self._device_manager_stub = (device_manager_pb2_grpc.DeviceManagerStub(
-            self.channel))
 
         if client_info is None:
             client_info = (
@@ -146,26 +189,11 @@ class DeviceManagerClient(object):
         self._method_configs = google.api_core.gapic_v1.config.parse_method_configs(
             client_config['interfaces'][self._INTERFACE_NAME], )
 
+        # Save a dictionary of cached API call functions.
+        # These are the actual callables which invoke the proper
+        # transport methods, wrapped with `wrap_method` to add retry,
+        # timeout, and the like.
         self._inner_api_calls = {}
-
-    def _intercept_channel(self, *interceptors):
-        """ Experimental. Bind gRPC interceptors to the gRPC channel.
-
-        Args:
-            interceptors (*Union[grpc.UnaryUnaryClientInterceptor, grpc.UnaryStreamingClientInterceptor, grpc.StreamingUnaryClientInterceptor, grpc.StreamingStreamingClientInterceptor]):
-              Zero or more gRPC interceptors. Interceptors are given control in the order
-              they are listed.
-        Raises:
-            TypeError: If interceptor does not derive from any of
-              UnaryUnaryClientInterceptor,
-              UnaryStreamClientInterceptor,
-              StreamUnaryClientInterceptor, or
-              StreamStreamClientInterceptor.
-        """
-        self.channel = grpc.intercept_channel(self.channel, *interceptors)
-        self._device_manager_stub = (device_manager_pb2_grpc.DeviceManagerStub(
-            self.channel))
-        self._inner_api_calls.clear()
 
     # Service calls
     def create_device_registry(self,
@@ -216,17 +244,15 @@ class DeviceManagerClient(object):
                     to a retryable error and retry attempts failed.
             ValueError: If the parameters are invalid.
         """
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
+        # Wrap the transport method to add retry and timeout logic.
         if 'create_device_registry' not in self._inner_api_calls:
             self._inner_api_calls[
                 'create_device_registry'] = google.api_core.gapic_v1.method.wrap_method(
-                    self._device_manager_stub.CreateDeviceRegistry,
-                    default_retry=self._method_configs['CreateDeviceRegistry']
-                    .retry,
-                    default_timeout=self._method_configs[
-                        'CreateDeviceRegistry'].timeout,
+                    self.transport.create_device_registry,
+                    default_retry=self._method_configs['CreateDeviceRegistry'].
+                    retry,
+                    default_timeout=self.
+                    _method_configs['CreateDeviceRegistry'].timeout,
                     client_info=self._client_info,
                 )
 
@@ -234,10 +260,17 @@ class DeviceManagerClient(object):
             parent=parent,
             device_registry=device_registry,
         )
-
-        routing_header = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-            [('parent', parent)], )
-        metadata.append(routing_header)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [('parent', parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header)
+            metadata.append(routing_metadata)
 
         return self._inner_api_calls['create_device_registry'](
             request, retry=retry, timeout=timeout, metadata=metadata)
@@ -281,25 +314,30 @@ class DeviceManagerClient(object):
                     to a retryable error and retry attempts failed.
             ValueError: If the parameters are invalid.
         """
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
+        # Wrap the transport method to add retry and timeout logic.
         if 'get_device_registry' not in self._inner_api_calls:
             self._inner_api_calls[
                 'get_device_registry'] = google.api_core.gapic_v1.method.wrap_method(
-                    self._device_manager_stub.GetDeviceRegistry,
-                    default_retry=self._method_configs[
-                        'GetDeviceRegistry'].retry,
-                    default_timeout=self._method_configs['GetDeviceRegistry']
-                    .timeout,
+                    self.transport.get_device_registry,
+                    default_retry=self._method_configs['GetDeviceRegistry'].
+                    retry,
+                    default_timeout=self._method_configs['GetDeviceRegistry'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
         request = device_manager_pb2.GetDeviceRegistryRequest(name=name, )
-
-        routing_header = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-            [('name', name)], )
-        metadata.append(routing_header)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [('name', name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header)
+            metadata.append(routing_metadata)
 
         return self._inner_api_calls['get_device_registry'](
             request, retry=retry, timeout=timeout, metadata=metadata)
@@ -358,17 +396,15 @@ class DeviceManagerClient(object):
                     to a retryable error and retry attempts failed.
             ValueError: If the parameters are invalid.
         """
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
+        # Wrap the transport method to add retry and timeout logic.
         if 'update_device_registry' not in self._inner_api_calls:
             self._inner_api_calls[
                 'update_device_registry'] = google.api_core.gapic_v1.method.wrap_method(
-                    self._device_manager_stub.UpdateDeviceRegistry,
-                    default_retry=self._method_configs['UpdateDeviceRegistry']
-                    .retry,
-                    default_timeout=self._method_configs[
-                        'UpdateDeviceRegistry'].timeout,
+                    self.transport.update_device_registry,
+                    default_retry=self._method_configs['UpdateDeviceRegistry'].
+                    retry,
+                    default_timeout=self.
+                    _method_configs['UpdateDeviceRegistry'].timeout,
                     client_info=self._client_info,
                 )
 
@@ -376,11 +412,17 @@ class DeviceManagerClient(object):
             device_registry=device_registry,
             update_mask=update_mask,
         )
-
-        if hasattr(device_registry, 'name'):
-            routing_header = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-                [('device_registry.name', device_registry.name)], )
-            metadata.append(routing_header)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [('device_registry.name', device_registry.name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header)
+            metadata.append(routing_metadata)
 
         return self._inner_api_calls['update_device_registry'](
             request, retry=retry, timeout=timeout, metadata=metadata)
@@ -421,25 +463,30 @@ class DeviceManagerClient(object):
                     to a retryable error and retry attempts failed.
             ValueError: If the parameters are invalid.
         """
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
+        # Wrap the transport method to add retry and timeout logic.
         if 'delete_device_registry' not in self._inner_api_calls:
             self._inner_api_calls[
                 'delete_device_registry'] = google.api_core.gapic_v1.method.wrap_method(
-                    self._device_manager_stub.DeleteDeviceRegistry,
-                    default_retry=self._method_configs['DeleteDeviceRegistry']
-                    .retry,
-                    default_timeout=self._method_configs[
-                        'DeleteDeviceRegistry'].timeout,
+                    self.transport.delete_device_registry,
+                    default_retry=self._method_configs['DeleteDeviceRegistry'].
+                    retry,
+                    default_timeout=self.
+                    _method_configs['DeleteDeviceRegistry'].timeout,
                     client_info=self._client_info,
                 )
 
         request = device_manager_pb2.DeleteDeviceRegistryRequest(name=name, )
-
-        routing_header = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-            [('name', name)], )
-        metadata.append(routing_header)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [('name', name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header)
+            metadata.append(routing_metadata)
 
         self._inner_api_calls['delete_device_registry'](
             request, retry=retry, timeout=timeout, metadata=metadata)
@@ -460,13 +507,15 @@ class DeviceManagerClient(object):
             >>>
             >>> parent = client.location_path('[PROJECT]', '[LOCATION]')
             >>>
-            >>>
             >>> # Iterate over all results
             >>> for element in client.list_device_registries(parent):
             ...     # process element
             ...     pass
             >>>
-            >>> # Or iterate over results one page at a time
+            >>>
+            >>> # Alternatively:
+            >>>
+            >>> # Iterate over results one page at a time
             >>> for page in client.list_device_registries(parent, options=CallOptions(page_token=INITIAL_PAGE)):
             ...     for element in page:
             ...         # process element
@@ -502,17 +551,15 @@ class DeviceManagerClient(object):
                     to a retryable error and retry attempts failed.
             ValueError: If the parameters are invalid.
         """
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
+        # Wrap the transport method to add retry and timeout logic.
         if 'list_device_registries' not in self._inner_api_calls:
             self._inner_api_calls[
                 'list_device_registries'] = google.api_core.gapic_v1.method.wrap_method(
-                    self._device_manager_stub.ListDeviceRegistries,
-                    default_retry=self._method_configs['ListDeviceRegistries']
-                    .retry,
-                    default_timeout=self._method_configs[
-                        'ListDeviceRegistries'].timeout,
+                    self.transport.list_device_registries,
+                    default_retry=self._method_configs['ListDeviceRegistries'].
+                    retry,
+                    default_timeout=self.
+                    _method_configs['ListDeviceRegistries'].timeout,
                     client_info=self._client_info,
                 )
 
@@ -520,10 +567,17 @@ class DeviceManagerClient(object):
             parent=parent,
             page_size=page_size,
         )
-
-        routing_header = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-            [('parent', parent)], )
-        metadata.append(routing_header)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [('parent', parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header)
+            metadata.append(routing_metadata)
 
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
@@ -588,16 +642,14 @@ class DeviceManagerClient(object):
                     to a retryable error and retry attempts failed.
             ValueError: If the parameters are invalid.
         """
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
+        # Wrap the transport method to add retry and timeout logic.
         if 'create_device' not in self._inner_api_calls:
             self._inner_api_calls[
                 'create_device'] = google.api_core.gapic_v1.method.wrap_method(
-                    self._device_manager_stub.CreateDevice,
+                    self.transport.create_device,
                     default_retry=self._method_configs['CreateDevice'].retry,
-                    default_timeout=self._method_configs['CreateDevice']
-                    .timeout,
+                    default_timeout=self._method_configs['CreateDevice'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -605,10 +657,17 @@ class DeviceManagerClient(object):
             parent=parent,
             device=device,
         )
-
-        routing_header = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-            [('parent', parent)], )
-        metadata.append(routing_header)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [('parent', parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header)
+            metadata.append(routing_metadata)
 
         return self._inner_api_calls['create_device'](
             request, retry=retry, timeout=timeout, metadata=metadata)
@@ -658,13 +717,11 @@ class DeviceManagerClient(object):
                     to a retryable error and retry attempts failed.
             ValueError: If the parameters are invalid.
         """
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
+        # Wrap the transport method to add retry and timeout logic.
         if 'get_device' not in self._inner_api_calls:
             self._inner_api_calls[
                 'get_device'] = google.api_core.gapic_v1.method.wrap_method(
-                    self._device_manager_stub.GetDevice,
+                    self.transport.get_device,
                     default_retry=self._method_configs['GetDevice'].retry,
                     default_timeout=self._method_configs['GetDevice'].timeout,
                     client_info=self._client_info,
@@ -674,10 +731,17 @@ class DeviceManagerClient(object):
             name=name,
             field_mask=field_mask,
         )
-
-        routing_header = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-            [('name', name)], )
-        metadata.append(routing_header)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [('name', name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header)
+            metadata.append(routing_metadata)
 
         return self._inner_api_calls['get_device'](
             request, retry=retry, timeout=timeout, metadata=metadata)
@@ -736,16 +800,14 @@ class DeviceManagerClient(object):
                     to a retryable error and retry attempts failed.
             ValueError: If the parameters are invalid.
         """
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
+        # Wrap the transport method to add retry and timeout logic.
         if 'update_device' not in self._inner_api_calls:
             self._inner_api_calls[
                 'update_device'] = google.api_core.gapic_v1.method.wrap_method(
-                    self._device_manager_stub.UpdateDevice,
+                    self.transport.update_device,
                     default_retry=self._method_configs['UpdateDevice'].retry,
-                    default_timeout=self._method_configs['UpdateDevice']
-                    .timeout,
+                    default_timeout=self._method_configs['UpdateDevice'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -753,11 +815,17 @@ class DeviceManagerClient(object):
             device=device,
             update_mask=update_mask,
         )
-
-        if hasattr(device, 'name'):
-            routing_header = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-                [('device.name', device.name)], )
-            metadata.append(routing_header)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [('device.name', device.name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header)
+            metadata.append(routing_metadata)
 
         return self._inner_api_calls['update_device'](
             request, retry=retry, timeout=timeout, metadata=metadata)
@@ -799,24 +867,29 @@ class DeviceManagerClient(object):
                     to a retryable error and retry attempts failed.
             ValueError: If the parameters are invalid.
         """
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
+        # Wrap the transport method to add retry and timeout logic.
         if 'delete_device' not in self._inner_api_calls:
             self._inner_api_calls[
                 'delete_device'] = google.api_core.gapic_v1.method.wrap_method(
-                    self._device_manager_stub.DeleteDevice,
+                    self.transport.delete_device,
                     default_retry=self._method_configs['DeleteDevice'].retry,
-                    default_timeout=self._method_configs['DeleteDevice']
-                    .timeout,
+                    default_timeout=self._method_configs['DeleteDevice'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
         request = device_manager_pb2.DeleteDeviceRequest(name=name, )
-
-        routing_header = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-            [('name', name)], )
-        metadata.append(routing_header)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [('name', name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header)
+            metadata.append(routing_metadata)
 
         self._inner_api_calls['delete_device'](
             request, retry=retry, timeout=timeout, metadata=metadata)
@@ -840,13 +913,15 @@ class DeviceManagerClient(object):
             >>>
             >>> parent = client.registry_path('[PROJECT]', '[LOCATION]', '[REGISTRY]')
             >>>
-            >>>
             >>> # Iterate over all results
             >>> for element in client.list_devices(parent):
             ...     # process element
             ...     pass
             >>>
-            >>> # Or iterate over results one page at a time
+            >>>
+            >>> # Alternatively:
+            >>>
+            >>> # Iterate over results one page at a time
             >>> for page in client.list_devices(parent, options=CallOptions(page_token=INITIAL_PAGE)):
             ...     for element in page:
             ...         # process element
@@ -892,16 +967,14 @@ class DeviceManagerClient(object):
                     to a retryable error and retry attempts failed.
             ValueError: If the parameters are invalid.
         """
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
+        # Wrap the transport method to add retry and timeout logic.
         if 'list_devices' not in self._inner_api_calls:
             self._inner_api_calls[
                 'list_devices'] = google.api_core.gapic_v1.method.wrap_method(
-                    self._device_manager_stub.ListDevices,
+                    self.transport.list_devices,
                     default_retry=self._method_configs['ListDevices'].retry,
-                    default_timeout=self._method_configs['ListDevices']
-                    .timeout,
+                    default_timeout=self._method_configs['ListDevices'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -912,10 +985,17 @@ class DeviceManagerClient(object):
             field_mask=field_mask,
             page_size=page_size,
         )
-
-        routing_header = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-            [('parent', parent)], )
-        metadata.append(routing_header)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [('parent', parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header)
+            metadata.append(routing_metadata)
 
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
@@ -985,17 +1065,15 @@ class DeviceManagerClient(object):
                     to a retryable error and retry attempts failed.
             ValueError: If the parameters are invalid.
         """
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
+        # Wrap the transport method to add retry and timeout logic.
         if 'modify_cloud_to_device_config' not in self._inner_api_calls:
             self._inner_api_calls[
                 'modify_cloud_to_device_config'] = google.api_core.gapic_v1.method.wrap_method(
-                    self._device_manager_stub.ModifyCloudToDeviceConfig,
-                    default_retry=self._method_configs[
-                        'ModifyCloudToDeviceConfig'].retry,
-                    default_timeout=self._method_configs[
-                        'ModifyCloudToDeviceConfig'].timeout,
+                    self.transport.modify_cloud_to_device_config,
+                    default_retry=self.
+                    _method_configs['ModifyCloudToDeviceConfig'].retry,
+                    default_timeout=self.
+                    _method_configs['ModifyCloudToDeviceConfig'].timeout,
                     client_info=self._client_info,
                 )
 
@@ -1004,10 +1082,17 @@ class DeviceManagerClient(object):
             binary_data=binary_data,
             version_to_update=version_to_update,
         )
-
-        routing_header = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-            [('name', name)], )
-        metadata.append(routing_header)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [('name', name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header)
+            metadata.append(routing_metadata)
 
         return self._inner_api_calls['modify_cloud_to_device_config'](
             request, retry=retry, timeout=timeout, metadata=metadata)
@@ -1058,17 +1143,15 @@ class DeviceManagerClient(object):
                     to a retryable error and retry attempts failed.
             ValueError: If the parameters are invalid.
         """
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
+        # Wrap the transport method to add retry and timeout logic.
         if 'list_device_config_versions' not in self._inner_api_calls:
             self._inner_api_calls[
                 'list_device_config_versions'] = google.api_core.gapic_v1.method.wrap_method(
-                    self._device_manager_stub.ListDeviceConfigVersions,
-                    default_retry=self._method_configs[
-                        'ListDeviceConfigVersions'].retry,
-                    default_timeout=self._method_configs[
-                        'ListDeviceConfigVersions'].timeout,
+                    self.transport.list_device_config_versions,
+                    default_retry=self.
+                    _method_configs['ListDeviceConfigVersions'].retry,
+                    default_timeout=self.
+                    _method_configs['ListDeviceConfigVersions'].timeout,
                     client_info=self._client_info,
                 )
 
@@ -1076,10 +1159,17 @@ class DeviceManagerClient(object):
             name=name,
             num_versions=num_versions,
         )
-
-        routing_header = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-            [('name', name)], )
-        metadata.append(routing_header)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [('name', name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header)
+            metadata.append(routing_metadata)
 
         return self._inner_api_calls['list_device_config_versions'](
             request, retry=retry, timeout=timeout, metadata=metadata)
@@ -1129,17 +1219,15 @@ class DeviceManagerClient(object):
                     to a retryable error and retry attempts failed.
             ValueError: If the parameters are invalid.
         """
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
+        # Wrap the transport method to add retry and timeout logic.
         if 'list_device_states' not in self._inner_api_calls:
             self._inner_api_calls[
                 'list_device_states'] = google.api_core.gapic_v1.method.wrap_method(
-                    self._device_manager_stub.ListDeviceStates,
-                    default_retry=self._method_configs[
-                        'ListDeviceStates'].retry,
-                    default_timeout=self._method_configs['ListDeviceStates']
-                    .timeout,
+                    self.transport.list_device_states,
+                    default_retry=self._method_configs['ListDeviceStates'].
+                    retry,
+                    default_timeout=self._method_configs['ListDeviceStates'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -1147,10 +1235,17 @@ class DeviceManagerClient(object):
             name=name,
             num_states=num_states,
         )
-
-        routing_header = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-            [('name', name)], )
-        metadata.append(routing_header)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [('name', name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header)
+            metadata.append(routing_metadata)
 
         return self._inner_api_calls['list_device_states'](
             request, retry=retry, timeout=timeout, metadata=metadata)
@@ -1206,16 +1301,14 @@ class DeviceManagerClient(object):
                     to a retryable error and retry attempts failed.
             ValueError: If the parameters are invalid.
         """
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
+        # Wrap the transport method to add retry and timeout logic.
         if 'set_iam_policy' not in self._inner_api_calls:
             self._inner_api_calls[
                 'set_iam_policy'] = google.api_core.gapic_v1.method.wrap_method(
-                    self._device_manager_stub.SetIamPolicy,
+                    self.transport.set_iam_policy,
                     default_retry=self._method_configs['SetIamPolicy'].retry,
-                    default_timeout=self._method_configs['SetIamPolicy']
-                    .timeout,
+                    default_timeout=self._method_configs['SetIamPolicy'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -1223,10 +1316,17 @@ class DeviceManagerClient(object):
             resource=resource,
             policy=policy,
         )
-
-        routing_header = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-            [('resource', resource)], )
-        metadata.append(routing_header)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [('resource', resource)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header)
+            metadata.append(routing_metadata)
 
         return self._inner_api_calls['set_iam_policy'](
             request, retry=retry, timeout=timeout, metadata=metadata)
@@ -1273,24 +1373,29 @@ class DeviceManagerClient(object):
                     to a retryable error and retry attempts failed.
             ValueError: If the parameters are invalid.
         """
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
+        # Wrap the transport method to add retry and timeout logic.
         if 'get_iam_policy' not in self._inner_api_calls:
             self._inner_api_calls[
                 'get_iam_policy'] = google.api_core.gapic_v1.method.wrap_method(
-                    self._device_manager_stub.GetIamPolicy,
+                    self.transport.get_iam_policy,
                     default_retry=self._method_configs['GetIamPolicy'].retry,
-                    default_timeout=self._method_configs['GetIamPolicy']
-                    .timeout,
+                    default_timeout=self._method_configs['GetIamPolicy'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
         request = iam_policy_pb2.GetIamPolicyRequest(resource=resource, )
-
-        routing_header = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-            [('resource', resource)], )
-        metadata.append(routing_header)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [('resource', resource)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header)
+            metadata.append(routing_metadata)
 
         return self._inner_api_calls['get_iam_policy'](
             request, retry=retry, timeout=timeout, metadata=metadata)
@@ -1345,17 +1450,15 @@ class DeviceManagerClient(object):
                     to a retryable error and retry attempts failed.
             ValueError: If the parameters are invalid.
         """
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
+        # Wrap the transport method to add retry and timeout logic.
         if 'test_iam_permissions' not in self._inner_api_calls:
             self._inner_api_calls[
                 'test_iam_permissions'] = google.api_core.gapic_v1.method.wrap_method(
-                    self._device_manager_stub.TestIamPermissions,
-                    default_retry=self._method_configs[
-                        'TestIamPermissions'].retry,
-                    default_timeout=self._method_configs['TestIamPermissions']
-                    .timeout,
+                    self.transport.test_iam_permissions,
+                    default_retry=self._method_configs['TestIamPermissions'].
+                    retry,
+                    default_timeout=self._method_configs['TestIamPermissions'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -1363,10 +1466,17 @@ class DeviceManagerClient(object):
             resource=resource,
             permissions=permissions,
         )
-
-        routing_header = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-            [('resource', resource)], )
-        metadata.append(routing_header)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [('resource', resource)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header)
+            metadata.append(routing_metadata)
 
         return self._inner_api_calls['test_iam_permissions'](
             request, retry=retry, timeout=timeout, metadata=metadata)

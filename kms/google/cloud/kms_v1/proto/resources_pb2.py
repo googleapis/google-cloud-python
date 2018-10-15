@@ -3,6 +3,7 @@
 
 import sys
 _b=sys.version_info[0]<3 and (lambda x:x) or (lambda x:x.encode('latin1'))
+from google.protobuf.internal import enum_type_wrapper
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
@@ -22,10 +23,40 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='google/cloud/kms_v1/proto/resources.proto',
   package='google.cloud.kms.v1',
   syntax='proto3',
-  serialized_pb=_b('\n)google/cloud/kms_v1/proto/resources.proto\x12\x13google.cloud.kms.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"H\n\x07KeyRing\x12\x0c\n\x04name\x18\x01 \x01(\t\x12/\n\x0b\x63reate_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\"\xff\x03\n\tCryptoKey\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x36\n\x07primary\x18\x02 \x01(\x0b\x32%.google.cloud.kms.v1.CryptoKeyVersion\x12@\n\x07purpose\x18\x03 \x01(\x0e\x32/.google.cloud.kms.v1.CryptoKey.CryptoKeyPurpose\x12/\n\x0b\x63reate_time\x18\x05 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x36\n\x12next_rotation_time\x18\x07 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x34\n\x0frotation_period\x18\x08 \x01(\x0b\x32\x19.google.protobuf.DurationH\x00\x12:\n\x06labels\x18\n \x03(\x0b\x32*.google.cloud.kms.v1.CryptoKey.LabelsEntry\x1a-\n\x0bLabelsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"K\n\x10\x43ryptoKeyPurpose\x12\"\n\x1e\x43RYPTO_KEY_PURPOSE_UNSPECIFIED\x10\x00\x12\x13\n\x0f\x45NCRYPT_DECRYPT\x10\x01\x42\x13\n\x11rotation_schedule\"\x8c\x03\n\x10\x43ryptoKeyVersion\x12\x0c\n\x04name\x18\x01 \x01(\t\x12J\n\x05state\x18\x03 \x01(\x0e\x32;.google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionState\x12/\n\x0b\x63reate_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x30\n\x0c\x64\x65stroy_time\x18\x05 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x36\n\x12\x64\x65stroy_event_time\x18\x06 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\"\x82\x01\n\x15\x43ryptoKeyVersionState\x12(\n$CRYPTO_KEY_VERSION_STATE_UNSPECIFIED\x10\x00\x12\x0b\n\x07\x45NABLED\x10\x01\x12\x0c\n\x08\x44ISABLED\x10\x02\x12\r\n\tDESTROYED\x10\x03\x12\x15\n\x11\x44\x45STROY_SCHEDULED\x10\x04\x42\x95\x01\n\x17\x63om.google.cloud.kms.v1B\x11KmsResourcesProtoP\x01Z6google.golang.org/genproto/googleapis/cloud/kms/v1;kms\xf8\x01\x01\xaa\x02\x13Google.Cloud.Kms.V1\xca\x02\x13Google\\Cloud\\Kms\\V1b\x06proto3')
+  serialized_pb=_b('\n)google/cloud/kms_v1/proto/resources.proto\x12\x13google.cloud.kms.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"H\n\x07KeyRing\x12\x0c\n\x04name\x18\x01 \x01(\t\x12/\n\x0b\x63reate_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\"\xf5\x04\n\tCryptoKey\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x36\n\x07primary\x18\x02 \x01(\x0b\x32%.google.cloud.kms.v1.CryptoKeyVersion\x12@\n\x07purpose\x18\x03 \x01(\x0e\x32/.google.cloud.kms.v1.CryptoKey.CryptoKeyPurpose\x12/\n\x0b\x63reate_time\x18\x05 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x36\n\x12next_rotation_time\x18\x07 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x34\n\x0frotation_period\x18\x08 \x01(\x0b\x32\x19.google.protobuf.DurationH\x00\x12G\n\x10version_template\x18\x0b \x01(\x0b\x32-.google.cloud.kms.v1.CryptoKeyVersionTemplate\x12:\n\x06labels\x18\n \x03(\x0b\x32*.google.cloud.kms.v1.CryptoKey.LabelsEntry\x1a-\n\x0bLabelsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"x\n\x10\x43ryptoKeyPurpose\x12\"\n\x1e\x43RYPTO_KEY_PURPOSE_UNSPECIFIED\x10\x00\x12\x13\n\x0f\x45NCRYPT_DECRYPT\x10\x01\x12\x13\n\x0f\x41SYMMETRIC_SIGN\x10\x05\x12\x16\n\x12\x41SYMMETRIC_DECRYPT\x10\x06\x42\x13\n\x11rotation_schedule\"\xae\x01\n\x18\x43ryptoKeyVersionTemplate\x12>\n\x10protection_level\x18\x01 \x01(\x0e\x32$.google.cloud.kms.v1.ProtectionLevel\x12R\n\talgorithm\x18\x03 \x01(\x0e\x32?.google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionAlgorithm\"\xcd\x01\n\x17KeyOperationAttestation\x12N\n\x06\x66ormat\x18\x04 \x01(\x0e\x32>.google.cloud.kms.v1.KeyOperationAttestation.AttestationFormat\x12\x0f\n\x07\x63ontent\x18\x05 \x01(\x0c\"Q\n\x11\x41ttestationFormat\x12\"\n\x1e\x41TTESTATION_FORMAT_UNSPECIFIED\x10\x00\x12\x18\n\x14\x43\x41VIUM_V1_COMPRESSED\x10\x03\"\xb8\t\n\x10\x43ryptoKeyVersion\x12\x0c\n\x04name\x18\x01 \x01(\t\x12J\n\x05state\x18\x03 \x01(\x0e\x32;.google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionState\x12>\n\x10protection_level\x18\x07 \x01(\x0e\x32$.google.cloud.kms.v1.ProtectionLevel\x12R\n\talgorithm\x18\n \x01(\x0e\x32?.google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionAlgorithm\x12\x41\n\x0b\x61ttestation\x18\x08 \x01(\x0b\x32,.google.cloud.kms.v1.KeyOperationAttestation\x12/\n\x0b\x63reate_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x31\n\rgenerate_time\x18\x0b \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x30\n\x0c\x64\x65stroy_time\x18\x05 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x36\n\x12\x64\x65stroy_event_time\x18\x06 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\"\xbc\x03\n\x19\x43ryptoKeyVersionAlgorithm\x12,\n(CRYPTO_KEY_VERSION_ALGORITHM_UNSPECIFIED\x10\x00\x12\x1f\n\x1bGOOGLE_SYMMETRIC_ENCRYPTION\x10\x01\x12\x1c\n\x18RSA_SIGN_PSS_2048_SHA256\x10\x02\x12\x1c\n\x18RSA_SIGN_PSS_3072_SHA256\x10\x03\x12\x1c\n\x18RSA_SIGN_PSS_4096_SHA256\x10\x04\x12\x1e\n\x1aRSA_SIGN_PKCS1_2048_SHA256\x10\x05\x12\x1e\n\x1aRSA_SIGN_PKCS1_3072_SHA256\x10\x06\x12\x1e\n\x1aRSA_SIGN_PKCS1_4096_SHA256\x10\x07\x12 \n\x1cRSA_DECRYPT_OAEP_2048_SHA256\x10\x08\x12 \n\x1cRSA_DECRYPT_OAEP_3072_SHA256\x10\t\x12 \n\x1cRSA_DECRYPT_OAEP_4096_SHA256\x10\n\x12\x17\n\x13\x45\x43_SIGN_P256_SHA256\x10\x0c\x12\x17\n\x13\x45\x43_SIGN_P384_SHA384\x10\r\"\x9a\x01\n\x15\x43ryptoKeyVersionState\x12(\n$CRYPTO_KEY_VERSION_STATE_UNSPECIFIED\x10\x00\x12\x16\n\x12PENDING_GENERATION\x10\x05\x12\x0b\n\x07\x45NABLED\x10\x01\x12\x0c\n\x08\x44ISABLED\x10\x02\x12\r\n\tDESTROYED\x10\x03\x12\x15\n\x11\x44\x45STROY_SCHEDULED\x10\x04\"I\n\x14\x43ryptoKeyVersionView\x12\'\n#CRYPTO_KEY_VERSION_VIEW_UNSPECIFIED\x10\x00\x12\x08\n\x04\x46ULL\x10\x01\"l\n\tPublicKey\x12\x0b\n\x03pem\x18\x01 \x01(\t\x12R\n\talgorithm\x18\x02 \x01(\x0e\x32?.google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionAlgorithm*J\n\x0fProtectionLevel\x12 \n\x1cPROTECTION_LEVEL_UNSPECIFIED\x10\x00\x12\x0c\n\x08SOFTWARE\x10\x01\x12\x07\n\x03HSM\x10\x02\x42\x95\x01\n\x17\x63om.google.cloud.kms.v1B\x11KmsResourcesProtoP\x01Z6google.golang.org/genproto/googleapis/cloud/kms/v1;kms\xf8\x01\x01\xaa\x02\x13Google.Cloud.Kms.V1\xca\x02\x13Google\\Cloud\\Kms\\V1b\x06proto3')
   ,
   dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR,google_dot_protobuf_dot_duration__pb2.DESCRIPTOR,google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,])
 
+_PROTECTIONLEVEL = _descriptor.EnumDescriptor(
+  name='ProtectionLevel',
+  full_name='google.cloud.kms.v1.ProtectionLevel',
+  filename=None,
+  file=DESCRIPTOR,
+  values=[
+    _descriptor.EnumValueDescriptor(
+      name='PROTECTION_LEVEL_UNSPECIFIED', index=0, number=0,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='SOFTWARE', index=1, number=1,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='HSM', index=2, number=2,
+      options=None,
+      type=None),
+  ],
+  containing_type=None,
+  options=None,
+  serialized_start=2573,
+  serialized_end=2647,
+)
+_sym_db.RegisterEnumDescriptor(_PROTECTIONLEVEL)
+
+ProtectionLevel = enum_type_wrapper.EnumTypeWrapper(_PROTECTIONLEVEL)
+PROTECTION_LEVEL_UNSPECIFIED = 0
+SOFTWARE = 1
+HSM = 2
 
 
 _CRYPTOKEY_CRYPTOKEYPURPOSE = _descriptor.EnumDescriptor(
@@ -42,13 +73,109 @@ _CRYPTOKEY_CRYPTOKEYPURPOSE = _descriptor.EnumDescriptor(
       name='ENCRYPT_DECRYPT', index=1, number=1,
       options=None,
       type=None),
+    _descriptor.EnumValueDescriptor(
+      name='ASYMMETRIC_SIGN', index=2, number=5,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='ASYMMETRIC_DECRYPT', index=3, number=6,
+      options=None,
+      type=None),
   ],
   containing_type=None,
   options=None,
-  serialized_start=651,
-  serialized_end=726,
+  serialized_start=724,
+  serialized_end=844,
 )
 _sym_db.RegisterEnumDescriptor(_CRYPTOKEY_CRYPTOKEYPURPOSE)
+
+_KEYOPERATIONATTESTATION_ATTESTATIONFORMAT = _descriptor.EnumDescriptor(
+  name='AttestationFormat',
+  full_name='google.cloud.kms.v1.KeyOperationAttestation.AttestationFormat',
+  filename=None,
+  file=DESCRIPTOR,
+  values=[
+    _descriptor.EnumValueDescriptor(
+      name='ATTESTATION_FORMAT_UNSPECIFIED', index=0, number=0,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='CAVIUM_V1_COMPRESSED', index=1, number=3,
+      options=None,
+      type=None),
+  ],
+  containing_type=None,
+  options=None,
+  serialized_start=1169,
+  serialized_end=1250,
+)
+_sym_db.RegisterEnumDescriptor(_KEYOPERATIONATTESTATION_ATTESTATIONFORMAT)
+
+_CRYPTOKEYVERSION_CRYPTOKEYVERSIONALGORITHM = _descriptor.EnumDescriptor(
+  name='CryptoKeyVersionAlgorithm',
+  full_name='google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionAlgorithm',
+  filename=None,
+  file=DESCRIPTOR,
+  values=[
+    _descriptor.EnumValueDescriptor(
+      name='CRYPTO_KEY_VERSION_ALGORITHM_UNSPECIFIED', index=0, number=0,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='GOOGLE_SYMMETRIC_ENCRYPTION', index=1, number=1,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='RSA_SIGN_PSS_2048_SHA256', index=2, number=2,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='RSA_SIGN_PSS_3072_SHA256', index=3, number=3,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='RSA_SIGN_PSS_4096_SHA256', index=4, number=4,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='RSA_SIGN_PKCS1_2048_SHA256', index=5, number=5,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='RSA_SIGN_PKCS1_3072_SHA256', index=6, number=6,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='RSA_SIGN_PKCS1_4096_SHA256', index=7, number=7,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='RSA_DECRYPT_OAEP_2048_SHA256', index=8, number=8,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='RSA_DECRYPT_OAEP_3072_SHA256', index=9, number=9,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='RSA_DECRYPT_OAEP_4096_SHA256', index=10, number=10,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='EC_SIGN_P256_SHA256', index=11, number=12,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='EC_SIGN_P384_SHA384', index=12, number=13,
+      options=None,
+      type=None),
+  ],
+  containing_type=None,
+  options=None,
+  serialized_start=1785,
+  serialized_end=2229,
+)
+_sym_db.RegisterEnumDescriptor(_CRYPTOKEYVERSION_CRYPTOKEYVERSIONALGORITHM)
 
 _CRYPTOKEYVERSION_CRYPTOKEYVERSIONSTATE = _descriptor.EnumDescriptor(
   name='CryptoKeyVersionState',
@@ -61,28 +188,54 @@ _CRYPTOKEYVERSION_CRYPTOKEYVERSIONSTATE = _descriptor.EnumDescriptor(
       options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='ENABLED', index=1, number=1,
+      name='PENDING_GENERATION', index=1, number=5,
       options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='DISABLED', index=2, number=2,
+      name='ENABLED', index=2, number=1,
       options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='DESTROYED', index=3, number=3,
+      name='DISABLED', index=3, number=2,
       options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='DESTROY_SCHEDULED', index=4, number=4,
+      name='DESTROYED', index=4, number=3,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='DESTROY_SCHEDULED', index=5, number=4,
       options=None,
       type=None),
   ],
   containing_type=None,
   options=None,
-  serialized_start=1016,
-  serialized_end=1146,
+  serialized_start=2232,
+  serialized_end=2386,
 )
 _sym_db.RegisterEnumDescriptor(_CRYPTOKEYVERSION_CRYPTOKEYVERSIONSTATE)
+
+_CRYPTOKEYVERSION_CRYPTOKEYVERSIONVIEW = _descriptor.EnumDescriptor(
+  name='CryptoKeyVersionView',
+  full_name='google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionView',
+  filename=None,
+  file=DESCRIPTOR,
+  values=[
+    _descriptor.EnumValueDescriptor(
+      name='CRYPTO_KEY_VERSION_VIEW_UNSPECIFIED', index=0, number=0,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='FULL', index=1, number=1,
+      options=None,
+      type=None),
+  ],
+  containing_type=None,
+  options=None,
+  serialized_start=2388,
+  serialized_end=2461,
+)
+_sym_db.RegisterEnumDescriptor(_CRYPTOKEYVERSION_CRYPTOKEYVERSIONVIEW)
 
 
 _KEYRING = _descriptor.Descriptor(
@@ -156,8 +309,8 @@ _CRYPTOKEY_LABELSENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=604,
-  serialized_end=649,
+  serialized_start=677,
+  serialized_end=722,
 )
 
 _CRYPTOKEY = _descriptor.Descriptor(
@@ -210,7 +363,14 @@ _CRYPTOKEY = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='labels', full_name='google.cloud.kms.v1.CryptoKey.labels', index=6,
+      name='version_template', full_name='google.cloud.kms.v1.CryptoKey.version_template', index=6,
+      number=11, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='labels', full_name='google.cloud.kms.v1.CryptoKey.labels', index=7,
       number=10, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
@@ -233,7 +393,84 @@ _CRYPTOKEY = _descriptor.Descriptor(
       index=0, containing_type=None, fields=[]),
   ],
   serialized_start=236,
-  serialized_end=747,
+  serialized_end=865,
+)
+
+
+_CRYPTOKEYVERSIONTEMPLATE = _descriptor.Descriptor(
+  name='CryptoKeyVersionTemplate',
+  full_name='google.cloud.kms.v1.CryptoKeyVersionTemplate',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='protection_level', full_name='google.cloud.kms.v1.CryptoKeyVersionTemplate.protection_level', index=0,
+      number=1, type=14, cpp_type=8, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='algorithm', full_name='google.cloud.kms.v1.CryptoKeyVersionTemplate.algorithm', index=1,
+      number=3, type=14, cpp_type=8, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=868,
+  serialized_end=1042,
+)
+
+
+_KEYOPERATIONATTESTATION = _descriptor.Descriptor(
+  name='KeyOperationAttestation',
+  full_name='google.cloud.kms.v1.KeyOperationAttestation',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='format', full_name='google.cloud.kms.v1.KeyOperationAttestation.format', index=0,
+      number=4, type=14, cpp_type=8, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='content', full_name='google.cloud.kms.v1.KeyOperationAttestation.content', index=1,
+      number=5, type=12, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b(""),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+    _KEYOPERATIONATTESTATION_ATTESTATIONFORMAT,
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=1045,
+  serialized_end=1250,
 )
 
 
@@ -259,21 +496,49 @@ _CRYPTOKEYVERSION = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='create_time', full_name='google.cloud.kms.v1.CryptoKeyVersion.create_time', index=2,
+      name='protection_level', full_name='google.cloud.kms.v1.CryptoKeyVersion.protection_level', index=2,
+      number=7, type=14, cpp_type=8, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='algorithm', full_name='google.cloud.kms.v1.CryptoKeyVersion.algorithm', index=3,
+      number=10, type=14, cpp_type=8, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='attestation', full_name='google.cloud.kms.v1.CryptoKeyVersion.attestation', index=4,
+      number=8, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='create_time', full_name='google.cloud.kms.v1.CryptoKeyVersion.create_time', index=5,
       number=4, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='destroy_time', full_name='google.cloud.kms.v1.CryptoKeyVersion.destroy_time', index=3,
+      name='generate_time', full_name='google.cloud.kms.v1.CryptoKeyVersion.generate_time', index=6,
+      number=11, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='destroy_time', full_name='google.cloud.kms.v1.CryptoKeyVersion.destroy_time', index=7,
       number=5, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='destroy_event_time', full_name='google.cloud.kms.v1.CryptoKeyVersion.destroy_event_time', index=4,
+      name='destroy_event_time', full_name='google.cloud.kms.v1.CryptoKeyVersion.destroy_event_time', index=8,
       number=6, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -284,7 +549,9 @@ _CRYPTOKEYVERSION = _descriptor.Descriptor(
   ],
   nested_types=[],
   enum_types=[
+    _CRYPTOKEYVERSION_CRYPTOKEYVERSIONALGORITHM,
     _CRYPTOKEYVERSION_CRYPTOKEYVERSIONSTATE,
+    _CRYPTOKEYVERSION_CRYPTOKEYVERSIONVIEW,
   ],
   options=None,
   is_extendable=False,
@@ -292,8 +559,46 @@ _CRYPTOKEYVERSION = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=750,
-  serialized_end=1146,
+  serialized_start=1253,
+  serialized_end=2461,
+)
+
+
+_PUBLICKEY = _descriptor.Descriptor(
+  name='PublicKey',
+  full_name='google.cloud.kms.v1.PublicKey',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='pem', full_name='google.cloud.kms.v1.PublicKey.pem', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='algorithm', full_name='google.cloud.kms.v1.PublicKey.algorithm', index=1,
+      number=2, type=14, cpp_type=8, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=2463,
+  serialized_end=2571,
 )
 
 _KEYRING.fields_by_name['create_time'].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
@@ -303,19 +608,35 @@ _CRYPTOKEY.fields_by_name['purpose'].enum_type = _CRYPTOKEY_CRYPTOKEYPURPOSE
 _CRYPTOKEY.fields_by_name['create_time'].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
 _CRYPTOKEY.fields_by_name['next_rotation_time'].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
 _CRYPTOKEY.fields_by_name['rotation_period'].message_type = google_dot_protobuf_dot_duration__pb2._DURATION
+_CRYPTOKEY.fields_by_name['version_template'].message_type = _CRYPTOKEYVERSIONTEMPLATE
 _CRYPTOKEY.fields_by_name['labels'].message_type = _CRYPTOKEY_LABELSENTRY
 _CRYPTOKEY_CRYPTOKEYPURPOSE.containing_type = _CRYPTOKEY
 _CRYPTOKEY.oneofs_by_name['rotation_schedule'].fields.append(
   _CRYPTOKEY.fields_by_name['rotation_period'])
 _CRYPTOKEY.fields_by_name['rotation_period'].containing_oneof = _CRYPTOKEY.oneofs_by_name['rotation_schedule']
+_CRYPTOKEYVERSIONTEMPLATE.fields_by_name['protection_level'].enum_type = _PROTECTIONLEVEL
+_CRYPTOKEYVERSIONTEMPLATE.fields_by_name['algorithm'].enum_type = _CRYPTOKEYVERSION_CRYPTOKEYVERSIONALGORITHM
+_KEYOPERATIONATTESTATION.fields_by_name['format'].enum_type = _KEYOPERATIONATTESTATION_ATTESTATIONFORMAT
+_KEYOPERATIONATTESTATION_ATTESTATIONFORMAT.containing_type = _KEYOPERATIONATTESTATION
 _CRYPTOKEYVERSION.fields_by_name['state'].enum_type = _CRYPTOKEYVERSION_CRYPTOKEYVERSIONSTATE
+_CRYPTOKEYVERSION.fields_by_name['protection_level'].enum_type = _PROTECTIONLEVEL
+_CRYPTOKEYVERSION.fields_by_name['algorithm'].enum_type = _CRYPTOKEYVERSION_CRYPTOKEYVERSIONALGORITHM
+_CRYPTOKEYVERSION.fields_by_name['attestation'].message_type = _KEYOPERATIONATTESTATION
 _CRYPTOKEYVERSION.fields_by_name['create_time'].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
+_CRYPTOKEYVERSION.fields_by_name['generate_time'].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
 _CRYPTOKEYVERSION.fields_by_name['destroy_time'].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
 _CRYPTOKEYVERSION.fields_by_name['destroy_event_time'].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
+_CRYPTOKEYVERSION_CRYPTOKEYVERSIONALGORITHM.containing_type = _CRYPTOKEYVERSION
 _CRYPTOKEYVERSION_CRYPTOKEYVERSIONSTATE.containing_type = _CRYPTOKEYVERSION
+_CRYPTOKEYVERSION_CRYPTOKEYVERSIONVIEW.containing_type = _CRYPTOKEYVERSION
+_PUBLICKEY.fields_by_name['algorithm'].enum_type = _CRYPTOKEYVERSION_CRYPTOKEYVERSIONALGORITHM
 DESCRIPTOR.message_types_by_name['KeyRing'] = _KEYRING
 DESCRIPTOR.message_types_by_name['CryptoKey'] = _CRYPTOKEY
+DESCRIPTOR.message_types_by_name['CryptoKeyVersionTemplate'] = _CRYPTOKEYVERSIONTEMPLATE
+DESCRIPTOR.message_types_by_name['KeyOperationAttestation'] = _KEYOPERATIONATTESTATION
 DESCRIPTOR.message_types_by_name['CryptoKeyVersion'] = _CRYPTOKEYVERSION
+DESCRIPTOR.message_types_by_name['PublicKey'] = _PUBLICKEY
+DESCRIPTOR.enum_types_by_name['ProtectionLevel'] = _PROTECTIONLEVEL
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 KeyRing = _reflection.GeneratedProtocolMessageType('KeyRing', (_message.Message,), dict(
@@ -373,12 +694,14 @@ CryptoKey = _reflection.GeneratedProtocolMessageType('CryptoKey', (_message.Mess
           me].  The [CryptoKey][google.cloud.kms.v1.CryptoKey]'s primary
           version can be updated via [UpdateCryptoKeyPrimaryVersion][goo
           gle.cloud.kms.v1.KeyManagementService.UpdateCryptoKeyPrimaryVe
-          rsion].
+          rsion].  All keys with
+          [purpose][google.cloud.kms.v1.CryptoKey.purpose] [ENCRYPT\_DEC
+          RYPT][google.cloud.kms.v1.CryptoKey.CryptoKeyPurpose.ENCRYPT\_
+          DECRYPT] have a primary. For other keys, this field will be
+          omitted.
       purpose:
           The immutable purpose of this
-          [CryptoKey][google.cloud.kms.v1.CryptoKey]. Currently, the
-          only acceptable purpose is [ENCRYPT\_DECRYPT][google.cloud.kms
-          .v1.CryptoKey.CryptoKeyPurpose.ENCRYPT\_DECRYPT].
+          [CryptoKey][google.cloud.kms.v1.CryptoKey].
       create_time:
           Output only. The time at which this
           [CryptoKey][google.cloud.kms.v1.CryptoKey] was created.
@@ -392,7 +715,11 @@ CryptoKey = _reflection.GeneratedProtocolMessageType('CryptoKey', (_message.Mess
           CreateCryptoKeyVersion] and [UpdateCryptoKeyPrimaryVersion][go
           ogle.cloud.kms.v1.KeyManagementService.UpdateCryptoKeyPrimaryV
           ersion] do not affect [next\_rotation\_time][google.cloud.kms.
-          v1.CryptoKey.next\_rotation\_time].
+          v1.CryptoKey.next\_rotation\_time].  Keys with
+          [purpose][google.cloud.kms.v1.CryptoKey.purpose] [ENCRYPT\_DEC
+          RYPT][google.cloud.kms.v1.CryptoKey.CryptoKeyPurpose.ENCRYPT\_
+          DECRYPT] support automatic rotation. For other keys, this
+          field must be omitted.
       rotation_schedule:
           Controls the rate of automatic rotation.
       rotation_period:
@@ -401,7 +728,19 @@ CryptoKey = _reflection.GeneratedProtocolMessageType('CryptoKey', (_message.Mess
           automatically rotates a key. Must be at least one day.  If [ro
           tation\_period][google.cloud.kms.v1.CryptoKey.rotation\_period
           ] is set, [next\_rotation\_time][google.cloud.kms.v1.CryptoKey
-          .next\_rotation\_time] must also be set.
+          .next\_rotation\_time] must also be set.  Keys with
+          [purpose][google.cloud.kms.v1.CryptoKey.purpose] [ENCRYPT\_DEC
+          RYPT][google.cloud.kms.v1.CryptoKey.CryptoKeyPurpose.ENCRYPT\_
+          DECRYPT] support automatic rotation. For other keys, this
+          field must be omitted.
+      version_template:
+          A template describing settings for new
+          [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
+          instances. The properties of new
+          [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
+          instances created by either [CreateCryptoKeyVersion][google.cl
+          oud.kms.v1.KeyManagementService.CreateCryptoKeyVersion] or
+          auto-rotation are controlled by this template.
       labels:
           Labels with user-defined metadata. For more information, see
           `Labeling Keys </kms/docs/labeling-keys>`__.
@@ -411,6 +750,59 @@ CryptoKey = _reflection.GeneratedProtocolMessageType('CryptoKey', (_message.Mess
 _sym_db.RegisterMessage(CryptoKey)
 _sym_db.RegisterMessage(CryptoKey.LabelsEntry)
 
+CryptoKeyVersionTemplate = _reflection.GeneratedProtocolMessageType('CryptoKeyVersionTemplate', (_message.Message,), dict(
+  DESCRIPTOR = _CRYPTOKEYVERSIONTEMPLATE,
+  __module__ = 'google.cloud.kms_v1.proto.resources_pb2'
+  ,
+  __doc__ = """A
+  [CryptoKeyVersionTemplate][google.cloud.kms.v1.CryptoKeyVersionTemplate]
+  specifies the properties to use when creating a new
+  [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion], either
+  manually with
+  [CreateCryptoKeyVersion][google.cloud.kms.v1.KeyManagementService.CreateCryptoKeyVersion]
+  or automatically as a result of auto-rotation.
+  
+  
+  Attributes:
+      protection_level:
+          [ProtectionLevel][google.cloud.kms.v1.ProtectionLevel] to use
+          when creating a
+          [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] based
+          on this template. Immutable. Defaults to
+          [SOFTWARE][google.cloud.kms.v1.ProtectionLevel.SOFTWARE].
+      algorithm:
+          Required. [Algorithm][google.cloud.kms.v1.CryptoKeyVersion.Cry
+          ptoKeyVersionAlgorithm] to use when creating a
+          [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] based
+          on this template.  For backwards compatibility,
+          GOOGLE\_SYMMETRIC\_ENCRYPTION is implied if both this field is
+          omitted and
+          [CryptoKey.purpose][google.cloud.kms.v1.CryptoKey.purpose] is 
+          [ENCRYPT\_DECRYPT][google.cloud.kms.v1.CryptoKey.CryptoKeyPurp
+          ose.ENCRYPT\_DECRYPT].
+  """,
+  # @@protoc_insertion_point(class_scope:google.cloud.kms.v1.CryptoKeyVersionTemplate)
+  ))
+_sym_db.RegisterMessage(CryptoKeyVersionTemplate)
+
+KeyOperationAttestation = _reflection.GeneratedProtocolMessageType('KeyOperationAttestation', (_message.Message,), dict(
+  DESCRIPTOR = _KEYOPERATIONATTESTATION,
+  __module__ = 'google.cloud.kms_v1.proto.resources_pb2'
+  ,
+  __doc__ = """Contains an HSM-generated attestation about a key operation.
+  
+  
+  Attributes:
+      format:
+          Output only. The format of the attestation data.
+      content:
+          Output only. The attestation data provided by the HSM when the
+          key operation was performed.
+  """,
+  # @@protoc_insertion_point(class_scope:google.cloud.kms.v1.KeyOperationAttestation)
+  ))
+_sym_db.RegisterMessage(KeyOperationAttestation)
+
 CryptoKeyVersion = _reflection.GeneratedProtocolMessageType('CryptoKeyVersion', (_message.Message,), dict(
   DESCRIPTOR = _CRYPTOKEYVERSION,
   __module__ = 'google.cloud.kms_v1.proto.resources_pb2'
@@ -418,14 +810,14 @@ CryptoKeyVersion = _reflection.GeneratedProtocolMessageType('CryptoKeyVersion', 
   __doc__ = """A [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] represents an
   individual cryptographic key, and the associated key material.
   
-  It can be used for cryptographic operations either directly, or via its
-  parent [CryptoKey][google.cloud.kms.v1.CryptoKey], in which case the
-  server will choose the appropriate version for the operation.
+  An
+  [ENABLED][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionState.ENABLED]
+  version can be used for cryptographic operations.
   
   For security reasons, the raw cryptographic key material represented by
   a [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] can never be
-  viewed or exported. It can only be used to encrypt or decrypt data when
-  an authorized user or application invokes Cloud KMS.
+  viewed or exported. It can only be used to encrypt, decrypt, or sign
+  data when an authorized user or application invokes Cloud KMS.
   
   
   Attributes:
@@ -437,10 +829,31 @@ CryptoKeyVersion = _reflection.GeneratedProtocolMessageType('CryptoKeyVersion', 
       state:
           The current state of the
           [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion].
+      protection_level:
+          Output only. The
+          [ProtectionLevel][google.cloud.kms.v1.ProtectionLevel]
+          describing how crypto operations are performed with this
+          [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion].
+      algorithm:
+          Output only. The [CryptoKeyVersionAlgorithm][google.cloud.kms.
+          v1.CryptoKeyVersion.CryptoKeyVersionAlgorithm] that this
+          [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
+          supports.
+      attestation:
+          Output only. Statement that was generated and signed by the
+          HSM at key creation time. Use this statement to verify
+          attributes of the key as stored on the HSM, independently of
+          Google. Only provided for key versions with [protection\_level
+          ][google.cloud.kms.v1.CryptoKeyVersion.protection\_level]
+          [HSM][google.cloud.kms.v1.ProtectionLevel.HSM].
       create_time:
           Output only. The time at which this
           [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] was
           created.
+      generate_time:
+          Output only. The time this
+          [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]'s key
+          material was generated.
       destroy_time:
           Output only. The time this
           [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]'s key
@@ -458,6 +871,31 @@ CryptoKeyVersion = _reflection.GeneratedProtocolMessageType('CryptoKeyVersion', 
   # @@protoc_insertion_point(class_scope:google.cloud.kms.v1.CryptoKeyVersion)
   ))
 _sym_db.RegisterMessage(CryptoKeyVersion)
+
+PublicKey = _reflection.GeneratedProtocolMessageType('PublicKey', (_message.Message,), dict(
+  DESCRIPTOR = _PUBLICKEY,
+  __module__ = 'google.cloud.kms_v1.proto.resources_pb2'
+  ,
+  __doc__ = """The public key for a given
+  [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]. Obtained via
+  [GetPublicKey][google.cloud.kms.v1.KeyManagementService.GetPublicKey].
+  
+  
+  Attributes:
+      pem:
+          The public key, encoded in PEM format. For more information,
+          see the `RFC 7468 <https://tools.ietf.org/html/rfc7468>`__
+          sections for `General Considerations
+          <https://tools.ietf.org/html/rfc7468#section-2>`__ and
+          [Textual Encoding of Subject Public Key Info]
+          (https://tools.ietf.org/html/rfc7468#section-13).
+      algorithm:
+          The [Algorithm][google.cloud.kms.v1.CryptoKeyVersion.CryptoKey
+          VersionAlgorithm] associated with this key.
+  """,
+  # @@protoc_insertion_point(class_scope:google.cloud.kms.v1.PublicKey)
+  ))
+_sym_db.RegisterMessage(PublicKey)
 
 
 DESCRIPTOR.has_options = True

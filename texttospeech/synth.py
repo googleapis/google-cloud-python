@@ -29,11 +29,8 @@ for version in versions:
     s.move(library / f'tests/unit/gapic/{version}')
     s.move(library / f'docs/gapic/{version}')
 
-# Use the highest version library to generate documentation index, README, and
-# import alias.
+# Use the highest version library to generate import alias.
 s.move(library / 'google/cloud/texttospeech.py')
-s.move(library / 'docs/index.rst')
-s.move(library / 'README.rst')
 
 
 # Fix bad docstrings.
@@ -41,16 +38,3 @@ s.replace(
     '**/gapic/*_client.py',
     r'\\"(.+?)-\*\\"',
     r'"\1-\\*"')
-
-
-# Make the docs multiversion
-s.replace(
-    'docs/index.rst',
-    r'    gapic/v1/api(.+?)\Z',
-    """\
-    gapic/v1/api
-    gapic/v1/types
-    gapic/v1beta1/api
-    gapic/v1beta1/types
-    changelog
-""", re.DOTALL | re.MULTILINE)

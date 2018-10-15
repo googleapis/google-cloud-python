@@ -21,6 +21,7 @@ from google.api_core.exceptions import RetryError
 from google.api_core.exceptions import NotFound
 from google.api_core.retry import if_exception_type
 from google.api_core.retry import Retry
+from google.api_core.gapic_v1.method import wrap_method
 from google.cloud._helpers import _to_bytes
 from google.cloud.bigtable.column_family import _gc_rule_from_pb
 from google.cloud.bigtable.column_family import ColumnFamily
@@ -122,7 +123,7 @@ class Table(object):
         """
         project = self._instance._client.project
         instance_id = self._instance.instance_id
-        table_client = self._instance._client.table_admin_client
+        table_client = self._instance._client.table_data_client
         return table_client.table_path(
             project=project, instance=instance_id, table=self.table_id)
 
@@ -288,20 +289,13 @@ class Table(object):
         :raises: :class:`ValueError <exceptions.ValueError>` if a commit row
                  chunk is never encountered.
         """
-        request_pb = _create_row_request(
-            self.name, row_key=row_key, filter_=filter_,
-            app_profile_id=self._app_profile_id)
-        data_client = self._instance._client.table_data_client
-        rows_data = PartialRowsData(data_client._read_rows, request_pb)
-
-        rows_data.consume_all()
-        if rows_data.state not in (rows_data.NEW_ROW, rows_data.START):
-            raise ValueError('The row remains partial / is not committed.')
-
-        if len(rows_data.rows) == 0:
-            return None
-
-        return rows_data.rows[row_key]
+        row_set = RowSet()
+        row_set.add_row_key(row_key)
+        result_iter = iter(self.read_rows(filter_=filter_, row_set=row_set))
+        row = next(result_iter, None)
+        if next(result_iter, None) is not None:
+            raise ValueError('More than one row was returned.')
+        return row
 
     def read_rows(self, start_key=None, end_key=None, limit=None,
                   filter_=None, end_inclusive=False, row_set=None):
@@ -344,7 +338,9 @@ class Table(object):
             filter_=filter_, limit=limit, end_inclusive=end_inclusive,
             app_profile_id=self._app_profile_id, row_set=row_set)
         data_client = self._instance._client.table_data_client
-        return PartialRowsData(data_client._read_rows, request_pb)
+        return PartialRowsData(
+            data_client.transport.read_rows,
+            request_pb)
 
     def yield_rows(self, **kwargs):
         """Read rows from this table.
@@ -608,7 +604,20 @@ class _RetryableMutateRowsWorker(object):
             self.table_name, retryable_rows,
             app_profile_id=self.app_profile_id)
         data_client = self.client.table_data_client
-        responses = data_client._mutate_rows(mutate_rows_request, retry=None)
+        inner_api_calls = data_client._inner_api_calls
+        if 'mutate_rows' not in inner_api_calls:
+            default_retry = data_client._method_configs['MutateRows'].retry,
+            default_timeout = data_client._method_configs['MutateRows'].timeout
+            data_client._inner_api_calls[
+                'mutate_rows'] = wrap_method(
+                    data_client.transport.mutate_rows,
+                    default_retry=default_retry,
+                    default_timeout=default_timeout,
+                    client_info=data_client._client_info,
+                )
+
+        responses = data_client._inner_api_calls['mutate_rows'](
+            mutate_rows_request, retry=None)
 
         num_responses = 0
         num_retryable_responses = 0
@@ -710,16 +719,13 @@ class ClusterState(object):
         return not self == other
 
 
-def _create_row_request(table_name, row_key=None, start_key=None, end_key=None,
+def _create_row_request(table_name, start_key=None, end_key=None,
                         filter_=None, limit=None, end_inclusive=False,
                         app_profile_id=None, row_set=None):
     """Creates a request to read rows in a table.
 
     :type table_name: str
     :param table_name: The name of the table to read from.
-
-    :type row_key: bytes
-    :param row_key: (Optional) The key of a specific row to read from.
 
     :type start_key: bytes
     :param start_key: (Optional) The beginning of a range of row keys to
@@ -754,18 +760,9 @@ def _create_row_request(table_name, row_key=None, start_key=None, end_key=None,
     :rtype: :class:`data_messages_v2_pb2.ReadRowsRequest`
     :returns: The ``ReadRowsRequest`` protobuf corresponding to the inputs.
     :raises: :class:`ValueError <exceptions.ValueError>` if both
-             ``row_key`` and one of ``start_key`` and ``end_key`` are set
+             ``row_set`` and one of ``start_key`` or ``end_key`` are set
     """
     request_kwargs = {'table_name': table_name}
-    if (row_key is not None and
-            (start_key is not None or end_key is not None)):
-        raise ValueError('Row key and row range cannot be '
-                         'set simultaneously')
-
-    if (row_key is not None and row_set is not None):
-        raise ValueError('Row key and row set cannot be '
-                         'set simultaneously')
-
     if ((start_key is not None or end_key is not None) and
             row_set is not None):
         raise ValueError('Row range and row set cannot be '
@@ -779,10 +776,6 @@ def _create_row_request(table_name, row_key=None, start_key=None, end_key=None,
         request_kwargs['app_profile_id'] = app_profile_id
 
     message = data_messages_v2_pb2.ReadRowsRequest(**request_kwargs)
-
-    if row_key is not None:
-        row_set = RowSet()
-        row_set.add_row_key(row_key)
 
     if start_key is not None or end_key is not None:
         row_set = RowSet()

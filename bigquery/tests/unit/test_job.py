@@ -156,7 +156,15 @@ class Test_AsyncJob(unittest.TestCase):
         self.assertEqual(job.project, self.PROJECT)
         self.assertIsNone(job.location)
         self.assertIs(job._client, client)
-        self.assertEqual(job._properties, {})
+        self.assertEqual(
+            job._properties,
+            {
+                'jobReference': {
+                    'projectId': self.PROJECT,
+                    'jobId': self.JOB_ID,
+                },
+            }
+        )
         self.assertIsInstance(job._completion_lock, type(threading.Lock()))
         self.assertEqual(
             job.path,
@@ -174,7 +182,16 @@ class Test_AsyncJob(unittest.TestCase):
         self.assertEqual(job.project, self.PROJECT)
         self.assertEqual(job.location, self.LOCATION)
         self.assertIs(job._client, client)
-        self.assertEqual(job._properties, {})
+        self.assertEqual(
+            job._properties,
+            {
+                'jobReference': {
+                    'projectId': self.PROJECT,
+                    'location': self.LOCATION,
+                    'jobId': self.JOB_ID,
+                },
+            }
+        )
         self.assertFalse(job._result_set)
         self.assertIsInstance(job._completion_lock, type(threading.Lock()))
         self.assertEqual(
@@ -359,6 +376,7 @@ class Test_AsyncJob(unittest.TestCase):
         job._copy_configuration_properties = mock.Mock()
         job._set_future_result = mock.Mock()
         job._properties = {
+            'jobReference': job._properties['jobReference'],
             'foo': 'bar',
         }
         return job
@@ -504,6 +522,12 @@ class Test_AsyncJob(unittest.TestCase):
         with self.assertRaises(NotImplementedError):
             job._build_resource()
 
+    def test_to_api_repr(self):
+        client = _make_client(project=self.PROJECT)
+        job = self._make_one(self.JOB_ID, client)
+        with self.assertRaises(NotImplementedError):
+            job.to_api_repr()
+
     def test__begin_already(self):
         job = self._set_properties_job()
         job._properties['status'] = {'state': 'WHATEVER'}
@@ -525,7 +549,7 @@ class Test_AsyncJob(unittest.TestCase):
             }
         }
         job = self._set_properties_job()
-        builder = job._build_resource = mock.Mock()
+        builder = job.to_api_repr = mock.Mock()
         builder.return_value = resource
         call_api = job._client._call_api = mock.Mock()
         call_api.return_value = resource
@@ -555,7 +579,7 @@ class Test_AsyncJob(unittest.TestCase):
             }
         }
         job = self._set_properties_job()
-        builder = job._build_resource = mock.Mock()
+        builder = job.to_api_repr = mock.Mock()
         builder.return_value = resource
         client = _make_client(project=other_project)
         call_api = client._call_api = mock.Mock()
@@ -577,7 +601,7 @@ class Test_AsyncJob(unittest.TestCase):
         from google.cloud.bigquery.retry import DEFAULT_RETRY
 
         job = self._set_properties_job()
-        job._job_ref._properties['location'] = self.LOCATION
+        job._properties['jobReference']['location'] = self.LOCATION
         call_api = job._client._call_api = mock.Mock()
         call_api.side_effect = NotFound('testing')
 
@@ -636,7 +660,7 @@ class Test_AsyncJob(unittest.TestCase):
             }
         }
         job = self._set_properties_job()
-        job._job_ref._properties['location'] = self.LOCATION
+        job._properties['jobReference']['location'] = self.LOCATION
         call_api = job._client._call_api = mock.Mock()
         call_api.return_value = resource
 
@@ -693,7 +717,7 @@ class Test_AsyncJob(unittest.TestCase):
         }
         response = {'job': resource}
         job = self._set_properties_job()
-        job._job_ref._properties['location'] = self.LOCATION
+        job._properties['jobReference']['location'] = self.LOCATION
         connection = job._client._connection = _make_connection(response)
 
         self.assertTrue(job.cancel())
@@ -893,6 +917,34 @@ class Test_JobConfig(unittest.TestCase):
         job_config = self._make_one()
         self.assertEqual(job_config._job_type, self.JOB_TYPE)
         self.assertEqual(job_config._properties, {self.JOB_TYPE: {}})
+
+    def test_fill_from_default(self):
+        from google.cloud.bigquery import QueryJobConfig
+
+        job_config = QueryJobConfig()
+        job_config.dry_run = True
+        job_config.maximum_bytes_billed = 1000
+
+        default_job_config = QueryJobConfig()
+        default_job_config.use_query_cache = True
+        default_job_config.maximum_bytes_billed = 2000
+
+        final_job_config = job_config._fill_from_default(default_job_config)
+        self.assertTrue(final_job_config.dry_run)
+        self.assertTrue(final_job_config.use_query_cache)
+        self.assertEqual(final_job_config.maximum_bytes_billed, 1000)
+
+    def test_fill_from_default_conflict(self):
+        from google.cloud.bigquery import QueryJobConfig
+
+        basic_job_config = QueryJobConfig()
+        conflicting_job_config = self._make_one('conflicting_job_type')
+        self.assertNotEqual(
+            basic_job_config._job_type, conflicting_job_config._job_type)
+
+        with self.assertRaises(TypeError):
+            basic_job_config._fill_from_default(
+                conflicting_job_config)
 
     @mock.patch('google.cloud.bigquery._helpers._get_sub_prop')
     def test__get_sub_prop_wo_default(self, _get_sub_prop):

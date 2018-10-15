@@ -96,7 +96,8 @@ class Logger(object):
     def _make_entry_resource(self, text=None, info=None, message=None,
                              labels=None, insert_id=None, severity=None,
                              http_request=None, timestamp=None,
-                             resource=_GLOBAL_RESOURCE):
+                             resource=_GLOBAL_RESOURCE, trace=None,
+                             span_id=None):
         """Return a log entry resource of the appropriate type.
 
         Helper for :meth:`log_text`, :meth:`log_struct`, and :meth:`log_proto`.
@@ -130,6 +131,13 @@ class Logger(object):
 
         :type resource: :class:`~google.cloud.logging.resource.Resource`
         :param resource: (Optional) Monitored resource of the entry
+
+        :type trace: str
+        :param trace: (optional) traceid to apply to the entry.
+
+        :type span_id: str
+        :param span_id: (optional) span_id within the trace for the log entry.
+                        Specify the trace parameter if span_id is set.
 
         :rtype: dict
         :returns: The JSON resource created.
@@ -172,11 +180,64 @@ class Logger(object):
         if timestamp is not None:
             entry['timestamp'] = _datetime_to_rfc3339(timestamp)
 
+        if trace is not None:
+            entry['trace'] = trace
+
+        if span_id is not None:
+            entry['spanId'] = span_id
+
         return entry
+
+    def log_empty(self, client=None, labels=None, insert_id=None,
+                  severity=None, http_request=None, timestamp=None,
+                  resource=_GLOBAL_RESOURCE, trace=None, span_id=None):
+        """API call:  log an empty message via a POST request
+
+        See
+        https://cloud.google.com/logging/docs/reference/v2/rest/v2/entries/write
+
+        :type client: :class:`~google.cloud.logging.client.Client` or
+                      ``NoneType``
+        :param client: the client to use.  If not passed, falls back to the
+                       ``client`` stored on the current logger.
+
+        :type labels: dict
+        :param labels: (optional) mapping of labels for the entry.
+
+        :type insert_id: str
+        :param insert_id: (optional) unique ID for log entry.
+
+        :type severity: str
+        :param severity: (optional) severity of event being logged.
+
+        :type http_request: dict
+        :param http_request: (optional) info about HTTP request associated with
+                             the entry
+
+        :type timestamp: :class:`datetime.datetime`
+        :param timestamp: (optional) timestamp of event being logged.
+
+        :type resource: :class:`~google.cloud.logging.resource.Resource`
+        :param resource: Monitored resource of the entry, defaults
+                         to the global resource type.
+
+        :type trace: str
+        :param trace: (optional) traceid to apply to the entry.
+
+        :type span_id: str
+        :param span_id: (optional) span_id within the trace for the log entry.
+                        Specify the trace parameter if span_id is set.
+        """
+        client = self._require_client(client)
+        entry_resource = self._make_entry_resource(
+            labels=labels, insert_id=insert_id, severity=severity,
+            http_request=http_request, timestamp=timestamp, resource=resource,
+            trace=trace, span_id=span_id)
+        client.logging_api.write_entries([entry_resource])
 
     def log_text(self, text, client=None, labels=None, insert_id=None,
                  severity=None, http_request=None, timestamp=None,
-                 resource=_GLOBAL_RESOURCE):
+                 resource=_GLOBAL_RESOURCE, trace=None, span_id=None):
         """API call:  log a text message via a POST request
 
         See
@@ -203,22 +264,30 @@ class Logger(object):
         :param http_request: (optional) info about HTTP request associated with
                              the entry
 
+        :type timestamp: :class:`datetime.datetime`
+        :param timestamp: (optional) timestamp of event being logged.
+
         :type resource: :class:`~google.cloud.logging.resource.Resource`
         :param resource: Monitored resource of the entry, defaults
                          to the global resource type.
 
-        :type timestamp: :class:`datetime.datetime`
-        :param timestamp: (optional) timestamp of event being logged.
+        :type trace: str
+        :param trace: (optional) traceid to apply to the entry.
+
+        :type span_id: str
+        :param span_id: (optional) span_id within the trace for the log entry.
+                        Specify the trace parameter if span_id is set.
         """
         client = self._require_client(client)
         entry_resource = self._make_entry_resource(
             text=text, labels=labels, insert_id=insert_id, severity=severity,
-            http_request=http_request, timestamp=timestamp, resource=resource)
+            http_request=http_request, timestamp=timestamp, resource=resource,
+            trace=trace, span_id=span_id)
         client.logging_api.write_entries([entry_resource])
 
     def log_struct(self, info, client=None, labels=None, insert_id=None,
                    severity=None, http_request=None, timestamp=None,
-                   resource=_GLOBAL_RESOURCE):
+                   resource=_GLOBAL_RESOURCE, trace=None, span_id=None):
         """API call:  log a structured message via a POST request
 
         See
@@ -245,22 +314,30 @@ class Logger(object):
         :param http_request: (optional) info about HTTP request associated with
                              the entry.
 
+        :type timestamp: :class:`datetime.datetime`
+        :param timestamp: (optional) timestamp of event being logged.
+
         :type resource: :class:`~google.cloud.logging.resource.Resource`
         :param resource: Monitored resource of the entry, defaults
                          to the global resource type.
 
-        :type timestamp: :class:`datetime.datetime`
-        :param timestamp: (optional) timestamp of event being logged.
+        :type trace: str
+        :param trace: (optional) traceid to apply to the entry.
+
+        :type span_id: str
+        :param span_id: (optional) span_id within the trace for the log entry.
+                        Specify the trace parameter if span_id is set.
         """
         client = self._require_client(client)
         entry_resource = self._make_entry_resource(
             info=info, labels=labels, insert_id=insert_id, severity=severity,
-            http_request=http_request, timestamp=timestamp, resource=resource)
+            http_request=http_request, timestamp=timestamp, resource=resource,
+            trace=trace, span_id=span_id)
         client.logging_api.write_entries([entry_resource])
 
     def log_proto(self, message, client=None, labels=None, insert_id=None,
                   severity=None, http_request=None, timestamp=None,
-                  resource=_GLOBAL_RESOURCE):
+                  resource=_GLOBAL_RESOURCE, trace=None, span_id=None):
         """API call:  log a protobuf message via a POST request
 
         See
@@ -287,18 +364,25 @@ class Logger(object):
         :param http_request: (optional) info about HTTP request associated with
                              the entry.
 
+        :type timestamp: :class:`datetime.datetime`
+        :param timestamp: (optional) timestamp of event being logged.
+
         :type resource: :class:`~google.cloud.logging.resource.Resource`
         :param resource: Monitored resource of the entry, defaults
                          to the global resource type.
 
-        :type timestamp: :class:`datetime.datetime`
-        :param timestamp: (optional) timestamp of event being logged.
+        :type trace: str
+        :param trace: (optional) traceid to apply to the entry.
+
+        :type span_id: str
+        :param span_id: (optional) span_id within the trace for the log entry.
+                        Specify the trace parameter if span_id is set.
         """
         client = self._require_client(client)
         entry_resource = self._make_entry_resource(
             message=message, labels=labels, insert_id=insert_id,
             severity=severity, http_request=http_request, timestamp=timestamp,
-            resource=resource)
+            resource=resource, trace=trace, span_id=span_id)
         client.logging_api.write_entries([entry_resource])
 
     def delete(self, client=None):
@@ -392,7 +476,8 @@ class Batch(object):
             self.commit()
 
     def log_text(self, text, labels=None, insert_id=None, severity=None,
-                 http_request=None, timestamp=None, resource=_GLOBAL_RESOURCE):
+                 http_request=None, timestamp=None, resource=_GLOBAL_RESOURCE,
+                 trace=None, span_id=None):
         """Add a text entry to be logged during :meth:`commit`.
 
         :type text: str
@@ -420,14 +505,21 @@ class Batch(object):
                          resource of the batch is used for this entry. If
                          both this resource and the Batch resource are None,
                          the API will return an error.
+
+        :type trace: str
+        :param trace: (optional) traceid to apply to the entry.
+
+        :type span_id: str
+        :param span_id: (optional) span_id within the trace for the log entry.
+                        Specify the trace parameter if span_id is set.
         """
         self.entries.append(
             ('text', text, labels, insert_id, severity, http_request,
-             timestamp, resource))
+             timestamp, resource, trace, span_id))
 
     def log_struct(self, info, labels=None, insert_id=None, severity=None,
                    http_request=None, timestamp=None,
-                   resource=_GLOBAL_RESOURCE):
+                   resource=_GLOBAL_RESOURCE, trace=None, span_id=None):
         """Add a struct entry to be logged during :meth:`commit`.
 
         :type info: dict
@@ -455,14 +547,21 @@ class Batch(object):
                          resource of the batch is used for this entry. If
                          both this resource and the Batch resource are None,
                          the API will return an error.
+
+        :type trace: str
+        :param trace: (optional) traceid to apply to the entry.
+
+        :type span_id: str
+        :param span_id: (optional) span_id within the trace for the log entry.
+                        Specify the trace parameter if span_id is set.
         """
         self.entries.append(
             ('struct', info, labels, insert_id, severity, http_request,
-             timestamp, resource))
+             timestamp, resource, trace, span_id))
 
     def log_proto(self, message, labels=None, insert_id=None, severity=None,
                   http_request=None, timestamp=None,
-                  resource=_GLOBAL_RESOURCE):
+                  resource=_GLOBAL_RESOURCE, trace=None, span_id=None):
         """Add a protobuf entry to be logged during :meth:`commit`.
 
         :type message: protobuf message
@@ -490,10 +589,17 @@ class Batch(object):
                          resource of the batch is used for this entry. If
                          both this resource and the Batch resource are None,
                          the API will return an error.
+
+        :type trace: str
+        :param trace: (optional) traceid to apply to the entry.
+
+        :type span_id: str
+        :param span_id: (optional) span_id within the trace for the log entry.
+                        Specify the trace parameter if span_id is set.
         """
         self.entries.append(
             ('proto', message, labels, insert_id, severity, http_request,
-             timestamp, resource))
+             timestamp, resource, trace, span_id))
 
     def commit(self, client=None):
         """Send saved log entries as a single API call.
@@ -517,7 +623,7 @@ class Batch(object):
 
         entries = []
         for (entry_type, entry, labels, iid, severity, http_req,
-             timestamp, resource) in self.entries:
+             timestamp, resource, trace, span_id) in self.entries:
             if entry_type == 'text':
                 info = {'textPayload': entry}
             elif entry_type == 'struct':
@@ -544,6 +650,10 @@ class Batch(object):
                 info['httpRequest'] = http_req
             if timestamp is not None:
                 info['timestamp'] = _datetime_to_rfc3339(timestamp)
+            if trace is not None:
+                info['trace'] = trace
+            if span_id is not None:
+                info['spanId'] = span_id
             entries.append(info)
 
         client.logging_api.write_entries(entries, **kwargs)

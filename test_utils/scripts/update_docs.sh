@@ -25,7 +25,15 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 function build_docs {
     rm -rf docs/_build/
     rm -rf docs/bigquery/generated
-    sphinx-build -W -b html -d docs/_build/doctrees docs/ docs/_build/html/
+    # -W -> warnings as errors
+    # -T -> show full traceback on exception
+    # -N -> no color
+    sphinx-build \
+        -W -T -N \
+        -b html \
+        -d docs/_build/doctrees \
+        docs/ \
+        docs/_build/html/
     return $?
 }
 

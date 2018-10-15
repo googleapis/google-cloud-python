@@ -176,6 +176,7 @@ _CELLDATA_FROM_JSON = {
     'BOOLEAN': _bool_from_json,
     'BOOL': _bool_from_json,
     'STRING': _string_from_json,
+    'GEOGRAPHY': _string_from_json,
     'BYTES': _bytes_from_json,
     'TIMESTAMP': _timestamp_from_json,
     'DATETIME': _datetime_from_json,

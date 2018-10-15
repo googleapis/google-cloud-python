@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+#
 # Copyright 2018 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,8 +15,10 @@
 # limitations under the License.
 """Wrappers for protocol buffer enum types."""
 
+import enum
 
-class StorageType(object):
+
+class StorageType(enum.IntEnum):
     """
     Storage media types for persisting Bigtable data.
 
@@ -28,8 +32,82 @@ class StorageType(object):
     HDD = 2
 
 
+class Table(object):
+    class TimestampGranularity(enum.IntEnum):
+        """
+        Possible timestamp granularities to use when keeping multiple versions
+        of data in a table.
+
+        Attributes:
+          TIMESTAMP_GRANULARITY_UNSPECIFIED (int): The user did not specify a granularity. Should not be returned.
+          When specified during table creation, MILLIS will be used.
+          MILLIS (int): The table keeps data versioned at a granularity of 1ms.
+        """
+        TIMESTAMP_GRANULARITY_UNSPECIFIED = 0
+        MILLIS = 1
+
+    class View(enum.IntEnum):
+        """
+        Defines a view over a table's fields.
+
+        Attributes:
+          VIEW_UNSPECIFIED (int): Uses the default view for each method as documented in its request.
+          NAME_ONLY (int): Only populates ``name``.
+          SCHEMA_VIEW (int): Only populates ``name`` and fields related to the table's schema.
+          REPLICATION_VIEW (int): Only populates ``name`` and fields related to the table's
+          replication state.
+          FULL (int): Populates all fields.
+        """
+        VIEW_UNSPECIFIED = 0
+        NAME_ONLY = 1
+        SCHEMA_VIEW = 2
+        REPLICATION_VIEW = 3
+        FULL = 4
+
+    class ClusterState(object):
+        class ReplicationState(enum.IntEnum):
+            """
+            Table replication states.
+
+            Attributes:
+              STATE_NOT_KNOWN (int): The replication state of the table is unknown in this cluster.
+              INITIALIZING (int): The cluster was recently created, and the table must finish copying
+              over pre-existing data from other clusters before it can begin
+              receiving live replication updates and serving Data API requests.
+              PLANNED_MAINTENANCE (int): The table is temporarily unable to serve Data API requests from this
+              cluster due to planned internal maintenance.
+              UNPLANNED_MAINTENANCE (int): The table is temporarily unable to serve Data API requests from this
+              cluster due to unplanned or emergency maintenance.
+              READY (int): The table can serve Data API requests from this cluster. Depending on
+              replication delay, reads may not immediately reflect the state of the
+              table in other clusters.
+            """
+            STATE_NOT_KNOWN = 0
+            INITIALIZING = 1
+            PLANNED_MAINTENANCE = 2
+            UNPLANNED_MAINTENANCE = 3
+            READY = 4
+
+
+class Snapshot(object):
+    class State(enum.IntEnum):
+        """
+        Possible states of a snapshot.
+
+        Attributes:
+          STATE_NOT_KNOWN (int): The state of the snapshot could not be determined.
+          READY (int): The snapshot has been successfully created and can serve all requests.
+          CREATING (int): The snapshot is currently being created, and may be destroyed if the
+          creation process encounters an error. A snapshot may not be restored to a
+          table while it is being created.
+        """
+        STATE_NOT_KNOWN = 0
+        READY = 1
+        CREATING = 2
+
+
 class Instance(object):
-    class State(object):
+    class State(enum.IntEnum):
         """
         Possible states of an instance.
 
@@ -44,7 +122,7 @@ class Instance(object):
         READY = 1
         CREATING = 2
 
-    class Type(object):
+    class Type(enum.IntEnum):
         """
         The type of the instance.
 
@@ -68,7 +146,7 @@ class Instance(object):
 
 
 class Cluster(object):
-    class State(object):
+    class State(enum.IntEnum):
         """
         Possible states of a cluster.
 
@@ -91,111 +169,3 @@ class Cluster(object):
         CREATING = 2
         RESIZING = 3
         DISABLED = 4
-
-
-class Table(object):
-    class TimestampGranularity(object):
-        """
-        Possible timestamp granularities to use when keeping multiple versions
-        of data in a table.
-
-        Attributes:
-          TIMESTAMP_GRANULARITY_UNSPECIFIED (int): The user did not specify a granularity. Should not be returned.
-          When specified during table creation, MILLIS will be used.
-          MILLIS (int): The table keeps data versioned at a granularity of 1ms.
-        """
-        TIMESTAMP_GRANULARITY_UNSPECIFIED = 0
-        MILLIS = 1
-
-    class View(object):
-        """
-        Defines a view over a table's fields.
-
-        Attributes:
-          VIEW_UNSPECIFIED (int): Uses the default view for each method as documented in its request.
-          NAME_ONLY (int): Only populates ``name``.
-          SCHEMA_VIEW (int): Only populates ``name`` and fields related to the table's schema.
-          REPLICATION_VIEW (int): This is a private alpha release of Cloud Bigtable replication. This
-          feature is not currently available to most Cloud Bigtable customers. This
-          feature might be changed in backward-incompatible ways and is not
-          recommended for production use. It is not subject to any SLA or
-          deprecation policy.
-
-          Only populates ``name`` and fields related to the table's
-          replication state.
-          FULL (int): Populates all fields.
-        """
-        VIEW_UNSPECIFIED = 0
-        NAME_ONLY = 1
-        SCHEMA_VIEW = 2
-        REPLICATION_VIEW = 3
-        FULL = 4
-
-    class ClusterState(object):
-        class ReplicationState(object):
-            """
-            Table replication states.
-
-            Attributes:
-              STATE_NOT_KNOWN (int): The replication state of the table is unknown in this cluster.
-              INITIALIZING (int): The cluster was recently created, and the table must finish copying
-              over pre-existing data from other clusters before it can begin
-              receiving live replication updates and serving
-              ``Data API`` requests.
-              PLANNED_MAINTENANCE (int): The table is temporarily unable to serve
-              ``Data API`` requests from this
-              cluster due to planned internal maintenance.
-              UNPLANNED_MAINTENANCE (int): The table is temporarily unable to serve
-              ``Data API`` requests from this
-              cluster due to unplanned or emergency maintenance.
-              READY (int): The table can serve
-              ``Data API`` requests from this
-              cluster. Depending on replication delay, reads may not immediately
-              reflect the state of the table in other clusters.
-            """
-            STATE_NOT_KNOWN = 0
-            INITIALIZING = 1
-            PLANNED_MAINTENANCE = 2
-            UNPLANNED_MAINTENANCE = 3
-            READY = 4
-
-
-class Snapshot(object):
-    class State(object):
-        """
-        Possible states of a snapshot.
-
-        Attributes:
-          STATE_NOT_KNOWN (int): The state of the snapshot could not be determined.
-          READY (int): The snapshot has been successfully created and can serve all requests.
-          CREATING (int): The snapshot is currently being created, and may be destroyed if the
-          creation process encounters an error. A snapshot may not be restored to a
-          table while it is being created.
-        """
-        STATE_NOT_KNOWN = 0
-        READY = 1
-        CREATING = 2
-
-
-class RoutingPolicyType(object):
-    """
-    The type of the routing policy for app_profile.
-
-    Attributes:
-      ANY (int): Read/write requests may be routed to any cluster in the
-      instance, and will fail over to another cluster in the event of
-      transient errors or delays.
-      Choosing this option sacrifices read-your-writes consistency to
-      improve availability.
-      See
-      https://cloud.google.com/bigtable/docs/reference/admin/rpc/google.bigtable.admin.v2#google.bigtable.admin.v2.AppProfile.MultiClusterRoutingUseAny
-
-      SINGLE (int): Unconditionally routes all read/write requests to a
-      specific cluster.
-      This option preserves read-your-writes consistency, but does not improve
-      availability.
-      See
-      https://cloud.google.com/bigtable/docs/reference/admin/rpc/google.bigtable.admin.v2#google.bigtable.admin.v2.AppProfile.SingleClusterRouting
-    """
-    ANY = 1
-    SINGLE = 2

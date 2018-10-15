@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+#
 # Copyright 2018 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,8 +20,8 @@ import os
 import setuptools
 
 name = 'google-cloud-kms'
-description = 'Google Cloud Key Management Service (KMS) API API client library'
-version = '0.1.0'
+description = 'Cloud Key Management Service (KMS) API API client library'
+version = '0.2.0'
 release_status = 'Development Status :: 3 - Alpha'
 dependencies = [
     'google-api-core[grpc] >= 1.1.0, < 2.0.0dev',

@@ -402,7 +402,7 @@ class TestColumnFamily(unittest.TestCase):
         # Patch the stub used by the API method.
         stub = _FakeStub(response_pb)
         client._table_admin_client = api
-        client._table_admin_client.bigtable_table_admin_stub = stub
+        client._table_admin_client.transport.create = stub
 
         # Create expected_result.
         expected_result = None  # create() has no return value.
@@ -462,7 +462,7 @@ class TestColumnFamily(unittest.TestCase):
         # Patch the stub used by the API method.
         stub = _FakeStub(response_pb)
         client._table_admin_client = api
-        client._table_admin_client.bigtable_table_admin_stub = stub
+        client._table_admin_client.transport.update = stub
 
         # Create expected_result.
         expected_result = None  # update() has no return value.
@@ -517,7 +517,7 @@ class TestColumnFamily(unittest.TestCase):
         # Patch the stub used by the API method.
         stub = _FakeStub(response_pb)
         client._table_admin_client = api
-        client._table_admin_client.bigtable_table_admin_stub = stub
+        client._table_admin_client.transport.delete = stub
 
         # Create expected_result.
         expected_result = None  # delete() has no return value.

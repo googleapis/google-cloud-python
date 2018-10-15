@@ -833,21 +833,27 @@ def process_server_timestamp(document_data, split_on_dots=True):
             (for updates only).
 
     Returns:
-        Tuple[List[str, ...], Dict[str, Any]]: A two-tuple of
+        List[List[str, ...], Dict[str, Any]], List[List[str, ...]: A
+        three-tuple of:
 
         * A list of all transform paths that use the server timestamp sentinel
         * The remaining keys in ``document_data`` after removing the
           server timestamp sentinels
+        * A list of all field paths that do not use the server timestamp
+          sentinel
     """
-    field_paths = []
     transform_paths = []
     actual_data = {}
+    field_paths = []
     for field_name, value in six.iteritems(document_data):
         if split_on_dots:
             top_level_path = FieldPath(*field_name.split("."))
         else:
             top_level_path = FieldPath.from_string(field_name)
         if isinstance(value, dict):
+            if len(value) == 0:
+                actual_data[field_name] = value
+                continue
             sub_transform_paths, sub_data, sub_field_paths = (
                 process_server_timestamp(value, False))
             for sub_transform_path in sub_transform_paths:
@@ -870,6 +876,26 @@ def process_server_timestamp(document_data, split_on_dots=True):
     if not transform_paths:
         actual_data = document_data
     return transform_paths, actual_data, field_paths
+
+
+def canonicalize_field_paths(field_paths):
+    """Converts non-simple field paths to quoted field paths
+
+    Args:
+        field_paths (Sequence[str]): A list of field paths
+
+    Returns:
+        Sequence[str]:
+            The same list of field paths except non-simple field names
+            in the `.` delimited field path have been converted
+            into quoted unicode field paths. Simple field paths match
+            the regex ^[_a-zA-Z][_a-zA-Z0-9]*$.  See `Document`_ page for
+            more information.
+
+    .. _Document: https://cloud.google.com/firestore/docs/reference/rpc/google.firestore.v1beta1#google.firestore.v1beta1.Document  # NOQA
+    """
+    field_paths = [path.to_api_repr() for path in field_paths]
+    return sorted(field_paths)  # for testing purposes
 
 
 def get_transform_pb(document_path, transform_paths):
@@ -944,26 +970,6 @@ def pbs_for_set(document_path, document_data, merge=False, exists=None):
         write_pbs.append(transform_pb)
 
     return write_pbs
-
-
-def canonicalize_field_paths(field_paths):
-    """Converts non-simple field paths to quoted field paths
-
-    Args:
-        field_paths (Sequence[str]): A list of field paths
-
-    Returns:
-        Sequence[str]:
-            The same list of field paths except non-simple field names
-            in the `.` delimited field path have been converted
-            into quoted unicode field paths. Simple field paths match
-            the regex ^[_a-zA-Z][_a-zA-Z0-9]*$.  See `Document`_ page for
-            more information.
-
-    .. _Document: https://cloud.google.com/firestore/docs/reference/rpc/google.firestore.v1beta1#google.firestore.v1beta1.Document  # NOQA
-    """
-    field_paths = [path.to_api_repr() for path in field_paths]
-    return sorted(field_paths)  # for testing purposes
 
 
 def pbs_for_update(client, document_path, field_updates, option):

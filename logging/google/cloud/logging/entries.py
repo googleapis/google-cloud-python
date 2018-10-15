@@ -76,9 +76,18 @@ class _BaseEntry(object):
 
     :type resource: :class:`~google.cloud.logging.resource.Resource`
     :param resource: (Optional) Monitored resource of the entry
+
+    :type trace: str
+    :param trace: (optional) traceid to apply to the entry.
+
+    :type span_id: str
+    :param span_id: (optional) span_id within the trace for the log entry.
+                    Specify the trace parameter if span_id is set.
     """
+
     def __init__(self, payload, logger, insert_id=None, timestamp=None,
-                 labels=None, severity=None, http_request=None, resource=None):
+                 labels=None, severity=None, http_request=None, resource=None,
+                 trace=None, span_id=None):
         self.payload = payload
         self.logger = logger
         self.insert_id = insert_id
@@ -87,6 +96,8 @@ class _BaseEntry(object):
         self.severity = severity
         self.http_request = http_request
         self.resource = resource
+        self.trace = trace
+        self.span_id = span_id
 
     @classmethod
     def from_api_repr(cls, resource, client, loggers=None):
@@ -115,7 +126,10 @@ class _BaseEntry(object):
         if logger is None:
             logger_name = logger_name_from_path(logger_fullname)
             logger = loggers[logger_fullname] = client.logger(logger_name)
-        payload = resource[cls._PAYLOAD_KEY]
+        if cls._PAYLOAD_KEY is not None:
+            payload = resource[cls._PAYLOAD_KEY]
+        else:
+            payload = None
         insert_id = resource.get('insertId')
         timestamp = resource.get('timestamp')
         if timestamp is not None:
@@ -123,6 +137,8 @@ class _BaseEntry(object):
         labels = resource.get('labels')
         severity = resource.get('severity')
         http_request = resource.get('httpRequest')
+        trace = resource.get('trace')
+        span_id = resource.get('spanId')
 
         monitored_resource_dict = resource.get('resource')
         monitored_resource = None
@@ -131,7 +147,16 @@ class _BaseEntry(object):
 
         return cls(payload, logger, insert_id=insert_id, timestamp=timestamp,
                    labels=labels, severity=severity, http_request=http_request,
-                   resource=monitored_resource)
+                   resource=monitored_resource, trace=trace, span_id=span_id)
+
+
+class EmptyEntry(_BaseEntry):
+    """Entry created with no payload.
+
+    See
+    https://cloud.google.com/logging/docs/reference/v2/rest/v2/LogEntry
+    """
+    _PAYLOAD_KEY = None
 
 
 class TextEntry(_BaseEntry):
@@ -185,15 +210,23 @@ class ProtobufEntry(_BaseEntry):
 
     :type resource: :class:`~google.cloud.logging.resource.Resource`
     :param resource: (Optional) Monitored resource of the entry
+
+    :type trace: str
+    :param trace: (optional) traceid to apply to the entry.
+
+    :type span_id: str
+    :param span_id: (optional) span_id within the trace for the log entry.
+                    Specify the trace parameter if span_id is set.
     """
     _PAYLOAD_KEY = 'protoPayload'
 
     def __init__(self, payload, logger, insert_id=None, timestamp=None,
-                 labels=None, severity=None, http_request=None, resource=None):
+                 labels=None, severity=None, http_request=None, resource=None,
+                 trace=None, span_id=None):
         super(ProtobufEntry, self).__init__(
             payload, logger, insert_id=insert_id, timestamp=timestamp,
             labels=labels, severity=severity, http_request=http_request,
-            resource=resource)
+            resource=resource, trace=trace, span_id=span_id)
         if isinstance(self.payload, any_pb2.Any):
             self.payload_pb = self.payload
             self.payload = None

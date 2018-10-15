@@ -1,39 +1,41 @@
 .. toctree::
-  :maxdepth: 2
+  :maxdepth: 1
   :hidden:
 
-  releases
-  core/index
-  asset/index
-  automl/index
-  bigquery/usage
-  bigquery_datatransfer/index
-  bigtable/usage
-  container/index
-  dataproc/index
-  datastore/usage
-  dlp/index
-  dns/usage
-  firestore/index
-  iot/index
-  kms/index
-  language/usage
-  pubsub/index
-  oslogin/index
-  resource-manager/api
-  runtimeconfig/usage
-  spanner/usage
-  speech/index
-  error-reporting/usage
-  monitoring/index
-  logging/usage
-  redis/index
-  storage/client
-  tasks/index
-  texttospeech/index
-  translate/usage
-  vision/index
-  videointelligence/index
+  Core Libraries <core/index>
+  Asset Management <asset/index>
+  AutoML <automl/index>
+  BigQuery <bigquery/index>
+  BigQuery Data-Transfer <bigquery_datatransfer/index>
+  Bigtable <bigtable/index>
+  Container <container/index>
+  Dataproc <dataproc/index>
+  Datastore <datastore/index>
+  Data Loss Prevention <dlp/index>
+  DNS <dns/index>
+  Firestore <firestore/index>
+  IoT <iot/index>
+  Key Management <kms/index>
+  Language <language/index>
+  PubSub <pubsub/index>
+  OSLogin <oslogin/index>
+  Redis <redis/index>
+  Resource Manager <resource-manager/index>
+  Runtime Configuration <runtimeconfig/index>
+  Security Scanner <websecurityscanner/index>
+  Spanner <spanner/index>
+  Speech <speech/index>
+  Storage <storage/index>
+  Tasks <tasks/index>
+  Text-to-Speech <texttospeech/index>
+  Translate <translate/index>
+  Vision <vision/index>
+  Video Intelligence <videointelligence/index>
+  Stackdriver Error Reporting <error-reporting/usage>
+  Stackdriver Logging <logging/index>
+  Stackdriver Monitoring <monitoring/index>
+  Stackdriver Trace <trace/index>
+  Release History <releases>
 
 Google Cloud Client Library for Python
 ======================================

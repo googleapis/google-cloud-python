@@ -156,8 +156,6 @@ class Client(ClientWithProject):
         :returns: A BigtableClient object.
         """
         if self._table_data_client is None:
-            if not self._admin:
-                raise ValueError('Client is not an admin client.')
             self._table_data_client = (
                 bigtable_v2.BigtableClient(credentials=self._credentials,
                                            client_info=_CLIENT_INFO))

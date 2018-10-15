@@ -23,6 +23,7 @@ import warnings
 import six
 
 from google.api_core import page_iterator
+from google.api_core import datetime_helpers
 from google.cloud._helpers import _datetime_to_rfc3339
 from google.cloud._helpers import _NOW
 from google.cloud._helpers import _rfc3339_to_datetime
@@ -38,6 +39,12 @@ from google.cloud.storage.blob import Blob
 from google.cloud.storage.blob import _get_encryption_headers
 from google.cloud.storage.notification import BucketNotification
 from google.cloud.storage.notification import NONE_PAYLOAD_FORMAT
+
+
+_LOCATION_SETTER_MESSAGE = (
+    "Assignment to 'Bucket.location' is deprecated, as it is only "
+    "valid before the bucket is created. Instead, pass the location "
+    "to `Bucket.create`.")
 
 
 def _blobs_page_start(iterator, page, response):
@@ -97,6 +104,170 @@ def _item_to_notification(iterator, item):
     :returns: The next notification being iterated.
     """
     return BucketNotification.from_api_repr(item, bucket=iterator.bucket)
+
+
+class LifecycleRuleConditions(dict):
+    """Map a single lifecycle rule for a bucket.
+
+    See: https://cloud.google.com/storage/docs/lifecycle
+
+    :type age: int
+    :param age: (optional) apply rule action to items whos age, in days,
+                exceeds this value.
+
+    :type created_before: datetime.date
+    :param created_before: (optional) apply rule action to items created
+                           before this date.
+
+    :type is_live: bool
+    :param is_live: (optional) if true, apply rule action to non-versioned
+                    items, or to items with no newer versions. If false, apply
+                    rule action to versioned items with at least one newer
+                    version.
+
+    :type matches_storage_class: list(str), one or more of
+                                 :attr:`Bucket._STORAGE_CLASSES`.
+    :param matches_storage_class: (optional) apply rule action to items which
+                                  whose storage class matches this value.
+
+    :type number_of_newer_versions: int
+    :param number_of_newer_versions: (optional) apply rule action to versioned
+                                     items having N newer versions.
+
+    :raises ValueError: if no arguments are passed.
+    """
+    def __init__(self, age=None, created_before=None, is_live=None,
+                 matches_storage_class=None, number_of_newer_versions=None,
+                 _factory=False):
+        conditions = {}
+
+        if age is not None:
+            conditions['age'] = age
+
+        if created_before is not None:
+            conditions['createdBefore'] = created_before.isoformat()
+
+        if is_live is not None:
+            conditions['isLive'] = is_live
+
+        if matches_storage_class is not None:
+            conditions['matchesStorageClass'] = matches_storage_class
+
+        if number_of_newer_versions is not None:
+            conditions['numNewerVersions'] = number_of_newer_versions
+
+        if not _factory and not conditions:
+            raise ValueError("Supply at least one condition")
+
+        super(LifecycleRuleConditions, self).__init__(conditions)
+
+    @classmethod
+    def from_api_repr(cls, resource):
+        """Factory:  construct instance from resource.
+
+        :type resource: dict
+        :param resource: mapping as returned from API call.
+
+        :rtype: :class:`LifecycleRuleConditions`
+        :returns: Instance created from resource.
+        """
+        instance = cls(_factory=True)
+        instance.update(resource)
+        return instance
+
+    @property
+    def age(self):
+        """Conditon's age value."""
+        return self.get('age')
+
+    @property
+    def created_before(self):
+        """Conditon's created_before value."""
+        before = self.get('createdBefore')
+        if before is not None:
+            return datetime_helpers.from_iso8601_date(before)
+
+    @property
+    def is_live(self):
+        """Conditon's 'is_live' value."""
+        return self.get('isLive')
+
+    @property
+    def matches_storage_class(self):
+        """Conditon's 'matches_storage_class' value."""
+        return self.get('matchesStorageClass')
+
+    @property
+    def number_of_newer_versions(self):
+        """Conditon's 'number_of_newer_versions' value."""
+        return self.get('numNewerVersions')
+
+
+class LifecycleRuleDelete(dict):
+    """Map a lifecycle rule deleting matching items.
+
+    :type kw: dict
+    :params kw: arguments passed to :class:`LifecycleRuleConditions`.
+    """
+    def __init__(self, **kw):
+        conditions = LifecycleRuleConditions(**kw)
+        rule = {
+            'action': {
+                'type': 'Delete',
+            },
+            'condition': dict(conditions),
+        }
+        super(LifecycleRuleDelete, self).__init__(rule)
+
+    @classmethod
+    def from_api_repr(cls, resource):
+        """Factory:  construct instance from resource.
+
+        :type resource: dict
+        :param resource: mapping as returned from API call.
+
+        :rtype: :class:`LifecycleRuleDelete`
+        :returns: Instance created from resource.
+        """
+        instance = cls(_factory=True)
+        instance.update(resource)
+        return instance
+
+
+class LifecycleRuleSetStorageClass(dict):
+    """Map a lifecycle rule upating storage class of matching items.
+
+    :type storage_class: str, one of :attr:`Bucket._STORAGE_CLASSES`.
+    :param storage_class: new storage class to assign to matching items.
+
+    :type kw: dict
+    :params kw: arguments passed to :class:`LifecycleRuleConditions`.
+    """
+    def __init__(self, storage_class, **kw):
+        conditions = LifecycleRuleConditions(**kw)
+        rule = {
+            'action': {
+                'type': 'SetStorageClass',
+                'storageClass': storage_class,
+            },
+            'condition': dict(conditions),
+        }
+        super(LifecycleRuleSetStorageClass, self).__init__(rule)
+
+    @classmethod
+    def from_api_repr(cls, resource):
+        """Factory:  construct instance from resource.
+
+        :type resource: dict
+        :param resource: mapping as returned from API call.
+
+        :rtype: :class:`LifecycleRuleDelete`
+        :returns: Instance created from resource.
+        """
+        action = resource['action']
+        instance = cls(action['storageClass'], _factory=True)
+        instance.update(resource)
+        return instance
 
 
 class Bucket(_PropertyMixin):
@@ -801,6 +972,21 @@ class Bucket(_PropertyMixin):
         """
         self._patch_property('cors', entries)
 
+    default_event_based_hold = _scalar_property('defaultEventBasedHold')
+    """Are uploaded objects automatically placed under an even-based hold?
+
+    If True, uploaded objects will be placed under an event-based hold to
+    be released at a future time. When released an object will then begin
+    the retention period determined by the policy retention period for the
+    object bucket.
+
+    See https://cloud.google.com/storage/docs/json_api/v1/buckets
+
+    If the property is not set locally, returns ``None``.
+
+    :rtype: bool or ``NoneType``
+    """
+
     @property
     def default_kms_key_name(self):
         """Retrieve / set default KMS encryption key for objects in the bucket.
@@ -927,11 +1113,18 @@ class Bucket(_PropertyMixin):
         :setter: Set lifestyle rules for this bucket.
         :getter: Gets the lifestyle rules for this bucket.
 
-        :rtype: list(dict)
+        :rtype: generator(dict)
         :returns: A sequence of mappings describing each lifecycle rule.
         """
         info = self._properties.get('lifecycle', {})
-        return [copy.deepcopy(rule) for rule in info.get('rule', ())]
+        for rule in info.get('rule', ()):
+            action_type = rule['action']['type']
+            if action_type == 'Delete':
+                yield LifecycleRuleDelete.from_api_repr(rule)
+            elif action_type == 'SetStorageClass':
+                yield LifecycleRuleSetStorageClass.from_api_repr(rule)
+            else:
+                raise ValueError("Unknown lifecycle rule: {}".format(rule))
 
     @lifecycle_rules.setter
     def lifecycle_rules(self, rules):
@@ -943,7 +1136,53 @@ class Bucket(_PropertyMixin):
         :type entries: list of dictionaries
         :param entries: A sequence of mappings describing each lifecycle rule.
         """
+        rules = [dict(rule) for rule in rules]  # Convert helpers if needed
         self._patch_property('lifecycle', {'rule': rules})
+
+    def clear_lifecyle_rules(self):
+        """Set lifestyle rules configured for this bucket.
+
+        See https://cloud.google.com/storage/docs/lifecycle and
+             https://cloud.google.com/storage/docs/json_api/v1/buckets
+        """
+        self.lifecycle_rules = []
+
+    def add_lifecycle_delete_rule(self, **kw):
+        """Add a "delete" rule to lifestyle rules configured for this bucket.
+
+        See https://cloud.google.com/storage/docs/lifecycle and
+             https://cloud.google.com/storage/docs/json_api/v1/buckets
+
+        .. literalinclude:: snippets.py
+          :start-after: [START add_lifecycle_delete_rule]
+          :end-before: [END add_lifecycle_delete_rule]
+
+        :type kw: dict
+        :params kw: arguments passed to :class:`LifecycleRuleConditions`.
+        """
+        rules = list(self.lifecycle_rules)
+        rules.append(LifecycleRuleDelete(**kw))
+        self.lifecycle_rules = rules
+
+    def add_lifecycle_set_storage_class_rule(self, storage_class, **kw):
+        """Add a "delete" rule to lifestyle rules configured for this bucket.
+
+        See https://cloud.google.com/storage/docs/lifecycle and
+             https://cloud.google.com/storage/docs/json_api/v1/buckets
+
+        .. literalinclude:: snippets.py
+          :start-after: [START add_lifecycle_set_storage_class_rule]
+          :end-before: [END add_lifecycle_set_storage_class_rule]
+
+        :type storage_class: str, one of :attr:`_STORAGE_CLASSES`.
+        :param storage_class: new storage class to assign to matching items.
+
+        :type kw: dict
+        :params kw: arguments passed to :class:`LifecycleRuleConditions`.
+        """
+        rules = list(self.lifecycle_rules)
+        rules.append(LifecycleRuleSetStorageClass(storage_class, **kw))
+        self.lifecycle_rules = rules
 
     _location = _scalar_property('location')
 
@@ -976,10 +1215,7 @@ class Bucket(_PropertyMixin):
             to `Bucket.create`.
         """
         warnings.warn(
-            "Assignment to 'Bucket.location' is deprecated, as it is only "
-            "valid before the bucket is created. Instead, pass the location "
-            "to `Bucket.create`.",
-            DeprecationWarning)
+            _LOCATION_SETTER_MESSAGE, DeprecationWarning, stacklevel=2)
         self._location = value
 
     def get_logging(self):
@@ -1054,6 +1290,66 @@ class Bucket(_PropertyMixin):
         project_number = self._properties.get('projectNumber')
         if project_number is not None:
             return int(project_number)
+
+    @property
+    def retention_policy_effective_time(self):
+        """Retrieve the effective time of the bucket's retention policy.
+
+        :rtype: datetime.datetime or ``NoneType``
+        :returns: point-in time at which the bucket's retention policy is
+                  effective, or ``None`` if the property is not
+                  set locally.
+        """
+        policy = self._properties.get('retentionPolicy')
+        if policy is not None:
+            timestamp = policy.get('effectiveTime')
+            if timestamp is not None:
+                return _rfc3339_to_datetime(timestamp)
+
+    @property
+    def retention_policy_locked(self):
+        """Retrieve whthere the bucket's retention policy is locked.
+
+        :rtype: bool
+        :returns: True if the bucket's policy is locked, or else False
+                  if the policy is not locked, or the property is not
+                  set locally.
+        """
+        policy = self._properties.get('retentionPolicy')
+        if policy is not None:
+            return policy.get('isLocked')
+
+    @property
+    def retention_period(self):
+        """Retrieve or set the retention period for items in the bucket.
+
+        :rtype: int or ``NoneType``
+        :returns: number of seconds to retain items after upload or release
+                  from event-based lock, or ``None`` if the property is not
+                  set locally.
+        """
+        policy = self._properties.get('retentionPolicy')
+        if policy is not None:
+            period = policy.get('retentionPeriod')
+            if period is not None:
+                return int(period)
+
+    @retention_period.setter
+    def retention_period(self, value):
+        """Set the retention period for items in the bucket.
+
+        :type value: int
+        :param value:
+            number of seconds to retain items after upload or release from
+            event-based lock.
+
+        :raises ValueError: if the bucket's retention policy is locked.
+        """
+        policy = self._properties.setdefault('retentionPolicy', {})
+        if value is not None:
+            value = str(value)
+        policy['retentionPeriod'] = value
+        self._patch_property('retentionPolicy', policy)
 
     @property
     def self_link(self):
@@ -1487,3 +1783,37 @@ class Bucket(_PropertyMixin):
         }
 
         return fields
+
+    def lock_retention_policy(self, client=None):
+        """Lock the bucket's retention policy.
+
+        :raises ValueError:
+            if the bucket has no metageneration (i.e., new or never reloaded);
+            if the bucket has no retention policy assigned;
+            if the bucket's retention policy is already locked.
+        """
+        if 'metageneration' not in self._properties:
+            raise ValueError(
+                "Bucket has no retention policy assigned: try 'reload'?")
+
+        policy = self._properties.get('retentionPolicy')
+
+        if policy is None:
+            raise ValueError(
+                "Bucket has no retention policy assigned: try 'reload'?")
+
+        if policy.get('isLocked'):
+            raise ValueError("Bucket's retention policy is already locked.")
+
+        client = self._require_client(client)
+
+        query_params = {'ifMetagenerationMatch': self.metageneration}
+
+        if self.user_project is not None:
+            query_params['userProject'] = self.user_project
+
+        path = '/b/{}/lockRetentionPolicy'.format(self.name)
+        api_response = client._connection.api_request(
+            method='POST', path=path, query_params=query_params,
+            _target_object=self)
+        self._set_properties(api_response)

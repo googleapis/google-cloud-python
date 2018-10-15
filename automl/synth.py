@@ -28,11 +28,8 @@ for version in versions:
     s.move(library / f'tests/unit/gapic/{version}')
     s.move(library / f'docs/gapic/automl/{version}')
 
-# Use the highest version library to generate documentation index, README, and
-# import alias.
+# Use the highest version library to generate import alias.
 s.move(library / 'google/cloud/automl.py')
-s.move(library / 'docs/index.rst')
-s.move(library / 'README.rst')
 
 
 # Fixup issues in generated code

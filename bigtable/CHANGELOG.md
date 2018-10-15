@@ -4,6 +4,49 @@
 
 [1]: https://pypi.org/project/google-cloud-bigtable/#history
 
+## 0.31.0
+
+### New Features
+- Upgrade support level from `alpha` to `beta`.  ([#6129](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6129))
+
+### Implementation Changes
+- Improve admin operation timeouts. ([#6010](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6010))
+
+### Documentation
+- Prepare docs for repo split. ([#6014](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6014))
+
+### Internal / Testing Changes
+- Refactor 'read_row' to call 'read_rows' ([#6137](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6102))
+- Harden instance teardown against '429 Too Many Requests'. ([#6102](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6102))
+- Add `{RowSet,RowRange}.{__eq__,.__ne__}` ([#6025](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6025))
+- Regenerate low-level GAPIC code ([#6036](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6036))
+
+## 0.30.2
+
+### New Features
+- Add iam policy implementation for an instance. (#5838)
+
+### Implementation Changes
+- Fix smart retries for 'read_rows()' when reading the full table (#5966)
+
+### Documentation
+- Replace links to `/stable/` with `/latest/`. (#5901)
+
+### Internal / Testing Changes
+- Re-generate library using bigtable/synth.py (#5974)
+- Refactor `read_rows` infrastructure (#5963)
+
+## 0.30.1
+
+### Implementation changes
+
+- Fix non-admin access to table data. (#5875)
+- Synth bigtable and bigtable admin GAPIC clients. (#5867)
+
+### Testing and internal changes
+
+- Nox: use in-place installs for local packages. (#5865)
+
 ## 0.30.0
 
 ### New Features

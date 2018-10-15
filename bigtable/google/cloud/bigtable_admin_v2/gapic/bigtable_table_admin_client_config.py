@@ -18,7 +18,7 @@ config = {
             },
             "methods": {
                 "CreateTable": {
-                    "timeout_millis": 130000,
+                    "timeout_millis": 900000,
                     "retry_codes_name": "non_idempotent",
                     "retry_params_name": "default"
                 },
@@ -28,27 +28,27 @@ config = {
                     "retry_params_name": "default"
                 },
                 "ListTables": {
-                    "timeout_millis": 60000,
+                    "timeout_millis": 120000,
                     "retry_codes_name": "idempotent",
                     "retry_params_name": "default"
                 },
                 "GetTable": {
-                    "timeout_millis": 60000,
+                    "timeout_millis": 120000,
                     "retry_codes_name": "idempotent",
                     "retry_params_name": "default"
                 },
                 "DeleteTable": {
-                    "timeout_millis": 60000,
-                    "retry_codes_name": "idempotent",
+                    "timeout_millis": 120000,
+                    "retry_codes_name": "non_idempotent",
                     "retry_params_name": "default"
                 },
                 "ModifyColumnFamilies": {
-                    "timeout_millis": 60000,
+                    "timeout_millis": 900000,
                     "retry_codes_name": "non_idempotent",
                     "retry_params_name": "default"
                 },
                 "DropRowRange": {
-                    "timeout_millis": 60000,
+                    "timeout_millis": 900000,
                     "retry_codes_name": "non_idempotent",
                     "retry_params_name": "default"
                 },

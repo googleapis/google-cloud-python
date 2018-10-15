@@ -3,7 +3,9 @@ config = {
         "google.privacy.dlp.v2.DlpService": {
             "retry_codes": {
                 "idempotent": ["DEADLINE_EXCEEDED", "UNAVAILABLE"],
-                "non_idempotent": []
+                "http_get": ["DEADLINE_EXCEEDED", "UNAVAILABLE"],
+                "non_idempotent": [],
+                "no_retry": []
             },
             "retry_params": {
                 "default": {

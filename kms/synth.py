@@ -30,11 +30,10 @@ library = gapic.py_library(
     'kms', version, config_path='artman_cloudkms.yaml',
     artman_output_name='kms-v1')
 
-s.copy(library)
-
-# Set Release Status
-release_status = 'Development Status :: 3 - Alpha'
-s.replace('setup.py',
-          '(release_status = )(.*)$',
-          f"\\1'{release_status}'")
-s.replace('setup.py', 'version = .*', f"version = '{client_library_version}'")
+s.move(
+    library,
+    excludes=[
+        'setup.py',
+        'docs/**/*',
+        'README.rst',
+    ])

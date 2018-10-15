@@ -278,9 +278,10 @@ class Blob(_PropertyMixin):
         .. note::
 
             If you are on Google Compute Engine, you can't generate a signed
-            URL. Follow `Issue 50`_ for updates on this. If you'd like to
-            be able to generate a signed URL from GCE, you can use a standard
-            service account from a JSON file rather than a GCE service account.
+            URL using GCE service account. Follow `Issue 50`_ for updates on
+            this. If you'd like to be able to generate a signed URL from GCE,
+            you can use a standard service account from a JSON file rather
+            than a GCE service account.
 
         .. _Issue 50: https://github.com/GoogleCloudPlatform/\
                       google-auth-library-python/issues/50
@@ -345,9 +346,11 @@ class Blob(_PropertyMixin):
             credentials = client._credentials
 
         return generate_signed_url(
-            credentials, resource=resource,
+            credentials,
+            resource=resource,
             api_access_endpoint=_API_ACCESS_ENDPOINT,
-            expiration=expiration, method=method,
+            expiration=expiration,
+            method=method.upper(),
             content_type=content_type,
             response_type=response_type,
             response_disposition=response_disposition,
@@ -1026,7 +1029,8 @@ class Blob(_PropertyMixin):
         .. _lifecycle: https://cloud.google.com/storage/docs/lifecycle
         """
         if num_retries is not None:
-            warnings.warn(_NUM_RETRIES_MESSAGE, DeprecationWarning)
+            warnings.warn(
+                _NUM_RETRIES_MESSAGE, DeprecationWarning, stacklevel=2)
 
         _maybe_rewind(file_obj, rewind=rewind)
         predefined_acl = ACL.validate_predefined(predefined_acl)
@@ -1373,13 +1377,7 @@ class Blob(_PropertyMixin):
                       ``NoneType``
         :param client: Optional. The client to use.  If not passed, falls back
                        to the ``client`` stored on the blob's bucket.
-
-        :raises: :exc:`ValueError` if this blob does not have its
-                 :attr:`content_type` set.
         """
-        if self.content_type is None:
-            raise ValueError("Destination 'content_type' not set.")
-
         client = self._require_client(client)
         query_params = {}
 
@@ -1590,6 +1588,16 @@ class Blob(_PropertyMixin):
         """
         return self._properties.get('etag')
 
+    event_based_hold = _scalar_property('eventBasedHold')
+    """Is an event-based hold active on the object?
+
+    See `API reference docs`_.
+
+    If the property is not set locally, returns :data:`None`.
+
+    :rtype: bool or ``NoneType``
+    """
+
     @property
     def generation(self):
         """Retrieve the generation for the object.
@@ -1697,6 +1705,20 @@ class Blob(_PropertyMixin):
         return copy.deepcopy(self._properties.get('owner'))
 
     @property
+    def retention_expiration_time(self):
+        """Retrieve timestamp at which the object's retention period expires.
+
+        See https://cloud.google.com/storage/docs/json_api/v1/objects
+
+        :rtype: :class:`datetime.datetime` or ``NoneType``
+        :returns: Datetime object parsed from RFC3339 valid timestamp, or
+                  ``None`` if the property is not set locally.
+        """
+        value = self._properties.get('retentionExpirationTime')
+        if value is not None:
+            return _rfc3339_to_datetime(value)
+
+    @property
     def self_link(self):
         """Retrieve the URI for the object.
 
@@ -1747,6 +1769,16 @@ class Blob(_PropertyMixin):
     :returns: If set, one of "MULTI_REGIONAL", "REGIONAL",
               "NEARLINE", "COLDLINE", "STANDARD", or
               "DURABLE_REDUCED_AVAILABILITY", else ``None``.
+    """
+
+    temporary_hold = _scalar_property('temporaryHold')
+    """Is a temporary hold active on the object?
+
+    See `API reference docs`_.
+
+    If the property is not set locally, returns :data:`None`.
+
+    :rtype: bool or ``NoneType``
     """
 
     @property

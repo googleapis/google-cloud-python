@@ -190,8 +190,8 @@ class TestInstance(unittest.TestCase):
         # Patch the stub used by the API method.
         client._instance_admin_client = instance_api
         instance_admin_client = client._instance_admin_client
-        instance_stub = instance_admin_client.bigtable_instance_admin_stub
-        instance_stub.ListClusters.side_effect = [response_pb]
+        instance_stub = instance_admin_client.transport
+        instance_stub.list_clusters.side_effect = [response_pb]
 
         # Perform the method and check the result.
         clusters, failed_locations = instance.list_clusters()
@@ -378,8 +378,8 @@ class TestInstance(unittest.TestCase):
         # Patch the stub used by the API method.
         client._instance_admin_client = api
         bigtable_instance_stub = (
-            client._instance_admin_client.bigtable_instance_admin_stub)
-        bigtable_instance_stub.GetInstance.side_effect = [response_pb]
+            client._instance_admin_client.transport)
+        bigtable_instance_stub.get_instance.side_effect = [response_pb]
 
         # Create expected_result.
         expected_result = None  # reload() has no return value.
@@ -416,8 +416,8 @@ class TestInstance(unittest.TestCase):
         # Patch the stub used by the API method.
         client._instance_admin_client = api
         instance_admin_client = client._instance_admin_client
-        instance_stub = instance_admin_client.bigtable_instance_admin_stub
-        instance_stub.GetCluster.side_effect = [
+        instance_stub = instance_admin_client.transport
+        instance_stub.get_instance.side_effect = [
             response_pb,
             exceptions.NotFound('testing'),
             exceptions.BadRequest('testing')
@@ -772,8 +772,8 @@ class TestInstance(unittest.TestCase):
         client._table_admin_client = table_api
         client._instance_admin_client = instance_api
         bigtable_table_stub = (
-            client._table_admin_client.bigtable_table_admin_stub)
-        bigtable_table_stub.ListTables.side_effect = [response_pb]
+            client._table_admin_client.transport)
+        bigtable_table_stub.list_tables.side_effect = [response_pb]
 
         # Create expected_result.
         expected_table = instance.table(self.TABLE_ID)
@@ -882,8 +882,8 @@ class TestInstance(unittest.TestCase):
         # Patch the stub used by the API method.
         client._instance_admin_client = instance_api
         bigtable_instance_stub = (
-            client._instance_admin_client.bigtable_instance_admin_stub)
-        bigtable_instance_stub.ListAppProfiles.side_effect = [
+            client._instance_admin_client.transport)
+        bigtable_instance_stub.list_app_profiles.side_effect = [
             expected_response]
 
         # Perform the method and check the result.
@@ -896,6 +896,127 @@ class TestInstance(unittest.TestCase):
 
         self.assertIsInstance(app_profile_2, AppProfile)
         self.assertEqual(app_profile_2.name, app_profile_name2)
+
+    def test_get_iam_policy(self):
+        from google.cloud.bigtable_admin_v2.gapic import (
+            bigtable_instance_admin_client)
+        from google.iam.v1 import iam_policy_pb2
+        from google.iam.v1 import policy_pb2
+        from google.cloud.bigtable.policy import Policy
+        from google.cloud.bigtable.policy import BIGTABLE_ADMIN_ROLE
+
+        credentials = _make_credentials()
+        client = self._make_client(project=self.PROJECT,
+                                   credentials=credentials, admin=True)
+        instance = self._make_one(self.INSTANCE_ID, client)
+
+        version = 1
+        etag = b'etag_v1'
+        bindings = [{'role': BIGTABLE_ADMIN_ROLE,
+                     'members': ['serviceAccount:service_acc1@test.com',
+                                 'user:user1@test.com']}]
+
+        expected_request_policy = policy_pb2.Policy(version=version,
+                                                    etag=etag,
+                                                    bindings=bindings)
+
+        expected_request = iam_policy_pb2.GetIamPolicyRequest(
+            resource=instance.name
+        )
+
+        # Patch the stub used by the API method.
+        channel = ChannelStub(responses=[expected_request_policy])
+        instance_api = (
+            bigtable_instance_admin_client.BigtableInstanceAdminClient(
+                channel=channel))
+        client._instance_admin_client = instance_api
+        # Perform the method and check the result.
+        policy_request = Policy(etag=etag, version=version)
+        policy_request[BIGTABLE_ADMIN_ROLE] = [Policy.user("user1@test.com"),
+                                               Policy.service_account(
+                                                   "service_acc1@test.com")]
+
+        result = instance.get_iam_policy()
+        actual_request = channel.requests[0][1]
+
+        self.assertEqual(actual_request, expected_request)
+        self.assertEqual(result.bigtable_admins,
+                         policy_request.bigtable_admins)
+
+    def test_set_iam_policy(self):
+        from google.cloud.bigtable_admin_v2.gapic import (
+            bigtable_instance_admin_client)
+        from google.iam.v1 import iam_policy_pb2
+        from google.iam.v1 import policy_pb2
+        from google.cloud.bigtable.policy import Policy
+        from google.cloud.bigtable.policy import BIGTABLE_ADMIN_ROLE
+
+        credentials = _make_credentials()
+        client = self._make_client(project=self.PROJECT,
+                                   credentials=credentials, admin=True)
+        instance = self._make_one(self.INSTANCE_ID, client)
+
+        version = 1
+        etag = b'etag_v1'
+        bindings = [{'role': BIGTABLE_ADMIN_ROLE,
+                     'members': ['serviceAccount:service_acc1@test.com',
+                                 'user:user1@test.com']}]
+
+        expected_request_policy = policy_pb2.Policy(version=version,
+                                                    etag=etag,
+                                                    bindings=bindings)
+
+        expected_request = iam_policy_pb2.SetIamPolicyRequest(
+            resource=instance.name,
+            policy=expected_request_policy
+        )
+
+        # Patch the stub used by the API method.
+        channel = ChannelStub(responses=[expected_request_policy])
+        instance_api = (
+            bigtable_instance_admin_client.BigtableInstanceAdminClient(
+                channel=channel))
+        client._instance_admin_client = instance_api
+        # Perform the method and check the result.
+        policy_request = Policy(etag=etag, version=version)
+        policy_request[BIGTABLE_ADMIN_ROLE] = [Policy.user("user1@test.com"),
+                                               Policy.service_account(
+                                                   "service_acc1@test.com")]
+
+        result = instance.set_iam_policy(policy_request)
+        actual_request = channel.requests[0][1]
+
+        self.assertEqual(actual_request, expected_request)
+        self.assertEqual(result.bigtable_admins,
+                         policy_request.bigtable_admins)
+
+    def test_test_iam_permissions(self):
+        from google.cloud.bigtable_admin_v2.gapic import (
+            bigtable_instance_admin_client)
+        from google.iam.v1 import iam_policy_pb2
+
+        credentials = _make_credentials()
+        client = self._make_client(project=self.PROJECT,
+                                   credentials=credentials, admin=True)
+        instance = self._make_one(self.INSTANCE_ID, client)
+
+        permissions = ["bigtable.tables.create", "bigtable.clusters.create"]
+
+        expected_request = iam_policy_pb2.TestIamPermissionsRequest(
+            resource=instance.name,
+            permissions=permissions)
+
+        # Patch the stub used by the API method.
+        channel = ChannelStub(responses=[expected_request])
+        instance_api = (
+            bigtable_instance_admin_client.BigtableInstanceAdminClient(
+                channel=channel))
+        client._instance_admin_client = instance_api
+
+        result = instance.test_iam_permissions(permissions)
+        actual_request = channel.requests[0][1]
+        self.assertEqual(actual_request, expected_request)
+        self.assertEqual(result, permissions)
 
 
 class _Client(object):
