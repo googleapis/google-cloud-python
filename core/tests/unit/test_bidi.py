@@ -21,7 +21,7 @@ import pytest
 from six.moves import queue
 
 from google.api_core import exceptions
-from google.cloud.pubsub_v1.subscriber._protocol import bidi
+from google.api_core import bidi
 
 
 class Test_RequestQueueGenerator(object):
