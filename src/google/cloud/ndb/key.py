@@ -25,6 +25,63 @@ uniquely designate a (possible) entity in Google Cloud Datastore:
 * a list of one or more ``(kind, id)`` pairs where ``kind`` is a string
   and ``id`` is either a string or an integer
 * an optional namespace (a string)
+
+The application ID must always be part of the key, but since most
+applications can only access their own entities, it defaults to the
+current application ID and you rarely need to worry about it.
+
+The namespace designates a top-level partition of the key space for a
+particular application. If you've never heard of namespaces, you can
+safely ignore this feature.
+
+Most of the action is in the ``(kind, id)`` pairs. A key must have at
+least one ``(kind, id)`` pair. The last ``(kind, id)`` pair gives the kind
+and the ID of the entity that the key refers to, the others merely
+specify a "parent key".
+
+The kind is a string giving the name of the model class used to
+represent the entity. In more traditional databases this would be
+the table name. A model class is a Python class derived from
+:class:`.Model`. Only the class name itself is used as the kind. This means
+all your model classes must be uniquely named within one application. You can
+override this on a per-class basis.
+
+The ID is either a string or an integer. When the ID is a string, the
+application is in control of how it assigns IDs. For example, you
+could use an email address as the ID for Account entities.
+
+To use integer IDs, it's common to let the datastore choose a unique ID for
+an entity when first inserted into the datastore. The ID can be set to
+:data:`None` to represent the key for an entity that hasn't yet been
+inserted into the datastore. The completed key (including the assigned ID)
+will be returned after the entity is successfully inserted into the datastore.
+
+A key for which the ID of the last ``(kind, id)`` pair is set to :data:`None`
+is called an **incomplete key** or **partial key**. Such keys can only be used
+to insert entities into the datastore.
+
+A key with exactly one ``(kind, id)`` pair is called a top level key or a
+root key. Top level keys are also used as entity groups, which play a
+role in transaction management.
+
+If there is more than one ``(kind, id)`` pair, all but the last pair
+represent the "ancestor path", also known as the key of the "parent entity".
+
+Other constraints:
+
+* Kinds and string IDs must not be empty and must be at most 1500 bytes
+  long (after UTF-8 encoding)
+* Integer IDs must be at least ``1`` and at most ``2**63 - 1`` (i.e. the
+  positive part of the range for a 64-bit signed integer)
+
+For more info about namespaces, see the multitenancy `overview`_.
+In the "legacy" Google App Engine runtime, the default namespace could be
+set via the namespace manager (``google.appengine.api.namespace_manager``).
+On the gVisor Google App Engine runtime (e.g. Python 3.7), the namespace
+manager is not available so the default is to have an unset or empty
+namespace. To explicitly select the empty namespace pass ``namespace=""``.
+
+.. _overview: https://cloud.google.com/appengine/docs/standard/python/multitenancy/
 """
 
 
@@ -48,8 +105,19 @@ _REFERENCE_NAMESPACE_MISMATCH = (
     "Key reference constructed uses a different namespace {!r} than "
     "the one specified {!r}"
 )
-_INVALID_ID_TYPE = "Key id must be a string or a number; received {!r}"
+_INVALID_ID_TYPE = "Key ID must be a string or a number; received {!r}"
 _NO_LEGACY = "The `google.appengine.ext.db` module is not available."
+_MAX_INTEGER_ID = 0x7FFFFFFFFFFFFFFF  # 2 ** 63 - 1
+_MAX_KEYPART_BYTES = 1500
+_BAD_KIND = (
+    "Key kind string must be a non-empty string up to {:d} bytes; received {}"
+)
+_BAD_INTEGER_ID = (
+    "Key ID number is outside of range [1, 2^63 - 1]; received {:d}"
+)
+_BAD_STRING_ID = (
+    "Key name strings must be non-empty strings up to {:d} bytes; received {}"
+)
 
 
 class _BadArgumentError(Exception):
@@ -157,15 +225,9 @@ class Key:
     once it has been created. This is enforced by the implementation as
     well as Python allows.
 
-    Keys also support interaction with the datastore; these methods are
-    the only ones that engage in any kind of I/O activity. For ``Future``
-    objects, see the documentation for :mod:`google.cloud.ndb.tasklets`.
-
-    * ``key.get()``: return the entity for the key
-    * ``key.get_async()``: return a future whose eventual result is
-      the entity for the key
-    * ``key.delete()``: delete the entity for the key
-    * ``key.delete_async()``: asynchronously delete the entity for the key
+    Keys also support interaction with the datastore; the methods :meth:`get`,
+    :meth:`get_async`, :meth:`delete` and :meth:`delete_async` are
+    the only ones that engage in any kind of I/O activity.
 
     Keys may be pickled.
 
@@ -611,7 +673,7 @@ class Key:
         if self._reference is None:
             self._reference = _app_engine_key_pb2.Reference(
                 app=self._key.project,
-                path=_key_module._to_legacy_path(self._key.path),
+                path=_to_legacy_path(self._key.path),
                 name_space=self._key.namespace,
             )
         return self._reference
@@ -639,6 +701,70 @@ class Key:
         """
         raw_bytes = self.serialized()
         return base64.urlsafe_b64encode(raw_bytes).strip(b"=")
+
+    def get(self, **ctx_options):
+        """Synchronously get the entity for this key.
+
+        Returns the retrieved :class:`.Model` or :data:`None` if there is no
+        such entity.
+
+        Args:
+            ctx_options (Dict[str, Any]): The context options for the request.
+                For example, ``{"read_policy": EVENTUAL_CONSISTENCY}``.
+
+        Raises:
+            NotImplementedError: Always. The method has not yet been
+                implemented.
+        """
+        raise NotImplementedError
+
+    def get_async(self, **ctx_options):
+        """Asynchronously get the entity for this key.
+
+        The result for the returned future with either by the retrieved
+        :class:`.Model` or :data:`None` if there is no such entity.
+
+        Args:
+            ctx_options (Dict[str, Any]): The context options for the request.
+                For example, ``{"read_policy": EVENTUAL_CONSISTENCY}``.
+
+        Raises:
+            NotImplementedError: Always. The method has not yet been
+                implemented.
+        """
+        raise NotImplementedError
+
+    def delete(self, **ctx_options):
+        """Synchronously delete the entity for this key.
+
+        This is a no-op if no such entity exists.
+
+        Args:
+            ctx_options (Dict[str, Any]): The context options for the request.
+                For example, ``{"deadline": 5}``.
+
+        Raises:
+            NotImplementedError: Always. The method has not yet been
+                implemented.
+        """
+        raise NotImplementedError
+
+    def delete_async(self, **ctx_options):
+        """Schedule deletion of the entity for this key.
+
+        This result of the returned a future becomes available once the
+        deletion is complete. In all cases the future's result is :data:`None`
+        (i.e. there is no way to tell whether the entity existed or not).
+
+        Args:
+            ctx_options (Dict[str, Any]): The context options for the request.
+                For example, ``{"deadline": 5}``.
+
+        Raises:
+            NotImplementedError: Always. The method has not yet been
+                implemented.
+        """
+        raise NotImplementedError
 
     @classmethod
     def from_old_key(cls, old_key):
@@ -1050,3 +1176,74 @@ def _clean_flat_path(flat):
     # Remove trailing ``None`` for a partial key.
     if flat[-1] is None:
         flat.pop()
+
+
+def _verify_path_value(value, is_str, is_kind=False):
+    """Verify a key path value: one of a kind, string ID or integer ID.
+
+    Args:
+        value (Union[str, int]): The value to verify
+        is_str (bool): Flag indicating if the ``value`` is a string. If
+            :data:`False`, then the ``value`` is assumed to be an integer.
+        is_kind (Optional[bool]): Flag indicating if the value is meant to
+            be a kind. Defaults to :data:`False`.
+
+    Returns:
+        Union[str, int]: The ``value`` passed in, if it passed verification
+        checks.
+
+    Raises:
+        ValueError: If the ``value`` is a ``str`` for the kind, but the number
+            of UTF-8 encoded bytes is outside of the range ``[1, 1500]``.
+        ValueError: If the ``value`` is a ``str`` for the name, but the number
+            of UTF-8 encoded bytes is outside of the range ``[1, 1500]``.
+        ValueError: If the ``value`` is an integer but lies outside of the
+            range ``[1, 2^63 - 1]``.
+    """
+    if is_str:
+        if 1 <= len(value.encode("utf-8")) <= _MAX_KEYPART_BYTES:
+            return value
+
+        if is_kind:
+            raise ValueError(_BAD_KIND.format(_MAX_KEYPART_BYTES, value))
+        else:
+            raise ValueError(_BAD_STRING_ID.format(_MAX_KEYPART_BYTES, value))
+    else:
+        if 1 <= value <= _MAX_INTEGER_ID:
+            return value
+
+        raise ValueError(_BAD_INTEGER_ID.format(value))
+
+
+def _to_legacy_path(dict_path):
+    """Convert a tuple of ints and strings in a legacy "Path".
+
+    .. note:
+
+        This assumes, but does not verify, that each entry in
+        ``dict_path`` is valid (i.e. doesn't have more than one
+        key out of "name" / "id").
+
+    Args:
+        dict_path (Iterable[Tuple[str, Union[str, int]]]): The "structured"
+            path for a ``google-cloud-datastore`` key, i.e. it is a list of
+            dictionaries, each of which has "kind" and one of "name" / "id" as
+            keys.
+
+    Returns:
+        _app_engine_key_pb2.Path: The legacy path corresponding to
+        ``dict_path``.
+    """
+    elements = []
+    for part in dict_path:
+        element_kwargs = {
+            "type": _verify_path_value(part["kind"], True, is_kind=True)
+        }
+        if "id" in part:
+            element_kwargs["id"] = _verify_path_value(part["id"], False)
+        elif "name" in part:
+            element_kwargs["name"] = _verify_path_value(part["name"], True)
+        element = _app_engine_key_pb2.Path.Element(**element_kwargs)
+        elements.append(element)
+
+    return _app_engine_key_pb2.Path(element=elements)
