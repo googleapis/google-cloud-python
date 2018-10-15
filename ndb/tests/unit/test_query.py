@@ -12,11 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import pickle
 import unittest.mock
 
 import pytest
 
 from google.cloud.ndb import exceptions
+from google.cloud.ndb import model
 from google.cloud.ndb import query
 import tests.unit.utils
 
@@ -216,8 +218,87 @@ class TestFalseNode:
 class TestParameterNode:
     @staticmethod
     def test_constructor():
+        prop = model.Property(name="val")
+        param = query.Parameter("abc")
+        parameter_node = query.ParameterNode(prop, "=", param)
+        assert parameter_node._prop is prop
+        assert parameter_node._op == "="
+        assert parameter_node._param is param
+
+    @staticmethod
+    def test_constructor_bad_property():
+        param = query.Parameter(11)
+        with pytest.raises(TypeError):
+            query.ParameterNode(None, "!=", param)
+
+    @staticmethod
+    def test_constructor_bad_op():
+        prop = model.Property(name="guitar")
+        param = query.Parameter("pick")
+        with pytest.raises(TypeError):
+            query.ParameterNode(prop, "less", param)
+
+    @staticmethod
+    def test_constructor_bad_param():
+        prop = model.Property(name="california")
+        with pytest.raises(TypeError):
+            query.ParameterNode(prop, "<", None)
+
+    @staticmethod
+    def test_pickling():
+        prop = model.Property(name="val")
+        param = query.Parameter("abc")
+        parameter_node = query.ParameterNode(prop, "=", param)
+
+        pickled = pickle.dumps(parameter_node)
+        unpickled = pickle.loads(pickled)
+        assert parameter_node == unpickled
+
+    @staticmethod
+    def test___repr__():
+        prop = model.Property(name="val")
+        param = query.Parameter("abc")
+        parameter_node = query.ParameterNode(prop, "=", param)
+
+        expected = "ParameterNode({!r}, '=', Parameter('abc'))".format(prop)
+        assert repr(parameter_node) == expected
+
+    @staticmethod
+    def test___eq__():
+        prop1 = model.Property(name="val")
+        param1 = query.Parameter("abc")
+        parameter_node1 = query.ParameterNode(prop1, "=", param1)
+        prop2 = model.Property(name="ue")
+        parameter_node2 = query.ParameterNode(prop2, "=", param1)
+        parameter_node3 = query.ParameterNode(prop1, "<", param1)
+        param2 = query.Parameter(900)
+        parameter_node4 = query.ParameterNode(prop1, "=", param2)
+        parameter_node5 = unittest.mock.sentinel.parameter_node
+
+        assert parameter_node1 == parameter_node1
+        assert not parameter_node1 == parameter_node2
+        assert not parameter_node1 == parameter_node3
+        assert not parameter_node1 == parameter_node4
+        assert not parameter_node1 == parameter_node5
+
+    @staticmethod
+    def test__to_filter():
+        prop = model.Property(name="val")
+        param = query.Parameter("abc")
+        parameter_node = query.ParameterNode(prop, "=", param)
+        with pytest.raises(_exceptions.BadArgumentError):
+            parameter_node._to_filter()
+
+    @staticmethod
+    def test_resolve():
+        prop = model.Property(name="val")
+        param = query.Parameter("abc")
+        parameter_node = query.ParameterNode(prop, "=", param)
+
+        used = {}
         with pytest.raises(NotImplementedError):
-            query.ParameterNode()
+            parameter_node.resolve({}, used)
+        assert used == {}
 
 
 class TestFilterNode:
