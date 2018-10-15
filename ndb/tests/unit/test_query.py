@@ -26,6 +26,20 @@ def test_Cursor():
     assert query.Cursor is NotImplemented
 
 
+class TestParameterizedThing:
+    @staticmethod
+    def test___eq__():
+        thing = query.ParameterizedThing()
+        with pytest.raises(NotImplementedError):
+            thing == None
+
+    @staticmethod
+    def test___ne__():
+        thing = query.ParameterizedThing()
+        with pytest.raises(NotImplementedError):
+            thing != None
+
+
 class TestConjunctionNode:
     @staticmethod
     def test_constructor():
@@ -86,13 +100,6 @@ class TestParameterizedFunction:
     def test_constructor():
         with pytest.raises(NotImplementedError):
             query.ParameterizedFunction()
-
-
-class TestParameterizedThing:
-    @staticmethod
-    def test_constructor():
-        with pytest.raises(NotImplementedError):
-            query.ParameterizedThing()
 
 
 class TestParameterNode:

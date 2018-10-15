@@ -51,8 +51,16 @@ class RepeatedStructuredPropertyPredicate:
 
 
 class ParameterizedThing:
-    def __init__(self, *args, **kwargs):
+    """Base class for :class:`Parameter` and :class:`ParameterizedFunction`.
+
+    This exists purely for :func:`isinstance` checks.
+    """
+
+    def __eq__(self, other):
         raise NotImplementedError
+
+    def __ne__(self, other):
+        return not self == other
 
 
 class Parameter(ParameterizedThing):
