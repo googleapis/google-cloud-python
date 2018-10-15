@@ -17,70 +17,35 @@
 
 __all__ = [
     "Cursor",
-    "ConjunctionNode",
-    "AND",
-    "DisjunctionNode",
-    "OR",
-    "FalseNode",
-    "FilterNode",
-    "gql",
-    "Node",
-    "Parameter",
-    "ParameterizedFunction",
-    "ParameterizedThing",
-    "ParameterNode",
-    "PostFilterNode",
-    "Query",
-    "QueryIterator",
     "QueryOptions",
     "RepeatedStructuredPropertyPredicate",
+    "ParameterizedThing",
+    "Parameter",
+    "ParameterizedFunction",
+    "Node",
+    "FalseNode",
+    "ParameterNode",
+    "FilterNode",
+    "PostFilterNode",
+    "ConjunctionNode",
+    "DisjunctionNode",
+    "AND",
+    "OR",
+    "Query",
+    "gql",
+    "QueryIterator",
 ]
 
 
 Cursor = NotImplemented  # From `google.appengine.datastore.datastore_query`
 
 
-class ConjunctionNode:
+class QueryOptions:
     def __init__(self, *args, **kwargs):
         raise NotImplementedError
 
 
-AND = ConjunctionNode
-
-
-class DisjunctionNode:
-    def __init__(self, *args, **kwargs):
-        raise NotImplementedError
-
-
-OR = DisjunctionNode
-
-
-class FalseNode:
-    def __init__(self, *args, **kwargs):
-        raise NotImplementedError
-
-
-class FilterNode:
-    def __init__(self, *args, **kwargs):
-        raise NotImplementedError
-
-
-def gql(*args, **kwargs):
-    raise NotImplementedError
-
-
-class Node:
-    def __init__(self, *args, **kwargs):
-        raise NotImplementedError
-
-
-class Parameter:
-    def __init__(self, *args, **kwargs):
-        raise NotImplementedError
-
-
-class ParameterizedFunction:
+class RepeatedStructuredPropertyPredicate:
     def __init__(self, *args, **kwargs):
         raise NotImplementedError
 
@@ -90,14 +55,54 @@ class ParameterizedThing:
         raise NotImplementedError
 
 
-class ParameterNode:
+class Parameter(ParameterizedThing):
     def __init__(self, *args, **kwargs):
         raise NotImplementedError
 
 
-class PostFilterNode:
+class ParameterizedFunction(ParameterizedThing):
     def __init__(self, *args, **kwargs):
         raise NotImplementedError
+
+
+class Node:
+    def __init__(self, *args, **kwargs):
+        raise NotImplementedError
+
+
+class FalseNode(Node):
+    def __init__(self, *args, **kwargs):
+        raise NotImplementedError
+
+
+class ParameterNode(Node):
+    def __init__(self, *args, **kwargs):
+        raise NotImplementedError
+
+
+class FilterNode(Node):
+    def __init__(self, *args, **kwargs):
+        raise NotImplementedError
+
+
+class PostFilterNode(Node):
+    def __init__(self, *args, **kwargs):
+        raise NotImplementedError
+
+
+class ConjunctionNode(Node):
+    def __init__(self, *args, **kwargs):
+        raise NotImplementedError
+
+
+class DisjunctionNode(Node):
+    def __init__(self, *args, **kwargs):
+        raise NotImplementedError
+
+
+# AND and OR are preferred aliases for these.
+AND = ConjunctionNode
+OR = DisjunctionNode
 
 
 class Query:
@@ -105,16 +110,10 @@ class Query:
         raise NotImplementedError
 
 
+def gql(*args, **kwargs):
+    raise NotImplementedError
+
+
 class QueryIterator:
-    def __init__(self, *args, **kwargs):
-        raise NotImplementedError
-
-
-class QueryOptions:
-    def __init__(self, *args, **kwargs):
-        raise NotImplementedError
-
-
-class RepeatedStructuredPropertyPredicate:
     def __init__(self, *args, **kwargs):
         raise NotImplementedError
