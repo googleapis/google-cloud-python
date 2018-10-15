@@ -7,5 +7,6 @@
    :maxdepth: 2
 
    Key <key>
+   Model <model>
 
 Placeholder.
