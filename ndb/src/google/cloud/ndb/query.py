@@ -134,8 +134,74 @@ class ParameterizedFunction(ParameterizedThing):
 
 
 class Node:
-    def __init__(self, *args, **kwargs):
+    """Base class for filter expression tree nodes.
+
+    Tree nodes are considered immutable, even though they can contain
+    Parameter instances, which are not.  In particular, two identical
+    trees may be represented by the same Node object in different
+    contexts.
+
+    Raises:
+        TypeError: Always, only subclasses are allowed.
+    """
+
+    def __new__(cls):
+        if cls is Node:
+            raise TypeError("Cannot instantiate Node, only a subclass.")
+        return super(Node, cls).__new__(cls)
+
+    def __eq__(self, other):
         raise NotImplementedError
+
+    def __ne__(self, other):
+        return not self == other
+
+    def __le__(self, unused_other):
+        raise TypeError("Nodes cannot be ordered")
+
+    def __lt__(self, unused_other):
+        raise TypeError("Nodes cannot be ordered")
+
+    def __ge__(self, unused_other):
+        raise TypeError("Nodes cannot be ordered")
+
+    def __gt__(self, unused_other):
+        raise TypeError("Nodes cannot be ordered")
+
+    def _to_filter(self, post=False):
+        """Helper to convert to low-level filter, or :data:`None`.
+
+        Raises:
+            NotImplementedError: Always. This method is virtual.
+        """
+        raise NotImplementedError
+
+    def _post_filters(self):
+        """Helper to extract post-filter nodes, if any.
+
+        Returns:
+            None: Always. Because this is the base implementation.
+        """
+        return None
+
+    def resolve(self, bindings, used):
+        """Return a node with parameters replaced by the selected values.
+
+        .. note::
+
+            Both ``bindings`` and ``used`` are unused by this base class
+            implementation.
+
+        Args:
+            bindings (dict): A mapping of parameter bindings.
+            used (Dict[Union[str, int], bool]): A mapping of already used
+                parameters. This will be modified if the current parameter
+                is in ``bindings``.
+
+        Returns:
+            Node: The current node.
+        """
+        return self
 
 
 class FalseNode(Node):

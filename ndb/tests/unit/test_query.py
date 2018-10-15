@@ -127,8 +127,68 @@ class TestParameterizedFunction:
 class TestNode:
     @staticmethod
     def test_constructor():
-        with pytest.raises(NotImplementedError):
+        with pytest.raises(TypeError):
             query.Node()
+
+    @staticmethod
+    def _make_one():
+        # Bypass the intentionally broken constructor.
+        node = object.__new__(query.Node)
+        assert isinstance(node, query.Node)
+        return node
+
+    def test___eq__(self):
+        node = self._make_one()
+        with pytest.raises(NotImplementedError):
+            node == None
+
+    def test___ne__(self):
+        node = self._make_one()
+        with pytest.raises(NotImplementedError):
+            node != None
+
+    def test___le__(self):
+        node = self._make_one()
+        with pytest.raises(TypeError) as exc_info:
+            node <= None
+
+        assert exc_info.value.args == ("Nodes cannot be ordered",)
+
+    def test___lt__(self):
+        node = self._make_one()
+        with pytest.raises(TypeError) as exc_info:
+            node < None
+
+        assert exc_info.value.args == ("Nodes cannot be ordered",)
+
+    def test___ge__(self):
+        node = self._make_one()
+        with pytest.raises(TypeError) as exc_info:
+            node >= None
+
+        assert exc_info.value.args == ("Nodes cannot be ordered",)
+
+    def test___gt__(self):
+        node = self._make_one()
+        with pytest.raises(TypeError) as exc_info:
+            node > None
+
+        assert exc_info.value.args == ("Nodes cannot be ordered",)
+
+    def test__to_filter(self):
+        node = self._make_one()
+        with pytest.raises(NotImplementedError):
+            node._to_filter()
+
+    def test__post_filters(self):
+        node = self._make_one()
+        assert node._post_filters() is None
+
+    def test_resolve(self):
+        node = self._make_one()
+        used = {}
+        assert node.resolve({}, used) is node
+        assert used == {}
 
 
 class TestFalseNode:
