@@ -22,6 +22,10 @@ def test___all__():
     tests.unit.utils.verify___all__(query)
 
 
+def test_Cursor():
+    assert query.Cursor is NotImplemented
+
+
 class TestConjunctionNode:
     @staticmethod
     def test_constructor():
@@ -31,13 +35,6 @@ class TestConjunctionNode:
 
 def test_AND():
     assert query.AND is query.ConjunctionNode
-
-
-class TestCursor:
-    @staticmethod
-    def test_constructor():
-        with pytest.raises(NotImplementedError):
-            query.Cursor()
 
 
 class TestDisjunctionNode:
