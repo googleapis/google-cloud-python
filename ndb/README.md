@@ -1,14 +1,14 @@
-# Google Datastore ``ndb`` Client Library
+# Google Datastore `ndb` Client Library
 
 ## Introduction
 
-``ndb`` is a client library for use with [Google Cloud Datastore][0].
+`ndb` is a client library for use with [Google Cloud Datastore][0].
 It was designed specifically to be used from within the
 [Google App Engine][1] Python runtime.
 
 ## Overview
 
-Learn how to use the ``ndb`` library by visiting the Google Cloud Platform
+Learn how to use the `ndb` library by visiting the Google Cloud Platform
 [documentation][2].
 
 ## Assumptions
@@ -58,6 +58,10 @@ the rewrite.
   same data on our `Key` (we just make a wrapper around
   `google.cloud.datastore.Key`), so these are replaced by functions calls
   `self.app() == self.app()` which incur some overhead.
+- The verification of kind / string ID fails when they exceed 1500 bytes. The
+  original implementation didn't allow in excess of 500 bytes, but it seems
+  the limit has been raised by the backend. (FWIW, Danny's opinion is that
+  the backend should enforce these limits, not the library.)
 
 ## Comments
 
@@ -75,6 +79,11 @@ the rewrite.
   `__getnewargs__` value, the extra support for
   `Key({"flat": ("a", "b"), ...})` as an alternative to
   `Key(flat=("a", "b"), ...)` can be retired
+- Key parts (i.e. kind, string ID and / or integer ID) are verified when a
+  `Reference` is created. However, this won't occur when the corresponding
+  protobuf for the underlying `google.cloud.datastore.Key` is created. This
+  is because the `Reference` is a legacy protobuf message type from App
+  Engine, while the latest (`google/datastore/v1`) RPC definition uses a `Key`.
 
 [0]: https://cloud.google.com/datastore
 [1]: https://cloud.google.com/appengine
