@@ -26,6 +26,20 @@ def test_Cursor():
     assert query.Cursor is NotImplemented
 
 
+class TestQueryOptions:
+    @staticmethod
+    def test_constructor():
+        with pytest.raises(NotImplementedError):
+            query.QueryOptions()
+
+
+class TestRepeatedStructuredPropertyPredicate:
+    @staticmethod
+    def test_constructor():
+        with pytest.raises(NotImplementedError):
+            query.RepeatedStructuredPropertyPredicate()
+
+
 class TestParameterizedThing:
     @staticmethod
     def test___eq__():
@@ -38,54 +52,6 @@ class TestParameterizedThing:
         thing = query.ParameterizedThing()
         with pytest.raises(NotImplementedError):
             thing != None
-
-
-class TestConjunctionNode:
-    @staticmethod
-    def test_constructor():
-        with pytest.raises(NotImplementedError):
-            query.ConjunctionNode()
-
-
-def test_AND():
-    assert query.AND is query.ConjunctionNode
-
-
-class TestDisjunctionNode:
-    @staticmethod
-    def test_constructor():
-        with pytest.raises(NotImplementedError):
-            query.DisjunctionNode()
-
-
-def test_OR():
-    assert query.OR is query.DisjunctionNode
-
-
-class TestFalseNode:
-    @staticmethod
-    def test_constructor():
-        with pytest.raises(NotImplementedError):
-            query.FalseNode()
-
-
-class TestFilterNode:
-    @staticmethod
-    def test_constructor():
-        with pytest.raises(NotImplementedError):
-            query.FilterNode()
-
-
-def test_gql():
-    with pytest.raises(NotImplementedError):
-        query.gql()
-
-
-class TestNode:
-    @staticmethod
-    def test_constructor():
-        with pytest.raises(NotImplementedError):
-            query.Node()
 
 
 class TestParameter:
@@ -102,11 +68,32 @@ class TestParameterizedFunction:
             query.ParameterizedFunction()
 
 
+class TestNode:
+    @staticmethod
+    def test_constructor():
+        with pytest.raises(NotImplementedError):
+            query.Node()
+
+
+class TestFalseNode:
+    @staticmethod
+    def test_constructor():
+        with pytest.raises(NotImplementedError):
+            query.FalseNode()
+
+
 class TestParameterNode:
     @staticmethod
     def test_constructor():
         with pytest.raises(NotImplementedError):
             query.ParameterNode()
+
+
+class TestFilterNode:
+    @staticmethod
+    def test_constructor():
+        with pytest.raises(NotImplementedError):
+            query.FilterNode()
 
 
 class TestPostFilterNode:
@@ -116,6 +103,28 @@ class TestPostFilterNode:
             query.PostFilterNode()
 
 
+class TestConjunctionNode:
+    @staticmethod
+    def test_constructor():
+        with pytest.raises(NotImplementedError):
+            query.ConjunctionNode()
+
+
+class TestDisjunctionNode:
+    @staticmethod
+    def test_constructor():
+        with pytest.raises(NotImplementedError):
+            query.DisjunctionNode()
+
+
+def test_AND():
+    assert query.AND is query.ConjunctionNode
+
+
+def test_OR():
+    assert query.OR is query.DisjunctionNode
+
+
 class TestQuery:
     @staticmethod
     def test_constructor():
@@ -123,22 +132,13 @@ class TestQuery:
             query.Query()
 
 
+def test_gql():
+    with pytest.raises(NotImplementedError):
+        query.gql()
+
+
 class TestQueryIterator:
     @staticmethod
     def test_constructor():
         with pytest.raises(NotImplementedError):
             query.QueryIterator()
-
-
-class TestQueryOptions:
-    @staticmethod
-    def test_constructor():
-        with pytest.raises(NotImplementedError):
-            query.QueryOptions()
-
-
-class TestRepeatedStructuredPropertyPredicate:
-    @staticmethod
-    def test_constructor():
-        with pytest.raises(NotImplementedError):
-            query.RepeatedStructuredPropertyPredicate()
