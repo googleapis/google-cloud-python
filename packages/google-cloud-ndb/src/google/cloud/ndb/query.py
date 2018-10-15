@@ -14,6 +14,8 @@
 
 """High-level wrapper for datastore queries."""
 
+from google.cloud.ndb import _exceptions
+
 
 __all__ = [
     "Cursor",
@@ -64,8 +66,66 @@ class ParameterizedThing:
 
 
 class Parameter(ParameterizedThing):
-    def __init__(self, *args, **kwargs):
-        raise NotImplementedError
+    """Represents a bound variable in a GQL query.
+
+    ``Parameter(1)`` corresponds to a slot labeled ``:1`` in a GQL query.
+    ``Parameter('xyz')`` corresponds to a slot labeled ``:xyz``.
+
+    The value must be set (bound) separately by calling :meth:`set`.
+
+    Args:
+        key (Union[str, int]): The parameter key.
+
+    Raises:
+        TypeError: If the ``key`` is not a string or integer.
+    """
+
+    def __init__(self, key):
+        if not isinstance(key, (int, str, bytes)):
+            raise TypeError(
+                "Parameter key must be an integer or string, not {}".format(
+                    key
+                )
+            )
+        self._key = key
+
+    def __repr__(self):
+        return "{}({!r})".format(self.__class__.__name__, self._key)
+
+    def __eq__(self, other):
+        if not isinstance(other, Parameter):
+            return NotImplemented
+
+        return self._key == other._key
+
+    @property
+    def key(self):
+        """Retrieve the key."""
+        return self._key
+
+    def resolve(self, bindings, used):
+        """Resolve the current parameter from the parameter bindings.
+
+        Args:
+            bindings (dict): A mapping of parameter bindings.
+            used (Dict[Union[str, int], bool]): A mapping of already used
+                parameters. This will be modified if the current parameter
+                is in ``bindings``.
+
+        Returns:
+            Any: The bound value for the current parameter.
+
+        Raises:
+            .BadArgumentError: If the current parameter is not in ``bindings``.
+        """
+        key = self._key
+        if key not in bindings:
+            raise _exceptions.BadArgumentError(
+                "Parameter :{} is not bound.".format(key)
+            )
+        value = bindings[key]
+        used[key] = True
+        return value
 
 
 class ParameterizedFunction(ParameterizedThing):
