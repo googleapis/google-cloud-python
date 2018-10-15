@@ -449,14 +449,61 @@ class TestKey:
         assert key.reference() is unittest.mock.sentinel.reference
 
     @staticmethod
+    def test_reference_bad_kind():
+        too_long = "a" * (key_module._MAX_KEYPART_BYTES + 1)
+        for kind in ("", too_long):
+            key = key_module.Key(kind, "key", app="app")
+            with pytest.raises(ValueError):
+                key.reference()
+
+    @staticmethod
+    def test_reference_bad_string_id():
+        too_long = "a" * (key_module._MAX_KEYPART_BYTES + 1)
+        for id_ in ("", too_long):
+            key = key_module.Key("kind", id_, app="app")
+            with pytest.raises(ValueError):
+                key.reference()
+
+    @staticmethod
+    def test_reference_bad_integer_id():
+        for id_ in (-10, 0, 2 ** 64):
+            key = key_module.Key("kind", id_, app="app")
+            with pytest.raises(ValueError):
+                key.reference()
+
+    @staticmethod
     def test_serialized():
-        key = key_module.Key("a", "b", app="c")
-        assert key.serialized() == b'j\x01cr\x08\x0b\x12\x01a"\x01b\x0c'
+        key = key_module.Key("a", 108, app="c")
+        assert key.serialized() == b"j\x01cr\x07\x0b\x12\x01a\x18l\x0c"
 
     @staticmethod
     def test_urlsafe():
-        key = key_module.Key("d", "e", app="f")
-        assert key.urlsafe() == b"agFmcggLEgFkIgFlDA"
+        key = key_module.Key("d", None, app="f")
+        assert key.urlsafe() == b"agFmcgULEgFkDA"
+
+    @staticmethod
+    def test_get():
+        key = key_module.Key("a", "b", app="c")
+        with pytest.raises(NotImplementedError):
+            key.get()
+
+    @staticmethod
+    def test_get_async():
+        key = key_module.Key("a", "b", app="c")
+        with pytest.raises(NotImplementedError):
+            key.get_async()
+
+    @staticmethod
+    def test_delete():
+        key = key_module.Key("a", "b", app="c")
+        with pytest.raises(NotImplementedError):
+            key.delete()
+
+    @staticmethod
+    def test_delete_async():
+        key = key_module.Key("a", "b", app="c")
+        with pytest.raises(NotImplementedError):
+            key.delete_async()
 
     @staticmethod
     def test_from_old_key():
