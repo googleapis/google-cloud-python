@@ -26,4 +26,18 @@ ssh-add ${KOKORO_GFILE_DIR}/id_rsa
 pip install --upgrade -r docs/requirements.txt
 
 # Build and Publish Documentation
-bash test_utils/scripts/update_docs.sh kokoro
+# bash test_utils/scripts/update_docs.sh kokoro
+
+# Setup service account credentials.
+gcloud auth activate-service-account --key-file==${KOKORO_GFILE_DIR}/service-account.json
+
+# Run the GOB cookie daemon
+git clone https://gerrit.googlesource.com/gcompute-tools $KOKORO_ARTIFACTS_DIR/gcompute-tools
+$KOKORO_ARTIFACTS_DIR/gcompute-tools/git-cookie-authdaemon
+
+git clone https://devrel.googlesource.com/cloud-docs/library-reference-docs
+
+cd library-reference-docs
+
+# Set up remote to use cookie and bypass gerrit
+git remote add direct https://devrel.googlesource.com/_direct/cloud-docs/library-reference-docs
