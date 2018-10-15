@@ -16,9 +16,9 @@
 
 
 __all__ = [
+    "Cursor",
     "ConjunctionNode",
     "AND",
-    "Cursor",
     "DisjunctionNode",
     "OR",
     "FalseNode",
@@ -37,17 +37,15 @@ __all__ = [
 ]
 
 
+Cursor = NotImplemented  # From `google.appengine.datastore.datastore_query`
+
+
 class ConjunctionNode:
     def __init__(self, *args, **kwargs):
         raise NotImplementedError
 
 
 AND = ConjunctionNode
-
-
-class Cursor:
-    def __init__(self, *args, **kwargs):
-        raise NotImplementedError
 
 
 class DisjunctionNode:
