@@ -83,16 +83,15 @@ def system(session, py):
     # Set the virtualenv dirname.
     session.virtualenv_dirname = 'sys-' + py
 
-    if 'offline' not in session.posargs:
-      # Use pre-release gRPC for system tests.
-      session.install('--pre', 'grpcio')
+    # Use pre-release gRPC for system tests.
+    session.install('--pre', 'grpcio')
 
-      # Install all test dependencies, then install local packages in-place.
-      session.install('mock', 'pytest')
-      for local_dep in LOCAL_DEPS:
-          session.install('-e', local_dep)
-      session.install('-e', '../test_utils/')
-      session.install('-e', '.')
+    # Install all test dependencies, then install local packages in-place.
+    session.install('mock', 'pytest')
+    for local_dep in LOCAL_DEPS:
+        session.install('-e', local_dep)
+    session.install('-e', '../test_utils/')
+    session.install('-e', '.')
 
     # Run py.test against the system tests.
     session.run(

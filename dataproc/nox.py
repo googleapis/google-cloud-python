@@ -74,12 +74,11 @@ def system(session, py):
 
     session.virtualenv_dirname = 'sys-' + py
 
-    if 'offline' not in session.posargs:
-      # Use pre-release gRPC for system tests.
-      session.install('--pre', 'grpcio')
+    # Use pre-release gRPC for system tests.
+    session.install('--pre', 'grpcio')
 
-      session.install('pytest')
-      session.install('-e', '.')
+    session.install('pytest')
+    session.install('-e', '.')
 
     session.run('py.test', '--quiet', os.path.join('tests', 'system'),
                 *session.posargs)
