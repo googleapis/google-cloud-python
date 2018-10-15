@@ -84,7 +84,7 @@ via its :meth:`~google.cloud.spanner.database.Database.update_ddl` method:
 Drop a Database
 ---------------
 
-Drop a databse using its
+Drop a database using its
 :meth:`~google.cloud.spanner.database.Database.drop` method:
 
 .. code:: python
