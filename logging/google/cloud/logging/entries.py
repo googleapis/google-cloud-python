@@ -109,6 +109,7 @@ class _ApiReprMixin(object):
         if source_location is not None:
             line = source_location.pop('line', None)
             source_location['line'] = _int_or_none(line)
+        operation = resource.get('operation')
 
         monitored_resource_dict = resource.get('resource')
         monitored_resource = None
@@ -130,6 +131,7 @@ class _ApiReprMixin(object):
             span_id=span_id,
             trace_sampled=trace_sampled,
             source_location=source_location,
+            operation=operation
         )
         received = resource.get('receiveTimestamp')
         if received is not None:
@@ -177,6 +179,8 @@ class _ApiReprMixin(object):
             source_location = self.source_location.copy()
             source_location['line'] = str(source_location.pop('line', 0))
             info['sourceLocation'] = source_location
+        if self.operation is not None:
+            info['operation'] = self.operation
         return info
 
 
@@ -195,6 +199,7 @@ _LOG_ENTRY_FIELDS = (  # (name, default)
     ('span_id', None),
     ('trace_sampled', None),
     ('source_location', None),
+    ('operation', None),
 )
 
 
@@ -245,6 +250,10 @@ _LOG_ENTRY_PARAM_DOCSTRING = """\
 :type source_location: dict
 :param source_location: (optional) location in source code from which
                         the entry was emitted.
+
+:type operation: dict
+:param operation: (optional) additional information about a potentially
+                  long-running operation with which a log entry is associated.
 """
 
 

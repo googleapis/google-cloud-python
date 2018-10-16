@@ -97,6 +97,7 @@ class TestLogEntry(unittest.TestCase):
         self.assertIsNone(entry.span_id)
         self.assertIsNone(entry.trace_sampled)
         self.assertIsNone(entry.source_location)
+        self.assertIsNone(entry.operation)
 
     def test_ctor_explicit(self):
         import datetime
@@ -126,6 +127,14 @@ class TestLogEntry(unittest.TestCase):
             'line': LINE_NO,
             'function': FUNCTION,
         }
+        OP_ID = 'OP_ID'
+        PRODUCER = 'PRODUCER'
+        OPERATION = {
+            'id': OP_ID,
+            'producer': PRODUCER,
+            'first': True,
+            'last': False,
+        }
         logger = _Logger(self.LOGGER_NAME, self.PROJECT)
 
         entry = self._make_one(
@@ -141,6 +150,7 @@ class TestLogEntry(unittest.TestCase):
             span_id=SPANID,
             trace_sampled=True,
             source_location=SOURCE_LOCATION,
+            operation=OPERATION,
         )
 
         self.assertEqual(entry.payload, PAYLOAD)
@@ -161,6 +171,8 @@ class TestLogEntry(unittest.TestCase):
         self.assertEqual(source_location['file'], FILE)
         self.assertEqual(source_location['line'], LINE_NO)
         self.assertEqual(source_location['function'], FUNCTION)
+
+        self.assertEqual(entry.operation, OPERATION)
 
     def test_from_api_repr_no_payload_missing_data_no_loggers(self):
         client = _Client(self.PROJECT)
@@ -185,6 +197,7 @@ class TestLogEntry(unittest.TestCase):
         self.assertIsNone(entry.span_id)
         self.assertIsNone(entry.trace_sampled)
         self.assertIsNone(entry.source_location)
+        self.assertIsNone(entry.operation)
         self.assertIs(logger.client, client)
 
     def test_from_api_repr_w_loggers_no_logger_match(self):
@@ -224,6 +237,14 @@ class TestLogEntry(unittest.TestCase):
             'line': str(LINE_NO),
             'function': FUNCTION,
         }
+        OP_ID = 'OP_ID'
+        PRODUCER = 'PRODUCER'
+        OPERATION = {
+            'id': OP_ID,
+            'producer': PRODUCER,
+            'first': True,
+            'last': False,
+        }
         API_REPR = {
             'dummyPayload': PAYLOAD,
             'logName': LOG_NAME,
@@ -241,6 +262,7 @@ class TestLogEntry(unittest.TestCase):
             'spanId': SPANID,
             'traceSampled': True,
             'sourceLocation': SOURCE_LOCATION,
+            'operation': OPERATION,
         }
         loggers = {}
 
@@ -272,6 +294,8 @@ class TestLogEntry(unittest.TestCase):
         self.assertEqual(source_location['line'], LINE_NO)
         self.assertEqual(source_location['function'], FUNCTION)
 
+        self.assertEqual(entry.operation, OPERATION)
+
     def test_from_api_repr_w_loggers_w_logger_match(self):
         from datetime import datetime
         from datetime import timedelta
@@ -296,6 +320,14 @@ class TestLogEntry(unittest.TestCase):
             'line': str(LINE_NO),
             'function': FUNCTION,
         }
+        OP_ID = 'OP_ID'
+        PRODUCER = 'PRODUCER'
+        OPERATION = {
+            'id': OP_ID,
+            'producer': PRODUCER,
+            'first': True,
+            'last': False,
+        }
         API_REPR = {
             'dummyPayload': PAYLOAD,
             'logName': LOG_NAME,
@@ -307,6 +339,7 @@ class TestLogEntry(unittest.TestCase):
             'spanId': SPANID,
             'traceSampled': True,
             'sourceLocation': SOURCE_LOCATION,
+            'operation': OPERATION,
         }
         LOGGER = object()
         loggers = {LOG_NAME: LOGGER}
@@ -329,6 +362,8 @@ class TestLogEntry(unittest.TestCase):
         self.assertEqual(source_location['file'], FILE)
         self.assertEqual(source_location['line'], LINE_NO)
         self.assertEqual(source_location['function'], FUNCTION)
+
+        self.assertEqual(entry.operation, OPERATION)
 
     def test_to_api_repr_empty_w_source_location_no_line(self):
         from google.cloud.logging.logger import _GLOBAL_RESOURCE
@@ -388,6 +423,14 @@ class TestLogEntry(unittest.TestCase):
             'line': LINE,
             'function': FUNCTION,
         }
+        OP_ID = 'OP_ID'
+        PRODUCER = 'PRODUCER'
+        OPERATION = {
+            'id': OP_ID,
+            'producer': PRODUCER,
+            'first': True,
+            'last': False,
+        }
         expected = {
             'logName': LOG_NAME,
             'labels': LABELS,
@@ -404,6 +447,7 @@ class TestLogEntry(unittest.TestCase):
                 'line': str(LINE),
                 'function': FUNCTION,
             },
+            'operation': OPERATION,
         }
         entry = self._make_one(
             type_='empty',
@@ -418,6 +462,7 @@ class TestLogEntry(unittest.TestCase):
             span_id=SPANID,
             trace_sampled=True,
             source_location=SOURCE_LOCATION,
+            operation=OPERATION,
         )
 
         self.assertEqual(entry.to_api_repr(), expected)
@@ -471,6 +516,14 @@ class TestLogEntry(unittest.TestCase):
             'line': LINE,
             'function': FUNCTION,
         }
+        OP_ID = 'OP_ID'
+        PRODUCER = 'PRODUCER'
+        OPERATION = {
+            'id': OP_ID,
+            'producer': PRODUCER,
+            'first': True,
+            'last': False,
+        }
         expected = {
             'logName': LOG_NAME,
             'textPayload': TEXT,
@@ -488,6 +541,7 @@ class TestLogEntry(unittest.TestCase):
                 'line': str(LINE),
                 'function': FUNCTION,
             },
+            'operation': OPERATION,
         }
         entry = self._make_one(
             type_='text',
@@ -503,6 +557,7 @@ class TestLogEntry(unittest.TestCase):
             span_id=SPANID,
             trace_sampled=True,
             source_location=SOURCE_LOCATION,
+            operation=OPERATION,
         )
 
         self.assertEqual(entry.to_api_repr(), expected)
@@ -556,6 +611,14 @@ class TestLogEntry(unittest.TestCase):
             'line': LINE,
             'function': FUNCTION,
         }
+        OP_ID = 'OP_ID'
+        PRODUCER = 'PRODUCER'
+        OPERATION = {
+            'id': OP_ID,
+            'producer': PRODUCER,
+            'first': True,
+            'last': False,
+        }
         expected = {
             'logName': LOG_NAME,
             'jsonPayload': JSON_PAYLOAD,
@@ -573,6 +636,7 @@ class TestLogEntry(unittest.TestCase):
                 'line': str(LINE),
                 'function': FUNCTION,
             },
+            'operation': OPERATION,
         }
         entry = self._make_one(
             type_='struct',
@@ -588,6 +652,7 @@ class TestLogEntry(unittest.TestCase):
             span_id=SPANID,
             trace_sampled=True,
             source_location=SOURCE_LOCATION,
+            operation=OPERATION,
         )
 
         self.assertEqual(entry.to_api_repr(), expected)
@@ -648,6 +713,14 @@ class TestLogEntry(unittest.TestCase):
             'line': LINE,
             'function': FUNCTION,
         }
+        OP_ID = 'OP_ID'
+        PRODUCER = 'PRODUCER'
+        OPERATION = {
+            'id': OP_ID,
+            'producer': PRODUCER,
+            'first': True,
+            'last': False,
+        }
         expected = {
             'logName': LOG_NAME,
             'protoPayload': MessageToDict(message),
@@ -665,6 +738,7 @@ class TestLogEntry(unittest.TestCase):
                 'line': str(LINE),
                 'function': FUNCTION,
             },
+            'operation': OPERATION,
         }
 
         entry = self._make_one(
@@ -681,6 +755,7 @@ class TestLogEntry(unittest.TestCase):
             span_id=SPANID,
             trace_sampled=True,
             source_location=SOURCE_LOCATION,
+            operation=OPERATION,
         )
 
         self.assertEqual(entry.to_api_repr(), expected)
