@@ -144,9 +144,15 @@ class TestLogger(unittest.TestCase):
         logger = self._make_one(self.LOGGER_NAME, client=client1,
                                 labels=DEFAULT_LABELS)
 
-        logger.log_empty(client=client2, labels=LABELS,
-                         insert_id=IID, severity=SEVERITY,
-                         http_request=REQUEST, trace=TRACE, span_id=SPANID)
+        logger.log_empty(
+            client=client2,
+            labels=LABELS,
+            insert_id=IID,
+            severity=SEVERITY,
+            http_request=REQUEST,
+            trace=TRACE,
+            span_id=SPANID,
+        )
 
         self.assertEqual(api._write_entries_called_with,
                          (ENTRIES, None, None, None))
@@ -301,9 +307,16 @@ class TestLogger(unittest.TestCase):
         logger = self._make_one(self.LOGGER_NAME, client=client1,
                                 labels=DEFAULT_LABELS)
 
-        logger.log_text(TEXT, client=client2, labels=LABELS,
-                        insert_id=IID, severity=SEVERITY, http_request=REQUEST,
-                        trace=TRACE, span_id=SPANID)
+        logger.log_text(
+            TEXT,
+            client=client2,
+            labels=LABELS,
+            insert_id=IID,
+            severity=SEVERITY,
+            http_request=REQUEST,
+            trace=TRACE,
+            span_id=SPANID,
+        )
 
         self.assertEqual(api._write_entries_called_with,
                          (ENTRIES, None, None, None))
@@ -388,9 +401,16 @@ class TestLogger(unittest.TestCase):
         logger = self._make_one(self.LOGGER_NAME, client=client1,
                                 labels=DEFAULT_LABELS)
 
-        logger.log_struct(STRUCT, client=client2, labels=LABELS,
-                          insert_id=IID, severity=SEVERITY,
-                          http_request=REQUEST, trace=TRACE, span_id=SPANID)
+        logger.log_struct(
+            STRUCT,
+            client=client2,
+            labels=LABELS,
+            insert_id=IID,
+            severity=SEVERITY,
+            http_request=REQUEST,
+            trace=TRACE,
+            span_id=SPANID,
+        )
 
         self.assertEqual(api._write_entries_called_with,
                          (ENTRIES, None, None, None))
@@ -558,9 +578,16 @@ class TestLogger(unittest.TestCase):
         logger = self._make_one(self.LOGGER_NAME, client=client1,
                                 labels=DEFAULT_LABELS)
 
-        logger.log_proto(message, client=client2, labels=LABELS,
-                         insert_id=IID, severity=SEVERITY,
-                         http_request=REQUEST, trace=TRACE, span_id=SPANID)
+        logger.log_proto(
+            message,
+            client=client2,
+            labels=LABELS,
+            insert_id=IID,
+            severity=SEVERITY,
+            http_request=REQUEST,
+            trace=TRACE,
+            span_id=SPANID,
+        )
 
         self.assertEqual(api._write_entries_called_with,
                          (ENTRIES, None, None, None))
@@ -804,9 +831,17 @@ class TestBatch(unittest.TestCase):
         client = _Client(project=self.PROJECT, connection=_make_credentials())
         logger = _Logger()
         batch = self._make_one(logger, client=client)
-        batch.log_text(TEXT, labels=LABELS, insert_id=IID, severity=SEVERITY,
-                       http_request=REQUEST, timestamp=TIMESTAMP,
-                       resource=RESOURCE, trace=TRACE, span_id=SPANID)
+        batch.log_text(
+            TEXT,
+            labels=LABELS,
+            insert_id=IID,
+            severity=SEVERITY,
+            http_request=REQUEST,
+            timestamp=TIMESTAMP,
+            resource=RESOURCE,
+            trace=TRACE,
+            span_id=SPANID,
+        )
         self.assertEqual(
             batch.entries,
             [('text', TEXT, LABELS, IID, SEVERITY, REQUEST, TIMESTAMP,
@@ -854,10 +889,17 @@ class TestBatch(unittest.TestCase):
         client = _Client(project=self.PROJECT, connection=_make_credentials())
         logger = _Logger()
         batch = self._make_one(logger, client=client)
-        batch.log_struct(STRUCT, labels=LABELS, insert_id=IID,
-                         severity=SEVERITY, http_request=REQUEST,
-                         timestamp=TIMESTAMP, resource=RESOURCE, trace=TRACE,
-                         span_id=SPANID)
+        batch.log_struct(
+            STRUCT,
+            labels=LABELS,
+            insert_id=IID,
+            severity=SEVERITY,
+            http_request=REQUEST,
+            timestamp=TIMESTAMP,
+            resource=RESOURCE,
+            trace=TRACE,
+            span_id=SPANID,
+        )
         self.assertEqual(
             batch.entries,
             [('struct', STRUCT, LABELS, IID, SEVERITY, REQUEST, TIMESTAMP,
@@ -908,10 +950,17 @@ class TestBatch(unittest.TestCase):
         client = _Client(project=self.PROJECT, connection=_make_credentials())
         logger = _Logger()
         batch = self._make_one(logger, client=client)
-        batch.log_proto(message, labels=LABELS, insert_id=IID,
-                        severity=SEVERITY, http_request=REQUEST,
-                        timestamp=TIMESTAMP, resource=RESOURCE, trace=TRACE,
-                        span_id=SPANID)
+        batch.log_proto(
+            message,
+            labels=LABELS,
+            insert_id=IID,
+            severity=SEVERITY,
+            http_request=REQUEST,
+            timestamp=TIMESTAMP,
+            resource=RESOURCE,
+            trace=TRACE,
+            span_id=SPANID,
+        )
         self.assertEqual(
             batch.entries,
             [('proto', message, LABELS, IID, SEVERITY, REQUEST, TIMESTAMP,
@@ -998,12 +1047,26 @@ class TestBatch(unittest.TestCase):
         logger = _Logger()
         batch = self._make_one(logger, client=client)
 
-        batch.log_text(TEXT, insert_id=IID1, timestamp=TIMESTAMP1,
-                       trace=TRACE1, span_id=SPANID1)
-        batch.log_struct(STRUCT, insert_id=IID2, timestamp=TIMESTAMP2,
-                         trace=TRACE2, span_id=SPANID2)
-        batch.log_proto(message, insert_id=IID3, timestamp=TIMESTAMP3,
-                        trace=TRACE3, span_id=SPANID3)
+        batch.log_text(
+            TEXT,
+            insert_id=IID1,
+            timestamp=TIMESTAMP1,
+            trace=TRACE1,
+            span_id=SPANID1,
+        )
+        batch.log_struct(
+            STRUCT,
+            insert_id=IID2,
+            timestamp=TIMESTAMP2,
+            trace=TRACE2,
+            span_id=SPANID2,
+        )
+        batch.log_proto(
+            message,
+            insert_id=IID3,
+            timestamp=TIMESTAMP3,
+            trace=TRACE3, span_id=SPANID3,
+        )
         batch.commit()
 
         self.assertEqual(list(batch.entries), [])

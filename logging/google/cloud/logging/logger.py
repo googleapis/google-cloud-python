@@ -93,11 +93,20 @@ class Logger(object):
         client = self._require_client(client)
         return Batch(self, client)
 
-    def _make_entry_resource(self, text=None, info=None, message=None,
-                             labels=None, insert_id=None, severity=None,
-                             http_request=None, timestamp=None,
-                             resource=_GLOBAL_RESOURCE, trace=None,
-                             span_id=None):
+    def _make_entry_resource(
+        self,
+        text=None,
+        info=None,
+        message=None,
+        labels=None,
+        insert_id=None,
+        severity=None,
+        http_request=None,
+        timestamp=None,
+        resource=_GLOBAL_RESOURCE,
+        trace=None,
+        span_id=None,
+    ):
         """Return a log entry resource of the appropriate type.
 
         Helper for :meth:`log_text`, :meth:`log_struct`, and :meth:`log_proto`.
@@ -188,9 +197,18 @@ class Logger(object):
 
         return entry
 
-    def log_empty(self, client=None, labels=None, insert_id=None,
-                  severity=None, http_request=None, timestamp=None,
-                  resource=_GLOBAL_RESOURCE, trace=None, span_id=None):
+    def log_empty(
+        self,
+        client=None,
+        labels=None,
+        insert_id=None,
+        severity=None,
+        http_request=None,
+        timestamp=None,
+        resource=_GLOBAL_RESOURCE,
+        trace=None,
+        span_id=None,
+    ):
         """API call:  log an empty message via a POST request
 
         See
@@ -230,14 +248,30 @@ class Logger(object):
         """
         client = self._require_client(client)
         entry_resource = self._make_entry_resource(
-            labels=labels, insert_id=insert_id, severity=severity,
-            http_request=http_request, timestamp=timestamp, resource=resource,
-            trace=trace, span_id=span_id)
+            labels=labels,
+            insert_id=insert_id,
+            severity=severity,
+            http_request=http_request,
+            timestamp=timestamp,
+            resource=resource,
+            trace=trace,
+            span_id=span_id,
+        )
         client.logging_api.write_entries([entry_resource])
 
-    def log_text(self, text, client=None, labels=None, insert_id=None,
-                 severity=None, http_request=None, timestamp=None,
-                 resource=_GLOBAL_RESOURCE, trace=None, span_id=None):
+    def log_text(
+        self,
+        text,
+        client=None,
+        labels=None,
+        insert_id=None,
+        severity=None,
+        http_request=None,
+        timestamp=None,
+        resource=_GLOBAL_RESOURCE,
+        trace=None,
+        span_id=None,
+    ):
         """API call:  log a text message via a POST request
 
         See
@@ -280,14 +314,31 @@ class Logger(object):
         """
         client = self._require_client(client)
         entry_resource = self._make_entry_resource(
-            text=text, labels=labels, insert_id=insert_id, severity=severity,
-            http_request=http_request, timestamp=timestamp, resource=resource,
-            trace=trace, span_id=span_id)
+            text=text,
+            labels=labels,
+            insert_id=insert_id,
+            severity=severity,
+            http_request=http_request,
+            timestamp=timestamp,
+            resource=resource,
+            trace=trace,
+            span_id=span_id,
+        )
         client.logging_api.write_entries([entry_resource])
 
-    def log_struct(self, info, client=None, labels=None, insert_id=None,
-                   severity=None, http_request=None, timestamp=None,
-                   resource=_GLOBAL_RESOURCE, trace=None, span_id=None):
+    def log_struct(
+        self,
+        info,
+        client=None,
+        labels=None,
+        insert_id=None,
+        severity=None,
+        http_request=None,
+        timestamp=None,
+        resource=_GLOBAL_RESOURCE,
+        trace=None,
+        span_id=None,
+    ):
         """API call:  log a structured message via a POST request
 
         See
@@ -330,14 +381,31 @@ class Logger(object):
         """
         client = self._require_client(client)
         entry_resource = self._make_entry_resource(
-            info=info, labels=labels, insert_id=insert_id, severity=severity,
-            http_request=http_request, timestamp=timestamp, resource=resource,
-            trace=trace, span_id=span_id)
+            info=info,
+            labels=labels,
+            insert_id=insert_id,
+            severity=severity,
+            http_request=http_request,
+            timestamp=timestamp,
+            resource=resource,
+            trace=trace,
+            span_id=span_id,
+        )
         client.logging_api.write_entries([entry_resource])
 
-    def log_proto(self, message, client=None, labels=None, insert_id=None,
-                  severity=None, http_request=None, timestamp=None,
-                  resource=_GLOBAL_RESOURCE, trace=None, span_id=None):
+    def log_proto(
+        self,
+        message,
+        client=None,
+        labels=None,
+        insert_id=None,
+        severity=None,
+        http_request=None,
+        timestamp=None,
+        resource=_GLOBAL_RESOURCE,
+        trace=None,
+        span_id=None,
+    ):
         """API call:  log a protobuf message via a POST request
 
         See
@@ -380,9 +448,16 @@ class Logger(object):
         """
         client = self._require_client(client)
         entry_resource = self._make_entry_resource(
-            message=message, labels=labels, insert_id=insert_id,
-            severity=severity, http_request=http_request, timestamp=timestamp,
-            resource=resource, trace=trace, span_id=span_id)
+            message=message,
+            labels=labels,
+            insert_id=insert_id,
+            severity=severity,
+            http_request=http_request,
+            timestamp=timestamp,
+            resource=resource,
+            trace=trace,
+            span_id=span_id,
+        )
         client.logging_api.write_entries([entry_resource])
 
     def delete(self, client=None):
@@ -475,9 +550,18 @@ class Batch(object):
         if exc_type is None:
             self.commit()
 
-    def log_text(self, text, labels=None, insert_id=None, severity=None,
-                 http_request=None, timestamp=None, resource=_GLOBAL_RESOURCE,
-                 trace=None, span_id=None):
+    def log_text(
+        self,
+        text,
+        labels=None,
+        insert_id=None,
+        severity=None,
+        http_request=None,
+        timestamp=None,
+        resource=_GLOBAL_RESOURCE,
+        trace=None,
+        span_id=None,
+    ):
         """Add a text entry to be logged during :meth:`commit`.
 
         :type text: str
@@ -513,13 +597,31 @@ class Batch(object):
         :param span_id: (optional) span_id within the trace for the log entry.
                         Specify the trace parameter if span_id is set.
         """
-        self.entries.append(
-            ('text', text, labels, insert_id, severity, http_request,
-             timestamp, resource, trace, span_id))
+        self.entries.append((
+            'text',
+            text,
+            labels,
+            insert_id,
+            severity,
+            http_request,
+            timestamp,
+            resource,
+            trace,
+            span_id,
+        ))
 
-    def log_struct(self, info, labels=None, insert_id=None, severity=None,
-                   http_request=None, timestamp=None,
-                   resource=_GLOBAL_RESOURCE, trace=None, span_id=None):
+    def log_struct(
+        self,
+        info,
+        labels=None,
+        insert_id=None,
+        severity=None,
+        http_request=None,
+        timestamp=None,
+        resource=_GLOBAL_RESOURCE,
+        trace=None,
+        span_id=None,
+    ):
         """Add a struct entry to be logged during :meth:`commit`.
 
         :type info: dict
@@ -555,13 +657,31 @@ class Batch(object):
         :param span_id: (optional) span_id within the trace for the log entry.
                         Specify the trace parameter if span_id is set.
         """
-        self.entries.append(
-            ('struct', info, labels, insert_id, severity, http_request,
-             timestamp, resource, trace, span_id))
+        self.entries.append((
+            'struct',
+            info,
+            labels,
+            insert_id,
+            severity,
+            http_request,
+            timestamp,
+            resource,
+            trace,
+            span_id,
+        ))
 
-    def log_proto(self, message, labels=None, insert_id=None, severity=None,
-                  http_request=None, timestamp=None,
-                  resource=_GLOBAL_RESOURCE, trace=None, span_id=None):
+    def log_proto(
+        self,
+        message,
+        labels=None,
+        insert_id=None,
+        severity=None,
+        http_request=None,
+        timestamp=None,
+        resource=_GLOBAL_RESOURCE,
+        trace=None,
+        span_id=None,
+    ):
         """Add a protobuf entry to be logged during :meth:`commit`.
 
         :type message: protobuf message
@@ -597,9 +717,18 @@ class Batch(object):
         :param span_id: (optional) span_id within the trace for the log entry.
                         Specify the trace parameter if span_id is set.
         """
-        self.entries.append(
-            ('proto', message, labels, insert_id, severity, http_request,
-             timestamp, resource, trace, span_id))
+        self.entries.append((
+            'proto',
+            message,
+            labels,
+            insert_id,
+            severity,
+            http_request,
+            timestamp,
+            resource,
+            trace,
+            span_id,
+        ))
 
     def commit(self, client=None):
         """Send saved log entries as a single API call.
