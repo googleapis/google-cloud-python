@@ -711,6 +711,109 @@ class TestClient(unittest.TestCase):
                 'location': OTHER_LOCATION,
             })
 
+    def test_create_dataset_w_reference(self):
+        path = '/projects/%s/datasets' % self.PROJECT
+        resource = {
+            'datasetReference':
+                {'projectId': self.PROJECT, 'datasetId': self.DS_ID},
+            'etag': "etag",
+            'id': "%s:%s" % (self.PROJECT, self.DS_ID),
+            'location': self.LOCATION,
+        }
+        creds = _make_credentials()
+        client = self._make_one(
+            project=self.PROJECT, credentials=creds, location=self.LOCATION)
+        conn = client._connection = _make_connection(resource)
+
+        dataset = client.create_dataset(client.dataset(self.DS_ID))
+
+        self.assertEqual(dataset.dataset_id, self.DS_ID)
+        self.assertEqual(dataset.project, self.PROJECT)
+        self.assertEqual(dataset.etag, resource['etag'])
+        self.assertEqual(dataset.full_dataset_id, resource['id'])
+        self.assertEqual(dataset.location, self.LOCATION)
+
+        conn.api_request.assert_called_once_with(
+            method='POST',
+            path=path,
+            data={
+                'datasetReference': {
+                    'projectId': self.PROJECT,
+                    'datasetId': self.DS_ID,
+                },
+                'labels': {},
+                'location': self.LOCATION,
+            })
+
+    def test_create_dataset_w_fully_qualified_string(self):
+        path = '/projects/%s/datasets' % self.PROJECT
+        resource = {
+            'datasetReference':
+                {'projectId': self.PROJECT, 'datasetId': self.DS_ID},
+            'etag': "etag",
+            'id': "%s:%s" % (self.PROJECT, self.DS_ID),
+            'location': self.LOCATION,
+        }
+        creds = _make_credentials()
+        client = self._make_one(
+            project=self.PROJECT, credentials=creds, location=self.LOCATION)
+        conn = client._connection = _make_connection(resource)
+
+        dataset = client.create_dataset(
+            '{}.{}'.format(self.PROJECT, self.DS_ID))
+
+        self.assertEqual(dataset.dataset_id, self.DS_ID)
+        self.assertEqual(dataset.project, self.PROJECT)
+        self.assertEqual(dataset.etag, resource['etag'])
+        self.assertEqual(dataset.full_dataset_id, resource['id'])
+        self.assertEqual(dataset.location, self.LOCATION)
+
+        conn.api_request.assert_called_once_with(
+            method='POST',
+            path=path,
+            data={
+                'datasetReference': {
+                    'projectId': self.PROJECT,
+                    'datasetId': self.DS_ID,
+                },
+                'labels': {},
+                'location': self.LOCATION,
+            })
+
+    def test_create_dataset_w_string(self):
+        path = '/projects/%s/datasets' % self.PROJECT
+        resource = {
+            'datasetReference':
+                {'projectId': self.PROJECT, 'datasetId': self.DS_ID},
+            'etag': "etag",
+            'id': "%s:%s" % (self.PROJECT, self.DS_ID),
+            'location': self.LOCATION,
+        }
+        creds = _make_credentials()
+        client = self._make_one(
+            project=self.PROJECT, credentials=creds, location=self.LOCATION)
+        conn = client._connection = _make_connection(resource)
+
+        dataset = client.create_dataset(self.DS_ID)
+
+        self.assertEqual(dataset.dataset_id, self.DS_ID)
+        self.assertEqual(dataset.project, self.PROJECT)
+        self.assertEqual(dataset.etag, resource['etag'])
+        self.assertEqual(dataset.full_dataset_id, resource['id'])
+        self.assertEqual(dataset.location, self.LOCATION)
+
+        conn.api_request.assert_called_once_with(
+            method='POST',
+            path=path,
+            data={
+                'datasetReference': {
+                    'projectId': self.PROJECT,
+                    'datasetId': self.DS_ID,
+                },
+                'labels': {},
+                'location': self.LOCATION,
+            })
+
     def test_create_table_w_day_partition(self):
         from google.cloud.bigquery.table import Table
         from google.cloud.bigquery.table import TimePartitioning
@@ -990,6 +1093,97 @@ class TestClient(unittest.TestCase):
         self.assertEqual(got.external_data_configuration.source_format,
                          SourceFormat.CSV)
         self.assertEqual(got.external_data_configuration.autodetect, True)
+
+    def test_create_table_w_reference(self):
+        path = 'projects/%s/datasets/%s/tables' % (
+            self.PROJECT, self.DS_ID)
+        creds = _make_credentials()
+        client = self._make_one(project=self.PROJECT, credentials=creds)
+        resource = {
+            'id': '%s:%s:%s' % (self.PROJECT, self.DS_ID, self.TABLE_ID),
+            'tableReference': {
+                'projectId': self.PROJECT,
+                'datasetId': self.DS_ID,
+                'tableId': self.TABLE_ID
+            },
+        }
+        conn = client._connection = _make_connection(resource)
+
+        got = client.create_table(self.TABLE_REF)
+
+        conn.api_request.assert_called_once_with(
+            method='POST',
+            path='/%s' % path,
+            data={
+                'tableReference': {
+                    'projectId': self.PROJECT,
+                    'datasetId': self.DS_ID,
+                    'tableId': self.TABLE_ID
+                },
+                'labels': {},
+            })
+        self.assertEqual(got.table_id, self.TABLE_ID)
+
+    def test_create_table_w_fully_qualified_string(self):
+        path = 'projects/%s/datasets/%s/tables' % (
+            self.PROJECT, self.DS_ID)
+        creds = _make_credentials()
+        client = self._make_one(project=self.PROJECT, credentials=creds)
+        resource = {
+            'id': '%s:%s:%s' % (self.PROJECT, self.DS_ID, self.TABLE_ID),
+            'tableReference': {
+                'projectId': self.PROJECT,
+                'datasetId': self.DS_ID,
+                'tableId': self.TABLE_ID
+            },
+        }
+        conn = client._connection = _make_connection(resource)
+
+        got = client.create_table(
+            '{}.{}.{}'.format(self.PROJECT, self.DS_ID, self.TABLE_ID))
+
+        conn.api_request.assert_called_once_with(
+            method='POST',
+            path='/%s' % path,
+            data={
+                'tableReference': {
+                    'projectId': self.PROJECT,
+                    'datasetId': self.DS_ID,
+                    'tableId': self.TABLE_ID
+                },
+                'labels': {},
+            })
+        self.assertEqual(got.table_id, self.TABLE_ID)
+
+    def test_create_table_w_string(self):
+        path = 'projects/%s/datasets/%s/tables' % (
+            self.PROJECT, self.DS_ID)
+        creds = _make_credentials()
+        client = self._make_one(project=self.PROJECT, credentials=creds)
+        resource = {
+            'id': '%s:%s:%s' % (self.PROJECT, self.DS_ID, self.TABLE_ID),
+            'tableReference': {
+                'projectId': self.PROJECT,
+                'datasetId': self.DS_ID,
+                'tableId': self.TABLE_ID
+            },
+        }
+        conn = client._connection = _make_connection(resource)
+
+        got = client.create_table('{}.{}'.format(self.DS_ID, self.TABLE_ID))
+
+        conn.api_request.assert_called_once_with(
+            method='POST',
+            path='/%s' % path,
+            data={
+                'tableReference': {
+                    'projectId': self.PROJECT,
+                    'datasetId': self.DS_ID,
+                    'tableId': self.TABLE_ID
+                },
+                'labels': {},
+            })
+        self.assertEqual(got.table_id, self.TABLE_ID)
 
     def test_get_table(self):
         path = 'projects/%s/datasets/%s/tables/%s' % (

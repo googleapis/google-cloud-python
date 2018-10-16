@@ -33,6 +33,8 @@ from test_utils.system import unique_resource_id
 
 
 USER_PROJECT = os.environ.get('GOOGLE_CLOUD_TESTS_USER_PROJECT')
+RUNNING_IN_VPCSC = os.getenv(
+    'GOOGLE_CLOUD_TESTS_IN_VPCSC', '').lower() == 'true'
 
 
 def _bad_copy(bad_request):
@@ -531,6 +533,7 @@ class TestStorageWriteFiles(TestStorageFiles):
 
 class TestUnicode(unittest.TestCase):
 
+    @unittest.skipIf(RUNNING_IN_VPCSC, 'Test is not VPCSC compatible.')
     def test_fetch_object_and_check_content(self):
         client = storage.Client()
         bucket = client.bucket('storage-library-test-bucket')
