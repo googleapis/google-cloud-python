@@ -41,6 +41,49 @@ _OUTBOUND_ENTRY_FIELDS = (  # (name, default)
 
 class OutboundEntry(collections.namedtuple(
         'OutboundEntry', (field for field, _ in _OUTBOUND_ENTRY_FIELDS))):
+    """Outbound log entry.
+
+    :type type_: str
+    :param type_: one of 'empty', 'text', 'struct', or 'proto'. Indicates
+                  how the payload field is handled.
+
+    :type payload: None, str | unicode, dict, protobuf message
+    :param payload: payload for the message, based on 'type_'
+
+    :type labels: dict
+    :param labels: (optional) mapping of labels for the entry
+
+    :type insert_id: text
+    :param insert_id: (optional) the ID used to identify an entry uniquely.
+
+    :type severity: str
+    :param severity: (optional) severity of event being logged.
+
+    :type http_request: dict
+    :param http_request: (optional) info about HTTP request associated with
+                         the entry.
+
+    :type timestamp: :class:`datetime.datetime`
+    :param timestamp: (optional) timestamp for the entry
+
+    :type resource: :class:`~google.cloud.logging.resource.Resource`
+    :param resource: (Optional) Monitored resource of the entry
+
+    :type trace: str
+    :param trace: (optional) traceid to apply to the entry.
+
+    :type span_id: str
+    :param span_id: (optional) span_id within the trace for the log entry.
+                    Specify the trace parameter if span_id is set.
+
+    :type trace_sampled: bool
+    :param trace_sampled: (optional) the sampling decision of the trace
+                          associated with the log entry.
+
+    :type source_location: dict
+    :param source_location: (optional) location in source code from which
+                            the entry was emitted.
+    """
     def to_api_repr(self):
         """API repr (JSON format) for entry.
         """
