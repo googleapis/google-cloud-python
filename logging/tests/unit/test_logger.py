@@ -37,14 +37,17 @@ class TestOutboundEntry(unittest.TestCase):
     def test_to_api_repr_empty_w_source_location_no_line(self):
         from google.cloud.logging.logger import _GLOBAL_RESOURCE
 
+        LOG_NAME = 'test.log'
         FILE = 'my_file.py'
         FUNCTION = 'my_function'
         SOURCE_LOCATION = {
             'file': FILE,
             'function': FUNCTION,
         }
-        entry = self._make_one('empty', source_location=SOURCE_LOCATION)
+        entry = self._make_one(
+            'empty', LOG_NAME, source_location=SOURCE_LOCATION)
         expected = {
+            'logName': LOG_NAME,
             'resource': _GLOBAL_RESOURCE._to_dict(),
             'sourceLocation': {
                 'file': FILE,
@@ -59,6 +62,7 @@ class TestOutboundEntry(unittest.TestCase):
         from google.cloud.logging.resource import Resource
         from google.cloud._helpers import _datetime_to_rfc3339
 
+        LOG_NAME = 'test.log'
         LABELS = {'foo': 'bar', 'baz': 'qux'}
         IID = 'IID'
         SEVERITY = 'CRITICAL'
@@ -89,6 +93,7 @@ class TestOutboundEntry(unittest.TestCase):
             'function': FUNCTION,
         }
         expected = {
+            'logName': LOG_NAME,
             'labels': LABELS,
             'insertId': IID,
             'severity': SEVERITY,
@@ -106,6 +111,7 @@ class TestOutboundEntry(unittest.TestCase):
         }
         entry = self._make_one(
             type_='empty',
+            log_name=LOG_NAME,
             labels=LABELS,
             insert_id=IID,
             severity=SEVERITY,
@@ -123,9 +129,12 @@ class TestOutboundEntry(unittest.TestCase):
     def test_to_api_repr_text_defaults(self):
         from google.cloud.logging.logger import _GLOBAL_RESOURCE
 
-        entry = self._make_one('text', 'TESTING')
+        LOG_NAME = 'test.log'
+        TEXT = 'TESTING'
+        entry = self._make_one('text', LOG_NAME, TEXT)
         expected = {
-            'textPayload': 'TESTING',
+            'logName': LOG_NAME,
+            'textPayload': TEXT,
             'resource': _GLOBAL_RESOURCE._to_dict(),
         }
         self.assertEqual(entry.to_api_repr(), expected)
@@ -135,6 +144,7 @@ class TestOutboundEntry(unittest.TestCase):
         from google.cloud.logging.resource import Resource
         from google.cloud._helpers import _datetime_to_rfc3339
 
+        LOG_NAME = 'test.log'
         TEXT = 'This is the entry text'
         LABELS = {'foo': 'bar', 'baz': 'qux'}
         IID = 'IID'
@@ -166,6 +176,7 @@ class TestOutboundEntry(unittest.TestCase):
             'function': FUNCTION,
         }
         expected = {
+            'logName': LOG_NAME,
             'textPayload': TEXT,
             'labels': LABELS,
             'insertId': IID,
@@ -184,6 +195,7 @@ class TestOutboundEntry(unittest.TestCase):
         }
         entry = self._make_one(
             type_='text',
+            log_name=LOG_NAME,
             payload=TEXT,
             labels=LABELS,
             insert_id=IID,
@@ -202,9 +214,11 @@ class TestOutboundEntry(unittest.TestCase):
     def test_to_api_repr_struct_defaults(self):
         from google.cloud.logging.logger import _GLOBAL_RESOURCE
 
+        LOG_NAME = 'test.log'
         JSON_PAYLOAD = {'key': 'value'}
-        entry = self._make_one('struct', JSON_PAYLOAD)
+        entry = self._make_one('struct', LOG_NAME, JSON_PAYLOAD)
         expected = {
+            'logName': LOG_NAME,
             'jsonPayload': JSON_PAYLOAD,
             'resource': _GLOBAL_RESOURCE._to_dict(),
         }
@@ -215,6 +229,7 @@ class TestOutboundEntry(unittest.TestCase):
         from google.cloud.logging.resource import Resource
         from google.cloud._helpers import _datetime_to_rfc3339
 
+        LOG_NAME = 'test.log'
         JSON_PAYLOAD = {'key': 'value'}
         LABELS = {'foo': 'bar', 'baz': 'qux'}
         IID = 'IID'
@@ -246,6 +261,7 @@ class TestOutboundEntry(unittest.TestCase):
             'function': FUNCTION,
         }
         expected = {
+            'logName': LOG_NAME,
             'jsonPayload': JSON_PAYLOAD,
             'labels': LABELS,
             'insertId': IID,
@@ -264,6 +280,7 @@ class TestOutboundEntry(unittest.TestCase):
         }
         entry = self._make_one(
             type_='struct',
+            log_name=LOG_NAME,
             payload=JSON_PAYLOAD,
             labels=LABELS,
             insert_id=IID,
@@ -285,10 +302,12 @@ class TestOutboundEntry(unittest.TestCase):
         from google.protobuf.struct_pb2 import Struct
         from google.protobuf.struct_pb2 import Value
 
+        LOG_NAME = 'test.log'
         message = Struct(fields={'foo': Value(bool_value=True)})
 
-        entry = self._make_one('proto', message)
+        entry = self._make_one('proto', LOG_NAME, message)
         expected = {
+            'logName': LOG_NAME,
             'protoPayload': MessageToDict(message),
             'resource': _GLOBAL_RESOURCE._to_dict(),
         }
@@ -302,6 +321,7 @@ class TestOutboundEntry(unittest.TestCase):
         from google.protobuf.struct_pb2 import Struct
         from google.protobuf.struct_pb2 import Value
 
+        LOG_NAME = 'test.log'
         message = Struct(fields={'foo': Value(bool_value=True)})
         LABELS = {'foo': 'bar', 'baz': 'qux'}
         IID = 'IID'
@@ -333,6 +353,7 @@ class TestOutboundEntry(unittest.TestCase):
             'function': FUNCTION,
         }
         expected = {
+            'logName': LOG_NAME,
             'protoPayload': MessageToDict(message),
             'labels': LABELS,
             'insertId': IID,
@@ -351,8 +372,9 @@ class TestOutboundEntry(unittest.TestCase):
         }
 
         entry = self._make_one(
-            'proto',
-            message,
+            type_='proto',
+            log_name=LOG_NAME,
+            payload=message,
             labels=LABELS,
             insert_id=IID,
             severity=SEVERITY,
@@ -458,6 +480,7 @@ class TestLogger(unittest.TestCase):
         import datetime
         from google.cloud.logging.resource import Resource
 
+        ALT_LOG_NAME = 'projects/foo/logs/alt.log.name'
         DEFAULT_LABELS = {'foo': 'spam'}
         LABELS = {'foo': 'bar', 'baz': 'qux'}
         IID = 'IID'
@@ -481,8 +504,7 @@ class TestLogger(unittest.TestCase):
             }
         )
         ENTRIES = [{
-            'logName': 'projects/%s/logs/%s' % (
-                self.PROJECT, self.LOGGER_NAME),
+            'logName': ALT_LOG_NAME,
             'labels': LABELS,
             'insertId': IID,
             'severity': SEVERITY,
@@ -500,6 +522,7 @@ class TestLogger(unittest.TestCase):
                                 labels=DEFAULT_LABELS)
 
         logger.log_empty(
+            log_name=ALT_LOG_NAME,
             client=client2,
             labels=LABELS,
             insert_id=IID,
@@ -562,6 +585,7 @@ class TestLogger(unittest.TestCase):
         import datetime
         from google.cloud.logging.resource import Resource
 
+        ALT_LOG_NAME = 'projects/foo/logs/alt.log.name'
         TEXT = 'TEXT'
         DEFAULT_LABELS = {'foo': 'spam'}
         LABELS = {'foo': 'bar', 'baz': 'qux'}
@@ -586,8 +610,7 @@ class TestLogger(unittest.TestCase):
             }
         )
         ENTRIES = [{
-            'logName': 'projects/%s/logs/%s' % (
-                self.PROJECT, self.LOGGER_NAME),
+            'logName': ALT_LOG_NAME,
             'textPayload': TEXT,
             'labels': LABELS,
             'insertId': IID,
@@ -607,6 +630,7 @@ class TestLogger(unittest.TestCase):
 
         logger.log_text(
             TEXT,
+            log_name=ALT_LOG_NAME,
             client=client2,
             labels=LABELS,
             insert_id=IID,
@@ -669,6 +693,7 @@ class TestLogger(unittest.TestCase):
         import datetime
         from google.cloud.logging.resource import Resource
 
+        ALT_LOG_NAME = 'projects/foo/logs/alt.log.name'
         STRUCT = {'message': 'MESSAGE', 'weather': 'cloudy'}
         DEFAULT_LABELS = {'foo': 'spam'}
         LABELS = {'foo': 'bar', 'baz': 'qux'}
@@ -693,8 +718,7 @@ class TestLogger(unittest.TestCase):
             }
         )
         ENTRIES = [{
-            'logName': 'projects/%s/logs/%s' % (
-                self.PROJECT, self.LOGGER_NAME),
+            'logName': ALT_LOG_NAME,
             'jsonPayload': STRUCT,
             'labels': LABELS,
             'insertId': IID,
@@ -714,6 +738,7 @@ class TestLogger(unittest.TestCase):
 
         logger.log_struct(
             STRUCT,
+            log_name=ALT_LOG_NAME,
             client=client2,
             labels=LABELS,
             insert_id=IID,
@@ -789,6 +814,7 @@ class TestLogger(unittest.TestCase):
         from google.cloud.logging.resource import Resource
 
         message = Struct(fields={'foo': Value(bool_value=True)})
+        ALT_LOG_NAME = 'projects/foo/logs/alt.log.name'
         DEFAULT_LABELS = {'foo': 'spam'}
         LABELS = {'foo': 'bar', 'baz': 'qux'}
         IID = 'IID'
@@ -812,8 +838,7 @@ class TestLogger(unittest.TestCase):
             }
         )
         ENTRIES = [{
-            'logName': 'projects/%s/logs/%s' % (
-                self.PROJECT, self.LOGGER_NAME),
+            'logName': ALT_LOG_NAME,
             'protoPayload': json.loads(MessageToJson(message)),
             'labels': LABELS,
             'insertId': IID,
@@ -833,6 +858,7 @@ class TestLogger(unittest.TestCase):
 
         logger.log_proto(
             message,
+            log_name=ALT_LOG_NAME,
             client=client2,
             labels=LABELS,
             insert_id=IID,
@@ -1254,7 +1280,7 @@ class TestBatch(unittest.TestCase):
         client = _Client(project=self.PROJECT, connection=_make_credentials())
         api = client.logging_api = _DummyLoggingAPI()
         batch = self._make_one(logger, client)
-        batch.entries.append(OutboundEntry('bogus', 'BOGUS', severity='blah'))
+        batch.entries.append(OutboundEntry('bogus', severity='blah'))
         ENTRY = {
             'severity': 'blah',
             'resource': _GLOBAL_RESOURCE._to_dict(),

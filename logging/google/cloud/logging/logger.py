@@ -25,6 +25,7 @@ _GLOBAL_RESOURCE = Resource(type='global', labels={})
 
 _OUTBOUND_ENTRY_FIELDS = (  # (name, default)
     ('type_', None),
+    ('log_name', None),
     ('payload', None),
     ('labels', None),
     ('insert_id', None),
@@ -49,6 +50,9 @@ class OutboundEntry(collections.namedtuple(
 
     :type payload: None, str | unicode, dict, protobuf message
     :param payload: payload for the message, based on 'type_'
+
+    :type log_name: str
+    :param log_name: the name of the logger used to post the entry.
 
     :type labels: dict
     :param labels: (optional) mapping of labels for the entry
@@ -101,6 +105,8 @@ class OutboundEntry(collections.namedtuple(
             info = {'protoPayload': MessageToDict(self.payload)}
         else:  # no payload
             info = {}
+        if self.log_name is not None:
+            info['logName'] = self.log_name
         if self.resource is not None:
             info['resource'] = self.resource._to_dict()
         if self.labels is not None:
@@ -213,6 +219,7 @@ class Logger(object):
         client = self._require_client(client)
 
         # Apply defaults
+        kw['log_name'] = kw.pop('log_name', self.full_name)
         kw['labels'] = kw.pop('labels', self.labels)
         kw['resource'] = kw.pop('resource', _GLOBAL_RESOURCE)
 
@@ -222,7 +229,6 @@ class Logger(object):
             entry = _entry_class._replace(**kw)
 
         api_repr = entry.to_api_repr()
-        api_repr['logName'] = self.full_name
         client.logging_api.write_entries([api_repr])
 
     def log_empty(self, client=None, **kw):
@@ -411,7 +417,8 @@ class Batch(object):
         :param kw: (optional) additional keyword arguments for the entry.
                    See :meth:`Logger.log_text`.
         """
-        self.entries.append(TextOutboundEntry._replace(payload=text, **kw))
+        self.entries.append(TextOutboundEntry._replace(
+            payload=text, **kw))
 
     def log_struct(self, info, **kw):
         """Add a struct entry to be logged during :meth:`commit`.
@@ -423,7 +430,8 @@ class Batch(object):
         :param kw: (optional) additional keyword arguments for the entry.
                    See :meth:`Logger.log_struct`.
         """
-        self.entries.append(StructOutboundEntry._replace(payload=info, **kw))
+        self.entries.append(StructOutboundEntry._replace(
+            payload=info, **kw))
 
     def log_proto(self, message, **kw):
         """Add a protobuf entry to be logged during :meth:`commit`.
@@ -435,7 +443,8 @@ class Batch(object):
         :param kw: (optional) additional keyword arguments for the entry.
                    See :meth:`Logger.log_proto`.
         """
-        self.entries.append(ProtoOutboundEntry._replace(payload=message, **kw))
+        self.entries.append(ProtoOutboundEntry._replace(
+            payload=message, **kw))
 
     def commit(self, client=None):
         """Send saved log entries as a single API call.
