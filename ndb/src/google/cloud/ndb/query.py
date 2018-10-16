@@ -457,8 +457,60 @@ class FilterNode(Node):
 
 
 class PostFilterNode(Node):
-    def __init__(self, *args, **kwargs):
-        raise NotImplementedError
+    """Tree node representing an in-memory filtering operation.
+
+    This is used to represent filters that cannot be executed by the
+    datastore, for example a query for a structured value.
+
+    Args:
+        predicate (Callable[[Any], bool]): A filter predicate that
+            takes a datastore entity (typically as a protobuf) and
+            returns :data:`True` or :data:`False` if the entity matches
+            the given filter.
+    """
+
+    def __new__(cls, predicate):
+        self = super(PostFilterNode, cls).__new__(cls)
+        self.predicate = predicate
+        return self
+
+    def __getnewargs__(self):
+        """Private API used to specify ``__new__`` arguments when unpickling.
+
+        .. note::
+
+            This method only applies if the ``pickle`` protocol is 2 or
+            greater.
+
+        Returns:
+            Tuple[Callable[[Any], bool],]: A tuple containing a single value,
+            the ``predicate`` attached to this node.
+        """
+        return (self.predicate,)
+
+    def __repr__(self):
+        return "{}({})".format(self.__class__.__name__, self.predicate)
+
+    def __eq__(self, other):
+        if not isinstance(other, PostFilterNode):
+            return NotImplemented
+        return self is other or self.predicate == other.predicate
+
+    def _to_filter(self, post=False):
+        """Helper to convert to low-level filter, or :data:`None`.
+
+        Args:
+            post (bool): Indicates if this is a post-filter node.
+
+        Returns:
+            Tuple[Callable[[Any], bool], None]: If this is a post-filter, this
+            returns the stored ``predicate``, otherwise it returns
+            :data:`None`.
+        """
+        if post:
+            return self.predicate
+        else:
+            return None
 
 
 class ConjunctionNode(Node):

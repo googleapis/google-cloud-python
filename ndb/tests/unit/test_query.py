@@ -405,8 +405,47 @@ class TestFilterNode:
 class TestPostFilterNode:
     @staticmethod
     def test_constructor():
-        with pytest.raises(NotImplementedError):
-            query.PostFilterNode()
+        predicate = unittest.mock.sentinel.predicate
+        post_filter_node = query.PostFilterNode(predicate)
+        assert post_filter_node.predicate is predicate
+
+    @staticmethod
+    def test_pickling():
+        predicate = "must-be-pickle-able"
+        post_filter_node = query.PostFilterNode(predicate)
+
+        pickled = pickle.dumps(post_filter_node)
+        unpickled = pickle.loads(pickled)
+        assert post_filter_node == unpickled
+
+    @staticmethod
+    def test___repr__():
+        predicate = "predicate-not-repr"
+        post_filter_node = query.PostFilterNode(predicate)
+        assert repr(post_filter_node) == "PostFilterNode(predicate-not-repr)"
+
+    @staticmethod
+    def test___eq__():
+        predicate1 = unittest.mock.sentinel.predicate1
+        post_filter_node1 = query.PostFilterNode(predicate1)
+        predicate2 = unittest.mock.sentinel.predicate2
+        post_filter_node2 = query.PostFilterNode(predicate2)
+        post_filter_node3 = unittest.mock.sentinel.post_filter_node
+        assert post_filter_node1 == post_filter_node1
+        assert not post_filter_node1 == post_filter_node2
+        assert not post_filter_node1 == post_filter_node3
+
+    @staticmethod
+    def test__to_filter_post():
+        predicate = unittest.mock.sentinel.predicate
+        post_filter_node = query.PostFilterNode(predicate)
+        assert post_filter_node._to_filter(post=True) is predicate
+
+    @staticmethod
+    def test__to_filter():
+        predicate = unittest.mock.sentinel.predicate
+        post_filter_node = query.PostFilterNode(predicate)
+        assert post_filter_node._to_filter() is None
 
 
 class TestConjunctionNode:

@@ -65,6 +65,8 @@ The primary differences come from:
   cases, the underlying representation of the class has changed (such as `Key`)
   due to newly available helper libraries or due to missing behavior from
   the legacy runtime.
+- `query.PostFilterNode.__eq__` compares `self.predicate` to `other.predicate`
+  rather than using `self.__dict__ == other.__dict__`
 
 ## Comments
 
@@ -94,3 +96,5 @@ The primary differences come from:
   import time, so this may not be an issue.
 - `ndb.model._BaseValue` for "wrapping" non-user values should probably
   be dropped or redesigned if possible.
+- Since we want "compatibility", suggestions in `TODO` comments have not been
+  implemented. However, that policy can be changed if desired.
