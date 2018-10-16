@@ -136,7 +136,8 @@ class TestLogger(unittest.TestCase):
             'severity': SEVERITY,
             'httpRequest': REQUEST,
             'trace': TRACE,
-            'spanId': SPANID
+            'spanId': SPANID,
+            'traceSampled': True,
         }]
         client1 = _Client(self.PROJECT)
         client2 = _Client(self.PROJECT)
@@ -152,6 +153,7 @@ class TestLogger(unittest.TestCase):
             http_request=REQUEST,
             trace=TRACE,
             span_id=SPANID,
+            trace_sampled=True,
         )
 
         self.assertEqual(api._write_entries_called_with,
@@ -224,32 +226,10 @@ class TestLogger(unittest.TestCase):
         self.assertEqual(api._write_entries_called_with,
                          (ENTRIES, None, None, None))
 
-    def test_log_text_w_trace(self):
+    def test_log_text_w_trace_span_trace_sampled(self):
 
         TEXT = 'TEXT'
         TRACE = '12345678-1234-5678-1234-567812345678'
-        ENTRIES = [{
-            'logName': 'projects/%s/logs/%s' % (
-                self.PROJECT, self.LOGGER_NAME),
-            'textPayload': TEXT,
-            'resource': {
-                'type': 'global',
-                'labels': {},
-            },
-            'trace': TRACE
-        }]
-        client = _Client(self.PROJECT)
-        api = client.logging_api = _DummyLoggingAPI()
-        logger = self._make_one(self.LOGGER_NAME, client=client)
-
-        logger.log_text(TEXT, trace=TRACE)
-
-        self.assertEqual(api._write_entries_called_with,
-                         (ENTRIES, None, None, None))
-
-    def test_log_text_w_span(self):
-
-        TEXT = 'TEXT'
         SPANID = '000000000000004a'
         ENTRIES = [{
             'logName': 'projects/%s/logs/%s' % (
@@ -259,13 +239,15 @@ class TestLogger(unittest.TestCase):
                 'type': 'global',
                 'labels': {},
             },
-            'spanId': SPANID
+            'trace': TRACE,
+            'spanId': SPANID,
+            'traceSampled': True,
         }]
         client = _Client(self.PROJECT)
         api = client.logging_api = _DummyLoggingAPI()
         logger = self._make_one(self.LOGGER_NAME, client=client)
 
-        logger.log_text(TEXT, span_id=SPANID)
+        logger.log_text(TEXT, trace=TRACE, span_id=SPANID, trace_sampled=True)
 
         self.assertEqual(api._write_entries_called_with,
                          (ENTRIES, None, None, None))
@@ -299,7 +281,8 @@ class TestLogger(unittest.TestCase):
             'severity': SEVERITY,
             'httpRequest': REQUEST,
             'trace': TRACE,
-            'spanId': SPANID
+            'spanId': SPANID,
+            'traceSampled': True,
         }]
         client1 = _Client(self.PROJECT)
         client2 = _Client(self.PROJECT)
@@ -316,6 +299,7 @@ class TestLogger(unittest.TestCase):
             http_request=REQUEST,
             trace=TRACE,
             span_id=SPANID,
+            trace_sampled=True,
         )
 
         self.assertEqual(api._write_entries_called_with,
@@ -393,7 +377,8 @@ class TestLogger(unittest.TestCase):
             'severity': SEVERITY,
             'httpRequest': REQUEST,
             'trace': TRACE,
-            'spanId': SPANID
+            'spanId': SPANID,
+            'traceSampled': True,
         }]
         client1 = _Client(self.PROJECT)
         client2 = _Client(self.PROJECT)
@@ -410,6 +395,7 @@ class TestLogger(unittest.TestCase):
             http_request=REQUEST,
             trace=TRACE,
             span_id=SPANID,
+            trace_sampled=True,
         )
 
         self.assertEqual(api._write_entries_called_with,
@@ -439,32 +425,10 @@ class TestLogger(unittest.TestCase):
         self.assertEqual(api._write_entries_called_with,
                          (ENTRIES, None, None, None))
 
-    def test_log_struct_w_trace(self):
+    def test_log_struct_w_trace_span_trace_sampled(self):
 
         STRUCT = {'message': 'MESSAGE', 'weather': 'cloudy'}
         TRACE = '12345678-1234-5678-1234-567812345678'
-        ENTRIES = [{
-            'logName': 'projects/%s/logs/%s' % (
-                self.PROJECT, self.LOGGER_NAME),
-            'jsonPayload': STRUCT,
-            'resource': {
-                'type': 'global',
-                'labels': {},
-            },
-            'trace': TRACE
-        }]
-        client = _Client(self.PROJECT)
-        api = client.logging_api = _DummyLoggingAPI()
-        logger = self._make_one(self.LOGGER_NAME, client=client)
-
-        logger.log_struct(STRUCT, trace=TRACE)
-
-        self.assertEqual(api._write_entries_called_with,
-                         (ENTRIES, None, None, None))
-
-    def test_log_struct_w_span(self):
-
-        STRUCT = {'message': 'MESSAGE', 'weather': 'cloudy'}
         SPANID = '000000000000004a'
         ENTRIES = [{
             'logName': 'projects/%s/logs/%s' % (
@@ -474,13 +438,16 @@ class TestLogger(unittest.TestCase):
                 'type': 'global',
                 'labels': {},
             },
-            'spanId': SPANID
+            'trace': TRACE,
+            'spanId': SPANID,
+            'traceSampled': True,
         }]
         client = _Client(self.PROJECT)
         api = client.logging_api = _DummyLoggingAPI()
         logger = self._make_one(self.LOGGER_NAME, client=client)
 
-        logger.log_struct(STRUCT, span_id=SPANID)
+        logger.log_struct(
+            STRUCT, trace=TRACE, span_id=SPANID, trace_sampled=True)
 
         self.assertEqual(api._write_entries_called_with,
                          (ENTRIES, None, None, None))
@@ -570,7 +537,8 @@ class TestLogger(unittest.TestCase):
             'severity': SEVERITY,
             'httpRequest': REQUEST,
             'trace': TRACE,
-            'spanId': SPANID
+            'spanId': SPANID,
+            'traceSampled': True,
         }]
         client1 = _Client(self.PROJECT)
         client2 = _Client(self.PROJECT)
@@ -587,6 +555,7 @@ class TestLogger(unittest.TestCase):
             http_request=REQUEST,
             trace=TRACE,
             span_id=SPANID,
+            trace_sampled=True,
         )
 
         self.assertEqual(api._write_entries_called_with,
@@ -620,7 +589,7 @@ class TestLogger(unittest.TestCase):
         self.assertEqual(api._write_entries_called_with,
                          (ENTRIES, None, None, None))
 
-    def test_log_proto_w_trace(self):
+    def test_log_proto_w_trace_span_trace_sampled(self):
         import json
         from google.protobuf.json_format import MessageToJson
         from google.protobuf.struct_pb2 import Struct
@@ -628,32 +597,6 @@ class TestLogger(unittest.TestCase):
 
         message = Struct(fields={'foo': Value(bool_value=True)})
         TRACE = '12345678-1234-5678-1234-567812345678'
-        ENTRIES = [{
-            'logName': 'projects/%s/logs/%s' % (
-                self.PROJECT, self.LOGGER_NAME),
-            'protoPayload': json.loads(MessageToJson(message)),
-            'resource': {
-                'type': 'global',
-                'labels': {},
-            },
-            'trace': TRACE
-        }]
-        client = _Client(self.PROJECT)
-        api = client.logging_api = _DummyLoggingAPI()
-        logger = self._make_one(self.LOGGER_NAME, client=client)
-
-        logger.log_proto(message, trace=TRACE)
-
-        self.assertEqual(api._write_entries_called_with,
-                         (ENTRIES, None, None, None))
-
-    def test_log_proto_w_span(self):
-        import json
-        from google.protobuf.json_format import MessageToJson
-        from google.protobuf.struct_pb2 import Struct
-        from google.protobuf.struct_pb2 import Value
-
-        message = Struct(fields={'foo': Value(bool_value=True)})
         SPANID = '000000000000004a'
         ENTRIES = [{
             'logName': 'projects/%s/logs/%s' % (
@@ -663,13 +606,16 @@ class TestLogger(unittest.TestCase):
                 'type': 'global',
                 'labels': {},
             },
-            'spanId': SPANID
+            'trace': TRACE,
+            'spanId': SPANID,
+            'traceSampled': True,
         }]
         client = _Client(self.PROJECT)
         api = client.logging_api = _DummyLoggingAPI()
         logger = self._make_one(self.LOGGER_NAME, client=client)
 
-        logger.log_proto(message, span_id=SPANID)
+        logger.log_proto(
+            message, trace=TRACE, span_id=SPANID, trace_sampled=True)
 
         self.assertEqual(api._write_entries_called_with,
                          (ENTRIES, None, None, None))
@@ -797,9 +743,20 @@ class TestBatch(unittest.TestCase):
         logger = _Logger()
         batch = self._make_one(logger, client=client)
         batch.log_text(TEXT)
-        self.assertEqual(batch.entries,
-                         [('text', TEXT, None, None, None, None, None,
-                           _GLOBAL_RESOURCE, None, None)])
+        ENTRY = (
+            'text',
+            TEXT,
+            None,
+            None,
+            None,
+            None,
+            None,
+            _GLOBAL_RESOURCE,
+            None,
+            None,
+            None,
+        )
+        self.assertEqual(batch.entries, [ENTRY])
 
     def test_log_text_explicit(self):
         import datetime
@@ -827,6 +784,19 @@ class TestBatch(unittest.TestCase):
         )
         TRACE = '12345678-1234-5678-1234-567812345678'
         SPANID = '000000000000004a'
+        ENTRY = (
+            'text',
+            TEXT,
+            LABELS,
+            IID,
+            SEVERITY,
+            REQUEST,
+            TIMESTAMP,
+            RESOURCE,
+            TRACE,
+            SPANID,
+            True,
+        )
 
         client = _Client(project=self.PROJECT, connection=_make_credentials())
         logger = _Logger()
@@ -841,23 +811,31 @@ class TestBatch(unittest.TestCase):
             resource=RESOURCE,
             trace=TRACE,
             span_id=SPANID,
+            trace_sampled=True,
         )
-        self.assertEqual(
-            batch.entries,
-            [('text', TEXT, LABELS, IID, SEVERITY, REQUEST, TIMESTAMP,
-              RESOURCE, TRACE, SPANID)])
+        self.assertEqual(batch.entries, [ENTRY])
 
     def test_log_struct_defaults(self):
         from google.cloud.logging.logger import _GLOBAL_RESOURCE
         STRUCT = {'message': 'Message text', 'weather': 'partly cloudy'}
+        ENTRY = (
+            'struct',
+            STRUCT,
+            None,
+            None,
+            None,
+            None,
+            None,
+            _GLOBAL_RESOURCE,
+            None,
+            None,
+            None,
+        )
         client = _Client(project=self.PROJECT, connection=_make_credentials())
         logger = _Logger()
         batch = self._make_one(logger, client=client)
         batch.log_struct(STRUCT)
-        self.assertEqual(
-            batch.entries,
-            [('struct', STRUCT, None, None, None, None, None,
-              _GLOBAL_RESOURCE, None, None)])
+        self.assertEqual(batch.entries, [ENTRY])
 
     def test_log_struct_explicit(self):
         import datetime
@@ -885,6 +863,19 @@ class TestBatch(unittest.TestCase):
                 'version_id': 'test',
             }
         )
+        ENTRY = (
+            'struct',
+            STRUCT,
+            LABELS,
+            IID,
+            SEVERITY,
+            REQUEST,
+            TIMESTAMP,
+            RESOURCE,
+            TRACE,
+            SPANID,
+            True,
+        )
 
         client = _Client(project=self.PROJECT, connection=_make_credentials())
         logger = _Logger()
@@ -899,11 +890,9 @@ class TestBatch(unittest.TestCase):
             resource=RESOURCE,
             trace=TRACE,
             span_id=SPANID,
+            trace_sampled=True,
         )
-        self.assertEqual(
-            batch.entries,
-            [('struct', STRUCT, LABELS, IID, SEVERITY, REQUEST, TIMESTAMP,
-              RESOURCE, TRACE, SPANID)])
+        self.assertEqual(batch.entries, [ENTRY])
 
     def test_log_proto_defaults(self):
         from google.cloud.logging.logger import _GLOBAL_RESOURCE
@@ -911,13 +900,24 @@ class TestBatch(unittest.TestCase):
         from google.protobuf.struct_pb2 import Value
 
         message = Struct(fields={'foo': Value(bool_value=True)})
+        ENTRY = (
+            'proto',
+            message,
+            None,
+            None,
+            None,
+            None,
+            None,
+            _GLOBAL_RESOURCE,
+            None,
+            None,
+            None,
+        )
         client = _Client(project=self.PROJECT, connection=_make_credentials())
         logger = _Logger()
         batch = self._make_one(logger, client=client)
         batch.log_proto(message)
-        self.assertEqual(batch.entries,
-                         [('proto', message, None, None, None, None, None,
-                           _GLOBAL_RESOURCE, None, None)])
+        self.assertEqual(batch.entries, [ENTRY])
 
     def test_log_proto_explicit(self):
         import datetime
@@ -947,6 +947,19 @@ class TestBatch(unittest.TestCase):
                 'version_id': 'test',
             }
         )
+        ENTRY = (
+            'proto',
+            message,
+            LABELS,
+            IID,
+            SEVERITY,
+            REQUEST,
+            TIMESTAMP,
+            RESOURCE,
+            TRACE,
+            SPANID,
+            True,
+        )
         client = _Client(project=self.PROJECT, connection=_make_credentials())
         logger = _Logger()
         batch = self._make_one(logger, client=client)
@@ -960,18 +973,16 @@ class TestBatch(unittest.TestCase):
             resource=RESOURCE,
             trace=TRACE,
             span_id=SPANID,
+            trace_sampled=True,
         )
-        self.assertEqual(
-            batch.entries,
-            [('proto', message, LABELS, IID, SEVERITY, REQUEST, TIMESTAMP,
-              RESOURCE, TRACE, SPANID)])
+        self.assertEqual(batch.entries, [ENTRY])
 
     def test_commit_w_invalid_entry_type(self):
         logger = _Logger()
         client = _Client(project=self.PROJECT, connection=_make_credentials())
         batch = self._make_one(logger, client)
         batch.entries.append(('bogus', 'BOGUS', None, None, None, None, None,
-                              None, None, None))
+                              None, None, None, None))
         with self.assertRaises(ValueError):
             batch.commit()
 
@@ -1027,21 +1038,31 @@ class TestBatch(unittest.TestCase):
         SPANID1 = '000000000000004a'
         SPANID2 = '000000000000004b'
         SPANID3 = '000000000000004c'
-        ENTRIES = [
-            {'textPayload': TEXT, 'insertId': IID1,
-             'timestamp': _datetime_to_rfc3339(TIMESTAMP1),
-             'resource': _GLOBAL_RESOURCE._to_dict(), 'trace': TRACE1,
-             'spanId': SPANID1},
-            {'jsonPayload': STRUCT, 'insertId': IID2,
-             'timestamp': _datetime_to_rfc3339(TIMESTAMP2),
-             'resource': _GLOBAL_RESOURCE._to_dict(), 'trace': TRACE2,
-             'spanId': SPANID2},
-            {'protoPayload': json.loads(MessageToJson(message)),
-             'insertId': IID3,
-             'timestamp': _datetime_to_rfc3339(TIMESTAMP3),
-             'resource': _GLOBAL_RESOURCE._to_dict(), 'trace': TRACE3,
-             'spanId': SPANID3},
-        ]
+        ENTRIES = [{
+            'textPayload': TEXT,
+            'insertId': IID1,
+            'timestamp': _datetime_to_rfc3339(TIMESTAMP1),
+            'resource': _GLOBAL_RESOURCE._to_dict(),
+            'trace': TRACE1,
+            'spanId': SPANID1,
+            'traceSampled': True,
+        }, {
+            'jsonPayload': STRUCT,
+            'insertId': IID2,
+            'timestamp': _datetime_to_rfc3339(TIMESTAMP2),
+            'resource': _GLOBAL_RESOURCE._to_dict(),
+            'trace': TRACE2,
+            'spanId': SPANID2,
+            'traceSampled': False,
+        }, {
+            'protoPayload': json.loads(MessageToJson(message)),
+            'insertId': IID3,
+            'timestamp': _datetime_to_rfc3339(TIMESTAMP3),
+            'resource': _GLOBAL_RESOURCE._to_dict(),
+            'trace': TRACE3,
+            'spanId': SPANID3,
+            'traceSampled': True,
+        }]
         client = _Client(project=self.PROJECT)
         api = client.logging_api = _DummyLoggingAPI()
         logger = _Logger()
@@ -1053,6 +1074,7 @@ class TestBatch(unittest.TestCase):
             timestamp=TIMESTAMP1,
             trace=TRACE1,
             span_id=SPANID1,
+            trace_sampled=True,
         )
         batch.log_struct(
             STRUCT,
@@ -1060,12 +1082,15 @@ class TestBatch(unittest.TestCase):
             timestamp=TIMESTAMP2,
             trace=TRACE2,
             span_id=SPANID2,
+            trace_sampled=False,
         )
         batch.log_proto(
             message,
             insert_id=IID3,
             timestamp=TIMESTAMP3,
-            trace=TRACE3, span_id=SPANID3,
+            trace=TRACE3,
+            span_id=SPANID3,
+            trace_sampled=True,
         )
         batch.commit()
 
@@ -1193,11 +1218,11 @@ class TestBatch(unittest.TestCase):
         logger = _Logger()
         UNSENT = [
             ('text', TEXT, None, IID, None, None, TIMESTAMP,
-             _GLOBAL_RESOURCE, None, None),
+             _GLOBAL_RESOURCE, None, None, None),
             ('struct', STRUCT, None, None, SEVERITY, None, None,
-             _GLOBAL_RESOURCE, None, None),
+             _GLOBAL_RESOURCE, None, None, None),
             ('proto', message, LABELS, None, None, REQUEST, None,
-             _GLOBAL_RESOURCE, None, None),
+             _GLOBAL_RESOURCE, None, None, None),
         ]
         batch = self._make_one(logger, client=client)
 

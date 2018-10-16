@@ -106,6 +106,7 @@ class Logger(object):
         resource=_GLOBAL_RESOURCE,
         trace=None,
         span_id=None,
+        trace_sampled=None,
     ):
         """Return a log entry resource of the appropriate type.
 
@@ -147,6 +148,10 @@ class Logger(object):
         :type span_id: str
         :param span_id: (optional) span_id within the trace for the log entry.
                         Specify the trace parameter if span_id is set.
+
+        :type trace_sampled: bool
+        :param trace_sampled: (optional) the sampling decision of the trace
+                              associated with the log entry.
 
         :rtype: dict
         :returns: The JSON resource created.
@@ -195,6 +200,9 @@ class Logger(object):
         if span_id is not None:
             entry['spanId'] = span_id
 
+        if trace_sampled is not None:
+            entry['traceSampled'] = trace_sampled
+
         return entry
 
     def log_empty(
@@ -208,6 +216,7 @@ class Logger(object):
         resource=_GLOBAL_RESOURCE,
         trace=None,
         span_id=None,
+        trace_sampled=None,
     ):
         """API call:  log an empty message via a POST request
 
@@ -245,6 +254,10 @@ class Logger(object):
         :type span_id: str
         :param span_id: (optional) span_id within the trace for the log entry.
                         Specify the trace parameter if span_id is set.
+
+        :type trace_sampled: bool
+        :param trace_sampled: (optional) the sampling decision of the trace
+                              associated with the log entry.
         """
         client = self._require_client(client)
         entry_resource = self._make_entry_resource(
@@ -256,6 +269,7 @@ class Logger(object):
             resource=resource,
             trace=trace,
             span_id=span_id,
+            trace_sampled=trace_sampled,
         )
         client.logging_api.write_entries([entry_resource])
 
@@ -271,6 +285,7 @@ class Logger(object):
         resource=_GLOBAL_RESOURCE,
         trace=None,
         span_id=None,
+        trace_sampled=None,
     ):
         """API call:  log a text message via a POST request
 
@@ -311,6 +326,10 @@ class Logger(object):
         :type span_id: str
         :param span_id: (optional) span_id within the trace for the log entry.
                         Specify the trace parameter if span_id is set.
+
+        :type trace_sampled: bool
+        :param trace_sampled: (optional) the sampling decision of the trace
+                              associated with the log entry.
         """
         client = self._require_client(client)
         entry_resource = self._make_entry_resource(
@@ -323,6 +342,7 @@ class Logger(object):
             resource=resource,
             trace=trace,
             span_id=span_id,
+            trace_sampled=trace_sampled,
         )
         client.logging_api.write_entries([entry_resource])
 
@@ -338,6 +358,7 @@ class Logger(object):
         resource=_GLOBAL_RESOURCE,
         trace=None,
         span_id=None,
+        trace_sampled=None,
     ):
         """API call:  log a structured message via a POST request
 
@@ -378,6 +399,10 @@ class Logger(object):
         :type span_id: str
         :param span_id: (optional) span_id within the trace for the log entry.
                         Specify the trace parameter if span_id is set.
+
+        :type trace_sampled: bool
+        :param trace_sampled: (optional) the sampling decision of the trace
+                              associated with the log entry.
         """
         client = self._require_client(client)
         entry_resource = self._make_entry_resource(
@@ -390,6 +415,7 @@ class Logger(object):
             resource=resource,
             trace=trace,
             span_id=span_id,
+            trace_sampled=trace_sampled,
         )
         client.logging_api.write_entries([entry_resource])
 
@@ -405,6 +431,7 @@ class Logger(object):
         resource=_GLOBAL_RESOURCE,
         trace=None,
         span_id=None,
+        trace_sampled=None,
     ):
         """API call:  log a protobuf message via a POST request
 
@@ -445,6 +472,10 @@ class Logger(object):
         :type span_id: str
         :param span_id: (optional) span_id within the trace for the log entry.
                         Specify the trace parameter if span_id is set.
+
+        :type trace_sampled: bool
+        :param trace_sampled: (optional) the sampling decision of the trace
+                              associated with the log entry.
         """
         client = self._require_client(client)
         entry_resource = self._make_entry_resource(
@@ -457,6 +488,7 @@ class Logger(object):
             resource=resource,
             trace=trace,
             span_id=span_id,
+            trace_sampled=trace_sampled,
         )
         client.logging_api.write_entries([entry_resource])
 
@@ -561,6 +593,7 @@ class Batch(object):
         resource=_GLOBAL_RESOURCE,
         trace=None,
         span_id=None,
+        trace_sampled=None,
     ):
         """Add a text entry to be logged during :meth:`commit`.
 
@@ -596,6 +629,10 @@ class Batch(object):
         :type span_id: str
         :param span_id: (optional) span_id within the trace for the log entry.
                         Specify the trace parameter if span_id is set.
+
+        :type trace_sampled: bool
+        :param trace_sampled: (optional) the sampling decision of the trace
+                              associated with the log entry.
         """
         self.entries.append((
             'text',
@@ -608,6 +645,7 @@ class Batch(object):
             resource,
             trace,
             span_id,
+            trace_sampled,
         ))
 
     def log_struct(
@@ -621,6 +659,7 @@ class Batch(object):
         resource=_GLOBAL_RESOURCE,
         trace=None,
         span_id=None,
+        trace_sampled=None,
     ):
         """Add a struct entry to be logged during :meth:`commit`.
 
@@ -656,6 +695,10 @@ class Batch(object):
         :type span_id: str
         :param span_id: (optional) span_id within the trace for the log entry.
                         Specify the trace parameter if span_id is set.
+
+        :type trace_sampled: bool
+        :param trace_sampled: (optional) the sampling decision of the trace
+                              associated with the log entry.
         """
         self.entries.append((
             'struct',
@@ -668,6 +711,7 @@ class Batch(object):
             resource,
             trace,
             span_id,
+            trace_sampled,
         ))
 
     def log_proto(
@@ -681,6 +725,7 @@ class Batch(object):
         resource=_GLOBAL_RESOURCE,
         trace=None,
         span_id=None,
+        trace_sampled=None,
     ):
         """Add a protobuf entry to be logged during :meth:`commit`.
 
@@ -716,6 +761,10 @@ class Batch(object):
         :type span_id: str
         :param span_id: (optional) span_id within the trace for the log entry.
                         Specify the trace parameter if span_id is set.
+
+        :type trace_sampled: bool
+        :param trace_sampled: (optional) the sampling decision of the trace
+                              associated with the log entry.
         """
         self.entries.append((
             'proto',
@@ -728,6 +777,7 @@ class Batch(object):
             resource,
             trace,
             span_id,
+            trace_sampled,
         ))
 
     def commit(self, client=None):
@@ -751,8 +801,19 @@ class Batch(object):
             kwargs['labels'] = self.logger.labels
 
         entries = []
-        for (entry_type, entry, labels, iid, severity, http_req,
-             timestamp, resource, trace, span_id) in self.entries:
+        for (
+            entry_type,
+            entry,
+            labels,
+            iid,
+            severity,
+            http_req,
+            timestamp,
+            resource,
+            trace,
+            span_id,
+            trace_sampled,
+        ) in self.entries:
             if entry_type == 'text':
                 info = {'textPayload': entry}
             elif entry_type == 'struct':
@@ -783,6 +844,8 @@ class Batch(object):
                 info['trace'] = trace
             if span_id is not None:
                 info['spanId'] = span_id
+            if trace_sampled is not None:
+                info['traceSampled'] = trace_sampled
             entries.append(info)
 
         client.logging_api.write_entries(entries, **kwargs)

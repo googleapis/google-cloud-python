@@ -83,6 +83,10 @@ class _BaseEntry(object):
     :type span_id: str
     :param span_id: (optional) span_id within the trace for the log entry.
                     Specify the trace parameter if span_id is set.
+
+    :type trace_sampled: bool
+    :param trace_sampled: (optional) the sampling decision of the trace
+                          associated with the log entry.
     """
     received_timestamp = None
 
@@ -98,6 +102,7 @@ class _BaseEntry(object):
         resource=None,
         trace=None,
         span_id=None,
+        trace_sampled=None,
     ):
         self.payload = payload
         self.logger = logger
@@ -109,6 +114,7 @@ class _BaseEntry(object):
         self.resource = resource
         self.trace = trace
         self.span_id = span_id
+        self.trace_sampled = trace_sampled
 
     @classmethod
     def from_api_repr(cls, resource, client, loggers=None):
@@ -150,6 +156,7 @@ class _BaseEntry(object):
         http_request = resource.get('httpRequest')
         trace = resource.get('trace')
         span_id = resource.get('spanId')
+        trace_sampled = resource.get('traceSampled')
 
         monitored_resource_dict = resource.get('resource')
         monitored_resource = None
@@ -167,6 +174,7 @@ class _BaseEntry(object):
             resource=monitored_resource,
             trace=trace,
             span_id=span_id,
+            trace_sampled=trace_sampled,
         )
         received = resource.get('receiveTimestamp')
         if received is not None:
@@ -241,16 +249,29 @@ class ProtobufEntry(_BaseEntry):
     :type span_id: str
     :param span_id: (optional) span_id within the trace for the log entry.
                     Specify the trace parameter if span_id is set.
+
+    :type trace_sampled: bool
+    :param trace_sampled: (optional) the sampling decision of the trace
+                          associated with the log entry.
     """
     _PAYLOAD_KEY = 'protoPayload'
 
     def __init__(self, payload, logger, insert_id=None, timestamp=None,
                  labels=None, severity=None, http_request=None, resource=None,
-                 trace=None, span_id=None):
+                 trace=None, span_id=None, trace_sampled=None):
         super(ProtobufEntry, self).__init__(
-            payload, logger, insert_id=insert_id, timestamp=timestamp,
-            labels=labels, severity=severity, http_request=http_request,
-            resource=resource, trace=trace, span_id=span_id)
+            payload,
+            logger,
+            insert_id=insert_id,
+            timestamp=timestamp,
+            labels=labels,
+            severity=severity,
+            http_request=http_request,
+            resource=resource,
+            trace=trace,
+            span_id=span_id,
+            trace_sampled=trace_sampled,
+        )
         if isinstance(self.payload, any_pb2.Any):
             self.payload_pb = self.payload
             self.payload = None

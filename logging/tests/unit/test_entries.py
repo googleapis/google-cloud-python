@@ -70,6 +70,7 @@ class Test_BaseEntry(unittest.TestCase):
         self.assertIsNone(entry.resource)
         self.assertIsNone(entry.trace)
         self.assertIsNone(entry.span_id)
+        self.assertIsNone(entry.trace_sampled)
 
     def test_ctor_explicit(self):
         import datetime
@@ -93,15 +94,19 @@ class Test_BaseEntry(unittest.TestCase):
         SPANID = '000000000000004a'
 
         logger = _Logger(self.LOGGER_NAME, self.PROJECT)
-        entry = self._make_one(PAYLOAD, logger,
-                               insert_id=IID,
-                               timestamp=TIMESTAMP,
-                               labels=LABELS,
-                               severity=SEVERITY,
-                               http_request=REQUEST,
-                               resource=resource,
-                               trace=TRACE,
-                               span_id=SPANID)
+        entry = self._make_one(
+            PAYLOAD,
+            logger,
+            insert_id=IID,
+            timestamp=TIMESTAMP,
+            labels=LABELS,
+            severity=SEVERITY,
+            http_request=REQUEST,
+            resource=resource,
+            trace=TRACE,
+            span_id=SPANID,
+            trace_sampled=True,
+        )
         self.assertEqual(entry.payload, PAYLOAD)
         self.assertIs(entry.logger, logger)
         self.assertEqual(entry.insert_id, IID)
@@ -114,6 +119,7 @@ class Test_BaseEntry(unittest.TestCase):
         self.assertEqual(entry.resource, resource)
         self.assertEqual(entry.trace, TRACE)
         self.assertEqual(entry.span_id, SPANID)
+        self.assertTrue(entry.trace_sampled)
 
     def test_from_api_repr_no_payload_missing_data_no_loggers(self):
         client = _Client(self.PROJECT)
@@ -130,6 +136,7 @@ class Test_BaseEntry(unittest.TestCase):
         self.assertIsNone(entry.http_request)
         self.assertIsNone(entry.trace)
         self.assertIsNone(entry.span_id)
+        self.assertIsNone(entry.trace_sampled)
         logger = entry.logger
         self.assertIsInstance(logger, _Logger)
         self.assertIs(logger.client, client)
@@ -178,7 +185,8 @@ class Test_BaseEntry(unittest.TestCase):
             },
             'resource': RESOURCE._to_dict(),
             'trace': TRACE,
-            'spanId': SPANID
+            'spanId': SPANID,
+            'traceSampled': True,
         }
         loggers = {}
         entry = klass.from_api_repr(API_REPR, client, loggers=loggers)
@@ -199,6 +207,7 @@ class Test_BaseEntry(unittest.TestCase):
         self.assertEqual(entry.resource, RESOURCE)
         self.assertEqual(entry.trace, TRACE)
         self.assertEqual(entry.span_id, SPANID)
+        self.assertTrue(entry.trace_sampled)
 
     def test_from_api_repr_w_loggers_w_logger_match(self):
         from datetime import datetime
@@ -224,7 +233,8 @@ class Test_BaseEntry(unittest.TestCase):
             'receiveTimestamp': RECEIVED,
             'labels': LABELS,
             'trace': TRACE,
-            'spanId': SPANID
+            'spanId': SPANID,
+            'traceSampled': True,
         }
         LOGGER = object()
         loggers = {LOG_NAME: LOGGER}
@@ -237,6 +247,7 @@ class Test_BaseEntry(unittest.TestCase):
         self.assertEqual(entry.labels, LABELS)
         self.assertEqual(entry.trace, TRACE)
         self.assertEqual(entry.span_id, SPANID)
+        self.assertTrue(entry.trace_sampled)
         self.assertIs(entry.logger, LOGGER)
 
 
@@ -267,6 +278,7 @@ class TestProtobufEntry(unittest.TestCase):
         self.assertIsNone(pb_entry.http_request)
         self.assertIsNone(pb_entry.trace)
         self.assertIsNone(pb_entry.span_id)
+        self.assertIsNone(pb_entry.trace_sampled)
 
     def test_constructor_with_any(self):
         from google.protobuf.any_pb2 import Any
@@ -283,6 +295,7 @@ class TestProtobufEntry(unittest.TestCase):
         self.assertIsNone(pb_entry.http_request)
         self.assertIsNone(pb_entry.trace)
         self.assertIsNone(pb_entry.span_id)
+        self.assertIsNone(pb_entry.trace_sampled)
 
     def test_parse_message(self):
         import json
