@@ -22,9 +22,9 @@ import threading
 import grpc
 import six
 
+from google.api_core import bidi
 from google.api_core import exceptions
 from google.cloud.pubsub_v1 import types
-from google.cloud.pubsub_v1.subscriber._protocol import bidi
 from google.cloud.pubsub_v1.subscriber._protocol import dispatcher
 from google.cloud.pubsub_v1.subscriber._protocol import heartbeater
 from google.cloud.pubsub_v1.subscriber._protocol import histogram
