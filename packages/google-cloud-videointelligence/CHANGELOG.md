@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-videointelligence/#history
 
+## 1.5.0
+
+### New Features
+- Regenerate v2p2beta1 to add Object Tracking and Text Detection Beta ([#6225](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6225))
+
+### Documentation
+- Harmonize / DRY 'README.rst' / 'docs/index.rst'. ([#6002](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6002))
+- Correct text for the pip install command ([#6198](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6198))
+
+### Internal / Testing Changes
+- Use new Nox ([#6175](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6175))
+
 ## 1.4.0
 
 ### New Features
