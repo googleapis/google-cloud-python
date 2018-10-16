@@ -33,7 +33,8 @@ from test_utils.system import unique_resource_id
 
 
 USER_PROJECT = os.environ.get('GOOGLE_CLOUD_TESTS_USER_PROJECT')
-RUNNING_IN_VPCSC = os.getenv('GOOGLE_CLOUD_TESTS_IN_VPCSC', '').lower() == 'true'
+RUNNING_IN_VPCSC = os.getenv(
+    'GOOGLE_CLOUD_TESTS_IN_VPCSC', '').lower() == 'true'
 
 
 def _bad_copy(bad_request):
