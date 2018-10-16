@@ -14,15 +14,20 @@
 
 """Log entries within the Google Stackdriver Logging API."""
 
+import collections
 import json
 import re
 
-from google.protobuf import any_pb2
+from google.protobuf.json_format import MessageToDict
 from google.protobuf.json_format import Parse
 
 from google.cloud.logging.resource import Resource
 from google.cloud._helpers import _name_from_project_path
 from google.cloud._helpers import _rfc3339_nanos_to_datetime
+from google.cloud._helpers import _datetime_to_rfc3339
+
+
+_GLOBAL_RESOURCE = Resource(type='global', labels={})
 
 
 _LOGGER_TEMPLATE = re.compile(r"""
@@ -55,79 +60,9 @@ def _int_or_none(value):
     return value
 
 
-class _BaseEntry(object):
-    """Base class for TextEntry, StructEntry, ProtobufEntry.
-
-    :type payload: text or dict
-    :param payload: The payload passed as ``textPayload``, ``jsonPayload``,
-                    or ``protoPayload``.
-
-    :type logger: :class:`google.cloud.logging.logger.Logger`
-    :param logger: the logger used to write the entry.
-
-    :type insert_id: text
-    :param insert_id: (optional) the ID used to identify an entry uniquely.
-
-    :type timestamp: :class:`datetime.datetime`
-    :param timestamp: (optional) timestamp for the entry
-
-    :type labels: dict
-    :param labels: (optional) mapping of labels for the entry
-
-    :type severity: str
-    :param severity: (optional) severity of event being logged.
-
-    :type http_request: dict
-    :param http_request: (optional) info about HTTP request associated with
-                         the entry.
-
-    :type resource: :class:`~google.cloud.logging.resource.Resource`
-    :param resource: (Optional) Monitored resource of the entry
-
-    :type trace: str
-    :param trace: (optional) traceid to apply to the entry.
-
-    :type span_id: str
-    :param span_id: (optional) span_id within the trace for the log entry.
-                    Specify the trace parameter if span_id is set.
-
-    :type trace_sampled: bool
-    :param trace_sampled: (optional) the sampling decision of the trace
-                          associated with the log entry.
-
-    :type source_location: dict
-    :param source_location: (optional) location in source code from which
-                            the entry was emitted.
-    """
+class _ApiReprMixin(object):
+    """Mixin for the various log entry types."""
     received_timestamp = None
-
-    def __init__(
-        self,
-        payload,
-        logger,
-        insert_id=None,
-        timestamp=None,
-        labels=None,
-        severity=None,
-        http_request=None,
-        resource=None,
-        trace=None,
-        span_id=None,
-        trace_sampled=None,
-        source_location=None,
-    ):
-        self.payload = payload
-        self.logger = logger
-        self.insert_id = insert_id
-        self.timestamp = timestamp
-        self.labels = labels
-        self.severity = severity
-        self.http_request = http_request
-        self.resource = resource
-        self.trace = trace
-        self.span_id = span_id
-        self.trace_sampled = trace_sampled
-        self.source_location = source_location
 
     @classmethod
     def from_api_repr(cls, resource, client, loggers=None):
@@ -181,8 +116,10 @@ class _BaseEntry(object):
             monitored_resource = Resource._from_dict(monitored_resource_dict)
 
         inst = cls(
-            payload,
-            logger,
+            type_=cls._TYPE_NAME,
+            log_name=logger_fullname,
+            payload=payload,
+            logger=logger,
             insert_id=insert_id,
             timestamp=timestamp,
             labels=labels,
@@ -199,119 +136,194 @@ class _BaseEntry(object):
             inst.received_timestamp = _rfc3339_nanos_to_datetime(received)
         return inst
 
+    def to_api_repr(self):
+        """API repr (JSON format) for entry.
+        """
+        if self.type_ == 'text':
+            info = {'textPayload': self.payload}
+        elif self.type_ == 'struct':
+            info = {'jsonPayload': self.payload}
+        elif self.type_ == 'proto':
+            # NOTE: If ``self`` contains an ``Any`` field with an
+            #       unknown type, this will fail with a ``TypeError``.
+            #       However, since ``self`` was provided by a user in
+            #       ``Batch.log_proto``, the assumption is that any types
+            #       needed for the protobuf->JSON conversion will be known
+            #       from already imported ``pb2`` modules.
+            info = {'protoPayload': MessageToDict(self.payload)}
+        else:  # no payload
+            info = {}
+        if self.log_name is not None:
+            info['logName'] = self.log_name
+        if self.resource is not None:
+            info['resource'] = self.resource._to_dict()
+        if self.labels is not None:
+            info['labels'] = self.labels
+        if self.insert_id is not None:
+            info['insertId'] = self.insert_id
+        if self.severity is not None:
+            info['severity'] = self.severity
+        if self.http_request is not None:
+            info['httpRequest'] = self.http_request
+        if self.timestamp is not None:
+            info['timestamp'] = _datetime_to_rfc3339(self.timestamp)
+        if self.trace is not None:
+            info['trace'] = self.trace
+        if self.span_id is not None:
+            info['spanId'] = self.span_id
+        if self.trace_sampled is not None:
+            info['traceSampled'] = self.trace_sampled
+        if self.source_location is not None:
+            source_location = self.source_location.copy()
+            source_location['line'] = str(source_location.pop('line', 0))
+            info['sourceLocation'] = source_location
+        return info
 
-class EmptyEntry(_BaseEntry):
-    """Entry created with no payload.
 
-    See
-    https://cloud.google.com/logging/docs/reference/v2/rest/v2/LogEntry
-    """
+_LOG_ENTRY_FIELDS = (  # (name, default)
+    ('type_', None),
+    ('log_name', None),
+    ('payload', None),
+    ('logger', None),
+    ('labels', None),
+    ('insert_id', None),
+    ('severity', None),
+    ('http_request', None),
+    ('timestamp', None),
+    ('resource', _GLOBAL_RESOURCE),
+    ('trace', None),
+    ('span_id', None),
+    ('trace_sampled', None),
+    ('source_location', None),
+)
+
+
+_LogEntryTuple = collections.namedtuple(
+        '_LogEntryTuple', (field for field, _ in _LOG_ENTRY_FIELDS))
+
+_LogEntryTuple.__new__.__defaults__ = tuple(
+    default for _, default in _LOG_ENTRY_FIELDS[1:])
+
+
+_LOG_ENTRY_PARAM_DOCSTRING = """\
+:type logger: :class:`google.cloud.logging.logger.Logger`
+:param logger: the logger used to write the entry.
+
+:type log_name: str
+:param log_name: the name of the logger used to post the entry.
+
+:type labels: dict
+:param labels: (optional) mapping of labels for the entry
+
+:type insert_id: text
+:param insert_id: (optional) the ID used to identify an entry uniquely.
+
+:type severity: str
+:param severity: (optional) severity of event being logged.
+
+:type http_request: dict
+:param http_request: (optional) info about HTTP request associated with
+                        the entry.
+
+:type timestamp: :class:`datetime.datetime`
+:param timestamp: (optional) timestamp for the entry
+
+:type resource: :class:`~google.cloud.logging.resource.Resource`
+:param resource: (Optional) Monitored resource of the entry
+
+:type trace: str
+:param trace: (optional) traceid to apply to the entry.
+
+:type span_id: str
+:param span_id: (optional) span_id within the trace for the log entry.
+                Specify the trace parameter if span_id is set.
+
+:type trace_sampled: bool
+:param trace_sampled: (optional) the sampling decision of the trace
+                        associated with the log entry.
+
+:type source_location: dict
+:param source_location: (optional) location in source code from which
+                        the entry was emitted.
+"""
+
+
+class LogEntry(_LogEntryTuple, _ApiReprMixin):
+    """Log entry.
+
+    :type type_: str
+    :param type_: one of 'empty', 'text', 'struct', or 'proto'. Indicates
+                    how the payload field is handled.
+
+    :type payload: None, str | unicode, dict, protobuf message
+    :param payload: payload for the message, based on 'type_'
+    """ + _LOG_ENTRY_PARAM_DOCSTRING
+
+
+_EmptyEntryTuple = collections.namedtuple(
+        '_EmptyEntryTuple', (field for field, _ in _LOG_ENTRY_FIELDS))
+_EmptyEntryTuple.__new__.__defaults__ = (
+    ('empty',) + tuple(default for _, default in _LOG_ENTRY_FIELDS[1:]))
+
+
+class EmptyEntry(_EmptyEntryTuple, _ApiReprMixin):
+    """Log entry without payload.
+
+    """ + _LOG_ENTRY_PARAM_DOCSTRING
     _PAYLOAD_KEY = None
+    _TYPE_NAME = 'empty'
 
 
-class TextEntry(_BaseEntry):
-    """Entry created with ``textPayload``.
+_TextEntryTuple = collections.namedtuple(
+        '_TextEntryTuple', (field for field, _ in _LOG_ENTRY_FIELDS))
+_TextEntryTuple.__new__.__defaults__ = (
+    ('text',) + tuple(default for _, default in _LOG_ENTRY_FIELDS[1:]))
 
-    See
-    https://cloud.google.com/logging/docs/reference/v2/rest/v2/LogEntry
-    """
+
+class TextEntry(_TextEntryTuple, _ApiReprMixin):
+    """Log entry with text payload.
+
+    :type payload: str | unicode
+    :param payload: payload for the log entry.
+    """ + _LOG_ENTRY_PARAM_DOCSTRING
     _PAYLOAD_KEY = 'textPayload'
+    _TYPE_NAME = 'text'
 
 
-class StructEntry(_BaseEntry):
-    """Entry created with ``jsonPayload``.
+_StructEntryTuple = collections.namedtuple(
+        '_StructEntryTuple', (field for field, _ in _LOG_ENTRY_FIELDS))
+_StructEntryTuple.__new__.__defaults__ = (
+    ('struct',) + tuple(default for _, default in _LOG_ENTRY_FIELDS[1:]))
 
-    See
-    https://cloud.google.com/logging/docs/reference/v2/rest/v2/LogEntry
-    """
+
+class StructEntry(_StructEntryTuple, _ApiReprMixin):
+    """Log entry with JSON payload.
+
+    :type payload: dict
+    :param payload: payload for the log entry.
+    """ + _LOG_ENTRY_PARAM_DOCSTRING
     _PAYLOAD_KEY = 'jsonPayload'
+    _TYPE_NAME = 'struct'
 
 
-class ProtobufEntry(_BaseEntry):
-    """Entry created with ``protoPayload``.
+_ProtobufEntryTuple = collections.namedtuple(
+        '_ProtobufEntryTuple', (field for field, _ in _LOG_ENTRY_FIELDS))
+_ProtobufEntryTuple.__new__.__defaults__ = (
+    ('proto',) + tuple(default for _, default in _LOG_ENTRY_FIELDS[1:]))
 
-    See
-    https://cloud.google.com/logging/docs/reference/v2/rest/v2/LogEntry
 
-    :type payload: str, dict or any_pb2.Any
-    :param payload: The payload passed as ``textPayload``, ``jsonPayload``,
-                    or ``protoPayload``. This also may be passed as a raw
-                    :class:`.any_pb2.Any` if the ``protoPayload`` could
-                    not be deserialized.
+class ProtobufEntry(_ProtobufEntryTuple, _ApiReprMixin):
+    """Log entry with protobuf message payload.
 
-    :type logger: :class:`~google.cloud.logging.logger.Logger`
-    :param logger: the logger used to write the entry.
-
-    :type insert_id: str
-    :param insert_id: (optional) the ID used to identify an entry uniquely.
-
-    :type timestamp: :class:`datetime.datetime`
-    :param timestamp: (optional) timestamp for the entry
-
-    :type labels: dict
-    :param labels: (optional) mapping of labels for the entry
-
-    :type severity: str
-    :param severity: (optional) severity of event being logged.
-
-    :type http_request: dict
-    :param http_request: (optional) info about HTTP request associated with
-                         the entry
-
-    :type resource: :class:`~google.cloud.logging.resource.Resource`
-    :param resource: (Optional) Monitored resource of the entry
-
-    :type trace: str
-    :param trace: (optional) traceid to apply to the entry.
-
-    :type span_id: str
-    :param span_id: (optional) span_id within the trace for the log entry.
-                    Specify the trace parameter if span_id is set.
-
-    :type trace_sampled: bool
-    :param trace_sampled: (optional) the sampling decision of the trace
-                          associated with the log entry.
-
-    :type source_location: dict
-    :param source_location: (optional) location in source code from which
-                            the entry was emitted.
-    """
+    :type payload: protobuf message
+    :param payload: payload for the log entry.
+    """ + _LOG_ENTRY_PARAM_DOCSTRING
     _PAYLOAD_KEY = 'protoPayload'
+    _TYPE_NAME = 'proto'
 
-    def __init__(
-        self,
-        payload,
-        logger,
-        insert_id=None,
-        timestamp=None,
-        labels=None,
-        severity=None,
-        http_request=None,
-        resource=None,
-        trace=None,
-        span_id=None,
-        trace_sampled=None,
-        source_location=None,
-    ):
-        super(ProtobufEntry, self).__init__(
-            payload,
-            logger,
-            insert_id=insert_id,
-            timestamp=timestamp,
-            labels=labels,
-            severity=severity,
-            http_request=http_request,
-            resource=resource,
-            trace=trace,
-            span_id=span_id,
-            trace_sampled=trace_sampled,
-            source_location=source_location,
-        )
-        if isinstance(self.payload, any_pb2.Any):
-            self.payload_pb = self.payload
-            self.payload = None
-        else:
-            self.payload_pb = None
+    @property
+    def payload_pb(self):
+        return self.payload
 
     def parse_message(self, message):
         """Parse payload into a protobuf message.

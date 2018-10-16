@@ -13,10 +13,11 @@
 # limitations under the License.
 
 """Define API Loggers."""
-import collections
 
-from google.protobuf.json_format import MessageToDict
-from google.cloud._helpers import _datetime_to_rfc3339
+from google.cloud.logging.entries import EmptyEntry
+from google.cloud.logging.entries import ProtobufEntry
+from google.cloud.logging.entries import StructEntry
+from google.cloud.logging.entries import TextEntry
 from google.cloud.logging.resource import Resource
 
 
@@ -38,108 +39,6 @@ _OUTBOUND_ENTRY_FIELDS = (  # (name, default)
     ('trace_sampled', None),
     ('source_location', None),
 )
-
-
-class OutboundEntry(collections.namedtuple(
-        'OutboundEntry', (field for field, _ in _OUTBOUND_ENTRY_FIELDS))):
-    """Outbound log entry.
-
-    :type type_: str
-    :param type_: one of 'empty', 'text', 'struct', or 'proto'. Indicates
-                  how the payload field is handled.
-
-    :type payload: None, str | unicode, dict, protobuf message
-    :param payload: payload for the message, based on 'type_'
-
-    :type log_name: str
-    :param log_name: the name of the logger used to post the entry.
-
-    :type labels: dict
-    :param labels: (optional) mapping of labels for the entry
-
-    :type insert_id: text
-    :param insert_id: (optional) the ID used to identify an entry uniquely.
-
-    :type severity: str
-    :param severity: (optional) severity of event being logged.
-
-    :type http_request: dict
-    :param http_request: (optional) info about HTTP request associated with
-                         the entry.
-
-    :type timestamp: :class:`datetime.datetime`
-    :param timestamp: (optional) timestamp for the entry
-
-    :type resource: :class:`~google.cloud.logging.resource.Resource`
-    :param resource: (Optional) Monitored resource of the entry
-
-    :type trace: str
-    :param trace: (optional) traceid to apply to the entry.
-
-    :type span_id: str
-    :param span_id: (optional) span_id within the trace for the log entry.
-                    Specify the trace parameter if span_id is set.
-
-    :type trace_sampled: bool
-    :param trace_sampled: (optional) the sampling decision of the trace
-                          associated with the log entry.
-
-    :type source_location: dict
-    :param source_location: (optional) location in source code from which
-                            the entry was emitted.
-    """
-    def to_api_repr(self):
-        """API repr (JSON format) for entry.
-        """
-        if self.type_ == 'text':
-            info = {'textPayload': self.payload}
-        elif self.type_ == 'struct':
-            info = {'jsonPayload': self.payload}
-        elif self.type_ == 'proto':
-            # NOTE: If ``self`` contains an ``Any`` field with an
-            #       unknown type, this will fail with a ``TypeError``.
-            #       However, since ``self`` was provided by a user in
-            #       ``Batch.log_proto``, the assumption is that any types
-            #       needed for the protobuf->JSON conversion will be known
-            #       from already imported ``pb2`` modules.
-            info = {'protoPayload': MessageToDict(self.payload)}
-        else:  # no payload
-            info = {}
-        if self.log_name is not None:
-            info['logName'] = self.log_name
-        if self.resource is not None:
-            info['resource'] = self.resource._to_dict()
-        if self.labels is not None:
-            info['labels'] = self.labels
-        if self.insert_id is not None:
-            info['insertId'] = self.insert_id
-        if self.severity is not None:
-            info['severity'] = self.severity
-        if self.http_request is not None:
-            info['httpRequest'] = self.http_request
-        if self.timestamp is not None:
-            info['timestamp'] = _datetime_to_rfc3339(self.timestamp)
-        if self.trace is not None:
-            info['trace'] = self.trace
-        if self.span_id is not None:
-            info['spanId'] = self.span_id
-        if self.trace_sampled is not None:
-            info['traceSampled'] = self.trace_sampled
-        if self.source_location is not None:
-            source_location = self.source_location.copy()
-            source_location['line'] = str(source_location.pop('line', 0))
-            info['sourceLocation'] = source_location
-        return info
-
-
-OutboundEntry.__new__.__defaults__ = tuple(
-    default for _, default in _OUTBOUND_ENTRY_FIELDS[1:])
-
-
-EmptyOutboundEntry = OutboundEntry('empty')
-TextOutboundEntry = OutboundEntry('text')
-StructOutboundEntry = OutboundEntry('struct')
-ProtoOutboundEntry = OutboundEntry('proto')
 
 
 class Logger(object):
@@ -224,9 +123,9 @@ class Logger(object):
         kw['resource'] = kw.pop('resource', _GLOBAL_RESOURCE)
 
         if payload is not None:
-            entry = _entry_class._replace(payload=payload, **kw)
+            entry = _entry_class(payload=payload, **kw)
         else:
-            entry = _entry_class._replace(**kw)
+            entry = _entry_class(**kw)
 
         api_repr = entry.to_api_repr()
         client.logging_api.write_entries([api_repr])
@@ -244,9 +143,9 @@ class Logger(object):
 
         :type kw: dict
         :param kw: (optional) additional keyword arguments for the entry.
-                   See :class:`OutboundEntry`.
+                   See :class:`~google.cloud.logging.entries.LogEntry`.
         """
-        self._do_log(client, EmptyOutboundEntry, **kw)
+        self._do_log(client, EmptyEntry, **kw)
 
     def log_text(self, text, client=None, **kw):
         """API call:  log a text message via a POST request
@@ -264,9 +163,9 @@ class Logger(object):
 
         :type kw: dict
         :param kw: (optional) additional keyword arguments for the entry.
-                   See :class:`OutboundEntry`.
+                   See :class:`~google.cloud.logging.entries.LogEntry`.
         """
-        self._do_log(client, TextOutboundEntry, text, **kw)
+        self._do_log(client, TextEntry, text, **kw)
 
     def log_struct(self, info, client=None, **kw):
         """API call:  log a structured message via a POST request
@@ -284,9 +183,9 @@ class Logger(object):
 
         :type kw: dict
         :param kw: (optional) additional keyword arguments for the entry.
-                   See :class:`OutboundEntry`.
+                   See :class:`~google.cloud.logging.entries.LogEntry`.
         """
-        self._do_log(client, StructOutboundEntry, info, **kw)
+        self._do_log(client, StructEntry, info, **kw)
 
     def log_proto(self, message, client=None, **kw):
         """API call:  log a protobuf message via a POST request
@@ -304,9 +203,9 @@ class Logger(object):
 
         :type kw: dict
         :param kw: (optional) additional keyword arguments for the entry.
-                   See :class:`OutboundEntry`.
+                   See :class:`~google.cloud.logging.entries.LogEntry`.
         """
-        self._do_log(client, ProtoOutboundEntry, message, **kw)
+        self._do_log(client, ProtobufEntry, message, **kw)
 
     def delete(self, client=None):
         """API call:  delete all entries in a logger via a DELETE request
@@ -352,8 +251,8 @@ class Logger(object):
                            entries.
 
         :rtype: :class:`~google.api_core.page_iterator.Iterator`
-        :returns: Iterator of :class:`~google.cloud.logging.entries._BaseEntry`
-                  accessible to the current logger.
+        :returns: Iterator of log entries accessible to the current logger.
+                  See :class:`~google.cloud.logging.entries.LogEntry`.
         """
         log_filter = 'logName=%s' % (self.full_name,)
         if filter_ is not None:
@@ -403,9 +302,9 @@ class Batch(object):
 
         :type kw: dict
         :param kw: (optional) additional keyword arguments for the entry.
-                   See :meth:`Logger.log_empty`.
+                   See :class:`~google.cloud.logging.entries.LogEntry`.
         """
-        self.entries.append(EmptyOutboundEntry._replace(**kw))
+        self.entries.append(EmptyEntry(**kw))
 
     def log_text(self, text, **kw):
         """Add a text entry to be logged during :meth:`commit`.
@@ -415,10 +314,9 @@ class Batch(object):
 
         :type kw: dict
         :param kw: (optional) additional keyword arguments for the entry.
-                   See :meth:`Logger.log_text`.
+                   See :class:`~google.cloud.logging.entries.LogEntry`.
         """
-        self.entries.append(TextOutboundEntry._replace(
-            payload=text, **kw))
+        self.entries.append(TextEntry(payload=text, **kw))
 
     def log_struct(self, info, **kw):
         """Add a struct entry to be logged during :meth:`commit`.
@@ -428,10 +326,9 @@ class Batch(object):
 
         :type kw: dict
         :param kw: (optional) additional keyword arguments for the entry.
-                   See :meth:`Logger.log_struct`.
+                   See :class:`~google.cloud.logging.entries.LogEntry`.
         """
-        self.entries.append(StructOutboundEntry._replace(
-            payload=info, **kw))
+        self.entries.append(StructEntry(payload=info, **kw))
 
     def log_proto(self, message, **kw):
         """Add a protobuf entry to be logged during :meth:`commit`.
@@ -441,10 +338,9 @@ class Batch(object):
 
         :type kw: dict
         :param kw: (optional) additional keyword arguments for the entry.
-                   See :meth:`Logger.log_proto`.
+                   See :class:`~google.cloud.logging.entries.LogEntry`.
         """
-        self.entries.append(ProtoOutboundEntry._replace(
-            payload=message, **kw))
+        self.entries.append(ProtobufEntry(payload=message, **kw))
 
     def commit(self, client=None):
         """Send saved log entries as a single API call.
