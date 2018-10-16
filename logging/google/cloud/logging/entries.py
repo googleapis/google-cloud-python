@@ -84,6 +84,8 @@ class _BaseEntry(object):
     :param span_id: (optional) span_id within the trace for the log entry.
                     Specify the trace parameter if span_id is set.
     """
+    received_timestamp = None
+
     def __init__(
         self,
         payload,
@@ -169,8 +171,6 @@ class _BaseEntry(object):
         received = resource.get('receiveTimestamp')
         if received is not None:
             inst.received_timestamp = _rfc3339_nanos_to_datetime(received)
-        else:
-            inst.received_timestamp = None
         return inst
 
 
