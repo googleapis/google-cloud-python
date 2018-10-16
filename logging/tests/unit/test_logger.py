@@ -715,52 +715,31 @@ class TestLogger(unittest.TestCase):
         })
 
 
-class TestBatch(unittest.TestCase):
-
-    PROJECT = 'test-project'
+class Test_BatchEntry(unittest.TestCase):
 
     @staticmethod
     def _get_target_class():
-        from google.cloud.logging.logger import Batch
+        from google.cloud.logging.logger import _BatchEntry
 
-        return Batch
+        return _BatchEntry
 
     def _make_one(self, *args, **kwargs):
         return self._get_target_class()(*args, **kwargs)
 
-    def test_ctor_defaults(self):
-        logger = _Logger()
-        client = _Client(project=self.PROJECT)
-        batch = self._make_one(logger, client)
-        self.assertIs(batch.logger, logger)
-        self.assertIs(batch.client, client)
-        self.assertEqual(len(batch.entries), 0)
-
-    def test_log_text_defaults(self):
+    def test_to_api_repr_text_defaults(self):
         from google.cloud.logging.logger import _GLOBAL_RESOURCE
-        TEXT = 'This is the entry text'
-        client = _Client(project=self.PROJECT, connection=_make_credentials())
-        logger = _Logger()
-        batch = self._make_one(logger, client=client)
-        batch.log_text(TEXT)
-        ENTRY = (
-            'text',
-            TEXT,
-            None,
-            None,
-            None,
-            None,
-            None,
-            _GLOBAL_RESOURCE,
-            None,
-            None,
-            None,
-        )
-        self.assertEqual(batch.entries, [ENTRY])
 
-    def test_log_text_explicit(self):
+        entry = self._make_one('text', 'TESTING')
+        expected = {
+            'textPayload': 'TESTING',
+            'resource': _GLOBAL_RESOURCE._to_dict(),
+        }
+        self.assertEqual(entry.to_api_repr(), expected)
+
+    def test_to_api_repr_text_explicit(self):
         import datetime
         from google.cloud.logging.resource import Resource
+        from google.cloud._helpers import _datetime_to_rfc3339
 
         TEXT = 'This is the entry text'
         LABELS = {'foo': 'bar', 'baz': 'qux'}
@@ -784,18 +763,312 @@ class TestBatch(unittest.TestCase):
         )
         TRACE = '12345678-1234-5678-1234-567812345678'
         SPANID = '000000000000004a'
-        ENTRY = (
-            'text',
-            TEXT,
-            LABELS,
-            IID,
-            SEVERITY,
-            REQUEST,
-            TIMESTAMP,
-            RESOURCE,
-            TRACE,
-            SPANID,
-            True,
+        expected = {
+            'textPayload': TEXT,
+            'labels': LABELS,
+            'insertId': IID,
+            'severity': SEVERITY,
+            'httpRequest': REQUEST,
+            'timestamp': _datetime_to_rfc3339(TIMESTAMP),
+            'resource': RESOURCE._to_dict(),
+            'trace': TRACE,
+            'spanId': SPANID,
+            'traceSampled': True,
+        }
+        entry = self._make_one(
+            type_='text',
+            payload=TEXT,
+            labels=LABELS,
+            insert_id=IID,
+            severity=SEVERITY,
+            http_request=REQUEST,
+            timestamp=TIMESTAMP,
+            resource=RESOURCE,
+            trace=TRACE,
+            span_id=SPANID,
+            trace_sampled=True,
+        )
+
+        self.assertEqual(entry.to_api_repr(), expected)
+
+    def test_to_api_repr_struct_defaults(self):
+        from google.cloud.logging.logger import _GLOBAL_RESOURCE
+
+        JSON_PAYLOAD = {'key': 'value'}
+        entry = self._make_one('struct', JSON_PAYLOAD)
+        expected = {
+            'jsonPayload': JSON_PAYLOAD,
+            'resource': _GLOBAL_RESOURCE._to_dict(),
+        }
+        self.assertEqual(entry.to_api_repr(), expected)
+
+    def test_to_api_repr_struct_explicit(self):
+        import datetime
+        from google.cloud.logging.resource import Resource
+        from google.cloud._helpers import _datetime_to_rfc3339
+
+        JSON_PAYLOAD = {'key': 'value'}
+        LABELS = {'foo': 'bar', 'baz': 'qux'}
+        IID = 'IID'
+        SEVERITY = 'CRITICAL'
+        METHOD = 'POST'
+        URI = 'https://api.example.com/endpoint'
+        STATUS = '500'
+        REQUEST = {
+            'requestMethod': METHOD,
+            'requestUrl': URI,
+            'status': STATUS,
+        }
+        TIMESTAMP = datetime.datetime(2016, 12, 31, 0, 1, 2, 999999)
+        RESOURCE = Resource(
+            type='gae_app',
+            labels={
+                'module_id': 'default',
+                'version_id': 'test'
+            }
+        )
+        TRACE = '12345678-1234-5678-1234-567812345678'
+        SPANID = '000000000000004a'
+        expected = {
+            'jsonPayload': JSON_PAYLOAD,
+            'labels': LABELS,
+            'insertId': IID,
+            'severity': SEVERITY,
+            'httpRequest': REQUEST,
+            'timestamp': _datetime_to_rfc3339(TIMESTAMP),
+            'resource': RESOURCE._to_dict(),
+            'trace': TRACE,
+            'spanId': SPANID,
+            'traceSampled': True,
+        }
+        entry = self._make_one(
+            type_='struct',
+            payload=JSON_PAYLOAD,
+            labels=LABELS,
+            insert_id=IID,
+            severity=SEVERITY,
+            http_request=REQUEST,
+            timestamp=TIMESTAMP,
+            resource=RESOURCE,
+            trace=TRACE,
+            span_id=SPANID,
+            trace_sampled=True,
+        )
+
+        self.assertEqual(entry.to_api_repr(), expected)
+
+    def test_to_api_repr_proto_defaults(self):
+        from google.protobuf.json_format import MessageToDict
+        from google.cloud.logging.logger import _GLOBAL_RESOURCE
+        from google.protobuf.struct_pb2 import Struct
+        from google.protobuf.struct_pb2 import Value
+
+        message = Struct(fields={'foo': Value(bool_value=True)})
+
+        entry = self._make_one('proto', message)
+        expected = {
+            'protoPayload': MessageToDict(message),
+            'resource': _GLOBAL_RESOURCE._to_dict(),
+        }
+        self.assertEqual(entry.to_api_repr(), expected)
+
+    def test_to_api_repr_proto_explicit(self):
+        import datetime
+        from google.protobuf.json_format import MessageToDict
+        from google.cloud.logging.resource import Resource
+        from google.cloud._helpers import _datetime_to_rfc3339
+        from google.protobuf.struct_pb2 import Struct
+        from google.protobuf.struct_pb2 import Value
+
+        message = Struct(fields={'foo': Value(bool_value=True)})
+        LABELS = {'foo': 'bar', 'baz': 'qux'}
+        IID = 'IID'
+        SEVERITY = 'CRITICAL'
+        METHOD = 'POST'
+        URI = 'https://api.example.com/endpoint'
+        STATUS = '500'
+        REQUEST = {
+            'requestMethod': METHOD,
+            'requestUrl': URI,
+            'status': STATUS,
+        }
+        TIMESTAMP = datetime.datetime(2016, 12, 31, 0, 1, 2, 999999)
+        RESOURCE = Resource(
+            type='gae_app',
+            labels={
+                'module_id': 'default',
+                'version_id': 'test'
+            }
+        )
+        TRACE = '12345678-1234-5678-1234-567812345678'
+        SPANID = '000000000000004a'
+        expected = {
+            'protoPayload': MessageToDict(message),
+            'labels': LABELS,
+            'insertId': IID,
+            'severity': SEVERITY,
+            'httpRequest': REQUEST,
+            'timestamp': _datetime_to_rfc3339(TIMESTAMP),
+            'resource': RESOURCE._to_dict(),
+            'trace': TRACE,
+            'spanId': SPANID,
+            'traceSampled': True,
+        }
+
+        entry = self._make_one(
+            'proto',
+            message,
+            labels=LABELS,
+            insert_id=IID,
+            severity=SEVERITY,
+            http_request=REQUEST,
+            timestamp=TIMESTAMP,
+            resource=RESOURCE,
+            trace=TRACE,
+            span_id=SPANID,
+            trace_sampled=True,
+        )
+
+        self.assertEqual(entry.to_api_repr(), expected)
+
+
+class TestBatch(unittest.TestCase):
+
+    PROJECT = 'test-project'
+
+    @staticmethod
+    def _get_target_class():
+        from google.cloud.logging.logger import Batch
+
+        return Batch
+
+    def _make_one(self, *args, **kwargs):
+        return self._get_target_class()(*args, **kwargs)
+
+    def test_ctor_defaults(self):
+        logger = _Logger()
+        client = _Client(project=self.PROJECT)
+        batch = self._make_one(logger, client)
+        self.assertIs(batch.logger, logger)
+        self.assertIs(batch.client, client)
+        self.assertEqual(len(batch.entries), 0)
+
+    def test_log_empty_defaults(self):
+        from google.cloud.logging.logger import _GLOBAL_RESOURCE
+        from google.cloud.logging.logger import _EmptyBatchEntry
+
+        ENTRY = _EmptyBatchEntry._replace(resource=_GLOBAL_RESOURCE)
+        client = _Client(project=self.PROJECT, connection=_make_credentials())
+        logger = _Logger()
+        batch = self._make_one(logger, client=client)
+        batch.log_empty()
+        self.assertEqual(batch.entries, [ENTRY])
+
+    def test_log_empty_explicit(self):
+        import datetime
+        from google.cloud.logging.resource import Resource
+        from google.cloud.logging.logger import _EmptyBatchEntry
+
+        LABELS = {'foo': 'bar', 'baz': 'qux'}
+        IID = 'IID'
+        SEVERITY = 'CRITICAL'
+        METHOD = 'POST'
+        URI = 'https://api.example.com/endpoint'
+        STATUS = '500'
+        REQUEST = {
+            'requestMethod': METHOD,
+            'requestUrl': URI,
+            'status': STATUS,
+        }
+        TIMESTAMP = datetime.datetime(2016, 12, 31, 0, 1, 2, 999999)
+        RESOURCE = Resource(
+            type='gae_app',
+            labels={
+                'module_id': 'default',
+                'version_id': 'test'
+            }
+        )
+        TRACE = '12345678-1234-5678-1234-567812345678'
+        SPANID = '000000000000004a'
+        ENTRY = _EmptyBatchEntry._replace(
+            labels=LABELS,
+            insert_id=IID,
+            severity=SEVERITY,
+            http_request=REQUEST,
+            timestamp=TIMESTAMP,
+            resource=RESOURCE,
+            trace=TRACE,
+            span_id=SPANID,
+            trace_sampled=True,
+        )
+
+        client = _Client(project=self.PROJECT, connection=_make_credentials())
+        logger = _Logger()
+        batch = self._make_one(logger, client=client)
+        batch.log_empty(
+            labels=LABELS,
+            insert_id=IID,
+            severity=SEVERITY,
+            http_request=REQUEST,
+            timestamp=TIMESTAMP,
+            resource=RESOURCE,
+            trace=TRACE,
+            span_id=SPANID,
+            trace_sampled=True,
+        )
+        self.assertEqual(batch.entries, [ENTRY])
+
+    def test_log_text_defaults(self):
+        from google.cloud.logging.logger import _GLOBAL_RESOURCE
+        from google.cloud.logging.logger import _TextBatchEntry
+
+        TEXT = 'This is the entry text'
+        ENTRY = _TextBatchEntry._replace(
+            payload=TEXT, resource=_GLOBAL_RESOURCE)
+        client = _Client(project=self.PROJECT, connection=_make_credentials())
+        logger = _Logger()
+        batch = self._make_one(logger, client=client)
+        batch.log_text(TEXT)
+        self.assertEqual(batch.entries, [ENTRY])
+
+    def test_log_text_explicit(self):
+        import datetime
+        from google.cloud.logging.resource import Resource
+        from google.cloud.logging.logger import _TextBatchEntry
+
+        TEXT = 'This is the entry text'
+        LABELS = {'foo': 'bar', 'baz': 'qux'}
+        IID = 'IID'
+        SEVERITY = 'CRITICAL'
+        METHOD = 'POST'
+        URI = 'https://api.example.com/endpoint'
+        STATUS = '500'
+        REQUEST = {
+            'requestMethod': METHOD,
+            'requestUrl': URI,
+            'status': STATUS,
+        }
+        TIMESTAMP = datetime.datetime(2016, 12, 31, 0, 1, 2, 999999)
+        RESOURCE = Resource(
+            type='gae_app',
+            labels={
+                'module_id': 'default',
+                'version_id': 'test'
+            }
+        )
+        TRACE = '12345678-1234-5678-1234-567812345678'
+        SPANID = '000000000000004a'
+        ENTRY = _TextBatchEntry._replace(
+            payload=TEXT,
+            labels=LABELS,
+            insert_id=IID,
+            severity=SEVERITY,
+            http_request=REQUEST,
+            timestamp=TIMESTAMP,
+            resource=RESOURCE,
+            trace=TRACE,
+            span_id=SPANID,
+            trace_sampled=True,
         )
 
         client = _Client(project=self.PROJECT, connection=_make_credentials())
@@ -817,19 +1090,12 @@ class TestBatch(unittest.TestCase):
 
     def test_log_struct_defaults(self):
         from google.cloud.logging.logger import _GLOBAL_RESOURCE
+        from google.cloud.logging.logger import _StructBatchEntry
+
         STRUCT = {'message': 'Message text', 'weather': 'partly cloudy'}
-        ENTRY = (
-            'struct',
-            STRUCT,
-            None,
-            None,
-            None,
-            None,
-            None,
-            _GLOBAL_RESOURCE,
-            None,
-            None,
-            None,
+        ENTRY = _StructBatchEntry._replace(
+            payload=STRUCT,
+            resource=_GLOBAL_RESOURCE,
         )
         client = _Client(project=self.PROJECT, connection=_make_credentials())
         logger = _Logger()
@@ -840,6 +1106,7 @@ class TestBatch(unittest.TestCase):
     def test_log_struct_explicit(self):
         import datetime
         from google.cloud.logging.resource import Resource
+        from google.cloud.logging.logger import _StructBatchEntry
 
         STRUCT = {'message': 'Message text', 'weather': 'partly cloudy'}
         LABELS = {'foo': 'bar', 'baz': 'qux'}
@@ -863,18 +1130,17 @@ class TestBatch(unittest.TestCase):
                 'version_id': 'test',
             }
         )
-        ENTRY = (
-            'struct',
-            STRUCT,
-            LABELS,
-            IID,
-            SEVERITY,
-            REQUEST,
-            TIMESTAMP,
-            RESOURCE,
-            TRACE,
-            SPANID,
-            True,
+        ENTRY = _StructBatchEntry._replace(
+            payload=STRUCT,
+            labels=LABELS,
+            insert_id=IID,
+            severity=SEVERITY,
+            http_request=REQUEST,
+            timestamp=TIMESTAMP,
+            resource=RESOURCE,
+            trace=TRACE,
+            span_id=SPANID,
+            trace_sampled=True,
         )
 
         client = _Client(project=self.PROJECT, connection=_make_credentials())
@@ -896,22 +1162,14 @@ class TestBatch(unittest.TestCase):
 
     def test_log_proto_defaults(self):
         from google.cloud.logging.logger import _GLOBAL_RESOURCE
+        from google.cloud.logging.logger import _ProtoBatchEntry
         from google.protobuf.struct_pb2 import Struct
         from google.protobuf.struct_pb2 import Value
 
         message = Struct(fields={'foo': Value(bool_value=True)})
-        ENTRY = (
-            'proto',
-            message,
-            None,
-            None,
-            None,
-            None,
-            None,
-            _GLOBAL_RESOURCE,
-            None,
-            None,
-            None,
+        ENTRY = _ProtoBatchEntry._replace(
+            payload=message,
+            resource=_GLOBAL_RESOURCE,
         )
         client = _Client(project=self.PROJECT, connection=_make_credentials())
         logger = _Logger()
@@ -922,6 +1180,7 @@ class TestBatch(unittest.TestCase):
     def test_log_proto_explicit(self):
         import datetime
         from google.cloud.logging.resource import Resource
+        from google.cloud.logging.logger import _ProtoBatchEntry
         from google.protobuf.struct_pb2 import Struct
         from google.protobuf.struct_pb2 import Value
 
@@ -947,18 +1206,17 @@ class TestBatch(unittest.TestCase):
                 'version_id': 'test',
             }
         )
-        ENTRY = (
-            'proto',
-            message,
-            LABELS,
-            IID,
-            SEVERITY,
-            REQUEST,
-            TIMESTAMP,
-            RESOURCE,
-            TRACE,
-            SPANID,
-            True,
+        ENTRY = _ProtoBatchEntry._replace(
+            payload=message,
+            labels=LABELS,
+            insert_id=IID,
+            severity=SEVERITY,
+            http_request=REQUEST,
+            timestamp=TIMESTAMP,
+            resource=RESOURCE,
+            trace=TRACE,
+            span_id=SPANID,
+            trace_sampled=True,
         )
         client = _Client(project=self.PROJECT, connection=_make_credentials())
         logger = _Logger()
@@ -977,14 +1235,25 @@ class TestBatch(unittest.TestCase):
         )
         self.assertEqual(batch.entries, [ENTRY])
 
-    def test_commit_w_invalid_entry_type(self):
+    def test_commit_w_unknown_entry_type(self):
+        from google.cloud.logging.logger import _BatchEntry
+        from google.cloud.logging.logger import _GLOBAL_RESOURCE
+
         logger = _Logger()
         client = _Client(project=self.PROJECT, connection=_make_credentials())
+        api = client.logging_api = _DummyLoggingAPI()
         batch = self._make_one(logger, client)
-        batch.entries.append(('bogus', 'BOGUS', None, None, None, None, None,
-                              None, None, None, None))
-        with self.assertRaises(ValueError):
-            batch.commit()
+        batch.entries.append(_BatchEntry('bogus', 'BOGUS', severity='blah'))
+        ENTRY = {
+            'severity': 'blah',
+            'resource': _GLOBAL_RESOURCE._to_dict(),
+        }
+
+        batch.commit()
+
+        self.assertEqual(list(batch.entries), [])
+        self.assertEqual(api._write_entries_called_with,
+                         ([ENTRY], logger.full_name, None, None))
 
     def test_commit_w_resource_specified(self):
         from google.cloud.logging.logger import _GLOBAL_RESOURCE

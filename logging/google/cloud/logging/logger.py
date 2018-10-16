@@ -13,6 +13,7 @@
 # limitations under the License.
 
 """Define API Loggers."""
+import collections
 
 from google.protobuf.json_format import MessageToDict
 from google.cloud._helpers import _datetime_to_rfc3339
@@ -549,6 +550,71 @@ class Logger(object):
             page_size=page_size, page_token=page_token)
 
 
+_BATCH_ENTRY_FIELDS = (  # (name, default)
+    ('type_', None),
+    ('payload', None),
+    ('labels', None),
+    ('insert_id', None),
+    ('severity', None),
+    ('http_request', None),
+    ('timestamp', None),
+    ('resource', _GLOBAL_RESOURCE),
+    ('trace', None),
+    ('span_id', None),
+    ('trace_sampled', None),
+)
+
+
+class _BatchEntry(collections.namedtuple(
+        '_BatchEntry', (field for field, _ in _BATCH_ENTRY_FIELDS))):
+    def to_api_repr(self):
+        """API repr (JSON format) for entry.
+        """
+        if self.type_ == 'text':
+            info = {'textPayload': self.payload}
+        elif self.type_ == 'struct':
+            info = {'jsonPayload': self.payload}
+        elif self.type_ == 'proto':
+            # NOTE: If ``self`` contains an ``Any`` field with an
+            #       unknown type, this will fail with a ``TypeError``.
+            #       However, since ``self`` was provided by a user in
+            #       ``Batch.log_proto``, the assumption is that any types
+            #       needed for the protobuf->JSON conversion will be known
+            #       from already imported ``pb2`` modules.
+            info = {'protoPayload': MessageToDict(self.payload)}
+        else:  # no payload
+            info = {}
+        if self.resource is not None:
+            info['resource'] = self.resource._to_dict()
+        if self.labels is not None:
+            info['labels'] = self.labels
+        if self.insert_id is not None:
+            info['insertId'] = self.insert_id
+        if self.severity is not None:
+            info['severity'] = self.severity
+        if self.http_request is not None:
+            info['httpRequest'] = self.http_request
+        if self.timestamp is not None:
+            info['timestamp'] = _datetime_to_rfc3339(self.timestamp)
+        if self.trace is not None:
+            info['trace'] = self.trace
+        if self.span_id is not None:
+            info['spanId'] = self.span_id
+        if self.trace_sampled is not None:
+            info['traceSampled'] = self.trace_sampled
+        return info
+
+
+_BatchEntry.__new__.__defaults__ = tuple(
+    default for _, default in _BATCH_ENTRY_FIELDS[1:])
+
+
+_EmptyBatchEntry = _BatchEntry('empty')
+_TextBatchEntry = _BatchEntry('text')
+_StructBatchEntry = _BatchEntry('struct')
+_ProtoBatchEntry = _BatchEntry('proto')
+
+
 class Batch(object):
     """Context manager:  collect entries to log via a single API call.
 
@@ -582,203 +648,50 @@ class Batch(object):
         if exc_type is None:
             self.commit()
 
-    def log_text(
-        self,
-        text,
-        labels=None,
-        insert_id=None,
-        severity=None,
-        http_request=None,
-        timestamp=None,
-        resource=_GLOBAL_RESOURCE,
-        trace=None,
-        span_id=None,
-        trace_sampled=None,
-    ):
+    def log_empty(self, **kw):
+        """Add a entry without payload to be logged during :meth:`commit`.
+
+        :type kw: dict
+        :param kw: (optional) additional keyword arguments for the entry.
+                   See :meth:`Logger.log_empty`.
+        """
+        self.entries.append(_EmptyBatchEntry._replace(**kw))
+
+    def log_text(self, text, **kw):
         """Add a text entry to be logged during :meth:`commit`.
 
         :type text: str
         :param text: the text entry
 
-        :type labels: dict
-        :param labels: (optional) mapping of labels for the entry.
-
-        :type insert_id: str
-        :param insert_id: (optional) unique ID for log entry.
-
-        :type severity: str
-        :param severity: (optional) severity of event being logged.
-
-        :type http_request: dict
-        :param http_request: (optional) info about HTTP request associated with
-                             the entry.
-
-        :type timestamp: :class:`datetime.datetime`
-        :param timestamp: (optional) timestamp of event being logged.
-
-        :type resource: :class:`~google.cloud.logging.resource.Resource`
-        :param resource: (Optional) Monitored resource of the entry. Defaults
-                         to the global resource type. If set to None, the
-                         resource of the batch is used for this entry. If
-                         both this resource and the Batch resource are None,
-                         the API will return an error.
-
-        :type trace: str
-        :param trace: (optional) traceid to apply to the entry.
-
-        :type span_id: str
-        :param span_id: (optional) span_id within the trace for the log entry.
-                        Specify the trace parameter if span_id is set.
-
-        :type trace_sampled: bool
-        :param trace_sampled: (optional) the sampling decision of the trace
-                              associated with the log entry.
+        :type kw: dict
+        :param kw: (optional) additional keyword arguments for the entry.
+                   See :meth:`Logger.log_text`.
         """
-        self.entries.append((
-            'text',
-            text,
-            labels,
-            insert_id,
-            severity,
-            http_request,
-            timestamp,
-            resource,
-            trace,
-            span_id,
-            trace_sampled,
-        ))
+        self.entries.append(_TextBatchEntry._replace(payload=text, **kw))
 
-    def log_struct(
-        self,
-        info,
-        labels=None,
-        insert_id=None,
-        severity=None,
-        http_request=None,
-        timestamp=None,
-        resource=_GLOBAL_RESOURCE,
-        trace=None,
-        span_id=None,
-        trace_sampled=None,
-    ):
+    def log_struct(self, info, **kw):
         """Add a struct entry to be logged during :meth:`commit`.
 
         :type info: dict
         :param info: the struct entry
 
-        :type labels: dict
-        :param labels: (optional) mapping of labels for the entry.
-
-        :type insert_id: str
-        :param insert_id: (optional) unique ID for log entry.
-
-        :type severity: str
-        :param severity: (optional) severity of event being logged.
-
-        :type http_request: dict
-        :param http_request: (optional) info about HTTP request associated with
-                             the entry.
-
-        :type timestamp: :class:`datetime.datetime`
-        :param timestamp: (optional) timestamp of event being logged.
-
-        :type resource: :class:`~google.cloud.logging.resource.Resource`
-        :param resource: (Optional) Monitored resource of the entry. Defaults
-                         to the global resource type. If set to None, the
-                         resource of the batch is used for this entry. If
-                         both this resource and the Batch resource are None,
-                         the API will return an error.
-
-        :type trace: str
-        :param trace: (optional) traceid to apply to the entry.
-
-        :type span_id: str
-        :param span_id: (optional) span_id within the trace for the log entry.
-                        Specify the trace parameter if span_id is set.
-
-        :type trace_sampled: bool
-        :param trace_sampled: (optional) the sampling decision of the trace
-                              associated with the log entry.
+        :type kw: dict
+        :param kw: (optional) additional keyword arguments for the entry.
+                   See :meth:`Logger.log_struct`.
         """
-        self.entries.append((
-            'struct',
-            info,
-            labels,
-            insert_id,
-            severity,
-            http_request,
-            timestamp,
-            resource,
-            trace,
-            span_id,
-            trace_sampled,
-        ))
+        self.entries.append(_StructBatchEntry._replace(payload=info, **kw))
 
-    def log_proto(
-        self,
-        message,
-        labels=None,
-        insert_id=None,
-        severity=None,
-        http_request=None,
-        timestamp=None,
-        resource=_GLOBAL_RESOURCE,
-        trace=None,
-        span_id=None,
-        trace_sampled=None,
-    ):
+    def log_proto(self, message, **kw):
         """Add a protobuf entry to be logged during :meth:`commit`.
 
         :type message: protobuf message
         :param message: the protobuf entry
 
-        :type labels: dict
-        :param labels: (optional) mapping of labels for the entry.
-
-        :type insert_id: str
-        :param insert_id: (optional) unique ID for log entry.
-
-        :type severity: str
-        :param severity: (optional) severity of event being logged.
-
-        :type http_request: dict
-        :param http_request: (optional) info about HTTP request associated with
-                             the entry.
-
-        :type timestamp: :class:`datetime.datetime`
-        :param timestamp: (optional) timestamp of event being logged.
-
-        :type resource: :class:`~google.cloud.logging.resource.Resource`
-        :param resource: (Optional) Monitored resource of the entry. Defaults
-                         to the global resource type. If set to None, the
-                         resource of the batch is used for this entry. If
-                         both this resource and the Batch resource are None,
-                         the API will return an error.
-
-        :type trace: str
-        :param trace: (optional) traceid to apply to the entry.
-
-        :type span_id: str
-        :param span_id: (optional) span_id within the trace for the log entry.
-                        Specify the trace parameter if span_id is set.
-
-        :type trace_sampled: bool
-        :param trace_sampled: (optional) the sampling decision of the trace
-                              associated with the log entry.
+        :type kw: dict
+        :param kw: (optional) additional keyword arguments for the entry.
+                   See :meth:`Logger.log_proto`.
         """
-        self.entries.append((
-            'proto',
-            message,
-            labels,
-            insert_id,
-            severity,
-            http_request,
-            timestamp,
-            resource,
-            trace,
-            span_id,
-            trace_sampled,
-        ))
+        self.entries.append(_ProtoBatchEntry._replace(payload=message, **kw))
 
     def commit(self, client=None):
         """Send saved log entries as a single API call.
@@ -797,56 +710,11 @@ class Batch(object):
 
         if self.resource is not None:
             kwargs['resource'] = self.resource._to_dict()
+
         if self.logger.labels is not None:
             kwargs['labels'] = self.logger.labels
 
-        entries = []
-        for (
-            entry_type,
-            entry,
-            labels,
-            iid,
-            severity,
-            http_req,
-            timestamp,
-            resource,
-            trace,
-            span_id,
-            trace_sampled,
-        ) in self.entries:
-            if entry_type == 'text':
-                info = {'textPayload': entry}
-            elif entry_type == 'struct':
-                info = {'jsonPayload': entry}
-            elif entry_type == 'proto':
-                # NOTE: If ``entry`` contains an ``Any`` field with an
-                #       unknown type, this will fail with a ``TypeError``.
-                #       However, since ``entry`` was provided by a user in
-                #       ``Batch.log_proto``, the assumption is that any types
-                #       needed for the protobuf->JSON conversion will be known
-                #       from already imported ``pb2`` modules.
-                info = {'protoPayload': MessageToDict(entry)}
-            else:
-                raise ValueError('Unknown entry type: %s' % (entry_type,))
-            if resource is not None:
-                info['resource'] = resource._to_dict()
-            if labels is not None:
-                info['labels'] = labels
-            if iid is not None:
-                info['insertId'] = iid
-            if severity is not None:
-                info['severity'] = severity
-            if http_req is not None:
-                info['httpRequest'] = http_req
-            if timestamp is not None:
-                info['timestamp'] = _datetime_to_rfc3339(timestamp)
-            if trace is not None:
-                info['trace'] = trace
-            if span_id is not None:
-                info['spanId'] = span_id
-            if trace_sampled is not None:
-                info['traceSampled'] = trace_sampled
-            entries.append(info)
+        entries = [entry.to_api_repr() for entry in self.entries]
 
         client.logging_api.write_entries(entries, **kwargs)
         del self.entries[:]
