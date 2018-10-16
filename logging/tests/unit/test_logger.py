@@ -34,6 +34,92 @@ class TestOutboundEntry(unittest.TestCase):
     def _make_one(self, *args, **kwargs):
         return self._get_target_class()(*args, **kwargs)
 
+    def test_to_api_repr_empty_w_source_location_no_line(self):
+        from google.cloud.logging.logger import _GLOBAL_RESOURCE
+
+        FILE = 'my_file.py'
+        FUNCTION = 'my_function'
+        SOURCE_LOCATION = {
+            'file': FILE,
+            'function': FUNCTION,
+        }
+        entry = self._make_one('empty', source_location=SOURCE_LOCATION)
+        expected = {
+            'resource': _GLOBAL_RESOURCE._to_dict(),
+            'sourceLocation': {
+                'file': FILE,
+                'line': '0',
+                'function': FUNCTION,
+            }
+        }
+        self.assertEqual(entry.to_api_repr(), expected)
+
+    def test_to_api_repr_empty_explicit(self):
+        import datetime
+        from google.cloud.logging.resource import Resource
+        from google.cloud._helpers import _datetime_to_rfc3339
+
+        LABELS = {'foo': 'bar', 'baz': 'qux'}
+        IID = 'IID'
+        SEVERITY = 'CRITICAL'
+        METHOD = 'POST'
+        URI = 'https://api.example.com/endpoint'
+        STATUS = '500'
+        REQUEST = {
+            'requestMethod': METHOD,
+            'requestUrl': URI,
+            'status': STATUS,
+        }
+        TIMESTAMP = datetime.datetime(2016, 12, 31, 0, 1, 2, 999999)
+        RESOURCE = Resource(
+            type='gae_app',
+            labels={
+                'module_id': 'default',
+                'version_id': 'test'
+            }
+        )
+        TRACE = '12345678-1234-5678-1234-567812345678'
+        SPANID = '000000000000004a'
+        FILE = 'my_file.py'
+        LINE = 123
+        FUNCTION = 'my_function'
+        SOURCE_LOCATION = {
+            'file': FILE,
+            'line': LINE,
+            'function': FUNCTION,
+        }
+        expected = {
+            'labels': LABELS,
+            'insertId': IID,
+            'severity': SEVERITY,
+            'httpRequest': REQUEST,
+            'timestamp': _datetime_to_rfc3339(TIMESTAMP),
+            'resource': RESOURCE._to_dict(),
+            'trace': TRACE,
+            'spanId': SPANID,
+            'traceSampled': True,
+            'sourceLocation': {
+                'file': FILE,
+                'line': str(LINE),
+                'function': FUNCTION,
+            },
+        }
+        entry = self._make_one(
+            type_='empty',
+            labels=LABELS,
+            insert_id=IID,
+            severity=SEVERITY,
+            http_request=REQUEST,
+            timestamp=TIMESTAMP,
+            resource=RESOURCE,
+            trace=TRACE,
+            span_id=SPANID,
+            trace_sampled=True,
+            source_location=SOURCE_LOCATION,
+        )
+
+        self.assertEqual(entry.to_api_repr(), expected)
+
     def test_to_api_repr_text_defaults(self):
         from google.cloud.logging.logger import _GLOBAL_RESOURCE
 
@@ -71,6 +157,14 @@ class TestOutboundEntry(unittest.TestCase):
         )
         TRACE = '12345678-1234-5678-1234-567812345678'
         SPANID = '000000000000004a'
+        FILE = 'my_file.py'
+        LINE = 123
+        FUNCTION = 'my_function'
+        SOURCE_LOCATION = {
+            'file': FILE,
+            'line': LINE,
+            'function': FUNCTION,
+        }
         expected = {
             'textPayload': TEXT,
             'labels': LABELS,
@@ -82,6 +176,11 @@ class TestOutboundEntry(unittest.TestCase):
             'trace': TRACE,
             'spanId': SPANID,
             'traceSampled': True,
+            'sourceLocation': {
+                'file': FILE,
+                'line': str(LINE),
+                'function': FUNCTION,
+            },
         }
         entry = self._make_one(
             type_='text',
@@ -95,6 +194,7 @@ class TestOutboundEntry(unittest.TestCase):
             trace=TRACE,
             span_id=SPANID,
             trace_sampled=True,
+            source_location=SOURCE_LOCATION,
         )
 
         self.assertEqual(entry.to_api_repr(), expected)
@@ -137,6 +237,14 @@ class TestOutboundEntry(unittest.TestCase):
         )
         TRACE = '12345678-1234-5678-1234-567812345678'
         SPANID = '000000000000004a'
+        FILE = 'my_file.py'
+        LINE = 123
+        FUNCTION = 'my_function'
+        SOURCE_LOCATION = {
+            'file': FILE,
+            'line': LINE,
+            'function': FUNCTION,
+        }
         expected = {
             'jsonPayload': JSON_PAYLOAD,
             'labels': LABELS,
@@ -148,6 +256,11 @@ class TestOutboundEntry(unittest.TestCase):
             'trace': TRACE,
             'spanId': SPANID,
             'traceSampled': True,
+            'sourceLocation': {
+                'file': FILE,
+                'line': str(LINE),
+                'function': FUNCTION,
+            },
         }
         entry = self._make_one(
             type_='struct',
@@ -161,6 +274,7 @@ class TestOutboundEntry(unittest.TestCase):
             trace=TRACE,
             span_id=SPANID,
             trace_sampled=True,
+            source_location=SOURCE_LOCATION,
         )
 
         self.assertEqual(entry.to_api_repr(), expected)
@@ -210,6 +324,14 @@ class TestOutboundEntry(unittest.TestCase):
         )
         TRACE = '12345678-1234-5678-1234-567812345678'
         SPANID = '000000000000004a'
+        FILE = 'my_file.py'
+        LINE = 123
+        FUNCTION = 'my_function'
+        SOURCE_LOCATION = {
+            'file': FILE,
+            'line': LINE,
+            'function': FUNCTION,
+        }
         expected = {
             'protoPayload': MessageToDict(message),
             'labels': LABELS,
@@ -221,6 +343,11 @@ class TestOutboundEntry(unittest.TestCase):
             'trace': TRACE,
             'spanId': SPANID,
             'traceSampled': True,
+            'sourceLocation': {
+                'file': FILE,
+                'line': str(LINE),
+                'function': FUNCTION,
+            },
         }
 
         entry = self._make_one(
@@ -235,6 +362,7 @@ class TestOutboundEntry(unittest.TestCase):
             trace=TRACE,
             span_id=SPANID,
             trace_sampled=True,
+            source_location=SOURCE_LOCATION,
         )
 
         self.assertEqual(entry.to_api_repr(), expected)
@@ -1348,7 +1476,6 @@ class TestBatch(unittest.TestCase):
         import datetime
         from google.protobuf.struct_pb2 import Struct
         from google.protobuf.struct_pb2 import Value
-        from google.cloud.logging.logger import _GLOBAL_RESOURCE
         from google.cloud.logging.logger import TextOutboundEntry
         from google.cloud.logging.logger import StructOutboundEntry
         from google.cloud.logging.logger import ProtoOutboundEntry

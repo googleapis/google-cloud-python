@@ -48,6 +48,13 @@ def logger_name_from_path(path):
     return _name_from_project_path(path, None, _LOGGER_TEMPLATE)
 
 
+def _int_or_none(value):
+    """Helper: return an integer or ``None``."""
+    if value is not None:
+        value = int(value)
+    return value
+
+
 class _BaseEntry(object):
     """Base class for TextEntry, StructEntry, ProtobufEntry.
 
@@ -87,6 +94,10 @@ class _BaseEntry(object):
     :type trace_sampled: bool
     :param trace_sampled: (optional) the sampling decision of the trace
                           associated with the log entry.
+
+    :type source_location: dict
+    :param source_location: (optional) location in source code from which
+                            the entry was emitted.
     """
     received_timestamp = None
 
@@ -103,6 +114,7 @@ class _BaseEntry(object):
         trace=None,
         span_id=None,
         trace_sampled=None,
+        source_location=None,
     ):
         self.payload = payload
         self.logger = logger
@@ -115,6 +127,7 @@ class _BaseEntry(object):
         self.trace = trace
         self.span_id = span_id
         self.trace_sampled = trace_sampled
+        self.source_location = source_location
 
     @classmethod
     def from_api_repr(cls, resource, client, loggers=None):
@@ -157,6 +170,10 @@ class _BaseEntry(object):
         trace = resource.get('trace')
         span_id = resource.get('spanId')
         trace_sampled = resource.get('traceSampled')
+        source_location = resource.get('sourceLocation')
+        if source_location is not None:
+            line = source_location.pop('line', None)
+            source_location['line'] = _int_or_none(line)
 
         monitored_resource_dict = resource.get('resource')
         monitored_resource = None
@@ -175,6 +192,7 @@ class _BaseEntry(object):
             trace=trace,
             span_id=span_id,
             trace_sampled=trace_sampled,
+            source_location=source_location,
         )
         received = resource.get('receiveTimestamp')
         if received is not None:
@@ -253,12 +271,28 @@ class ProtobufEntry(_BaseEntry):
     :type trace_sampled: bool
     :param trace_sampled: (optional) the sampling decision of the trace
                           associated with the log entry.
+
+    :type source_location: dict
+    :param source_location: (optional) location in source code from which
+                            the entry was emitted.
     """
     _PAYLOAD_KEY = 'protoPayload'
 
-    def __init__(self, payload, logger, insert_id=None, timestamp=None,
-                 labels=None, severity=None, http_request=None, resource=None,
-                 trace=None, span_id=None, trace_sampled=None):
+    def __init__(
+        self,
+        payload,
+        logger,
+        insert_id=None,
+        timestamp=None,
+        labels=None,
+        severity=None,
+        http_request=None,
+        resource=None,
+        trace=None,
+        span_id=None,
+        trace_sampled=None,
+        source_location=None,
+    ):
         super(ProtobufEntry, self).__init__(
             payload,
             logger,
@@ -271,6 +305,7 @@ class ProtobufEntry(_BaseEntry):
             trace=trace,
             span_id=span_id,
             trace_sampled=trace_sampled,
+            source_location=source_location,
         )
         if isinstance(self.payload, any_pb2.Any):
             self.payload_pb = self.payload

@@ -39,6 +39,23 @@ class Test_logger_name_from_path(unittest.TestCase):
         self.assertEqual(logger_name, LOGGER_NAME)
 
 
+class Test__int_or_none(unittest.TestCase):
+
+    def _call_fut(self, value):
+        from google.cloud.logging.entries import _int_or_none
+
+        return _int_or_none(value)
+
+    def test_w_none(self):
+        self.assertIsNone(self._call_fut(None))
+
+    def test_w_int(self):
+        self.assertEqual(self._call_fut(123), 123)
+
+    def test_w_str(self):
+        self.assertEqual(self._call_fut('123'), 123)
+
+
 class Test_BaseEntry(unittest.TestCase):
 
     PROJECT = 'PROJECT'
@@ -71,6 +88,7 @@ class Test_BaseEntry(unittest.TestCase):
         self.assertIsNone(entry.trace)
         self.assertIsNone(entry.span_id)
         self.assertIsNone(entry.trace_sampled)
+        self.assertIsNone(entry.source_location)
 
     def test_ctor_explicit(self):
         import datetime
@@ -92,6 +110,14 @@ class Test_BaseEntry(unittest.TestCase):
         resource = Resource(type='global', labels={})
         TRACE = '12345678-1234-5678-1234-567812345678'
         SPANID = '000000000000004a'
+        FILE = 'my_file.py'
+        LINE_NO = 123
+        FUNCTION = 'my_function'
+        SOURCE_LOCATION = {
+            'file': FILE,
+            'line': LINE_NO,
+            'function': FUNCTION,
+        }
 
         logger = _Logger(self.LOGGER_NAME, self.PROJECT)
         entry = self._make_one(
@@ -106,6 +132,7 @@ class Test_BaseEntry(unittest.TestCase):
             trace=TRACE,
             span_id=SPANID,
             trace_sampled=True,
+            source_location=SOURCE_LOCATION,
         )
         self.assertEqual(entry.payload, PAYLOAD)
         self.assertIs(entry.logger, logger)
@@ -120,6 +147,11 @@ class Test_BaseEntry(unittest.TestCase):
         self.assertEqual(entry.trace, TRACE)
         self.assertEqual(entry.span_id, SPANID)
         self.assertTrue(entry.trace_sampled)
+
+        source_location = entry.source_location
+        self.assertEqual(source_location['file'], FILE)
+        self.assertEqual(source_location['line'], LINE_NO)
+        self.assertEqual(source_location['function'], FUNCTION)
 
     def test_from_api_repr_no_payload_missing_data_no_loggers(self):
         client = _Client(self.PROJECT)
@@ -137,6 +169,7 @@ class Test_BaseEntry(unittest.TestCase):
         self.assertIsNone(entry.trace)
         self.assertIsNone(entry.span_id)
         self.assertIsNone(entry.trace_sampled)
+        self.assertIsNone(entry.source_location)
         logger = entry.logger
         self.assertIsInstance(logger, _Logger)
         self.assertIs(logger.client, client)
@@ -171,6 +204,14 @@ class Test_BaseEntry(unittest.TestCase):
         STATUS = '500'
         TRACE = '12345678-1234-5678-1234-567812345678'
         SPANID = '000000000000004a'
+        FILE = 'my_file.py'
+        LINE_NO = 123
+        FUNCTION = 'my_function'
+        SOURCE_LOCATION = {
+            'file': FILE,
+            'line': str(LINE_NO),
+            'function': FUNCTION,
+        }
         API_REPR = {
             'dummyPayload': PAYLOAD,
             'logName': LOG_NAME,
@@ -187,6 +228,7 @@ class Test_BaseEntry(unittest.TestCase):
             'trace': TRACE,
             'spanId': SPANID,
             'traceSampled': True,
+            'sourceLocation': SOURCE_LOCATION,
         }
         loggers = {}
         entry = klass.from_api_repr(API_REPR, client, loggers=loggers)
@@ -209,6 +251,11 @@ class Test_BaseEntry(unittest.TestCase):
         self.assertEqual(entry.span_id, SPANID)
         self.assertTrue(entry.trace_sampled)
 
+        source_location = entry.source_location
+        self.assertEqual(source_location['file'], FILE)
+        self.assertEqual(source_location['line'], LINE_NO)
+        self.assertEqual(source_location['function'], FUNCTION)
+
     def test_from_api_repr_w_loggers_w_logger_match(self):
         from datetime import datetime
         from datetime import timedelta
@@ -225,6 +272,14 @@ class Test_BaseEntry(unittest.TestCase):
         LABELS = {'foo': 'bar', 'baz': 'qux'}
         TRACE = '12345678-1234-5678-1234-567812345678'
         SPANID = '000000000000004a'
+        FILE = 'my_file.py'
+        LINE_NO = 123
+        FUNCTION = 'my_function'
+        SOURCE_LOCATION = {
+            'file': FILE,
+            'line': str(LINE_NO),
+            'function': FUNCTION,
+        }
         API_REPR = {
             'dummyPayload': PAYLOAD,
             'logName': LOG_NAME,
@@ -235,6 +290,7 @@ class Test_BaseEntry(unittest.TestCase):
             'trace': TRACE,
             'spanId': SPANID,
             'traceSampled': True,
+            'sourceLocation': SOURCE_LOCATION,
         }
         LOGGER = object()
         loggers = {LOG_NAME: LOGGER}
@@ -249,6 +305,11 @@ class Test_BaseEntry(unittest.TestCase):
         self.assertEqual(entry.span_id, SPANID)
         self.assertTrue(entry.trace_sampled)
         self.assertIs(entry.logger, LOGGER)
+
+        source_location = entry.source_location
+        self.assertEqual(source_location['file'], FILE)
+        self.assertEqual(source_location['line'], LINE_NO)
+        self.assertEqual(source_location['function'], FUNCTION)
 
 
 class TestProtobufEntry(unittest.TestCase):
@@ -279,6 +340,7 @@ class TestProtobufEntry(unittest.TestCase):
         self.assertIsNone(pb_entry.trace)
         self.assertIsNone(pb_entry.span_id)
         self.assertIsNone(pb_entry.trace_sampled)
+        self.assertIsNone(pb_entry.source_location)
 
     def test_constructor_with_any(self):
         from google.protobuf.any_pb2 import Any
@@ -295,6 +357,7 @@ class TestProtobufEntry(unittest.TestCase):
         self.assertIsNone(pb_entry.http_request)
         self.assertIsNone(pb_entry.trace)
         self.assertIsNone(pb_entry.span_id)
+        self.assertIsNone(pb_entry.trace_sampled)
         self.assertIsNone(pb_entry.trace_sampled)
 
     def test_parse_message(self):

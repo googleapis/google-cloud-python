@@ -35,6 +35,7 @@ _OUTBOUND_ENTRY_FIELDS = (  # (name, default)
     ('trace', None),
     ('span_id', None),
     ('trace_sampled', None),
+    ('source_location', None),
 )
 
 
@@ -75,6 +76,10 @@ class OutboundEntry(collections.namedtuple(
             info['spanId'] = self.span_id
         if self.trace_sampled is not None:
             info['traceSampled'] = self.trace_sampled
+        if self.source_location is not None:
+            source_location = self.source_location.copy()
+            source_location['line'] = str(source_location.pop('line', 0))
+            info['sourceLocation'] = source_location
         return info
 
 
