@@ -154,6 +154,25 @@ class DlpServiceClient(object):
             dlp_job=dlp_job,
         )
 
+    @classmethod
+    def organization_stored_info_type_path(cls, organization,
+                                           stored_info_type):
+        """Return a fully-qualified organization_stored_info_type string."""
+        return google.api_core.path_template.expand(
+            'organizations/{organization}/storedInfoTypes/{stored_info_type}',
+            organization=organization,
+            stored_info_type=stored_info_type,
+        )
+
+    @classmethod
+    def project_stored_info_type_path(cls, project, stored_info_type):
+        """Return a fully-qualified project_stored_info_type string."""
+        return google.api_core.path_template.expand(
+            'projects/{project}/storedInfoTypes/{stored_info_type}',
+            project=project,
+            stored_info_type=stored_info_type,
+        )
+
     def __init__(self,
                  transport=None,
                  channel=None,
@@ -1468,6 +1487,7 @@ class DlpServiceClient(object):
                       filter_=None,
                       page_size=None,
                       type_=None,
+                      order_by=None,
                       retry=google.api_core.gapic_v1.method.DEFAULT,
                       timeout=google.api_core.gapic_v1.method.DEFAULT,
                       metadata=None):
@@ -1528,6 +1548,19 @@ class DlpServiceClient(object):
                 streaming is performed per-page, this determines the maximum number
                 of resources in a page.
             type_ (~google.cloud.dlp_v2.types.DlpJobType): The type of job. Defaults to ``DlpJobType.INSPECT``
+            order_by (str): Optional comma separated list of fields to order by,
+                followed by ``asc`` or ``desc`` postfix. This list is case-insensitive,
+                default sorting order is ascending, redundant space characters are
+                insignificant.
+
+                Example: ``name asc, end_time asc, create_time desc``
+
+                Supported fields are:
+
+                - ``create_time``: corresponds to time the job was created.
+                - ``end_time``: corresponds to time the job ended.
+                - ``name``: corresponds to job's name.
+                - ``state``: corresponds to ``state``
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -1566,6 +1599,7 @@ class DlpServiceClient(object):
             filter=filter_,
             page_size=page_size,
             type=type_,
+            order_by=order_by,
         )
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
@@ -2093,4 +2127,371 @@ class DlpServiceClient(object):
             trigger_id=trigger_id,
         )
         return self._inner_api_calls['create_job_trigger'](
+            request, retry=retry, timeout=timeout, metadata=metadata)
+
+    def create_stored_info_type(
+            self,
+            parent,
+            config=None,
+            stored_info_type_id=None,
+            retry=google.api_core.gapic_v1.method.DEFAULT,
+            timeout=google.api_core.gapic_v1.method.DEFAULT,
+            metadata=None):
+        """
+        Creates a pre-built stored infoType to be used for inspection.
+        See https://cloud.google.com/dlp/docs/creating-stored-infotypes to
+        learn more.
+
+        Example:
+            >>> from google.cloud import dlp_v2
+            >>>
+            >>> client = dlp_v2.DlpServiceClient()
+            >>>
+            >>> parent = client.organization_path('[ORGANIZATION]')
+            >>>
+            >>> response = client.create_stored_info_type(parent)
+
+        Args:
+            parent (str): The parent resource name, for example projects/my-project-id or
+                organizations/my-org-id.
+            config (Union[dict, ~google.cloud.dlp_v2.types.StoredInfoTypeConfig]): Configuration of the storedInfoType to create.
+                If a dict is provided, it must be of the same form as the protobuf
+                message :class:`~google.cloud.dlp_v2.types.StoredInfoTypeConfig`
+            stored_info_type_id (str): The storedInfoType ID can contain uppercase and lowercase letters,
+                numbers, and hyphens; that is, it must match the regular
+                expression: ``[a-zA-Z\\d-]+``. The maximum length is 100
+                characters. Can be empty to allow the system to generate one.
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will not
+                be retried.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Returns:
+            A :class:`~google.cloud.dlp_v2.types.StoredInfoType` instance.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        # Wrap the transport method to add retry and timeout logic.
+        if 'create_stored_info_type' not in self._inner_api_calls:
+            self._inner_api_calls[
+                'create_stored_info_type'] = google.api_core.gapic_v1.method.wrap_method(
+                    self.transport.create_stored_info_type,
+                    default_retry=self._method_configs['CreateStoredInfoType'].
+                    retry,
+                    default_timeout=self.
+                    _method_configs['CreateStoredInfoType'].timeout,
+                    client_info=self._client_info,
+                )
+
+        request = dlp_pb2.CreateStoredInfoTypeRequest(
+            parent=parent,
+            config=config,
+            stored_info_type_id=stored_info_type_id,
+        )
+        return self._inner_api_calls['create_stored_info_type'](
+            request, retry=retry, timeout=timeout, metadata=metadata)
+
+    def update_stored_info_type(
+            self,
+            name,
+            config=None,
+            update_mask=None,
+            retry=google.api_core.gapic_v1.method.DEFAULT,
+            timeout=google.api_core.gapic_v1.method.DEFAULT,
+            metadata=None):
+        """
+        Updates the stored infoType by creating a new version. The existing version
+        will continue to be used until the new version is ready.
+        See https://cloud.google.com/dlp/docs/creating-stored-infotypes to
+        learn more.
+
+        Example:
+            >>> from google.cloud import dlp_v2
+            >>>
+            >>> client = dlp_v2.DlpServiceClient()
+            >>>
+            >>> name = client.organization_stored_info_type_path('[ORGANIZATION]', '[STORED_INFO_TYPE]')
+            >>>
+            >>> response = client.update_stored_info_type(name)
+
+        Args:
+            name (str): Resource name of organization and storedInfoType to be updated, for
+                example ``organizations/433245324/storedInfoTypes/432452342`` or
+                projects/project-id/storedInfoTypes/432452342.
+            config (Union[dict, ~google.cloud.dlp_v2.types.StoredInfoTypeConfig]): Updated configuration for the storedInfoType. If not provided, a new
+                version of the storedInfoType will be created with the existing
+                configuration.
+                If a dict is provided, it must be of the same form as the protobuf
+                message :class:`~google.cloud.dlp_v2.types.StoredInfoTypeConfig`
+            update_mask (Union[dict, ~google.cloud.dlp_v2.types.FieldMask]): Mask to control which fields get updated.
+                If a dict is provided, it must be of the same form as the protobuf
+                message :class:`~google.cloud.dlp_v2.types.FieldMask`
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will not
+                be retried.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Returns:
+            A :class:`~google.cloud.dlp_v2.types.StoredInfoType` instance.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        # Wrap the transport method to add retry and timeout logic.
+        if 'update_stored_info_type' not in self._inner_api_calls:
+            self._inner_api_calls[
+                'update_stored_info_type'] = google.api_core.gapic_v1.method.wrap_method(
+                    self.transport.update_stored_info_type,
+                    default_retry=self._method_configs['UpdateStoredInfoType'].
+                    retry,
+                    default_timeout=self.
+                    _method_configs['UpdateStoredInfoType'].timeout,
+                    client_info=self._client_info,
+                )
+
+        request = dlp_pb2.UpdateStoredInfoTypeRequest(
+            name=name,
+            config=config,
+            update_mask=update_mask,
+        )
+        return self._inner_api_calls['update_stored_info_type'](
+            request, retry=retry, timeout=timeout, metadata=metadata)
+
+    def get_stored_info_type(self,
+                             name,
+                             retry=google.api_core.gapic_v1.method.DEFAULT,
+                             timeout=google.api_core.gapic_v1.method.DEFAULT,
+                             metadata=None):
+        """
+        Gets a stored infoType.
+        See https://cloud.google.com/dlp/docs/creating-stored-infotypes to
+        learn more.
+
+        Example:
+            >>> from google.cloud import dlp_v2
+            >>>
+            >>> client = dlp_v2.DlpServiceClient()
+            >>>
+            >>> name = client.organization_stored_info_type_path('[ORGANIZATION]', '[STORED_INFO_TYPE]')
+            >>>
+            >>> response = client.get_stored_info_type(name)
+
+        Args:
+            name (str): Resource name of the organization and storedInfoType to be read, for
+                example ``organizations/433245324/storedInfoTypes/432452342`` or
+                projects/project-id/storedInfoTypes/432452342.
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will not
+                be retried.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Returns:
+            A :class:`~google.cloud.dlp_v2.types.StoredInfoType` instance.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        # Wrap the transport method to add retry and timeout logic.
+        if 'get_stored_info_type' not in self._inner_api_calls:
+            self._inner_api_calls[
+                'get_stored_info_type'] = google.api_core.gapic_v1.method.wrap_method(
+                    self.transport.get_stored_info_type,
+                    default_retry=self._method_configs['GetStoredInfoType'].
+                    retry,
+                    default_timeout=self._method_configs['GetStoredInfoType'].
+                    timeout,
+                    client_info=self._client_info,
+                )
+
+        request = dlp_pb2.GetStoredInfoTypeRequest(name=name, )
+        return self._inner_api_calls['get_stored_info_type'](
+            request, retry=retry, timeout=timeout, metadata=metadata)
+
+    def list_stored_info_types(self,
+                               parent,
+                               page_size=None,
+                               order_by=None,
+                               retry=google.api_core.gapic_v1.method.DEFAULT,
+                               timeout=google.api_core.gapic_v1.method.DEFAULT,
+                               metadata=None):
+        """
+        Lists stored infoTypes.
+        See https://cloud.google.com/dlp/docs/creating-stored-infotypes to
+        learn more.
+
+        Example:
+            >>> from google.cloud import dlp_v2
+            >>>
+            >>> client = dlp_v2.DlpServiceClient()
+            >>>
+            >>> parent = client.organization_path('[ORGANIZATION]')
+            >>>
+            >>> # Iterate over all results
+            >>> for element in client.list_stored_info_types(parent):
+            ...     # process element
+            ...     pass
+            >>>
+            >>>
+            >>> # Alternatively:
+            >>>
+            >>> # Iterate over results one page at a time
+            >>> for page in client.list_stored_info_types(parent, options=CallOptions(page_token=INITIAL_PAGE)):
+            ...     for element in page:
+            ...         # process element
+            ...         pass
+
+        Args:
+            parent (str): The parent resource name, for example projects/my-project-id or
+                organizations/my-org-id.
+            page_size (int): The maximum number of resources contained in the
+                underlying API response. If page streaming is performed per-
+                resource, this parameter does not affect the return value. If page
+                streaming is performed per-page, this determines the maximum number
+                of resources in a page.
+            order_by (str): Optional comma separated list of fields to order by,
+                followed by ``asc`` or ``desc`` postfix. This list is case-insensitive,
+                default sorting order is ascending, redundant space characters are
+                insignificant.
+
+                Example: ``name asc, display_name, create_time desc``
+
+                Supported fields are:
+
+                - ``create_time``: corresponds to time the most recent version of the
+                resource was created.
+                - ``state``: corresponds to the state of the resource.
+                - ``name``: corresponds to resource name.
+                - ``display_name``: corresponds to info type's display name.
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will not
+                be retried.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Returns:
+            A :class:`~google.gax.PageIterator` instance. By default, this
+            is an iterable of :class:`~google.cloud.dlp_v2.types.StoredInfoType` instances.
+            This object can also be configured to iterate over the pages
+            of the response through the `options` parameter.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        # Wrap the transport method to add retry and timeout logic.
+        if 'list_stored_info_types' not in self._inner_api_calls:
+            self._inner_api_calls[
+                'list_stored_info_types'] = google.api_core.gapic_v1.method.wrap_method(
+                    self.transport.list_stored_info_types,
+                    default_retry=self._method_configs['ListStoredInfoTypes'].
+                    retry,
+                    default_timeout=self.
+                    _method_configs['ListStoredInfoTypes'].timeout,
+                    client_info=self._client_info,
+                )
+
+        request = dlp_pb2.ListStoredInfoTypesRequest(
+            parent=parent,
+            page_size=page_size,
+            order_by=order_by,
+        )
+        iterator = google.api_core.page_iterator.GRPCIterator(
+            client=None,
+            method=functools.partial(
+                self._inner_api_calls['list_stored_info_types'],
+                retry=retry,
+                timeout=timeout,
+                metadata=metadata),
+            request=request,
+            items_field='stored_info_types',
+            request_token_field='page_token',
+            response_token_field='next_page_token',
+        )
+        return iterator
+
+    def delete_stored_info_type(
+            self,
+            name,
+            retry=google.api_core.gapic_v1.method.DEFAULT,
+            timeout=google.api_core.gapic_v1.method.DEFAULT,
+            metadata=None):
+        """
+        Deletes a stored infoType.
+        See https://cloud.google.com/dlp/docs/creating-stored-infotypes to
+        learn more.
+
+        Example:
+            >>> from google.cloud import dlp_v2
+            >>>
+            >>> client = dlp_v2.DlpServiceClient()
+            >>>
+            >>> name = client.organization_stored_info_type_path('[ORGANIZATION]', '[STORED_INFO_TYPE]')
+            >>>
+            >>> client.delete_stored_info_type(name)
+
+        Args:
+            name (str): Resource name of the organization and storedInfoType to be deleted, for
+                example ``organizations/433245324/storedInfoTypes/432452342`` or
+                projects/project-id/storedInfoTypes/432452342.
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will not
+                be retried.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        # Wrap the transport method to add retry and timeout logic.
+        if 'delete_stored_info_type' not in self._inner_api_calls:
+            self._inner_api_calls[
+                'delete_stored_info_type'] = google.api_core.gapic_v1.method.wrap_method(
+                    self.transport.delete_stored_info_type,
+                    default_retry=self._method_configs['DeleteStoredInfoType'].
+                    retry,
+                    default_timeout=self.
+                    _method_configs['DeleteStoredInfoType'].timeout,
+                    client_info=self._client_info,
+                )
+
+        request = dlp_pb2.DeleteStoredInfoTypeRequest(name=name, )
+        self._inner_api_calls['delete_stored_info_type'](
             request, retry=retry, timeout=timeout, metadata=metadata)
