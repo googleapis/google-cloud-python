@@ -17,13 +17,13 @@ import logging
 import mock
 import pytest
 
+from google.api_core import bidi
 from google.api_core import exceptions
 from google.cloud.pubsub_v1 import types
 from google.cloud.pubsub_v1.gapic import subscriber_client_config
 from google.cloud.pubsub_v1.subscriber import client
 from google.cloud.pubsub_v1.subscriber import message
 from google.cloud.pubsub_v1.subscriber import scheduler
-from google.cloud.pubsub_v1.subscriber._protocol import bidi
 from google.cloud.pubsub_v1.subscriber._protocol import dispatcher
 from google.cloud.pubsub_v1.subscriber._protocol import heartbeater
 from google.cloud.pubsub_v1.subscriber._protocol import leaser
