@@ -107,3 +107,5 @@ The primary differences come from:
   `RuntimeError` just it case it **is** actually reached.
 - For ``AND`` and ``OR`` to compare equal, the nodes must come in the
   same order. So ``AND(a > 7, b > 6)`` is not equal to ``AND(b > 6, a > 7)``.
+- Since we want "compatibility", suggestions in `TODO` comments have not been
+  implemented. However, that policy can be changed if desired.
