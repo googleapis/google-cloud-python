@@ -1349,6 +1349,9 @@ class TestBatch(unittest.TestCase):
         from google.protobuf.struct_pb2 import Struct
         from google.protobuf.struct_pb2 import Value
         from google.cloud.logging.logger import _GLOBAL_RESOURCE
+        from google.cloud.logging.logger import TextOutboundEntry
+        from google.cloud.logging.logger import StructOutboundEntry
+        from google.cloud.logging.logger import ProtoOutboundEntry
 
         TEXT = 'This is the entry text'
         STRUCT = {'message': TEXT, 'weather': 'partly cloudy'}
@@ -1369,12 +1372,12 @@ class TestBatch(unittest.TestCase):
         api = client.logging_api = _DummyLoggingAPI()
         logger = _Logger()
         UNSENT = [
-            ('text', TEXT, None, IID, None, None, TIMESTAMP,
-             _GLOBAL_RESOURCE, None, None, None),
-            ('struct', STRUCT, None, None, SEVERITY, None, None,
-             _GLOBAL_RESOURCE, None, None, None),
-            ('proto', message, LABELS, None, None, REQUEST, None,
-             _GLOBAL_RESOURCE, None, None, None),
+            TextOutboundEntry._replace(
+                payload=TEXT, insert_id=IID, timestamp=TIMESTAMP),
+            StructOutboundEntry._replace(
+                payload=STRUCT, severity=SEVERITY),
+            ProtoOutboundEntry._replace(
+                payload=message, labels=LABELS, http_request=REQUEST),
         ]
         batch = self._make_one(logger, client=client)
 
