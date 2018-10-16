@@ -214,7 +214,7 @@ class PublisherClient(object):
                 underscores (``_``), periods (``.``), tildes (``~``), plus (``+``) or percent
                 signs (``%``). It must be between 3 and 255 characters in length, and it
                 must not start with ``\"goog\"``.
-            labels (dict[str -> str]): User labels.
+            labels (dict[str -> str]): See <a href=\"/pubsub/docs/labels\"> Creating and managing labels</a>.
             message_storage_policy (Union[dict, ~google.cloud.pubsub_v1.types.MessageStoragePolicy]): Policy constraining how messages published to the topic may be stored. It
                 is determined when the topic is created based on the policy configured at
                 the project level. It must not be set by the caller in the request to
@@ -340,8 +340,7 @@ class PublisherClient(object):
                 metadata=None):
         """
         Adds one or more messages to the topic. Returns ``NOT_FOUND`` if the topic
-        does not exist. The message payload must not be empty; it must contain
-        either a non-empty data field, or at least one attribute.
+        does not exist.
 
         Example:
             >>> from google.cloud import pubsub_v1
@@ -481,8 +480,8 @@ class PublisherClient(object):
             ...         pass
 
         Args:
-            project (str): The name of the cloud project that topics belong to.
-                Format is ``projects/{project}``.
+            project (str): The name of the project in which to list topics.
+                Format is ``projects/{project-id}``.
             page_size (int): The maximum number of resources contained in the
                 underlying API response. If page streaming is performed per-
                 resource, this parameter does not affect the return value. If page
