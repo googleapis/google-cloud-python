@@ -41,8 +41,12 @@ __all__ = [
 
 
 Cursor = NotImplemented  # From `google.appengine.datastore.datastore_query`
+_EQ_OP = "="
+_NE_OP = "!="
 _IN_OP = "in"
-_OPS = frozenset(["=", "!=", "<", "<=", ">", ">=", _IN_OP])
+_LT_OP = "<"
+_GT_OP = ">"
+_OPS = frozenset([_EQ_OP, _NE_OP, _LT_OP, "<=", _GT_OP, ">=", _IN_OP])
 
 
 class QueryOptions:
@@ -329,8 +333,127 @@ class ParameterNode(Node):
 
 
 class FilterNode(Node):
-    def __init__(self, *args, **kwargs):
-        raise NotImplementedError
+    """Tree node for a single filter expression.
+
+    For example ``FilterNode("a", ">", 3)`` filters for entities where the
+    value ``a`` is greater than ``3``.
+
+    .. warning::
+
+        The constructor for this type may not always return a
+        :class:`FilterNode`. For example:
+
+        * The filter ``name != value`` is converted into
+          ``(name > value) OR (name < value)`` (a :class:`DisjunctionNode`)
+        * The filter ``name in (value1, ..., valueN)`` is converted into
+          ``(name = value1) OR ... OR (name = valueN)`` (also a
+          :class:`DisjunctionNode`)
+        * The filter ``name in ()`` (i.e. a property is among an empty list
+          of values) is converted into a :class:`FalseNode`
+        * The filter ``name in (value1,)`` (i.e. a list with one element) is
+          converted into ``name = value1``, a related :class:`FilterNode`
+          with a different ``opsymbol`` and ``value`` than what was passed
+          to the constructor
+
+    Args:
+        name (str): The name of the property being filtered.
+        opsymbol (str): The comparison operator. One of ``=``, ``!=``, ``<``,
+            ``<=``, ``>``, ``>=`` or ``in``.
+        value (Any): The value to filter on / relative to.
+
+    Raises:
+        TypeError: If ``opsymbol`` is ``"in"`` but ``value`` is not a
+            basic container (:class:`list`, :func:`tuple`, :class:`set` or
+            :class:`frozenset`)
+    """
+
+    def __new__(cls, name, opsymbol, value):
+        if isinstance(value, model.Key):
+            value = value.to_old_key()
+
+        if opsymbol == _NE_OP:
+            node1 = FilterNode(name, _LT_OP, value)
+            node2 = FilterNode(name, _GT_OP, value)
+            return DisjunctionNode(node1, node2)
+
+        if opsymbol == _IN_OP:
+            if not isinstance(value, (list, tuple, set, frozenset)):
+                raise TypeError(
+                    "in expected a list, tuple or set of values; "
+                    "received {!r}".format(value)
+                )
+            nodes = [
+                FilterNode(name, _EQ_OP, sub_value) for sub_value in value
+            ]
+            if not nodes:
+                return FalseNode()
+            if len(nodes) == 1:
+                return nodes[0]
+            return DisjunctionNode(*nodes)
+
+        self = super(FilterNode, cls).__new__(cls)
+        self._name = name
+        self._opsymbol = opsymbol
+        self._value = value
+        return self
+
+    def __getnewargs__(self):
+        """Private API used to specify ``__new__`` arguments when unpickling.
+
+        .. note::
+
+            This method only applies if the ``pickle`` protocol is 2 or
+            greater.
+
+        Returns:
+            Tuple[str, str, Any]: A tuple containing the
+            internal state: the name, ``opsymbol`` and value.
+        """
+        return self._name, self._opsymbol, self._value
+
+    def __repr__(self):
+        return "{}({!r}, {!r}, {!r})".format(
+            self.__class__.__name__, self._name, self._opsymbol, self._value
+        )
+
+    def __eq__(self, other):
+        if not isinstance(other, FilterNode):
+            return NotImplemented
+
+        return (
+            self._name == other._name
+            and self._opsymbol == other._opsymbol
+            and self._value == other._value
+        )
+
+    def _to_filter(self, post=False):
+        """Helper to convert to low-level filter, or :data:`None`.
+
+        Args:
+            post (bool): Indicates if this is a post-filter node.
+
+        Returns:
+            None: If this is a post-filter.
+
+        Raises:
+            NotImplementedError: If the ``opsymbol`` is ``!=`` or ``in``, since
+                they should correspond to a composite filter. This should
+                never occur since the constructor will create ``OR`` nodes for
+                ``!=`` and ``in``
+            NotImplementedError: If not a post-filter and the ``opsymbol``
+                is a simple comparison. (For now) this is because the original
+                implementation relied on a low-level datastore query module.
+        """
+        if post:
+            return None
+        if self._opsymbol in (_NE_OP, _IN_OP):
+            raise NotImplementedError(
+                "Inequality filters are not single filter "
+                "expressions and therefore cannot be converted "
+                "to a single filter ({!r})".format(self._opsymbol)
+            )
+
+        raise NotImplementedError("Missing datastore_query.make_filter")
 
 
 class PostFilterNode(Node):

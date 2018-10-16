@@ -18,6 +18,7 @@ import unittest.mock
 import pytest
 
 from google.cloud.ndb import exceptions
+from google.cloud.ndb import key as key_module
 from google.cloud.ndb import model
 from google.cloud.ndb import query
 import tests.unit.utils
@@ -304,8 +305,101 @@ class TestParameterNode:
 class TestFilterNode:
     @staticmethod
     def test_constructor():
+        filter_node = query.FilterNode("a", ">", 9)
+        assert filter_node._name == "a"
+        assert filter_node._opsymbol == ">"
+        assert filter_node._value == 9
+
+    @staticmethod
+    def test_constructor_with_key():
+        key = key_module.Key("a", "b", app="c", namespace="d")
         with pytest.raises(NotImplementedError):
-            query.FilterNode()
+            query.FilterNode("name", "=", key)
+
+    @staticmethod
+    @unittest.mock.patch("google.cloud.ndb.query.DisjunctionNode")
+    def test_constructor_in(disjunction_node):
+        or_node = query.FilterNode("a", "in", ("x", "y", "z"))
+        assert or_node is disjunction_node.return_value
+
+        filter_node1 = query.FilterNode("a", "=", "x")
+        filter_node2 = query.FilterNode("a", "=", "y")
+        filter_node3 = query.FilterNode("a", "=", "z")
+        disjunction_node.assert_called_once_with(
+            filter_node1, filter_node2, filter_node3
+        )
+
+    @staticmethod
+    def test_constructor_in_single():
+        filter_node = query.FilterNode("a", "in", [9000])
+        assert isinstance(filter_node, query.FilterNode)
+        assert filter_node._name == "a"
+        assert filter_node._opsymbol == "="
+        assert filter_node._value == 9000
+
+    @staticmethod
+    def test_constructor_in_empty():
+        filter_node = query.FilterNode("a", "in", set())
+        assert isinstance(filter_node, query.FalseNode)
+
+    @staticmethod
+    def test_constructor_in_invalid_container():
+        with pytest.raises(TypeError):
+            query.FilterNode("a", "in", {})
+
+    @staticmethod
+    @unittest.mock.patch("google.cloud.ndb.query.DisjunctionNode")
+    def test_constructor_ne(disjunction_node):
+        or_node = query.FilterNode("a", "!=", 2.5)
+        assert or_node is disjunction_node.return_value
+
+        filter_node1 = query.FilterNode("a", "<", 2.5)
+        filter_node2 = query.FilterNode("a", ">", 2.5)
+        disjunction_node.assert_called_once_with(filter_node1, filter_node2)
+
+    @staticmethod
+    def test_pickling():
+        filter_node = query.FilterNode("speed", ">=", 88)
+
+        pickled = pickle.dumps(filter_node)
+        unpickled = pickle.loads(pickled)
+        assert filter_node == unpickled
+
+    @staticmethod
+    def test___repr__():
+        filter_node = query.FilterNode("speed", ">=", 88)
+        assert repr(filter_node) == "FilterNode('speed', '>=', 88)"
+
+    @staticmethod
+    def test___eq__():
+        filter_node1 = query.FilterNode("speed", ">=", 88)
+        filter_node2 = query.FilterNode("slow", ">=", 88)
+        filter_node3 = query.FilterNode("speed", "<=", 88)
+        filter_node4 = query.FilterNode("speed", ">=", 188)
+        filter_node5 = unittest.mock.sentinel.filter_node
+        assert filter_node1 == filter_node1
+        assert not filter_node1 == filter_node2
+        assert not filter_node1 == filter_node3
+        assert not filter_node1 == filter_node4
+        assert not filter_node1 == filter_node5
+
+    @staticmethod
+    def test__to_filter_post():
+        filter_node = query.FilterNode("speed", ">=", 88)
+        assert filter_node._to_filter(post=True) is None
+
+    @staticmethod
+    def test__to_filter_bad_op():
+        filter_node = query.FilterNode("speed", ">=", 88)
+        filter_node._opsymbol = "!="
+        with pytest.raises(NotImplementedError):
+            filter_node._to_filter()
+
+    @staticmethod
+    def test__to_filter():
+        filter_node = query.FilterNode("speed", ">=", 88)
+        with pytest.raises(NotImplementedError):
+            filter_node._to_filter()
 
 
 class TestPostFilterNode:
