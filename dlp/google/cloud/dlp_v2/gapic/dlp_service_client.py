@@ -2383,7 +2383,7 @@ class DlpServiceClient(object):
                 Supported fields are:
 
                 - ``create_time``: corresponds to time the most recent version of the
-                resource was created.
+                  resource was created.
                 - ``state``: corresponds to the state of the resource.
                 - ``name``: corresponds to resource name.
                 - ``display_name``: corresponds to info type's display name.
