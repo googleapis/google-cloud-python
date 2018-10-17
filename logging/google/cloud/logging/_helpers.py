@@ -16,7 +16,7 @@
 
 import requests
 
-from google.cloud.logging.entries import EmptyEntry
+from google.cloud.logging.entries import LogEntry
 from google.cloud.logging.entries import ProtobufEntry
 from google.cloud.logging.entries import StructEntry
 from google.cloud.logging.entries import TextEntry
@@ -54,7 +54,7 @@ def entry_from_resource(resource, client, loggers):
     if 'protoPayload' in resource:
         return ProtobufEntry.from_api_repr(resource, client, loggers)
 
-    return EmptyEntry.from_api_repr(resource, client, loggers)
+    return LogEntry.from_api_repr(resource, client, loggers)
 
 
 def retrieve_metadata_server(metadata_key):

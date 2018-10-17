@@ -14,7 +14,7 @@
 
 """Define API Loggers."""
 
-from google.cloud.logging.entries import EmptyEntry
+from google.cloud.logging.entries import LogEntry
 from google.cloud.logging.entries import ProtobufEntry
 from google.cloud.logging.entries import StructEntry
 from google.cloud.logging.entries import TextEntry
@@ -145,7 +145,7 @@ class Logger(object):
         :param kw: (optional) additional keyword arguments for the entry.
                    See :class:`~google.cloud.logging.entries.LogEntry`.
         """
-        self._do_log(client, EmptyEntry, **kw)
+        self._do_log(client, LogEntry, **kw)
 
     def log_text(self, text, client=None, **kw):
         """API call:  log a text message via a POST request
@@ -304,7 +304,7 @@ class Batch(object):
         :param kw: (optional) additional keyword arguments for the entry.
                    See :class:`~google.cloud.logging.entries.LogEntry`.
         """
-        self.entries.append(EmptyEntry(**kw))
+        self.entries.append(LogEntry(**kw))
 
     def log_text(self, text, **kw):
         """Add a text entry to be logged during :meth:`commit`.

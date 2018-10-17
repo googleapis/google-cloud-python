@@ -624,10 +624,9 @@ class TestBatch(unittest.TestCase):
         self.assertEqual(len(batch.entries), 0)
 
     def test_log_empty_defaults(self):
-        from google.cloud.logging.entries import _GLOBAL_RESOURCE
-        from google.cloud.logging.entries import EmptyEntry
+        from google.cloud.logging.entries import LogEntry
 
-        ENTRY = EmptyEntry(resource=_GLOBAL_RESOURCE)
+        ENTRY = LogEntry()
         client = _Client(project=self.PROJECT, connection=_make_credentials())
         logger = _Logger()
         batch = self._make_one(logger, client=client)
@@ -637,7 +636,7 @@ class TestBatch(unittest.TestCase):
     def test_log_empty_explicit(self):
         import datetime
         from google.cloud.logging.resource import Resource
-        from google.cloud.logging.entries import EmptyEntry
+        from google.cloud.logging.entries import LogEntry
 
         LABELS = {'foo': 'bar', 'baz': 'qux'}
         IID = 'IID'
@@ -660,7 +659,7 @@ class TestBatch(unittest.TestCase):
         )
         TRACE = '12345678-1234-5678-1234-567812345678'
         SPANID = '000000000000004a'
-        ENTRY = EmptyEntry(
+        ENTRY = LogEntry(
             labels=LABELS,
             insert_id=IID,
             severity=SEVERITY,
@@ -906,7 +905,7 @@ class TestBatch(unittest.TestCase):
         client = _Client(project=self.PROJECT, connection=_make_credentials())
         api = client.logging_api = _DummyLoggingAPI()
         batch = self._make_one(logger, client)
-        batch.entries.append(LogEntry(entry_type='bogus', severity='blah'))
+        batch.entries.append(LogEntry(severity='blah'))
         ENTRY = {
             'severity': 'blah',
             'resource': _GLOBAL_RESOURCE._to_dict(),

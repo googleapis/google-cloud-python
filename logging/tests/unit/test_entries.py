@@ -62,17 +62,10 @@ class TestLogEntry(unittest.TestCase):
     LOGGER_NAME = 'LOGGER_NAME'
 
     @staticmethod
-    def _get_target_class(payload_key='dummyPayload'):
+    def _get_target_class():
         from google.cloud.logging.entries import LogEntry
 
-        class _Dummy(LogEntry):
-            _PAYLOAD_KEY = payload_key
-            _TYPE_NAME = 'dummy'
-
-        _Dummy.__new__.__defaults__ = (
-            ('dummy',) + LogEntry.__new__.__defaults__)
-
-        return _Dummy
+        return LogEntry
 
     def _make_one(self, *args, **kw):
         return self._get_target_class()(*args, **kw)
@@ -80,30 +73,28 @@ class TestLogEntry(unittest.TestCase):
     def test_ctor_defaults(self):
         from google.cloud.logging.entries import _GLOBAL_RESOURCE
 
-        PAYLOAD = 'PAYLOAD'
-        logger = _Logger(self.LOGGER_NAME, self.PROJECT)
+        entry = self._make_one()
 
-        entry = self._make_one(payload=PAYLOAD, logger=logger)
-
-        self.assertEqual(entry.payload, PAYLOAD)
-        self.assertIs(entry.logger, logger)
-        self.assertIsNone(entry.insert_id)
-        self.assertIsNone(entry.timestamp)
+        self.assertIsNone(entry.log_name)
+        self.assertIsNone(entry.logger)
         self.assertIsNone(entry.labels)
+        self.assertIsNone(entry.insert_id)
         self.assertIsNone(entry.severity)
         self.assertIsNone(entry.http_request)
+        self.assertIsNone(entry.timestamp)
         self.assertIs(entry.resource, _GLOBAL_RESOURCE)
         self.assertIsNone(entry.trace)
         self.assertIsNone(entry.span_id)
         self.assertIsNone(entry.trace_sampled)
         self.assertIsNone(entry.source_location)
         self.assertIsNone(entry.operation)
+        self.assertIsNone(entry.payload)
 
     def test_ctor_explicit(self):
         import datetime
         from google.cloud.logging.resource import Resource
 
-        PAYLOAD = 'PAYLOAD'
+        LOG_NAME = 'projects/%s/logs/%s' % (self.PROJECT, self.LOGGER_NAME)
         IID = 'IID'
         TIMESTAMP = datetime.datetime.now()
         LABELS = {'foo': 'bar', 'baz': 'qux'}
@@ -138,7 +129,7 @@ class TestLogEntry(unittest.TestCase):
         logger = _Logger(self.LOGGER_NAME, self.PROJECT)
 
         entry = self._make_one(
-            payload=PAYLOAD,
+            log_name=LOG_NAME,
             logger=logger,
             insert_id=IID,
             timestamp=TIMESTAMP,
@@ -153,7 +144,7 @@ class TestLogEntry(unittest.TestCase):
             operation=OPERATION,
         )
 
-        self.assertEqual(entry.payload, PAYLOAD)
+        self.assertEqual(entry.log_name, LOG_NAME)
         self.assertIs(entry.logger, logger)
         self.assertEqual(entry.insert_id, IID)
         self.assertEqual(entry.timestamp, TIMESTAMP)
@@ -173,19 +164,19 @@ class TestLogEntry(unittest.TestCase):
         self.assertEqual(source_location['function'], FUNCTION)
 
         self.assertEqual(entry.operation, OPERATION)
+        self.assertIsNone(entry.payload)
 
-    def test_from_api_repr_no_payload_missing_data_no_loggers(self):
+    def test_from_api_repr_missing_data_no_loggers(self):
         client = _Client(self.PROJECT)
         LOG_NAME = 'projects/%s/logs/%s' % (self.PROJECT, self.LOGGER_NAME)
         API_REPR = {
             'logName': LOG_NAME,
         }
-        klass = self._get_target_class(payload_key=None)
+        klass = self._get_target_class()
 
         entry = klass.from_api_repr(API_REPR, client)
 
         self.assertEqual(entry.log_name, LOG_NAME)
-        self.assertIsNone(entry.payload)
         logger = entry.logger
         self.assertIsInstance(logger, _Logger)
         self.assertEqual(logger.name, self.LOGGER_NAME)
@@ -199,6 +190,7 @@ class TestLogEntry(unittest.TestCase):
         self.assertIsNone(entry.source_location)
         self.assertIsNone(entry.operation)
         self.assertIs(logger.client, client)
+        self.assertIsNone(entry.payload)
 
     def test_from_api_repr_w_loggers_no_logger_match(self):
         from datetime import datetime
@@ -207,7 +199,6 @@ class TestLogEntry(unittest.TestCase):
 
         klass = self._get_target_class()
         client = _Client(self.PROJECT)
-        PAYLOAD = 'PAYLOAD'
         SEVERITY = 'CRITICAL'
         IID = 'IID'
         NOW = datetime.utcnow().replace(tzinfo=UTC)
@@ -246,7 +237,6 @@ class TestLogEntry(unittest.TestCase):
             'last': False,
         }
         API_REPR = {
-            'dummyPayload': PAYLOAD,
             'logName': LOG_NAME,
             'insertId': IID,
             'timestamp': TIMESTAMP,
@@ -269,7 +259,6 @@ class TestLogEntry(unittest.TestCase):
         entry = klass.from_api_repr(API_REPR, client, loggers=loggers)
 
         self.assertEqual(entry.log_name, LOG_NAME)
-        self.assertEqual(entry.payload, PAYLOAD)
         logger = entry.logger
         self.assertIsInstance(logger, _Logger)
         self.assertEqual(logger.name, self.LOGGER_NAME)
@@ -295,6 +284,7 @@ class TestLogEntry(unittest.TestCase):
         self.assertEqual(source_location['function'], FUNCTION)
 
         self.assertEqual(entry.operation, OPERATION)
+        self.assertIsNone(entry.payload)
 
     def test_from_api_repr_w_loggers_w_logger_match(self):
         from datetime import datetime
@@ -302,7 +292,6 @@ class TestLogEntry(unittest.TestCase):
         from google.cloud._helpers import UTC
 
         client = _Client(self.PROJECT)
-        PAYLOAD = 'PAYLOAD'
         IID = 'IID'
         NOW = datetime.utcnow().replace(tzinfo=UTC)
         LATER = NOW + timedelta(seconds=1)
@@ -329,7 +318,6 @@ class TestLogEntry(unittest.TestCase):
             'last': False,
         }
         API_REPR = {
-            'dummyPayload': PAYLOAD,
             'logName': LOG_NAME,
             'insertId': IID,
             'timestamp': TIMESTAMP,
@@ -348,7 +336,6 @@ class TestLogEntry(unittest.TestCase):
         entry = klass.from_api_repr(API_REPR, client, loggers=loggers)
 
         self.assertEqual(entry.log_name, LOG_NAME)
-        self.assertEqual(entry.payload, PAYLOAD)
         self.assertIs(entry.logger, LOGGER)
         self.assertEqual(entry.insert_id, IID)
         self.assertEqual(entry.timestamp, NOW)
@@ -364,8 +351,9 @@ class TestLogEntry(unittest.TestCase):
         self.assertEqual(source_location['function'], FUNCTION)
 
         self.assertEqual(entry.operation, OPERATION)
+        self.assertIsNone(entry.payload)
 
-    def test_to_api_repr_empty_w_source_location_no_line(self):
+    def test_to_api_repr_w_source_location_no_line(self):
         from google.cloud.logging.logger import _GLOBAL_RESOURCE
 
         LOG_NAME = 'test.log'
@@ -376,7 +364,7 @@ class TestLogEntry(unittest.TestCase):
             'function': FUNCTION,
         }
         entry = self._make_one(
-            'empty', LOG_NAME, source_location=SOURCE_LOCATION)
+            log_name=LOG_NAME, source_location=SOURCE_LOCATION)
         expected = {
             'logName': LOG_NAME,
             'resource': _GLOBAL_RESOURCE._to_dict(),
@@ -388,7 +376,7 @@ class TestLogEntry(unittest.TestCase):
         }
         self.assertEqual(entry.to_api_repr(), expected)
 
-    def test_to_api_repr_empty_explicit(self):
+    def test_to_api_repr_explicit(self):
         import datetime
         from google.cloud.logging.resource import Resource
         from google.cloud._helpers import _datetime_to_rfc3339
@@ -450,7 +438,6 @@ class TestLogEntry(unittest.TestCase):
             'operation': OPERATION,
         }
         entry = self._make_one(
-            entry_type='empty',
             log_name=LOG_NAME,
             labels=LABELS,
             insert_id=IID,
@@ -467,12 +454,27 @@ class TestLogEntry(unittest.TestCase):
 
         self.assertEqual(entry.to_api_repr(), expected)
 
-    def test_to_api_repr_text_defaults(self):
+
+class TestTextEntry(unittest.TestCase):
+
+    PROJECT = 'PROJECT'
+    LOGGER_NAME = 'LOGGER_NAME'
+
+    @staticmethod
+    def _get_target_class():
+        from google.cloud.logging.entries import TextEntry
+
+        return TextEntry
+
+    def _make_one(self, *args, **kw):
+        return self._get_target_class()(*args, **kw)
+
+    def test_to_api_repr_defaults(self):
         from google.cloud.logging.logger import _GLOBAL_RESOURCE
 
         LOG_NAME = 'test.log'
         TEXT = 'TESTING'
-        entry = self._make_one('text', LOG_NAME, TEXT)
+        entry = self._make_one(log_name=LOG_NAME, payload=TEXT)
         expected = {
             'logName': LOG_NAME,
             'textPayload': TEXT,
@@ -480,7 +482,7 @@ class TestLogEntry(unittest.TestCase):
         }
         self.assertEqual(entry.to_api_repr(), expected)
 
-    def test_to_api_repr_text_explicit(self):
+    def test_to_api_repr_explicit(self):
         import datetime
         from google.cloud.logging.resource import Resource
         from google.cloud._helpers import _datetime_to_rfc3339
@@ -544,7 +546,6 @@ class TestLogEntry(unittest.TestCase):
             'operation': OPERATION,
         }
         entry = self._make_one(
-            entry_type='text',
             log_name=LOG_NAME,
             payload=TEXT,
             labels=LABELS,
@@ -562,12 +563,27 @@ class TestLogEntry(unittest.TestCase):
 
         self.assertEqual(entry.to_api_repr(), expected)
 
-    def test_to_api_repr_struct_defaults(self):
+
+class TestStructEntry(unittest.TestCase):
+
+    PROJECT = 'PROJECT'
+    LOGGER_NAME = 'LOGGER_NAME'
+
+    @staticmethod
+    def _get_target_class():
+        from google.cloud.logging.entries import StructEntry
+
+        return StructEntry
+
+    def _make_one(self, *args, **kw):
+        return self._get_target_class()(*args, **kw)
+
+    def test_to_api_repr_defaults(self):
         from google.cloud.logging.logger import _GLOBAL_RESOURCE
 
         LOG_NAME = 'test.log'
         JSON_PAYLOAD = {'key': 'value'}
-        entry = self._make_one('struct', LOG_NAME, JSON_PAYLOAD)
+        entry = self._make_one(log_name=LOG_NAME, payload=JSON_PAYLOAD)
         expected = {
             'logName': LOG_NAME,
             'jsonPayload': JSON_PAYLOAD,
@@ -575,7 +591,7 @@ class TestLogEntry(unittest.TestCase):
         }
         self.assertEqual(entry.to_api_repr(), expected)
 
-    def test_to_api_repr_struct_explicit(self):
+    def test_to_api_repr_explicit(self):
         import datetime
         from google.cloud.logging.resource import Resource
         from google.cloud._helpers import _datetime_to_rfc3339
@@ -639,112 +655,8 @@ class TestLogEntry(unittest.TestCase):
             'operation': OPERATION,
         }
         entry = self._make_one(
-            entry_type='struct',
             log_name=LOG_NAME,
             payload=JSON_PAYLOAD,
-            labels=LABELS,
-            insert_id=IID,
-            severity=SEVERITY,
-            http_request=REQUEST,
-            timestamp=TIMESTAMP,
-            resource=RESOURCE,
-            trace=TRACE,
-            span_id=SPANID,
-            trace_sampled=True,
-            source_location=SOURCE_LOCATION,
-            operation=OPERATION,
-        )
-
-        self.assertEqual(entry.to_api_repr(), expected)
-
-    def test_to_api_repr_proto_defaults(self):
-        from google.protobuf.json_format import MessageToDict
-        from google.cloud.logging.logger import _GLOBAL_RESOURCE
-        from google.protobuf.struct_pb2 import Struct
-        from google.protobuf.struct_pb2 import Value
-
-        LOG_NAME = 'test.log'
-        message = Struct(fields={'foo': Value(bool_value=True)})
-
-        entry = self._make_one('proto', LOG_NAME, message)
-        expected = {
-            'logName': LOG_NAME,
-            'protoPayload': MessageToDict(message),
-            'resource': _GLOBAL_RESOURCE._to_dict(),
-        }
-        self.assertEqual(entry.to_api_repr(), expected)
-
-    def test_to_api_repr_proto_explicit(self):
-        import datetime
-        from google.protobuf.json_format import MessageToDict
-        from google.cloud.logging.resource import Resource
-        from google.cloud._helpers import _datetime_to_rfc3339
-        from google.protobuf.struct_pb2 import Struct
-        from google.protobuf.struct_pb2 import Value
-
-        LOG_NAME = 'test.log'
-        message = Struct(fields={'foo': Value(bool_value=True)})
-        LABELS = {'foo': 'bar', 'baz': 'qux'}
-        IID = 'IID'
-        SEVERITY = 'CRITICAL'
-        METHOD = 'POST'
-        URI = 'https://api.example.com/endpoint'
-        STATUS = '500'
-        REQUEST = {
-            'requestMethod': METHOD,
-            'requestUrl': URI,
-            'status': STATUS,
-        }
-        TIMESTAMP = datetime.datetime(2016, 12, 31, 0, 1, 2, 999999)
-        RESOURCE = Resource(
-            type='gae_app',
-            labels={
-                'module_id': 'default',
-                'version_id': 'test'
-            }
-        )
-        TRACE = '12345678-1234-5678-1234-567812345678'
-        SPANID = '000000000000004a'
-        FILE = 'my_file.py'
-        LINE = 123
-        FUNCTION = 'my_function'
-        SOURCE_LOCATION = {
-            'file': FILE,
-            'line': LINE,
-            'function': FUNCTION,
-        }
-        OP_ID = 'OP_ID'
-        PRODUCER = 'PRODUCER'
-        OPERATION = {
-            'id': OP_ID,
-            'producer': PRODUCER,
-            'first': True,
-            'last': False,
-        }
-        expected = {
-            'logName': LOG_NAME,
-            'protoPayload': MessageToDict(message),
-            'labels': LABELS,
-            'insertId': IID,
-            'severity': SEVERITY,
-            'httpRequest': REQUEST,
-            'timestamp': _datetime_to_rfc3339(TIMESTAMP),
-            'resource': RESOURCE._to_dict(),
-            'trace': TRACE,
-            'spanId': SPANID,
-            'traceSampled': True,
-            'sourceLocation': {
-                'file': FILE,
-                'line': str(LINE),
-                'function': FUNCTION,
-            },
-            'operation': OPERATION,
-        }
-
-        entry = self._make_one(
-            entry_type='proto',
-            log_name=LOG_NAME,
-            payload=message,
             labels=LABELS,
             insert_id=IID,
             severity=SEVERITY,
@@ -828,6 +740,108 @@ class TestProtobufEntry(unittest.TestCase):
         entry.parse_message(message)
 
         self.assertTrue(message.fields['foo'])
+
+    def test_to_api_repr_proto_defaults(self):
+        from google.protobuf.json_format import MessageToDict
+        from google.cloud.logging.logger import _GLOBAL_RESOURCE
+        from google.protobuf.struct_pb2 import Struct
+        from google.protobuf.struct_pb2 import Value
+
+        LOG_NAME = 'test.log'
+        message = Struct(fields={'foo': Value(bool_value=True)})
+
+        entry = self._make_one(log_name=LOG_NAME, payload=message)
+        expected = {
+            'logName': LOG_NAME,
+            'protoPayload': MessageToDict(message),
+            'resource': _GLOBAL_RESOURCE._to_dict(),
+        }
+        self.assertEqual(entry.to_api_repr(), expected)
+
+    def test_to_api_repr_proto_explicit(self):
+        import datetime
+        from google.protobuf.json_format import MessageToDict
+        from google.cloud.logging.resource import Resource
+        from google.cloud._helpers import _datetime_to_rfc3339
+        from google.protobuf.struct_pb2 import Struct
+        from google.protobuf.struct_pb2 import Value
+
+        LOG_NAME = 'test.log'
+        message = Struct(fields={'foo': Value(bool_value=True)})
+        LABELS = {'foo': 'bar', 'baz': 'qux'}
+        IID = 'IID'
+        SEVERITY = 'CRITICAL'
+        METHOD = 'POST'
+        URI = 'https://api.example.com/endpoint'
+        STATUS = '500'
+        REQUEST = {
+            'requestMethod': METHOD,
+            'requestUrl': URI,
+            'status': STATUS,
+        }
+        TIMESTAMP = datetime.datetime(2016, 12, 31, 0, 1, 2, 999999)
+        RESOURCE = Resource(
+            type='gae_app',
+            labels={
+                'module_id': 'default',
+                'version_id': 'test'
+            }
+        )
+        TRACE = '12345678-1234-5678-1234-567812345678'
+        SPANID = '000000000000004a'
+        FILE = 'my_file.py'
+        LINE = 123
+        FUNCTION = 'my_function'
+        SOURCE_LOCATION = {
+            'file': FILE,
+            'line': LINE,
+            'function': FUNCTION,
+        }
+        OP_ID = 'OP_ID'
+        PRODUCER = 'PRODUCER'
+        OPERATION = {
+            'id': OP_ID,
+            'producer': PRODUCER,
+            'first': True,
+            'last': False,
+        }
+        expected = {
+            'logName': LOG_NAME,
+            'protoPayload': MessageToDict(message),
+            'labels': LABELS,
+            'insertId': IID,
+            'severity': SEVERITY,
+            'httpRequest': REQUEST,
+            'timestamp': _datetime_to_rfc3339(TIMESTAMP),
+            'resource': RESOURCE._to_dict(),
+            'trace': TRACE,
+            'spanId': SPANID,
+            'traceSampled': True,
+            'sourceLocation': {
+                'file': FILE,
+                'line': str(LINE),
+                'function': FUNCTION,
+            },
+            'operation': OPERATION,
+        }
+
+        entry = self._make_one(
+            log_name=LOG_NAME,
+            payload=message,
+            labels=LABELS,
+            insert_id=IID,
+            severity=SEVERITY,
+            http_request=REQUEST,
+            timestamp=TIMESTAMP,
+            resource=RESOURCE,
+            trace=TRACE,
+            span_id=SPANID,
+            trace_sampled=True,
+            source_location=SOURCE_LOCATION,
+            operation=OPERATION,
+        )
+
+        self.assertEqual(entry.to_api_repr(), expected)
 
 
 def _datetime_to_rfc3339_w_nanos(value):

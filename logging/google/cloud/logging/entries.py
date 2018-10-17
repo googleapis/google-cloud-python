@@ -61,135 +61,8 @@ def _int_or_none(value):
     return value
 
 
-class _ApiReprMixin(object):
-    """Mixin for the various log entry types."""
-    received_timestamp = None
-
-    @classmethod
-    def from_api_repr(cls, resource, client, loggers=None):
-        """Factory:  construct an entry given its API representation
-
-        :type resource: dict
-        :param resource: text entry resource representation returned from
-                         the API
-
-        :type client: :class:`google.cloud.logging.client.Client`
-        :param client: Client which holds credentials and project
-                       configuration.
-
-        :type loggers: dict
-        :param loggers:
-            (Optional) A mapping of logger fullnames -> loggers.  If not
-            passed, the entry will have a newly-created logger.
-
-        :rtype: :class:`google.cloud.logging.entries.LogEntry`
-        :returns: Log entry parsed from ``resource``.
-        """
-        if loggers is None:
-            loggers = {}
-        logger_fullname = resource['logName']
-        logger = loggers.get(logger_fullname)
-        if logger is None:
-            logger_name = logger_name_from_path(logger_fullname)
-            logger = loggers[logger_fullname] = client.logger(logger_name)
-        if cls._PAYLOAD_KEY is not None:
-            payload = resource[cls._PAYLOAD_KEY]
-        else:
-            payload = None
-        insert_id = resource.get('insertId')
-        timestamp = resource.get('timestamp')
-        if timestamp is not None:
-            timestamp = _rfc3339_nanos_to_datetime(timestamp)
-        labels = resource.get('labels')
-        severity = resource.get('severity')
-        http_request = resource.get('httpRequest')
-        trace = resource.get('trace')
-        span_id = resource.get('spanId')
-        trace_sampled = resource.get('traceSampled')
-        source_location = resource.get('sourceLocation')
-        if source_location is not None:
-            line = source_location.pop('line', None)
-            source_location['line'] = _int_or_none(line)
-        operation = resource.get('operation')
-
-        monitored_resource_dict = resource.get('resource')
-        monitored_resource = None
-        if monitored_resource_dict is not None:
-            monitored_resource = Resource._from_dict(monitored_resource_dict)
-
-        inst = cls(
-            entry_type=cls._TYPE_NAME,
-            log_name=logger_fullname,
-            payload=payload,
-            logger=logger,
-            insert_id=insert_id,
-            timestamp=timestamp,
-            labels=labels,
-            severity=severity,
-            http_request=http_request,
-            resource=monitored_resource,
-            trace=trace,
-            span_id=span_id,
-            trace_sampled=trace_sampled,
-            source_location=source_location,
-            operation=operation
-        )
-        received = resource.get('receiveTimestamp')
-        if received is not None:
-            inst.received_timestamp = _rfc3339_nanos_to_datetime(received)
-        return inst
-
-    def to_api_repr(self):
-        """API repr (JSON format) for entry.
-        """
-        if self.entry_type == 'text':
-            info = {'textPayload': self.payload}
-        elif self.entry_type == 'struct':
-            info = {'jsonPayload': self.payload}
-        elif self.entry_type == 'proto':
-            # NOTE: If ``self`` contains an ``Any`` field with an
-            #       unknown type, this will fail with a ``TypeError``.
-            #       However, since ``self`` was provided by a user in
-            #       ``Batch.log_proto``, the assumption is that any types
-            #       needed for the protobuf->JSON conversion will be known
-            #       from already imported ``pb2`` modules.
-            info = {'protoPayload': MessageToDict(self.payload)}
-        else:  # no payload
-            info = {}
-        if self.log_name is not None:
-            info['logName'] = self.log_name
-        if self.resource is not None:
-            info['resource'] = self.resource._to_dict()
-        if self.labels is not None:
-            info['labels'] = self.labels
-        if self.insert_id is not None:
-            info['insertId'] = self.insert_id
-        if self.severity is not None:
-            info['severity'] = self.severity
-        if self.http_request is not None:
-            info['httpRequest'] = self.http_request
-        if self.timestamp is not None:
-            info['timestamp'] = _datetime_to_rfc3339(self.timestamp)
-        if self.trace is not None:
-            info['trace'] = self.trace
-        if self.span_id is not None:
-            info['spanId'] = self.span_id
-        if self.trace_sampled is not None:
-            info['traceSampled'] = self.trace_sampled
-        if self.source_location is not None:
-            source_location = self.source_location.copy()
-            source_location['line'] = str(source_location.pop('line', 0))
-            info['sourceLocation'] = source_location
-        if self.operation is not None:
-            info['operation'] = self.operation
-        return info
-
-
 _LOG_ENTRY_FIELDS = (  # (name, default)
-    ('entry_type', None),
     ('log_name', None),
-    ('payload', None),
-    ('logger', None),
     ('labels', None),
     ('insert_id', None),
     ('severity', None),
@@ -201,6 +74,8 @@ _LOG_ENTRY_FIELDS = (  # (name, default)
     ('trace_sampled', None),
     ('source_location', None),
     ('operation', None),
+    ('logger', None),
+    ('payload', None),
 )
 
 
@@ -208,13 +83,10 @@ _LogEntryTuple = collections.namedtuple(
         'LogEntry', (field for field, _ in _LOG_ENTRY_FIELDS))
 
 _LogEntryTuple.__new__.__defaults__ = tuple(
-    default for _, default in _LOG_ENTRY_FIELDS[1:])
+    default for _, default in _LOG_ENTRY_FIELDS)
 
 
 _LOG_ENTRY_PARAM_DOCSTRING = """\
-
-    :type logger: :class:`google.cloud.logging.logger.Logger`
-    :param logger: the logger used to write the entry.
 
     :type log_name: str
     :param log_name: the name of the logger used to post the entry.
@@ -257,88 +129,194 @@ _LOG_ENTRY_PARAM_DOCSTRING = """\
     :param operation: (optional) additional information about a potentially
                       long-running operation associated with the log entry.
 
+    :type logger: :class:`google.cloud.logging.logger.Logger`
+    :param logger: the logger used to write the entry.
+
+"""
+
+_LOG_ENTRY_SEE_ALSO_DOCSTRING = """\
+
     See:
     https://cloud.google.com/logging/docs/reference/v2/rest/v2/LogEntry
 """
 
 
-class LogEntry(_LogEntryTuple, _ApiReprMixin):
+class LogEntry(_LogEntryTuple):
     __doc__ = """
     Log entry.
 
-    :type entry_type: str
-    :param entry_type: one of 'empty', 'text', 'struct', or 'proto'. Indicates
-                       how the payload field is handled.
+    """ + _LOG_ENTRY_PARAM_DOCSTRING + _LOG_ENTRY_SEE_ALSO_DOCSTRING
 
-    :type payload: None, str | unicode, dict, protobuf message
-    :param payload: payload for the message, based on :attr:`entry_type`
-    """ + _LOG_ENTRY_PARAM_DOCSTRING
+    received_timestamp = None
+
+    @classmethod
+    def _extract_payload(cls, resource):
+        """Helper for :meth:`from_api_repr`"""
+        return None
+
+    @classmethod
+    def from_api_repr(cls, resource, client, loggers=None):
+        """Factory:  construct an entry given its API representation
+
+        :type resource: dict
+        :param resource: text entry resource representation returned from
+                         the API
+
+        :type client: :class:`google.cloud.logging.client.Client`
+        :param client: Client which holds credentials and project
+                       configuration.
+
+        :type loggers: dict
+        :param loggers:
+            (Optional) A mapping of logger fullnames -> loggers.  If not
+            passed, the entry will have a newly-created logger.
+
+        :rtype: :class:`google.cloud.logging.entries.LogEntry`
+        :returns: Log entry parsed from ``resource``.
+        """
+        if loggers is None:
+            loggers = {}
+        logger_fullname = resource['logName']
+        logger = loggers.get(logger_fullname)
+        if logger is None:
+            logger_name = logger_name_from_path(logger_fullname)
+            logger = loggers[logger_fullname] = client.logger(logger_name)
+        payload = cls._extract_payload(resource)
+        insert_id = resource.get('insertId')
+        timestamp = resource.get('timestamp')
+        if timestamp is not None:
+            timestamp = _rfc3339_nanos_to_datetime(timestamp)
+        labels = resource.get('labels')
+        severity = resource.get('severity')
+        http_request = resource.get('httpRequest')
+        trace = resource.get('trace')
+        span_id = resource.get('spanId')
+        trace_sampled = resource.get('traceSampled')
+        source_location = resource.get('sourceLocation')
+        if source_location is not None:
+            line = source_location.pop('line', None)
+            source_location['line'] = _int_or_none(line)
+        operation = resource.get('operation')
+
+        monitored_resource_dict = resource.get('resource')
+        monitored_resource = None
+        if monitored_resource_dict is not None:
+            monitored_resource = Resource._from_dict(monitored_resource_dict)
+
+        inst = cls(
+            log_name=logger_fullname,
+            insert_id=insert_id,
+            timestamp=timestamp,
+            labels=labels,
+            severity=severity,
+            http_request=http_request,
+            resource=monitored_resource,
+            trace=trace,
+            span_id=span_id,
+            trace_sampled=trace_sampled,
+            source_location=source_location,
+            operation=operation,
+            logger=logger,
+            payload=payload,
+        )
+        received = resource.get('receiveTimestamp')
+        if received is not None:
+            inst.received_timestamp = _rfc3339_nanos_to_datetime(received)
+        return inst
+
+    def to_api_repr(self):
+        """API repr (JSON format) for entry.
+        """
+        info = {}
+        if self.log_name is not None:
+            info['logName'] = self.log_name
+        if self.resource is not None:
+            info['resource'] = self.resource._to_dict()
+        if self.labels is not None:
+            info['labels'] = self.labels
+        if self.insert_id is not None:
+            info['insertId'] = self.insert_id
+        if self.severity is not None:
+            info['severity'] = self.severity
+        if self.http_request is not None:
+            info['httpRequest'] = self.http_request
+        if self.timestamp is not None:
+            info['timestamp'] = _datetime_to_rfc3339(self.timestamp)
+        if self.trace is not None:
+            info['trace'] = self.trace
+        if self.span_id is not None:
+            info['spanId'] = self.span_id
+        if self.trace_sampled is not None:
+            info['traceSampled'] = self.trace_sampled
+        if self.source_location is not None:
+            source_location = self.source_location.copy()
+            source_location['line'] = str(source_location.pop('line', 0))
+            info['sourceLocation'] = source_location
+        if self.operation is not None:
+            info['operation'] = self.operation
+        return info
 
 
-_EmptyEntryTuple = collections.namedtuple(
-        'EmptyEntry', (field for field, _ in _LOG_ENTRY_FIELDS))
-_EmptyEntryTuple.__new__.__defaults__ = (
-    ('empty',) + tuple(default for _, default in _LOG_ENTRY_FIELDS[1:]))
-
-
-class EmptyEntry(_EmptyEntryTuple, _ApiReprMixin):
-    __doc__ = """
-    Log entry without payload.
-
-    """ + _LOG_ENTRY_PARAM_DOCSTRING
-    _PAYLOAD_KEY = None
-    _TYPE_NAME = 'empty'
-
-
-_TextEntryTuple = collections.namedtuple(
-        'TextEntry', (field for field, _ in _LOG_ENTRY_FIELDS))
-_TextEntryTuple.__new__.__defaults__ = (
-    ('text',) + tuple(default for _, default in _LOG_ENTRY_FIELDS[1:]))
-
-
-class TextEntry(_TextEntryTuple, _ApiReprMixin):
+class TextEntry(LogEntry):
     __doc__ = """
     Log entry with text payload.
 
+    """ + _LOG_ENTRY_PARAM_DOCSTRING + """
+
     :type payload: str | unicode
     :param payload: payload for the log entry.
-    """ + _LOG_ENTRY_PARAM_DOCSTRING
-    _PAYLOAD_KEY = 'textPayload'
-    _TYPE_NAME = 'text'
+    """ + _LOG_ENTRY_SEE_ALSO_DOCSTRING
+
+    @classmethod
+    def _extract_payload(cls, resource):
+        """Helper for :meth:`from_api_repr`"""
+        return resource['textPayload']
+
+    def to_api_repr(self):
+        """API repr (JSON format) for entry.
+        """
+        info = super(TextEntry, self).to_api_repr()
+        info['textPayload'] = self.payload
+        return info
 
 
-_StructEntryTuple = collections.namedtuple(
-        'StructEntry', (field for field, _ in _LOG_ENTRY_FIELDS))
-_StructEntryTuple.__new__.__defaults__ = (
-    ('struct',) + tuple(default for _, default in _LOG_ENTRY_FIELDS[1:]))
-
-
-class StructEntry(_StructEntryTuple, _ApiReprMixin):
+class StructEntry(LogEntry):
     __doc__ = """
     Log entry with JSON payload.
 
+    """ + _LOG_ENTRY_PARAM_DOCSTRING + """
+
     :type payload: dict
     :param payload: payload for the log entry.
-    """ + _LOG_ENTRY_PARAM_DOCSTRING
-    _PAYLOAD_KEY = 'jsonPayload'
-    _TYPE_NAME = 'struct'
+    """ + _LOG_ENTRY_SEE_ALSO_DOCSTRING
+
+    @classmethod
+    def _extract_payload(cls, resource):
+        """Helper for :meth:`from_api_repr`"""
+        return resource['jsonPayload']
+
+    def to_api_repr(self):
+        """API repr (JSON format) for entry.
+        """
+        info = super(StructEntry, self).to_api_repr()
+        info['jsonPayload'] = self.payload
+        return info
 
 
-_ProtobufEntryTuple = collections.namedtuple(
-        'ProtobufEntry', (field for field, _ in _LOG_ENTRY_FIELDS))
-_ProtobufEntryTuple.__new__.__defaults__ = (
-    ('proto',) + tuple(default for _, default in _LOG_ENTRY_FIELDS[1:]))
-
-
-class ProtobufEntry(_ProtobufEntryTuple, _ApiReprMixin):
+class ProtobufEntry(LogEntry):
     __doc__ = """
     Log entry with protobuf message payload.
 
+    """ + _LOG_ENTRY_PARAM_DOCSTRING + """
+
     :type payload: protobuf message
     :param payload: payload for the log entry.
-    """ + _LOG_ENTRY_PARAM_DOCSTRING
-    _PAYLOAD_KEY = 'protoPayload'
-    _TYPE_NAME = 'proto'
+    """ + _LOG_ENTRY_SEE_ALSO_DOCSTRING
+
+    @classmethod
+    def _extract_payload(cls, resource):
+        """Helper for :meth:`from_api_repr`"""
+        return resource['protoPayload']
 
     @property
     def payload_pb(self):
@@ -349,6 +327,13 @@ class ProtobufEntry(_ProtobufEntryTuple, _ApiReprMixin):
     def payload_json(self):
         if not isinstance(self.payload, Any):
             return self.payload
+
+    def to_api_repr(self):
+        """API repr (JSON format) for entry.
+        """
+        info = super(ProtobufEntry, self).to_api_repr()
+        info['protoPayload'] = MessageToDict(self.payload)
+        return info
 
     def parse_message(self, message):
         """Parse payload into a protobuf message.
