@@ -448,18 +448,394 @@ class TestPostFilterNode:
         assert post_filter_node._to_filter() is None
 
 
+class Test_BooleanClauses:
+    @staticmethod
+    def test_constructor_or():
+        or_clauses = query._BooleanClauses("name", True)
+        assert or_clauses.name == "name"
+        assert or_clauses.combine_or
+        assert or_clauses.or_parts == []
+
+    @staticmethod
+    def test_constructor_and():
+        and_clauses = query._BooleanClauses("name", False)
+        assert and_clauses.name == "name"
+        assert not and_clauses.combine_or
+        assert and_clauses.or_parts == [[]]
+
+    @staticmethod
+    def test_add_node_invalid():
+        clauses = query._BooleanClauses("name", False)
+        with pytest.raises(TypeError):
+            clauses.add_node(None)
+
+    @staticmethod
+    def test_add_node_or_with_simple():
+        clauses = query._BooleanClauses("name", True)
+        node = query.FilterNode("a", "=", 7)
+        clauses.add_node(node)
+        assert clauses.or_parts == [node]
+
+    @staticmethod
+    def test_add_node_or_with_disjunction():
+        clauses = query._BooleanClauses("name", True)
+        node1 = query.FilterNode("a", "=", 7)
+        node2 = query.FilterNode("b", ">", 7.5)
+        node3 = query.DisjunctionNode(node1, node2)
+        clauses.add_node(node3)
+        assert clauses.or_parts == [node1, node2]
+
+    @staticmethod
+    def test_add_node_and_with_simple():
+        clauses = query._BooleanClauses("name", False)
+        node1 = query.FilterNode("a", "=", 7)
+        node2 = query.FilterNode("b", ">", 7.5)
+        node3 = query.FilterNode("c", "<", "now")
+        # Modify to see the "broadcast"
+        clauses.or_parts = [[node1], [node2], [node3]]
+
+        node4 = query.FilterNode("d", ">=", 80)
+        clauses.add_node(node4)
+        assert clauses.or_parts == [
+            [node1, node4],
+            [node2, node4],
+            [node3, node4],
+        ]
+
+    @staticmethod
+    def test_add_node_and_with_conjunction():
+        clauses = query._BooleanClauses("name", False)
+        node1 = query.FilterNode("a", "=", 7)
+        node2 = query.FilterNode("b", ">", 7.5)
+        clauses.or_parts = [[node1], [node2]]  # Modify to see the "broadcast"
+
+        node3 = query.FilterNode("c", "<", "now")
+        node4 = query.FilterNode("d", ">=", 80)
+        node5 = query.ConjunctionNode(node3, node4)
+        clauses.add_node(node5)
+        assert clauses.or_parts == [
+            [node1, node3, node4],
+            [node2, node3, node4],
+        ]
+
+    @staticmethod
+    def test_add_node_and_with_disjunction():
+        clauses = query._BooleanClauses("name", False)
+        node1 = query.FilterNode("a", "=", 7)
+        node2 = query.FilterNode("b", ">", 7.5)
+        clauses.or_parts = [[node1], [node2]]  # Modify to see the "broadcast"
+
+        node3 = query.FilterNode("c", "<", "now")
+        node4 = query.FilterNode("d", ">=", 80)
+        node5 = query.DisjunctionNode(node3, node4)
+        clauses.add_node(node5)
+        assert clauses.or_parts == [
+            [node1, node3],
+            [node1, node4],
+            [node2, node3],
+            [node2, node4],
+        ]
+
+
 class TestConjunctionNode:
     @staticmethod
-    def test_constructor():
-        with pytest.raises(NotImplementedError):
+    def test_constructor_no_nodes():
+        with pytest.raises(TypeError):
             query.ConjunctionNode()
+
+    @staticmethod
+    def test_constructor_one_node():
+        node = query.FilterNode("a", "=", 7)
+        result_node = query.ConjunctionNode(node)
+        assert result_node is node
+
+    @staticmethod
+    def test_constructor_many_nodes():
+        node1 = query.FilterNode("a", "=", 7)
+        node2 = query.FilterNode("b", ">", 7.5)
+        node3 = query.FilterNode("c", "<", "now")
+        node4 = query.FilterNode("d", ">=", 80)
+
+        result_node = query.ConjunctionNode(node1, node2, node3, node4)
+        assert isinstance(result_node, query.ConjunctionNode)
+        assert result_node._nodes == [node1, node2, node3, node4]
+
+    @staticmethod
+    def test_constructor_convert_or():
+        node1 = query.FilterNode("a", "=", 7)
+        node2 = query.FilterNode("b", ">", 7.5)
+        node3 = query.DisjunctionNode(node1, node2)
+        node4 = query.FilterNode("d", ">=", 80)
+
+        result_node = query.ConjunctionNode(node3, node4)
+        assert isinstance(result_node, query.DisjunctionNode)
+        assert result_node._nodes == [
+            query.ConjunctionNode(node1, node4),
+            query.ConjunctionNode(node2, node4),
+        ]
+
+    @staticmethod
+    @unittest.mock.patch("google.cloud.ndb.query._BooleanClauses")
+    def test_constructor_unreachable(boolean_clauses):
+        clauses = unittest.mock.Mock(
+            or_parts=[], spec=("add_node", "or_parts")
+        )
+        boolean_clauses.return_value = clauses
+
+        node1 = query.FilterNode("a", "=", 7)
+        node2 = query.FilterNode("b", ">", 7.5)
+
+        with pytest.raises(RuntimeError):
+            query.ConjunctionNode(node1, node2)
+
+        boolean_clauses.assert_called_once_with(
+            "ConjunctionNode", combine_or=False
+        )
+        assert clauses.add_node.call_count == 2
+        clauses.add_node.assert_has_calls(
+            [unittest.mock.call(node1), unittest.mock.call(node2)]
+        )
+
+    @staticmethod
+    def test_pickling():
+        node1 = query.FilterNode("a", "=", 7)
+        node2 = query.FilterNode("b", ">", 7.5)
+        and_node = query.ConjunctionNode(node1, node2)
+
+        pickled = pickle.dumps(and_node)
+        unpickled = pickle.loads(pickled)
+        assert and_node == unpickled
+
+    @staticmethod
+    def test___iter__():
+        node1 = query.FilterNode("a", "=", 7)
+        node2 = query.FilterNode("b", ">", 7.5)
+        and_node = query.ConjunctionNode(node1, node2)
+
+        assert list(and_node) == and_node._nodes
+
+    @staticmethod
+    def test___repr__():
+        node1 = query.FilterNode("a", "=", 7)
+        node2 = query.FilterNode("b", ">", 7.5)
+        and_node = query.ConjunctionNode(node1, node2)
+        expected = "AND(FilterNode('a', '=', 7), FilterNode('b', '>', 7.5))"
+        assert repr(and_node) == expected
+
+    @staticmethod
+    def test___eq__():
+        filter_node1 = query.FilterNode("a", "=", 7)
+        filter_node2 = query.FilterNode("b", ">", 7.5)
+        filter_node3 = query.FilterNode("c", "<", "now")
+
+        and_node1 = query.ConjunctionNode(filter_node1, filter_node2)
+        and_node2 = query.ConjunctionNode(filter_node2, filter_node1)
+        and_node3 = query.ConjunctionNode(filter_node1, filter_node3)
+        and_node4 = unittest.mock.sentinel.and_node
+
+        assert and_node1 == and_node1
+        assert not and_node1 == and_node2
+        assert not and_node1 == and_node3
+        assert not and_node1 == and_node4
+
+    @staticmethod
+    def test__to_filter_empty():
+        node1 = query.FilterNode("a", "=", 7)
+        node2 = query.FilterNode("b", "<", 6)
+        and_node = query.ConjunctionNode(node1, node2)
+
+        as_filter = and_node._to_filter(post=True)
+        assert as_filter is None
+
+    @staticmethod
+    def test__to_filter_single():
+        node1 = query.FilterNode("a", "=", 7)
+        node1._to_filter = unittest.mock.Mock(spec=())
+        node2 = query.PostFilterNode("predicate")
+        node3 = query.FilterNode("a", "=", 7)
+        node3._to_filter = unittest.mock.Mock(spec=(), return_value=False)
+        and_node = query.ConjunctionNode(node1, node2, node3)
+
+        as_filter = and_node._to_filter()
+        assert as_filter is node1._to_filter.return_value
+
+        node1._to_filter.assert_called_once_with(post=False)
+
+    @staticmethod
+    def test__to_filter_multiple():
+        node1 = query.PostFilterNode("predicate1")
+        node2 = query.PostFilterNode("predicate2")
+        and_node = query.ConjunctionNode(node1, node2)
+
+        with pytest.raises(NotImplementedError):
+            and_node._to_filter(post=True)
+
+    @staticmethod
+    def test__post_filters_empty():
+        node1 = query.FilterNode("a", "=", 7)
+        node2 = query.FilterNode("b", ">", 77)
+        and_node = query.ConjunctionNode(node1, node2)
+
+        post_filters_node = and_node._post_filters()
+        assert post_filters_node is None
+
+    @staticmethod
+    def test__post_filters_single():
+        node1 = query.FilterNode("a", "=", 7)
+        node2 = query.PostFilterNode("predicate2")
+        and_node = query.ConjunctionNode(node1, node2)
+
+        post_filters_node = and_node._post_filters()
+        assert post_filters_node is node2
+
+    @staticmethod
+    def test__post_filters_multiple():
+        node1 = query.FilterNode("a", "=", 7)
+        node2 = query.PostFilterNode("predicate2")
+        node3 = query.PostFilterNode("predicate3")
+        and_node = query.ConjunctionNode(node1, node2, node3)
+
+        post_filters_node = and_node._post_filters()
+        assert post_filters_node == query.ConjunctionNode(node2, node3)
+
+    @staticmethod
+    def test__post_filters_same():
+        node1 = query.PostFilterNode("predicate1")
+        node2 = query.PostFilterNode("predicate2")
+        and_node = query.ConjunctionNode(node1, node2)
+
+        post_filters_node = and_node._post_filters()
+        assert post_filters_node is and_node
+
+    @staticmethod
+    def test_resolve():
+        node1 = query.FilterNode("a", "=", 7)
+        node2 = query.FilterNode("b", ">", 77)
+        and_node = query.ConjunctionNode(node1, node2)
+
+        bindings = {}
+        used = {}
+        resolved_node = and_node.resolve(bindings, used)
+
+        assert resolved_node is and_node
+        assert bindings == {}
+        assert used == {}
+
+    @staticmethod
+    def test_resolve_changed():
+        node1 = query.FilterNode("a", "=", 7)
+        node2 = query.FilterNode("b", ">", 77)
+        node3 = query.FilterNode("c", "=", 7)
+        node1.resolve = unittest.mock.Mock(spec=(), return_value=node3)
+        and_node = query.ConjunctionNode(node1, node2)
+
+        bindings = {}
+        used = {}
+        resolved_node = and_node.resolve(bindings, used)
+
+        assert isinstance(resolved_node, query.ConjunctionNode)
+        assert resolved_node._nodes == [node3, node2]
+        assert bindings == {}
+        assert used == {}
+        node1.resolve.assert_called_once_with(bindings, used)
 
 
 class TestDisjunctionNode:
     @staticmethod
-    def test_constructor():
-        with pytest.raises(NotImplementedError):
+    def test_constructor_no_nodes():
+        with pytest.raises(TypeError):
             query.DisjunctionNode()
+
+    @staticmethod
+    def test_constructor_one_node():
+        node = query.FilterNode("a", "=", 7)
+        result_node = query.DisjunctionNode(node)
+        assert result_node is node
+
+    @staticmethod
+    def test_constructor_many_nodes():
+        node1 = query.FilterNode("a", "=", 7)
+        node2 = query.FilterNode("b", ">", 7.5)
+        node3 = query.FilterNode("c", "<", "now")
+        node4 = query.FilterNode("d", ">=", 80)
+
+        result_node = query.DisjunctionNode(node1, node2, node3, node4)
+        assert isinstance(result_node, query.DisjunctionNode)
+        assert result_node._nodes == [node1, node2, node3, node4]
+
+    @staticmethod
+    def test_pickling():
+        node1 = query.FilterNode("a", "=", 7)
+        node2 = query.FilterNode("b", ">", 7.5)
+        or_node = query.DisjunctionNode(node1, node2)
+
+        pickled = pickle.dumps(or_node)
+        unpickled = pickle.loads(pickled)
+        assert or_node == unpickled
+
+    @staticmethod
+    def test___iter__():
+        node1 = query.FilterNode("a", "=", 7)
+        node2 = query.FilterNode("b", ">", 7.5)
+        or_node = query.DisjunctionNode(node1, node2)
+
+        assert list(or_node) == or_node._nodes
+
+    @staticmethod
+    def test___repr__():
+        node1 = query.FilterNode("a", "=", 7)
+        node2 = query.FilterNode("b", ">", 7.5)
+        or_node = query.DisjunctionNode(node1, node2)
+        expected = "OR(FilterNode('a', '=', 7), FilterNode('b', '>', 7.5))"
+        assert repr(or_node) == expected
+
+    @staticmethod
+    def test___eq__():
+        filter_node1 = query.FilterNode("a", "=", 7)
+        filter_node2 = query.FilterNode("b", ">", 7.5)
+        filter_node3 = query.FilterNode("c", "<", "now")
+
+        or_node1 = query.DisjunctionNode(filter_node1, filter_node2)
+        or_node2 = query.DisjunctionNode(filter_node2, filter_node1)
+        or_node3 = query.DisjunctionNode(filter_node1, filter_node3)
+        or_node4 = unittest.mock.sentinel.or_node
+
+        assert or_node1 == or_node1
+        assert not or_node1 == or_node2
+        assert not or_node1 == or_node3
+        assert not or_node1 == or_node4
+
+    @staticmethod
+    def test_resolve():
+        node1 = query.FilterNode("a", "=", 7)
+        node2 = query.FilterNode("b", ">", 77)
+        or_node = query.DisjunctionNode(node1, node2)
+
+        bindings = {}
+        used = {}
+        resolved_node = or_node.resolve(bindings, used)
+
+        assert resolved_node is or_node
+        assert bindings == {}
+        assert used == {}
+
+    @staticmethod
+    def test_resolve_changed():
+        node1 = query.FilterNode("a", "=", 7)
+        node2 = query.FilterNode("b", ">", 77)
+        node3 = query.FilterNode("c", "=", 7)
+        node1.resolve = unittest.mock.Mock(spec=(), return_value=node3)
+        or_node = query.DisjunctionNode(node1, node2)
+
+        bindings = {}
+        used = {}
+        resolved_node = or_node.resolve(bindings, used)
+
+        assert isinstance(resolved_node, query.DisjunctionNode)
+        assert resolved_node._nodes == [node3, node2]
+        assert bindings == {}
+        assert used == {}
+        node1.resolve.assert_called_once_with(bindings, used)
 
 
 def test_AND():

@@ -98,3 +98,8 @@ The primary differences come from:
   be dropped or redesigned if possible.
 - Since we want "compatibility", suggestions in `TODO` comments have not been
   implemented. However, that policy can be changed if desired.
+- It seems that `query.ConjunctionNode.__new__` had an unreachable line
+  that returned a `FalseNode`. This return has been changed to a
+  `RuntimeError` just it case it **is** actually reached.
+- For ``AND`` and ``OR`` to compare equal, the nodes must come in the
+  same order. So ``AND(a > 7, b > 6)`` is not equal to ``AND(b > 6, a > 7)``.

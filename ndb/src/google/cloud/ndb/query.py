@@ -513,14 +513,333 @@ class PostFilterNode(Node):
             return None
 
 
+class _BooleanClauses:
+    """This type will be used for symbolically performing boolean operations.
+
+    Internally, the state will track a symbolic expression like::
+
+        A or (B and C) or (A and D)
+
+    as a list of the ``OR`` components::
+
+        [A, B and C, A and D]
+
+    When ``combine_or=False``, it will track ``AND`` statements as a list,
+    making the final simplified form of our example::
+
+        [[A], [B, C], [A, D]]
+
+    Via :meth:`add_node`, we will ensure that new nodes will be correctly
+    combined (via ``AND`` or ``OR``) with the current expression.
+
+    Args:
+        name (str): The name of the class that is tracking a
+            boolean expression.
+        combine_or (bool): Indicates if new nodes will be combined
+            with the current boolean expression via ``AND`` or ``OR``.
+    """
+
+    def __init__(self, name, combine_or):
+        self.name = name
+        self.combine_or = combine_or
+        if combine_or:
+            # For ``OR()`` the parts are just nodes.
+            self.or_parts = []
+        else:
+            # For ``AND()`` the parts are "segments", i.e. node lists.
+            self.or_parts = [[]]
+
+    def add_node(self, node):
+        """Update the current boolean expression.
+
+        This uses the distributive law for sets to combine as follows:
+
+        - ``(A or B or C or ...) or  D`` -> ``A or B or C or ... or D``
+        - ``(A or B or C or ...) and D`` ->
+          ``(A and D) or (B and D) or (C and D) or ...``
+
+        Args:
+            node (Node): A node to add to the list of clauses.
+
+        Raises:
+            TypeError: If ``node`` is not a :class:`.Node`.
+        """
+        if not isinstance(node, Node):
+            raise TypeError(
+                "{}() expects Node instances as arguments; "
+                "received a non-Node instance {!r}".format(self.name, node)
+            )
+
+        if self.combine_or:
+            if isinstance(node, DisjunctionNode):
+                #    [S1 or ... or Sn] or [A1 or ... or Am]
+                # -> S1 or ... Sn or A1 or ... or Am
+                self.or_parts.extend(node._nodes)
+            else:
+                #    [S1 or ... or Sn] or [A1]
+                # -> S1 or ... or Sn or A1
+                self.or_parts.append(node)
+        else:
+            if isinstance(node, DisjunctionNode):
+                #    [S1 or ... or Sn] and [A1 or ... or Am]
+                # -> [S1 and A1] or ... or [Sn and A1] or
+                #        ... or [Sn and Am] or ... or [Sn and Am]
+                new_segments = []
+                for segment in self.or_parts:
+                    # ``segment`` represents ``Si``
+                    for sub_node in node:
+                        # ``sub_node`` represents ``Aj``
+                        new_segment = segment + [sub_node]
+                        new_segments.append(new_segment)
+                # Replace wholesale.
+                self.or_parts[:] = new_segments
+            elif isinstance(node, ConjunctionNode):
+                #    [S1 or ... or Sn] and [A1 and ... and Am]
+                # -> [S1 and A1 and ... and Am] or ... or
+                #        [Sn and A1 and ... and Am]
+                for segment in self.or_parts:
+                    # ``segment`` represents ``Si``
+                    segment.extend(node._nodes)
+            else:
+                #    [S1 or ... or Sn] and [A1]
+                # -> [S1 and A1] or ... or [Sn and A1]
+                for segment in self.or_parts:
+                    segment.append(node)
+
+
 class ConjunctionNode(Node):
-    def __init__(self, *args, **kwargs):
-        raise NotImplementedError
+    """Tree node representing a boolean ``AND`` operator on multiple nodes.
+
+    .. warning::
+
+        The constructor for this type may not always return a
+        :class:`ConjunctionNode`. For example:
+
+        * If the passed in ``nodes`` has only one entry, that single node
+          will be returned by the constructor
+        * If the resulting boolean expression has an ``OR`` in it, then a
+          :class:`DisjunctionNode` will be returned; e.g.
+          ``AND(OR(A, B), C)`` becomes ``OR(AND(A, C), AND(B, C))``
+
+    Args:
+        nodes (Tuple[Node, ...]): A list of nodes to be joined.
+
+    Raises:
+        TypeError: If ``nodes`` is empty.
+        RuntimeError: If the ``nodes`` combine to an "empty" boolean
+            expression.
+    """
+
+    def __new__(cls, *nodes):
+        if not nodes:
+            raise TypeError("ConjunctionNode() requires at least one node.")
+        elif len(nodes) == 1:
+            return nodes[0]
+
+        clauses = _BooleanClauses("ConjunctionNode", combine_or=False)
+        for node in nodes:
+            clauses.add_node(node)
+
+        if not clauses.or_parts:
+            # NOTE: The original implementation returned a ``FalseNode``
+            #       here but as far as I can tell this code is unreachable.
+            raise RuntimeError("Invalid boolean expression")
+
+        if len(clauses.or_parts) > 1:
+            return DisjunctionNode(
+                *[ConjunctionNode(*segment) for segment in clauses.or_parts]
+            )
+
+        self = super(ConjunctionNode, cls).__new__(cls)
+        self._nodes = clauses.or_parts[0]
+        return self
+
+    def __getnewargs__(self):
+        """Private API used to specify ``__new__`` arguments when unpickling.
+
+        .. note::
+
+            This method only applies if the ``pickle`` protocol is 2 or
+            greater.
+
+        Returns:
+            Tuple[Node, ...]: The list of stored nodes, converted to a
+            :func:`tuple`.
+        """
+        return tuple(self._nodes)
+
+    def __iter__(self):
+        return iter(self._nodes)
+
+    def __repr__(self):
+        all_nodes = ", ".join(map(str, self._nodes))
+        return "AND({})".format(all_nodes)
+
+    def __eq__(self, other):
+        if not isinstance(other, ConjunctionNode):
+            return NotImplemented
+
+        return self._nodes == other._nodes
+
+    def _to_filter(self, post=False):
+        """Helper to convert to low-level filter, or :data:`None`.
+
+        Args:
+            post (bool): Indicates if this is a post-filter node.
+
+        Returns:
+            Optional[Node]: The single or composite filter corresponding to
+            the pre- or post-filter nodes stored.
+
+        Raises:
+            NotImplementedError: If a composite filter must be returned. This
+                is because the original implementation relied on a low-level
+                datastore query module.
+        """
+        filters = []
+        for node in self._nodes:
+            if isinstance(node, PostFilterNode) == post:
+                as_filter = node._to_filter(post=post)
+                if as_filter:
+                    filters.append(as_filter)
+
+        if not filters:
+            return None
+        if len(filters) == 1:
+            return filters[0]
+
+        raise NotImplementedError("Missing datastore_query.CompositeFilter")
+
+    def _post_filters(self):
+        """Helper to extract post-filter nodes, if any.
+
+        Filters all of the stored nodes that are :class:`PostFilterNode`.
+
+        Returns:
+            Optional[Node]: One of the following:
+
+            * :data:`None` if there are no post-filter nodes in this ``AND()``
+              clause
+            * The single node if there is exactly one post-filter node, e.g.
+              if the only node in ``AND(A, B, ...)`` that is a post-filter
+              node is ``B``
+            * The current node if every stored node a post-filter node, e.g.
+              if all nodes ``A, B, ...`` in ``AND(A, B, ...)`` are
+              post-filter nodes
+            * A **new** :class:`ConjunctionNode` containing the post-filter
+              nodes, e.g. if only ``A, C`` are post-filter nodes in
+              ``AND(A, B, C)``, then the returned node is ``AND(A, C)``
+        """
+        post_filters = [
+            node for node in self._nodes if isinstance(node, PostFilterNode)
+        ]
+        if not post_filters:
+            return None
+        if len(post_filters) == 1:
+            return post_filters[0]
+        if post_filters == self._nodes:
+            return self
+        return ConjunctionNode(*post_filters)
+
+    def resolve(self, bindings, used):
+        """Return a node with parameters replaced by the selected values.
+
+        Args:
+            bindings (dict): A mapping of parameter bindings.
+            used (Dict[Union[str, int], bool]): A mapping of already used
+                parameters. This will be modified for each parameter found
+                in ``bindings``.
+
+        Returns:
+            Node: The current node, if all nodes are already resolved.
+            Otherwise returns a modifed :class:`ConjunctionNode` with
+            each individual node resolved.
+        """
+        resolved_nodes = [node.resolve(bindings, used) for node in self._nodes]
+        if resolved_nodes == self._nodes:
+            return self
+
+        return ConjunctionNode(*resolved_nodes)
 
 
 class DisjunctionNode(Node):
-    def __init__(self, *args, **kwargs):
-        raise NotImplementedError
+    """Tree node representing a boolean ``OR`` operator on multiple nodes.
+
+    .. warning::
+
+        This constructor may not always return a :class:`DisjuctionNode`.
+        If the passed in ``nodes`` has only one entry, that single node
+        will be returned by the constructor.
+
+    Args:
+        nodes (Tuple[Node, ...]): A list of nodes to be joined.
+
+    Raises:
+        TypeError: If ``nodes`` is empty.
+    """
+
+    def __new__(cls, *nodes):
+        if not nodes:
+            raise TypeError("DisjunctionNode() requires at least one node")
+        elif len(nodes) == 1:
+            return nodes[0]
+
+        self = super(DisjunctionNode, cls).__new__(cls)
+        self._nodes = []
+
+        clauses = _BooleanClauses("DisjunctionNode", combine_or=True)
+        for node in nodes:
+            clauses.add_node(node)
+
+        self._nodes[:] = clauses.or_parts
+        return self
+
+    def __getnewargs__(self):
+        """Private API used to specify ``__new__`` arguments when unpickling.
+
+        .. note::
+
+            This method only applies if the ``pickle`` protocol is 2 or
+            greater.
+
+        Returns:
+            Tuple[Node, ...]: The list of stored nodes, converted to a
+            :func:`tuple`.
+        """
+        return tuple(self._nodes)
+
+    def __iter__(self):
+        return iter(self._nodes)
+
+    def __repr__(self):
+        all_nodes = ", ".join(map(str, self._nodes))
+        return "OR({})".format(all_nodes)
+
+    def __eq__(self, other):
+        if not isinstance(other, DisjunctionNode):
+            return NotImplemented
+
+        return self._nodes == other._nodes
+
+    def resolve(self, bindings, used):
+        """Return a node with parameters replaced by the selected values.
+
+        Args:
+            bindings (dict): A mapping of parameter bindings.
+            used (Dict[Union[str, int], bool]): A mapping of already used
+                parameters. This will be modified for each parameter found
+                in ``bindings``.
+
+        Returns:
+            Node: The current node, if all nodes are already resolved.
+            Otherwise returns a modifed :class:`DisjunctionNode` with
+            each individual node resolved.
+        """
+        resolved_nodes = [node.resolve(bindings, used) for node in self._nodes]
+        if resolved_nodes == self._nodes:
+            return self
+
+        return DisjunctionNode(*resolved_nodes)
 
 
 # AND and OR are preferred aliases for these.
