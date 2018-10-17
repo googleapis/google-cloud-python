@@ -84,10 +84,21 @@ class _BaseEntry(object):
     :param span_id: (optional) span_id within the trace for the log entry.
                     Specify the trace parameter if span_id is set.
     """
+    received_timestamp = None
 
-    def __init__(self, payload, logger, insert_id=None, timestamp=None,
-                 labels=None, severity=None, http_request=None, resource=None,
-                 trace=None, span_id=None):
+    def __init__(
+        self,
+        payload,
+        logger,
+        insert_id=None,
+        timestamp=None,
+        labels=None,
+        severity=None,
+        http_request=None,
+        resource=None,
+        trace=None,
+        span_id=None,
+    ):
         self.payload = payload
         self.logger = logger
         self.insert_id = insert_id
@@ -145,9 +156,22 @@ class _BaseEntry(object):
         if monitored_resource_dict is not None:
             monitored_resource = Resource._from_dict(monitored_resource_dict)
 
-        return cls(payload, logger, insert_id=insert_id, timestamp=timestamp,
-                   labels=labels, severity=severity, http_request=http_request,
-                   resource=monitored_resource, trace=trace, span_id=span_id)
+        inst = cls(
+            payload,
+            logger,
+            insert_id=insert_id,
+            timestamp=timestamp,
+            labels=labels,
+            severity=severity,
+            http_request=http_request,
+            resource=monitored_resource,
+            trace=trace,
+            span_id=span_id,
+        )
+        received = resource.get('receiveTimestamp')
+        if received is not None:
+            inst.received_timestamp = _rfc3339_nanos_to_datetime(received)
+        return inst
 
 
 class EmptyEntry(_BaseEntry):
