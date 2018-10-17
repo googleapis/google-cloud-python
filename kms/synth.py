@@ -33,7 +33,8 @@ library = gapic.py_library(
 s.move(
     library,
     excludes=[
-        'setup.py',
-        'docs/**/*',
         'README.rst',
+        'setup.py',
+        'nox*.py',
+        'docs/**/*',
     ])
