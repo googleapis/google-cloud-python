@@ -29,14 +29,50 @@ class TestCloudLoggingHandler(unittest.TestCase):
     def _make_one(self, *args, **kw):
         return self._get_target_class()(*args, **kw)
 
-    def test_ctor(self):
+    def test_ctor_defaults(self):
+        import sys
+        from google.cloud.logging.logger import _GLOBAL_RESOURCE
+        from google.cloud.logging.handlers.handlers import DEFAULT_LOGGER_NAME
+
         client = _Client(self.PROJECT)
         handler = self._make_one(client, transport=_Transport)
-        self.assertEqual(handler.client, client)
+        self.assertEqual(handler.name, DEFAULT_LOGGER_NAME)
+        self.assertIs(handler.client, client)
+        self.assertIsInstance(handler.transport, _Transport)
+        self.assertIs(handler.transport.client, client)
+        self.assertEqual(handler.transport.name, DEFAULT_LOGGER_NAME)
+        self.assertIs(handler.resource, _GLOBAL_RESOURCE)
+        self.assertIsNone(handler.labels)
+        self.assertIs(handler.stream, sys.stderr)
+
+    def test_ctor_explicit(self):
+        import io
+        from google.cloud.logging.resource import Resource
+
+        resource = Resource('resource_type', {'resource_label': 'value'})
+        labels = {'handler_lable': 'value'}
+        name = 'test-logger'
+        client = _Client(self.PROJECT)
+        stream = io.BytesIO()
+        handler = self._make_one(
+            client,
+            name=name,
+            transport=_Transport,
+            resource=resource,
+            labels=labels,
+            stream=stream,
+        )
+        self.assertEqual(handler.name, name)
+        self.assertIs(handler.client, client)
+        self.assertIsInstance(handler.transport, _Transport)
+        self.assertIs(handler.transport.client, client)
+        self.assertEqual(handler.transport.name, name)
+        self.assertIs(handler.resource, resource)
+        self.assertEqual(handler.labels, labels)
+        self.assertIs(handler.stream, stream)
 
     def test_emit(self):
         from google.cloud.logging.logger import _GLOBAL_RESOURCE
-
         client = _Client(self.PROJECT)
         handler = self._make_one(
             client, transport=_Transport, resource=_GLOBAL_RESOURCE
@@ -108,7 +144,8 @@ class _Client(object):
 
 class _Transport(object):
     def __init__(self, client, name):
-        pass
+        self.client = client
+        self.name = name
 
     def send(self, record, message, resource, labels=None):
         self.send_called_with = (record, message, resource, labels)

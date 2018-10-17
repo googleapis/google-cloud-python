@@ -58,6 +58,9 @@ class CloudLoggingHandler(logging.StreamHandler):
     :type labels: dict
     :param labels: (Optional) Mapping of labels for the entry.
 
+    :type stream: file-like object
+    :param stream: (optional) stream to be used by the handler.
+
     Example:
 
     .. code-block:: python
@@ -74,7 +77,6 @@ class CloudLoggingHandler(logging.StreamHandler):
         cloud_logger.addHandler(handler)
 
         cloud_logger.error('bad news')  # API call
-
     """
 
     def __init__(
@@ -84,8 +86,9 @@ class CloudLoggingHandler(logging.StreamHandler):
         transport=BackgroundThreadTransport,
         resource=_GLOBAL_RESOURCE,
         labels=None,
+        stream=None,
     ):
-        super(CloudLoggingHandler, self).__init__()
+        super(CloudLoggingHandler, self).__init__(stream)
         self.name = name
         self.client = client
         self.transport = transport(client, name)
