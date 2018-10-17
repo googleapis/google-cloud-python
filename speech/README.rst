@@ -11,7 +11,7 @@ variants, to support your global user base.
 - `Product Documentation`_
 
 .. |beta| image:: https://img.shields.io/badge/support-beta-silver.svg
-   :target: https://github.com/googleapis/google-cloud-python/README.rst#beta-support
+   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#beta-support
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-speech.svg
    :target: https://pypi.org/project/google-cloud-speech/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-speech.svg
