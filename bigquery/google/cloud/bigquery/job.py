@@ -1072,12 +1072,10 @@ class LoadJobConfig(_JobConfig):
         See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.maxBadRecords
         """
-        # XXX: should this coerce from str, like 'skip_leading_rows' below?
-        return self._get_sub_prop('maxBadRecords')
+        return _helpers._int_or_none(self._get_sub_prop('maxBadRecords'))
 
     @max_bad_records.setter
     def max_bad_records(self, value):
-        # XXX: should this coerce to str, like 'skip_leading_rows' below?
         self._set_sub_prop('maxBadRecords', value)
 
     @property

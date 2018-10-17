@@ -1592,7 +1592,6 @@ class TestLoadJobConfig(unittest.TestCase, _Base):
         config.skip_leading_rows = skip_leading_rows
         self.assertEqual(
             config._properties['load']['skipLeadingRows'],
-            # XXX: Should this really be a str?
             str(skip_leading_rows))
 
     def test_source_format_missing(self):
