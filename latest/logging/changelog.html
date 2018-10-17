@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Changelog &#8212; google-cloud 6a68a46 documentation</title>
+    <title>Changelog &#8212; google-cloud 10837fc documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -39,9 +39,46 @@
 <span id="changelog"></span><h1>Changelog<a class="headerlink" href="#changelog" title="Permalink to this headline">#</a></h1>
 <p><a class="reference external" href="https://pypi.org/project/google-cloud-logging/#history">PyPI History</a></p>
 <div class="section" id="">
-<span id="id1"></span><h2>1.7.0<a class="headerlink" href="#" title="Permalink to this headline">#</a></h2>
+<span id="id1"></span><h2>1.8.0<a class="headerlink" href="#" title="Permalink to this headline">#</a></h2>
+<p>10-17-2018 14:23 PDT</p>
 <div class="section" id="implementation-changes">
 <span id="implementation-changes"></span><h3>Implementation Changes<a class="headerlink" href="#implementation-changes" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li>Logging:  allow more tries on inner retry for ‘_list_entries’. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6179">#6179</a>)</li>
+<li>Accommodate payload-less log entries. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6103">#6103</a>)</li>
+</ul>
+</div>
+<div class="section" id="new-features">
+<span id="new-features"></span><h3>New Features<a class="headerlink" href="#new-features" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li>Logging: support request-correlated logging in App Engine standard python37 runtime (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6118">#6118</a>)</li>
+</ul>
+</div>
+<div class="section" id="documentation">
+<span id="documentation"></span><h3>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li>Logging: fix class reference in docstring (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6153">#6153</a>)</li>
+<li>Translate / Logging / Language: restore detailed usage docs. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/5999">#5999</a>)</li>
+<li>Redirect renamed ‘usage.html’/’client.html’ -&gt; ‘index.html’. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/5996">#5996</a>)</li>
+</ul>
+</div>
+<div class="section" id="internal-testing-changes">
+<span id="internal-testing-changes"></span><h3>Internal / Testing Changes<a class="headerlink" href="#internal-testing-changes" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li>Use new Nox (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6175">#6175</a>)</li>
+<li>Logging: harden systest teardown against ‘DeadlineExceeded’ retry errors. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6182">#6182</a>)</li>
+<li>Logging: fix lint errors. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6183">#6183</a>)</li>
+<li>Harden sink / metric creation against transient errors. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6180">#6180</a>)</li>
+<li>Logging: test both GCLOUD_PROJECT and GOOGLE_CLOUD_PROJECT env vars (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6138">#6138</a>)</li>
+<li>Harden ‘test_list_entry_with_unregistered’ against 429 errors. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6181">#6181</a>)</li>
+<li>Prep logging docs for repo split. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/5943">#5943</a>)</li>
+</ul>
+</div>
+</div>
+<div class="section" id="">
+<span id="id2"></span><h2>1.7.0<a class="headerlink" href="#" title="Permalink to this headline">#</a></h2>
+<div class="section" id="implementation-changes">
+<span id="id3"></span><h3>Implementation Changes<a class="headerlink" href="#implementation-changes" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li>Print to stderr instead of stdout when exiting the program (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/5569">#5569</a>)</li>
 <li>Avoid overwriting ‘<strong>module</strong>’ of messages from shared modules. (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/5364">#5364</a>)</li>
@@ -50,7 +87,7 @@
 </ul>
 </div>
 <div class="section" id="new-features">
-<span id="new-features"></span><h3>New Features<a class="headerlink" href="#new-features" title="Permalink to this headline">#</a></h3>
+<span id="id4"></span><h3>New Features<a class="headerlink" href="#new-features" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li>Add support for <code class="docutils literal notranslate"><span class="pre">trace</span></code> and <code class="docutils literal notranslate"><span class="pre">span_id</span></code> to logging async API (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/5908">#5908</a>)</li>
 <li>Add support for <code class="docutils literal notranslate"><span class="pre">span_id</span></code> attribute of log entries (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/5885">#5885</a>)</li>
@@ -59,13 +96,13 @@
 </ul>
 </div>
 <div class="section" id="documentation">
-<span id="documentation"></span><h3>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">#</a></h3>
+<span id="id5"></span><h3>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li>Replace links to ‘/stable/’ with ‘/latest/’. (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/5901">#5901</a>)</li>
 </ul>
 </div>
 <div class="section" id="internal-testing-changes">
-<span id="internal-testing-changes"></span><h3>Internal / Testing Changes<a class="headerlink" href="#internal-testing-changes" title="Permalink to this headline">#</a></h3>
+<span id="id6"></span><h3>Internal / Testing Changes<a class="headerlink" href="#internal-testing-changes" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li>Nox: use inplace installs (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/5865">#5865</a>)</li>
 <li>Unflake logging systests (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/5698">#5698</a>)</li>
@@ -78,7 +115,7 @@
 </div>
 </div>
 <div class="section" id="">
-<span id="id2"></span><h2>1.6.0<a class="headerlink" href="#" title="Permalink to this headline">#</a></h2>
+<span id="id7"></span><h2>1.6.0<a class="headerlink" href="#" title="Permalink to this headline">#</a></h2>
 <div class="section" id="dependencies">
 <span id="dependencies"></span><h3>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
@@ -95,16 +132,16 @@
 </div>
 </div>
 <div class="section" id="">
-<span id="id3"></span><h2>1.5.0<a class="headerlink" href="#" title="Permalink to this headline">#</a></h2>
+<span id="id8"></span><h2>1.5.0<a class="headerlink" href="#" title="Permalink to this headline">#</a></h2>
 <div class="section" id="new-features">
-<span id="id4"></span><h3>New features<a class="headerlink" href="#new-features" title="Permalink to this headline">#</a></h3>
+<span id="id9"></span><h3>New features<a class="headerlink" href="#new-features" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li>Added <code class="docutils literal notranslate"><span class="pre">max_latency</span></code> to <code class="docutils literal notranslate"><span class="pre">BackgroundThreadTransport</span></code>. (#4762)</li>
 <li>Added support for unique writer identity in <code class="docutils literal notranslate"><span class="pre">Sink</span></code>. (#4595, #4708, #4704, #4706)</li>
 </ul>
 </div>
 <div class="section" id="implementation-changes">
-<span id="id5"></span><h3>Implementation changes<a class="headerlink" href="#implementation-changes" title="Permalink to this headline">#</a></h3>
+<span id="id10"></span><h3>Implementation changes<a class="headerlink" href="#implementation-changes" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li>The underlying auto-generated client library was re-generated to pick up new features and bugfixes. (#4759)</li>
 <li>Moved the code path of <code class="docutils literal notranslate"><span class="pre">get_gae_labels()</span></code> to <code class="docutils literal notranslate"><span class="pre">emit()</span></code>. (#4824)</li>
@@ -126,7 +163,7 @@
 </ul>
 </div>
 <div class="section" id="documentation">
-<span id="id6"></span><h3>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">#</a></h3>
+<span id="id11"></span><h3>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li>Added doc to highlight missing <code class="docutils literal notranslate"><span class="pre">uniqueWriterIdentity</span></code> field. (#4579)</li>
 <li>Fixing “Fore” -&gt; “For” typo in README docs. (#4317)</li>
@@ -134,22 +171,22 @@
 </div>
 </div>
 <div class="section" id="">
-<span id="id7"></span><h2>1.4.0<a class="headerlink" href="#" title="Permalink to this headline">#</a></h2>
+<span id="id12"></span><h2>1.4.0<a class="headerlink" href="#" title="Permalink to this headline">#</a></h2>
 <div class="section" id="implementation-changes">
-<span id="id8"></span><h3>Implementation Changes<a class="headerlink" href="#implementation-changes" title="Permalink to this headline">#</a></h3>
+<span id="id13"></span><h3>Implementation Changes<a class="headerlink" href="#implementation-changes" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li>Remove <code class="docutils literal notranslate"><span class="pre">deepcopy</span></code> of <code class="docutils literal notranslate"><span class="pre">Client._http</span></code> in background transport (#3954)</li>
 </ul>
 </div>
 <div class="section" id="documentation">
-<span id="id9"></span><h3>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">#</a></h3>
+<span id="id14"></span><h3>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li>Added link to “Python Development Environment Setup Guide” in
 project README (#4187, h/t to &#64;michaelawyu)</li>
 </ul>
 </div>
 <div class="section" id="dependencies">
-<span id="id10"></span><h3>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline">#</a></h3>
+<span id="id15"></span><h3>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li>Upgrading to <code class="docutils literal notranslate"><span class="pre">google-cloud-core</span> <span class="pre">&gt;=</span> <span class="pre">0.28.0</span></code> and adding dependency
 on <code class="docutils literal notranslate"><span class="pre">google-api-core</span></code> (#4221, #4280)</li>
