@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.pubsub_v1.gapic.publisher_client &#8212; google-cloud f70c00b documentation</title>
+    <title>google.cloud.pubsub_v1.gapic.publisher_client &#8212; google-cloud c8d4f5d documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -250,7 +250,7 @@
 <span class="sd">                underscores (``_``), periods (``.``), tildes (``~``), plus (``+``) or percent</span>
 <span class="sd">                signs (``%``). It must be between 3 and 255 characters in length, and it</span>
 <span class="sd">                must not start with ``\&quot;goog\&quot;``.</span>
-<span class="sd">            labels (dict[str -&gt; str]): User labels.</span>
+<span class="sd">            labels (dict[str -&gt; str]): See &lt;a href=\&quot;/pubsub/docs/labels\&quot;&gt; Creating and managing labels&lt;/a&gt;.</span>
 <span class="sd">            message_storage_policy (Union[dict, ~google.cloud.pubsub_v1.types.MessageStoragePolicy]): Policy constraining how messages published to the topic may be stored. It</span>
 <span class="sd">                is determined when the topic is created based on the policy configured at</span>
 <span class="sd">                the project level. It must not be set by the caller in the request to</span>
@@ -376,8 +376,7 @@
                 <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Adds one or more messages to the topic. Returns ``NOT_FOUND`` if the topic</span>
-<span class="sd">        does not exist. The message payload must not be empty; it must contain</span>
-<span class="sd">        either a non-empty data field, or at least one attribute.</span>
+<span class="sd">        does not exist.</span>
 
 <span class="sd">        Example:</span>
 <span class="sd">            &gt;&gt;&gt; from google.cloud import pubsub_v1</span>
@@ -517,8 +516,8 @@
 <span class="sd">            ...         pass</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            project (str): The name of the cloud project that topics belong to.</span>
-<span class="sd">                Format is ``projects/{project}``.</span>
+<span class="sd">            project (str): The name of the project in which to list topics.</span>
+<span class="sd">                Format is ``projects/{project-id}``.</span>
 <span class="sd">            page_size (int): The maximum number of resources contained in the</span>
 <span class="sd">                underlying API response. If page streaming is performed per-</span>
 <span class="sd">                resource, this parameter does not affect the return value. If page</span>

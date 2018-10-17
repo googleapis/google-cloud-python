@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Pub/Sub Client Types &#8212; google-cloud f70c00b documentation</title>
+    <title>Pub/Sub Client Types &#8212; google-cloud c8d4f5d documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -174,7 +174,7 @@ SLA or deprecation policy.</p>
 not provided in the request, the server will assign a random
 name for this snapshot on the same project as the
 subscription. Note that for REST API requests, you must
-specify a name. Format is
+specify a name. See the resource name rules. Format is
 <code class="docutils literal notranslate"><span class="pre">projects/{project}/snapshots/{snap}</span></code>.</p>
 </dd></dl>
 
@@ -195,7 +195,7 @@ completion of the CreateSnapshot request. Format is
 <dl class="attribute">
 <dt id="google.cloud.pubsub_v1.types.CreateSnapshotRequest.labels">
 <code class="descname">labels</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.CreateSnapshotRequest.labels" title="Permalink to this definition">#</a></dt>
-<dd><p>User labels.</p>
+<dd><p>See Creating and managing labels.</p>
 </dd></dl>
 
 <dl class="class">
@@ -301,6 +301,25 @@ SLA or deprecation policy.</p>
 <dt id="google.cloud.pubsub_v1.types.EnumValueOptions">
 <em class="property">class </em><code class="descclassname">google.cloud.pubsub_v1.types.</code><code class="descname">EnumValueOptions</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.EnumValueOptions" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.pubsub_v1.types.ExpirationPolicy">
+<em class="property">class </em><code class="descclassname">google.cloud.pubsub_v1.types.</code><code class="descname">ExpirationPolicy</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.ExpirationPolicy" title="Permalink to this definition">#</a></dt>
+<dd><p>A policy that specifies the conditions for resource expiration (i.e.,
+automatic resource deletion).</p>
+<dl class="attribute">
+<dt id="google.cloud.pubsub_v1.types.ExpirationPolicy.ttl">
+<code class="descname">ttl</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.ExpirationPolicy.ttl" title="Permalink to this definition">#</a></dt>
+<dd><p>Specifies the “time-to-live” duration for an associated
+resource. The resource expires if it is not active for a
+period of <code class="docutils literal notranslate"><span class="pre">ttl</span></code>. The definition of “activity” depends on the
+type of the associated resource. The minimum and maximum
+allowed values for <code class="docutils literal notranslate"><span class="pre">ttl</span></code> depend on the type of the
+associated resource, as well. If <code class="docutils literal notranslate"><span class="pre">ttl</span></code> is not set, the
+associated resource never expires.</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.pubsub_v1.types.ExtensionRangeOptions">
@@ -472,8 +491,8 @@ SLA or deprecation policy.</p>
 <dl class="attribute">
 <dt id="google.cloud.pubsub_v1.types.ListSnapshotsRequest.project">
 <code class="descname">project</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.ListSnapshotsRequest.project" title="Permalink to this definition">#</a></dt>
-<dd><p>The name of the cloud project that snapshots belong to. Format
-is <code class="docutils literal notranslate"><span class="pre">projects/{project}</span></code>.</p>
+<dd><p>The name of the project in which to list snapshots. Format is
+<code class="docutils literal notranslate"><span class="pre">projects/{project-id}</span></code>.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -523,8 +542,8 @@ match the request; this value should be passed in a new
 <dl class="attribute">
 <dt id="google.cloud.pubsub_v1.types.ListSubscriptionsRequest.project">
 <code class="descname">project</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.ListSubscriptionsRequest.project" title="Permalink to this definition">#</a></dt>
-<dd><p>The name of the cloud project that subscriptions belong to.
-Format is <code class="docutils literal notranslate"><span class="pre">projects/{project}</span></code>.</p>
+<dd><p>The name of the project in which to list subscriptions. Format
+is <code class="docutils literal notranslate"><span class="pre">projects/{project-id}</span></code>.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -673,8 +692,8 @@ that match the request; this value should be passed in a new
 <dl class="attribute">
 <dt id="google.cloud.pubsub_v1.types.ListTopicsRequest.project">
 <code class="descname">project</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.ListTopicsRequest.project" title="Permalink to this definition">#</a></dt>
-<dd><p>The name of the cloud project that topics belong to. Format is
-<code class="docutils literal notranslate"><span class="pre">projects/{project}</span></code>.</p>
+<dd><p>The name of the project in which to list topics. Format is
+<code class="docutils literal notranslate"><span class="pre">projects/{project-id}</span></code>.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -924,13 +943,15 @@ unique within the topic.</p>
 <dl class="class">
 <dt id="google.cloud.pubsub_v1.types.PubsubMessage">
 <em class="property">class </em><code class="descclassname">google.cloud.pubsub_v1.types.</code><code class="descname">PubsubMessage</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.PubsubMessage" title="Permalink to this definition">#</a></dt>
-<dd><p>A message data and its attributes. The message payload must not be
-empty; it must contain either a non-empty data field, or at least one
-attribute.</p>
+<dd><p>A message that is published by publishers and consumed by subscribers.
+The message must contain either a non-empty data field or at least one
+attribute. See Quotas and limits for more information about message
+limits.</p>
 <dl class="attribute">
 <dt id="google.cloud.pubsub_v1.types.PubsubMessage.data">
 <code class="descname">data</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.PubsubMessage.data" title="Permalink to this definition">#</a></dt>
-<dd><p>The message payload.</p>
+<dd><p>The message data field. If this field is empty, the message
+must contain at least one attribute.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -982,9 +1003,7 @@ is <code class="docutils literal notranslate"><span class="pre">projects/{projec
 even if it there are no messages available to return in the
 <code class="docutils literal notranslate"><span class="pre">Pull</span></code> response. Otherwise, the system may wait (for a
 bounded amount of time) until at least one message is
-available, rather than returning no messages. The client may
-cancel the request if it does not wish to wait any longer for
-the response.</p>
+available, rather than returning no messages.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1003,11 +1022,11 @@ Pub/Sub system may return fewer than the number specified.</p>
 <dl class="attribute">
 <dt id="google.cloud.pubsub_v1.types.PullResponse.received_messages">
 <code class="descname">received_messages</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.PullResponse.received_messages" title="Permalink to this definition">#</a></dt>
-<dd><p>Received Pub/Sub messages. The Pub/Sub system will return zero
-messages if there are no more available in the backlog. The
-Pub/Sub system may return fewer than the <code class="docutils literal notranslate"><span class="pre">maxMessages</span></code>
-requested even if there are more messages available in the
-backlog.</p>
+<dd><p>Received Pub/Sub messages. The list will be empty if there are
+no more messages available in the backlog. For JSON, the
+response can be entirely empty. The Pub/Sub system may return
+fewer than the <code class="docutils literal notranslate"><span class="pre">maxMessages</span></code> requested even if there are
+more messages available in the backlog.</p>
 </dd></dl>
 
 </dd></dl>
@@ -1115,7 +1134,8 @@ as that of the provided subscription. Format is
 <dl class="class">
 <dt id="google.cloud.pubsub_v1.types.SeekResponse">
 <em class="property">class </em><code class="descclassname">google.cloud.pubsub_v1.types.</code><code class="descname">SeekResponse</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.SeekResponse" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Response for the <code class="docutils literal notranslate"><span class="pre">Seek</span></code> method (this response is empty).</p>
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.pubsub_v1.types.ServiceDescriptorProto">
@@ -1191,7 +1211,7 @@ less than 1 hour after creation.</p>
 <dl class="attribute">
 <dt id="google.cloud.pubsub_v1.types.Snapshot.labels">
 <code class="descname">labels</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.Snapshot.labels" title="Permalink to this definition">#</a></dt>
-<dd><p>User labels.</p>
+<dd><p>See Creating and managing labels.</p>
 </dd></dl>
 
 <dl class="class">
@@ -1380,7 +1400,22 @@ or deprecation policy.</p>
 <dl class="attribute">
 <dt id="google.cloud.pubsub_v1.types.Subscription.labels">
 <code class="descname">labels</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.Subscription.labels" title="Permalink to this definition">#</a></dt>
-<dd><p>User labels.</p>
+<dd><p>See Creating and managing labels.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.pubsub_v1.types.Subscription.expiration_policy">
+<code class="descname">expiration_policy</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.Subscription.expiration_policy" title="Permalink to this definition">#</a></dt>
+<dd><p>A policy that specifies the conditions for this subscription’s
+expiration. A subscription is considered active as long as any
+connected subscriber is successfully consuming messages from
+the subscription or is issuing operations on the subscription.
+If <code class="docutils literal notranslate"><span class="pre">expiration_policy</span></code> is not set, a <em>default policy</em> with
+<code class="docutils literal notranslate"><span class="pre">ttl</span></code> of 31 days will be used. The minimum allowed value for
+<code class="docutils literal notranslate"><span class="pre">expiration_policy.ttl</span></code> is 1 day. BETA: This feature is part
+of a beta release. This API might be changed in backward-
+incompatible ways and is not recommended for production use.
+It is not subject to any SLA or deprecation policy.</p>
 </dd></dl>
 
 <dl class="class">
@@ -1450,7 +1485,7 @@ and it must not start with <code class="docutils literal notranslate"><span clas
 <dl class="attribute">
 <dt id="google.cloud.pubsub_v1.types.Topic.labels">
 <code class="descname">labels</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.Topic.labels" title="Permalink to this definition">#</a></dt>
-<dd><p>User labels.</p>
+<dd><p>See Creating and managing labels.</p>
 </dd></dl>
 
 <dl class="attribute">
