@@ -46,12 +46,19 @@ class AppEngineHandler(logging.StreamHandler):
     :param transport: The transport class. It should be a subclass
                       of :class:`.Transport`. If unspecified,
                       :class:`.BackgroundThreadTransport` will be used.
+
+    :type stream: file-like object
+    :param stream: (optional) stream to be used by the handler.
     """
 
     def __init__(
-        self, client, name=_DEFAULT_GAE_LOGGER_NAME, transport=BackgroundThreadTransport
+        self,
+        client,
+        name=_DEFAULT_GAE_LOGGER_NAME,
+        transport=BackgroundThreadTransport,
+        stream=None,
     ):
-        super(AppEngineHandler, self).__init__()
+        super(AppEngineHandler, self).__init__(stream)
         self.name = name
         self.client = client
         self.transport = transport(client, name)

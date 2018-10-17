@@ -49,9 +49,9 @@ class TestCloudLoggingHandler(unittest.TestCase):
         import io
         from google.cloud.logging.resource import Resource
 
-        resource = Resource('resource_type', {'resource_label': 'value'})
-        labels = {'handler_lable': 'value'}
-        name = 'test-logger'
+        resource = Resource("resource_type", {"resource_label": "value"})
+        labels = {"handler_lable": "value"}
+        name = "test-logger"
         client = _Client(self.PROJECT)
         stream = io.BytesIO()
         handler = self._make_one(
@@ -73,6 +73,7 @@ class TestCloudLoggingHandler(unittest.TestCase):
 
     def test_emit(self):
         from google.cloud.logging.logger import _GLOBAL_RESOURCE
+
         client = _Client(self.PROJECT)
         handler = self._make_one(
             client, transport=_Transport, resource=_GLOBAL_RESOURCE
