@@ -1,0 +1,246 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Python Client for Stackdriver Error Reporting &#8212; google-cloud ec5e02e documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Using Stackdriver Error Reporting" href="usage.html" />
+    <link rel="prev" title="Changelog" href="../videointelligence/changelog.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="python-client-for-stackdriver-error-reporting">
+<h1>Python Client for Stackdriver Error Reporting<a class="headerlink" href="#python-client-for-stackdriver-error-reporting" title="Permalink to this headline">#</a></h1>
+<p><a class="reference external" href="https://pypi.org/project/google-cloud-error-reporting/"><img alt="pypi" src="https://img.shields.io/pypi/v/google-cloud-error-reporting.svg" /></a> <a class="reference external" href="https://pypi.org/project/google-cloud-error-reporting/"><img alt="versions" src="https://img.shields.io/pypi/pyversions/google-cloud-error-reporting.svg" /></a></p>
+<p>The Stackdriver <a class="reference external" href="https://cloud.google.com/error-reporting/">Error Reporting</a> API counts, analyzes and aggregates the
+crashes in your running cloud services.  A centralized error management
+interface displays the results with sorting and filtering capabilities. A
+dedicated view shows the error details: time chart, occurrences, affected user
+count, first and last seen dates and a cleaned exception stack trace. Opt-in
+to receive email and mobile alerts on new errors.</p>
+<ul class="simple">
+<li><a class="reference external" href="https://googlecloudplatform.github.io/google-cloud-python/latest/error-reporting/usage.html">Client Library Documentation</a></li>
+<li><a class="reference external" href="https://cloud.google.com/error-reporting/reference/">Product Documentation</a></li>
+</ul>
+<div class="section" id="quick-start">
+<h2>Quick Start<a class="headerlink" href="#quick-start" title="Permalink to this headline">#</a></h2>
+<p>In order to use this library, you first need to go through the following steps:</p>
+<ol class="arabic simple">
+<li><a class="reference external" href="https://console.cloud.google.com/project">Select or create a Cloud Platform project.</a></li>
+<li><a class="reference external" href="https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project">Enable billing for your project.</a></li>
+<li><a class="reference external" href="https://cloud.google.com/error-reporting">Enable the Google Cloud Datastore API.</a></li>
+<li><a class="reference external" href="https://googlecloudplatform.github.io/google-cloud-python/latest/core/auth.html">Setup Authentication.</a></li>
+</ol>
+<div class="section" id="installation">
+<h3>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">#</a></h3>
+<p>Install this library in a <a class="reference external" href="https://virtualenv.pypa.io/en/latest/">virtualenv</a> using pip. <a class="reference external" href="https://virtualenv.pypa.io/en/latest/">virtualenv</a> is a tool to
+create isolated Python environments. The basic problem it addresses is one of
+dependencies and versions, and indirectly permissions.</p>
+<p>With <a class="reference external" href="https://virtualenv.pypa.io/en/latest/">virtualenv</a>, it’s possible to install this library without needing system
+install permissions, and without clashing with the installed system
+dependencies.</p>
+<div class="section" id="mac-linux">
+<h4>Mac/Linux<a class="headerlink" href="#mac-linux" title="Permalink to this headline">#</a></h4>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install virtualenv</span>
+<span class="go">virtualenv &lt;your-env&gt;</span>
+<span class="go">source &lt;your-env&gt;/bin/activate</span>
+<span class="go">&lt;your-env&gt;/bin/pip install google-cloud-error-reporting</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="windows">
+<h4>Windows<a class="headerlink" href="#windows" title="Permalink to this headline">#</a></h4>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install virtualenv</span>
+<span class="go">virtualenv &lt;your-env&gt;</span>
+<span class="go">&lt;your-env&gt;\Scripts\activate</span>
+<span class="go">&lt;your-env&gt;\Scripts\pip.exe install google-cloud-error-reporting</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="next-steps">
+<h3>Next Steps<a class="headerlink" href="#next-steps" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li>Read the <a class="reference external" href="https://googlecloudplatform.github.io/google-cloud-python/latest/error-reporting/usage.html">Client Library Documentation</a> for Google Cloud Datastore API
+API to see other available methods on the client.</li>
+<li>Read the <a class="reference external" href="https://cloud.google.com/error-reporting/reference/">Product documentation</a> to learn
+more about the product and see How-to Guides.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="usage-documentation">
+<h2>Usage Documentation<a class="headerlink" href="#usage-documentation" title="Permalink to this headline">#</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Using Stackdriver Error Reporting</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#reporting-an-exception">Reporting an exception</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#reporting-an-error-without-an-exception">Reporting an error without an exception</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="api-reference">
+<h2>API Reference<a class="headerlink" href="#api-reference" title="Permalink to this headline">#</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="client.html">Error Reporting Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="util.html">Error Reporting Utilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gapic/v1beta1/api.html">Client for Stackdriver Error Reporting API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gapic/v1beta1/types.html">Types for Stackdriver Error Reporting API Client</a></li>
+</ul>
+</div>
+</div>
+<div class="section" id="changelog">
+<h2>Changelog<a class="headerlink" href="#changelog" title="Permalink to this headline">#</a></h2>
+<p>For a list of all <code class="docutils literal notranslate"><span class="pre">google-cloud-error-reporting</span></code> releases:</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#">0.30.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#">0.29.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#">0.29.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#">0.28.0</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">google-cloud</a></h1>
+
+
+
+<p class="blurb">Google Cloud Client Libraries for Python</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=GoogleCloudPlatform&repo=google-cloud-python&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../core/index.html">Core Libraries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../asset/index.html">Asset Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../automl/index.html">AutoML</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bigquery/index.html">BigQuery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bigquery_datatransfer/index.html">BigQuery Data-Transfer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bigtable/index.html">Bigtable</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../container/index.html">Container</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dataproc/index.html">Dataproc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../datastore/index.html">Datastore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dlp/index.html">Data Loss Prevention</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dns/index.html">DNS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../firestore/index.html">Firestore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../iot/index.html">IoT</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../kms/index.html">Key Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../language/index.html">Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pubsub/index.html">PubSub</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../oslogin/index.html">OSLogin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../redis/index.html">Redis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../resource-manager/index.html">Resource Manager</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../runtimeconfig/index.html">Python Client for Google Cloud RuntimeConfig</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../runtimeconfig/index.html#api-reference">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../websecurityscanner/index.html">Security Scanner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../spanner/index.html">Spanner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../speech/index.html">Speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../storage/index.html">Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tasks/index.html">Tasks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../texttospeech/index.html">Text-to-Speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../translate/index.html">Translate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vision/index.html">Vision</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../videointelligence/index.html">Video Intelligence</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Stackdriver Error Reporting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../logging/index.html">Stackdriver Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../monitoring/index.html">Stackdriver Monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../trace/index.html">Stackdriver Trace</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases.html">Release History</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="../videointelligence/changelog.html" title="previous chapter">Changelog</a></li>
+      <li>Next: <a href="usage.html" title="next chapter">Using Stackdriver Error Reporting</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2014-2017, Google.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/error-reporting/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/GoogleCloudPlatform/google-cloud-python" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

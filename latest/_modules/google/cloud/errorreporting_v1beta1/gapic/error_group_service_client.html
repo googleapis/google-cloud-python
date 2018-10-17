@@ -1,0 +1,429 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>google.cloud.errorreporting_v1beta1.gapic.error_group_service_client &#8212; google-cloud ec5e02e documentation</title>
+    <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../../_static/doctools.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="shortcut icon" href="../../../../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for google.cloud.errorreporting_v1beta1.gapic.error_group_service_client</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="c1">#</span>
+<span class="c1"># Copyright 2018 Google LLC</span>
+<span class="c1">#</span>
+<span class="c1"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span class="c1"># you may not use this file except in compliance with the License.</span>
+<span class="c1"># You may obtain a copy of the License at</span>
+<span class="c1">#</span>
+<span class="c1">#     https://www.apache.org/licenses/LICENSE-2.0</span>
+<span class="c1">#</span>
+<span class="c1"># Unless required by applicable law or agreed to in writing, software</span>
+<span class="c1"># distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span class="c1"># WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span class="c1"># See the License for the specific language governing permissions and</span>
+<span class="c1"># limitations under the License.</span>
+<span class="sd">&quot;&quot;&quot;Accesses the google.devtools.clouderrorreporting.v1beta1 ErrorGroupService API.&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">pkg_resources</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+
+<span class="kn">from</span> <span class="nn">google.oauth2</span> <span class="k">import</span> <span class="n">service_account</span>
+<span class="kn">import</span> <span class="nn">google.api_core.gapic_v1.client_info</span>
+<span class="kn">import</span> <span class="nn">google.api_core.gapic_v1.config</span>
+<span class="kn">import</span> <span class="nn">google.api_core.gapic_v1.method</span>
+<span class="kn">import</span> <span class="nn">google.api_core.grpc_helpers</span>
+<span class="kn">import</span> <span class="nn">google.api_core.path_template</span>
+<span class="kn">import</span> <span class="nn">grpc</span>
+
+<span class="kn">from</span> <span class="nn">google.cloud.errorreporting_v1beta1.gapic</span> <span class="k">import</span> <span class="n">enums</span>
+<span class="kn">from</span> <span class="nn">google.cloud.errorreporting_v1beta1.gapic</span> <span class="k">import</span> <span class="n">error_group_service_client_config</span>
+<span class="kn">from</span> <span class="nn">google.cloud.errorreporting_v1beta1.gapic.transports</span> <span class="k">import</span> <span class="n">error_group_service_grpc_transport</span>
+<span class="kn">from</span> <span class="nn">google.cloud.errorreporting_v1beta1.proto</span> <span class="k">import</span> <span class="n">common_pb2</span>
+<span class="kn">from</span> <span class="nn">google.cloud.errorreporting_v1beta1.proto</span> <span class="k">import</span> <span class="n">error_group_service_pb2</span>
+<span class="kn">from</span> <span class="nn">google.cloud.errorreporting_v1beta1.proto</span> <span class="k">import</span> <span class="n">error_group_service_pb2_grpc</span>
+
+<span class="n">_GAPIC_LIBRARY_VERSION</span> <span class="o">=</span> <span class="n">pkg_resources</span><span class="o">.</span><span class="n">get_distribution</span><span class="p">(</span>
+    <span class="s1">&#39;google-cloud-error-reporting&#39;</span><span class="p">,</span> <span class="p">)</span><span class="o">.</span><span class="n">version</span>
+
+
+<span class="k">class</span> <span class="nc">ErrorGroupServiceClient</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Service for retrieving and updating individual error groups.&quot;&quot;&quot;</span>
+
+    <span class="n">SERVICE_ADDRESS</span> <span class="o">=</span> <span class="s1">&#39;clouderrorreporting.googleapis.com:443&#39;</span>
+    <span class="sd">&quot;&quot;&quot;The default address of the service.&quot;&quot;&quot;</span>
+
+    <span class="c1"># The name of the interface for this client. This is the key used to</span>
+    <span class="c1"># find the method configuration in the client_config dictionary.</span>
+    <span class="n">_INTERFACE_NAME</span> <span class="o">=</span> <span class="s1">&#39;google.devtools.clouderrorreporting.v1beta1.ErrorGroupService&#39;</span>
+
+<div class="viewcode-block" id="ErrorGroupServiceClient.from_service_account_file"><a class="viewcode-back" href="../../../../../error-reporting/gapic/v1beta1/api.html#google.cloud.errorreporting_v1beta1.ErrorGroupServiceClient.from_service_account_file">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_service_account_file</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Creates an instance of this client using the provided credentials</span>
+<span class="sd">        file.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            filename (str): The path to the service account private key json</span>
+<span class="sd">                file.</span>
+<span class="sd">            args: Additional arguments to pass to the constructor.</span>
+<span class="sd">            kwargs: Additional arguments to pass to the constructor.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            ErrorGroupServiceClient: The constructed client.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">credentials</span> <span class="o">=</span> <span class="n">service_account</span><span class="o">.</span><span class="n">Credentials</span><span class="o">.</span><span class="n">from_service_account_file</span><span class="p">(</span>
+            <span class="n">filename</span><span class="p">)</span>
+        <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;credentials&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">credentials</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+    <span class="n">from_service_account_json</span> <span class="o">=</span> <span class="n">from_service_account_file</span>
+
+<div class="viewcode-block" id="ErrorGroupServiceClient.group_path"><a class="viewcode-back" href="../../../../../error-reporting/gapic/v1beta1/api.html#google.cloud.errorreporting_v1beta1.ErrorGroupServiceClient.group_path">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">group_path</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">project</span><span class="p">,</span> <span class="n">group</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return a fully-qualified group string.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">path_template</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span>
+            <span class="s1">&#39;projects/</span><span class="si">{project}</span><span class="s1">/groups/</span><span class="si">{group}</span><span class="s1">&#39;</span><span class="p">,</span>
+            <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span>
+            <span class="n">group</span><span class="o">=</span><span class="n">group</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">transport</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">channel</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">credentials</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">client_config</span><span class="o">=</span><span class="n">error_group_service_client_config</span><span class="o">.</span><span class="n">config</span><span class="p">,</span>
+                 <span class="n">client_info</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Constructor.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            transport (Union[~.ErrorGroupServiceGrpcTransport,</span>
+<span class="sd">                    Callable[[~.Credentials, type], ~.ErrorGroupServiceGrpcTransport]): A transport</span>
+<span class="sd">                instance, responsible for actually making the API calls.</span>
+<span class="sd">                The default transport uses the gRPC protocol.</span>
+<span class="sd">                This argument may also be a callable which returns a</span>
+<span class="sd">                transport instance. Callables will be sent the credentials</span>
+<span class="sd">                as the first argument and the default transport class as</span>
+<span class="sd">                the second argument.</span>
+<span class="sd">            channel (grpc.Channel): DEPRECATED. A ``Channel`` instance</span>
+<span class="sd">                through which to make calls. This argument is mutually exclusive</span>
+<span class="sd">                with ``credentials``; providing both will raise an exception.</span>
+<span class="sd">            credentials (google.auth.credentials.Credentials): The</span>
+<span class="sd">                authorization credentials to attach to requests. These</span>
+<span class="sd">                credentials identify this application to the service. If none</span>
+<span class="sd">                are specified, the client will attempt to ascertain the</span>
+<span class="sd">                credentials from the environment.</span>
+<span class="sd">                This argument is mutually exclusive with providing a</span>
+<span class="sd">                transport instance to ``transport``; doing so will raise</span>
+<span class="sd">                an exception.</span>
+<span class="sd">            client_config (dict): DEPRECATED. A dictionary of call options for</span>
+<span class="sd">                each method. If not specified, the default configuration is used.</span>
+<span class="sd">            client_info (google.api_core.gapic_v1.client_info.ClientInfo):</span>
+<span class="sd">                The client info used to send a user-agent string along with</span>
+<span class="sd">                API requests. If ``None``, then default info will be used.</span>
+<span class="sd">                Generally, you only need to set this if you&#39;re developing</span>
+<span class="sd">                your own client library.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Raise deprecation warnings for things we want to go away.</span>
+        <span class="k">if</span> <span class="n">client_config</span><span class="p">:</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;The `client_config` argument is deprecated.&#39;</span><span class="p">,</span>
+                          <span class="ne">PendingDeprecationWarning</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">channel</span><span class="p">:</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+                <span class="s1">&#39;The `channel` argument is deprecated; use &#39;</span>
+                <span class="s1">&#39;`transport` instead.&#39;</span><span class="p">,</span> <span class="ne">PendingDeprecationWarning</span><span class="p">)</span>
+
+        <span class="c1"># Instantiate the transport.</span>
+        <span class="c1"># The transport is responsible for handling serialization and</span>
+        <span class="c1"># deserialization and actually sending data to the service.</span>
+        <span class="k">if</span> <span class="n">transport</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">callable</span><span class="p">(</span><span class="n">transport</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">transport</span> <span class="o">=</span> <span class="n">transport</span><span class="p">(</span>
+                    <span class="n">credentials</span><span class="o">=</span><span class="n">credentials</span><span class="p">,</span>
+                    <span class="n">default_class</span><span class="o">=</span><span class="n">error_group_service_grpc_transport</span><span class="o">.</span>
+                    <span class="n">ErrorGroupServiceGrpcTransport</span><span class="p">,</span>
+                <span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">credentials</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                        <span class="s1">&#39;Received both a transport instance and &#39;</span>
+                        <span class="s1">&#39;credentials; these are mutually exclusive.&#39;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">transport</span> <span class="o">=</span> <span class="n">transport</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">transport</span> <span class="o">=</span> <span class="n">error_group_service_grpc_transport</span><span class="o">.</span><span class="n">ErrorGroupServiceGrpcTransport</span><span class="p">(</span>
+                <span class="n">address</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">SERVICE_ADDRESS</span><span class="p">,</span>
+                <span class="n">channel</span><span class="o">=</span><span class="n">channel</span><span class="p">,</span>
+                <span class="n">credentials</span><span class="o">=</span><span class="n">credentials</span><span class="p">,</span>
+            <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">client_info</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">client_info</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">client_info</span><span class="o">.</span><span class="n">DEFAULT_CLIENT_INFO</span><span class="p">)</span>
+        <span class="n">client_info</span><span class="o">.</span><span class="n">gapic_version</span> <span class="o">=</span> <span class="n">_GAPIC_LIBRARY_VERSION</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_client_info</span> <span class="o">=</span> <span class="n">client_info</span>
+
+        <span class="c1"># Parse out the default settings for retry and timeout for each RPC</span>
+        <span class="c1"># from the client configuration.</span>
+        <span class="c1"># (Ordinarily, these are the defaults specified in the `*_config.py`</span>
+        <span class="c1"># file next to this one.)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">parse_method_configs</span><span class="p">(</span>
+            <span class="n">client_config</span><span class="p">[</span><span class="s1">&#39;interfaces&#39;</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">_INTERFACE_NAME</span><span class="p">],</span> <span class="p">)</span>
+
+        <span class="c1"># Save a dictionary of cached API call functions.</span>
+        <span class="c1"># These are the actual callables which invoke the proper</span>
+        <span class="c1"># transport methods, wrapped with `wrap_method` to add retry,</span>
+        <span class="c1"># timeout, and the like.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="c1"># Service calls</span>
+<div class="viewcode-block" id="ErrorGroupServiceClient.get_group"><a class="viewcode-back" href="../../../../../error-reporting/gapic/v1beta1/api.html#google.cloud.errorreporting_v1beta1.ErrorGroupServiceClient.get_group">[docs]</a>    <span class="k">def</span> <span class="nf">get_group</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                  <span class="n">group_name</span><span class="p">,</span>
+                  <span class="n">retry</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+                  <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+                  <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the specified group.</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">            &gt;&gt;&gt; from google.cloud import errorreporting_v1beta1</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; client = errorreporting_v1beta1.ErrorGroupServiceClient()</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; group_name = client.group_path(&#39;[PROJECT]&#39;, &#39;[GROUP]&#39;)</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; response = client.get_group(group_name)</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            group_name (str): [Required] The group resource name. Written as</span>
+<span class="sd">                &lt;code&gt;projects/&lt;var&gt;projectID&lt;/var&gt;/groups/&lt;var&gt;group_name&lt;/var&gt;&lt;/code&gt;.</span>
+<span class="sd">                Call</span>
+<span class="sd">                &lt;a href=\&quot;/error-reporting/reference/rest/v1beta1/projects.groupStats/list\&quot;&gt;</span>
+<span class="sd">                &lt;code&gt;groupStats.list&lt;/code&gt;&lt;/a&gt; to return a list of groups belonging to</span>
+<span class="sd">                this project.</span>
+
+<span class="sd">                Example: &lt;code&gt;projects/my-project-123/groups/my-group&lt;/code&gt;</span>
+<span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
+<span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
+<span class="sd">                be retried.</span>
+<span class="sd">            timeout (Optional[float]): The amount of time, in seconds, to wait</span>
+<span class="sd">                for the request to complete. Note that if ``retry`` is</span>
+<span class="sd">                specified, the timeout applies to each individual attempt.</span>
+<span class="sd">            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata</span>
+<span class="sd">                that is provided to the method.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A :class:`~google.cloud.errorreporting_v1beta1.types.ErrorGroup` instance.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            google.api_core.exceptions.GoogleAPICallError: If the request</span>
+<span class="sd">                    failed for any reason.</span>
+<span class="sd">            google.api_core.exceptions.RetryError: If the request failed due</span>
+<span class="sd">                    to a retryable error and retry attempts failed.</span>
+<span class="sd">            ValueError: If the parameters are invalid.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Wrap the transport method to add retry and timeout logic.</span>
+        <span class="k">if</span> <span class="s1">&#39;get_group&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span>
+                <span class="s1">&#39;get_group&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">wrap_method</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">get_group</span><span class="p">,</span>
+                    <span class="n">default_retry</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span><span class="s1">&#39;GetGroup&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">retry</span><span class="p">,</span>
+                    <span class="n">default_timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span><span class="s1">&#39;GetGroup&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">timeout</span><span class="p">,</span>
+                    <span class="n">client_info</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client_info</span><span class="p">,</span>
+                <span class="p">)</span>
+
+        <span class="n">request</span> <span class="o">=</span> <span class="n">error_group_service_pb2</span><span class="o">.</span><span class="n">GetGroupRequest</span><span class="p">(</span>
+            <span class="n">group_name</span><span class="o">=</span><span class="n">group_name</span><span class="p">,</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span><span class="s1">&#39;get_group&#39;</span><span class="p">](</span>
+            <span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ErrorGroupServiceClient.update_group"><a class="viewcode-back" href="../../../../../error-reporting/gapic/v1beta1/api.html#google.cloud.errorreporting_v1beta1.ErrorGroupServiceClient.update_group">[docs]</a>    <span class="k">def</span> <span class="nf">update_group</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                     <span class="n">group</span><span class="p">,</span>
+                     <span class="n">retry</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+                     <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+                     <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Replace the data for the specified group.</span>
+<span class="sd">        Fails if the group does not exist.</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">            &gt;&gt;&gt; from google.cloud import errorreporting_v1beta1</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; client = errorreporting_v1beta1.ErrorGroupServiceClient()</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``group``:</span>
+<span class="sd">            &gt;&gt;&gt; group = {}</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; response = client.update_group(group)</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            group (Union[dict, ~google.cloud.errorreporting_v1beta1.types.ErrorGroup]): [Required] The group which replaces the resource on the server.</span>
+<span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
+<span class="sd">                message :class:`~google.cloud.errorreporting_v1beta1.types.ErrorGroup`</span>
+<span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
+<span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
+<span class="sd">                be retried.</span>
+<span class="sd">            timeout (Optional[float]): The amount of time, in seconds, to wait</span>
+<span class="sd">                for the request to complete. Note that if ``retry`` is</span>
+<span class="sd">                specified, the timeout applies to each individual attempt.</span>
+<span class="sd">            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata</span>
+<span class="sd">                that is provided to the method.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A :class:`~google.cloud.errorreporting_v1beta1.types.ErrorGroup` instance.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            google.api_core.exceptions.GoogleAPICallError: If the request</span>
+<span class="sd">                    failed for any reason.</span>
+<span class="sd">            google.api_core.exceptions.RetryError: If the request failed due</span>
+<span class="sd">                    to a retryable error and retry attempts failed.</span>
+<span class="sd">            ValueError: If the parameters are invalid.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Wrap the transport method to add retry and timeout logic.</span>
+        <span class="k">if</span> <span class="s1">&#39;update_group&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span>
+                <span class="s1">&#39;update_group&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">wrap_method</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">update_group</span><span class="p">,</span>
+                    <span class="n">default_retry</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span><span class="s1">&#39;UpdateGroup&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">retry</span><span class="p">,</span>
+                    <span class="n">default_timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span><span class="s1">&#39;UpdateGroup&#39;</span><span class="p">]</span><span class="o">.</span>
+                    <span class="n">timeout</span><span class="p">,</span>
+                    <span class="n">client_info</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client_info</span><span class="p">,</span>
+                <span class="p">)</span>
+
+        <span class="n">request</span> <span class="o">=</span> <span class="n">error_group_service_pb2</span><span class="o">.</span><span class="n">UpdateGroupRequest</span><span class="p">(</span><span class="n">group</span><span class="o">=</span><span class="n">group</span><span class="p">,</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span><span class="s1">&#39;update_group&#39;</span><span class="p">](</span>
+            <span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">)</span></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../../index.html">google-cloud</a></h1>
+
+
+
+<p class="blurb">Google Cloud Client Libraries for Python</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=GoogleCloudPlatform&repo=google-cloud-python&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../core/index.html">Core Libraries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../asset/index.html">Asset Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../automl/index.html">AutoML</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../bigquery/index.html">BigQuery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../bigquery_datatransfer/index.html">BigQuery Data-Transfer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../bigtable/index.html">Bigtable</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../container/index.html">Container</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../dataproc/index.html">Dataproc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../datastore/index.html">Datastore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../dlp/index.html">Data Loss Prevention</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../dns/index.html">DNS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../firestore/index.html">Firestore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../iot/index.html">IoT</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../kms/index.html">Key Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../language/index.html">Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pubsub/index.html">PubSub</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../oslogin/index.html">OSLogin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../redis/index.html">Redis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../resource-manager/index.html">Resource Manager</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../runtimeconfig/index.html">Python Client for Google Cloud RuntimeConfig</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../runtimeconfig/index.html#api-reference">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../websecurityscanner/index.html">Security Scanner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../spanner/index.html">Spanner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../speech/index.html">Speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../storage/index.html">Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../tasks/index.html">Tasks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../texttospeech/index.html">Text-to-Speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../translate/index.html">Translate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../vision/index.html">Vision</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../videointelligence/index.html">Video Intelligence</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../error-reporting/index.html">Stackdriver Error Reporting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../logging/index.html">Stackdriver Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../monitoring/index.html">Stackdriver Monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../trace/index.html">Stackdriver Trace</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../releases.html">Release History</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../../index.html">Module code</a><ul>
+  <li><a href="../../errorreporting_v1beta1.html">google.cloud.errorreporting_v1beta1</a><ul>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2014-2017, Google.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+    <a href="https://github.com/GoogleCloudPlatform/google-cloud-python" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>
