@@ -292,8 +292,11 @@ class Client(ClientWithProject):
         return self.metrics_api.list_metrics(
             self.project, page_size, page_token)
 
-    def get_default_handler(self):
+    def get_default_handler(self, **kw):
         """Return the default logging handler based on the local environment.
+
+        :type kw: dict
+        :param kw: keyword args passed to handler constructor
 
         :rtype: :class:`logging.Handler`
         :returns: The default log handler based on the environment
@@ -302,14 +305,18 @@ class Client(ClientWithProject):
 
         if (_APPENGINE_FLEXIBLE_ENV_VM in os.environ or
                 _APPENGINE_INSTANCE_ID in os.environ):
-            return AppEngineHandler(self)
+            return AppEngineHandler(self, **kw)
         elif gke_cluster_name is not None:
-            return ContainerEngineHandler()
+            return ContainerEngineHandler(**kw)
         else:
-            return CloudLoggingHandler(self)
+            return CloudLoggingHandler(self, **kw)
 
-    def setup_logging(self, log_level=logging.INFO,
-                      excluded_loggers=EXCLUDED_LOGGER_DEFAULTS):
+    def setup_logging(
+        self,
+        log_level=logging.INFO,
+        excluded_loggers=EXCLUDED_LOGGER_DEFAULTS,
+        **kw
+    ):
         """Attach default Stackdriver logging handler to the root logger.
 
         This method uses the default log handler, obtained by
@@ -326,7 +333,10 @@ class Client(ClientWithProject):
                                  handler to. This will always include the
                                  loggers in the path of the logging client
                                  itself.
+
+        :type kw: dict
+        :param kw: keyword args passed to handler constructor
         """
-        handler = self.get_default_handler()
+        handler = self.get_default_handler(**kw)
         setup_logging(handler, log_level=log_level,
                       excluded_loggers=excluded_loggers)
