@@ -29,9 +29,10 @@ class TestAppEngineHandler(unittest.TestCase):
     def _make_one(self, *args, **kw):
         return self._get_target_class()(*args, **kw)
 
-    def test_constructor(self):
+    def test_constructor_w_gae_standard_env(self):
+        import sys
         from google.cloud.logging.handlers.app_engine import (
-            _GAE_PROJECT_ENV_FLEX)
+            _DEFAULT_GAE_LOGGER_NAME)
         from google.cloud.logging.handlers.app_engine import (
             _GAE_PROJECT_ENV_STANDARD)
         from google.cloud.logging.handlers.app_engine import _GAE_SERVICE_ENV
@@ -47,11 +48,27 @@ class TestAppEngineHandler(unittest.TestCase):
             _GAE_VERSION_ENV: 'test_version',
         }):
             handler = self._make_one(client, transport=_Transport)
+
         self.assertIs(handler.client, client)
+        self.assertEqual(handler.name, _DEFAULT_GAE_LOGGER_NAME)
         self.assertEqual(handler.resource.type, 'gae_app')
         self.assertEqual(handler.resource.labels['project_id'], 'test_project')
         self.assertEqual(handler.resource.labels['module_id'], 'test_service')
         self.assertEqual(handler.resource.labels['version_id'], 'test_version')
+        self.assertIs(handler.stream, sys.stderr)
+
+    def test_constructor_w_gae_flex_env(self):
+        import io
+        from google.cloud.logging.handlers.app_engine import (
+            _GAE_PROJECT_ENV_FLEX)
+        from google.cloud.logging.handlers.app_engine import (
+            _GAE_PROJECT_ENV_STANDARD)
+        from google.cloud.logging.handlers.app_engine import _GAE_SERVICE_ENV
+        from google.cloud.logging.handlers.app_engine import _GAE_VERSION_ENV
+
+        client = mock.Mock(project=self.PROJECT, spec=['project'])
+        name = 'test-logger'
+        stream = io.BytesIO()
 
         # Verify that _GAE_PROJECT_ENV_FLEX environment variable takes
         # precedence over _GAE_PROJECT_ENV_STANDARD.
@@ -61,8 +78,11 @@ class TestAppEngineHandler(unittest.TestCase):
             _GAE_SERVICE_ENV: 'test_service_2',
             _GAE_VERSION_ENV: 'test_version_2',
         }):
-            handler = self._make_one(client, transport=_Transport)
+            handler = self._make_one(
+                client, name=name, transport=_Transport, stream=stream)
+
         self.assertIs(handler.client, client)
+        self.assertEqual(handler.name, name)
         self.assertEqual(handler.resource.type, 'gae_app')
         self.assertEqual(
             handler.resource.labels['project_id'], 'test_project_2')
@@ -70,6 +90,7 @@ class TestAppEngineHandler(unittest.TestCase):
             handler.resource.labels['module_id'], 'test_service_2')
         self.assertEqual(
             handler.resource.labels['version_id'], 'test_version_2')
+        self.assertIs(handler.stream, stream)
 
     def test_emit(self):
         client = mock.Mock(project=self.PROJECT, spec=['project'])
