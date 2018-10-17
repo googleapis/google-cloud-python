@@ -33,8 +33,8 @@ class TestContainerEngineHandler(unittest.TestCase):
         self.assertIsNone(handler.name)
 
     def test_ctor_w_name(self):
-        handler = self._make_one(name='foo')
-        self.assertEqual(handler.name, 'foo')
+        handler = self._make_one(name="foo")
+        self.assertEqual(handler.name, "foo")
 
     def test_format(self):
         import logging

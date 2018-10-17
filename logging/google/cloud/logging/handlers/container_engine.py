@@ -36,6 +36,7 @@ class ContainerEngineHandler(logging.StreamHandler):
     :type stream: file-like object
     :param stream: (optional) stream to be used by the handler.
     """
+
     def __init__(self, name=None, stream=None):
         super(ContainerEngineHandler, self).__init__()
         self.name = name

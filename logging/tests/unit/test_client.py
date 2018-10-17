@@ -552,20 +552,23 @@ class TestClient(unittest.TestCase):
         from google.cloud.logging.handlers import AppEngineHandler
 
         credentials = _make_credentials()
+        client = self._make_one(
+            project=self.PROJECT, credentials=credentials, _use_grpc=False
+        )
 
         with _Monkey(os, environ={_APPENGINE_FLEXIBLE_ENV_VM: "True"}):
-            client = self._make_one(
-                project=self.PROJECT, credentials=credentials, _use_grpc=False
-            )
             handler = client.get_default_handler()
+
+        handler.transport.worker.stop()
 
         self.assertIsInstance(handler, AppEngineHandler)
 
     def test_get_default_handler_container_engine(self):
         from google.cloud.logging.handlers import ContainerEngineHandler
 
+        credentials = _make_credentials()
         client = self._make_one(
-            project=self.PROJECT, credentials=_make_credentials(), _use_grpc=False
+            project=self.PROJECT, credentials=credentials, _use_grpc=False
         )
 
         patch = mock.patch(
@@ -579,29 +582,92 @@ class TestClient(unittest.TestCase):
         self.assertIsInstance(handler, ContainerEngineHandler)
 
     def test_get_default_handler_general(self):
+        import io
         from google.cloud.logging.handlers import CloudLoggingHandler
+        from google.cloud.logging.resource import Resource
+
+        name = "test-logger"
+        resource = Resource("resource_type", {"resource_label": "value"})
+        labels = {"handler_label": "value"}
+        stream = io.BytesIO()
 
         credentials = _make_credentials()
-
         client = self._make_one(
             project=self.PROJECT, credentials=credentials, _use_grpc=False
         )
-        handler = client.get_default_handler()
+
+        handler = client.get_default_handler(
+            name=name, resource=resource, labels=labels, stream=stream
+        )
+
+        handler.transport.worker.stop()
 
         self.assertIsInstance(handler, CloudLoggingHandler)
+        self.assertEqual(handler.name, name)
+        self.assertEqual(handler.resource, resource)
+        self.assertEqual(handler.labels, labels)
 
     def test_setup_logging(self):
-        setup_logging = mock.Mock(spec=[])
+        from google.cloud.logging.handlers import CloudLoggingHandler
 
         credentials = _make_credentials()
+        client = self._make_one(
+            project=self.PROJECT, credentials=credentials, _use_grpc=False
+        )
 
-        with mock.patch("google.cloud.logging.client.setup_logging", new=setup_logging):
-            client = self._make_one(
-                project=self.PROJECT, credentials=credentials, _use_grpc=False
-            )
+        with mock.patch("google.cloud.logging.client.setup_logging") as mocked:
             client.setup_logging()
 
-        setup_logging.assert_called()
+        self.assertEqual(len(mocked.mock_calls), 1)
+        _, args, kwargs = mocked.mock_calls[0]
+
+        handler, = args
+        self.assertIsInstance(handler, CloudLoggingHandler)
+
+        handler.transport.worker.stop()
+
+        expected_kwargs = {
+            "excluded_loggers": ("google.cloud", "google.auth", "google_auth_httplib2"),
+            "log_level": 20,
+        }
+        self.assertEqual(kwargs, expected_kwargs)
+
+    def test_setup_logging_w_extra_kwargs(self):
+        import io
+        from google.cloud.logging.handlers import CloudLoggingHandler
+        from google.cloud.logging.resource import Resource
+
+        name = "test-logger"
+        resource = Resource("resource_type", {"resource_label": "value"})
+        labels = {"handler_label": "value"}
+        stream = io.BytesIO()
+
+        credentials = _make_credentials()
+        client = self._make_one(
+            project=self.PROJECT, credentials=credentials, _use_grpc=False
+        )
+
+        with mock.patch("google.cloud.logging.client.setup_logging") as mocked:
+            client.setup_logging(
+                name=name, resource=resource, labels=labels, stream=stream
+            )
+
+        self.assertEqual(len(mocked.mock_calls), 1)
+        _, args, kwargs = mocked.mock_calls[0]
+
+        handler, = args
+        self.assertIsInstance(handler, CloudLoggingHandler)
+        self.assertEqual(handler.name, name)
+        self.assertEqual(handler.resource, resource)
+        self.assertEqual(handler.labels, labels)
+
+        handler.transport.worker.stop()
+
+        expected_kwargs = {
+            "excluded_loggers": ("google.cloud", "google.auth", "google_auth_httplib2"),
+            "log_level": 20,
+        }
+        self.assertEqual(kwargs, expected_kwargs)
 
 
 class _Connection(object):
