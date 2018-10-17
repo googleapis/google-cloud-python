@@ -906,7 +906,7 @@ class TestBatch(unittest.TestCase):
         client = _Client(project=self.PROJECT, connection=_make_credentials())
         api = client.logging_api = _DummyLoggingAPI()
         batch = self._make_one(logger, client)
-        batch.entries.append(LogEntry(type_='bogus', severity='blah'))
+        batch.entries.append(LogEntry(entry_type='bogus', severity='blah'))
         ENTRY = {
             'severity': 'blah',
             'resource': _GLOBAL_RESOURCE._to_dict(),

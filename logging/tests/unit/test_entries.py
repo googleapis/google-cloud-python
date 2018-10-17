@@ -450,7 +450,7 @@ class TestLogEntry(unittest.TestCase):
             'operation': OPERATION,
         }
         entry = self._make_one(
-            type_='empty',
+            entry_type='empty',
             log_name=LOG_NAME,
             labels=LABELS,
             insert_id=IID,
@@ -544,7 +544,7 @@ class TestLogEntry(unittest.TestCase):
             'operation': OPERATION,
         }
         entry = self._make_one(
-            type_='text',
+            entry_type='text',
             log_name=LOG_NAME,
             payload=TEXT,
             labels=LABELS,
@@ -639,7 +639,7 @@ class TestLogEntry(unittest.TestCase):
             'operation': OPERATION,
         }
         entry = self._make_one(
-            type_='struct',
+            entry_type='struct',
             log_name=LOG_NAME,
             payload=JSON_PAYLOAD,
             labels=LABELS,
@@ -742,7 +742,7 @@ class TestLogEntry(unittest.TestCase):
         }
 
         entry = self._make_one(
-            type_='proto',
+            entry_type='proto',
             log_name=LOG_NAME,
             payload=message,
             labels=LABELS,

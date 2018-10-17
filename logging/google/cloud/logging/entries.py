@@ -117,7 +117,7 @@ class _ApiReprMixin(object):
             monitored_resource = Resource._from_dict(monitored_resource_dict)
 
         inst = cls(
-            type_=cls._TYPE_NAME,
+            entry_type=cls._TYPE_NAME,
             log_name=logger_fullname,
             payload=payload,
             logger=logger,
@@ -141,11 +141,11 @@ class _ApiReprMixin(object):
     def to_api_repr(self):
         """API repr (JSON format) for entry.
         """
-        if self.type_ == 'text':
+        if self.entry_type == 'text':
             info = {'textPayload': self.payload}
-        elif self.type_ == 'struct':
+        elif self.entry_type == 'struct':
             info = {'jsonPayload': self.payload}
-        elif self.type_ == 'proto':
+        elif self.entry_type == 'proto':
             # NOTE: If ``self`` contains an ``Any`` field with an
             #       unknown type, this will fail with a ``TypeError``.
             #       However, since ``self`` was provided by a user in
@@ -185,7 +185,7 @@ class _ApiReprMixin(object):
 
 
 _LOG_ENTRY_FIELDS = (  # (name, default)
-    ('type_', None),
+    ('entry_type', None),
     ('log_name', None),
     ('payload', None),
     ('logger', None),
@@ -211,61 +211,61 @@ _LogEntryTuple.__new__.__defaults__ = tuple(
 
 
 _LOG_ENTRY_PARAM_DOCSTRING = """\
-:type logger: :class:`google.cloud.logging.logger.Logger`
-:param logger: the logger used to write the entry.
+    :type logger: :class:`google.cloud.logging.logger.Logger`
+    :param logger: the logger used to write the entry.
 
-:type log_name: str
-:param log_name: the name of the logger used to post the entry.
+    :type log_name: str
+    :param log_name: the name of the logger used to post the entry.
 
-:type labels: dict
-:param labels: (optional) mapping of labels for the entry
+    :type labels: dict
+    :param labels: (optional) mapping of labels for the entry
 
-:type insert_id: text
-:param insert_id: (optional) the ID used to identify an entry uniquely.
+    :type insert_id: text
+    :param insert_id: (optional) the ID used to identify an entry uniquely.
 
-:type severity: str
-:param severity: (optional) severity of event being logged.
+    :type severity: str
+    :param severity: (optional) severity of event being logged.
 
-:type http_request: dict
-:param http_request: (optional) info about HTTP request associated with
-                        the entry.
+    :type http_request: dict
+    :param http_request: (optional) info about HTTP request associated with
+                            the entry.
 
-:type timestamp: :class:`datetime.datetime`
-:param timestamp: (optional) timestamp for the entry
+    :type timestamp: :class:`datetime.datetime`
+    :param timestamp: (optional) timestamp for the entry
 
-:type resource: :class:`~google.cloud.logging.resource.Resource`
-:param resource: (Optional) Monitored resource of the entry
+    :type resource: :class:`~google.cloud.logging.resource.Resource`
+    :param resource: (Optional) Monitored resource of the entry
 
-:type trace: str
-:param trace: (optional) traceid to apply to the entry.
+    :type trace: str
+    :param trace: (optional) traceid to apply to the entry.
 
-:type span_id: str
-:param span_id: (optional) span_id within the trace for the log entry.
-                Specify the trace parameter if span_id is set.
+    :type span_id: str
+    :param span_id: (optional) span_id within the trace for the log entry.
+                    Specify the trace parameter if span_id is set.
 
-:type trace_sampled: bool
-:param trace_sampled: (optional) the sampling decision of the trace
-                        associated with the log entry.
+    :type trace_sampled: bool
+    :param trace_sampled: (optional) the sampling decision of the trace
+                          associated with the log entry.
 
-:type source_location: dict
-:param source_location: (optional) location in source code from which
-                        the entry was emitted.
+    :type source_location: dict
+    :param source_location: (optional) location in source code from which
+                            the entry was emitted.
 
-:type operation: dict
-:param operation: (optional) additional information about a potentially
-                  long-running operation with which a log entry is associated.
+    :type operation: dict
+    :param operation: (optional) additional information about a potentially
+                      long-running operation associated with the log entry.
 """
 
 
 class LogEntry(_LogEntryTuple, _ApiReprMixin):
     """Log entry.
 
-    :type type_: str
-    :param type_: one of 'empty', 'text', 'struct', or 'proto'. Indicates
-                    how the payload field is handled.
+    :type entry_type: str
+    :param entry_type: one of 'empty', 'text', 'struct', or 'proto'. Indicates
+                       how the payload field is handled.
 
     :type payload: None, str | unicode, dict, protobuf message
-    :param payload: payload for the message, based on 'type_'
+    :param payload: payload for the message, based on :attr:`entry_type`
     """ + _LOG_ENTRY_PARAM_DOCSTRING
 
 
