@@ -1,7 +1,7 @@
 Python Client for Cloud Spanner
 ===============================
 
-|pypi| |versions|
+|GA| |pypi| |versions|
 
 `Cloud Spanner`_ is the world's first fully managed relational database service
 to offer both strong consistency and horizontal scalability for
@@ -15,7 +15,8 @@ workloads.
 - `Client Library Documentation`_
 - `Product Documentation`_
 
-
+.. |GA| image:: https://img.shields.io/badge/support-GA-gold.svg
+   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#general-availability
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-spanner.svg
    :target: https://pypi.org/project/google-cloud-spanner/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-spanner.svg

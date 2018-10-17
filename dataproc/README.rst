@@ -1,14 +1,15 @@
-Python Client for Google Cloud Dataproc API (`Alpha`_)
-======================================================
+Python Client for Google Cloud Dataproc API
+===========================================
 
-|pypi| |versions|
+|alpha| |pypi| |versions|
 
 `Google Cloud Dataproc API`_: Manages Hadoop-based clusters and jobs on Google Cloud Platform.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
 
-.. _Alpha: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/README.rst
+.. |alpha| image:: https://img.shields.io/badge/support-alpha-orange.svg
+   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#alpha-support
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-dataproc.svg
    :target: https://pypi.org/project/google-cloud-dataproc/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-dataproc.svg
