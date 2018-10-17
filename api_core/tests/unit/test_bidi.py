@@ -20,8 +20,8 @@ import mock
 import pytest
 from six.moves import queue
 
-from google.api_core import exceptions
 from google.api_core import bidi
+from google.api_core import exceptions
 
 
 class Test_RequestQueueGenerator(object):
