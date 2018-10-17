@@ -280,3 +280,10 @@ s.replace(
     "  ::\n  (\s+- `state`.*\n)(\s+\* The operator must be)",
     "* Supported fields for risk analysis jobs:\n\g<1>\g<2>"
 )
+
+
+s.replace(
+    "google/cloud/dlp_v2/gapic/dlp_service_client.py",
+    "^\s+resource was created.",
+    "  \g<0>"
+)

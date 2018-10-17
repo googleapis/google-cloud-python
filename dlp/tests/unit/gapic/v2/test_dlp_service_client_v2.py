@@ -922,3 +922,171 @@ class TestDlpServiceClient(object):
 
         with pytest.raises(CustomException):
             client.create_job_trigger(parent)
+
+    def test_create_stored_info_type(self):
+        # Setup Expected Response
+        name = 'name3373707'
+        expected_response = {'name': name}
+        expected_response = dlp_pb2.StoredInfoType(**expected_response)
+
+        # Mock the API response
+        channel = ChannelStub(responses=[expected_response])
+        client = dlp_v2.DlpServiceClient(channel=channel)
+
+        # Setup Request
+        parent = client.organization_path('[ORGANIZATION]')
+
+        response = client.create_stored_info_type(parent)
+        assert expected_response == response
+
+        assert len(channel.requests) == 1
+        expected_request = dlp_pb2.CreateStoredInfoTypeRequest(parent=parent)
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_create_stored_info_type_exception(self):
+        # Mock the API response
+        channel = ChannelStub(responses=[CustomException()])
+        client = dlp_v2.DlpServiceClient(channel=channel)
+
+        # Setup request
+        parent = client.organization_path('[ORGANIZATION]')
+
+        with pytest.raises(CustomException):
+            client.create_stored_info_type(parent)
+
+    def test_update_stored_info_type(self):
+        # Setup Expected Response
+        name_2 = 'name2-1052831874'
+        expected_response = {'name': name_2}
+        expected_response = dlp_pb2.StoredInfoType(**expected_response)
+
+        # Mock the API response
+        channel = ChannelStub(responses=[expected_response])
+        client = dlp_v2.DlpServiceClient(channel=channel)
+
+        # Setup Request
+        name = client.organization_stored_info_type_path(
+            '[ORGANIZATION]', '[STORED_INFO_TYPE]')
+
+        response = client.update_stored_info_type(name)
+        assert expected_response == response
+
+        assert len(channel.requests) == 1
+        expected_request = dlp_pb2.UpdateStoredInfoTypeRequest(name=name)
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_update_stored_info_type_exception(self):
+        # Mock the API response
+        channel = ChannelStub(responses=[CustomException()])
+        client = dlp_v2.DlpServiceClient(channel=channel)
+
+        # Setup request
+        name = client.organization_stored_info_type_path(
+            '[ORGANIZATION]', '[STORED_INFO_TYPE]')
+
+        with pytest.raises(CustomException):
+            client.update_stored_info_type(name)
+
+    def test_get_stored_info_type(self):
+        # Setup Expected Response
+        name_2 = 'name2-1052831874'
+        expected_response = {'name': name_2}
+        expected_response = dlp_pb2.StoredInfoType(**expected_response)
+
+        # Mock the API response
+        channel = ChannelStub(responses=[expected_response])
+        client = dlp_v2.DlpServiceClient(channel=channel)
+
+        # Setup Request
+        name = client.organization_stored_info_type_path(
+            '[ORGANIZATION]', '[STORED_INFO_TYPE]')
+
+        response = client.get_stored_info_type(name)
+        assert expected_response == response
+
+        assert len(channel.requests) == 1
+        expected_request = dlp_pb2.GetStoredInfoTypeRequest(name=name)
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_get_stored_info_type_exception(self):
+        # Mock the API response
+        channel = ChannelStub(responses=[CustomException()])
+        client = dlp_v2.DlpServiceClient(channel=channel)
+
+        # Setup request
+        name = client.organization_stored_info_type_path(
+            '[ORGANIZATION]', '[STORED_INFO_TYPE]')
+
+        with pytest.raises(CustomException):
+            client.get_stored_info_type(name)
+
+    def test_list_stored_info_types(self):
+        # Setup Expected Response
+        next_page_token = ''
+        stored_info_types_element = {}
+        stored_info_types = [stored_info_types_element]
+        expected_response = {
+            'next_page_token': next_page_token,
+            'stored_info_types': stored_info_types
+        }
+        expected_response = dlp_pb2.ListStoredInfoTypesResponse(
+            **expected_response)
+
+        # Mock the API response
+        channel = ChannelStub(responses=[expected_response])
+        client = dlp_v2.DlpServiceClient(channel=channel)
+
+        # Setup Request
+        parent = client.organization_path('[ORGANIZATION]')
+
+        paged_list_response = client.list_stored_info_types(parent)
+        resources = list(paged_list_response)
+        assert len(resources) == 1
+
+        assert expected_response.stored_info_types[0] == resources[0]
+
+        assert len(channel.requests) == 1
+        expected_request = dlp_pb2.ListStoredInfoTypesRequest(parent=parent)
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_list_stored_info_types_exception(self):
+        channel = ChannelStub(responses=[CustomException()])
+        client = dlp_v2.DlpServiceClient(channel=channel)
+
+        # Setup request
+        parent = client.organization_path('[ORGANIZATION]')
+
+        paged_list_response = client.list_stored_info_types(parent)
+        with pytest.raises(CustomException):
+            list(paged_list_response)
+
+    def test_delete_stored_info_type(self):
+        channel = ChannelStub()
+        client = dlp_v2.DlpServiceClient(channel=channel)
+
+        # Setup Request
+        name = client.organization_stored_info_type_path(
+            '[ORGANIZATION]', '[STORED_INFO_TYPE]')
+
+        client.delete_stored_info_type(name)
+
+        assert len(channel.requests) == 1
+        expected_request = dlp_pb2.DeleteStoredInfoTypeRequest(name=name)
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_delete_stored_info_type_exception(self):
+        # Mock the API response
+        channel = ChannelStub(responses=[CustomException()])
+        client = dlp_v2.DlpServiceClient(channel=channel)
+
+        # Setup request
+        name = client.organization_stored_info_type_path(
+            '[ORGANIZATION]', '[STORED_INFO_TYPE]')
+
+        with pytest.raises(CustomException):
+            client.delete_stored_info_type(name)
