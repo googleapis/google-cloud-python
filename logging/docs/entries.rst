@@ -3,4 +3,5 @@ Entries
 
 .. automodule:: google.cloud.logging.entries
   :members:
-  :show-inheritance:
+  :inherited-members:
+  :member-order: groupwise

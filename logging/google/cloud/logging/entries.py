@@ -81,8 +81,8 @@ class _ApiReprMixin(object):
             (Optional) A mapping of logger fullnames -> loggers.  If not
             passed, the entry will have a newly-created logger.
 
-        :rtype: :class:`google.cloud.logging.entries._BaseEntry`
-        :returns: Text entry parsed from ``resource``.
+        :rtype: :class:`google.cloud.logging.entries.LogEntry`
+        :returns: Log entry parsed from ``resource``.
         """
         if loggers is None:
             loggers = {}
@@ -204,13 +204,14 @@ _LOG_ENTRY_FIELDS = (  # (name, default)
 
 
 _LogEntryTuple = collections.namedtuple(
-        '_LogEntryTuple', (field for field, _ in _LOG_ENTRY_FIELDS))
+        'LogEntry', (field for field, _ in _LOG_ENTRY_FIELDS))
 
 _LogEntryTuple.__new__.__defaults__ = tuple(
     default for _, default in _LOG_ENTRY_FIELDS[1:])
 
 
 _LOG_ENTRY_PARAM_DOCSTRING = """\
+
     :type logger: :class:`google.cloud.logging.logger.Logger`
     :param logger: the logger used to write the entry.
 
@@ -254,11 +255,15 @@ _LOG_ENTRY_PARAM_DOCSTRING = """\
     :type operation: dict
     :param operation: (optional) additional information about a potentially
                       long-running operation associated with the log entry.
+
+    See:
+    https://cloud.google.com/logging/docs/reference/v2/rest/v2/LogEntry
 """
 
 
 class LogEntry(_LogEntryTuple, _ApiReprMixin):
-    """Log entry.
+    __doc__ = """
+    Log entry.
 
     :type entry_type: str
     :param entry_type: one of 'empty', 'text', 'struct', or 'proto'. Indicates
@@ -270,13 +275,14 @@ class LogEntry(_LogEntryTuple, _ApiReprMixin):
 
 
 _EmptyEntryTuple = collections.namedtuple(
-        '_EmptyEntryTuple', (field for field, _ in _LOG_ENTRY_FIELDS))
+        'EmptyEntry', (field for field, _ in _LOG_ENTRY_FIELDS))
 _EmptyEntryTuple.__new__.__defaults__ = (
     ('empty',) + tuple(default for _, default in _LOG_ENTRY_FIELDS[1:]))
 
 
 class EmptyEntry(_EmptyEntryTuple, _ApiReprMixin):
-    """Log entry without payload.
+    __doc__ = """
+    Log entry without payload.
 
     """ + _LOG_ENTRY_PARAM_DOCSTRING
     _PAYLOAD_KEY = None
@@ -284,13 +290,14 @@ class EmptyEntry(_EmptyEntryTuple, _ApiReprMixin):
 
 
 _TextEntryTuple = collections.namedtuple(
-        '_TextEntryTuple', (field for field, _ in _LOG_ENTRY_FIELDS))
+        'TextEntry', (field for field, _ in _LOG_ENTRY_FIELDS))
 _TextEntryTuple.__new__.__defaults__ = (
     ('text',) + tuple(default for _, default in _LOG_ENTRY_FIELDS[1:]))
 
 
 class TextEntry(_TextEntryTuple, _ApiReprMixin):
-    """Log entry with text payload.
+    __doc__ = """
+    Log entry with text payload.
 
     :type payload: str | unicode
     :param payload: payload for the log entry.
@@ -300,13 +307,14 @@ class TextEntry(_TextEntryTuple, _ApiReprMixin):
 
 
 _StructEntryTuple = collections.namedtuple(
-        '_StructEntryTuple', (field for field, _ in _LOG_ENTRY_FIELDS))
+        'StructEntry', (field for field, _ in _LOG_ENTRY_FIELDS))
 _StructEntryTuple.__new__.__defaults__ = (
     ('struct',) + tuple(default for _, default in _LOG_ENTRY_FIELDS[1:]))
 
 
 class StructEntry(_StructEntryTuple, _ApiReprMixin):
-    """Log entry with JSON payload.
+    __doc__ = """
+    Log entry with JSON payload.
 
     :type payload: dict
     :param payload: payload for the log entry.
@@ -316,13 +324,14 @@ class StructEntry(_StructEntryTuple, _ApiReprMixin):
 
 
 _ProtobufEntryTuple = collections.namedtuple(
-        '_ProtobufEntryTuple', (field for field, _ in _LOG_ENTRY_FIELDS))
+        'ProtobufEntry', (field for field, _ in _LOG_ENTRY_FIELDS))
 _ProtobufEntryTuple.__new__.__defaults__ = (
     ('proto',) + tuple(default for _, default in _LOG_ENTRY_FIELDS[1:]))
 
 
 class ProtobufEntry(_ProtobufEntryTuple, _ApiReprMixin):
-    """Log entry with protobuf message payload.
+    __doc__ = """
+    Log entry with protobuf message payload.
 
     :type payload: protobuf message
     :param payload: payload for the log entry.
