@@ -4,6 +4,35 @@
 
 [1]: https://pypi.org/project/google-cloud-logging/#history
 
+## 1.8.0
+
+10-17-2018 14:23 PDT
+
+### Implementation Changes
+
+- Logging:  allow more tries on inner retry for '_list_entries'. ([#6179](https://github.com/googleapis/google-cloud-python/pull/6179))
+- Accommodate payload-less log entries. ([#6103](https://github.com/googleapis/google-cloud-python/pull/6103))
+
+### New Features
+
+- Logging: support request-correlated logging in App Engine standard python37 runtime ([#6118](https://github.com/googleapis/google-cloud-python/pull/6118))
+
+### Documentation
+
+- Logging: fix class reference in docstring ([#6153](https://github.com/googleapis/google-cloud-python/pull/6153))
+- Translate / Logging / Language: restore detailed usage docs. ([#5999](https://github.com/googleapis/google-cloud-python/pull/5999))
+- Redirect renamed 'usage.html'/'client.html' -> 'index.html'. ([#5996](https://github.com/googleapis/google-cloud-python/pull/5996))
+
+### Internal / Testing Changes
+
+- Use new Nox ([#6175](https://github.com/googleapis/google-cloud-python/pull/6175))
+- Logging: harden systest teardown against 'DeadlineExceeded' retry errors. ([#6182](https://github.com/googleapis/google-cloud-python/pull/6182))
+- Logging: fix lint errors. ([#6183](https://github.com/googleapis/google-cloud-python/pull/6183))
+- Harden sink / metric creation against transient errors. ([#6180](https://github.com/googleapis/google-cloud-python/pull/6180))
+- Logging: test both GCLOUD_PROJECT and GOOGLE_CLOUD_PROJECT env vars ([#6138](https://github.com/googleapis/google-cloud-python/pull/6138))
+- Harden 'test_list_entry_with_unregistered' against 429 errors. ([#6181](https://github.com/googleapis/google-cloud-python/pull/6181))
+- Prep logging docs for repo split. ([#5943](https://github.com/googleapis/google-cloud-python/pull/5943))
+
 ## 1.7.0
 
 ### Implementation Changes
