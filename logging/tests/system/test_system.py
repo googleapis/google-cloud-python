@@ -140,12 +140,12 @@ class TestLogging(unittest.TestCase):
 
         self.assertIsInstance(protobuf_entry, entries.ProtobufEntry)
         if Config.CLIENT._use_grpc:
-            self.assertIsNone(protobuf_entry.payload)
+            self.assertIsNone(protobuf_entry.payload_json)
             self.assertIsInstance(protobuf_entry.payload_pb, any_pb2.Any)
             self.assertEqual(protobuf_entry.payload_pb.type_url, type_url)
         else:
             self.assertIsNone(protobuf_entry.payload_pb)
-            self.assertEqual(protobuf_entry.payload['@type'], type_url)
+            self.assertEqual(protobuf_entry.payload_json['@type'], type_url)
 
     def test_log_text(self):
         TEXT_PAYLOAD = 'System test: test_log_text'

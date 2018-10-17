@@ -781,7 +781,8 @@ class TestProtobufEntry(unittest.TestCase):
         pb_entry = self._make_one(payload=payload, logger=mock.sentinel.logger)
 
         self.assertIs(pb_entry.payload, payload)
-        self.assertIs(pb_entry.payload_pb, payload)
+        self.assertIsNone(pb_entry.payload_pb)
+        self.assertIs(pb_entry.payload_json, payload)
         self.assertIs(pb_entry.logger, mock.sentinel.logger)
         self.assertIsNone(pb_entry.insert_id)
         self.assertIsNone(pb_entry.timestamp)
@@ -802,6 +803,7 @@ class TestProtobufEntry(unittest.TestCase):
 
         self.assertIs(pb_entry.payload, payload)
         self.assertIs(pb_entry.payload_pb, payload)
+        self.assertIsNone(pb_entry.payload_json)
         self.assertIs(pb_entry.logger, mock.sentinel.logger)
         self.assertIsNone(pb_entry.insert_id)
         self.assertIsNone(pb_entry.timestamp)
@@ -811,7 +813,7 @@ class TestProtobufEntry(unittest.TestCase):
         self.assertIsNone(pb_entry.trace)
         self.assertIsNone(pb_entry.span_id)
         self.assertIsNone(pb_entry.trace_sampled)
-        self.assertIsNone(pb_entry.trace_sampled)
+        self.assertIsNone(pb_entry.source_location)
 
     def test_parse_message(self):
         import json

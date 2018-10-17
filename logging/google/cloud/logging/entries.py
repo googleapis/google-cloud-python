@@ -18,6 +18,7 @@ import collections
 import json
 import re
 
+from google.protobuf.any_pb2 import Any
 from google.protobuf.json_format import MessageToDict
 from google.protobuf.json_format import Parse
 
@@ -341,7 +342,13 @@ class ProtobufEntry(_ProtobufEntryTuple, _ApiReprMixin):
 
     @property
     def payload_pb(self):
-        return self.payload
+        if isinstance(self.payload, Any):
+            return self.payload
+
+    @property
+    def payload_json(self):
+        if not isinstance(self.payload, Any):
+            return self.payload
 
     def parse_message(self, message):
         """Parse payload into a protobuf message.
