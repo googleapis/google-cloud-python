@@ -45,6 +45,14 @@ def test_message_ident():
     assert message.ident.sphinx == '~.bar.Baz'
 
 
+def test_message_ident_collisions():
+    message = make_message('Baz', package='foo.v1', module='bar').with_context(
+        collisions={'bar'},
+    )
+    assert str(message.ident) == 'fv_bar.Baz'
+    assert message.ident.sphinx == '~.fv_bar.Baz'
+
+
 def test_get_field():
     fields = (make_field('field_one'), make_field('field_two'))
     message = make_message('Message', fields=fields)

@@ -12,7 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import collections
 import typing
 
 from google.protobuf import descriptor_pb2
@@ -25,13 +24,12 @@ def test_address_str():
     assert str(addr) == 'baz.Bacon'
 
 
-def test_address_str_context():
-    Names = collections.namedtuple('Names', ['names'])
+def test_address_str_with_context():
     addr = metadata.Address(
         package=('foo', 'bar'),
         module='baz',
         name='Bacon',
-    ).context(Names(names={'baz'}))
+    ).with_context(collisions={'baz'})
     assert str(addr) == 'fb_baz.Bacon'
 
 
@@ -121,6 +119,13 @@ def test_address_resolve():
     assert addr.resolve('google.example.Bacon') == 'google.example.Bacon'
 
 
+def test_metadata_with_context():
+    meta = metadata.Metadata()
+    assert meta.with_context(
+        collisions={'foo', 'bar'},
+    ).address.collisions == {'foo', 'bar'}
+
+
 def test_doc_nothing():
     meta = metadata.Metadata()
     assert meta.doc == ''
@@ -139,11 +144,6 @@ def test_doc_trailing_trumps_detached():
 def test_doc_detached_joined():
     meta = make_doc_meta(detached=['foo', 'bar'])
     assert meta.doc == 'foo\n\nbar'
-
-
-def test_field_identifier_context():
-    fi = metadata.FieldIdentifier(ident=metadata.Address(), repeated=False)
-    assert fi.context(None) is fi
 
 
 def make_doc_meta(

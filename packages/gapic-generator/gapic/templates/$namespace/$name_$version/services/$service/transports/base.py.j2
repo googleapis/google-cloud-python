@@ -57,8 +57,8 @@ class {{ service.name }}Transport(metaclass=abc.ABCMeta):
     @abc.abstractmethod
     def {{ method.name|snake_case }}(
             self,
-            request: {{ method.input.ident.context(service) }},
-            ) -> {{ method.output.ident.context(service) }}:
+            request: {{ method.input.ident }},
+            ) -> {{ method.output.ident }}:
         raise NotImplementedError
     {%- endfor %}
 

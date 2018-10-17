@@ -128,6 +128,23 @@ class Field:
         raise TypeError('Unrecognized protobuf type. This code should '
                         'not be reachable; please file a bug.')
 
+    def with_context(self, *, collisions: Set[str]) -> 'Field':
+        """Return a derivative of this field with the provided context.
+
+        This method is used to address naming collisions. The returned
+        ``Field`` object aliases module names to avoid naming collisions
+        in the file being written.
+        """
+        return dataclasses.replace(self,
+            message=self.message.with_context(
+                collisions=collisions,
+                skip_fields=True,
+            ) if self.message else None,
+            enum=self.enum.with_context(collisions=collisions)
+                if self.enum else None,
+            meta=self.meta.with_context(collisions=collisions),
+        )
+
 
 @dataclasses.dataclass(frozen=True)
 class MessageType:
@@ -152,7 +169,13 @@ class MessageType:
                 answer.append(field.type)
         return tuple(answer)
 
-    def get_field(self, *field_path: Sequence[str]) -> Field:
+    @property
+    def ident(self) -> metadata.Address:
+        """Return the identifier data to be used in templates."""
+        return self.meta.address
+
+    def get_field(self, *field_path: Sequence[str],
+            collisions: Set[str] = frozenset()) -> Field:
         """Return a field arbitrarily deep in this message's structure.
 
         This method recursively traverses the message tree to return the
@@ -171,12 +194,21 @@ class MessageType:
             KeyError: If a repeated field is used in the non-terminal position
                 in the path.
         """
+        # If collisions are not explicitly specified, retrieve them
+        # from this message's address.
+        # This ensures that calls to `get_field` will return a field with
+        # the same context, regardless of the number of levels through the
+        # chain (in order to avoid infinite recursion on circular references,
+        # we only shallowly bind message references held by fields; this
+        # binds deeply in the one spot where that might be a problem).
+        collisions = collisions or self.meta.address.collisions
+
         # Get the first field in the path.
         cursor = self.fields[field_path[0]]
 
         # Base case: If this is the last field in the path, return it outright.
         if len(field_path) == 1:
-            return cursor
+            return cursor.with_context(collisions=collisions)
 
         # Sanity check: If cursor is a repeated field, then raise an exception.
         # Repeated fields are only permitted in the terminal position.
@@ -191,12 +223,37 @@ class MessageType:
 
         # Recursion case: Pass the remainder of the path to the sub-field's
         # message.
-        return cursor.message.get_field(*field_path[1:])
+        return cursor.message.get_field(*field_path[1:], collisions=collisions)
 
-    @property
-    def ident(self) -> metadata.Address:
-        """Return the identifier data to be used in templates."""
-        return self.meta.address
+    def with_context(self, *,
+            collisions: Set[str],
+            skip_fields: bool = False,
+            ) -> 'MessageType':
+        """Return a derivative of this message with the provided context.
+
+        This method is used to address naming collisions. The returned
+        ``MessageType`` object aliases module names to avoid naming collisions
+        in the file being written.
+
+        The ``skip_fields`` argument will omit applying the context to the
+        underlying fields. This provides for an "exit" in the case of circular
+        references.
+        """
+        return dataclasses.replace(self,
+            fields=collections.OrderedDict([
+                (k, v.with_context(collisions=collisions))
+                for k, v in self.fields.items()
+            ]) if not skip_fields else self.fields,
+            nested_enums=collections.OrderedDict([
+                (k, v.with_context(collisions=collisions))
+                for k, v in self.nested_enums.items()
+            ]),
+            nested_messages=collections.OrderedDict([(k, v.with_context(
+                collisions=collisions,
+                skip_fields=skip_fields,
+            )) for k, v in self.nested_messages.items()]),
+            meta=self.meta.with_context(collisions=collisions),
+        )
 
 
 @dataclasses.dataclass(frozen=True)
@@ -227,6 +284,17 @@ class EnumType:
     def ident(self) -> metadata.Address:
         """Return the identifier data to be used in templates."""
         return self.meta.address
+
+    def with_context(self, *, collisions: Set[str]) -> 'EnumType':
+        """Return a derivative of this enum with the provided context.
+
+        This method is used to address naming collisions. The returned
+        ``EnumType`` object aliases module names to avoid naming collisions in
+        the file being written.
+        """
+        return dataclasses.replace(self,
+            meta=self.meta.with_context(collisions=collisions),
+        )
 
 
 @dataclasses.dataclass(frozen=True)
@@ -275,6 +343,7 @@ class OperationType:
                 name='Operation',
                 module='operation',
                 package=('google', 'api_core'),
+                collisions=self.lro_response.meta.address.collisions,
             ),
             documentation=descriptor_pb2.SourceCodeInfo.Location(
                 leading_comments='An object representing a long-running '
@@ -297,6 +366,18 @@ class OperationType:
         # that this generator is not forced to take an entire dependency
         # on google.api_core just to get these strings.
         return 'Operation'
+
+    def with_context(self, *, collisions: Set[str]) -> 'OperationType':
+        """Return a derivative of this operation with the provided context.
+
+        This method is used to address naming collisions. The returned
+        ``OperationType`` object aliases module names to avoid naming
+        collisions in the file being written.
+        """
+        return dataclasses.replace(self,
+            lro_response=self.lro_response.with_context(collisions=collisions),
+            lro_metadata=self.lro_metadata.with_context(collisions=collisions),
+        )
 
 
 @dataclasses.dataclass(frozen=True)
@@ -380,6 +461,19 @@ class Method:
 
         # Done; return a tuple of signatures.
         return MethodSignatures(all=tuple(answer))
+
+    def with_context(self, *, collisions: Set[str]) -> 'Method':
+        """Return a derivative of this method with the provided context.
+
+        This method is used to address naming collisions. The returned
+        ``Method`` object aliases module names to avoid naming collisions
+        in the file being written.
+        """
+        return dataclasses.replace(self,
+            input=self.input.with_context(collisions=collisions),
+            output=self.output.with_context(collisions=collisions),
+            meta=self.meta.with_context(collisions=collisions),
+        )
 
 
 @dataclasses.dataclass(frozen=True)
@@ -519,7 +613,7 @@ class Service:
         answer = set()
         for method in self.methods.values():
             for t in method.ref_types:
-                answer.add(t.ident.context(self).python_import)
+                answer.add(t.ident.python_import)
         return tuple(sorted(list(answer)))
 
     @property
@@ -527,3 +621,18 @@ class Service:
         """Return whether the service has a long-running method."""
         return any([getattr(m.output, 'lro_response', None)
                     for m in self.methods.values()])
+
+    def with_context(self, *, collisions: Set[str]) -> 'Service':
+        """Return a derivative of this service with the provided context.
+
+        This method is used to address naming collisions. The returned
+        ``Service`` object aliases module names to avoid naming collisions
+        in the file being written.
+        """
+        return dataclasses.replace(self,
+            methods=collections.OrderedDict([
+                (k, v.with_context(collisions=collisions))
+                for k, v in self.methods.items()
+            ]),
+            meta=self.meta.with_context(collisions=collisions),
+        )

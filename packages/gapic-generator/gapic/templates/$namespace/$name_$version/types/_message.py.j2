@@ -16,7 +16,7 @@ class {{ message.name }}({{ p }}.Message):
     {%- for field in message.fields.values() %}
     {{ field.name }} = {{ p }}.{% if field.repeated %}Repeated{% endif %}Field({{ p }}.{{ field.proto_type }}, number={{ field.number }}
     {%- if field.enum or field.message %},
-        {{ field.proto_type.lower() }}={{ field.type.ident.context(proto).rel(message.ident) }},
+        {{ field.proto_type.lower() }}={{ field.type.ident.rel(message.ident) }},
     {% endif %})
     """{{ field.meta.doc|rst(indent=4) }}"""
     {% endfor %}

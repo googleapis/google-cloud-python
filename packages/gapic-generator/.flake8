@@ -5,4 +5,4 @@ ignore =
   E123, E124
   # Line over-indented for visual indent.
   # This works poorly with type annotations in method declarations.
-  E128, E131
+  E126, E128, E131
