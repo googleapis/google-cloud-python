@@ -1,0 +1,6 @@
+google.cloud.bigquery.job.LoadJobConfig.destination\_table\_friendly\_name
+==========================================================================
+
+.. currentmodule:: google.cloud.bigquery.job
+
+.. autoattribute:: LoadJobConfig.destination_table_friendly_name

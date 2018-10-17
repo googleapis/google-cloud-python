@@ -38,6 +38,8 @@ google.cloud.bigquery.job.LoadJobConfig
       ~LoadJobConfig.clustering_fields
       ~LoadJobConfig.create_disposition
       ~LoadJobConfig.destination_encryption_configuration
+      ~LoadJobConfig.destination_table_description
+      ~LoadJobConfig.destination_table_friendly_name
       ~LoadJobConfig.encoding
       ~LoadJobConfig.field_delimiter
       ~LoadJobConfig.ignore_unknown_values
