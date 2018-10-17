@@ -28,6 +28,14 @@ class TestContainerEngineHandler(unittest.TestCase):
     def _make_one(self, *args, **kw):
         return self._get_target_class()(*args, **kw)
 
+    def test_ctor_defaults(self):
+        handler = self._make_one()
+        self.assertIsNone(handler.name)
+
+    def test_ctor_w_name(self):
+        handler = self._make_one(name='foo')
+        self.assertEqual(handler.name, 'foo')
+
     def test_format(self):
         import logging
         import json
