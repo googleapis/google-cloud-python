@@ -1,14 +1,19 @@
 Core Helpers for Google Cloud Python Client Library
 ===================================================
 
+|pypi| |versions|
+
 This library is not meant to stand-alone. Instead it defines
 common helpers (e.g. base ``Client`` classes) used by all of the
 ``google-cloud-*`` packages.
 
-|pypi| |versions|
 
 -  `Documentation`_
 
+.. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-core.svg
+   :target: https://pypi.org/project/google-cloud-core/
+.. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-core.svg
+   :target: https://pypi.org/project/google-cloud-core/
 .. _Documentation: https://googlecloudplatform.github.io/google-cloud-python/latest/core/index.html
 
 Quick Start
@@ -24,7 +29,3 @@ to `Python Development Environment Setup Guide`_ for Google Cloud Platform.
 
 .. _Python Development Environment Setup Guide: https://cloud.google.com/python/setup
 
-.. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-core.svg
-   :target: https://pypi.org/project/google-cloud-core/
-.. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-core.svg
-   :target: https://pypi.org/project/google-cloud-core/

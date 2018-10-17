@@ -1,13 +1,19 @@
 Python Client for Cloud Text-to-Speech API (`Alpha`_)
 =====================================================
 
-`Cloud Text-to-Speech API`_: Synthesizes natural-sounding speech by applying powerful neural network
-models.
+|pypi| |versions|
+
+`Cloud Text-to-Speech API`_: Synthesizes natural-sounding speech by applying
+powerful neural network models.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
 
 .. _Alpha: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/README.rst
+.. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-texttospeech.svg
+   :target: https://pypi.org/project/google-cloud-texttospeech/
+.. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-texttospeech.svg
+   :target: https://pypi.org/project/google-cloud-texttospeech/
 .. _Cloud Text-to-Speech API: https://cloud.google.com/texttospeech
 .. _Client Library Documentation: https://googlecloudplatform.github.io/google-cloud-python/latest/texttospeech/api.html
 .. _Product Documentation: https://cloud.google.com/texttospeech
@@ -69,8 +75,6 @@ Next Steps
    API to see other available methods on the client.
 -  Read the `Cloud Text-to-Speech API Product documentation`_ to learn
    more about the product and see How-to Guides.
--  View this `repository’s main README`_ to see the full list of Cloud
    APIs that we cover.
 
 .. _Cloud Text-to-Speech API Product documentation:  https://cloud.google.com/texttospeech
-.. _repository’s main README: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/README.rst
