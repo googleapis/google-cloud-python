@@ -1,7 +1,7 @@
 Python Client for Google Cloud Translation
 ==========================================
 
-|pypi| |versions|
+|GA| |pypi| |versions|
 
 With `Google Cloud Translation`_, you can dynamically translate text between
 thousands of language pairs. The Google Cloud Translation API lets websites
@@ -12,7 +12,8 @@ Cloud Translation is available as a paid service. See the `Pricing`_ and
 - `Client Library Documentation`_
 - `Product Documentation`_
 
-
+.. |GA| image:: https://img.shields.io/badge/support-GA-gold.svg
+   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#general-availability
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-translate.svg
    :target: https://pypi.org/project/google-cloud-translate/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-translate.svg
