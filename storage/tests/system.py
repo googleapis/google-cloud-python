@@ -1083,6 +1083,7 @@ class TestAnonymousClient(unittest.TestCase):
 
     PUBLIC_BUCKET = 'gcp-public-data-landsat'
 
+    @unittest.skipIf(RUNNING_IN_VPCSC, 'Test is not VPCSC compatible.')
     def test_access_to_public_bucket(self):
         anonymous = storage.Client.create_anonymous_client()
         bucket = anonymous.bucket(self.PUBLIC_BUCKET)
