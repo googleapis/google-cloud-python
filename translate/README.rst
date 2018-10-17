@@ -13,7 +13,7 @@ Cloud Translation is available as a paid service. See the `Pricing`_ and
 - `Product Documentation`_
 
 .. |GA| image:: https://img.shields.io/badge/support-GA-gold.svg
-   :target: https://github.com/googleapis/google-cloud-python/README.rst#generally-available-support
+   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#general-availability
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-translate.svg
    :target: https://pypi.org/project/google-cloud-translate/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-translate.svg

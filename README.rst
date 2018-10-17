@@ -18,8 +18,8 @@ Python idiomatic clients for `Google Cloud Platform`_ services.
 .. _Python 3 runtime: https://cloud.google.com/appengine/docs/standard/python3
 .. _Python 2 runtime: https://cloud.google.com/appengine/docs/standard/python
 
-Generally Available Support
-----------------------------
+General Availability
+--------------------
 
 **GA** (general availability) indicates that the client library for a
 particular service is stable, and that the code surface will not change in
