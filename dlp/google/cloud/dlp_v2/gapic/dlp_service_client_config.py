@@ -3,9 +3,7 @@ config = {
         "google.privacy.dlp.v2.DlpService": {
             "retry_codes": {
                 "idempotent": ["DEADLINE_EXCEEDED", "UNAVAILABLE"],
-                "http_get": ["DEADLINE_EXCEEDED", "UNAVAILABLE"],
-                "non_idempotent": [],
-                "no_retry": []
+                "non_idempotent": []
             },
             "retry_params": {
                 "default": {
@@ -142,6 +140,31 @@ config = {
                 "CreateJobTrigger": {
                     "timeout_millis": 300000,
                     "retry_codes_name": "non_idempotent",
+                    "retry_params_name": "default"
+                },
+                "CreateStoredInfoType": {
+                    "timeout_millis": 300000,
+                    "retry_codes_name": "non_idempotent",
+                    "retry_params_name": "default"
+                },
+                "UpdateStoredInfoType": {
+                    "timeout_millis": 300000,
+                    "retry_codes_name": "non_idempotent",
+                    "retry_params_name": "default"
+                },
+                "GetStoredInfoType": {
+                    "timeout_millis": 300000,
+                    "retry_codes_name": "idempotent",
+                    "retry_params_name": "default"
+                },
+                "ListStoredInfoTypes": {
+                    "timeout_millis": 300000,
+                    "retry_codes_name": "idempotent",
+                    "retry_params_name": "default"
+                },
+                "DeleteStoredInfoType": {
+                    "timeout_millis": 300000,
+                    "retry_codes_name": "idempotent",
                     "retry_params_name": "default"
                 }
             }
