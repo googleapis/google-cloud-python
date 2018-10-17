@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Types for Cloud Data Loss Prevention (DLP) API Client &#8212; google-cloud 4ed5a40 documentation</title>
+    <title>Types for Cloud Data Loss Prevention (DLP) API Client &#8212; google-cloud ba4e7d5 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -788,7 +788,15 @@ limit. Defaults to 0.</p>
 <code class="descname">url</code><a class="headerlink" href="#google.cloud.dlp_v2.types.CloudStorageOptions.FileSet.url" title="Permalink to this definition">#</a></dt>
 <dd><p>The Cloud Storage url of the file(s) to scan, in the format
 <code class="docutils literal notranslate"><span class="pre">gs://&lt;bucket&gt;/&lt;path&gt;</span></code>. Trailing wildcard in the path is
-allowed.</p>
+allowed. Exactly one of <code class="docutils literal notranslate"><span class="pre">url</span></code> or <code class="docutils literal notranslate"><span class="pre">regex_file_set</span></code> must be
+set.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.CloudStorageOptions.FileSet.regex_file_set">
+<code class="descname">regex_file_set</code><a class="headerlink" href="#google.cloud.dlp_v2.types.CloudStorageOptions.FileSet.regex_file_set" title="Permalink to this definition">#</a></dt>
+<dd><p>The regex-filtered set of files to scan. Exactly one of
+<code class="docutils literal notranslate"><span class="pre">url</span></code> or <code class="docutils literal notranslate"><span class="pre">regex_file_set</span></code> must be set.</p>
 </dd></dl>
 
 </dd></dl>
@@ -804,6 +812,69 @@ allowed.</p>
 <code class="descname">path</code><a class="headerlink" href="#google.cloud.dlp_v2.types.CloudStoragePath.path" title="Permalink to this definition">#</a></dt>
 <dd><p>A url representing a file or path (no wildcards) in Cloud
 Storage. Example: gs://[BUCKET_NAME]/dictionary.txt</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.dlp_v2.types.CloudStorageRegexFileSet">
+<em class="property">class </em><code class="descclassname">google.cloud.dlp_v2.types.</code><code class="descname">CloudStorageRegexFileSet</code><a class="headerlink" href="#google.cloud.dlp_v2.types.CloudStorageRegexFileSet" title="Permalink to this definition">#</a></dt>
+<dd><p>Message representing a set of files in a Cloud Storage bucket. Regular
+expressions are used to allow fine-grained control over which files in
+the bucket to include.</p>
+<p>Included files are those that match at least one item in
+<code class="docutils literal notranslate"><span class="pre">include_regex</span></code> and do not match any items in <code class="docutils literal notranslate"><span class="pre">exclude_regex</span></code>. Note
+that a file that matches items from both lists will <em>not</em> be included.
+For a match to occur, the entire file path (i.e., everything in the url
+after the bucket name) must match the regular expression.</p>
+<p>For example, given the input
+<code class="docutils literal notranslate"><span class="pre">{bucket_name:</span> <span class="pre">&quot;mybucket&quot;,</span> <span class="pre">include_regex:</span> <span class="pre">[&quot;directory1/.*&quot;],</span> <span class="pre">exclude_regex:</span> <span class="pre">[&quot;directory1/excluded.*&quot;]}</span></code>:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">gs://mybucket/directory1/myfile</span></code> will be included</li>
+<li><code class="docutils literal notranslate"><span class="pre">gs://mybucket/directory1/directory2/myfile</span></code> will be included
+(<code class="docutils literal notranslate"><span class="pre">.*</span></code> matches across <code class="docutils literal notranslate"><span class="pre">/</span></code>)</li>
+<li><code class="docutils literal notranslate"><span class="pre">gs://mybucket/directory0/directory1/myfile</span></code> will <em>not</em> be included
+(the full path doesn’t match any items in <code class="docutils literal notranslate"><span class="pre">include_regex</span></code>)</li>
+<li><code class="docutils literal notranslate"><span class="pre">gs://mybucket/directory1/excludedfile</span></code> will <em>not</em> be included (the
+path matches an item in <code class="docutils literal notranslate"><span class="pre">exclude_regex</span></code>)</li>
+</ul>
+<p>If <code class="docutils literal notranslate"><span class="pre">include_regex</span></code> is left empty, it will match all files by default
+(this is equivalent to setting <code class="docutils literal notranslate"><span class="pre">include_regex:</span> <span class="pre">[&quot;.*&quot;]</span></code>).</p>
+<p>Some other common use cases:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">{bucket_name:</span> <span class="pre">&quot;mybucket&quot;,</span> <span class="pre">exclude_regex:</span> <span class="pre">[&quot;.*\.pdf&quot;]}</span></code> will
+include all files in <code class="docutils literal notranslate"><span class="pre">mybucket</span></code> except for .pdf files</li>
+<li><code class="docutils literal notranslate"><span class="pre">{bucket_name:</span> <span class="pre">&quot;mybucket&quot;,</span> <span class="pre">include_regex:</span> <span class="pre">[&quot;directory/[^/]+&quot;]}</span></code>
+will include all files directly under <code class="docutils literal notranslate"><span class="pre">gs://mybucket/directory/</span></code>,
+without matching across <code class="docutils literal notranslate"><span class="pre">/</span></code></li>
+</ul>
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.CloudStorageRegexFileSet.bucket_name">
+<code class="descname">bucket_name</code><a class="headerlink" href="#google.cloud.dlp_v2.types.CloudStorageRegexFileSet.bucket_name" title="Permalink to this definition">#</a></dt>
+<dd><p>The name of a Cloud Storage bucket. Required.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.CloudStorageRegexFileSet.include_regex">
+<code class="descname">include_regex</code><a class="headerlink" href="#google.cloud.dlp_v2.types.CloudStorageRegexFileSet.include_regex" title="Permalink to this definition">#</a></dt>
+<dd><p>A list of regular expressions matching file paths to include.
+All files in the bucket that match at least one of these
+regular expressions will be included in the set of files,
+except for those that also match an item in <code class="docutils literal notranslate"><span class="pre">exclude_regex</span></code>.
+Leaving this field empty will match all files by default (this
+is equivalent to including <code class="docutils literal notranslate"><span class="pre">.*</span></code> in the list).  Regular
+expressions use RE2 <a class="reference external" href="https://github.com/google/re2/wiki/Syntax">syntax</a>; a guide can be
+found under the google/re2 repository on GitHub.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.CloudStorageRegexFileSet.exclude_regex">
+<code class="descname">exclude_regex</code><a class="headerlink" href="#google.cloud.dlp_v2.types.CloudStorageRegexFileSet.exclude_regex" title="Permalink to this definition">#</a></dt>
+<dd><p>A list of regular expressions matching file paths to exclude.
+All files in the bucket that match at least one of these
+regular expressions will be excluded from the scan.  Regular
+expressions use RE2 <a class="reference external" href="https://github.com/google/re2/wiki/Syntax">syntax</a>; a guide can be
+found under the google/re2 repository on GitHub.</p>
 </dd></dl>
 
 </dd></dl>
@@ -877,10 +948,13 @@ text#inspecting_a_table to learn more.</p>
 <dt id="google.cloud.dlp_v2.types.ContentLocation.container_name">
 <code class="descname">container_name</code><a class="headerlink" href="#google.cloud.dlp_v2.types.ContentLocation.container_name" title="Permalink to this definition">#</a></dt>
 <dd><p>Name of the container where the finding is located. The top
-level name is the source file name or table name. Nested names
-could be absent if the embedded object has no string
-identifier (for an example an image contained within a
-document).</p>
+level name is the source file name or table name. Names of
+some common storage containers are formatted as follows:  -
+BigQuery tables: <code class="docutils literal notranslate"><span class="pre">&lt;project_id&gt;:&lt;dataset_id&gt;.&lt;table_id&gt;</span></code> -
+Cloud Storage files: <code class="docutils literal notranslate"><span class="pre">gs://&lt;bucket&gt;/&lt;path&gt;</span></code> -  Datastore
+namespace:  Nested names could be absent if the embedded
+object has no string identifier (for an example an image
+contained within a document).</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -2984,6 +3058,19 @@ be no more than 500 characters.</p>
 <dt id="google.cloud.dlp_v2.types.ListDlpJobsRequest.type">
 <code class="descname">type</code><a class="headerlink" href="#google.cloud.dlp_v2.types.ListDlpJobsRequest.type" title="Permalink to this definition">#</a></dt>
 <dd><p>The type of job. Defaults to <code class="docutils literal notranslate"><span class="pre">DlpJobType.INSPECT</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.ListDlpJobsRequest.order_by">
+<code class="descname">order_by</code><a class="headerlink" href="#google.cloud.dlp_v2.types.ListDlpJobsRequest.order_by" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional comma separated list of fields to order by, followed
+by <code class="docutils literal notranslate"><span class="pre">asc</span></code> or <code class="docutils literal notranslate"><span class="pre">desc</span></code> postfix. This list is case-insensitive,
+default sorting order is ascending, redundant space characters
+are insignificant.  Example: <code class="docutils literal notranslate"><span class="pre">name</span> <span class="pre">asc,</span> <span class="pre">end_time</span> <span class="pre">asc,</span>
+<span class="pre">create_time</span> <span class="pre">desc</span></code>  Supported fields are:  -  <code class="docutils literal notranslate"><span class="pre">create_time</span></code>:
+corresponds to time the job was created. -  <code class="docutils literal notranslate"><span class="pre">end_time</span></code>:
+corresponds to time the job ended. -  <code class="docutils literal notranslate"><span class="pre">name</span></code>: corresponds to
+job’s name. -  <code class="docutils literal notranslate"><span class="pre">state</span></code>: corresponds to <code class="docutils literal notranslate"><span class="pre">state</span></code></p>
 </dd></dl>
 
 </dd></dl>

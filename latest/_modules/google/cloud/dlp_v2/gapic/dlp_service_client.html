@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.dlp_v2.gapic.dlp_service_client &#8212; google-cloud 4ed5a40 documentation</title>
+    <title>google.cloud.dlp_v2.gapic.dlp_service_client &#8212; google-cloud ba4e7d5 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -188,6 +188,25 @@
             <span class="s1">&#39;projects/</span><span class="si">{project}</span><span class="s1">/dlpJobs/</span><span class="si">{dlp_job}</span><span class="s1">&#39;</span><span class="p">,</span>
             <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span>
             <span class="n">dlp_job</span><span class="o">=</span><span class="n">dlp_job</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="DlpServiceClient.organization_stored_info_type_path"><a class="viewcode-back" href="../../../../../dlp/gapic/v2/api.html#google.cloud.dlp_v2.DlpServiceClient.organization_stored_info_type_path">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">organization_stored_info_type_path</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">organization</span><span class="p">,</span>
+                                           <span class="n">stored_info_type</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return a fully-qualified organization_stored_info_type string.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">path_template</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span>
+            <span class="s1">&#39;organizations/</span><span class="si">{organization}</span><span class="s1">/storedInfoTypes/</span><span class="si">{stored_info_type}</span><span class="s1">&#39;</span><span class="p">,</span>
+            <span class="n">organization</span><span class="o">=</span><span class="n">organization</span><span class="p">,</span>
+            <span class="n">stored_info_type</span><span class="o">=</span><span class="n">stored_info_type</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="DlpServiceClient.project_stored_info_type_path"><a class="viewcode-back" href="../../../../../dlp/gapic/v2/api.html#google.cloud.dlp_v2.DlpServiceClient.project_stored_info_type_path">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">project_stored_info_type_path</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">project</span><span class="p">,</span> <span class="n">stored_info_type</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return a fully-qualified project_stored_info_type string.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">path_template</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span>
+            <span class="s1">&#39;projects/</span><span class="si">{project}</span><span class="s1">/storedInfoTypes/</span><span class="si">{stored_info_type}</span><span class="s1">&#39;</span><span class="p">,</span>
+            <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span>
+            <span class="n">stored_info_type</span><span class="o">=</span><span class="n">stored_info_type</span><span class="p">,</span>
         <span class="p">)</span></div>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
@@ -1504,6 +1523,7 @@
                       <span class="n">filter_</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                       <span class="n">page_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                       <span class="n">type_</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                      <span class="n">order_by</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                       <span class="n">retry</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
                       <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
                       <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -1564,6 +1584,19 @@
 <span class="sd">                streaming is performed per-page, this determines the maximum number</span>
 <span class="sd">                of resources in a page.</span>
 <span class="sd">            type_ (~google.cloud.dlp_v2.types.DlpJobType): The type of job. Defaults to ``DlpJobType.INSPECT``</span>
+<span class="sd">            order_by (str): Optional comma separated list of fields to order by,</span>
+<span class="sd">                followed by ``asc`` or ``desc`` postfix. This list is case-insensitive,</span>
+<span class="sd">                default sorting order is ascending, redundant space characters are</span>
+<span class="sd">                insignificant.</span>
+
+<span class="sd">                Example: ``name asc, end_time asc, create_time desc``</span>
+
+<span class="sd">                Supported fields are:</span>
+
+<span class="sd">                - ``create_time``: corresponds to time the job was created.</span>
+<span class="sd">                - ``end_time``: corresponds to time the job ended.</span>
+<span class="sd">                - ``name``: corresponds to job&#39;s name.</span>
+<span class="sd">                - ``state``: corresponds to ``state``</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
 <span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
 <span class="sd">                be retried.</span>
@@ -1602,6 +1635,7 @@
             <span class="nb">filter</span><span class="o">=</span><span class="n">filter_</span><span class="p">,</span>
             <span class="n">page_size</span><span class="o">=</span><span class="n">page_size</span><span class="p">,</span>
             <span class="nb">type</span><span class="o">=</span><span class="n">type_</span><span class="p">,</span>
+            <span class="n">order_by</span><span class="o">=</span><span class="n">order_by</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="n">iterator</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">page_iterator</span><span class="o">.</span><span class="n">GRPCIterator</span><span class="p">(</span>
             <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -2129,6 +2163,373 @@
             <span class="n">trigger_id</span><span class="o">=</span><span class="n">trigger_id</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span><span class="s1">&#39;create_job_trigger&#39;</span><span class="p">](</span>
+            <span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="DlpServiceClient.create_stored_info_type"><a class="viewcode-back" href="../../../../../dlp/gapic/v2/api.html#google.cloud.dlp_v2.DlpServiceClient.create_stored_info_type">[docs]</a>    <span class="k">def</span> <span class="nf">create_stored_info_type</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">parent</span><span class="p">,</span>
+            <span class="n">config</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">stored_info_type_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">retry</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+            <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+            <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Creates a pre-built stored infoType to be used for inspection.</span>
+<span class="sd">        See https://cloud.google.com/dlp/docs/creating-stored-infotypes to</span>
+<span class="sd">        learn more.</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">            &gt;&gt;&gt; from google.cloud import dlp_v2</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; client = dlp_v2.DlpServiceClient()</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; parent = client.organization_path(&#39;[ORGANIZATION]&#39;)</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; response = client.create_stored_info_type(parent)</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            parent (str): The parent resource name, for example projects/my-project-id or</span>
+<span class="sd">                organizations/my-org-id.</span>
+<span class="sd">            config (Union[dict, ~google.cloud.dlp_v2.types.StoredInfoTypeConfig]): Configuration of the storedInfoType to create.</span>
+<span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
+<span class="sd">                message :class:`~google.cloud.dlp_v2.types.StoredInfoTypeConfig`</span>
+<span class="sd">            stored_info_type_id (str): The storedInfoType ID can contain uppercase and lowercase letters,</span>
+<span class="sd">                numbers, and hyphens; that is, it must match the regular</span>
+<span class="sd">                expression: ``[a-zA-Z\\d-]+``. The maximum length is 100</span>
+<span class="sd">                characters. Can be empty to allow the system to generate one.</span>
+<span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
+<span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
+<span class="sd">                be retried.</span>
+<span class="sd">            timeout (Optional[float]): The amount of time, in seconds, to wait</span>
+<span class="sd">                for the request to complete. Note that if ``retry`` is</span>
+<span class="sd">                specified, the timeout applies to each individual attempt.</span>
+<span class="sd">            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata</span>
+<span class="sd">                that is provided to the method.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A :class:`~google.cloud.dlp_v2.types.StoredInfoType` instance.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            google.api_core.exceptions.GoogleAPICallError: If the request</span>
+<span class="sd">                    failed for any reason.</span>
+<span class="sd">            google.api_core.exceptions.RetryError: If the request failed due</span>
+<span class="sd">                    to a retryable error and retry attempts failed.</span>
+<span class="sd">            ValueError: If the parameters are invalid.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Wrap the transport method to add retry and timeout logic.</span>
+        <span class="k">if</span> <span class="s1">&#39;create_stored_info_type&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span>
+                <span class="s1">&#39;create_stored_info_type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">wrap_method</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">create_stored_info_type</span><span class="p">,</span>
+                    <span class="n">default_retry</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span><span class="s1">&#39;CreateStoredInfoType&#39;</span><span class="p">]</span><span class="o">.</span>
+                    <span class="n">retry</span><span class="p">,</span>
+                    <span class="n">default_timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span>
+                    <span class="n">_method_configs</span><span class="p">[</span><span class="s1">&#39;CreateStoredInfoType&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">timeout</span><span class="p">,</span>
+                    <span class="n">client_info</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client_info</span><span class="p">,</span>
+                <span class="p">)</span>
+
+        <span class="n">request</span> <span class="o">=</span> <span class="n">dlp_pb2</span><span class="o">.</span><span class="n">CreateStoredInfoTypeRequest</span><span class="p">(</span>
+            <span class="n">parent</span><span class="o">=</span><span class="n">parent</span><span class="p">,</span>
+            <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">,</span>
+            <span class="n">stored_info_type_id</span><span class="o">=</span><span class="n">stored_info_type_id</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span><span class="s1">&#39;create_stored_info_type&#39;</span><span class="p">](</span>
+            <span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="DlpServiceClient.update_stored_info_type"><a class="viewcode-back" href="../../../../../dlp/gapic/v2/api.html#google.cloud.dlp_v2.DlpServiceClient.update_stored_info_type">[docs]</a>    <span class="k">def</span> <span class="nf">update_stored_info_type</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">name</span><span class="p">,</span>
+            <span class="n">config</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">update_mask</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">retry</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+            <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+            <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Updates the stored infoType by creating a new version. The existing version</span>
+<span class="sd">        will continue to be used until the new version is ready.</span>
+<span class="sd">        See https://cloud.google.com/dlp/docs/creating-stored-infotypes to</span>
+<span class="sd">        learn more.</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">            &gt;&gt;&gt; from google.cloud import dlp_v2</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; client = dlp_v2.DlpServiceClient()</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; name = client.organization_stored_info_type_path(&#39;[ORGANIZATION]&#39;, &#39;[STORED_INFO_TYPE]&#39;)</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; response = client.update_stored_info_type(name)</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            name (str): Resource name of organization and storedInfoType to be updated, for</span>
+<span class="sd">                example ``organizations/433245324/storedInfoTypes/432452342`` or</span>
+<span class="sd">                projects/project-id/storedInfoTypes/432452342.</span>
+<span class="sd">            config (Union[dict, ~google.cloud.dlp_v2.types.StoredInfoTypeConfig]): Updated configuration for the storedInfoType. If not provided, a new</span>
+<span class="sd">                version of the storedInfoType will be created with the existing</span>
+<span class="sd">                configuration.</span>
+<span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
+<span class="sd">                message :class:`~google.cloud.dlp_v2.types.StoredInfoTypeConfig`</span>
+<span class="sd">            update_mask (Union[dict, ~google.cloud.dlp_v2.types.FieldMask]): Mask to control which fields get updated.</span>
+<span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
+<span class="sd">                message :class:`~google.cloud.dlp_v2.types.FieldMask`</span>
+<span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
+<span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
+<span class="sd">                be retried.</span>
+<span class="sd">            timeout (Optional[float]): The amount of time, in seconds, to wait</span>
+<span class="sd">                for the request to complete. Note that if ``retry`` is</span>
+<span class="sd">                specified, the timeout applies to each individual attempt.</span>
+<span class="sd">            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata</span>
+<span class="sd">                that is provided to the method.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A :class:`~google.cloud.dlp_v2.types.StoredInfoType` instance.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            google.api_core.exceptions.GoogleAPICallError: If the request</span>
+<span class="sd">                    failed for any reason.</span>
+<span class="sd">            google.api_core.exceptions.RetryError: If the request failed due</span>
+<span class="sd">                    to a retryable error and retry attempts failed.</span>
+<span class="sd">            ValueError: If the parameters are invalid.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Wrap the transport method to add retry and timeout logic.</span>
+        <span class="k">if</span> <span class="s1">&#39;update_stored_info_type&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span>
+                <span class="s1">&#39;update_stored_info_type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">wrap_method</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">update_stored_info_type</span><span class="p">,</span>
+                    <span class="n">default_retry</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span><span class="s1">&#39;UpdateStoredInfoType&#39;</span><span class="p">]</span><span class="o">.</span>
+                    <span class="n">retry</span><span class="p">,</span>
+                    <span class="n">default_timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span>
+                    <span class="n">_method_configs</span><span class="p">[</span><span class="s1">&#39;UpdateStoredInfoType&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">timeout</span><span class="p">,</span>
+                    <span class="n">client_info</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client_info</span><span class="p">,</span>
+                <span class="p">)</span>
+
+        <span class="n">request</span> <span class="o">=</span> <span class="n">dlp_pb2</span><span class="o">.</span><span class="n">UpdateStoredInfoTypeRequest</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">,</span>
+            <span class="n">update_mask</span><span class="o">=</span><span class="n">update_mask</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span><span class="s1">&#39;update_stored_info_type&#39;</span><span class="p">](</span>
+            <span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="DlpServiceClient.get_stored_info_type"><a class="viewcode-back" href="../../../../../dlp/gapic/v2/api.html#google.cloud.dlp_v2.DlpServiceClient.get_stored_info_type">[docs]</a>    <span class="k">def</span> <span class="nf">get_stored_info_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                             <span class="n">name</span><span class="p">,</span>
+                             <span class="n">retry</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+                             <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+                             <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Gets a stored infoType.</span>
+<span class="sd">        See https://cloud.google.com/dlp/docs/creating-stored-infotypes to</span>
+<span class="sd">        learn more.</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">            &gt;&gt;&gt; from google.cloud import dlp_v2</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; client = dlp_v2.DlpServiceClient()</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; name = client.organization_stored_info_type_path(&#39;[ORGANIZATION]&#39;, &#39;[STORED_INFO_TYPE]&#39;)</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; response = client.get_stored_info_type(name)</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            name (str): Resource name of the organization and storedInfoType to be read, for</span>
+<span class="sd">                example ``organizations/433245324/storedInfoTypes/432452342`` or</span>
+<span class="sd">                projects/project-id/storedInfoTypes/432452342.</span>
+<span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
+<span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
+<span class="sd">                be retried.</span>
+<span class="sd">            timeout (Optional[float]): The amount of time, in seconds, to wait</span>
+<span class="sd">                for the request to complete. Note that if ``retry`` is</span>
+<span class="sd">                specified, the timeout applies to each individual attempt.</span>
+<span class="sd">            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata</span>
+<span class="sd">                that is provided to the method.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A :class:`~google.cloud.dlp_v2.types.StoredInfoType` instance.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            google.api_core.exceptions.GoogleAPICallError: If the request</span>
+<span class="sd">                    failed for any reason.</span>
+<span class="sd">            google.api_core.exceptions.RetryError: If the request failed due</span>
+<span class="sd">                    to a retryable error and retry attempts failed.</span>
+<span class="sd">            ValueError: If the parameters are invalid.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Wrap the transport method to add retry and timeout logic.</span>
+        <span class="k">if</span> <span class="s1">&#39;get_stored_info_type&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span>
+                <span class="s1">&#39;get_stored_info_type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">wrap_method</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">get_stored_info_type</span><span class="p">,</span>
+                    <span class="n">default_retry</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span><span class="s1">&#39;GetStoredInfoType&#39;</span><span class="p">]</span><span class="o">.</span>
+                    <span class="n">retry</span><span class="p">,</span>
+                    <span class="n">default_timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span><span class="s1">&#39;GetStoredInfoType&#39;</span><span class="p">]</span><span class="o">.</span>
+                    <span class="n">timeout</span><span class="p">,</span>
+                    <span class="n">client_info</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client_info</span><span class="p">,</span>
+                <span class="p">)</span>
+
+        <span class="n">request</span> <span class="o">=</span> <span class="n">dlp_pb2</span><span class="o">.</span><span class="n">GetStoredInfoTypeRequest</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span><span class="s1">&#39;get_stored_info_type&#39;</span><span class="p">](</span>
+            <span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="DlpServiceClient.list_stored_info_types"><a class="viewcode-back" href="../../../../../dlp/gapic/v2/api.html#google.cloud.dlp_v2.DlpServiceClient.list_stored_info_types">[docs]</a>    <span class="k">def</span> <span class="nf">list_stored_info_types</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                               <span class="n">parent</span><span class="p">,</span>
+                               <span class="n">page_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                               <span class="n">order_by</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                               <span class="n">retry</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+                               <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+                               <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Lists stored infoTypes.</span>
+<span class="sd">        See https://cloud.google.com/dlp/docs/creating-stored-infotypes to</span>
+<span class="sd">        learn more.</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">            &gt;&gt;&gt; from google.cloud import dlp_v2</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; client = dlp_v2.DlpServiceClient()</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; parent = client.organization_path(&#39;[ORGANIZATION]&#39;)</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; # Iterate over all results</span>
+<span class="sd">            &gt;&gt;&gt; for element in client.list_stored_info_types(parent):</span>
+<span class="sd">            ...     # process element</span>
+<span class="sd">            ...     pass</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; # Alternatively:</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; # Iterate over results one page at a time</span>
+<span class="sd">            &gt;&gt;&gt; for page in client.list_stored_info_types(parent, options=CallOptions(page_token=INITIAL_PAGE)):</span>
+<span class="sd">            ...     for element in page:</span>
+<span class="sd">            ...         # process element</span>
+<span class="sd">            ...         pass</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            parent (str): The parent resource name, for example projects/my-project-id or</span>
+<span class="sd">                organizations/my-org-id.</span>
+<span class="sd">            page_size (int): The maximum number of resources contained in the</span>
+<span class="sd">                underlying API response. If page streaming is performed per-</span>
+<span class="sd">                resource, this parameter does not affect the return value. If page</span>
+<span class="sd">                streaming is performed per-page, this determines the maximum number</span>
+<span class="sd">                of resources in a page.</span>
+<span class="sd">            order_by (str): Optional comma separated list of fields to order by,</span>
+<span class="sd">                followed by ``asc`` or ``desc`` postfix. This list is case-insensitive,</span>
+<span class="sd">                default sorting order is ascending, redundant space characters are</span>
+<span class="sd">                insignificant.</span>
+
+<span class="sd">                Example: ``name asc, display_name, create_time desc``</span>
+
+<span class="sd">                Supported fields are:</span>
+
+<span class="sd">                - ``create_time``: corresponds to time the most recent version of the</span>
+<span class="sd">                  resource was created.</span>
+<span class="sd">                - ``state``: corresponds to the state of the resource.</span>
+<span class="sd">                - ``name``: corresponds to resource name.</span>
+<span class="sd">                - ``display_name``: corresponds to info type&#39;s display name.</span>
+<span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
+<span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
+<span class="sd">                be retried.</span>
+<span class="sd">            timeout (Optional[float]): The amount of time, in seconds, to wait</span>
+<span class="sd">                for the request to complete. Note that if ``retry`` is</span>
+<span class="sd">                specified, the timeout applies to each individual attempt.</span>
+<span class="sd">            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata</span>
+<span class="sd">                that is provided to the method.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A :class:`~google.gax.PageIterator` instance. By default, this</span>
+<span class="sd">            is an iterable of :class:`~google.cloud.dlp_v2.types.StoredInfoType` instances.</span>
+<span class="sd">            This object can also be configured to iterate over the pages</span>
+<span class="sd">            of the response through the `options` parameter.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            google.api_core.exceptions.GoogleAPICallError: If the request</span>
+<span class="sd">                    failed for any reason.</span>
+<span class="sd">            google.api_core.exceptions.RetryError: If the request failed due</span>
+<span class="sd">                    to a retryable error and retry attempts failed.</span>
+<span class="sd">            ValueError: If the parameters are invalid.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Wrap the transport method to add retry and timeout logic.</span>
+        <span class="k">if</span> <span class="s1">&#39;list_stored_info_types&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span>
+                <span class="s1">&#39;list_stored_info_types&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">wrap_method</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">list_stored_info_types</span><span class="p">,</span>
+                    <span class="n">default_retry</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span><span class="s1">&#39;ListStoredInfoTypes&#39;</span><span class="p">]</span><span class="o">.</span>
+                    <span class="n">retry</span><span class="p">,</span>
+                    <span class="n">default_timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span>
+                    <span class="n">_method_configs</span><span class="p">[</span><span class="s1">&#39;ListStoredInfoTypes&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">timeout</span><span class="p">,</span>
+                    <span class="n">client_info</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client_info</span><span class="p">,</span>
+                <span class="p">)</span>
+
+        <span class="n">request</span> <span class="o">=</span> <span class="n">dlp_pb2</span><span class="o">.</span><span class="n">ListStoredInfoTypesRequest</span><span class="p">(</span>
+            <span class="n">parent</span><span class="o">=</span><span class="n">parent</span><span class="p">,</span>
+            <span class="n">page_size</span><span class="o">=</span><span class="n">page_size</span><span class="p">,</span>
+            <span class="n">order_by</span><span class="o">=</span><span class="n">order_by</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">iterator</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">page_iterator</span><span class="o">.</span><span class="n">GRPCIterator</span><span class="p">(</span>
+            <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">method</span><span class="o">=</span><span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span><span class="s1">&#39;list_stored_info_types&#39;</span><span class="p">],</span>
+                <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span>
+                <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span>
+                <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">),</span>
+            <span class="n">request</span><span class="o">=</span><span class="n">request</span><span class="p">,</span>
+            <span class="n">items_field</span><span class="o">=</span><span class="s1">&#39;stored_info_types&#39;</span><span class="p">,</span>
+            <span class="n">request_token_field</span><span class="o">=</span><span class="s1">&#39;page_token&#39;</span><span class="p">,</span>
+            <span class="n">response_token_field</span><span class="o">=</span><span class="s1">&#39;next_page_token&#39;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">iterator</span></div>
+
+<div class="viewcode-block" id="DlpServiceClient.delete_stored_info_type"><a class="viewcode-back" href="../../../../../dlp/gapic/v2/api.html#google.cloud.dlp_v2.DlpServiceClient.delete_stored_info_type">[docs]</a>    <span class="k">def</span> <span class="nf">delete_stored_info_type</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">name</span><span class="p">,</span>
+            <span class="n">retry</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+            <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+            <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Deletes a stored infoType.</span>
+<span class="sd">        See https://cloud.google.com/dlp/docs/creating-stored-infotypes to</span>
+<span class="sd">        learn more.</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">            &gt;&gt;&gt; from google.cloud import dlp_v2</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; client = dlp_v2.DlpServiceClient()</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; name = client.organization_stored_info_type_path(&#39;[ORGANIZATION]&#39;, &#39;[STORED_INFO_TYPE]&#39;)</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; client.delete_stored_info_type(name)</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            name (str): Resource name of the organization and storedInfoType to be deleted, for</span>
+<span class="sd">                example ``organizations/433245324/storedInfoTypes/432452342`` or</span>
+<span class="sd">                projects/project-id/storedInfoTypes/432452342.</span>
+<span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
+<span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
+<span class="sd">                be retried.</span>
+<span class="sd">            timeout (Optional[float]): The amount of time, in seconds, to wait</span>
+<span class="sd">                for the request to complete. Note that if ``retry`` is</span>
+<span class="sd">                specified, the timeout applies to each individual attempt.</span>
+<span class="sd">            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata</span>
+<span class="sd">                that is provided to the method.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            google.api_core.exceptions.GoogleAPICallError: If the request</span>
+<span class="sd">                    failed for any reason.</span>
+<span class="sd">            google.api_core.exceptions.RetryError: If the request failed due</span>
+<span class="sd">                    to a retryable error and retry attempts failed.</span>
+<span class="sd">            ValueError: If the parameters are invalid.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Wrap the transport method to add retry and timeout logic.</span>
+        <span class="k">if</span> <span class="s1">&#39;delete_stored_info_type&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span>
+                <span class="s1">&#39;delete_stored_info_type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">wrap_method</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">delete_stored_info_type</span><span class="p">,</span>
+                    <span class="n">default_retry</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span><span class="s1">&#39;DeleteStoredInfoType&#39;</span><span class="p">]</span><span class="o">.</span>
+                    <span class="n">retry</span><span class="p">,</span>
+                    <span class="n">default_timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span>
+                    <span class="n">_method_configs</span><span class="p">[</span><span class="s1">&#39;DeleteStoredInfoType&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">timeout</span><span class="p">,</span>
+                    <span class="n">client_info</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client_info</span><span class="p">,</span>
+                <span class="p">)</span>
+
+        <span class="n">request</span> <span class="o">=</span> <span class="n">dlp_pb2</span><span class="o">.</span><span class="n">DeleteStoredInfoTypeRequest</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span><span class="s1">&#39;delete_stored_info_type&#39;</span><span class="p">](</span>
             <span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">)</span></div>
 </pre></div>
 
