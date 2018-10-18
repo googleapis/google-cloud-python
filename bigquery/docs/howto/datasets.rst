@@ -1,5 +1,5 @@
-Datasets
-~~~~~~~~
+Managing Datasets
+~~~~~~~~~~~~~~~~~
 
 A dataset represents a collection of tables, and applies several default
 policies to tables as they are created:
@@ -17,7 +17,8 @@ See BigQuery documentation for more information on
 Dataset operations
 ^^^^^^^^^^^^^^^^^^
 
-List datasets for the client's project:
+List datasets for a project with the
+:func:`~google.cloud.bigquery.client.Client.list_datasets` method:
 
 .. literalinclude:: ../snippets.py
    :language: python
@@ -25,7 +26,8 @@ List datasets for the client's project:
    :start-after: [START bigquery_list_datasets]
    :end-before: [END bigquery_list_datasets]
 
-Create a new dataset for the client's project:
+Create a new dataset with the
+:func:`~google.cloud.bigquery.client.Client.create_dataset` method:
 
 .. literalinclude:: ../snippets.py
    :language: python
@@ -33,7 +35,8 @@ Create a new dataset for the client's project:
    :start-after: [START bigquery_create_dataset]
    :end-before: [END bigquery_create_dataset]
 
-Refresh metadata for a dataset (to pick up changes made by another client):
+Get a dataset resource (to pick up changes made by another client) with the
+:func:`~google.cloud.bigquery.client.Client.get_dataset` method:
 
 .. literalinclude:: ../snippets.py
    :language: python
@@ -41,7 +44,8 @@ Refresh metadata for a dataset (to pick up changes made by another client):
    :start-after: [START bigquery_get_dataset]
    :end-before: [END bigquery_get_dataset]
 
-Update a property in a dataset's metadata:
+Update a property in a dataset's metadata with the
+:func:`~google.cloud.bigquery.client.Client.update_dataset` method:
 
 .. literalinclude:: ../snippets.py
    :language: python
@@ -49,7 +53,8 @@ Update a property in a dataset's metadata:
    :start-after: [START bigquery_update_dataset_description]
    :end-before: [END bigquery_update_dataset_description]
 
-Modify user permissions on a dataset:
+Modify user permissions on a dataset with the
+:func:`~google.cloud.bigquery.client.Client.update_dataset` method:
 
 .. literalinclude:: ../snippets.py
    :language: python
@@ -57,7 +62,8 @@ Modify user permissions on a dataset:
    :start-after: [START bigquery_update_dataset_access]
    :end-before: [END bigquery_update_dataset_access]
 
-Delete a dataset:
+Delete a dataset with the
+:func:`~google.cloud.bigquery.client.Client.delete_dataset` method:
 
 .. literalinclude:: ../snippets.py
    :language: python

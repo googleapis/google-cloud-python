@@ -1,5 +1,5 @@
-Jobs
-~~~~
+Managing Jobs
+~~~~~~~~~~~~~
 
 List jobs for a project
 ^^^^^^^^^^^^^^^^^^^^^^^

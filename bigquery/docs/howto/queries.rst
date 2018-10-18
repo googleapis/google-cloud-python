@@ -1,5 +1,5 @@
-Queries
-~~~~~~~
+Running Queries
+~~~~~~~~~~~~~~~
 
 Querying data
 ^^^^^^^^^^^^^
