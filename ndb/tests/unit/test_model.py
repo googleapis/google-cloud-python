@@ -16,8 +16,10 @@ import unittest.mock
 
 import pytest
 
+from google.cloud.ndb import exceptions
 from google.cloud.ndb import key
 from google.cloud.ndb import model
+from google.cloud.ndb import query
 import tests.unit.utils
 
 
@@ -451,6 +453,33 @@ class TestProperty:
 
         prop = SimpleProperty(foo_type=list, bar="nope")
         assert repr(prop) == "SimpleProperty(foo_type=list, bar='nope')"
+
+    @staticmethod
+    def test__datastore_type():
+        prop = model.Property("foo")
+        value = unittest.mock.sentinel.value
+        assert prop._datastore_type(value) is value
+
+    @staticmethod
+    def test__comparison_indexed():
+        prop = model.Property("color", indexed=False)
+        assert not prop._indexed
+        with pytest.raises(exceptions.BadFilterError):
+            prop._comparison("!=", "red")
+
+    @staticmethod
+    def test__comparison():
+        prop = model.Property("sentiment")
+        assert prop._indexed
+        filter_node = prop._comparison(">=", 0.0)
+        assert filter_node == query.FilterNode(b"sentiment", ">=", 0.0)
+
+    @staticmethod
+    def test__comparison_empty_value():
+        prop = model.Property("height")
+        assert prop._indexed
+        filter_node = prop._comparison("=", None)
+        assert filter_node == query.FilterNode(b"height", "=", None)
 
 
 class TestModelKey:

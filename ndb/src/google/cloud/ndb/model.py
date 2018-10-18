@@ -526,6 +526,47 @@ class Property(ModelAttribute):
 
         return "{}({})".format(self.__class__.__name__, ", ".join(args))
 
+    def _datastore_type(self, value):
+        """Internal hook used by property filters.
+
+        Sometimes the low-level query interface needs a specific data type
+        in order for the right filter to be constructed. See
+        :meth:`_comparison`.
+
+        Args:
+            value (Any): The value to be converted to a low-level type.
+
+        Returns:
+            Any: The passed-in ``value``, always. Subclasses may alter this
+            behavior.
+        """
+        return value
+
+    def _comparison(self, op, value):
+        """Internal helper for comparison operators.
+
+        Args:
+            op (str): The comparison operator. One of ``=``, ``!=``, ``<``,
+                ``<=``, ``>``, ``>=`` or ``in``.
+
+        Returns:
+            FilterNode: A FilterNode instance representing the requested
+            comparison.
+
+        Raises:
+            BadFilterError: If the current property is not indexed.
+        """
+        if not self._indexed:
+            raise exceptions.BadFilterError(
+                "Cannot query for unindexed property {}".format(self._name)
+            )
+        # Import late to avoid circular imports.
+        from google.cloud.ndb import query
+
+        if value is not None:
+            value = self._datastore_type(value)
+        return query.FilterNode(self._name, op, value)
+
 
 class ModelKey(Property):
     __slots__ = ()

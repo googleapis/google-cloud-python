@@ -115,3 +115,11 @@ The primary differences come from:
   `RuntimeError` just it case it **is** actually reached.
 - For ``AND`` and ``OR`` to compare equal, the nodes must come in the
   same order. So ``AND(a > 7, b > 6)`` is not equal to ``AND(b > 6, a > 7)``.
+- The whole `bytes` vs. `str` issue needs to be considered package-wide.
+  For example, the `Property()` constructor always encoded Python 2 `unicode`
+  to a Python 2 `str` (i.e. `bytes`) with the `utf-8` encoding. This fits
+  in some sense: the property name in the [protobuf definition][1] is a
+  `string` (i.e. UTF-8 encoded text). However, there is a bit of a disconnect
+  with other types that use property names, e.g. `FilterNode`.
+
+[1]: https://github.com/googleapis/googleapis/blob/3afba2fd062df0c89ecd62d97f912192b8e0e0ae/google/datastore/v1/entity.proto#L203
