@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.firestore_v1beta1.document &#8212; google-cloud c0c7ed6 documentation</title>
+    <title>google.cloud.firestore_v1beta1.document &#8212; google-cloud 65eec54 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -50,8 +50,9 @@
 
 <span class="sd">&quot;&quot;&quot;Classes for representing documents for the Google Cloud Firestore API.&quot;&quot;&quot;</span>
 
-
 <span class="kn">import</span> <span class="nn">copy</span>
+
+<span class="kn">import</span> <span class="nn">six</span>
 
 <span class="kn">from</span> <span class="nn">google.cloud.firestore_v1beta1</span> <span class="k">import</span> <span class="n">_helpers</span>
 
@@ -454,6 +455,9 @@
 <span class="sd">                `update_time`, and `create_time` attributes will all be</span>
 <span class="sd">                `None` and `exists` will be `False`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">field_paths</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">string_types</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;&#39;field_paths&#39; must be a sequence of paths, not a string.&quot;</span><span class="p">)</span>
         <span class="n">snapshot_generator</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">get_all</span><span class="p">(</span>
             <span class="p">[</span><span class="bp">self</span><span class="p">],</span> <span class="n">field_paths</span><span class="o">=</span><span class="n">field_paths</span><span class="p">,</span> <span class="n">transaction</span><span class="o">=</span><span class="n">transaction</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">_consume_single_get</span><span class="p">(</span><span class="n">snapshot_generator</span><span class="p">)</span></div>
