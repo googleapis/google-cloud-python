@@ -449,6 +449,13 @@ class TestDocumentReference(unittest.TestCase):
         )
         self._delete_helper(last_update_time=timestamp_pb)
 
+    def test_get_w_single_field_path(self):
+        client = mock.Mock(spec=[])
+
+        document = self._make_one('yellow', 'mellow', client=client)
+        with self.assertRaises(ValueError):
+            document.get('foo')
+
     def test_get_success(self):
         # Create a minimal fake client with a dummy response.
         response_iterator = iter([mock.sentinel.snapshot])
