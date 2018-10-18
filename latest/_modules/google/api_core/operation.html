@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.api_core.operation &#8212; google-cloud 87ed207 documentation</title>
+    <title>google.api_core.operation &#8212; google-cloud 7456acd documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -129,6 +129,18 @@
 
         <span class="k">return</span> <span class="n">protobuf_helpers</span><span class="o">.</span><span class="n">from_any_pb</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_metadata_type</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_operation</span><span class="o">.</span><span class="n">metadata</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Operation.deserialize"><a class="viewcode-back" href="../../../core/operation.html#google.api_core.operation.Operation.deserialize">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">deserialize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">payload</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Deserialize a ``google.longrunning.Operation`` protocol buffer.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            payload (bytes): A serialized operation protocol buffer.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            ~.operations_pb2.Operation: An Operation protobuf object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">operations_pb2</span><span class="o">.</span><span class="n">Operation</span><span class="o">.</span><span class="n">FromString</span><span class="p">(</span><span class="n">payload</span><span class="p">)</span></div>
 
     <span class="k">def</span> <span class="nf">_set_result_from_operation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Set the result or exception from the operation if it is complete.&quot;&quot;&quot;</span>
