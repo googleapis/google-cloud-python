@@ -14,7 +14,11 @@
 
 from google.api_core.gapic_v1.dispatch import dispatch
 
+import pytest
+import six
 
+
+@pytest.mark.skipif(six.PY2, reason='dispatch only works on Python 3.')
 def test_dispatch():
     class Foo(object):
         @dispatch
