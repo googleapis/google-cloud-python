@@ -416,6 +416,42 @@ class TestProperty:
         # Check that the creation counter was not updated.
         assert model.Property._CREATION_COUNTER == 0
 
+    def test_repr(self):
+        prop = model.Property(
+            "val",
+            indexed=False,
+            repeated=False,
+            required=True,
+            default="zorp",
+            choices=("zorp", "zap", "zip"),
+            validator=self._example_validator,
+            verbose_name="VALUE FOR READING",
+            write_empty_list=False,
+        )
+        expected = (
+            "Property(b'val', indexed=False, required=True, "
+            "default='zorp', choices={}, validator={}, "
+            "verbose_name='VALUE FOR READING')".format(
+                prop._choices, prop._validator
+            )
+        )
+        assert repr(prop) == expected
+
+    @staticmethod
+    def test_repr_subclass():
+        class SimpleProperty(model.Property):
+            _positional_attributes = []
+            _keyword_attributes = ["_foo_type", "bar"]
+            _foo_type = None
+            bar = "eleventy"
+
+            def __init__(self, *, foo_type, bar):
+                self._foo_type = foo_type
+                self.bar = bar
+
+        prop = SimpleProperty(foo_type=list, bar="nope")
+        assert repr(prop) == "SimpleProperty(foo_type=list, bar='nope')"
+
 
 class TestModelKey:
     @staticmethod

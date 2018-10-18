@@ -71,6 +71,9 @@ The primary differences come from:
   reasons. The first is the naive "performance" win and the second is that
   this will make it transparent whenever `ndb` users refer to non-existent
   "private" or "protected" instance attributes
+- I dropped `Property._positional` since keyword-only arguments are native
+  Python 3 syntax and converted `Property._attributes` into
+  `Property._positional_attributes` and `Property._keyword_attributes`
 
 ## Comments
 
