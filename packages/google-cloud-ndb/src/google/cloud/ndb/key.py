@@ -259,14 +259,15 @@ class Key:
 
     __slots__ = ("_key", "_reference")
 
-    def __init__(self, *path_args, **kwargs):
+    def __new__(cls, *path_args, **kwargs):
         _constructor_handle_positional(path_args, kwargs)
+        self = super(Key, cls).__new__(cls)
         if (
             "reference" in kwargs
             or "serialized" in kwargs
             or "urlsafe" in kwargs
         ):
-            ds_key, reference = _parse_from_ref(type(self), **kwargs)
+            ds_key, reference = _parse_from_ref(cls, **kwargs)
         elif "pairs" in kwargs or "flat" in kwargs:
             ds_key = _parse_from_args(**kwargs)
             reference = None
@@ -277,6 +278,7 @@ class Key:
 
         self._key = ds_key
         self._reference = reference
+        return self
 
     @classmethod
     def _from_ds_key(cls, ds_key):
@@ -292,7 +294,7 @@ class Key:
         Returns:
             Key: The constructed :class:`Key`.
         """
-        key = cls.__new__(cls)
+        key = super(Key, cls).__new__(cls)
         key._key = ds_key
         key._reference = None
         return key
