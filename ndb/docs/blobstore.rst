@@ -1,8 +1,8 @@
-###
-Key
-###
+#########
+Blobstore
+#########
 
-.. automodule:: google.cloud.ndb.key
+.. automodule:: google.cloud.ndb.blobstore
     :members:
     :inherited-members:
     :undoc-members:

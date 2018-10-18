@@ -34,6 +34,10 @@ version = ".".join(release.split(".")[:2])
 # If your documentation needs a minimal Sphinx version, state it here.
 #
 # needs_sphinx = '1.0'
+nitpicky = True
+nitpick_ignore = [
+    ("py:obj", "google.cloud.datastore._app_engine_key_pb2.Reference")
+]
 
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom

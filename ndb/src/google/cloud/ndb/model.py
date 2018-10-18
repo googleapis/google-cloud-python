@@ -15,7 +15,7 @@
 """Model classes for datastore objects and properties for models."""
 
 
-from google.cloud.ndb import _exceptions
+from google.cloud.ndb import exceptions
 from google.cloud.ndb import key as key_module
 
 
@@ -81,17 +81,17 @@ __all__ = [
 Key = key_module.Key
 BlobKey = NotImplemented  # From `google.appengine.api.datastore_types`
 GeoPt = NotImplemented  # From `google.appengine.api.datastore_types`
-Rollback = _exceptions.Rollback
+Rollback = exceptions.Rollback
 
 
-class KindError(_exceptions.BadValueError):
+class KindError(exceptions.BadValueError):
     """Raised when an implementation for a kind can't be found.
 
     May also be raised when the kind is not a byte string.
     """
 
 
-class InvalidPropertyError(_exceptions.Error):
+class InvalidPropertyError(exceptions.Error):
     """Raised when a property is not applicable to a given use.
 
     For example, a property must exist and be indexed to be used in a query's
@@ -103,11 +103,11 @@ BadProjectionError = InvalidPropertyError
 """This alias for :class:`InvalidPropertyError` is for legacy support."""
 
 
-class UnprojectedPropertyError(_exceptions.Error):
+class UnprojectedPropertyError(exceptions.Error):
     """Raised when getting a property value that's not in the projection."""
 
 
-class ReadonlyPropertyError(_exceptions.Error):
+class ReadonlyPropertyError(exceptions.Error):
     """Raised when attempting to set a property value that is read-only."""
 
 
@@ -268,7 +268,7 @@ def make_connection(*args, **kwargs):
 
 
 class ModelAttribute:
-    """Base for :meth:`_fix_up` implementing classes."""
+    """Base for classes that implement a ``_fix_up()`` method."""
 
     def _fix_up(self, cls, code_name):
         """Fix-up property name. To be implemented by subclasses.
