@@ -16,6 +16,11 @@ import functools
 
 
 def dispatch(func):
+    """Return a decorated method that dispatches on the second argument.
+
+    This is the equivalent of :meth:`functools.singledispatch`, but for
+    bound methods.
+    """
     base_dispatcher = functools.singledispatch(func)
 
     # Define a wrapper function that works off args[1] instead of args[0].
