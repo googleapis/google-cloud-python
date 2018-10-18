@@ -6,7 +6,16 @@
    :hidden:
    :maxdepth: 2
 
-   Key <key>
-   Model <model>
+   key
+   model
+   query
+   exceptions
+   polymodel
+   django-middleware
+   msgprop
+   blobstore
+   metadata
+   stats
 
-Placeholder.
+.. automodule:: google.cloud.ndb
+    :no-members:

@@ -16,9 +16,13 @@
 
 It was originally included in the Google App Engine runtime as a "new"
 version of the ``db`` API (hence ``ndb``).
+
+.. autodata:: __version__
+.. autodata:: __all__
 """
 
 __version__ = "0.0.1.dev1"
+"""Current ``ndb`` version."""
 __all__ = [
     "AutoBatcher",
     "Context",
@@ -115,6 +119,7 @@ __all__ = [
     "tasklet",
     "toplevel",
 ]
+"""All top-level exported names."""
 
 from google.cloud.ndb.context import AutoBatcher
 from google.cloud.ndb.context import Context
