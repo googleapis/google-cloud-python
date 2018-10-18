@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Copyright 2017 Google LLC All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,10 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import unittest
-import math
+import collections
 import mock
-
+import six
+import sys
+import unittest
 
 from google.cloud.firestore_v1beta1._helpers import encode_value, GeoPoint
 from google.cloud.firestore_v1beta1.order import Order
@@ -43,6 +45,7 @@ class TestOrder(unittest.TestCase):
         int_min_value = -(2 ** 31)
         float_min_value = 1.175494351 ** -38
         float_nan = float('nan')
+        inf = float('inf')
 
         groups = [None] * 65
 
@@ -53,7 +56,7 @@ class TestOrder(unittest.TestCase):
 
         # numbers
         groups[3] = [_double_value(float_nan), _double_value(float_nan)]
-        groups[4] = [_double_value(-math.inf)]
+        groups[4] = [_double_value(-inf)]
         groups[5] = [_int_value(int_min_value - 1)]
         groups[6] = [_int_value(int_min_value)]
         groups[7] = [_double_value(-1.1)]
@@ -68,7 +71,7 @@ class TestOrder(unittest.TestCase):
         groups[13] = [_double_value(1.1)]
         groups[14] = [_int_value(int_max_value)]
         groups[15] = [_int_value(int_max_value + 1)]
-        groups[16] = [_double_value(math.inf)]
+        groups[16] = [_double_value(inf)]
 
         groups[17] = [_timestamp_value(123, 0)]
         groups[18] = [_timestamp_value(123, 123)]
@@ -77,21 +80,21 @@ class TestOrder(unittest.TestCase):
         # strings
         groups[20] = [_string_value("")]
         groups[21] = [_string_value("\u0000\ud7ff\ue000\uffff")]
-        groups[22] = [_string_value(u"(╯°□°）╯︵ ┻━┻")]
+        groups[22] = [_string_value("(╯°□°）╯︵ ┻━┻")]
         groups[23] = [_string_value("a")]
         groups[24] = [_string_value("abc def")]
         # latin small letter e + combining acute accent + latin small letter b
         groups[25] = [_string_value("e\u0301b")]
-        groups[26] = [_string_value(u"æ")]
+        groups[26] = [_string_value("æ")]
         # latin small letter e with acute accent + latin small letter a
-        groups[27] = [_string_value(u"\u00e9a")]
+        groups[27] = [_string_value("\u00e9a")]
 
         # blobs
-        groups[28] = [_blob_value(bytes())]
-        groups[29] = [_blob_value(bytes([0]))]
-        groups[30] = [_blob_value(bytes([0, 1, 2, 3, 4]))]
-        groups[31] = [_blob_value(bytes([0, 1, 2, 4, 3]))]
-        groups[32] = [_blob_value(bytes([127]))]
+        groups[28] = [_blob_value(b'')]
+        groups[29] = [_blob_value(b'\x00')]
+        groups[30] = [_blob_value(b'\x00\x01\x02\x03\x04')]
+        groups[31] = [_blob_value(b'\x00\x01\x02\x04\x03')]
+        groups[32] = [_blob_value(b'\x7f')]
 
         # resource names
         groups[33] = [
@@ -174,7 +177,7 @@ class TestOrder(unittest.TestCase):
         left = mock.Mock()
         left.WhichOneof.return_value = "imaginary-type"
 
-        with self.assertRaisesRegex(ValueError, "Could not detect value"):
+        with self.assertRaisesRegexp(ValueError, "Could not detect value"):
             target.compare(left, mock.Mock())
 
     def test_failure_to_find_type(self):
@@ -186,7 +189,9 @@ class TestOrder(unittest.TestCase):
         # expect this to fail with value error.
         with mock.patch.object(TypeOrder, 'from_value',) as to:
             to.value = None
-            with self.assertRaisesRegex(ValueError, "'Unknown ``value_type``"):
+            with self.assertRaisesRegexp(
+                    ValueError, "'Unknown ``value_type``"
+            ):
                 target.compare(left, right)
 
     def test_compare_objects_different_keys(self):
@@ -210,6 +215,8 @@ def _int_value(l):
 
 
 def _string_value(s):
+    if not isinstance(s, six.text_type):
+        s = six.u(s)
     return encode_value(s)
 
 
