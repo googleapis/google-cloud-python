@@ -71,8 +71,12 @@ class Naming:
         # Sanity check: If there is no common ground in the package,
         # we are obviously in trouble.
         if not root_package:
-            raise ValueError('Protos provided have entirely different '
-                             'proto packages.')
+            raise ValueError(
+                'The protos provided do not share a common root package. '
+                'Ensure that all explicitly-specified protos are for a '
+                'single API. '
+                f'The packages we got are: {", ".join(proto_packages)}'
+            )
 
         # Define the valid regex to split the package.
         #
