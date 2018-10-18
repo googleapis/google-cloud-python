@@ -88,7 +88,7 @@ DataTransferServiceClient
         pass
 
     # Or iterate over results one page at a time
-    for page in client.list_data_sources(parent, options=CallOptions(page_token=INITIAL_PAGE)):
+    for page in client.list_data_sources(parent).pages:
         for element in page:
             # process element
             pass
