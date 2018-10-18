@@ -1,13 +1,5 @@
 .. include:: /../bigquery/README.rst
 
-More Examples
--------------
-
-These guides cover how to use the ``google-cloud-bigquery`` library to use
-the Google BigQuery API. See the `official Google BigQuery how-to guides
-<https://cloud.google.com/bigquery/docs/how-to>`_ for more in-depth
-information and code samples.
-
 BigQuery Basics
 ~~~~~~~~~~~~~~~
 
@@ -38,6 +30,14 @@ Integrations with Other Libraries
 
 See also, the :mod:`google.cloud.bigquery.magics` module for integrations
 with Jupyter.
+
+More Examples
+~~~~~~~~~~~~~
+
+See the `official Google BigQuery how-to guides
+<https://cloud.google.com/bigquery/docs/how-to>`_ for more in-depth
+information and code samples on using the ``google-cloud-bigquery`` library
+with the BigQuery API.
 
 API Reference
 -------------
