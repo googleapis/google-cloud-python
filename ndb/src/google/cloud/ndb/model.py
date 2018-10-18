@@ -567,6 +567,34 @@ class Property(ModelAttribute):
             value = self._datastore_type(value)
         return query.FilterNode(self._name, op, value)
 
+    # Comparison operators on Property instances don't compare the
+    # properties; instead they return ``FilterNode``` instances that can be
+    # used in queries.
+
+    def __eq__(self, value):
+        """FilterNode: Represents the ``=`` comparison."""
+        return self._comparison("=", value)
+
+    def __ne__(self, value):
+        """FilterNode: Represents the ``!=`` comparison."""
+        return self._comparison("!=", value)
+
+    def __lt__(self, value):
+        """FilterNode: Represents the ``<`` comparison."""
+        return self._comparison("<", value)
+
+    def __le__(self, value):
+        """FilterNode: Represents the ``<=`` comparison."""
+        return self._comparison("<=", value)
+
+    def __gt__(self, value):
+        """FilterNode: Represents the ``>`` comparison."""
+        return self._comparison(">", value)
+
+    def __ge__(self, value):
+        """FilterNode: Represents the ``>=`` comparison."""
+        return self._comparison(">=", value)
+
 
 class ModelKey(Property):
     __slots__ = ()

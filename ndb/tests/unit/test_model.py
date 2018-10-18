@@ -463,23 +463,89 @@ class TestProperty:
     @staticmethod
     def test__comparison_indexed():
         prop = model.Property("color", indexed=False)
-        assert not prop._indexed
         with pytest.raises(exceptions.BadFilterError):
             prop._comparison("!=", "red")
 
     @staticmethod
     def test__comparison():
-        prop = model.Property("sentiment")
-        assert prop._indexed
+        prop = model.Property("sentiment", indexed=True)
         filter_node = prop._comparison(">=", 0.0)
         assert filter_node == query.FilterNode(b"sentiment", ">=", 0.0)
 
     @staticmethod
     def test__comparison_empty_value():
-        prop = model.Property("height")
-        assert prop._indexed
+        prop = model.Property("height", indexed=True)
         filter_node = prop._comparison("=", None)
         assert filter_node == query.FilterNode(b"height", "=", None)
+
+    @staticmethod
+    def test___eq__():
+        prop = model.Property("name", indexed=True)
+        value = 1337
+        expected = query.FilterNode(b"name", "=", value)
+
+        filter_node_left = prop == value
+        assert filter_node_left == expected
+        filter_node_right = value == prop
+        assert filter_node_right == expected
+
+    @staticmethod
+    def test___ne__():
+        prop = model.Property("name", indexed=True)
+        value = 7.0
+        expected = query.DisjunctionNode(
+            query.FilterNode(b"name", "<", value),
+            query.FilterNode(b"name", ">", value),
+        )
+
+        or_node_left = prop != value
+        assert or_node_left == expected
+        or_node_right = value != prop
+        assert or_node_right == expected
+
+    @staticmethod
+    def test___lt__():
+        prop = model.Property("name", indexed=True)
+        value = 2.0
+        expected = query.FilterNode(b"name", "<", value)
+
+        filter_node_left = prop < value
+        assert filter_node_left == expected
+        filter_node_right = value > prop
+        assert filter_node_right == expected
+
+    @staticmethod
+    def test___le__():
+        prop = model.Property("name", indexed=True)
+        value = 20.0
+        expected = query.FilterNode(b"name", "<=", value)
+
+        filter_node_left = prop <= value
+        assert filter_node_left == expected
+        filter_node_right = value >= prop
+        assert filter_node_right == expected
+
+    @staticmethod
+    def test___gt__():
+        prop = model.Property("name", indexed=True)
+        value = "new"
+        expected = query.FilterNode(b"name", ">", value)
+
+        filter_node_left = prop > value
+        assert filter_node_left == expected
+        filter_node_right = value < prop
+        assert filter_node_right == expected
+
+    @staticmethod
+    def test___ge__():
+        prop = model.Property("name", indexed=True)
+        value = "old"
+        expected = query.FilterNode(b"name", ">=", value)
+
+        filter_node_left = prop >= value
+        assert filter_node_left == expected
+        filter_node_right = value <= prop
+        assert filter_node_right == expected
 
 
 class TestModelKey:
