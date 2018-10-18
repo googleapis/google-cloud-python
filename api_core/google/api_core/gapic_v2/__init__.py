@@ -14,9 +14,9 @@
 
 from google.api_core.gapic_v1 import client_info
 from google.api_core.gapic_v1 import config
-from google.api_core.gapic_v2 import dispatch
 from google.api_core.gapic_v1 import method
 from google.api_core.gapic_v1 import routing_header
+from google.api_core.gapic_v2 import dispatch
 
 __all__ = [
     'client_info',
