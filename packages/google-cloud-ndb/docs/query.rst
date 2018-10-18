@@ -1,8 +1,8 @@
-###
-Key
-###
+#####
+Query
+#####
 
-.. automodule:: google.cloud.ndb.key
+.. automodule:: google.cloud.ndb.query
     :members:
     :inherited-members:
     :undoc-members:

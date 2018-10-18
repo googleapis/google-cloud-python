@@ -1,9 +1,9 @@
 ##################
-Model and Property
+Datastore Metadata
 ##################
 
-.. automodule:: google.cloud.ndb.model
+.. automodule:: google.cloud.ndb.metadata
     :members:
-    :exclude-members: Key, Rollback
+    :inherited-members:
     :undoc-members:
     :show-inheritance:

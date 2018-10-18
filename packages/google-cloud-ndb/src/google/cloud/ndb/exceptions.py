@@ -20,7 +20,7 @@ legacy Google App Engine runtime.
 """
 
 
-__all__ = []
+__all__ = ["Error", "BadValueError", "BadArgumentError", "Rollback"]
 
 
 class Error(Exception):

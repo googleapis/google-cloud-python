@@ -20,7 +20,7 @@ from google.cloud.datastore import _app_engine_key_pb2
 import google.cloud.datastore
 import pytest
 
-from google.cloud.ndb import _exceptions
+from google.cloud.ndb import exceptions
 from google.cloud.ndb import key as key_module
 from google.cloud.ndb import model
 import tests.unit.utils
@@ -66,7 +66,7 @@ class TestKey:
     def test_constructor_invalid_id_type():
         with pytest.raises(TypeError):
             key_module.Key("Kind", object())
-        with pytest.raises(_exceptions.BadArgumentError):
+        with pytest.raises(exceptions.BadArgumentError):
             key_module.Key("Kind", None, "Also", 10)
 
     @staticmethod
@@ -186,7 +186,7 @@ class TestKey:
 
     def test_constructor_with_parent_bad_type(self):
         parent = unittest.mock.sentinel.parent
-        with pytest.raises(_exceptions.BadValueError):
+        with pytest.raises(exceptions.BadValueError):
             key_module.Key("Zip", 10, parent=parent)
 
     @staticmethod
