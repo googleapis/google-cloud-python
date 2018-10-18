@@ -22,7 +22,7 @@ import functools
 import pytz
 
 from google.api_core.bidi import ResumableBidiRpc
-from google.api_core.bidi  import BackgroundConsumer
+from google.api_core.bidi import BackgroundConsumer
 from google.cloud.firestore_v1beta1.proto import firestore_pb2
 from google.cloud.firestore_v1beta1 import _helpers
 

@@ -943,8 +943,8 @@ class TestQuery(unittest.TestCase):
         doc2._data = {'first': {'stringValue': 'Ada'},
                       'last': {'stringValue': 'lovelace'}}
 
-        with self.assertRaisesRegex(ValueError,
-                                    "Can only compare fields "):
+        with self.assertRaisesRegexp(ValueError,
+                                     "Can only compare fields "):
             query._comparator(doc1, doc2)
 
 

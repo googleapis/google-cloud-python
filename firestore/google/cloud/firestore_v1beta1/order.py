@@ -30,6 +30,7 @@ class TypeOrder(Enum):
     ARRAY = 8
     OBJECT = 9
 
+    @staticmethod
     def from_value(value):
         v = value.WhichOneof('value_type')
 
