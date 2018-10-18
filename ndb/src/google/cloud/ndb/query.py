@@ -243,13 +243,15 @@ class ParameterNode(Node):
     """Tree node for a parameterized filter.
 
     Args:
-        prop (.Property): A property describing a value type.
+        prop (~google.cloud.ndb.model.Property): A property describing a value
+            type.
         op (str): The comparison operator. One of ``=``, ``!=``, ``<``, ``<=``,
             ``>``, ``>=`` or ``in``.
         param (ParameterizedThing): The parameter corresponding to the node.
 
     Raises:
-        TypeError: If ``prop`` is not a :class:`.Property`.
+        TypeError: If ``prop`` is not a
+            :class:`~google.cloud.ndb.model.Property`.
         TypeError: If ``op`` is not one of the accepted operators.
         TypeError: If ``param`` is not a :class:`.Parameter` or
             :class:`.ParameterizedFunction`.
@@ -279,8 +281,9 @@ class ParameterNode(Node):
             greater.
 
         Returns:
-            Tuple[.Property, str, .ParameterizedThing]: A tuple containing the
-            internal state: the property, operation and parameter.
+            Tuple[~google.cloud.ndb.model.Property, str, ParameterizedThing]:
+            A tuple containing the internal state: the property, operation and
+            parameter.
         """
         return self._prop, self._op, self._param
 
@@ -323,7 +326,7 @@ class ParameterNode(Node):
         Raises:
             NotImplementedError: Always. This is because the implementation
                 will rely on as-yet-unimplemented features in
-                :class:`Property`.
+                :class:`~google.cloud.ndb.model.Property`.
         """
         raise NotImplementedError(
             "Some features of Property need to be implemented first"
@@ -361,7 +364,7 @@ class FilterNode(Node):
 
     Raises:
         TypeError: If ``opsymbol`` is ``"in"`` but ``value`` is not a
-            basic container (:class:`list`, :func:`tuple`, :class:`set` or
+            basic container (:class:`list`, :class:`tuple`, :class:`set` or
             :class:`frozenset`)
     """
 
@@ -662,7 +665,7 @@ class ConjunctionNode(Node):
 
         Returns:
             Tuple[Node, ...]: The list of stored nodes, converted to a
-            :func:`tuple`.
+            :class:`tuple`.
         """
         return tuple(self._nodes)
 
@@ -765,7 +768,7 @@ class DisjunctionNode(Node):
 
     .. warning::
 
-        This constructor may not always return a :class:`DisjuctionNode`.
+        This constructor may not always return a :class:`DisjunctionNode`.
         If the passed in ``nodes`` has only one entry, that single node
         will be returned by the constructor.
 
@@ -802,7 +805,7 @@ class DisjunctionNode(Node):
 
         Returns:
             Tuple[Node, ...]: The list of stored nodes, converted to a
-            :func:`tuple`.
+            :class:`tuple`.
         """
         return tuple(self._nodes)
 
