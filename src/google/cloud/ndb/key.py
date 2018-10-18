@@ -92,7 +92,7 @@ from google.cloud.datastore import _app_engine_key_pb2
 from google.cloud.datastore import key as _key_module
 import google.cloud.datastore
 
-from google.cloud.ndb import _exceptions
+from google.cloud.ndb import exceptions
 
 
 __all__ = ["Key"]
@@ -1075,7 +1075,7 @@ def _parse_from_args(
     else:
         project = _project_from_app(app, allow_empty=True)
         if not isinstance(parent, Key):
-            raise _exceptions.BadValueError(
+            raise exceptions.BadValueError(
                 "Expected Key instance, got {!r}".format(parent)
             )
         # Offload verification of parent to ``google.cloud.datastore.Key()``.
@@ -1163,7 +1163,7 @@ def _clean_flat_path(flat):
         id_ = flat[i + 1]
         if id_ is None:
             if i + 2 < len(flat):
-                raise _exceptions.BadArgumentError(
+                raise exceptions.BadArgumentError(
                     "Incomplete Key entry must be last"
                 )
         elif not isinstance(id_, (str, int)):

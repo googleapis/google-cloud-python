@@ -14,7 +14,7 @@
 
 """High-level wrapper for datastore queries."""
 
-from google.cloud.ndb import _exceptions
+from google.cloud.ndb import exceptions
 
 
 __all__ = [
@@ -71,7 +71,7 @@ class Parameter(ParameterizedThing):
     ``Parameter(1)`` corresponds to a slot labeled ``:1`` in a GQL query.
     ``Parameter('xyz')`` corresponds to a slot labeled ``:xyz``.
 
-    The value must be set (bound) separately by calling :meth:`set`.
+    The value must be set (bound) separately.
 
     Args:
         key (Union[str, int]): The parameter key.
@@ -120,7 +120,7 @@ class Parameter(ParameterizedThing):
         """
         key = self._key
         if key not in bindings:
-            raise _exceptions.BadArgumentError(
+            raise exceptions.BadArgumentError(
                 "Parameter :{} is not bound.".format(key)
             )
         value = bindings[key]

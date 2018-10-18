@@ -31,7 +31,7 @@ The primary differences come from:
 ## Differences (between old and new implementations)
 
 - The "standard" exceptions from App Engine are no longer available. Instead,
-  we'll create "shims" for them in `google.cloud.ndb._exceptions` to match the
+  we'll create "shims" for them in `google.cloud.ndb.exceptions` to match the
   class names and emulate behavior.
 - There is no replacement for `google.appengine.api.namespace_manager` which is
   used to determine the default namespace when not passed in to `Key()`
