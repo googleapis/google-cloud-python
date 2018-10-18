@@ -12,10 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from google.api_core.gapic_v1.dispatch import dispatch
-
 import pytest
 import six
+
+from google.api_core.gapic_v1.dispatch import dispatch
 
 
 @pytest.mark.skipif(six.PY2, reason='dispatch only works on Python 3.')
