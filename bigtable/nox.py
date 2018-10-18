@@ -97,9 +97,10 @@ def system(session, py):
     # Run py.test against the system tests.
     session.run('py.test', '--quiet', 'tests/system.py', *session.posargs)
 
+#@nox.parametrize('py', ['2.7', '3.6'])
 
 @nox.session
-@nox.parametrize('py', ['2.7', '3.6'])
+@nox.parametrize('py', ['2.7'])
 def snippets(session, py):
     """Run the system test suite."""
 

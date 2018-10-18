@@ -33,10 +33,14 @@ import pytest
 
 from google.cloud import bigtable
 
+INSTANCE_ID = "instance-snippet"
+CLUSTER_ID = "cluster-snippet"
+CLUSTER_ID1 = "ssd-cluster-1"
+
 
 @pytest.fixture(scope='module')
 def client():
-    return bigtable.Client(project='my-project', admin=True)
+    return bigtable.Client(project='grass-clump-479', admin=True)
 
 
 @pytest.fixture
@@ -47,6 +51,7 @@ def to_delete():
         item.delete()
 
 
+@pytest.mark.order1
 def test_bigtable_create_instance(client, to_delete):
     # [START bigtable_create_prod_instance]
     from google.cloud.bigtable import enums
@@ -57,9 +62,9 @@ def test_bigtable_create_instance(client, to_delete):
     production = enums.Instance.Type.PRODUCTION
     labels = {'prod-label': 'prod-label'}
 
-    instance = client.instance("instance_my1", instance_type=production,
+    instance = client.instance(INSTANCE_ID, instance_type=production,
                                labels=labels)
-    cluster = instance.cluster("ssd-cluster1", location_id=location_id,
+    cluster = instance.cluster(CLUSTER_ID1, location_id=location_id,
                                serve_nodes=serve_nodes,
                                default_storage_type=storage_type)
     instance.create(clusters=[cluster])
@@ -69,16 +74,17 @@ def test_bigtable_create_instance(client, to_delete):
     to_delete.append(instance)
 
 
+@pytest.mark.order2
 def test_bigtable_create_cluster(client):
     # [START bigtable_create_cluster]
     from google.cloud.bigtable import enums
 
-    instance = client.instance("instance_my1")
+    instance = client.instance(INSTANCE_ID)
     location_id = 'us-central1-a'
     serve_nodes = 3
     storage_type = enums.StorageType.SSD
 
-    cluster = instance.cluster("cluster_my2", location_id=location_id,
+    cluster = instance.cluster(CLUSTER_ID, location_id=location_id,
                                serve_nodes=serve_nodes,
                                default_storage_type=storage_type)
     cluster.create()
@@ -86,6 +92,7 @@ def test_bigtable_create_cluster(client):
     assert cluster is not None
 
 
+@pytest.mark.order3
 def test_bigtable_list_instances(client):
     # [START bigtable_list_instances]
     (instances_list, failed_locations_list) = client.list_instances()
@@ -94,73 +101,62 @@ def test_bigtable_list_instances(client):
     assert instances_list.__len__() is not 0
 
 
+@pytest.mark.order4
 def test_bigtable_list_clusters(client):
     # [START bigtable_list_clusters]
-    instance = client.instance("instance_my1")
+    instance = client.instance(INSTANCE_ID)
     (clusters_list, failed_locations_list) = instance.list_clusters()
     # [END bigtable_list_clusters]
 
     assert clusters_list.__len__() is not 0
 
 
+@pytest.mark.order5
 def test_bigtable_instance_exists(client):
     # [START bigtable_check_instance_exists]
-    instance = client.instance("instance_my1")
+    instance = client.instance(INSTANCE_ID)
     instance_exists = instance.exists()
     # [END bigtable_check_instance_exists]
     assert instance_exists
 
 
+@pytest.mark.order6
 def test_bigtable_cluster_exists(client):
     # [START bigtable_check_cluster_exists]
-    instance = client.instance("instance_my1")
-    cluster = instance.cluster("ssd-cluster1")
+    instance = client.instance(INSTANCE_ID)
+    cluster = instance.cluster(CLUSTER_ID1)
     cluster_exists = cluster.exists()
     # [END bigtable_check_cluster_exists]
     assert cluster_exists
 
 
-def test_bigtable_delete_instance(client):
-    # [START bigtable_delete_instance]
-    instance = client.instance("instance_my1")
-    instance.delete()
-    # [END bigtable_delete_instance]
-    assert instance is None
-
-
-def test_bigtable_delete_cluster(client):
-    # [START bigtable_delete_cluster]
-    instance = client.instance("instance_my1")
-    cluster = instance.cluster("ssd-cluster1")
-    cluster.delete()
-    # [END bigtable_delete_cluster]
-    assert cluster is None
-
-
+@pytest.mark.order7
 def test_bigtable_reload_cluster(client):
     # [START bigtable_reload_cluster]
-    instance = client.instance("instance_my1")
-    cluster = instance.cluster("ssd-cluster1")
+    instance = client.instance(INSTANCE_ID)
+    cluster = instance.cluster(CLUSTER_ID1)
     cluster.reload()
     # [END bigtable_reload_cluster]
     assert cluster is not None
 
 
+@pytest.mark.order8
 def test_bigtable_update_cluster(client):
     # [START bigtable_update_cluster]
-    instance = client.instance("instance_my1")
-    cluster = instance.cluster("ssd-cluster1")
+    instance = client.instance(INSTANCE_ID)
+    cluster = instance.cluster(CLUSTER_ID1)
     cluster.serve_nodes = 8
     cluster.update()
     # [END bigtable_update_cluster]
     assert cluster is not None
 
 
+@pytest.mark.order9
 def test_bigtable_create_table(client):
     # [START bigtable_create_table]
     from google.cloud.bigtable import column_family
 
-    instance = client.instance("instance_my1")
+    instance = client.instance(INSTANCE_ID)
     table = instance.table("table_my")
     # Define the GC policy to retain only the most recent 2 versions.
     max_versions_rule = column_family.MaxVersionsGCRule(2)
@@ -170,12 +166,32 @@ def test_bigtable_create_table(client):
     assert table is not None
 
 
+@pytest.mark.order10
 def test_bigtable_list_tables(client):
     # [START bigtable_list_tables]
-    instance = client.instance("instance_my1")
+    instance = client.instance(INSTANCE_ID)
     tables_list = instance.list_tables()
     # [END bigtable_list_tables]
     assert tables_list.__len__() is not 0
+
+
+@pytest.mark.order11
+def test_bigtable_delete_cluster(client):
+    # [START bigtable_delete_cluster]
+    instance = client.instance(INSTANCE_ID)
+    cluster = instance.cluster(CLUSTER_ID1)
+    cluster.delete()
+    # [END bigtable_delete_cluster]
+    assert cluster is None
+
+
+@pytest.mark.order12
+def test_bigtable_delete_instance(client):
+    # [START bigtable_delete_instance]
+    instance = client.instance(INSTANCE_ID)
+    instance.delete()
+    # [END bigtable_delete_instance]
+    assert instance is None
 
 
 if __name__ == '__main__':
