@@ -58,6 +58,13 @@ The primary differences come from:
   the backend should enforce these limits, not the library.)
 - I renamed `Property.__creation_counter_global` to
   `Property._CREATION_COUNTER`.
+- `ndb` uses "private" instance attributes in many places, e.g. `Key.__app`.
+  The current implementation (for now) just uses "protected" attribute names,
+  e.g. `Key._key` (the implementation has changed in the rewrite). We may want
+  to keep the old "private" names around for compatibility. However, in some
+  cases, the underlying representation of the class has changed (such as `Key`)
+  due to newly available helper libraries or due to missing behavior from
+  the legacy runtime.
 
 ## Comments
 
@@ -72,14 +79,10 @@ The primary differences come from:
   and 4, during unpickling an instance will first be created via
   `Key.__new__()` and then `__setstate__` would be called on that instance.
   The addition of the `__getnewargs__` allows the (positional) arguments to be
-  stored in the pickled bytes. The original `ndb` implementation did **all** of
-  the work of the constructor in `__new__`, so the call to `__setstate__` was
-  redundant. In our implementation `__setstate__` is succifient and `__new__`
-  isn't implemented, hence `__getnewargs__` isn't needed.
-- Since we no longer use `__new__` as the constructor / utilize the
-  `__getnewargs__` value, the extra support for
-  `Key({"flat": ("a", "b"), ...})` as an alternative to
-  `Key(flat=("a", "b"), ...)` can be retired
+  stored in the pickled bytes. **All** of the work of the constructor happens
+  in `__new__`, so the call to `__setstate__` is redundant. In our
+  implementation `__setstate__` is sufficient, hence `__getnewargs__` isn't
+  needed.
 - Key parts (i.e. kind, string ID and / or integer ID) are verified when a
   `Reference` is created. However, this won't occur when the corresponding
   protobuf for the underlying `google.cloud.datastore.Key` is created. This
