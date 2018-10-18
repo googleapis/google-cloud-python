@@ -17,6 +17,7 @@ import typing
 from google.protobuf import descriptor_pb2
 
 from gapic.schema import metadata
+from gapic.schema import naming
 
 
 def test_address_str():
@@ -117,6 +118,30 @@ def test_address_resolve():
     assert addr.resolve('Bacon') == 'foo.bar.Bacon'
     assert addr.resolve('foo.bar.Bacon') == 'foo.bar.Bacon'
     assert addr.resolve('google.example.Bacon') == 'google.example.Bacon'
+
+
+def test_address_subpackage():
+    addr = metadata.Address(
+        package=('foo', 'bar', 'baz', 'v1', 'spam', 'eggs'),
+        api_naming=naming.Naming(proto_package='foo.bar.baz.v1'),
+    )
+    assert addr.subpackage == ('spam', 'eggs')
+
+
+def test_address_subpackage_no_version():
+    addr = metadata.Address(
+        package=('foo', 'bar', 'baz', 'spam', 'eggs'),
+        api_naming=naming.Naming(proto_package='foo.bar.baz'),
+    )
+    assert addr.subpackage == ('spam', 'eggs')
+
+
+def test_address_subpackage_empty():
+    addr = metadata.Address(
+        package=('foo', 'bar', 'baz', 'v1'),
+        api_naming=naming.Naming(proto_package='foo.bar.baz.v1'),
+    )
+    assert addr.subpackage == ()
 
 
 def test_metadata_with_context():

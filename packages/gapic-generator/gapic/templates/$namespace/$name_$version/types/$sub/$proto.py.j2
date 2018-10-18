@@ -16,11 +16,11 @@ import proto{% if p != 'proto' %} as {{ p }}{% endif -%}
 
 
 {% for enum in proto.top.enums.values() -%}
-    {% include '$namespace/$name_$version/types/_enum.py.j2' with context %}
+    {% include '$namespace/$name_$version/types/$sub/_enum.py.j2' with context %}
 {% endfor %}
 
 {% for message in proto.top.messages.values() -%}
-    {% include "$namespace/$name_$version/types/_message.py.j2" with context %}
+    {% include "$namespace/$name_$version/types/$sub/_message.py.j2" with context %}
 {% endfor %}
 
 __all__ = (

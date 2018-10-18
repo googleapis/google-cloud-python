@@ -239,6 +239,29 @@ def test_get_filenames_with_proto():
     ) == ('spam/types/bacon.py',)
 
 
+def test_get_filenames_with_proto_and_sub():
+    file_pb2 = descriptor_pb2.FileDescriptorProto(
+        name='bacon.proto',
+        package='foo.bar.v2.baz',
+    )
+    naming = make_naming(
+        namespace=('Foo',),
+        name='Bar',
+        proto_package='foo.bar.v2',
+        version='v2',
+    )
+    api = make_api(
+        make_proto(file_pb2, naming=naming),
+        naming=naming,
+    )
+
+    g = generator.Generator(api_schema=api)
+    assert g._get_filenames(
+        '$name/types/$sub/$proto.py.j2',
+        context={'proto': api.protos['bacon.proto']},
+    ) == ('bar/types/baz/bacon.py',)
+
+
 def test_get_filenames_with_namespace_init():
     g = generator.Generator(api_schema=make_api(naming=make_naming(
         namespace=('Foo', 'Bar', 'Baz'),
@@ -255,11 +278,12 @@ def test_get_filenames_with_namespace_init():
 
 def make_proto(file_pb: descriptor_pb2.FileDescriptorProto,
         file_to_generate: bool = True, prior_protos: Mapping = None,
+        naming: naming.Naming = None,
         ) -> api.Proto:
     prior_protos = prior_protos or {}
     return api._ProtoBuilder(file_pb,
         file_to_generate=file_to_generate,
-        naming=make_naming(),
+        naming=naming or make_naming(),
         prior_protos=prior_protos,
     ).proto
 

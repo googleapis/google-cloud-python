@@ -203,10 +203,14 @@ class Generator:
             )
 
         # Replace the $proto variable if appliable.
+        # In the cases of protos, we also honor subpackages.
         if context and 'proto' in context:
             filename = filename.replace(
                 '$proto',
                 context['proto'].module_name,
+            ).replace(
+                '$sub',
+                '/'.join(context['proto'].meta.address.subpackage),
             )
 
         # Paths may have empty path segments if components are empty

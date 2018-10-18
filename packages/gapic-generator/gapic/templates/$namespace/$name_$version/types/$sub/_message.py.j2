@@ -2,13 +2,13 @@ class {{ message.name }}({{ p }}.Message):
     """{{ message.meta.doc|rst(indent=4) }}"""
     {# Iterate over nested enums. -#}
     {% for enum in message.nested_enums.values() %}{% filter indent -%}
-        {% include '$namespace/$name_$version/types/_enum.py.j2' %}
+        {% include '$namespace/$name_$version/types/$sub/_enum.py.j2' %}
     {% endfilter %}{% endfor -%}
 
     {#- Iterate over nested messages. -#}
     {% for submessage in message.nested_messages.values() -%}
         {% with message = submessage %}{% filter indent %}
-            {%- include '$namespace/$name_$version/types/_message.py.j2' %}
+            {%- include '$namespace/$name_$version/types/$sub/_message.py.j2' %}
         {% endfilter %}{% endwith %}
     {% endfor -%}
 

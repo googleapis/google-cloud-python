@@ -118,7 +118,7 @@ class Address:
                 package=self.api_naming.module_namespace + (
                     self.api_naming.versioned_module_name,
                     'types',
-                ),
+                ) + self.subpackage,
                 module=self.module,
                 alias=self.module_alias,
             )
@@ -136,6 +136,13 @@ class Address:
         if self.module:
             return f'~.{self}'
         return self.name
+
+    @property
+    def subpackage(self) -> Tuple[str]:
+        """Return the subpackage below the versioned module name, if any."""
+        return tuple(
+            self.package[len(self.api_naming.proto_package.split('.')):]
+        )
 
     def child(self, child_name: str, path: Tuple[int]) -> 'Address':
         """Return a new child of the current Address.
