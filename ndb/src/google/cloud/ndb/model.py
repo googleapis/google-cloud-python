@@ -556,15 +556,17 @@ class Property(ModelAttribute):
         Raises:
             BadFilterError: If the current property is not indexed.
         """
+        # Import late to avoid circular imports.
+        from google.cloud.ndb import query
+
         if not self._indexed:
             raise exceptions.BadFilterError(
                 "Cannot query for unindexed property {}".format(self._name)
             )
-        # Import late to avoid circular imports.
-        from google.cloud.ndb import query
 
         if value is not None:
             value = self._datastore_type(value)
+
         return query.FilterNode(self._name, op, value)
 
     # Comparison operators on Property instances don't compare the
@@ -594,6 +596,105 @@ class Property(ModelAttribute):
     def __ge__(self, value):
         """FilterNode: Represents the ``>=`` comparison."""
         return self._comparison(">=", value)
+
+    def _IN(self, value):
+        """For the ``in`` comparison operator.
+
+        The ``in`` operator cannot be overloaded in the way we want
+        to, so we define a method. For example:
+
+        .. code-block:: python
+
+            Employee.query(Employee.rank.IN([4, 5, 6]))
+
+        Note that the method is called ``_IN()`` but may normally be invoked
+        as ``IN()``; ``_IN()`` is provided for the case that a
+        :class:`.StructuredProperty` refers to a model that has a property
+        named ``IN``.
+
+        Args:
+            value (Iterable[Any]): The set of values that the property value
+                must be contained in.
+
+        Returns:
+            Union[~google.cloud.ndb.query.DisjunctionNode, \
+                ~google.cloud.ndb.query.FilterNode, \
+                ~google.cloud.ndb.query.FalseNode]: A node corresponding
+            to the desired in filter.
+
+            * If ``value`` is empty, this will return a :class:`.FalseNode`
+            * If ``len(value) == 1``, this will return a :class:`.FilterNode`
+            * Otherwise, this will return a :class:`.DisjunctionNode`
+
+        Raises:
+            ~google.cloud.ndb.exceptions.BadFilterError: If the current
+                property is not indexed.
+            ~google.cloud.ndb.exceptions.BadArgumentError: If ``value`` is not
+                a basic container (:class:`list`, :class:`tuple`, :class:`set`
+                or :class:`frozenset`).
+        """
+        # Import late to avoid circular imports.
+        from google.cloud.ndb import query
+
+        if not self._indexed:
+            raise exceptions.BadFilterError(
+                "Cannot query for unindexed property {}".format(self._name)
+            )
+
+        if not isinstance(value, (list, tuple, set, frozenset)):
+            raise exceptions.BadArgumentError(
+                "Expected list, tuple or set, got {!r}".format(value)
+            )
+
+        values = []
+        for sub_value in value:
+            if sub_value is not None:
+                sub_value = self._datastore_type(sub_value)
+            values.append(sub_value)
+
+        return query.FilterNode(self._name, "in", values)
+
+    IN = _IN
+    """Used to check if a property value is contained in a set of values.
+
+    For example:
+
+    .. code-block:: python
+
+        Employee.query(Employee.rank.IN([4, 5, 6]))
+    """
+
+    def __neg__(self):
+        """Return a descending sort order on this property.
+
+        For example:
+
+        .. code-block:: python
+
+            Employee.query().order(-Employee.rank)
+
+        Raises:
+            NotImplementedError: Always, the original implementation relied on
+                a low-level datastore query module.
+        """
+        raise NotImplementedError("Missing datastore_query.PropertyOrder")
+
+    def __pos__(self):
+        """Return an ascending sort order on this property.
+
+        Note that this is redundant but provided for consistency with
+        :meth:`__neg__`. For example, the following two are equivalent:
+
+        .. code-block:: python
+
+            Employee.query().order(+Employee.rank)
+            Employee.query().order(Employee.rank)
+
+        Raises:
+            NotImplementedError: Always, the original implementation relied on
+                a low-level datastore query module.
+        """
+        raise NotImplementedError("Missing datastore_query.PropertyOrder")
 
 
 class ModelKey(Property):

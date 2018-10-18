@@ -547,6 +547,43 @@ class TestProperty:
         filter_node_right = value <= prop
         assert filter_node_right == expected
 
+    @staticmethod
+    def test__IN_not_indexed():
+        prop = model.Property("name", indexed=False)
+        with pytest.raises(exceptions.BadFilterError):
+            prop._IN([10, 20, 81])
+
+    @staticmethod
+    def test__IN_wrong_container():
+        prop = model.Property("name", indexed=True)
+        with pytest.raises(exceptions.BadArgumentError):
+            prop._IN({1: "a", 11: "b"})
+
+    @staticmethod
+    def test__IN():
+        prop = model.Property("name", indexed=True)
+        or_node = prop._IN(["a", None, "xy"])
+        expected = query.DisjunctionNode(
+            query.FilterNode(b"name", "=", "a"),
+            query.FilterNode(b"name", "=", None),
+            query.FilterNode(b"name", "=", "xy"),
+        )
+        assert or_node == expected
+        # Also verify the alias
+        assert or_node == prop.IN(["a", None, "xy"])
+
+    @staticmethod
+    def test___neg__():
+        prop = model.Property("name")
+        with pytest.raises(NotImplementedError):
+            -prop
+
+    @staticmethod
+    def test___pos__():
+        prop = model.Property("name")
+        with pytest.raises(NotImplementedError):
+            +prop
+
 
 class TestModelKey:
     @staticmethod

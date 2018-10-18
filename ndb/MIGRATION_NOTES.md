@@ -121,5 +121,8 @@ The primary differences come from:
   in some sense: the property name in the [protobuf definition][1] is a
   `string` (i.e. UTF-8 encoded text). However, there is a bit of a disconnect
   with other types that use property names, e.g. `FilterNode`.
+- There is a giant web of module interdependency, so runtime imports (to avoid
+  import cycles) are very common. For example `model.Property` depends on
+  `query` but `query` depends on `model`.
 
 [1]: https://github.com/googleapis/googleapis/blob/3afba2fd062df0c89ecd62d97f912192b8e0e0ae/google/datastore/v1/entity.proto#L203
