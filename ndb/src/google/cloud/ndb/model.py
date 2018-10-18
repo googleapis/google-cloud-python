@@ -502,7 +502,8 @@ class Property(ModelAttribute):
     def __repr__(self):
         """Return a compact unambiguous string representation of a property.
 
-        This
+        This cycles through all stored attributes and displays the ones that
+        differ from the default values.
         """
         args = []
         cls = self.__class__
