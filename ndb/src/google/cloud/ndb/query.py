@@ -65,6 +65,8 @@ class ParameterizedThing:
     This exists purely for :func:`isinstance` checks.
     """
 
+    __slots__ = ()
+
     def __eq__(self, other):
         raise NotImplementedError
 
@@ -86,6 +88,8 @@ class Parameter(ParameterizedThing):
     Raises:
         TypeError: If the ``key`` is not a string or integer.
     """
+
+    __slots__ = ("_key",)
 
     def __init__(self, key):
         if not isinstance(key, (int, str, bytes)):
@@ -136,6 +140,8 @@ class Parameter(ParameterizedThing):
 
 
 class ParameterizedFunction(ParameterizedThing):
+    __slots__ = ()
+
     def __init__(self, *args, **kwargs):
         raise NotImplementedError
 
@@ -151,6 +157,8 @@ class Node:
     Raises:
         TypeError: Always, only subclasses are allowed.
     """
+
+    __slots__ = ()
 
     def __new__(cls):
         if cls is Node:
@@ -214,6 +222,8 @@ class Node:
 class FalseNode(Node):
     """Tree node for an always-failing filter."""
 
+    __slots__ = ()
+
     def __eq__(self, other):
         """Equality check.
 
@@ -256,6 +266,8 @@ class ParameterNode(Node):
         TypeError: If ``param`` is not a :class:`.Parameter` or
             :class:`.ParameterizedFunction`.
     """
+
+    __slots__ = ("_prop", "_op", "_param")
 
     def __new__(cls, prop, op, param):
         if not isinstance(prop, model.Property):
@@ -368,6 +380,8 @@ class FilterNode(Node):
             :class:`frozenset`)
     """
 
+    __slots__ = ("_name", "_opsymbol", "_value")
+
     def __new__(cls, name, opsymbol, value):
         if isinstance(value, model.Key):
             value = value.to_old_key()
@@ -470,6 +484,8 @@ class PostFilterNode(Node):
             the given filter.
     """
 
+    __slots__ = ("predicate",)
+
     def __new__(cls, predicate):
         self = super(PostFilterNode, cls).__new__(cls)
         self.predicate = predicate
@@ -539,6 +555,8 @@ class _BooleanClauses:
         combine_or (bool): Indicates if new nodes will be combined
             with the current boolean expression via ``AND`` or ``OR``.
     """
+
+    __slots__ = ("name", "combine_or", "or_parts")
 
     def __init__(self, name, combine_or):
         self.name = name
@@ -630,6 +648,8 @@ class ConjunctionNode(Node):
         RuntimeError: If the ``nodes`` combine to an "empty" boolean
             expression.
     """
+
+    __slots__ = ("_nodes",)
 
     def __new__(cls, *nodes):
         if not nodes:
@@ -778,6 +798,8 @@ class DisjunctionNode(Node):
     Raises:
         TypeError: If ``nodes`` is empty.
     """
+
+    __slots__ = ("_nodes",)
 
     def __new__(cls, *nodes):
         if not nodes:

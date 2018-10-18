@@ -649,11 +649,10 @@ class TestConjunctionNode:
 
     @staticmethod
     def test__to_filter_single():
-        node1 = query.FilterNode("a", "=", 7)
-        node1._to_filter = unittest.mock.Mock(spec=())
+        node1 = unittest.mock.Mock(spec=query.FilterNode)
         node2 = query.PostFilterNode("predicate")
-        node3 = query.FilterNode("a", "=", 7)
-        node3._to_filter = unittest.mock.Mock(spec=(), return_value=False)
+        node3 = unittest.mock.Mock(spec=query.FilterNode)
+        node3._to_filter.return_value = False
         and_node = query.ConjunctionNode(node1, node2, node3)
 
         as_filter = and_node._to_filter()
@@ -723,10 +722,10 @@ class TestConjunctionNode:
 
     @staticmethod
     def test_resolve_changed():
-        node1 = query.FilterNode("a", "=", 7)
+        node1 = unittest.mock.Mock(spec=query.FilterNode)
         node2 = query.FilterNode("b", ">", 77)
         node3 = query.FilterNode("c", "=", 7)
-        node1.resolve = unittest.mock.Mock(spec=(), return_value=node3)
+        node1.resolve.return_value = node3
         and_node = query.ConjunctionNode(node1, node2)
 
         bindings = {}
@@ -821,10 +820,10 @@ class TestDisjunctionNode:
 
     @staticmethod
     def test_resolve_changed():
-        node1 = query.FilterNode("a", "=", 7)
+        node1 = unittest.mock.Mock(spec=query.FilterNode)
         node2 = query.FilterNode("b", ">", 77)
         node3 = query.FilterNode("c", "=", 7)
-        node1.resolve = unittest.mock.Mock(spec=(), return_value=node3)
+        node1.resolve.return_value = node3
         or_node = query.DisjunctionNode(node1, node2)
 
         bindings = {}
