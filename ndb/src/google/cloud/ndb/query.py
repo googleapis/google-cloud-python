@@ -236,9 +236,7 @@ class FalseNode(Node):
         """
         if post:
             return None
-        raise _exceptions.BadQueryError(
-            "Cannot convert FalseNode to predicate"
-        )
+        raise exceptions.BadQueryError("Cannot convert FalseNode to predicate")
 
 
 class ParameterNode(Node):
@@ -310,7 +308,7 @@ class ParameterNode(Node):
             .BadArgumentError: Always. This is because this node represents
             a parameter, i.e. no value exists to be filtered on.
         """
-        raise _exceptions.BadArgumentError(
+        raise exceptions.BadArgumentError(
             "Parameter :{} is not bound.".format(self._param.key)
         )
 

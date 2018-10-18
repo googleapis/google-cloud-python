@@ -207,7 +207,7 @@ class TestFalseNode:
     @staticmethod
     def test__to_filter():
         false_node = query.FalseNode()
-        with pytest.raises(_exceptions.BadQueryError):
+        with pytest.raises(exceptions.BadQueryError):
             false_node._to_filter()
 
     @staticmethod
@@ -287,7 +287,7 @@ class TestParameterNode:
         prop = model.Property(name="val")
         param = query.Parameter("abc")
         parameter_node = query.ParameterNode(prop, "=", param)
-        with pytest.raises(_exceptions.BadArgumentError):
+        with pytest.raises(exceptions.BadArgumentError):
             parameter_node._to_filter()
 
     @staticmethod
