@@ -1374,9 +1374,9 @@ class LoadJob(_AsyncJob):
         :returns: the count (None until set from the server).
         :raises: ValueError for invalid value types.
         """
-        statistics = self._properties.get('statistics')
-        if statistics is not None:
-            return int(statistics['load']['inputFileBytes'])
+        return _helpers._get_sub_prop(
+                self._properties, ['statistics', 'load', 'inputFileBytes']
+            )
 
     @property
     def input_files(self):
@@ -1385,9 +1385,9 @@ class LoadJob(_AsyncJob):
         :rtype: int, or ``NoneType``
         :returns: the count (None until set from the server).
         """
-        statistics = self._properties.get('statistics')
-        if statistics is not None:
-            return int(statistics['load']['inputFiles'])
+        return _helpers._get_sub_prop(
+                self._properties, ['statistics', 'load', 'inputFiles']
+            )
 
     @property
     def output_bytes(self):
@@ -1396,9 +1396,9 @@ class LoadJob(_AsyncJob):
         :rtype: int, or ``NoneType``
         :returns: the count (None until set from the server).
         """
-        statistics = self._properties.get('statistics')
-        if statistics is not None:
-            return int(statistics['load']['outputBytes'])
+        return _helpers._get_sub_prop(
+                self._properties, ['statistics', 'load', 'outputBytes']
+            )
 
     @property
     def output_rows(self):
@@ -1407,9 +1407,9 @@ class LoadJob(_AsyncJob):
         :rtype: int, or ``NoneType``
         :returns: the count (None until set from the server).
         """
-        statistics = self._properties.get('statistics')
-        if statistics is not None:
-            return int(statistics['load']['outputRows'])
+        return _helpers._get_sub_prop(
+                self._properties, ['statistics', 'load', 'outputRows']
+            )
 
     def to_api_repr(self):
         """Generate a resource for :meth:`_begin`."""

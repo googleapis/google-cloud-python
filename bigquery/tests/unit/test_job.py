@@ -1985,11 +1985,6 @@ class TestLoadJob(unittest.TestCase, _Base):
         statistics['creationTime'] = _millis(CREATED)
         statistics['startTime'] = _millis(STARTED)
         statistics['endTime'] = _millis(ENDED)
-        load_stats = statistics['load'] = {}
-        load_stats['inputFileBytes'] = 12345
-        load_stats['inputFiles'] = 1
-        load_stats['outputBytes'] = 23456
-        load_stats['outputRows'] = 345
 
         self.assertEqual(job.etag, 'ETAG')
         self.assertEqual(job.self_link, URL)
@@ -1998,6 +1993,15 @@ class TestLoadJob(unittest.TestCase, _Base):
         self.assertEqual(job.created, CREATED)
         self.assertEqual(job.started, STARTED)
         self.assertEqual(job.ended, ENDED)
+
+        # running jobs have no load stats not yet set.
+        self.assertIsNone(job.output_bytes)
+
+        load_stats = statistics['load'] = {}
+        load_stats['inputFileBytes'] = 12345
+        load_stats['inputFiles'] = 1
+        load_stats['outputBytes'] = 23456
+        load_stats['outputRows'] = 345
 
         self.assertEqual(job.input_file_bytes, 12345)
         self.assertEqual(job.input_files, 1)
