@@ -16,7 +16,7 @@ import unittest.mock
 
 import pytest
 
-from google.cloud.ndb import _exceptions
+from google.cloud.ndb import exceptions
 from google.cloud.ndb import query
 import tests.unit.utils
 
@@ -111,7 +111,7 @@ class TestParameter:
     def test_resolve_missing_key():
         parameter = query.Parameter(9000)
         used = {}
-        with pytest.raises(_exceptions.BadArgumentError):
+        with pytest.raises(exceptions.BadArgumentError):
             parameter.resolve({}, used)
 
         assert used == {}
