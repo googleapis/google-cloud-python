@@ -27,7 +27,7 @@ version = '1.5.0'
 # 'Development Status :: 3 - Alpha'
 # 'Development Status :: 4 - Beta'
 # 'Development Status :: 5 - Production/Stable'
-release_status = 'Development Status :: 3 - Alpha'
+release_status = 'Development Status :: 5 - Production/Stable'
 dependencies = [
     'googleapis-common-protos<2.0dev,>=1.5.3',
     'protobuf>=3.4.0',
