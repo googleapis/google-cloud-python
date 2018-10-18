@@ -14,8 +14,9 @@
 
 """Classes for representing documents for the Google Cloud Firestore API."""
 
-
 import copy
+
+import six
 
 from google.cloud.firestore_v1beta1 import _helpers
 
@@ -418,6 +419,9 @@ class DocumentReference(object):
                 `update_time`, and `create_time` attributes will all be
                 `None` and `exists` will be `False`.
         """
+        if isinstance(field_paths, six.string_types):
+            raise ValueError(
+                "'field_paths' must be a sequence of paths, not a string.")
         snapshot_generator = self._client.get_all(
             [self], field_paths=field_paths, transaction=transaction)
         return _consume_single_get(snapshot_generator)
