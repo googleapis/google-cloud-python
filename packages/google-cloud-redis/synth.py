@@ -23,8 +23,9 @@ logging.basicConfig(level=logging.DEBUG)
 gapic = gcp.GAPICGenerator()
 common = gcp.CommonTemplates()
 excludes = [
+    'README.rst',
     'setup.py',
-    'nox.py',
+    'nox*.py',
     'docs/conf.py',
     'docs/index.rst',
 ]
