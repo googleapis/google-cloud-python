@@ -217,10 +217,6 @@ class Generator:
         # (e.g. no $version); handle this.
         filename = re.sub(r'/+', '/', filename)
 
-        # Paths may have empty path segments if components are empty
-        # (e.g. no $version); handle this.
-        filename = re.sub(r'/+', '/', filename)
-
         # Done, return the filename.
         return (filename,)
 
