@@ -1,0 +1,470 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Managing Tables &#8212; google-cloud 9108464 documentation</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Using Customer Managed Encryption Keys" href="encryption.html" />
+    <link rel="prev" title="Managing Datasets" href="datasets.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="managing-tables">
+<h1>Managing Tables<a class="headerlink" href="#managing-tables" title="Permalink to this headline">#</a></h1>
+<p>Tables exist within datasets. See BigQuery documentation for more information
+on <a class="reference external" href="https://cloud.google.com/bigquery/docs/tables">Tables</a>.</p>
+<div class="section" id="listing-tables">
+<h2>Listing Tables<a class="headerlink" href="#listing-tables" title="Permalink to this headline">#</a></h2>
+<p>List the tables belonging to a dataset with the
+<a class="reference internal" href="../generated/google.cloud.bigquery.client.Client.html#google.cloud.bigquery.client.Client.list_tables" title="google.cloud.bigquery.client.Client.list_tables"><code class="xref py py-func docutils literal notranslate"><span class="pre">list_tables()</span></code></a> method:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># from google.cloud import bigquery</span>
+<span class="c1"># client = bigquery.Client()</span>
+<span class="c1"># dataset_ref = client.dataset(&#39;my_dataset&#39;)</span>
+
+<span class="n">tables</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">client</span><span class="o">.</span><span class="n">list_tables</span><span class="p">(</span><span class="n">dataset_ref</span><span class="p">))</span>  <span class="c1"># API request(s)</span>
+<span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">tables</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+
+<span class="n">table_ref</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;my_table&#39;</span><span class="p">)</span>
+<span class="n">table</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="n">table_ref</span><span class="p">)</span>
+<span class="n">client</span><span class="o">.</span><span class="n">create_table</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>                  <span class="c1"># API request</span>
+<span class="n">tables</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">client</span><span class="o">.</span><span class="n">list_tables</span><span class="p">(</span><span class="n">dataset</span><span class="p">))</span>  <span class="c1"># API request(s)</span>
+
+<span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">tables</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
+<span class="k">assert</span> <span class="n">tables</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">table_id</span> <span class="o">==</span> <span class="s1">&#39;my_table&#39;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="getting-a-table">
+<h2>Getting a Table<a class="headerlink" href="#getting-a-table" title="Permalink to this headline">#</a></h2>
+<p>Get a table resource with the
+<a class="reference internal" href="../generated/google.cloud.bigquery.client.Client.html#google.cloud.bigquery.client.Client.get_table" title="google.cloud.bigquery.client.Client.get_table"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_table()</span></code></a> method:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># from google.cloud import bigquery</span>
+<span class="c1"># client = bigquery.Client()</span>
+<span class="c1"># dataset_id = &#39;my_dataset&#39;</span>
+<span class="c1"># table_id = &#39;my_table&#39;</span>
+
+<span class="n">dataset_ref</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">dataset</span><span class="p">(</span><span class="n">dataset_id</span><span class="p">)</span>
+<span class="n">table_ref</span> <span class="o">=</span> <span class="n">dataset_ref</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="n">table_id</span><span class="p">)</span>
+<span class="n">table</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_table</span><span class="p">(</span><span class="n">table_ref</span><span class="p">)</span>  <span class="c1"># API Request</span>
+
+<span class="c1"># View table properties</span>
+<span class="k">print</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">schema</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">description</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">num_rows</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Browse data rows in a table with the
+<a class="reference internal" href="../generated/google.cloud.bigquery.client.Client.html#google.cloud.bigquery.client.Client.list_rows" title="google.cloud.bigquery.client.Client.list_rows"><code class="xref py py-func docutils literal notranslate"><span class="pre">list_rows()</span></code></a> method:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># from google.cloud import bigquery</span>
+<span class="c1"># client = bigquery.Client()</span>
+
+<span class="n">dataset_ref</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">dataset</span><span class="p">(</span><span class="s1">&#39;samples&#39;</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="s1">&#39;bigquery-public-data&#39;</span><span class="p">)</span>
+<span class="n">table_ref</span> <span class="o">=</span> <span class="n">dataset_ref</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;shakespeare&#39;</span><span class="p">)</span>
+<span class="n">table</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_table</span><span class="p">(</span><span class="n">table_ref</span><span class="p">)</span>  <span class="c1"># API call</span>
+
+<span class="c1"># Load all rows from a table</span>
+<span class="n">rows</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">list_rows</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>
+<span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">rows</span><span class="p">))</span> <span class="o">==</span> <span class="n">table</span><span class="o">.</span><span class="n">num_rows</span>
+
+<span class="c1"># Load the first 10 rows</span>
+<span class="n">rows</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">list_rows</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">max_results</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">rows</span><span class="p">))</span> <span class="o">==</span> <span class="mi">10</span>
+
+<span class="c1"># Specify selected fields to limit the results to certain columns</span>
+<span class="n">fields</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">schema</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span>  <span class="c1"># first two columns</span>
+<span class="n">rows</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">list_rows</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">selected_fields</span><span class="o">=</span><span class="n">fields</span><span class="p">,</span> <span class="n">max_results</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">rows</span><span class="o">.</span><span class="n">schema</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span>
+<span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">rows</span><span class="p">))</span> <span class="o">==</span> <span class="mi">10</span>
+
+<span class="c1"># Use the start index to load an arbitrary portion of the table</span>
+<span class="n">rows</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">list_rows</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">start_index</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">max_results</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+
+<span class="c1"># Print row data in tabular format</span>
+<span class="n">format_string</span> <span class="o">=</span> <span class="s1">&#39;{!s:&lt;16} &#39;</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">rows</span><span class="o">.</span><span class="n">schema</span><span class="p">)</span>
+<span class="n">field_names</span> <span class="o">=</span> <span class="p">[</span><span class="n">field</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">rows</span><span class="o">.</span><span class="n">schema</span><span class="p">]</span>
+<span class="k">print</span><span class="p">(</span><span class="n">format_string</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">*</span><span class="n">field_names</span><span class="p">))</span>  <span class="c1"># prints column headers</span>
+<span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">rows</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">format_string</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">*</span><span class="n">row</span><span class="p">))</span>      <span class="c1"># prints row data</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="creating-a-table">
+<h2>Creating a Table<a class="headerlink" href="#creating-a-table" title="Permalink to this headline">#</a></h2>
+<p>Create an empty table with the
+<a class="reference internal" href="../generated/google.cloud.bigquery.client.Client.html#google.cloud.bigquery.client.Client.create_table" title="google.cloud.bigquery.client.Client.create_table"><code class="xref py py-func docutils literal notranslate"><span class="pre">create_table()</span></code></a> method:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># from google.cloud import bigquery</span>
+<span class="c1"># client = bigquery.Client()</span>
+<span class="c1"># dataset_ref = client.dataset(&#39;my_dataset&#39;)</span>
+
+<span class="n">schema</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">bigquery</span><span class="o">.</span><span class="n">SchemaField</span><span class="p">(</span><span class="s1">&#39;full_name&#39;</span><span class="p">,</span> <span class="s1">&#39;STRING&#39;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;REQUIRED&#39;</span><span class="p">),</span>
+    <span class="n">bigquery</span><span class="o">.</span><span class="n">SchemaField</span><span class="p">(</span><span class="s1">&#39;age&#39;</span><span class="p">,</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;REQUIRED&#39;</span><span class="p">),</span>
+<span class="p">]</span>
+<span class="n">table_ref</span> <span class="o">=</span> <span class="n">dataset_ref</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;my_table&#39;</span><span class="p">)</span>
+<span class="n">table</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="n">table_ref</span><span class="p">,</span> <span class="n">schema</span><span class="o">=</span><span class="n">schema</span><span class="p">)</span>
+<span class="n">table</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">create_table</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>  <span class="c1"># API request</span>
+
+<span class="k">assert</span> <span class="n">table</span><span class="o">.</span><span class="n">table_id</span> <span class="o">==</span> <span class="s1">&#39;my_table&#39;</span>
+</pre></div>
+</div>
+<p>Load table data from a file with the
+<a class="reference internal" href="../generated/google.cloud.bigquery.client.Client.html#google.cloud.bigquery.client.Client.load_table_from_file" title="google.cloud.bigquery.client.Client.load_table_from_file"><code class="xref py py-func docutils literal notranslate"><span class="pre">load_table_from_file()</span></code></a> method:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># from google.cloud import bigquery</span>
+<span class="c1"># client = bigquery.Client()</span>
+<span class="c1"># filename = &#39;/path/to/file.csv&#39;</span>
+<span class="c1"># dataset_id = &#39;my_dataset&#39;</span>
+<span class="c1"># table_id = &#39;my_table&#39;</span>
+
+<span class="n">dataset_ref</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">dataset</span><span class="p">(</span><span class="n">dataset_id</span><span class="p">)</span>
+<span class="n">table_ref</span> <span class="o">=</span> <span class="n">dataset_ref</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="n">table_id</span><span class="p">)</span>
+<span class="n">job_config</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">LoadJobConfig</span><span class="p">()</span>
+<span class="n">job_config</span><span class="o">.</span><span class="n">source_format</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">SourceFormat</span><span class="o">.</span><span class="n">CSV</span>
+<span class="n">job_config</span><span class="o">.</span><span class="n">skip_leading_rows</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">job_config</span><span class="o">.</span><span class="n">autodetect</span> <span class="o">=</span> <span class="bp">True</span>
+
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">source_file</span><span class="p">:</span>
+    <span class="n">job</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">load_table_from_file</span><span class="p">(</span>
+        <span class="n">source_file</span><span class="p">,</span>
+        <span class="n">table_ref</span><span class="p">,</span>
+        <span class="n">location</span><span class="o">=</span><span class="s1">&#39;US&#39;</span><span class="p">,</span>  <span class="c1"># Must match the destination dataset location.</span>
+        <span class="n">job_config</span><span class="o">=</span><span class="n">job_config</span><span class="p">)</span>  <span class="c1"># API request</span>
+
+<span class="n">job</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>  <span class="c1"># Waits for table load to complete.</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;Loaded {} rows into {}:{}.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+    <span class="n">job</span><span class="o">.</span><span class="n">output_rows</span><span class="p">,</span> <span class="n">dataset_id</span><span class="p">,</span> <span class="n">table_id</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>Load a CSV file from Cloud Storage with the
+<a class="reference internal" href="../generated/google.cloud.bigquery.client.Client.html#google.cloud.bigquery.client.Client.load_table_from_uri" title="google.cloud.bigquery.client.Client.load_table_from_uri"><code class="xref py py-func docutils literal notranslate"><span class="pre">load_table_from_uri()</span></code></a> method:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># from google.cloud import bigquery</span>
+<span class="c1"># client = bigquery.Client()</span>
+<span class="c1"># dataset_id = &#39;my_dataset&#39;</span>
+
+<span class="n">dataset_ref</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">dataset</span><span class="p">(</span><span class="n">dataset_id</span><span class="p">)</span>
+<span class="n">job_config</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">LoadJobConfig</span><span class="p">()</span>
+<span class="n">job_config</span><span class="o">.</span><span class="n">schema</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">bigquery</span><span class="o">.</span><span class="n">SchemaField</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;STRING&#39;</span><span class="p">),</span>
+    <span class="n">bigquery</span><span class="o">.</span><span class="n">SchemaField</span><span class="p">(</span><span class="s1">&#39;post_abbr&#39;</span><span class="p">,</span> <span class="s1">&#39;STRING&#39;</span><span class="p">)</span>
+<span class="p">]</span>
+<span class="n">job_config</span><span class="o">.</span><span class="n">skip_leading_rows</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="c1"># The source format defaults to CSV, so the line below is optional.</span>
+<span class="n">job_config</span><span class="o">.</span><span class="n">source_format</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">SourceFormat</span><span class="o">.</span><span class="n">CSV</span>
+<span class="n">uri</span> <span class="o">=</span> <span class="s1">&#39;gs://cloud-samples-data/bigquery/us-states/us-states.csv&#39;</span>
+
+<span class="n">load_job</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">load_table_from_uri</span><span class="p">(</span>
+    <span class="n">uri</span><span class="p">,</span>
+    <span class="n">dataset_ref</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;us_states&#39;</span><span class="p">),</span>
+    <span class="n">job_config</span><span class="o">=</span><span class="n">job_config</span><span class="p">)</span>  <span class="c1"># API request</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;Starting job {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">load_job</span><span class="o">.</span><span class="n">job_id</span><span class="p">))</span>
+
+<span class="n">load_job</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>  <span class="c1"># Waits for table load to complete.</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;Job finished.&#39;</span><span class="p">)</span>
+
+<span class="n">destination_table</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_table</span><span class="p">(</span><span class="n">dataset_ref</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;us_states&#39;</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;Loaded {} rows.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">destination_table</span><span class="o">.</span><span class="n">num_rows</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>See also: <a class="reference external" href="https://cloud.google.com/bigquery/docs/loading-data-cloud-storage-csv">Loading CSV data from Cloud Storage</a>.</p>
+<p>Load a JSON file from Cloud Storage:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># from google.cloud import bigquery</span>
+<span class="c1"># client = bigquery.Client()</span>
+<span class="c1"># dataset_id = &#39;my_dataset&#39;</span>
+
+<span class="n">dataset_ref</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">dataset</span><span class="p">(</span><span class="n">dataset_id</span><span class="p">)</span>
+<span class="n">job_config</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">LoadJobConfig</span><span class="p">()</span>
+<span class="n">job_config</span><span class="o">.</span><span class="n">schema</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">bigquery</span><span class="o">.</span><span class="n">SchemaField</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;STRING&#39;</span><span class="p">),</span>
+    <span class="n">bigquery</span><span class="o">.</span><span class="n">SchemaField</span><span class="p">(</span><span class="s1">&#39;post_abbr&#39;</span><span class="p">,</span> <span class="s1">&#39;STRING&#39;</span><span class="p">)</span>
+<span class="p">]</span>
+<span class="n">job_config</span><span class="o">.</span><span class="n">source_format</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">SourceFormat</span><span class="o">.</span><span class="n">NEWLINE_DELIMITED_JSON</span>
+<span class="n">uri</span> <span class="o">=</span> <span class="s1">&#39;gs://cloud-samples-data/bigquery/us-states/us-states.json&#39;</span>
+
+<span class="n">load_job</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">load_table_from_uri</span><span class="p">(</span>
+    <span class="n">uri</span><span class="p">,</span>
+    <span class="n">dataset_ref</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;us_states&#39;</span><span class="p">),</span>
+    <span class="n">location</span><span class="o">=</span><span class="s1">&#39;US&#39;</span><span class="p">,</span>  <span class="c1"># Location must match that of the destination dataset.</span>
+    <span class="n">job_config</span><span class="o">=</span><span class="n">job_config</span><span class="p">)</span>  <span class="c1"># API request</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;Starting job {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">load_job</span><span class="o">.</span><span class="n">job_id</span><span class="p">))</span>
+
+<span class="n">load_job</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>  <span class="c1"># Waits for table load to complete.</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;Job finished.&#39;</span><span class="p">)</span>
+
+<span class="n">destination_table</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_table</span><span class="p">(</span><span class="n">dataset_ref</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;us_states&#39;</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;Loaded {} rows.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">destination_table</span><span class="o">.</span><span class="n">num_rows</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>See also: <a class="reference external" href="https://cloud.google.com/bigquery/docs/loading-data-cloud-storage-json">Loading JSON data from Cloud Storage</a>.</p>
+<p>Load a Parquet file from Cloud Storage:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># from google.cloud import bigquery</span>
+<span class="c1"># client = bigquery.Client()</span>
+<span class="c1"># dataset_id = &#39;my_dataset&#39;</span>
+
+<span class="n">dataset_ref</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">dataset</span><span class="p">(</span><span class="n">dataset_id</span><span class="p">)</span>
+<span class="n">job_config</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">LoadJobConfig</span><span class="p">()</span>
+<span class="n">job_config</span><span class="o">.</span><span class="n">source_format</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">SourceFormat</span><span class="o">.</span><span class="n">PARQUET</span>
+<span class="n">uri</span> <span class="o">=</span> <span class="s1">&#39;gs://cloud-samples-data/bigquery/us-states/us-states.parquet&#39;</span>
+
+<span class="n">load_job</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">load_table_from_uri</span><span class="p">(</span>
+    <span class="n">uri</span><span class="p">,</span>
+    <span class="n">dataset_ref</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;us_states&#39;</span><span class="p">),</span>
+    <span class="n">job_config</span><span class="o">=</span><span class="n">job_config</span><span class="p">)</span>  <span class="c1"># API request</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;Starting job {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">load_job</span><span class="o">.</span><span class="n">job_id</span><span class="p">))</span>
+
+<span class="n">load_job</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>  <span class="c1"># Waits for table load to complete.</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;Job finished.&#39;</span><span class="p">)</span>
+
+<span class="n">destination_table</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_table</span><span class="p">(</span><span class="n">dataset_ref</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;us_states&#39;</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;Loaded {} rows.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">destination_table</span><span class="o">.</span><span class="n">num_rows</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>See also: <a class="reference external" href="https://cloud.google.com/bigquery/docs/loading-data-cloud-storage-parquet">Loading Parquet data from Cloud Storage</a>.</p>
+</div>
+<div class="section" id="updating-a-table">
+<h2>Updating a Table<a class="headerlink" href="#updating-a-table" title="Permalink to this headline">#</a></h2>
+<p>Update a property in a table’s metadata with the
+<a class="reference internal" href="../generated/google.cloud.bigquery.client.Client.html#google.cloud.bigquery.client.Client.update_table" title="google.cloud.bigquery.client.Client.update_table"><code class="xref py py-func docutils literal notranslate"><span class="pre">update_table()</span></code></a> method:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># from google.cloud import bigquery</span>
+<span class="c1"># client = bigquery.Client()</span>
+<span class="c1"># table_ref = client.dataset(&#39;my_dataset&#39;).table(&#39;my_table&#39;)</span>
+<span class="c1"># table = client.get_table(table_ref)  # API request</span>
+
+<span class="k">assert</span> <span class="n">table</span><span class="o">.</span><span class="n">description</span> <span class="o">==</span> <span class="s1">&#39;Original description.&#39;</span>
+<span class="n">table</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="s1">&#39;Updated description.&#39;</span>
+
+<span class="n">table</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">update_table</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;description&#39;</span><span class="p">])</span>  <span class="c1"># API request</span>
+
+<span class="k">assert</span> <span class="n">table</span><span class="o">.</span><span class="n">description</span> <span class="o">==</span> <span class="s1">&#39;Updated description.&#39;</span>
+</pre></div>
+</div>
+<p>Insert rows into a table’s data with the
+<a class="reference internal" href="../generated/google.cloud.bigquery.client.Client.html#google.cloud.bigquery.client.Client.insert_rows" title="google.cloud.bigquery.client.Client.insert_rows"><code class="xref py py-func docutils literal notranslate"><span class="pre">insert_rows()</span></code></a> method:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># TODO(developer): Uncomment the lines below and replace with your values.</span>
+<span class="c1"># from google.cloud import bigquery</span>
+<span class="c1"># client = bigquery.Client()</span>
+<span class="c1"># dataset_id = &#39;my_dataset&#39;  # replace with your dataset ID</span>
+<span class="c1"># For this sample, the table must already exist and have a defined schema</span>
+<span class="c1"># table_id = &#39;my_table&#39;  # replace with your table ID</span>
+<span class="c1"># table_ref = client.dataset(dataset_id).table(table_id)</span>
+<span class="c1"># table = client.get_table(table_ref)  # API request</span>
+
+<span class="n">rows_to_insert</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">(</span><span class="sa">u</span><span class="s1">&#39;Phred Phlyntstone&#39;</span><span class="p">,</span> <span class="mi">32</span><span class="p">),</span>
+    <span class="p">(</span><span class="sa">u</span><span class="s1">&#39;Wylma Phlyntstone&#39;</span><span class="p">,</span> <span class="mi">29</span><span class="p">),</span>
+<span class="p">]</span>
+
+<span class="n">errors</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">insert_rows</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">rows_to_insert</span><span class="p">)</span>  <span class="c1"># API request</span>
+
+<span class="k">assert</span> <span class="n">errors</span> <span class="o">==</span> <span class="p">[]</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="copying-a-table">
+<h2>Copying a Table<a class="headerlink" href="#copying-a-table" title="Permalink to this headline">#</a></h2>
+<p>Copy a table with the
+<a class="reference internal" href="../generated/google.cloud.bigquery.client.Client.html#google.cloud.bigquery.client.Client.copy_table" title="google.cloud.bigquery.client.Client.copy_table"><code class="xref py py-func docutils literal notranslate"><span class="pre">copy_table()</span></code></a> method:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># from google.cloud import bigquery</span>
+<span class="c1"># client = bigquery.Client()</span>
+
+<span class="n">source_dataset</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">dataset</span><span class="p">(</span><span class="s1">&#39;samples&#39;</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="s1">&#39;bigquery-public-data&#39;</span><span class="p">)</span>
+<span class="n">source_table_ref</span> <span class="o">=</span> <span class="n">source_dataset</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;shakespeare&#39;</span><span class="p">)</span>
+
+<span class="c1"># dataset_id = &#39;my_dataset&#39;</span>
+<span class="n">dest_table_ref</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">dataset</span><span class="p">(</span><span class="n">dataset_id</span><span class="p">)</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;destination_table&#39;</span><span class="p">)</span>
+
+<span class="n">job</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">copy_table</span><span class="p">(</span>
+    <span class="n">source_table_ref</span><span class="p">,</span>
+    <span class="n">dest_table_ref</span><span class="p">,</span>
+    <span class="c1"># Location must match that of the source and destination tables.</span>
+    <span class="n">location</span><span class="o">=</span><span class="s1">&#39;US&#39;</span><span class="p">)</span>  <span class="c1"># API request</span>
+
+<span class="n">job</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>  <span class="c1"># Waits for job to complete.</span>
+
+<span class="k">assert</span> <span class="n">job</span><span class="o">.</span><span class="n">state</span> <span class="o">==</span> <span class="s1">&#39;DONE&#39;</span>
+<span class="n">dest_table</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_table</span><span class="p">(</span><span class="n">dest_table_ref</span><span class="p">)</span>  <span class="c1"># API request</span>
+<span class="k">assert</span> <span class="n">dest_table</span><span class="o">.</span><span class="n">num_rows</span> <span class="o">&gt;</span> <span class="mi">0</span>
+</pre></div>
+</div>
+<p>Copy table data to Google Cloud Storage with the
+<a class="reference internal" href="../generated/google.cloud.bigquery.client.Client.html#google.cloud.bigquery.client.Client.extract_table" title="google.cloud.bigquery.client.Client.extract_table"><code class="xref py py-func docutils literal notranslate"><span class="pre">extract_table()</span></code></a> method:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># from google.cloud import bigquery</span>
+<span class="c1"># client = bigquery.Client()</span>
+<span class="c1"># bucket_name = &#39;my-bucket&#39;</span>
+<span class="n">project</span> <span class="o">=</span> <span class="s1">&#39;bigquery-public-data&#39;</span>
+<span class="n">dataset_id</span> <span class="o">=</span> <span class="s1">&#39;samples&#39;</span>
+<span class="n">table_id</span> <span class="o">=</span> <span class="s1">&#39;shakespeare&#39;</span>
+
+<span class="n">destination_uri</span> <span class="o">=</span> <span class="s1">&#39;gs://{}/{}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">bucket_name</span><span class="p">,</span> <span class="s1">&#39;shakespeare.csv&#39;</span><span class="p">)</span>
+<span class="n">dataset_ref</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">dataset</span><span class="p">(</span><span class="n">dataset_id</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">)</span>
+<span class="n">table_ref</span> <span class="o">=</span> <span class="n">dataset_ref</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="n">table_id</span><span class="p">)</span>
+
+<span class="n">extract_job</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">extract_table</span><span class="p">(</span>
+    <span class="n">table_ref</span><span class="p">,</span>
+    <span class="n">destination_uri</span><span class="p">,</span>
+    <span class="c1"># Location must match that of the source table.</span>
+    <span class="n">location</span><span class="o">=</span><span class="s1">&#39;US&#39;</span><span class="p">)</span>  <span class="c1"># API request</span>
+<span class="n">extract_job</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>  <span class="c1"># Waits for job to complete.</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;Exported {}:{}.{} to {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+    <span class="n">project</span><span class="p">,</span> <span class="n">dataset_id</span><span class="p">,</span> <span class="n">table_id</span><span class="p">,</span> <span class="n">destination_uri</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="deleting-a-table">
+<h2>Deleting a Table<a class="headerlink" href="#deleting-a-table" title="Permalink to this headline">#</a></h2>
+<p>Delete a table with the
+<a class="reference internal" href="../generated/google.cloud.bigquery.client.Client.html#google.cloud.bigquery.client.Client.delete_table" title="google.cloud.bigquery.client.Client.delete_table"><code class="xref py py-func docutils literal notranslate"><span class="pre">delete_table()</span></code></a> method:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># from google.cloud import bigquery</span>
+<span class="c1"># client = bigquery.Client()</span>
+<span class="c1"># dataset_id = &#39;my_dataset&#39;</span>
+<span class="c1"># table_id = &#39;my_table&#39;</span>
+
+<span class="n">table_ref</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">dataset</span><span class="p">(</span><span class="n">dataset_id</span><span class="p">)</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="n">table_id</span><span class="p">)</span>
+<span class="n">client</span><span class="o">.</span><span class="n">delete_table</span><span class="p">(</span><span class="n">table_ref</span><span class="p">)</span>  <span class="c1"># API request</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;Table {}:{} deleted.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">dataset_id</span><span class="p">,</span> <span class="n">table_id</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">google-cloud</a></h1>
+
+
+
+<p class="blurb">Google Cloud Client Libraries for Python</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=GoogleCloudPlatform&repo=google-cloud-python&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../core/index.html">Core Libraries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../asset/index.html">Asset Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../automl/index.html">AutoML</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">BigQuery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../bigquery_datatransfer/index.html">BigQuery Data-Transfer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../bigtable/index.html">Bigtable</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../container/index.html">Container</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dataproc/index.html">Dataproc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../datastore/index.html">Datastore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dlp/index.html">Data Loss Prevention</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dns/index.html">DNS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../firestore/index.html">Firestore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../iot/index.html">IoT</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../kms/index.html">Key Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../language/index.html">Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pubsub/index.html">PubSub</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../oslogin/index.html">OSLogin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../redis/index.html">Redis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../resource-manager/index.html">Resource Manager</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../runtimeconfig/index.html">Python Client for Google Cloud RuntimeConfig</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../runtimeconfig/index.html#api-reference">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../websecurityscanner/index.html">Security Scanner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../spanner/index.html">Spanner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../speech/index.html">Speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../storage/index.html">Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tasks/index.html">Tasks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../texttospeech/index.html">Text-to-Speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../translate/index.html">Translate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../vision/index.html">Vision</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../videointelligence/index.html">Video Intelligence</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../error-reporting/index.html">Stackdriver Error Reporting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../logging/index.html">Stackdriver Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../monitoring/index.html">Stackdriver Monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../trace/index.html">Stackdriver Trace</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases.html">Release History</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Python Client for Google BigQuery</a><ul>
+  <li><a href="index.html">Usage Guides</a><ul>
+      <li>Previous: <a href="datasets.html" title="previous chapter">Managing Datasets</a></li>
+      <li>Next: <a href="encryption.html" title="next chapter">Using Customer Managed Encryption Keys</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2014-2017, Google.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../../_sources/bigquery/usage/tables.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/GoogleCloudPlatform/google-cloud-python" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

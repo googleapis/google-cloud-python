@@ -1,0 +1,268 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Running Queries &#8212; google-cloud 9108464 documentation</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Managing Datasets" href="datasets.html" />
+    <link rel="prev" title="Creating a Client" href="client.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="running-queries">
+<h1>Running Queries<a class="headerlink" href="#running-queries" title="Permalink to this headline">#</a></h1>
+<div class="section" id="querying-data">
+<h2>Querying data<a class="headerlink" href="#querying-data" title="Permalink to this headline">#</a></h2>
+<p>Run a query and wait for it to finish:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># from google.cloud import bigquery</span>
+<span class="c1"># client = bigquery.Client()</span>
+
+<span class="n">query</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="s1">&#39;SELECT name FROM `bigquery-public-data.usa_names.usa_1910_2013` &#39;</span>
+    <span class="s1">&#39;WHERE state = &quot;TX&quot; &#39;</span>
+    <span class="s1">&#39;LIMIT 100&#39;</span><span class="p">)</span>
+<span class="n">query_job</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">query</span><span class="p">(</span>
+    <span class="n">query</span><span class="p">,</span>
+    <span class="c1"># Location must match that of the dataset(s) referenced in the query.</span>
+    <span class="n">location</span><span class="o">=</span><span class="s1">&#39;US&#39;</span><span class="p">)</span>  <span class="c1"># API request - starts the query</span>
+
+<span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">query_job</span><span class="p">:</span>  <span class="c1"># API request - fetches results</span>
+    <span class="c1"># Row values can be accessed by field name or index</span>
+    <span class="k">assert</span> <span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">row</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="run-a-dry-run-query">
+<h2>Run a dry run query<a class="headerlink" href="#run-a-dry-run-query" title="Permalink to this headline">#</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># from google.cloud import bigquery</span>
+<span class="c1"># client = bigquery.Client()</span>
+
+<span class="n">job_config</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">QueryJobConfig</span><span class="p">()</span>
+<span class="n">job_config</span><span class="o">.</span><span class="n">dry_run</span> <span class="o">=</span> <span class="bp">True</span>
+<span class="n">job_config</span><span class="o">.</span><span class="n">use_query_cache</span> <span class="o">=</span> <span class="bp">False</span>
+<span class="n">query_job</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">query</span><span class="p">(</span>
+    <span class="p">(</span><span class="s1">&#39;SELECT name, COUNT(*) as name_count &#39;</span>
+     <span class="s1">&#39;FROM `bigquery-public-data.usa_names.usa_1910_2013` &#39;</span>
+     <span class="s2">&quot;WHERE state = &#39;WA&#39; &quot;</span>
+     <span class="s1">&#39;GROUP BY name&#39;</span><span class="p">),</span>
+    <span class="c1"># Location must match that of the dataset(s) referenced in the query.</span>
+    <span class="n">location</span><span class="o">=</span><span class="s1">&#39;US&#39;</span><span class="p">,</span>
+    <span class="n">job_config</span><span class="o">=</span><span class="n">job_config</span><span class="p">)</span>  <span class="c1"># API request</span>
+
+<span class="c1"># A dry run query completes immediately.</span>
+<span class="k">assert</span> <span class="n">query_job</span><span class="o">.</span><span class="n">state</span> <span class="o">==</span> <span class="s1">&#39;DONE&#39;</span>
+<span class="k">assert</span> <span class="n">query_job</span><span class="o">.</span><span class="n">dry_run</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;This query will process {} bytes.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+    <span class="n">query_job</span><span class="o">.</span><span class="n">total_bytes_processed</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="writing-query-results-to-a-destination-table">
+<h2>Writing query results to a destination table<a class="headerlink" href="#writing-query-results-to-a-destination-table" title="Permalink to this headline">#</a></h2>
+<p>See BigQuery documentation for more information on
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/writing-results">writing query results</a>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># from google.cloud import bigquery</span>
+<span class="c1"># client = bigquery.Client()</span>
+<span class="c1"># dataset_id = &#39;your_dataset_id&#39;</span>
+
+<span class="n">job_config</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">QueryJobConfig</span><span class="p">()</span>
+<span class="c1"># Set the destination table</span>
+<span class="n">table_ref</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">dataset</span><span class="p">(</span><span class="n">dataset_id</span><span class="p">)</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;your_table_id&#39;</span><span class="p">)</span>
+<span class="n">job_config</span><span class="o">.</span><span class="n">destination</span> <span class="o">=</span> <span class="n">table_ref</span>
+<span class="n">sql</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    SELECT corpus</span>
+<span class="s2">    FROM `bigquery-public-data.samples.shakespeare`</span>
+<span class="s2">    GROUP BY corpus;</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+<span class="c1"># Start the query, passing in the extra configuration.</span>
+<span class="n">query_job</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">query</span><span class="p">(</span>
+    <span class="n">sql</span><span class="p">,</span>
+    <span class="c1"># Location must match that of the dataset(s) referenced in the query</span>
+    <span class="c1"># and of the destination table.</span>
+    <span class="n">location</span><span class="o">=</span><span class="s1">&#39;US&#39;</span><span class="p">,</span>
+    <span class="n">job_config</span><span class="o">=</span><span class="n">job_config</span><span class="p">)</span>  <span class="c1"># API request - starts the query</span>
+
+<span class="n">query_job</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>  <span class="c1"># Waits for the query to finish</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;Query results loaded to table {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">table_ref</span><span class="o">.</span><span class="n">path</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="run-a-query-using-a-named-query-parameter">
+<h2>Run a query using a named query parameter<a class="headerlink" href="#run-a-query-using-a-named-query-parameter" title="Permalink to this headline">#</a></h2>
+<p>See BigQuery documentation for more information on
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/parameterized-queries">parameterized queries</a>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># from google.cloud import bigquery</span>
+<span class="c1"># client = bigquery.Client()</span>
+
+<span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    SELECT word, word_count</span>
+<span class="s2">    FROM `bigquery-public-data.samples.shakespeare`</span>
+<span class="s2">    WHERE corpus = @corpus</span>
+<span class="s2">    AND word_count &gt;= @min_word_count</span>
+<span class="s2">    ORDER BY word_count DESC;</span>
+<span class="s2">&quot;&quot;&quot;</span>
+<span class="n">query_params</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">bigquery</span><span class="o">.</span><span class="n">ScalarQueryParameter</span><span class="p">(</span><span class="s1">&#39;corpus&#39;</span><span class="p">,</span> <span class="s1">&#39;STRING&#39;</span><span class="p">,</span> <span class="s1">&#39;romeoandjuliet&#39;</span><span class="p">),</span>
+    <span class="n">bigquery</span><span class="o">.</span><span class="n">ScalarQueryParameter</span><span class="p">(</span><span class="s1">&#39;min_word_count&#39;</span><span class="p">,</span> <span class="s1">&#39;INT64&#39;</span><span class="p">,</span> <span class="mi">250</span><span class="p">)</span>
+<span class="p">]</span>
+<span class="n">job_config</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">QueryJobConfig</span><span class="p">()</span>
+<span class="n">job_config</span><span class="o">.</span><span class="n">query_parameters</span> <span class="o">=</span> <span class="n">query_params</span>
+<span class="n">query_job</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">query</span><span class="p">(</span>
+    <span class="n">query</span><span class="p">,</span>
+    <span class="c1"># Location must match that of the dataset(s) referenced in the query.</span>
+    <span class="n">location</span><span class="o">=</span><span class="s1">&#39;US&#39;</span><span class="p">,</span>
+    <span class="n">job_config</span><span class="o">=</span><span class="n">job_config</span><span class="p">)</span>  <span class="c1"># API request - starts the query</span>
+
+<span class="c1"># Print the results</span>
+<span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">query_job</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;{}: </span><span class="se">\t</span><span class="s1">{}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">row</span><span class="o">.</span><span class="n">word</span><span class="p">,</span> <span class="n">row</span><span class="o">.</span><span class="n">word_count</span><span class="p">))</span>
+
+<span class="k">assert</span> <span class="n">query_job</span><span class="o">.</span><span class="n">state</span> <span class="o">==</span> <span class="s1">&#39;DONE&#39;</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">google-cloud</a></h1>
+
+
+
+<p class="blurb">Google Cloud Client Libraries for Python</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=GoogleCloudPlatform&repo=google-cloud-python&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../core/index.html">Core Libraries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../asset/index.html">Asset Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../automl/index.html">AutoML</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">BigQuery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../bigquery_datatransfer/index.html">BigQuery Data-Transfer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../bigtable/index.html">Bigtable</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../container/index.html">Container</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dataproc/index.html">Dataproc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../datastore/index.html">Datastore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dlp/index.html">Data Loss Prevention</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dns/index.html">DNS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../firestore/index.html">Firestore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../iot/index.html">IoT</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../kms/index.html">Key Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../language/index.html">Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pubsub/index.html">PubSub</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../oslogin/index.html">OSLogin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../redis/index.html">Redis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../resource-manager/index.html">Resource Manager</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../runtimeconfig/index.html">Python Client for Google Cloud RuntimeConfig</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../runtimeconfig/index.html#api-reference">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../websecurityscanner/index.html">Security Scanner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../spanner/index.html">Spanner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../speech/index.html">Speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../storage/index.html">Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tasks/index.html">Tasks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../texttospeech/index.html">Text-to-Speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../translate/index.html">Translate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../vision/index.html">Vision</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../videointelligence/index.html">Video Intelligence</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../error-reporting/index.html">Stackdriver Error Reporting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../logging/index.html">Stackdriver Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../monitoring/index.html">Stackdriver Monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../trace/index.html">Stackdriver Trace</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases.html">Release History</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Python Client for Google BigQuery</a><ul>
+  <li><a href="index.html">Usage Guides</a><ul>
+      <li>Previous: <a href="client.html" title="previous chapter">Creating a Client</a></li>
+      <li>Next: <a href="datasets.html" title="next chapter">Managing Datasets</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2014-2017, Google.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../../_sources/bigquery/usage/queries.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/GoogleCloudPlatform/google-cloud-python" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,196 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Managing Jobs &#8212; google-cloud 9108464 documentation</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Using BigQuery with Pandas" href="pandas.html" />
+    <link rel="prev" title="Using Customer Managed Encryption Keys" href="encryption.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="managing-jobs">
+<h1>Managing Jobs<a class="headerlink" href="#managing-jobs" title="Permalink to this headline">#</a></h1>
+<div class="section" id="list-jobs-for-a-project">
+<h2>List jobs for a project<a class="headerlink" href="#list-jobs-for-a-project" title="Permalink to this headline">#</a></h2>
+<p>Jobs describe actions performed on data in BigQuery tables:</p>
+<ul class="simple">
+<li>Load data into a table</li>
+<li>Run a query against data in one or more tables</li>
+<li>Extract data from a table</li>
+<li>Copy a table</li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># TODO(developer): Uncomment the lines below and replace with your values.</span>
+<span class="c1"># from google.cloud import bigquery</span>
+<span class="c1"># project = &#39;my_project&#39;  # replace with your project ID</span>
+<span class="c1"># client = bigquery.Client(project=project)</span>
+<span class="kn">import</span> <span class="nn">datetime</span>
+
+<span class="c1"># List the 10 most recent jobs in reverse chronological order.</span>
+<span class="c1"># Omit the max_results parameter to list jobs from the past 6 months.</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;Last 10 jobs:&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">job</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_jobs</span><span class="p">(</span><span class="n">max_results</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>  <span class="c1"># API request(s)</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">job</span><span class="o">.</span><span class="n">job_id</span><span class="p">)</span>
+
+<span class="c1"># The following are examples of additional optional parameters:</span>
+
+<span class="c1"># Use min_creation_time and/or max_creation_time to specify a time window.</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;Jobs from the last ten minutes:&quot;</span><span class="p">)</span>
+<span class="n">ten_mins_ago</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span> <span class="o">-</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">minutes</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">job</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_jobs</span><span class="p">(</span><span class="n">min_creation_time</span><span class="o">=</span><span class="n">ten_mins_ago</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">job</span><span class="o">.</span><span class="n">job_id</span><span class="p">)</span>
+
+<span class="c1"># Use all_users to include jobs run by all users in the project.</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;Last 10 jobs run by all users:&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">job</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_jobs</span><span class="p">(</span><span class="n">max_results</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">all_users</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;{} run by user: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">job</span><span class="o">.</span><span class="n">job_id</span><span class="p">,</span> <span class="n">job</span><span class="o">.</span><span class="n">user_email</span><span class="p">))</span>
+
+<span class="c1"># Use state_filter to filter by job state.</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;Jobs currently running:&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">job</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_jobs</span><span class="p">(</span><span class="n">state_filter</span><span class="o">=</span><span class="s1">&#39;RUNNING&#39;</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">job</span><span class="o">.</span><span class="n">job_id</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">google-cloud</a></h1>
+
+
+
+<p class="blurb">Google Cloud Client Libraries for Python</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=GoogleCloudPlatform&repo=google-cloud-python&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../core/index.html">Core Libraries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../asset/index.html">Asset Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../automl/index.html">AutoML</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">BigQuery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../bigquery_datatransfer/index.html">BigQuery Data-Transfer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../bigtable/index.html">Bigtable</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../container/index.html">Container</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dataproc/index.html">Dataproc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../datastore/index.html">Datastore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dlp/index.html">Data Loss Prevention</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dns/index.html">DNS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../firestore/index.html">Firestore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../iot/index.html">IoT</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../kms/index.html">Key Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../language/index.html">Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pubsub/index.html">PubSub</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../oslogin/index.html">OSLogin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../redis/index.html">Redis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../resource-manager/index.html">Resource Manager</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../runtimeconfig/index.html">Python Client for Google Cloud RuntimeConfig</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../runtimeconfig/index.html#api-reference">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../websecurityscanner/index.html">Security Scanner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../spanner/index.html">Spanner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../speech/index.html">Speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../storage/index.html">Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tasks/index.html">Tasks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../texttospeech/index.html">Text-to-Speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../translate/index.html">Translate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../vision/index.html">Vision</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../videointelligence/index.html">Video Intelligence</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../error-reporting/index.html">Stackdriver Error Reporting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../logging/index.html">Stackdriver Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../monitoring/index.html">Stackdriver Monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../trace/index.html">Stackdriver Trace</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases.html">Release History</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Python Client for Google BigQuery</a><ul>
+  <li><a href="index.html">Usage Guides</a><ul>
+      <li>Previous: <a href="encryption.html" title="previous chapter">Using Customer Managed Encryption Keys</a></li>
+      <li>Next: <a href="pandas.html" title="next chapter">Using BigQuery with Pandas</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2014-2017, Google.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../../_sources/bigquery/usage/jobs.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/GoogleCloudPlatform/google-cloud-python" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

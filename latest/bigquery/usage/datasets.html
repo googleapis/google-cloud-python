@@ -1,0 +1,302 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Managing Datasets &#8212; google-cloud 9108464 documentation</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Managing Tables" href="tables.html" />
+    <link rel="prev" title="Running Queries" href="queries.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="managing-datasets">
+<h1>Managing Datasets<a class="headerlink" href="#managing-datasets" title="Permalink to this headline">#</a></h1>
+<p>A dataset represents a collection of tables, and applies several default
+policies to tables as they are created:</p>
+<ul class="simple">
+<li>An access control list (ACL).  When created, a dataset has an ACL
+which maps to the ACL inherited from its project.</li>
+<li>A default table expiration period.  If set, tables created within the
+dataset will have the value as their expiration period.</li>
+</ul>
+<p>See BigQuery documentation for more information on
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/datasets">Datasets</a>.</p>
+<div class="section" id="listing-datasets">
+<h2>Listing Datasets<a class="headerlink" href="#listing-datasets" title="Permalink to this headline">#</a></h2>
+<p>List datasets for a project with the
+<a class="reference internal" href="../generated/google.cloud.bigquery.client.Client.html#google.cloud.bigquery.client.Client.list_datasets" title="google.cloud.bigquery.client.Client.list_datasets"><code class="xref py py-func docutils literal notranslate"><span class="pre">list_datasets()</span></code></a> method:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># from google.cloud import bigquery</span>
+<span class="c1"># client = bigquery.Client()</span>
+
+<span class="n">datasets</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">client</span><span class="o">.</span><span class="n">list_datasets</span><span class="p">())</span>
+<span class="n">project</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">project</span>
+
+<span class="k">if</span> <span class="n">datasets</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;Datasets in project {}:&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">project</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">dataset</span> <span class="ow">in</span> <span class="n">datasets</span><span class="p">:</span>  <span class="c1"># API request(s)</span>
+        <span class="k">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">{}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">dataset</span><span class="o">.</span><span class="n">dataset_id</span><span class="p">))</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;{} project does not contain any datasets.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">project</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="getting-a-dataset">
+<h2>Getting a Dataset<a class="headerlink" href="#getting-a-dataset" title="Permalink to this headline">#</a></h2>
+<p>Get a dataset resource (to pick up changes made by another client) with the
+<a class="reference internal" href="../generated/google.cloud.bigquery.client.Client.html#google.cloud.bigquery.client.Client.get_dataset" title="google.cloud.bigquery.client.Client.get_dataset"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_dataset()</span></code></a> method:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># from google.cloud import bigquery</span>
+<span class="c1"># client = bigquery.Client()</span>
+<span class="c1"># dataset_id = &#39;my_dataset&#39;</span>
+
+<span class="n">dataset_ref</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">dataset</span><span class="p">(</span><span class="n">dataset_id</span><span class="p">)</span>
+<span class="n">dataset</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_dataset</span><span class="p">(</span><span class="n">dataset_ref</span><span class="p">)</span>  <span class="c1"># API request</span>
+
+<span class="c1"># View dataset properties</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;Dataset ID: {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">dataset_id</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;Description: {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">dataset</span><span class="o">.</span><span class="n">description</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;Labels:&#39;</span><span class="p">)</span>
+<span class="n">labels</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">labels</span>
+<span class="k">if</span> <span class="n">labels</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">label</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">labels</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">{}: {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">value</span><span class="p">))</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">Dataset has no labels defined.&quot;</span><span class="p">)</span>
+
+<span class="c1"># View tables in dataset</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;Tables:&#39;</span><span class="p">)</span>
+<span class="n">tables</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">client</span><span class="o">.</span><span class="n">list_tables</span><span class="p">(</span><span class="n">dataset_ref</span><span class="p">))</span>  <span class="c1"># API request(s)</span>
+<span class="k">if</span> <span class="n">tables</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">table</span> <span class="ow">in</span> <span class="n">tables</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">{}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">table_id</span><span class="p">))</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">This dataset does not contain any tables.&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="creating-a-dataset">
+<h2>Creating a Dataset<a class="headerlink" href="#creating-a-dataset" title="Permalink to this headline">#</a></h2>
+<p>Create a new dataset with the
+<a class="reference internal" href="../generated/google.cloud.bigquery.client.Client.html#google.cloud.bigquery.client.Client.create_dataset" title="google.cloud.bigquery.client.Client.create_dataset"><code class="xref py py-func docutils literal notranslate"><span class="pre">create_dataset()</span></code></a> method:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># from google.cloud import bigquery</span>
+<span class="c1"># client = bigquery.Client()</span>
+<span class="c1"># dataset_id = &#39;my_dataset&#39;</span>
+
+<span class="c1"># Create a DatasetReference using a chosen dataset ID.</span>
+<span class="c1"># The project defaults to the Client&#39;s project if not specified.</span>
+<span class="n">dataset_ref</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">dataset</span><span class="p">(</span><span class="n">dataset_id</span><span class="p">)</span>
+
+<span class="c1"># Construct a full Dataset object to send to the API.</span>
+<span class="n">dataset</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">Dataset</span><span class="p">(</span><span class="n">dataset_ref</span><span class="p">)</span>
+<span class="c1"># Specify the geographic location where the dataset should reside.</span>
+<span class="n">dataset</span><span class="o">.</span><span class="n">location</span> <span class="o">=</span> <span class="s1">&#39;US&#39;</span>
+
+<span class="c1"># Send the dataset to the API for creation.</span>
+<span class="c1"># Raises google.api_core.exceptions.AlreadyExists if the Dataset already</span>
+<span class="c1"># exists within the project.</span>
+<span class="n">dataset</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span>  <span class="c1"># API request</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="updating-a-dataset">
+<h2>Updating a Dataset<a class="headerlink" href="#updating-a-dataset" title="Permalink to this headline">#</a></h2>
+<p>Update a property in a dataset’s metadata with the
+<a class="reference internal" href="../generated/google.cloud.bigquery.client.Client.html#google.cloud.bigquery.client.Client.update_dataset" title="google.cloud.bigquery.client.Client.update_dataset"><code class="xref py py-func docutils literal notranslate"><span class="pre">update_dataset()</span></code></a> method:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># from google.cloud import bigquery</span>
+<span class="c1"># client = bigquery.Client()</span>
+<span class="c1"># dataset_ref = client.dataset(&#39;my_dataset&#39;)</span>
+<span class="c1"># dataset = client.get_dataset(dataset_ref)  # API request</span>
+
+<span class="k">assert</span> <span class="n">dataset</span><span class="o">.</span><span class="n">description</span> <span class="o">==</span> <span class="s1">&#39;Original description.&#39;</span>
+<span class="n">dataset</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="s1">&#39;Updated description.&#39;</span>
+
+<span class="n">dataset</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">update_dataset</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;description&#39;</span><span class="p">])</span>  <span class="c1"># API request</span>
+
+<span class="k">assert</span> <span class="n">dataset</span><span class="o">.</span><span class="n">description</span> <span class="o">==</span> <span class="s1">&#39;Updated description.&#39;</span>
+</pre></div>
+</div>
+<p>Modify user permissions on a dataset with the
+<a class="reference internal" href="../generated/google.cloud.bigquery.client.Client.html#google.cloud.bigquery.client.Client.update_dataset" title="google.cloud.bigquery.client.Client.update_dataset"><code class="xref py py-func docutils literal notranslate"><span class="pre">update_dataset()</span></code></a> method:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># from google.cloud import bigquery</span>
+<span class="c1"># client = bigquery.Client()</span>
+<span class="c1"># dataset = client.get_dataset(client.dataset(&#39;my_dataset&#39;))</span>
+
+<span class="n">entry</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">AccessEntry</span><span class="p">(</span>
+    <span class="n">role</span><span class="o">=</span><span class="s1">&#39;READER&#39;</span><span class="p">,</span>
+    <span class="n">entity_type</span><span class="o">=</span><span class="s1">&#39;userByEmail&#39;</span><span class="p">,</span>
+    <span class="n">entity_id</span><span class="o">=</span><span class="s1">&#39;sample.bigquery.dev@gmail.com&#39;</span><span class="p">)</span>
+<span class="k">assert</span> <span class="n">entry</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">dataset</span><span class="o">.</span><span class="n">access_entries</span>
+<span class="n">entries</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">dataset</span><span class="o">.</span><span class="n">access_entries</span><span class="p">)</span>
+<span class="n">entries</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">entry</span><span class="p">)</span>
+<span class="n">dataset</span><span class="o">.</span><span class="n">access_entries</span> <span class="o">=</span> <span class="n">entries</span>
+
+<span class="n">dataset</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">update_dataset</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;access_entries&#39;</span><span class="p">])</span>  <span class="c1"># API request</span>
+
+<span class="k">assert</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">dataset</span><span class="o">.</span><span class="n">access_entries</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="deleting-a-dataset">
+<h2>Deleting a Dataset<a class="headerlink" href="#deleting-a-dataset" title="Permalink to this headline">#</a></h2>
+<p>Delete a dataset with the
+<a class="reference internal" href="../generated/google.cloud.bigquery.client.Client.html#google.cloud.bigquery.client.Client.delete_dataset" title="google.cloud.bigquery.client.Client.delete_dataset"><code class="xref py py-func docutils literal notranslate"><span class="pre">delete_dataset()</span></code></a> method:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># from google.cloud import bigquery</span>
+<span class="c1"># client = bigquery.Client()</span>
+
+<span class="c1"># Delete a dataset that does not contain any tables</span>
+<span class="c1"># dataset1_id = &#39;my_empty_dataset&#39;</span>
+<span class="n">dataset1_ref</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">dataset</span><span class="p">(</span><span class="n">dataset1_id</span><span class="p">)</span>
+<span class="n">client</span><span class="o">.</span><span class="n">delete_dataset</span><span class="p">(</span><span class="n">dataset1_ref</span><span class="p">)</span>  <span class="c1"># API request</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;Dataset {} deleted.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">dataset1_id</span><span class="p">))</span>
+
+<span class="c1"># Use the delete_contents parameter to delete a dataset and its contents</span>
+<span class="c1"># dataset2_id = &#39;my_dataset_with_tables&#39;</span>
+<span class="n">dataset2_ref</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">dataset</span><span class="p">(</span><span class="n">dataset2_id</span><span class="p">)</span>
+<span class="n">client</span><span class="o">.</span><span class="n">delete_dataset</span><span class="p">(</span><span class="n">dataset2_ref</span><span class="p">,</span> <span class="n">delete_contents</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>  <span class="c1"># API request</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;Dataset {} deleted.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">dataset2_id</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">google-cloud</a></h1>
+
+
+
+<p class="blurb">Google Cloud Client Libraries for Python</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=GoogleCloudPlatform&repo=google-cloud-python&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../core/index.html">Core Libraries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../asset/index.html">Asset Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../automl/index.html">AutoML</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">BigQuery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../bigquery_datatransfer/index.html">BigQuery Data-Transfer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../bigtable/index.html">Bigtable</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../container/index.html">Container</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dataproc/index.html">Dataproc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../datastore/index.html">Datastore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dlp/index.html">Data Loss Prevention</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dns/index.html">DNS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../firestore/index.html">Firestore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../iot/index.html">IoT</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../kms/index.html">Key Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../language/index.html">Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pubsub/index.html">PubSub</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../oslogin/index.html">OSLogin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../redis/index.html">Redis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../resource-manager/index.html">Resource Manager</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../runtimeconfig/index.html">Python Client for Google Cloud RuntimeConfig</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../runtimeconfig/index.html#api-reference">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../websecurityscanner/index.html">Security Scanner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../spanner/index.html">Spanner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../speech/index.html">Speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../storage/index.html">Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tasks/index.html">Tasks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../texttospeech/index.html">Text-to-Speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../translate/index.html">Translate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../vision/index.html">Vision</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../videointelligence/index.html">Video Intelligence</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../error-reporting/index.html">Stackdriver Error Reporting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../logging/index.html">Stackdriver Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../monitoring/index.html">Stackdriver Monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../trace/index.html">Stackdriver Trace</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases.html">Release History</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Python Client for Google BigQuery</a><ul>
+  <li><a href="index.html">Usage Guides</a><ul>
+      <li>Previous: <a href="queries.html" title="previous chapter">Running Queries</a></li>
+      <li>Next: <a href="tables.html" title="next chapter">Managing Tables</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2014-2017, Google.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../../_sources/bigquery/usage/datasets.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/GoogleCloudPlatform/google-cloud-python" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>
