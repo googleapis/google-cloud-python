@@ -36,6 +36,45 @@ class TestClient(unittest.TestCase):
     def _make_one(self, *args, **kwargs):
         return self._get_target_class()(*args, **kwargs)
 
+    def test_constructor_defaults(self):
+        from google.cloud.bigtable.client import DATA_SCOPE
+
+        credentials = _make_credentials()
+
+        with mock.patch('google.auth.default') as mocked:
+            mocked.return_value = credentials, self.PROJECT
+            client = self._make_one()
+
+        self.assertEqual(client.project, self.PROJECT)
+        self.assertIs(
+            client._credentials, credentials.with_scopes.return_value)
+        self.assertFalse(client._read_only)
+        self.assertFalse(client._admin)
+        self.assertIsNone(client._channel)
+        self.assertEqual(client.SCOPE, (DATA_SCOPE,))
+
+    def test_constructor_explicit(self):
+        from google.cloud.bigtable.client import ADMIN_SCOPE
+        from google.cloud.bigtable.client import DATA_SCOPE
+
+        credentials = _make_credentials()
+
+        client = self._make_one(
+            project=self.PROJECT,
+            credentials=credentials,
+            read_only=False,
+            admin=True,
+            channel=mock.sentinel.channel,
+        )
+
+        self.assertEqual(client.project, self.PROJECT)
+        self.assertIs(
+            client._credentials, credentials.with_scopes.return_value)
+        self.assertFalse(client._read_only)
+        self.assertTrue(client._admin)
+        self.assertIs(client._channel, mock.sentinel.channel)
+        self.assertEqual(client.SCOPE, (DATA_SCOPE, ADMIN_SCOPE))
+
     def test_constructor_both_admin_and_read_only(self):
         credentials = _make_credentials()
         with self.assertRaises(ValueError):
@@ -68,15 +107,7 @@ class TestClient(unittest.TestCase):
             read_only=True)
         self.assertEqual(client._get_scopes(), (READ_ONLY_SCOPE,))
 
-    def test_credentials_getter(self):
-        credentials = _make_credentials()
-        project = 'PROJECT'
-        client = self._make_one(
-            project=project, credentials=credentials)
-        self.assertIs(client._credentials,
-                      credentials.with_scopes.return_value)
-
-    def test_project_name_property(self):
+    def test_project_path_property(self):
         credentials = _make_credentials()
         project = 'PROJECT'
         client = self._make_one(project=project, credentials=credentials,
