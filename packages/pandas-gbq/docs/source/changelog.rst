@@ -3,7 +3,7 @@ Changelog
 
 .. _changelog-0.7.0:
 
-0.7.0 / [unreleased]
+0.7.0 / 2018-10-19
 --------------------
 
 - `int` columns which contain `NULL` are now cast to `float`, rather than
