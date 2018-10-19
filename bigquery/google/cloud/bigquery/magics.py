@@ -39,6 +39,9 @@
         amount of time for the query to complete will not be cleared after the
         query is finished. By default, this information will be displayed but
         will be cleared after the query is finished.
+    * ``--params <params dictionary>`` (optional, line argument):
+        If present, the argument will be parsed into a dictionary. This dictionary
+        will be used to format values enclosed within {} in the query.
     * ``<query>`` (required, cell argument):
         SQL query to run.
 
@@ -100,8 +103,10 @@
 
 from __future__ import print_function
 
+import json
 import time
 from concurrent import futures
+from json import JSONDecodeError
 
 try:
     import IPython
@@ -249,6 +254,12 @@ def _run_query(client, query, job_config=None):
           'amount of time for the query to finish. By default, this '
           'information will be displayed as the query runs, but will be '
           'cleared after the query is finished.'))
+@magic_arguments.argument(
+    '--params',
+    default=None,
+    help=('Parameters to format the query string. If present, it should be a '
+          'parsable JSON string. The parsed dictionary will be used for string'
+          'replacement in the query'))
 def _cell_magic(line, query):
     """Underlying function for bigquery cell magic
 
@@ -264,6 +275,14 @@ def _cell_magic(line, query):
         pandas.DataFrame: the query results.
     """
     args = magic_arguments.parse_argstring(_cell_magic, line)
+
+    if args.params is not None:
+        try:
+            params = json.loads(args.params)
+        except JSONDecodeError as e:
+            raise JSONDecodeError('--params is not a correctly formatted JSON string', e.doc, e.pos)
+
+        query = query.format(**params)
 
     project = args.project or context.project
     client = bigquery.Client(project=project, credentials=context.credentials)

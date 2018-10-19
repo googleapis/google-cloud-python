@@ -259,3 +259,31 @@ def test_bigquery_magic_with_project():
         assert client_used.project == 'specific-project'
         # context project should not change
         assert magics.context.project == 'general-project'
+
+
+@pytest.mark.usefixtures('ipython_interactive')
+@pytest.mark.skipif(pandas is None, reason='Requires `pandas`')
+def test_bigquery_magic_with_formatting_params():
+    ip = IPython.get_ipython()
+    ip.extension_manager.load_extension('google.cloud.bigquery')
+    magics.context.credentials = mock.create_autospec(
+        google.auth.credentials.Credentials, instance=True)
+
+    sql = 'SELECT {num} AS num'
+    result = pandas.DataFrame([17], columns=['num'])
+    assert 'myvariable' not in ip.user_ns
+
+    run_query_patch = mock.patch(
+        'google.cloud.bigquery.magics._run_query', autospec=True)
+    query_job_mock = mock.create_autospec(
+        google.cloud.bigquery.job.QueryJob, instance=True)
+    query_job_mock.to_dataframe.return_value = result
+    with run_query_patch as run_query_mock:
+        run_query_mock.return_value = query_job_mock
+
+        ip.run_cell_magic('bigquery', 'df --params {"num":17}', sql)
+
+    assert 'df' in ip.user_ns        # verify that variable exists
+    df = ip.user_ns['df']
+    assert len(df) == len(result)    # verify row count
+    assert list(df) == list(result)  # verify column names
