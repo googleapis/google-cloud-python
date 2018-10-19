@@ -74,55 +74,14 @@ Windows
 Example Usage
 -------------
 
-Create a dataset
-~~~~~~~~~~~~~~~~
-
-.. code:: python
-
-    from google.cloud import bigquery
-    from google.cloud.bigquery import Dataset
-
-    client = bigquery.Client()
-
-    dataset_ref = client.dataset('dataset_name')
-    dataset = Dataset(dataset_ref)
-    dataset.description = 'my dataset'
-    dataset = client.create_dataset(dataset)  # API request
-
-Load data from CSV
-~~~~~~~~~~~~~~~~~~
-
-.. code:: python
-
-    import csv
-
-    from google.cloud import bigquery
-    from google.cloud.bigquery import LoadJobConfig
-    from google.cloud.bigquery import SchemaField
-
-    client = bigquery.Client()
-
-    SCHEMA = [
-        SchemaField('full_name', 'STRING', mode='required'),
-        SchemaField('age', 'INTEGER', mode='required'),
-    ]
-    table_ref = client.dataset('dataset_name').table('table_name')
-
-    load_config = LoadJobConfig()
-    load_config.skip_leading_rows = 1
-    load_config.schema = SCHEMA
-
-    # Contents of csv_file.csv:
-    #     Name,Age
-    #     Tim,99
-    with open('csv_file.csv', 'rb') as readable:
-        client.load_table_from_file(
-            readable, table_ref, job_config=load_config)  # API request
-
 Perform a query
 ~~~~~~~~~~~~~~~
 
 .. code:: python
+
+    from google.cloud import bigquery
+
+    client = bigquery.Client()
 
     # Perform a query.
     QUERY = (
