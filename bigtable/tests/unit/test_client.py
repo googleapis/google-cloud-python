@@ -115,47 +115,6 @@ class TestClient(unittest.TestCase):
         project_name = 'projects/' + project
         self.assertEqual(client.project_path, project_name)
 
-    def test_instance_factory_defaults(self):
-        from google.cloud.bigtable.instance import Instance
-
-        PROJECT = 'PROJECT'
-        INSTANCE_ID = 'instance-id'
-        credentials = _make_credentials()
-        client = self._make_one(
-            project=PROJECT, credentials=credentials)
-
-        instance = client.instance(INSTANCE_ID)
-
-        self.assertIsInstance(instance, Instance)
-        self.assertEqual(instance.instance_id, INSTANCE_ID)
-        self.assertEqual(instance.display_name, INSTANCE_ID)
-        self.assertIsNone(instance.type_)
-        self.assertIsNone(instance.labels)
-        self.assertIs(instance._client, client)
-
-    def test_instance_factory_non_defaults(self):
-        from google.cloud.bigtable.instance import Instance
-        from google.cloud.bigtable import enums
-
-        PROJECT = 'PROJECT'
-        INSTANCE_ID = 'instance-id'
-        DISPLAY_NAME = 'display-name'
-        instance_type = enums.Instance.Type.DEVELOPMENT
-        labels = {'foo': 'bar'}
-        credentials = _make_credentials()
-        client = self._make_one(
-            project=PROJECT, credentials=credentials)
-
-        instance = client.instance(INSTANCE_ID, display_name=DISPLAY_NAME,
-                                   instance_type=instance_type, labels=labels)
-
-        self.assertIsInstance(instance, Instance)
-        self.assertEqual(instance.instance_id, INSTANCE_ID)
-        self.assertEqual(instance.display_name, DISPLAY_NAME)
-        self.assertEqual(instance.type_, instance_type)
-        self.assertEqual(instance.labels, labels)
-        self.assertIs(instance._client, client)
-
     def test_table_data_client_not_initialized(self):
         from google.cloud.bigtable_v2 import BigtableClient
 
@@ -224,6 +183,47 @@ class TestClient(unittest.TestCase):
 
         already = client._instance_admin_client = object()
         self.assertIs(client.instance_admin_client, already)
+
+    def test_instance_factory_defaults(self):
+        from google.cloud.bigtable.instance import Instance
+
+        PROJECT = 'PROJECT'
+        INSTANCE_ID = 'instance-id'
+        credentials = _make_credentials()
+        client = self._make_one(
+            project=PROJECT, credentials=credentials)
+
+        instance = client.instance(INSTANCE_ID)
+
+        self.assertIsInstance(instance, Instance)
+        self.assertEqual(instance.instance_id, INSTANCE_ID)
+        self.assertEqual(instance.display_name, INSTANCE_ID)
+        self.assertIsNone(instance.type_)
+        self.assertIsNone(instance.labels)
+        self.assertIs(instance._client, client)
+
+    def test_instance_factory_non_defaults(self):
+        from google.cloud.bigtable.instance import Instance
+        from google.cloud.bigtable import enums
+
+        PROJECT = 'PROJECT'
+        INSTANCE_ID = 'instance-id'
+        DISPLAY_NAME = 'display-name'
+        instance_type = enums.Instance.Type.DEVELOPMENT
+        labels = {'foo': 'bar'}
+        credentials = _make_credentials()
+        client = self._make_one(
+            project=PROJECT, credentials=credentials)
+
+        instance = client.instance(INSTANCE_ID, display_name=DISPLAY_NAME,
+                                   instance_type=instance_type, labels=labels)
+
+        self.assertIsInstance(instance, Instance)
+        self.assertEqual(instance.instance_id, INSTANCE_ID)
+        self.assertEqual(instance.display_name, DISPLAY_NAME)
+        self.assertEqual(instance.type_, instance_type)
+        self.assertEqual(instance.labels, labels)
+        self.assertIs(instance._client, client)
 
     def test_list_instances(self):
         from google.cloud.bigtable_admin_v2.proto import (
