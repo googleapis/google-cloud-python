@@ -145,8 +145,7 @@ class Client(ClientWithProject):
         :rtype: str
         :returns: Return a fully-qualified project string.
         """
-        instance_client = self.instance_admin_client
-        return instance_client.project_path(self.project)
+        return self.instance_admin_client.project_path(self.project)
 
     @property
     def table_data_client(self):
