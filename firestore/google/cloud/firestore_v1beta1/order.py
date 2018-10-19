@@ -187,7 +187,9 @@ class Order(object):
         left_fields = left.map_value.fields
         right_fields = right.map_value.fields
 
-        for left_key, right_key in zip(left_fields, right_fields):
+        for left_key, right_key in zip(
+                sorted(left_fields), sorted(right_fields)
+        ):
             keyCompare = Order._compare_to(left_key, right_key)
             if keyCompare != 0:
                 return keyCompare

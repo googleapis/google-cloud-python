@@ -13,10 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import collections
 import mock
 import six
-import sys
 import unittest
 
 from google.cloud.firestore_v1beta1._helpers import encode_value, GeoPoint
