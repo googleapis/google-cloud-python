@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigquery.job &#8212; google-cloud a74dc33 documentation</title>
+    <title>google.cloud.bigquery.job &#8212; google-cloud 333c52a documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -1410,9 +1410,9 @@
 <span class="sd">        :returns: the count (None until set from the server).</span>
 <span class="sd">        :raises: ValueError for invalid value types.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">statistics</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;statistics&#39;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">statistics</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">statistics</span><span class="p">[</span><span class="s1">&#39;load&#39;</span><span class="p">][</span><span class="s1">&#39;inputFileBytes&#39;</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">_helpers</span><span class="o">.</span><span class="n">_int_or_none</span><span class="p">(</span><span class="n">_helpers</span><span class="o">.</span><span class="n">_get_sub_prop</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;statistics&#39;</span><span class="p">,</span> <span class="s1">&#39;load&#39;</span><span class="p">,</span> <span class="s1">&#39;inputFileBytes&#39;</span><span class="p">]</span>
+            <span class="p">))</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">input_files</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -1421,9 +1421,9 @@
 <span class="sd">        :rtype: int, or ``NoneType``</span>
 <span class="sd">        :returns: the count (None until set from the server).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">statistics</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;statistics&#39;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">statistics</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">statistics</span><span class="p">[</span><span class="s1">&#39;load&#39;</span><span class="p">][</span><span class="s1">&#39;inputFiles&#39;</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">_helpers</span><span class="o">.</span><span class="n">_int_or_none</span><span class="p">(</span><span class="n">_helpers</span><span class="o">.</span><span class="n">_get_sub_prop</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;statistics&#39;</span><span class="p">,</span> <span class="s1">&#39;load&#39;</span><span class="p">,</span> <span class="s1">&#39;inputFiles&#39;</span><span class="p">]</span>
+            <span class="p">))</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">output_bytes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -1432,9 +1432,9 @@
 <span class="sd">        :rtype: int, or ``NoneType``</span>
 <span class="sd">        :returns: the count (None until set from the server).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">statistics</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;statistics&#39;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">statistics</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">statistics</span><span class="p">[</span><span class="s1">&#39;load&#39;</span><span class="p">][</span><span class="s1">&#39;outputBytes&#39;</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">_helpers</span><span class="o">.</span><span class="n">_int_or_none</span><span class="p">(</span><span class="n">_helpers</span><span class="o">.</span><span class="n">_get_sub_prop</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;statistics&#39;</span><span class="p">,</span> <span class="s1">&#39;load&#39;</span><span class="p">,</span> <span class="s1">&#39;outputBytes&#39;</span><span class="p">]</span>
+            <span class="p">))</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">output_rows</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -1443,9 +1443,9 @@
 <span class="sd">        :rtype: int, or ``NoneType``</span>
 <span class="sd">        :returns: the count (None until set from the server).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">statistics</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;statistics&#39;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">statistics</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">statistics</span><span class="p">[</span><span class="s1">&#39;load&#39;</span><span class="p">][</span><span class="s1">&#39;outputRows&#39;</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">_helpers</span><span class="o">.</span><span class="n">_int_or_none</span><span class="p">(</span><span class="n">_helpers</span><span class="o">.</span><span class="n">_get_sub_prop</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;statistics&#39;</span><span class="p">,</span> <span class="s1">&#39;load&#39;</span><span class="p">,</span> <span class="s1">&#39;outputRows&#39;</span><span class="p">]</span>
+            <span class="p">))</span>
 
 <div class="viewcode-block" id="LoadJob.to_api_repr"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.job.LoadJob.html#google.cloud.bigquery.job.LoadJob.to_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">to_api_repr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Generate a resource for :meth:`_begin`.&quot;&quot;&quot;</span>
