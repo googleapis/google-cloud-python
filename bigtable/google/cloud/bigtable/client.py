@@ -155,9 +155,15 @@ class Client(ClientWithProject):
         :returns: A BigtableClient object.
         """
         if self._table_data_client is None:
-            self._table_data_client = (
-                bigtable_v2.BigtableClient(credentials=self._credentials,
-                                           client_info=_CLIENT_INFO))
+
+            if self._channel is not None:
+                gapic_client = bigtable_v2.BigtableClient(
+                    channel=self._channel, client_info=_CLIENT_INFO)
+            else:
+                gapic_client = bigtable_v2.BigtableClient(
+                    credentials=self._credentials, client_info=_CLIENT_INFO)
+
+            self._table_data_client = gapic_client
 
         return self._table_data_client
 
@@ -172,11 +178,18 @@ class Client(ClientWithProject):
                  :meth:`start`-ed.
         """
         if self._table_admin_client is None:
+
             if not self._admin:
                 raise ValueError('Client is not an admin client.')
-            self._table_admin_client = (
-                bigtable_admin_v2.BigtableTableAdminClient(
-                    credentials=self._credentials, client_info=_CLIENT_INFO))
+
+            if self._channel is not None:
+                gapic_client = bigtable_admin_v2.BigtableTableAdminClient(
+                    channel=self._channel, client_info=_CLIENT_INFO)
+            else:
+                gapic_client = bigtable_admin_v2.BigtableTableAdminClient(
+                    credentials=self._credentials, client_info=_CLIENT_INFO)
+
+            self._table_admin_client = gapic_client
 
         return self._table_admin_client
 
@@ -191,11 +204,18 @@ class Client(ClientWithProject):
                  :meth:`start`-ed.
         """
         if self._instance_admin_client is None:
+
             if not self._admin:
                 raise ValueError('Client is not an admin client.')
-            self._instance_admin_client = (
-                bigtable_admin_v2.BigtableInstanceAdminClient(
-                    credentials=self._credentials, client_info=_CLIENT_INFO))
+
+            if self._channel is not None:
+                gapic_client = bigtable_admin_v2.BigtableInstanceAdminClient(
+                    channel=self._channel, client_info=_CLIENT_INFO)
+            else:
+                gapic_client = bigtable_admin_v2.BigtableInstanceAdminClient(
+                    credentials=self._credentials, client_info=_CLIENT_INFO)
+            self._instance_admin_client = gapic_client
+
         return self._instance_admin_client
 
     def instance(self, instance_id, display_name=None,

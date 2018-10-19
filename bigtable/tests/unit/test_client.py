@@ -122,8 +122,29 @@ class TestClient(unittest.TestCase):
         client = self._make_one(project=self.PROJECT, credentials=credentials)
 
         table_data_client = client.table_data_client
+
         self.assertIsInstance(table_data_client, BigtableClient)
         self.assertIs(client._table_data_client, table_data_client)
+
+    def test_table_data_client_not_initialized_w_channel(self):
+        import warnings
+        from google.cloud.bigtable_v2 import BigtableClient
+
+        credentials = _make_credentials()
+        channel = mock.Mock()
+        client = self._make_one(
+            project=self.PROJECT,
+            credentials=credentials,
+            channel=channel,
+        )
+
+        with warnings.catch_warnings():
+            table_data_client = client.table_data_client
+
+        self.assertIsInstance(table_data_client, BigtableClient)
+        self.assertIs(client._table_data_client, table_data_client)
+        stub = table_data_client.transport._stubs['bigtable_stub']
+        self.assertIs(stub.ReadRows, channel.unary_stream.return_value)
 
     def test_table_data_client_initialized(self):
         credentials = _make_credentials()
@@ -150,6 +171,26 @@ class TestClient(unittest.TestCase):
         table_admin_client = client.table_admin_client
         self.assertIsInstance(table_admin_client, BigtableTableAdminClient)
 
+    def test_table_admin_client_not_initialized_w_admin_flag_channel(self):
+        import warnings
+        from google.cloud.bigtable_admin_v2 import BigtableTableAdminClient
+
+        credentials = _make_credentials()
+        channel = mock.Mock()
+        client = self._make_one(
+            project=self.PROJECT,
+            credentials=credentials,
+            channel=channel,
+            admin=True,
+        )
+
+        with warnings.catch_warnings():
+            table_admin_client = client.table_admin_client
+
+        self.assertIsInstance(table_admin_client, BigtableTableAdminClient)
+        stub = table_admin_client.transport._stubs['bigtable_table_admin_stub']
+        self.assertIs(stub.CreateTable, channel.unary_unary.return_value)
+
     def test_table_admin_client_initialized(self):
         credentials = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=credentials,
@@ -175,6 +216,28 @@ class TestClient(unittest.TestCase):
         instance_admin_client = client.instance_admin_client
         self.assertIsInstance(
             instance_admin_client, BigtableInstanceAdminClient)
+
+    def test_instance_admin_client_not_initialized_w_admin_flag_channel(self):
+        import warnings
+        from google.cloud.bigtable_admin_v2 import BigtableInstanceAdminClient
+
+        credentials = _make_credentials()
+        channel = mock.Mock()
+        client = self._make_one(
+            project=self.PROJECT,
+            credentials=credentials,
+            channel=channel,
+            admin=True,
+        )
+
+        with warnings.catch_warnings():
+            instance_admin_client = client.instance_admin_client
+
+        self.assertIsInstance(
+            instance_admin_client, BigtableInstanceAdminClient)
+        stub = instance_admin_client.transport._stubs[
+            'bigtable_instance_admin_stub']
+        self.assertIs(stub.CreateInstance, channel.unary_unary.return_value)
 
     def test_instance_admin_client_initialized(self):
         credentials = _make_credentials()
