@@ -1,6 +1,0 @@
-google.cloud.bigquery.external\_config.BigtableOptions.to\_api\_repr
-====================================================================
-
-.. currentmodule:: google.cloud.bigquery.external_config
-
-.. automethod:: BigtableOptions.to_api_repr

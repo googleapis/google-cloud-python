@@ -1,6 +1,0 @@
-google.cloud.bigquery.job.ExtractJob.self\_link
-===============================================
-
-.. currentmodule:: google.cloud.bigquery.job
-
-.. autoattribute:: ExtractJob.self_link

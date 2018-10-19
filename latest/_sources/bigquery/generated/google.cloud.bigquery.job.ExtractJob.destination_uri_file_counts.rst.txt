@@ -1,6 +1,0 @@
-google.cloud.bigquery.job.ExtractJob.destination\_uri\_file\_counts
-===================================================================
-
-.. currentmodule:: google.cloud.bigquery.job
-
-.. autoattribute:: ExtractJob.destination_uri_file_counts

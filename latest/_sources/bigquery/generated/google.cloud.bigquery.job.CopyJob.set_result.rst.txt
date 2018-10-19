@@ -1,6 +1,0 @@
-google.cloud.bigquery.job.CopyJob.set\_result
-=============================================
-
-.. currentmodule:: google.cloud.bigquery.job
-
-.. automethod:: CopyJob.set_result

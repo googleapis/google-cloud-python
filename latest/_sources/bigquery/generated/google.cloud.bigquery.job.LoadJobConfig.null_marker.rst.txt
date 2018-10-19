@@ -1,6 +1,0 @@
-google.cloud.bigquery.job.LoadJobConfig.null\_marker
-====================================================
-
-.. currentmodule:: google.cloud.bigquery.job
-
-.. autoattribute:: LoadJobConfig.null_marker

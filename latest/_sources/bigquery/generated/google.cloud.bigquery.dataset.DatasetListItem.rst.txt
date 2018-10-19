@@ -3,37 +3,39 @@ google.cloud.bigquery.dataset.DatasetListItem
 
 .. currentmodule:: google.cloud.bigquery.dataset
 
+
+
+.. rubric:: Methods
+
+.. autosummary::
+
+   
+   
+   ~DatasetListItem.table
+   
+
+
+
+
+
+.. rubric:: Attributes
+
+.. autosummary::
+
+   ~DatasetListItem.dataset_id
+   ~DatasetListItem.friendly_name
+   ~DatasetListItem.full_dataset_id
+   ~DatasetListItem.labels
+   ~DatasetListItem.project
+   ~DatasetListItem.reference
+
+
+
+.. raw:: html
+
+    <p>
+    <hr>
+    <p>
+
 .. autoclass:: DatasetListItem
-
-   
-   .. automethod:: __init__
-
-   
-   .. rubric:: Methods
-
-   
-   .. autosummary::
-      :toctree: .
-   
-      
-      
-      ~DatasetListItem.table
-      
-   
-   
-
-   
-   
-   .. rubric:: Attributes
-
-   .. autosummary::
-      :toctree: .
-   
-      ~DatasetListItem.dataset_id
-      ~DatasetListItem.friendly_name
-      ~DatasetListItem.full_dataset_id
-      ~DatasetListItem.labels
-      ~DatasetListItem.project
-      ~DatasetListItem.reference
-   
-   
+   :members:

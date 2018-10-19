@@ -1,6 +1,0 @@
-google.cloud.bigquery.query.ScalarQueryParameter.from\_api\_repr
-================================================================
-
-.. currentmodule:: google.cloud.bigquery.query
-
-.. automethod:: ScalarQueryParameter.from_api_repr

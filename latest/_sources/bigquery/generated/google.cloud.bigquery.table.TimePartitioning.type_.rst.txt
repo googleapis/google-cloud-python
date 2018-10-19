@@ -1,6 +1,0 @@
-google.cloud.bigquery.table.TimePartitioning.type\_
-===================================================
-
-.. currentmodule:: google.cloud.bigquery.table
-
-.. autoattribute:: TimePartitioning.type_

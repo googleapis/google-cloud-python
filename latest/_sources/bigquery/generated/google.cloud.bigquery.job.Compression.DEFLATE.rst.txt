@@ -1,6 +1,0 @@
-google.cloud.bigquery.job.Compression.DEFLATE
-=============================================
-
-.. currentmodule:: google.cloud.bigquery.job
-
-.. autoattribute:: Compression.DEFLATE

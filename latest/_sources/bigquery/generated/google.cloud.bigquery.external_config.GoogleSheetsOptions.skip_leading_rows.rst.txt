@@ -1,6 +1,0 @@
-google.cloud.bigquery.external\_config.GoogleSheetsOptions.skip\_leading\_rows
-==============================================================================
-
-.. currentmodule:: google.cloud.bigquery.external_config
-
-.. autoattribute:: GoogleSheetsOptions.skip_leading_rows

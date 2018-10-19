@@ -1,6 +1,0 @@
-google.cloud.bigquery.job.LoadJob.input\_file\_bytes
-====================================================
-
-.. currentmodule:: google.cloud.bigquery.job
-
-.. autoattribute:: LoadJob.input_file_bytes

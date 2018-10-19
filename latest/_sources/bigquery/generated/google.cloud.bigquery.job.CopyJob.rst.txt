@@ -3,85 +3,87 @@ google.cloud.bigquery.job.CopyJob
 
 .. currentmodule:: google.cloud.bigquery.job
 
+
+
+.. rubric:: Methods
+
+.. autosummary::
+
+   
+   
+   ~CopyJob.add_done_callback
+   
+   
+   ~CopyJob.cancel
+   
+   
+   ~CopyJob.cancelled
+   
+   
+   ~CopyJob.done
+   
+   
+   ~CopyJob.exception
+   
+   
+   ~CopyJob.exists
+   
+   
+   ~CopyJob.from_api_repr
+   
+   
+   ~CopyJob.reload
+   
+   
+   ~CopyJob.result
+   
+   
+   ~CopyJob.running
+   
+   
+   ~CopyJob.set_exception
+   
+   
+   ~CopyJob.set_result
+   
+   
+   ~CopyJob.to_api_repr
+   
+
+
+
+
+
+.. rubric:: Attributes
+
+.. autosummary::
+
+   ~CopyJob.create_disposition
+   ~CopyJob.created
+   ~CopyJob.destination_encryption_configuration
+   ~CopyJob.ended
+   ~CopyJob.error_result
+   ~CopyJob.errors
+   ~CopyJob.etag
+   ~CopyJob.job_id
+   ~CopyJob.job_type
+   ~CopyJob.labels
+   ~CopyJob.location
+   ~CopyJob.path
+   ~CopyJob.project
+   ~CopyJob.self_link
+   ~CopyJob.started
+   ~CopyJob.state
+   ~CopyJob.user_email
+   ~CopyJob.write_disposition
+
+
+
+.. raw:: html
+
+    <p>
+    <hr>
+    <p>
+
 .. autoclass:: CopyJob
-
-   
-   .. automethod:: __init__
-
-   
-   .. rubric:: Methods
-
-   
-   .. autosummary::
-      :toctree: .
-   
-      
-      
-      ~CopyJob.add_done_callback
-      
-      
-      ~CopyJob.cancel
-      
-      
-      ~CopyJob.cancelled
-      
-      
-      ~CopyJob.done
-      
-      
-      ~CopyJob.exception
-      
-      
-      ~CopyJob.exists
-      
-      
-      ~CopyJob.from_api_repr
-      
-      
-      ~CopyJob.reload
-      
-      
-      ~CopyJob.result
-      
-      
-      ~CopyJob.running
-      
-      
-      ~CopyJob.set_exception
-      
-      
-      ~CopyJob.set_result
-      
-      
-      ~CopyJob.to_api_repr
-      
-   
-   
-
-   
-   
-   .. rubric:: Attributes
-
-   .. autosummary::
-      :toctree: .
-   
-      ~CopyJob.create_disposition
-      ~CopyJob.created
-      ~CopyJob.destination_encryption_configuration
-      ~CopyJob.ended
-      ~CopyJob.error_result
-      ~CopyJob.errors
-      ~CopyJob.etag
-      ~CopyJob.job_id
-      ~CopyJob.job_type
-      ~CopyJob.labels
-      ~CopyJob.location
-      ~CopyJob.path
-      ~CopyJob.project
-      ~CopyJob.self_link
-      ~CopyJob.started
-      ~CopyJob.state
-      ~CopyJob.user_email
-      ~CopyJob.write_disposition
-   
-   
+   :members:

@@ -1,6 +1,0 @@
-google.cloud.bigquery.job.ExtractJob.job\_id
-============================================
-
-.. currentmodule:: google.cloud.bigquery.job
-
-.. autoattribute:: ExtractJob.job_id

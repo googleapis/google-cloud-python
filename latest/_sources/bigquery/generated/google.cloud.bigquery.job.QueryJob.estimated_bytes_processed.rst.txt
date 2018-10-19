@@ -1,6 +1,0 @@
-google.cloud.bigquery.job.QueryJob.estimated\_bytes\_processed
-==============================================================
-
-.. currentmodule:: google.cloud.bigquery.job
-
-.. autoattribute:: QueryJob.estimated_bytes_processed

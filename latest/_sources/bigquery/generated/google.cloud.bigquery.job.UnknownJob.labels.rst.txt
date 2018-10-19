@@ -1,6 +1,0 @@
-google.cloud.bigquery.job.UnknownJob.labels
-===========================================
-
-.. currentmodule:: google.cloud.bigquery.job
-
-.. autoattribute:: UnknownJob.labels

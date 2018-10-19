@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigquery.external_config &#8212; google-cloud 05dea1b805 documentation</title>
+    <title>google.cloud.bigquery.external_config &#8212; google-cloud a74dc33 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -95,8 +95,8 @@
 <div class="viewcode-block" id="BigtableColumn"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.external_config.BigtableColumn.html#google.cloud.bigquery.external_config.BigtableColumn">[docs]</a><span class="k">class</span> <span class="nc">BigtableColumn</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Options for a Bigtable column.&quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="BigtableColumn.__init__"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.external_config.BigtableColumn.html#google.cloud.bigquery.external_config.BigtableColumn.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span> <span class="o">=</span> <span class="p">{}</span></div>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span> <span class="o">=</span> <span class="p">{}</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">encoding</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -190,7 +190,7 @@
     <span class="k">def</span> <span class="nf">type_</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
 
-<div class="viewcode-block" id="BigtableColumn.to_api_repr"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.external_config.BigtableColumn.to_api_repr.html#google.cloud.bigquery.external_config.BigtableColumn.to_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">to_api_repr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="BigtableColumn.to_api_repr"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.external_config.BigtableColumn.html#google.cloud.bigquery.external_config.BigtableColumn.to_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">to_api_repr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Build an API representation of this object.</span>
 
 <span class="sd">        Returns:</span>
@@ -199,7 +199,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="BigtableColumn.from_api_repr"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.external_config.BigtableColumn.from_api_repr.html#google.cloud.bigquery.external_config.BigtableColumn.from_api_repr">[docs]</a>    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="BigtableColumn.from_api_repr"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.external_config.BigtableColumn.html#google.cloud.bigquery.external_config.BigtableColumn.from_api_repr">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">resource</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Factory: construct a :class:`~.external_config.BigtableColumn`</span>
 <span class="sd">        instance given its API representation.</span>
@@ -222,8 +222,8 @@
 <div class="viewcode-block" id="BigtableColumnFamily"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.external_config.BigtableColumnFamily.html#google.cloud.bigquery.external_config.BigtableColumnFamily">[docs]</a><span class="k">class</span> <span class="nc">BigtableColumnFamily</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Options for a Bigtable column family.&quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="BigtableColumnFamily.__init__"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.external_config.BigtableColumnFamily.html#google.cloud.bigquery.external_config.BigtableColumnFamily.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span> <span class="o">=</span> <span class="p">{}</span></div>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span> <span class="o">=</span> <span class="p">{}</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">encoding</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -298,7 +298,7 @@
     <span class="k">def</span> <span class="nf">columns</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s1">&#39;columns&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">col</span><span class="o">.</span><span class="n">to_api_repr</span><span class="p">()</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">value</span><span class="p">]</span>
 
-<div class="viewcode-block" id="BigtableColumnFamily.to_api_repr"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.external_config.BigtableColumnFamily.to_api_repr.html#google.cloud.bigquery.external_config.BigtableColumnFamily.to_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">to_api_repr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="BigtableColumnFamily.to_api_repr"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.external_config.BigtableColumnFamily.html#google.cloud.bigquery.external_config.BigtableColumnFamily.to_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">to_api_repr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Build an API representation of this object.</span>
 
 <span class="sd">        Returns:</span>
@@ -307,7 +307,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="BigtableColumnFamily.from_api_repr"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.external_config.BigtableColumnFamily.from_api_repr.html#google.cloud.bigquery.external_config.BigtableColumnFamily.from_api_repr">[docs]</a>    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="BigtableColumnFamily.from_api_repr"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.external_config.BigtableColumnFamily.html#google.cloud.bigquery.external_config.BigtableColumnFamily.from_api_repr">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">resource</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Factory: construct a :class:`~.external_config.BigtableColumnFamily`</span>
 <span class="sd">        instance given its API representation.</span>
@@ -334,8 +334,8 @@
     <span class="n">_SOURCE_FORMAT</span> <span class="o">=</span> <span class="s1">&#39;BIGTABLE&#39;</span>
     <span class="n">_RESOURCE_NAME</span> <span class="o">=</span> <span class="s1">&#39;bigtableOptions&#39;</span>
 
-<div class="viewcode-block" id="BigtableOptions.__init__"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.external_config.BigtableOptions.html#google.cloud.bigquery.external_config.BigtableOptions.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span> <span class="o">=</span> <span class="p">{}</span></div>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span> <span class="o">=</span> <span class="p">{}</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">ignore_unspecified_column_families</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -383,7 +383,7 @@
     <span class="k">def</span> <span class="nf">column_families</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s1">&#39;columnFamilies&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">cf</span><span class="o">.</span><span class="n">to_api_repr</span><span class="p">()</span> <span class="k">for</span> <span class="n">cf</span> <span class="ow">in</span> <span class="n">value</span><span class="p">]</span>
 
-<div class="viewcode-block" id="BigtableOptions.to_api_repr"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.external_config.BigtableOptions.to_api_repr.html#google.cloud.bigquery.external_config.BigtableOptions.to_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">to_api_repr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="BigtableOptions.to_api_repr"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.external_config.BigtableOptions.html#google.cloud.bigquery.external_config.BigtableOptions.to_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">to_api_repr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Build an API representation of this object.</span>
 
 <span class="sd">        Returns:</span>
@@ -392,7 +392,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="BigtableOptions.from_api_repr"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.external_config.BigtableOptions.from_api_repr.html#google.cloud.bigquery.external_config.BigtableOptions.from_api_repr">[docs]</a>    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="BigtableOptions.from_api_repr"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.external_config.BigtableOptions.html#google.cloud.bigquery.external_config.BigtableOptions.from_api_repr">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">resource</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Factory: construct a :class:`~.external_config.BigtableOptions`</span>
 <span class="sd">        instance given its API representation.</span>
@@ -418,8 +418,8 @@
     <span class="n">_SOURCE_FORMAT</span> <span class="o">=</span> <span class="s1">&#39;CSV&#39;</span>
     <span class="n">_RESOURCE_NAME</span> <span class="o">=</span> <span class="s1">&#39;csvOptions&#39;</span>
 
-<div class="viewcode-block" id="CSVOptions.__init__"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.external_config.CSVOptions.html#google.cloud.bigquery.external_config.CSVOptions.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span> <span class="o">=</span> <span class="p">{}</span></div>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span> <span class="o">=</span> <span class="p">{}</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">allow_jagged_rows</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -507,7 +507,7 @@
     <span class="k">def</span> <span class="nf">skip_leading_rows</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s1">&#39;skipLeadingRows&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
 
-<div class="viewcode-block" id="CSVOptions.to_api_repr"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.external_config.CSVOptions.to_api_repr.html#google.cloud.bigquery.external_config.CSVOptions.to_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">to_api_repr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="CSVOptions.to_api_repr"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.external_config.CSVOptions.html#google.cloud.bigquery.external_config.CSVOptions.to_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">to_api_repr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Build an API representation of this object.</span>
 
 <span class="sd">        Returns:</span>
@@ -516,7 +516,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="CSVOptions.from_api_repr"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.external_config.CSVOptions.from_api_repr.html#google.cloud.bigquery.external_config.CSVOptions.from_api_repr">[docs]</a>    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="CSVOptions.from_api_repr"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.external_config.CSVOptions.html#google.cloud.bigquery.external_config.CSVOptions.from_api_repr">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">resource</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Factory: construct a :class:`~.external_config.CSVOptions` instance</span>
 <span class="sd">        given its API representation.</span>
@@ -542,8 +542,8 @@
     <span class="n">_SOURCE_FORMAT</span> <span class="o">=</span> <span class="s1">&#39;GOOGLE_SHEETS&#39;</span>
     <span class="n">_RESOURCE_NAME</span> <span class="o">=</span> <span class="s1">&#39;googleSheetsOptions&#39;</span>
 
-<div class="viewcode-block" id="GoogleSheetsOptions.__init__"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.external_config.GoogleSheetsOptions.html#google.cloud.bigquery.external_config.GoogleSheetsOptions.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span> <span class="o">=</span> <span class="p">{}</span></div>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span> <span class="o">=</span> <span class="p">{}</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">skip_leading_rows</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -560,7 +560,7 @@
     <span class="k">def</span> <span class="nf">skip_leading_rows</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s1">&#39;skipLeadingRows&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
 
-<div class="viewcode-block" id="GoogleSheetsOptions.to_api_repr"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.external_config.GoogleSheetsOptions.to_api_repr.html#google.cloud.bigquery.external_config.GoogleSheetsOptions.to_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">to_api_repr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="GoogleSheetsOptions.to_api_repr"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.external_config.GoogleSheetsOptions.html#google.cloud.bigquery.external_config.GoogleSheetsOptions.to_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">to_api_repr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Build an API representation of this object.</span>
 
 <span class="sd">        Returns:</span>
@@ -569,7 +569,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="GoogleSheetsOptions.from_api_repr"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.external_config.GoogleSheetsOptions.from_api_repr.html#google.cloud.bigquery.external_config.GoogleSheetsOptions.from_api_repr">[docs]</a>    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="GoogleSheetsOptions.from_api_repr"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.external_config.GoogleSheetsOptions.html#google.cloud.bigquery.external_config.GoogleSheetsOptions.from_api_repr">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">resource</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Factory: construct a :class:`~.external_config.GoogleSheetsOptions`</span>
 <span class="sd">        instance given its API representation.</span>
@@ -600,13 +600,13 @@
 <span class="sd">            See :attr:`source_format`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="ExternalConfig.__init__"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.external_config.ExternalConfig.html#google.cloud.bigquery.external_config.ExternalConfig.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source_format</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source_format</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;sourceFormat&#39;</span><span class="p">:</span> <span class="n">source_format</span><span class="p">}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_options</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">for</span> <span class="n">optcls</span> <span class="ow">in</span> <span class="n">_OPTION_CLASSES</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">source_format</span> <span class="o">==</span> <span class="n">optcls</span><span class="o">.</span><span class="n">_SOURCE_FORMAT</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_options</span> <span class="o">=</span> <span class="n">optcls</span><span class="p">()</span>
-                <span class="k">break</span></div>
+                <span class="k">break</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">source_format</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -716,7 +716,7 @@
             <span class="n">prop</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;fields&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">field</span><span class="o">.</span><span class="n">to_api_repr</span><span class="p">()</span> <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">value</span><span class="p">]}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s1">&#39;schema&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">prop</span>
 
-<div class="viewcode-block" id="ExternalConfig.to_api_repr"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.external_config.ExternalConfig.to_api_repr.html#google.cloud.bigquery.external_config.ExternalConfig.to_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">to_api_repr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="ExternalConfig.to_api_repr"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.external_config.ExternalConfig.html#google.cloud.bigquery.external_config.ExternalConfig.to_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">to_api_repr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Build an API representation of this object.</span>
 
 <span class="sd">        Returns:</span>
@@ -730,7 +730,7 @@
                 <span class="n">config</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">_RESOURCE_NAME</span><span class="p">]</span> <span class="o">=</span> <span class="n">r</span>
         <span class="k">return</span> <span class="n">config</span></div>
 
-<div class="viewcode-block" id="ExternalConfig.from_api_repr"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.external_config.ExternalConfig.from_api_repr.html#google.cloud.bigquery.external_config.ExternalConfig.from_api_repr">[docs]</a>    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="ExternalConfig.from_api_repr"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.external_config.ExternalConfig.html#google.cloud.bigquery.external_config.ExternalConfig.from_api_repr">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">resource</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Factory: construct an :class:`~.external_config.ExternalConfig`</span>
 <span class="sd">        instance given its API representation.</span>

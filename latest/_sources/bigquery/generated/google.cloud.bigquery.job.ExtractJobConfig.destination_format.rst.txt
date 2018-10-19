@@ -1,6 +1,0 @@
-google.cloud.bigquery.job.ExtractJobConfig.destination\_format
-==============================================================
-
-.. currentmodule:: google.cloud.bigquery.job
-
-.. autoattribute:: ExtractJobConfig.destination_format

@@ -1,6 +1,0 @@
-google.cloud.bigquery.external\_config.BigtableColumnFamily.family\_id
-======================================================================
-
-.. currentmodule:: google.cloud.bigquery.external_config
-
-.. autoattribute:: BigtableColumnFamily.family_id

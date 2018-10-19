@@ -3,87 +3,89 @@ google.cloud.bigquery.job.ExtractJob
 
 .. currentmodule:: google.cloud.bigquery.job
 
+
+
+.. rubric:: Methods
+
+.. autosummary::
+
+   
+   
+   ~ExtractJob.add_done_callback
+   
+   
+   ~ExtractJob.cancel
+   
+   
+   ~ExtractJob.cancelled
+   
+   
+   ~ExtractJob.done
+   
+   
+   ~ExtractJob.exception
+   
+   
+   ~ExtractJob.exists
+   
+   
+   ~ExtractJob.from_api_repr
+   
+   
+   ~ExtractJob.reload
+   
+   
+   ~ExtractJob.result
+   
+   
+   ~ExtractJob.running
+   
+   
+   ~ExtractJob.set_exception
+   
+   
+   ~ExtractJob.set_result
+   
+   
+   ~ExtractJob.to_api_repr
+   
+
+
+
+
+
+.. rubric:: Attributes
+
+.. autosummary::
+
+   ~ExtractJob.compression
+   ~ExtractJob.created
+   ~ExtractJob.destination_format
+   ~ExtractJob.destination_uri_file_counts
+   ~ExtractJob.ended
+   ~ExtractJob.error_result
+   ~ExtractJob.errors
+   ~ExtractJob.etag
+   ~ExtractJob.field_delimiter
+   ~ExtractJob.job_id
+   ~ExtractJob.job_type
+   ~ExtractJob.labels
+   ~ExtractJob.location
+   ~ExtractJob.path
+   ~ExtractJob.print_header
+   ~ExtractJob.project
+   ~ExtractJob.self_link
+   ~ExtractJob.started
+   ~ExtractJob.state
+   ~ExtractJob.user_email
+
+
+
+.. raw:: html
+
+    <p>
+    <hr>
+    <p>
+
 .. autoclass:: ExtractJob
-
-   
-   .. automethod:: __init__
-
-   
-   .. rubric:: Methods
-
-   
-   .. autosummary::
-      :toctree: .
-   
-      
-      
-      ~ExtractJob.add_done_callback
-      
-      
-      ~ExtractJob.cancel
-      
-      
-      ~ExtractJob.cancelled
-      
-      
-      ~ExtractJob.done
-      
-      
-      ~ExtractJob.exception
-      
-      
-      ~ExtractJob.exists
-      
-      
-      ~ExtractJob.from_api_repr
-      
-      
-      ~ExtractJob.reload
-      
-      
-      ~ExtractJob.result
-      
-      
-      ~ExtractJob.running
-      
-      
-      ~ExtractJob.set_exception
-      
-      
-      ~ExtractJob.set_result
-      
-      
-      ~ExtractJob.to_api_repr
-      
-   
-   
-
-   
-   
-   .. rubric:: Attributes
-
-   .. autosummary::
-      :toctree: .
-   
-      ~ExtractJob.compression
-      ~ExtractJob.created
-      ~ExtractJob.destination_format
-      ~ExtractJob.destination_uri_file_counts
-      ~ExtractJob.ended
-      ~ExtractJob.error_result
-      ~ExtractJob.errors
-      ~ExtractJob.etag
-      ~ExtractJob.field_delimiter
-      ~ExtractJob.job_id
-      ~ExtractJob.job_type
-      ~ExtractJob.labels
-      ~ExtractJob.location
-      ~ExtractJob.path
-      ~ExtractJob.print_header
-      ~ExtractJob.project
-      ~ExtractJob.self_link
-      ~ExtractJob.started
-      ~ExtractJob.state
-      ~ExtractJob.user_email
-   
-   
+   :members:

@@ -1,6 +1,0 @@
-google.cloud.bigquery.job.LoadJob.skip\_leading\_rows
-=====================================================
-
-.. currentmodule:: google.cloud.bigquery.job
-
-.. autoattribute:: LoadJob.skip_leading_rows

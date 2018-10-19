@@ -3,118 +3,120 @@ google.cloud.bigquery.job.QueryJob
 
 .. currentmodule:: google.cloud.bigquery.job
 
+
+
+.. rubric:: Methods
+
+.. autosummary::
+
+   
+   
+   ~QueryJob.add_done_callback
+   
+   
+   ~QueryJob.cancel
+   
+   
+   ~QueryJob.cancelled
+   
+   
+   ~QueryJob.done
+   
+   
+   ~QueryJob.exception
+   
+   
+   ~QueryJob.exists
+   
+   
+   ~QueryJob.from_api_repr
+   
+   
+   ~QueryJob.reload
+   
+   
+   ~QueryJob.result
+   
+   
+   ~QueryJob.running
+   
+   
+   ~QueryJob.set_exception
+   
+   
+   ~QueryJob.set_result
+   
+   
+   ~QueryJob.to_api_repr
+   
+   
+   ~QueryJob.to_dataframe
+   
+
+
+
+
+
+.. rubric:: Attributes
+
+.. autosummary::
+
+   ~QueryJob.allow_large_results
+   ~QueryJob.billing_tier
+   ~QueryJob.cache_hit
+   ~QueryJob.clustering_fields
+   ~QueryJob.create_disposition
+   ~QueryJob.created
+   ~QueryJob.ddl_operation_performed
+   ~QueryJob.ddl_target_table
+   ~QueryJob.default_dataset
+   ~QueryJob.destination
+   ~QueryJob.destination_encryption_configuration
+   ~QueryJob.dry_run
+   ~QueryJob.ended
+   ~QueryJob.error_result
+   ~QueryJob.errors
+   ~QueryJob.estimated_bytes_processed
+   ~QueryJob.etag
+   ~QueryJob.flatten_results
+   ~QueryJob.job_id
+   ~QueryJob.job_type
+   ~QueryJob.labels
+   ~QueryJob.location
+   ~QueryJob.maximum_billing_tier
+   ~QueryJob.maximum_bytes_billed
+   ~QueryJob.num_dml_affected_rows
+   ~QueryJob.path
+   ~QueryJob.priority
+   ~QueryJob.project
+   ~QueryJob.query_parameters
+   ~QueryJob.query_plan
+   ~QueryJob.referenced_tables
+   ~QueryJob.schema_update_options
+   ~QueryJob.self_link
+   ~QueryJob.slot_millis
+   ~QueryJob.started
+   ~QueryJob.state
+   ~QueryJob.statement_type
+   ~QueryJob.table_definitions
+   ~QueryJob.time_partitioning
+   ~QueryJob.timeline
+   ~QueryJob.total_bytes_billed
+   ~QueryJob.total_bytes_processed
+   ~QueryJob.udf_resources
+   ~QueryJob.undeclared_query_parameters
+   ~QueryJob.use_legacy_sql
+   ~QueryJob.use_query_cache
+   ~QueryJob.user_email
+   ~QueryJob.write_disposition
+
+
+
+.. raw:: html
+
+    <p>
+    <hr>
+    <p>
+
 .. autoclass:: QueryJob
-
-   
-   .. automethod:: __init__
-
-   
-   .. rubric:: Methods
-
-   
-   .. autosummary::
-      :toctree: .
-   
-      
-      
-      ~QueryJob.add_done_callback
-      
-      
-      ~QueryJob.cancel
-      
-      
-      ~QueryJob.cancelled
-      
-      
-      ~QueryJob.done
-      
-      
-      ~QueryJob.exception
-      
-      
-      ~QueryJob.exists
-      
-      
-      ~QueryJob.from_api_repr
-      
-      
-      ~QueryJob.reload
-      
-      
-      ~QueryJob.result
-      
-      
-      ~QueryJob.running
-      
-      
-      ~QueryJob.set_exception
-      
-      
-      ~QueryJob.set_result
-      
-      
-      ~QueryJob.to_api_repr
-      
-      
-      ~QueryJob.to_dataframe
-      
-   
-   
-
-   
-   
-   .. rubric:: Attributes
-
-   .. autosummary::
-      :toctree: .
-   
-      ~QueryJob.allow_large_results
-      ~QueryJob.billing_tier
-      ~QueryJob.cache_hit
-      ~QueryJob.clustering_fields
-      ~QueryJob.create_disposition
-      ~QueryJob.created
-      ~QueryJob.ddl_operation_performed
-      ~QueryJob.ddl_target_table
-      ~QueryJob.default_dataset
-      ~QueryJob.destination
-      ~QueryJob.destination_encryption_configuration
-      ~QueryJob.dry_run
-      ~QueryJob.ended
-      ~QueryJob.error_result
-      ~QueryJob.errors
-      ~QueryJob.estimated_bytes_processed
-      ~QueryJob.etag
-      ~QueryJob.flatten_results
-      ~QueryJob.job_id
-      ~QueryJob.job_type
-      ~QueryJob.labels
-      ~QueryJob.location
-      ~QueryJob.maximum_billing_tier
-      ~QueryJob.maximum_bytes_billed
-      ~QueryJob.num_dml_affected_rows
-      ~QueryJob.path
-      ~QueryJob.priority
-      ~QueryJob.project
-      ~QueryJob.query_parameters
-      ~QueryJob.query_plan
-      ~QueryJob.referenced_tables
-      ~QueryJob.schema_update_options
-      ~QueryJob.self_link
-      ~QueryJob.slot_millis
-      ~QueryJob.started
-      ~QueryJob.state
-      ~QueryJob.statement_type
-      ~QueryJob.table_definitions
-      ~QueryJob.time_partitioning
-      ~QueryJob.timeline
-      ~QueryJob.total_bytes_billed
-      ~QueryJob.total_bytes_processed
-      ~QueryJob.udf_resources
-      ~QueryJob.undeclared_query_parameters
-      ~QueryJob.use_legacy_sql
-      ~QueryJob.use_query_cache
-      ~QueryJob.user_email
-      ~QueryJob.write_disposition
-   
-   
+   :members:

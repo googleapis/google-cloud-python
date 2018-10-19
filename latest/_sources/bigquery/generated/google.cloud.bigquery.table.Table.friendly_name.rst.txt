@@ -1,6 +1,0 @@
-google.cloud.bigquery.table.Table.friendly\_name
-================================================
-
-.. currentmodule:: google.cloud.bigquery.table
-
-.. autoattribute:: Table.friendly_name

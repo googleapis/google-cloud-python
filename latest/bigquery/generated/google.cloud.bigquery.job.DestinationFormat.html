@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigquery.job.DestinationFormat &#8212; google-cloud 05dea1b805 documentation</title>
+    <title>google.cloud.bigquery.job.DestinationFormat &#8212; google-cloud a74dc33 documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -17,8 +17,8 @@
     <link rel="shortcut icon" href="../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="google.cloud.bigquery.job.DestinationFormat.AVRO" href="google.cloud.bigquery.job.DestinationFormat.AVRO.html" />
-    <link rel="prev" title="google.cloud.bigquery.job.CreateDisposition.CREATE_NEVER" href="google.cloud.bigquery.job.CreateDisposition.CREATE_NEVER.html" />
+    <link rel="next" title="google.cloud.bigquery.job.Encoding" href="google.cloud.bigquery.job.Encoding.html" />
+    <link rel="prev" title="google.cloud.bigquery.job.CreateDisposition" href="google.cloud.bigquery.job.CreateDisposition.html" />
    
   <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
   
@@ -37,17 +37,6 @@
             
   <div class="section" id="google-cloud-bigquery-job-destinationformat">
 <h1>google.cloud.bigquery.job.DestinationFormat<a class="headerlink" href="#google-cloud-bigquery-job-destinationformat" title="Permalink to this headline">#</a></h1>
-<dl class="class">
-<dt id="google.cloud.bigquery.job.DestinationFormat">
-<em class="property">class </em><code class="descclassname">google.cloud.bigquery.job.</code><code class="descname">DestinationFormat</code><a class="reference internal" href="../../_modules/google/cloud/bigquery/job.html#DestinationFormat"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.job.DestinationFormat" title="Permalink to this definition">#</a></dt>
-<dd><p>The exported file format. The default value is <a class="reference internal" href="google.cloud.bigquery.job.DestinationFormat.CSV.html#google.cloud.bigquery.job.DestinationFormat.CSV" title="google.cloud.bigquery.job.DestinationFormat.CSV"><code class="xref py py-attr docutils literal notranslate"><span class="pre">CSV</span></code></a>.</p>
-<p>Tables with nested or repeated fields cannot be exported as CSV.</p>
-<dl class="method">
-<dt id="google.cloud.bigquery.job.DestinationFormat.__init__">
-<code class="descname">__init__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.bigquery.job.DestinationFormat.__init__" title="Permalink to this definition">#</a></dt>
-<dd><p>Initialize self.  See help(type(self)) for accurate signature.</p>
-</dd></dl>
-
 <p class="rubric">Attributes</p>
 <table border="1" class="longtable docutils">
 <colgroup>
@@ -55,17 +44,42 @@
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="google.cloud.bigquery.job.DestinationFormat.AVRO.html#google.cloud.bigquery.job.DestinationFormat.AVRO" title="google.cloud.bigquery.job.DestinationFormat.AVRO"><code class="xref py py-obj docutils literal notranslate"><span class="pre">AVRO</span></code></a></td>
+<tr class="row-odd"><td><a class="reference internal" href="#google.cloud.bigquery.job.DestinationFormat.AVRO" title="google.cloud.bigquery.job.DestinationFormat.AVRO"><code class="xref py py-obj docutils literal notranslate"><span class="pre">AVRO</span></code></a></td>
 <td>Specifies Avro format.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="google.cloud.bigquery.job.DestinationFormat.CSV.html#google.cloud.bigquery.job.DestinationFormat.CSV" title="google.cloud.bigquery.job.DestinationFormat.CSV"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CSV</span></code></a></td>
+<tr class="row-even"><td><a class="reference internal" href="#google.cloud.bigquery.job.DestinationFormat.CSV" title="google.cloud.bigquery.job.DestinationFormat.CSV"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CSV</span></code></a></td>
 <td>Specifies CSV format.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="google.cloud.bigquery.job.DestinationFormat.NEWLINE_DELIMITED_JSON.html#google.cloud.bigquery.job.DestinationFormat.NEWLINE_DELIMITED_JSON" title="google.cloud.bigquery.job.DestinationFormat.NEWLINE_DELIMITED_JSON"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NEWLINE_DELIMITED_JSON</span></code></a></td>
+<tr class="row-odd"><td><a class="reference internal" href="#google.cloud.bigquery.job.DestinationFormat.NEWLINE_DELIMITED_JSON" title="google.cloud.bigquery.job.DestinationFormat.NEWLINE_DELIMITED_JSON"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NEWLINE_DELIMITED_JSON</span></code></a></td>
 <td>Specifies newline delimited JSON format.</td>
 </tr>
 </tbody>
 </table>
+<p>
+<hr>
+<p><dl class="class">
+<dt id="google.cloud.bigquery.job.DestinationFormat">
+<em class="property">class </em><code class="descclassname">google.cloud.bigquery.job.</code><code class="descname">DestinationFormat</code><a class="reference internal" href="../../_modules/google/cloud/bigquery/job.html#DestinationFormat"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.job.DestinationFormat" title="Permalink to this definition">#</a></dt>
+<dd><p>The exported file format. The default value is <a class="reference internal" href="#google.cloud.bigquery.job.DestinationFormat.CSV" title="google.cloud.bigquery.job.DestinationFormat.CSV"><code class="xref py py-attr docutils literal notranslate"><span class="pre">CSV</span></code></a>.</p>
+<p>Tables with nested or repeated fields cannot be exported as CSV.</p>
+<dl class="attribute">
+<dt id="google.cloud.bigquery.job.DestinationFormat.AVRO">
+<code class="descname">AVRO</code><em class="property"> = 'AVRO'</em><a class="headerlink" href="#google.cloud.bigquery.job.DestinationFormat.AVRO" title="Permalink to this definition">#</a></dt>
+<dd><p>Specifies Avro format.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery.job.DestinationFormat.CSV">
+<code class="descname">CSV</code><em class="property"> = 'CSV'</em><a class="headerlink" href="#google.cloud.bigquery.job.DestinationFormat.CSV" title="Permalink to this definition">#</a></dt>
+<dd><p>Specifies CSV format.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery.job.DestinationFormat.NEWLINE_DELIMITED_JSON">
+<code class="descname">NEWLINE_DELIMITED_JSON</code><em class="property"> = 'NEWLINE_DELIMITED_JSON'</em><a class="headerlink" href="#google.cloud.bigquery.job.DestinationFormat.NEWLINE_DELIMITED_JSON" title="Permalink to this definition">#</a></dt>
+<dd><p>Specifies newline delimited JSON format.</p>
+</dd></dl>
+
 </dd></dl>
 
 </div>
@@ -140,8 +154,8 @@
   <li><a href="../../index.html">Documentation overview</a><ul>
   <li><a href="../index.html">Python Client for Google BigQuery</a><ul>
   <li><a href="../reference.html">API Reference</a><ul>
-      <li>Previous: <a href="google.cloud.bigquery.job.CreateDisposition.CREATE_NEVER.html" title="previous chapter">google.cloud.bigquery.job.CreateDisposition.CREATE_NEVER</a></li>
-      <li>Next: <a href="google.cloud.bigquery.job.DestinationFormat.AVRO.html" title="next chapter">google.cloud.bigquery.job.DestinationFormat.AVRO</a></li>
+      <li>Previous: <a href="google.cloud.bigquery.job.CreateDisposition.html" title="previous chapter">google.cloud.bigquery.job.CreateDisposition</a></li>
+      <li>Next: <a href="google.cloud.bigquery.job.Encoding.html" title="next chapter">google.cloud.bigquery.job.Encoding</a></li>
   </ul></li>
   </ul></li>
   </ul></li>

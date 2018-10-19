@@ -1,6 +1,0 @@
-google.cloud.bigquery.job.UnknownJob.exists
-===========================================
-
-.. currentmodule:: google.cloud.bigquery.job
-
-.. automethod:: UnknownJob.exists

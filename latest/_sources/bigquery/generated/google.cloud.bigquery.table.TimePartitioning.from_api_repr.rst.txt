@@ -1,6 +1,0 @@
-google.cloud.bigquery.table.TimePartitioning.from\_api\_repr
-============================================================
-
-.. currentmodule:: google.cloud.bigquery.table
-
-.. automethod:: TimePartitioning.from_api_repr

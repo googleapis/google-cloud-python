@@ -1,6 +1,0 @@
-google.cloud.bigquery.table.RowIterator.schema
-==============================================
-
-.. currentmodule:: google.cloud.bigquery.table
-
-.. autoattribute:: RowIterator.schema

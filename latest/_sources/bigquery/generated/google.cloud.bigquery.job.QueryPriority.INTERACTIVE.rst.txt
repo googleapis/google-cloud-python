@@ -1,6 +1,0 @@
-google.cloud.bigquery.job.QueryPriority.INTERACTIVE
-===================================================
-
-.. currentmodule:: google.cloud.bigquery.job
-
-.. autoattribute:: QueryPriority.INTERACTIVE

@@ -1,6 +1,0 @@
-google.cloud.bigquery.table.Table.description
-=============================================
-
-.. currentmodule:: google.cloud.bigquery.table
-
-.. autoattribute:: Table.description

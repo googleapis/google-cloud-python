@@ -1,6 +1,0 @@
-google.cloud.bigquery.client.Client.insert\_rows
-================================================
-
-.. currentmodule:: google.cloud.bigquery.client
-
-.. automethod:: Client.insert_rows

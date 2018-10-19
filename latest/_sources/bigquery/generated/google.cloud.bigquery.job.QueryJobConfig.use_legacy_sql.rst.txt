@@ -1,6 +1,0 @@
-google.cloud.bigquery.job.QueryJobConfig.use\_legacy\_sql
-=========================================================
-
-.. currentmodule:: google.cloud.bigquery.job
-
-.. autoattribute:: QueryJobConfig.use_legacy_sql

@@ -1,6 +1,0 @@
-google.cloud.bigquery.job.QueryJob.udf\_resources
-=================================================
-
-.. currentmodule:: google.cloud.bigquery.job
-
-.. autoattribute:: QueryJob.udf_resources

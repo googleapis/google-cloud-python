@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigquery.client &#8212; google-cloud 05dea1b805 documentation</title>
+    <title>google.cloud.bigquery.client &#8212; google-cloud a74dc33 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -160,21 +160,21 @@
              <span class="s1">&#39;https://www.googleapis.com/auth/cloud-platform&#39;</span><span class="p">)</span>
     <span class="sd">&quot;&quot;&quot;The scopes required for authenticating as a BigQuery consumer.&quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="Client.__init__"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.client.Client.html#google.cloud.bigquery.client.Client.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">_http</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">location</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">default_query_job_config</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">Client</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
             <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="n">credentials</span><span class="p">,</span> <span class="n">_http</span><span class="o">=</span><span class="n">_http</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_connection</span> <span class="o">=</span> <span class="n">Connection</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_location</span> <span class="o">=</span> <span class="n">location</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_default_query_job_config</span> <span class="o">=</span> <span class="n">default_query_job_config</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_default_query_job_config</span> <span class="o">=</span> <span class="n">default_query_job_config</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">location</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Default location for jobs / datasets / tables.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_location</span>
 
-<div class="viewcode-block" id="Client.get_service_account_email"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.client.Client.get_service_account_email.html#google.cloud.bigquery.client.Client.get_service_account_email">[docs]</a>    <span class="k">def</span> <span class="nf">get_service_account_email</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Client.get_service_account_email"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.client.Client.html#google.cloud.bigquery.client.Client.get_service_account_email">[docs]</a>    <span class="k">def</span> <span class="nf">get_service_account_email</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get the email address of the project&#39;s BigQuery service account</span>
 
 <span class="sd">        Note:</span>
@@ -203,7 +203,7 @@
         <span class="n">api_response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">api_response</span><span class="p">[</span><span class="s1">&#39;email&#39;</span><span class="p">]</span></div>
 
-<div class="viewcode-block" id="Client.list_projects"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.client.Client.list_projects.html#google.cloud.bigquery.client.Client.list_projects">[docs]</a>    <span class="k">def</span> <span class="nf">list_projects</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">max_results</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">page_token</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<div class="viewcode-block" id="Client.list_projects"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.client.Client.html#google.cloud.bigquery.client.Client.list_projects">[docs]</a>    <span class="k">def</span> <span class="nf">list_projects</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">max_results</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">page_token</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                       <span class="n">retry</span><span class="o">=</span><span class="n">DEFAULT_RETRY</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;List projects for the project associated with this client.</span>
 
@@ -239,7 +239,7 @@
             <span class="n">page_token</span><span class="o">=</span><span class="n">page_token</span><span class="p">,</span>
             <span class="n">max_results</span><span class="o">=</span><span class="n">max_results</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Client.list_datasets"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.client.Client.list_datasets.html#google.cloud.bigquery.client.Client.list_datasets">[docs]</a>    <span class="k">def</span> <span class="nf">list_datasets</span><span class="p">(</span>
+<div class="viewcode-block" id="Client.list_datasets"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.client.Client.html#google.cloud.bigquery.client.Client.list_datasets">[docs]</a>    <span class="k">def</span> <span class="nf">list_datasets</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">include_all</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="nb">filter</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">max_results</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">page_token</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">DEFAULT_RETRY</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;List datasets for the project associated with this client.</span>
@@ -296,7 +296,7 @@
             <span class="n">max_results</span><span class="o">=</span><span class="n">max_results</span><span class="p">,</span>
             <span class="n">extra_params</span><span class="o">=</span><span class="n">extra_params</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Client.dataset"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.client.Client.dataset.html#google.cloud.bigquery.client.Client.dataset">[docs]</a>    <span class="k">def</span> <span class="nf">dataset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset_id</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Client.dataset"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.client.Client.html#google.cloud.bigquery.client.Client.dataset">[docs]</a>    <span class="k">def</span> <span class="nf">dataset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset_id</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Construct a reference to a dataset.</span>
 
 <span class="sd">        :type dataset_id: str</span>
@@ -314,7 +314,7 @@
 
         <span class="k">return</span> <span class="n">DatasetReference</span><span class="p">(</span><span class="n">project</span><span class="p">,</span> <span class="n">dataset_id</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Client.create_dataset"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.client.Client.create_dataset.html#google.cloud.bigquery.client.Client.create_dataset">[docs]</a>    <span class="k">def</span> <span class="nf">create_dataset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset</span><span class="p">):</span>
+<div class="viewcode-block" id="Client.create_dataset"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.client.Client.html#google.cloud.bigquery.client.Client.create_dataset">[docs]</a>    <span class="k">def</span> <span class="nf">create_dataset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;API call: create the dataset via a POST request.</span>
 
 <span class="sd">        See</span>
@@ -359,7 +359,7 @@
 
         <span class="k">return</span> <span class="n">Dataset</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">api_response</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Client.create_table"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.client.Client.create_table.html#google.cloud.bigquery.client.Client.create_table">[docs]</a>    <span class="k">def</span> <span class="nf">create_table</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table</span><span class="p">):</span>
+<div class="viewcode-block" id="Client.create_table"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.client.Client.html#google.cloud.bigquery.client.Client.create_table">[docs]</a>    <span class="k">def</span> <span class="nf">create_table</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;API call:  create a table via a PUT request</span>
 
 <span class="sd">        See</span>
@@ -398,7 +398,7 @@
             <span class="n">call</span> <span class="o">=</span> <span class="n">retry</span><span class="p">(</span><span class="n">call</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">call</span><span class="p">()</span>
 
-<div class="viewcode-block" id="Client.get_dataset"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.client.Client.get_dataset.html#google.cloud.bigquery.client.Client.get_dataset">[docs]</a>    <span class="k">def</span> <span class="nf">get_dataset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset_ref</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">DEFAULT_RETRY</span><span class="p">):</span>
+<div class="viewcode-block" id="Client.get_dataset"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.client.Client.html#google.cloud.bigquery.client.Client.get_dataset">[docs]</a>    <span class="k">def</span> <span class="nf">get_dataset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset_ref</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">DEFAULT_RETRY</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Fetch the dataset referenced by ``dataset_ref``</span>
 
 <span class="sd">        Args:</span>
@@ -425,7 +425,7 @@
             <span class="n">retry</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">dataset_ref</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">Dataset</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">api_response</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Client.get_table"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.client.Client.get_table.html#google.cloud.bigquery.client.Client.get_table">[docs]</a>    <span class="k">def</span> <span class="nf">get_table</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table_ref</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">DEFAULT_RETRY</span><span class="p">):</span>
+<div class="viewcode-block" id="Client.get_table"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.client.Client.html#google.cloud.bigquery.client.Client.get_table">[docs]</a>    <span class="k">def</span> <span class="nf">get_table</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table_ref</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">DEFAULT_RETRY</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Fetch the table referenced by ``table_ref``.</span>
 
 <span class="sd">        Args:</span>
@@ -451,7 +451,7 @@
         <span class="n">api_response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_call_api</span><span class="p">(</span><span class="n">retry</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">table_ref</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">Table</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">api_response</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Client.update_dataset"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.client.Client.update_dataset.html#google.cloud.bigquery.client.Client.update_dataset">[docs]</a>    <span class="k">def</span> <span class="nf">update_dataset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">fields</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">DEFAULT_RETRY</span><span class="p">):</span>
+<div class="viewcode-block" id="Client.update_dataset"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.client.Client.html#google.cloud.bigquery.client.Client.update_dataset">[docs]</a>    <span class="k">def</span> <span class="nf">update_dataset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">fields</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">DEFAULT_RETRY</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Change some fields of a dataset.</span>
 
 <span class="sd">        Use ``fields`` to specify which fields to update. At least one field</span>
@@ -490,7 +490,7 @@
             <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">Dataset</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">api_response</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Client.update_table"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.client.Client.update_table.html#google.cloud.bigquery.client.Client.update_table">[docs]</a>    <span class="k">def</span> <span class="nf">update_table</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table</span><span class="p">,</span> <span class="n">fields</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">DEFAULT_RETRY</span><span class="p">):</span>
+<div class="viewcode-block" id="Client.update_table"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.client.Client.html#google.cloud.bigquery.client.Client.update_table">[docs]</a>    <span class="k">def</span> <span class="nf">update_table</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table</span><span class="p">,</span> <span class="n">fields</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">DEFAULT_RETRY</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Change some fields of a table.</span>
 
 <span class="sd">        Use ``fields`` to specify which fields to update. At least one field</span>
@@ -525,7 +525,7 @@
             <span class="n">method</span><span class="o">=</span><span class="s1">&#39;PATCH&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">table</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">partial</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">Table</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">api_response</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Client.list_tables"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.client.Client.list_tables.html#google.cloud.bigquery.client.Client.list_tables">[docs]</a>    <span class="k">def</span> <span class="nf">list_tables</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">max_results</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">page_token</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<div class="viewcode-block" id="Client.list_tables"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.client.Client.html#google.cloud.bigquery.client.Client.list_tables">[docs]</a>    <span class="k">def</span> <span class="nf">list_tables</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">max_results</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">page_token</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                     <span class="n">retry</span><span class="o">=</span><span class="n">DEFAULT_RETRY</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;List tables in the dataset.</span>
 
@@ -581,7 +581,7 @@
         <span class="n">result</span><span class="o">.</span><span class="n">dataset</span> <span class="o">=</span> <span class="n">dataset</span>
         <span class="k">return</span> <span class="n">result</span></div>
 
-<div class="viewcode-block" id="Client.delete_dataset"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.client.Client.delete_dataset.html#google.cloud.bigquery.client.Client.delete_dataset">[docs]</a>    <span class="k">def</span> <span class="nf">delete_dataset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">delete_contents</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<div class="viewcode-block" id="Client.delete_dataset"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.client.Client.html#google.cloud.bigquery.client.Client.delete_dataset">[docs]</a>    <span class="k">def</span> <span class="nf">delete_dataset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">delete_contents</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                        <span class="n">retry</span><span class="o">=</span><span class="n">DEFAULT_RETRY</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Delete a dataset.</span>
 
@@ -621,7 +621,7 @@
                        <span class="n">path</span><span class="o">=</span><span class="n">dataset</span><span class="o">.</span><span class="n">path</span><span class="p">,</span>
                        <span class="n">query_params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Client.delete_table"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.client.Client.delete_table.html#google.cloud.bigquery.client.Client.delete_table">[docs]</a>    <span class="k">def</span> <span class="nf">delete_table</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">DEFAULT_RETRY</span><span class="p">):</span>
+<div class="viewcode-block" id="Client.delete_table"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.client.Client.html#google.cloud.bigquery.client.Client.delete_table">[docs]</a>    <span class="k">def</span> <span class="nf">delete_table</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">DEFAULT_RETRY</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Delete a table</span>
 
 <span class="sd">        See</span>
@@ -692,7 +692,7 @@
             <span class="n">retry</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="n">query_params</span><span class="o">=</span><span class="n">extra_params</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">_QueryResults</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">resource</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Client.job_from_resource"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.client.Client.job_from_resource.html#google.cloud.bigquery.client.Client.job_from_resource">[docs]</a>    <span class="k">def</span> <span class="nf">job_from_resource</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">resource</span><span class="p">):</span>
+<div class="viewcode-block" id="Client.job_from_resource"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.client.Client.html#google.cloud.bigquery.client.Client.job_from_resource">[docs]</a>    <span class="k">def</span> <span class="nf">job_from_resource</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">resource</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Detect correct job type from resource and instantiate.</span>
 
 <span class="sd">        :type resource: dict</span>
@@ -716,7 +716,7 @@
             <span class="k">return</span> <span class="n">job</span><span class="o">.</span><span class="n">QueryJob</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">resource</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">job</span><span class="o">.</span><span class="n">UnknownJob</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">resource</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Client.get_job"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.client.Client.get_job.html#google.cloud.bigquery.client.Client.get_job">[docs]</a>    <span class="k">def</span> <span class="nf">get_job</span><span class="p">(</span>
+<div class="viewcode-block" id="Client.get_job"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.client.Client.html#google.cloud.bigquery.client.Client.get_job">[docs]</a>    <span class="k">def</span> <span class="nf">get_job</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span> <span class="n">job_id</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">location</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">DEFAULT_RETRY</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Fetch a job for the project associated with this client.</span>
 
@@ -759,7 +759,7 @@
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">job_from_resource</span><span class="p">(</span><span class="n">resource</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Client.cancel_job"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.client.Client.cancel_job.html#google.cloud.bigquery.client.Client.cancel_job">[docs]</a>    <span class="k">def</span> <span class="nf">cancel_job</span><span class="p">(</span>
+<div class="viewcode-block" id="Client.cancel_job"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.client.Client.html#google.cloud.bigquery.client.Client.cancel_job">[docs]</a>    <span class="k">def</span> <span class="nf">cancel_job</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span> <span class="n">job_id</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">location</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">DEFAULT_RETRY</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Attempt to cancel a job from a job ID.</span>
 
@@ -802,7 +802,7 @@
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">job_from_resource</span><span class="p">(</span><span class="n">resource</span><span class="p">[</span><span class="s1">&#39;job&#39;</span><span class="p">])</span></div>
 
-<div class="viewcode-block" id="Client.list_jobs"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.client.Client.list_jobs.html#google.cloud.bigquery.client.Client.list_jobs">[docs]</a>    <span class="k">def</span> <span class="nf">list_jobs</span><span class="p">(</span>
+<div class="viewcode-block" id="Client.list_jobs"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.client.Client.html#google.cloud.bigquery.client.Client.list_jobs">[docs]</a>    <span class="k">def</span> <span class="nf">list_jobs</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_results</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">page_token</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">all_users</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">state_filter</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">DEFAULT_RETRY</span><span class="p">,</span>
             <span class="n">min_creation_time</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_creation_time</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -876,7 +876,7 @@
             <span class="n">max_results</span><span class="o">=</span><span class="n">max_results</span><span class="p">,</span>
             <span class="n">extra_params</span><span class="o">=</span><span class="n">extra_params</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Client.load_table_from_uri"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.client.Client.load_table_from_uri.html#google.cloud.bigquery.client.Client.load_table_from_uri">[docs]</a>    <span class="k">def</span> <span class="nf">load_table_from_uri</span><span class="p">(</span>
+<div class="viewcode-block" id="Client.load_table_from_uri"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.client.Client.html#google.cloud.bigquery.client.Client.load_table_from_uri">[docs]</a>    <span class="k">def</span> <span class="nf">load_table_from_uri</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span> <span class="n">source_uris</span><span class="p">,</span> <span class="n">destination</span><span class="p">,</span>
             <span class="n">job_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">job_id_prefix</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -945,7 +945,7 @@
 
         <span class="k">return</span> <span class="n">load_job</span></div>
 
-<div class="viewcode-block" id="Client.load_table_from_file"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.client.Client.load_table_from_file.html#google.cloud.bigquery.client.Client.load_table_from_file">[docs]</a>    <span class="k">def</span> <span class="nf">load_table_from_file</span><span class="p">(</span>
+<div class="viewcode-block" id="Client.load_table_from_file"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.client.Client.html#google.cloud.bigquery.client.Client.load_table_from_file">[docs]</a>    <span class="k">def</span> <span class="nf">load_table_from_file</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span> <span class="n">file_obj</span><span class="p">,</span> <span class="n">destination</span><span class="p">,</span> <span class="n">rewind</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">num_retries</span><span class="o">=</span><span class="n">_DEFAULT_NUM_RETRIES</span><span class="p">,</span> <span class="n">job_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">job_id_prefix</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">location</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -1031,7 +1031,7 @@
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">job_from_resource</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">())</span></div>
 
-<div class="viewcode-block" id="Client.load_table_from_dataframe"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.client.Client.load_table_from_dataframe.html#google.cloud.bigquery.client.Client.load_table_from_dataframe">[docs]</a>    <span class="k">def</span> <span class="nf">load_table_from_dataframe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataframe</span><span class="p">,</span> <span class="n">destination</span><span class="p">,</span>
+<div class="viewcode-block" id="Client.load_table_from_dataframe"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.client.Client.html#google.cloud.bigquery.client.Client.load_table_from_dataframe">[docs]</a>    <span class="k">def</span> <span class="nf">load_table_from_dataframe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataframe</span><span class="p">,</span> <span class="n">destination</span><span class="p">,</span>
                                   <span class="n">num_retries</span><span class="o">=</span><span class="n">_DEFAULT_NUM_RETRIES</span><span class="p">,</span>
                                   <span class="n">job_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">job_id_prefix</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                                   <span class="n">location</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -1207,7 +1207,7 @@
 
         <span class="k">return</span> <span class="n">response</span>
 
-<div class="viewcode-block" id="Client.copy_table"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.client.Client.copy_table.html#google.cloud.bigquery.client.Client.copy_table">[docs]</a>    <span class="k">def</span> <span class="nf">copy_table</span><span class="p">(</span>
+<div class="viewcode-block" id="Client.copy_table"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.client.Client.html#google.cloud.bigquery.client.Client.copy_table">[docs]</a>    <span class="k">def</span> <span class="nf">copy_table</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span> <span class="n">sources</span><span class="p">,</span> <span class="n">destination</span><span class="p">,</span> <span class="n">job_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">job_id_prefix</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">location</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">job_config</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">retry</span><span class="o">=</span><span class="n">DEFAULT_RETRY</span><span class="p">):</span>
@@ -1278,7 +1278,7 @@
 
         <span class="k">return</span> <span class="n">copy_job</span></div>
 
-<div class="viewcode-block" id="Client.extract_table"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.client.Client.extract_table.html#google.cloud.bigquery.client.Client.extract_table">[docs]</a>    <span class="k">def</span> <span class="nf">extract_table</span><span class="p">(</span>
+<div class="viewcode-block" id="Client.extract_table"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.client.Client.html#google.cloud.bigquery.client.Client.extract_table">[docs]</a>    <span class="k">def</span> <span class="nf">extract_table</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">destination_uris</span><span class="p">,</span> <span class="n">job_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">job_id_prefix</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">location</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">job_config</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">retry</span><span class="o">=</span><span class="n">DEFAULT_RETRY</span><span class="p">):</span>
@@ -1345,7 +1345,7 @@
 
         <span class="k">return</span> <span class="n">extract_job</span></div>
 
-<div class="viewcode-block" id="Client.query"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.client.Client.query.html#google.cloud.bigquery.client.Client.query">[docs]</a>    <span class="k">def</span> <span class="nf">query</span><span class="p">(</span>
+<div class="viewcode-block" id="Client.query"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.client.Client.html#google.cloud.bigquery.client.Client.query">[docs]</a>    <span class="k">def</span> <span class="nf">query</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span>
             <span class="n">job_config</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">job_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">job_id_prefix</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -1409,7 +1409,7 @@
 
         <span class="k">return</span> <span class="n">query_job</span></div>
 
-<div class="viewcode-block" id="Client.insert_rows"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.client.Client.insert_rows.html#google.cloud.bigquery.client.Client.insert_rows">[docs]</a>    <span class="k">def</span> <span class="nf">insert_rows</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table</span><span class="p">,</span> <span class="n">rows</span><span class="p">,</span> <span class="n">selected_fields</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="Client.insert_rows"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.client.Client.html#google.cloud.bigquery.client.Client.insert_rows">[docs]</a>    <span class="k">def</span> <span class="nf">insert_rows</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table</span><span class="p">,</span> <span class="n">rows</span><span class="p">,</span> <span class="n">selected_fields</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Insert rows into a table via the streaming API.</span>
 
 <span class="sd">        See</span>
@@ -1482,7 +1482,7 @@
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">insert_rows_json</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">json_rows</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Client.insert_rows_json"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.client.Client.insert_rows_json.html#google.cloud.bigquery.client.Client.insert_rows_json">[docs]</a>    <span class="k">def</span> <span class="nf">insert_rows_json</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table</span><span class="p">,</span> <span class="n">json_rows</span><span class="p">,</span> <span class="n">row_ids</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<div class="viewcode-block" id="Client.insert_rows_json"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.client.Client.html#google.cloud.bigquery.client.Client.insert_rows_json">[docs]</a>    <span class="k">def</span> <span class="nf">insert_rows_json</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table</span><span class="p">,</span> <span class="n">json_rows</span><span class="p">,</span> <span class="n">row_ids</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                          <span class="n">skip_invalid_rows</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ignore_unknown_values</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                          <span class="n">template_suffix</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">DEFAULT_RETRY</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Insert rows into a table without applying local type conversions.</span>
@@ -1562,7 +1562,7 @@
 
         <span class="k">return</span> <span class="n">errors</span></div>
 
-<div class="viewcode-block" id="Client.list_partitions"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.client.Client.list_partitions.html#google.cloud.bigquery.client.Client.list_partitions">[docs]</a>    <span class="k">def</span> <span class="nf">list_partitions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">DEFAULT_RETRY</span><span class="p">):</span>
+<div class="viewcode-block" id="Client.list_partitions"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.client.Client.html#google.cloud.bigquery.client.Client.list_partitions">[docs]</a>    <span class="k">def</span> <span class="nf">list_partitions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">DEFAULT_RETRY</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;List the partitions in a table.</span>
 
 <span class="sd">        Arguments:</span>
@@ -1594,7 +1594,7 @@
                 <span class="n">selected_fields</span><span class="o">=</span><span class="n">subset</span><span class="p">,</span>
                 <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">)]</span></div>
 
-<div class="viewcode-block" id="Client.list_rows"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.client.Client.list_rows.html#google.cloud.bigquery.client.Client.list_rows">[docs]</a>    <span class="k">def</span> <span class="nf">list_rows</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table</span><span class="p">,</span> <span class="n">selected_fields</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_results</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<div class="viewcode-block" id="Client.list_rows"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.client.Client.html#google.cloud.bigquery.client.Client.list_rows">[docs]</a>    <span class="k">def</span> <span class="nf">list_rows</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table</span><span class="p">,</span> <span class="n">selected_fields</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_results</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                   <span class="n">page_token</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">start_index</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">page_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                   <span class="n">retry</span><span class="o">=</span><span class="n">DEFAULT_RETRY</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;List the rows of the table.</span>

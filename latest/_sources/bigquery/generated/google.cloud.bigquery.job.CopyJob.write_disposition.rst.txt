@@ -1,6 +1,0 @@
-google.cloud.bigquery.job.CopyJob.write\_disposition
-====================================================
-
-.. currentmodule:: google.cloud.bigquery.job
-
-.. autoattribute:: CopyJob.write_disposition

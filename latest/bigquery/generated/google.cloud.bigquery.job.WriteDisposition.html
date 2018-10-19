@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigquery.job.WriteDisposition &#8212; google-cloud 05dea1b805 documentation</title>
+    <title>google.cloud.bigquery.job.WriteDisposition &#8212; google-cloud a74dc33 documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -17,8 +17,8 @@
     <link rel="shortcut icon" href="../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="google.cloud.bigquery.job.WriteDisposition.WRITE_APPEND" href="google.cloud.bigquery.job.WriteDisposition.WRITE_APPEND.html" />
-    <link rel="prev" title="google.cloud.bigquery.job.SourceFormat.PARQUET" href="google.cloud.bigquery.job.SourceFormat.PARQUET.html" />
+    <link rel="next" title="google.cloud.bigquery.job.SchemaUpdateOption" href="google.cloud.bigquery.job.SchemaUpdateOption.html" />
+    <link rel="prev" title="google.cloud.bigquery.job.SourceFormat" href="google.cloud.bigquery.job.SourceFormat.html" />
    
   <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
   
@@ -37,20 +37,6 @@
             
   <div class="section" id="google-cloud-bigquery-job-writedisposition">
 <h1>google.cloud.bigquery.job.WriteDisposition<a class="headerlink" href="#google-cloud-bigquery-job-writedisposition" title="Permalink to this headline">#</a></h1>
-<dl class="class">
-<dt id="google.cloud.bigquery.job.WriteDisposition">
-<em class="property">class </em><code class="descclassname">google.cloud.bigquery.job.</code><code class="descname">WriteDisposition</code><a class="reference internal" href="../../_modules/google/cloud/bigquery/job.html#WriteDisposition"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.job.WriteDisposition" title="Permalink to this definition">#</a></dt>
-<dd><p>Specifies the action that occurs if destination table already exists.</p>
-<p>The default value is <a class="reference internal" href="google.cloud.bigquery.job.WriteDisposition.WRITE_APPEND.html#google.cloud.bigquery.job.WriteDisposition.WRITE_APPEND" title="google.cloud.bigquery.job.WriteDisposition.WRITE_APPEND"><code class="xref py py-attr docutils literal notranslate"><span class="pre">WRITE_APPEND</span></code></a>.</p>
-<p>Each action is atomic and only occurs if BigQuery is able to complete
-the job successfully. Creation, truncation and append actions occur as one
-atomic update upon job completion.</p>
-<dl class="method">
-<dt id="google.cloud.bigquery.job.WriteDisposition.__init__">
-<code class="descname">__init__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.bigquery.job.WriteDisposition.__init__" title="Permalink to this definition">#</a></dt>
-<dd><p>Initialize self.  See help(type(self)) for accurate signature.</p>
-</dd></dl>
-
 <p class="rubric">Attributes</p>
 <table border="1" class="longtable docutils">
 <colgroup>
@@ -58,17 +44,46 @@ atomic update upon job completion.</p>
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="google.cloud.bigquery.job.WriteDisposition.WRITE_APPEND.html#google.cloud.bigquery.job.WriteDisposition.WRITE_APPEND" title="google.cloud.bigquery.job.WriteDisposition.WRITE_APPEND"><code class="xref py py-obj docutils literal notranslate"><span class="pre">WRITE_APPEND</span></code></a></td>
+<tr class="row-odd"><td><a class="reference internal" href="#google.cloud.bigquery.job.WriteDisposition.WRITE_APPEND" title="google.cloud.bigquery.job.WriteDisposition.WRITE_APPEND"><code class="xref py py-obj docutils literal notranslate"><span class="pre">WRITE_APPEND</span></code></a></td>
 <td>If the table already exists, BigQuery appends the data to the table.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="google.cloud.bigquery.job.WriteDisposition.WRITE_EMPTY.html#google.cloud.bigquery.job.WriteDisposition.WRITE_EMPTY" title="google.cloud.bigquery.job.WriteDisposition.WRITE_EMPTY"><code class="xref py py-obj docutils literal notranslate"><span class="pre">WRITE_EMPTY</span></code></a></td>
+<tr class="row-even"><td><a class="reference internal" href="#google.cloud.bigquery.job.WriteDisposition.WRITE_EMPTY" title="google.cloud.bigquery.job.WriteDisposition.WRITE_EMPTY"><code class="xref py py-obj docutils literal notranslate"><span class="pre">WRITE_EMPTY</span></code></a></td>
 <td>If the table already exists and contains data, a ‘duplicate’ error is returned in the job result.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="google.cloud.bigquery.job.WriteDisposition.WRITE_TRUNCATE.html#google.cloud.bigquery.job.WriteDisposition.WRITE_TRUNCATE" title="google.cloud.bigquery.job.WriteDisposition.WRITE_TRUNCATE"><code class="xref py py-obj docutils literal notranslate"><span class="pre">WRITE_TRUNCATE</span></code></a></td>
+<tr class="row-odd"><td><a class="reference internal" href="#google.cloud.bigquery.job.WriteDisposition.WRITE_TRUNCATE" title="google.cloud.bigquery.job.WriteDisposition.WRITE_TRUNCATE"><code class="xref py py-obj docutils literal notranslate"><span class="pre">WRITE_TRUNCATE</span></code></a></td>
 <td>If the table already exists, BigQuery overwrites the table data.</td>
 </tr>
 </tbody>
 </table>
+<p>
+<hr>
+<p><dl class="class">
+<dt id="google.cloud.bigquery.job.WriteDisposition">
+<em class="property">class </em><code class="descclassname">google.cloud.bigquery.job.</code><code class="descname">WriteDisposition</code><a class="reference internal" href="../../_modules/google/cloud/bigquery/job.html#WriteDisposition"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.job.WriteDisposition" title="Permalink to this definition">#</a></dt>
+<dd><p>Specifies the action that occurs if destination table already exists.</p>
+<p>The default value is <a class="reference internal" href="#google.cloud.bigquery.job.WriteDisposition.WRITE_APPEND" title="google.cloud.bigquery.job.WriteDisposition.WRITE_APPEND"><code class="xref py py-attr docutils literal notranslate"><span class="pre">WRITE_APPEND</span></code></a>.</p>
+<p>Each action is atomic and only occurs if BigQuery is able to complete
+the job successfully. Creation, truncation and append actions occur as one
+atomic update upon job completion.</p>
+<dl class="attribute">
+<dt id="google.cloud.bigquery.job.WriteDisposition.WRITE_APPEND">
+<code class="descname">WRITE_APPEND</code><em class="property"> = 'WRITE_APPEND'</em><a class="headerlink" href="#google.cloud.bigquery.job.WriteDisposition.WRITE_APPEND" title="Permalink to this definition">#</a></dt>
+<dd><p>If the table already exists, BigQuery appends the data to the table.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery.job.WriteDisposition.WRITE_EMPTY">
+<code class="descname">WRITE_EMPTY</code><em class="property"> = 'WRITE_EMPTY'</em><a class="headerlink" href="#google.cloud.bigquery.job.WriteDisposition.WRITE_EMPTY" title="Permalink to this definition">#</a></dt>
+<dd><p>If the table already exists and contains data, a ‘duplicate’ error is
+returned in the job result.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery.job.WriteDisposition.WRITE_TRUNCATE">
+<code class="descname">WRITE_TRUNCATE</code><em class="property"> = 'WRITE_TRUNCATE'</em><a class="headerlink" href="#google.cloud.bigquery.job.WriteDisposition.WRITE_TRUNCATE" title="Permalink to this definition">#</a></dt>
+<dd><p>If the table already exists, BigQuery overwrites the table data.</p>
+</dd></dl>
+
 </dd></dl>
 
 </div>
@@ -143,8 +158,8 @@ atomic update upon job completion.</p>
   <li><a href="../../index.html">Documentation overview</a><ul>
   <li><a href="../index.html">Python Client for Google BigQuery</a><ul>
   <li><a href="../reference.html">API Reference</a><ul>
-      <li>Previous: <a href="google.cloud.bigquery.job.SourceFormat.PARQUET.html" title="previous chapter">google.cloud.bigquery.job.SourceFormat.PARQUET</a></li>
-      <li>Next: <a href="google.cloud.bigquery.job.WriteDisposition.WRITE_APPEND.html" title="next chapter">google.cloud.bigquery.job.WriteDisposition.WRITE_APPEND</a></li>
+      <li>Previous: <a href="google.cloud.bigquery.job.SourceFormat.html" title="previous chapter">google.cloud.bigquery.job.SourceFormat</a></li>
+      <li>Next: <a href="google.cloud.bigquery.job.SchemaUpdateOption.html" title="next chapter">google.cloud.bigquery.job.SchemaUpdateOption</a></li>
   </ul></li>
   </ul></li>
   </ul></li>

@@ -1,6 +1,0 @@
-google.cloud.bigquery.client.Client.list\_projects
-==================================================
-
-.. currentmodule:: google.cloud.bigquery.client
-
-.. automethod:: Client.list_projects

@@ -3,54 +3,56 @@ google.cloud.bigquery.job.QueryJobConfig
 
 .. currentmodule:: google.cloud.bigquery.job
 
+
+
+.. rubric:: Methods
+
+.. autosummary::
+
+   
+   
+   ~QueryJobConfig.from_api_repr
+   
+   
+   ~QueryJobConfig.to_api_repr
+   
+
+
+
+
+
+.. rubric:: Attributes
+
+.. autosummary::
+
+   ~QueryJobConfig.allow_large_results
+   ~QueryJobConfig.clustering_fields
+   ~QueryJobConfig.create_disposition
+   ~QueryJobConfig.default_dataset
+   ~QueryJobConfig.destination
+   ~QueryJobConfig.destination_encryption_configuration
+   ~QueryJobConfig.dry_run
+   ~QueryJobConfig.flatten_results
+   ~QueryJobConfig.labels
+   ~QueryJobConfig.maximum_billing_tier
+   ~QueryJobConfig.maximum_bytes_billed
+   ~QueryJobConfig.priority
+   ~QueryJobConfig.query_parameters
+   ~QueryJobConfig.schema_update_options
+   ~QueryJobConfig.table_definitions
+   ~QueryJobConfig.time_partitioning
+   ~QueryJobConfig.udf_resources
+   ~QueryJobConfig.use_legacy_sql
+   ~QueryJobConfig.use_query_cache
+   ~QueryJobConfig.write_disposition
+
+
+
+.. raw:: html
+
+    <p>
+    <hr>
+    <p>
+
 .. autoclass:: QueryJobConfig
-
-   
-   .. automethod:: __init__
-
-   
-   .. rubric:: Methods
-
-   
-   .. autosummary::
-      :toctree: .
-   
-      
-      
-      ~QueryJobConfig.from_api_repr
-      
-      
-      ~QueryJobConfig.to_api_repr
-      
-   
-   
-
-   
-   
-   .. rubric:: Attributes
-
-   .. autosummary::
-      :toctree: .
-   
-      ~QueryJobConfig.allow_large_results
-      ~QueryJobConfig.clustering_fields
-      ~QueryJobConfig.create_disposition
-      ~QueryJobConfig.default_dataset
-      ~QueryJobConfig.destination
-      ~QueryJobConfig.destination_encryption_configuration
-      ~QueryJobConfig.dry_run
-      ~QueryJobConfig.flatten_results
-      ~QueryJobConfig.labels
-      ~QueryJobConfig.maximum_billing_tier
-      ~QueryJobConfig.maximum_bytes_billed
-      ~QueryJobConfig.priority
-      ~QueryJobConfig.query_parameters
-      ~QueryJobConfig.schema_update_options
-      ~QueryJobConfig.table_definitions
-      ~QueryJobConfig.time_partitioning
-      ~QueryJobConfig.udf_resources
-      ~QueryJobConfig.use_legacy_sql
-      ~QueryJobConfig.use_query_cache
-      ~QueryJobConfig.write_disposition
-   
-   
+   :members:

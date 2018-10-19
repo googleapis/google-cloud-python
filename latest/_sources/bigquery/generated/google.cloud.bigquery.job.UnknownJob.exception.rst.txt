@@ -1,6 +1,0 @@
-google.cloud.bigquery.job.UnknownJob.exception
-==============================================
-
-.. currentmodule:: google.cloud.bigquery.job
-
-.. automethod:: UnknownJob.exception

@@ -1,6 +1,0 @@
-google.cloud.bigquery.external\_config.ExternalSourceFormat.GOOGLE\_SHEETS
-==========================================================================
-
-.. currentmodule:: google.cloud.bigquery.external_config
-
-.. autoattribute:: ExternalSourceFormat.GOOGLE_SHEETS

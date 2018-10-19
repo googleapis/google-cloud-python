@@ -3,41 +3,43 @@ google.cloud.bigquery.table.TableReference
 
 .. currentmodule:: google.cloud.bigquery.table
 
+
+
+.. rubric:: Methods
+
+.. autosummary::
+
+   
+   
+   ~TableReference.from_api_repr
+   
+   
+   ~TableReference.from_string
+   
+   
+   ~TableReference.to_api_repr
+   
+
+
+
+
+
+.. rubric:: Attributes
+
+.. autosummary::
+
+   ~TableReference.dataset_id
+   ~TableReference.path
+   ~TableReference.project
+   ~TableReference.table_id
+
+
+
+.. raw:: html
+
+    <p>
+    <hr>
+    <p>
+
 .. autoclass:: TableReference
-
-   
-   .. automethod:: __init__
-
-   
-   .. rubric:: Methods
-
-   
-   .. autosummary::
-      :toctree: .
-   
-      
-      
-      ~TableReference.from_api_repr
-      
-      
-      ~TableReference.from_string
-      
-      
-      ~TableReference.to_api_repr
-      
-   
-   
-
-   
-   
-   .. rubric:: Attributes
-
-   .. autosummary::
-      :toctree: .
-   
-      ~TableReference.dataset_id
-      ~TableReference.path
-      ~TableReference.project
-      ~TableReference.table_id
-   
-   
+   :members:

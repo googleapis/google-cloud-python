@@ -1,6 +1,0 @@
-google.cloud.bigquery.external\_config.BigtableColumnFamily.to\_api\_repr
-=========================================================================
-
-.. currentmodule:: google.cloud.bigquery.external_config
-
-.. automethod:: BigtableColumnFamily.to_api_repr

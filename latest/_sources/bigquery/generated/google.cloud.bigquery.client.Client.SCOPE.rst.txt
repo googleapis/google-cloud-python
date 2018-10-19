@@ -1,6 +1,0 @@
-google.cloud.bigquery.client.Client.SCOPE
-=========================================
-
-.. currentmodule:: google.cloud.bigquery.client
-
-.. autoattribute:: Client.SCOPE

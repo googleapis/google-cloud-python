@@ -1,6 +1,0 @@
-google.cloud.bigquery.job.QueryJob.result
-=========================================
-
-.. currentmodule:: google.cloud.bigquery.job
-
-.. automethod:: QueryJob.result

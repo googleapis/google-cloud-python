@@ -1,6 +1,0 @@
-google.cloud.bigquery.external\_config.BigtableColumn.qualifier\_encoded
-========================================================================
-
-.. currentmodule:: google.cloud.bigquery.external_config
-
-.. autoattribute:: BigtableColumn.qualifier_encoded

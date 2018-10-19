@@ -1,6 +1,0 @@
-google.cloud.bigquery.job.DestinationFormat.AVRO
-================================================
-
-.. currentmodule:: google.cloud.bigquery.job
-
-.. autoattribute:: DestinationFormat.AVRO

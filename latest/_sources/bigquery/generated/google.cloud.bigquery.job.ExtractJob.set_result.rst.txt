@@ -1,6 +1,0 @@
-google.cloud.bigquery.job.ExtractJob.set\_result
-================================================
-
-.. currentmodule:: google.cloud.bigquery.job
-
-.. automethod:: ExtractJob.set_result

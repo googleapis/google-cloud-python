@@ -1,6 +1,0 @@
-google.cloud.bigquery.job.DestinationFormat.NEWLINE\_DELIMITED\_JSON
-====================================================================
-
-.. currentmodule:: google.cloud.bigquery.job
-
-.. autoattribute:: DestinationFormat.NEWLINE_DELIMITED_JSON

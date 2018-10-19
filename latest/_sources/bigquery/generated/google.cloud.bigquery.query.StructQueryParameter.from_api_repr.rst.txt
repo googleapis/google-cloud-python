@@ -1,6 +1,0 @@
-google.cloud.bigquery.query.StructQueryParameter.from\_api\_repr
-================================================================
-
-.. currentmodule:: google.cloud.bigquery.query
-
-.. automethod:: StructQueryParameter.from_api_repr

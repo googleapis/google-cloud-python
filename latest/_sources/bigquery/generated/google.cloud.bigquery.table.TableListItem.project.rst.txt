@@ -1,6 +1,0 @@
-google.cloud.bigquery.table.TableListItem.project
-=================================================
-
-.. currentmodule:: google.cloud.bigquery.table
-
-.. autoattribute:: TableListItem.project

@@ -1,6 +1,0 @@
-google.cloud.bigquery.table.Table.external\_data\_configuration
-===============================================================
-
-.. currentmodule:: google.cloud.bigquery.table
-
-.. autoattribute:: Table.external_data_configuration

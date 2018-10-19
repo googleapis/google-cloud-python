@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigquery.job.SchemaUpdateOption &#8212; google-cloud 05dea1b805 documentation</title>
+    <title>google.cloud.bigquery.job.SchemaUpdateOption &#8212; google-cloud a74dc33 documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -17,8 +17,8 @@
     <link rel="shortcut icon" href="../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="google.cloud.bigquery.job.SchemaUpdateOption.ALLOW_FIELD_ADDITION" href="google.cloud.bigquery.job.SchemaUpdateOption.ALLOW_FIELD_ADDITION.html" />
-    <link rel="prev" title="google.cloud.bigquery.job.WriteDisposition.WRITE_TRUNCATE" href="google.cloud.bigquery.job.WriteDisposition.WRITE_TRUNCATE.html" />
+    <link rel="next" title="google.cloud.bigquery.dataset.Dataset" href="google.cloud.bigquery.dataset.Dataset.html" />
+    <link rel="prev" title="google.cloud.bigquery.job.WriteDisposition" href="google.cloud.bigquery.job.WriteDisposition.html" />
    
   <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
   
@@ -37,17 +37,6 @@
             
   <div class="section" id="google-cloud-bigquery-job-schemaupdateoption">
 <h1>google.cloud.bigquery.job.SchemaUpdateOption<a class="headerlink" href="#google-cloud-bigquery-job-schemaupdateoption" title="Permalink to this headline">#</a></h1>
-<dl class="class">
-<dt id="google.cloud.bigquery.job.SchemaUpdateOption">
-<em class="property">class </em><code class="descclassname">google.cloud.bigquery.job.</code><code class="descname">SchemaUpdateOption</code><a class="reference internal" href="../../_modules/google/cloud/bigquery/job.html#SchemaUpdateOption"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.job.SchemaUpdateOption" title="Permalink to this definition">#</a></dt>
-<dd><p>Specifies an update to the destination table schema as a side effect of
-a load job.</p>
-<dl class="method">
-<dt id="google.cloud.bigquery.job.SchemaUpdateOption.__init__">
-<code class="descname">__init__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.bigquery.job.SchemaUpdateOption.__init__" title="Permalink to this definition">#</a></dt>
-<dd><p>Initialize self.  See help(type(self)) for accurate signature.</p>
-</dd></dl>
-
 <p class="rubric">Attributes</p>
 <table border="1" class="longtable docutils">
 <colgroup>
@@ -55,14 +44,33 @@ a load job.</p>
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="google.cloud.bigquery.job.SchemaUpdateOption.ALLOW_FIELD_ADDITION.html#google.cloud.bigquery.job.SchemaUpdateOption.ALLOW_FIELD_ADDITION" title="google.cloud.bigquery.job.SchemaUpdateOption.ALLOW_FIELD_ADDITION"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ALLOW_FIELD_ADDITION</span></code></a></td>
+<tr class="row-odd"><td><a class="reference internal" href="#google.cloud.bigquery.job.SchemaUpdateOption.ALLOW_FIELD_ADDITION" title="google.cloud.bigquery.job.SchemaUpdateOption.ALLOW_FIELD_ADDITION"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ALLOW_FIELD_ADDITION</span></code></a></td>
 <td>Allow adding a nullable field to the schema.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="google.cloud.bigquery.job.SchemaUpdateOption.ALLOW_FIELD_RELAXATION.html#google.cloud.bigquery.job.SchemaUpdateOption.ALLOW_FIELD_RELAXATION" title="google.cloud.bigquery.job.SchemaUpdateOption.ALLOW_FIELD_RELAXATION"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ALLOW_FIELD_RELAXATION</span></code></a></td>
+<tr class="row-even"><td><a class="reference internal" href="#google.cloud.bigquery.job.SchemaUpdateOption.ALLOW_FIELD_RELAXATION" title="google.cloud.bigquery.job.SchemaUpdateOption.ALLOW_FIELD_RELAXATION"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ALLOW_FIELD_RELAXATION</span></code></a></td>
 <td>Allow relaxing a required field in the original schema to nullable.</td>
 </tr>
 </tbody>
 </table>
+<p>
+<hr>
+<p><dl class="class">
+<dt id="google.cloud.bigquery.job.SchemaUpdateOption">
+<em class="property">class </em><code class="descclassname">google.cloud.bigquery.job.</code><code class="descname">SchemaUpdateOption</code><a class="reference internal" href="../../_modules/google/cloud/bigquery/job.html#SchemaUpdateOption"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.job.SchemaUpdateOption" title="Permalink to this definition">#</a></dt>
+<dd><p>Specifies an update to the destination table schema as a side effect of
+a load job.</p>
+<dl class="attribute">
+<dt id="google.cloud.bigquery.job.SchemaUpdateOption.ALLOW_FIELD_ADDITION">
+<code class="descname">ALLOW_FIELD_ADDITION</code><em class="property"> = 'ALLOW_FIELD_ADDITION'</em><a class="headerlink" href="#google.cloud.bigquery.job.SchemaUpdateOption.ALLOW_FIELD_ADDITION" title="Permalink to this definition">#</a></dt>
+<dd><p>Allow adding a nullable field to the schema.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery.job.SchemaUpdateOption.ALLOW_FIELD_RELAXATION">
+<code class="descname">ALLOW_FIELD_RELAXATION</code><em class="property"> = 'ALLOW_FIELD_RELAXATION'</em><a class="headerlink" href="#google.cloud.bigquery.job.SchemaUpdateOption.ALLOW_FIELD_RELAXATION" title="Permalink to this definition">#</a></dt>
+<dd><p>Allow relaxing a required field in the original schema to nullable.</p>
+</dd></dl>
+
 </dd></dl>
 
 </div>
@@ -137,8 +145,8 @@ a load job.</p>
   <li><a href="../../index.html">Documentation overview</a><ul>
   <li><a href="../index.html">Python Client for Google BigQuery</a><ul>
   <li><a href="../reference.html">API Reference</a><ul>
-      <li>Previous: <a href="google.cloud.bigquery.job.WriteDisposition.WRITE_TRUNCATE.html" title="previous chapter">google.cloud.bigquery.job.WriteDisposition.WRITE_TRUNCATE</a></li>
-      <li>Next: <a href="google.cloud.bigquery.job.SchemaUpdateOption.ALLOW_FIELD_ADDITION.html" title="next chapter">google.cloud.bigquery.job.SchemaUpdateOption.ALLOW_FIELD_ADDITION</a></li>
+      <li>Previous: <a href="google.cloud.bigquery.job.WriteDisposition.html" title="previous chapter">google.cloud.bigquery.job.WriteDisposition</a></li>
+      <li>Next: <a href="google.cloud.bigquery.dataset.Dataset.html" title="next chapter">google.cloud.bigquery.dataset.Dataset</a></li>
   </ul></li>
   </ul></li>
   </ul></li>

@@ -1,6 +1,0 @@
-google.cloud.bigquery.job.LoadJob.exists
-========================================
-
-.. currentmodule:: google.cloud.bigquery.job
-
-.. automethod:: LoadJob.exists

@@ -1,6 +1,0 @@
-google.cloud.bigquery.dataset.DatasetReference.path
-===================================================
-
-.. currentmodule:: google.cloud.bigquery.dataset
-
-.. autoattribute:: DatasetReference.path

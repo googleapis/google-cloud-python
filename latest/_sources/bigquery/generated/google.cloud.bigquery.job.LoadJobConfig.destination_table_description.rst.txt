@@ -1,6 +1,0 @@
-google.cloud.bigquery.job.LoadJobConfig.destination\_table\_description
-=======================================================================
-
-.. currentmodule:: google.cloud.bigquery.job
-
-.. autoattribute:: LoadJobConfig.destination_table_description

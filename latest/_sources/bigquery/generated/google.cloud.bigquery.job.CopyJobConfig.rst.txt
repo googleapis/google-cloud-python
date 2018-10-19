@@ -3,38 +3,40 @@ google.cloud.bigquery.job.CopyJobConfig
 
 .. currentmodule:: google.cloud.bigquery.job
 
+
+
+.. rubric:: Methods
+
+.. autosummary::
+
+   
+   
+   ~CopyJobConfig.from_api_repr
+   
+   
+   ~CopyJobConfig.to_api_repr
+   
+
+
+
+
+
+.. rubric:: Attributes
+
+.. autosummary::
+
+   ~CopyJobConfig.create_disposition
+   ~CopyJobConfig.destination_encryption_configuration
+   ~CopyJobConfig.labels
+   ~CopyJobConfig.write_disposition
+
+
+
+.. raw:: html
+
+    <p>
+    <hr>
+    <p>
+
 .. autoclass:: CopyJobConfig
-
-   
-   .. automethod:: __init__
-
-   
-   .. rubric:: Methods
-
-   
-   .. autosummary::
-      :toctree: .
-   
-      
-      
-      ~CopyJobConfig.from_api_repr
-      
-      
-      ~CopyJobConfig.to_api_repr
-      
-   
-   
-
-   
-   
-   .. rubric:: Attributes
-
-   .. autosummary::
-      :toctree: .
-   
-      ~CopyJobConfig.create_disposition
-      ~CopyJobConfig.destination_encryption_configuration
-      ~CopyJobConfig.labels
-      ~CopyJobConfig.write_disposition
-   
-   
+   :members:

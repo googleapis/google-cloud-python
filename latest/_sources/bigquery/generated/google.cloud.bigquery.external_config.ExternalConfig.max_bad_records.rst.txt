@@ -1,6 +1,0 @@
-google.cloud.bigquery.external\_config.ExternalConfig.max\_bad\_records
-=======================================================================
-
-.. currentmodule:: google.cloud.bigquery.external_config
-
-.. autoattribute:: ExternalConfig.max_bad_records

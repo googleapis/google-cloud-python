@@ -1,6 +1,0 @@
-google.cloud.bigquery.table.TimePartitioning.expiration\_ms
-===========================================================
-
-.. currentmodule:: google.cloud.bigquery.table
-
-.. autoattribute:: TimePartitioning.expiration_ms

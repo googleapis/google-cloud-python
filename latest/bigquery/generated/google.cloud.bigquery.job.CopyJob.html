@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigquery.job.CopyJob &#8212; google-cloud 05dea1b805 documentation</title>
+    <title>google.cloud.bigquery.job.CopyJob &#8212; google-cloud a74dc33 documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -17,8 +17,8 @@
     <link rel="shortcut icon" href="../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="google.cloud.bigquery.job.CopyJob.add_done_callback" href="google.cloud.bigquery.job.CopyJob.add_done_callback.html" />
-    <link rel="prev" title="google.cloud.bigquery.job.QueryJob.write_disposition" href="google.cloud.bigquery.job.QueryJob.write_disposition.html" />
+    <link rel="next" title="google.cloud.bigquery.job.LoadJob" href="google.cloud.bigquery.job.LoadJob.html" />
+    <link rel="prev" title="google.cloud.bigquery.job.QueryJob" href="google.cloud.bigquery.job.QueryJob.html" />
    
   <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
   
@@ -37,7 +37,120 @@
             
   <div class="section" id="google-cloud-bigquery-job-copyjob">
 <h1>google.cloud.bigquery.job.CopyJob<a class="headerlink" href="#google-cloud-bigquery-job-copyjob" title="Permalink to this headline">#</a></h1>
-<dl class="class">
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_done_callback</span></code>(fn)</td>
+<td>Add a callback to be executed when the operation is complete.</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">cancel</span></code>([client])</td>
+<td>API call:  cancel job via a POST request</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">cancelled</span></code>()</td>
+<td>Check if the job has been cancelled.</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">done</span></code>([retry])</td>
+<td>Refresh the job and checks if it is complete.</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">exception</span></code>([timeout])</td>
+<td>Get the exception from the operation, blocking if necessary.</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">exists</span></code>([client,&nbsp;retry])</td>
+<td>API call:  test for the existence of the job via a GET request</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#google.cloud.bigquery.job.CopyJob.from_api_repr" title="google.cloud.bigquery.job.CopyJob.from_api_repr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_api_repr</span></code></a>(resource,&nbsp;client)</td>
+<td>Factory:  construct a job given its API representation</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">reload</span></code>([client,&nbsp;retry])</td>
+<td>API call:  refresh job properties via a GET request.</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">result</span></code>([timeout])</td>
+<td>Start the job and wait for it to complete and get the result.</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">running</span></code>()</td>
+<td>True if the operation is currently running.</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_exception</span></code>(exception)</td>
+<td>Set the Future’s exception.</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_result</span></code>(result)</td>
+<td>Set the Future’s result.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#google.cloud.bigquery.job.CopyJob.to_api_repr" title="google.cloud.bigquery.job.CopyJob.to_api_repr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_api_repr</span></code></a>()</td>
+<td>Generate a resource for <code class="xref py py-meth docutils literal notranslate"><span class="pre">_begin()</span></code>.</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Attributes</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#google.cloud.bigquery.job.CopyJob.create_disposition" title="google.cloud.bigquery.job.CopyJob.create_disposition"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_disposition</span></code></a></td>
+<td>See <a class="reference internal" href="google.cloud.bigquery.job.CopyJobConfig.html#google.cloud.bigquery.job.CopyJobConfig.create_disposition" title="google.cloud.bigquery.job.CopyJobConfig.create_disposition"><code class="xref py py-attr docutils literal notranslate"><span class="pre">google.cloud.bigquery.job.CopyJobConfig.create_disposition</span></code></a>.</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">created</span></code></td>
+<td>Datetime at which the job was created.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#google.cloud.bigquery.job.CopyJob.destination_encryption_configuration" title="google.cloud.bigquery.job.CopyJob.destination_encryption_configuration"><code class="xref py py-obj docutils literal notranslate"><span class="pre">destination_encryption_configuration</span></code></a></td>
+<td>Custom encryption configuration for the destination table.</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">ended</span></code></td>
+<td>Datetime at which the job finished.</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">error_result</span></code></td>
+<td>Error information about the job as a whole.</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">errors</span></code></td>
+<td>Information about individual errors generated by the job.</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">etag</span></code></td>
+<td>ETag for the job resource.</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">job_id</span></code></td>
+<td>ID of the job.</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">job_type</span></code></td>
+<td>Type of job</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">labels</span></code></td>
+<td>Labels for the job.</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">location</span></code></td>
+<td>Location where the job runs.</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">path</span></code></td>
+<td>URL path for the job’s APIs.</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">project</span></code></td>
+<td>Project bound to the job.</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">self_link</span></code></td>
+<td>URL for the job resource.</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">started</span></code></td>
+<td>Datetime at which the job was started.</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">state</span></code></td>
+<td>Status of the job.</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">user_email</span></code></td>
+<td>E-mail address of user who submitted the job.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#google.cloud.bigquery.job.CopyJob.write_disposition" title="google.cloud.bigquery.job.CopyJob.write_disposition"><code class="xref py py-obj docutils literal notranslate"><span class="pre">write_disposition</span></code></a></td>
+<td>See <a class="reference internal" href="google.cloud.bigquery.job.CopyJobConfig.html#google.cloud.bigquery.job.CopyJobConfig.write_disposition" title="google.cloud.bigquery.job.CopyJobConfig.write_disposition"><code class="xref py py-attr docutils literal notranslate"><span class="pre">google.cloud.bigquery.job.CopyJobConfig.write_disposition</span></code></a>.</td>
+</tr>
+</tbody>
+</table>
+<p>
+<hr>
+<p><dl class="class">
 <dt id="google.cloud.bigquery.job.CopyJob">
 <em class="property">class </em><code class="descclassname">google.cloud.bigquery.job.</code><code class="descname">CopyJob</code><span class="sig-paren">(</span><em>job_id</em>, <em>sources</em>, <em>destination</em>, <em>client</em>, <em>job_config=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/google/cloud/bigquery/job.html#CopyJob"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.job.CopyJob" title="Permalink to this definition">#</a></dt>
 <dd><p>Asynchronous job: copy data into a table from other tables.</p>
@@ -57,123 +170,70 @@ for the dataset (which requires a project).</li>
 </tr>
 </tbody>
 </table>
-<dl class="method">
-<dt id="google.cloud.bigquery.job.CopyJob.__init__">
-<code class="descname">__init__</code><span class="sig-paren">(</span><em>job_id</em>, <em>sources</em>, <em>destination</em>, <em>client</em>, <em>job_config=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/google/cloud/bigquery/job.html#CopyJob.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.job.CopyJob.__init__" title="Permalink to this definition">#</a></dt>
-<dd><p>Initialize self.  See help(type(self)) for accurate signature.</p>
+<dl class="attribute">
+<dt id="google.cloud.bigquery.job.CopyJob.create_disposition">
+<code class="descname">create_disposition</code><a class="headerlink" href="#google.cloud.bigquery.job.CopyJob.create_disposition" title="Permalink to this definition">#</a></dt>
+<dd><p>See
+<a class="reference internal" href="google.cloud.bigquery.job.CopyJobConfig.html#google.cloud.bigquery.job.CopyJobConfig.create_disposition" title="google.cloud.bigquery.job.CopyJobConfig.create_disposition"><code class="xref py py-attr docutils literal notranslate"><span class="pre">google.cloud.bigquery.job.CopyJobConfig.create_disposition</span></code></a>.</p>
 </dd></dl>
 
-<p class="rubric">Methods</p>
-<table border="1" class="longtable docutils">
-<colgroup>
-<col width="10%" />
-<col width="90%" />
-</colgroup>
+<dl class="attribute">
+<dt id="google.cloud.bigquery.job.CopyJob.destination_encryption_configuration">
+<code class="descname">destination_encryption_configuration</code><a class="headerlink" href="#google.cloud.bigquery.job.CopyJob.destination_encryption_configuration" title="Permalink to this definition">#</a></dt>
+<dd><p>Custom
+encryption configuration for the destination table.</p>
+<p>Custom encryption configuration (e.g., Cloud KMS keys) or <code class="docutils literal notranslate"><span class="pre">None</span></code>
+if using default encryption.</p>
+<p>See
+<a class="reference internal" href="google.cloud.bigquery.job.CopyJobConfig.html#google.cloud.bigquery.job.CopyJobConfig.destination_encryption_configuration" title="google.cloud.bigquery.job.CopyJobConfig.destination_encryption_configuration"><code class="xref py py-attr docutils literal notranslate"><span class="pre">google.cloud.bigquery.job.CopyJobConfig.destination_encryption_configuration</span></code></a>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
 <tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="google.cloud.bigquery.job.CopyJob.add_done_callback.html#google.cloud.bigquery.job.CopyJob.add_done_callback" title="google.cloud.bigquery.job.CopyJob.add_done_callback"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_done_callback</span></code></a>(fn)</td>
-<td>Add a callback to be executed when the operation is complete.</td>
-</tr>
-<tr class="row-even"><td><a class="reference internal" href="google.cloud.bigquery.job.CopyJob.cancel.html#google.cloud.bigquery.job.CopyJob.cancel" title="google.cloud.bigquery.job.CopyJob.cancel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cancel</span></code></a>([client])</td>
-<td>API call:  cancel job via a POST request</td>
-</tr>
-<tr class="row-odd"><td><a class="reference internal" href="google.cloud.bigquery.job.CopyJob.cancelled.html#google.cloud.bigquery.job.CopyJob.cancelled" title="google.cloud.bigquery.job.CopyJob.cancelled"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cancelled</span></code></a>()</td>
-<td>Check if the job has been cancelled.</td>
-</tr>
-<tr class="row-even"><td><a class="reference internal" href="google.cloud.bigquery.job.CopyJob.done.html#google.cloud.bigquery.job.CopyJob.done" title="google.cloud.bigquery.job.CopyJob.done"><code class="xref py py-obj docutils literal notranslate"><span class="pre">done</span></code></a>([retry])</td>
-<td>Refresh the job and checks if it is complete.</td>
-</tr>
-<tr class="row-odd"><td><a class="reference internal" href="google.cloud.bigquery.job.CopyJob.exception.html#google.cloud.bigquery.job.CopyJob.exception" title="google.cloud.bigquery.job.CopyJob.exception"><code class="xref py py-obj docutils literal notranslate"><span class="pre">exception</span></code></a>([timeout])</td>
-<td>Get the exception from the operation, blocking if necessary.</td>
-</tr>
-<tr class="row-even"><td><a class="reference internal" href="google.cloud.bigquery.job.CopyJob.exists.html#google.cloud.bigquery.job.CopyJob.exists" title="google.cloud.bigquery.job.CopyJob.exists"><code class="xref py py-obj docutils literal notranslate"><span class="pre">exists</span></code></a>([client,&nbsp;retry])</td>
-<td>API call:  test for the existence of the job via a GET request</td>
-</tr>
-<tr class="row-odd"><td><a class="reference internal" href="google.cloud.bigquery.job.CopyJob.from_api_repr.html#google.cloud.bigquery.job.CopyJob.from_api_repr" title="google.cloud.bigquery.job.CopyJob.from_api_repr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_api_repr</span></code></a>(resource,&nbsp;client)</td>
-<td>Factory:  construct a job given its API representation</td>
-</tr>
-<tr class="row-even"><td><a class="reference internal" href="google.cloud.bigquery.job.CopyJob.reload.html#google.cloud.bigquery.job.CopyJob.reload" title="google.cloud.bigquery.job.CopyJob.reload"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reload</span></code></a>([client,&nbsp;retry])</td>
-<td>API call:  refresh job properties via a GET request.</td>
-</tr>
-<tr class="row-odd"><td><a class="reference internal" href="google.cloud.bigquery.job.CopyJob.result.html#google.cloud.bigquery.job.CopyJob.result" title="google.cloud.bigquery.job.CopyJob.result"><code class="xref py py-obj docutils literal notranslate"><span class="pre">result</span></code></a>([timeout])</td>
-<td>Start the job and wait for it to complete and get the result.</td>
-</tr>
-<tr class="row-even"><td><a class="reference internal" href="google.cloud.bigquery.job.CopyJob.running.html#google.cloud.bigquery.job.CopyJob.running" title="google.cloud.bigquery.job.CopyJob.running"><code class="xref py py-obj docutils literal notranslate"><span class="pre">running</span></code></a>()</td>
-<td>True if the operation is currently running.</td>
-</tr>
-<tr class="row-odd"><td><a class="reference internal" href="google.cloud.bigquery.job.CopyJob.set_exception.html#google.cloud.bigquery.job.CopyJob.set_exception" title="google.cloud.bigquery.job.CopyJob.set_exception"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_exception</span></code></a>(exception)</td>
-<td>Set the Future’s exception.</td>
-</tr>
-<tr class="row-even"><td><a class="reference internal" href="google.cloud.bigquery.job.CopyJob.set_result.html#google.cloud.bigquery.job.CopyJob.set_result" title="google.cloud.bigquery.job.CopyJob.set_result"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_result</span></code></a>(result)</td>
-<td>Set the Future’s result.</td>
-</tr>
-<tr class="row-odd"><td><a class="reference internal" href="google.cloud.bigquery.job.CopyJob.to_api_repr.html#google.cloud.bigquery.job.CopyJob.to_api_repr" title="google.cloud.bigquery.job.CopyJob.to_api_repr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_api_repr</span></code></a>()</td>
-<td>Generate a resource for <code class="xref py py-meth docutils literal notranslate"><span class="pre">_begin()</span></code>.</td>
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference internal" href="google.cloud.bigquery.table.EncryptionConfiguration.html#google.cloud.bigquery.table.EncryptionConfiguration" title="google.cloud.bigquery.table.EncryptionConfiguration">google.cloud.bigquery.table.EncryptionConfiguration</a></td>
 </tr>
 </tbody>
 </table>
-<p class="rubric">Attributes</p>
-<table border="1" class="longtable docutils">
-<colgroup>
-<col width="10%" />
-<col width="90%" />
-</colgroup>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="google.cloud.bigquery.job.CopyJob.from_api_repr">
+<em class="property">classmethod </em><code class="descname">from_api_repr</code><span class="sig-paren">(</span><em>resource</em>, <em>client</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/google/cloud/bigquery/job.html#CopyJob.from_api_repr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.job.CopyJob.from_api_repr" title="Permalink to this definition">#</a></dt>
+<dd><p>Factory:  construct a job given its API representation</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
 <tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="google.cloud.bigquery.job.CopyJob.create_disposition.html#google.cloud.bigquery.job.CopyJob.create_disposition" title="google.cloud.bigquery.job.CopyJob.create_disposition"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_disposition</span></code></a></td>
-<td>See <a class="reference internal" href="google.cloud.bigquery.job.CopyJobConfig.create_disposition.html#google.cloud.bigquery.job.CopyJobConfig.create_disposition" title="google.cloud.bigquery.job.CopyJobConfig.create_disposition"><code class="xref py py-attr docutils literal notranslate"><span class="pre">google.cloud.bigquery.job.CopyJobConfig.create_disposition</span></code></a>.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>resource</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – dataset job representation returned from the API</li>
+<li><strong>client</strong> (<a class="reference internal" href="google.cloud.bigquery.client.Client.html#google.cloud.bigquery.client.Client" title="google.cloud.bigquery.client.Client"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.bigquery.client.Client</span></code></a>) – Client which holds credentials and project
+configuration for the dataset.</li>
+</ul>
+</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="google.cloud.bigquery.job.CopyJob.created.html#google.cloud.bigquery.job.CopyJob.created" title="google.cloud.bigquery.job.CopyJob.created"><code class="xref py py-obj docutils literal notranslate"><span class="pre">created</span></code></a></td>
-<td>Datetime at which the job was created.</td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="#google.cloud.bigquery.job.CopyJob" title="google.cloud.bigquery.job.CopyJob"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.bigquery.job.CopyJob</span></code></a></p>
+</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="google.cloud.bigquery.job.CopyJob.destination_encryption_configuration.html#google.cloud.bigquery.job.CopyJob.destination_encryption_configuration" title="google.cloud.bigquery.job.CopyJob.destination_encryption_configuration"><code class="xref py py-obj docutils literal notranslate"><span class="pre">destination_encryption_configuration</span></code></a></td>
-<td>Custom encryption configuration for the destination table.</td>
-</tr>
-<tr class="row-even"><td><a class="reference internal" href="google.cloud.bigquery.job.CopyJob.ended.html#google.cloud.bigquery.job.CopyJob.ended" title="google.cloud.bigquery.job.CopyJob.ended"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ended</span></code></a></td>
-<td>Datetime at which the job finished.</td>
-</tr>
-<tr class="row-odd"><td><a class="reference internal" href="google.cloud.bigquery.job.CopyJob.error_result.html#google.cloud.bigquery.job.CopyJob.error_result" title="google.cloud.bigquery.job.CopyJob.error_result"><code class="xref py py-obj docutils literal notranslate"><span class="pre">error_result</span></code></a></td>
-<td>Error information about the job as a whole.</td>
-</tr>
-<tr class="row-even"><td><a class="reference internal" href="google.cloud.bigquery.job.CopyJob.errors.html#google.cloud.bigquery.job.CopyJob.errors" title="google.cloud.bigquery.job.CopyJob.errors"><code class="xref py py-obj docutils literal notranslate"><span class="pre">errors</span></code></a></td>
-<td>Information about individual errors generated by the job.</td>
-</tr>
-<tr class="row-odd"><td><a class="reference internal" href="google.cloud.bigquery.job.CopyJob.etag.html#google.cloud.bigquery.job.CopyJob.etag" title="google.cloud.bigquery.job.CopyJob.etag"><code class="xref py py-obj docutils literal notranslate"><span class="pre">etag</span></code></a></td>
-<td>ETag for the job resource.</td>
-</tr>
-<tr class="row-even"><td><a class="reference internal" href="google.cloud.bigquery.job.CopyJob.job_id.html#google.cloud.bigquery.job.CopyJob.job_id" title="google.cloud.bigquery.job.CopyJob.job_id"><code class="xref py py-obj docutils literal notranslate"><span class="pre">job_id</span></code></a></td>
-<td>ID of the job.</td>
-</tr>
-<tr class="row-odd"><td><a class="reference internal" href="google.cloud.bigquery.job.CopyJob.job_type.html#google.cloud.bigquery.job.CopyJob.job_type" title="google.cloud.bigquery.job.CopyJob.job_type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">job_type</span></code></a></td>
-<td>Type of job</td>
-</tr>
-<tr class="row-even"><td><a class="reference internal" href="google.cloud.bigquery.job.CopyJob.labels.html#google.cloud.bigquery.job.CopyJob.labels" title="google.cloud.bigquery.job.CopyJob.labels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">labels</span></code></a></td>
-<td>Labels for the job.</td>
-</tr>
-<tr class="row-odd"><td><a class="reference internal" href="google.cloud.bigquery.job.CopyJob.location.html#google.cloud.bigquery.job.CopyJob.location" title="google.cloud.bigquery.job.CopyJob.location"><code class="xref py py-obj docutils literal notranslate"><span class="pre">location</span></code></a></td>
-<td>Location where the job runs.</td>
-</tr>
-<tr class="row-even"><td><a class="reference internal" href="google.cloud.bigquery.job.CopyJob.path.html#google.cloud.bigquery.job.CopyJob.path" title="google.cloud.bigquery.job.CopyJob.path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">path</span></code></a></td>
-<td>URL path for the job’s APIs.</td>
-</tr>
-<tr class="row-odd"><td><a class="reference internal" href="google.cloud.bigquery.job.CopyJob.project.html#google.cloud.bigquery.job.CopyJob.project" title="google.cloud.bigquery.job.CopyJob.project"><code class="xref py py-obj docutils literal notranslate"><span class="pre">project</span></code></a></td>
-<td>Project bound to the job.</td>
-</tr>
-<tr class="row-even"><td><a class="reference internal" href="google.cloud.bigquery.job.CopyJob.self_link.html#google.cloud.bigquery.job.CopyJob.self_link" title="google.cloud.bigquery.job.CopyJob.self_link"><code class="xref py py-obj docutils literal notranslate"><span class="pre">self_link</span></code></a></td>
-<td>URL for the job resource.</td>
-</tr>
-<tr class="row-odd"><td><a class="reference internal" href="google.cloud.bigquery.job.CopyJob.started.html#google.cloud.bigquery.job.CopyJob.started" title="google.cloud.bigquery.job.CopyJob.started"><code class="xref py py-obj docutils literal notranslate"><span class="pre">started</span></code></a></td>
-<td>Datetime at which the job was started.</td>
-</tr>
-<tr class="row-even"><td><a class="reference internal" href="google.cloud.bigquery.job.CopyJob.state.html#google.cloud.bigquery.job.CopyJob.state" title="google.cloud.bigquery.job.CopyJob.state"><code class="xref py py-obj docutils literal notranslate"><span class="pre">state</span></code></a></td>
-<td>Status of the job.</td>
-</tr>
-<tr class="row-odd"><td><a class="reference internal" href="google.cloud.bigquery.job.CopyJob.user_email.html#google.cloud.bigquery.job.CopyJob.user_email" title="google.cloud.bigquery.job.CopyJob.user_email"><code class="xref py py-obj docutils literal notranslate"><span class="pre">user_email</span></code></a></td>
-<td>E-mail address of user who submitted the job.</td>
-</tr>
-<tr class="row-even"><td><a class="reference internal" href="google.cloud.bigquery.job.CopyJob.write_disposition.html#google.cloud.bigquery.job.CopyJob.write_disposition" title="google.cloud.bigquery.job.CopyJob.write_disposition"><code class="xref py py-obj docutils literal notranslate"><span class="pre">write_disposition</span></code></a></td>
-<td>See <a class="reference internal" href="google.cloud.bigquery.job.CopyJobConfig.write_disposition.html#google.cloud.bigquery.job.CopyJobConfig.write_disposition" title="google.cloud.bigquery.job.CopyJobConfig.write_disposition"><code class="xref py py-attr docutils literal notranslate"><span class="pre">google.cloud.bigquery.job.CopyJobConfig.write_disposition</span></code></a>.</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Job parsed from <code class="docutils literal notranslate"><span class="pre">resource</span></code>.</p>
+</td>
 </tr>
 </tbody>
 </table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.bigquery.job.CopyJob.to_api_repr">
+<code class="descname">to_api_repr</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/google/cloud/bigquery/job.html#CopyJob.to_api_repr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.job.CopyJob.to_api_repr" title="Permalink to this definition">#</a></dt>
+<dd><p>Generate a resource for <code class="xref py py-meth docutils literal notranslate"><span class="pre">_begin()</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery.job.CopyJob.write_disposition">
+<code class="descname">write_disposition</code><a class="headerlink" href="#google.cloud.bigquery.job.CopyJob.write_disposition" title="Permalink to this definition">#</a></dt>
+<dd><p>See
+<a class="reference internal" href="google.cloud.bigquery.job.CopyJobConfig.html#google.cloud.bigquery.job.CopyJobConfig.write_disposition" title="google.cloud.bigquery.job.CopyJobConfig.write_disposition"><code class="xref py py-attr docutils literal notranslate"><span class="pre">google.cloud.bigquery.job.CopyJobConfig.write_disposition</span></code></a>.</p>
+</dd></dl>
+
 </dd></dl>
 
 </div>
@@ -248,8 +308,8 @@ for the dataset (which requires a project).</li>
   <li><a href="../../index.html">Documentation overview</a><ul>
   <li><a href="../index.html">Python Client for Google BigQuery</a><ul>
   <li><a href="../reference.html">API Reference</a><ul>
-      <li>Previous: <a href="google.cloud.bigquery.job.QueryJob.write_disposition.html" title="previous chapter">google.cloud.bigquery.job.QueryJob.write_disposition</a></li>
-      <li>Next: <a href="google.cloud.bigquery.job.CopyJob.add_done_callback.html" title="next chapter">google.cloud.bigquery.job.CopyJob.add_done_callback</a></li>
+      <li>Previous: <a href="google.cloud.bigquery.job.QueryJob.html" title="previous chapter">google.cloud.bigquery.job.QueryJob</a></li>
+      <li>Next: <a href="google.cloud.bigquery.job.LoadJob.html" title="next chapter">google.cloud.bigquery.job.LoadJob</a></li>
   </ul></li>
   </ul></li>
   </ul></li>

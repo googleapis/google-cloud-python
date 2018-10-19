@@ -3,22 +3,26 @@ google.cloud.bigquery.job.QueryPriority
 
 .. currentmodule:: google.cloud.bigquery.job
 
+
+
+
+
+
+
+.. rubric:: Attributes
+
+.. autosummary::
+
+   ~QueryPriority.BATCH
+   ~QueryPriority.INTERACTIVE
+
+
+
+.. raw:: html
+
+    <p>
+    <hr>
+    <p>
+
 .. autoclass:: QueryPriority
-
-   
-   .. automethod:: __init__
-
-   
-   
-
-   
-   
-   .. rubric:: Attributes
-
-   .. autosummary::
-      :toctree: .
-   
-      ~QueryPriority.BATCH
-      ~QueryPriority.INTERACTIVE
-   
-   
+   :members:

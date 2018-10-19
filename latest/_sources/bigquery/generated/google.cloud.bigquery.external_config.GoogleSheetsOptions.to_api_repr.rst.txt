@@ -1,6 +1,0 @@
-google.cloud.bigquery.external\_config.GoogleSheetsOptions.to\_api\_repr
-========================================================================
-
-.. currentmodule:: google.cloud.bigquery.external_config
-
-.. automethod:: GoogleSheetsOptions.to_api_repr

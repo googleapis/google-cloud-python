@@ -3,35 +3,37 @@ google.cloud.bigquery.dataset.AccessEntry
 
 .. currentmodule:: google.cloud.bigquery.dataset
 
+
+
+.. rubric:: Methods
+
+.. autosummary::
+
+   
+   
+   ~AccessEntry.from_api_repr
+   
+   
+   ~AccessEntry.to_api_repr
+   
+
+
+
+
+
+.. rubric:: Attributes
+
+.. autosummary::
+
+   ~AccessEntry.ENTITY_TYPES
+
+
+
+.. raw:: html
+
+    <p>
+    <hr>
+    <p>
+
 .. autoclass:: AccessEntry
-
-   
-   .. automethod:: __init__
-
-   
-   .. rubric:: Methods
-
-   
-   .. autosummary::
-      :toctree: .
-   
-      
-      
-      ~AccessEntry.from_api_repr
-      
-      
-      ~AccessEntry.to_api_repr
-      
-   
-   
-
-   
-   
-   .. rubric:: Attributes
-
-   .. autosummary::
-      :toctree: .
-   
-      ~AccessEntry.ENTITY_TYPES
-   
-   
+   :members:

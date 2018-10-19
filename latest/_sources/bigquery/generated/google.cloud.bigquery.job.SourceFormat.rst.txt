@@ -3,26 +3,30 @@ google.cloud.bigquery.job.SourceFormat
 
 .. currentmodule:: google.cloud.bigquery.job
 
+
+
+
+
+
+
+.. rubric:: Attributes
+
+.. autosummary::
+
+   ~SourceFormat.AVRO
+   ~SourceFormat.CSV
+   ~SourceFormat.DATASTORE_BACKUP
+   ~SourceFormat.NEWLINE_DELIMITED_JSON
+   ~SourceFormat.ORC
+   ~SourceFormat.PARQUET
+
+
+
+.. raw:: html
+
+    <p>
+    <hr>
+    <p>
+
 .. autoclass:: SourceFormat
-
-   
-   .. automethod:: __init__
-
-   
-   
-
-   
-   
-   .. rubric:: Attributes
-
-   .. autosummary::
-      :toctree: .
-   
-      ~SourceFormat.AVRO
-      ~SourceFormat.CSV
-      ~SourceFormat.DATASTORE_BACKUP
-      ~SourceFormat.NEWLINE_DELIMITED_JSON
-      ~SourceFormat.ORC
-      ~SourceFormat.PARQUET
-   
-   
+   :members:

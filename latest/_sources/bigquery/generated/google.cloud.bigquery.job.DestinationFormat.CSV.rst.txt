@@ -1,6 +1,0 @@
-google.cloud.bigquery.job.DestinationFormat.CSV
-===============================================
-
-.. currentmodule:: google.cloud.bigquery.job
-
-.. autoattribute:: DestinationFormat.CSV

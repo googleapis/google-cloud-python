@@ -1,6 +1,0 @@
-google.cloud.bigquery.external\_config.ExternalSourceFormat.CSV
-===============================================================
-
-.. currentmodule:: google.cloud.bigquery.external_config
-
-.. autoattribute:: ExternalSourceFormat.CSV

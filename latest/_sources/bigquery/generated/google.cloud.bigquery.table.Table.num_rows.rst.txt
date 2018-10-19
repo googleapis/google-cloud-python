@@ -1,6 +1,0 @@
-google.cloud.bigquery.table.Table.num\_rows
-===========================================
-
-.. currentmodule:: google.cloud.bigquery.table
-
-.. autoattribute:: Table.num_rows

@@ -1,6 +1,0 @@
-google.cloud.bigquery.job.QueryJob.default\_dataset
-===================================================
-
-.. currentmodule:: google.cloud.bigquery.job
-
-.. autoattribute:: QueryJob.default_dataset

@@ -3,43 +3,45 @@ google.cloud.bigquery.dataset.DatasetReference
 
 .. currentmodule:: google.cloud.bigquery.dataset
 
+
+
+.. rubric:: Methods
+
+.. autosummary::
+
+   
+   
+   ~DatasetReference.from_api_repr
+   
+   
+   ~DatasetReference.from_string
+   
+   
+   ~DatasetReference.table
+   
+   
+   ~DatasetReference.to_api_repr
+   
+
+
+
+
+
+.. rubric:: Attributes
+
+.. autosummary::
+
+   ~DatasetReference.dataset_id
+   ~DatasetReference.path
+   ~DatasetReference.project
+
+
+
+.. raw:: html
+
+    <p>
+    <hr>
+    <p>
+
 .. autoclass:: DatasetReference
-
-   
-   .. automethod:: __init__
-
-   
-   .. rubric:: Methods
-
-   
-   .. autosummary::
-      :toctree: .
-   
-      
-      
-      ~DatasetReference.from_api_repr
-      
-      
-      ~DatasetReference.from_string
-      
-      
-      ~DatasetReference.table
-      
-      
-      ~DatasetReference.to_api_repr
-      
-   
-   
-
-   
-   
-   .. rubric:: Attributes
-
-   .. autosummary::
-      :toctree: .
-   
-      ~DatasetReference.dataset_id
-      ~DatasetReference.path
-      ~DatasetReference.project
-   
-   
+   :members:

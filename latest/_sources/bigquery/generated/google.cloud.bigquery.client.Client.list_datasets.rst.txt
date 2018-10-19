@@ -1,6 +1,0 @@
-google.cloud.bigquery.client.Client.list\_datasets
-==================================================
-
-.. currentmodule:: google.cloud.bigquery.client
-
-.. automethod:: Client.list_datasets

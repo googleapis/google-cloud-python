@@ -1,6 +1,0 @@
-google.cloud.bigquery.job.QueryJob.undeclared\_query\_parameters
-================================================================
-
-.. currentmodule:: google.cloud.bigquery.job
-
-.. autoattribute:: QueryJob.undeclared_query_parameters

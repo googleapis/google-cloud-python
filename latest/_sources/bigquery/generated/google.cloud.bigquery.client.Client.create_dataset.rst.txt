@@ -1,6 +1,0 @@
-google.cloud.bigquery.client.Client.create\_dataset
-===================================================
-
-.. currentmodule:: google.cloud.bigquery.client
-
-.. automethod:: Client.create_dataset

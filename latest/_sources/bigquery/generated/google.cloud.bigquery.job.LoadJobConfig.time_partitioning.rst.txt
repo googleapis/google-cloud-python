@@ -1,6 +1,0 @@
-google.cloud.bigquery.job.LoadJobConfig.time\_partitioning
-==========================================================
-
-.. currentmodule:: google.cloud.bigquery.job
-
-.. autoattribute:: LoadJobConfig.time_partitioning

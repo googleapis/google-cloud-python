@@ -1,6 +1,0 @@
-google.cloud.bigquery.job.QueryJob.maximum\_billing\_tier
-=========================================================
-
-.. currentmodule:: google.cloud.bigquery.job
-
-.. autoattribute:: QueryJob.maximum_billing_tier

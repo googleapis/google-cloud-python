@@ -3,22 +3,25 @@ google.cloud.bigquery.query.UDFResource
 
 .. currentmodule:: google.cloud.bigquery.query
 
+
+
+.. rubric:: Methods
+
+.. autosummary::
+
+   
+
+
+
+
+
+
+
+.. raw:: html
+
+    <p>
+    <hr>
+    <p>
+
 .. autoclass:: UDFResource
-
-   
-   .. automethod:: __init__
-
-   
-   .. rubric:: Methods
-
-   
-   .. autosummary::
-      :toctree: .
-   
-      
-   
-   
-
-   
-   
-   
+   :members:

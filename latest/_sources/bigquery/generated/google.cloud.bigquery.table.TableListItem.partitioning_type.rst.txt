@@ -1,6 +1,0 @@
-google.cloud.bigquery.table.TableListItem.partitioning\_type
-============================================================
-
-.. currentmodule:: google.cloud.bigquery.table
-
-.. autoattribute:: TableListItem.partitioning_type

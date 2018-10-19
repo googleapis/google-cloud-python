@@ -3,34 +3,36 @@ google.cloud.bigquery.table.RowIterator
 
 .. currentmodule:: google.cloud.bigquery.table
 
+
+
+.. rubric:: Methods
+
+.. autosummary::
+
+   
+   
+   ~RowIterator.to_dataframe
+   
+
+
+
+
+
+.. rubric:: Attributes
+
+.. autosummary::
+
+   ~RowIterator.pages
+   ~RowIterator.schema
+   ~RowIterator.total_rows
+
+
+
+.. raw:: html
+
+    <p>
+    <hr>
+    <p>
+
 .. autoclass:: RowIterator
-
-   
-   .. automethod:: __init__
-
-   
-   .. rubric:: Methods
-
-   
-   .. autosummary::
-      :toctree: .
-   
-      
-      
-      ~RowIterator.to_dataframe
-      
-   
-   
-
-   
-   
-   .. rubric:: Attributes
-
-   .. autosummary::
-      :toctree: .
-   
-      ~RowIterator.pages
-      ~RowIterator.schema
-      ~RowIterator.total_rows
-   
-   
+   :members:

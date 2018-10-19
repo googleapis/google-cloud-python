@@ -1,6 +1,0 @@
-google.cloud.bigquery.external\_config.ExternalConfig.compression
-=================================================================
-
-.. currentmodule:: google.cloud.bigquery.external_config
-
-.. autoattribute:: ExternalConfig.compression

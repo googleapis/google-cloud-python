@@ -1,6 +1,0 @@
-google.cloud.bigquery.job.LoadJob.max\_bad\_records
-===================================================
-
-.. currentmodule:: google.cloud.bigquery.job
-
-.. autoattribute:: LoadJob.max_bad_records

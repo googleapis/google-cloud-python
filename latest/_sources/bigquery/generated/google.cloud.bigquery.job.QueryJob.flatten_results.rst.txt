@@ -1,6 +1,0 @@
-google.cloud.bigquery.job.QueryJob.flatten\_results
-===================================================
-
-.. currentmodule:: google.cloud.bigquery.job
-
-.. autoattribute:: QueryJob.flatten_results

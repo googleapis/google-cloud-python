@@ -1,6 +1,0 @@
-google.cloud.bigquery.job.ExtractJob.error\_result
-==================================================
-
-.. currentmodule:: google.cloud.bigquery.job
-
-.. autoattribute:: ExtractJob.error_result

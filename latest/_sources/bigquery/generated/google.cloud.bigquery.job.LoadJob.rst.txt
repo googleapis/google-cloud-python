@@ -3,104 +3,106 @@ google.cloud.bigquery.job.LoadJob
 
 .. currentmodule:: google.cloud.bigquery.job
 
+
+
+.. rubric:: Methods
+
+.. autosummary::
+
+   
+   
+   ~LoadJob.add_done_callback
+   
+   
+   ~LoadJob.cancel
+   
+   
+   ~LoadJob.cancelled
+   
+   
+   ~LoadJob.done
+   
+   
+   ~LoadJob.exception
+   
+   
+   ~LoadJob.exists
+   
+   
+   ~LoadJob.from_api_repr
+   
+   
+   ~LoadJob.reload
+   
+   
+   ~LoadJob.result
+   
+   
+   ~LoadJob.running
+   
+   
+   ~LoadJob.set_exception
+   
+   
+   ~LoadJob.set_result
+   
+   
+   ~LoadJob.to_api_repr
+   
+
+
+
+
+
+.. rubric:: Attributes
+
+.. autosummary::
+
+   ~LoadJob.allow_jagged_rows
+   ~LoadJob.allow_quoted_newlines
+   ~LoadJob.autodetect
+   ~LoadJob.clustering_fields
+   ~LoadJob.create_disposition
+   ~LoadJob.created
+   ~LoadJob.destination_encryption_configuration
+   ~LoadJob.encoding
+   ~LoadJob.ended
+   ~LoadJob.error_result
+   ~LoadJob.errors
+   ~LoadJob.etag
+   ~LoadJob.field_delimiter
+   ~LoadJob.ignore_unknown_values
+   ~LoadJob.input_file_bytes
+   ~LoadJob.input_files
+   ~LoadJob.job_id
+   ~LoadJob.job_type
+   ~LoadJob.labels
+   ~LoadJob.location
+   ~LoadJob.max_bad_records
+   ~LoadJob.null_marker
+   ~LoadJob.output_bytes
+   ~LoadJob.output_rows
+   ~LoadJob.path
+   ~LoadJob.project
+   ~LoadJob.quote_character
+   ~LoadJob.schema
+   ~LoadJob.schema_update_options
+   ~LoadJob.self_link
+   ~LoadJob.skip_leading_rows
+   ~LoadJob.source_format
+   ~LoadJob.started
+   ~LoadJob.state
+   ~LoadJob.time_partitioning
+   ~LoadJob.user_email
+   ~LoadJob.write_disposition
+
+
+
+.. raw:: html
+
+    <p>
+    <hr>
+    <p>
+
 .. autoclass:: LoadJob
-
-   
-   .. automethod:: __init__
-
-   
-   .. rubric:: Methods
-
-   
-   .. autosummary::
-      :toctree: .
-   
-      
-      
-      ~LoadJob.add_done_callback
-      
-      
-      ~LoadJob.cancel
-      
-      
-      ~LoadJob.cancelled
-      
-      
-      ~LoadJob.done
-      
-      
-      ~LoadJob.exception
-      
-      
-      ~LoadJob.exists
-      
-      
-      ~LoadJob.from_api_repr
-      
-      
-      ~LoadJob.reload
-      
-      
-      ~LoadJob.result
-      
-      
-      ~LoadJob.running
-      
-      
-      ~LoadJob.set_exception
-      
-      
-      ~LoadJob.set_result
-      
-      
-      ~LoadJob.to_api_repr
-      
-   
-   
-
-   
-   
-   .. rubric:: Attributes
-
-   .. autosummary::
-      :toctree: .
-   
-      ~LoadJob.allow_jagged_rows
-      ~LoadJob.allow_quoted_newlines
-      ~LoadJob.autodetect
-      ~LoadJob.clustering_fields
-      ~LoadJob.create_disposition
-      ~LoadJob.created
-      ~LoadJob.destination_encryption_configuration
-      ~LoadJob.encoding
-      ~LoadJob.ended
-      ~LoadJob.error_result
-      ~LoadJob.errors
-      ~LoadJob.etag
-      ~LoadJob.field_delimiter
-      ~LoadJob.ignore_unknown_values
-      ~LoadJob.input_file_bytes
-      ~LoadJob.input_files
-      ~LoadJob.job_id
-      ~LoadJob.job_type
-      ~LoadJob.labels
-      ~LoadJob.location
-      ~LoadJob.max_bad_records
-      ~LoadJob.null_marker
-      ~LoadJob.output_bytes
-      ~LoadJob.output_rows
-      ~LoadJob.path
-      ~LoadJob.project
-      ~LoadJob.quote_character
-      ~LoadJob.schema
-      ~LoadJob.schema_update_options
-      ~LoadJob.self_link
-      ~LoadJob.skip_leading_rows
-      ~LoadJob.source_format
-      ~LoadJob.started
-      ~LoadJob.state
-      ~LoadJob.time_partitioning
-      ~LoadJob.user_email
-      ~LoadJob.write_disposition
-   
-   
+   :members:

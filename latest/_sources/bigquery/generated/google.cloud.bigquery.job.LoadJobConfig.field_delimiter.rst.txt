@@ -1,6 +1,0 @@
-google.cloud.bigquery.job.LoadJobConfig.field\_delimiter
-========================================================
-
-.. currentmodule:: google.cloud.bigquery.job
-
-.. autoattribute:: LoadJobConfig.field_delimiter

@@ -1,6 +1,0 @@
-google.cloud.bigquery.schema.SchemaField.to\_api\_repr
-======================================================
-
-.. currentmodule:: google.cloud.bigquery.schema
-
-.. automethod:: SchemaField.to_api_repr

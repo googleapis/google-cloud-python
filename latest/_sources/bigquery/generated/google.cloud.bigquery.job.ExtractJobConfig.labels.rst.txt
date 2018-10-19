@@ -1,6 +1,0 @@
-google.cloud.bigquery.job.ExtractJobConfig.labels
-=================================================
-
-.. currentmodule:: google.cloud.bigquery.job
-
-.. autoattribute:: ExtractJobConfig.labels

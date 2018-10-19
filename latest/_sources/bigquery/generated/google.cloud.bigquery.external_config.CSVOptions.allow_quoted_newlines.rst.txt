@@ -1,6 +1,0 @@
-google.cloud.bigquery.external\_config.CSVOptions.allow\_quoted\_newlines
-=========================================================================
-
-.. currentmodule:: google.cloud.bigquery.external_config
-
-.. autoattribute:: CSVOptions.allow_quoted_newlines

@@ -1,6 +1,0 @@
-google.cloud.bigquery.table.TableReference.dataset\_id
-======================================================
-
-.. currentmodule:: google.cloud.bigquery.table
-
-.. autoattribute:: TableReference.dataset_id

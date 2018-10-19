@@ -1,6 +1,0 @@
-google.cloud.bigquery.external\_config.ExternalSourceFormat.DATASTORE\_BACKUP
-=============================================================================
-
-.. currentmodule:: google.cloud.bigquery.external_config
-
-.. autoattribute:: ExternalSourceFormat.DATASTORE_BACKUP

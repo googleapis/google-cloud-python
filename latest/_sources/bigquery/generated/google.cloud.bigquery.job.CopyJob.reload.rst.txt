@@ -1,6 +1,0 @@
-google.cloud.bigquery.job.CopyJob.reload
-========================================
-
-.. currentmodule:: google.cloud.bigquery.job
-
-.. automethod:: CopyJob.reload

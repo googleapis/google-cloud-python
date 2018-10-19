@@ -1,6 +1,0 @@
-google.cloud.bigquery.job.QueryJob.location
-===========================================
-
-.. currentmodule:: google.cloud.bigquery.job
-
-.. autoattribute:: QueryJob.location

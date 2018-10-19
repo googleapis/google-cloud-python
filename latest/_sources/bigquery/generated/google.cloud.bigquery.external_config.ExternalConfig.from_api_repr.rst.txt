@@ -1,6 +1,0 @@
-google.cloud.bigquery.external\_config.ExternalConfig.from\_api\_repr
-=====================================================================
-
-.. currentmodule:: google.cloud.bigquery.external_config
-
-.. automethod:: ExternalConfig.from_api_repr

@@ -1,6 +1,0 @@
-google.cloud.bigquery.job.LoadJob.job\_type
-===========================================
-
-.. currentmodule:: google.cloud.bigquery.job
-
-.. autoattribute:: LoadJob.job_type

@@ -1,6 +1,0 @@
-google.cloud.bigquery.job.SourceFormat.PARQUET
-==============================================
-
-.. currentmodule:: google.cloud.bigquery.job
-
-.. autoattribute:: SourceFormat.PARQUET

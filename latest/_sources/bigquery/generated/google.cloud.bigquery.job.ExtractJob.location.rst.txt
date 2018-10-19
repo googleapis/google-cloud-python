@@ -1,6 +1,0 @@
-google.cloud.bigquery.job.ExtractJob.location
-=============================================
-
-.. currentmodule:: google.cloud.bigquery.job
-
-.. autoattribute:: ExtractJob.location

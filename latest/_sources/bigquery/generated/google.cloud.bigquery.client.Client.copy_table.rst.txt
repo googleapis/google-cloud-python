@@ -1,6 +1,0 @@
-google.cloud.bigquery.client.Client.copy\_table
-===============================================
-
-.. currentmodule:: google.cloud.bigquery.client
-
-.. automethod:: Client.copy_table

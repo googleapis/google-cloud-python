@@ -3,31 +3,34 @@ google.cloud.bigquery.query.ScalarQueryParameter
 
 .. currentmodule:: google.cloud.bigquery.query
 
+
+
+.. rubric:: Methods
+
+.. autosummary::
+
+   
+   
+   ~ScalarQueryParameter.from_api_repr
+   
+   
+   ~ScalarQueryParameter.positional
+   
+   
+   ~ScalarQueryParameter.to_api_repr
+   
+
+
+
+
+
+
+
+.. raw:: html
+
+    <p>
+    <hr>
+    <p>
+
 .. autoclass:: ScalarQueryParameter
-
-   
-   .. automethod:: __init__
-
-   
-   .. rubric:: Methods
-
-   
-   .. autosummary::
-      :toctree: .
-   
-      
-      
-      ~ScalarQueryParameter.from_api_repr
-      
-      
-      ~ScalarQueryParameter.positional
-      
-      
-      ~ScalarQueryParameter.to_api_repr
-      
-   
-   
-
-   
-   
-   
+   :members:

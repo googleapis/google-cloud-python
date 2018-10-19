@@ -1,6 +1,0 @@
-google.cloud.bigquery.magics.Context.project
-============================================
-
-.. currentmodule:: google.cloud.bigquery.magics
-
-.. autoattribute:: Context.project

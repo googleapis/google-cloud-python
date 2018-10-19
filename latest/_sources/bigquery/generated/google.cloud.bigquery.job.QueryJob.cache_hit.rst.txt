@@ -1,6 +1,0 @@
-google.cloud.bigquery.job.QueryJob.cache\_hit
-=============================================
-
-.. currentmodule:: google.cloud.bigquery.job
-
-.. autoattribute:: QueryJob.cache_hit

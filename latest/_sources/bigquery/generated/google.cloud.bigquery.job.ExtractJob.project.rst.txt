@@ -1,6 +1,0 @@
-google.cloud.bigquery.job.ExtractJob.project
-============================================
-
-.. currentmodule:: google.cloud.bigquery.job
-
-.. autoattribute:: ExtractJob.project

@@ -1,6 +1,0 @@
-google.cloud.bigquery.job.UnknownJob.to\_api\_repr
-==================================================
-
-.. currentmodule:: google.cloud.bigquery.job
-
-.. automethod:: UnknownJob.to_api_repr

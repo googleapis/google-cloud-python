@@ -3,21 +3,25 @@ google.cloud.bigquery.table.TimePartitioningType
 
 .. currentmodule:: google.cloud.bigquery.table
 
+
+
+
+
+
+
+.. rubric:: Attributes
+
+.. autosummary::
+
+   ~TimePartitioningType.DAY
+
+
+
+.. raw:: html
+
+    <p>
+    <hr>
+    <p>
+
 .. autoclass:: TimePartitioningType
-
-   
-   .. automethod:: __init__
-
-   
-   
-
-   
-   
-   .. rubric:: Attributes
-
-   .. autosummary::
-      :toctree: .
-   
-      ~TimePartitioningType.DAY
-   
-   
+   :members:

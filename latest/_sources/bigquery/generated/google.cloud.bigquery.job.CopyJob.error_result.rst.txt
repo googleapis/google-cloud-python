@@ -1,6 +1,0 @@
-google.cloud.bigquery.job.CopyJob.error\_result
-===============================================
-
-.. currentmodule:: google.cloud.bigquery.job
-
-.. autoattribute:: CopyJob.error_result

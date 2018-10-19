@@ -3,26 +3,30 @@ google.cloud.bigquery.external\_config.ExternalSourceFormat
 
 .. currentmodule:: google.cloud.bigquery.external_config
 
+
+
+
+
+
+
+.. rubric:: Attributes
+
+.. autosummary::
+
+   ~ExternalSourceFormat.AVRO
+   ~ExternalSourceFormat.BIGTABLE
+   ~ExternalSourceFormat.CSV
+   ~ExternalSourceFormat.DATASTORE_BACKUP
+   ~ExternalSourceFormat.GOOGLE_SHEETS
+   ~ExternalSourceFormat.NEWLINE_DELIMITED_JSON
+
+
+
+.. raw:: html
+
+    <p>
+    <hr>
+    <p>
+
 .. autoclass:: ExternalSourceFormat
-
-   
-   .. automethod:: __init__
-
-   
-   
-
-   
-   
-   .. rubric:: Attributes
-
-   .. autosummary::
-      :toctree: .
-   
-      ~ExternalSourceFormat.AVRO
-      ~ExternalSourceFormat.BIGTABLE
-      ~ExternalSourceFormat.CSV
-      ~ExternalSourceFormat.DATASTORE_BACKUP
-      ~ExternalSourceFormat.GOOGLE_SHEETS
-      ~ExternalSourceFormat.NEWLINE_DELIMITED_JSON
-   
-   
+   :members:

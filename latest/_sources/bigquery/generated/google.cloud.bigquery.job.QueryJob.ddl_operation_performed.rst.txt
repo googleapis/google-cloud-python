@@ -1,6 +1,0 @@
-google.cloud.bigquery.job.QueryJob.ddl\_operation\_performed
-============================================================
-
-.. currentmodule:: google.cloud.bigquery.job
-
-.. autoattribute:: QueryJob.ddl_operation_performed

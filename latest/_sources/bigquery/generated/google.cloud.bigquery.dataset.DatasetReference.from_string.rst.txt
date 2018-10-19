@@ -1,6 +1,0 @@
-google.cloud.bigquery.dataset.DatasetReference.from\_string
-===========================================================
-
-.. currentmodule:: google.cloud.bigquery.dataset
-
-.. automethod:: DatasetReference.from_string

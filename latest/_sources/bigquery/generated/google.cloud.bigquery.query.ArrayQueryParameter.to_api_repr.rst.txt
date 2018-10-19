@@ -1,6 +1,0 @@
-google.cloud.bigquery.query.ArrayQueryParameter.to\_api\_repr
-=============================================================
-
-.. currentmodule:: google.cloud.bigquery.query
-
-.. automethod:: ArrayQueryParameter.to_api_repr

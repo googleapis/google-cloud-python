@@ -1,6 +1,0 @@
-google.cloud.bigquery.job.UnknownJob.cancelled
-==============================================
-
-.. currentmodule:: google.cloud.bigquery.job
-
-.. automethod:: UnknownJob.cancelled

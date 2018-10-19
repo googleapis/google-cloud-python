@@ -1,6 +1,0 @@
-google.cloud.bigquery.table.TableListItem.full\_table\_id
-=========================================================
-
-.. currentmodule:: google.cloud.bigquery.table
-
-.. autoattribute:: TableListItem.full_table_id

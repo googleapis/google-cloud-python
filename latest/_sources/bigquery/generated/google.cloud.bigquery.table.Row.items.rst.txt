@@ -1,6 +1,0 @@
-google.cloud.bigquery.table.Row.items
-=====================================
-
-.. currentmodule:: google.cloud.bigquery.table
-
-.. automethod:: Row.items

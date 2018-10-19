@@ -1,6 +1,0 @@
-google.cloud.bigquery.job.QueryJob.table\_definitions
-=====================================================
-
-.. currentmodule:: google.cloud.bigquery.job
-
-.. autoattribute:: QueryJob.table_definitions

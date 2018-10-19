@@ -3,82 +3,84 @@ google.cloud.bigquery.job.UnknownJob
 
 .. currentmodule:: google.cloud.bigquery.job
 
+
+
+.. rubric:: Methods
+
+.. autosummary::
+
+   
+   
+   ~UnknownJob.add_done_callback
+   
+   
+   ~UnknownJob.cancel
+   
+   
+   ~UnknownJob.cancelled
+   
+   
+   ~UnknownJob.done
+   
+   
+   ~UnknownJob.exception
+   
+   
+   ~UnknownJob.exists
+   
+   
+   ~UnknownJob.from_api_repr
+   
+   
+   ~UnknownJob.reload
+   
+   
+   ~UnknownJob.result
+   
+   
+   ~UnknownJob.running
+   
+   
+   ~UnknownJob.set_exception
+   
+   
+   ~UnknownJob.set_result
+   
+   
+   ~UnknownJob.to_api_repr
+   
+
+
+
+
+
+.. rubric:: Attributes
+
+.. autosummary::
+
+   ~UnknownJob.created
+   ~UnknownJob.ended
+   ~UnknownJob.error_result
+   ~UnknownJob.errors
+   ~UnknownJob.etag
+   ~UnknownJob.job_id
+   ~UnknownJob.job_type
+   ~UnknownJob.labels
+   ~UnknownJob.location
+   ~UnknownJob.path
+   ~UnknownJob.project
+   ~UnknownJob.self_link
+   ~UnknownJob.started
+   ~UnknownJob.state
+   ~UnknownJob.user_email
+
+
+
+.. raw:: html
+
+    <p>
+    <hr>
+    <p>
+
 .. autoclass:: UnknownJob
-
-   
-   .. automethod:: __init__
-
-   
-   .. rubric:: Methods
-
-   
-   .. autosummary::
-      :toctree: .
-   
-      
-      
-      ~UnknownJob.add_done_callback
-      
-      
-      ~UnknownJob.cancel
-      
-      
-      ~UnknownJob.cancelled
-      
-      
-      ~UnknownJob.done
-      
-      
-      ~UnknownJob.exception
-      
-      
-      ~UnknownJob.exists
-      
-      
-      ~UnknownJob.from_api_repr
-      
-      
-      ~UnknownJob.reload
-      
-      
-      ~UnknownJob.result
-      
-      
-      ~UnknownJob.running
-      
-      
-      ~UnknownJob.set_exception
-      
-      
-      ~UnknownJob.set_result
-      
-      
-      ~UnknownJob.to_api_repr
-      
-   
-   
-
-   
-   
-   .. rubric:: Attributes
-
-   .. autosummary::
-      :toctree: .
-   
-      ~UnknownJob.created
-      ~UnknownJob.ended
-      ~UnknownJob.error_result
-      ~UnknownJob.errors
-      ~UnknownJob.etag
-      ~UnknownJob.job_id
-      ~UnknownJob.job_type
-      ~UnknownJob.labels
-      ~UnknownJob.location
-      ~UnknownJob.path
-      ~UnknownJob.project
-      ~UnknownJob.self_link
-      ~UnknownJob.started
-      ~UnknownJob.state
-      ~UnknownJob.user_email
-   
-   
+   :members:

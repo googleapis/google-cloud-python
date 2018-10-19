@@ -3,22 +3,26 @@ google.cloud.bigquery.job.Encoding
 
 .. currentmodule:: google.cloud.bigquery.job
 
+
+
+
+
+
+
+.. rubric:: Attributes
+
+.. autosummary::
+
+   ~Encoding.ISO_8859_1
+   ~Encoding.UTF_8
+
+
+
+.. raw:: html
+
+    <p>
+    <hr>
+    <p>
+
 .. autoclass:: Encoding
-
-   
-   .. automethod:: __init__
-
-   
-   
-
-   
-   
-   .. rubric:: Attributes
-
-   .. autosummary::
-      :toctree: .
-   
-      ~Encoding.ISO_8859_1
-      ~Encoding.UTF_8
-   
-   
+   :members:

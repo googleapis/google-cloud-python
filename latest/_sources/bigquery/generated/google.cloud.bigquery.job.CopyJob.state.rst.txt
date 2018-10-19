@@ -1,6 +1,0 @@
-google.cloud.bigquery.job.CopyJob.state
-=======================================
-
-.. currentmodule:: google.cloud.bigquery.job
-
-.. autoattribute:: CopyJob.state

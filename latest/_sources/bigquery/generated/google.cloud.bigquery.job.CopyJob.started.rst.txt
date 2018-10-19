@@ -1,6 +1,0 @@
-google.cloud.bigquery.job.CopyJob.started
-=========================================
-
-.. currentmodule:: google.cloud.bigquery.job
-
-.. autoattribute:: CopyJob.started

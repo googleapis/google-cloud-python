@@ -1,6 +1,0 @@
-google.cloud.bigquery.job.UnknownJob.add\_done\_callback
-========================================================
-
-.. currentmodule:: google.cloud.bigquery.job
-
-.. automethod:: UnknownJob.add_done_callback

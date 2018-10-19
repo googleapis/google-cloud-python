@@ -1,6 +1,0 @@
-google.cloud.bigquery.table.Table.streaming\_buffer
-===================================================
-
-.. currentmodule:: google.cloud.bigquery.table
-
-.. autoattribute:: Table.streaming_buffer

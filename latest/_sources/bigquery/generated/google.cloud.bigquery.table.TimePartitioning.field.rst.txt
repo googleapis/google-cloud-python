@@ -1,6 +1,0 @@
-google.cloud.bigquery.table.TimePartitioning.field
-==================================================
-
-.. currentmodule:: google.cloud.bigquery.table
-
-.. autoattribute:: TimePartitioning.field

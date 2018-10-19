@@ -1,6 +1,0 @@
-google.cloud.bigquery.job.ExtractJob.started
-============================================
-
-.. currentmodule:: google.cloud.bigquery.job
-
-.. autoattribute:: ExtractJob.started

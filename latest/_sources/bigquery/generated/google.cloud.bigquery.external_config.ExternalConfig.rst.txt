@@ -3,42 +3,44 @@ google.cloud.bigquery.external\_config.ExternalConfig
 
 .. currentmodule:: google.cloud.bigquery.external_config
 
+
+
+.. rubric:: Methods
+
+.. autosummary::
+
+   
+   
+   ~ExternalConfig.from_api_repr
+   
+   
+   ~ExternalConfig.to_api_repr
+   
+
+
+
+
+
+.. rubric:: Attributes
+
+.. autosummary::
+
+   ~ExternalConfig.autodetect
+   ~ExternalConfig.compression
+   ~ExternalConfig.ignore_unknown_values
+   ~ExternalConfig.max_bad_records
+   ~ExternalConfig.options
+   ~ExternalConfig.schema
+   ~ExternalConfig.source_format
+   ~ExternalConfig.source_uris
+
+
+
+.. raw:: html
+
+    <p>
+    <hr>
+    <p>
+
 .. autoclass:: ExternalConfig
-
-   
-   .. automethod:: __init__
-
-   
-   .. rubric:: Methods
-
-   
-   .. autosummary::
-      :toctree: .
-   
-      
-      
-      ~ExternalConfig.from_api_repr
-      
-      
-      ~ExternalConfig.to_api_repr
-      
-   
-   
-
-   
-   
-   .. rubric:: Attributes
-
-   .. autosummary::
-      :toctree: .
-   
-      ~ExternalConfig.autodetect
-      ~ExternalConfig.compression
-      ~ExternalConfig.ignore_unknown_values
-      ~ExternalConfig.max_bad_records
-      ~ExternalConfig.options
-      ~ExternalConfig.schema
-      ~ExternalConfig.source_format
-      ~ExternalConfig.source_uris
-   
-   
+   :members:

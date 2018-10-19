@@ -1,6 +1,0 @@
-google.cloud.bigquery.table.Table.clustering\_fields
-====================================================
-
-.. currentmodule:: google.cloud.bigquery.table
-
-.. autoattribute:: Table.clustering_fields

@@ -1,6 +1,0 @@
-google.cloud.bigquery.job.CreateDisposition.CREATE\_IF\_NEEDED
-==============================================================
-
-.. currentmodule:: google.cloud.bigquery.job
-
-.. autoattribute:: CreateDisposition.CREATE_IF_NEEDED

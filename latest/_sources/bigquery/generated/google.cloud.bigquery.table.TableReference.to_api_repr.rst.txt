@@ -1,6 +1,0 @@
-google.cloud.bigquery.table.TableReference.to\_api\_repr
-========================================================
-
-.. currentmodule:: google.cloud.bigquery.table
-
-.. automethod:: TableReference.to_api_repr

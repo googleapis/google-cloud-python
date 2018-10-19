@@ -1,6 +1,0 @@
-google.cloud.bigquery.external\_config.BigtableOptions.read\_rowkey\_as\_string
-===============================================================================
-
-.. currentmodule:: google.cloud.bigquery.external_config
-
-.. autoattribute:: BigtableOptions.read_rowkey_as_string

@@ -1,6 +1,0 @@
-google.cloud.bigquery.dataset.Dataset.modified
-==============================================
-
-.. currentmodule:: google.cloud.bigquery.dataset
-
-.. autoattribute:: Dataset.modified

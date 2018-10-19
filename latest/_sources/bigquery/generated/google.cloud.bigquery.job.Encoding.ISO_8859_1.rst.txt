@@ -1,6 +1,0 @@
-google.cloud.bigquery.job.Encoding.ISO\_8859\_1
-===============================================
-
-.. currentmodule:: google.cloud.bigquery.job
-
-.. autoattribute:: Encoding.ISO_8859_1

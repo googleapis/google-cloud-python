@@ -1,6 +1,0 @@
-google.cloud.bigquery.external\_config.BigtableOptions.ignore\_unspecified\_column\_families
-============================================================================================
-
-.. currentmodule:: google.cloud.bigquery.external_config
-
-.. autoattribute:: BigtableOptions.ignore_unspecified_column_families

@@ -1,6 +1,0 @@
-google.cloud.bigquery.job.QueryPriority.BATCH
-=============================================
-
-.. currentmodule:: google.cloud.bigquery.job
-
-.. autoattribute:: QueryPriority.BATCH

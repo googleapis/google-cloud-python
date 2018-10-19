@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigquery.table &#8212; google-cloud 05dea1b805 documentation</title>
+    <title>google.cloud.bigquery.table &#8212; google-cloud a74dc33 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -123,10 +123,10 @@
 <span class="sd">        kms_key_name (str): resource ID of Cloud KMS key used for encryption</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="EncryptionConfiguration.__init__"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.table.EncryptionConfiguration.html#google.cloud.bigquery.table.EncryptionConfiguration.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">kms_key_name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">kms_key_name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">if</span> <span class="n">kms_key_name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s1">&#39;kmsKeyName&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">kms_key_name</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s1">&#39;kmsKeyName&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">kms_key_name</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">kms_key_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -141,7 +141,7 @@
     <span class="k">def</span> <span class="nf">kms_key_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s1">&#39;kmsKeyName&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
 
-<div class="viewcode-block" id="EncryptionConfiguration.from_api_repr"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.table.EncryptionConfiguration.from_api_repr.html#google.cloud.bigquery.table.EncryptionConfiguration.from_api_repr">[docs]</a>    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="EncryptionConfiguration.from_api_repr"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.table.EncryptionConfiguration.html#google.cloud.bigquery.table.EncryptionConfiguration.from_api_repr">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">resource</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Construct an encryption configuration from its API representation</span>
 
@@ -158,7 +158,7 @@
         <span class="n">config</span><span class="o">.</span><span class="n">_properties</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">resource</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">config</span></div>
 
-<div class="viewcode-block" id="EncryptionConfiguration.to_api_repr"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.table.EncryptionConfiguration.to_api_repr.html#google.cloud.bigquery.table.EncryptionConfiguration.to_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">to_api_repr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="EncryptionConfiguration.to_api_repr"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.table.EncryptionConfiguration.html#google.cloud.bigquery.table.EncryptionConfiguration.to_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">to_api_repr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Construct the API resource representation of this encryption</span>
 <span class="sd">        configuration.</span>
 
@@ -195,10 +195,10 @@
 <span class="sd">        table_id (str): The ID of the table</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="TableReference.__init__"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.table.TableReference.html#google.cloud.bigquery.table.TableReference.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset_ref</span><span class="p">,</span> <span class="n">table_id</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset_ref</span><span class="p">,</span> <span class="n">table_id</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_project</span> <span class="o">=</span> <span class="n">dataset_ref</span><span class="o">.</span><span class="n">project</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_dataset_id</span> <span class="o">=</span> <span class="n">dataset_ref</span><span class="o">.</span><span class="n">dataset_id</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_table_id</span> <span class="o">=</span> <span class="n">table_id</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_table_id</span> <span class="o">=</span> <span class="n">table_id</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">project</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -221,7 +221,7 @@
         <span class="k">return</span> <span class="s1">&#39;/projects/</span><span class="si">%s</span><span class="s1">/datasets/</span><span class="si">%s</span><span class="s1">/tables/</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_project</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dataset_id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_table_id</span><span class="p">)</span>
 
-<div class="viewcode-block" id="TableReference.from_string"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.table.TableReference.from_string.html#google.cloud.bigquery.table.TableReference.from_string">[docs]</a>    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="TableReference.from_string"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.table.TableReference.html#google.cloud.bigquery.table.TableReference.from_string">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_string</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">table_id</span><span class="p">,</span> <span class="n">default_project</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Construct a table reference from table ID string.</span>
 
@@ -279,7 +279,7 @@
             <span class="n">output_table_id</span><span class="p">,</span>
         <span class="p">)</span></div>
 
-<div class="viewcode-block" id="TableReference.from_api_repr"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.table.TableReference.from_api_repr.html#google.cloud.bigquery.table.TableReference.from_api_repr">[docs]</a>    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="TableReference.from_api_repr"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.table.TableReference.html#google.cloud.bigquery.table.TableReference.from_api_repr">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">resource</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Factory:  construct a table reference given its API representation</span>
 
@@ -298,7 +298,7 @@
         <span class="n">table_id</span> <span class="o">=</span> <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;tableId&#39;</span><span class="p">]</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">DatasetReference</span><span class="p">(</span><span class="n">project</span><span class="p">,</span> <span class="n">dataset_id</span><span class="p">),</span> <span class="n">table_id</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="TableReference.to_api_repr"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.table.TableReference.to_api_repr.html#google.cloud.bigquery.table.TableReference.to_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">to_api_repr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="TableReference.to_api_repr"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.table.TableReference.html#google.cloud.bigquery.table.TableReference.to_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">to_api_repr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Construct the API resource representation of this table reference.</span>
 
 <span class="sd">        Returns:</span>
@@ -367,14 +367,14 @@
         <span class="s1">&#39;encryption_configuration&#39;</span><span class="p">:</span> <span class="s1">&#39;encryptionConfiguration&#39;</span><span class="p">,</span>
     <span class="p">}</span>
 
-<div class="viewcode-block" id="Table.__init__"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.table.Table.html#google.cloud.bigquery.table.Table.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table_ref</span><span class="p">,</span> <span class="n">schema</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table_ref</span><span class="p">,</span> <span class="n">schema</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s1">&#39;tableReference&#39;</span><span class="p">:</span> <span class="n">table_ref</span><span class="o">.</span><span class="n">to_api_repr</span><span class="p">(),</span>
             <span class="s1">&#39;labels&#39;</span><span class="p">:</span> <span class="p">{},</span>
         <span class="p">}</span>
         <span class="c1"># Let the @property do validation.</span>
         <span class="k">if</span> <span class="n">schema</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">schema</span> <span class="o">=</span> <span class="n">schema</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">schema</span> <span class="o">=</span> <span class="n">schema</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">project</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -776,7 +776,7 @@
             <span class="n">api_repr</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">to_api_repr</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s1">&#39;externalDataConfiguration&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">api_repr</span>
 
-<div class="viewcode-block" id="Table.from_string"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.table.Table.from_string.html#google.cloud.bigquery.table.Table.from_string">[docs]</a>    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Table.from_string"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.table.Table.html#google.cloud.bigquery.table.Table.from_string">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_string</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">full_table_id</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Construct a table from fully-qualified table ID.</span>
 
@@ -800,7 +800,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">TableReference</span><span class="o">.</span><span class="n">from_string</span><span class="p">(</span><span class="n">full_table_id</span><span class="p">))</span></div>
 
-<div class="viewcode-block" id="Table.from_api_repr"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.table.Table.from_api_repr.html#google.cloud.bigquery.table.Table.from_api_repr">[docs]</a>    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Table.from_api_repr"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.table.Table.html#google.cloud.bigquery.table.Table.from_api_repr">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">resource</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Factory: construct a table given its API representation</span>
 
@@ -835,7 +835,7 @@
 
         <span class="k">return</span> <span class="n">table</span></div>
 
-<div class="viewcode-block" id="Table.to_api_repr"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.table.Table.to_api_repr.html#google.cloud.bigquery.table.Table.to_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">to_api_repr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Table.to_api_repr"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.table.Table.html#google.cloud.bigquery.table.Table.to_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">to_api_repr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Constructs the API resource of this table</span>
 
 <span class="sd">        Returns:</span>
@@ -887,7 +887,7 @@
 <span class="sd">            from ``resource``.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="TableListItem.__init__"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.table.TableListItem.html#google.cloud.bigquery.table.TableListItem.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">resource</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">resource</span><span class="p">):</span>
         <span class="k">if</span> <span class="s1">&#39;tableReference&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">resource</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;resource must contain a tableReference value&#39;</span><span class="p">)</span>
         <span class="k">if</span> <span class="s1">&#39;projectId&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;tableReference&#39;</span><span class="p">]:</span>
@@ -900,7 +900,7 @@
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
                 <span class="s2">&quot;resource[&#39;tableReference&#39;] must contain a tableId value&quot;</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span> <span class="o">=</span> <span class="n">resource</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span> <span class="o">=</span> <span class="n">resource</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">project</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -1059,11 +1059,11 @@
     <span class="c1"># Choose unusual field names to try to avoid conflict with schema fields.</span>
     <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;_xxx_values&#39;</span><span class="p">,</span> <span class="s1">&#39;_xxx_field_to_index&#39;</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Row.__init__"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.table.Row.html#google.cloud.bigquery.table.Row.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">field_to_index</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">field_to_index</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_xxx_values</span> <span class="o">=</span> <span class="n">values</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_xxx_field_to_index</span> <span class="o">=</span> <span class="n">field_to_index</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_xxx_field_to_index</span> <span class="o">=</span> <span class="n">field_to_index</span>
 
-<div class="viewcode-block" id="Row.values"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.table.Row.values.html#google.cloud.bigquery.table.Row.values">[docs]</a>    <span class="k">def</span> <span class="nf">values</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Row.values"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.table.Row.html#google.cloud.bigquery.table.Row.values">[docs]</a>    <span class="k">def</span> <span class="nf">values</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return the values included in this row.</span>
 
 <span class="sd">        Returns:</span>
@@ -1071,7 +1071,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_xxx_values</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Row.keys"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.table.Row.keys.html#google.cloud.bigquery.table.Row.keys">[docs]</a>    <span class="k">def</span> <span class="nf">keys</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Row.keys"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.table.Row.html#google.cloud.bigquery.table.Row.keys">[docs]</a>    <span class="k">def</span> <span class="nf">keys</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return the keys for using a row as a dict.</span>
 
 <span class="sd">        Returns:</span>
@@ -1084,7 +1084,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">six</span><span class="o">.</span><span class="n">iterkeys</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_xxx_field_to_index</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Row.items"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.table.Row.items.html#google.cloud.bigquery.table.Row.items">[docs]</a>    <span class="k">def</span> <span class="nf">items</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Row.items"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.table.Row.html#google.cloud.bigquery.table.Row.items">[docs]</a>    <span class="k">def</span> <span class="nf">items</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return items as ``(key, value)`` pairs.</span>
 
 <span class="sd">        Returns:</span>
@@ -1099,7 +1099,7 @@
         <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">index</span> <span class="ow">in</span> <span class="n">six</span><span class="o">.</span><span class="n">iteritems</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_xxx_field_to_index</span><span class="p">):</span>
             <span class="k">yield</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_xxx_values</span><span class="p">[</span><span class="n">index</span><span class="p">]))</span></div>
 
-<div class="viewcode-block" id="Row.get"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.table.Row.get.html#google.cloud.bigquery.table.Row.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Row.get"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.table.Row.html#google.cloud.bigquery.table.Row.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return a value for key, with a default value if it does not exist.</span>
 
 <span class="sd">        Args:</span>
@@ -1187,7 +1187,7 @@
 <span class="sd">            Extra query string parameters for the API call.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="RowIterator.__init__"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.table.RowIterator.html#google.cloud.bigquery.table.RowIterator.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">api_request</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">schema</span><span class="p">,</span> <span class="n">page_token</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">api_request</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">schema</span><span class="p">,</span> <span class="n">page_token</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">max_results</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">page_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">extra_params</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">RowIterator</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
             <span class="n">client</span><span class="p">,</span> <span class="n">api_request</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">item_to_value</span><span class="o">=</span><span class="n">_item_to_row</span><span class="p">,</span>
@@ -1197,7 +1197,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_schema</span> <span class="o">=</span> <span class="n">schema</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_field_to_index</span> <span class="o">=</span> <span class="n">_helpers</span><span class="o">.</span><span class="n">_field_to_index_mapping</span><span class="p">(</span><span class="n">schema</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_total_rows</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_page_size</span> <span class="o">=</span> <span class="n">page_size</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_page_size</span> <span class="o">=</span> <span class="n">page_size</span>
 
     <span class="k">def</span> <span class="nf">_get_next_page_response</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Requests the next page from the path provided.</span>
@@ -1224,7 +1224,7 @@
         <span class="sd">&quot;&quot;&quot;int: The total number of rows in the table.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_total_rows</span>
 
-<div class="viewcode-block" id="RowIterator.to_dataframe"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.table.RowIterator.to_dataframe.html#google.cloud.bigquery.table.RowIterator.to_dataframe">[docs]</a>    <span class="k">def</span> <span class="nf">to_dataframe</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="RowIterator.to_dataframe"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.table.RowIterator.html#google.cloud.bigquery.table.RowIterator.to_dataframe">[docs]</a>    <span class="k">def</span> <span class="nf">to_dataframe</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Create a pandas DataFrame from the query results.</span>
 
 <span class="sd">        Returns:</span>
@@ -1295,7 +1295,7 @@
 <span class="sd">            partition filter that can be used for partition elimination to be</span>
 <span class="sd">            specified.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-<div class="viewcode-block" id="TimePartitioning.__init__"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.table.TimePartitioning.html#google.cloud.bigquery.table.TimePartitioning.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">type_</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">field</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">expiration_ms</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">type_</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">field</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">expiration_ms</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">require_partition_filter</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">if</span> <span class="n">type_</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -1307,7 +1307,7 @@
         <span class="k">if</span> <span class="n">expiration_ms</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">expiration_ms</span> <span class="o">=</span> <span class="n">expiration_ms</span>
         <span class="k">if</span> <span class="n">require_partition_filter</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">require_partition_filter</span> <span class="o">=</span> <span class="n">require_partition_filter</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">require_partition_filter</span> <span class="o">=</span> <span class="n">require_partition_filter</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">type_</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -1348,7 +1348,7 @@
     <span class="k">def</span> <span class="nf">require_partition_filter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s1">&#39;requirePartitionFilter&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
 
-<div class="viewcode-block" id="TimePartitioning.from_api_repr"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.table.TimePartitioning.from_api_repr.html#google.cloud.bigquery.table.TimePartitioning.from_api_repr">[docs]</a>    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="TimePartitioning.from_api_repr"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.table.TimePartitioning.html#google.cloud.bigquery.table.TimePartitioning.from_api_repr">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">api_repr</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return a :class:`TimePartitioning` object deserialized from a dict.</span>
 
@@ -1377,7 +1377,7 @@
         <span class="n">instance</span><span class="o">.</span><span class="n">_properties</span> <span class="o">=</span> <span class="n">api_repr</span>
         <span class="k">return</span> <span class="n">instance</span></div>
 
-<div class="viewcode-block" id="TimePartitioning.to_api_repr"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.table.TimePartitioning.to_api_repr.html#google.cloud.bigquery.table.TimePartitioning.to_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">to_api_repr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="TimePartitioning.to_api_repr"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.table.TimePartitioning.html#google.cloud.bigquery.table.TimePartitioning.to_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">to_api_repr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return a dictionary representing this object.</span>
 
 <span class="sd">        This method returns the properties dict of the ``TimePartitioning``</span>

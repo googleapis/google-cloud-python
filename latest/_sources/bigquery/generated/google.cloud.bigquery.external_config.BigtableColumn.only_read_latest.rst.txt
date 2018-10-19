@@ -1,6 +1,0 @@
-google.cloud.bigquery.external\_config.BigtableColumn.only\_read\_latest
-========================================================================
-
-.. currentmodule:: google.cloud.bigquery.external_config
-
-.. autoattribute:: BigtableColumn.only_read_latest

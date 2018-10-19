@@ -1,6 +1,0 @@
-google.cloud.bigquery.job.QueryJobConfig.dry\_run
-=================================================
-
-.. currentmodule:: google.cloud.bigquery.job
-
-.. autoattribute:: QueryJobConfig.dry_run

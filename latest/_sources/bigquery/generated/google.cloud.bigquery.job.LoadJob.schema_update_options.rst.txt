@@ -1,6 +1,0 @@
-google.cloud.bigquery.job.LoadJob.schema\_update\_options
-=========================================================
-
-.. currentmodule:: google.cloud.bigquery.job
-
-.. autoattribute:: LoadJob.schema_update_options

@@ -1,6 +1,0 @@
-google.cloud.bigquery.job.ExtractJob.ended
-==========================================
-
-.. currentmodule:: google.cloud.bigquery.job
-
-.. autoattribute:: ExtractJob.ended

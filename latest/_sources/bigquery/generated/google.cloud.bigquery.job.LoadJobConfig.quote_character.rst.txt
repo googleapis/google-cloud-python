@@ -1,6 +1,0 @@
-google.cloud.bigquery.job.LoadJobConfig.quote\_character
-========================================================
-
-.. currentmodule:: google.cloud.bigquery.job
-
-.. autoattribute:: LoadJobConfig.quote_character

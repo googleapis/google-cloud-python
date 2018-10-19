@@ -1,6 +1,0 @@
-google.cloud.bigquery.job.UnknownJob.state
-==========================================
-
-.. currentmodule:: google.cloud.bigquery.job
-
-.. autoattribute:: UnknownJob.state

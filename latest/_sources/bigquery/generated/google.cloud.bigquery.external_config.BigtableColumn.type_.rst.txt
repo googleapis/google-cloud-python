@@ -1,6 +1,0 @@
-google.cloud.bigquery.external\_config.BigtableColumn.type\_
-============================================================
-
-.. currentmodule:: google.cloud.bigquery.external_config
-
-.. autoattribute:: BigtableColumn.type_

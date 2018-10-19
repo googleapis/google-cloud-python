@@ -3,22 +3,26 @@ google.cloud.bigquery.job.CreateDisposition
 
 .. currentmodule:: google.cloud.bigquery.job
 
+
+
+
+
+
+
+.. rubric:: Attributes
+
+.. autosummary::
+
+   ~CreateDisposition.CREATE_IF_NEEDED
+   ~CreateDisposition.CREATE_NEVER
+
+
+
+.. raw:: html
+
+    <p>
+    <hr>
+    <p>
+
 .. autoclass:: CreateDisposition
-
-   
-   .. automethod:: __init__
-
-   
-   
-
-   
-   
-   .. rubric:: Attributes
-
-   .. autosummary::
-      :toctree: .
-   
-      ~CreateDisposition.CREATE_IF_NEEDED
-      ~CreateDisposition.CREATE_NEVER
-   
-   
+   :members:

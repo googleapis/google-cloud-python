@@ -1,6 +1,0 @@
-google.cloud.bigquery.client.Client.list\_rows
-==============================================
-
-.. currentmodule:: google.cloud.bigquery.client
-
-.. automethod:: Client.list_rows

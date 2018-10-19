@@ -1,6 +1,0 @@
-google.cloud.bigquery.external\_config.CSVOptions.to\_api\_repr
-===============================================================
-
-.. currentmodule:: google.cloud.bigquery.external_config
-
-.. automethod:: CSVOptions.to_api_repr

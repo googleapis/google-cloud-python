@@ -1,6 +1,0 @@
-google.cloud.bigquery.job.QueryJob.ddl\_target\_table
-=====================================================
-
-.. currentmodule:: google.cloud.bigquery.job
-
-.. autoattribute:: QueryJob.ddl_target_table

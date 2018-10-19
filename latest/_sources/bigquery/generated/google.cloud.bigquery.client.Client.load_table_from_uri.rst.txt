@@ -1,6 +1,0 @@
-google.cloud.bigquery.client.Client.load\_table\_from\_uri
-==========================================================
-
-.. currentmodule:: google.cloud.bigquery.client
-
-.. automethod:: Client.load_table_from_uri

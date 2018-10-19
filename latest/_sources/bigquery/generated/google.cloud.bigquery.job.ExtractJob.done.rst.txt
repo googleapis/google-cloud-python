@@ -1,6 +1,0 @@
-google.cloud.bigquery.job.ExtractJob.done
-=========================================
-
-.. currentmodule:: google.cloud.bigquery.job
-
-.. automethod:: ExtractJob.done

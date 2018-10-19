@@ -1,6 +1,0 @@
-google.cloud.bigquery.client.Client.get\_job
-============================================
-
-.. currentmodule:: google.cloud.bigquery.client
-
-.. automethod:: Client.get_job

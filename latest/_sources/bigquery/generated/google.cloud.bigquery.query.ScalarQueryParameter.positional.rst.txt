@@ -1,6 +1,0 @@
-google.cloud.bigquery.query.ScalarQueryParameter.positional
-===========================================================
-
-.. currentmodule:: google.cloud.bigquery.query
-
-.. automethod:: ScalarQueryParameter.positional

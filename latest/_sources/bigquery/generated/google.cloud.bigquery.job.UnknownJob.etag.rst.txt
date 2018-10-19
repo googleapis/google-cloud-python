@@ -1,6 +1,0 @@
-google.cloud.bigquery.job.UnknownJob.etag
-=========================================
-
-.. currentmodule:: google.cloud.bigquery.job
-
-.. autoattribute:: UnknownJob.etag

@@ -1,6 +1,0 @@
-google.cloud.bigquery.job.UnknownJob.started
-============================================
-
-.. currentmodule:: google.cloud.bigquery.job
-
-.. autoattribute:: UnknownJob.started

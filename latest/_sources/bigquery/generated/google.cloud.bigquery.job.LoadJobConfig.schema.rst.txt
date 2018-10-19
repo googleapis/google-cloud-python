@@ -1,6 +1,0 @@
-google.cloud.bigquery.job.LoadJobConfig.schema
-==============================================
-
-.. currentmodule:: google.cloud.bigquery.job
-
-.. autoattribute:: LoadJobConfig.schema

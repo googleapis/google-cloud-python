@@ -1,6 +1,0 @@
-google.cloud.bigquery.client.Client.extract\_table
-==================================================
-
-.. currentmodule:: google.cloud.bigquery.client
-
-.. automethod:: Client.extract_table

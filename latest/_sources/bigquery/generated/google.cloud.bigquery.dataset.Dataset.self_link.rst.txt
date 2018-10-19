@@ -1,6 +1,0 @@
-google.cloud.bigquery.dataset.Dataset.self\_link
-================================================
-
-.. currentmodule:: google.cloud.bigquery.dataset
-
-.. autoattribute:: Dataset.self_link

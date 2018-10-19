@@ -1,6 +1,0 @@
-google.cloud.bigquery.external\_config.CSVOptions.skip\_leading\_rows
-=====================================================================
-
-.. currentmodule:: google.cloud.bigquery.external_config
-
-.. autoattribute:: CSVOptions.skip_leading_rows

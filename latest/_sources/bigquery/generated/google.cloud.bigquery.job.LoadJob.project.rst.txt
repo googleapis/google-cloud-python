@@ -1,6 +1,0 @@
-google.cloud.bigquery.job.LoadJob.project
-=========================================
-
-.. currentmodule:: google.cloud.bigquery.job
-
-.. autoattribute:: LoadJob.project

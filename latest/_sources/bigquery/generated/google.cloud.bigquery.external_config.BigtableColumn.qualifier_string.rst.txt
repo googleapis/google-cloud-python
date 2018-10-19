@@ -1,6 +1,0 @@
-google.cloud.bigquery.external\_config.BigtableColumn.qualifier\_string
-=======================================================================
-
-.. currentmodule:: google.cloud.bigquery.external_config
-
-.. autoattribute:: BigtableColumn.qualifier_string

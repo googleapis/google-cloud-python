@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigquery.job.Compression &#8212; google-cloud 05dea1b805 documentation</title>
+    <title>google.cloud.bigquery.job.Compression &#8212; google-cloud a74dc33 documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -17,8 +17,8 @@
     <link rel="shortcut icon" href="../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="google.cloud.bigquery.job.Compression.DEFLATE" href="google.cloud.bigquery.job.Compression.DEFLATE.html" />
-    <link rel="prev" title="google.cloud.bigquery.job.UnknownJob.user_email" href="google.cloud.bigquery.job.UnknownJob.user_email.html" />
+    <link rel="next" title="google.cloud.bigquery.job.CreateDisposition" href="google.cloud.bigquery.job.CreateDisposition.html" />
+    <link rel="prev" title="google.cloud.bigquery.job.UnknownJob" href="google.cloud.bigquery.job.UnknownJob.html" />
    
   <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
   
@@ -37,19 +37,6 @@
             
   <div class="section" id="google-cloud-bigquery-job-compression">
 <h1>google.cloud.bigquery.job.Compression<a class="headerlink" href="#google-cloud-bigquery-job-compression" title="Permalink to this headline">#</a></h1>
-<dl class="class">
-<dt id="google.cloud.bigquery.job.Compression">
-<em class="property">class </em><code class="descclassname">google.cloud.bigquery.job.</code><code class="descname">Compression</code><a class="reference internal" href="../../_modules/google/cloud/bigquery/job.html#Compression"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.job.Compression" title="Permalink to this definition">#</a></dt>
-<dd><p>The compression type to use for exported files. The default value is
-<a class="reference internal" href="google.cloud.bigquery.job.Compression.NONE.html#google.cloud.bigquery.job.Compression.NONE" title="google.cloud.bigquery.job.Compression.NONE"><code class="xref py py-attr docutils literal notranslate"><span class="pre">NONE</span></code></a>.</p>
-<p><a class="reference internal" href="google.cloud.bigquery.job.Compression.DEFLATE.html#google.cloud.bigquery.job.Compression.DEFLATE" title="google.cloud.bigquery.job.Compression.DEFLATE"><code class="xref py py-attr docutils literal notranslate"><span class="pre">DEFLATE</span></code></a> and <a class="reference internal" href="google.cloud.bigquery.job.Compression.SNAPPY.html#google.cloud.bigquery.job.Compression.SNAPPY" title="google.cloud.bigquery.job.Compression.SNAPPY"><code class="xref py py-attr docutils literal notranslate"><span class="pre">SNAPPY</span></code></a> are
-only supported for Avro.</p>
-<dl class="method">
-<dt id="google.cloud.bigquery.job.Compression.__init__">
-<code class="descname">__init__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.bigquery.job.Compression.__init__" title="Permalink to this definition">#</a></dt>
-<dd><p>Initialize self.  See help(type(self)) for accurate signature.</p>
-</dd></dl>
-
 <p class="rubric">Attributes</p>
 <table border="1" class="longtable docutils">
 <colgroup>
@@ -57,20 +44,53 @@ only supported for Avro.</p>
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="google.cloud.bigquery.job.Compression.DEFLATE.html#google.cloud.bigquery.job.Compression.DEFLATE" title="google.cloud.bigquery.job.Compression.DEFLATE"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DEFLATE</span></code></a></td>
+<tr class="row-odd"><td><a class="reference internal" href="#google.cloud.bigquery.job.Compression.DEFLATE" title="google.cloud.bigquery.job.Compression.DEFLATE"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DEFLATE</span></code></a></td>
 <td>Specifies DEFLATE format.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="google.cloud.bigquery.job.Compression.GZIP.html#google.cloud.bigquery.job.Compression.GZIP" title="google.cloud.bigquery.job.Compression.GZIP"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GZIP</span></code></a></td>
+<tr class="row-even"><td><a class="reference internal" href="#google.cloud.bigquery.job.Compression.GZIP" title="google.cloud.bigquery.job.Compression.GZIP"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GZIP</span></code></a></td>
 <td>Specifies GZIP format.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="google.cloud.bigquery.job.Compression.NONE.html#google.cloud.bigquery.job.Compression.NONE" title="google.cloud.bigquery.job.Compression.NONE"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NONE</span></code></a></td>
+<tr class="row-odd"><td><a class="reference internal" href="#google.cloud.bigquery.job.Compression.NONE" title="google.cloud.bigquery.job.Compression.NONE"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NONE</span></code></a></td>
 <td>Specifies no compression.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="google.cloud.bigquery.job.Compression.SNAPPY.html#google.cloud.bigquery.job.Compression.SNAPPY" title="google.cloud.bigquery.job.Compression.SNAPPY"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SNAPPY</span></code></a></td>
+<tr class="row-even"><td><a class="reference internal" href="#google.cloud.bigquery.job.Compression.SNAPPY" title="google.cloud.bigquery.job.Compression.SNAPPY"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SNAPPY</span></code></a></td>
 <td>Specifies SNAPPY format.</td>
 </tr>
 </tbody>
 </table>
+<p>
+<hr>
+<p><dl class="class">
+<dt id="google.cloud.bigquery.job.Compression">
+<em class="property">class </em><code class="descclassname">google.cloud.bigquery.job.</code><code class="descname">Compression</code><a class="reference internal" href="../../_modules/google/cloud/bigquery/job.html#Compression"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.job.Compression" title="Permalink to this definition">#</a></dt>
+<dd><p>The compression type to use for exported files. The default value is
+<a class="reference internal" href="#google.cloud.bigquery.job.Compression.NONE" title="google.cloud.bigquery.job.Compression.NONE"><code class="xref py py-attr docutils literal notranslate"><span class="pre">NONE</span></code></a>.</p>
+<p><a class="reference internal" href="#google.cloud.bigquery.job.Compression.DEFLATE" title="google.cloud.bigquery.job.Compression.DEFLATE"><code class="xref py py-attr docutils literal notranslate"><span class="pre">DEFLATE</span></code></a> and <a class="reference internal" href="#google.cloud.bigquery.job.Compression.SNAPPY" title="google.cloud.bigquery.job.Compression.SNAPPY"><code class="xref py py-attr docutils literal notranslate"><span class="pre">SNAPPY</span></code></a> are
+only supported for Avro.</p>
+<dl class="attribute">
+<dt id="google.cloud.bigquery.job.Compression.DEFLATE">
+<code class="descname">DEFLATE</code><em class="property"> = 'DEFLATE'</em><a class="headerlink" href="#google.cloud.bigquery.job.Compression.DEFLATE" title="Permalink to this definition">#</a></dt>
+<dd><p>Specifies DEFLATE format.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery.job.Compression.GZIP">
+<code class="descname">GZIP</code><em class="property"> = 'GZIP'</em><a class="headerlink" href="#google.cloud.bigquery.job.Compression.GZIP" title="Permalink to this definition">#</a></dt>
+<dd><p>Specifies GZIP format.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery.job.Compression.NONE">
+<code class="descname">NONE</code><em class="property"> = 'NONE'</em><a class="headerlink" href="#google.cloud.bigquery.job.Compression.NONE" title="Permalink to this definition">#</a></dt>
+<dd><p>Specifies no compression.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery.job.Compression.SNAPPY">
+<code class="descname">SNAPPY</code><em class="property"> = 'SNAPPY'</em><a class="headerlink" href="#google.cloud.bigquery.job.Compression.SNAPPY" title="Permalink to this definition">#</a></dt>
+<dd><p>Specifies SNAPPY format.</p>
+</dd></dl>
+
 </dd></dl>
 
 </div>
@@ -145,8 +165,8 @@ only supported for Avro.</p>
   <li><a href="../../index.html">Documentation overview</a><ul>
   <li><a href="../index.html">Python Client for Google BigQuery</a><ul>
   <li><a href="../reference.html">API Reference</a><ul>
-      <li>Previous: <a href="google.cloud.bigquery.job.UnknownJob.user_email.html" title="previous chapter">google.cloud.bigquery.job.UnknownJob.user_email</a></li>
-      <li>Next: <a href="google.cloud.bigquery.job.Compression.DEFLATE.html" title="next chapter">google.cloud.bigquery.job.Compression.DEFLATE</a></li>
+      <li>Previous: <a href="google.cloud.bigquery.job.UnknownJob.html" title="previous chapter">google.cloud.bigquery.job.UnknownJob</a></li>
+      <li>Next: <a href="google.cloud.bigquery.job.CreateDisposition.html" title="next chapter">google.cloud.bigquery.job.CreateDisposition</a></li>
   </ul></li>
   </ul></li>
   </ul></li>

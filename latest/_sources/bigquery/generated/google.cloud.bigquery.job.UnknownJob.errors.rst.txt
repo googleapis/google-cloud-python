@@ -1,6 +1,0 @@
-google.cloud.bigquery.job.UnknownJob.errors
-===========================================
-
-.. currentmodule:: google.cloud.bigquery.job
-
-.. autoattribute:: UnknownJob.errors

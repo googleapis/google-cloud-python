@@ -1,6 +1,0 @@
-google.cloud.bigquery.table.Table.reference
-===========================================
-
-.. currentmodule:: google.cloud.bigquery.table
-
-.. autoattribute:: Table.reference

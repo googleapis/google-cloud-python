@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigquery.external_config.GoogleSheetsOptions &#8212; google-cloud 05dea1b805 documentation</title>
+    <title>google.cloud.bigquery.external_config.GoogleSheetsOptions &#8212; google-cloud a74dc33 documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -17,8 +17,8 @@
     <link rel="shortcut icon" href="../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="google.cloud.bigquery.external_config.GoogleSheetsOptions.from_api_repr" href="google.cloud.bigquery.external_config.GoogleSheetsOptions.from_api_repr.html" />
-    <link rel="prev" title="google.cloud.bigquery.external_config.CSVOptions.skip_leading_rows" href="google.cloud.bigquery.external_config.CSVOptions.skip_leading_rows.html" />
+    <link rel="next" title="google.cloud.bigquery.magics" href="google.cloud.bigquery.magics.html" />
+    <link rel="prev" title="google.cloud.bigquery.external_config.CSVOptions" href="google.cloud.bigquery.external_config.CSVOptions.html" />
    
   <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
   
@@ -37,16 +37,6 @@
             
   <div class="section" id="google-cloud-bigquery-external-config-googlesheetsoptions">
 <h1>google.cloud.bigquery.external_config.GoogleSheetsOptions<a class="headerlink" href="#google-cloud-bigquery-external-config-googlesheetsoptions" title="Permalink to this headline">#</a></h1>
-<dl class="class">
-<dt id="google.cloud.bigquery.external_config.GoogleSheetsOptions">
-<em class="property">class </em><code class="descclassname">google.cloud.bigquery.external_config.</code><code class="descname">GoogleSheetsOptions</code><a class="reference internal" href="../../_modules/google/cloud/bigquery/external_config.html#GoogleSheetsOptions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.external_config.GoogleSheetsOptions" title="Permalink to this definition">#</a></dt>
-<dd><p>Options that describe how to treat Google Sheets as BigQuery tables.</p>
-<dl class="method">
-<dt id="google.cloud.bigquery.external_config.GoogleSheetsOptions.__init__">
-<code class="descname">__init__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/google/cloud/bigquery/external_config.html#GoogleSheetsOptions.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.external_config.GoogleSheetsOptions.__init__" title="Permalink to this definition">#</a></dt>
-<dd><p>Initialize self.  See help(type(self)) for accurate signature.</p>
-</dd></dl>
-
 <p class="rubric">Methods</p>
 <table border="1" class="longtable docutils">
 <colgroup>
@@ -54,10 +44,10 @@
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="google.cloud.bigquery.external_config.GoogleSheetsOptions.from_api_repr.html#google.cloud.bigquery.external_config.GoogleSheetsOptions.from_api_repr" title="google.cloud.bigquery.external_config.GoogleSheetsOptions.from_api_repr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_api_repr</span></code></a>(resource)</td>
+<tr class="row-odd"><td><a class="reference internal" href="#google.cloud.bigquery.external_config.GoogleSheetsOptions.from_api_repr" title="google.cloud.bigquery.external_config.GoogleSheetsOptions.from_api_repr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_api_repr</span></code></a>(resource)</td>
 <td>Factory: construct a <a class="reference internal" href="#google.cloud.bigquery.external_config.GoogleSheetsOptions" title="google.cloud.bigquery.external_config.GoogleSheetsOptions"><code class="xref py py-class docutils literal notranslate"><span class="pre">GoogleSheetsOptions</span></code></a> instance given its API representation.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="google.cloud.bigquery.external_config.GoogleSheetsOptions.to_api_repr.html#google.cloud.bigquery.external_config.GoogleSheetsOptions.to_api_repr" title="google.cloud.bigquery.external_config.GoogleSheetsOptions.to_api_repr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_api_repr</span></code></a>()</td>
+<tr class="row-even"><td><a class="reference internal" href="#google.cloud.bigquery.external_config.GoogleSheetsOptions.to_api_repr" title="google.cloud.bigquery.external_config.GoogleSheetsOptions.to_api_repr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_api_repr</span></code></a>()</td>
 <td>Build an API representation of this object.</td>
 </tr>
 </tbody>
@@ -69,11 +59,72 @@
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="google.cloud.bigquery.external_config.GoogleSheetsOptions.skip_leading_rows.html#google.cloud.bigquery.external_config.GoogleSheetsOptions.skip_leading_rows" title="google.cloud.bigquery.external_config.GoogleSheetsOptions.skip_leading_rows"><code class="xref py py-obj docutils literal notranslate"><span class="pre">skip_leading_rows</span></code></a></td>
+<tr class="row-odd"><td><a class="reference internal" href="#google.cloud.bigquery.external_config.GoogleSheetsOptions.skip_leading_rows" title="google.cloud.bigquery.external_config.GoogleSheetsOptions.skip_leading_rows"><code class="xref py py-obj docutils literal notranslate"><span class="pre">skip_leading_rows</span></code></a></td>
 <td>The number of rows at the top of a sheet that BigQuery will skip when reading the data.</td>
 </tr>
 </tbody>
 </table>
+<p>
+<hr>
+<p><dl class="class">
+<dt id="google.cloud.bigquery.external_config.GoogleSheetsOptions">
+<em class="property">class </em><code class="descclassname">google.cloud.bigquery.external_config.</code><code class="descname">GoogleSheetsOptions</code><a class="reference internal" href="../../_modules/google/cloud/bigquery/external_config.html#GoogleSheetsOptions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.external_config.GoogleSheetsOptions" title="Permalink to this definition">#</a></dt>
+<dd><p>Options that describe how to treat Google Sheets as BigQuery tables.</p>
+<dl class="classmethod">
+<dt id="google.cloud.bigquery.external_config.GoogleSheetsOptions.from_api_repr">
+<em class="property">classmethod </em><code class="descname">from_api_repr</code><span class="sig-paren">(</span><em>resource</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/google/cloud/bigquery/external_config.html#GoogleSheetsOptions.from_api_repr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.external_config.GoogleSheetsOptions.from_api_repr" title="Permalink to this definition">#</a></dt>
+<dd><p>Factory: construct a <a class="reference internal" href="#google.cloud.bigquery.external_config.GoogleSheetsOptions" title="google.cloud.bigquery.external_config.GoogleSheetsOptions"><code class="xref py py-class docutils literal notranslate"><span class="pre">GoogleSheetsOptions</span></code></a>
+instance given its API representation.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>resource</strong> (<em>Dict</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference internal" href="../../asset/gapic/v1beta1/types.html#google.cloud.asset_v1beta1.types.Any" title="google.cloud.asset_v1beta1.types.Any"><em>Any</em></a><em>]</em>) – Definition of a <a class="reference internal" href="#google.cloud.bigquery.external_config.GoogleSheetsOptions" title="google.cloud.bigquery.external_config.GoogleSheetsOptions"><code class="xref py py-class docutils literal notranslate"><span class="pre">GoogleSheetsOptions</span></code></a>
+instance in the same representation as is returned from the
+API.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Configuration parsed from <code class="docutils literal notranslate"><span class="pre">resource</span></code>.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#google.cloud.bigquery.external_config.GoogleSheetsOptions" title="google.cloud.bigquery.external_config.GoogleSheetsOptions"><code class="xref py py-class docutils literal notranslate"><span class="pre">GoogleSheetsOptions</span></code></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery.external_config.GoogleSheetsOptions.skip_leading_rows">
+<code class="descname">skip_leading_rows</code><a class="headerlink" href="#google.cloud.bigquery.external_config.GoogleSheetsOptions.skip_leading_rows" title="Permalink to this definition">#</a></dt>
+<dd><p>The number of rows at the top of a sheet that BigQuery will
+skip when reading the data.</p>
+<p>See
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).googleSheetsOptions.skipLeadingRows">https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).googleSheetsOptions.skipLeadingRows</a>
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.googleSheetsOptions.skipLeadingRows">https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.googleSheetsOptions.skipLeadingRows</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)">int</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.bigquery.external_config.GoogleSheetsOptions.to_api_repr">
+<code class="descname">to_api_repr</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/google/cloud/bigquery/external_config.html#GoogleSheetsOptions.to_api_repr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.external_config.GoogleSheetsOptions.to_api_repr" title="Permalink to this definition">#</a></dt>
+<dd><p>Build an API representation of this object.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A dictionary in the format used by the BigQuery API.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">Dict[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a>, <a class="reference internal" href="../../asset/gapic/v1beta1/types.html#google.cloud.asset_v1beta1.types.Any" title="google.cloud.asset_v1beta1.types.Any">Any</a>]</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 </dd></dl>
 
 </div>
@@ -148,8 +199,8 @@
   <li><a href="../../index.html">Documentation overview</a><ul>
   <li><a href="../index.html">Python Client for Google BigQuery</a><ul>
   <li><a href="../reference.html">API Reference</a><ul>
-      <li>Previous: <a href="google.cloud.bigquery.external_config.CSVOptions.skip_leading_rows.html" title="previous chapter">google.cloud.bigquery.external_config.CSVOptions.skip_leading_rows</a></li>
-      <li>Next: <a href="google.cloud.bigquery.external_config.GoogleSheetsOptions.from_api_repr.html" title="next chapter">google.cloud.bigquery.external_config.GoogleSheetsOptions.from_api_repr</a></li>
+      <li>Previous: <a href="google.cloud.bigquery.external_config.CSVOptions.html" title="previous chapter">google.cloud.bigquery.external_config.CSVOptions</a></li>
+      <li>Next: <a href="google.cloud.bigquery.magics.html" title="next chapter">google.cloud.bigquery.magics</a></li>
   </ul></li>
   </ul></li>
   </ul></li>

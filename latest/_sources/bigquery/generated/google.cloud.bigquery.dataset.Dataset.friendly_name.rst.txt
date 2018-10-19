@@ -1,6 +1,0 @@
-google.cloud.bigquery.dataset.Dataset.friendly\_name
-====================================================
-
-.. currentmodule:: google.cloud.bigquery.dataset
-
-.. autoattribute:: Dataset.friendly_name

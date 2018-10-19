@@ -1,6 +1,0 @@
-google.cloud.bigquery.dataset.DatasetReference.table
-====================================================
-
-.. currentmodule:: google.cloud.bigquery.dataset
-
-.. automethod:: DatasetReference.table

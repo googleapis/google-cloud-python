@@ -1,6 +1,0 @@
-google.cloud.bigquery.table.RowIterator.to\_dataframe
-=====================================================
-
-.. currentmodule:: google.cloud.bigquery.table
-
-.. automethod:: RowIterator.to_dataframe

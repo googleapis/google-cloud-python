@@ -1,6 +1,0 @@
-google.cloud.bigquery.job.UnknownJob.self\_link
-===============================================
-
-.. currentmodule:: google.cloud.bigquery.job
-
-.. autoattribute:: UnknownJob.self_link

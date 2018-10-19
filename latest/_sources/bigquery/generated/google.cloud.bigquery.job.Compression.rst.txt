@@ -3,24 +3,28 @@ google.cloud.bigquery.job.Compression
 
 .. currentmodule:: google.cloud.bigquery.job
 
+
+
+
+
+
+
+.. rubric:: Attributes
+
+.. autosummary::
+
+   ~Compression.DEFLATE
+   ~Compression.GZIP
+   ~Compression.NONE
+   ~Compression.SNAPPY
+
+
+
+.. raw:: html
+
+    <p>
+    <hr>
+    <p>
+
 .. autoclass:: Compression
-
-   
-   .. automethod:: __init__
-
-   
-   
-
-   
-   
-   .. rubric:: Attributes
-
-   .. autosummary::
-      :toctree: .
-   
-      ~Compression.DEFLATE
-      ~Compression.GZIP
-      ~Compression.NONE
-      ~Compression.SNAPPY
-   
-   
+   :members:

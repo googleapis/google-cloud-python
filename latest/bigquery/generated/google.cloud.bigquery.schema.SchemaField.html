@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigquery.schema.SchemaField &#8212; google-cloud 05dea1b805 documentation</title>
+    <title>google.cloud.bigquery.schema.SchemaField &#8212; google-cloud a74dc33 documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -17,8 +17,8 @@
     <link rel="shortcut icon" href="../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="google.cloud.bigquery.schema.SchemaField.from_api_repr" href="google.cloud.bigquery.schema.SchemaField.from_api_repr.html" />
-    <link rel="prev" title="google.cloud.bigquery.table.TimePartitioningType.DAY" href="google.cloud.bigquery.table.TimePartitioningType.DAY.html" />
+    <link rel="next" title="google.cloud.bigquery.query.ArrayQueryParameter" href="google.cloud.bigquery.query.ArrayQueryParameter.html" />
+    <link rel="prev" title="google.cloud.bigquery.table.TimePartitioningType" href="google.cloud.bigquery.table.TimePartitioningType.html" />
    
   <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
   
@@ -37,7 +37,51 @@
             
   <div class="section" id="google-cloud-bigquery-schema-schemafield">
 <h1>google.cloud.bigquery.schema.SchemaField<a class="headerlink" href="#google-cloud-bigquery-schema-schemafield" title="Permalink to this headline">#</a></h1>
-<dl class="class">
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#google.cloud.bigquery.schema.SchemaField.from_api_repr" title="google.cloud.bigquery.schema.SchemaField.from_api_repr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_api_repr</span></code></a>(api_repr)</td>
+<td>Return a <code class="docutils literal notranslate"><span class="pre">SchemaField</span></code> object deserialized from a dictionary.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#google.cloud.bigquery.schema.SchemaField.to_api_repr" title="google.cloud.bigquery.schema.SchemaField.to_api_repr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_api_repr</span></code></a>()</td>
+<td>Return a dictionary representing this schema field.</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Attributes</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#google.cloud.bigquery.schema.SchemaField.description" title="google.cloud.bigquery.schema.SchemaField.description"><code class="xref py py-obj docutils literal notranslate"><span class="pre">description</span></code></a></td>
+<td>description for the field.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#google.cloud.bigquery.schema.SchemaField.field_type" title="google.cloud.bigquery.schema.SchemaField.field_type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">field_type</span></code></a></td>
+<td>The type of the field.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#google.cloud.bigquery.schema.SchemaField.fields" title="google.cloud.bigquery.schema.SchemaField.fields"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fields</span></code></a></td>
+<td>Subfields contained in this field.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#google.cloud.bigquery.schema.SchemaField.is_nullable" title="google.cloud.bigquery.schema.SchemaField.is_nullable"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_nullable</span></code></a></td>
+<td>whether ‘mode’ is ‘nullable’.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#google.cloud.bigquery.schema.SchemaField.mode" title="google.cloud.bigquery.schema.SchemaField.mode"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mode</span></code></a></td>
+<td>The mode of the field.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#google.cloud.bigquery.schema.SchemaField.name" title="google.cloud.bigquery.schema.SchemaField.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></td>
+<td>The name of the field.</td>
+</tr>
+</tbody>
+</table>
+<p>
+<hr>
+<p><dl class="class">
 <dt id="google.cloud.bigquery.schema.SchemaField">
 <em class="property">class </em><code class="descclassname">google.cloud.bigquery.schema.</code><code class="descname">SchemaField</code><span class="sig-paren">(</span><em>name</em>, <em>field_type</em>, <em>mode='NULLABLE'</em>, <em>description=None</em>, <em>fields=()</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/google/cloud/bigquery/schema.html#SchemaField"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.schema.SchemaField" title="Permalink to this definition">#</a></dt>
 <dd><p>Describe a single field within a table schema.</p>
@@ -58,54 +102,135 @@
 </tr>
 </tbody>
 </table>
-<dl class="method">
-<dt id="google.cloud.bigquery.schema.SchemaField.__init__">
-<code class="descname">__init__</code><span class="sig-paren">(</span><em>name</em>, <em>field_type</em>, <em>mode='NULLABLE'</em>, <em>description=None</em>, <em>fields=()</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/google/cloud/bigquery/schema.html#SchemaField.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.schema.SchemaField.__init__" title="Permalink to this definition">#</a></dt>
-<dd><p>Initialize self.  See help(type(self)) for accurate signature.</p>
+<dl class="attribute">
+<dt id="google.cloud.bigquery.schema.SchemaField.description">
+<code class="descname">description</code><a class="headerlink" href="#google.cloud.bigquery.schema.SchemaField.description" title="Permalink to this definition">#</a></dt>
+<dd><p>description for the field.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">Optional[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a>]</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
-<p class="rubric">Methods</p>
-<table border="1" class="longtable docutils">
-<colgroup>
-<col width="10%" />
-<col width="90%" />
-</colgroup>
+<dl class="attribute">
+<dt id="google.cloud.bigquery.schema.SchemaField.field_type">
+<code class="descname">field_type</code><a class="headerlink" href="#google.cloud.bigquery.schema.SchemaField.field_type" title="Permalink to this definition">#</a></dt>
+<dd><p>The type of the field.</p>
+<p>See:
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#schema.fields.type">https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#schema.fields.type</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
 <tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="google.cloud.bigquery.schema.SchemaField.from_api_repr.html#google.cloud.bigquery.schema.SchemaField.from_api_repr" title="google.cloud.bigquery.schema.SchemaField.from_api_repr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_api_repr</span></code></a>(api_repr)</td>
-<td>Return a <code class="docutils literal notranslate"><span class="pre">SchemaField</span></code> object deserialized from a dictionary.</td>
-</tr>
-<tr class="row-even"><td><a class="reference internal" href="google.cloud.bigquery.schema.SchemaField.to_api_repr.html#google.cloud.bigquery.schema.SchemaField.to_api_repr" title="google.cloud.bigquery.schema.SchemaField.to_api_repr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_api_repr</span></code></a>()</td>
-<td>Return a dictionary representing this schema field.</td>
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a></td>
 </tr>
 </tbody>
 </table>
-<p class="rubric">Attributes</p>
-<table border="1" class="longtable docutils">
-<colgroup>
-<col width="10%" />
-<col width="90%" />
-</colgroup>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery.schema.SchemaField.fields">
+<code class="descname">fields</code><a class="headerlink" href="#google.cloud.bigquery.schema.SchemaField.fields" title="Permalink to this definition">#</a></dt>
+<dd><p>Subfields contained in this field.</p>
+<p>Must be empty unset if <code class="docutils literal notranslate"><span class="pre">field_type</span></code> is not ‘RECORD’.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
 <tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="google.cloud.bigquery.schema.SchemaField.description.html#google.cloud.bigquery.schema.SchemaField.description" title="google.cloud.bigquery.schema.SchemaField.description"><code class="xref py py-obj docutils literal notranslate"><span class="pre">description</span></code></a></td>
-<td>description for the field.</td>
-</tr>
-<tr class="row-even"><td><a class="reference internal" href="google.cloud.bigquery.schema.SchemaField.field_type.html#google.cloud.bigquery.schema.SchemaField.field_type" title="google.cloud.bigquery.schema.SchemaField.field_type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">field_type</span></code></a></td>
-<td>The type of the field.</td>
-</tr>
-<tr class="row-odd"><td><a class="reference internal" href="google.cloud.bigquery.schema.SchemaField.fields.html#google.cloud.bigquery.schema.SchemaField.fields" title="google.cloud.bigquery.schema.SchemaField.fields"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fields</span></code></a></td>
-<td>Subfields contained in this field.</td>
-</tr>
-<tr class="row-even"><td><a class="reference internal" href="google.cloud.bigquery.schema.SchemaField.is_nullable.html#google.cloud.bigquery.schema.SchemaField.is_nullable" title="google.cloud.bigquery.schema.SchemaField.is_nullable"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_nullable</span></code></a></td>
-<td>whether ‘mode’ is ‘nullable’.</td>
-</tr>
-<tr class="row-odd"><td><a class="reference internal" href="google.cloud.bigquery.schema.SchemaField.mode.html#google.cloud.bigquery.schema.SchemaField.mode" title="google.cloud.bigquery.schema.SchemaField.mode"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mode</span></code></a></td>
-<td>The mode of the field.</td>
-</tr>
-<tr class="row-even"><td><a class="reference internal" href="google.cloud.bigquery.schema.SchemaField.name.html#google.cloud.bigquery.schema.SchemaField.name" title="google.cloud.bigquery.schema.SchemaField.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></td>
-<td>The name of the field.</td>
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.7)">tuple</a></td>
 </tr>
 </tbody>
 </table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="google.cloud.bigquery.schema.SchemaField.from_api_repr">
+<em class="property">classmethod </em><code class="descname">from_api_repr</code><span class="sig-paren">(</span><em>api_repr</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/google/cloud/bigquery/schema.html#SchemaField.from_api_repr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.schema.SchemaField.from_api_repr" title="Permalink to this definition">#</a></dt>
+<dd><p>Return a <code class="docutils literal notranslate"><span class="pre">SchemaField</span></code> object deserialized from a dictionary.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>api_repr</strong> (<em>Mapping</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em>) – The serialized representation
+of the SchemaField, such as what is output by
+<a class="reference internal" href="#google.cloud.bigquery.schema.SchemaField.to_api_repr" title="google.cloud.bigquery.schema.SchemaField.to_api_repr"><code class="xref py py-meth docutils literal notranslate"><span class="pre">to_api_repr()</span></code></a>.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The <code class="docutils literal notranslate"><span class="pre">SchemaField</span></code> object.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">google.cloud.biquery.schema.SchemaField</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery.schema.SchemaField.is_nullable">
+<code class="descname">is_nullable</code><a class="headerlink" href="#google.cloud.bigquery.schema.SchemaField.is_nullable" title="Permalink to this definition">#</a></dt>
+<dd><p>whether ‘mode’ is ‘nullable’.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)">bool</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery.schema.SchemaField.mode">
+<code class="descname">mode</code><a class="headerlink" href="#google.cloud.bigquery.schema.SchemaField.mode" title="Permalink to this definition">#</a></dt>
+<dd><p>The mode of the field.</p>
+<p>See:
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#schema.fields.mode">https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#schema.fields.mode</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery.schema.SchemaField.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.bigquery.schema.SchemaField.name" title="Permalink to this definition">#</a></dt>
+<dd><p>The name of the field.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.bigquery.schema.SchemaField.to_api_repr">
+<code class="descname">to_api_repr</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/google/cloud/bigquery/schema.html#SchemaField.to_api_repr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.schema.SchemaField.to_api_repr" title="Permalink to this definition">#</a></dt>
+<dd><p>Return a dictionary representing this schema field.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="docutils">
+<dt>A dictionary representing the SchemaField in a serialized</dt>
+<dd>form.</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)">dict</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 </dd></dl>
 
 </div>
@@ -180,8 +305,8 @@
   <li><a href="../../index.html">Documentation overview</a><ul>
   <li><a href="../index.html">Python Client for Google BigQuery</a><ul>
   <li><a href="../reference.html">API Reference</a><ul>
-      <li>Previous: <a href="google.cloud.bigquery.table.TimePartitioningType.DAY.html" title="previous chapter">google.cloud.bigquery.table.TimePartitioningType.DAY</a></li>
-      <li>Next: <a href="google.cloud.bigquery.schema.SchemaField.from_api_repr.html" title="next chapter">google.cloud.bigquery.schema.SchemaField.from_api_repr</a></li>
+      <li>Previous: <a href="google.cloud.bigquery.table.TimePartitioningType.html" title="previous chapter">google.cloud.bigquery.table.TimePartitioningType</a></li>
+      <li>Next: <a href="google.cloud.bigquery.query.ArrayQueryParameter.html" title="next chapter">google.cloud.bigquery.query.ArrayQueryParameter</a></li>
   </ul></li>
   </ul></li>
   </ul></li>

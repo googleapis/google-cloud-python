@@ -1,6 +1,0 @@
-google.cloud.bigquery.dataset.AccessEntry.ENTITY\_TYPES
-=======================================================
-
-.. currentmodule:: google.cloud.bigquery.dataset
-
-.. autoattribute:: AccessEntry.ENTITY_TYPES

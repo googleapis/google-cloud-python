@@ -3,40 +3,42 @@ google.cloud.bigquery.schema.SchemaField
 
 .. currentmodule:: google.cloud.bigquery.schema
 
+
+
+.. rubric:: Methods
+
+.. autosummary::
+
+   
+   
+   ~SchemaField.from_api_repr
+   
+   
+   ~SchemaField.to_api_repr
+   
+
+
+
+
+
+.. rubric:: Attributes
+
+.. autosummary::
+
+   ~SchemaField.description
+   ~SchemaField.field_type
+   ~SchemaField.fields
+   ~SchemaField.is_nullable
+   ~SchemaField.mode
+   ~SchemaField.name
+
+
+
+.. raw:: html
+
+    <p>
+    <hr>
+    <p>
+
 .. autoclass:: SchemaField
-
-   
-   .. automethod:: __init__
-
-   
-   .. rubric:: Methods
-
-   
-   .. autosummary::
-      :toctree: .
-   
-      
-      
-      ~SchemaField.from_api_repr
-      
-      
-      ~SchemaField.to_api_repr
-      
-   
-   
-
-   
-   
-   .. rubric:: Attributes
-
-   .. autosummary::
-      :toctree: .
-   
-      ~SchemaField.description
-      ~SchemaField.field_type
-      ~SchemaField.fields
-      ~SchemaField.is_nullable
-      ~SchemaField.mode
-      ~SchemaField.name
-   
-   
+   :members:

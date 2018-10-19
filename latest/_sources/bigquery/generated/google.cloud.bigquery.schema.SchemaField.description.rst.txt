@@ -1,6 +1,0 @@
-google.cloud.bigquery.schema.SchemaField.description
-====================================================
-
-.. currentmodule:: google.cloud.bigquery.schema
-
-.. autoattribute:: SchemaField.description

@@ -1,6 +1,0 @@
-google.cloud.bigquery.table.Table.location
-==========================================
-
-.. currentmodule:: google.cloud.bigquery.table
-
-.. autoattribute:: Table.location

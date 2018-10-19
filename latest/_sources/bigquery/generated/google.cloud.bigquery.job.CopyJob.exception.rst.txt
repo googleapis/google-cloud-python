@@ -1,6 +1,0 @@
-google.cloud.bigquery.job.CopyJob.exception
-===========================================
-
-.. currentmodule:: google.cloud.bigquery.job
-
-.. automethod:: CopyJob.exception

@@ -1,6 +1,0 @@
-google.cloud.bigquery.table.TimePartitioning.require\_partition\_filter
-=======================================================================
-
-.. currentmodule:: google.cloud.bigquery.table
-
-.. autoattribute:: TimePartitioning.require_partition_filter

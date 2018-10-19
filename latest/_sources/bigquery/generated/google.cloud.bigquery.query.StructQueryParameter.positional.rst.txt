@@ -1,6 +1,0 @@
-google.cloud.bigquery.query.StructQueryParameter.positional
-===========================================================
-
-.. currentmodule:: google.cloud.bigquery.query
-
-.. automethod:: StructQueryParameter.positional

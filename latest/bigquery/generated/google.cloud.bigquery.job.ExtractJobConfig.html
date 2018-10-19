@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigquery.job.ExtractJobConfig &#8212; google-cloud 05dea1b805 documentation</title>
+    <title>google.cloud.bigquery.job.ExtractJobConfig &#8212; google-cloud a74dc33 documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -17,8 +17,8 @@
     <link rel="shortcut icon" href="../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="google.cloud.bigquery.job.ExtractJobConfig.from_api_repr" href="google.cloud.bigquery.job.ExtractJobConfig.from_api_repr.html" />
-    <link rel="prev" title="google.cloud.bigquery.job.LoadJobConfig.write_disposition" href="google.cloud.bigquery.job.LoadJobConfig.write_disposition.html" />
+    <link rel="next" title="google.cloud.bigquery.job.QueryJob" href="google.cloud.bigquery.job.QueryJob.html" />
+    <link rel="prev" title="google.cloud.bigquery.job.LoadJobConfig" href="google.cloud.bigquery.job.LoadJobConfig.html" />
    
   <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
   
@@ -37,18 +37,6 @@
             
   <div class="section" id="google-cloud-bigquery-job-extractjobconfig">
 <h1>google.cloud.bigquery.job.ExtractJobConfig<a class="headerlink" href="#google-cloud-bigquery-job-extractjobconfig" title="Permalink to this headline">#</a></h1>
-<dl class="class">
-<dt id="google.cloud.bigquery.job.ExtractJobConfig">
-<em class="property">class </em><code class="descclassname">google.cloud.bigquery.job.</code><code class="descname">ExtractJobConfig</code><a class="reference internal" href="../../_modules/google/cloud/bigquery/job.html#ExtractJobConfig"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.job.ExtractJobConfig" title="Permalink to this definition">#</a></dt>
-<dd><p>Configuration options for extract jobs.</p>
-<p>All properties in this class are optional. Values which are <code class="docutils literal notranslate"><span class="pre">None</span></code> -&gt;
-server defaults.</p>
-<dl class="method">
-<dt id="google.cloud.bigquery.job.ExtractJobConfig.__init__">
-<code class="descname">__init__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/google/cloud/bigquery/job.html#ExtractJobConfig.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.job.ExtractJobConfig.__init__" title="Permalink to this definition">#</a></dt>
-<dd><p>Initialize self.  See help(type(self)) for accurate signature.</p>
-</dd></dl>
-
 <p class="rubric">Methods</p>
 <table border="1" class="longtable docutils">
 <colgroup>
@@ -56,10 +44,10 @@ server defaults.</p>
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="google.cloud.bigquery.job.ExtractJobConfig.from_api_repr.html#google.cloud.bigquery.job.ExtractJobConfig.from_api_repr" title="google.cloud.bigquery.job.ExtractJobConfig.from_api_repr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_api_repr</span></code></a>(resource)</td>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_api_repr</span></code>(resource)</td>
 <td>Factory: construct a job configuration given its API representation</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="google.cloud.bigquery.job.ExtractJobConfig.to_api_repr.html#google.cloud.bigquery.job.ExtractJobConfig.to_api_repr" title="google.cloud.bigquery.job.ExtractJobConfig.to_api_repr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_api_repr</span></code></a>()</td>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_api_repr</span></code>()</td>
 <td>Build an API representation of the job config.</td>
 </tr>
 </tbody>
@@ -71,23 +59,96 @@ server defaults.</p>
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="google.cloud.bigquery.job.ExtractJobConfig.compression.html#google.cloud.bigquery.job.ExtractJobConfig.compression" title="google.cloud.bigquery.job.ExtractJobConfig.compression"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compression</span></code></a></td>
+<tr class="row-odd"><td><a class="reference internal" href="#google.cloud.bigquery.job.ExtractJobConfig.compression" title="google.cloud.bigquery.job.ExtractJobConfig.compression"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compression</span></code></a></td>
 <td>Compression type to use for exported files.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="google.cloud.bigquery.job.ExtractJobConfig.destination_format.html#google.cloud.bigquery.job.ExtractJobConfig.destination_format" title="google.cloud.bigquery.job.ExtractJobConfig.destination_format"><code class="xref py py-obj docutils literal notranslate"><span class="pre">destination_format</span></code></a></td>
+<tr class="row-even"><td><a class="reference internal" href="#google.cloud.bigquery.job.ExtractJobConfig.destination_format" title="google.cloud.bigquery.job.ExtractJobConfig.destination_format"><code class="xref py py-obj docutils literal notranslate"><span class="pre">destination_format</span></code></a></td>
 <td>Exported file format.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="google.cloud.bigquery.job.ExtractJobConfig.field_delimiter.html#google.cloud.bigquery.job.ExtractJobConfig.field_delimiter" title="google.cloud.bigquery.job.ExtractJobConfig.field_delimiter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">field_delimiter</span></code></a></td>
+<tr class="row-odd"><td><a class="reference internal" href="#google.cloud.bigquery.job.ExtractJobConfig.field_delimiter" title="google.cloud.bigquery.job.ExtractJobConfig.field_delimiter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">field_delimiter</span></code></a></td>
 <td>Delimiter to use between fields in the exported data.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="google.cloud.bigquery.job.ExtractJobConfig.labels.html#google.cloud.bigquery.job.ExtractJobConfig.labels" title="google.cloud.bigquery.job.ExtractJobConfig.labels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">labels</span></code></a></td>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">labels</span></code></td>
 <td>Labels for the job.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="google.cloud.bigquery.job.ExtractJobConfig.print_header.html#google.cloud.bigquery.job.ExtractJobConfig.print_header" title="google.cloud.bigquery.job.ExtractJobConfig.print_header"><code class="xref py py-obj docutils literal notranslate"><span class="pre">print_header</span></code></a></td>
+<tr class="row-odd"><td><a class="reference internal" href="#google.cloud.bigquery.job.ExtractJobConfig.print_header" title="google.cloud.bigquery.job.ExtractJobConfig.print_header"><code class="xref py py-obj docutils literal notranslate"><span class="pre">print_header</span></code></a></td>
 <td>Print a header row in the exported data.</td>
 </tr>
 </tbody>
 </table>
+<p>
+<hr>
+<p><dl class="class">
+<dt id="google.cloud.bigquery.job.ExtractJobConfig">
+<em class="property">class </em><code class="descclassname">google.cloud.bigquery.job.</code><code class="descname">ExtractJobConfig</code><a class="reference internal" href="../../_modules/google/cloud/bigquery/job.html#ExtractJobConfig"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.job.ExtractJobConfig" title="Permalink to this definition">#</a></dt>
+<dd><p>Configuration options for extract jobs.</p>
+<p>All properties in this class are optional. Values which are <code class="docutils literal notranslate"><span class="pre">None</span></code> -&gt;
+server defaults.</p>
+<dl class="attribute">
+<dt id="google.cloud.bigquery.job.ExtractJobConfig.compression">
+<code class="descname">compression</code><a class="headerlink" href="#google.cloud.bigquery.job.ExtractJobConfig.compression" title="Permalink to this definition">#</a></dt>
+<dd><p>Compression type to use for
+exported files.</p>
+<p>See
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.extract.compression">https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.extract.compression</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference internal" href="google.cloud.bigquery.job.Compression.html#google.cloud.bigquery.job.Compression" title="google.cloud.bigquery.job.Compression">google.cloud.bigquery.job.Compression</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery.job.ExtractJobConfig.destination_format">
+<code class="descname">destination_format</code><a class="headerlink" href="#google.cloud.bigquery.job.ExtractJobConfig.destination_format" title="Permalink to this definition">#</a></dt>
+<dd><p>Exported file format.</p>
+<p>See
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.extract.destinationFormat">https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.extract.destinationFormat</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference internal" href="google.cloud.bigquery.job.DestinationFormat.html#google.cloud.bigquery.job.DestinationFormat" title="google.cloud.bigquery.job.DestinationFormat">google.cloud.bigquery.job.DestinationFormat</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery.job.ExtractJobConfig.field_delimiter">
+<code class="descname">field_delimiter</code><a class="headerlink" href="#google.cloud.bigquery.job.ExtractJobConfig.field_delimiter" title="Permalink to this definition">#</a></dt>
+<dd><p>Delimiter to use between fields in the exported data.</p>
+<p>See
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.extract.fieldDelimiter">https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.extract.fieldDelimiter</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery.job.ExtractJobConfig.print_header">
+<code class="descname">print_header</code><a class="headerlink" href="#google.cloud.bigquery.job.ExtractJobConfig.print_header" title="Permalink to this definition">#</a></dt>
+<dd><p>Print a header row in the exported data.</p>
+<p>See
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.extract.printHeader">https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.extract.printHeader</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)">bool</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 </dd></dl>
 
 </div>
@@ -162,8 +223,8 @@ server defaults.</p>
   <li><a href="../../index.html">Documentation overview</a><ul>
   <li><a href="../index.html">Python Client for Google BigQuery</a><ul>
   <li><a href="../reference.html">API Reference</a><ul>
-      <li>Previous: <a href="google.cloud.bigquery.job.LoadJobConfig.write_disposition.html" title="previous chapter">google.cloud.bigquery.job.LoadJobConfig.write_disposition</a></li>
-      <li>Next: <a href="google.cloud.bigquery.job.ExtractJobConfig.from_api_repr.html" title="next chapter">google.cloud.bigquery.job.ExtractJobConfig.from_api_repr</a></li>
+      <li>Previous: <a href="google.cloud.bigquery.job.LoadJobConfig.html" title="previous chapter">google.cloud.bigquery.job.LoadJobConfig</a></li>
+      <li>Next: <a href="google.cloud.bigquery.job.QueryJob.html" title="next chapter">google.cloud.bigquery.job.QueryJob</a></li>
   </ul></li>
   </ul></li>
   </ul></li>

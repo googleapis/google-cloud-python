@@ -1,6 +1,0 @@
-google.cloud.bigquery.job.ExtractJobConfig.to\_api\_repr
-========================================================
-
-.. currentmodule:: google.cloud.bigquery.job
-
-.. automethod:: ExtractJobConfig.to_api_repr

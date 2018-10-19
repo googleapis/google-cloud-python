@@ -1,6 +1,0 @@
-google.cloud.bigquery.job.CopyJob.add\_done\_callback
-=====================================================
-
-.. currentmodule:: google.cloud.bigquery.job
-
-.. automethod:: CopyJob.add_done_callback

@@ -1,6 +1,0 @@
-google.cloud.bigquery.client.Client.delete\_dataset
-===================================================
-
-.. currentmodule:: google.cloud.bigquery.client
-
-.. automethod:: Client.delete_dataset

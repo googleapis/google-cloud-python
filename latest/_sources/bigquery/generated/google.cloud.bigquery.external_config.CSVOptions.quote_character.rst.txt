@@ -1,6 +1,0 @@
-google.cloud.bigquery.external\_config.CSVOptions.quote\_character
-==================================================================
-
-.. currentmodule:: google.cloud.bigquery.external_config
-
-.. autoattribute:: CSVOptions.quote_character

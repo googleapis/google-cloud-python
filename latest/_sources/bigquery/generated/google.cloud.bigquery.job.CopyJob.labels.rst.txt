@@ -1,6 +1,0 @@
-google.cloud.bigquery.job.CopyJob.labels
-========================================
-
-.. currentmodule:: google.cloud.bigquery.job
-
-.. autoattribute:: CopyJob.labels

@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigquery.client.Client &#8212; google-cloud 05dea1b805 documentation</title>
+    <title>google.cloud.bigquery.client.Client &#8212; google-cloud a74dc33 documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -17,7 +17,7 @@
     <link rel="shortcut icon" href="../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="google.cloud.bigquery.client.Client.cancel_job" href="google.cloud.bigquery.client.Client.cancel_job.html" />
+    <link rel="next" title="google.cloud.bigquery.job.QueryJobConfig" href="google.cloud.bigquery.job.QueryJobConfig.html" />
     <link rel="prev" title="API Reference" href="../reference.html" />
    
   <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
@@ -37,7 +37,117 @@
             
   <div class="section" id="google-cloud-bigquery-client-client">
 <h1>google.cloud.bigquery.client.Client<a class="headerlink" href="#google-cloud-bigquery-client-client" title="Permalink to this headline">#</a></h1>
-<dl class="class">
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#google.cloud.bigquery.client.Client.cancel_job" title="google.cloud.bigquery.client.Client.cancel_job"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cancel_job</span></code></a>(job_id[,&nbsp;project,&nbsp;location,&nbsp;retry])</td>
+<td>Attempt to cancel a job from a job ID.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#google.cloud.bigquery.client.Client.copy_table" title="google.cloud.bigquery.client.Client.copy_table"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy_table</span></code></a>(sources,&nbsp;destination[,&nbsp;job_id,&nbsp;…])</td>
+<td>Copy one or more tables to another table.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#google.cloud.bigquery.client.Client.create_dataset" title="google.cloud.bigquery.client.Client.create_dataset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_dataset</span></code></a>(dataset)</td>
+<td>API call: create the dataset via a POST request.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#google.cloud.bigquery.client.Client.create_table" title="google.cloud.bigquery.client.Client.create_table"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_table</span></code></a>(table)</td>
+<td>API call:  create a table via a PUT request</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#google.cloud.bigquery.client.Client.dataset" title="google.cloud.bigquery.client.Client.dataset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dataset</span></code></a>(dataset_id[,&nbsp;project])</td>
+<td>Construct a reference to a dataset.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#google.cloud.bigquery.client.Client.delete_dataset" title="google.cloud.bigquery.client.Client.delete_dataset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete_dataset</span></code></a>(dataset[,&nbsp;delete_contents,&nbsp;retry])</td>
+<td>Delete a dataset.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#google.cloud.bigquery.client.Client.delete_table" title="google.cloud.bigquery.client.Client.delete_table"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete_table</span></code></a>(table[,&nbsp;retry])</td>
+<td>Delete a table</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#google.cloud.bigquery.client.Client.extract_table" title="google.cloud.bigquery.client.Client.extract_table"><code class="xref py py-obj docutils literal notranslate"><span class="pre">extract_table</span></code></a>(source,&nbsp;destination_uris[,&nbsp;…])</td>
+<td>Start a job to extract a table into Cloud Storage files.</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_service_account_json</span></code>(…)</td>
+<td>Factory to retrieve JSON credentials while creating client.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#google.cloud.bigquery.client.Client.get_dataset" title="google.cloud.bigquery.client.Client.get_dataset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_dataset</span></code></a>(dataset_ref[,&nbsp;retry])</td>
+<td>Fetch the dataset referenced by <code class="docutils literal notranslate"><span class="pre">dataset_ref</span></code></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#google.cloud.bigquery.client.Client.get_job" title="google.cloud.bigquery.client.Client.get_job"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_job</span></code></a>(job_id[,&nbsp;project,&nbsp;location,&nbsp;retry])</td>
+<td>Fetch a job for the project associated with this client.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#google.cloud.bigquery.client.Client.get_service_account_email" title="google.cloud.bigquery.client.Client.get_service_account_email"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_service_account_email</span></code></a>([project])</td>
+<td>Get the email address of the project’s BigQuery service account</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#google.cloud.bigquery.client.Client.get_table" title="google.cloud.bigquery.client.Client.get_table"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_table</span></code></a>(table_ref[,&nbsp;retry])</td>
+<td>Fetch the table referenced by <code class="docutils literal notranslate"><span class="pre">table_ref</span></code>.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#google.cloud.bigquery.client.Client.insert_rows" title="google.cloud.bigquery.client.Client.insert_rows"><code class="xref py py-obj docutils literal notranslate"><span class="pre">insert_rows</span></code></a>(table,&nbsp;rows[,&nbsp;selected_fields])</td>
+<td>Insert rows into a table via the streaming API.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#google.cloud.bigquery.client.Client.insert_rows_json" title="google.cloud.bigquery.client.Client.insert_rows_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">insert_rows_json</span></code></a>(table,&nbsp;json_rows[,&nbsp;…])</td>
+<td>Insert rows into a table without applying local type conversions.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#google.cloud.bigquery.client.Client.job_from_resource" title="google.cloud.bigquery.client.Client.job_from_resource"><code class="xref py py-obj docutils literal notranslate"><span class="pre">job_from_resource</span></code></a>(resource)</td>
+<td>Detect correct job type from resource and instantiate.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#google.cloud.bigquery.client.Client.list_datasets" title="google.cloud.bigquery.client.Client.list_datasets"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list_datasets</span></code></a>([project,&nbsp;include_all,&nbsp;…])</td>
+<td>List datasets for the project associated with this client.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#google.cloud.bigquery.client.Client.list_jobs" title="google.cloud.bigquery.client.Client.list_jobs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list_jobs</span></code></a>([project,&nbsp;max_results,&nbsp;…])</td>
+<td>List jobs for the project associated with this client.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#google.cloud.bigquery.client.Client.list_partitions" title="google.cloud.bigquery.client.Client.list_partitions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list_partitions</span></code></a>(table[,&nbsp;retry])</td>
+<td>List the partitions in a table.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#google.cloud.bigquery.client.Client.list_projects" title="google.cloud.bigquery.client.Client.list_projects"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list_projects</span></code></a>([max_results,&nbsp;page_token,&nbsp;retry])</td>
+<td>List projects for the project associated with this client.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#google.cloud.bigquery.client.Client.list_rows" title="google.cloud.bigquery.client.Client.list_rows"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list_rows</span></code></a>(table[,&nbsp;selected_fields,&nbsp;…])</td>
+<td>List the rows of the table.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#google.cloud.bigquery.client.Client.list_tables" title="google.cloud.bigquery.client.Client.list_tables"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list_tables</span></code></a>(dataset[,&nbsp;max_results,&nbsp;…])</td>
+<td>List tables in the dataset.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#google.cloud.bigquery.client.Client.load_table_from_dataframe" title="google.cloud.bigquery.client.Client.load_table_from_dataframe"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_table_from_dataframe</span></code></a>(dataframe,&nbsp;destination)</td>
+<td>Upload the contents of a table from a pandas DataFrame.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#google.cloud.bigquery.client.Client.load_table_from_file" title="google.cloud.bigquery.client.Client.load_table_from_file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_table_from_file</span></code></a>(file_obj,&nbsp;destination)</td>
+<td>Upload the contents of this table from a file-like object.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#google.cloud.bigquery.client.Client.load_table_from_uri" title="google.cloud.bigquery.client.Client.load_table_from_uri"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_table_from_uri</span></code></a>(source_uris,&nbsp;destination)</td>
+<td>Starts a job for loading data into a table from CloudStorage.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#google.cloud.bigquery.client.Client.query" title="google.cloud.bigquery.client.Client.query"><code class="xref py py-obj docutils literal notranslate"><span class="pre">query</span></code></a>(query[,&nbsp;job_config,&nbsp;job_id,&nbsp;…])</td>
+<td>Run a SQL query.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#google.cloud.bigquery.client.Client.update_dataset" title="google.cloud.bigquery.client.Client.update_dataset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_dataset</span></code></a>(dataset,&nbsp;fields[,&nbsp;retry])</td>
+<td>Change some fields of a dataset.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#google.cloud.bigquery.client.Client.update_table" title="google.cloud.bigquery.client.Client.update_table"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_table</span></code></a>(table,&nbsp;fields[,&nbsp;retry])</td>
+<td>Change some fields of a table.</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Attributes</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#google.cloud.bigquery.client.Client.SCOPE" title="google.cloud.bigquery.client.Client.SCOPE"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SCOPE</span></code></a></td>
+<td>The scopes required for authenticating as a BigQuery consumer.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#google.cloud.bigquery.client.Client.location" title="google.cloud.bigquery.client.Client.location"><code class="xref py py-obj docutils literal notranslate"><span class="pre">location</span></code></a></td>
+<td>Default location for jobs / datasets / tables.</td>
+</tr>
+</tbody>
+</table>
+<p>
+<hr>
+<p><dl class="class">
 <dt id="google.cloud.bigquery.client.Client">
 <em class="property">class </em><code class="descclassname">google.cloud.bigquery.client.</code><code class="descname">Client</code><span class="sig-paren">(</span><em>project=None</em>, <em>credentials=None</em>, <em>_http=None</em>, <em>location=None</em>, <em>default_query_job_config=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/google/cloud/bigquery/client.html#Client"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.client.Client" title="Permalink to this definition">#</a></dt>
 <dd><p>Client to bundle configuration needed for API requests.</p>
@@ -71,120 +181,987 @@ to acquire default credentials.</p>
 </tr>
 </tbody>
 </table>
-<dl class="method">
-<dt id="google.cloud.bigquery.client.Client.__init__">
-<code class="descname">__init__</code><span class="sig-paren">(</span><em>project=None</em>, <em>credentials=None</em>, <em>_http=None</em>, <em>location=None</em>, <em>default_query_job_config=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/google/cloud/bigquery/client.html#Client.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.client.Client.__init__" title="Permalink to this definition">#</a></dt>
-<dd><p>Initialize self.  See help(type(self)) for accurate signature.</p>
+<dl class="attribute">
+<dt id="google.cloud.bigquery.client.Client.SCOPE">
+<code class="descname">SCOPE</code><em class="property"> = ('https://www.googleapis.com/auth/bigquery', 'https://www.googleapis.com/auth/cloud-platform')</em><a class="headerlink" href="#google.cloud.bigquery.client.Client.SCOPE" title="Permalink to this definition">#</a></dt>
+<dd><p>The scopes required for authenticating as a BigQuery consumer.</p>
 </dd></dl>
 
-<p class="rubric">Methods</p>
-<table border="1" class="longtable docutils">
-<colgroup>
-<col width="10%" />
-<col width="90%" />
-</colgroup>
+<dl class="method">
+<dt id="google.cloud.bigquery.client.Client.cancel_job">
+<code class="descname">cancel_job</code><span class="sig-paren">(</span><em>job_id</em>, <em>project=None</em>, <em>location=None</em>, <em>retry=&lt;google.api_core.retry.Retry object&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/google/cloud/bigquery/client.html#Client.cancel_job"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.client.Client.cancel_job" title="Permalink to this definition">#</a></dt>
+<dd><p>Attempt to cancel a job from a job ID.</p>
+<p>See
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/cancel">https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/cancel</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
 <tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="google.cloud.bigquery.client.Client.cancel_job.html#google.cloud.bigquery.client.Client.cancel_job" title="google.cloud.bigquery.client.Client.cancel_job"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cancel_job</span></code></a>(job_id[,&nbsp;project,&nbsp;location,&nbsp;retry])</td>
-<td>Attempt to cancel a job from a job ID.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>job_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Unique job identifier.</p>
+</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="google.cloud.bigquery.client.Client.copy_table.html#google.cloud.bigquery.client.Client.copy_table" title="google.cloud.bigquery.client.Client.copy_table"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy_table</span></code></a>(sources,&nbsp;destination[,&nbsp;job_id,&nbsp;…])</td>
-<td>Copy one or more tables to another table.</td>
+<tr class="field-even field"><th class="field-name" colspan="2">Keyword Arguments:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><strong>project</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – (Optional) ID of the project which owns the job (defaults to
+the client’s project).</li>
+<li><strong>location</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Location where the job was run.</li>
+<li><strong>retry</strong> (<a class="reference internal" href="../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a>) – (Optional) How to retry the RPC.</li>
+</ul>
+</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="google.cloud.bigquery.client.Client.create_dataset.html#google.cloud.bigquery.client.Client.create_dataset" title="google.cloud.bigquery.client.Client.create_dataset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_dataset</span></code></a>(dataset)</td>
-<td>API call: create the dataset via a POST request.</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Job instance, based on the resource returned by the API.</p>
+</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="google.cloud.bigquery.client.Client.create_table.html#google.cloud.bigquery.client.Client.create_table" title="google.cloud.bigquery.client.Client.create_table"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_table</span></code></a>(table)</td>
-<td>API call:  create a table via a PUT request</td>
-</tr>
-<tr class="row-odd"><td><a class="reference internal" href="google.cloud.bigquery.client.Client.dataset.html#google.cloud.bigquery.client.Client.dataset" title="google.cloud.bigquery.client.Client.dataset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dataset</span></code></a>(dataset_id[,&nbsp;project])</td>
-<td>Construct a reference to a dataset.</td>
-</tr>
-<tr class="row-even"><td><a class="reference internal" href="google.cloud.bigquery.client.Client.delete_dataset.html#google.cloud.bigquery.client.Client.delete_dataset" title="google.cloud.bigquery.client.Client.delete_dataset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete_dataset</span></code></a>(dataset[,&nbsp;delete_contents,&nbsp;retry])</td>
-<td>Delete a dataset.</td>
-</tr>
-<tr class="row-odd"><td><a class="reference internal" href="google.cloud.bigquery.client.Client.delete_table.html#google.cloud.bigquery.client.Client.delete_table" title="google.cloud.bigquery.client.Client.delete_table"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete_table</span></code></a>(table[,&nbsp;retry])</td>
-<td>Delete a table</td>
-</tr>
-<tr class="row-even"><td><a class="reference internal" href="google.cloud.bigquery.client.Client.extract_table.html#google.cloud.bigquery.client.Client.extract_table" title="google.cloud.bigquery.client.Client.extract_table"><code class="xref py py-obj docutils literal notranslate"><span class="pre">extract_table</span></code></a>(source,&nbsp;destination_uris[,&nbsp;…])</td>
-<td>Start a job to extract a table into Cloud Storage files.</td>
-</tr>
-<tr class="row-odd"><td><a class="reference internal" href="google.cloud.bigquery.client.Client.from_service_account_json.html#google.cloud.bigquery.client.Client.from_service_account_json" title="google.cloud.bigquery.client.Client.from_service_account_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_service_account_json</span></code></a>(…)</td>
-<td>Factory to retrieve JSON credentials while creating client.</td>
-</tr>
-<tr class="row-even"><td><a class="reference internal" href="google.cloud.bigquery.client.Client.get_dataset.html#google.cloud.bigquery.client.Client.get_dataset" title="google.cloud.bigquery.client.Client.get_dataset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_dataset</span></code></a>(dataset_ref[,&nbsp;retry])</td>
-<td>Fetch the dataset referenced by <code class="docutils literal notranslate"><span class="pre">dataset_ref</span></code></td>
-</tr>
-<tr class="row-odd"><td><a class="reference internal" href="google.cloud.bigquery.client.Client.get_job.html#google.cloud.bigquery.client.Client.get_job" title="google.cloud.bigquery.client.Client.get_job"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_job</span></code></a>(job_id[,&nbsp;project,&nbsp;location,&nbsp;retry])</td>
-<td>Fetch a job for the project associated with this client.</td>
-</tr>
-<tr class="row-even"><td><a class="reference internal" href="google.cloud.bigquery.client.Client.get_service_account_email.html#google.cloud.bigquery.client.Client.get_service_account_email" title="google.cloud.bigquery.client.Client.get_service_account_email"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_service_account_email</span></code></a>([project])</td>
-<td>Get the email address of the project’s BigQuery service account</td>
-</tr>
-<tr class="row-odd"><td><a class="reference internal" href="google.cloud.bigquery.client.Client.get_table.html#google.cloud.bigquery.client.Client.get_table" title="google.cloud.bigquery.client.Client.get_table"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_table</span></code></a>(table_ref[,&nbsp;retry])</td>
-<td>Fetch the table referenced by <code class="docutils literal notranslate"><span class="pre">table_ref</span></code>.</td>
-</tr>
-<tr class="row-even"><td><a class="reference internal" href="google.cloud.bigquery.client.Client.insert_rows.html#google.cloud.bigquery.client.Client.insert_rows" title="google.cloud.bigquery.client.Client.insert_rows"><code class="xref py py-obj docutils literal notranslate"><span class="pre">insert_rows</span></code></a>(table,&nbsp;rows[,&nbsp;selected_fields])</td>
-<td>Insert rows into a table via the streaming API.</td>
-</tr>
-<tr class="row-odd"><td><a class="reference internal" href="google.cloud.bigquery.client.Client.insert_rows_json.html#google.cloud.bigquery.client.Client.insert_rows_json" title="google.cloud.bigquery.client.Client.insert_rows_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">insert_rows_json</span></code></a>(table,&nbsp;json_rows[,&nbsp;…])</td>
-<td>Insert rows into a table without applying local type conversions.</td>
-</tr>
-<tr class="row-even"><td><a class="reference internal" href="google.cloud.bigquery.client.Client.job_from_resource.html#google.cloud.bigquery.client.Client.job_from_resource" title="google.cloud.bigquery.client.Client.job_from_resource"><code class="xref py py-obj docutils literal notranslate"><span class="pre">job_from_resource</span></code></a>(resource)</td>
-<td>Detect correct job type from resource and instantiate.</td>
-</tr>
-<tr class="row-odd"><td><a class="reference internal" href="google.cloud.bigquery.client.Client.list_datasets.html#google.cloud.bigquery.client.Client.list_datasets" title="google.cloud.bigquery.client.Client.list_datasets"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list_datasets</span></code></a>([project,&nbsp;include_all,&nbsp;…])</td>
-<td>List datasets for the project associated with this client.</td>
-</tr>
-<tr class="row-even"><td><a class="reference internal" href="google.cloud.bigquery.client.Client.list_jobs.html#google.cloud.bigquery.client.Client.list_jobs" title="google.cloud.bigquery.client.Client.list_jobs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list_jobs</span></code></a>([project,&nbsp;max_results,&nbsp;…])</td>
-<td>List jobs for the project associated with this client.</td>
-</tr>
-<tr class="row-odd"><td><a class="reference internal" href="google.cloud.bigquery.client.Client.list_partitions.html#google.cloud.bigquery.client.Client.list_partitions" title="google.cloud.bigquery.client.Client.list_partitions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list_partitions</span></code></a>(table[,&nbsp;retry])</td>
-<td>List the partitions in a table.</td>
-</tr>
-<tr class="row-even"><td><a class="reference internal" href="google.cloud.bigquery.client.Client.list_projects.html#google.cloud.bigquery.client.Client.list_projects" title="google.cloud.bigquery.client.Client.list_projects"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list_projects</span></code></a>([max_results,&nbsp;page_token,&nbsp;retry])</td>
-<td>List projects for the project associated with this client.</td>
-</tr>
-<tr class="row-odd"><td><a class="reference internal" href="google.cloud.bigquery.client.Client.list_rows.html#google.cloud.bigquery.client.Client.list_rows" title="google.cloud.bigquery.client.Client.list_rows"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list_rows</span></code></a>(table[,&nbsp;selected_fields,&nbsp;…])</td>
-<td>List the rows of the table.</td>
-</tr>
-<tr class="row-even"><td><a class="reference internal" href="google.cloud.bigquery.client.Client.list_tables.html#google.cloud.bigquery.client.Client.list_tables" title="google.cloud.bigquery.client.Client.list_tables"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list_tables</span></code></a>(dataset[,&nbsp;max_results,&nbsp;…])</td>
-<td>List tables in the dataset.</td>
-</tr>
-<tr class="row-odd"><td><a class="reference internal" href="google.cloud.bigquery.client.Client.load_table_from_dataframe.html#google.cloud.bigquery.client.Client.load_table_from_dataframe" title="google.cloud.bigquery.client.Client.load_table_from_dataframe"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_table_from_dataframe</span></code></a>(dataframe,&nbsp;destination)</td>
-<td>Upload the contents of a table from a pandas DataFrame.</td>
-</tr>
-<tr class="row-even"><td><a class="reference internal" href="google.cloud.bigquery.client.Client.load_table_from_file.html#google.cloud.bigquery.client.Client.load_table_from_file" title="google.cloud.bigquery.client.Client.load_table_from_file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_table_from_file</span></code></a>(file_obj,&nbsp;destination)</td>
-<td>Upload the contents of this table from a file-like object.</td>
-</tr>
-<tr class="row-odd"><td><a class="reference internal" href="google.cloud.bigquery.client.Client.load_table_from_uri.html#google.cloud.bigquery.client.Client.load_table_from_uri" title="google.cloud.bigquery.client.Client.load_table_from_uri"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_table_from_uri</span></code></a>(source_uris,&nbsp;destination)</td>
-<td>Starts a job for loading data into a table from CloudStorage.</td>
-</tr>
-<tr class="row-even"><td><a class="reference internal" href="google.cloud.bigquery.client.Client.query.html#google.cloud.bigquery.client.Client.query" title="google.cloud.bigquery.client.Client.query"><code class="xref py py-obj docutils literal notranslate"><span class="pre">query</span></code></a>(query[,&nbsp;job_config,&nbsp;job_id,&nbsp;…])</td>
-<td>Run a SQL query.</td>
-</tr>
-<tr class="row-odd"><td><a class="reference internal" href="google.cloud.bigquery.client.Client.update_dataset.html#google.cloud.bigquery.client.Client.update_dataset" title="google.cloud.bigquery.client.Client.update_dataset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_dataset</span></code></a>(dataset,&nbsp;fields[,&nbsp;retry])</td>
-<td>Change some fields of a dataset.</td>
-</tr>
-<tr class="row-even"><td><a class="reference internal" href="google.cloud.bigquery.client.Client.update_table.html#google.cloud.bigquery.client.Client.update_table" title="google.cloud.bigquery.client.Client.update_table"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_table</span></code></a>(table,&nbsp;fields[,&nbsp;retry])</td>
-<td>Change some fields of a table.</td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">Union[<a class="reference internal" href="google.cloud.bigquery.job.LoadJob.html#google.cloud.bigquery.job.LoadJob" title="google.cloud.bigquery.job.LoadJob">google.cloud.bigquery.job.LoadJob</a>,                   <a class="reference internal" href="google.cloud.bigquery.job.CopyJob.html#google.cloud.bigquery.job.CopyJob" title="google.cloud.bigquery.job.CopyJob">google.cloud.bigquery.job.CopyJob</a>,                   <a class="reference internal" href="google.cloud.bigquery.job.ExtractJob.html#google.cloud.bigquery.job.ExtractJob" title="google.cloud.bigquery.job.ExtractJob">google.cloud.bigquery.job.ExtractJob</a>,                   <a class="reference internal" href="google.cloud.bigquery.job.QueryJob.html#google.cloud.bigquery.job.QueryJob" title="google.cloud.bigquery.job.QueryJob">google.cloud.bigquery.job.QueryJob</a>]</p>
+</td>
 </tr>
 </tbody>
 </table>
-<p class="rubric">Attributes</p>
-<table border="1" class="longtable docutils">
-<colgroup>
-<col width="10%" />
-<col width="90%" />
-</colgroup>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.bigquery.client.Client.copy_table">
+<code class="descname">copy_table</code><span class="sig-paren">(</span><em>sources</em>, <em>destination</em>, <em>job_id=None</em>, <em>job_id_prefix=None</em>, <em>location=None</em>, <em>project=None</em>, <em>job_config=None</em>, <em>retry=&lt;google.api_core.retry.Retry object&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/google/cloud/bigquery/client.html#Client.copy_table"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.client.Client.copy_table" title="Permalink to this definition">#</a></dt>
+<dd><p>Copy one or more tables to another table.</p>
+<p>See
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.copy">https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.copy</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
 <tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="google.cloud.bigquery.client.Client.SCOPE.html#google.cloud.bigquery.client.Client.SCOPE" title="google.cloud.bigquery.client.Client.SCOPE"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SCOPE</span></code></a></td>
-<td>The scopes required for authenticating as a BigQuery consumer.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>sources</strong> (Union[                 <a class="reference internal" href="google.cloud.bigquery.table.TableReference.html#google.cloud.bigquery.table.TableReference" title="google.cloud.bigquery.table.TableReference"><code class="xref py py-class docutils literal notranslate"><span class="pre">TableReference</span></code></a>,                 str,                 Sequence[                     <a class="reference internal" href="google.cloud.bigquery.table.TableReference.html#google.cloud.bigquery.table.TableReference" title="google.cloud.bigquery.table.TableReference"><code class="xref py py-class docutils literal notranslate"><span class="pre">TableReference</span></code></a>],             ]) – Table or tables to be copied.</li>
+<li><strong>(</strong><strong>Union</strong><strong>[</strong> (<em>destination</em>) – <a class="reference internal" href="google.cloud.bigquery.table.TableReference.html#google.cloud.bigquery.table.TableReference" title="google.cloud.bigquery.table.TableReference"><code class="xref py py-class docutils literal notranslate"><span class="pre">TableReference</span></code></a>,                 str,             ]):
+Table into which data is to be copied.</li>
+</ul>
+</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="google.cloud.bigquery.client.Client.location.html#google.cloud.bigquery.client.Client.location" title="google.cloud.bigquery.client.Client.location"><code class="xref py py-obj docutils literal notranslate"><span class="pre">location</span></code></a></td>
-<td>Default location for jobs / datasets / tables.</td>
+<tr class="field-even field"><th class="field-name" colspan="2">Keyword Arguments:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><strong>job_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – (Optional) The ID of the job.</li>
+<li><strong>job_id_prefix</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – (Optional) the user-provided prefix for a randomly generated
+job ID. This parameter will be ignored if a <code class="docutils literal notranslate"><span class="pre">job_id</span></code> is
+also given.</li>
+<li><strong>location</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Location where to run the job. Must match the location of any
+source table as well as the destination table.</li>
+<li><strong>project</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Project ID of the project of where to run the job. Defaults
+to the client’s project.</li>
+<li><strong>job_config</strong> (<a class="reference internal" href="google.cloud.bigquery.job.CopyJobConfig.html#google.cloud.bigquery.job.CopyJobConfig" title="google.cloud.bigquery.job.CopyJobConfig"><em>google.cloud.bigquery.job.CopyJobConfig</em></a>) – (Optional) Extra configuration options for the job.</li>
+<li><strong>retry</strong> (<a class="reference internal" href="../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a>) – (Optional) How to retry the RPC.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A new copy job instance.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="google.cloud.bigquery.job.CopyJob.html#google.cloud.bigquery.job.CopyJob" title="google.cloud.bigquery.job.CopyJob">google.cloud.bigquery.job.CopyJob</a></p>
+</td>
 </tr>
 </tbody>
 </table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.bigquery.client.Client.create_dataset">
+<code class="descname">create_dataset</code><span class="sig-paren">(</span><em>dataset</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/google/cloud/bigquery/client.html#Client.create_dataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.client.Client.create_dataset" title="Permalink to this definition">#</a></dt>
+<dd><p>API call: create the dataset via a POST request.</p>
+<p>See
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/rest/v2/tables/insert">https://cloud.google.com/bigquery/docs/reference/rest/v2/tables/insert</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>dataset</strong> (Union[                 <a class="reference internal" href="google.cloud.bigquery.dataset.Dataset.html#google.cloud.bigquery.dataset.Dataset" title="google.cloud.bigquery.dataset.Dataset"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dataset</span></code></a>,                 <a class="reference internal" href="google.cloud.bigquery.dataset.DatasetReference.html#google.cloud.bigquery.dataset.DatasetReference" title="google.cloud.bigquery.dataset.DatasetReference"><code class="xref py py-class docutils literal notranslate"><span class="pre">DatasetReference</span></code></a>,                 str,             ]) – A <a class="reference internal" href="google.cloud.bigquery.dataset.Dataset.html#google.cloud.bigquery.dataset.Dataset" title="google.cloud.bigquery.dataset.Dataset"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dataset</span></code></a> to create.
+If <code class="docutils literal notranslate"><span class="pre">dataset</span></code> is a reference, an empty dataset is created
+with the specified ID and client’s default location.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A new <code class="docutils literal notranslate"><span class="pre">Dataset</span></code> returned from the API.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="google.cloud.bigquery.dataset.Dataset.html#google.cloud.bigquery.dataset.Dataset" title="google.cloud.bigquery.dataset.Dataset">google.cloud.bigquery.dataset.Dataset</a></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">bigquery</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">Dataset</span><span class="p">(</span><span class="n">client</span><span class="o">.</span><span class="n">dataset</span><span class="p">(</span><span class="s1">&#39;my_dataset&#39;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.bigquery.client.Client.create_table">
+<code class="descname">create_table</code><span class="sig-paren">(</span><em>table</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/google/cloud/bigquery/client.html#Client.create_table"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.client.Client.create_table" title="Permalink to this definition">#</a></dt>
+<dd><p>API call:  create a table via a PUT request</p>
+<p>See
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/rest/v2/tables/insert">https://cloud.google.com/bigquery/docs/reference/rest/v2/tables/insert</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>table</strong> (Union[                 <a class="reference internal" href="google.cloud.bigquery.table.Table.html#google.cloud.bigquery.table.Table" title="google.cloud.bigquery.table.Table"><code class="xref py py-class docutils literal notranslate"><span class="pre">Table</span></code></a>,                 <a class="reference internal" href="google.cloud.bigquery.table.TableReference.html#google.cloud.bigquery.table.TableReference" title="google.cloud.bigquery.table.TableReference"><code class="xref py py-class docutils literal notranslate"><span class="pre">TableReference</span></code></a>,                 str,             ]) – A <a class="reference internal" href="google.cloud.bigquery.table.Table.html#google.cloud.bigquery.table.Table" title="google.cloud.bigquery.table.Table"><code class="xref py py-class docutils literal notranslate"><span class="pre">Table</span></code></a> to create.
+If <code class="docutils literal notranslate"><span class="pre">table</span></code> is a reference, an empty table is created
+with the specified ID. The dataset that the table belongs to
+must already exist.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A new <code class="docutils literal notranslate"><span class="pre">Table</span></code> returned from the service.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="google.cloud.bigquery.table.Table.html#google.cloud.bigquery.table.Table" title="google.cloud.bigquery.table.Table">google.cloud.bigquery.table.Table</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.bigquery.client.Client.dataset">
+<code class="descname">dataset</code><span class="sig-paren">(</span><em>dataset_id</em>, <em>project=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/google/cloud/bigquery/client.html#Client.dataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.client.Client.dataset" title="Permalink to this definition">#</a></dt>
+<dd><p>Construct a reference to a dataset.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>dataset_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – ID of the dataset.</li>
+<li><strong>project</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – (Optional) project ID for the dataset (defaults to
+the project of the client).</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="google.cloud.bigquery.dataset.DatasetReference.html#google.cloud.bigquery.dataset.DatasetReference" title="google.cloud.bigquery.dataset.DatasetReference"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.bigquery.dataset.DatasetReference</span></code></a></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">a new <code class="docutils literal notranslate"><span class="pre">DatasetReference</span></code> instance</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.bigquery.client.Client.delete_dataset">
+<code class="descname">delete_dataset</code><span class="sig-paren">(</span><em>dataset</em>, <em>delete_contents=False</em>, <em>retry=&lt;google.api_core.retry.Retry object&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/google/cloud/bigquery/client.html#Client.delete_dataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.client.Client.delete_dataset" title="Permalink to this definition">#</a></dt>
+<dd><p>Delete a dataset.</p>
+<p>See
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets/delete">https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets/delete</a></p>
+<dl class="docutils">
+<dt>Args</dt>
+<dd><dl class="first last docutils">
+<dt>dataset (Union[                 <a class="reference internal" href="google.cloud.bigquery.dataset.Dataset.html#google.cloud.bigquery.dataset.Dataset" title="google.cloud.bigquery.dataset.Dataset"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dataset</span></code></a>,                 <a class="reference internal" href="google.cloud.bigquery.dataset.DatasetReference.html#google.cloud.bigquery.dataset.DatasetReference" title="google.cloud.bigquery.dataset.DatasetReference"><code class="xref py py-class docutils literal notranslate"><span class="pre">DatasetReference</span></code></a>,                 str,             ]):</dt>
+<dd>A reference to the dataset to delete. If a string is passed
+in, this method attempts to create a dataset reference from a
+string using
+<a class="reference internal" href="google.cloud.bigquery.dataset.DatasetReference.html#google.cloud.bigquery.dataset.DatasetReference.from_string" title="google.cloud.bigquery.dataset.DatasetReference.from_string"><code class="xref py py-func docutils literal notranslate"><span class="pre">google.cloud.bigquery.dataset.DatasetReference.from_string()</span></code></a>.</dd>
+<dt>retry (<a class="reference internal" href="../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.api_core.retry.Retry</span></code></a>):</dt>
+<dd>(Optional) How to retry the RPC.</dd>
+<dt>delete_contents (boolean):</dt>
+<dd>(Optional) If True, delete all the tables in the dataset. If
+False and the dataset contains tables, the request will fail.
+Default is False.</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.bigquery.client.Client.delete_table">
+<code class="descname">delete_table</code><span class="sig-paren">(</span><em>table</em>, <em>retry=&lt;google.api_core.retry.Retry object&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/google/cloud/bigquery/client.html#Client.delete_table"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.client.Client.delete_table" title="Permalink to this definition">#</a></dt>
+<dd><p>Delete a table</p>
+<p>See
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/rest/v2/tables/delete">https://cloud.google.com/bigquery/docs/reference/rest/v2/tables/delete</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>table</strong> (Union[                 <a class="reference internal" href="google.cloud.bigquery.table.Table.html#google.cloud.bigquery.table.Table" title="google.cloud.bigquery.table.Table"><code class="xref py py-class docutils literal notranslate"><span class="pre">Table</span></code></a>,                 <a class="reference internal" href="google.cloud.bigquery.table.TableReference.html#google.cloud.bigquery.table.TableReference" title="google.cloud.bigquery.table.TableReference"><code class="xref py py-class docutils literal notranslate"><span class="pre">TableReference</span></code></a>,                 str,             ]) – A reference to the table to delete. If a string is passed in,
+this method attempts to create a table reference from a
+string using
+<a class="reference internal" href="google.cloud.bigquery.table.TableReference.html#google.cloud.bigquery.table.TableReference.from_string" title="google.cloud.bigquery.table.TableReference.from_string"><code class="xref py py-func docutils literal notranslate"><span class="pre">google.cloud.bigquery.table.TableReference.from_string()</span></code></a>.</li>
+<li><strong>retry</strong> (<a class="reference internal" href="../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.api_core.retry.Retry</span></code></a>) – (Optional) How to retry the RPC.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.bigquery.client.Client.extract_table">
+<code class="descname">extract_table</code><span class="sig-paren">(</span><em>source</em>, <em>destination_uris</em>, <em>job_id=None</em>, <em>job_id_prefix=None</em>, <em>location=None</em>, <em>project=None</em>, <em>job_config=None</em>, <em>retry=&lt;google.api_core.retry.Retry object&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/google/cloud/bigquery/client.html#Client.extract_table"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.client.Client.extract_table" title="Permalink to this definition">#</a></dt>
+<dd><p>Start a job to extract a table into Cloud Storage files.</p>
+<p>See
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.extract">https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.extract</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>source</strong> (<a class="reference internal" href="google.cloud.bigquery.table.TableReference.html#google.cloud.bigquery.table.TableReference" title="google.cloud.bigquery.table.TableReference"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.bigquery.table.TableReference</span></code></a>) – Table to be extracted.</li>
+<li><strong>destination_uris</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>Sequence</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em>) – URIs of Cloud Storage file(s) into which table data is to be
+extracted; in format
+<code class="docutils literal notranslate"><span class="pre">gs://&lt;bucket_name&gt;/&lt;object_name_or_glob&gt;</span></code>.</li>
+<li><strong>source</strong> – table to be extracted.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Keyword Arguments:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><strong>job_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – (Optional) The ID of the job.</li>
+<li><strong>job_id_prefix</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – (Optional) the user-provided prefix for a randomly generated
+job ID. This parameter will be ignored if a <code class="docutils literal notranslate"><span class="pre">job_id</span></code> is
+also given.</li>
+<li><strong>location</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Location where to run the job. Must match the location of the
+source table.</li>
+<li><strong>project</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Project ID of the project of where to run the job. Defaults
+to the client’s project.</li>
+<li><strong>job_config</strong> (<a class="reference internal" href="google.cloud.bigquery.job.ExtractJobConfig.html#google.cloud.bigquery.job.ExtractJobConfig" title="google.cloud.bigquery.job.ExtractJobConfig"><em>google.cloud.bigquery.job.ExtractJobConfig</em></a>) – (Optional) Extra configuration options for the job.</li>
+<li><strong>retry</strong> (<a class="reference internal" href="../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a>) – (Optional) How to retry the RPC.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A new extract job instance.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="google.cloud.bigquery.job.ExtractJob.html#google.cloud.bigquery.job.ExtractJob" title="google.cloud.bigquery.job.ExtractJob">google.cloud.bigquery.job.ExtractJob</a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.bigquery.client.Client.get_dataset">
+<code class="descname">get_dataset</code><span class="sig-paren">(</span><em>dataset_ref</em>, <em>retry=&lt;google.api_core.retry.Retry object&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/google/cloud/bigquery/client.html#Client.get_dataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.client.Client.get_dataset" title="Permalink to this definition">#</a></dt>
+<dd><p>Fetch the dataset referenced by <code class="docutils literal notranslate"><span class="pre">dataset_ref</span></code></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>dataset_ref</strong> (Union[                 <a class="reference internal" href="google.cloud.bigquery.dataset.DatasetReference.html#google.cloud.bigquery.dataset.DatasetReference" title="google.cloud.bigquery.dataset.DatasetReference"><code class="xref py py-class docutils literal notranslate"><span class="pre">DatasetReference</span></code></a>,                 str,             ]) – A reference to the dataset to fetch from the BigQuery API.
+If a string is passed in, this method attempts to create a
+dataset reference from a string using
+<a class="reference internal" href="google.cloud.bigquery.dataset.DatasetReference.html#google.cloud.bigquery.dataset.DatasetReference.from_string" title="google.cloud.bigquery.dataset.DatasetReference.from_string"><code class="xref py py-func docutils literal notranslate"><span class="pre">from_string()</span></code></a>.</li>
+<li><strong>retry</strong> (<a class="reference internal" href="../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.api_core.retry.Retry</span></code></a>) – (Optional) How to retry the RPC.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <code class="docutils literal notranslate"><span class="pre">Dataset</span></code> instance.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="google.cloud.bigquery.dataset.Dataset.html#google.cloud.bigquery.dataset.Dataset" title="google.cloud.bigquery.dataset.Dataset">google.cloud.bigquery.dataset.Dataset</a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.bigquery.client.Client.get_job">
+<code class="descname">get_job</code><span class="sig-paren">(</span><em>job_id</em>, <em>project=None</em>, <em>location=None</em>, <em>retry=&lt;google.api_core.retry.Retry object&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/google/cloud/bigquery/client.html#Client.get_job"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.client.Client.get_job" title="Permalink to this definition">#</a></dt>
+<dd><p>Fetch a job for the project associated with this client.</p>
+<p>See
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/get">https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/get</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>job_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Unique job identifier.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Keyword Arguments:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><strong>project</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – (Optional) ID of the project which ownsthe job (defaults to
+the client’s project).</li>
+<li><strong>location</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Location where the job was run.</li>
+<li><strong>retry</strong> (<a class="reference internal" href="../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a>) – (Optional) How to retry the RPC.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Job instance, based on the resource returned by the API.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">Union[<a class="reference internal" href="google.cloud.bigquery.job.LoadJob.html#google.cloud.bigquery.job.LoadJob" title="google.cloud.bigquery.job.LoadJob">google.cloud.bigquery.job.LoadJob</a>,                   <a class="reference internal" href="google.cloud.bigquery.job.CopyJob.html#google.cloud.bigquery.job.CopyJob" title="google.cloud.bigquery.job.CopyJob">google.cloud.bigquery.job.CopyJob</a>,                   <a class="reference internal" href="google.cloud.bigquery.job.ExtractJob.html#google.cloud.bigquery.job.ExtractJob" title="google.cloud.bigquery.job.ExtractJob">google.cloud.bigquery.job.ExtractJob</a>,                   <a class="reference internal" href="google.cloud.bigquery.job.QueryJob.html#google.cloud.bigquery.job.QueryJob" title="google.cloud.bigquery.job.QueryJob">google.cloud.bigquery.job.QueryJob</a>]</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.bigquery.client.Client.get_service_account_email">
+<code class="descname">get_service_account_email</code><span class="sig-paren">(</span><em>project=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/google/cloud/bigquery/client.html#Client.get_service_account_email"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.client.Client.get_service_account_email" title="Permalink to this definition">#</a></dt>
+<dd><p>Get the email address of the project’s BigQuery service account</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This is the service account that BigQuery uses to manage tables
+encrypted by a key in KMS.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>project</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>optional</em>) – Project ID to use for retreiving service account email.
+Defaults to the client’s project.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">service account email address</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">bigquery</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span><span class="o">.</span><span class="n">get_service_account_email</span><span class="p">()</span>
+<span class="go">my_service_account@my-project.iam.gserviceaccount.com</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.bigquery.client.Client.get_table">
+<code class="descname">get_table</code><span class="sig-paren">(</span><em>table_ref</em>, <em>retry=&lt;google.api_core.retry.Retry object&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/google/cloud/bigquery/client.html#Client.get_table"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.client.Client.get_table" title="Permalink to this definition">#</a></dt>
+<dd><p>Fetch the table referenced by <code class="docutils literal notranslate"><span class="pre">table_ref</span></code>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>table_ref</strong> (Union[                 <a class="reference internal" href="google.cloud.bigquery.table.TableReference.html#google.cloud.bigquery.table.TableReference" title="google.cloud.bigquery.table.TableReference"><code class="xref py py-class docutils literal notranslate"><span class="pre">TableReference</span></code></a>,                 str,             ]) – A reference to the table to fetch from the BigQuery API.
+If a string is passed in, this method attempts to create a
+table reference from a string using
+<a class="reference internal" href="google.cloud.bigquery.table.TableReference.html#google.cloud.bigquery.table.TableReference.from_string" title="google.cloud.bigquery.table.TableReference.from_string"><code class="xref py py-func docutils literal notranslate"><span class="pre">google.cloud.bigquery.table.TableReference.from_string()</span></code></a>.</li>
+<li><strong>retry</strong> (<a class="reference internal" href="../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.api_core.retry.Retry</span></code></a>) – (Optional) How to retry the RPC.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <code class="docutils literal notranslate"><span class="pre">Table</span></code> instance.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="google.cloud.bigquery.table.Table.html#google.cloud.bigquery.table.Table" title="google.cloud.bigquery.table.Table">google.cloud.bigquery.table.Table</a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.bigquery.client.Client.insert_rows">
+<code class="descname">insert_rows</code><span class="sig-paren">(</span><em>table</em>, <em>rows</em>, <em>selected_fields=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/google/cloud/bigquery/client.html#Client.insert_rows"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.client.Client.insert_rows" title="Permalink to this definition">#</a></dt>
+<dd><p>Insert rows into a table via the streaming API.</p>
+<p>See
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/rest/v2/tabledata/insertAll">https://cloud.google.com/bigquery/docs/reference/rest/v2/tabledata/insertAll</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>table</strong> (Union[                 <a class="reference internal" href="google.cloud.bigquery.table.Table.html#google.cloud.bigquery.table.Table" title="google.cloud.bigquery.table.Table"><code class="xref py py-class docutils literal notranslate"><span class="pre">Table</span></code></a>,                 <a class="reference internal" href="google.cloud.bigquery.table.TableReference.html#google.cloud.bigquery.table.TableReference" title="google.cloud.bigquery.table.TableReference"><code class="xref py py-class docutils literal notranslate"><span class="pre">TableReference</span></code></a>,                 str,             ]) – The destination table for the row data, or a reference to it.</li>
+<li><strong>rows</strong> (<em>Union</em><em>[                 </em><em>Sequence</em><em>[</em><em>Tuple</em><em>]</em><em>,                 </em><em>Sequence</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>]</em><em>,             </em><em>]</em>) – Row data to be inserted. If a list of tuples is given, each
+tuple should contain data for each schema field on the
+current table and in the same order as the schema fields. If
+a list of dictionaries is given, the keys must include all
+required fields in the schema. Keys which do not correspond
+to a field in the schema are ignored.</li>
+<li><strong>selected_fields</strong> (Sequence[                 <a class="reference internal" href="google.cloud.bigquery.schema.SchemaField.html#google.cloud.bigquery.schema.SchemaField" title="google.cloud.bigquery.schema.SchemaField"><code class="xref py py-class docutils literal notranslate"><span class="pre">SchemaField</span></code></a>,             ]) – The fields to return. Required if <code class="docutils literal notranslate"><span class="pre">table</span></code> is a
+<a class="reference internal" href="google.cloud.bigquery.table.TableReference.html#google.cloud.bigquery.table.TableReference" title="google.cloud.bigquery.table.TableReference"><code class="xref py py-class docutils literal notranslate"><span class="pre">TableReference</span></code></a>.</li>
+<li><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – Keyword arguments to
+<a class="reference internal" href="#google.cloud.bigquery.client.Client.insert_rows_json" title="google.cloud.bigquery.client.Client.insert_rows_json"><code class="xref py py-meth docutils literal notranslate"><span class="pre">insert_rows_json()</span></code></a>.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">One mapping per row with insert errors: the “index” key
+identifies the row, and the “errors” key contains a list of
+the mappings describing one or more problems with the row.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">Sequence[Mappings]</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – if table’s schema is not set</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.bigquery.client.Client.insert_rows_json">
+<code class="descname">insert_rows_json</code><span class="sig-paren">(</span><em>table</em>, <em>json_rows</em>, <em>row_ids=None</em>, <em>skip_invalid_rows=None</em>, <em>ignore_unknown_values=None</em>, <em>template_suffix=None</em>, <em>retry=&lt;google.api_core.retry.Retry object&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/google/cloud/bigquery/client.html#Client.insert_rows_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.client.Client.insert_rows_json" title="Permalink to this definition">#</a></dt>
+<dd><p>Insert rows into a table without applying local type conversions.</p>
+<p>See
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/rest/v2/tabledata/insertAll">https://cloud.google.com/bigquery/docs/reference/rest/v2/tabledata/insertAll</a></p>
+<dl class="docutils">
+<dt>table (Union[             <a class="reference internal" href="google.cloud.bigquery.table.Table.html#google.cloud.bigquery.table.Table" title="google.cloud.bigquery.table.Table"><code class="xref py py-class docutils literal notranslate"><span class="pre">Table</span></code></a>             <a class="reference internal" href="google.cloud.bigquery.table.TableReference.html#google.cloud.bigquery.table.TableReference" title="google.cloud.bigquery.table.TableReference"><code class="xref py py-class docutils literal notranslate"><span class="pre">TableReference</span></code></a>,             str,         ]):</dt>
+<dd>The destination table for the row data, or a reference to it.</dd>
+<dt>json_rows (Sequence[dict]):</dt>
+<dd>Row data to be inserted. Keys must match the table schema fields
+and values must be JSON-compatible representations.</dd>
+<dt>row_ids (Sequence[str]):</dt>
+<dd>(Optional) Unique ids, one per row being inserted. If omitted,
+unique IDs are created.</dd>
+<dt>skip_invalid_rows (bool):</dt>
+<dd>(Optional) Insert all valid rows of a request, even if invalid
+rows exist. The default value is False, which causes the entire
+request to fail if any invalid rows exist.</dd>
+<dt>ignore_unknown_values (bool):</dt>
+<dd>(Optional) Accept rows that contain values that do not match the
+schema. The unknown values are ignored. Default is False, which
+treats unknown values as errors.</dd>
+<dt>template_suffix (str):</dt>
+<dd>(Optional) treat <code class="docutils literal notranslate"><span class="pre">name</span></code> as a template table and provide a suffix.
+BigQuery will create the table <code class="docutils literal notranslate"><span class="pre">&lt;name&gt;</span> <span class="pre">+</span> <span class="pre">&lt;template_suffix&gt;</span></code> based
+on the schema of the template table. See
+<a class="reference external" href="https://cloud.google.com/bigquery/streaming-data-into-bigquery#template-tables">https://cloud.google.com/bigquery/streaming-data-into-bigquery#template-tables</a></dd>
+<dt>retry (<a class="reference internal" href="../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.api_core.retry.Retry</span></code></a>):</dt>
+<dd>(Optional) How to retry the RPC.</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">One mapping per row with insert errors: the “index” key
+identifies the row, and the “errors” key contains a list of
+the mappings describing one or more problems with the row.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">Sequence[Mappings]</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.bigquery.client.Client.job_from_resource">
+<code class="descname">job_from_resource</code><span class="sig-paren">(</span><em>resource</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/google/cloud/bigquery/client.html#Client.job_from_resource"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.client.Client.job_from_resource" title="Permalink to this definition">#</a></dt>
+<dd><p>Detect correct job type from resource and instantiate.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>resource</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – one job resource from API response</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">One of:
+<a class="reference internal" href="google.cloud.bigquery.job.LoadJob.html#google.cloud.bigquery.job.LoadJob" title="google.cloud.bigquery.job.LoadJob"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.bigquery.job.LoadJob</span></code></a>,
+<a class="reference internal" href="google.cloud.bigquery.job.CopyJob.html#google.cloud.bigquery.job.CopyJob" title="google.cloud.bigquery.job.CopyJob"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.bigquery.job.CopyJob</span></code></a>,
+<a class="reference internal" href="google.cloud.bigquery.job.ExtractJob.html#google.cloud.bigquery.job.ExtractJob" title="google.cloud.bigquery.job.ExtractJob"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.bigquery.job.ExtractJob</span></code></a>,
+or <a class="reference internal" href="google.cloud.bigquery.job.QueryJob.html#google.cloud.bigquery.job.QueryJob" title="google.cloud.bigquery.job.QueryJob"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.bigquery.job.QueryJob</span></code></a></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">the job instance, constructed via the resource</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.bigquery.client.Client.list_datasets">
+<code class="descname">list_datasets</code><span class="sig-paren">(</span><em>project=None</em>, <em>include_all=False</em>, <em>filter=None</em>, <em>max_results=None</em>, <em>page_token=None</em>, <em>retry=&lt;google.api_core.retry.Retry object&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/google/cloud/bigquery/client.html#Client.list_datasets"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.client.Client.list_datasets" title="Permalink to this definition">#</a></dt>
+<dd><p>List datasets for the project associated with this client.</p>
+<p>See
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets/list">https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets/list</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>project</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Optional. Project ID to use for retreiving datasets. Defaults
+to the client’s project.</li>
+<li><strong>include_all</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – Optional. True if results include hidden datasets. Defaults
+to False.</li>
+<li><strong>filter</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Optional. An expression for filtering the results by label.
+For syntax, see
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets/list#filter">https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets/list#filter</a>.</li>
+<li><strong>max_results</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – Optional. Maximum number of datasets to return.</li>
+<li><strong>page_token</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Optional. Token representing a cursor into the datasets. If
+not passed, the API will return the first page of datasets.
+The token marks the beginning of the iterator to be returned
+and the value of the <code class="docutils literal notranslate"><span class="pre">page_token</span></code> can be accessed at
+<code class="docutils literal notranslate"><span class="pre">next_page_token</span></code> of the
+<a class="reference internal" href="../../core/page_iterator.html#google.api_core.page_iterator.HTTPIterator" title="google.api_core.page_iterator.HTTPIterator"><code class="xref py py-class docutils literal notranslate"><span class="pre">HTTPIterator</span></code></a>.</li>
+<li><strong>retry</strong> (<a class="reference internal" href="../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a>) – Optional. How to retry the RPC.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Iterator of
+<a class="reference internal" href="google.cloud.bigquery.dataset.DatasetListItem.html#google.cloud.bigquery.dataset.DatasetListItem" title="google.cloud.bigquery.dataset.DatasetListItem"><code class="xref py py-class docutils literal notranslate"><span class="pre">DatasetListItem</span></code></a>.
+associated with the project.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="../../core/page_iterator.html#google.api_core.page_iterator.Iterator" title="google.api_core.page_iterator.Iterator">google.api_core.page_iterator.Iterator</a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.bigquery.client.Client.list_jobs">
+<code class="descname">list_jobs</code><span class="sig-paren">(</span><em>project=None</em>, <em>max_results=None</em>, <em>page_token=None</em>, <em>all_users=None</em>, <em>state_filter=None</em>, <em>retry=&lt;google.api_core.retry.Retry object&gt;</em>, <em>min_creation_time=None</em>, <em>max_creation_time=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/google/cloud/bigquery/client.html#Client.list_jobs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.client.Client.list_jobs" title="Permalink to this definition">#</a></dt>
+<dd><p>List jobs for the project associated with this client.</p>
+<p>See
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/list">https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/list</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>project</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>optional</em>) – Project ID to use for retreiving datasets. Defaults
+to the client’s project.</li>
+<li><strong>max_results</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>, </em><em>optional</em>) – Maximum number of jobs to return.</li>
+<li><strong>page_token</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>optional</em>) – Opaque marker for the next “page” of jobs. If not
+passed, the API will return the first page of jobs. The token
+marks the beginning of the iterator to be returned and the
+value of the <code class="docutils literal notranslate"><span class="pre">page_token</span></code> can be accessed at
+<code class="docutils literal notranslate"><span class="pre">next_page_token</span></code> of
+<a class="reference internal" href="../../core/page_iterator.html#google.api_core.page_iterator.HTTPIterator" title="google.api_core.page_iterator.HTTPIterator"><code class="xref py py-class docutils literal notranslate"><span class="pre">HTTPIterator</span></code></a>.</li>
+<li><strong>all_users</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a><em>, </em><em>optional</em>) – If true, include jobs owned by all users in the project.
+Defaults to <a class="reference external" href="https://docs.python.org/3/library/constants.html#False" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">False</span></code></a>.</li>
+<li><strong>state_filter</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>optional</em>) – <dl class="docutils">
+<dt>If set, include only jobs matching the given state. One of:</dt>
+<dd><ul class="first last">
+<li><code class="docutils literal notranslate"><span class="pre">&quot;done&quot;</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">&quot;pending&quot;</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">&quot;running&quot;</span></code></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><strong>retry</strong> (<a class="reference internal" href="../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>, </em><em>optional</em>) – How to retry the RPC.</li>
+<li><strong>min_creation_time</strong> (<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.7)"><em>datetime.datetime</em></a><em>, </em><em>optional</em>) – Min value for job creation time. If set, only jobs created
+after or at this timestamp are returned. If the datetime has
+no time zone assumes UTC time.</li>
+<li><strong>max_creation_time</strong> (<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.7)"><em>datetime.datetime</em></a><em>, </em><em>optional</em>) – Max value for job creation time. If set, only jobs created
+before or at this timestamp are returned. If the datetime has
+no time zone assumes UTC time.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Iterable of job instances.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="../../core/page_iterator.html#google.api_core.page_iterator.Iterator" title="google.api_core.page_iterator.Iterator">google.api_core.page_iterator.Iterator</a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.bigquery.client.Client.list_partitions">
+<code class="descname">list_partitions</code><span class="sig-paren">(</span><em>table</em>, <em>retry=&lt;google.api_core.retry.Retry object&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/google/cloud/bigquery/client.html#Client.list_partitions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.client.Client.list_partitions" title="Permalink to this definition">#</a></dt>
+<dd><p>List the partitions in a table.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>table</strong> (Union[                 <a class="reference internal" href="google.cloud.bigquery.table.Table.html#google.cloud.bigquery.table.Table" title="google.cloud.bigquery.table.Table"><code class="xref py py-class docutils literal notranslate"><span class="pre">Table</span></code></a>,                 <a class="reference internal" href="google.cloud.bigquery.table.TableReference.html#google.cloud.bigquery.table.TableReference" title="google.cloud.bigquery.table.TableReference"><code class="xref py py-class docutils literal notranslate"><span class="pre">TableReference</span></code></a>,                 str,             ]) – The table or reference from which to get partition info</li>
+<li><strong>retry</strong> (<a class="reference internal" href="../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a>) – (Optional) How to retry the RPC.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A list of the partition ids present in the partitioned table</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">List[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a>]</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.bigquery.client.Client.list_projects">
+<code class="descname">list_projects</code><span class="sig-paren">(</span><em>max_results=None</em>, <em>page_token=None</em>, <em>retry=&lt;google.api_core.retry.Retry object&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/google/cloud/bigquery/client.html#Client.list_projects"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.client.Client.list_projects" title="Permalink to this definition">#</a></dt>
+<dd><p>List projects for the project associated with this client.</p>
+<p>See
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/rest/v2/projects/list">https://cloud.google.com/bigquery/docs/reference/rest/v2/projects/list</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>max_results</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – (Optional) maximum number of projects to return,
+If not passed, defaults to a value set by the API.</li>
+<li><strong>page_token</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – (Optional) Token representing a cursor into the projects. If
+not passed, the API will return the first page of projects.
+The token marks the beginning of the iterator to be returned
+and the value of the <code class="docutils literal notranslate"><span class="pre">page_token</span></code> can be accessed at
+<code class="docutils literal notranslate"><span class="pre">next_page_token</span></code> of the
+<a class="reference internal" href="../../core/page_iterator.html#google.api_core.page_iterator.HTTPIterator" title="google.api_core.page_iterator.HTTPIterator"><code class="xref py py-class docutils literal notranslate"><span class="pre">HTTPIterator</span></code></a>.</li>
+<li><strong>retry</strong> (<a class="reference internal" href="../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.api_core.retry.Retry</span></code></a>) – (Optional) How to retry the RPC.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="../../core/page_iterator.html#google.api_core.page_iterator.Iterator" title="google.api_core.page_iterator.Iterator"><code class="xref py py-class docutils literal notranslate"><span class="pre">Iterator</span></code></a></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Iterator of <code class="xref py py-class docutils literal notranslate"><span class="pre">Project</span></code>
+accessible to the current client.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.bigquery.client.Client.list_rows">
+<code class="descname">list_rows</code><span class="sig-paren">(</span><em>table</em>, <em>selected_fields=None</em>, <em>max_results=None</em>, <em>page_token=None</em>, <em>start_index=None</em>, <em>page_size=None</em>, <em>retry=&lt;google.api_core.retry.Retry object&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/google/cloud/bigquery/client.html#Client.list_rows"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.client.Client.list_rows" title="Permalink to this definition">#</a></dt>
+<dd><p>List the rows of the table.</p>
+<p>See
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/rest/v2/tabledata/list">https://cloud.google.com/bigquery/docs/reference/rest/v2/tabledata/list</a></p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This method assumes that the provided schema is up-to-date with the
+schema as defined on the back-end: if the two schemas are not
+identical, the values returned may be incomplete. To ensure that the
+local copy of the schema is up-to-date, call <code class="docutils literal notranslate"><span class="pre">client.get_table</span></code>.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>table</strong> (Union[                 <a class="reference internal" href="google.cloud.bigquery.table.Table.html#google.cloud.bigquery.table.Table" title="google.cloud.bigquery.table.Table"><code class="xref py py-class docutils literal notranslate"><span class="pre">Table</span></code></a>,                 <a class="reference internal" href="google.cloud.bigquery.table.TableReference.html#google.cloud.bigquery.table.TableReference" title="google.cloud.bigquery.table.TableReference"><code class="xref py py-class docutils literal notranslate"><span class="pre">TableReference</span></code></a>,                 str,             ]) – The table to list, or a reference to it.</li>
+<li><strong>selected_fields</strong> (Sequence[                 <a class="reference internal" href="google.cloud.bigquery.schema.SchemaField.html#google.cloud.bigquery.schema.SchemaField" title="google.cloud.bigquery.schema.SchemaField"><code class="xref py py-class docutils literal notranslate"><span class="pre">SchemaField</span></code></a>             ]) – The fields to return. Required if <code class="docutils literal notranslate"><span class="pre">table</span></code> is a
+<a class="reference internal" href="google.cloud.bigquery.table.TableReference.html#google.cloud.bigquery.table.TableReference" title="google.cloud.bigquery.table.TableReference"><code class="xref py py-class docutils literal notranslate"><span class="pre">TableReference</span></code></a>.</li>
+<li><strong>max_results</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – (Optional) maximum number of rows to return.</li>
+<li><strong>page_token</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – (Optional) Token representing a cursor into the table’s rows.
+If not passed, the API will return the first page of the
+rows. The token marks the beginning of the iterator to be
+returned and the value of the <code class="docutils literal notranslate"><span class="pre">page_token</span></code> can be accessed
+at <code class="docutils literal notranslate"><span class="pre">next_page_token</span></code> of the
+<a class="reference internal" href="google.cloud.bigquery.table.RowIterator.html#google.cloud.bigquery.table.RowIterator" title="google.cloud.bigquery.table.RowIterator"><code class="xref py py-class docutils literal notranslate"><span class="pre">RowIterator</span></code></a>.</li>
+<li><strong>start_index</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – (Optional) The zero-based index of the starting row to read.</li>
+<li><strong>page_size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – (Optional) The maximum number of items to return per page in
+the iterator.</li>
+<li><strong>retry</strong> (<a class="reference internal" href="../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.api_core.retry.Retry</span></code></a>) – (Optional) How to retry the RPC.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Iterator of row data
+<a class="reference internal" href="google.cloud.bigquery.table.Row.html#google.cloud.bigquery.table.Row" title="google.cloud.bigquery.table.Row"><code class="xref py py-class docutils literal notranslate"><span class="pre">Row</span></code></a>-s. During each
+page, the iterator will have the <code class="docutils literal notranslate"><span class="pre">total_rows</span></code> attribute
+set, which counts the total number of rows <strong>in the table</strong>
+(this is distinct from the total number of rows in the
+current page: <code class="docutils literal notranslate"><span class="pre">iterator.page.num_items</span></code>).</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="google.cloud.bigquery.table.RowIterator.html#google.cloud.bigquery.table.RowIterator" title="google.cloud.bigquery.table.RowIterator">google.cloud.bigquery.table.RowIterator</a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.bigquery.client.Client.list_tables">
+<code class="descname">list_tables</code><span class="sig-paren">(</span><em>dataset</em>, <em>max_results=None</em>, <em>page_token=None</em>, <em>retry=&lt;google.api_core.retry.Retry object&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/google/cloud/bigquery/client.html#Client.list_tables"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.client.Client.list_tables" title="Permalink to this definition">#</a></dt>
+<dd><p>List tables in the dataset.</p>
+<p>See
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/rest/v2/tables/list">https://cloud.google.com/bigquery/docs/reference/rest/v2/tables/list</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>dataset</strong> (Union[                 <a class="reference internal" href="google.cloud.bigquery.dataset.Dataset.html#google.cloud.bigquery.dataset.Dataset" title="google.cloud.bigquery.dataset.Dataset"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dataset</span></code></a>,                 <a class="reference internal" href="google.cloud.bigquery.dataset.DatasetReference.html#google.cloud.bigquery.dataset.DatasetReference" title="google.cloud.bigquery.dataset.DatasetReference"><code class="xref py py-class docutils literal notranslate"><span class="pre">DatasetReference</span></code></a>,                 str,             ]) – A reference to the dataset whose tables to list from the
+BigQuery API. If a string is passed in, this method attempts
+to create a dataset reference from a string using
+<a class="reference internal" href="google.cloud.bigquery.dataset.DatasetReference.html#google.cloud.bigquery.dataset.DatasetReference.from_string" title="google.cloud.bigquery.dataset.DatasetReference.from_string"><code class="xref py py-func docutils literal notranslate"><span class="pre">google.cloud.bigquery.dataset.DatasetReference.from_string()</span></code></a>.</li>
+<li><strong>max_results</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – (Optional) Maximum number of tables to return. If not passed,
+defaults to a value set by the API.</li>
+<li><strong>page_token</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – (Optional) Token representing a cursor into the tables. If
+not passed, the API will return the first page of tables. The
+token marks the beginning of the iterator to be returned and
+the value of the <code class="docutils literal notranslate"><span class="pre">page_token</span></code> can be accessed at
+<code class="docutils literal notranslate"><span class="pre">next_page_token</span></code> of the
+<a class="reference internal" href="../../core/page_iterator.html#google.api_core.page_iterator.HTTPIterator" title="google.api_core.page_iterator.HTTPIterator"><code class="xref py py-class docutils literal notranslate"><span class="pre">HTTPIterator</span></code></a>.</li>
+<li><strong>retry</strong> (<a class="reference internal" href="../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.api_core.retry.Retry</span></code></a>) – (Optional) How to retry the RPC.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Iterator of
+<a class="reference internal" href="google.cloud.bigquery.table.TableListItem.html#google.cloud.bigquery.table.TableListItem" title="google.cloud.bigquery.table.TableListItem"><code class="xref py py-class docutils literal notranslate"><span class="pre">TableListItem</span></code></a> contained
+within the requested dataset.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="../../core/page_iterator.html#google.api_core.page_iterator.Iterator" title="google.api_core.page_iterator.Iterator">google.api_core.page_iterator.Iterator</a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.bigquery.client.Client.load_table_from_dataframe">
+<code class="descname">load_table_from_dataframe</code><span class="sig-paren">(</span><em>dataframe</em>, <em>destination</em>, <em>num_retries=6</em>, <em>job_id=None</em>, <em>job_id_prefix=None</em>, <em>location=None</em>, <em>project=None</em>, <em>job_config=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/google/cloud/bigquery/client.html#Client.load_table_from_dataframe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.client.Client.load_table_from_dataframe" title="Permalink to this definition">#</a></dt>
+<dd><p>Upload the contents of a table from a pandas DataFrame.</p>
+<p>Similar to <a class="reference internal" href="#google.cloud.bigquery.client.Client.load_table_from_uri" title="google.cloud.bigquery.client.Client.load_table_from_uri"><code class="xref py py-meth docutils literal notranslate"><span class="pre">load_table_from_uri()</span></code></a>, this method creates, starts and
+returns a <a class="reference internal" href="google.cloud.bigquery.job.LoadJob.html#google.cloud.bigquery.job.LoadJob" title="google.cloud.bigquery.job.LoadJob"><code class="xref py py-class docutils literal notranslate"><span class="pre">LoadJob</span></code></a>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>dataframe</strong> (<a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.23.4)"><em>pandas.DataFrame</em></a>) – A <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.23.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code></a> containing the data to load.</li>
+<li><strong>destination</strong> (<a class="reference internal" href="google.cloud.bigquery.table.TableReference.html#google.cloud.bigquery.table.TableReference" title="google.cloud.bigquery.table.TableReference"><em>google.cloud.bigquery.table.TableReference</em></a>) – <p>The destination table to use for loading the data. If it is an
+existing table, the schema of the <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.23.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code></a>
+must match the schema of the destination table. If the table
+does not yet exist, the schema is inferred from the
+<a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.23.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code></a>.</p>
+<p>If a string is passed in, this method attempts to create a
+table reference from a string using
+<a class="reference internal" href="google.cloud.bigquery.table.TableReference.html#google.cloud.bigquery.table.TableReference.from_string" title="google.cloud.bigquery.table.TableReference.from_string"><code class="xref py py-func docutils literal notranslate"><span class="pre">google.cloud.bigquery.table.TableReference.from_string()</span></code></a>.</p>
+</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Keyword Arguments:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><strong>num_retries</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>, </em><em>optional</em>) – Number of upload retries.</li>
+<li><strong>job_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>optional</em>) – Name of the job.</li>
+<li><strong>job_id_prefix</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>optional</em>) – The user-provided prefix for a randomly generated
+job ID. This parameter will be ignored if a <code class="docutils literal notranslate"><span class="pre">job_id</span></code> is
+also given.</li>
+<li><strong>location</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Location where to run the job. Must match the location of the
+destination table.</li>
+<li><strong>project</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>optional</em>) – Project ID of the project of where to run the job. Defaults
+to the client’s project.</li>
+<li><strong>job_config</strong> (<a class="reference internal" href="google.cloud.bigquery.job.LoadJobConfig.html#google.cloud.bigquery.job.LoadJobConfig" title="google.cloud.bigquery.job.LoadJobConfig"><em>google.cloud.bigquery.job.LoadJobConfig</em></a><em>, </em><em>optional</em>) – Extra configuration options for the job.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A new load job.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="google.cloud.bigquery.job.LoadJob.html#google.cloud.bigquery.job.LoadJob" title="google.cloud.bigquery.job.LoadJob">google.cloud.bigquery.job.LoadJob</a></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ImportError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ImportError</span></code></a> – If a usable parquet engine cannot be found. This method
+requires <code class="xref py py-mod docutils literal notranslate"><span class="pre">pyarrow</span></code> to be installed.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.bigquery.client.Client.load_table_from_file">
+<code class="descname">load_table_from_file</code><span class="sig-paren">(</span><em>file_obj</em>, <em>destination</em>, <em>rewind=False</em>, <em>size=None</em>, <em>num_retries=6</em>, <em>job_id=None</em>, <em>job_id_prefix=None</em>, <em>location=None</em>, <em>project=None</em>, <em>job_config=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/google/cloud/bigquery/client.html#Client.load_table_from_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.client.Client.load_table_from_file" title="Permalink to this definition">#</a></dt>
+<dd><p>Upload the contents of this table from a file-like object.</p>
+<p>Similar to <a class="reference internal" href="#google.cloud.bigquery.client.Client.load_table_from_uri" title="google.cloud.bigquery.client.Client.load_table_from_uri"><code class="xref py py-meth docutils literal notranslate"><span class="pre">load_table_from_uri()</span></code></a>, this method creates, starts and
+returns a <a class="reference internal" href="google.cloud.bigquery.job.LoadJob.html#google.cloud.bigquery.job.LoadJob" title="google.cloud.bigquery.job.LoadJob"><code class="xref py py-class docutils literal notranslate"><span class="pre">LoadJob</span></code></a>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>file_obj</strong> (<em>file</em>) – A file handle opened in binary mode for reading.</li>
+<li><strong>destination</strong> (Union[                 <a class="reference internal" href="google.cloud.bigquery.table.TableReference.html#google.cloud.bigquery.table.TableReference" title="google.cloud.bigquery.table.TableReference"><code class="xref py py-class docutils literal notranslate"><span class="pre">TableReference</span></code></a>,                 str,             ]) – Table into which data is to be loaded. If a string is passed
+in, this method attempts to create a table reference from a
+string using
+<a class="reference internal" href="google.cloud.bigquery.table.TableReference.html#google.cloud.bigquery.table.TableReference.from_string" title="google.cloud.bigquery.table.TableReference.from_string"><code class="xref py py-func docutils literal notranslate"><span class="pre">google.cloud.bigquery.table.TableReference.from_string()</span></code></a>.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Keyword Arguments:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><strong>rewind</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – If True, seek to the beginning of the file handle before
+reading the file.</li>
+<li><strong>size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – The number of bytes to read from the file handle. If size is
+<code class="docutils literal notranslate"><span class="pre">None</span></code> or large, resumable upload will be used. Otherwise,
+multipart upload will be used.</li>
+<li><strong>num_retries</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – Number of upload retries. Defaults to 6.</li>
+<li><strong>job_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – (Optional) Name of the job.</li>
+<li><strong>job_id_prefix</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – (Optional) the user-provided prefix for a randomly generated
+job ID. This parameter will be ignored if a <code class="docutils literal notranslate"><span class="pre">job_id</span></code> is
+also given.</li>
+<li><strong>location</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Location where to run the job. Must match the location of the
+destination table.</li>
+<li><strong>project</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Project ID of the project of where to run the job. Defaults
+to the client’s project.</li>
+<li><strong>job_config</strong> (<a class="reference internal" href="google.cloud.bigquery.job.LoadJobConfig.html#google.cloud.bigquery.job.LoadJobConfig" title="google.cloud.bigquery.job.LoadJobConfig"><em>google.cloud.bigquery.job.LoadJobConfig</em></a>) – (Optional) Extra configuration options for the job.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A new load job.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="google.cloud.bigquery.job.LoadJob.html#google.cloud.bigquery.job.LoadJob" title="google.cloud.bigquery.job.LoadJob">google.cloud.bigquery.job.LoadJob</a></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If <code class="docutils literal notranslate"><span class="pre">size</span></code> is not passed in and can not be determined, or if
+the <code class="docutils literal notranslate"><span class="pre">file_obj</span></code> can be detected to be a file opened in text
+mode.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.bigquery.client.Client.load_table_from_uri">
+<code class="descname">load_table_from_uri</code><span class="sig-paren">(</span><em>source_uris</em>, <em>destination</em>, <em>job_id=None</em>, <em>job_id_prefix=None</em>, <em>location=None</em>, <em>project=None</em>, <em>job_config=None</em>, <em>retry=&lt;google.api_core.retry.Retry object&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/google/cloud/bigquery/client.html#Client.load_table_from_uri"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.client.Client.load_table_from_uri" title="Permalink to this definition">#</a></dt>
+<dd><p>Starts a job for loading data into a table from CloudStorage.</p>
+<p>See
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load">https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>source_uris</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>Sequence</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em>) – URIs of data files to be loaded; in format
+<code class="docutils literal notranslate"><span class="pre">gs://&lt;bucket_name&gt;/&lt;object_name_or_glob&gt;</span></code>.</li>
+<li><strong>destination</strong> (Union[                 <a class="reference internal" href="google.cloud.bigquery.table.TableReference.html#google.cloud.bigquery.table.TableReference" title="google.cloud.bigquery.table.TableReference"><code class="xref py py-class docutils literal notranslate"><span class="pre">TableReference</span></code></a>,                 str,             ]) – Table into which data is to be loaded. If a string is passed
+in, this method attempts to create a table reference from a
+string using
+<a class="reference internal" href="google.cloud.bigquery.table.TableReference.html#google.cloud.bigquery.table.TableReference.from_string" title="google.cloud.bigquery.table.TableReference.from_string"><code class="xref py py-func docutils literal notranslate"><span class="pre">google.cloud.bigquery.table.TableReference.from_string()</span></code></a>.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Keyword Arguments:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><strong>job_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – (Optional) Name of the job.</li>
+<li><strong>job_id_prefix</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – (Optional) the user-provided prefix for a randomly generated
+job ID. This parameter will be ignored if a <code class="docutils literal notranslate"><span class="pre">job_id</span></code> is
+also given.</li>
+<li><strong>location</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Location where to run the job. Must match the location of the
+destination table.</li>
+<li><strong>project</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Project ID of the project of where to run the job. Defaults
+to the client’s project.</li>
+<li><strong>job_config</strong> (<a class="reference internal" href="google.cloud.bigquery.job.LoadJobConfig.html#google.cloud.bigquery.job.LoadJobConfig" title="google.cloud.bigquery.job.LoadJobConfig"><em>google.cloud.bigquery.job.LoadJobConfig</em></a>) – (Optional) Extra configuration options for the job.</li>
+<li><strong>retry</strong> (<a class="reference internal" href="../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a>) – (Optional) How to retry the RPC.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A new load job.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="google.cloud.bigquery.job.LoadJob.html#google.cloud.bigquery.job.LoadJob" title="google.cloud.bigquery.job.LoadJob">google.cloud.bigquery.job.LoadJob</a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery.client.Client.location">
+<code class="descname">location</code><a class="headerlink" href="#google.cloud.bigquery.client.Client.location" title="Permalink to this definition">#</a></dt>
+<dd><p>Default location for jobs / datasets / tables.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.bigquery.client.Client.query">
+<code class="descname">query</code><span class="sig-paren">(</span><em>query</em>, <em>job_config=None</em>, <em>job_id=None</em>, <em>job_id_prefix=None</em>, <em>location=None</em>, <em>project=None</em>, <em>retry=&lt;google.api_core.retry.Retry object&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/google/cloud/bigquery/client.html#Client.query"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.client.Client.query" title="Permalink to this definition">#</a></dt>
+<dd><p>Run a SQL query.</p>
+<p>See
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query">https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>query</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – SQL query to be executed. Defaults to the standard SQL
+dialect. Use the <code class="docutils literal notranslate"><span class="pre">job_config</span></code> parameter to change dialects.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Keyword Arguments:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><strong>job_config</strong> (<a class="reference internal" href="google.cloud.bigquery.job.QueryJobConfig.html#google.cloud.bigquery.job.QueryJobConfig" title="google.cloud.bigquery.job.QueryJobConfig"><em>google.cloud.bigquery.job.QueryJobConfig</em></a>) – (Optional) Extra configuration options for the job.
+To override any options that were previously set in
+the <code class="docutils literal notranslate"><span class="pre">default_query_job_config</span></code> given to the
+<code class="docutils literal notranslate"><span class="pre">Client</span></code> constructor, manually set those options to <code class="docutils literal notranslate"><span class="pre">None</span></code>,
+or whatever value is preferred.</li>
+<li><strong>job_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – (Optional) ID to use for the query job.</li>
+<li><strong>job_id_prefix</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – (Optional) The prefix to use for a randomly generated job ID.
+This parameter will be ignored if a <code class="docutils literal notranslate"><span class="pre">job_id</span></code> is also given.</li>
+<li><strong>location</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Location where to run the job. Must match the location of the
+any table used in the query as well as the destination table.</li>
+<li><strong>project</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Project ID of the project of where to run the job. Defaults
+to the client’s project.</li>
+<li><strong>retry</strong> (<a class="reference internal" href="../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a>) – (Optional) How to retry the RPC.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A new query job instance.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="google.cloud.bigquery.job.QueryJob.html#google.cloud.bigquery.job.QueryJob" title="google.cloud.bigquery.job.QueryJob">google.cloud.bigquery.job.QueryJob</a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.bigquery.client.Client.update_dataset">
+<code class="descname">update_dataset</code><span class="sig-paren">(</span><em>dataset</em>, <em>fields</em>, <em>retry=&lt;google.api_core.retry.Retry object&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/google/cloud/bigquery/client.html#Client.update_dataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.client.Client.update_dataset" title="Permalink to this definition">#</a></dt>
+<dd><p>Change some fields of a dataset.</p>
+<p>Use <code class="docutils literal notranslate"><span class="pre">fields</span></code> to specify which fields to update. At least one field
+must be provided. If a field is listed in <code class="docutils literal notranslate"><span class="pre">fields</span></code> and is <code class="docutils literal notranslate"><span class="pre">None</span></code> in
+<code class="docutils literal notranslate"><span class="pre">dataset</span></code>, it will be deleted.</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">dataset.etag</span></code> is not <code class="docutils literal notranslate"><span class="pre">None</span></code>, the update will only
+succeed if the dataset on the server has the same ETag. Thus
+reading a dataset with <code class="docutils literal notranslate"><span class="pre">get_dataset</span></code>, changing its fields,
+and then passing it to <code class="docutils literal notranslate"><span class="pre">update_dataset</span></code> will ensure that the changes
+will only be saved if no modifications to the dataset occurred
+since the read.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>dataset</strong> (<a class="reference internal" href="google.cloud.bigquery.dataset.Dataset.html#google.cloud.bigquery.dataset.Dataset" title="google.cloud.bigquery.dataset.Dataset"><em>google.cloud.bigquery.dataset.Dataset</em></a>) – The dataset to update.</li>
+<li><strong>fields</strong> (<em>Sequence</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em>) – The properties of <code class="docutils literal notranslate"><span class="pre">dataset</span></code> to change (e.g. “friendly_name”).</li>
+<li><strong>retry</strong> (<a class="reference internal" href="../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>, </em><em>optional</em>) – How to retry the RPC.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The modified <code class="docutils literal notranslate"><span class="pre">Dataset</span></code> instance.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="google.cloud.bigquery.dataset.Dataset.html#google.cloud.bigquery.dataset.Dataset" title="google.cloud.bigquery.dataset.Dataset">google.cloud.bigquery.dataset.Dataset</a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.bigquery.client.Client.update_table">
+<code class="descname">update_table</code><span class="sig-paren">(</span><em>table</em>, <em>fields</em>, <em>retry=&lt;google.api_core.retry.Retry object&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/google/cloud/bigquery/client.html#Client.update_table"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.client.Client.update_table" title="Permalink to this definition">#</a></dt>
+<dd><p>Change some fields of a table.</p>
+<p>Use <code class="docutils literal notranslate"><span class="pre">fields</span></code> to specify which fields to update. At least one field
+must be provided. If a field is listed in <code class="docutils literal notranslate"><span class="pre">fields</span></code> and is <code class="docutils literal notranslate"><span class="pre">None</span></code>
+in <code class="docutils literal notranslate"><span class="pre">table</span></code>, it will be deleted.</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">table.etag</span></code> is not <code class="docutils literal notranslate"><span class="pre">None</span></code>, the update will only succeed if
+the table on the server has the same ETag. Thus reading a table with
+<code class="docutils literal notranslate"><span class="pre">get_table</span></code>, changing its fields, and then passing it to
+<code class="docutils literal notranslate"><span class="pre">update_table</span></code> will ensure that the changes will only be saved if
+no modifications to the table occurred since the read.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>table</strong> (<a class="reference internal" href="google.cloud.bigquery.table.Table.html#google.cloud.bigquery.table.Table" title="google.cloud.bigquery.table.Table"><em>google.cloud.bigquery.table.Table</em></a>) – The table to update.</li>
+<li><strong>fields</strong> (<em>Sequence</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em>) – The fields of <code class="docutils literal notranslate"><span class="pre">table</span></code> to change, spelled as the Table
+properties (e.g. “friendly_name”).</li>
+<li><strong>retry</strong> (<a class="reference internal" href="../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a>) – (Optional) A description of how to retry the API call.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The table resource returned from the API call.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="google.cloud.bigquery.table.Table.html#google.cloud.bigquery.table.Table" title="google.cloud.bigquery.table.Table">google.cloud.bigquery.table.Table</a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 </dd></dl>
 
 </div>
@@ -260,7 +1237,7 @@ to acquire default credentials.</p>
   <li><a href="../index.html">Python Client for Google BigQuery</a><ul>
   <li><a href="../reference.html">API Reference</a><ul>
       <li>Previous: <a href="../reference.html" title="previous chapter">API Reference</a></li>
-      <li>Next: <a href="google.cloud.bigquery.client.Client.cancel_job.html" title="next chapter">google.cloud.bigquery.client.Client.cancel_job</a></li>
+      <li>Next: <a href="google.cloud.bigquery.job.QueryJobConfig.html" title="next chapter">google.cloud.bigquery.job.QueryJobConfig</a></li>
   </ul></li>
   </ul></li>
   </ul></li>

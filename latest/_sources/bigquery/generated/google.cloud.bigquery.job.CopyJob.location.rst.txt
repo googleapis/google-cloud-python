@@ -1,6 +1,0 @@
-google.cloud.bigquery.job.CopyJob.location
-==========================================
-
-.. currentmodule:: google.cloud.bigquery.job
-
-.. autoattribute:: CopyJob.location

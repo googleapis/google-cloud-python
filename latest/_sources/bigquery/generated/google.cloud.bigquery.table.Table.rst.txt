@@ -3,65 +3,67 @@ google.cloud.bigquery.table.Table
 
 .. currentmodule:: google.cloud.bigquery.table
 
+
+
+.. rubric:: Methods
+
+.. autosummary::
+
+   
+   
+   ~Table.from_api_repr
+   
+   
+   ~Table.from_string
+   
+   
+   ~Table.to_api_repr
+   
+
+
+
+
+
+.. rubric:: Attributes
+
+.. autosummary::
+
+   ~Table.clustering_fields
+   ~Table.created
+   ~Table.dataset_id
+   ~Table.description
+   ~Table.encryption_configuration
+   ~Table.etag
+   ~Table.expires
+   ~Table.external_data_configuration
+   ~Table.friendly_name
+   ~Table.full_table_id
+   ~Table.labels
+   ~Table.location
+   ~Table.modified
+   ~Table.num_bytes
+   ~Table.num_rows
+   ~Table.partition_expiration
+   ~Table.partitioning_type
+   ~Table.path
+   ~Table.project
+   ~Table.reference
+   ~Table.schema
+   ~Table.self_link
+   ~Table.streaming_buffer
+   ~Table.table_id
+   ~Table.table_type
+   ~Table.time_partitioning
+   ~Table.view_query
+   ~Table.view_use_legacy_sql
+
+
+
+.. raw:: html
+
+    <p>
+    <hr>
+    <p>
+
 .. autoclass:: Table
-
-   
-   .. automethod:: __init__
-
-   
-   .. rubric:: Methods
-
-   
-   .. autosummary::
-      :toctree: .
-   
-      
-      
-      ~Table.from_api_repr
-      
-      
-      ~Table.from_string
-      
-      
-      ~Table.to_api_repr
-      
-   
-   
-
-   
-   
-   .. rubric:: Attributes
-
-   .. autosummary::
-      :toctree: .
-   
-      ~Table.clustering_fields
-      ~Table.created
-      ~Table.dataset_id
-      ~Table.description
-      ~Table.encryption_configuration
-      ~Table.etag
-      ~Table.expires
-      ~Table.external_data_configuration
-      ~Table.friendly_name
-      ~Table.full_table_id
-      ~Table.labels
-      ~Table.location
-      ~Table.modified
-      ~Table.num_bytes
-      ~Table.num_rows
-      ~Table.partition_expiration
-      ~Table.partitioning_type
-      ~Table.path
-      ~Table.project
-      ~Table.reference
-      ~Table.schema
-      ~Table.self_link
-      ~Table.streaming_buffer
-      ~Table.table_id
-      ~Table.table_type
-      ~Table.time_partitioning
-      ~Table.view_query
-      ~Table.view_use_legacy_sql
-   
-   
+   :members:

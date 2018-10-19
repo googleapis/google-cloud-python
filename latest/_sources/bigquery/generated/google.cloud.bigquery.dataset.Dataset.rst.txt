@@ -3,55 +3,57 @@ google.cloud.bigquery.dataset.Dataset
 
 .. currentmodule:: google.cloud.bigquery.dataset
 
+
+
+.. rubric:: Methods
+
+.. autosummary::
+
+   
+   
+   ~Dataset.from_api_repr
+   
+   
+   ~Dataset.from_string
+   
+   
+   ~Dataset.table
+   
+   
+   ~Dataset.to_api_repr
+   
+
+
+
+
+
+.. rubric:: Attributes
+
+.. autosummary::
+
+   ~Dataset.access_entries
+   ~Dataset.created
+   ~Dataset.dataset_id
+   ~Dataset.default_table_expiration_ms
+   ~Dataset.description
+   ~Dataset.etag
+   ~Dataset.friendly_name
+   ~Dataset.full_dataset_id
+   ~Dataset.labels
+   ~Dataset.location
+   ~Dataset.modified
+   ~Dataset.path
+   ~Dataset.project
+   ~Dataset.reference
+   ~Dataset.self_link
+
+
+
+.. raw:: html
+
+    <p>
+    <hr>
+    <p>
+
 .. autoclass:: Dataset
-
-   
-   .. automethod:: __init__
-
-   
-   .. rubric:: Methods
-
-   
-   .. autosummary::
-      :toctree: .
-   
-      
-      
-      ~Dataset.from_api_repr
-      
-      
-      ~Dataset.from_string
-      
-      
-      ~Dataset.table
-      
-      
-      ~Dataset.to_api_repr
-      
-   
-   
-
-   
-   
-   .. rubric:: Attributes
-
-   .. autosummary::
-      :toctree: .
-   
-      ~Dataset.access_entries
-      ~Dataset.created
-      ~Dataset.dataset_id
-      ~Dataset.default_table_expiration_ms
-      ~Dataset.description
-      ~Dataset.etag
-      ~Dataset.friendly_name
-      ~Dataset.full_dataset_id
-      ~Dataset.labels
-      ~Dataset.location
-      ~Dataset.modified
-      ~Dataset.path
-      ~Dataset.project
-      ~Dataset.reference
-      ~Dataset.self_link
-   
-   
+   :members:

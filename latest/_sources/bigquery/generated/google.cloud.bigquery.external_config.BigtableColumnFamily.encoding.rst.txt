@@ -1,6 +1,0 @@
-google.cloud.bigquery.external\_config.BigtableColumnFamily.encoding
-====================================================================
-
-.. currentmodule:: google.cloud.bigquery.external_config
-
-.. autoattribute:: BigtableColumnFamily.encoding

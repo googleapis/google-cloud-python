@@ -1,6 +1,0 @@
-google.cloud.bigquery.job.ExtractJob.etag
-=========================================
-
-.. currentmodule:: google.cloud.bigquery.job
-
-.. autoattribute:: ExtractJob.etag

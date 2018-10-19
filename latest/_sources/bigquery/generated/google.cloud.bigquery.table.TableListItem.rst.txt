@@ -3,40 +3,42 @@ google.cloud.bigquery.table.TableListItem
 
 .. currentmodule:: google.cloud.bigquery.table
 
+
+
+.. rubric:: Methods
+
+.. autosummary::
+
+   
+
+
+
+
+
+.. rubric:: Attributes
+
+.. autosummary::
+
+   ~TableListItem.dataset_id
+   ~TableListItem.friendly_name
+   ~TableListItem.full_table_id
+   ~TableListItem.labels
+   ~TableListItem.partition_expiration
+   ~TableListItem.partitioning_type
+   ~TableListItem.project
+   ~TableListItem.reference
+   ~TableListItem.table_id
+   ~TableListItem.table_type
+   ~TableListItem.time_partitioning
+   ~TableListItem.view_use_legacy_sql
+
+
+
+.. raw:: html
+
+    <p>
+    <hr>
+    <p>
+
 .. autoclass:: TableListItem
-
-   
-   .. automethod:: __init__
-
-   
-   .. rubric:: Methods
-
-   
-   .. autosummary::
-      :toctree: .
-   
-      
-   
-   
-
-   
-   
-   .. rubric:: Attributes
-
-   .. autosummary::
-      :toctree: .
-   
-      ~TableListItem.dataset_id
-      ~TableListItem.friendly_name
-      ~TableListItem.full_table_id
-      ~TableListItem.labels
-      ~TableListItem.partition_expiration
-      ~TableListItem.partitioning_type
-      ~TableListItem.project
-      ~TableListItem.reference
-      ~TableListItem.table_id
-      ~TableListItem.table_type
-      ~TableListItem.time_partitioning
-      ~TableListItem.view_use_legacy_sql
-   
-   
+   :members:

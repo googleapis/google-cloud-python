@@ -1,6 +1,0 @@
-google.cloud.bigquery.job.QueryJob.create\_disposition
-======================================================
-
-.. currentmodule:: google.cloud.bigquery.job
-
-.. autoattribute:: QueryJob.create_disposition

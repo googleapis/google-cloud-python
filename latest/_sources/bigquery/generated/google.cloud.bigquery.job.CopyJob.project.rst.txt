@@ -1,6 +1,0 @@
-google.cloud.bigquery.job.CopyJob.project
-=========================================
-
-.. currentmodule:: google.cloud.bigquery.job
-
-.. autoattribute:: CopyJob.project

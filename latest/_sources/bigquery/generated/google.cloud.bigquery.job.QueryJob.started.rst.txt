@@ -1,6 +1,0 @@
-google.cloud.bigquery.job.QueryJob.started
-==========================================
-
-.. currentmodule:: google.cloud.bigquery.job
-
-.. autoattribute:: QueryJob.started

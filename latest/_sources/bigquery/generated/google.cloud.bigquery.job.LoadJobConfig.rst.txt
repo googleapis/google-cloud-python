@@ -3,55 +3,57 @@ google.cloud.bigquery.job.LoadJobConfig
 
 .. currentmodule:: google.cloud.bigquery.job
 
+
+
+.. rubric:: Methods
+
+.. autosummary::
+
+   
+   
+   ~LoadJobConfig.from_api_repr
+   
+   
+   ~LoadJobConfig.to_api_repr
+   
+
+
+
+
+
+.. rubric:: Attributes
+
+.. autosummary::
+
+   ~LoadJobConfig.allow_jagged_rows
+   ~LoadJobConfig.allow_quoted_newlines
+   ~LoadJobConfig.autodetect
+   ~LoadJobConfig.clustering_fields
+   ~LoadJobConfig.create_disposition
+   ~LoadJobConfig.destination_encryption_configuration
+   ~LoadJobConfig.destination_table_description
+   ~LoadJobConfig.destination_table_friendly_name
+   ~LoadJobConfig.encoding
+   ~LoadJobConfig.field_delimiter
+   ~LoadJobConfig.ignore_unknown_values
+   ~LoadJobConfig.labels
+   ~LoadJobConfig.max_bad_records
+   ~LoadJobConfig.null_marker
+   ~LoadJobConfig.quote_character
+   ~LoadJobConfig.schema
+   ~LoadJobConfig.schema_update_options
+   ~LoadJobConfig.skip_leading_rows
+   ~LoadJobConfig.source_format
+   ~LoadJobConfig.time_partitioning
+   ~LoadJobConfig.write_disposition
+
+
+
+.. raw:: html
+
+    <p>
+    <hr>
+    <p>
+
 .. autoclass:: LoadJobConfig
-
-   
-   .. automethod:: __init__
-
-   
-   .. rubric:: Methods
-
-   
-   .. autosummary::
-      :toctree: .
-   
-      
-      
-      ~LoadJobConfig.from_api_repr
-      
-      
-      ~LoadJobConfig.to_api_repr
-      
-   
-   
-
-   
-   
-   .. rubric:: Attributes
-
-   .. autosummary::
-      :toctree: .
-   
-      ~LoadJobConfig.allow_jagged_rows
-      ~LoadJobConfig.allow_quoted_newlines
-      ~LoadJobConfig.autodetect
-      ~LoadJobConfig.clustering_fields
-      ~LoadJobConfig.create_disposition
-      ~LoadJobConfig.destination_encryption_configuration
-      ~LoadJobConfig.destination_table_description
-      ~LoadJobConfig.destination_table_friendly_name
-      ~LoadJobConfig.encoding
-      ~LoadJobConfig.field_delimiter
-      ~LoadJobConfig.ignore_unknown_values
-      ~LoadJobConfig.labels
-      ~LoadJobConfig.max_bad_records
-      ~LoadJobConfig.null_marker
-      ~LoadJobConfig.quote_character
-      ~LoadJobConfig.schema
-      ~LoadJobConfig.schema_update_options
-      ~LoadJobConfig.skip_leading_rows
-      ~LoadJobConfig.source_format
-      ~LoadJobConfig.time_partitioning
-      ~LoadJobConfig.write_disposition
-   
-   
+   :members:

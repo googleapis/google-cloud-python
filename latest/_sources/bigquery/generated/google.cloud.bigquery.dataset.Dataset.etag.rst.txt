@@ -1,6 +1,0 @@
-google.cloud.bigquery.dataset.Dataset.etag
-==========================================
-
-.. currentmodule:: google.cloud.bigquery.dataset
-
-.. autoattribute:: Dataset.etag

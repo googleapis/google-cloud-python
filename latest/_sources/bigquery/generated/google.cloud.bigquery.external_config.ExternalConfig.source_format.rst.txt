@@ -1,6 +1,0 @@
-google.cloud.bigquery.external\_config.ExternalConfig.source\_format
-====================================================================
-
-.. currentmodule:: google.cloud.bigquery.external_config
-
-.. autoattribute:: ExternalConfig.source_format

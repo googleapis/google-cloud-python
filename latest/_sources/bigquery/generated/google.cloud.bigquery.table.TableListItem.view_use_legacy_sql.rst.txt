@@ -1,6 +1,0 @@
-google.cloud.bigquery.table.TableListItem.view\_use\_legacy\_sql
-================================================================
-
-.. currentmodule:: google.cloud.bigquery.table
-
-.. autoattribute:: TableListItem.view_use_legacy_sql

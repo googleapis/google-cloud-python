@@ -1,6 +1,0 @@
-google.cloud.bigquery.table.TableReference.from\_string
-=======================================================
-
-.. currentmodule:: google.cloud.bigquery.table
-
-.. automethod:: TableReference.from_string

@@ -1,6 +1,0 @@
-google.cloud.bigquery.table.TableReference.path
-===============================================
-
-.. currentmodule:: google.cloud.bigquery.table
-
-.. autoattribute:: TableReference.path

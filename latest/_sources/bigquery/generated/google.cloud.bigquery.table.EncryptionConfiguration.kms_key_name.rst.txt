@@ -1,6 +1,0 @@
-google.cloud.bigquery.table.EncryptionConfiguration.kms\_key\_name
-==================================================================
-
-.. currentmodule:: google.cloud.bigquery.table
-
-.. autoattribute:: EncryptionConfiguration.kms_key_name

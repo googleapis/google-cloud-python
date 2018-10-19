@@ -3,23 +3,27 @@ google.cloud.bigquery.job.WriteDisposition
 
 .. currentmodule:: google.cloud.bigquery.job
 
+
+
+
+
+
+
+.. rubric:: Attributes
+
+.. autosummary::
+
+   ~WriteDisposition.WRITE_APPEND
+   ~WriteDisposition.WRITE_EMPTY
+   ~WriteDisposition.WRITE_TRUNCATE
+
+
+
+.. raw:: html
+
+    <p>
+    <hr>
+    <p>
+
 .. autoclass:: WriteDisposition
-
-   
-   .. automethod:: __init__
-
-   
-   
-
-   
-   
-   .. rubric:: Attributes
-
-   .. autosummary::
-      :toctree: .
-   
-      ~WriteDisposition.WRITE_APPEND
-      ~WriteDisposition.WRITE_EMPTY
-      ~WriteDisposition.WRITE_TRUNCATE
-   
-   
+   :members:

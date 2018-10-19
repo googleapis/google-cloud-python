@@ -1,6 +1,0 @@
-google.cloud.bigquery.schema.SchemaField.is\_nullable
-=====================================================
-
-.. currentmodule:: google.cloud.bigquery.schema
-
-.. autoattribute:: SchemaField.is_nullable

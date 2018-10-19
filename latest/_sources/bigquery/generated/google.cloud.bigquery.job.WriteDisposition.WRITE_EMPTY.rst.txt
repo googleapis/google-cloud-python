@@ -1,6 +1,0 @@
-google.cloud.bigquery.job.WriteDisposition.WRITE\_EMPTY
-=======================================================
-
-.. currentmodule:: google.cloud.bigquery.job
-
-.. autoattribute:: WriteDisposition.WRITE_EMPTY

@@ -1,6 +1,0 @@
-google.cloud.bigquery.job.CopyJob.create\_disposition
-=====================================================
-
-.. currentmodule:: google.cloud.bigquery.job
-
-.. autoattribute:: CopyJob.create_disposition

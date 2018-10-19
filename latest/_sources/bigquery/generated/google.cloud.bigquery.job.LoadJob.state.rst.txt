@@ -1,6 +1,0 @@
-google.cloud.bigquery.job.LoadJob.state
-=======================================
-
-.. currentmodule:: google.cloud.bigquery.job
-
-.. autoattribute:: LoadJob.state

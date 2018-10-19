@@ -1,6 +1,0 @@
-google.cloud.bigquery.job.UnknownJob.running
-============================================
-
-.. currentmodule:: google.cloud.bigquery.job
-
-.. automethod:: UnknownJob.running

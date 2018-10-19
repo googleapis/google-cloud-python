@@ -1,6 +1,0 @@
-google.cloud.bigquery.job.LoadJobConfig.allow\_jagged\_rows
-===========================================================
-
-.. currentmodule:: google.cloud.bigquery.job
-
-.. autoattribute:: LoadJobConfig.allow_jagged_rows

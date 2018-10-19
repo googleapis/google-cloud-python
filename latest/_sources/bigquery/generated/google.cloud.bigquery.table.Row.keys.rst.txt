@@ -1,6 +1,0 @@
-google.cloud.bigquery.table.Row.keys
-====================================
-
-.. currentmodule:: google.cloud.bigquery.table
-
-.. automethod:: Row.keys

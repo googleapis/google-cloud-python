@@ -1,6 +1,0 @@
-google.cloud.bigquery.external\_config.ExternalConfig.options
-=============================================================
-
-.. currentmodule:: google.cloud.bigquery.external_config
-
-.. autoattribute:: ExternalConfig.options

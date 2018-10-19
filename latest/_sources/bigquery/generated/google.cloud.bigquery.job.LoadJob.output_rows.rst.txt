@@ -1,6 +1,0 @@
-google.cloud.bigquery.job.LoadJob.output\_rows
-==============================================
-
-.. currentmodule:: google.cloud.bigquery.job
-
-.. autoattribute:: LoadJob.output_rows

@@ -1,6 +1,0 @@
-google.cloud.bigquery.job.LoadJobConfig.encoding
-================================================
-
-.. currentmodule:: google.cloud.bigquery.job
-
-.. autoattribute:: LoadJobConfig.encoding

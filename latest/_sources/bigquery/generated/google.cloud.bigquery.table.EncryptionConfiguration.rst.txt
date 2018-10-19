@@ -3,35 +3,37 @@ google.cloud.bigquery.table.EncryptionConfiguration
 
 .. currentmodule:: google.cloud.bigquery.table
 
+
+
+.. rubric:: Methods
+
+.. autosummary::
+
+   
+   
+   ~EncryptionConfiguration.from_api_repr
+   
+   
+   ~EncryptionConfiguration.to_api_repr
+   
+
+
+
+
+
+.. rubric:: Attributes
+
+.. autosummary::
+
+   ~EncryptionConfiguration.kms_key_name
+
+
+
+.. raw:: html
+
+    <p>
+    <hr>
+    <p>
+
 .. autoclass:: EncryptionConfiguration
-
-   
-   .. automethod:: __init__
-
-   
-   .. rubric:: Methods
-
-   
-   .. autosummary::
-      :toctree: .
-   
-      
-      
-      ~EncryptionConfiguration.from_api_repr
-      
-      
-      ~EncryptionConfiguration.to_api_repr
-      
-   
-   
-
-   
-   
-   .. rubric:: Attributes
-
-   .. autosummary::
-      :toctree: .
-   
-      ~EncryptionConfiguration.kms_key_name
-   
-   
+   :members:

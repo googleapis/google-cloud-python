@@ -1,6 +1,0 @@
-google.cloud.bigquery.job.QueryJobConfig.allow\_large\_results
-==============================================================
-
-.. currentmodule:: google.cloud.bigquery.job
-
-.. autoattribute:: QueryJobConfig.allow_large_results

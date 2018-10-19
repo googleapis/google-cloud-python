@@ -1,6 +1,0 @@
-google.cloud.bigquery.job.CopyJob.etag
-======================================
-
-.. currentmodule:: google.cloud.bigquery.job
-
-.. autoattribute:: CopyJob.etag

@@ -1,6 +1,0 @@
-google.cloud.bigquery.job.QueryJob.labels
-=========================================
-
-.. currentmodule:: google.cloud.bigquery.job
-
-.. autoattribute:: QueryJob.labels

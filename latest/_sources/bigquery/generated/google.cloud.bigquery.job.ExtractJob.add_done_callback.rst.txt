@@ -1,6 +1,0 @@
-google.cloud.bigquery.job.ExtractJob.add\_done\_callback
-========================================================
-
-.. currentmodule:: google.cloud.bigquery.job
-
-.. automethod:: ExtractJob.add_done_callback

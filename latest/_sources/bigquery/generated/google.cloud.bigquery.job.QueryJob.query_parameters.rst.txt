@@ -1,6 +1,0 @@
-google.cloud.bigquery.job.QueryJob.query\_parameters
-====================================================
-
-.. currentmodule:: google.cloud.bigquery.job
-
-.. autoattribute:: QueryJob.query_parameters

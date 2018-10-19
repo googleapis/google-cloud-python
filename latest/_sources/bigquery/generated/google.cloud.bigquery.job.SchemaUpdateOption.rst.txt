@@ -3,22 +3,26 @@ google.cloud.bigquery.job.SchemaUpdateOption
 
 .. currentmodule:: google.cloud.bigquery.job
 
+
+
+
+
+
+
+.. rubric:: Attributes
+
+.. autosummary::
+
+   ~SchemaUpdateOption.ALLOW_FIELD_ADDITION
+   ~SchemaUpdateOption.ALLOW_FIELD_RELAXATION
+
+
+
+.. raw:: html
+
+    <p>
+    <hr>
+    <p>
+
 .. autoclass:: SchemaUpdateOption
-
-   
-   .. automethod:: __init__
-
-   
-   
-
-   
-   
-   .. rubric:: Attributes
-
-   .. autosummary::
-      :toctree: .
-   
-      ~SchemaUpdateOption.ALLOW_FIELD_ADDITION
-      ~SchemaUpdateOption.ALLOW_FIELD_RELAXATION
-   
-   
+   :members:

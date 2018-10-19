@@ -1,6 +1,0 @@
-google.cloud.bigquery.external\_config.ExternalSourceFormat.NEWLINE\_DELIMITED\_JSON
-====================================================================================
-
-.. currentmodule:: google.cloud.bigquery.external_config
-
-.. autoattribute:: ExternalSourceFormat.NEWLINE_DELIMITED_JSON

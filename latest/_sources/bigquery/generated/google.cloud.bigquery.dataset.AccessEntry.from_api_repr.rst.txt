@@ -1,6 +1,0 @@
-google.cloud.bigquery.dataset.AccessEntry.from\_api\_repr
-=========================================================
-
-.. currentmodule:: google.cloud.bigquery.dataset
-
-.. automethod:: AccessEntry.from_api_repr

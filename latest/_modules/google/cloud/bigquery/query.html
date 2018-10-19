@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigquery.query &#8212; google-cloud 05dea1b805 documentation</title>
+    <title>google.cloud.bigquery.query &#8212; google-cloud a74dc33 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -71,9 +71,9 @@
 <span class="sd">    See</span>
 <span class="sd">    https://cloud.google.com/bigquery/user-defined-functions#api</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-<div class="viewcode-block" id="UDFResource.__init__"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.query.UDFResource.html#google.cloud.bigquery.query.UDFResource.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">udf_type</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">udf_type</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">udf_type</span> <span class="o">=</span> <span class="n">udf_type</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">value</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">value</span>
 
     <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">UDFResource</span><span class="p">):</span>
@@ -124,12 +124,12 @@
 <span class="sd">                 :class:`datetime.datetime`, or :class:`datetime.date`.</span>
 <span class="sd">    :param value: the scalar parameter value.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-<div class="viewcode-block" id="ScalarQueryParameter.__init__"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.query.ScalarQueryParameter.html#google.cloud.bigquery.query.ScalarQueryParameter.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">type_</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">type_</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">type_</span> <span class="o">=</span> <span class="n">type_</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">value</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">value</span>
 
-<div class="viewcode-block" id="ScalarQueryParameter.positional"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.query.ScalarQueryParameter.positional.html#google.cloud.bigquery.query.ScalarQueryParameter.positional">[docs]</a>    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="ScalarQueryParameter.positional"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.query.ScalarQueryParameter.html#google.cloud.bigquery.query.ScalarQueryParameter.positional">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">positional</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">type_</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Factory for positional paramater.</span>
 
@@ -149,7 +149,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">type_</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="ScalarQueryParameter.from_api_repr"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.query.ScalarQueryParameter.from_api_repr.html#google.cloud.bigquery.query.ScalarQueryParameter.from_api_repr">[docs]</a>    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="ScalarQueryParameter.from_api_repr"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.query.ScalarQueryParameter.html#google.cloud.bigquery.query.ScalarQueryParameter.from_api_repr">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">resource</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Factory: construct parameter from JSON resource.</span>
 
@@ -165,7 +165,7 @@
         <span class="n">converted</span> <span class="o">=</span> <span class="n">_QUERY_PARAMS_FROM_JSON</span><span class="p">[</span><span class="n">type_</span><span class="p">](</span><span class="n">value</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">type_</span><span class="p">,</span> <span class="n">converted</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="ScalarQueryParameter.to_api_repr"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.query.ScalarQueryParameter.to_api_repr.html#google.cloud.bigquery.query.ScalarQueryParameter.to_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">to_api_repr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="ScalarQueryParameter.to_api_repr"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.query.ScalarQueryParameter.html#google.cloud.bigquery.query.ScalarQueryParameter.to_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">to_api_repr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Construct JSON API representation for the parameter.</span>
 
 <span class="sd">        :rtype: dict</span>
@@ -229,12 +229,12 @@
 <span class="sd">    :type values: list of appropriate scalar type.</span>
 <span class="sd">    :param values: the parameter array values.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-<div class="viewcode-block" id="ArrayQueryParameter.__init__"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.query.ArrayQueryParameter.html#google.cloud.bigquery.query.ArrayQueryParameter.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">array_type</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">array_type</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">array_type</span> <span class="o">=</span> <span class="n">array_type</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">values</span> <span class="o">=</span> <span class="n">values</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">values</span> <span class="o">=</span> <span class="n">values</span>
 
-<div class="viewcode-block" id="ArrayQueryParameter.positional"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.query.ArrayQueryParameter.positional.html#google.cloud.bigquery.query.ArrayQueryParameter.positional">[docs]</a>    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="ArrayQueryParameter.positional"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.query.ArrayQueryParameter.html#google.cloud.bigquery.query.ArrayQueryParameter.positional">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">positional</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">array_type</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Factory for positional parameters.</span>
 
@@ -282,7 +282,7 @@
         <span class="p">]</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">array_type</span><span class="p">,</span> <span class="n">converted</span><span class="p">)</span>
 
-<div class="viewcode-block" id="ArrayQueryParameter.from_api_repr"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.query.ArrayQueryParameter.from_api_repr.html#google.cloud.bigquery.query.ArrayQueryParameter.from_api_repr">[docs]</a>    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="ArrayQueryParameter.from_api_repr"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.query.ArrayQueryParameter.html#google.cloud.bigquery.query.ArrayQueryParameter.from_api_repr">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">resource</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Factory: construct parameter from JSON resource.</span>
 
@@ -297,7 +297,7 @@
             <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_from_api_repr_struct</span><span class="p">(</span><span class="n">resource</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_from_api_repr_scalar</span><span class="p">(</span><span class="n">resource</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="ArrayQueryParameter.to_api_repr"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.query.ArrayQueryParameter.to_api_repr.html#google.cloud.bigquery.query.ArrayQueryParameter.to_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">to_api_repr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="ArrayQueryParameter.to_api_repr"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.query.ArrayQueryParameter.html#google.cloud.bigquery.query.ArrayQueryParameter.to_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">to_api_repr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Construct JSON API representation for the parameter.</span>
 
 <span class="sd">        :rtype: dict</span>
@@ -367,7 +367,7 @@
 <span class="sd">        :class:`~google.cloud.bigquery.query.StructQueryParameter`</span>
 <span class="sd">    :param sub_params: the sub-parameters for the struct</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-<div class="viewcode-block" id="StructQueryParameter.__init__"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.query.StructQueryParameter.html#google.cloud.bigquery.query.StructQueryParameter.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="o">*</span><span class="n">sub_params</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="o">*</span><span class="n">sub_params</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
         <span class="n">types</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">struct_types</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
         <span class="n">values</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">struct_values</span> <span class="o">=</span> <span class="p">{}</span>
@@ -380,9 +380,9 @@
                 <span class="n">values</span><span class="p">[</span><span class="n">sub</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">sub</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">types</span><span class="p">[</span><span class="n">sub</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">sub</span><span class="o">.</span><span class="n">type_</span>
-                <span class="n">values</span><span class="p">[</span><span class="n">sub</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">sub</span><span class="o">.</span><span class="n">value</span></div>
+                <span class="n">values</span><span class="p">[</span><span class="n">sub</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">sub</span><span class="o">.</span><span class="n">value</span>
 
-<div class="viewcode-block" id="StructQueryParameter.positional"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.query.StructQueryParameter.positional.html#google.cloud.bigquery.query.StructQueryParameter.positional">[docs]</a>    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="StructQueryParameter.positional"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.query.StructQueryParameter.html#google.cloud.bigquery.query.StructQueryParameter.positional">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">positional</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">sub_params</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Factory for positional parameters.</span>
 
@@ -398,7 +398,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="n">sub_params</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="StructQueryParameter.from_api_repr"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.query.StructQueryParameter.from_api_repr.html#google.cloud.bigquery.query.StructQueryParameter.from_api_repr">[docs]</a>    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="StructQueryParameter.from_api_repr"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.query.StructQueryParameter.html#google.cloud.bigquery.query.StructQueryParameter.from_api_repr">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">resource</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Factory: construct parameter from JSON resource.</span>
 
@@ -439,7 +439,7 @@
             <span class="n">instance</span><span class="o">.</span><span class="n">struct_values</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">converted</span>
         <span class="k">return</span> <span class="n">instance</span></div>
 
-<div class="viewcode-block" id="StructQueryParameter.to_api_repr"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.query.StructQueryParameter.to_api_repr.html#google.cloud.bigquery.query.StructQueryParameter.to_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">to_api_repr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="StructQueryParameter.to_api_repr"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.query.StructQueryParameter.html#google.cloud.bigquery.query.StructQueryParameter.to_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">to_api_repr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Construct JSON API representation for the parameter.</span>
 
 <span class="sd">        :rtype: dict</span>

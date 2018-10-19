@@ -3,35 +3,37 @@ google.cloud.bigquery.external\_config.GoogleSheetsOptions
 
 .. currentmodule:: google.cloud.bigquery.external_config
 
+
+
+.. rubric:: Methods
+
+.. autosummary::
+
+   
+   
+   ~GoogleSheetsOptions.from_api_repr
+   
+   
+   ~GoogleSheetsOptions.to_api_repr
+   
+
+
+
+
+
+.. rubric:: Attributes
+
+.. autosummary::
+
+   ~GoogleSheetsOptions.skip_leading_rows
+
+
+
+.. raw:: html
+
+    <p>
+    <hr>
+    <p>
+
 .. autoclass:: GoogleSheetsOptions
-
-   
-   .. automethod:: __init__
-
-   
-   .. rubric:: Methods
-
-   
-   .. autosummary::
-      :toctree: .
-   
-      
-      
-      ~GoogleSheetsOptions.from_api_repr
-      
-      
-      ~GoogleSheetsOptions.to_api_repr
-      
-   
-   
-
-   
-   
-   .. rubric:: Attributes
-
-   .. autosummary::
-      :toctree: .
-   
-      ~GoogleSheetsOptions.skip_leading_rows
-   
-   
+   :members:

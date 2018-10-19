@@ -1,6 +1,0 @@
-google.cloud.bigquery.job.ExtractJob.path
-=========================================
-
-.. currentmodule:: google.cloud.bigquery.job
-
-.. autoattribute:: ExtractJob.path

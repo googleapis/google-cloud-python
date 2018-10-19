@@ -1,6 +1,0 @@
-google.cloud.bigquery.job.ExtractJob.created
-============================================
-
-.. currentmodule:: google.cloud.bigquery.job
-
-.. autoattribute:: ExtractJob.created

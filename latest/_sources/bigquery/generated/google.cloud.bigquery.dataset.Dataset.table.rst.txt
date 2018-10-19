@@ -1,6 +1,0 @@
-google.cloud.bigquery.dataset.Dataset.table
-===========================================
-
-.. currentmodule:: google.cloud.bigquery.dataset
-
-.. automethod:: Dataset.table

@@ -1,6 +1,0 @@
-google.cloud.bigquery.job.QueryJobConfig.clustering\_fields
-===========================================================
-
-.. currentmodule:: google.cloud.bigquery.job
-
-.. autoattribute:: QueryJobConfig.clustering_fields

@@ -1,6 +1,0 @@
-google.cloud.bigquery.job.CreateDisposition.CREATE\_NEVER
-=========================================================
-
-.. currentmodule:: google.cloud.bigquery.job
-
-.. autoattribute:: CreateDisposition.CREATE_NEVER

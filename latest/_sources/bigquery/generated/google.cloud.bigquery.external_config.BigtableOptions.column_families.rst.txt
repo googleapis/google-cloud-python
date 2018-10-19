@@ -1,6 +1,0 @@
-google.cloud.bigquery.external\_config.BigtableOptions.column\_families
-=======================================================================
-
-.. currentmodule:: google.cloud.bigquery.external_config
-
-.. autoattribute:: BigtableOptions.column_families

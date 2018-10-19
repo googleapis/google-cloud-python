@@ -1,6 +1,0 @@
-google.cloud.bigquery.table.Table.path
-======================================
-
-.. currentmodule:: google.cloud.bigquery.table
-
-.. autoattribute:: Table.path

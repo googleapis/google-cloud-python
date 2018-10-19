@@ -1,6 +1,0 @@
-google.cloud.bigquery.job.Encoding.UTF\_8
-=========================================
-
-.. currentmodule:: google.cloud.bigquery.job
-
-.. autoattribute:: Encoding.UTF_8

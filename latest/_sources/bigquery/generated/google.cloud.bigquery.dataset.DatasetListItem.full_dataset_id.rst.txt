@@ -1,6 +1,0 @@
-google.cloud.bigquery.dataset.DatasetListItem.full\_dataset\_id
-===============================================================
-
-.. currentmodule:: google.cloud.bigquery.dataset
-
-.. autoattribute:: DatasetListItem.full_dataset_id

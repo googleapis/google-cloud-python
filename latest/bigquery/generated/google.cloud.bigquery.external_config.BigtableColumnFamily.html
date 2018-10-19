@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigquery.external_config.BigtableColumnFamily &#8212; google-cloud 05dea1b805 documentation</title>
+    <title>google.cloud.bigquery.external_config.BigtableColumnFamily &#8212; google-cloud a74dc33 documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -17,8 +17,8 @@
     <link rel="shortcut icon" href="../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="google.cloud.bigquery.external_config.BigtableColumnFamily.from_api_repr" href="google.cloud.bigquery.external_config.BigtableColumnFamily.from_api_repr.html" />
-    <link rel="prev" title="google.cloud.bigquery.external_config.BigtableOptions.read_rowkey_as_string" href="google.cloud.bigquery.external_config.BigtableOptions.read_rowkey_as_string.html" />
+    <link rel="next" title="google.cloud.bigquery.external_config.BigtableColumn" href="google.cloud.bigquery.external_config.BigtableColumn.html" />
+    <link rel="prev" title="google.cloud.bigquery.external_config.BigtableOptions" href="google.cloud.bigquery.external_config.BigtableOptions.html" />
    
   <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
   
@@ -37,16 +37,6 @@
             
   <div class="section" id="google-cloud-bigquery-external-config-bigtablecolumnfamily">
 <h1>google.cloud.bigquery.external_config.BigtableColumnFamily<a class="headerlink" href="#google-cloud-bigquery-external-config-bigtablecolumnfamily" title="Permalink to this headline">#</a></h1>
-<dl class="class">
-<dt id="google.cloud.bigquery.external_config.BigtableColumnFamily">
-<em class="property">class </em><code class="descclassname">google.cloud.bigquery.external_config.</code><code class="descname">BigtableColumnFamily</code><a class="reference internal" href="../../_modules/google/cloud/bigquery/external_config.html#BigtableColumnFamily"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.external_config.BigtableColumnFamily" title="Permalink to this definition">#</a></dt>
-<dd><p>Options for a Bigtable column family.</p>
-<dl class="method">
-<dt id="google.cloud.bigquery.external_config.BigtableColumnFamily.__init__">
-<code class="descname">__init__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/google/cloud/bigquery/external_config.html#BigtableColumnFamily.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.external_config.BigtableColumnFamily.__init__" title="Permalink to this definition">#</a></dt>
-<dd><p>Initialize self.  See help(type(self)) for accurate signature.</p>
-</dd></dl>
-
 <p class="rubric">Methods</p>
 <table border="1" class="longtable docutils">
 <colgroup>
@@ -54,10 +44,10 @@
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="google.cloud.bigquery.external_config.BigtableColumnFamily.from_api_repr.html#google.cloud.bigquery.external_config.BigtableColumnFamily.from_api_repr" title="google.cloud.bigquery.external_config.BigtableColumnFamily.from_api_repr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_api_repr</span></code></a>(resource)</td>
+<tr class="row-odd"><td><a class="reference internal" href="#google.cloud.bigquery.external_config.BigtableColumnFamily.from_api_repr" title="google.cloud.bigquery.external_config.BigtableColumnFamily.from_api_repr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_api_repr</span></code></a>(resource)</td>
 <td>Factory: construct a <a class="reference internal" href="#google.cloud.bigquery.external_config.BigtableColumnFamily" title="google.cloud.bigquery.external_config.BigtableColumnFamily"><code class="xref py py-class docutils literal notranslate"><span class="pre">BigtableColumnFamily</span></code></a> instance given its API representation.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="google.cloud.bigquery.external_config.BigtableColumnFamily.to_api_repr.html#google.cloud.bigquery.external_config.BigtableColumnFamily.to_api_repr" title="google.cloud.bigquery.external_config.BigtableColumnFamily.to_api_repr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_api_repr</span></code></a>()</td>
+<tr class="row-even"><td><a class="reference internal" href="#google.cloud.bigquery.external_config.BigtableColumnFamily.to_api_repr" title="google.cloud.bigquery.external_config.BigtableColumnFamily.to_api_repr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_api_repr</span></code></a>()</td>
 <td>Build an API representation of this object.</td>
 </tr>
 </tbody>
@@ -69,23 +59,153 @@
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="google.cloud.bigquery.external_config.BigtableColumnFamily.columns.html#google.cloud.bigquery.external_config.BigtableColumnFamily.columns" title="google.cloud.bigquery.external_config.BigtableColumnFamily.columns"><code class="xref py py-obj docutils literal notranslate"><span class="pre">columns</span></code></a></td>
+<tr class="row-odd"><td><a class="reference internal" href="#google.cloud.bigquery.external_config.BigtableColumnFamily.columns" title="google.cloud.bigquery.external_config.BigtableColumnFamily.columns"><code class="xref py py-obj docutils literal notranslate"><span class="pre">columns</span></code></a></td>
 <td>Lists of columns that should be exposed as individual fields.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="google.cloud.bigquery.external_config.BigtableColumnFamily.encoding.html#google.cloud.bigquery.external_config.BigtableColumnFamily.encoding" title="google.cloud.bigquery.external_config.BigtableColumnFamily.encoding"><code class="xref py py-obj docutils literal notranslate"><span class="pre">encoding</span></code></a></td>
+<tr class="row-even"><td><a class="reference internal" href="#google.cloud.bigquery.external_config.BigtableColumnFamily.encoding" title="google.cloud.bigquery.external_config.BigtableColumnFamily.encoding"><code class="xref py py-obj docutils literal notranslate"><span class="pre">encoding</span></code></a></td>
 <td>The encoding of the values when the type is not <cite>STRING</cite></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="google.cloud.bigquery.external_config.BigtableColumnFamily.family_id.html#google.cloud.bigquery.external_config.BigtableColumnFamily.family_id" title="google.cloud.bigquery.external_config.BigtableColumnFamily.family_id"><code class="xref py py-obj docutils literal notranslate"><span class="pre">family_id</span></code></a></td>
+<tr class="row-odd"><td><a class="reference internal" href="#google.cloud.bigquery.external_config.BigtableColumnFamily.family_id" title="google.cloud.bigquery.external_config.BigtableColumnFamily.family_id"><code class="xref py py-obj docutils literal notranslate"><span class="pre">family_id</span></code></a></td>
 <td>Identifier of the column family.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="google.cloud.bigquery.external_config.BigtableColumnFamily.only_read_latest.html#google.cloud.bigquery.external_config.BigtableColumnFamily.only_read_latest" title="google.cloud.bigquery.external_config.BigtableColumnFamily.only_read_latest"><code class="xref py py-obj docutils literal notranslate"><span class="pre">only_read_latest</span></code></a></td>
+<tr class="row-even"><td><a class="reference internal" href="#google.cloud.bigquery.external_config.BigtableColumnFamily.only_read_latest" title="google.cloud.bigquery.external_config.BigtableColumnFamily.only_read_latest"><code class="xref py py-obj docutils literal notranslate"><span class="pre">only_read_latest</span></code></a></td>
 <td>If this is set only the latest version of value are exposed for all columns in this column family.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="google.cloud.bigquery.external_config.BigtableColumnFamily.type_.html#google.cloud.bigquery.external_config.BigtableColumnFamily.type_" title="google.cloud.bigquery.external_config.BigtableColumnFamily.type_"><code class="xref py py-obj docutils literal notranslate"><span class="pre">type_</span></code></a></td>
+<tr class="row-odd"><td><a class="reference internal" href="#google.cloud.bigquery.external_config.BigtableColumnFamily.type_" title="google.cloud.bigquery.external_config.BigtableColumnFamily.type_"><code class="xref py py-obj docutils literal notranslate"><span class="pre">type_</span></code></a></td>
 <td>The type to convert the value in cells of this column family.</td>
 </tr>
 </tbody>
 </table>
+<p>
+<hr>
+<p><dl class="class">
+<dt id="google.cloud.bigquery.external_config.BigtableColumnFamily">
+<em class="property">class </em><code class="descclassname">google.cloud.bigquery.external_config.</code><code class="descname">BigtableColumnFamily</code><a class="reference internal" href="../../_modules/google/cloud/bigquery/external_config.html#BigtableColumnFamily"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.external_config.BigtableColumnFamily" title="Permalink to this definition">#</a></dt>
+<dd><p>Options for a Bigtable column family.</p>
+<dl class="attribute">
+<dt id="google.cloud.bigquery.external_config.BigtableColumnFamily.columns">
+<code class="descname">columns</code><a class="headerlink" href="#google.cloud.bigquery.external_config.BigtableColumnFamily.columns" title="Permalink to this definition">#</a></dt>
+<dd><p>Lists of columns
+that should be exposed as individual fields.</p>
+<p>See
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).bigtableOptions.columnFamilies.columns">https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).bigtableOptions.columnFamilies.columns</a>
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.bigtableOptions.columnFamilies.columns">https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.bigtableOptions.columnFamilies.columns</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">List[<a class="reference internal" href="google.cloud.bigquery.external_config.BigtableColumn.html#google.cloud.bigquery.external_config.BigtableColumn" title="google.cloud.bigquery.external_config.BigtableColumn"><code class="xref py py-class docutils literal notranslate"><span class="pre">BigtableColumn</span></code></a>]</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery.external_config.BigtableColumnFamily.encoding">
+<code class="descname">encoding</code><a class="headerlink" href="#google.cloud.bigquery.external_config.BigtableColumnFamily.encoding" title="Permalink to this definition">#</a></dt>
+<dd><p>The encoding of the values when the type is not <cite>STRING</cite></p>
+<p>See
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).bigtableOptions.columnFamilies.encoding">https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).bigtableOptions.columnFamilies.encoding</a>
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.bigtableOptions.columnFamilies.encoding">https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.bigtableOptions.columnFamilies.encoding</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery.external_config.BigtableColumnFamily.family_id">
+<code class="descname">family_id</code><a class="headerlink" href="#google.cloud.bigquery.external_config.BigtableColumnFamily.family_id" title="Permalink to this definition">#</a></dt>
+<dd><p>Identifier of the column family.</p>
+<p>See
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).bigtableOptions.columnFamilies.familyId">https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).bigtableOptions.columnFamilies.familyId</a>
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.bigtableOptions.columnFamilies.familyId">https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.bigtableOptions.columnFamilies.familyId</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="google.cloud.bigquery.external_config.BigtableColumnFamily.from_api_repr">
+<em class="property">classmethod </em><code class="descname">from_api_repr</code><span class="sig-paren">(</span><em>resource</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/google/cloud/bigquery/external_config.html#BigtableColumnFamily.from_api_repr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.external_config.BigtableColumnFamily.from_api_repr" title="Permalink to this definition">#</a></dt>
+<dd><p>Factory: construct a <a class="reference internal" href="#google.cloud.bigquery.external_config.BigtableColumnFamily" title="google.cloud.bigquery.external_config.BigtableColumnFamily"><code class="xref py py-class docutils literal notranslate"><span class="pre">BigtableColumnFamily</span></code></a>
+instance given its API representation.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>resource</strong> (<em>Dict</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference internal" href="../../asset/gapic/v1beta1/types.html#google.cloud.asset_v1beta1.types.Any" title="google.cloud.asset_v1beta1.types.Any"><em>Any</em></a><em>]</em>) – Definition of a <a class="reference internal" href="#google.cloud.bigquery.external_config.BigtableColumnFamily" title="google.cloud.bigquery.external_config.BigtableColumnFamily"><code class="xref py py-class docutils literal notranslate"><span class="pre">BigtableColumnFamily</span></code></a>
+instance in the same representation as is returned from the
+API.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Configuration parsed from <code class="docutils literal notranslate"><span class="pre">resource</span></code>.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#google.cloud.bigquery.external_config.BigtableColumnFamily" title="google.cloud.bigquery.external_config.BigtableColumnFamily"><code class="xref py py-class docutils literal notranslate"><span class="pre">BigtableColumnFamily</span></code></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery.external_config.BigtableColumnFamily.only_read_latest">
+<code class="descname">only_read_latest</code><a class="headerlink" href="#google.cloud.bigquery.external_config.BigtableColumnFamily.only_read_latest" title="Permalink to this definition">#</a></dt>
+<dd><p>If this is set only the latest version of value are exposed
+for all columns in this column family.</p>
+<p>See
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).bigtableOptions.columnFamilies.onlyReadLatest">https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).bigtableOptions.columnFamilies.onlyReadLatest</a>
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.bigtableOptions.columnFamilies.onlyReadLatest">https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.bigtableOptions.columnFamilies.onlyReadLatest</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)">bool</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.bigquery.external_config.BigtableColumnFamily.to_api_repr">
+<code class="descname">to_api_repr</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/google/cloud/bigquery/external_config.html#BigtableColumnFamily.to_api_repr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.external_config.BigtableColumnFamily.to_api_repr" title="Permalink to this definition">#</a></dt>
+<dd><p>Build an API representation of this object.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A dictionary in the format used by the BigQuery API.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">Dict[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a>, <a class="reference internal" href="../../asset/gapic/v1beta1/types.html#google.cloud.asset_v1beta1.types.Any" title="google.cloud.asset_v1beta1.types.Any">Any</a>]</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery.external_config.BigtableColumnFamily.type_">
+<code class="descname">type_</code><a class="headerlink" href="#google.cloud.bigquery.external_config.BigtableColumnFamily.type_" title="Permalink to this definition">#</a></dt>
+<dd><p>The type to convert the value in cells of this column family.</p>
+<p>See
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).bigtableOptions.columnFamilies.type">https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).bigtableOptions.columnFamilies.type</a>
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.bigtableOptions.columnFamilies.type">https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.bigtableOptions.columnFamilies.type</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 </dd></dl>
 
 </div>
@@ -160,8 +280,8 @@
   <li><a href="../../index.html">Documentation overview</a><ul>
   <li><a href="../index.html">Python Client for Google BigQuery</a><ul>
   <li><a href="../reference.html">API Reference</a><ul>
-      <li>Previous: <a href="google.cloud.bigquery.external_config.BigtableOptions.read_rowkey_as_string.html" title="previous chapter">google.cloud.bigquery.external_config.BigtableOptions.read_rowkey_as_string</a></li>
-      <li>Next: <a href="google.cloud.bigquery.external_config.BigtableColumnFamily.from_api_repr.html" title="next chapter">google.cloud.bigquery.external_config.BigtableColumnFamily.from_api_repr</a></li>
+      <li>Previous: <a href="google.cloud.bigquery.external_config.BigtableOptions.html" title="previous chapter">google.cloud.bigquery.external_config.BigtableOptions</a></li>
+      <li>Next: <a href="google.cloud.bigquery.external_config.BigtableColumn.html" title="next chapter">google.cloud.bigquery.external_config.BigtableColumn</a></li>
   </ul></li>
   </ul></li>
   </ul></li>

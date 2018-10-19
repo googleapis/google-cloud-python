@@ -1,6 +1,0 @@
-google.cloud.bigquery.table.Table.encryption\_configuration
-===========================================================
-
-.. currentmodule:: google.cloud.bigquery.table
-
-.. autoattribute:: Table.encryption_configuration

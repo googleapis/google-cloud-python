@@ -1,6 +1,0 @@
-google.cloud.bigquery.table.Table.labels
-========================================
-
-.. currentmodule:: google.cloud.bigquery.table
-
-.. autoattribute:: Table.labels

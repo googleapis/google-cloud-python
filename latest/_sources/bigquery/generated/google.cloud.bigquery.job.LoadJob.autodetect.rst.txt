@@ -1,6 +1,0 @@
-google.cloud.bigquery.job.LoadJob.autodetect
-============================================
-
-.. currentmodule:: google.cloud.bigquery.job
-
-.. autoattribute:: LoadJob.autodetect
