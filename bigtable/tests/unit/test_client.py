@@ -54,18 +54,22 @@ class TestClient(unittest.TestCase):
         self.assertEqual(client.SCOPE, (DATA_SCOPE,))
 
     def test_constructor_explicit(self):
+        import warnings
         from google.cloud.bigtable.client import ADMIN_SCOPE
         from google.cloud.bigtable.client import DATA_SCOPE
 
         credentials = _make_credentials()
 
-        client = self._make_one(
-            project=self.PROJECT,
-            credentials=credentials,
-            read_only=False,
-            admin=True,
-            channel=mock.sentinel.channel,
-        )
+        with warnings.catch_warnings(record=True) as warned:
+            client = self._make_one(
+                project=self.PROJECT,
+                credentials=credentials,
+                read_only=False,
+                admin=True,
+                channel=mock.sentinel.channel,
+            )
+
+        self.assertEqual(len(warned), 1)
 
         self.assertEqual(client.project, self.PROJECT)
         self.assertIs(
