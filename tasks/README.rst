@@ -1,12 +1,20 @@
-Python Client for Cloud Tasks API (`Alpha`_)
-============================================
+Python Client for Cloud Tasks API
+=================================
 
-`Cloud Tasks API`_: Manages the execution of large numbers of distributed requests.
+|alpha| |pypi| |versions|
+
+`Cloud Tasks API`_: Manages the execution of large numbers of distributed
+requests.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
 
-.. _Alpha: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/README.rst
+.. |alpha| image:: https://img.shields.io/badge/support-alpha-orange.svg
+   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#alpha-support
+.. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-tasks.svg
+   :target: https://pypi.org/project/google-cloud-tasks/
+.. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-tasks.svg
+   :target: https://pypi.org/project/google-cloud-tasks/
 .. _Cloud Tasks API: https://cloud.google.com/tasks
 .. _Client Library Documentation: https://googlecloudplatform.github.io/google-cloud-python/latest/tasks/index.html
 .. _Product Documentation:  https://cloud.google.com/tasks
@@ -68,8 +76,5 @@ Next Steps
    API to see other available methods on the client.
 -  Read the `Cloud Tasks API Product documentation`_ to learn
    more about the product and see How-to Guides.
--  View this `repository’s main README`_ to see the full list of Cloud
-   APIs that we cover.
 
 .. _Cloud Tasks API Product documentation:  https://cloud.google.com/tasks
-.. _repository’s main README: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/README.rst

@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-api-core/#history
 
+## 1.6.0a1
+
+10-18-2018 16:26 PDT
+
+### New Features
+- Add methods to api_core used by new autogenerator. ([#6267](https://github.com/googleapis/google-cloud-python/pull/6267))
+
+### Internal / Testing Changes
+- Fix branch coverage for un-called callbacks. ([#6242](https://github.com/googleapis/google-cloud-python/pull/6242))
+- Fix import order, appeasing lint. ([#6240](https://github.com/googleapis/google-cloud-python/pull/6240))
+- Add / fix badges for PyPI / versions. ([#6158](https://github.com/googleapis/google-cloud-python/pull/6158))
+
 ## 1.5.0
 
 ### New Features

@@ -272,10 +272,10 @@ def test_heartbeat_inactive():
 
 
 @mock.patch(
-    'google.cloud.pubsub_v1.subscriber._protocol.bidi.ResumableBidiRpc',
+    'google.api_core.bidi.ResumableBidiRpc',
     autospec=True)
 @mock.patch(
-    'google.cloud.pubsub_v1.subscriber._protocol.bidi.BackgroundConsumer',
+    'google.api_core.bidi.BackgroundConsumer',
     autospec=True)
 @mock.patch(
     'google.cloud.pubsub_v1.subscriber._protocol.leaser.Leaser',

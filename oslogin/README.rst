@@ -1,5 +1,7 @@
-Python Client for Google Cloud OS Login API (`Alpha`_)
-======================================================
+Python Client for Google Cloud OS Login API (unreleased)
+========================================================
+
+|pypi| |versions|
 
 `Google Cloud OS Login API`_: Manages OS login configuration for Google account users.
 
@@ -7,6 +9,10 @@ Python Client for Google Cloud OS Login API (`Alpha`_)
 - `Product Documentation`_
 
 .. _Alpha: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/README.rst
+.. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-oslogin.svg
+   :target: https://pypi.org/project/google-cloud-oslogin/
+.. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-oslogin.svg
+   :target: https://pypi.org/project/google-cloud-oslogin/
 .. _Google Cloud OS Login API: https://cloud.google.com/os-login
 .. _Client Library Documentation: https://googlecloudplatform.github.io/google-cloud-python/latest/oslogin/index.html
 .. _Product Documentation:  https://cloud.google.com/os-login
@@ -65,11 +71,6 @@ Next Steps
 ~~~~~~~~~~
 
 -  Read the `Client Library Documentation`_ for Google Cloud OS Login API
-   API to see other available methods on the client.
--  Read the `Google Cloud OS Login API Product documentation`_ to learn
+   to see other available methods on the client.
+-  Read the `Product documentation`_ to learn
    more about the product and see How-to Guides.
--  View this `repository’s main README`_ to see the full list of Cloud
-   APIs that we cover.
-
-.. _Google Cloud OS Login API Product documentation:  https://cloud.google.com/os-login
-.. _repository’s main README: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/README.rst

@@ -4,8 +4,8 @@ config = {
             "retry_codes": {
                 "idempotent": ["DEADLINE_EXCEEDED", "UNAVAILABLE"],
                 "pull": [
-                    "CANCELLED", "DEADLINE_EXCEEDED", "INTERNAL",
-                    "RESOURCE_EXHAUSTED", "UNAVAILABLE"
+                    "DEADLINE_EXCEEDED", "INTERNAL", "RESOURCE_EXHAUSTED",
+                    "UNAVAILABLE"
                 ],
                 "http_get": ["DEADLINE_EXCEEDED", "UNAVAILABLE"],
                 "non_idempotent": []
@@ -72,7 +72,7 @@ config = {
                 },
                 "Acknowledge": {
                     "timeout_millis": 60000,
-                    "retry_codes_name": "non_idempotent",
+                    "retry_codes_name": "idempotent",
                     "retry_params_name": "messaging"
                 },
                 "Pull": {

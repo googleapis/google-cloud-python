@@ -25,6 +25,7 @@ common = gcp.CommonTemplates()
 excludes = [
     'README.rst',
     'setup.py',
+    'nox*.py',
     'docs/conf.py',
     'docs/index.rst',
 ]

@@ -20,8 +20,8 @@ import mock
 import pytest
 from six.moves import queue
 
-from google.api_core import exceptions
 from google.api_core import bidi
+from google.api_core import exceptions
 
 
 class Test_RequestQueueGenerator(object):
@@ -280,7 +280,9 @@ class CallStub(object):
 
 class TestResumableBidiRpc(object):
     def test_initial_state(self):
-        bidi_rpc = bidi.ResumableBidiRpc(None, lambda _: True)
+        callback = mock.Mock()
+        callback.return_value = True
+        bidi_rpc = bidi.ResumableBidiRpc(None, callback)
 
         assert bidi_rpc.is_active is False
 
@@ -380,7 +382,9 @@ class TestResumableBidiRpc(object):
             grpc.StreamStreamMultiCallable,
             instance=True,
             side_effect=[call_1, call_2])
-        bidi_rpc = bidi.ResumableBidiRpc(start_rpc, lambda _: True)
+        callback = mock.Mock()
+        callback.return_value = True
+        bidi_rpc = bidi.ResumableBidiRpc(start_rpc, callback)
 
         bidi_rpc.open()
 

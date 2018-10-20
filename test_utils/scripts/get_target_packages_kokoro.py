@@ -14,8 +14,8 @@
 
 """Print a list of packages which require testing."""
 
-import subprocess
 import pathlib
+import subprocess
 
 import ci_diff_helper
 
@@ -47,7 +47,7 @@ def get_changed_files(base):
 
 def determine_changed_packages(changed_files):
     packages = [
-        path.parent for path in pathlib.Path('.').glob('*/nox.py')
+        path.parent for path in pathlib.Path('.').glob('*/noxfile.py')
     ]
 
     changed_packages = set()

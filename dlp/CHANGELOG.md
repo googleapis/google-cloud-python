@@ -4,6 +4,24 @@
 
 [1]: https://pypi.org/project/google-cloud-dlp/#history
 
+## 0.9.0
+
+10-18-2018 10:44 PDT
+
+### New Features
+
+- Added `stored_info_type` methods to v2. ([#6221](https://github.com/googleapis/google-cloud-python/pull/6221))
+
+### Documentation
+
+- Docs: normalize use of support level badges ([#6159](https://github.com/googleapis/google-cloud-python/pull/6159))
+- Add / fix badges for PyPI / versions. ([#6158](https://github.com/googleapis/google-cloud-python/pull/6158))
+
+### Internal / Testing Changes
+
+- Use new Nox ([#6175](https://github.com/googleapis/google-cloud-python/pull/6175))
+- Avoid replacing/scribbling on 'setup.py' during synth. ([#6125](https://github.com/googleapis/google-cloud-python/pull/6125))
+
 ## 0.8.0
 
 ### New Features

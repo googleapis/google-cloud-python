@@ -1,15 +1,16 @@
 Python Client for Google Cloud DNS
 ==================================
 
+|alpha| |pypi| |versions|
+
 The `Google Cloud DNS`_ API provides methods that you can use to
 manage DNS for your applications.
-
-
-|pypi| |versions|
 
 - `Client Library Documentation`_
 - `Product Documentation`_
 
+.. |alpha| image:: https://img.shields.io/badge/support-alpha-orange.svg
+   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#alpha-support
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-dns.svg
    :target: https://pypi.org/project/google-cloud-dns/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-dns.svg
@@ -25,12 +26,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Google Cloud Datastore API.`_
+3. `Enable the Google Cloud DNS API.`_
 4. `Setup Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Google Cloud Datastore API.:  https://cloud.google.com/dns
+.. _Enable the Google Cloud DNS API.:  https://cloud.google.com/dns
 .. _Setup Authentication.: https://googlecloudplatform.github.io/google-cloud-python/latest/core/auth.html
 
 Installation

@@ -213,7 +213,7 @@ class Watch(object):
             ResumableBidiRpc = self.ResumableBidiRpc  # FBO unit tests
 
         self.rpc = ResumableBidiRpc(
-            self._api.firestore_stub.Listen,
+            self._api.transport._stubs['firestore_stub'].Listen,
             initial_request=initial_request,
             should_recover=should_recover)
 

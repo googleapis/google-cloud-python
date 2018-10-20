@@ -1,5 +1,7 @@
-Python Client for Cloud Speech API (`Beta`_)
-=============================================
+Python Client for Cloud Speech API
+==================================
+
+|beta| |pypi| |versions|
 
 The `Cloud Speech API`_ enables developers to convert audio to text by applying
 powerful neural network models.  The API recognizes over 80 languages and
@@ -8,7 +10,12 @@ variants, to support your global user base.
 - `Client Library Documentation`_
 - `Product Documentation`_
 
-.. _Beta: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/README.rst
+.. |beta| image:: https://img.shields.io/badge/support-beta-silver.svg
+   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#beta-support
+.. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-speech.svg
+   :target: https://pypi.org/project/google-cloud-speech/
+.. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-speech.svg
+   :target: https://pypi.org/project/google-cloud-speech/
 .. _Cloud Speech API: https://cloud.google.com/speech
 .. _Client Library Documentation: https://googlecloudplatform.github.io/google-cloud-python/latest/speech/index.html
 .. _Product Documentation:  https://cloud.google.com/speech

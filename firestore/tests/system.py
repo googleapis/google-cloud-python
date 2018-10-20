@@ -919,24 +919,12 @@ def test_watch_query(client, cleanup):
 
     for _ in range(10):
         if on_snapshot.called_count == 1:
-            break
+            return
         sleep(1)
 
-    # Alter document
-    doc_ref.set({
-        u'first': u'Ada',
-        u'last': u'Lovelace',
-        u'born': 0
-    })
-
-    for _ in range(10):
-        if on_snapshot.called_count == 2:
-            break
-        sleep(1)
-
-    if on_snapshot.called_count != 2:
+    if on_snapshot.called_count != 1:
         raise AssertionError(
-            "Failed to get exactly two document changes: count: " +
+            "Failed to get exactly one document change: count: " +
             str(on_snapshot.called_count))
 
 
@@ -983,6 +971,11 @@ def test_watch_query_order(client, cleanup):
     on_snapshot.failed = None
     query_ref.on_snapshot(on_snapshot)
 
+<<<<<<< HEAD
+=======
+    sleep(1)
+
+>>>>>>> crwilcox/firestore-watch
     doc_ref1.set({
         u'first': u'Ada' + unique_id,
         u'last': u'Lovelace',
