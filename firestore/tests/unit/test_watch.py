@@ -704,11 +704,13 @@ class DummyFirestoreStub(object):
     def Listen(self):  # pragma: NO COVER
         pass
 
+
 class DummyFirestoreClient(object):
     def __init__(self):
         self.transport = mock.Mock(
             _stubs={'firestore_stub': DummyFirestoreStub()}
         )
+
 
 class DummyDocumentReference(object):
     def __init__(self, *document_path, **kw):
@@ -738,6 +740,7 @@ class DummyQuery(object):  # pragma: NO COVER
 
     def _to_protobuf(self):
         return ''
+
 
 class DummyFirestore(object):
     _firestore_api = DummyFirestoreClient()
