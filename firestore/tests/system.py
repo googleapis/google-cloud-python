@@ -971,11 +971,8 @@ def test_watch_query_order(client, cleanup):
     on_snapshot.failed = None
     query_ref.on_snapshot(on_snapshot)
 
-<<<<<<< HEAD
-=======
     sleep(1)
 
->>>>>>> crwilcox/firestore-watch
     doc_ref1.set({
         u'first': u'Ada' + unique_id,
         u'last': u'Lovelace',

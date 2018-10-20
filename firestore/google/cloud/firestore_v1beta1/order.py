@@ -225,9 +225,7 @@ class Order(object):
 
     @staticmethod
     def _compare_to(left, right):
-        if left < right:
-            return -1
-        elif left == right:
-            return 0
-        # left > right
-        return 1
+        # We can't just use cmp(left, right) because cmp doesn't exist
+        # in Python 3, so this is an equivalent suggested by
+        # https://docs.python.org/3.0/whatsnew/3.0.html#ordering-comparisons
+        return (left > right) - (left < right)
