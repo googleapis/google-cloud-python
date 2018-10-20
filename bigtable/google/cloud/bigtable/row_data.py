@@ -305,6 +305,20 @@ def _retry_read_rows_exception(exc):
                             exceptions.DeadlineExceeded))
 
 
+DEFAULT_RETRY_READ_ROWS = retry.Retry(
+    predicate=_retry_read_rows_exception,
+    initial=1.0,
+    maximum=15.0,
+    multiplier=2.0,
+    deadline=60.0,  # 60 seconds
+)
+"""The default retry strategy to be used on retry-able errors.
+
+Used by :meth:`~google.cloud.bigtable.row_data.PartialRowsData.
+                                            _read_next_response`.
+"""
+
+
 class PartialRowsData(object):
     """Convenience wrapper for consuming a ``ReadRows`` streaming response.
 
@@ -319,6 +333,13 @@ class PartialRowsData(object):
                     identified by self.last_scanned_row_key. The retry happens
                     inside of the Retry class, using a predicate for the
                     expected exceptions during iteration.
+
+    :type retry: :class:`~google.api_core.retry.Retry`
+    :param retry: (Optional) Retry delay and deadline arguments. To override,
+                  the default value :attr:`DEFAULT_RETRY_READ_ROWS` can be
+                  used and modified with the
+                  :meth:`~google.api_core.retry.Retry.with_delay` method or the
+                  :meth:`~google.api_core.retry.Retry.with_deadline` method.
     """
 
     NEW_ROW = 'New row'  # No cells yet complete for row
@@ -333,7 +354,8 @@ class PartialRowsData(object):
                    STATE_ROW_IN_PROGRESS: ROW_IN_PROGRESS,
                    STATE_CELL_IN_PROGRESS: CELL_IN_PROGRESS}
 
-    def __init__(self, read_method, request):
+    def __init__(self, read_method, request,
+                 retry=DEFAULT_RETRY_READ_ROWS):
         # Counter for rows returned to the user
         self._counter = 0
         # In-progress row, unset until first response, after commit/reset
@@ -349,6 +371,7 @@ class PartialRowsData(object):
         self.last_scanned_row_key = None
         self.read_method = read_method
         self.request = request
+        self.retry = retry
         self.response_iterator = read_method(request)
 
         self.rows = {}
@@ -405,10 +428,7 @@ class PartialRowsData(object):
 
     def _read_next_response(self):
         """Helper for :meth:`__iter__`."""
-        retry_ = retry.Retry(
-            predicate=_retry_read_rows_exception,
-            deadline=60)
-        return retry_(self._read_next, on_error=self._on_error)()
+        return self.retry(self._read_next, on_error=self._on_error)()
 
     def __iter__(self):
         """Consume the ``ReadRowsResponse``s from the stream.
