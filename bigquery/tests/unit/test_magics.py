@@ -282,8 +282,10 @@ def test_bigquery_magic_with_formatting_params():
         run_query_mock.return_value = query_job_mock
 
         ip.run_cell_magic('bigquery', 'df --params {"num":17}', sql)
+        run_query_mock.assert_called_once_with(mock.ANY, sql.format(num=17), mock.ANY)
 
     assert 'df' in ip.user_ns        # verify that variable exists
     df = ip.user_ns['df']
     assert len(df) == len(result)    # verify row count
     assert list(df) == list(result)  # verify column names
+

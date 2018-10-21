@@ -40,7 +40,7 @@
         query is finished. By default, this information will be displayed but
         will be cleared after the query is finished.
     * ``--params <params dictionary>`` (optional, line argument):
-        If present, the argument will be parsed into a dictionary. This dictionary
+        If present, the argument must be a parsable JSON string. This dictionary
         will be used to format values enclosed within {} in the query.
     * ``<query>`` (required, cell argument):
         SQL query to run.
