@@ -338,8 +338,10 @@ class PartialRowsData(object):
     :param retry: (Optional) Retry delay and deadline arguments. To override,
                   the default value :attr:`DEFAULT_RETRY_READ_ROWS` can be
                   used and modified with the
-                  :meth:`~google.api_core.retry.Retry.with_delay` method or the
-                  :meth:`~google.api_core.retry.Retry.with_deadline` method.
+                  .. :meth::`~google.api_core.retry.Retry.with_delay` method
+                  or the
+                  .. :meth::`~google.api_core.retry.Retry.with_deadline`
+                  method.
     """
 
     NEW_ROW = 'New row'  # No cells yet complete for row
