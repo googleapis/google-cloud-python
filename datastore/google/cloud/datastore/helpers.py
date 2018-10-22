@@ -212,8 +212,6 @@ def entity_to_protobuf(entity):
 
     for name, value in entity.items():
         value_is_list = isinstance(value, list)
-        if value_is_list and len(value) == 0:
-            continue
 
         value_pb = _new_value_pb(entity_pb, name)
         # Set the appropriate value.
@@ -453,10 +451,14 @@ def _set_protobuf_value(value_pb, val):
         entity_pb = entity_to_protobuf(val)
         value_pb.entity_value.CopyFrom(entity_pb)
     elif attr == 'array_value':
-        l_pb = value_pb.array_value.values
-        for item in val:
-            i_pb = l_pb.add()
-            _set_protobuf_value(i_pb, item)
+        if len(val) == 0:
+            array_value = entity_pb2.ArrayValue(values=[])
+            value_pb.array_value.CopyFrom(array_value)
+        else:
+            l_pb = value_pb.array_value.values
+            for item in val:
+                i_pb = l_pb.add()
+                _set_protobuf_value(i_pb, item)
     elif attr == 'geo_point_value':
         value_pb.geo_point_value.CopyFrom(val)
     else:  # scalar, just assign
