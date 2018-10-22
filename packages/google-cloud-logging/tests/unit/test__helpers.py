@@ -44,7 +44,7 @@ class Test_entry_from_resource(unittest.TestCase):
         self.assertEqual(mock_class.called, (resource, client, loggers))
 
     def test_wo_payload(self):
-        self._payload_helper(None, 'EmptyEntry')
+        self._payload_helper(None, 'LogEntry')
 
     def test_text_payload(self):
         self._payload_helper('textPayload', 'TextEntry')
