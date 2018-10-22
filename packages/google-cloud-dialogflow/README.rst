@@ -6,7 +6,7 @@ Dialogflow: Python Client
     Python idiomatic client for `Dialogflow`_
 
 `Dialogflow`_ is an enterprise-grade NLU platform that makes it easy for
-developers to design and integrate conversational user interfaces int
+developers to design and integrate conversational user interfaces into
 mobile apps, web applications, devices, and bots.
 
 * `Dialogflow Python Client API Reference <http://dialogflow-python-client-v2.readthedocs.io/en/latest/>`_
