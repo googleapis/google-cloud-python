@@ -1,0 +1,8 @@
+[run]
+omit =
+    *_pb2_grpc.py
+
+[report]
+exclude_lines =
+    pragma: no cover
+    def from_service_account_file
