@@ -338,15 +338,13 @@ class TestFilterNode:
             query.FilterNode("name", "=", key)
 
     @staticmethod
-    @unittest.mock.patch("google.cloud.ndb.query.DisjunctionNode")
-    def test_constructor_in(disjunction_node):
+    def test_constructor_in():
         or_node = query.FilterNode("a", "in", ("x", "y", "z"))
-        assert or_node is disjunction_node.return_value
 
         filter_node1 = query.FilterNode("a", "=", "x")
         filter_node2 = query.FilterNode("a", "=", "y")
         filter_node3 = query.FilterNode("a", "=", "z")
-        disjunction_node.assert_called_once_with(
+        assert or_node == query.DisjunctionNode(
             filter_node1, filter_node2, filter_node3
         )
 
@@ -369,14 +367,12 @@ class TestFilterNode:
             query.FilterNode("a", "in", {})
 
     @staticmethod
-    @unittest.mock.patch("google.cloud.ndb.query.DisjunctionNode")
-    def test_constructor_ne(disjunction_node):
+    def test_constructor_ne():
         or_node = query.FilterNode("a", "!=", 2.5)
-        assert or_node is disjunction_node.return_value
 
         filter_node1 = query.FilterNode("a", "<", 2.5)
         filter_node2 = query.FilterNode("a", ">", 2.5)
-        disjunction_node.assert_called_once_with(filter_node1, filter_node2)
+        assert or_node == query.DisjunctionNode(filter_node1, filter_node2)
 
     @staticmethod
     def test_pickling():
