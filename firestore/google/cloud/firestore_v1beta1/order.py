@@ -126,24 +126,17 @@ class Order(object):
     def compare_geo_points(left, right):
         left_value = decode_value(left, None)
         right_value = decode_value(right, None)
-        cmp = 0
-        if left_value.latitude < right_value.latitude:
-            cmp = -1
-        elif left_value.latitude == right_value.latitude:
-            cmp = 0
-        else:
-            cmp = 1
+        cmp = (
+            (left_value.latitude > right_value.latitude) -
+            (left_value.latitude < right_value.latitude)
+        )
 
         if cmp != 0:
             return cmp
-        else:
-            if left_value.longitude < right_value.longitude:
-                cmp = -1
-            elif left_value.longitude == right_value.longitude:
-                cmp = 0
-            else:
-                cmp = 1
-            return cmp
+        return (
+            (left_value.longitude > right_value.longitude) -
+            (left_value.longitude < right_value.longitude)
+        )
 
     @staticmethod
     def compare_resource_paths(left, right):
@@ -162,12 +155,7 @@ class Order(object):
 
         left_length = len(left)
         right_length = len(right)
-        if left_length < right_length:
-            return -1
-        if left_length > right_length:
-            return 1
-
-        return 0
+        return (left_length > right_length) - (left_length < right_length)
 
     @staticmethod
     def compare_arrays(left, right):
@@ -216,18 +204,11 @@ class Order(object):
         if math.isnan(right):
             return 1
 
-        if left == -0.0:
-            left = 0
-        if right == -0.0:
-            right = 0
-
         return Order._compare_to(left, right)
 
     @staticmethod
     def _compare_to(left, right):
-        if left < right:
-            return -1
-        elif left == right:
-            return 0
-        # left > right
-        return 1
+        # We can't just use cmp(left, right) because cmp doesn't exist
+        # in Python 3, so this is an equivalent suggested by
+        # https://docs.python.org/3.0/whatsnew/3.0.html#ordering-comparisons
+        return (left > right) - (left < right)
