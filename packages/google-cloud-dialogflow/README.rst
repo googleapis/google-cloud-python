@@ -1,7 +1,7 @@
 Dialogflow: Python Client
 =========================
 
-|release level| |circleci| |codecov|
+|release level|
 
     Python idiomatic client for `Dialogflow`_
 
