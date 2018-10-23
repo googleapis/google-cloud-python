@@ -265,6 +265,8 @@ class IndexState:
 
 
 class ModelAdapter:
+    __slots__ = ()
+
     def __init__(self, *args, **kwargs):
         raise NotImplementedError
 
@@ -275,6 +277,8 @@ def make_connection(*args, **kwargs):
 
 class ModelAttribute:
     """Base for classes that implement a ``_fix_up()`` method."""
+
+    __slots__ = ()
 
     def _fix_up(self, cls, code_name):
         """Fix-up property name. To be implemented by subclasses.
@@ -485,111 +489,155 @@ class Property(ModelAttribute):
 
 
 class ModelKey(Property):
+    __slots__ = ()
+
     def __init__(self, *args, **kwargs):
         raise NotImplementedError
 
 
 class BooleanProperty(Property):
+    __slots__ = ()
+
     def __init__(self, *args, **kwargs):
         raise NotImplementedError
 
 
 class IntegerProperty(Property):
+    __slots__ = ()
+
     def __init__(self, *args, **kwargs):
         raise NotImplementedError
 
 
 class FloatProperty(Property):
+    __slots__ = ()
+
     def __init__(self, *args, **kwargs):
         raise NotImplementedError
 
 
 class BlobProperty(Property):
+    __slots__ = ()
+
     def __init__(self, *args, **kwargs):
         raise NotImplementedError
 
 
 class TextProperty(BlobProperty):
+    __slots__ = ()
+
     def __init__(self, *args, **kwargs):
         raise NotImplementedError
 
 
 class StringProperty(TextProperty):
+    __slots__ = ()
+
     def __init__(self, *args, **kwargs):
         raise NotImplementedError
 
 
 class GeoPtProperty(Property):
+    __slots__ = ()
+
     def __init__(self, *args, **kwargs):
         raise NotImplementedError
 
 
 class PickleProperty(BlobProperty):
+    __slots__ = ()
+
     def __init__(self, *args, **kwargs):
         raise NotImplementedError
 
 
 class JsonProperty(BlobProperty):
+    __slots__ = ()
+
     def __init__(self, *args, **kwargs):
         raise NotImplementedError
 
 
 class UserProperty(Property):
+    __slots__ = ()
+
     def __init__(self, *args, **kwargs):
         raise NotImplementedError
 
 
 class KeyProperty(Property):
+    __slots__ = ()
+
     def __init__(self, *args, **kwargs):
         raise NotImplementedError
 
 
 class BlobKeyProperty(Property):
+    __slots__ = ()
+
     def __init__(self, *args, **kwargs):
         raise NotImplementedError
 
 
 class DateTimeProperty(Property):
+    __slots__ = ()
+
     def __init__(self, *args, **kwargs):
         raise NotImplementedError
 
 
 class DateProperty(DateTimeProperty):
+    __slots__ = ()
+
     def __init__(self, *args, **kwargs):
         raise NotImplementedError
 
 
 class TimeProperty(DateTimeProperty):
+    __slots__ = ()
+
     def __init__(self, *args, **kwargs):
         raise NotImplementedError
 
 
 class StructuredProperty(Property):
+    __slots__ = ()
+
     def __init__(self, *args, **kwargs):
         raise NotImplementedError
 
 
 class LocalStructuredProperty(BlobProperty):
+    __slots__ = ()
+
     def __init__(self, *args, **kwargs):
         raise NotImplementedError
 
 
 class GenericProperty(Property):
+    __slots__ = ()
+
     def __init__(self, *args, **kwargs):
         raise NotImplementedError
 
 
 class ComputedProperty(GenericProperty):
+    __slots__ = ()
+
     def __init__(self, *args, **kwargs):
         raise NotImplementedError
 
 
 class MetaModel(type):
+    __slots__ = ()
+
     def __new__(self, *args, **kwargs):
         raise NotImplementedError
 
 
 class Model:
+    __slots__ = ()
+
     def __init__(self, *args, **kwargs):
         raise NotImplementedError
 
@@ -605,6 +653,8 @@ class Model:
 
 
 class Expando(Model):
+    __slots__ = ()
+
     def __init__(self, *args, **kwargs):
         raise NotImplementedError
 
