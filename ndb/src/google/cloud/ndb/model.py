@@ -725,6 +725,40 @@ class Property(ModelAttribute):
         cache[names] = methods
         return methods
 
+    def _apply_list(self, methods):
+        """Chain together a list of callables for transforming a value.
+
+        .. note::
+
+            Each callable in ``methods`` is an unbound instance method, e.g.
+            accessed via ``Property.foo`` rather than ``instance.foo``.
+            Therefore, calling these methods will require ``self`` as the
+            first argument.
+
+        If one of the method returns :data:`None`, the previous value is kept;
+        otherwise the last value is replace.
+
+        Exceptions thrown by a method in ``methods`` are not caught, so it
+        is up to the caller to catch them.
+
+        Args:
+            methods (Iterable[Callable[[Any], Any]]): An iterable of methods
+                to apply to a value.
+
+        Returns:
+            Callable[[Any], Any]: A callable that takes a single value and
+            applies each method in ``methods`` to it.
+        """
+
+        def call(value):
+            for method in methods:
+                new_value = method(self, value)
+                if new_value is not None:
+                    value = new_value
+            return value
+
+        return call
+
 
 class ModelKey(Property):
     __slots__ = ()

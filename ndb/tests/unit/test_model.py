@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import types
 import unittest.mock
 
 import pytest
@@ -639,6 +640,25 @@ class TestProperty:
 
         methods = [SomeProperty.IN, SomeProperty.find_me, model.Property.IN]
         assert SomeProperty._find_methods("IN", "find_me") == methods
+
+    @staticmethod
+    def test__apply_list():
+        method1 = unittest.mock.Mock(spec=())
+        method2 = unittest.mock.Mock(spec=(), return_value=None)
+        method3 = unittest.mock.Mock(spec=())
+
+        prop = model.Property(name="benji")
+        to_call = prop._apply_list([method1, method2, method3])
+        assert isinstance(to_call, types.FunctionType)
+
+        value = unittest.mock.sentinel.value
+        result = to_call(value)
+        assert result is method3.return_value
+
+        # Check mocks.
+        method1.assert_called_once_with(prop, value)
+        method2.assert_called_once_with(prop, method1.return_value)
+        method3.assert_called_once_with(prop, method1.return_value)
 
 
 class TestModelKey:
