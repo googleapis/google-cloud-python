@@ -48,3 +48,7 @@ class Rollback(Error):
     Note that *any* exception raised by a transaction function will cause a
     rollback. Hence, this exception type is purely for convenience.
     """
+
+
+class BadQueryError(Error):
+    """Raised by Query when a query or query string is invalid."""
