@@ -25,16 +25,22 @@ __all__ = [
 
 
 class AutoBatcher:
+    __slots__ = ()
+
     def __init__(self, *args, **kwargs):
         raise NotImplementedError
 
 
 class Context:
+    __slots__ = ()
+
     def __init__(self, *args, **kwargs):
         raise NotImplementedError
 
 
 class ContextOptions:
+    __slots__ = ()
+
     def __init__(self, *args, **kwargs):
         raise NotImplementedError
 
@@ -43,5 +49,7 @@ EVENTUAL_CONSISTENCY = 1
 
 
 class TransactionOptions:
+    __slots__ = ()
+
     def __init__(self, *args, **kwargs):
         raise NotImplementedError

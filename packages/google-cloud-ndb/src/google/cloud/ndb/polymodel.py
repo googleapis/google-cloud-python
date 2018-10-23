@@ -19,5 +19,7 @@ __all__ = ["PolyModel"]
 
 
 class PolyModel:
+    __slots__ = ()
+
     def __init__(self, *args, **kwargs):
         raise NotImplementedError
