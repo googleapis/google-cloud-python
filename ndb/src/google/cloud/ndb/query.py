@@ -406,11 +406,11 @@ class FilterNode(Node):
                 return nodes[0]
             return DisjunctionNode(*nodes)
 
-        self = super(FilterNode, cls).__new__(cls)
-        self._name = name
-        self._opsymbol = opsymbol
-        self._value = value
-        return self
+        instance = super(FilterNode, cls).__new__(cls)
+        instance._name = name
+        instance._opsymbol = opsymbol
+        instance._value = value
+        return instance
 
     def __getnewargs__(self):
         """Private API used to specify ``__new__`` arguments when unpickling.
@@ -487,9 +487,9 @@ class PostFilterNode(Node):
     __slots__ = ("predicate",)
 
     def __new__(cls, predicate):
-        self = super(PostFilterNode, cls).__new__(cls)
-        self.predicate = predicate
-        return self
+        instance = super(PostFilterNode, cls).__new__(cls)
+        instance.predicate = predicate
+        return instance
 
     def __getnewargs__(self):
         """Private API used to specify ``__new__`` arguments when unpickling.
@@ -671,9 +671,9 @@ class ConjunctionNode(Node):
                 *[ConjunctionNode(*segment) for segment in clauses.or_parts]
             )
 
-        self = super(ConjunctionNode, cls).__new__(cls)
-        self._nodes = clauses.or_parts[0]
-        return self
+        instance = super(ConjunctionNode, cls).__new__(cls)
+        instance._nodes = clauses.or_parts[0]
+        return instance
 
     def __getnewargs__(self):
         """Private API used to specify ``__new__`` arguments when unpickling.
@@ -807,15 +807,15 @@ class DisjunctionNode(Node):
         elif len(nodes) == 1:
             return nodes[0]
 
-        self = super(DisjunctionNode, cls).__new__(cls)
-        self._nodes = []
+        instance = super(DisjunctionNode, cls).__new__(cls)
+        instance._nodes = []
 
         clauses = _BooleanClauses("DisjunctionNode", combine_or=True)
         for node in nodes:
             clauses.add_node(node)
 
-        self._nodes[:] = clauses.or_parts
-        return self
+        instance._nodes[:] = clauses.or_parts
+        return instance
 
     def __getnewargs__(self):
         """Private API used to specify ``__new__`` arguments when unpickling.
