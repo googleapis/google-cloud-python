@@ -83,6 +83,7 @@ def system(session):
     for local_dep in LOCAL_DEPS:
         session.install('-e', local_dep)
     session.install('-e', '../test_utils/')
+    session.install('-e', '../trace/')
     session.install('-e', '.[opencensus]')
 
     # Run py.test against the system tests.

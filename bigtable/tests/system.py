@@ -85,6 +85,14 @@ retry_429 = RetryErrors(TooManyRequests)
 
 def setUpModule():
     from google.cloud.exceptions import GrpcRendezvous
+    from opencensus.trace.tracer import Tracer
+    from opencensus.trace.exporters import stackdriver_exporter
+    from opencensus.trace.ext.grpc import client_interceptor
+
+    exporter = stackdriver_exporter.StackdriverExporter()
+    tracer = Tracer(exporter=exporter)
+    tracer_interceptor = client_interceptor.OpenCensusClientInterceptor(
+        tracer)
 
     Config.IN_EMULATOR = os.getenv(BIGTABLE_EMULATOR) is not None
 
@@ -92,7 +100,8 @@ def setUpModule():
         credentials = EmulatorCreds()
         Config.CLIENT = Client(admin=True, credentials=credentials)
     else:
-        Config.CLIENT = Client(admin=True)
+        Config.CLIENT = Client(
+            admin=True, grpc_interceptors=[tracer_interceptor])
 
     Config.INSTANCE = Config.CLIENT.instance(INSTANCE_ID, labels=LABELS)
     Config.CLUSTER = Config.INSTANCE.cluster(
