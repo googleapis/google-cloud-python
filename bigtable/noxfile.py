@@ -60,6 +60,13 @@ def unit(session):
 
 
 @nox.session(python=['2.7', '3.7'])
+def unit_opencensus(session):
+    """Run the unit test suite with the 'opencensus' extra installed."""
+    session.install('-e', '.[opencensus]')
+    default(session)
+
+
+@nox.session(python=['2.7', '3.7'])
 def system(session):
     """Run the system test suite."""
 
@@ -76,7 +83,7 @@ def system(session):
     for local_dep in LOCAL_DEPS:
         session.install('-e', local_dep)
     session.install('-e', '../test_utils/')
-    session.install('-e', '.')
+    session.install('-e', '.[opencensus]')
 
     # Run py.test against the system tests.
     session.run('py.test', '--quiet', 'tests/system.py', *session.posargs)

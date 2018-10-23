@@ -34,6 +34,7 @@ dependencies = [
     'grpc-google-iam-v1<0.12dev,>=0.11.4'
 ]
 extras = {
+    'opencensus': 'opencensus>=0.1.8,<0.2',
 }
 
 
