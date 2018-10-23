@@ -685,6 +685,46 @@ class Property(ModelAttribute):
         """
         raise NotImplementedError("Missing datastore_query.PropertyOrder")
 
+    @classmethod
+    def _find_methods(cls, *names, reverse=False):
+        """Compute a list of composable methods.
+
+        Because this is a common operation and the class hierarchy is
+        static, the outcome is cached (assuming that for a particular list
+        of names the reversed flag is either always on, or always off).
+
+        Args:
+            names (Tuple[str, ...]): One or more method names to look up on
+                the current class or base classes.
+            reverse (bool): Optional flag, default False; if True, the list is
+              reversed.
+
+        Returns:
+            List[Callable]: Class method objects.
+        """
+        # Get cache on current class / set cache if it doesn't exist.
+        cache = cls.__dict__.get("_find_methods_cache")
+        if cache:
+            hit = cache.get(names)
+            if hit is not None:
+                return hit
+        else:
+            cache = {}
+            cls._find_methods_cache = cache
+
+        methods = []
+        for klass in cls.__mro__:
+            for name in names:
+                method = klass.__dict__.get(name)
+                if method is not None:
+                    methods.append(method)
+
+        if reverse:
+            methods.reverse()
+
+        cache[names] = methods
+        return methods
+
 
 class ModelKey(Property):
     __slots__ = ()

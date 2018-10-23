@@ -154,7 +154,7 @@ class Node:
     """Base class for filter expression tree nodes.
 
     Tree nodes are considered immutable, even though they can contain
-    Parameter instances, which are not.  In particular, two identical
+    Parameter instances, which are not. In particular, two identical
     trees may be represented by the same Node object in different
     contexts.
 

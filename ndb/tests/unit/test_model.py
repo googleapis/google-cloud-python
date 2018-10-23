@@ -582,6 +582,64 @@ class TestProperty:
         with pytest.raises(NotImplementedError):
             +prop
 
+    @staticmethod
+    def _property_subtype():
+        class SomeProperty(model.Property):
+            def find_me(self):
+                return self._name
+
+            def IN(self):
+                return len(self._name) < 20
+
+        prop = SomeProperty(name="hi")
+        assert prop.find_me() == b"hi"
+        assert prop.IN()
+
+        return SomeProperty
+
+    def test__find_methods(self):
+        SomeProperty = self._property_subtype()
+        # Make sure no cache is set.
+        assert getattr(SomeProperty, "_find_methods_cache", None) is None
+
+        methods = SomeProperty._find_methods("IN", "find_me")
+        assert methods == [
+            SomeProperty.IN,
+            SomeProperty.find_me,
+            model.Property.IN,
+        ]
+        # Check cache
+        assert SomeProperty._find_methods_cache == {("IN", "find_me"): methods}
+
+    def test__find_methods_reverse(self):
+        SomeProperty = self._property_subtype()
+        # Make sure no cache is set.
+        assert getattr(SomeProperty, "_find_methods_cache", None) is None
+
+        methods = SomeProperty._find_methods("IN", "find_me", reverse=True)
+        assert methods == [
+            model.Property.IN,
+            SomeProperty.find_me,
+            SomeProperty.IN,
+        ]
+        # Check cache
+        assert SomeProperty._find_methods_cache == {("IN", "find_me"): methods}
+
+    def test__find_methods_cached(self):
+        SomeProperty = self._property_subtype()
+        # Set cache
+        methods = unittest.mock.sentinel.methods
+        SomeProperty._find_methods_cache = {("IN", "find_me"): methods}
+        assert SomeProperty._find_methods("IN", "find_me") is methods
+
+    def test__find_methods_not_in_cache(self):
+        SomeProperty = self._property_subtype()
+        # Set cache
+        SomeProperty._find_methods_cache = {("find_me",): None}
+
+        methods = [SomeProperty.IN, SomeProperty.find_me, model.Property.IN]
+        assert SomeProperty._find_methods("IN", "find_me") == methods
+
 
 class TestModelKey:
     @staticmethod
