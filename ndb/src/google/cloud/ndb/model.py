@@ -685,6 +685,62 @@ class Property(ModelAttribute):
         """
         raise NotImplementedError("Missing datastore_query.PropertyOrder")
 
+    def _do_validate(self, value):
+        """Call all validations on the value.
+
+        This transforms the ``value`` via:
+
+        * Calling the derived ``_validate()`` method(s) (on subclasses that
+          don't define ``_to_base_type``),
+        * Calling the custom validator function
+
+        After transforming, it checks if the transformed value is in
+        ``choices`` (if defined).
+
+        It's possible that one of the ``_validate()`` methods will raise
+        an exception.
+
+        If ``value`` is a base-value, this will do nothing and return it.
+
+        .. note::
+
+            This does not call all composable ``_validate()`` methods.
+            It only calls ``_validate()`` methods up to the
+            first class in the hierarchy that defines a ``_to_base_type()``
+            method, when the MRO is traversed looking for ``_validate()`` and
+            ``_to_base_type()`` methods.
+
+        .. note::
+
+            For a repeated property this method should be called
+            for each value in the list, not for the list as a whole.
+
+        Args:
+            value (Any): The value to be converted / validated.
+
+        Returns:
+            Any: The transformed ``value``, possibly modified in an idempotent
+            way.
+        """
+        if isinstance(value, _BaseValue):
+            return value
+
+        value = self._call_shallow_validation(value)
+
+        if self._validator is not None:
+            new_value = self._validator(self, value)
+            if new_value is not None:
+                value = new_value
+
+        if self._choices is not None:
+            if value not in self._choices:
+                raise exceptions.BadValueError(
+                    "Value {!r} for property {} is not an allowed "
+                    "choice".format(value, self._name)
+                )
+
+        return value
+
     def _call_to_base_type(self, value):
         """Call all ``_validate()`` and ``_to_base_type()`` methods on value.
 

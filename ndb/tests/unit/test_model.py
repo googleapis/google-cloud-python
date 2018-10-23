@@ -584,6 +584,58 @@ class TestProperty:
             +prop
 
     @staticmethod
+    def test__do_validate(property_clean_cache):
+        validator = unittest.mock.Mock(spec=())
+        value = 18
+        choices = (1, 2, validator.return_value)
+
+        prop = model.Property(name="foo", validator=validator, choices=choices)
+        result = prop._do_validate(value)
+        assert result is validator.return_value
+        # Check validator call.
+        validator.assert_called_once_with(prop, value)
+
+    @staticmethod
+    def test__do_validate_base_value():
+        value = model._BaseValue(b"\x00\x01")
+
+        prop = model.Property(name="foo")
+        result = prop._do_validate(value)
+        assert result is value
+
+    @staticmethod
+    def test__do_validate_validator_none(property_clean_cache):
+        validator = unittest.mock.Mock(spec=(), return_value=None)
+        value = 18
+
+        prop = model.Property(name="foo", validator=validator)
+        result = prop._do_validate(value)
+        assert result == value
+        # Check validator call.
+        validator.assert_called_once_with(prop, value)
+
+    @staticmethod
+    def test__do_validate_not_in_choices(property_clean_cache):
+        value = 18
+        prop = model.Property(name="foo", choices=(1, 2))
+
+        with pytest.raises(exceptions.BadValueError):
+            prop._do_validate(value)
+
+    @staticmethod
+    def test__do_validate_call_validation():
+        class SimpleProperty(model.Property):
+            def _validate(self, value):
+                value.append("SimpleProperty._validate")
+                return value
+
+        value = []
+        prop = SimpleProperty(name="foo")
+        result = prop._do_validate(value)
+        assert result is value
+        assert value == ["SimpleProperty._validate"]
+
+    @staticmethod
     def _property_subtype_chain():
         class A(model.Property):
             def _validate(self, value):
