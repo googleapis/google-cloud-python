@@ -92,3 +92,5 @@ The primary differences come from:
   a new `Property()` instance is created. This increment is not threadsafe.
   However, `ndb` was designed for `Property()` instances to be created at
   import time, so this may not be an issue.
+- `ndb.model._BaseValue` for "wrapping" non-user values should probably
+  be dropped or redesigned if possible.
