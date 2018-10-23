@@ -92,12 +92,18 @@ class _Worker(object):
         than the grace_period. This means this is effectively the longest
         amount of time the background thread will hold onto log entries
         before sending them to the server.
+        
+    :type includer_logger_name: bool
+    :param include_logger_name: (optional) Include python_logger field in
+        jsonPayload. Turn this off to enable json detection in log messages.      
     """
 
     def __init__(self, cloud_logger, grace_period=_DEFAULT_GRACE_PERIOD,
                  max_batch_size=_DEFAULT_MAX_BATCH_SIZE,
-                 max_latency=_DEFAULT_MAX_LATENCY):
+                 max_latency=_DEFAULT_MAX_LATENCY,
+                 include_logger_name=True):
         self._cloud_logger = cloud_logger
+        self._include_logger_name = include_logger_name
         self._grace_period = grace_period
         self._max_batch_size = max_batch_size
         self._max_latency = max_latency
@@ -253,17 +259,22 @@ class _Worker(object):
         :param span_id: (optional) span_id within the trace for the log entry.
                         Specify the trace parameter if span_id is set.
         """
-        self._queue.put_nowait({
+        
+        log_record = {
             'info': {
                 'message': message,
-                'python_logger': record.name,
             },
             'severity': record.levelname,
             'resource': resource,
             'labels': labels,
             'trace': trace,
             'span_id': span_id,
-        })
+        }
+        
+        if self._include_logger_name:
+            log_record['info']['python_logger'] = record.name 
+        self._queue.put_nowait(log_record)
+        
 
     def flush(self):
         """Submit any pending log records."""
@@ -293,17 +304,24 @@ class BackgroundThreadTransport(Transport):
         than the grace_period. This means this is effectively the longest
         amount of time the background thread will hold onto log entries
         before sending them to the server.
+        
+    :type includer_logger_name: bool
+    :param include_logger_name: (optional) Include python_logger field in
+                                jsonPayload. Turn this off to enable jso
+                                detection in log messages.      
     """
 
     def __init__(self, client, name, grace_period=_DEFAULT_GRACE_PERIOD,
                  batch_size=_DEFAULT_MAX_BATCH_SIZE,
-                 max_latency=_DEFAULT_MAX_LATENCY):
+                 max_latency=_DEFAULT_MAX_LATENCY,
+                 include_logger_name=True):
         self.client = client
         logger = self.client.logger(name)
         self.worker = _Worker(logger,
                               grace_period=grace_period,
                               max_batch_size=batch_size,
-                              max_latency=max_latency)
+                              max_latency=max_latency,
+                              include_logger_name=include_logger_name)
         self.worker.start()
 
     def send(self, record, message, resource=None, labels=None,
