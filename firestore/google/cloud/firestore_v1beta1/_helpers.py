@@ -852,7 +852,7 @@ def process_server_timestamp(document_data, split_on_dots=True):
         if split_on_dots:
             top_level_path = FieldPath(*field_name.split("."))
         else:
-            top_level_path = FieldPath.from_string(field_name)
+            top_level_path = FieldPath(field_name)
         if isinstance(value, dict):
             if len(value) == 0:
                 actual_data[field_name] = value
@@ -868,7 +868,7 @@ def process_server_timestamp(document_data, split_on_dots=True):
                 # Only add a key to ``actual_data`` if there is data.
                 actual_data[field_name] = sub_data
                 for sub_field_path in sub_field_paths:
-                    field_path = FieldPath.from_string(field_name)
+                    field_path = FieldPath(field_name)
                     field_path.parts = field_path.parts + sub_field_path.parts
                     field_paths.append(field_path)
         elif value is constants.SERVER_TIMESTAMP:
