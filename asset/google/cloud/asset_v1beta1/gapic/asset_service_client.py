@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+#
 # Copyright 2018 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,7 +38,7 @@ from google.longrunning import operations_pb2
 from google.protobuf import timestamp_pb2
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
-    'google-cloud-cloudasset', ).version
+    'google-cloud-asset', ).version
 
 
 class AssetServiceClient(object):
@@ -168,34 +170,30 @@ class AssetServiceClient(object):
     # Service calls
     def export_assets(self,
                       parent,
-                      content_types,
                       output_config,
                       read_time=None,
                       asset_types=None,
+                      content_type=None,
                       retry=google.api_core.gapic_v1.method.DEFAULT,
                       timeout=google.api_core.gapic_v1.method.DEFAULT,
                       metadata=None):
         """
         Exports assets with time and resource types to a given Google Cloud Storage
-        location. The output format is newline delimited JSON.
+        location. The output format is newline-delimited JSON.
         This API implements the ``google.longrunning.Operation`` API allowing users
         to keep track of the export.
 
         Example:
             >>> from google.cloud import asset_v1beta1
-            >>> from google.cloud.asset_v1beta1 import enums
             >>>
             >>> client = asset_v1beta1.AssetServiceClient()
             >>>
             >>> parent = client.project_path('[PROJECT]')
             >>>
-            >>> # TODO: Initialize ``content_types``:
-            >>> content_types = []
-            >>>
             >>> # TODO: Initialize ``output_config``:
             >>> output_config = {}
             >>>
-            >>> response = client.export_assets(parent, content_types, output_config)
+            >>> response = client.export_assets(parent, output_config)
             >>>
             >>> def callback(operation_future):
             ...     # Handle result.
@@ -207,23 +205,24 @@ class AssetServiceClient(object):
             >>> metadata = response.metadata()
 
         Args:
-            parent (str): Required. The relative name of the root asset. It can only be an
-                organization number (e.g. \"organizations/123\") or a project number
-                (e.g. \"projects/12345\").
-            content_types (list[~google.cloud.asset_v1beta1.types.ContentType]): A list of asset content types. If specified, only matching content will be
-                returned. Otherwise, no content but the asset name will be returned.
+            parent (str): Required. The relative name of the root asset. Can only be an organization
+                number (such as \"organizations/123\"), or a project id (such as
+                \"projects/my-project-id\") or a project number (such as \"projects/12345\").
             output_config (Union[dict, ~google.cloud.asset_v1beta1.types.OutputConfig]): Required. Output configuration indicating where the results will be output
                 to. All results will be in newline delimited JSON format.
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.asset_v1beta1.types.OutputConfig`
-            read_time (Union[dict, ~google.cloud.asset_v1beta1.types.Timestamp]): Timestamp to take an asset snapshot. This can only be current or past
-                time. If not specified, the current time will be used. Due to delays in
-                resource data collection and indexing, there is a volatile window during
-                which running the same query may get different results.
+            read_time (Union[dict, ~google.cloud.asset_v1beta1.types.Timestamp]): Timestamp to take an asset snapshot. This can only be set to a timestamp in
+                the past or of the current time. If not specified, the current time will be
+                used. Due to delays in resource data collection and indexing, there is a
+                volatile window during which running the same query may get different
+                results.
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.asset_v1beta1.types.Timestamp`
-            asset_types (list[str]): A list of asset types to take a snapshot for. Example:
+            asset_types (list[str]): A list of asset types of which to take a snapshot for. Example:
                 \"google.compute.disk\". If specified, only matching assets will be returned.
+            content_type (~google.cloud.asset_v1beta1.types.ContentType): Asset content type. If not specified, no content but the asset name will be
+                returned.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -249,17 +248,17 @@ class AssetServiceClient(object):
                 'export_assets'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.export_assets,
                     default_retry=self._method_configs['ExportAssets'].retry,
-                    default_timeout=self._method_configs['ExportAssets']
-                    .timeout,
+                    default_timeout=self._method_configs['ExportAssets'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
         request = asset_service_pb2.ExportAssetsRequest(
             parent=parent,
-            content_types=content_types,
             output_config=output_config,
             read_time=read_time,
             asset_types=asset_types,
+            content_type=content_type,
         )
         operation = self._inner_api_calls['export_assets'](
             request, retry=retry, timeout=timeout, metadata=metadata)
@@ -273,9 +272,9 @@ class AssetServiceClient(object):
     def batch_get_assets_history(
             self,
             parent,
-            asset_names,
             content_type,
             read_time_window,
+            asset_names=None,
             retry=google.api_core.gapic_v1.method.DEFAULT,
             timeout=google.api_core.gapic_v1.method.DEFAULT,
             metadata=None):
@@ -294,33 +293,31 @@ class AssetServiceClient(object):
             >>>
             >>> parent = client.project_path('[PROJECT]')
             >>>
-            >>> # TODO: Initialize ``asset_names``:
-            >>> asset_names = []
-            >>>
             >>> # TODO: Initialize ``content_type``:
             >>> content_type = enums.ContentType.CONTENT_TYPE_UNSPECIFIED
             >>>
             >>> # TODO: Initialize ``read_time_window``:
             >>> read_time_window = {}
             >>>
-            >>> response = client.batch_get_assets_history(parent, asset_names, content_type, read_time_window)
+            >>> response = client.batch_get_assets_history(parent, content_type, read_time_window)
 
         Args:
             parent (str): Required. The relative name of the root asset. It can only be an
-                organization ID (e.g. \"organizations/123\") or a project ID
-                (e.g. \"projects/12345\").
+                organization number (such as \"organizations/123\"), or a project id (such as
+                \"projects/my-project-id\")\"or a project number (such as \"projects/12345\").
+            content_type (~google.cloud.asset_v1beta1.types.ContentType): Required. The content type.
+            read_time_window (Union[dict, ~google.cloud.asset_v1beta1.types.TimeWindow]): Required. The time window for the asset history. The start time is
+                required. The returned results contain all temporal assets whose time
+                window overlap with read_time_window.
+                If a dict is provided, it must be of the same form as the protobuf
+                message :class:`~google.cloud.asset_v1beta1.types.TimeWindow`
             asset_names (list[str]): A list of the full names of the assets. See:
                 https://cloud.google.com/apis/design/resource_names#full_resource_name
                 Example:
                 \"//compute.googleapis.com/projects/my_project_123/zones/zone1/instances/instance1\".
 
-                The request becomes a no-op if the asset name list is empty.
-            content_type (~google.cloud.asset_v1beta1.types.ContentType): Required. The content type.
-            read_time_window (Union[dict, ~google.cloud.asset_v1beta1.types.TimeWindow]): Required. The time window for the asset history. The returned results
-                contain all temporal assets whose time window overlap with
-                read_time_window.
-                If a dict is provided, it must be of the same form as the protobuf
-                message :class:`~google.cloud.asset_v1beta1.types.TimeWindow`
+                The request becomes a no-op if the asset name list is empty, and the max
+                size of the asset name list is 100 in one request.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -345,18 +342,18 @@ class AssetServiceClient(object):
             self._inner_api_calls[
                 'batch_get_assets_history'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.batch_get_assets_history,
-                    default_retry=self._method_configs['BatchGetAssetsHistory']
-                    .retry,
-                    default_timeout=self._method_configs[
-                        'BatchGetAssetsHistory'].timeout,
+                    default_retry=self.
+                    _method_configs['BatchGetAssetsHistory'].retry,
+                    default_timeout=self.
+                    _method_configs['BatchGetAssetsHistory'].timeout,
                     client_info=self._client_info,
                 )
 
         request = asset_service_pb2.BatchGetAssetsHistoryRequest(
             parent=parent,
-            asset_names=asset_names,
             content_type=content_type,
             read_time_window=read_time_window,
+            asset_names=asset_names,
         )
         return self._inner_api_calls['batch_get_assets_history'](
             request, retry=retry, timeout=timeout, metadata=metadata)

@@ -286,7 +286,8 @@ Queue = _reflection.GeneratedProtocolMessageType('Queue', (_message.Message,), d
           all tasks in the queue.
       app_engine_http_queue:
           App Engine HTTP queue.  An App Engine queue is a queue that
-          has an [AppEngineHttpQeueue][] type.
+          has an [AppEngineHttpQueue][google.cloud.tasks.v2beta3.AppEngi
+          neHttpQueue] type.
       rate_limits:
           Rate limits for task dispatches.
           [rate\_limits][google.cloud.tasks.v2beta3.Queue.rate\_limits]

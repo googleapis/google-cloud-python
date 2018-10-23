@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+#
 # Copyright 2018 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -241,10 +243,10 @@ class WorkflowTemplateServiceClient(object):
             self._inner_api_calls[
                 'create_workflow_template'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.create_workflow_template,
-                    default_retry=self._method_configs[
-                        'CreateWorkflowTemplate'].retry,
-                    default_timeout=self._method_configs[
-                        'CreateWorkflowTemplate'].timeout,
+                    default_retry=self.
+                    _method_configs['CreateWorkflowTemplate'].retry,
+                    default_timeout=self.
+                    _method_configs['CreateWorkflowTemplate'].timeout,
                     client_info=self._client_info,
                 )
 
@@ -308,10 +310,10 @@ class WorkflowTemplateServiceClient(object):
             self._inner_api_calls[
                 'get_workflow_template'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.get_workflow_template,
-                    default_retry=self._method_configs[
-                        'GetWorkflowTemplate'].retry,
-                    default_timeout=self._method_configs['GetWorkflowTemplate']
-                    .timeout,
+                    default_retry=self._method_configs['GetWorkflowTemplate'].
+                    retry,
+                    default_timeout=self.
+                    _method_configs['GetWorkflowTemplate'].timeout,
                     client_info=self._client_info,
                 )
 
@@ -411,10 +413,10 @@ class WorkflowTemplateServiceClient(object):
             self._inner_api_calls[
                 'instantiate_workflow_template'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.instantiate_workflow_template,
-                    default_retry=self._method_configs[
-                        'InstantiateWorkflowTemplate'].retry,
-                    default_timeout=self._method_configs[
-                        'InstantiateWorkflowTemplate'].timeout,
+                    default_retry=self.
+                    _method_configs['InstantiateWorkflowTemplate'].retry,
+                    default_timeout=self.
+                    _method_configs['InstantiateWorkflowTemplate'].timeout,
                     client_info=self._client_info,
                 )
 
@@ -482,10 +484,10 @@ class WorkflowTemplateServiceClient(object):
             self._inner_api_calls[
                 'update_workflow_template'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.update_workflow_template,
-                    default_retry=self._method_configs[
-                        'UpdateWorkflowTemplate'].retry,
-                    default_timeout=self._method_configs[
-                        'UpdateWorkflowTemplate'].timeout,
+                    default_retry=self.
+                    _method_configs['UpdateWorkflowTemplate'].retry,
+                    default_timeout=self.
+                    _method_configs['UpdateWorkflowTemplate'].timeout,
                     client_info=self._client_info,
                 )
 
@@ -561,10 +563,10 @@ class WorkflowTemplateServiceClient(object):
             self._inner_api_calls[
                 'list_workflow_templates'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.list_workflow_templates,
-                    default_retry=self._method_configs['ListWorkflowTemplates']
-                    .retry,
-                    default_timeout=self._method_configs[
-                        'ListWorkflowTemplates'].timeout,
+                    default_retry=self.
+                    _method_configs['ListWorkflowTemplates'].retry,
+                    default_timeout=self.
+                    _method_configs['ListWorkflowTemplates'].timeout,
                     client_info=self._client_info,
                 )
 
@@ -633,10 +635,10 @@ class WorkflowTemplateServiceClient(object):
             self._inner_api_calls[
                 'delete_workflow_template'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.delete_workflow_template,
-                    default_retry=self._method_configs[
-                        'DeleteWorkflowTemplate'].retry,
-                    default_timeout=self._method_configs[
-                        'DeleteWorkflowTemplate'].timeout,
+                    default_retry=self.
+                    _method_configs['DeleteWorkflowTemplate'].retry,
+                    default_timeout=self.
+                    _method_configs['DeleteWorkflowTemplate'].timeout,
                     client_info=self._client_info,
                 )
 

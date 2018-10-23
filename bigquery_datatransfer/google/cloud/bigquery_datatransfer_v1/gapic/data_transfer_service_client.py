@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+#
 # Copyright 2018 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -25,6 +27,7 @@ import google.api_core.path_template
 import google.api_core.gapic_v1.routing_header
 import google.api_core.grpc_helpers
 import google.api_core.page_iterator
+import google.api_core.path_template
 import grpc
 
 from google.cloud.bigquery_datatransfer_v1.gapic import data_transfer_service_client_config
@@ -247,8 +250,8 @@ class DataTransferServiceClient(object):
                 'get_data_source'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.get_data_source,
                     default_retry=self._method_configs['GetDataSource'].retry,
-                    default_timeout=self._method_configs['GetDataSource']
-                    .timeout,
+                    default_timeout=self._method_configs['GetDataSource'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -334,10 +337,10 @@ class DataTransferServiceClient(object):
             self._inner_api_calls[
                 'list_data_sources'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.list_data_sources,
-                    default_retry=self._method_configs[
-                        'ListDataSources'].retry,
-                    default_timeout=self._method_configs['ListDataSources']
-                    .timeout,
+                    default_retry=self._method_configs['ListDataSources'].
+                    retry,
+                    default_timeout=self._method_configs['ListDataSources'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -441,10 +444,10 @@ class DataTransferServiceClient(object):
             self._inner_api_calls[
                 'create_transfer_config'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.create_transfer_config,
-                    default_retry=self._method_configs['CreateTransferConfig']
-                    .retry,
-                    default_timeout=self._method_configs[
-                        'CreateTransferConfig'].timeout,
+                    default_retry=self._method_configs['CreateTransferConfig'].
+                    retry,
+                    default_timeout=self.
+                    _method_configs['CreateTransferConfig'].timeout,
                     client_info=self._client_info,
                 )
 
@@ -539,10 +542,10 @@ class DataTransferServiceClient(object):
             self._inner_api_calls[
                 'update_transfer_config'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.update_transfer_config,
-                    default_retry=self._method_configs['UpdateTransferConfig']
-                    .retry,
-                    default_timeout=self._method_configs[
-                        'UpdateTransferConfig'].timeout,
+                    default_retry=self._method_configs['UpdateTransferConfig'].
+                    retry,
+                    default_timeout=self.
+                    _method_configs['UpdateTransferConfig'].timeout,
                     client_info=self._client_info,
                 )
 
@@ -608,10 +611,10 @@ class DataTransferServiceClient(object):
             self._inner_api_calls[
                 'delete_transfer_config'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.delete_transfer_config,
-                    default_retry=self._method_configs['DeleteTransferConfig']
-                    .retry,
-                    default_timeout=self._method_configs[
-                        'DeleteTransferConfig'].timeout,
+                    default_retry=self._method_configs['DeleteTransferConfig'].
+                    retry,
+                    default_timeout=self.
+                    _method_configs['DeleteTransferConfig'].timeout,
                     client_info=self._client_info,
                 )
 
@@ -675,10 +678,10 @@ class DataTransferServiceClient(object):
             self._inner_api_calls[
                 'get_transfer_config'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.get_transfer_config,
-                    default_retry=self._method_configs[
-                        'GetTransferConfig'].retry,
-                    default_timeout=self._method_configs['GetTransferConfig']
-                    .timeout,
+                    default_retry=self._method_configs['GetTransferConfig'].
+                    retry,
+                    default_timeout=self._method_configs['GetTransferConfig'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -765,10 +768,10 @@ class DataTransferServiceClient(object):
             self._inner_api_calls[
                 'list_transfer_configs'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.list_transfer_configs,
-                    default_retry=self._method_configs[
-                        'ListTransferConfigs'].retry,
-                    default_timeout=self._method_configs['ListTransferConfigs']
-                    .timeout,
+                    default_retry=self._method_configs['ListTransferConfigs'].
+                    retry,
+                    default_timeout=self.
+                    _method_configs['ListTransferConfigs'].timeout,
                     client_info=self._client_info,
                 )
 
@@ -866,10 +869,10 @@ class DataTransferServiceClient(object):
             self._inner_api_calls[
                 'schedule_transfer_runs'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.schedule_transfer_runs,
-                    default_retry=self._method_configs['ScheduleTransferRuns']
-                    .retry,
-                    default_timeout=self._method_configs[
-                        'ScheduleTransferRuns'].timeout,
+                    default_retry=self._method_configs['ScheduleTransferRuns'].
+                    retry,
+                    default_timeout=self.
+                    _method_configs['ScheduleTransferRuns'].timeout,
                     client_info=self._client_info,
                 )
 
@@ -938,8 +941,8 @@ class DataTransferServiceClient(object):
                 'get_transfer_run'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.get_transfer_run,
                     default_retry=self._method_configs['GetTransferRun'].retry,
-                    default_timeout=self._method_configs['GetTransferRun']
-                    .timeout,
+                    default_timeout=self._method_configs['GetTransferRun'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -1000,10 +1003,10 @@ class DataTransferServiceClient(object):
             self._inner_api_calls[
                 'delete_transfer_run'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.delete_transfer_run,
-                    default_retry=self._method_configs[
-                        'DeleteTransferRun'].retry,
-                    default_timeout=self._method_configs['DeleteTransferRun']
-                    .timeout,
+                    default_retry=self._method_configs['DeleteTransferRun'].
+                    retry,
+                    default_timeout=self._method_configs['DeleteTransferRun'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -1093,10 +1096,10 @@ class DataTransferServiceClient(object):
             self._inner_api_calls[
                 'list_transfer_runs'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.list_transfer_runs,
-                    default_retry=self._method_configs[
-                        'ListTransferRuns'].retry,
-                    default_timeout=self._method_configs['ListTransferRuns']
-                    .timeout,
+                    default_retry=self._method_configs['ListTransferRuns'].
+                    retry,
+                    default_timeout=self._method_configs['ListTransferRuns'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -1200,10 +1203,10 @@ class DataTransferServiceClient(object):
             self._inner_api_calls[
                 'list_transfer_logs'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.list_transfer_logs,
-                    default_retry=self._method_configs[
-                        'ListTransferLogs'].retry,
-                    default_timeout=self._method_configs['ListTransferLogs']
-                    .timeout,
+                    default_retry=self._method_configs['ListTransferLogs'].
+                    retry,
+                    default_timeout=self._method_configs['ListTransferLogs'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -1287,10 +1290,10 @@ class DataTransferServiceClient(object):
             self._inner_api_calls[
                 'check_valid_creds'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.check_valid_creds,
-                    default_retry=self._method_configs[
-                        'CheckValidCreds'].retry,
-                    default_timeout=self._method_configs['CheckValidCreds']
-                    .timeout,
+                    default_retry=self._method_configs['CheckValidCreds'].
+                    retry,
+                    default_timeout=self._method_configs['CheckValidCreds'].
+                    timeout,
                     client_info=self._client_info,
                 )
 

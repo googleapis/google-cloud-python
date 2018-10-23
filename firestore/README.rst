@@ -1,42 +1,9 @@
 Python Client for Google Cloud Firestore
 ========================================
 
-    Python idiomatic client for `Cloud Firestore`_
+|beta| |pypi| |versions|
 
-.. _Cloud Firestore: https://cloud.google.com/firestore/docs/
-
--  `Documentation`_
-
-.. _Documentation: https://googlecloudplatform.github.io/google-cloud-python/latest/firestore/client.html
-
-Quick Start
------------
-
-.. code-block:: console
-
-    $ pip install --upgrade google-cloud-firestore
-
-For more information on setting up your Python development environment,
-such as installing ``pip`` and ``virtualenv`` on your system, please refer
-to `Python Development Environment Setup Guide`_ for Google Cloud Platform.
-
-.. _Python Development Environment Setup Guide: https://cloud.google.com/python/setup
-
-Authentication
---------------
-
-With ``google-cloud-python`` we try to make authentication as painless as
-possible. Check out the `Authentication section`_ in our documentation to
-learn more. You may also find the `authentication document`_ shared by all
-the ``google-cloud-*`` libraries to be helpful.
-
-.. _Authentication section: https://google-cloud-python.readthedocs.io/en/latest/core/auth.html
-.. _authentication document: https://github.com/GoogleCloudPlatform/google-cloud-common/tree/master/authentication
-
-Using the API
--------------
-
-`Cloud Firestore`_ (`Firestore API docs`_) is a flexible, scalable
+The `Google Cloud Firestore`_ API is a flexible, scalable
 database for mobile, web, and server development from Firebase and Google
 Cloud Platform. Like Firebase Realtime Database, it keeps your data in
 sync across client apps through realtime listeners and offers offline support
@@ -45,17 +12,71 @@ network latency or Internet connectivity. Cloud Firestore also offers seamless
 integration with other Firebase and Google Cloud Platform products,
 including Cloud Functions.
 
-.. _Firestore API docs: https://cloud.google.com/firestore/docs/
+-  `Product Documentation`_
+-  `Client Library Documentation`_
 
-See the ``google-cloud-python`` API `firestore documentation`_ to learn how to
-interact with the Cloud Firestore using this Client Library.
+.. |beta| image:: https://img.shields.io/badge/support-beta-silver.svg
+   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#beta-support
+.. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-firestore.svg
+   :target: https://pypi.org/project/google-cloud-firestore/
+.. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-firestore.svg
+.. _Google Cloud Firestore: https://cloud.google.com/firestore/
+.. _Product Documentation: https://cloud.google.com/firestore/docs/
+.. _Client Library Documentation: https://googlecloudplatform.github.io/google-cloud-python/latest/firestore/index.html
 
-.. _firestore documentation: https://googlecloudplatform.github.io/google-cloud-python/latest/firestore/client.html
+Quick Start
+-----------
 
-See the `official Cloud Firestore documentation`_ for more details on
-how to activate Cloud Firestore for your project.
+In order to use this library, you first need to go through the following steps:
 
-.. _official Cloud Firestore documentation: https://cloud.google.com/firestore/docs/
+1. `Select or create a Cloud Platform project.`_
+2. `Enable billing for your project.`_
+3. `Enable the Google Cloud Firestore API.`_
+4. `Setup Authentication.`_
+
+.. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
+.. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
+.. _Enable the Google Cloud Firestore API.:  https://cloud.google.com/firestore
+.. _Setup Authentication.: https://googlecloudplatform.github.io/google-cloud-python/latest/core/auth.html
+
+Installation
+~~~~~~~~~~~~
+
+Install this library in a `virtualenv`_ using pip. `virtualenv`_ is a tool to
+create isolated Python environments. The basic problem it addresses is one of
+dependencies and versions, and indirectly permissions.
+
+With `virtualenv`_, it's possible to install this library without needing system
+install permissions, and without clashing with the installed system
+dependencies.
+
+.. _`virtualenv`: https://virtualenv.pypa.io/en/latest/
+
+
+Mac/Linux
+^^^^^^^^^
+
+.. code-block:: console
+
+    pip install virtualenv
+    virtualenv <your-env>
+    source <your-env>/bin/activate
+    <your-env>/bin/pip install google-cloud-firestore
+
+
+Windows
+^^^^^^^
+
+.. code-block:: console
+
+    pip install virtualenv
+    virtualenv <your-env>
+    <your-env>\Scripts\activate
+    <your-env>\Scripts\pip.exe install google-cloud-firestore
+
+
+Example Usage
+~~~~~~~~~~~~~
 
 .. code:: python
 
@@ -76,3 +97,11 @@ how to activate Cloud Firestore for your project.
 
     for doc in docs:
         print(u'{} => {}'.format(doc.id, doc.to_dict()))
+
+Next Steps
+~~~~~~~~~~
+
+-  Read the `Client Library Documentation`_ for Google Cloud Firestore API
+   API to see other available methods on the client.
+-  Read the `Product Documentation`_ to learn
+   more about the product and see How-to Guides.

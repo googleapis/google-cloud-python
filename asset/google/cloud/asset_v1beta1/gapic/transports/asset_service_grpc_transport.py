@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+#
 # Copyright 2018 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -102,7 +104,7 @@ class AssetServiceGrpcTransport(object):
         """Return the gRPC stub for {$apiMethod.name}.
 
         Exports assets with time and resource types to a given Google Cloud Storage
-        location. The output format is newline delimited JSON.
+        location. The output format is newline-delimited JSON.
         This API implements the ``google.longrunning.Operation`` API allowing users
         to keep track of the export.
 

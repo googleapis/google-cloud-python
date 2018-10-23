@@ -1,5 +1,7 @@
-Python Client for Google Container Engine API (`Alpha`_)
-========================================================
+Python Client for Google Container Engine API
+=============================================
+
+|alpha| |pypi| |versions|
 
 `Google Container Engine API`_: The Google Kubernetes Engine API is used for building and managing container
 based applications, powered by the open source Kubernetes technology.
@@ -7,7 +9,12 @@ based applications, powered by the open source Kubernetes technology.
 - `Client Library Documentation`_
 - `Product Documentation`_
 
-.. _Alpha: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/README.rst
+.. |alpha| image:: https://img.shields.io/badge/support-alpha-orange.svg
+   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#alpha-support
+.. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-container.svg
+   :target: https://pypi.org/project/google-cloud-container/
+.. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-container.svg
+   :target: https://pypi.org/project/google-cloud-container/
 .. _Google Container Engine API: https://cloud.google.com/container
 .. _Client Library Documentation: https://googlecloudplatform.github.io/google-cloud-python/latest/container/index.html
 .. _Product Documentation:  https://cloud.google.com/container
@@ -60,11 +67,8 @@ Windows
     <your-env>\Scripts\activate
     <your-env>\Scripts\pip.exe install google-cloud-container
 
-Preview
-~~~~~~~
-
-ClusterManagerClient
-^^^^^^^^^^^^^^^^^^^^
+Example Usage
+~~~~~~~~~~~~~
 
 .. code:: py
 
@@ -82,10 +86,5 @@ Next Steps
 
 -  Read the `Client Library Documentation`_ for Google Container Engine API
    API to see other available methods on the client.
--  Read the `Google Container Engine API Product documentation`_ to learn
-   more about the product and see How-to Guides.
--  View this `repository’s main README`_ to see the full list of Cloud
-   APIs that we cover.
-
-.. _Google Container Engine API Product documentation:  https://cloud.google.com/container
-.. _repository’s main README: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/README.rst
+-  Read the `Product documentation`_ to learn more about the product and see
+   How-to Guides.

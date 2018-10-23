@@ -1,5 +1,7 @@
-Python Client for Cloud Data Loss Prevention (DLP) API (`Alpha`_)
-=================================================================
+Python Client for Cloud Data Loss Prevention (DLP) API
+======================================================
+
+|alpha| |pypi| |versions|
 
 `Cloud Data Loss Prevention (DLP) API`_: Provides methods for detection, risk analysis, and de-identification of
 privacy-sensitive fragments in text, images, and Google Cloud Platform
@@ -8,7 +10,12 @@ storage repositories.
 - `Client Library Documentation`_
 - `Product Documentation`_
 
-.. _Alpha: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/README.rst
+.. |alpha| image:: https://img.shields.io/badge/support-alpha-orange.svg
+   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#alpha-support
+.. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-dlp.svg
+   :target: https://pypi.org/project/google-cloud-dlp/
+.. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-dlp.svg
+   :target: https://pypi.org/project/google-cloud-dlp/
 .. _Cloud Data Loss Prevention (DLP) API: https://cloud.google.com/dlp
 .. _Client Library Documentation: https://googlecloudplatform.github.io/google-cloud-python/latest/dlp/index.html
 .. _Product Documentation:  https://cloud.google.com/dlp
@@ -89,12 +96,7 @@ DlpServiceClient
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Cloud Data Loss Prevention (DLP) API
-   API to see other available methods on the client.
--  Read the `Cloud Data Loss Prevention (DLP) API Product documentation`_ to learn
-   more about the product and see How-to Guides.
--  View this `repository’s main README`_ to see the full list of Cloud
-   APIs that we cover.
-
-.. _Cloud Data Loss Prevention (DLP) API Product documentation:  https://cloud.google.com/dlp
-.. _repository’s main README: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/README.rst
+-  Read the `Client Library Documentation`_ for Cloud Data Loss Prevention
+   (DLP) API to see other available methods on the client.
+-  Read the `Product documentation`_ to
+   learn more about the product and see How-to Guides.

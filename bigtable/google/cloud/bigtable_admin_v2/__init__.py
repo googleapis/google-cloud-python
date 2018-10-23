@@ -25,8 +25,7 @@ from google.cloud.bigtable_admin_v2.gapic import enums
 class BigtableInstanceAdminClient(
         bigtable_instance_admin_client.BigtableInstanceAdminClient):
     __doc__ = (
-        bigtable_instance_admin_client.BigtableInstanceAdminClient.__doc__
-    )
+        bigtable_instance_admin_client.BigtableInstanceAdminClient.__doc__)
     enums = enums
 
 

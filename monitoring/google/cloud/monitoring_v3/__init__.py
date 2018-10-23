@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+#
 # Copyright 2018 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,7 +21,8 @@ from google.cloud.monitoring_v3.gapic import alert_policy_service_client
 from google.cloud.monitoring_v3.gapic import enums
 from google.cloud.monitoring_v3.gapic import group_service_client
 from google.cloud.monitoring_v3.gapic import metric_service_client
-from google.cloud.monitoring_v3.gapic import notification_channel_service_client
+from google.cloud.monitoring_v3.gapic import (
+    notification_channel_service_client as notification_client)
 from google.cloud.monitoring_v3.gapic import uptime_check_service_client
 
 
@@ -40,8 +43,8 @@ class MetricServiceClient(metric_service_client.MetricServiceClient):
 
 
 class NotificationChannelServiceClient(
-        notification_channel_service_client.NotificationChannelServiceClient):
-    __doc__ = notification_channel_service_client.NotificationChannelServiceClient.__doc__
+        notification_client.NotificationChannelServiceClient):
+    __doc__ = notification_client.NotificationChannelServiceClient.__doc__
     enums = enums
 
 

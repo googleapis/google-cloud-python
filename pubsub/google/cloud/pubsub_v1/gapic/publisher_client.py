@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+#
 # Copyright 2018 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -212,7 +214,7 @@ class PublisherClient(object):
                 underscores (``_``), periods (``.``), tildes (``~``), plus (``+``) or percent
                 signs (``%``). It must be between 3 and 255 characters in length, and it
                 must not start with ``\"goog\"``.
-            labels (dict[str -> str]): User labels.
+            labels (dict[str -> str]): See <a href=\"/pubsub/docs/labels\"> Creating and managing labels</a>.
             message_storage_policy (Union[dict, ~google.cloud.pubsub_v1.types.MessageStoragePolicy]): Policy constraining how messages published to the topic may be stored. It
                 is determined when the topic is created based on the policy configured at
                 the project level. It must not be set by the caller in the request to
@@ -246,8 +248,8 @@ class PublisherClient(object):
                 'create_topic'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.create_topic,
                     default_retry=self._method_configs['CreateTopic'].retry,
-                    default_timeout=self._method_configs['CreateTopic']
-                    .timeout,
+                    default_timeout=self._method_configs['CreateTopic'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -318,8 +320,8 @@ class PublisherClient(object):
                 'update_topic'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.update_topic,
                     default_retry=self._method_configs['UpdateTopic'].retry,
-                    default_timeout=self._method_configs['UpdateTopic']
-                    .timeout,
+                    default_timeout=self._method_configs['UpdateTopic'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -338,8 +340,7 @@ class PublisherClient(object):
                 metadata=None):
         """
         Adds one or more messages to the topic. Returns ``NOT_FOUND`` if the topic
-        does not exist. The message payload must not be empty; it must contain
-        either a non-empty data field, or at least one attribute.
+        does not exist.
 
         Example:
             >>> from google.cloud import pubsub_v1
@@ -479,8 +480,8 @@ class PublisherClient(object):
             ...         pass
 
         Args:
-            project (str): The name of the cloud project that topics belong to.
-                Format is ``projects/{project}``.
+            project (str): The name of the project in which to list topics.
+                Format is ``projects/{project-id}``.
             page_size (int): The maximum number of resources contained in the
                 underlying API response. If page streaming is performed per-
                 resource, this parameter does not affect the return value. If page
@@ -602,10 +603,10 @@ class PublisherClient(object):
             self._inner_api_calls[
                 'list_topic_subscriptions'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.list_topic_subscriptions,
-                    default_retry=self._method_configs[
-                        'ListTopicSubscriptions'].retry,
-                    default_timeout=self._method_configs[
-                        'ListTopicSubscriptions'].timeout,
+                    default_retry=self.
+                    _method_configs['ListTopicSubscriptions'].retry,
+                    default_timeout=self.
+                    _method_configs['ListTopicSubscriptions'].timeout,
                     client_info=self._client_info,
                 )
 
@@ -673,8 +674,8 @@ class PublisherClient(object):
                 'delete_topic'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.delete_topic,
                     default_retry=self._method_configs['DeleteTopic'].retry,
-                    default_timeout=self._method_configs['DeleteTopic']
-                    .timeout,
+                    default_timeout=self._method_configs['DeleteTopic'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -739,8 +740,8 @@ class PublisherClient(object):
                 'set_iam_policy'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.set_iam_policy,
                     default_retry=self._method_configs['SetIamPolicy'].retry,
-                    default_timeout=self._method_configs['SetIamPolicy']
-                    .timeout,
+                    default_timeout=self._method_configs['SetIamPolicy'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -799,8 +800,8 @@ class PublisherClient(object):
                 'get_iam_policy'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.get_iam_policy,
                     default_retry=self._method_configs['GetIamPolicy'].retry,
-                    default_timeout=self._method_configs['GetIamPolicy']
-                    .timeout,
+                    default_timeout=self._method_configs['GetIamPolicy'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -863,10 +864,10 @@ class PublisherClient(object):
             self._inner_api_calls[
                 'test_iam_permissions'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.test_iam_permissions,
-                    default_retry=self._method_configs[
-                        'TestIamPermissions'].retry,
-                    default_timeout=self._method_configs['TestIamPermissions']
-                    .timeout,
+                    default_retry=self._method_configs['TestIamPermissions'].
+                    retry,
+                    default_timeout=self._method_configs['TestIamPermissions'].
+                    timeout,
                     client_info=self._client_info,
                 )
 

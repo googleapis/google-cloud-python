@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+#
 # Copyright 2018 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -94,6 +96,36 @@ class ContentOption(enum.IntEnum):
     CONTENT_IMAGE = 2
 
 
+class MatchingType(enum.IntEnum):
+    """
+    Type of the match which can be applied to different ways of matching, like
+    Dictionary, regular expression and intersecting with findings of another
+    info type.
+
+    Attributes:
+      MATCHING_TYPE_UNSPECIFIED (int): Invalid.
+      MATCHING_TYPE_FULL_MATCH (int): Full match.
+
+      - Dictionary: join of Dictionary results matched complete finding quote
+      - Regex: all regex matches fill a finding quote start to end
+      - Exclude info type: completely inside affecting info types findings
+      MATCHING_TYPE_PARTIAL_MATCH (int): Partial match.
+
+      - Dictionary: at least one of the tokens in the finding matches
+      - Regex: substring of the finding matches
+      - Exclude info type: intersects with affecting info types findings
+      MATCHING_TYPE_INVERSE_MATCH (int): Inverse match.
+
+      - Dictionary: no tokens in the finding match the dictionary
+      - Regex: finding doesn't match the regex
+      - Exclude info type: no intersection with affecting info types findings
+    """
+    MATCHING_TYPE_UNSPECIFIED = 0
+    MATCHING_TYPE_FULL_MATCH = 1
+    MATCHING_TYPE_PARTIAL_MATCH = 2
+    MATCHING_TYPE_INVERSE_MATCH = 3
+
+
 class InfoTypeSupportedBy(enum.IntEnum):
     """
     Parts of the APIs which use certain infoTypes.
@@ -165,6 +197,18 @@ class StoredInfoTypeState(enum.IntEnum):
     READY = 2
     FAILED = 3
     INVALID = 4
+
+
+class CustomInfoType(object):
+    class ExclusionType(enum.IntEnum):
+        """
+        Attributes:
+          EXCLUSION_TYPE_UNSPECIFIED (int): A finding of this custom info type will not be excluded from results.
+          EXCLUSION_TYPE_EXCLUDE (int): A finding of this custom info type will be excluded from final results,
+          but can still affect rule execution.
+        """
+        EXCLUSION_TYPE_UNSPECIFIED = 0
+        EXCLUSION_TYPE_EXCLUDE = 1
 
 
 class CloudStorageOptions(object):

@@ -1,108 +1,294 @@
-Python Client for Cloud Speech API (`Beta`_)
-=============================================
+.. include:: /../speech/README.rst
 
-`Cloud Speech API`_: Converts audio to text by applying powerful neural network models.
+Using the Library
+-----------------
 
-- `Client Library Documentation`_
-- `Product Documentation`_
+Asynchronous Recognition
+~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. _Beta: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/README.rst
-.. _Cloud Speech API: https://cloud.google.com/speech
-.. _Client Library Documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/speech/usage.html
-.. _Product Documentation:  https://cloud.google.com/speech
+The :meth:`~.speech_v1.SpeechClient.long_running_recognize` method
+sends audio data to the Speech API and initiates a Long Running Operation.
 
-Quick Start
------------
+Using this operation, you can periodically poll for recognition results.
+Use asynchronous requests for audio data of any duration up to 80 minutes.
 
-In order to use this library, you first need to go through the following steps:
-
-1. `Select or create a Cloud Platform project.`_
-2. `Enable billing for your project.`_
-3. `Enable the Cloud Speech API.`_
-4. `Setup Authentication.`_
-
-.. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
-.. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Cloud Speech API.:  https://cloud.google.com/speech
-.. _Setup Authentication.: https://googlecloudplatform.github.io/google-cloud-python/stable/core/auth.html
-
-Installation
-~~~~~~~~~~~~
-
-Install this library in a `virtualenv`_ using pip. `virtualenv`_ is a tool to
-create isolated Python environments. The basic problem it addresses is one of
-dependencies and versions, and indirectly permissions.
-
-With `virtualenv`_, it's possible to install this library without needing system
-install permissions, and without clashing with the installed system
-dependencies.
-
-.. _`virtualenv`: https://virtualenv.pypa.io/en/latest/
+See: `Speech Asynchronous Recognize`_
 
 
-Mac/Linux
-^^^^^^^^^
+.. code-block:: python
 
-.. code-block:: console
+    >>> from google.cloud import speech
+    >>> client = speech.SpeechClient()
+    >>> operation = client.long_running_recognize(
+    ...     audio=speech.types.RecognitionAudio(
+    ...         uri='gs://my-bucket/recording.flac',
+    ...     ),
+    ...     config=speech.types.RecognitionConfig(
+    ...         encoding='LINEAR16',
+    ...         language_code='en-US',
+    ...         sample_rate_hertz=44100,
+    ...     ),
+    ... )
+    >>> op_result = operation.result()
+    >>> for result in op_result.results:
+    ...     for alternative in result.alternatives:
+    ...         print('=' * 20)
+    ...         print(alternative.transcript)
+    ...         print(alternative.confidence)
+    ====================
+    'how old is the Brooklyn Bridge'
+    0.98267895
 
-    pip install virtualenv
-    virtualenv <your-env>
-    source <your-env>/bin/activate
-    <your-env>/bin/pip install google-cloud-speech
+
+Synchronous Recognition
+~~~~~~~~~~~~~~~~~~~~~~~
+
+The :meth:`~.speech_v1.SpeechClient.recognize` method converts speech
+data to text and returns alternative text transcriptions.
+
+This example uses ``language_code='en-GB'`` to better recognize a dialect from
+Great Britain.
+
+.. code-block:: python
+
+    >>> from google.cloud import speech
+    >>> client = speech.SpeechClient()
+    >>> results = client.recognize(
+    ...     audio=speech.types.RecognitionAudio(
+    ...         uri='gs://my-bucket/recording.flac',
+    ...     ),
+    ...     config=speech.types.RecognitionConfig(
+    ...         encoding='LINEAR16',
+    ...         language_code='en-US',
+    ...         sample_rate_hertz=44100,
+    ...     ),
+    ... )
+    >>> for result in results:
+    ...     for alternative in result.alternatives:
+    ...         print('=' * 20)
+    ...         print('transcript: ' + alternative.transcript)
+    ...         print('confidence: ' + str(alternative.confidence))
+    ====================
+    transcript: Hello, this is a test
+    confidence: 0.81
+    ====================
+    transcript: Hello, this is one test
+    confidence: 0
+
+Example of using the profanity filter.
+
+.. code-block:: python
+
+    >>> from google.cloud import speech
+    >>> client = speech.SpeechClient()
+    >>> results = client.recognize(
+    ...     audio=speech.types.RecognitionAudio(
+    ...         uri='gs://my-bucket/recording.flac',
+    ...     ),
+    ...     config=speech.types.RecognitionConfig(
+    ...         encoding='LINEAR16',
+    ...         language_code='en-US',
+    ...         profanity_filter=True,
+    ...         sample_rate_hertz=44100,
+    ...     ),
+    ... )
+    >>> for result in results:
+    ...     for alternative in result.alternatives:
+    ...         print('=' * 20)
+    ...         print('transcript: ' + alternative.transcript)
+    ...         print('confidence: ' + str(alternative.confidence))
+    ====================
+    transcript: Hello, this is a f****** test
+    confidence: 0.81
+
+Using speech context hints to get better results. This can be used to improve
+the accuracy for specific words and phrases. This can also be used to add new
+words to the vocabulary of the recognizer.
+
+.. code-block:: python
+
+    >>> from google.cloud import speech
+    >>> from google.cloud import speech
+    >>> client = speech.SpeechClient()
+    >>> results = client.recognize(
+    ...     audio=speech.types.RecognitionAudio(
+    ...         uri='gs://my-bucket/recording.flac',
+    ...     ),
+    ...     config=speech.types.RecognitionConfig(
+    ...         encoding='LINEAR16',
+    ...         language_code='en-US',
+    ...         sample_rate_hertz=44100,
+    ...         speech_contexts=[speech.types.SpeechContext(
+    ...             phrases=['hi', 'good afternoon'],
+    ...         )],
+    ...     ),
+    ... )
+    >>> for result in results:
+    ...     for alternative in result.alternatives:
+    ...         print('=' * 20)
+    ...         print('transcript: ' + alternative.transcript)
+    ...         print('confidence: ' + str(alternative.confidence))
+    ====================
+    transcript: Hello, this is a test
+    confidence: 0.81
 
 
-Windows
-^^^^^^^
+Streaming Recognition
+~~~~~~~~~~~~~~~~~~~~~
 
-.. code-block:: console
+The :meth:`~speech_v1.SpeechClient.streaming_recognize` method converts
+speech data to possible text alternatives on the fly.
 
-    pip install virtualenv
-    virtualenv <your-env>
-    <your-env>\Scripts\activate
-    <your-env>\Scripts\pip.exe install google-cloud-speech
+.. note::
+    Streaming recognition requests are limited to 1 minute of audio.
 
-Preview
-~~~~~~~
+    See: https://cloud.google.com/speech/limits#content
 
-SpeechClient
-^^^^^^^^^^^^
+.. code-block:: python
 
-.. code:: py
+    >>> import io
+    >>> from google.cloud import speech
+    >>> client = speech.SpeechClient()
+    >>> config = speech.types.RecognitionConfig(
+    ...     encoding='LINEAR16',
+    ...     language_code='en-US',
+    ...     sample_rate_hertz=44100,
+    ... )
+    >>> with io.open('./hello.wav', 'rb') as stream:
+    ...     requests = [speech.types.StreamingRecognizeRequest(
+    ...         audio_content=stream.read(),
+    ...     )]
+    >>> results = sample.streaming_recognize(
+    ...     config=speech.types.StreamingRecognitionConfig(config=config),
+    ...     requests,
+    ... )
+    >>> for result in results:
+    ...     for alternative in result.alternatives:
+    ...         print('=' * 20)
+    ...         print('transcript: ' + alternative.transcript)
+    ...         print('confidence: ' + str(alternative.confidence))
+    ====================
+    transcript: hello thank you for using Google Cloud platform
+    confidence: 0.927983105183
 
-    from google.cloud import speech_v1
-    from google.cloud.speech_v1 import enums
 
-    client = speech_v1.SpeechClient()
+By default the API will perform continuous recognition
+(continuing to process audio even if the speaker in the audio pauses speaking)
+until the client closes the output stream or until the maximum time limit has
+been reached.
 
-    encoding = enums.RecognitionConfig.AudioEncoding.FLAC
-    sample_rate_hertz = 44100
-    language_code = 'en-US'
-    config = {'encoding': encoding, 'sample_rate_hertz': sample_rate_hertz, 'language_code': language_code}
-    uri = 'gs://bucket_name/file_name.flac'
-    audio = {'uri': uri}
+If you only want to recognize a single utterance you can set
+``single_utterance`` to :data:`True` and only one result will be returned.
 
-    response = client.recognize(config, audio)
+See: `Single Utterance`_
 
-Next Steps
-~~~~~~~~~~
+.. code-block:: python
 
--  Read the `Client Library Documentation`_ for Cloud Speech API
-   API to see other available methods on the client.
--  Read the `Cloud Speech API Product documentation`_ to learn
-   more about the product and see How-to Guides.
--  View this `repository’s main README`_ to see the full list of Cloud
-   APIs that we cover.
+    >>> import io
+    >>> from google.cloud import speech
+    >>> client = speech.SpeechClient()
+    >>> config = speech.types.RecognitionConfig(
+    ...     encoding='LINEAR16',
+    ...     language_code='en-US',
+    ...     sample_rate_hertz=44100,
+    ... )
+    >>> with io.open('./hello-pause-goodbye.wav', 'rb') as stream:
+    ...     requests = [speech.types.StreamingRecognizeRequest(
+    ...         audio_content=stream.read(),
+    ...     )]
+    >>> results = sample.streaming_recognize(
+    ...     config=speech.types.StreamingRecognitionConfig(
+    ...         config=config,
+    ...         single_utterance=False,
+    ...     ),
+    ...     requests,
+    ... )
+    >>> for result in results:
+    ...     for alternative in result.alternatives:
+    ...         print('=' * 20)
+    ...         print('transcript: ' + alternative.transcript)
+    ...         print('confidence: ' + str(alternative.confidence))
+    ...     for result in results:
+    ...         for alternative in result.alternatives:
+    ...             print('=' * 20)
+    ...             print('transcript: ' + alternative.transcript)
+    ...             print('confidence: ' + str(alternative.confidence))
+    ====================
+    transcript: testing a pause
+    confidence: 0.933770477772
 
-.. _Cloud Speech API Product documentation:  https://cloud.google.com/speech
-.. _repository’s main README: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/README.rst
+If ``interim_results`` is set to :data:`True`, interim results
+(tentative hypotheses) may be returned as they become available.
 
-Api Reference
+.. code-block:: python
+
+    >>> import io
+    >>> from google.cloud import speech
+    >>> client = speech.SpeechClient()
+    >>> config = speech.types.RecognitionConfig(
+    ...     encoding='LINEAR16',
+    ...     language_code='en-US',
+    ...     sample_rate_hertz=44100,
+    ... )
+    >>> with io.open('./hello.wav', 'rb') as stream:
+    ...     requests = [speech.types.StreamingRecognizeRequest(
+    ...         audio_content=stream.read(),
+    ...     )]
+    >>> config = speech.types.StreamingRecognitionConfig(config=config)
+    >>> responses = client.streaming_recognize(config,requests)
+    >>> for response in responses:
+    ...     for result in response:
+    ...         for alternative in result.alternatives:
+    ...             print('=' * 20)
+    ...             print('transcript: ' + alternative.transcript)
+    ...             print('confidence: ' + str(alternative.confidence))
+    ...             print('is_final:' + str(result.is_final))
+    ====================
+    'he'
+    None
+    False
+    ====================
+    'hell'
+    None
+    False
+    ====================
+    'hello'
+    0.973458576
+    True
+
+
+.. _Single Utterance: https://cloud.google.com/speech/reference/rpc/google.cloud.speech.v1beta1#streamingrecognitionconfig
+.. _sync_recognize: https://cloud.google.com/speech/reference/rest/v1beta1/speech/syncrecognize
+.. _Speech Asynchronous Recognize: https://cloud.google.com/speech/reference/rest/v1beta1/speech/asyncrecognize
+
+
+API Reference
 -------------
-.. toctree::
-    :maxdepth: 2
 
-    gapic/v1/api
-    gapic/v1/types
-    gapic/v1p1beta1/api
-    gapic/v1p1beta1/types
-    changelog
+.. toctree::
+  :maxdepth: 2
+
+  gapic/v1/api
+  gapic/v1/types
+
+A new beta release, spelled ``v1p1beta1``, is provided to provide for preview
+of upcoming features. In order to use this, you will want to import from
+``google.cloud.speech_v1p1beta1`` in lieu of ``google.cloud.speech``.
+
+An API and type reference is provided the first beta also:
+
+.. toctree::
+  :maxdepth: 2
+
+  gapic/v1p1beta1/api
+  gapic/v1p1beta1/types
+
+Changelog
+---------
+
+For a list of all ``google-cloud-speech`` releases:
+
+.. toctree::
+  :maxdepth: 2
+
+  changelog

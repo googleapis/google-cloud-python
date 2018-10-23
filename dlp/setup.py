@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+#
 # Copyright 2018 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,7 +21,7 @@ import setuptools
 
 name = 'google-cloud-dlp'
 description = 'Cloud Data Loss Prevention (DLP) API API client library'
-version = '0.7.0'
+version = '0.9.0'
 release_status = 'Development Status :: 3 - Alpha'
 dependencies = [
     'google-api-core[grpc] >= 1.1.0, < 2.0.0dev',

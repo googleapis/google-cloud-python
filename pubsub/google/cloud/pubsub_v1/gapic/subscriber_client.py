@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+#
 # Copyright 2018 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -214,6 +216,7 @@ class SubscriberClient(object):
                             retain_acked_messages=None,
                             message_retention_duration=None,
                             labels=None,
+                            expiration_policy=None,
                             retry=google.api_core.gapic_v1.method.DEFAULT,
                             timeout=google.api_core.gapic_v1.method.DEFAULT,
                             metadata=None):
@@ -294,7 +297,18 @@ class SubscriberClient(object):
                 use. It is not subject to any SLA or deprecation policy.
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.pubsub_v1.types.Duration`
-            labels (dict[str -> str]): User labels.
+            labels (dict[str -> str]): See <a href=\"/pubsub/docs/labels\"> Creating and managing labels</a>.
+            expiration_policy (Union[dict, ~google.cloud.pubsub_v1.types.ExpirationPolicy]): A policy that specifies the conditions for this subscription's expiration.
+                A subscription is considered active as long as any connected subscriber is
+                successfully consuming messages from the subscription or is issuing
+                operations on the subscription. If ``expiration_policy`` is not set, a
+                *default policy* with ``ttl`` of 31 days will be used. The minimum allowed
+                value for ``expiration_policy.ttl`` is 1 day.
+                <b>BETA:</b> This feature is part of a beta release. This API might be
+                changed in backward-incompatible ways and is not recommended for production
+                use. It is not subject to any SLA or deprecation policy.
+                If a dict is provided, it must be of the same form as the protobuf
+                message :class:`~google.cloud.pubsub_v1.types.ExpirationPolicy`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -319,10 +333,10 @@ class SubscriberClient(object):
             self._inner_api_calls[
                 'create_subscription'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.create_subscription,
-                    default_retry=self._method_configs[
-                        'CreateSubscription'].retry,
-                    default_timeout=self._method_configs['CreateSubscription']
-                    .timeout,
+                    default_retry=self._method_configs['CreateSubscription'].
+                    retry,
+                    default_timeout=self._method_configs['CreateSubscription'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -334,6 +348,7 @@ class SubscriberClient(object):
             retain_acked_messages=retain_acked_messages,
             message_retention_duration=message_retention_duration,
             labels=labels,
+            expiration_policy=expiration_policy,
         )
         return self._inner_api_calls['create_subscription'](
             request, retry=retry, timeout=timeout, metadata=metadata)
@@ -382,10 +397,10 @@ class SubscriberClient(object):
             self._inner_api_calls[
                 'get_subscription'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.get_subscription,
-                    default_retry=self._method_configs[
-                        'GetSubscription'].retry,
-                    default_timeout=self._method_configs['GetSubscription']
-                    .timeout,
+                    default_retry=self._method_configs['GetSubscription'].
+                    retry,
+                    default_timeout=self._method_configs['GetSubscription'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -449,10 +464,10 @@ class SubscriberClient(object):
             self._inner_api_calls[
                 'update_subscription'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.update_subscription,
-                    default_retry=self._method_configs[
-                        'UpdateSubscription'].retry,
-                    default_timeout=self._method_configs['UpdateSubscription']
-                    .timeout,
+                    default_retry=self._method_configs['UpdateSubscription'].
+                    retry,
+                    default_timeout=self._method_configs['UpdateSubscription'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -494,8 +509,8 @@ class SubscriberClient(object):
             ...         pass
 
         Args:
-            project (str): The name of the cloud project that subscriptions belong to.
-                Format is ``projects/{project}``.
+            project (str): The name of the project in which to list subscriptions.
+                Format is ``projects/{project-id}``.
             page_size (int): The maximum number of resources contained in the
                 underlying API response. If page streaming is performed per-
                 resource, this parameter does not affect the return value. If page
@@ -528,10 +543,10 @@ class SubscriberClient(object):
             self._inner_api_calls[
                 'list_subscriptions'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.list_subscriptions,
-                    default_retry=self._method_configs[
-                        'ListSubscriptions'].retry,
-                    default_timeout=self._method_configs['ListSubscriptions']
-                    .timeout,
+                    default_retry=self._method_configs['ListSubscriptions'].
+                    retry,
+                    default_timeout=self._method_configs['ListSubscriptions'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -598,10 +613,10 @@ class SubscriberClient(object):
             self._inner_api_calls[
                 'delete_subscription'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.delete_subscription,
-                    default_retry=self._method_configs[
-                        'DeleteSubscription'].retry,
-                    default_timeout=self._method_configs['DeleteSubscription']
-                    .timeout,
+                    default_retry=self._method_configs['DeleteSubscription'].
+                    retry,
+                    default_timeout=self._method_configs['DeleteSubscription'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -671,10 +686,10 @@ class SubscriberClient(object):
             self._inner_api_calls[
                 'modify_ack_deadline'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.modify_ack_deadline,
-                    default_retry=self._method_configs[
-                        'ModifyAckDeadline'].retry,
-                    default_timeout=self._method_configs['ModifyAckDeadline']
-                    .timeout,
+                    default_retry=self._method_configs['ModifyAckDeadline'].
+                    retry,
+                    default_timeout=self._method_configs['ModifyAckDeadline'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -740,8 +755,8 @@ class SubscriberClient(object):
                 'acknowledge'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.acknowledge,
                     default_retry=self._method_configs['Acknowledge'].retry,
-                    default_timeout=self._method_configs['Acknowledge']
-                    .timeout,
+                    default_timeout=self._method_configs['Acknowledge'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -760,8 +775,7 @@ class SubscriberClient(object):
              timeout=google.api_core.gapic_v1.method.DEFAULT,
              metadata=None):
         """
-        Pulls messages from the server. Returns an empty list if there are no
-        messages available in the backlog. The server may return ``UNAVAILABLE`` if
+        Pulls messages from the server. The server may return ``UNAVAILABLE`` if
         there are too many concurrent pull requests pending for the given
         subscription.
 
@@ -785,9 +799,7 @@ class SubscriberClient(object):
             return_immediately (bool): If this field set to true, the system will respond immediately even if
                 it there are no messages available to return in the ``Pull`` response.
                 Otherwise, the system may wait (for a bounded amount of time) until at
-                least one message is available, rather than returning no messages. The
-                client may cancel the request if it does not wish to wait any longer for
-                the response.
+                least one message is available, rather than returning no messages.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -885,8 +897,8 @@ class SubscriberClient(object):
                 'streaming_pull'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.streaming_pull,
                     default_retry=self._method_configs['StreamingPull'].retry,
-                    default_timeout=self._method_configs['StreamingPull']
-                    .timeout,
+                    default_timeout=self._method_configs['StreamingPull'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -951,10 +963,10 @@ class SubscriberClient(object):
             self._inner_api_calls[
                 'modify_push_config'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.modify_push_config,
-                    default_retry=self._method_configs[
-                        'ModifyPushConfig'].retry,
-                    default_timeout=self._method_configs['ModifyPushConfig']
-                    .timeout,
+                    default_retry=self._method_configs['ModifyPushConfig'].
+                    retry,
+                    default_timeout=self._method_configs['ModifyPushConfig'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -999,8 +1011,8 @@ class SubscriberClient(object):
             ...         pass
 
         Args:
-            project (str): The name of the cloud project that snapshots belong to.
-                Format is ``projects/{project}``.
+            project (str): The name of the project in which to list snapshots.
+                Format is ``projects/{project-id}``.
             page_size (int): The maximum number of resources contained in the
                 underlying API response. If page streaming is performed per-
                 resource, this parameter does not affect the return value. If page
@@ -1034,8 +1046,8 @@ class SubscriberClient(object):
                 'list_snapshots'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.list_snapshots,
                     default_retry=self._method_configs['ListSnapshots'].retry,
-                    default_timeout=self._method_configs['ListSnapshots']
-                    .timeout,
+                    default_timeout=self._method_configs['ListSnapshots'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -1068,7 +1080,7 @@ class SubscriberClient(object):
         Creates a snapshot from the requested subscription.<br><br>
         <b>ALPHA:</b> This feature is part of an alpha release. This API might be
         changed in backward-incompatible ways and is not recommended for production
-        use. It is not subject to any SLA or deprecation policy.
+        use. It is not subject to any SLA or deprecation policy.<br><br>
         If the snapshot already exists, returns ``ALREADY_EXISTS``.
         If the requested subscription doesn't exist, returns ``NOT_FOUND``.
         If the backlog in the subscription is too old -- and the resulting snapshot
@@ -1095,7 +1107,8 @@ class SubscriberClient(object):
             name (str): Optional user-provided name for this snapshot.
                 If the name is not provided in the request, the server will assign a random
                 name for this snapshot on the same project as the subscription.
-                Note that for REST API requests, you must specify a name.
+                Note that for REST API requests, you must specify a name.  See the
+                <a href=\"/pubsub/docs/admin#resource_names\">resource name rules</a>.
                 Format is ``projects/{project}/snapshots/{snap}``.
             subscription (str): The subscription whose backlog the snapshot retains.
                 Specifically, the created snapshot is guaranteed to retain: \
@@ -1107,7 +1120,7 @@ class SubscriberClient(object):
                      successful completion of the CreateSnapshot request. \
 
                 Format is ``projects/{project}/subscriptions/{sub}``.
-            labels (dict[str -> str]): User labels.
+            labels (dict[str -> str]): See <a href=\"/pubsub/docs/labels\"> Creating and managing labels</a>.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -1133,8 +1146,8 @@ class SubscriberClient(object):
                 'create_snapshot'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.create_snapshot,
                     default_retry=self._method_configs['CreateSnapshot'].retry,
-                    default_timeout=self._method_configs['CreateSnapshot']
-                    .timeout,
+                    default_timeout=self._method_configs['CreateSnapshot'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -1206,8 +1219,8 @@ class SubscriberClient(object):
                 'update_snapshot'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.update_snapshot,
                     default_retry=self._method_configs['UpdateSnapshot'].retry,
-                    default_timeout=self._method_configs['UpdateSnapshot']
-                    .timeout,
+                    default_timeout=self._method_configs['UpdateSnapshot'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -1267,8 +1280,8 @@ class SubscriberClient(object):
                 'delete_snapshot'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.delete_snapshot,
                     default_retry=self._method_configs['DeleteSnapshot'].retry,
-                    default_timeout=self._method_configs['DeleteSnapshot']
-                    .timeout,
+                    default_timeout=self._method_configs['DeleteSnapshot'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -1418,8 +1431,8 @@ class SubscriberClient(object):
                 'set_iam_policy'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.set_iam_policy,
                     default_retry=self._method_configs['SetIamPolicy'].retry,
-                    default_timeout=self._method_configs['SetIamPolicy']
-                    .timeout,
+                    default_timeout=self._method_configs['SetIamPolicy'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -1478,8 +1491,8 @@ class SubscriberClient(object):
                 'get_iam_policy'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.get_iam_policy,
                     default_retry=self._method_configs['GetIamPolicy'].retry,
-                    default_timeout=self._method_configs['GetIamPolicy']
-                    .timeout,
+                    default_timeout=self._method_configs['GetIamPolicy'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -1542,10 +1555,10 @@ class SubscriberClient(object):
             self._inner_api_calls[
                 'test_iam_permissions'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.test_iam_permissions,
-                    default_retry=self._method_configs[
-                        'TestIamPermissions'].retry,
-                    default_timeout=self._method_configs['TestIamPermissions']
-                    .timeout,
+                    default_retry=self._method_configs['TestIamPermissions'].
+                    retry,
+                    default_timeout=self._method_configs['TestIamPermissions'].
+                    timeout,
                     client_info=self._client_info,
                 )
 

@@ -16,6 +16,7 @@
 
 import requests
 
+from google.cloud.logging.entries import LogEntry
 from google.cloud.logging.entries import ProtobufEntry
 from google.cloud.logging.entries import StructEntry
 from google.cloud.logging.entries import TextEntry
@@ -46,12 +47,14 @@ def entry_from_resource(resource, client, loggers):
     """
     if 'textPayload' in resource:
         return TextEntry.from_api_repr(resource, client, loggers)
-    elif 'jsonPayload' in resource:
+
+    if 'jsonPayload' in resource:
         return StructEntry.from_api_repr(resource, client, loggers)
-    elif 'protoPayload' in resource:
+
+    if 'protoPayload' in resource:
         return ProtobufEntry.from_api_repr(resource, client, loggers)
 
-    raise ValueError('Cannot parse log entry resource.')
+    return LogEntry.from_api_repr(resource, client, loggers)
 
 
 def retrieve_metadata_server(metadata_key):

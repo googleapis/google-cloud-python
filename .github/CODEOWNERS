@@ -1,14 +1,16 @@
 # Code owners file.
 # This file controls who is tagged for review for any given pull request.
 
-# Thea Flowers is the default owner for anything not explicitly
+# Chris Wilcox is the default owner for anything not explicitly
 # taken by someone else.
-*                         @theacodes
+*                         @crwilcox
 
 # Danny Hermes is the primary author of the original core library, as
-# well as most of the testing code.
+# well as most of the testing code. He is (currently) handling the
+# rewrite of `ndb`.
 core/*                    @dhermes
 test_utils/*              @dhermes
+ndb/*                     @dhermes
 
 # Thea Flowers is the author of the new google.api_core library.
 api_core/*                @theacodes

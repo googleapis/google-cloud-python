@@ -4,6 +4,35 @@
 
 [1]: https://pypi.org/project/google-api-core/#history
 
+## 1.6.0a1
+
+10-18-2018 16:26 PDT
+
+### New Features
+- Add methods to api_core used by new autogenerator. ([#6267](https://github.com/googleapis/google-cloud-python/pull/6267))
+
+### Internal / Testing Changes
+- Fix branch coverage for un-called callbacks. ([#6242](https://github.com/googleapis/google-cloud-python/pull/6242))
+- Fix import order, appeasing lint. ([#6240](https://github.com/googleapis/google-cloud-python/pull/6240))
+- Add / fix badges for PyPI / versions. ([#6158](https://github.com/googleapis/google-cloud-python/pull/6158))
+
+## 1.5.0
+
+### New Features
+- Add bidi, Bidirection Streaming, to api-core ([#6211](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6211))
+
+
+### Internal / Testing Changes
+- Use new Nox ([#6175](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6175))
+
+## 1.4.1
+
+### Dependencies
+- Pin minimum protobuf dependency to 3.4.0. ([#6132](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6132))
+
+### Internal / Testing Changes
+- Add type-checking via pytype to api_core. ([#6116](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6116))
+
 ## 1.4.0
 
 ### Dependencies

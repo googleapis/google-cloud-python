@@ -4,6 +4,34 @@
 
 [1]: https://pypi.org/project/google-cloud-dlp/#history
 
+## 0.9.0
+
+10-18-2018 10:44 PDT
+
+### New Features
+
+- Added `stored_info_type` methods to v2. ([#6221](https://github.com/googleapis/google-cloud-python/pull/6221))
+
+### Documentation
+
+- Docs: normalize use of support level badges ([#6159](https://github.com/googleapis/google-cloud-python/pull/6159))
+- Add / fix badges for PyPI / versions. ([#6158](https://github.com/googleapis/google-cloud-python/pull/6158))
+
+### Internal / Testing Changes
+
+- Use new Nox ([#6175](https://github.com/googleapis/google-cloud-python/pull/6175))
+- Avoid replacing/scribbling on 'setup.py' during synth. ([#6125](https://github.com/googleapis/google-cloud-python/pull/6125))
+
+## 0.8.0
+
+### New Features
+- Add support for exclude findings. ([#6091](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6091))
+- Add support for stored info type support. ([#5950](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/5950))
+
+### Documentation
+- Fix docs issue in DLP generation. ([#5668](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/5668), [#5815](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/5815))
+- Docs: Replace links to '/stable/' with '/latest/'. ([#5901](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/5901))
+
 ## 0.7.0
 
 ### New Features

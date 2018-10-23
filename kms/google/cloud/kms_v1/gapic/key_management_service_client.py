@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+#
 # Copyright 2018 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,7 +36,6 @@ from google.cloud.kms_v1.proto import resources_pb2
 from google.cloud.kms_v1.proto import service_pb2
 from google.cloud.kms_v1.proto import service_pb2_grpc
 from google.iam.v1 import iam_policy_pb2
-from google.iam.v1 import iam_policy_pb2
 from google.iam.v1 import policy_pb2
 from google.protobuf import field_mask_pb2
 
@@ -52,6 +53,9 @@ class KeyManagementServiceClient(object):
     * ``KeyRing``
     * ``CryptoKey``
     * ``CryptoKeyVersion``
+
+    If you are using manual gRPC libraries, see
+    `Using gRPC with Cloud KMS <https://cloud.google.com/kms/docs/grpc>`_.
     """
 
     SERVICE_ADDRESS = 'cloudkms.googleapis.com:443'
@@ -291,8 +295,8 @@ class KeyManagementServiceClient(object):
                 'list_key_rings'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.list_key_rings,
                     default_retry=self._method_configs['ListKeyRings'].retry,
-                    default_timeout=self._method_configs['ListKeyRings']
-                    .timeout,
+                    default_timeout=self._method_configs['ListKeyRings'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -329,6 +333,7 @@ class KeyManagementServiceClient(object):
     def list_crypto_keys(self,
                          parent,
                          page_size=None,
+                         version_view=None,
                          retry=google.api_core.gapic_v1.method.DEFAULT,
                          timeout=google.api_core.gapic_v1.method.DEFAULT,
                          metadata=None):
@@ -364,6 +369,7 @@ class KeyManagementServiceClient(object):
                 resource, this parameter does not affect the return value. If page
                 streaming is performed per-page, this determines the maximum number
                 of resources in a page.
+            version_view (~google.cloud.kms_v1.types.CryptoKeyVersionView): The fields of the primary version to include in the response.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -392,14 +398,15 @@ class KeyManagementServiceClient(object):
                 'list_crypto_keys'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.list_crypto_keys,
                     default_retry=self._method_configs['ListCryptoKeys'].retry,
-                    default_timeout=self._method_configs['ListCryptoKeys']
-                    .timeout,
+                    default_timeout=self._method_configs['ListCryptoKeys'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
         request = service_pb2.ListCryptoKeysRequest(
             parent=parent,
             page_size=page_size,
+            version_view=version_view,
         )
         if metadata is None:
             metadata = []
@@ -431,6 +438,7 @@ class KeyManagementServiceClient(object):
             self,
             parent,
             page_size=None,
+            view=None,
             retry=google.api_core.gapic_v1.method.DEFAULT,
             timeout=google.api_core.gapic_v1.method.DEFAULT,
             metadata=None):
@@ -466,6 +474,7 @@ class KeyManagementServiceClient(object):
                 resource, this parameter does not affect the return value. If page
                 streaming is performed per-page, this determines the maximum number
                 of resources in a page.
+            view (~google.cloud.kms_v1.types.CryptoKeyVersionView): The fields to include in the response.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -493,16 +502,17 @@ class KeyManagementServiceClient(object):
             self._inner_api_calls[
                 'list_crypto_key_versions'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.list_crypto_key_versions,
-                    default_retry=self._method_configs['ListCryptoKeyVersions']
-                    .retry,
-                    default_timeout=self._method_configs[
-                        'ListCryptoKeyVersions'].timeout,
+                    default_retry=self.
+                    _method_configs['ListCryptoKeyVersions'].retry,
+                    default_timeout=self.
+                    _method_configs['ListCryptoKeyVersions'].timeout,
                     client_info=self._client_info,
                 )
 
         request = service_pb2.ListCryptoKeyVersionsRequest(
             parent=parent,
             page_size=page_size,
+            view=view,
         )
         if metadata is None:
             metadata = []
@@ -639,8 +649,8 @@ class KeyManagementServiceClient(object):
                 'get_crypto_key'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.get_crypto_key,
                     default_retry=self._method_configs['GetCryptoKey'].retry,
-                    default_timeout=self._method_configs['GetCryptoKey']
-                    .timeout,
+                    default_timeout=self._method_configs['GetCryptoKey'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -703,10 +713,10 @@ class KeyManagementServiceClient(object):
             self._inner_api_calls[
                 'get_crypto_key_version'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.get_crypto_key_version,
-                    default_retry=self._method_configs[
-                        'GetCryptoKeyVersion'].retry,
-                    default_timeout=self._method_configs['GetCryptoKeyVersion']
-                    .timeout,
+                    default_retry=self._method_configs['GetCryptoKeyVersion'].
+                    retry,
+                    default_timeout=self.
+                    _method_configs['GetCryptoKeyVersion'].timeout,
                     client_info=self._client_info,
                 )
 
@@ -784,8 +794,8 @@ class KeyManagementServiceClient(object):
                 'create_key_ring'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.create_key_ring,
                     default_retry=self._method_configs['CreateKeyRing'].retry,
-                    default_timeout=self._method_configs['CreateKeyRing']
-                    .timeout,
+                    default_timeout=self._method_configs['CreateKeyRing'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -819,7 +829,9 @@ class KeyManagementServiceClient(object):
         """
         Create a new ``CryptoKey`` within a ``KeyRing``.
 
-        ``CryptoKey.purpose`` is required.
+        ``CryptoKey.purpose`` and
+        ``CryptoKey.version_template.algorithm``
+        are required.
 
         Example:
             >>> from google.cloud import kms_v1
@@ -870,10 +882,10 @@ class KeyManagementServiceClient(object):
             self._inner_api_calls[
                 'create_crypto_key'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.create_crypto_key,
-                    default_retry=self._method_configs[
-                        'CreateCryptoKey'].retry,
-                    default_timeout=self._method_configs['CreateCryptoKey']
-                    .timeout,
+                    default_retry=self._method_configs['CreateCryptoKey'].
+                    retry,
+                    default_timeout=self._method_configs['CreateCryptoKey'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -953,10 +965,10 @@ class KeyManagementServiceClient(object):
             self._inner_api_calls[
                 'create_crypto_key_version'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.create_crypto_key_version,
-                    default_retry=self._method_configs[
-                        'CreateCryptoKeyVersion'].retry,
-                    default_timeout=self._method_configs[
-                        'CreateCryptoKeyVersion'].timeout,
+                    default_retry=self.
+                    _method_configs['CreateCryptoKeyVersion'].retry,
+                    default_timeout=self.
+                    _method_configs['CreateCryptoKeyVersion'].timeout,
                     client_info=self._client_info,
                 )
 
@@ -1032,10 +1044,10 @@ class KeyManagementServiceClient(object):
             self._inner_api_calls[
                 'update_crypto_key'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.update_crypto_key,
-                    default_retry=self._method_configs[
-                        'UpdateCryptoKey'].retry,
-                    default_timeout=self._method_configs['UpdateCryptoKey']
-                    .timeout,
+                    default_retry=self._method_configs['UpdateCryptoKey'].
+                    retry,
+                    default_timeout=self._method_configs['UpdateCryptoKey'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -1118,10 +1130,10 @@ class KeyManagementServiceClient(object):
             self._inner_api_calls[
                 'update_crypto_key_version'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.update_crypto_key_version,
-                    default_retry=self._method_configs[
-                        'UpdateCryptoKeyVersion'].retry,
-                    default_timeout=self._method_configs[
-                        'UpdateCryptoKeyVersion'].timeout,
+                    default_retry=self.
+                    _method_configs['UpdateCryptoKeyVersion'].retry,
+                    default_timeout=self.
+                    _method_configs['UpdateCryptoKeyVersion'].timeout,
                     client_info=self._client_info,
                 )
 
@@ -1154,6 +1166,8 @@ class KeyManagementServiceClient(object):
                 metadata=None):
         """
         Encrypts data, so that it can only be recovered by a call to ``Decrypt``.
+        The ``CryptoKey.purpose`` must be
+        ``ENCRYPT_DECRYPT``.
 
         Example:
             >>> from google.cloud import kms_v1
@@ -1174,9 +1188,22 @@ class KeyManagementServiceClient(object):
                 If a ``CryptoKey`` is specified, the server will use its
                 ``primary version``.
             plaintext (bytes): Required. The data to encrypt. Must be no larger than 64KiB.
+
+                The maximum size depends on the key version's
+                ``protection_level``. For
+                ``SOFTWARE`` keys, the plaintext must be no larger
+                than 64KiB. For ``HSM`` keys, the combined length of the
+                plaintext and additional_authenticated_data fields must be no larger than
+                8KiB.
             additional_authenticated_data (bytes): Optional data that, if specified, must also be provided during decryption
-                through ``DecryptRequest.additional_authenticated_data``.  Must be no
-                larger than 64KiB.
+                through ``DecryptRequest.additional_authenticated_data``.
+
+                The maximum size depends on the key version's
+                ``protection_level``. For
+                ``SOFTWARE`` keys, the AAD must be no larger than
+                64KiB. For ``HSM`` keys, the combined length of the
+                plaintext and additional_authenticated_data fields must be no larger than
+                8KiB.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -1234,7 +1261,8 @@ class KeyManagementServiceClient(object):
                 timeout=google.api_core.gapic_v1.method.DEFAULT,
                 metadata=None):
         """
-        Decrypts data that was protected by ``Encrypt``.
+        Decrypts data that was protected by ``Encrypt``. The ``CryptoKey.purpose``
+        must be ``ENCRYPT_DECRYPT``.
 
         Example:
             >>> from google.cloud import kms_v1
@@ -1312,7 +1340,9 @@ class KeyManagementServiceClient(object):
             timeout=google.api_core.gapic_v1.method.DEFAULT,
             metadata=None):
         """
-        Update the version of a ``CryptoKey`` that will be used in ``Encrypt``
+        Update the version of a ``CryptoKey`` that will be used in ``Encrypt``.
+
+        Returns an error if called on an asymmetric key.
 
         Example:
             >>> from google.cloud import kms_v1
@@ -1353,10 +1383,10 @@ class KeyManagementServiceClient(object):
             self._inner_api_calls[
                 'update_crypto_key_primary_version'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.update_crypto_key_primary_version,
-                    default_retry=self._method_configs[
-                        'UpdateCryptoKeyPrimaryVersion'].retry,
-                    default_timeout=self._method_configs[
-                        'UpdateCryptoKeyPrimaryVersion'].timeout,
+                    default_retry=self.
+                    _method_configs['UpdateCryptoKeyPrimaryVersion'].retry,
+                    default_timeout=self.
+                    _method_configs['UpdateCryptoKeyPrimaryVersion'].timeout,
                     client_info=self._client_info,
                 )
 
@@ -1434,10 +1464,10 @@ class KeyManagementServiceClient(object):
             self._inner_api_calls[
                 'destroy_crypto_key_version'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.destroy_crypto_key_version,
-                    default_retry=self._method_configs[
-                        'DestroyCryptoKeyVersion'].retry,
-                    default_timeout=self._method_configs[
-                        'DestroyCryptoKeyVersion'].timeout,
+                    default_retry=self.
+                    _method_configs['DestroyCryptoKeyVersion'].retry,
+                    default_timeout=self.
+                    _method_configs['DestroyCryptoKeyVersion'].timeout,
                     client_info=self._client_info,
                 )
 
@@ -1465,7 +1495,7 @@ class KeyManagementServiceClient(object):
             metadata=None):
         """
         Restore a ``CryptoKeyVersion`` in the
-        ``DESTROY_SCHEDULED``,
+        ``DESTROY_SCHEDULED``
         state.
 
         Upon restoration of the CryptoKeyVersion, ``state``
@@ -1507,10 +1537,10 @@ class KeyManagementServiceClient(object):
             self._inner_api_calls[
                 'restore_crypto_key_version'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.restore_crypto_key_version,
-                    default_retry=self._method_configs[
-                        'RestoreCryptoKeyVersion'].retry,
-                    default_timeout=self._method_configs[
-                        'RestoreCryptoKeyVersion'].timeout,
+                    default_retry=self.
+                    _method_configs['RestoreCryptoKeyVersion'].retry,
+                    default_timeout=self.
+                    _method_configs['RestoreCryptoKeyVersion'].timeout,
                     client_info=self._client_info,
                 )
 
@@ -1528,6 +1558,232 @@ class KeyManagementServiceClient(object):
             metadata.append(routing_metadata)
 
         return self._inner_api_calls['restore_crypto_key_version'](
+            request, retry=retry, timeout=timeout, metadata=metadata)
+
+    def get_public_key(self,
+                       name,
+                       retry=google.api_core.gapic_v1.method.DEFAULT,
+                       timeout=google.api_core.gapic_v1.method.DEFAULT,
+                       metadata=None):
+        """
+        Returns the public key for the given ``CryptoKeyVersion``. The
+        ``CryptoKey.purpose`` must be
+        ``ASYMMETRIC_SIGN`` or
+        ``ASYMMETRIC_DECRYPT``.
+
+        Example:
+            >>> from google.cloud import kms_v1
+            >>>
+            >>> client = kms_v1.KeyManagementServiceClient()
+            >>>
+            >>> name = client.crypto_key_version_path('[PROJECT]', '[LOCATION]', '[KEY_RING]', '[CRYPTO_KEY]', '[CRYPTO_KEY_VERSION]')
+            >>>
+            >>> response = client.get_public_key(name)
+
+        Args:
+            name (str): The ``name`` of the ``CryptoKeyVersion`` public key to
+                get.
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will not
+                be retried.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Returns:
+            A :class:`~google.cloud.kms_v1.types.PublicKey` instance.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        # Wrap the transport method to add retry and timeout logic.
+        if 'get_public_key' not in self._inner_api_calls:
+            self._inner_api_calls[
+                'get_public_key'] = google.api_core.gapic_v1.method.wrap_method(
+                    self.transport.get_public_key,
+                    default_retry=self._method_configs['GetPublicKey'].retry,
+                    default_timeout=self._method_configs['GetPublicKey'].
+                    timeout,
+                    client_info=self._client_info,
+                )
+
+        request = service_pb2.GetPublicKeyRequest(name=name, )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [('name', name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header)
+            metadata.append(routing_metadata)
+
+        return self._inner_api_calls['get_public_key'](
+            request, retry=retry, timeout=timeout, metadata=metadata)
+
+    def asymmetric_decrypt(self,
+                           name,
+                           ciphertext,
+                           retry=google.api_core.gapic_v1.method.DEFAULT,
+                           timeout=google.api_core.gapic_v1.method.DEFAULT,
+                           metadata=None):
+        """
+        Decrypts data that was encrypted with a public key retrieved from
+        ``GetPublicKey`` corresponding to a ``CryptoKeyVersion`` with
+        ``CryptoKey.purpose`` ASYMMETRIC_DECRYPT.
+
+        Example:
+            >>> from google.cloud import kms_v1
+            >>>
+            >>> client = kms_v1.KeyManagementServiceClient()
+            >>>
+            >>> name = client.crypto_key_version_path('[PROJECT]', '[LOCATION]', '[KEY_RING]', '[CRYPTO_KEY]', '[CRYPTO_KEY_VERSION]')
+            >>>
+            >>> # TODO: Initialize ``ciphertext``:
+            >>> ciphertext = b''
+            >>>
+            >>> response = client.asymmetric_decrypt(name, ciphertext)
+
+        Args:
+            name (str): Required. The resource name of the ``CryptoKeyVersion`` to use for
+                decryption.
+            ciphertext (bytes): Required. The data encrypted with the named ``CryptoKeyVersion``'s public
+                key using OAEP.
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will not
+                be retried.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Returns:
+            A :class:`~google.cloud.kms_v1.types.AsymmetricDecryptResponse` instance.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        # Wrap the transport method to add retry and timeout logic.
+        if 'asymmetric_decrypt' not in self._inner_api_calls:
+            self._inner_api_calls[
+                'asymmetric_decrypt'] = google.api_core.gapic_v1.method.wrap_method(
+                    self.transport.asymmetric_decrypt,
+                    default_retry=self._method_configs['AsymmetricDecrypt'].
+                    retry,
+                    default_timeout=self._method_configs['AsymmetricDecrypt'].
+                    timeout,
+                    client_info=self._client_info,
+                )
+
+        request = service_pb2.AsymmetricDecryptRequest(
+            name=name,
+            ciphertext=ciphertext,
+        )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [('name', name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header)
+            metadata.append(routing_metadata)
+
+        return self._inner_api_calls['asymmetric_decrypt'](
+            request, retry=retry, timeout=timeout, metadata=metadata)
+
+    def asymmetric_sign(self,
+                        name,
+                        digest,
+                        retry=google.api_core.gapic_v1.method.DEFAULT,
+                        timeout=google.api_core.gapic_v1.method.DEFAULT,
+                        metadata=None):
+        """
+        Signs data using a ``CryptoKeyVersion`` with ``CryptoKey.purpose``
+        ASYMMETRIC_SIGN, producing a signature that can be verified with the public
+        key retrieved from ``GetPublicKey``.
+
+        Example:
+            >>> from google.cloud import kms_v1
+            >>>
+            >>> client = kms_v1.KeyManagementServiceClient()
+            >>>
+            >>> name = client.crypto_key_version_path('[PROJECT]', '[LOCATION]', '[KEY_RING]', '[CRYPTO_KEY]', '[CRYPTO_KEY_VERSION]')
+            >>>
+            >>> # TODO: Initialize ``digest``:
+            >>> digest = {}
+            >>>
+            >>> response = client.asymmetric_sign(name, digest)
+
+        Args:
+            name (str): Required. The resource name of the ``CryptoKeyVersion`` to use for signing.
+            digest (Union[dict, ~google.cloud.kms_v1.types.Digest]): Required. The digest of the data to sign. The digest must be produced with
+                the same digest algorithm as specified by the key version's
+                ``algorithm``.
+                If a dict is provided, it must be of the same form as the protobuf
+                message :class:`~google.cloud.kms_v1.types.Digest`
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will not
+                be retried.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Returns:
+            A :class:`~google.cloud.kms_v1.types.AsymmetricSignResponse` instance.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        # Wrap the transport method to add retry and timeout logic.
+        if 'asymmetric_sign' not in self._inner_api_calls:
+            self._inner_api_calls[
+                'asymmetric_sign'] = google.api_core.gapic_v1.method.wrap_method(
+                    self.transport.asymmetric_sign,
+                    default_retry=self._method_configs['AsymmetricSign'].retry,
+                    default_timeout=self._method_configs['AsymmetricSign'].
+                    timeout,
+                    client_info=self._client_info,
+                )
+
+        request = service_pb2.AsymmetricSignRequest(
+            name=name,
+            digest=digest,
+        )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [('name', name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header)
+            metadata.append(routing_metadata)
+
+        return self._inner_api_calls['asymmetric_sign'](
             request, retry=retry, timeout=timeout, metadata=metadata)
 
     def set_iam_policy(self,
@@ -1587,8 +1843,8 @@ class KeyManagementServiceClient(object):
                 'set_iam_policy'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.set_iam_policy,
                     default_retry=self._method_configs['SetIamPolicy'].retry,
-                    default_timeout=self._method_configs['SetIamPolicy']
-                    .timeout,
+                    default_timeout=self._method_configs['SetIamPolicy'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -1659,8 +1915,8 @@ class KeyManagementServiceClient(object):
                 'get_iam_policy'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.get_iam_policy,
                     default_retry=self._method_configs['GetIamPolicy'].retry,
-                    default_timeout=self._method_configs['GetIamPolicy']
-                    .timeout,
+                    default_timeout=self._method_configs['GetIamPolicy'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -1735,10 +1991,10 @@ class KeyManagementServiceClient(object):
             self._inner_api_calls[
                 'test_iam_permissions'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.test_iam_permissions,
-                    default_retry=self._method_configs[
-                        'TestIamPermissions'].retry,
-                    default_timeout=self._method_configs['TestIamPermissions']
-                    .timeout,
+                    default_retry=self._method_configs['TestIamPermissions'].
+                    retry,
+                    default_timeout=self._method_configs['TestIamPermissions'].
+                    timeout,
                     client_info=self._client_info,
                 )
 

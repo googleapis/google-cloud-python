@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+#
 # Copyright 2018 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -189,11 +191,12 @@ class AutoMlClient(object):
                         'Received both a transport instance and '
                         'credentials; these are mutually exclusive.')
                 self.transport = transport
-        self.transport = auto_ml_grpc_transport.AutoMlGrpcTransport(
-            address=self.SERVICE_ADDRESS,
-            channel=channel,
-            credentials=credentials,
-        )
+        else:
+            self.transport = auto_ml_grpc_transport.AutoMlGrpcTransport(
+                address=self.SERVICE_ADDRESS,
+                channel=channel,
+                credentials=credentials,
+            )
 
         if client_info is None:
             client_info = (
@@ -266,8 +269,8 @@ class AutoMlClient(object):
                 'create_dataset'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.create_dataset,
                     default_retry=self._method_configs['CreateDataset'].retry,
-                    default_timeout=self._method_configs['CreateDataset']
-                    .timeout,
+                    default_timeout=self._method_configs['CreateDataset'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -405,8 +408,8 @@ class AutoMlClient(object):
                 'list_datasets'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.list_datasets,
                     default_retry=self._method_configs['ListDatasets'].retry,
-                    default_timeout=self._method_configs['ListDatasets']
-                    .timeout,
+                    default_timeout=self._method_configs['ListDatasets'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -486,8 +489,8 @@ class AutoMlClient(object):
                 'delete_dataset'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.delete_dataset,
                     default_retry=self._method_configs['DeleteDataset'].retry,
-                    default_timeout=self._method_configs['DeleteDataset']
-                    .timeout,
+                    default_timeout=self._method_configs['DeleteDataset'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -724,8 +727,8 @@ class AutoMlClient(object):
                 'create_model'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.create_model,
                     default_retry=self._method_configs['CreateModel'].retry,
-                    default_timeout=self._method_configs['CreateModel']
-                    .timeout,
+                    default_timeout=self._method_configs['CreateModel'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -956,8 +959,8 @@ class AutoMlClient(object):
                 'delete_model'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.delete_model,
                     default_retry=self._method_configs['DeleteModel'].retry,
-                    default_timeout=self._method_configs['DeleteModel']
-                    .timeout,
+                    default_timeout=self._method_configs['DeleteModel'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -1017,8 +1020,8 @@ class AutoMlClient(object):
                 'deploy_model'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.deploy_model,
                     default_retry=self._method_configs['DeployModel'].retry,
-                    default_timeout=self._method_configs['DeployModel']
-                    .timeout,
+                    default_timeout=self._method_configs['DeployModel'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -1072,8 +1075,8 @@ class AutoMlClient(object):
                 'undeploy_model'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.undeploy_model,
                     default_retry=self._method_configs['UndeployModel'].retry,
-                    default_timeout=self._method_configs['UndeployModel']
-                    .timeout,
+                    default_timeout=self._method_configs['UndeployModel'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -1124,10 +1127,10 @@ class AutoMlClient(object):
             self._inner_api_calls[
                 'get_model_evaluation'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.get_model_evaluation,
-                    default_retry=self._method_configs[
-                        'GetModelEvaluation'].retry,
-                    default_timeout=self._method_configs['GetModelEvaluation']
-                    .timeout,
+                    default_retry=self._method_configs['GetModelEvaluation'].
+                    retry,
+                    default_timeout=self._method_configs['GetModelEvaluation'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -1216,10 +1219,10 @@ class AutoMlClient(object):
             self._inner_api_calls[
                 'list_model_evaluations'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.list_model_evaluations,
-                    default_retry=self._method_configs['ListModelEvaluations']
-                    .retry,
-                    default_timeout=self._method_configs[
-                        'ListModelEvaluations'].timeout,
+                    default_retry=self._method_configs['ListModelEvaluations'].
+                    retry,
+                    default_timeout=self.
+                    _method_configs['ListModelEvaluations'].timeout,
                     client_info=self._client_info,
                 )
 

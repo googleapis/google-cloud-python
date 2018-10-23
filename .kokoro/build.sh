@@ -24,8 +24,14 @@ export PYTHONUNBUFFERED=1
 # Debug: show build environment
 env | grep KOKORO
 
+# Setup firestore account credentials
+export FIRESTORE_APPLICATION_CREDENTIALS=${KOKORO_GFILE_DIR}/firebase-credentials.json
+
 # Setup service account credentials.
 export GOOGLE_APPLICATION_CREDENTIALS=${KOKORO_GFILE_DIR}/service-account.json
+
+# Setup project id.
+export PROJECT_ID=$(cat "${KOKORO_GFILE_DIR}/project-id.json")
 
 # Find out if this package was modified.
 # Temporarily use Thea's fork of ci-diff-helper w/ Kokoro support.
@@ -40,6 +46,11 @@ fi
 
 cd "$PACKAGE"
 
-python3.6 -m pip install --quiet nox-automation
+# Remove old nox
+python3.6 -m pip uninstall --yes --quiet nox-automation
 
-nox
+# Install nox
+python3.6 -m pip install --upgrade --quiet nox
+python3.6 -m nox --version
+
+python3.6 -m nox

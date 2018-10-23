@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+#
 # Copyright 2018 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -480,3 +482,79 @@ class DlpServiceGrpcTransport(object):
                 deserialized response object.
         """
         return self._stubs['dlp_service_stub'].CreateJobTrigger
+
+    @property
+    def create_stored_info_type(self):
+        """Return the gRPC stub for {$apiMethod.name}.
+
+        Creates a pre-built stored infoType to be used for inspection.
+        See https://cloud.google.com/dlp/docs/creating-stored-infotypes to
+        learn more.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs['dlp_service_stub'].CreateStoredInfoType
+
+    @property
+    def update_stored_info_type(self):
+        """Return the gRPC stub for {$apiMethod.name}.
+
+        Updates the stored infoType by creating a new version. The existing version
+        will continue to be used until the new version is ready.
+        See https://cloud.google.com/dlp/docs/creating-stored-infotypes to
+        learn more.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs['dlp_service_stub'].UpdateStoredInfoType
+
+    @property
+    def get_stored_info_type(self):
+        """Return the gRPC stub for {$apiMethod.name}.
+
+        Gets a stored infoType.
+        See https://cloud.google.com/dlp/docs/creating-stored-infotypes to
+        learn more.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs['dlp_service_stub'].GetStoredInfoType
+
+    @property
+    def list_stored_info_types(self):
+        """Return the gRPC stub for {$apiMethod.name}.
+
+        Lists stored infoTypes.
+        See https://cloud.google.com/dlp/docs/creating-stored-infotypes to
+        learn more.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs['dlp_service_stub'].ListStoredInfoTypes
+
+    @property
+    def delete_stored_info_type(self):
+        """Return the gRPC stub for {$apiMethod.name}.
+
+        Deletes a stored infoType.
+        See https://cloud.google.com/dlp/docs/creating-stored-infotypes to
+        learn more.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs['dlp_service_stub'].DeleteStoredInfoType

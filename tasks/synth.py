@@ -22,13 +22,20 @@ logging.basicConfig(level=logging.DEBUG)
 
 gapic = gcp.GAPICGenerator()
 common = gcp.CommonTemplates()
+excludes = [
+    'README.rst',
+    'setup.py',
+    'nox*.py',
+    'docs/conf.py',
+    'docs/index.rst',
+]
 
 for version in ['v2beta2', 'v2beta3']:
     library = gapic.py_library(
         'tasks', version,
         config_path=f'artman_cloudtasks_{version}.yaml')
 
-    s.copy(library, excludes=['docs/conf.py', 'docs/index.rst'])
+    s.copy(library, excludes=excludes)
 
     # Fix unindentation of bullet list second line
     s.replace(
@@ -58,21 +65,3 @@ s.replace(
     f"google/cloud/tasks_v2beta2/proto/queue_pb2.py",
     '(uests in queue.yaml/xml) <\n\s+',
     '\g<1>\n          <')
-
-# Set Release Status
-release_status = 'Development Status :: 3 - Alpha'
-s.replace('setup.py',
-          '(release_status = )(.*)$',
-          f"\\1'{release_status}'")
-
-# Add Dependencies
-s.replace('setup.py',
-          'dependencies = \[\n*(^.*,\n)+',
-          "\\g<0>    'grpc-google-iam-v1<0.12dev,>=0.11.4',\n")
-
-# Fix the enable API link
-s.replace(
-    'README.rst',
-    r'.. _Enable the Cloud Tasks API.:  https://cloud.google.com/tasks',
-    '.. _Enable the Cloud Tasks API.:  https://console.cloud.google.com/apis/'
-    'library/cloudtasks.googleapis.com')

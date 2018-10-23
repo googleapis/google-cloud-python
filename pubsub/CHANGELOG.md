@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
+## 0.38.0
+
+### Implementation Changes
+
+- Fix race condition in recv()'s usage of self.call. ([#5935](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/5935))
+- Re-generate the underlying library from protos. ([#5953](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/5953))
+- Change 'BatchSettings.max_bytes' default. ([#5899](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/5899))
+- Fix race condition where pending Ack IDs can be modified by another thread. ([#5929](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/5929))
+
+### Internal / Testing Changes
+
+- Nox: use inplace installs ([#5865](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/5865))
+
 ## 0.37.2
 
 ### Implementation Changes

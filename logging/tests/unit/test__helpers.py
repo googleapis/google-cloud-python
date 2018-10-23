@@ -26,14 +26,12 @@ class Test_entry_from_resource(unittest.TestCase):
 
         return entry_from_resource(resource, client, loggers)
 
-    def test_unknown_type(self):
-        with self.assertRaises(ValueError):
-            self._call_fut({}, None, {})
-
     def _payload_helper(self, key, class_name):
         import mock
 
-        resource = {key: 'yup'}
+        resource = {}
+        if key is not None:
+            resource[key] = 'yup'
         client = object()
         loggers = {}
         mock_class = EntryMock()
@@ -44,6 +42,9 @@ class Test_entry_from_resource(unittest.TestCase):
 
         self.assertIs(result, mock_class.sentinel)
         self.assertEqual(mock_class.called, (resource, client, loggers))
+
+    def test_wo_payload(self):
+        self._payload_helper(None, 'LogEntry')
 
     def test_text_payload(self):
         self._payload_helper('textPayload', 'TextEntry')

@@ -39,7 +39,7 @@ class CloudLoggingHandler(logging.StreamHandler):
 
     This handler supports both an asynchronous and synchronous transport.
 
-    :type client: :class:`google.cloud.logging.client`
+    :type client: :class:`google.cloud.logging.client.Client`
     :param client: the authenticated Google Cloud Logging client for this
                    handler to use
 

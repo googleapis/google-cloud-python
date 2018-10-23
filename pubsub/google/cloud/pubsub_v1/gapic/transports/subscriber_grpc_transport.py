@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+#
 # Copyright 2018 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -214,8 +216,7 @@ class SubscriberGrpcTransport(object):
     def pull(self):
         """Return the gRPC stub for {$apiMethod.name}.
 
-        Pulls messages from the server. Returns an empty list if there are no
-        messages available in the backlog. The server may return ``UNAVAILABLE`` if
+        Pulls messages from the server. The server may return ``UNAVAILABLE`` if
         there are too many concurrent pull requests pending for the given
         subscription.
 
@@ -286,7 +287,7 @@ class SubscriberGrpcTransport(object):
         Creates a snapshot from the requested subscription.<br><br>
         <b>ALPHA:</b> This feature is part of an alpha release. This API might be
         changed in backward-incompatible ways and is not recommended for production
-        use. It is not subject to any SLA or deprecation policy.
+        use. It is not subject to any SLA or deprecation policy.<br><br>
         If the snapshot already exists, returns ``ALREADY_EXISTS``.
         If the requested subscription doesn't exist, returns ``NOT_FOUND``.
         If the backlog in the subscription is too old -- and the resulting snapshot

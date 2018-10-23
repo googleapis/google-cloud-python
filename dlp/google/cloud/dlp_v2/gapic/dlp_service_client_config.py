@@ -141,6 +141,31 @@ config = {
                     "timeout_millis": 300000,
                     "retry_codes_name": "non_idempotent",
                     "retry_params_name": "default"
+                },
+                "CreateStoredInfoType": {
+                    "timeout_millis": 300000,
+                    "retry_codes_name": "non_idempotent",
+                    "retry_params_name": "default"
+                },
+                "UpdateStoredInfoType": {
+                    "timeout_millis": 300000,
+                    "retry_codes_name": "non_idempotent",
+                    "retry_params_name": "default"
+                },
+                "GetStoredInfoType": {
+                    "timeout_millis": 300000,
+                    "retry_codes_name": "idempotent",
+                    "retry_params_name": "default"
+                },
+                "ListStoredInfoTypes": {
+                    "timeout_millis": 300000,
+                    "retry_codes_name": "idempotent",
+                    "retry_params_name": "default"
+                },
+                "DeleteStoredInfoType": {
+                    "timeout_millis": 300000,
+                    "retry_codes_name": "idempotent",
+                    "retry_params_name": "default"
                 }
             }
         }

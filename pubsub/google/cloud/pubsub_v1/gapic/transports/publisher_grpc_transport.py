@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+#
 # Copyright 2018 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -127,8 +129,7 @@ class PublisherGrpcTransport(object):
         """Return the gRPC stub for {$apiMethod.name}.
 
         Adds one or more messages to the topic. Returns ``NOT_FOUND`` if the topic
-        does not exist. The message payload must not be empty; it must contain
-        either a non-empty data field, or at least one attribute.
+        does not exist.
 
         Returns:
             Callable: A callable which accepts the appropriate

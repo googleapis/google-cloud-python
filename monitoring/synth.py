@@ -28,8 +28,14 @@ v3_library = gapic.py_library(
     config_path='/google/monitoring/artman_monitoring.yaml',
     artman_output_name='monitoring-v3')
 
-# don't copy setup.py, README.rst, docs/index.rst
-s.copy(v3_library, excludes=['setup.py', 'README.rst', 'docs/index.rst'])
+# don't copy nox.py, setup.py, README.rst, docs/index.rst
+excludes = [
+    'nox.py',
+    'setup.py',
+    'README.rst',
+    'docs/index.rst',
+]
+s.copy(v3_library, excludes=excludes)
 
 # Correct calls to routing_header
 # https://github.com/googleapis/gapic-generator/issues/2016
@@ -67,12 +73,6 @@ files = ['google/cloud/monitoring_v3/proto/common_pb2.py']
 for f in files:
     s.replace(f, r"(^.*$\n)*", r"# -*- coding: utf-8 -*-\n\g<0>")
 
-# monitoring unit tests require mock
-s.replace("nox.py",
-          "(def unit\(session, py\):\n(.*\n)*?\s+)session.install\('pytest'\)",
-          "\g<1>session.install('pytest', 'mock')")
-
-
 # GAPIC-Generator is mangling some docstrings
 # Missing blank line after bulleted list
 s.replace(
@@ -101,3 +101,17 @@ s.replace(
     "\g<1>    'grpc.max_send_message_length': -1,\n"
     "\g<1>    'grpc.max_receive_message_length': -1,\n"
     "\g<1>}.items(),\n")
+
+# Deal with long lines due to long proto name
+s.replace(
+    ['google/cloud/monitoring_v3/__init__.py'],
+    'from google.cloud.monitoring_v3.gapic import '
+    'notification_channel_service_client\n',
+    'from google.cloud.monitoring_v3.gapic import (\n'
+    '    notification_channel_service_client as notification_client)\n',
+)
+s.replace(
+    ['google/cloud/monitoring_v3/__init__.py'],
+    'notification_channel_service_client.NotificationChannelServiceClient',
+    'notification_client.NotificationChannelServiceClient',
+)
