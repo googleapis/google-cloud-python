@@ -285,6 +285,50 @@ class ModelAttribute:
         """
 
 
+class _BaseValue:
+    """A marker object wrapping a "base type" value.
+
+    This is used to be able to tell whether ``entity._values[name]`` is a
+    user value (i.e. of a type that the Python code understands) or a
+    base value (i.e of a type that serialization understands).
+    User values are unwrapped; base values are wrapped in a
+    :class:`_BaseValue` instance.
+
+    Args:
+        b_val (Any): The base value to be wrapped.
+
+    Raises:
+        TypeError: If ``b_val`` is :data:`None`.
+        TypeError: If ``b_val`` is a list.
+    """
+
+    __slots__ = ("b_val",)
+
+    def __init__(self, b_val):
+        if b_val is None:
+            raise TypeError("Cannot wrap None")
+        if isinstance(b_val, list):
+            raise TypeError("Lists cannot be wrapped. Received", b_val)
+        self.b_val = b_val
+
+    def __repr__(self):
+        return "_BaseValue({!r})".format(self.b_val)
+
+    def __eq__(self, other):
+        """Compare two :class:`_BaseValue` instances."""
+        if not isinstance(other, _BaseValue):
+            return NotImplemented
+
+        return self.b_val == other.b_val
+
+    def __ne__(self, other):
+        """Inequality comparison operation."""
+        return not self == other
+
+    def __hash__(self):
+        raise TypeError("_BaseValue is not immutable")
+
+
 class Property(ModelAttribute):
     # Instance default fallbacks provided by class.
     _name = None
