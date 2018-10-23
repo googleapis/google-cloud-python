@@ -15,8 +15,6 @@
 import functools
 import glob
 import json
-import os
-import unittest
 
 import mock
 import pytest
