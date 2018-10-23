@@ -52,6 +52,7 @@ class TestClient(unittest.TestCase):
         self.assertFalse(client._admin)
         self.assertIsNone(client._channel)
         self.assertEqual(client.SCOPE, (DATA_SCOPE,))
+        self.assertEqual(len(client.grpc_interceptors), 0)
 
     def test_constructor_explicit(self):
         import warnings
@@ -59,6 +60,7 @@ class TestClient(unittest.TestCase):
         from google.cloud.bigtable.client import DATA_SCOPE
 
         credentials = _make_credentials()
+        grpc_interceptors = [mock.Mock(spec=())]
 
         with warnings.catch_warnings(record=True) as warned:
             client = self._make_one(
@@ -67,6 +69,7 @@ class TestClient(unittest.TestCase):
                 read_only=False,
                 admin=True,
                 channel=mock.sentinel.channel,
+                grpc_interceptors=grpc_interceptors,
             )
 
         self.assertEqual(len(warned), 1)
@@ -78,6 +81,8 @@ class TestClient(unittest.TestCase):
         self.assertTrue(client._admin)
         self.assertIs(client._channel, mock.sentinel.channel)
         self.assertEqual(client.SCOPE, (DATA_SCOPE, ADMIN_SCOPE))
+        self.assertEqual(
+            len(client.grpc_interceptors), len(grpc_interceptors))
 
     def test_constructor_both_admin_and_read_only(self):
         credentials = _make_credentials()

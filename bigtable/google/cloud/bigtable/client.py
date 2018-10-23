@@ -86,6 +86,9 @@ class Client(ClientWithProject):
                   interact with the Instance Admin or Table Admin APIs. This
                   requires the :const:`ADMIN_SCOPE`. Defaults to :data:`False`.
 
+    :type grpc_interceptors: list of GRPC channel interceptors.
+    :param grpc_interceptors: (Optional) interceptors used to wrap GRPC calls.
+
     :type channel: :instance: grpc.Channel
     :param channel (grpc.Channel): (Optional) DEPRECATED:
             A ``Channel`` instance through which to make calls.
@@ -99,8 +102,15 @@ class Client(ClientWithProject):
     _table_admin_client = None
     _instance_admin_client = None
 
-    def __init__(self, project=None, credentials=None,
-                 read_only=False, admin=False, channel=None):
+    def __init__(
+        self,
+        project=None,
+        credentials=None,
+        read_only=False,
+        admin=False,
+        grpc_interceptors=(),
+        channel=None,
+    ):
         if read_only and admin:
             raise ValueError('A read-only client cannot also perform'
                              'administrative actions.')
@@ -117,6 +127,7 @@ class Client(ClientWithProject):
 
         self._channel = channel
         self.SCOPE = self._get_scopes()
+        self.grpc_interceptors = grpc_interceptors
         super(Client, self).__init__(project=project, credentials=credentials)
 
     def _get_scopes(self):
