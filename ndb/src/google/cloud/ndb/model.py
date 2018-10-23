@@ -121,10 +121,10 @@ class IndexProperty:
     __slots__ = ("_name", "_direction")
 
     def __new__(cls, *, name, direction):
-        self = super(IndexProperty, cls).__new__(cls)
-        self._name = name
-        self._direction = direction
-        return self
+        instance = super(IndexProperty, cls).__new__(cls)
+        instance._name = name
+        instance._direction = direction
+        return instance
 
     @property
     def name(self):
@@ -162,11 +162,11 @@ class Index:
     __slots__ = ("_kind", "_properties", "_ancestor")
 
     def __new__(cls, *, kind, properties, ancestor):
-        self = super(Index, cls).__new__(cls)
-        self._kind = kind
-        self._properties = properties
-        self._ancestor = ancestor
-        return self
+        instance = super(Index, cls).__new__(cls)
+        instance._kind = kind
+        instance._properties = properties
+        instance._ancestor = ancestor
+        return instance
 
     @property
     def kind(self):
@@ -214,11 +214,11 @@ class IndexState:
     __slots__ = ("_definition", "_state", "_id")
 
     def __new__(cls, *, definition, state, id):
-        self = super(IndexState, cls).__new__(cls)
-        self._definition = definition
-        self._state = state
-        self._id = id
-        return self
+        instance = super(IndexState, cls).__new__(cls)
+        instance._definition = definition
+        instance._state = state
+        instance._id = id
+        return instance
 
     @property
     def definition(self):

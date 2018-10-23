@@ -261,7 +261,7 @@ class Key:
 
     def __new__(cls, *path_args, **kwargs):
         _constructor_handle_positional(path_args, kwargs)
-        self = super(Key, cls).__new__(cls)
+        instance = super(Key, cls).__new__(cls)
         if (
             "reference" in kwargs
             or "serialized" in kwargs
@@ -276,9 +276,9 @@ class Key:
                 "Key() cannot create a Key instance without arguments."
             )
 
-        self._key = ds_key
-        self._reference = reference
-        return self
+        instance._key = ds_key
+        instance._reference = reference
+        return instance
 
     @classmethod
     def _from_ds_key(cls, ds_key):
