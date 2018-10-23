@@ -68,6 +68,8 @@ class BlobFetchSizeTooLargeError:
 
 
 class BlobInfo:
+    __slots__ = ()
+
     def __init__(self, *args, **kwargs):
         raise NotImplementedError
 
@@ -94,6 +96,8 @@ class BlobInfoParseError:
 
 
 class BlobKey:
+    __slots__ = ()
+
     def __init__(self, *args, **kwargs):
         raise NotImplementedError
 
@@ -107,6 +111,8 @@ class BlobNotFoundError:
 
 
 class BlobReader:
+    __slots__ = ()
+
     def __init__(self, *args, **kwargs):
         raise NotImplementedError
 

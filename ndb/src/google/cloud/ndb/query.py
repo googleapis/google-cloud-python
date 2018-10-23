@@ -50,11 +50,15 @@ _OPS = frozenset([_EQ_OP, _NE_OP, _LT_OP, "<=", _GT_OP, ">=", _IN_OP])
 
 
 class QueryOptions:
+    __slots__ = ()
+
     def __init__(self, *args, **kwargs):
         raise NotImplementedError
 
 
 class RepeatedStructuredPropertyPredicate:
+    __slots__ = ()
+
     def __init__(self, *args, **kwargs):
         raise NotImplementedError
 
@@ -871,6 +875,8 @@ OR = DisjunctionNode
 
 
 class Query:
+    __slots__ = ()
+
     def __init__(self, *args, **kwargs):
         raise NotImplementedError
 
@@ -880,5 +886,7 @@ def gql(*args, **kwargs):
 
 
 class QueryIterator:
+    __slots__ = ()
+
     def __init__(self, *args, **kwargs):
         raise NotImplementedError
