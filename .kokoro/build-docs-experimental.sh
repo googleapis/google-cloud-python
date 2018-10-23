@@ -6,7 +6,6 @@ set -eo pipefail
 PACKAGE="storage"
 VERSION="1.12.0"
 
-
 function build_docs {
     rm -rf docs/_build/
     # -W -> warnings as errors
@@ -46,9 +45,7 @@ cd library-reference-docs
 # Set up remote to use cookie and bypass gerrit
 git remote add direct https://devrel.googlesource.com/_direct/cloud-docs/library-reference-docs
 
-mkdir python
-mkdir python/${PACKAGE}
-mkdir python/${PACKAGE}/${VERSION}
+mkdir -p python/${PACKAGE}/${VERSION}
 
 cp -R ../docs/_build/html/* python/${PACKAGE}/${VERSION}
 
