@@ -27,7 +27,7 @@ In the hierarchy of API concepts
 * a :class:`~google.cloud.bigtable.table.Table` owns a
   :class:`~google.cloud.bigtable.row.Row` (and all the cells in the row)
 """
-
+import warnings
 
 from google.api_core.gapic_v1 import client_info
 
@@ -87,10 +87,10 @@ class Client(ClientWithProject):
                   requires the :const:`ADMIN_SCOPE`. Defaults to :data:`False`.
 
     :type channel: :instance: grpc.Channel
-    :param channel (grpc.Channel): (Optional) A ``Channel`` instance
-            through which to make calls. This argument is mutually
-            exclusive with ``credentials``; providing both will raise an
-            exception.
+    :param channel (grpc.Channel): (Optional) DEPRECATED:
+            A ``Channel`` instance through which to make calls.
+            This argument is mutually exclusive with ``credentials``;
+            providing both will raise an exception. No longer used.
 
     :raises: :class:`ValueError <exceptions.ValueError>` if both ``read_only``
              and ``admin`` are :data:`True`
@@ -109,6 +109,12 @@ class Client(ClientWithProject):
         #       It **may** use those scopes in ``with_scopes_if_required``.
         self._read_only = bool(read_only)
         self._admin = bool(admin)
+
+        if channel is not None:
+            warnings.warn(
+                "'channel' is deprecated and no longer used.",
+                DeprecationWarning, stacklevel=2)
+
         self._channel = channel
         self.SCOPE = self._get_scopes()
         super(Client, self).__init__(project=project, credentials=credentials)
@@ -145,8 +151,7 @@ class Client(ClientWithProject):
         :rtype: str
         :returns: Return a fully-qualified project string.
         """
-        instance_client = self.instance_admin_client
-        return instance_client.project_path(self.project)
+        return self.instance_admin_client.project_path(self.project)
 
     @property
     def table_data_client(self):
