@@ -554,6 +554,8 @@ class Property(ModelAttribute):
             )
 
         if value is not None:
+            value = self._do_validate(value)
+            value = self._call_to_base_type(value)
             value = self._datastore_type(value)
 
         return query.FilterNode(self._name, op, value)
@@ -638,6 +640,8 @@ class Property(ModelAttribute):
         values = []
         for sub_value in value:
             if sub_value is not None:
+                sub_value = self._do_validate(sub_value)
+                sub_value = self._call_to_base_type(sub_value)
                 sub_value = self._datastore_type(sub_value)
             values.append(sub_value)
 
