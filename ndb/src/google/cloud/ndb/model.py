@@ -685,6 +685,58 @@ class Property(ModelAttribute):
         """
         raise NotImplementedError("Missing datastore_query.PropertyOrder")
 
+    def _call_shallow_validation(self, value):
+        """Call the "initial" set of ``_validate()`` methods.
+
+        This is similar to :meth:`_call_to_base_type` except it only calls
+        those ``_validate()`` methods that can be called without needing to
+        call ``_to_base_type()``.
+
+        An example: suppose the class hierarchy is
+
+        .. code-block:: python
+
+            class A(Property):
+                def _validate(self, value):
+                    ...
+                def _to_base_type(self, value):
+                    ...
+
+            class B(A):
+                def _validate(self, value):
+                    ...
+                def _to_base_type(self, value):
+                    ...
+
+            class C(B):
+                def _validate(self, value):
+                    ...
+
+        The full list of methods (in order) called by
+        :meth:`_call_to_base_type` is:
+
+        * ``C._validate()``
+        * ``B._validate()``
+        * ``B._to_base_type()``
+        * ``A._validate()``
+        * ``A._to_base_type()``
+
+        whereas the full list of methods (in order) called here stops once
+        a ``_to_base_type`` method is encountered:
+
+        * ``C._validate()``
+        * ``B._validate()``
+        """
+        methods = []
+        for method in self._find_methods("_validate", "_to_base_type"):
+            # Stop if ``_to_base_type`` is encountered.
+            if method.__name__ != "_validate":
+                break
+            methods.append(method)
+
+        call = self._apply_list(methods)
+        return call(value)
+
     @classmethod
     def _find_methods(cls, *names, reverse=False):
         """Compute a list of composable methods.

@@ -584,6 +584,79 @@ class TestProperty:
             +prop
 
     @staticmethod
+    def _property_subtype_chain():
+        class A(model.Property):
+            def _validate(self, value):
+                value.append("A._validate")
+                return value
+
+            def _to_base_type(self, value):
+                value.append("A._to_base_type")
+                return value
+
+        class B(A):
+            def _validate(self, value):
+                value.append("B._validate")
+                return value
+
+            def _to_base_type(self, value):
+                value.append("B._to_base_type")
+                return value
+
+        class C(B):
+            def _validate(self, value):
+                value.append("C._validate")
+                return value
+
+        value = []
+
+        prop_a = A(name="name-a")
+        assert value is prop_a._validate(value)
+        assert value == ["A._validate"]
+        assert value is prop_a._to_base_type(value)
+        assert value == ["A._validate", "A._to_base_type"]
+        prop_b = B(name="name-b")
+        assert value is prop_b._validate(value)
+        assert value == ["A._validate", "A._to_base_type", "B._validate"]
+        assert value is prop_b._to_base_type(value)
+        assert value == [
+            "A._validate",
+            "A._to_base_type",
+            "B._validate",
+            "B._to_base_type",
+        ]
+        prop_c = C(name="name-c")
+        assert value is prop_c._validate(value)
+        assert value == [
+            "A._validate",
+            "A._to_base_type",
+            "B._validate",
+            "B._to_base_type",
+            "C._validate",
+        ]
+
+        return A, B, C
+
+    def test__call_shallow_validation(self):
+        _, _, PropertySubclass = self._property_subtype_chain()
+        prop = PropertySubclass(name="prop")
+        value = []
+        assert value is prop._call_shallow_validation(value)
+        assert value == ["C._validate", "B._validate"]
+
+    @staticmethod
+    def test__call_shallow_validation_no_break():
+        class SimpleProperty(model.Property):
+            def _validate(self, value):
+                value.append("SimpleProperty._validate")
+                return value
+
+        prop = SimpleProperty(name="simple")
+        value = []
+        assert value is prop._call_shallow_validation(value)
+        assert value == ["SimpleProperty._validate"]
+
+    @staticmethod
     def _property_subtype():
         class SomeProperty(model.Property):
             def find_me(self):
