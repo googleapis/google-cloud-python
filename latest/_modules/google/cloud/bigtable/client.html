@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigtable.client &#8212; google-cloud 6baadd8 documentation</title>
+    <title>google.cloud.bigtable.client &#8212; google-cloud b34a859 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -63,7 +63,7 @@
 <span class="sd">* a :class:`~google.cloud.bigtable.table.Table` owns a</span>
 <span class="sd">  :class:`~google.cloud.bigtable.row.Row` (and all the cells in the row)</span>
 <span class="sd">&quot;&quot;&quot;</span>
-
+<span class="kn">import</span> <span class="nn">warnings</span>
 
 <span class="kn">from</span> <span class="nn">google.api_core.gapic_v1</span> <span class="k">import</span> <span class="n">client_info</span>
 
@@ -123,10 +123,10 @@
 <span class="sd">                  requires the :const:`ADMIN_SCOPE`. Defaults to :data:`False`.</span>
 
 <span class="sd">    :type channel: :instance: grpc.Channel</span>
-<span class="sd">    :param channel (grpc.Channel): (Optional) A ``Channel`` instance</span>
-<span class="sd">            through which to make calls. This argument is mutually</span>
-<span class="sd">            exclusive with ``credentials``; providing both will raise an</span>
-<span class="sd">            exception.</span>
+<span class="sd">    :param channel (grpc.Channel): (Optional) DEPRECATED:</span>
+<span class="sd">            A ``Channel`` instance through which to make calls.</span>
+<span class="sd">            This argument is mutually exclusive with ``credentials``;</span>
+<span class="sd">            providing both will raise an exception. No longer used.</span>
 
 <span class="sd">    :raises: :class:`ValueError &lt;exceptions.ValueError&gt;` if both ``read_only``</span>
 <span class="sd">             and ``admin`` are :data:`True`</span>
@@ -145,6 +145,12 @@
         <span class="c1">#       It **may** use those scopes in ``with_scopes_if_required``.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_read_only</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">read_only</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_admin</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">admin</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">channel</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+                <span class="s2">&quot;&#39;channel&#39; is deprecated and no longer used.&quot;</span><span class="p">,</span>
+                <span class="ne">DeprecationWarning</span><span class="p">,</span> <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">_channel</span> <span class="o">=</span> <span class="n">channel</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">SCOPE</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_scopes</span><span class="p">()</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">Client</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="n">credentials</span><span class="p">)</span>
@@ -181,8 +187,7 @@
 <span class="sd">        :rtype: str</span>
 <span class="sd">        :returns: Return a fully-qualified project string.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">instance_client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">instance_admin_client</span>
-        <span class="k">return</span> <span class="n">instance_client</span><span class="o">.</span><span class="n">project_path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">instance_admin_client</span><span class="o">.</span><span class="n">project_path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">table_data_client</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>

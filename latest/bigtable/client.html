@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Client &#8212; google-cloud 6baadd8 documentation</title>
+    <title>Client &#8212; google-cloud b34a859 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -83,10 +83,10 @@ for reading only (or for writing as well). Defaults to
 <li><strong>admin</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – (Optional) Boolean indicating if the client will be used to
 interact with the Instance Admin or Table Admin APIs. This
 requires the <a class="reference internal" href="#google.cloud.bigtable.client.ADMIN_SCOPE" title="google.cloud.bigtable.client.ADMIN_SCOPE"><code class="xref py py-const docutils literal notranslate"><span class="pre">ADMIN_SCOPE</span></code></a>. Defaults to <a class="reference external" href="https://docs.python.org/3/library/constants.html#False" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">False</span></code></a>.</li>
-<li><strong>(</strong><strong>grpc.Channel</strong><strong>)</strong> (<em>channel</em>) – (Optional) A <code class="docutils literal notranslate"><span class="pre">Channel</span></code> instance
-through which to make calls. This argument is mutually
-exclusive with <code class="docutils literal notranslate"><span class="pre">credentials</span></code>; providing both will raise an
-exception.</li>
+<li><strong>(</strong><strong>grpc.Channel</strong><strong>)</strong> (<em>channel</em>) – (Optional) DEPRECATED:
+A <code class="docutils literal notranslate"><span class="pre">Channel</span></code> instance through which to make calls.
+This argument is mutually exclusive with <code class="docutils literal notranslate"><span class="pre">credentials</span></code>;
+providing both will raise an exception. No longer used.</li>
 </ul>
 </td>
 </tr>
