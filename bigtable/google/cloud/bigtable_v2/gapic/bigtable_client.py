@@ -82,6 +82,7 @@ class BigtableClient(object):
                  transport=None,
                  channel=None,
                  credentials=None,
+                 grpc_interceptors=(),
                  client_config=bigtable_client_config.config,
                  client_info=None):
         """Constructor.
@@ -106,6 +107,9 @@ class BigtableClient(object):
                 This argument is mutually exclusive with providing a
                 transport instance to ``transport``; doing so will raise
                 an exception.
+            grpc_interceptors (Optional[Sequence[grpc.*ClientInterceptor])]:
+                Interceptors to be applied to the GRPC channel.
+            List(derived from grpc.*ClientInterceptor)
             client_config (dict): DEPRECATED. A dictionary of call options for
                 each method. If not specified, the default configuration is used.
             client_info (google.api_core.gapic_v1.client_info.ClientInfo):
@@ -144,6 +148,7 @@ class BigtableClient(object):
                 address=self.SERVICE_ADDRESS,
                 channel=channel,
                 credentials=credentials,
+                grpc_interceptors=grpc_interceptors,
             )
 
         if client_info is None:

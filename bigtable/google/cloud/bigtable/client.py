@@ -173,8 +173,11 @@ class Client(ClientWithProject):
         """
         if self._table_data_client is None:
             self._table_data_client = (
-                bigtable_v2.BigtableClient(credentials=self._credentials,
-                                           client_info=_CLIENT_INFO))
+                bigtable_v2.BigtableClient(
+                    credentials=self._credentials,
+                    client_info=_CLIENT_INFO,
+                    grpc_interceptors=self.grpc_interceptors,
+                ))
 
         return self._table_data_client
 
@@ -193,7 +196,10 @@ class Client(ClientWithProject):
                 raise ValueError('Client is not an admin client.')
             self._table_admin_client = (
                 bigtable_admin_v2.BigtableTableAdminClient(
-                    credentials=self._credentials, client_info=_CLIENT_INFO))
+                    credentials=self._credentials,
+                    client_info=_CLIENT_INFO,
+                    grpc_interceptors=self.grpc_interceptors,
+                ))
 
         return self._table_admin_client
 
@@ -212,7 +218,10 @@ class Client(ClientWithProject):
                 raise ValueError('Client is not an admin client.')
             self._instance_admin_client = (
                 bigtable_admin_v2.BigtableInstanceAdminClient(
-                    credentials=self._credentials, client_info=_CLIENT_INFO))
+                    credentials=self._credentials,
+                    client_info=_CLIENT_INFO,
+                    grpc_interceptors=self.grpc_interceptors,
+                ))
         return self._instance_admin_client
 
     def instance(self, instance_id, display_name=None,

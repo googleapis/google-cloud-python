@@ -134,6 +134,36 @@ class TestClient(unittest.TestCase):
         self.assertIsInstance(table_data_client, BigtableClient)
         self.assertIs(client._table_data_client, table_data_client)
 
+    def test_table_data_client_not_initialized_w_interceptors(self):
+        from grpc import UnaryUnaryClientInterceptor
+        from grpc._interceptor import _UnaryUnaryMultiCallable
+        from google.cloud.bigtable_v2 import BigtableClient
+
+        class _Interceptor(UnaryUnaryClientInterceptor):
+            def intercept_unary_unary(
+                self, continuation, client_call_details, request,
+            ):
+                pass
+
+        credentials = _make_credentials()
+        interceptor = _Interceptor()
+        client = self._make_one(
+            project=self.PROJECT,
+            credentials=credentials,
+            grpc_interceptors=[interceptor],
+        )
+
+        table_data_client = client.table_data_client
+        self.assertIsInstance(table_data_client, BigtableClient)
+        self.assertIs(client._table_data_client, table_data_client)
+
+        # Check that interceptors were propagated
+        transport = table_data_client.transport
+        stub = transport._stubs['bigtable_stub']
+        mutate_row = stub.MutateRow
+        self.assertIsInstance(mutate_row, _UnaryUnaryMultiCallable)
+        self.assertIs(mutate_row._interceptor, interceptor)
+
     def test_table_data_client_initialized(self):
         credentials = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=credentials,
@@ -158,6 +188,38 @@ class TestClient(unittest.TestCase):
 
         table_admin_client = client.table_admin_client
         self.assertIsInstance(table_admin_client, BigtableTableAdminClient)
+
+    def test_table_admin_client_not_initialized_w_interceptors(self):
+        from grpc import UnaryUnaryClientInterceptor
+        from grpc._interceptor import _UnaryUnaryMultiCallable
+        from google.cloud.bigtable_admin_v2 import BigtableTableAdminClient
+
+        class _Interceptor(UnaryUnaryClientInterceptor):
+            def intercept_unary_unary(
+                self, continuation, client_call_details, request,
+            ):
+                pass
+
+        credentials = _make_credentials()
+        interceptor = _Interceptor()
+        client = self._make_one(
+            project=self.PROJECT,
+            credentials=credentials,
+            admin=True,
+            grpc_interceptors=[interceptor],
+        )
+
+        table_admin_client = client.table_admin_client
+        self.assertIsInstance(
+            table_admin_client, BigtableTableAdminClient)
+        self.assertIs(client._table_admin_client, table_admin_client)
+
+        # Check that interceptors were propagated
+        transport = table_admin_client.transport
+        stub = transport._stubs['bigtable_table_admin_stub']
+        create_table = stub.CreateTable
+        self.assertIsInstance(create_table, _UnaryUnaryMultiCallable)
+        self.assertIs(create_table._interceptor, interceptor)
 
     def test_table_admin_client_initialized(self):
         credentials = _make_credentials()
@@ -184,6 +246,38 @@ class TestClient(unittest.TestCase):
         instance_admin_client = client.instance_admin_client
         self.assertIsInstance(
             instance_admin_client, BigtableInstanceAdminClient)
+
+    def test_instance_admin_client_not_initialized_w_interceptors(self):
+        from grpc import UnaryUnaryClientInterceptor
+        from grpc._interceptor import _UnaryUnaryMultiCallable
+        from google.cloud.bigtable_admin_v2 import BigtableInstanceAdminClient
+
+        class _Interceptor(UnaryUnaryClientInterceptor):
+            def intercept_unary_unary(
+                self, continuation, client_call_details, request,
+            ):
+                pass
+
+        credentials = _make_credentials()
+        interceptor = _Interceptor()
+        client = self._make_one(
+            project=self.PROJECT,
+            credentials=credentials,
+            admin=True,
+            grpc_interceptors=[interceptor],
+        )
+
+        instance_admin_client = client.instance_admin_client
+        self.assertIsInstance(
+            instance_admin_client, BigtableInstanceAdminClient)
+        self.assertIs(client._instance_admin_client, instance_admin_client)
+
+        # Check that interceptors were propagated
+        transport = instance_admin_client.transport
+        stub = transport._stubs['bigtable_instance_admin_stub']
+        create_instance = stub.CreateInstance
+        self.assertIsInstance(create_instance, _UnaryUnaryMultiCallable)
+        self.assertIs(create_instance._interceptor, interceptor)
 
     def test_instance_admin_client_initialized(self):
         credentials = _make_credentials()

@@ -14,6 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import grpc
 import google.api_core.grpc_helpers
 
 from google.cloud.bigtable_v2.proto import bigtable_pb2_grpc
@@ -41,7 +42,8 @@ class BigtableGrpcTransport(object):
     def __init__(self,
                  channel=None,
                  credentials=None,
-                 address='bigtable.googleapis.com:443'):
+                 address='bigtable.googleapis.com:443',
+                 grpc_interceptors=()):
         """Instantiate the transport class.
 
         Args:
@@ -54,6 +56,8 @@ class BigtableGrpcTransport(object):
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
             address (str): The address where the service is hosted.
+            grpc_interceptors (Optional[Sequence[grpc.*ClientInterceptor])]:
+                Interceptors to be applied when creating a GRPC channel.
         """
         # If both `channel` and `credentials` are specified, raise an
         # exception (channels come with credentials baked in already).
@@ -68,6 +72,8 @@ class BigtableGrpcTransport(object):
                 address=address,
                 credentials=credentials,
             )
+            for interceptor in grpc_interceptors:
+                channel = grpc.intercept_channel(channel, interceptor)
 
         # gRPC uses objects called "stubs" that are bound to the
         # channel and provide a basic method for each RPC.
