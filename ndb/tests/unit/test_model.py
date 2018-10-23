@@ -284,6 +284,49 @@ class TestModelAttribute:
         assert attr._fix_up(model.Model, "birthdate") is None
 
 
+class Test_BaseValue:
+    @staticmethod
+    def test_constructor():
+        wrapped = model._BaseValue(17)
+        assert wrapped.b_val == 17
+
+    @staticmethod
+    def test_constructor_invalid_input():
+        with pytest.raises(TypeError):
+            model._BaseValue(None)
+        with pytest.raises(TypeError):
+            model._BaseValue([1, 2])
+
+    @staticmethod
+    def test___repr__():
+        wrapped = model._BaseValue(b"abc")
+        assert repr(wrapped) == "_BaseValue(b'abc')"
+
+    @staticmethod
+    def test___eq__():
+        wrapped1 = model._BaseValue("one val")
+        wrapped2 = model._BaseValue(25.5)
+        wrapped3 = unittest.mock.sentinel.base_value
+        assert wrapped1 == wrapped1
+        assert not wrapped1 == wrapped2
+        assert not wrapped1 == wrapped3
+
+    @staticmethod
+    def test___ne__():
+        wrapped1 = model._BaseValue("one val")
+        wrapped2 = model._BaseValue(25.5)
+        wrapped3 = unittest.mock.sentinel.base_value
+        assert not wrapped1 != wrapped1
+        assert wrapped1 != wrapped2
+        assert wrapped1 != wrapped3
+
+    @staticmethod
+    def test___hash__():
+        wrapped = model._BaseValue((11, 12, 88))
+        with pytest.raises(TypeError):
+            hash(wrapped)
+
+
 @pytest.fixture
 def zero_prop_counter():
     counter_val = model.Property._CREATION_COUNTER
