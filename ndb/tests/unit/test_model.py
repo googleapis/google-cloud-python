@@ -637,6 +637,19 @@ class TestProperty:
 
         return A, B, C
 
+    def test__call_to_base_type(self):
+        _, _, PropertySubclass = self._property_subtype_chain()
+        prop = PropertySubclass(name="prop")
+        value = []
+        assert value is prop._call_to_base_type(value)
+        assert value == [
+            "C._validate",
+            "B._validate",
+            "B._to_base_type",
+            "A._validate",
+            "A._to_base_type",
+        ]
+
     def test__call_shallow_validation(self):
         _, _, PropertySubclass = self._property_subtype_chain()
         prop = PropertySubclass(name="prop")

@@ -685,6 +685,48 @@ class Property(ModelAttribute):
         """
         raise NotImplementedError("Missing datastore_query.PropertyOrder")
 
+    def _call_to_base_type(self, value):
+        """Call all ``_validate()`` and ``_to_base_type()`` methods on value.
+
+        This calls the methods in the method resolution order of the
+        property's class. For example, given the hierarchy
+
+        .. code-block:: python
+
+            class A(Property):
+                def _validate(self, value):
+                    ...
+                def _to_base_type(self, value):
+                    ...
+
+            class B(A):
+                def _validate(self, value):
+                    ...
+                def _to_base_type(self, value):
+                    ...
+
+            class C(B):
+                def _validate(self, value):
+                    ...
+
+        the full list of methods (in order) is:
+
+        * ``C._validate()``
+        * ``B._validate()``
+        * ``B._to_base_type()``
+        * ``A._validate()``
+        * ``A._to_base_type()``
+
+        Args:
+            value (Any): The value to be converted / validated.
+
+        Returns:
+            Any: The transformed ``value``.
+        """
+        methods = self._find_methods("_validate", "_to_base_type")
+        call = self._apply_list(methods)
+        return call(value)
+
     def _call_shallow_validation(self, value):
         """Call the "initial" set of ``_validate()`` methods.
 
@@ -726,6 +768,12 @@ class Property(ModelAttribute):
 
         * ``C._validate()``
         * ``B._validate()``
+
+        Args:
+            value (Any): The value to be converted / validated.
+
+        Returns:
+            Any: The transformed ``value``.
         """
         methods = []
         for method in self._find_methods("_validate", "_to_base_type"):
