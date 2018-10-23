@@ -67,6 +67,10 @@ The primary differences come from:
   the legacy runtime.
 - `query.PostFilterNode.__eq__` compares `self.predicate` to `other.predicate`
   rather than using `self.__dict__ == other.__dict__`
+- `__slots__` have been added to most non-exception types for a number of
+  reasons. The first is the naive "performance" win and the second is that
+  this will make it transparent whenever `ndb` users refer to non-existent
+  "private" or "protected" instance attributes
 
 ## Comments
 
