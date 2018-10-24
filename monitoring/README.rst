@@ -90,7 +90,7 @@ MetricServiceClient
         pass
 
     # Or iterate over results one page at a time
-    for page in client.list_monitored_resource_descriptors(name, options=CallOptions(page_token=INITIAL_PAGE)):
+    for page in client.list_monitored_resource_descriptors(name).pages:
         for element in page:
             # process element
             pass
