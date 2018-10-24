@@ -86,8 +86,10 @@ Base Classes Defined
   loads credentials from a service account file and delegates to the main
   class ctor with loaded credentials in ``**kwargs``.
 
-- If subclasses define ``_SET_PROJECT``, copies project ID from the
-  credentials into the ``**kwargs``. (This feature is only used by
+- If subclasses define ``_SET_PROJECT`` as True, copies project ID from the
+  credentials into the ``**kwargs``. (This feature is only used directly
+  by ``spanner``, but the ``ClientWithProject`` class sets it to True,
+  which means that most clients get it (including spanner).
 
 
 ``google.cloud.client.Client``
