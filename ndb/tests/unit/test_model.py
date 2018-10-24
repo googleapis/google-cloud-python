@@ -442,14 +442,12 @@ class TestProperty:
     @staticmethod
     def test_repr_subclass():
         class SimpleProperty(model.Property):
-            _positional_attributes = []
-            _keyword_attributes = ["_foo_type", "bar"]
             _foo_type = None
-            bar = "eleventy"
+            _bar = "eleventy"
 
             def __init__(self, *, foo_type, bar):
                 self._foo_type = foo_type
-                self.bar = bar
+                self._bar = bar
 
         prop = SimpleProperty(foo_type=list, bar="nope")
         assert repr(prop) == "SimpleProperty(foo_type=list, bar='nope')"

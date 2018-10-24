@@ -15,6 +15,8 @@
 """Model classes for datastore objects and properties for models."""
 
 
+import inspect
+
 from google.cloud.ndb import exceptions
 from google.cloud.ndb import key as key_module
 
@@ -346,18 +348,6 @@ class Property(ModelAttribute):
     _write_empty_list = False
     # Non-public class attributes.
     _CREATION_COUNTER = 0
-    # Attribute names, used only by ``repr()``.
-    _positional_attributes = ["_name"]
-    _keyword_attributes = [
-        "_indexed",
-        "_repeated",
-        "_required",
-        "_default",
-        "_choices",
-        "_validator",
-        "_verbose_name",
-        "_write_empty_list",
-    ]
 
     def __init__(
         self,
@@ -507,22 +497,20 @@ class Property(ModelAttribute):
         """
         args = []
         cls = self.__class__
-        combined_attributes = (
-            cls._positional_attributes + cls._keyword_attributes
-        )
-        for index, attr in enumerate(combined_attributes):
+        signature = inspect.signature(self.__init__)
+        for name, parameter in signature.parameters.items():
+            attr = "_{}".format(name)
             instance_val = getattr(self, attr)
             default_val = getattr(cls, attr)
+
             if instance_val is not default_val:
                 if isinstance(instance_val, type):
                     as_str = instance_val.__name__
                 else:
                     as_str = repr(instance_val)
 
-                if index >= len(cls._positional_attributes):
-                    if attr.startswith("_"):
-                        attr = attr[1:]
-                    as_str = "{}={}".format(attr, as_str)
+                if parameter.kind == inspect.Parameter.KEYWORD_ONLY:
+                    as_str = "{}={}".format(name, as_str)
                 args.append(as_str)
 
         return "{}({})".format(self.__class__.__name__, ", ".join(args))
