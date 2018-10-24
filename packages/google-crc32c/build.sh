@@ -42,5 +42,6 @@ ${PYTHON_BIN}/python check_cffi_crc32c.py
 # Clean up.
 rm -f /var/code/py-crc32c/_crc32c_cffi.c
 rm -f /var/code/py-crc32c/_crc32c_cffi.o
-rm -f /var/code/py-crc32c/_crc32c_cffi.cpython-37m-x86_64-linux-gnu.so
+SUFFIX=$(${PYTHON_BIN}/python3-config --extension-suffix)
+rm -f /var/code/py-crc32c/_crc32c_cffi${SUFFIX}
 rm -fr /var/code/py-crc32c/crc32c/build/
