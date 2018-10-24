@@ -22,6 +22,12 @@ $ docker run \
 >   quay.io/pypa/manylinux1_x86_64 \
 >   /var/code/py-crc32c/build.sh
 ...
+```
+
+Currently this fails, so it's worthwhile to clean up before
+the next run:
+
+```
 $ rm -f _crc32c_cffi.*
 $ [sudo] rm -fr crc32c/build/
 ```
