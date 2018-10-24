@@ -2,10 +2,20 @@
 
 set -eo pipefail
 
-#TODO: Change to be get package and version from tag.
-PACKAGE="storage"
-VERSION="1.12.0"
+# TODO: Get package from environment variable.
+PACKAGE="websecurityscanner"
 
+# Kokoro currently uses 3.6.1
+pyenv global 3.6.1
+
+# Install Requirements
+pip install --upgrade -r ${KOKORO_ARTIFACTS_DIR}/github/google-cloud-python/docs/requirements.txt
+
+cd ${KOKORO_ARTIFACTS_DIR}/github/google-cloud-python/${PACKAGE}
+
+VERSION=$(python ${KOKORO_ARTIFACTS_DIR}/github/google-cloud-python/test_utils/scripts/get_package_version.py .)
+
+# Build documentation
 function build_docs {
     rm -rf docs/_build/
     # -W -> warnings as errors
@@ -20,22 +30,11 @@ function build_docs {
     return $?
 }
 
-cd ${KOKORO_ARTIFACTS_DIR}/github/google-cloud-python
-
-# Kokoro currently uses 3.6.1
-pyenv global 3.6.1
-
-# Install Requirements
-pip install --upgrade -r docs/requirements.txt
-
-cd ${PACKAGE}
-
-# Build documentation
 build_docs
 
 # Run the GOB cookie daemon
-git clone https://gerrit.googlesource.com/gcompute-tools $KOKORO_ARTIFACTS_DIR/gcompute-tools
-$KOKORO_ARTIFACTS_DIR/gcompute-tools/git-cookie-authdaemon
+git clone https://gerrit.googlesource.com/gcompute-tools ${KOKORO_ARTIFACTS_DIR}/gcompute-tools
+${KOKORO_ARTIFACTS_DIR}/gcompute-tools/git-cookie-authdaemon
 
 # Clone Git-on-Borg docs repository
 git clone https://devrel.googlesource.com/cloud-docs/library-reference-docs
@@ -52,7 +51,5 @@ cp -R ../docs/_build/html/* python/${PACKAGE}/${VERSION}
 # Update the files
 git add .
 git status
-
 git commit -m "Publish documentation for ${PACKAGE} v${VERSION}"
-
 git push direct master
