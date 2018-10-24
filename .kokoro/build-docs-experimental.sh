@@ -2,9 +2,6 @@
 
 set -eo pipefail
 
-# TODO: Get package from environment variable.
-PACKAGE="websecurityscanner"
-
 # Kokoro currently uses 3.6.1
 pyenv global 3.6.1
 
