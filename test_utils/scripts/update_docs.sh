@@ -68,11 +68,6 @@ else
     SPHINX_RELEASE=$(git log -1 --pretty=%h) build_docs
 fi
 
-# Get the current version.
-# This is only likely to work from within nox, because the google-cloud
-# package must be installed.
-CURRENT_VERSION=$(python ${DIR}/get_version.py)
-
 # Update gh-pages with the created docs.
 cd ${GH_PAGES_DIR}
 git rm -fr latest/
