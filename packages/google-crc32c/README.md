@@ -1,13 +1,12 @@
 # `py-crc32c`
 
-> Python / Cython wrapper for google/crc32c
+> Python / Cython wrapper for `google/crc32c`
 
 ## Building Wheel
 
 ```
 $ docker pull quay.io/pypa/manylinux1_i686
 $ docker pull quay.io/pypa/manylinux1_x86_64
-$ git clone --recursive https://github.com/google/crc32c
 $ docker run \
 >   --rm \
 >   --tty \
