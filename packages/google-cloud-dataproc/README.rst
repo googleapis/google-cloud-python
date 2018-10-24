@@ -87,7 +87,7 @@ Example Usage
         pass
 
     # Or iterate over results one page at a time
-    for page in client.list_clusters(project_id, region, options=CallOptions(page_token=INITIAL_PAGE)):
+    for page in client.list_clusters(project_id, region).pages:
         for element in page:
             # process element
             pass
