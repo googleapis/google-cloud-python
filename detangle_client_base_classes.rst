@@ -209,7 +209,9 @@ HTTP-based Clients
   table data to GCS in its ``load_table_from_file`` method.
 
 - Clients which are passed on already-created ``requests.Session``-workalike
-  should *not* need / require / infer credentials.
+  should *not* need / require / infer credentials.  For the ``storage``
+  case noted above, where the credentials are used to create a signed URL,
+  we could fall back to using the ``credentials`` attribute of the session.
 
 Hybrid Clients
 ~~~~~~~~~~~~~~
