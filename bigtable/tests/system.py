@@ -15,8 +15,17 @@
 import datetime
 import operator
 import os
-
 import unittest
+
+try:
+    from opencensus.trace.tracer import Tracer
+    from opencensus.trace.exporters import stackdriver_exporter
+    from opencensus.trace.ext.google_cloud_clientlibs.trace import (
+        trace_integration)
+except ImportError:
+    _HAVE_OPENCENSUS = False
+else:
+    _HAVE_OPENCENSUS = True
 
 from google.api_core.exceptions import TooManyRequests
 from google.cloud._helpers import _datetime_from_microseconds
@@ -85,6 +94,12 @@ retry_429 = RetryErrors(TooManyRequests)
 
 def setUpModule():
     from google.cloud.exceptions import GrpcRendezvous
+
+    if _HAVE_OPENCENSUS:
+        import pdb; pdb.set_trace()
+        exporter = stackdriver_exporter.StackdriverExporter()
+        tracer = Tracer(exporter=exporter)
+        trace_integration(tracer)
 
     Config.IN_EMULATOR = os.getenv(BIGTABLE_EMULATOR) is not None
 
