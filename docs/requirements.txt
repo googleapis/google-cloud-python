@@ -1,7 +1,7 @@
 setuptools >= 36.4.0
 sphinx >= 1.6.3
-sphinx_rtd_theme >=
-ipython >= 0.4.0
+sphinx_rtd_theme >= 0.4.0
+ipython >= 4
 recommonmark >= 0.4.0
 grpcio-gcp >= 0.2.2
 
