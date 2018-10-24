@@ -62,19 +62,15 @@ def unit(session):
 
 
 @nox.session(python=['2.7', '3.6'])
-def system(session):
+def system(session, local_deps=LOCAL_DEPS):
     """Run the system test suite."""
 
     # Sanity check: Only run system tests if the environment variable is set.
     if not os.environ.get('GOOGLE_APPLICATION_CREDENTIALS', ''):
         session.skip('Credentials must be set via environment variable.')
 
-    # Use pre-release gRPC for system tests.
-    session.install('--pre', 'grpcio')
-
     # Install all test dependencies, then install local packages in-place.
-    session.install('mock', 'pytest')
-    for local_dep in LOCAL_DEPS:
+    for local_dep in local_deps:
         session.install('-e', local_dep)
     systest_deps = [
         '../test_utils/',
@@ -87,6 +83,13 @@ def system(session):
 
     # Run py.test against the system tests.
     session.run('py.test', '--quiet', 'tests/system.py', *session.posargs)
+
+
+@nox.session(python=['2.7', '3.6'])
+def system_opencensus(session):
+    session.install('wrapt')
+    session.install('opencensus')
+    system(session, local_deps=LOCAL_DEPS + ('../trace',))
 
 
 @nox.session(python='3.6')
