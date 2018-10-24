@@ -60,7 +60,7 @@ def unit(session):
 
 
 @nox.session(python=['2.7', '3.7'])
-def system(session):
+def system(session, local_deps=LOCAL_DEPS):
     """Run the system test suite."""
 
     # Sanity check: Only run system tests if the environment variable is set.
@@ -72,14 +72,21 @@ def system(session):
 
     # Install all test dependencies, then install this package into the
     # virtualenv's dist-packages.
-    session.install('mock', 'pytest')
-    for local_dep in LOCAL_DEPS:
+    session.install('pytest')
+    for local_dep in local_deps:
         session.install('-e', local_dep)
     session.install('-e', '../test_utils/')
     session.install('-e', '.')
 
     # Run py.test against the system tests.
     session.run('py.test', '--quiet', 'tests/system.py', *session.posargs)
+
+
+@nox.session(python=['2.7', '3.7'])
+def system_opencensus(session):
+    session.install('wrapt')
+    session.install('opencensus')
+    system(session, local_deps=LOCAL_DEPS + ('../trace',))
 
 
 @nox.session(python='3.6')
