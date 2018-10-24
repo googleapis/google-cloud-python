@@ -25,9 +25,22 @@ ${PYTHON_BIN}/python -m pip install --upgrade cmake cffi
 cd /var/code/py-crc32c/crc32c/
 mkdir build
 cd build/
-${PYTHON_BIN}/cmake -DCRC32C_BUILD_TESTS=0 -DCRC32C_BUILD_BENCHMARKS=0 ..
+${PYTHON_BIN}/cmake \
+  -DCRC32C_BUILD_TESTS=0 \
+  -DCRC32C_BUILD_BENCHMARKS=0 \
+  -DBUILD_SHARED_LIBS=yes \
+  ..
 make all install
 
 # Build the CFFI Python extension
 cd /var/code/py-crc32c/
 ${PYTHON_BIN}/python crc32c_build.py
+
+# Make sure it was built.
+${PYTHON_BIN}/python check_cffi_crc32c.py
+
+# Clean up.
+rm -f /var/code/py-crc32c/_crc32c_cffi.c
+rm -f /var/code/py-crc32c/_crc32c_cffi.o
+rm -f /var/code/py-crc32c/_crc32c_cffi.cpython-37m-x86_64-linux-gnu.so
+rm -fr /var/code/py-crc32c/crc32c/build/
