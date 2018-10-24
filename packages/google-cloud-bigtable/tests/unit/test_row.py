@@ -445,7 +445,7 @@ class TestConditionalRow(unittest.TestCase):
             predicate_matched=predicate_matched)
 
         # Patch the stub used by the API method.
-        api.transport.check_and_mutate_row.side_effect = [[response_pb]]
+        api.transport.check_and_mutate_row.side_effect = [response_pb]
         client._table_data_client = api
 
         # Create expected_result.
