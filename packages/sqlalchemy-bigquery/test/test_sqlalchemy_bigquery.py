@@ -402,10 +402,9 @@ def test_table_names_in_schema(inspector, inspector_using_test_dataset):
 def test_get_indexes(inspector, inspector_using_test_dataset):
     for table in ['test_pybigquery.sample', 'test_pybigquery.sample_one_row']:
         indexes = inspector.get_indexes('test_pybigquery.sample')
-        assert len(indexes) == 3
-        assert indexes[0] == {'name':'partition', 'column_names': 'timestamp', 'unique': False}
-        assert indexes[1] == {'name': 'clustering', 'column_names': 'integer', 'unique': False}
-        assert indexes[2] == {'name': 'clustering', 'column_names': 'string', 'unique': False}
+        assert len(indexes) == 2
+        assert indexes[0] == {'name':'partition', 'column_names': ['timestamp'], 'unique': False}
+        assert indexes[1] == {'name': 'clustering', 'column_names': ['integer', 'string'], 'unique': False}
 
 
 def test_get_columns(inspector, inspector_using_test_dataset):

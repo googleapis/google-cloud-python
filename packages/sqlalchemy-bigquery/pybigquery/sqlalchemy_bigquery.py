@@ -355,13 +355,12 @@ class BigQueryDialect(DefaultDialect):
         indexes = []
         if table.time_partitioning:
             indexes.append({'name': 'partition',
-                            'column_names': table.time_partitioning.field,
+                            'column_names': [table.time_partitioning.field],
                             'unique': False})
         if table.clustering_fields:
-            for cluster_field in table.clustering_fields:
-                indexes.append({'name': 'clustering',
-                                'column_names': cluster_field,
-                                'unique': False})
+            indexes.append({'name': 'clustering',
+                            'column_names': table.clustering_fields,
+                            'unique': False})
         return indexes
 
     def get_schema_names(self, connection, **kw):
