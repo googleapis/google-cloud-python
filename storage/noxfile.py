@@ -70,6 +70,7 @@ def system(session, local_deps=LOCAL_DEPS):
         session.skip('Credentials must be set via environment variable.')
 
     # Install all test dependencies, then install local packages in-place.
+    session.install('pytest')
     for local_dep in local_deps:
         session.install('-e', local_dep)
     systest_deps = [
