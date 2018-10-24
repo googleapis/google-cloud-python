@@ -8,8 +8,10 @@ PACKAGE="websecurityscanner"
 # Kokoro currently uses 3.6.1
 pyenv global 3.6.1
 
+cd ${KOKORO_ARTIFACTS_DIR}/github/google-cloud-python
+
 # Install Requirements
-pip install --upgrade -r ${KOKORO_ARTIFACTS_DIR}/github/google-cloud-python/docs/requirements.txt
+pip install --upgrade -r docs/requirements.txt
 
 cd ${KOKORO_ARTIFACTS_DIR}/github/google-cloud-python/${PACKAGE}
 
@@ -44,8 +46,8 @@ cd library-reference-docs
 # Set up remote to use cookie and bypass gerrit
 git remote add direct https://devrel.googlesource.com/_direct/cloud-docs/library-reference-docs
 
+# Copy docmentation
 mkdir -p python/${PACKAGE}/${VERSION}
-
 cp -R ../docs/_build/html/* python/${PACKAGE}/${VERSION}
 
 # Update the files
