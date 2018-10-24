@@ -14,34 +14,60 @@
 
 set -e -x
 
-PYTHON_BIN="/opt/python/cp37-cp37m/bin"
+MAIN_PYTHON_BIN="/opt/python/cp37-cp37m/bin"
 PKG_NAME="py_crc32c"
 
 # Upgrade `pip` before using it.
-${PYTHON_BIN}/python -m pip install --upgrade pip
+${MAIN_PYTHON_BIN}/python -m pip install --upgrade pip
 # Install `cmake` and `cffi`
-# See: https://github.com/pypa/auditwheel/issues/102
-${PYTHON_BIN}/python -m pip install --upgrade \
-  auditwheel cmake cffi "wheel != 0.32.*"
+${MAIN_PYTHON_BIN}/python -m pip install "cmake >= 3.12.0"
+${MAIN_PYTHON_BIN}/python -m pip install \
+    --requirement /var/code/py-crc32c/dev-requirements.txt
 
 # Build and install `crc32c`
 cd /var/code/py-crc32c/crc32c/
 mkdir build
 cd build/
-${PYTHON_BIN}/cmake \
-  -DCRC32C_BUILD_TESTS=0 \
-  -DCRC32C_BUILD_BENCHMARKS=0 \
-  -DBUILD_SHARED_LIBS=yes \
-  ..
+${MAIN_PYTHON_BIN}/cmake \
+    -DCRC32C_BUILD_TESTS=0 \
+    -DCRC32C_BUILD_BENCHMARKS=0 \
+    -DBUILD_SHARED_LIBS=yes \
+    ..
 make all install
 
-# Build the package.
+# Collect all target Python versions.
+VERSION_WHITELIST=""
+for PYTHON_BIN in /opt/python/*/bin; do
+    # H/T: https://stackoverflow.com/a/229606/1068170
+    if [[ "${PYTHON_BIN}" == *"27"* ]]; then
+        VERSION_WHITELIST="${VERSION_WHITELIST} ${PYTHON_BIN}"
+        continue
+    elif [[ "${PYTHON_BIN}" == *"35"* ]]; then
+        VERSION_WHITELIST="${VERSION_WHITELIST} ${PYTHON_BIN}"
+        continue
+    elif [[ "${PYTHON_BIN}" == *"36"* ]]; then
+        VERSION_WHITELIST="${VERSION_WHITELIST} ${PYTHON_BIN}"
+        continue
+    elif [[ "${PYTHON_BIN}" == *"37"* ]]; then
+        VERSION_WHITELIST="${VERSION_WHITELIST} ${PYTHON_BIN}"
+        continue
+    else
+        echo "Ignoring unsupported version: ${PYTHON_BIN}"
+        echo "====================================="
+    fi
+done
+
+# Build the wheels.
 cd /var/code/py-crc32c/
-${PYTHON_BIN}/python -m pip wheel . -w dist_wheels/
+for PYTHON_BIN in ${VERSION_WHITELIST}; do
+    ${PYTHON_BIN}/python -m pip install \
+        --requirement /var/code/py-crc32c/dev-requirements.txt
+    ${PYTHON_BIN}/python -m pip wheel . -w dist_wheels/
+done
 
 # Bundle external shared libraries into the wheels
 for whl in dist_wheels/${PKG_NAME}*.whl; do
-    ${PYTHON_BIN}/auditwheel repair "${whl}" -w .
+    ${MAIN_PYTHON_BIN}/auditwheel repair "${whl}" -w .
 done
 
 # Clean up.
