@@ -28,11 +28,15 @@ Fixed-up wheel written to /var/code/py-crc32c/py_crc32c-0.0.1-cp37-cp37m-manylin
 ...
 ```
 
+(Similar work will need to be done for `quay.io/pypa/manylinux1_i686`.)
+
+## Verify Wheel
+
 To verify that the `manylinux` wheel works as expected,
-run `check.sh` on a host Linux OS:
+run `check-37.sh` on a host Linux OS:
 
 ```
-$ ./check.sh
+$ ./check-37.sh
 ...
 + venv/bin/python check_cffi_crc32c.py
 _crc32c_cffi: <module '_crc32c_cffi' from '/home/dhermes/google_contracting/py-crc32c/venv/lib/python3.7/site-packages/_crc32c_cffi.abi3.so'>
@@ -53,5 +57,3 @@ Archive:  py_crc32c-0.0.1-cp37-cp37m-manylinux1_x86_64.whl
     57145                     7 files
 ...
 ```
-
-(Similar work will need to be done for `quay.io/pypa/manylinux1_i686`.)
