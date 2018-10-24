@@ -1,4 +1,4 @@
-.. include:: /../automl/README.rst
+.. include:: ../README.rst
 
 
 Api Reference
