@@ -20,6 +20,15 @@ import unittest
 
 import requests
 import six
+try:
+    from opencensus.trace.tracer import Tracer
+    from opencensus.trace.exporters import stackdriver_exporter
+    from opencensus.trace.ext.google_cloud_clientlibs.trace import (
+        trace_integration)
+except ImportError:
+    _HAVE_OPENCENSUS = False
+else:
+    _HAVE_OPENCENSUS = True
 
 from google.cloud import exceptions
 from google.cloud import storage
@@ -75,6 +84,12 @@ class Config(object):
 
 
 def setUpModule():
+
+    if _HAVE_OPENCENSUS:
+        exporter = stackdriver_exporter.StackdriverExporter()
+        tracer = Tracer(exporter=exporter)
+        trace_integration(tracer)
+
     Config.CLIENT = storage.Client()
     bucket_name = 'new' + unique_resource_id()
     # In the **very** rare case the bucket name is reserved, this
