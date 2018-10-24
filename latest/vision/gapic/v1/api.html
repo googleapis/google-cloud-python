@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Client for Cloud Vision API &#8212; google-cloud 53d8146220 documentation</title>
+    <title>Client for Cloud Vision API &#8212; google-cloud d144a00 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -99,8 +99,12 @@ your own client library.</li>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>request</strong> (<a class="reference internal" href="types.html#google.cloud.vision_v1.types.AnnotateImageRequest" title="google.cloud.vision_v1.types.AnnotateImageRequest"><code class="xref py py-class docutils literal notranslate"><span class="pre">AnnotateImageRequest</span></code></a>) – </li>
-<li><strong>options</strong> (<a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.html#google.gax.CallOptions" title="(in google-gax v0.16.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.gax.CallOptions</span></code></a>) – Overrides the default
-settings for this call, e.g, timeout, retries, etc.</li>
+<li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
+be retried.</li>
+<li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
+for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
+specified, the timeout applies to each individual attempt.</li>
 </ul>
 </td>
 </tr>
@@ -285,7 +289,7 @@ TEXT_DETECTION, DOCUMENT_TEXT_DETECTION, or CROP_HINTS.</li>
 
 <dl class="attribute">
 <dt id="google.cloud.vision_v1.ImageAnnotatorClient.enums">
-<code class="descname">enums</code><em class="property"> = &lt;module 'google.cloud.vision_v1.gapic.enums' from '/tmpfs/src/github/google-cloud-python/vision/google/cloud/vision_v1/gapic/enums.py'&gt;</em><a class="headerlink" href="#google.cloud.vision_v1.ImageAnnotatorClient.enums" title="Permalink to this definition">#</a></dt>
+<code class="descname">enums</code><em class="property"> = &lt;module 'google.cloud.vision_v1.gapic.enums' from '/var/code/gcp/vision/google/cloud/vision_v1/gapic/enums.py'&gt;</em><a class="headerlink" href="#google.cloud.vision_v1.ImageAnnotatorClient.enums" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="method">

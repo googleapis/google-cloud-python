@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.vision_helpers &#8212; google-cloud 53d8146220 documentation</title>
+    <title>google.cloud.vision_helpers &#8212; google-cloud d144a00 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -76,8 +76,12 @@
 
 <span class="sd">        Args:</span>
 <span class="sd">            request (:class:`~.vision_v1.types.AnnotateImageRequest`)</span>
-<span class="sd">            options (:class:`google.gax.CallOptions`): Overrides the default</span>
-<span class="sd">                settings for this call, e.g, timeout, retries, etc.</span>
+<span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
+<span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
+<span class="sd">                be retried.</span>
+<span class="sd">            timeout (Optional[float]): The amount of time, in seconds, to wait</span>
+<span class="sd">                for the request to complete. Note that if ``retry`` is</span>
+<span class="sd">                specified, the timeout applies to each individual attempt.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            :class:`~.vision_v1.types.AnnotateImageResponse` The API response.</span>
