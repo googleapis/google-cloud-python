@@ -399,6 +399,15 @@ def test_table_names_in_schema(inspector, inspector_using_test_dataset):
     assert len(tables) == 3
 
 
+def test_get_indexes(inspector, inspector_using_test_dataset):
+    for table in ['test_pybigquery.sample', 'test_pybigquery.sample_one_row']:
+        indexes = inspector.get_indexes('test_pybigquery.sample')
+        assert len(indexes) == 3
+        assert indexes[0] == {'name':'partition', 'column_names': 'timestamp', 'unique': False}
+        assert indexes[1] == {'name': 'clustering', 'column_names': 'integer', 'unique': False}
+        assert indexes[2] == {'name': 'clustering', 'column_names': 'string', 'unique': False}
+
+
 def test_get_columns(inspector, inspector_using_test_dataset):
     columns_without_schema = inspector.get_columns('test_pybigquery.sample')
     columns_schema = inspector.get_columns('sample', 'test_pybigquery')
