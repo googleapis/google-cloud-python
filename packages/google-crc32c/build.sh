@@ -12,14 +12,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-set -e
+set -e -x
 
 PYTHON_BIN="/opt/python/cp37-cp37m/bin"
+PKG_NAME="py_crc32c"
 
 # Upgrade `pip` before using it.
 ${PYTHON_BIN}/python -m pip install --upgrade pip
 # Install `cmake` and `cffi`
-${PYTHON_BIN}/python -m pip install --upgrade cmake cffi
+# See: https://github.com/pypa/auditwheel/issues/102
+${PYTHON_BIN}/python -m pip install --upgrade \
+  auditwheel cmake cffi "wheel != 0.32.*"
 
 # Build and install `crc32c`
 cd /var/code/py-crc32c/crc32c/
@@ -32,16 +35,15 @@ ${PYTHON_BIN}/cmake \
   ..
 make all install
 
-# Build the CFFI Python extension
+# Build the package.
 cd /var/code/py-crc32c/
-${PYTHON_BIN}/python crc32c_build.py
+${PYTHON_BIN}/python -m pip wheel . -w dist_wheels/
 
-# Make sure it was built.
-${PYTHON_BIN}/python check_cffi_crc32c.py
+# Bundle external shared libraries into the wheels
+for whl in dist_wheels/${PKG_NAME}*.whl; do
+    ${PYTHON_BIN}/auditwheel repair "${whl}" -w .
+done
 
 # Clean up.
-rm -f /var/code/py-crc32c/_crc32c_cffi.c
-rm -f /var/code/py-crc32c/_crc32c_cffi.o
-SUFFIX=$(${PYTHON_BIN}/python3-config --extension-suffix)
-rm -f /var/code/py-crc32c/_crc32c_cffi${SUFFIX}
 rm -fr /var/code/py-crc32c/crc32c/build/
+rm -fr /var/code/py-crc32c/dist_wheels/

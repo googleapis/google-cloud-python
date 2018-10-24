@@ -12,23 +12,20 @@
 
 import cffi
 
-HEADER = """\
+
+_HEADER = """\
 uint32_t crc32c_extend(uint32_t crc, const uint8_t* data, size_t count);
 uint32_t crc32c_value(const uint8_t* data, size_t count);
 """
-
-
-def main():
-    ffibuilder = cffi.FFI()
-    ffibuilder.cdef(HEADER)
-    ffibuilder.set_source(
-        "_crc32c_cffi",
-        '#include "crc32c/crc32c.h"',
-        libraries=["crc32c"],
-        include_dirs=["/usr/local/include"],
-    )
-    ffibuilder.compile(verbose=True)
+FFIBUILDER = cffi.FFI()
+FFIBUILDER.cdef(_HEADER)
+FFIBUILDER.set_source(
+    "_crc32c_cffi",
+    '#include "crc32c/crc32c.h"',
+    libraries=["crc32c"],
+    include_dirs=["/usr/local/include"],
+)
 
 
 if __name__ == "__main__":
-    main()
+    FFIBUILDER.compile(verbose=True)
