@@ -1,4 +1,4 @@
-.. include:: /../websecurityscanner/README.rst
+.. include:: ../websecurityscanner/README.rst
 
 Api Reference
 -------------
