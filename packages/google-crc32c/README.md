@@ -13,26 +13,17 @@ $ git clone --recursive git@github.com:dhermes/py-crc32c.git
 ## Building Wheel
 
 ```
-$ docker pull quay.io/pypa/manylinux1_i686
 $ docker pull quay.io/pypa/manylinux1_x86_64
 $ docker run \
 >   --rm \
 >   --tty \
 >   --interactive \
->   --volume $(pwd)/crc32c:/var/code/crc32c/ \
+>   --volume $(pwd):/var/code/py-crc32c/ \
 >   quay.io/pypa/manylinux1_x86_64 \
->   /bin/bash
-[root@df9f7ccc7e04 /]#
-[root@df9f7ccc7e04 /]# /opt/python/cp37-cp37m/bin/python -m pip install --upgrade pip
-[root@df9f7ccc7e04 /]# /opt/python/cp37-cp37m/bin/python -m pip install --upgrade cmake
-[root@df9f7ccc7e04 /]# /opt/python/cp37-cp37m/bin/cmake --version
-cmake version 3.12.0
-
-CMake suite maintained and supported by Kitware (kitware.com/cmake).
-[root@df9f7ccc7e04 /]# cd /var/code/crc32c
-[root@df9f7ccc7e04 crc32c]# mkdir build
-[root@df9f7ccc7e04 crc32c]# cd build/
-[root@df9f7ccc7e04 build]# /opt/python/cp37-cp37m/bin/cmake -DCRC32C_BUILD_TESTS=0 -DCRC32C_BUILD_BENCHMARKS=0 ..
+>   /var/code/py-crc32c/build.sh
 ...
-[root@df9f7ccc7e04 build]# make all install
+$ rm -f _crc32c_cffi.*
+$ [sudo] rm -fr crc32c/build/
 ```
+
+(Similar work will need to be done for `quay.io/pypa/manylinux1_i686`.)
