@@ -646,6 +646,23 @@ class TestProperty:
         assert value == ["SimpleProperty._validate"]
 
     @staticmethod
+    def test__fix_up():
+        prop = model.Property(name="foo")
+        assert prop._code_name is None
+        prop._fix_up(None, "bar")
+        assert prop._code_name == "bar"
+
+    @staticmethod
+    def test__fix_up_no_name():
+        prop = model.Property()
+        assert prop._name is None
+        assert prop._code_name is None
+
+        prop._fix_up(None, "both")
+        assert prop._code_name == "both"
+        assert prop._name == "both"
+
+    @staticmethod
     def _property_subtype_chain():
         class A(model.Property):
             def _validate(self, value):

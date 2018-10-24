@@ -337,6 +337,7 @@ class _BaseValue:
 
 class Property(ModelAttribute):
     # Instance default fallbacks provided by class.
+    _code_name = None
     _name = None
     _indexed = True
     _repeated = False
@@ -745,6 +746,41 @@ class Property(ModelAttribute):
                 )
 
         return value
+
+    def _fix_up(self, cls, code_name):
+        """Internal helper called to tell the property its name.
+
+        This is called by :meth:`_fix_up_properties`, which is called by
+        :class:`MetaModel` when finishing the construction of a :class:`Model`
+        subclass. The name passed in is the name of the class attribute to
+        which the current property is assigned (a.k.a. the code name). Note
+        that this means that each property instance must be assigned to (at
+        most) one class attribute. E.g. to declare three strings, you must
+        call create three :class`StringProperty` instances:
+
+        .. code-block:: python
+
+            class MyModel(ndb.Model):
+                foo = ndb.StringProperty()
+                bar = ndb.StringProperty()
+                baz = ndb.StringProperty()
+
+        you cannot write:
+
+        .. code-block:: python
+
+            class MyModel(ndb.Model):
+                foo = bar = baz = ndb.StringProperty()
+
+        Args:
+            cls (type): The class that the property is stored on. This argument
+                is unused by this method, but may be used by subclasses.
+            code_name (str): The name (on the class) that refers to this
+                property.
+        """
+        self._code_name = code_name
+        if self._name is None:
+            self._name = code_name
 
     def _call_to_base_type(self, value):
         """Call all ``_validate()`` and ``_to_base_type()`` methods on value.
