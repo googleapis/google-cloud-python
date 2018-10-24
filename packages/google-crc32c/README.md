@@ -2,6 +2,14 @@
 
 > Python / Cython wrapper for `google/crc32c`
 
+## Checking Out
+
+Be sure to check out all submodules:
+
+```
+$ git clone --recursive git@github.com:dhermes/py-crc32c.git
+```
+
 ## Building Wheel
 
 ```
