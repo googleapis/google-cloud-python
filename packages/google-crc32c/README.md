@@ -22,14 +22,9 @@ $ docker run \
 >   quay.io/pypa/manylinux1_x86_64 \
 >   /var/code/py-crc32c/build.sh
 ...
-```
-
-Currently this fails, so it's worthwhile to clean up before
-the next run:
-
-```
-$ rm -f _crc32c_cffi.*
-$ [sudo] rm -fr crc32c/build/
+_crc32c_cffi: <module '_crc32c_cffi' from '/var/code/py-crc32c/_crc32c_cffi.cpython-37m-x86_64-linux-gnu.so'>
+_crc32c_cffi.lib: <Lib object for '_crc32c_cffi'>
+dir(_crc32c_cffi.lib): ['crc32c_extend', 'crc32c_value']
 ```
 
 (Similar work will need to be done for `quay.io/pypa/manylinux1_i686`.)
