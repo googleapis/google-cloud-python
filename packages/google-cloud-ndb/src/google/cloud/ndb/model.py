@@ -15,6 +15,8 @@
 """Model classes for datastore objects and properties for models."""
 
 
+import inspect
+
 from google.cloud.ndb import exceptions
 from google.cloud.ndb import key as key_module
 
@@ -486,6 +488,202 @@ class Property(ModelAttribute):
             )
 
         return validator
+
+    def __repr__(self):
+        """Return a compact unambiguous string representation of a property.
+
+        This cycles through all stored attributes and displays the ones that
+        differ from the default values.
+        """
+        args = []
+        cls = self.__class__
+        signature = inspect.signature(self.__init__)
+        for name, parameter in signature.parameters.items():
+            attr = "_{}".format(name)
+            instance_val = getattr(self, attr)
+            default_val = getattr(cls, attr)
+
+            if instance_val is not default_val:
+                if isinstance(instance_val, type):
+                    as_str = instance_val.__qualname__
+                else:
+                    as_str = repr(instance_val)
+
+                if parameter.kind == inspect.Parameter.KEYWORD_ONLY:
+                    as_str = "{}={}".format(name, as_str)
+                args.append(as_str)
+
+        return "{}({})".format(self.__class__.__name__, ", ".join(args))
+
+    def _datastore_type(self, value):
+        """Internal hook used by property filters.
+
+        Sometimes the low-level query interface needs a specific data type
+        in order for the right filter to be constructed. See
+        :meth:`_comparison`.
+
+        Args:
+            value (Any): The value to be converted to a low-level type.
+
+        Returns:
+            Any: The passed-in ``value``, always. Subclasses may alter this
+            behavior.
+        """
+        return value
+
+    def _comparison(self, op, value):
+        """Internal helper for comparison operators.
+
+        Args:
+            op (str): The comparison operator. One of ``=``, ``!=``, ``<``,
+                ``<=``, ``>``, ``>=`` or ``in``.
+
+        Returns:
+            FilterNode: A FilterNode instance representing the requested
+            comparison.
+
+        Raises:
+            BadFilterError: If the current property is not indexed.
+        """
+        # Import late to avoid circular imports.
+        from google.cloud.ndb import query
+
+        if not self._indexed:
+            raise exceptions.BadFilterError(
+                "Cannot query for unindexed property {}".format(self._name)
+            )
+
+        if value is not None:
+            value = self._datastore_type(value)
+
+        return query.FilterNode(self._name, op, value)
+
+    # Comparison operators on Property instances don't compare the
+    # properties; instead they return ``FilterNode``` instances that can be
+    # used in queries.
+
+    def __eq__(self, value):
+        """FilterNode: Represents the ``=`` comparison."""
+        return self._comparison("=", value)
+
+    def __ne__(self, value):
+        """FilterNode: Represents the ``!=`` comparison."""
+        return self._comparison("!=", value)
+
+    def __lt__(self, value):
+        """FilterNode: Represents the ``<`` comparison."""
+        return self._comparison("<", value)
+
+    def __le__(self, value):
+        """FilterNode: Represents the ``<=`` comparison."""
+        return self._comparison("<=", value)
+
+    def __gt__(self, value):
+        """FilterNode: Represents the ``>`` comparison."""
+        return self._comparison(">", value)
+
+    def __ge__(self, value):
+        """FilterNode: Represents the ``>=`` comparison."""
+        return self._comparison(">=", value)
+
+    def _IN(self, value):
+        """For the ``in`` comparison operator.
+
+        The ``in`` operator cannot be overloaded in the way we want
+        to, so we define a method. For example:
+
+        .. code-block:: python
+
+            Employee.query(Employee.rank.IN([4, 5, 6]))
+
+        Note that the method is called ``_IN()`` but may normally be invoked
+        as ``IN()``; ``_IN()`` is provided for the case that a
+        :class:`.StructuredProperty` refers to a model that has a property
+        named ``IN``.
+
+        Args:
+            value (Iterable[Any]): The set of values that the property value
+                must be contained in.
+
+        Returns:
+            Union[~google.cloud.ndb.query.DisjunctionNode, \
+                ~google.cloud.ndb.query.FilterNode, \
+                ~google.cloud.ndb.query.FalseNode]: A node corresponding
+            to the desired in filter.
+
+            * If ``value`` is empty, this will return a :class:`.FalseNode`
+            * If ``len(value) == 1``, this will return a :class:`.FilterNode`
+            * Otherwise, this will return a :class:`.DisjunctionNode`
+
+        Raises:
+            ~google.cloud.ndb.exceptions.BadFilterError: If the current
+                property is not indexed.
+            ~google.cloud.ndb.exceptions.BadArgumentError: If ``value`` is not
+                a basic container (:class:`list`, :class:`tuple`, :class:`set`
+                or :class:`frozenset`).
+        """
+        # Import late to avoid circular imports.
+        from google.cloud.ndb import query
+
+        if not self._indexed:
+            raise exceptions.BadFilterError(
+                "Cannot query for unindexed property {}".format(self._name)
+            )
+
+        if not isinstance(value, (list, tuple, set, frozenset)):
+            raise exceptions.BadArgumentError(
+                "Expected list, tuple or set, got {!r}".format(value)
+            )
+
+        values = []
+        for sub_value in value:
+            if sub_value is not None:
+                sub_value = self._datastore_type(sub_value)
+            values.append(sub_value)
+
+        return query.FilterNode(self._name, "in", values)
+
+    IN = _IN
+    """Used to check if a property value is contained in a set of values.
+
+    For example:
+
+    .. code-block:: python
+
+        Employee.query(Employee.rank.IN([4, 5, 6]))
+    """
+
+    def __neg__(self):
+        """Return a descending sort order on this property.
+
+        For example:
+
+        .. code-block:: python
+
+            Employee.query().order(-Employee.rank)
+
+        Raises:
+            NotImplementedError: Always, the original implementation relied on
+                a low-level datastore query module.
+        """
+        raise NotImplementedError("Missing datastore_query.PropertyOrder")
+
+    def __pos__(self):
+        """Return an ascending sort order on this property.
+
+        Note that this is redundant but provided for consistency with
+        :meth:`__neg__`. For example, the following two are equivalent:
+
+        .. code-block:: python
+
+            Employee.query().order(+Employee.rank)
+            Employee.query().order(Employee.rank)
+
+        Raises:
+            NotImplementedError: Always, the original implementation relied on
+                a low-level datastore query module.
+        """
+        raise NotImplementedError("Missing datastore_query.PropertyOrder")
 
 
 class ModelKey(Property):
