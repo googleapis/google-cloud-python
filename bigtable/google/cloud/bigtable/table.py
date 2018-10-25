@@ -559,7 +559,7 @@ class _RetryableMutateRowsWorker(object):
 
         try:
             mutate_rows()
-        except (_BigtableRetryableError, RetryError) as err:
+        except (_BigtableRetryableError, RetryError):
             # - _BigtableRetryableError raised when no retry strategy is used
             #   and a retryable error on a mutation occurred.
             # - RetryError raised when retry deadline is reached.
