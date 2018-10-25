@@ -1688,75 +1688,115 @@ class TestSessionAPI(unittest.TestCase, _TestData):
             order=False,
         )
 
-        # Bind a null STRING
+    def _bind_test_helper(
+        self,
+        type_name,
+        single_value,
+        array_value,
+        expected_array_value=None,
+    ):
+
+        self._db.snapshot(multi_use=True)
+
+        # Bind a non-null <type_name>
+        self._check_sql_results(
+            self._db,
+            sql='SELECT @v',
+            params={'v': single_value},
+            param_types={'v': Type(code=type_name)},
+            expected=[(single_value,)],
+            order=False,
+        )
+
+        # Bind a null <type_name>
         self._check_sql_results(
             self._db,
             sql='SELECT @v',
             params={'v': None},
-            param_types={'v': Type(code=STRING)},
+            param_types={'v': Type(code=type_name)},
             expected=[(None,)],
             order=False,
         )
 
-        # Bind a null BOOL
+        # Bind an array of <type_name>
+        array_type = Type(
+            code=ARRAY, array_element_type=Type(code=type_name))
+
+        if expected_array_value is None:
+            expected_array_value = array_value
+
+        self._check_sql_results(
+            self._db,
+            sql='SELECT @v',
+            params={'v': array_value},
+            param_types={'v': array_type},
+            expected=[(expected_array_value,)],
+            order=False,
+        )
+
+        # Bind an empty array of <type_name>
+        self._check_sql_results(
+            self._db,
+            sql='SELECT @v',
+            params={'v': []},
+            param_types={'v': array_type},
+            expected=[([],)],
+            order=False,
+        )
+
+        # Bind a null array of <type_name>
         self._check_sql_results(
             self._db,
             sql='SELECT @v',
             params={'v': None},
-            param_types={'v': Type(code=BOOL)},
+            param_types={'v': array_type},
             expected=[(None,)],
             order=False,
         )
 
-        # Bind a null INT64
-        self._check_sql_results(
-            self._db,
-            sql='SELECT @v',
-            params={'v': None},
-            param_types={'v': Type(code=INT64)},
-            expected=[(None,)],
-            order=False,
-        )
+    def test_execute_sql_w_string_bindings(self):
+        self._bind_test_helper(STRING, 'Phred', ['Phred', 'Bharney'])
 
-        # Bind a null FLOAT64
-        self._check_sql_results(
-            self._db,
-            sql='SELECT @v',
-            params={'v': None},
-            param_types={'v': Type(code=FLOAT64)},
-            expected=[(None,)],
-            order=False,
-        )
+    def test_execute_sql_w_bool_bindings(self):
+        self._bind_test_helper(BOOL, True, [True, False, True])
 
-        # Bind a null BYTES
-        self._check_sql_results(
-            self._db,
-            sql='SELECT @v',
-            params={'v': None},
-            param_types={'v': Type(code=BYTES)},
-            expected=[(None,)],
-            order=False,
-        )
+    def test_execute_sql_w_int64_bindings(self):
+        self._bind_test_helper(INT64, 42, [123, 456, 789])
 
-        # Bind a null TIMESTAMP
-        self._check_sql_results(
-            self._db,
-            sql='SELECT @v',
-            params={'v': None},
-            param_types={'v': Type(code=TIMESTAMP)},
-            expected=[(None,)],
-            order=False,
-        )
+    def test_execute_sql_w_float64_bindings(self):
+        self._bind_test_helper(FLOAT64, 42.3, [12.3, 456.0, 7.89])
 
-        # Bind a null TIMESTAMP
-        self._check_sql_results(
-            self._db,
-            sql='SELECT @v',
-            params={'v': None},
-            param_types={'v': Type(code=DATE)},
-            expected=[(None,)],
-            order=False,
-        )
+    def test_execute_sql_w_bytes_bindings(self):
+        self._bind_test_helper(BYTES, b'DEADBEEF', [b'FACEDACE', b'DEADBEEF'])
+
+    def test_execute_sql_w_timestamp_bindings(self):
+        import datetime
+        import pytz
+        from google.api_core.datetime_helpers import DatetimeWithNanoseconds
+
+        timestamp_1 = DatetimeWithNanoseconds(
+            1989, 1, 17, 17, 59, 12, nanosecond=345612789)
+
+        timestamp_2 = DatetimeWithNanoseconds(
+            1989, 1, 17, 17, 59, 13, nanosecond=456127893)
+
+        timestamps = [timestamp_1, timestamp_2]
+
+        # In round-trip, timestamps acquire a timezone value.
+        expected_timestamps = [
+            timestamp.replace(tzinfo=pytz.UTC) for timestamp in timestamps]
+
+        self._bind_test_helper(
+            TIMESTAMP, timestamp_1, timestamps, expected_timestamps)
+
+    def test_execute_sql_w_date_bindings(self):
+        import datetime
+
+        dates = [
+            self.SOME_DATE,
+            self.SOME_DATE + datetime.timedelta(days=1),
+        ]
+        self._bind_test_helper(DATE, self.SOME_DATE, dates)
 
     def test_execute_sql_w_query_param_transfinite(self):
         with self._db.batch() as batch:
