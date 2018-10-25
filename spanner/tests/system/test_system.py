@@ -1674,11 +1674,69 @@ class TestSessionAPI(unittest.TestCase, _TestData):
             expected=[(19,), (99,)],
         )
 
+    def test_execute_sql_w_query_param_no_table(self):
+
+        self._db.snapshot(multi_use=True)
+
+        self._check_sql_results(
+            self._db,
+            sql='SELECT 1',
+            params=None,
+            param_types=None,
+            expected=[(1,)],
+            order=False,
+        )
+
         self._check_sql_results(
             self._db,
             sql='SELECT @v',
             params={'v': None},
             param_types={'v': Type(code=STRING)},
+            expected=[(None,)],
+            order=False,
+        )
+
+        self._check_sql_results(
+            self._db,
+            sql='SELECT @v',
+            params={'v': None},
+            param_types={'v': Type(code=BOOL)},
+            expected=[(None,)],
+            order=False,
+        )
+
+        self._check_sql_results(
+            self._db,
+            sql='SELECT @v',
+            params={'v': None},
+            param_types={'v': Type(code=FLOAT64)},
+            expected=[(None,)],
+            order=False,
+        )
+
+        self._check_sql_results(
+            self._db,
+            sql='SELECT @v',
+            params={'v': None},
+            param_types={'v': Type(code=BYTES)},
+            expected=[(None,)],
+            order=False,
+        )
+
+        self._check_sql_results(
+            self._db,
+            sql='SELECT @v',
+            params={'v': None},
+            param_types={'v': Type(code=TIMESTAMP)},
+            expected=[(None,)],
+            order=False,
+        )
+
+        self._check_sql_results(
+            self._db,
+            sql='SELECT @v',
+            params={'v': None},
+            param_types={'v': Type(code=DATE)},
             expected=[(None,)],
             order=False,
         )
