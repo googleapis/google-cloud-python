@@ -16,7 +16,7 @@
 
 set -e -x
 
-WHEEL_FILE="py_crc32c-0.0.1-cp37-cp37m-manylinux1_x86_64.whl"
+WHEEL_FILE="wheels/py_crc32c-0.0.1-cp37-cp37m-manylinux1_x86_64.whl"
 PYTHON="python3.7"
 
 # Make sure we can create a virtual environment.
