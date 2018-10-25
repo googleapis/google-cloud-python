@@ -19,18 +19,19 @@ PKG_NAME="py_crc32c"
 
 # Upgrade `pip` before using it.
 ${MAIN_PYTHON_BIN}/python -m pip install --upgrade pip
-# Install `cmake` and `cffi`
+# Install `cmake` (i.e. non-Python build dependency).
 ${MAIN_PYTHON_BIN}/python -m pip install "cmake >= 3.12.0"
+# Install Python build dependencies.
 ${MAIN_PYTHON_BIN}/python -m pip install \
-    --requirement /var/code/py-crc32c/dev-requirements.txt
+    --requirement /var/code/py-crc32c/scripts/dev-requirements.txt
 
 # Build and install `crc32c`
 cd /var/code/py-crc32c/crc32c/
 mkdir build
 cd build/
 ${MAIN_PYTHON_BIN}/cmake \
-    -DCRC32C_BUILD_TESTS=0 \
-    -DCRC32C_BUILD_BENCHMARKS=0 \
+    -DCRC32C_BUILD_TESTS=no \
+    -DCRC32C_BUILD_BENCHMARKS=no \
     -DBUILD_SHARED_LIBS=yes \
     ..
 make all install
@@ -62,13 +63,13 @@ cd /var/code/py-crc32c/
 for PYTHON_BIN in ${VERSION_WHITELIST}; do
     ${PYTHON_BIN}/python -m pip install --upgrade pip
     ${PYTHON_BIN}/python -m pip install \
-        --requirement /var/code/py-crc32c/dev-requirements.txt
-    ${PYTHON_BIN}/python -m pip wheel . -w dist_wheels/
+        --requirement /var/code/py-crc32c/scripts/dev-requirements.txt
+    ${PYTHON_BIN}/python -m pip wheel . --wheel-dir dist_wheels/
 done
 
 # Bundle external shared libraries into the wheels
 for whl in dist_wheels/${PKG_NAME}*.whl; do
-    ${MAIN_PYTHON_BIN}/auditwheel repair "${whl}" -w .
+    ${MAIN_PYTHON_BIN}/auditwheel repair "${whl}" --wheel-dir .
 done
 
 # Clean up.
