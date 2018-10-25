@@ -40,31 +40,31 @@ _ALL_TESTPROTOS = [
 
 _CREATE_TESTPROTOS = [
     test_proto for test_proto in _ALL_TESTPROTOS
-        if test_proto.WhichOneof('test') == 'create']
+    if test_proto.WhichOneof('test') == 'create']
 
 _GET_TESTPROTOS = [
     test_proto for test_proto in _ALL_TESTPROTOS
-        if test_proto.WhichOneof('test') == 'get']
+    if test_proto.WhichOneof('test') == 'get']
 
 _SET_TESTPROTOS = [
     test_proto for test_proto in _ALL_TESTPROTOS
-        if test_proto.WhichOneof('test') == 'set']
+    if test_proto.WhichOneof('test') == 'set']
 
 _UPDATE_TESTPROTOS = [
     test_proto for test_proto in _ALL_TESTPROTOS
-        if test_proto.WhichOneof('test') == 'update']
+    if test_proto.WhichOneof('test') == 'update']
 
 _UPDATE_PATHS_TESTPROTOS = [
     test_proto for test_proto in _ALL_TESTPROTOS
-        if test_proto.WhichOneof('test') == 'update_paths']
+    if test_proto.WhichOneof('test') == 'update_paths']
 
 _DELETE_TESTPROTOS = [
     test_proto for test_proto in _ALL_TESTPROTOS
-        if test_proto.WhichOneof('test') == 'delete']
+    if test_proto.WhichOneof('test') == 'delete']
 
 _LISTEN_TESTPROTOS = [
     test_proto for test_proto in _ALL_TESTPROTOS
-        if test_proto.WhichOneof('test') == 'listen']
+    if test_proto.WhichOneof('test') == 'listen']
 
 
 def _mock_firestore_api():
