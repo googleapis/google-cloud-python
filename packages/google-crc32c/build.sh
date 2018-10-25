@@ -60,6 +60,7 @@ done
 # Build the wheels.
 cd /var/code/py-crc32c/
 for PYTHON_BIN in ${VERSION_WHITELIST}; do
+    ${PYTHON_BIN}/python -m pip install --upgrade pip
     ${PYTHON_BIN}/python -m pip install \
         --requirement /var/code/py-crc32c/dev-requirements.txt
     ${PYTHON_BIN}/python -m pip wheel . -w dist_wheels/

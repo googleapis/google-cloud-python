@@ -1,13 +1,13 @@
 # `py-crc32c`
 
-> Python / Cython wrapper for `google/crc32c`
+> Python / CFFI wrapper for `google/crc32c`
 
 ## Checking Out
 
 Be sure to check out all submodules:
 
 ```
-$ git clone --recursive git@github.com:dhermes/py-crc32c.git
+$ git clone --recursive https://github.com/dhermes/py-crc32c
 ```
 
 ## Building Wheel
@@ -39,21 +39,22 @@ run `check-37.sh` on a host Linux OS:
 $ ./check-37.sh
 ...
 + venv/bin/python check_cffi_crc32c.py
-_crc32c_cffi: <module '_crc32c_cffi' from '/home/dhermes/google_contracting/py-crc32c/venv/lib/python3.7/site-packages/_crc32c_cffi.abi3.so'>
-_crc32c_cffi.lib: <Lib object for '_crc32c_cffi'>
+_crc32c_cffi: <module 'crc32c._crc32c_cffi' from '.../py-crc32c/venv/lib/python3.7/site-packages/crc32c/_crc32c_cffi.abi3.so'>
+_crc32c_cffi.lib: <Lib object for 'crc32c._crc32c_cffi'>
 dir(_crc32c_cffi.lib): ['crc32c_extend', 'crc32c_value']
 + unzip -l py_crc32c-0.0.1-cp37-cp37m-manylinux1_x86_64.whl
 Archive:  py_crc32c-0.0.1-cp37-cp37m-manylinux1_x86_64.whl
   Length      Date    Time    Name
 ---------  ---------- -----   ----
-    26128  2018-10-24 19:16   _crc32c_cffi.abi3.so
-    29552  2018-10-24 19:16   .libs_crc32c_cffi/libcrc32c-f865a225.so
-      109  2018-10-24 19:16   py_crc32c-0.0.1.dist-info/WHEEL
-      766  2018-10-24 19:16   py_crc32c-0.0.1.dist-info/METADATA
-      576  2018-10-24 19:16   py_crc32c-0.0.1.dist-info/RECORD
-        1  2018-10-24 19:16   py_crc32c-0.0.1.dist-info/zip-safe
-       13  2018-10-24 19:16   py_crc32c-0.0.1.dist-info/top_level.txt
+    26120  2018-10-25 00:05   crc32c/_crc32c_cffi.abi3.so
+      765  2018-10-24 23:57   crc32c/__init__.py
+    29552  2018-10-25 00:05   crc32c/.libs/libcrc32c-f865a225.so
+      109  2018-10-25 00:05   py_crc32c-0.0.1.dist-info/WHEEL
+      766  2018-10-25 00:05   py_crc32c-0.0.1.dist-info/METADATA
+      652  2018-10-25 00:05   py_crc32c-0.0.1.dist-info/RECORD
+        1  2018-10-25 00:05   py_crc32c-0.0.1.dist-info/zip-safe
+        7  2018-10-25 00:05   py_crc32c-0.0.1.dist-info/top_level.txt
 ---------                     -------
-    57145                     7 files
+    57972                     8 files
 ...
 ```
