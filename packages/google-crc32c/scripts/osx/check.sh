@@ -38,27 +38,27 @@ VIRTUALENV_CMD="${PYTHON37}/python3 -m virtualenv"
 WHL=${REPO_ROOT}/wheels/py_crc32c-0.0.1-cp27-cp27m-macosx_10_6_intel.whl
 ${VIRTUALENV_CMD} --python=${PYTHON27}/python2 venv27
 venv27/bin/pip install ${WHL}
-venv27/bin/python ${REPO_ROOT}/check_cffi_crc32c.py
+venv27/bin/python ${REPO_ROOT}/scripts/check_cffi_crc32c.py
 ${LISTDEPS_CMD} ${WHL}
 rm -fr venv27
 
 ${VIRTUALENV_CMD} --python=${PYTHON35}/python3 venv35
 WHL=${REPO_ROOT}/wheels/py_crc32c-0.0.1-cp35-cp35m-macosx_10_6_intel.whl
 venv35/bin/pip install ${WHL}
-venv35/bin/python ${REPO_ROOT}/check_cffi_crc32c.py
+venv35/bin/python ${REPO_ROOT}/scripts/check_cffi_crc32c.py
 ${LISTDEPS_CMD} ${WHL}
 rm -fr venv35
 
 ${VIRTUALENV_CMD} --python=${PYTHON36}/python3 venv36
 WHL=${REPO_ROOT}/wheels/py_crc32c-0.0.1-cp36-cp36m-macosx_10_6_intel.whl
 venv36/bin/pip install ${WHL}
-venv36/bin/python ${REPO_ROOT}/check_cffi_crc32c.py
+venv36/bin/python ${REPO_ROOT}/scripts/check_cffi_crc32c.py
 ${LISTDEPS_CMD} ${WHL}
 rm -fr venv36
 
 ${VIRTUALENV_CMD} --python=${PYTHON37}/python3 venv37
 WHL=${REPO_ROOT}/wheels/py_crc32c-0.0.1-cp37-cp37m-macosx_10_6_intel.whl
 venv37/bin/pip install ${WHL}
-venv37/bin/python ${REPO_ROOT}/check_cffi_crc32c.py
+venv37/bin/python ${REPO_ROOT}/scripts/check_cffi_crc32c.py
 ${LISTDEPS_CMD} ${WHL}
 rm -fr venv37

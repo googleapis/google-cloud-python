@@ -69,7 +69,7 @@ done
 
 # Bundle external shared libraries into the wheels
 for whl in dist_wheels/${PKG_NAME}*.whl; do
-    ${MAIN_PYTHON_BIN}/auditwheel repair "${whl}" --wheel-dir .
+    ${MAIN_PYTHON_BIN}/auditwheel repair "${whl}" --wheel-dir wheels/
 done
 
 # Clean up.
