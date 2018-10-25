@@ -472,7 +472,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         self.assertIsNone(table.view_query)
         self.assertIsNone(table.view_use_legacy_sql)
         self.assertIsNone(table.external_data_configuration)
-        self.assertEquals(table.labels, {})
+        self.assertEqual(table.labels, {})
         self.assertIsNone(table.encryption_configuration)
         self.assertIsNone(table.time_partitioning)
         self.assertIsNone(table.clustering_fields)
