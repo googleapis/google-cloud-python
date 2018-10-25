@@ -1767,6 +1767,22 @@ class TestSessionAPI(unittest.TestCase, _TestData):
             expected=[(107,)],
         )
 
+        # Query returning -inf, +inf, NaN as column values
+        with self._db.snapshot(
+                read_timestamp=batch.committed,
+                multi_use=True) as snapshot:
+            rows = list(snapshot.execute_sql(
+                'SELECT '
+                'CAST("-inf" AS FLOAT64), '
+                'CAST("+inf" AS FLOAT64), '
+                'CAST("NaN" AS FLOAT64)'))
+            self.assertEqual(len(rows), 1)
+            self.assertEqual(rows[0][0], float('-inf'))
+            self.assertEqual(rows[0][1], float('+inf'))
+            # NaNs cannot be compared by equality.
+            self.assertTrue(math.isnan(rows[0][2]))
+
+        # Query returning array of -inf, +inf, NaN as one column
         with self._db.snapshot(
                 read_timestamp=batch.committed,
                 multi_use=True) as snapshot:
