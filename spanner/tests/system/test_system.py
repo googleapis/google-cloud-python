@@ -430,6 +430,7 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         ([3, None, 9], False, None, None, float('-inf'), 207, u'bat', None),
         ([], False, None, None, float('nan'), 1207, u'owl', None),
         ([], False, None, None, OTHER_NAN, 2000, u'virus', NANO_TIME),
+        (None, None, None, None, None, 5432, u'algae', None),
     )
 
     @classmethod
