@@ -351,8 +351,17 @@ class BigQueryDialect(DefaultDialect):
         return []
 
     def get_indexes(self, connection, table_name, schema=None, **kw):
-        # BigQuery has no support for indexes.
-        return []
+        table = self._get_table(connection, table_name, schema)
+        indexes = []
+        if table.time_partitioning:
+            indexes.append({'name': 'partition',
+                            'column_names': [table.time_partitioning.field],
+                            'unique': False})
+        if table.clustering_fields:
+            indexes.append({'name': 'clustering',
+                            'column_names': table.clustering_fields,
+                            'unique': False})
+        return indexes
 
     def get_schema_names(self, connection, **kw):
         if isinstance(connection, Engine):
