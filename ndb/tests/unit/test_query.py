@@ -291,15 +291,50 @@ class TestParameterNode:
             parameter_node._to_filter()
 
     @staticmethod
-    def test_resolve():
+    def test_resolve_simple():
         prop = model.Property(name="val")
         param = query.Parameter("abc")
         parameter_node = query.ParameterNode(prop, "=", param)
 
+        value = 67
+        bindings = {"abc": value}
         used = {}
-        with pytest.raises(NotImplementedError):
-            parameter_node.resolve({}, used)
-        assert used == {}
+        resolved_node = parameter_node.resolve(bindings, used)
+
+        assert resolved_node == query.FilterNode(b"val", "=", value)
+        assert used == {"abc": True}
+
+    @staticmethod
+    def test_resolve_with_in():
+        prop = model.Property(name="val")
+        param = query.Parameter("replace")
+        parameter_node = query.ParameterNode(prop, "in", param)
+
+        value = (19, 20, 28)
+        bindings = {"replace": value}
+        used = {}
+        resolved_node = parameter_node.resolve(bindings, used)
+
+        assert resolved_node == query.DisjunctionNode(
+            query.FilterNode(b"val", "=", 19),
+            query.FilterNode(b"val", "=", 20),
+            query.FilterNode(b"val", "=", 28),
+        )
+        assert used == {"replace": True}
+
+    @staticmethod
+    def test_resolve_in_empty_container():
+        prop = model.Property(name="val")
+        param = query.Parameter("replace")
+        parameter_node = query.ParameterNode(prop, "in", param)
+
+        value = ()
+        bindings = {"replace": value}
+        used = {}
+        resolved_node = parameter_node.resolve(bindings, used)
+
+        assert resolved_node == query.FalseNode()
+        assert used == {"replace": True}
 
 
 class TestFilterNode:
@@ -317,15 +352,13 @@ class TestFilterNode:
             query.FilterNode("name", "=", key)
 
     @staticmethod
-    @unittest.mock.patch("google.cloud.ndb.query.DisjunctionNode")
-    def test_constructor_in(disjunction_node):
+    def test_constructor_in():
         or_node = query.FilterNode("a", "in", ("x", "y", "z"))
-        assert or_node is disjunction_node.return_value
 
         filter_node1 = query.FilterNode("a", "=", "x")
         filter_node2 = query.FilterNode("a", "=", "y")
         filter_node3 = query.FilterNode("a", "=", "z")
-        disjunction_node.assert_called_once_with(
+        assert or_node == query.DisjunctionNode(
             filter_node1, filter_node2, filter_node3
         )
 
@@ -348,14 +381,12 @@ class TestFilterNode:
             query.FilterNode("a", "in", {})
 
     @staticmethod
-    @unittest.mock.patch("google.cloud.ndb.query.DisjunctionNode")
-    def test_constructor_ne(disjunction_node):
+    def test_constructor_ne():
         or_node = query.FilterNode("a", "!=", 2.5)
-        assert or_node is disjunction_node.return_value
 
         filter_node1 = query.FilterNode("a", "<", 2.5)
         filter_node2 = query.FilterNode("a", ">", 2.5)
-        disjunction_node.assert_called_once_with(filter_node1, filter_node2)
+        assert or_node == query.DisjunctionNode(filter_node1, filter_node2)
 
     @staticmethod
     def test_pickling():
