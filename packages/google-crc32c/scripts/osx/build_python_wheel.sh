@@ -49,7 +49,8 @@ mkdir ${DIST_WHEELS}
 ${VENV}/bin/python -m pip wheel ${REPO_ROOT} --wheel-dir ${DIST_WHEELS}
 
 # Delocate the wheel.
-FIXED_WHEELS="${REPO_ROOT}"
+FIXED_WHEELS="${REPO_ROOT}/wheels"
+mkdir -p ${FIXED_WHEELS}
 ${VENV}/bin/delocate-wheel \
     --check-archs \
     --wheel-dir ${FIXED_WHEELS} \
