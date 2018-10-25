@@ -677,13 +677,16 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
             self.reload(retry=retry)
         return self.state == _DONE_STATE
 
-    def result(self, timeout=None):
+    def result(self, timeout=None, retry=DEFAULT_RETRY):
         """Start the job and wait for it to complete and get the result.
 
         :type timeout: float
         :param timeout:
             How long (in seconds) to wait for job to complete before raising
             a :class:`concurrent.futures.TimeoutError`.
+
+        :type retry: :class:`google.api_core.retry.Retry`
+        :param retry: (Optional) How to retry the RPC.
 
         :rtype: _AsyncJob
         :returns: This instance.
@@ -694,7 +697,7 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
             not complete in the given timeout.
         """
         if self.state is None:
-            self._begin()
+            self._begin(retry=retry)
         # TODO: modify PollingFuture so it can pass a retry argument to done().
         return super(_AsyncJob, self).result(timeout=timeout)
 
