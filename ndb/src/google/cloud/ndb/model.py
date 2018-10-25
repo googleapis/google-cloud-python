@@ -505,7 +505,7 @@ class Property(ModelAttribute):
 
             if instance_val is not default_val:
                 if isinstance(instance_val, type):
-                    as_str = instance_val.__name__
+                    as_str = instance_val.__qualname__
                 else:
                     as_str = repr(instance_val)
 

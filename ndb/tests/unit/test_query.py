@@ -322,6 +322,20 @@ class TestParameterNode:
         )
         assert used == {"replace": True}
 
+    @staticmethod
+    def test_resolve_in_empty_container():
+        prop = model.Property(name="val")
+        param = query.Parameter("replace")
+        parameter_node = query.ParameterNode(prop, "in", param)
+
+        value = ()
+        bindings = {"replace": value}
+        used = {}
+        resolved_node = parameter_node.resolve(bindings, used)
+
+        assert resolved_node == query.FalseNode()
+        assert used == {"replace": True}
+
 
 class TestFilterNode:
     @staticmethod
