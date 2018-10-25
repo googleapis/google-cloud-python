@@ -1678,6 +1678,7 @@ class TestSessionAPI(unittest.TestCase, _TestData):
 
         self._db.snapshot(multi_use=True)
 
+        # Hello, world query
         self._check_sql_results(
             self._db,
             sql='SELECT 1',
@@ -1687,6 +1688,7 @@ class TestSessionAPI(unittest.TestCase, _TestData):
             order=False,
         )
 
+        # Bind a null STRING
         self._check_sql_results(
             self._db,
             sql='SELECT @v',
@@ -1696,6 +1698,7 @@ class TestSessionAPI(unittest.TestCase, _TestData):
             order=False,
         )
 
+        # Bind a null BOOL
         self._check_sql_results(
             self._db,
             sql='SELECT @v',
@@ -1705,6 +1708,17 @@ class TestSessionAPI(unittest.TestCase, _TestData):
             order=False,
         )
 
+        # Bind a null INT64
+        self._check_sql_results(
+            self._db,
+            sql='SELECT @v',
+            params={'v': None},
+            param_types={'v': Type(code=INT64)},
+            expected=[(None,)],
+            order=False,
+        )
+
+        # Bind a null FLOAT64
         self._check_sql_results(
             self._db,
             sql='SELECT @v',
@@ -1714,6 +1728,7 @@ class TestSessionAPI(unittest.TestCase, _TestData):
             order=False,
         )
 
+        # Bind a null BYTES
         self._check_sql_results(
             self._db,
             sql='SELECT @v',
@@ -1723,6 +1738,7 @@ class TestSessionAPI(unittest.TestCase, _TestData):
             order=False,
         )
 
+        # Bind a null TIMESTAMP
         self._check_sql_results(
             self._db,
             sql='SELECT @v',
@@ -1732,6 +1748,7 @@ class TestSessionAPI(unittest.TestCase, _TestData):
             order=False,
         )
 
+        # Bind a null TIMESTAMP
         self._check_sql_results(
             self._db,
             sql='SELECT @v',
