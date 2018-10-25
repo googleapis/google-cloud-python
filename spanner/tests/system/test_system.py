@@ -1543,12 +1543,10 @@ class TestSessionAPI(unittest.TestCase, _TestData):
             "ON X.C1 = Y.C2 "
             "ORDER BY C1 ASC)"
         )
-        session = self._db.session()
-        session.create()
-        self.to_delete.append(session)
-        snapshot = session.snapshot()
+        self._db.snapshot(multi_use=True)
+        
         self._check_sql_results(
-            snapshot,
+            self._db,
             sql=SQL,
             params=None,
             param_types=None,
