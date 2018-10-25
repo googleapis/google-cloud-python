@@ -4,6 +4,48 @@
 
 [1]: https://pypi.org/project/google-cloud-language/#history
 
+## 1.1.0
+
+10-05-2018 13:52 PDT
+
+### Implementation Changes
+
+- The library has been regenerated to pick up changes in the underlying API.
+- Add Test runs for Python 3.7 and remove 3.4 ([#5295](https://github.com/googleapis/google-cloud-python/pull/5295))
+
+### Documentation
+
+- Translate / Logging / Language: restore detailed usage docs. ([#5999](https://github.com/googleapis/google-cloud-python/pull/5999))
+- Redirect renamed 'usage.html'/'client.html' -> 'index.html'. ([#5996](https://github.com/googleapis/google-cloud-python/pull/5996))
+- Prep language docs for repo split. ([#5932](https://github.com/googleapis/google-cloud-python/pull/5932))
+
+### Internal / Testing Changes
+
+- Language: add 'synth.py'. ([#6080](https://github.com/googleapis/google-cloud-python/pull/6080))
+- Nox: use inplace installs ([#5865](https://github.com/googleapis/google-cloud-python/pull/5865))
+- Avoid overwriting '__module__' of messages from shared modules. ([#5364](https://github.com/googleapis/google-cloud-python/pull/5364))
+- Modify system tests to use prerelease versions of grpcio ([#5304](https://github.com/googleapis/google-cloud-python/pull/5304))
+
+## 1.0.2
+
+### Packaging
+- Update setuptools before packaging (#5265)
+- Update setup.py to use recommended method for python-verson specific dependencies (#5266)
+- Fix bad trove classifier
+
+## 1.0.1
+
+### Dependencies
+
+- Update dependency range for api-core to include v1.0.0 releases (#4944)
+
+### Testing and internal changes
+
+- Install local dependencies when running lint (#4936)
+- Re-enable lint for tests, remove usage of pylint (#4921)
+- Normalize all setup.py files (#4909)
+- Fix coveragerc to correctly omit generated files (#4843)
+
 ## 1.0.0
 
 [![release level](https://img.shields.io/badge/release%20level-general%20availability%20%28GA%29-brightgreen.svg?style&#x3D;flat)](https://cloud.google.com/terms/launch-stages)

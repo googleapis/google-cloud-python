@@ -14,23 +14,21 @@
 
 """Client for interacting with the Stackdriver Trace API."""
 
-from google.cloud.trace._gax import make_gax_trace_api
+from google.cloud.trace._gapic import make_trace_api
 from google.cloud.client import ClientWithProject
-from google.cloud._helpers import _datetime_to_pb_timestamp
 
 
 class Client(ClientWithProject):
-    """Client to bundle configuration needed for API requests.
+    """
+    Client to bundle configuration needed for API requests.
 
-    :type project: str
-    :param project: The project which the client acts on behalf of.
-                    If not passed, falls back to the default inferred from
-                    the environment.
-
-    :type credentials: :class:`~google.auth.credentials.Credentials`
-    :param credentials: (Optional) The OAuth2 Credentials to use for this
-                        client. If not passed, falls back to the default
-                        inferred from the environment.
+    Args:
+        project (str): The project which the client acts on behalf of.
+            If not passed, falls back to the default inferred from
+            the environment.
+        credentials (Optional[:class:`~google.auth.credentials.Credentials`]):
+            The OAuth2 Credentials to use for this client. If not passed,
+            falls back to the default inferred from the environment.
     """
     SCOPE = ('https://www.googleapis.com/auth/cloud-platform',
              'https://www.googleapis.com/auth/trace.append',)
@@ -44,128 +42,185 @@ class Client(ClientWithProject):
 
     @property
     def trace_api(self):
-        """Helper for trace-related API calls.
+        """
+        Helper for trace-related API calls.
 
         See
-        https://cloud.google.com/trace/docs/reference/v1/rpc/google.devtools.
-        cloudtrace.v1
+        https://cloud.google.com/trace/docs/reference/v2/rpc/google.devtools.
+        cloudtrace.v2
         """
-        self._trace_api = make_gax_trace_api(self)
+        self._trace_api = make_trace_api(self)
         return self._trace_api
 
-    def patch_traces(self, traces, project_id=None, options=None):
-        """Sends new traces to Stackdriver Trace or updates existing traces.
-
-        :type traces: dict
-        :param traces: The traces to be patched in the API call.
-
-        :type project_id: str
-        :param project_id: (Optional) ID of the Cloud project where the trace
-                           data is stored.
-
-        :type options: :class:`~google.gax.CallOptions`
-        :param options: (Optional) Overrides the default settings for this
-                        call, e.g, timeout, retries etc.
+    def batch_write_spans(self,
+                          name,
+                          spans,
+                          retry=None,
+                          timeout=None):
         """
-        if project_id is None:
-            project_id = self.project
+        Sends new spans to Stackdriver Trace or updates existing traces. If the
+        name of a trace that you send matches that of an existing trace, new
+        spans are added to the existing trace. Attempt to update existing spans
+        results undefined behavior. If the name does not match, a new trace is
+        created with given set of spans.
 
-        self.trace_api.patch_traces(
-            project_id=project_id,
-            traces=traces,
-            options=options)
+        Example:
+            >>> from google.cloud import trace_v2
+            >>>
+            >>> client = trace_v2.Client()
+            >>>
+            >>> name = 'projects/[PROJECT_ID]'
+            >>> spans = {'spans': [{'endTime': '2017-11-21T23:50:58.890768Z',
+                                    'spanId': [SPAN_ID],
+                                    'startTime': '2017-11-21T23:50:58.890763Z',
+                                    'name': 'projects/[PROJECT_ID]/traces/
+                                            [TRACE_ID]/spans/[SPAN_ID]',
+                                    'displayName': {'value': 'sample span'}}]}
+            >>>
+            >>> client.batch_write_spans(name, spans)
 
-    def get_trace(self, trace_id, project_id=None, options=None):
-        """Gets a single trace by its ID.
+        Args:
+            name (str): Optional. Name of the project where the spans belong.
+                The format is ``projects/PROJECT_ID``.
+            spans (dict): A collection of spans.
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will not
+                be retried.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
 
-        :type project_id: str
-        :param project_id: ID of the Cloud project where the trace data is
-                           stored.
-
-        :type trace_id: str
-        :param trace_id: ID of the trace to return.
-
-        :type options: :class:`~google.gax.CallOptions`
-        :param options: (Optional) Overrides the default settings for this
-                        call, e.g, timeout, retries etc.
-
-        :rtype: dict
-        :returns: A Trace dict.
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
         """
-        if project_id is None:
-            project_id = self.project
+        self.trace_api.batch_write_spans(
+            name=name,
+            spans=spans,
+            retry=retry,
+            timeout=timeout)
 
-        return self.trace_api.get_trace(
-            project_id=project_id,
-            trace_id=trace_id,
-            options=options)
-
-    def list_traces(
-            self,
-            project_id=None,
-            view=None,
-            page_size=None,
-            start_time=None,
-            end_time=None,
-            filter_=None,
-            order_by=None,
-            page_token=None):
-        """Returns of a list of traces that match the filter conditions.
-
-        :type project_id: str
-        :param project_id: (Optional) ID of the Cloud project where the trace
-                           data is stored.
-
-        :type view: :class:`google.cloud.trace_v1.gapic.enums.
-                            ListTracesRequest.ViewType`
-        :param view: (Optional) Type of data returned for traces in the list.
-                     Default is ``MINIMAL``.
-
-        :type page_size: int
-        :param page_size: (Optional) Maximum number of traces to return.
-                          If not specified or <= 0, the implementation selects
-                          a reasonable value. The implementation may return
-                          fewer traces than the requested page size.
-
-        :type start_time: :class:`~datetime.datetime`
-        :param start_time: (Optional) Start of the time interval (inclusive)
-                           during which the trace data was collected from the
-                           application.
-
-        :type end_time: :class:`~datetime.datetime`
-        :param end_time: (Optional) End of the time interval (inclusive) during
-                         which the trace data was collected from the
-                         application.
-
-        :type filter_: str
-        :param filter_: (Optional) An optional filter for the request.
-
-        :type order_by: str
-        :param order_by: (Optional) Field used to sort the returned traces.
-
-        :type page_token: str
-        :param page_token: opaque marker for the next "page" of entries. If not
-                           passed, the API will return the first page of
-                           entries.
-
-        :rtype: :class:`~google.api_core.page_iterator.Iterator`
-        :returns: Traces that match the specified filter conditions.
+    def create_span(self,
+                    name,
+                    span_id,
+                    display_name,
+                    start_time,
+                    end_time,
+                    parent_span_id=None,
+                    attributes=None,
+                    stack_trace=None,
+                    time_events=None,
+                    links=None,
+                    status=None,
+                    same_process_as_parent_span=None,
+                    child_span_count=None,
+                    retry=None,
+                    timeout=None):
         """
-        if project_id is None:
-            project_id = self.project
+        Creates a new Span.
 
-        if start_time is not None:
-            start_time = _datetime_to_pb_timestamp(start_time)
+        Example:
+            >>> from google.cloud import trace_v2
+            >>>
+            >>> client = trace_v2.Client()
+            >>>
+            >>> name = 'projects/{project}/traces/{trace_id}/spans/{span_id}'.
+                       format('[PROJECT]', '[TRACE_ID]', '[SPAN_ID]')
+            >>> span_id = '[SPAN_ID]'
+            >>> display_name = {}
+            >>> start_time = {}
+            >>> end_time = {}
+            >>>
+            >>> response = client.create_span(name, span_id, display_name,
+                                              start_time, end_time)
 
-        if end_time is not None:
-            end_time = _datetime_to_pb_timestamp(end_time)
+        Args:
+            name (str): The resource name of the span in the following format:
 
-        return self.trace_api.list_traces(
-            project_id=project_id,
-            view=view,
-            page_size=page_size,
+                ::
+
+                    projects/[PROJECT_ID]/traces/[TRACE_ID]/spans/[SPAN_ID]
+
+                [TRACE_ID] is a unique identifier for a trace within a project.
+                [SPAN_ID] is a unique identifier for a span within a trace,
+                assigned when the span is created.
+            span_id (str): The [SPAN_ID] portion of the span's resource name.
+                The ID is a 16-character hexadecimal encoding of an 8-byte
+                array.
+            display_name (dict): A description of the span's operation
+                (up to 128 bytes). Stackdriver Trace displays the description
+                in the {% dynamic print site_values.console_name %}.
+                For example, the display name can be a qualified method name
+                or a file name and a line number where the operation is called.
+                A best practice is to use the same display name within an
+                application and at the same call point. This makes it easier to
+                correlate spans in different traces.
+                Contains two fields, value is the truncated name,
+                truncatedByteCount is the number of bytes removed from the
+                original string. If 0, then the string was not shortened.
+            start_time (:class:`~datetime.datetime`):
+                The start time of the span. On the client side, this is the
+                time kept by the local machine where the span execution starts.
+                On the server side, this is the time when the server's
+                application handler starts running.
+            end_time (:class:`~datetime.datetime`):
+                The end time of the span. On the client side, this is the time
+                kept by the local machine where the span execution ends. On the
+                server side, this is the time when the server application
+                handler stops running.
+            parent_span_id (str): The [SPAN_ID] of this span's parent span.
+                If this is a root span, then this field must be empty.
+            attributes (dict): A set of attributes on the span. There is a
+                limit of 32 attributes per span.
+            stack_trace (dict):
+                Stack trace captured at the start of the span.
+                Contains two fields, stackFrames is a list of stack frames in
+                this call stack, a maximum of 128 frames are allowed per
+                StackFrame; stackTraceHashId is used to conserve network
+                bandwidth for duplicate stack traces within a single trace.
+            time_events (dict):
+                The included time events. There can be up to 32 annotations
+                and 128 message events per span.
+            links (dict): A maximum of 128 links are allowed per Span.
+            status (dict): An optional final status for this span.
+            same_process_as_parent_span (bool): A highly recommended but not
+                required flag that identifies when a trace crosses a process
+                boundary. True when the parent_span belongs to the same process
+                as the current span.
+            child_span_count (int): An optional number of child spans that were
+                generated while this span was active. If set, allows
+                implementation to detect missing child spans.
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will not
+                be retried.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+
+        Returns:
+            A :class:`~google.cloud.trace_v2.types.Span` instance.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        return self.trace_api.create_span(
+            name=name,
+            span_id=span_id,
+            display_name=display_name,
             start_time=start_time,
             end_time=end_time,
-            filter_=filter_,
-            order_by=order_by,
-            page_token=page_token)
+            parent_span_id=parent_span_id,
+            attributes=attributes,
+            stack_trace=stack_trace,
+            time_events=time_events,
+            links=links,
+            status=status,
+            same_process_as_parent_span=same_process_as_parent_span,
+            child_span_count=child_span_count)

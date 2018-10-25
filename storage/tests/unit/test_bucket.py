@@ -31,6 +31,180 @@ def _create_signing_credentials():
     return credentials
 
 
+class Test_LifecycleRuleConditions(unittest.TestCase):
+
+    @staticmethod
+    def _get_target_class():
+        from google.cloud.storage.bucket import LifecycleRuleConditions
+        return LifecycleRuleConditions
+
+    def _make_one(self, **kw):
+        return self._get_target_class()(**kw)
+
+    def test_ctor_wo_conditions(self):
+        with self.assertRaises(ValueError):
+            self._make_one()
+
+    def test_ctor_w_age_and_matches_storage_class(self):
+        conditions = self._make_one(
+            age=10, matches_storage_class=['REGIONAL'])
+        expected = {
+            'age': 10,
+            'matchesStorageClass': ['REGIONAL'],
+        }
+        self.assertEqual(dict(conditions), expected)
+        self.assertEqual(conditions.age, 10)
+        self.assertIsNone(conditions.created_before)
+        self.assertIsNone(conditions.is_live)
+        self.assertEqual(conditions.matches_storage_class, ['REGIONAL'])
+        self.assertIsNone(conditions.number_of_newer_versions)
+
+    def test_ctor_w_created_before_and_is_live(self):
+        import datetime
+
+        before = datetime.date(2018, 8, 1)
+        conditions = self._make_one(created_before=before, is_live=False)
+        expected = {
+            'createdBefore': '2018-08-01',
+            'isLive': False,
+        }
+        self.assertEqual(dict(conditions), expected)
+        self.assertIsNone(conditions.age)
+        self.assertEqual(conditions.created_before, before)
+        self.assertEqual(conditions.is_live, False)
+        self.assertIsNone(conditions.matches_storage_class)
+        self.assertIsNone(conditions.number_of_newer_versions)
+
+    def test_ctor_w_number_of_newer_versions(self):
+        conditions = self._make_one(number_of_newer_versions=3)
+        expected = {
+            'numNewerVersions': 3,
+        }
+        self.assertEqual(dict(conditions), expected)
+        self.assertIsNone(conditions.age)
+        self.assertIsNone(conditions.created_before)
+        self.assertIsNone(conditions.is_live)
+        self.assertIsNone(conditions.matches_storage_class)
+        self.assertEqual(conditions.number_of_newer_versions, 3)
+
+    def test_from_api_repr(self):
+        import datetime
+
+        before = datetime.date(2018, 8, 1)
+        klass = self._get_target_class()
+        resource = {
+            'age': 10,
+            'createdBefore': '2018-08-01',
+            'isLive': True,
+            'matchesStorageClass': ['REGIONAL'],
+            'numNewerVersions': 3,
+        }
+        conditions = klass.from_api_repr(resource)
+        self.assertEqual(conditions.age, 10)
+        self.assertEqual(conditions.created_before, before)
+        self.assertEqual(conditions.is_live, True)
+        self.assertEqual(conditions.matches_storage_class, ['REGIONAL'])
+        self.assertEqual(conditions.number_of_newer_versions, 3)
+
+
+class Test_LifecycleRuleDelete(unittest.TestCase):
+
+    @staticmethod
+    def _get_target_class():
+        from google.cloud.storage.bucket import LifecycleRuleDelete
+        return LifecycleRuleDelete
+
+    def _make_one(self, **kw):
+        return self._get_target_class()(**kw)
+
+    def test_ctor_wo_conditions(self):
+        with self.assertRaises(ValueError):
+            self._make_one()
+
+    def test_ctor_w_condition(self):
+        rule = self._make_one(age=10, matches_storage_class=['REGIONAL'])
+        expected = {
+            'action': {
+                'type': 'Delete',
+            },
+            'condition': {
+                'age': 10,
+                'matchesStorageClass': ['REGIONAL'],
+            }
+        }
+        self.assertEqual(dict(rule), expected)
+
+    def test_from_api_repr(self):
+        klass = self._get_target_class()
+        conditions = {
+            'age': 10,
+            'createdBefore': '2018-08-01',
+            'isLive': True,
+            'matchesStorageClass': ['REGIONAL'],
+            'numNewerVersions': 3,
+        }
+        resource = {
+            'action': {
+                'type': 'Delete',
+            },
+            'condition': conditions,
+        }
+        rule = klass.from_api_repr(resource)
+        self.assertEqual(dict(rule), resource)
+
+
+class Test_LifecycleRuleSetStorageClass(unittest.TestCase):
+
+    @staticmethod
+    def _get_target_class():
+        from google.cloud.storage.bucket import (
+            LifecycleRuleSetStorageClass)
+        return LifecycleRuleSetStorageClass
+
+    def _make_one(self, **kw):
+        return self._get_target_class()(**kw)
+
+    def test_ctor_wo_conditions(self):
+        with self.assertRaises(ValueError):
+            self._make_one(storage_class='REGIONAL')
+
+    def test_ctor_w_condition(self):
+        rule = self._make_one(
+            storage_class='NEARLINE',
+            age=10,
+            matches_storage_class=['REGIONAL'])
+        expected = {
+            'action': {
+                'type': 'SetStorageClass',
+                'storageClass': 'NEARLINE',
+            },
+            'condition': {
+                'age': 10,
+                'matchesStorageClass': ['REGIONAL'],
+            }
+        }
+        self.assertEqual(dict(rule), expected)
+
+    def test_from_api_repr(self):
+        klass = self._get_target_class()
+        conditions = {
+            'age': 10,
+            'createdBefore': '2018-08-01',
+            'isLive': True,
+            'matchesStorageClass': ['REGIONAL'],
+            'numNewerVersions': 3,
+        }
+        resource = {
+            'action': {
+                'type': 'SetStorageClass',
+                'storageClass': 'NEARLINE',
+            },
+            'condition': conditions,
+        }
+        rule = klass.from_api_repr(resource)
+        self.assertEqual(dict(rule), resource)
+
+
 class Test_Bucket(unittest.TestCase):
 
     @staticmethod
@@ -77,7 +251,25 @@ class Test_Bucket(unittest.TestCase):
         self.assertFalse(bucket._default_object_acl.loaded)
         self.assertIs(bucket._default_object_acl.bucket, bucket)
 
-    def test_blob(self):
+    def test_blob_wo_keys(self):
+        from google.cloud.storage.blob import Blob
+
+        BUCKET_NAME = 'BUCKET_NAME'
+        BLOB_NAME = 'BLOB_NAME'
+        CHUNK_SIZE = 1024 * 1024
+
+        bucket = self._make_one(name=BUCKET_NAME)
+        blob = bucket.blob(
+            BLOB_NAME, chunk_size=CHUNK_SIZE)
+        self.assertIsInstance(blob, Blob)
+        self.assertIs(blob.bucket, bucket)
+        self.assertIs(blob.client, bucket.client)
+        self.assertEqual(blob.name, BLOB_NAME)
+        self.assertEqual(blob.chunk_size, CHUNK_SIZE)
+        self.assertIsNone(blob._encryption_key)
+        self.assertIsNone(blob.kms_key_name)
+
+    def test_blob_w_encryption_key(self):
         from google.cloud.storage.blob import Blob
 
         BUCKET_NAME = 'BUCKET_NAME'
@@ -94,6 +286,31 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(blob.name, BLOB_NAME)
         self.assertEqual(blob.chunk_size, CHUNK_SIZE)
         self.assertEqual(blob._encryption_key, KEY)
+        self.assertIsNone(blob.kms_key_name)
+
+    def test_blob_w_kms_key_name(self):
+        from google.cloud.storage.blob import Blob
+
+        BUCKET_NAME = 'BUCKET_NAME'
+        BLOB_NAME = 'BLOB_NAME'
+        CHUNK_SIZE = 1024 * 1024
+        KMS_RESOURCE = (
+            "projects/test-project-123/"
+            "locations/us/"
+            "keyRings/test-ring/"
+            "cryptoKeys/test-key"
+        )
+
+        bucket = self._make_one(name=BUCKET_NAME)
+        blob = bucket.blob(
+            BLOB_NAME, chunk_size=CHUNK_SIZE, kms_key_name=KMS_RESOURCE)
+        self.assertIsInstance(blob, Blob)
+        self.assertIs(blob.bucket, bucket)
+        self.assertIs(blob.client, bucket.client)
+        self.assertEqual(blob.name, BLOB_NAME)
+        self.assertEqual(blob.chunk_size, CHUNK_SIZE)
+        self.assertIsNone(blob._encryption_key)
+        self.assertEqual(blob.kms_key_name, KMS_RESOURCE)
 
     def test_notification_defaults(self):
         from google.cloud.storage.notification import BucketNotification
@@ -155,7 +372,7 @@ class Test_Bucket(unittest.TestCase):
 
     def test_bucket_name_value(self):
         BUCKET_NAME = 'bucket-name'
-        bucket = self._make_one(name=BUCKET_NAME)
+        self._make_one(name=BUCKET_NAME)
 
         bad_start_bucket_name = '/testing123'
         with self.assertRaises(ValueError):
@@ -241,7 +458,6 @@ class Test_Bucket(unittest.TestCase):
 
     def test_create_w_missing_client_project(self):
         BUCKET_NAME = 'bucket-name'
-        USER_PROJECT = 'user-project-123'
         connection = _Connection()
         client = _Client(connection, project=None)
         bucket = self._make_one(client, BUCKET_NAME)
@@ -265,6 +481,25 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(kw['path'], '/b')
         self.assertEqual(kw['query_params'], {'project': OTHER_PROJECT})
         self.assertEqual(kw['data'], DATA)
+
+    def test_create_w_explicit_location(self):
+        PROJECT = 'PROJECT'
+        BUCKET_NAME = 'bucket-name'
+        LOCATION = 'us-central1'
+        DATA = {'location': LOCATION, 'name': BUCKET_NAME}
+        connection = _Connection(
+            DATA,
+            "{'location': 'us-central1', 'name': 'bucket-name'}")
+        client = _Client(connection, project=PROJECT)
+        bucket = self._make_one(client, BUCKET_NAME)
+
+        bucket.create(location=LOCATION)
+
+        kw, = connection._requested
+        self.assertEqual(kw['method'], 'POST')
+        self.assertEqual(kw['path'], '/b')
+        self.assertEqual(kw['data'], DATA)
+        self.assertEqual(bucket.location, LOCATION)
 
     def test_create_hit(self):
         PROJECT = 'PROJECT'
@@ -312,12 +547,11 @@ class Test_Bucket(unittest.TestCase):
         bucket = self._make_one(client=client, name=BUCKET_NAME)
         bucket.cors = CORS
         bucket.lifecycle_rules = LIFECYCLE_RULES
-        bucket.location = LOCATION
         bucket.storage_class = STORAGE_CLASS
         bucket.versioning_enabled = True
         bucket.requester_pays = True
         bucket.labels = LABELS
-        bucket.create()
+        bucket.create(location=LOCATION)
 
         kw, = connection._requested
         self.assertEqual(kw['method'], 'POST')
@@ -500,7 +734,7 @@ class Test_Bucket(unittest.TestCase):
 
         self.assertEqual(len(notifications), len(resources))
         for notification, resource, topic_ref in zip(
-            notifications, resources, topic_refs):
+                notifications, resources, topic_refs):
             self.assertIsInstance(notification, BucketNotification)
             self.assertEqual(notification.topic_project, topic_ref[0])
             self.assertEqual(notification.topic_name, topic_ref[1])
@@ -728,6 +962,31 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(kw['path'], COPY_PATH)
         self.assertEqual(kw['query_params'], {})
 
+    def test_copy_blobs_source_generation(self):
+        SOURCE = 'source'
+        DEST = 'dest'
+        BLOB_NAME = 'blob-name'
+        GENERATION = 1512565576797178
+
+        class _Blob(object):
+            name = BLOB_NAME
+            path = '/b/%s/o/%s' % (SOURCE, BLOB_NAME)
+
+        connection = _Connection({})
+        client = _Client(connection)
+        source = self._make_one(client=client, name=SOURCE)
+        dest = self._make_one(client=client, name=DEST)
+        blob = _Blob()
+        new_blob = source.copy_blob(blob, dest, source_generation=GENERATION)
+        self.assertIs(new_blob.bucket, dest)
+        self.assertEqual(new_blob.name, BLOB_NAME)
+        kw, = connection._requested
+        COPY_PATH = '/b/%s/o/%s/copyTo/b/%s/o/%s' % (SOURCE, BLOB_NAME,
+                                                     DEST, BLOB_NAME)
+        self.assertEqual(kw['method'], 'POST')
+        self.assertEqual(kw['path'], COPY_PATH)
+        self.assertEqual(kw['query_params'], {'sourceGeneration': GENERATION})
+
     def test_copy_blobs_preserve_acl(self):
         from google.cloud.storage.acl import ObjectACL
 
@@ -834,32 +1093,206 @@ class Test_Bucket(unittest.TestCase):
         bucket = self._make_one(name=NAME, properties=before)
         self.assertEqual(bucket.location, 'AS')
 
-    def test_location_setter(self):
+    @mock.patch('warnings.warn')
+    def test_location_setter(self, mock_warn):
+        from google.cloud.storage import bucket as bucket_module
+
         NAME = 'name'
         bucket = self._make_one(name=NAME)
         self.assertIsNone(bucket.location)
         bucket.location = 'AS'
         self.assertEqual(bucket.location, 'AS')
         self.assertTrue('location' in bucket._changes)
+        mock_warn.assert_called_once_with(
+            bucket_module._LOCATION_SETTER_MESSAGE,
+            DeprecationWarning,
+            stacklevel=2)
 
-    def test_lifecycle_rules_getter(self):
+    def test_lifecycle_rules_getter_unknown_action_type(self):
         NAME = 'name'
-        LC_RULE = {'action': {'type': 'Delete'}, 'condition': {'age': 42}}
-        rules = [LC_RULE]
+        BOGUS_RULE = {
+            'action': {
+                'type': 'Bogus',
+            },
+            'condition': {
+                'age': 42,
+            },
+        }
+        rules = [BOGUS_RULE]
         properties = {'lifecycle': {'rule': rules}}
         bucket = self._make_one(name=NAME, properties=properties)
-        self.assertEqual(bucket.lifecycle_rules, rules)
-        # Make sure it's a copy
-        self.assertIsNot(bucket.lifecycle_rules, rules)
 
-    def test_lifecycle_rules_setter(self):
+        with self.assertRaises(ValueError):
+            list(bucket.lifecycle_rules)
+
+    def test_lifecycle_rules_getter(self):
+        from google.cloud.storage.bucket import (
+            LifecycleRuleDelete, LifecycleRuleSetStorageClass)
+
         NAME = 'name'
-        LC_RULE = {'action': {'type': 'Delete'}, 'condition': {'age': 42}}
-        rules = [LC_RULE]
+        DELETE_RULE = {
+            'action': {
+                'type': 'Delete',
+            },
+            'condition': {
+                'age': 42,
+            },
+        }
+        SSC_RULE = {
+            'action': {
+                'type': 'SetStorageClass',
+                'storageClass': 'NEARLINE',
+            },
+            'condition': {
+                'isLive': False,
+            },
+        }
+        rules = [DELETE_RULE, SSC_RULE]
+        properties = {'lifecycle': {'rule': rules}}
+        bucket = self._make_one(name=NAME, properties=properties)
+
+        found = list(bucket.lifecycle_rules)
+
+        delete_rule = found[0]
+        self.assertIsInstance(delete_rule, LifecycleRuleDelete)
+        self.assertEqual(dict(delete_rule), DELETE_RULE)
+
+        ssc_rule = found[1]
+        self.assertIsInstance(ssc_rule, LifecycleRuleSetStorageClass)
+        self.assertEqual(dict(ssc_rule), SSC_RULE)
+
+    def test_lifecycle_rules_setter_w_dicts(self):
+        NAME = 'name'
+        DELETE_RULE = {
+            'action': {
+                'type': 'Delete',
+            },
+            'condition': {
+                'age': 42,
+            },
+        }
+        SSC_RULE = {
+            'action': {
+                'type': 'SetStorageClass',
+                'storageClass': 'NEARLINE',
+            },
+            'condition': {
+                'isLive': False,
+            },
+        }
+        rules = [DELETE_RULE, SSC_RULE]
         bucket = self._make_one(name=NAME)
-        self.assertEqual(bucket.lifecycle_rules, [])
+        self.assertEqual(list(bucket.lifecycle_rules), [])
+
         bucket.lifecycle_rules = rules
-        self.assertEqual(bucket.lifecycle_rules, rules)
+
+        self.assertEqual(
+            [dict(rule) for rule in bucket.lifecycle_rules], rules)
+        self.assertTrue('lifecycle' in bucket._changes)
+
+    def test_lifecycle_rules_setter_w_helpers(self):
+        from google.cloud.storage.bucket import (
+            LifecycleRuleDelete, LifecycleRuleSetStorageClass)
+
+        NAME = 'name'
+        DELETE_RULE = {
+            'action': {
+                'type': 'Delete',
+            },
+            'condition': {
+                'age': 42,
+            },
+        }
+        SSC_RULE = {
+            'action': {
+                'type': 'SetStorageClass',
+                'storageClass': 'NEARLINE',
+            },
+            'condition': {
+                'isLive': False,
+            },
+        }
+        rules = [DELETE_RULE, SSC_RULE]
+        bucket = self._make_one(name=NAME)
+        self.assertEqual(list(bucket.lifecycle_rules), [])
+
+        bucket.lifecycle_rules = [
+            LifecycleRuleDelete(age=42),
+            LifecycleRuleSetStorageClass('NEARLINE', is_live=False),
+        ]
+
+        self.assertEqual(
+            [dict(rule) for rule in bucket.lifecycle_rules], rules)
+        self.assertTrue('lifecycle' in bucket._changes)
+
+    def test_clear_lifecycle_rules(self):
+        NAME = 'name'
+        DELETE_RULE = {
+            'action': {
+                'type': 'Delete',
+            },
+            'condition': {
+                'age': 42,
+            },
+        }
+        SSC_RULE = {
+            'action': {
+                'type': 'SetStorageClass',
+                'storageClass': 'NEARLINE',
+            },
+            'condition': {
+                'isLive': False,
+            },
+        }
+        rules = [DELETE_RULE, SSC_RULE]
+        bucket = self._make_one(name=NAME)
+        bucket._properties['lifecycle'] = {'rule': rules}
+        self.assertEqual(list(bucket.lifecycle_rules), rules)
+
+        bucket.clear_lifecyle_rules()
+
+        self.assertEqual(list(bucket.lifecycle_rules), [])
+        self.assertTrue('lifecycle' in bucket._changes)
+
+    def test_add_lifecycle_delete_rule(self):
+        NAME = 'name'
+        DELETE_RULE = {
+            'action': {
+                'type': 'Delete',
+            },
+            'condition': {
+                'age': 42,
+            },
+        }
+        rules = [DELETE_RULE]
+        bucket = self._make_one(name=NAME)
+        self.assertEqual(list(bucket.lifecycle_rules), [])
+
+        bucket.add_lifecycle_delete_rule(age=42)
+
+        self.assertEqual(
+            [dict(rule) for rule in bucket.lifecycle_rules], rules)
+        self.assertTrue('lifecycle' in bucket._changes)
+
+    def test_add_lifecycle_set_storage_class_rule(self):
+        NAME = 'name'
+        SSC_RULE = {
+            'action': {
+                'type': 'SetStorageClass',
+                'storageClass': 'NEARLINE',
+            },
+            'condition': {
+                'isLive': False,
+            },
+        }
+        rules = [SSC_RULE]
+        bucket = self._make_one(name=NAME)
+        self.assertEqual(list(bucket.lifecycle_rules), [])
+
+        bucket.add_lifecycle_set_storage_class_rule('NEARLINE', is_live=False)
+
+        self.assertEqual(
+            [dict(rule) for rule in bucket.lifecycle_rules], rules)
         self.assertTrue('lifecycle' in bucket._changes)
 
     def test_cors_getter(self):
@@ -893,6 +1326,39 @@ class Test_Bucket(unittest.TestCase):
         bucket.cors = [CORS_ENTRY]
         self.assertEqual(bucket.cors, [CORS_ENTRY])
         self.assertTrue('cors' in bucket._changes)
+
+    def test_default_kms_key_name_getter(self):
+        NAME = 'name'
+        KMS_RESOURCE = (
+            'projects/test-project-123/'
+            'locations/us/'
+            'keyRings/test-ring/'
+            'cryptoKeys/test-key'
+        )
+        ENCRYPTION_CONFIG = {
+            'defaultKmsKeyName': KMS_RESOURCE,
+        }
+        bucket = self._make_one(name=NAME)
+        self.assertIsNone(bucket.default_kms_key_name)
+        bucket._properties['encryption'] = ENCRYPTION_CONFIG
+        self.assertEqual(bucket.default_kms_key_name, KMS_RESOURCE)
+
+    def test_default_kms_key_name_setter(self):
+        NAME = 'name'
+        KMS_RESOURCE = (
+            'projects/test-project-123/'
+            'locations/us/'
+            'keyRings/test-ring/'
+            'cryptoKeys/test-key'
+        )
+        ENCRYPTION_CONFIG = {
+            'defaultKmsKeyName': KMS_RESOURCE,
+        }
+        bucket = self._make_one(name=NAME)
+        bucket.default_kms_key_name = KMS_RESOURCE
+        self.assertEqual(
+            bucket._properties['encryption'], ENCRYPTION_CONFIG)
+        self.assertTrue('encryption' in bucket._changes)
 
     def test_labels_getter(self):
         NAME = 'name'
@@ -1027,6 +1493,103 @@ class Test_Bucket(unittest.TestCase):
         properties = {'projectNumber': str(PROJECT_NUMBER)}
         bucket = self._make_one(properties=properties)
         self.assertEqual(bucket.project_number, PROJECT_NUMBER)
+
+    def test_retention_policy_effective_time_policy_missing(self):
+        bucket = self._make_one()
+        self.assertIsNone(bucket.retention_policy_effective_time)
+
+    def test_retention_policy_effective_time_et_missing(self):
+        properties = {
+            'retentionPolicy': {
+            },
+        }
+        bucket = self._make_one(properties=properties)
+
+        self.assertIsNone(bucket.retention_policy_effective_time)
+
+    def test_retention_policy_effective_time(self):
+        import datetime
+        from google.cloud._helpers import _datetime_to_rfc3339
+        from google.cloud._helpers import UTC
+
+        effective_time = datetime.datetime.utcnow().replace(tzinfo=UTC)
+        properties = {
+            'retentionPolicy': {
+                'effectiveTime': _datetime_to_rfc3339(effective_time),
+            },
+        }
+        bucket = self._make_one(properties=properties)
+
+        self.assertEqual(
+            bucket.retention_policy_effective_time, effective_time)
+
+    def test_retention_policy_locked_missing(self):
+        bucket = self._make_one()
+        self.assertFalse(bucket.retention_policy_locked)
+
+    def test_retention_policy_locked_false(self):
+        properties = {
+            'retentionPolicy': {
+                'isLocked': False,
+            },
+        }
+        bucket = self._make_one(properties=properties)
+        self.assertFalse(bucket.retention_policy_locked)
+
+    def test_retention_policy_locked_true(self):
+        properties = {
+            'retentionPolicy': {
+                'isLocked': True,
+            },
+        }
+        bucket = self._make_one(properties=properties)
+        self.assertTrue(bucket.retention_policy_locked)
+
+    def test_retention_period_getter_policymissing(self):
+        bucket = self._make_one()
+
+        self.assertIsNone(bucket.retention_period)
+
+    def test_retention_period_getter_pr_missing(self):
+        properties = {
+            'retentionPolicy': {
+            },
+        }
+        bucket = self._make_one(properties=properties)
+
+        self.assertIsNone(bucket.retention_period)
+
+    def test_retention_period_getter(self):
+        period = 86400 * 100  # 100 days
+        properties = {
+            'retentionPolicy': {
+                'retentionPeriod': str(period),
+            },
+        }
+        bucket = self._make_one(properties=properties)
+
+        self.assertEqual(bucket.retention_period, period)
+
+    def test_retention_period_setter_w_none(self):
+        period = 86400 * 100  # 100 days
+        bucket = self._make_one()
+        policy = bucket._properties['retentionPolicy'] = {}
+        policy['retentionPeriod'] = period
+
+        bucket.retention_period = None
+
+        self.assertIsNone(
+            bucket._properties['retentionPolicy']['retentionPeriod'])
+
+    def test_retention_period_setter_w_int(self):
+        period = 86400 * 100  # 100 days
+        bucket = self._make_one()
+
+        bucket.retention_period = period
+
+        self.assertEqual(
+            bucket._properties['retentionPolicy']['retentionPeriod'],
+            str(period))
 
     def test_self_link(self):
         SELF_LINK = 'http://example.com/self/'
@@ -1293,8 +1856,8 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(len(sent['bindings']), len(BINDINGS))
         key = operator.itemgetter('role')
         for found, expected in zip(
-            sorted(sent['bindings'], key=key),
-            sorted(BINDINGS, key=key)):
+                sorted(sent['bindings'], key=key),
+                sorted(BINDINGS, key=key)):
             self.assertEqual(found['role'], expected['role'])
             self.assertEqual(
                 sorted(found['members']), sorted(expected['members']))
@@ -1352,8 +1915,8 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(len(sent['bindings']), len(BINDINGS))
         key = operator.itemgetter('role')
         for found, expected in zip(
-            sorted(sent['bindings'], key=key),
-            sorted(BINDINGS, key=key)):
+                sorted(sent['bindings'], key=key),
+                sorted(BINDINGS, key=key)):
             self.assertEqual(found['role'], expected['role'])
             self.assertEqual(
                 sorted(found['members']), sorted(expected['members']))
@@ -1565,6 +2128,145 @@ class Test_Bucket(unittest.TestCase):
         bucket._MAX_OBJECTS_FOR_ITERATION = 1
         self.assertRaises(ValueError, bucket.make_public, recursive=True)
 
+    def test_make_private_defaults(self):
+        NAME = 'name'
+        no_permissions = []
+        after = {'acl': no_permissions, 'defaultObjectAcl': []}
+        connection = _Connection(after)
+        client = _Client(connection)
+        bucket = self._make_one(client=client, name=NAME)
+        bucket.acl.loaded = True
+        bucket.default_object_acl.loaded = True
+        bucket.make_private()
+        self.assertEqual(list(bucket.acl), no_permissions)
+        self.assertEqual(list(bucket.default_object_acl), [])
+        kw = connection._requested
+        self.assertEqual(len(kw), 1)
+        self.assertEqual(kw[0]['method'], 'PATCH')
+        self.assertEqual(kw[0]['path'], '/b/%s' % NAME)
+        self.assertEqual(kw[0]['data'], {'acl': after['acl']})
+        self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
+
+    def _make_private_w_future_helper(self, default_object_acl_loaded=True):
+        NAME = 'name'
+        no_permissions = []
+        after1 = {'acl': no_permissions, 'defaultObjectAcl': []}
+        after2 = {'acl': no_permissions, 'defaultObjectAcl': no_permissions}
+        if default_object_acl_loaded:
+            num_requests = 2
+            connection = _Connection(after1, after2)
+        else:
+            num_requests = 3
+            # We return the same value for default_object_acl.reload()
+            # to consume.
+            connection = _Connection(after1, after1, after2)
+        client = _Client(connection)
+        bucket = self._make_one(client=client, name=NAME)
+        bucket.acl.loaded = True
+        bucket.default_object_acl.loaded = default_object_acl_loaded
+        bucket.make_private(future=True)
+        self.assertEqual(list(bucket.acl), no_permissions)
+        self.assertEqual(list(bucket.default_object_acl), no_permissions)
+        kw = connection._requested
+        self.assertEqual(len(kw), num_requests)
+        self.assertEqual(kw[0]['method'], 'PATCH')
+        self.assertEqual(kw[0]['path'], '/b/%s' % NAME)
+        self.assertEqual(kw[0]['data'], {'acl': no_permissions})
+        self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
+        if not default_object_acl_loaded:
+            self.assertEqual(kw[1]['method'], 'GET')
+            self.assertEqual(kw[1]['path'], '/b/%s/defaultObjectAcl' % NAME)
+        # Last could be 1 or 2 depending on `default_object_acl_loaded`.
+        self.assertEqual(kw[-1]['method'], 'PATCH')
+        self.assertEqual(kw[-1]['path'], '/b/%s' % NAME)
+        self.assertEqual(kw[-1]['data'], {'defaultObjectAcl': no_permissions})
+        self.assertEqual(kw[-1]['query_params'], {'projection': 'full'})
+
+    def test_make_private_w_future(self):
+        self._make_private_w_future_helper(default_object_acl_loaded=True)
+
+    def test_make_private_w_future_reload_default(self):
+        self._make_private_w_future_helper(default_object_acl_loaded=False)
+
+    def test_make_private_recursive(self):
+        _saved = []
+
+        class _Blob(object):
+            _granted = True
+
+            def __init__(self, bucket, name):
+                self._bucket = bucket
+                self._name = name
+
+            @property
+            def acl(self):
+                return self
+
+            # Faux ACL methods
+            def all(self):
+                return self
+
+            def revoke_read(self):
+                self._granted = False
+
+            def save(self, client=None):
+                _saved.append(
+                    (self._bucket, self._name, self._granted, client))
+
+        def item_to_blob(self, item):
+            return _Blob(self.bucket, item['name'])
+
+        NAME = 'name'
+        BLOB_NAME = 'blob-name'
+        no_permissions = []
+        after = {'acl': no_permissions, 'defaultObjectAcl': []}
+        connection = _Connection(after, {'items': [{'name': BLOB_NAME}]})
+        client = _Client(connection)
+        bucket = self._make_one(client=client, name=NAME)
+        bucket.acl.loaded = True
+        bucket.default_object_acl.loaded = True
+
+        with mock.patch('google.cloud.storage.bucket._item_to_blob',
+                        new=item_to_blob):
+            bucket.make_private(recursive=True)
+        self.assertEqual(list(bucket.acl), no_permissions)
+        self.assertEqual(list(bucket.default_object_acl), [])
+        self.assertEqual(_saved, [(bucket, BLOB_NAME, False, None)])
+        kw = connection._requested
+        self.assertEqual(len(kw), 2)
+        self.assertEqual(kw[0]['method'], 'PATCH')
+        self.assertEqual(kw[0]['path'], '/b/%s' % NAME)
+        self.assertEqual(kw[0]['data'], {'acl': no_permissions})
+        self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
+        self.assertEqual(kw[1]['method'], 'GET')
+        self.assertEqual(kw[1]['path'], '/b/%s/o' % NAME)
+        max_results = bucket._MAX_OBJECTS_FOR_ITERATION + 1
+        self.assertEqual(kw[1]['query_params'],
+                         {'maxResults': max_results, 'projection': 'full'})
+
+    def test_make_private_recursive_too_many(self):
+        NO_PERMISSIONS = []
+        AFTER = {'acl': NO_PERMISSIONS, 'defaultObjectAcl': []}
+
+        NAME = 'name'
+        BLOB_NAME1 = 'blob-name1'
+        BLOB_NAME2 = 'blob-name2'
+        GET_BLOBS_RESP = {
+            'items': [
+                {'name': BLOB_NAME1},
+                {'name': BLOB_NAME2},
+            ],
+        }
+        connection = _Connection(AFTER, GET_BLOBS_RESP)
+        client = _Client(connection)
+        bucket = self._make_one(client=client, name=NAME)
+        bucket.acl.loaded = True
+        bucket.default_object_acl.loaded = True
+
+        # Make the Bucket refuse to make_private with 2 objects.
+        bucket._MAX_OBJECTS_FOR_ITERATION = 1
+        self.assertRaises(ValueError, bucket.make_private, recursive=True)
+
     def test_page_empty_response(self):
         from google.api_core import page_iterator
 
@@ -1722,6 +2424,114 @@ class Test_Bucket(unittest.TestCase):
 
         with self.assertRaises(AttributeError):
             bucket.generate_upload_policy([])
+
+    def test_lock_retention_policy_no_policy_set(self):
+        credentials = object()
+        connection = _Connection()
+        connection.credentials = credentials
+        client = _Client(connection)
+        name = 'name'
+        bucket = self._make_one(client=client, name=name)
+        bucket._properties['metageneration'] = 1234
+
+        with self.assertRaises(ValueError):
+            bucket.lock_retention_policy()
+
+    def test_lock_retention_policy_no_metageneration(self):
+        credentials = object()
+        connection = _Connection()
+        connection.credentials = credentials
+        client = _Client(connection)
+        name = 'name'
+        bucket = self._make_one(client=client, name=name)
+        bucket._properties['retentionPolicy'] = {
+            'effectiveTime': '2018-03-01T16:46:27.123456Z',
+            'retentionPeriod': 86400 * 100,  # 100 days
+        }
+
+        with self.assertRaises(ValueError):
+            bucket.lock_retention_policy()
+
+    def test_lock_retention_policy_already_locked(self):
+        credentials = object()
+        connection = _Connection()
+        connection.credentials = credentials
+        client = _Client(connection)
+        name = 'name'
+        bucket = self._make_one(client=client, name=name)
+        bucket._properties['metageneration'] = 1234
+        bucket._properties['retentionPolicy'] = {
+            'effectiveTime': '2018-03-01T16:46:27.123456Z',
+            'isLocked': True,
+            'retentionPeriod': 86400 * 100,  # 100 days
+        }
+
+        with self.assertRaises(ValueError):
+            bucket.lock_retention_policy()
+
+    def test_lock_retention_policy_ok(self):
+        name = 'name'
+        response = {
+            'name': name,
+            'metageneration': 1235,
+            'retentionPolicy': {
+                'effectiveTime': '2018-03-01T16:46:27.123456Z',
+                'isLocked': True,
+                'retentionPeriod': 86400 * 100,  # 100 days
+            },
+        }
+        credentials = object()
+        connection = _Connection(response)
+        connection.credentials = credentials
+        client = _Client(connection)
+        bucket = self._make_one(client=client, name=name)
+        bucket._properties['metageneration'] = 1234
+        bucket._properties['retentionPolicy'] = {
+            'effectiveTime': '2018-03-01T16:46:27.123456Z',
+            'retentionPeriod': 86400 * 100,  # 100 days
+        }
+
+        bucket.lock_retention_policy()
+
+        kw, = connection._requested
+        self.assertEqual(kw['method'], 'POST')
+        self.assertEqual(kw['path'], '/b/{}/lockRetentionPolicy'.format(name))
+        self.assertEqual(kw['query_params'], {'ifMetagenerationMatch': 1234})
+
+    def test_lock_retention_policy_w_user_project(self):
+        name = 'name'
+        user_project = 'user-project-123'
+        response = {
+            'name': name,
+            'metageneration': 1235,
+            'retentionPolicy': {
+                'effectiveTime': '2018-03-01T16:46:27.123456Z',
+                'isLocked': True,
+                'retentionPeriod': 86400 * 100,  # 100 days
+            },
+        }
+        credentials = object()
+        connection = _Connection(response)
+        connection.credentials = credentials
+        client = _Client(connection)
+        bucket = self._make_one(
+            client=client, name=name, user_project=user_project)
+        bucket._properties['metageneration'] = 1234
+        bucket._properties['retentionPolicy'] = {
+            'effectiveTime': '2018-03-01T16:46:27.123456Z',
+            'retentionPeriod': 86400 * 100,  # 100 days
+        }
+
+        bucket.lock_retention_policy()
+
+        kw, = connection._requested
+        self.assertEqual(kw['method'], 'POST')
+        self.assertEqual(kw['path'], '/b/{}/lockRetentionPolicy'.format(name))
+        self.assertEqual(
+            kw['query_params'], {
+                'ifMetagenerationMatch': 1234,
+                'userProject': user_project,
+            })
 
 
 class _Connection(object):

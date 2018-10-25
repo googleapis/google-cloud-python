@@ -172,6 +172,20 @@ class Test_ScalarQueryParameter(unittest.TestCase):
         param = klass.positional(type_='FLOAT64', value=12.345)
         self.assertEqual(param.to_api_repr(), EXPECTED)
 
+    def test_to_api_repr_w_numeric(self):
+        EXPECTED = {
+            'parameterType': {
+                'type': 'NUMERIC',
+            },
+            'parameterValue': {
+                'value': '123456789.123456789',
+            },
+        }
+        klass = self._get_target_class()
+        param = klass.positional(type_='NUMERIC',
+                                 value='123456789.123456789')
+        self.assertEqual(param.to_api_repr(), EXPECTED)
+
     def test_to_api_repr_w_bool(self):
         EXPECTED = {
             'parameterType': {
@@ -973,16 +987,16 @@ class Test_StructQueryParameter(unittest.TestCase):
         self.assertIn("'field1': 'hello'", got)
 
 
-class TestQueryResults(unittest.TestCase):
+class Test_QueryResults(unittest.TestCase):
     PROJECT = 'project'
     JOB_ID = 'test-synchronous-query'
     TOKEN = 'TOKEN'
 
     @staticmethod
     def _get_target_class():
-        from google.cloud.bigquery.query import QueryResults
+        from google.cloud.bigquery.query import _QueryResults
 
-        return QueryResults
+        return _QueryResults
 
     def _make_one(self, *args, **kw):
         return self._get_target_class()(*args, **kw)

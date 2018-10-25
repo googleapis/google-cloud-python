@@ -21,7 +21,7 @@ from google.cloud.spanner_v1.proto.transaction_pb2 import TransactionOptions
 from google.cloud._helpers import _pb_timestamp_to_datetime
 from google.cloud.spanner_v1._helpers import _SessionWrapper
 from google.cloud.spanner_v1._helpers import _make_list_value_pbs
-from google.cloud.spanner_v1._helpers import _options_with_prefix
+from google.cloud.spanner_v1._helpers import _metadata_with_prefix
 # pylint: enable=ungrouped-imports
 
 
@@ -116,7 +116,7 @@ class _BatchBase(_SessionWrapper):
         """
         delete = Mutation.Delete(
             table=table,
-            key_set=keyset.to_pb(),
+            key_set=keyset._to_pb(),
         )
         self._mutations.append(Mutation(
             delete=delete))
@@ -148,12 +148,12 @@ class Batch(_BatchBase):
         self._check_state()
         database = self._session._database
         api = database.spanner_api
-        options = _options_with_prefix(database.name)
+        metadata = _metadata_with_prefix(database.name)
         txn_options = TransactionOptions(
             read_write=TransactionOptions.ReadWrite())
         response = api.commit(self._session.name, self._mutations,
                               single_use_transaction=txn_options,
-                              options=options)
+                              metadata=metadata)
         self.committed = _pb_timestamp_to_datetime(
             response.commit_timestamp)
         return self.committed

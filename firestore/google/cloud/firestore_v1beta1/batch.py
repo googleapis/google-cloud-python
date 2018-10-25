@@ -57,10 +57,11 @@ class WriteBatch(object):
             document_data (dict): Property names and values to use for
                 creating a document.
         """
-        option = self._client.write_option(exists=False)
-        self.set(reference, document_data, option=option)
+        write_pbs = _helpers.pbs_for_set(
+            reference._document_path, document_data, merge=False, exists=False)
+        self._add_write_pbs(write_pbs)
 
-    def set(self, reference, document_data, option=None):
+    def set(self, reference, document_data, merge=False):
         """Add a "change" to replace a document.
 
         See
@@ -69,16 +70,16 @@ class WriteBatch(object):
         applied.
 
         Args:
-            reference (~.firestore_v1beta1.document.DocumentReference): A
-               document reference that will have values set in this batch.
-            document_data (dict): Property names and values to use for
-                replacing a document.
-            option (Optional[~.firestore_v1beta1.client.WriteOption]): A
-               write option to make assertions / preconditions on the server
-               state of the document before applying changes.
+            reference (~.firestore_v1beta1.document.DocumentReference):
+                A document reference that will have values set in this batch.
+            document_data (dict):
+                Property names and values to use for replacing a document.
+            merge (Optional[bool]):
+                If True, apply merging instead of overwriting the state
+                of the document.
         """
         write_pbs = _helpers.pbs_for_set(
-            reference._document_path, document_data, option)
+            reference._document_path, document_data, merge=merge)
         self._add_write_pbs(write_pbs)
 
     def update(self, reference, field_updates, option=None):
@@ -129,10 +130,9 @@ class WriteBatch(object):
             changes were applied to this batch. A write result contains an
             ``update_time`` field.
         """
-        with _helpers.remap_gax_error_on_commit():
-            commit_response = self._client._firestore_api.commit(
-                self._client._database_string, self._write_pbs,
-                transaction=None, options=self._client._call_options)
+        commit_response = self._client._firestore_api.commit(
+            self._client._database_string, self._write_pbs,
+            transaction=None, metadata=self._client._rpc_metadata)
 
         self._write_pbs = []
         return list(commit_response.write_results)

@@ -14,6 +14,8 @@
 
 from __future__ import absolute_import
 
+import google.api_core.gapic_v1.method
+
 
 class SpeechHelpers(object):
     """A set of convenience methods to make the Speech client easier to use.
@@ -22,7 +24,10 @@ class SpeechHelpers(object):
     in a multiple-inheritance construction alongside the applicable GAPIC.
     See the :class:`~google.cloud.speech_v1.SpeechClient`.
     """
-    def streaming_recognize(self, config, requests, options=None):
+    def streaming_recognize(
+            self, config, requests,
+            retry=google.api_core.gapic_v1.method.DEFAULT,
+            timeout=google.api_core.gapic_v1.method.DEFAULT):
         """Perform bi-directional speech recognition.
 
         This method allows you to receive results while sending audio;
@@ -50,12 +55,16 @@ class SpeechHelpers(object):
           ...     pass
 
         Args:
-          config (:class:`~.types.StreamingRecognitionConfig`): The
-            configuration to use for the stream.
-          requests (Iterable[:class:`~.types.StreamingRecognizeRequest`]):
-            The input objects.
-          options (:class:`google.gax.CallOptions`): Overrides the default
-            settings for this call, e.g, timeout, retries etc.
+            config (:class:`~.types.StreamingRecognitionConfig`): The
+                configuration to use for the stream.
+            requests (Iterable[:class:`~.types.StreamingRecognizeRequest`]):
+                The input objects.
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will not
+                be retried.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
 
         Returns:
           Iterable[:class:`~.types.StreamingRecognizeResponse`]
@@ -64,9 +73,9 @@ class SpeechHelpers(object):
           :exc:`google.gax.errors.GaxError` if the RPC is aborted.
           :exc:`ValueError` if the parameters are invalid.
         """
-        return self._streaming_recognize(
+        return super(SpeechHelpers, self).streaming_recognize(
             self._streaming_request_iterable(config, requests),
-            options,
+            retry=retry, timeout=timeout
         )
 
     def _streaming_request_iterable(self, config, requests):

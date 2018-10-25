@@ -13,141 +13,216 @@
 # limitations under the License.
 
 from __future__ import absolute_import
-import os
-
-import mock
-
-import pytest
 
 from google.auth import credentials
+
+import mock
+import pytest
+
 from google.cloud.pubsub_v1.gapic import publisher_client
 from google.cloud.pubsub_v1 import publisher
 from google.cloud.pubsub_v1 import types
 
 
 def test_init():
-    client = publisher.Client()
+    creds = mock.Mock(spec=credentials.Credentials)
+    client = publisher.Client(credentials=creds)
 
     # A plain client should have an `api` (the underlying GAPIC) and a
     # batch settings object, which should have the defaults.
     assert isinstance(client.api, publisher_client.PublisherClient)
-    assert client.batch_settings.max_bytes == 5 * (2 ** 20)
+    assert client.batch_settings.max_bytes == 10 * 1000 * 1000
     assert client.batch_settings.max_latency == 0.05
     assert client.batch_settings.max_messages == 1000
 
 
 def test_init_emulator(monkeypatch):
     monkeypatch.setenv('PUBSUB_EMULATOR_HOST', '/foo/bar/')
+    # NOTE: When the emulator host is set, a custom channel will be used, so
+    #       no credentials (mock ot otherwise) can be passed in.
     client = publisher.Client()
 
     # Establish that a gRPC request would attempt to hit the emulator host.
     #
     # Sadly, there seems to be no good way to do this without poking at
     # the private API of gRPC.
-    channel = client.api.publisher_stub.Publish._channel
+    channel = client.api.transport.publish._channel
     assert channel.target().decode('utf8') == '/foo/bar/'
 
 
-def test_batch_accepting():
-    """Establish that an existing batch is returned if it accepts messages."""
-    client = publisher.Client()
-    message = types.PubsubMessage(data=b'foo')
+def test_batch_create():
+    creds = mock.Mock(spec=credentials.Credentials)
+    client = publisher.Client(credentials=creds)
 
-    # At first, there are no batches, so this should return a new batch
-    # which is also saved to the object.
-    ante = len(client._batches)
-    batch = client.batch('topic_name', message, autocommit=False)
-    assert len(client._batches) == ante + 1
-    assert batch is client._batches['topic_name']
+    assert len(client._batches) == 0
+    topic = 'topic/path'
+    batch = client._batch(topic, autocommit=False)
+    assert client._batches == {topic: batch}
+
+
+def test_batch_exists():
+    creds = mock.Mock(spec=credentials.Credentials)
+    client = publisher.Client(credentials=creds)
+
+    topic = 'topic/path'
+    client._batches[topic] = mock.sentinel.batch
 
     # A subsequent request should return the same batch.
-    batch2 = client.batch('topic_name', message, autocommit=False)
-    assert batch is batch2
-    assert batch2 is client._batches['topic_name']
+    batch = client._batch(topic, autocommit=False)
+    assert batch is mock.sentinel.batch
+    assert client._batches == {topic: batch}
 
 
-def test_batch_without_autocreate():
-    client = publisher.Client()
-    message = types.PubsubMessage(data=b'foo')
+def test_batch_create_and_exists():
+    creds = mock.Mock(spec=credentials.Credentials)
+    client = publisher.Client(credentials=creds)
 
-    # If `create=False` is sent, then when the batch is not found, None
-    # is returned instead.
-    ante = len(client._batches)
-    batch = client.batch('topic_name', message, create=False)
-    assert batch is None
-    assert len(client._batches) == ante
+    topic = 'topic/path'
+    client._batches[topic] = mock.sentinel.batch
+
+    # A subsequent request should return the same batch.
+    batch = client._batch(topic, create=True, autocommit=False)
+    assert batch is not mock.sentinel.batch
+    assert client._batches == {topic: batch}
 
 
 def test_publish():
-    client = publisher.Client()
+    creds = mock.Mock(spec=credentials.Credentials)
+    client = publisher.Client(credentials=creds)
 
-    # Use a mock in lieu of the actual batch class; set the mock up to claim
-    # indiscriminately that it accepts all messages.
+    # Use a mock in lieu of the actual batch class.
     batch = mock.Mock(spec=client._batch_class)
+    # Set the mock up to claim indiscriminately that it accepts all messages.
     batch.will_accept.return_value = True
-    client._batches['topic_name'] = batch
+    batch.publish.side_effect = (
+        mock.sentinel.future1,
+        mock.sentinel.future2,
+    )
+
+    topic = 'topic/path'
+    client._batches[topic] = batch
 
     # Begin publishing.
-    client.publish('topic_name', b'spam')
-    client.publish('topic_name', b'foo', bar='baz')
+    future1 = client.publish(topic, b'spam')
+    future2 = client.publish(topic, b'foo', bar='baz')
 
-    # The batch's publish method should have been called twice.
-    assert batch.publish.call_count == 2
+    assert future1 is mock.sentinel.future1
+    assert future2 is mock.sentinel.future2
 
-    # In both cases
-    # The first call should correspond to the first message.
-    _, args, _ = batch.publish.mock_calls[0]
-    assert args[0].data == b'spam'
-    assert not args[0].attributes
-
-    # The second call should correspond to the second message.
-    _, args, _ = batch.publish.mock_calls[1]
-    assert args[0].data == b'foo'
-    assert args[0].attributes == {u'bar': u'baz'}
+    # Check mock.
+    batch.publish.assert_has_calls(
+        [
+            mock.call(types.PubsubMessage(data=b'spam')),
+            mock.call(types.PubsubMessage(
+                data=b'foo',
+                attributes={'bar': 'baz'},
+            )),
+        ],
+    )
 
 
 def test_publish_data_not_bytestring_error():
-    client = publisher.Client()
+    creds = mock.Mock(spec=credentials.Credentials)
+    client = publisher.Client(credentials=creds)
+    topic = 'topic/path'
     with pytest.raises(TypeError):
-        client.publish('topic_name', u'This is a text string.')
+        client.publish(topic, u'This is a text string.')
     with pytest.raises(TypeError):
-        client.publish('topic_name', 42)
+        client.publish(topic, 42)
 
 
 def test_publish_attrs_bytestring():
-    client = publisher.Client()
+    creds = mock.Mock(spec=credentials.Credentials)
+    client = publisher.Client(credentials=creds)
 
-    # Use a mock in lieu of the actual batch class; set the mock up to claim
-    # indiscriminately that it accepts all messages.
+    # Use a mock in lieu of the actual batch class.
     batch = mock.Mock(spec=client._batch_class)
+    # Set the mock up to claim indiscriminately that it accepts all messages.
     batch.will_accept.return_value = True
-    client._batches['topic_name'] = batch
+
+    topic = 'topic/path'
+    client._batches[topic] = batch
 
     # Begin publishing.
-    client.publish('topic_name', b'foo', bar=b'baz')
+    future = client.publish(topic, b'foo', bar=b'baz')
+
+    assert future is batch.publish.return_value
 
     # The attributes should have been sent as text.
-    _, args, _ = batch.publish.mock_calls[0]
-    assert args[0].data == b'foo'
-    assert args[0].attributes == {u'bar': u'baz'}
+    batch.publish.assert_called_once_with(
+        types.PubsubMessage(
+            data=b'foo',
+            attributes={'bar': u'baz'},
+        ),
+    )
+
+
+def test_publish_new_batch_needed():
+    creds = mock.Mock(spec=credentials.Credentials)
+    client = publisher.Client(credentials=creds)
+
+    # Use mocks in lieu of the actual batch class.
+    batch1 = mock.Mock(spec=client._batch_class)
+    batch2 = mock.Mock(spec=client._batch_class)
+    # Set the first mock up to claim indiscriminately that it rejects all
+    # messages and the second accepts all.
+    batch1.publish.return_value = None
+    batch2.publish.return_value = mock.sentinel.future
+
+    topic = 'topic/path'
+    client._batches[topic] = batch1
+
+    # Actually mock the batch class now.
+    batch_class = mock.Mock(spec=(), return_value=batch2)
+    client._batch_class = batch_class
+
+    # Publish a message.
+    future = client.publish(topic, b'foo', bar=b'baz')
+    assert future is mock.sentinel.future
+
+    # Check the mocks.
+    batch_class.assert_called_once_with(
+        autocommit=True,
+        client=client,
+        settings=client.batch_settings,
+        topic=topic,
+    )
+    message_pb = types.PubsubMessage(
+        data=b'foo',
+        attributes={'bar': u'baz'},
+    )
+    batch1.publish.assert_called_once_with(message_pb)
+    batch2.publish.assert_called_once_with(message_pb)
 
 
 def test_publish_attrs_type_error():
-    client = publisher.Client()
+    creds = mock.Mock(spec=credentials.Credentials)
+    client = publisher.Client(credentials=creds)
+    topic = 'topic/path'
     with pytest.raises(TypeError):
-        client.publish('topic_name', b'foo', answer=42)
+        client.publish(topic, b'foo', answer=42)
 
 
 def test_gapic_instance_method():
-    client = publisher.Client()
-    with mock.patch.object(client.api, '_create_topic', autospec=True) as ct:
-        client.create_topic('projects/foo/topics/bar')
-        assert ct.call_count == 1
-        _, args, _ = ct.mock_calls[0]
-        assert args[0] == types.Topic(name='projects/foo/topics/bar')
+    creds = mock.Mock(spec=credentials.Credentials)
+    client = publisher.Client(credentials=creds)
+
+    ct = mock.Mock()
+    client.api._inner_api_calls['create_topic'] = ct
+
+    client.create_topic('projects/foo/topics/bar')
+    assert ct.call_count == 1
+    _, args, _ = ct.mock_calls[0]
+    assert args[0] == types.Topic(name='projects/foo/topics/bar')
 
 
-def test_gapic_class_method():
-    client = publisher.Client()
+def test_gapic_class_method_on_class():
+    answer = publisher.Client.topic_path('foo', 'bar')
+    assert answer == 'projects/foo/topics/bar'
+
+
+def test_gapic_class_method_on_instance():
+    creds = mock.Mock(spec=credentials.Credentials)
+    client = publisher.Client(credentials=creds)
     answer = client.topic_path('foo', 'bar')
     assert answer == 'projects/foo/topics/bar'

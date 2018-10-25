@@ -28,7 +28,7 @@ TIMESTAMP = type_pb2.Type(code=type_pb2.TIMESTAMP)
 
 
 def Array(element_type):  # pylint: disable=invalid-name
-    """Construct an array paramter type description protobuf.
+    """Construct an array parameter type description protobuf.
 
     :type element_type: :class:`type_pb2.Type`
     :param element_type: the type of elements of the array
@@ -55,7 +55,7 @@ def StructField(name, field_type):  # pylint: disable=invalid-name
 
 
 def Struct(fields):  # pylint: disable=invalid-name
-    """Construct a struct paramter type description protobuf.
+    """Construct a struct parameter type description protobuf.
 
     :type fields: list of :class:`type_pb2.StructType.Field`
     :param fields: the fields of the struct

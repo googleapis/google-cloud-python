@@ -14,10 +14,17 @@
 
 """This module is used to configure gcp-devrel-py-tools run-pylint."""
 
+import copy
+
+from gcp_devrel.tools import pylint
+
 # Library configuration
 
 # library_additions = {}
-# library_replacements = {}
+# Ignore generated code
+library_replacements = copy.deepcopy(pylint.DEFAULT_LIBRARY_RC_REPLACEMENTS)
+library_replacements['MASTER']['ignore'].append('gapic')
+library_replacements['MASTER']['ignore'].append('proto')
 
 # Test configuration
 

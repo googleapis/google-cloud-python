@@ -51,21 +51,21 @@ class TestCursor(unittest.TestCase):
         mock_job.error_result = None
         mock_job.state = 'DONE'
         mock_job.result.return_value = mock_job
+        mock_job._query_results = self._mock_results(
+            total_rows=total_rows, schema=schema,
+            num_dml_affected_rows=num_dml_affected_rows)
 
         if num_dml_affected_rows is None:
             mock_job.statement_type = None  # API sends back None for SELECT
         else:
             mock_job.statement_type = 'UPDATE'
 
-        mock_job.query_results.return_value = self._mock_results(
-            total_rows=total_rows, schema=schema,
-            num_dml_affected_rows=num_dml_affected_rows)
         return mock_job
 
     def _mock_results(
             self, total_rows=0, schema=None, num_dml_affected_rows=None):
         from google.cloud.bigquery import query
-        mock_results = mock.create_autospec(query.QueryResults)
+        mock_results = mock.create_autospec(query._QueryResults)
         mock_results.schema = schema
         mock_results.num_dml_affected_rows = num_dml_affected_rows
         mock_results.total_rows = total_rows

@@ -16,6 +16,20 @@
 from functools import total_ordering
 import unittest
 
+import mock
+
+
+def _make_database(name='name'):
+    from google.cloud.spanner_v1.database import Database
+
+    return mock.create_autospec(Database, instance=True)
+
+
+def _make_session():
+    from google.cloud.spanner_v1.database import Session
+
+    return mock.create_autospec(Session, instance=True)
+
 
 class TestAbstractSessionPool(unittest.TestCase):
 
@@ -30,10 +44,17 @@ class TestAbstractSessionPool(unittest.TestCase):
     def test_ctor_defaults(self):
         pool = self._make_one()
         self.assertIsNone(pool._database)
+        self.assertEqual(pool.labels, {})
+
+    def test_ctor_explicit(self):
+        labels = {'foo': 'bar'}
+        pool = self._make_one(labels=labels)
+        self.assertIsNone(pool._database)
+        self.assertEqual(pool.labels, labels)
 
     def test_bind_abstract(self):
         pool = self._make_one()
-        database = _Database('name')
+        database = _make_database('name')
         with self.assertRaises(NotImplementedError):
             pool.bind(database)
 
@@ -52,6 +73,31 @@ class TestAbstractSessionPool(unittest.TestCase):
         pool = self._make_one()
         with self.assertRaises(NotImplementedError):
             pool.clear()
+
+    def test__new_session_wo_labels(self):
+        pool = self._make_one()
+        database = pool._database = _make_database('name')
+        session = _make_session()
+        database.session.return_value = session
+
+        new_session = pool._new_session()
+
+        self.assertIs(new_session, session)
+        database.session.assert_called_once_with()
+
+    def test__new_session_w_labels(self):
+        labels = {'foo': 'bar'}
+        pool = self._make_one(labels=labels)
+        database = pool._database = _make_database('name')
+        session = _make_session()
+        database.session.return_value = session
+
+        new_session = pool._new_session()
+
+        self.assertIs(new_session, session)
+        database.session.assert_called_once_with(
+            labels=labels,
+        )
 
     def test_session_wo_kwargs(self):
         from google.cloud.spanner_v1.pool import SessionCheckout
@@ -90,13 +136,16 @@ class TestFixedSizePool(unittest.TestCase):
         self.assertEqual(pool.size, 10)
         self.assertEqual(pool.default_timeout, 10)
         self.assertTrue(pool._sessions.empty())
+        self.assertEqual(pool.labels, {})
 
     def test_ctor_explicit(self):
-        pool = self._make_one(size=4, default_timeout=30)
+        labels = {'foo': 'bar'}
+        pool = self._make_one(size=4, default_timeout=30, labels=labels)
         self.assertIsNone(pool._database)
         self.assertEqual(pool.size, 4)
         self.assertEqual(pool.default_timeout, 30)
         self.assertTrue(pool._sessions.empty())
+        self.assertEqual(pool.labels, labels)
 
     def test_bind(self):
         pool = self._make_one()
@@ -222,12 +271,15 @@ class TestBurstyPool(unittest.TestCase):
         self.assertIsNone(pool._database)
         self.assertEqual(pool.target_size, 10)
         self.assertTrue(pool._sessions.empty())
+        self.assertEqual(pool.labels, {})
 
     def test_ctor_explicit(self):
-        pool = self._make_one(target_size=4)
+        labels = {'foo': 'bar'}
+        pool = self._make_one(target_size=4, labels=labels)
         self.assertIsNone(pool._database)
         self.assertEqual(pool.target_size, 4)
         self.assertTrue(pool._sessions.empty())
+        self.assertEqual(pool.labels, labels)
 
     def test_get_empty(self):
         pool = self._make_one()
@@ -340,14 +392,18 @@ class TestPingingPool(unittest.TestCase):
         self.assertEqual(pool.default_timeout, 10)
         self.assertEqual(pool._delta.seconds, 3000)
         self.assertTrue(pool._sessions.empty())
+        self.assertEqual(pool.labels, {})
 
     def test_ctor_explicit(self):
-        pool = self._make_one(size=4, default_timeout=30, ping_interval=1800)
+        labels = {'foo': 'bar'}
+        pool = self._make_one(
+            size=4, default_timeout=30, ping_interval=1800, labels=labels)
         self.assertIsNone(pool._database)
         self.assertEqual(pool.size, 4)
         self.assertEqual(pool.default_timeout, 30)
         self.assertEqual(pool._delta.seconds, 1800)
         self.assertTrue(pool._sessions.empty())
+        self.assertEqual(pool.labels, labels)
 
     def test_bind(self):
         pool = self._make_one()
@@ -567,15 +623,19 @@ class TestTransactionPingingPool(unittest.TestCase):
         self.assertEqual(pool._delta.seconds, 3000)
         self.assertTrue(pool._sessions.empty())
         self.assertTrue(pool._pending_sessions.empty())
+        self.assertEqual(pool.labels, {})
 
     def test_ctor_explicit(self):
-        pool = self._make_one(size=4, default_timeout=30, ping_interval=1800)
+        labels = {'foo': 'bar'}
+        pool = self._make_one(
+            size=4, default_timeout=30, ping_interval=1800, labels=labels)
         self.assertIsNone(pool._database)
         self.assertEqual(pool.size, 4)
         self.assertEqual(pool.default_timeout, 30)
         self.assertEqual(pool._delta.seconds, 1800)
         self.assertTrue(pool._sessions.empty())
         self.assertTrue(pool._pending_sessions.empty())
+        self.assertEqual(pool.labels, labels)
 
     def test_bind(self):
         pool = self._make_one()

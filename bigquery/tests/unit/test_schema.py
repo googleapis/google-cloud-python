@@ -64,9 +64,10 @@ class TestSchemaField(unittest.TestCase):
     def test_to_api_repr(self):
         field = self._make_one('foo', 'INTEGER', 'NULLABLE')
         self.assertEqual(field.to_api_repr(), {
-            'mode': 'nullable',
+            'mode': 'NULLABLE',
             'name': 'foo',
-            'type': 'integer',
+            'type': 'INTEGER',
+            'description': None,
         })
 
     def test_to_api_repr_with_subfield(self):
@@ -74,13 +75,15 @@ class TestSchemaField(unittest.TestCase):
         field = self._make_one('foo', 'RECORD', 'REQUIRED', fields=(subfield,))
         self.assertEqual(field.to_api_repr(), {
             'fields': [{
-                'mode': 'nullable',
+                'mode': 'NULLABLE',
                 'name': 'bar',
-                'type': 'integer',
+                'type': 'INTEGER',
+                'description': None,
             }],
-            'mode': 'required',
+            'mode': 'REQUIRED',
             'name': 'foo',
-            'type': 'record',
+            'type': 'RECORD',
+            'description': None,
         })
 
     def test_from_api_repr(self):
@@ -91,16 +94,29 @@ class TestSchemaField(unittest.TestCase):
                 'type': 'integer',
             }],
             'mode': 'required',
+            'description': 'test_description',
             'name': 'foo',
             'type': 'record',
         })
         self.assertEqual(field.name, 'foo')
         self.assertEqual(field.field_type, 'RECORD')
         self.assertEqual(field.mode, 'REQUIRED')
+        self.assertEqual(field.description, 'test_description')
         self.assertEqual(len(field.fields), 1)
         self.assertEqual(field.fields[0].name, 'bar')
         self.assertEqual(field.fields[0].field_type, 'INTEGER')
         self.assertEqual(field.fields[0].mode, 'NULLABLE')
+
+    def test_from_api_repr_defaults(self):
+        field = self._get_target_class().from_api_repr({
+            'name': 'foo',
+            'type': 'record',
+        })
+        self.assertEqual(field.name, 'foo')
+        self.assertEqual(field.field_type, 'RECORD')
+        self.assertEqual(field.mode, 'NULLABLE')
+        self.assertEqual(field.description, None)
+        self.assertEqual(len(field.fields), 0)
 
     def test_name_property(self):
         name = 'lemon-ness'
@@ -234,7 +250,7 @@ class TestSchemaField(unittest.TestCase):
 
     def test___repr__(self):
         field1 = self._make_one('field1', 'STRING')
-        expected = "SchemaField('field1', 'string', 'NULLABLE', None, ())"
+        expected = "SchemaField('field1', 'STRING', 'NULLABLE', None, ())"
         self.assertEqual(repr(field1), expected)
 
 
@@ -316,11 +332,13 @@ class Test_build_schema_resource(unittest.TestCase, _SchemaBase):
         self.assertEqual(resource[0],
                          {'name': 'full_name',
                           'type': 'STRING',
-                          'mode': 'REQUIRED'})
+                          'mode': 'REQUIRED',
+                          'description': None})
         self.assertEqual(resource[1],
                          {'name': 'age',
                           'type': 'INTEGER',
-                          'mode': 'REQUIRED'})
+                          'mode': 'REQUIRED',
+                          'description': None})
 
     def test_w_description(self):
         from google.cloud.bigquery.schema import SchemaField
@@ -339,7 +357,8 @@ class Test_build_schema_resource(unittest.TestCase, _SchemaBase):
         self.assertEqual(resource[1],
                          {'name': 'age',
                           'type': 'INTEGER',
-                          'mode': 'REQUIRED'})
+                          'mode': 'REQUIRED',
+                          'description': None})
 
     def test_w_subfields(self):
         from google.cloud.bigquery.schema import SchemaField
@@ -354,14 +373,18 @@ class Test_build_schema_resource(unittest.TestCase, _SchemaBase):
         self.assertEqual(resource[0],
                          {'name': 'full_name',
                           'type': 'STRING',
-                          'mode': 'REQUIRED'})
+                          'mode': 'REQUIRED',
+                          'description': None})
         self.assertEqual(resource[1],
                          {'name': 'phone',
                           'type': 'RECORD',
                           'mode': 'REPEATED',
+                          'description': None,
                           'fields': [{'name': 'type',
                                       'type': 'STRING',
-                                      'mode': 'REQUIRED'},
+                                      'mode': 'REQUIRED',
+                                      'description': None},
                                      {'name': 'number',
                                       'type': 'STRING',
-                                      'mode': 'REQUIRED'}]})
+                                      'mode': 'REQUIRED',
+                                      'description': None}]})

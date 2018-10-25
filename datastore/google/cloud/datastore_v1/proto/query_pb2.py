@@ -23,7 +23,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='google/cloud/datastore_v1/proto/query.proto',
   package='google.datastore.v1',
   syntax='proto3',
-  serialized_pb=_b('\n+google/cloud/datastore_v1/proto/query.proto\x12\x13google.datastore.v1\x1a\x1cgoogle/api/annotations.proto\x1a,google/cloud/datastore_v1/proto/entity.proto\x1a\x1egoogle/protobuf/wrappers.proto\x1a\x18google/type/latlng.proto\"\xaf\x01\n\x0c\x45ntityResult\x12+\n\x06\x65ntity\x18\x01 \x01(\x0b\x32\x1b.google.datastore.v1.Entity\x12\x0f\n\x07version\x18\x04 \x01(\x03\x12\x0e\n\x06\x63ursor\x18\x03 \x01(\x0c\"Q\n\nResultType\x12\x1b\n\x17RESULT_TYPE_UNSPECIFIED\x10\x00\x12\x08\n\x04\x46ULL\x10\x01\x12\x0e\n\nPROJECTION\x10\x02\x12\x0c\n\x08KEY_ONLY\x10\x03\"\xf2\x02\n\x05Query\x12\x33\n\nprojection\x18\x02 \x03(\x0b\x32\x1f.google.datastore.v1.Projection\x12\x31\n\x04kind\x18\x03 \x03(\x0b\x32#.google.datastore.v1.KindExpression\x12+\n\x06\x66ilter\x18\x04 \x01(\x0b\x32\x1b.google.datastore.v1.Filter\x12\x31\n\x05order\x18\x05 \x03(\x0b\x32\".google.datastore.v1.PropertyOrder\x12;\n\x0b\x64istinct_on\x18\x06 \x03(\x0b\x32&.google.datastore.v1.PropertyReference\x12\x14\n\x0cstart_cursor\x18\x07 \x01(\x0c\x12\x12\n\nend_cursor\x18\x08 \x01(\x0c\x12\x0e\n\x06offset\x18\n \x01(\x05\x12*\n\x05limit\x18\x0c \x01(\x0b\x32\x1b.google.protobuf.Int32Value\"\x1e\n\x0eKindExpression\x12\x0c\n\x04name\x18\x01 \x01(\t\"!\n\x11PropertyReference\x12\x0c\n\x04name\x18\x02 \x01(\t\"F\n\nProjection\x12\x38\n\x08property\x18\x01 \x01(\x0b\x32&.google.datastore.v1.PropertyReference\"\xd1\x01\n\rPropertyOrder\x12\x38\n\x08property\x18\x01 \x01(\x0b\x32&.google.datastore.v1.PropertyReference\x12?\n\tdirection\x18\x02 \x01(\x0e\x32,.google.datastore.v1.PropertyOrder.Direction\"E\n\tDirection\x12\x19\n\x15\x44IRECTION_UNSPECIFIED\x10\x00\x12\r\n\tASCENDING\x10\x01\x12\x0e\n\nDESCENDING\x10\x02\"\x99\x01\n\x06\x46ilter\x12@\n\x10\x63omposite_filter\x18\x01 \x01(\x0b\x32$.google.datastore.v1.CompositeFilterH\x00\x12>\n\x0fproperty_filter\x18\x02 \x01(\x0b\x32#.google.datastore.v1.PropertyFilterH\x00\x42\r\n\x0b\x66ilter_type\"\xa9\x01\n\x0f\x43ompositeFilter\x12\x39\n\x02op\x18\x01 \x01(\x0e\x32-.google.datastore.v1.CompositeFilter.Operator\x12,\n\x07\x66ilters\x18\x02 \x03(\x0b\x32\x1b.google.datastore.v1.Filter\"-\n\x08Operator\x12\x18\n\x14OPERATOR_UNSPECIFIED\x10\x00\x12\x07\n\x03\x41ND\x10\x01\"\xc7\x02\n\x0ePropertyFilter\x12\x38\n\x08property\x18\x01 \x01(\x0b\x32&.google.datastore.v1.PropertyReference\x12\x38\n\x02op\x18\x02 \x01(\x0e\x32,.google.datastore.v1.PropertyFilter.Operator\x12)\n\x05value\x18\x03 \x01(\x0b\x32\x1a.google.datastore.v1.Value\"\x95\x01\n\x08Operator\x12\x18\n\x14OPERATOR_UNSPECIFIED\x10\x00\x12\r\n\tLESS_THAN\x10\x01\x12\x16\n\x12LESS_THAN_OR_EQUAL\x10\x02\x12\x10\n\x0cGREATER_THAN\x10\x03\x12\x19\n\x15GREATER_THAN_OR_EQUAL\x10\x04\x12\t\n\x05\x45QUAL\x10\x05\x12\x10\n\x0cHAS_ANCESTOR\x10\x0b\"\xa5\x02\n\x08GqlQuery\x12\x14\n\x0cquery_string\x18\x01 \x01(\t\x12\x16\n\x0e\x61llow_literals\x18\x02 \x01(\x08\x12H\n\x0enamed_bindings\x18\x05 \x03(\x0b\x32\x30.google.datastore.v1.GqlQuery.NamedBindingsEntry\x12\x43\n\x13positional_bindings\x18\x04 \x03(\x0b\x32&.google.datastore.v1.GqlQueryParameter\x1a\\\n\x12NamedBindingsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\x35\n\x05value\x18\x02 \x01(\x0b\x32&.google.datastore.v1.GqlQueryParameter:\x02\x38\x01\"d\n\x11GqlQueryParameter\x12+\n\x05value\x18\x02 \x01(\x0b\x32\x1a.google.datastore.v1.ValueH\x00\x12\x10\n\x06\x63ursor\x18\x03 \x01(\x0cH\x00\x42\x10\n\x0eparameter_type\"\xde\x03\n\x10QueryResultBatch\x12\x17\n\x0fskipped_results\x18\x06 \x01(\x05\x12\x16\n\x0eskipped_cursor\x18\x03 \x01(\x0c\x12H\n\x12\x65ntity_result_type\x18\x01 \x01(\x0e\x32,.google.datastore.v1.EntityResult.ResultType\x12\x39\n\x0e\x65ntity_results\x18\x02 \x03(\x0b\x32!.google.datastore.v1.EntityResult\x12\x12\n\nend_cursor\x18\x04 \x01(\x0c\x12K\n\x0cmore_results\x18\x05 \x01(\x0e\x32\x35.google.datastore.v1.QueryResultBatch.MoreResultsType\x12\x18\n\x10snapshot_version\x18\x07 \x01(\x03\"\x98\x01\n\x0fMoreResultsType\x12!\n\x1dMORE_RESULTS_TYPE_UNSPECIFIED\x10\x00\x12\x10\n\x0cNOT_FINISHED\x10\x01\x12\x1c\n\x18MORE_RESULTS_AFTER_LIMIT\x10\x02\x12\x1d\n\x19MORE_RESULTS_AFTER_CURSOR\x10\x04\x12\x13\n\x0fNO_MORE_RESULTS\x10\x03\x42\x81\x01\n\x17\x63om.google.datastore.v1B\nQueryProtoP\x01Z<google.golang.org/genproto/googleapis/datastore/v1;datastore\xaa\x02\x19Google.Cloud.Datastore.V1b\x06proto3')
+  serialized_pb=_b('\n+google/cloud/datastore_v1/proto/query.proto\x12\x13google.datastore.v1\x1a\x1cgoogle/api/annotations.proto\x1a,google/cloud/datastore_v1/proto/entity.proto\x1a\x1egoogle/protobuf/wrappers.proto\x1a\x18google/type/latlng.proto\"\xaf\x01\n\x0c\x45ntityResult\x12+\n\x06\x65ntity\x18\x01 \x01(\x0b\x32\x1b.google.datastore.v1.Entity\x12\x0f\n\x07version\x18\x04 \x01(\x03\x12\x0e\n\x06\x63ursor\x18\x03 \x01(\x0c\"Q\n\nResultType\x12\x1b\n\x17RESULT_TYPE_UNSPECIFIED\x10\x00\x12\x08\n\x04\x46ULL\x10\x01\x12\x0e\n\nPROJECTION\x10\x02\x12\x0c\n\x08KEY_ONLY\x10\x03\"\xf2\x02\n\x05Query\x12\x33\n\nprojection\x18\x02 \x03(\x0b\x32\x1f.google.datastore.v1.Projection\x12\x31\n\x04kind\x18\x03 \x03(\x0b\x32#.google.datastore.v1.KindExpression\x12+\n\x06\x66ilter\x18\x04 \x01(\x0b\x32\x1b.google.datastore.v1.Filter\x12\x31\n\x05order\x18\x05 \x03(\x0b\x32\".google.datastore.v1.PropertyOrder\x12;\n\x0b\x64istinct_on\x18\x06 \x03(\x0b\x32&.google.datastore.v1.PropertyReference\x12\x14\n\x0cstart_cursor\x18\x07 \x01(\x0c\x12\x12\n\nend_cursor\x18\x08 \x01(\x0c\x12\x0e\n\x06offset\x18\n \x01(\x05\x12*\n\x05limit\x18\x0c \x01(\x0b\x32\x1b.google.protobuf.Int32Value\"\x1e\n\x0eKindExpression\x12\x0c\n\x04name\x18\x01 \x01(\t\"!\n\x11PropertyReference\x12\x0c\n\x04name\x18\x02 \x01(\t\"F\n\nProjection\x12\x38\n\x08property\x18\x01 \x01(\x0b\x32&.google.datastore.v1.PropertyReference\"\xd1\x01\n\rPropertyOrder\x12\x38\n\x08property\x18\x01 \x01(\x0b\x32&.google.datastore.v1.PropertyReference\x12?\n\tdirection\x18\x02 \x01(\x0e\x32,.google.datastore.v1.PropertyOrder.Direction\"E\n\tDirection\x12\x19\n\x15\x44IRECTION_UNSPECIFIED\x10\x00\x12\r\n\tASCENDING\x10\x01\x12\x0e\n\nDESCENDING\x10\x02\"\x99\x01\n\x06\x46ilter\x12@\n\x10\x63omposite_filter\x18\x01 \x01(\x0b\x32$.google.datastore.v1.CompositeFilterH\x00\x12>\n\x0fproperty_filter\x18\x02 \x01(\x0b\x32#.google.datastore.v1.PropertyFilterH\x00\x42\r\n\x0b\x66ilter_type\"\xa9\x01\n\x0f\x43ompositeFilter\x12\x39\n\x02op\x18\x01 \x01(\x0e\x32-.google.datastore.v1.CompositeFilter.Operator\x12,\n\x07\x66ilters\x18\x02 \x03(\x0b\x32\x1b.google.datastore.v1.Filter\"-\n\x08Operator\x12\x18\n\x14OPERATOR_UNSPECIFIED\x10\x00\x12\x07\n\x03\x41ND\x10\x01\"\xc7\x02\n\x0ePropertyFilter\x12\x38\n\x08property\x18\x01 \x01(\x0b\x32&.google.datastore.v1.PropertyReference\x12\x38\n\x02op\x18\x02 \x01(\x0e\x32,.google.datastore.v1.PropertyFilter.Operator\x12)\n\x05value\x18\x03 \x01(\x0b\x32\x1a.google.datastore.v1.Value\"\x95\x01\n\x08Operator\x12\x18\n\x14OPERATOR_UNSPECIFIED\x10\x00\x12\r\n\tLESS_THAN\x10\x01\x12\x16\n\x12LESS_THAN_OR_EQUAL\x10\x02\x12\x10\n\x0cGREATER_THAN\x10\x03\x12\x19\n\x15GREATER_THAN_OR_EQUAL\x10\x04\x12\t\n\x05\x45QUAL\x10\x05\x12\x10\n\x0cHAS_ANCESTOR\x10\x0b\"\xa5\x02\n\x08GqlQuery\x12\x14\n\x0cquery_string\x18\x01 \x01(\t\x12\x16\n\x0e\x61llow_literals\x18\x02 \x01(\x08\x12H\n\x0enamed_bindings\x18\x05 \x03(\x0b\x32\x30.google.datastore.v1.GqlQuery.NamedBindingsEntry\x12\x43\n\x13positional_bindings\x18\x04 \x03(\x0b\x32&.google.datastore.v1.GqlQueryParameter\x1a\\\n\x12NamedBindingsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\x35\n\x05value\x18\x02 \x01(\x0b\x32&.google.datastore.v1.GqlQueryParameter:\x02\x38\x01\"d\n\x11GqlQueryParameter\x12+\n\x05value\x18\x02 \x01(\x0b\x32\x1a.google.datastore.v1.ValueH\x00\x12\x10\n\x06\x63ursor\x18\x03 \x01(\x0cH\x00\x42\x10\n\x0eparameter_type\"\xde\x03\n\x10QueryResultBatch\x12\x17\n\x0fskipped_results\x18\x06 \x01(\x05\x12\x16\n\x0eskipped_cursor\x18\x03 \x01(\x0c\x12H\n\x12\x65ntity_result_type\x18\x01 \x01(\x0e\x32,.google.datastore.v1.EntityResult.ResultType\x12\x39\n\x0e\x65ntity_results\x18\x02 \x03(\x0b\x32!.google.datastore.v1.EntityResult\x12\x12\n\nend_cursor\x18\x04 \x01(\x0c\x12K\n\x0cmore_results\x18\x05 \x01(\x0e\x32\x35.google.datastore.v1.QueryResultBatch.MoreResultsType\x12\x18\n\x10snapshot_version\x18\x07 \x01(\x03\"\x98\x01\n\x0fMoreResultsType\x12!\n\x1dMORE_RESULTS_TYPE_UNSPECIFIED\x10\x00\x12\x10\n\x0cNOT_FINISHED\x10\x01\x12\x1c\n\x18MORE_RESULTS_AFTER_LIMIT\x10\x02\x12\x1d\n\x19MORE_RESULTS_AFTER_CURSOR\x10\x04\x12\x13\n\x0fNO_MORE_RESULTS\x10\x03\x42\x9d\x01\n\x17\x63om.google.datastore.v1B\nQueryProtoP\x01Z<google.golang.org/genproto/googleapis/datastore/v1;datastore\xaa\x02\x19Google.Cloud.Datastore.V1\xca\x02\x19Google\\Cloud\\Datastore\\V1b\x06proto3')
   ,
   dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR,google_dot_cloud_dot_datastore__v1_dot_proto_dot_entity__pb2.DESCRIPTOR,google_dot_protobuf_dot_wrappers__pb2.DESCRIPTOR,google_dot_type_dot_latlng__pb2.DESCRIPTOR,])
 
@@ -197,21 +197,21 @@ _ENTITYRESULT = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='version', full_name='google.datastore.v1.EntityResult.version', index=1,
       number=4, type=3, cpp_type=2, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='cursor', full_name='google.datastore.v1.EntityResult.cursor', index=2,
       number=3, type=12, cpp_type=9, label=1,
       has_default_value=False, default_value=_b(""),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -243,63 +243,63 @@ _QUERY = _descriptor.Descriptor(
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='kind', full_name='google.datastore.v1.Query.kind', index=1,
       number=3, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='filter', full_name='google.datastore.v1.Query.filter', index=2,
       number=4, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='order', full_name='google.datastore.v1.Query.order', index=3,
       number=5, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='distinct_on', full_name='google.datastore.v1.Query.distinct_on', index=4,
       number=6, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='start_cursor', full_name='google.datastore.v1.Query.start_cursor', index=5,
       number=7, type=12, cpp_type=9, label=1,
       has_default_value=False, default_value=_b(""),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='end_cursor', full_name='google.datastore.v1.Query.end_cursor', index=6,
       number=8, type=12, cpp_type=9, label=1,
       has_default_value=False, default_value=_b(""),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='offset', full_name='google.datastore.v1.Query.offset', index=7,
       number=10, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='limit', full_name='google.datastore.v1.Query.limit', index=8,
       number=12, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -330,7 +330,7 @@ _KINDEXPRESSION = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -361,7 +361,7 @@ _PROPERTYREFERENCE = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -392,7 +392,7 @@ _PROJECTION = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -423,14 +423,14 @@ _PROPERTYORDER = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='direction', full_name='google.datastore.v1.PropertyOrder.direction', index=1,
       number=2, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -462,14 +462,14 @@ _FILTER = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='property_filter', full_name='google.datastore.v1.Filter.property_filter', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -503,14 +503,14 @@ _COMPOSITEFILTER = _descriptor.Descriptor(
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='filters', full_name='google.datastore.v1.CompositeFilter.filters', index=1,
       number=2, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -542,21 +542,21 @@ _PROPERTYFILTER = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='op', full_name='google.datastore.v1.PropertyFilter.op', index=1,
       number=2, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='value', full_name='google.datastore.v1.PropertyFilter.value', index=2,
       number=3, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -588,14 +588,14 @@ _GQLQUERY_NAMEDBINDINGSENTRY = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='value', full_name='google.datastore.v1.GqlQuery.NamedBindingsEntry.value', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -625,28 +625,28 @@ _GQLQUERY = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='allow_literals', full_name='google.datastore.v1.GqlQuery.allow_literals', index=1,
       number=2, type=8, cpp_type=7, label=1,
       has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='named_bindings', full_name='google.datastore.v1.GqlQuery.named_bindings', index=2,
       number=5, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='positional_bindings', full_name='google.datastore.v1.GqlQuery.positional_bindings', index=3,
       number=4, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -677,14 +677,14 @@ _GQLQUERYPARAMETER = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='cursor', full_name='google.datastore.v1.GqlQueryParameter.cursor', index=1,
       number=3, type=12, cpp_type=9, label=1,
       has_default_value=False, default_value=_b(""),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -718,49 +718,49 @@ _QUERYRESULTBATCH = _descriptor.Descriptor(
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='skipped_cursor', full_name='google.datastore.v1.QueryResultBatch.skipped_cursor', index=1,
       number=3, type=12, cpp_type=9, label=1,
       has_default_value=False, default_value=_b(""),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='entity_result_type', full_name='google.datastore.v1.QueryResultBatch.entity_result_type', index=2,
       number=1, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='entity_results', full_name='google.datastore.v1.QueryResultBatch.entity_results', index=3,
       number=2, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='end_cursor', full_name='google.datastore.v1.QueryResultBatch.end_cursor', index=4,
       number=4, type=12, cpp_type=9, label=1,
       has_default_value=False, default_value=_b(""),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='more_results', full_name='google.datastore.v1.QueryResultBatch.more_results', index=5,
       number=5, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='snapshot_version', full_name='google.datastore.v1.QueryResultBatch.snapshot_version', index=6,
       number=7, type=3, cpp_type=2, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -847,9 +847,9 @@ EntityResult = _reflection.GeneratedProtocolMessageType('EntityResult', (_messag
       version:
           The version of the entity, a strictly positive number that
           monotonically increases with changes to the entity.  This
-          field is set for [``FULL``\
-          ][google.datastore.v1.EntityResult.ResultType.FULL] entity
-          results.  For
+          field is set for
+          [``FULL``][google.datastore.v1.EntityResult.ResultType.FULL]
+          entity results.  For
           [missing][google.datastore.v1.LookupResponse.missing] entities
           in ``LookupResponse``, this is the version of the snapshot
           that was used to look up the entity, and it is always set
@@ -1129,17 +1129,7 @@ _sym_db.RegisterMessage(QueryResultBatch)
 
 
 DESCRIPTOR.has_options = True
-DESCRIPTOR._options = _descriptor._ParseOptions(descriptor_pb2.FileOptions(), _b('\n\027com.google.datastore.v1B\nQueryProtoP\001Z<google.golang.org/genproto/googleapis/datastore/v1;datastore\252\002\031Google.Cloud.Datastore.V1'))
+DESCRIPTOR._options = _descriptor._ParseOptions(descriptor_pb2.FileOptions(), _b('\n\027com.google.datastore.v1B\nQueryProtoP\001Z<google.golang.org/genproto/googleapis/datastore/v1;datastore\252\002\031Google.Cloud.Datastore.V1\312\002\031Google\\Cloud\\Datastore\\V1'))
 _GQLQUERY_NAMEDBINDINGSENTRY.has_options = True
 _GQLQUERY_NAMEDBINDINGSENTRY._options = _descriptor._ParseOptions(descriptor_pb2.MessageOptions(), _b('8\001'))
-try:
-  # THESE ELEMENTS WILL BE DEPRECATED.
-  # Please use the generated *_pb2_grpc.py files instead.
-  import grpc
-  from grpc.beta import implementations as beta_implementations
-  from grpc.beta import interfaces as beta_interfaces
-  from grpc.framework.common import cardinality
-  from grpc.framework.interfaces.face import utilities as face_utilities
-except ImportError:
-  pass
 # @@protoc_insertion_point(module_scope)

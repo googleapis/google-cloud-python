@@ -3,11 +3,12 @@ config = {
         "google.pubsub.v1.Subscriber": {
             "retry_codes": {
                 "idempotent": ["DEADLINE_EXCEEDED", "UNAVAILABLE"],
-                "non_idempotent": [],
                 "pull": [
-                    "CANCELLED", "DEADLINE_EXCEEDED", "INTERNAL",
-                    "RESOURCE_EXHAUSTED", "UNAVAILABLE"
-                ]
+                    "DEADLINE_EXCEEDED", "INTERNAL", "RESOURCE_EXHAUSTED",
+                    "UNAVAILABLE"
+                ],
+                "http_get": ["DEADLINE_EXCEEDED", "UNAVAILABLE"],
+                "non_idempotent": []
             },
             "retry_params": {
                 "default": {
@@ -71,7 +72,7 @@ config = {
                 },
                 "Acknowledge": {
                     "timeout_millis": 60000,
-                    "retry_codes_name": "non_idempotent",
+                    "retry_codes_name": "idempotent",
                     "retry_params_name": "messaging"
                 },
                 "Pull": {
@@ -80,7 +81,7 @@ config = {
                     "retry_params_name": "messaging"
                 },
                 "StreamingPull": {
-                    "timeout_millis": 60000,
+                    "timeout_millis": 900000,
                     "retry_codes_name": "pull",
                     "retry_params_name": "streaming_messaging"
                 },

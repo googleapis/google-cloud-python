@@ -16,22 +16,42 @@ import base64
 import concurrent.futures
 import csv
 import datetime
+import decimal
 import json
 import operator
 import os
 import time
 import unittest
 import uuid
+import re
 
 import six
+import pytest
+try:
+    import pandas
+except ImportError:  # pragma: NO COVER
+    pandas = None
+try:
+    import IPython
+    from IPython.utils import io
+    from IPython.testing import tools
+    from IPython.terminal import interactiveshell
+except ImportError:  # pragma: NO COVER
+    IPython = None
 
 from google.api_core.exceptions import PreconditionFailed
+from google.api_core.exceptions import BadRequest
+from google.api_core.exceptions import Conflict
+from google.api_core.exceptions import Forbidden
+from google.api_core.exceptions import NotFound
+from google.api_core.exceptions import TooManyRequests
 from google.cloud import bigquery
-from google.cloud.bigquery.dataset import Dataset, DatasetReference
+from google.cloud.bigquery.dataset import Dataset
+from google.cloud.bigquery.dataset import DatasetReference
 from google.cloud.bigquery.table import Table
 from google.cloud._helpers import UTC
 from google.cloud.bigquery import dbapi
-from google.cloud.exceptions import Forbidden, NotFound
+from google.cloud import storage
 
 from test_utils.retry import RetryErrors
 from test_utils.retry import RetryInstanceState
@@ -53,6 +73,19 @@ HEADER_ROW = ('Full Name', 'Age')
 SCHEMA = [
     bigquery.SchemaField('full_name', 'STRING', mode='REQUIRED'),
     bigquery.SchemaField('age', 'INTEGER', mode='REQUIRED'),
+]
+TIME_PARTITIONING_CLUSTERING_FIELDS_SCHEMA = [
+    bigquery.SchemaField('transaction_time', 'TIMESTAMP', mode='REQUIRED'),
+    bigquery.SchemaField('transaction_id', 'INTEGER', mode='REQUIRED'),
+    bigquery.SchemaField('user_email', 'STRING', mode='REQUIRED'),
+    bigquery.SchemaField('store_code', 'STRING', mode='REQUIRED'),
+    bigquery.SchemaField(
+        'items', 'RECORD', mode='REPEATED', fields=[
+            bigquery.SchemaField('item_code', 'STRING', mode='REQUIRED'),
+            bigquery.SchemaField('quantity', 'INTEGER', mode='REQUIRED'),
+            bigquery.SchemaField('comments', 'STRING', mode='NULLABLE'),
+            bigquery.SchemaField('expiration_date', 'DATE', mode='REQUIRED'),
+        ]),
 ]
 
 
@@ -107,25 +140,31 @@ class TestBigQuery(unittest.TestCase):
         self.to_delete = []
 
     def tearDown(self):
-        from google.cloud.storage import Bucket
-        from google.cloud.exceptions import BadRequest
-        from google.cloud.exceptions import Conflict
 
         def _still_in_use(bad_request):
             return any(error['reason'] == 'resourceInUse'
                        for error in bad_request._errors)
 
         retry_in_use = RetryErrors(BadRequest, error_predicate=_still_in_use)
-        retry_409 = RetryErrors(Conflict)
+        retry_409_429 = RetryErrors((Conflict, TooManyRequests))
         for doomed in self.to_delete:
-            if isinstance(doomed, Bucket):
-                retry_409(doomed.delete)(force=True)
-            elif isinstance(doomed, Dataset):
-                retry_in_use(Config.CLIENT.delete_dataset)(doomed)
-            elif isinstance(doomed, Table):
+            if isinstance(doomed, storage.Bucket):
+                retry_409_429(doomed.delete)(force=True)
+            elif isinstance(doomed, (Dataset, bigquery.DatasetReference)):
+                retry_in_use(Config.CLIENT.delete_dataset)(
+                    doomed, delete_contents=True)
+            elif isinstance(doomed, (Table, bigquery.TableReference)):
                 retry_in_use(Config.CLIENT.delete_table)(doomed)
             else:
                 doomed.delete()
+
+    def test_get_service_account_email(self):
+        client = Config.CLIENT
+
+        got = client.get_service_account_email()
+
+        self.assertIsInstance(got, six.text_type)
+        self.assertIn('@', got)
 
     def test_create_dataset(self):
         DATASET_ID = _make_dataset_id('create_dataset')
@@ -136,17 +175,27 @@ class TestBigQuery(unittest.TestCase):
         self.assertEqual(dataset.project, Config.CLIENT.project)
 
     def test_get_dataset(self):
-        DATASET_ID = _make_dataset_id('get_dataset')
+        dataset_id = _make_dataset_id('get_dataset')
         client = Config.CLIENT
-        dataset_arg = Dataset(client.dataset(DATASET_ID))
+        dataset_arg = Dataset(client.dataset(dataset_id))
         dataset_arg.friendly_name = 'Friendly'
         dataset_arg.description = 'Description'
         dataset = retry_403(client.create_dataset)(dataset_arg)
         self.to_delete.append(dataset)
-        dataset_ref = client.dataset(DATASET_ID)
+        dataset_ref = client.dataset(dataset_id)
 
+        # Get with a reference.
         got = client.get_dataset(dataset_ref)
+        self.assertEqual(got.friendly_name, 'Friendly')
+        self.assertEqual(got.description, 'Description')
 
+        # Get with a string.
+        got = client.get_dataset(dataset_id)
+        self.assertEqual(got.friendly_name, 'Friendly')
+        self.assertEqual(got.description, 'Description')
+
+        # Get with a fully-qualified string.
+        got = client.get_dataset('{}.{}'.format(client.project, dataset_id))
         self.assertEqual(got.friendly_name, 'Friendly')
         self.assertEqual(got.description, 'Description')
 
@@ -155,7 +204,7 @@ class TestBigQuery(unittest.TestCase):
         self.assertTrue(_dataset_exists(dataset))
         self.assertIsNone(dataset.friendly_name)
         self.assertIsNone(dataset.description)
-        self.assertEquals(dataset.labels, {})
+        self.assertEqual(dataset.labels, {})
 
         dataset.friendly_name = 'Friendly'
         dataset.description = 'Description'
@@ -199,6 +248,12 @@ class TestBigQuery(unittest.TestCase):
                    dataset.project == Config.CLIENT.project]
         self.assertEqual(len(created), len(datasets_to_create))
 
+    def test_list_datasets_w_project(self):
+        # Retrieve datasets from a different project.
+        iterator = Config.CLIENT.list_datasets(project='bigquery-public-data')
+        all_datasets = frozenset([dataset.dataset_id for dataset in iterator])
+        self.assertIn('usa_names', all_datasets)
+
     def test_create_table(self):
         dataset = self.temp_dataset(_make_dataset_id('create_table'))
         table_id = 'test_table'
@@ -211,26 +266,96 @@ class TestBigQuery(unittest.TestCase):
         self.assertTrue(_table_exists(table))
         self.assertEqual(table.table_id, table_id)
 
+    def test_create_table_w_time_partitioning_w_clustering_fields(self):
+        from google.cloud.bigquery.table import TimePartitioning
+        from google.cloud.bigquery.table import TimePartitioningType
+
+        dataset = self.temp_dataset(_make_dataset_id('create_table_tp_cf'))
+        table_id = 'test_table'
+        table_arg = Table(
+            dataset.table(table_id),
+            schema=TIME_PARTITIONING_CLUSTERING_FIELDS_SCHEMA)
+        self.assertFalse(_table_exists(table_arg))
+
+        table_arg.time_partitioning = TimePartitioning(
+            field='transaction_time')
+
+        table_arg.clustering_fields = ['user_email', 'store_code']
+        table = retry_403(Config.CLIENT.create_table)(table_arg)
+        self.to_delete.insert(0, table)
+
+        self.assertTrue(_table_exists(table))
+        self.assertEqual(table.table_id, table_id)
+        time_partitioning = table.time_partitioning
+        self.assertEqual(time_partitioning.type_, TimePartitioningType.DAY)
+        self.assertEqual(time_partitioning.field, 'transaction_time')
+        self.assertEqual(table.clustering_fields, ['user_email', 'store_code'])
+
+    def test_delete_dataset_with_string(self):
+        dataset_id = _make_dataset_id('delete_table_true')
+        dataset_ref = Config.CLIENT.dataset(dataset_id)
+        retry_403(Config.CLIENT.create_dataset)(Dataset(dataset_ref))
+        self.assertTrue(_dataset_exists(dataset_ref))
+        Config.CLIENT.delete_dataset(dataset_id)
+        self.assertFalse(_dataset_exists(dataset_ref))
+
+    def test_delete_dataset_delete_contents_true(self):
+        dataset_id = _make_dataset_id('delete_table_true')
+        dataset = retry_403(Config.CLIENT.create_dataset)(
+            Dataset(Config.CLIENT.dataset(dataset_id)))
+
+        table_id = 'test_table'
+        table_arg = Table(dataset.table(table_id), schema=SCHEMA)
+        table = retry_403(Config.CLIENT.create_table)(table_arg)
+        Config.CLIENT.delete_dataset(dataset, delete_contents=True)
+
+        self.assertFalse(_table_exists(table))
+
+    def test_delete_dataset_delete_contents_false(self):
+        from google.api_core import exceptions
+        dataset = self.temp_dataset(_make_dataset_id('delete_table_false'))
+        table_id = 'test_table'
+        table_arg = Table(dataset.table(table_id), schema=SCHEMA)
+
+        retry_403(Config.CLIENT.create_table)(table_arg)
+        with self.assertRaises(exceptions.BadRequest):
+            Config.CLIENT.delete_dataset(dataset)
+
     def test_get_table_w_public_dataset(self):
-        PUBLIC = 'bigquery-public-data'
-        DATASET_ID = 'samples'
-        TABLE_ID = 'shakespeare'
-        table_ref = DatasetReference(PUBLIC, DATASET_ID).table(TABLE_ID)
+        public = 'bigquery-public-data'
+        dataset_id = 'samples'
+        table_id = 'shakespeare'
+        table_ref = DatasetReference(public, dataset_id).table(table_id)
 
+        # Get table with reference.
         table = Config.CLIENT.get_table(table_ref)
-
-        self.assertEqual(table.table_id, TABLE_ID)
-        self.assertEqual(table.dataset_id, DATASET_ID)
-        self.assertEqual(table.project, PUBLIC)
+        self.assertEqual(table.table_id, table_id)
+        self.assertEqual(table.dataset_id, dataset_id)
+        self.assertEqual(table.project, public)
         schema_names = [field.name for field in table.schema]
         self.assertEqual(
             schema_names, ['word', 'word_count', 'corpus', 'corpus_date'])
 
-    def test_list_dataset_tables(self):
-        DATASET_ID = _make_dataset_id('list_tables')
-        dataset = self.temp_dataset(DATASET_ID)
+        # Get table with string.
+        table = Config.CLIENT.get_table(
+            '{}.{}.{}'.format(public, dataset_id, table_id))
+        self.assertEqual(table.table_id, table_id)
+        self.assertEqual(table.dataset_id, dataset_id)
+        self.assertEqual(table.project, public)
+
+    def test_list_partitions(self):
+        table_ref = DatasetReference(
+            'bigquery-public-data',
+            'ethereum_blockchain').table('blocks')
+        all_rows = Config.CLIENT.list_partitions(table_ref)
+        self.assertIn('20180801', all_rows)
+        self.assertGreater(len(all_rows), 1000)
+
+    def test_list_tables(self):
+        dataset_id = _make_dataset_id('list_tables')
+        dataset = self.temp_dataset(dataset_id)
         # Retrieve tables before any are created for the dataset.
-        iterator = Config.CLIENT.list_dataset_tables(dataset)
+        iterator = Config.CLIENT.list_tables(dataset)
         all_tables = list(iterator)
         self.assertEqual(all_tables, [])
         self.assertIsNone(iterator.next_page_token)
@@ -247,13 +372,22 @@ class TestBigQuery(unittest.TestCase):
             self.to_delete.insert(0, created_table)
 
         # Retrieve the tables.
-        iterator = Config.CLIENT.list_dataset_tables(dataset)
+        iterator = Config.CLIENT.list_tables(dataset)
         all_tables = list(iterator)
         self.assertIsNone(iterator.next_page_token)
         created = [table for table in all_tables
                    if (table.table_id in tables_to_create and
-                       table.dataset_id == DATASET_ID)]
+                       table.dataset_id == dataset_id)]
         self.assertEqual(len(created), len(tables_to_create))
+
+        # List tables with a string ID.
+        iterator = Config.CLIENT.list_tables(dataset_id)
+        self.assertGreater(len(list(iterator)), 0)
+
+        # List tables with a fully-qualified string ID.
+        iterator = Config.CLIENT.list_tables(
+            '{}.{}'.format(Config.CLIENT.project, dataset_id))
+        self.assertGreater(len(list(iterator)), 0)
 
     def test_update_table(self):
         dataset = self.temp_dataset(_make_dataset_id('update_table'))
@@ -266,7 +400,7 @@ class TestBigQuery(unittest.TestCase):
         self.assertTrue(_table_exists(table))
         self.assertIsNone(table.friendly_name)
         self.assertIsNone(table.description)
-        self.assertEquals(table.labels, {})
+        self.assertEqual(table.labels, {})
         table.friendly_name = 'Friendly'
         table.description = 'Description'
         table.labels = {'priority': 'high', 'color': 'blue'}
@@ -323,7 +457,60 @@ class TestBigQuery(unittest.TestCase):
         page = six.next(iterator.pages)
         return list(page)
 
-    def test_create_rows_then_dump_table(self):
+    def _create_table_many_columns(self, rowcount):
+        # Generate a table of maximum width via CREATE TABLE AS SELECT.
+        # first column is named 'rowval', and has a value from 1..rowcount
+        # Subsequent column is named col_<N> and contains the value N*rowval,
+        # where N is between 1 and 9999 inclusive.
+        dsname = _make_dataset_id('wide_schema')
+        dataset = self.temp_dataset(dsname)
+        table_id = 'many_columns'
+        table_ref = dataset.table(table_id)
+        self.to_delete.insert(0, table_ref)
+        colprojections = ','.join(
+                ['r * {} as col_{}'.format(n, n) for n in range(1, 10000)])
+        sql = """
+            CREATE TABLE {}.{}
+            AS
+            SELECT
+                r as rowval,
+                {}
+            FROM
+              UNNEST(GENERATE_ARRAY(1,{},1)) as r
+            """.format(dsname, table_id, colprojections, rowcount)
+        query_job = Config.CLIENT.query(sql)
+        query_job.result()
+        self.assertEqual(query_job.statement_type, 'CREATE_TABLE_AS_SELECT')
+        self.assertEqual(query_job.ddl_operation_performed, 'CREATE')
+        self.assertEqual(query_job.ddl_target_table, table_ref)
+
+        return table_ref
+
+    def test_query_many_columns(self):
+        # Test working with the widest schema BigQuery supports, 10k columns.
+        row_count = 2
+        table_ref = self._create_table_many_columns(row_count)
+        rows = list(Config.CLIENT.query(
+            'SELECT * FROM `{}.{}`'.format(
+                table_ref.dataset_id, table_ref.table_id)))
+
+        self.assertEqual(len(rows), row_count)
+
+        # check field representations adhere to expected values.
+        correctwidth = 0
+        badvals = 0
+        for r in rows:
+            vals = r._xxx_values
+            rowval = vals[0]
+            if len(vals) == 10000:
+                correctwidth = correctwidth + 1
+            for n in range(1, 10000):
+                if vals[n] != rowval * (n):
+                    badvals = badvals + 1
+        self.assertEqual(correctwidth, row_count)
+        self.assertEqual(badvals, 0)
+
+    def test_insert_rows_then_dump_table(self):
         NOW_SECONDS = 1448911495.484366
         NOW = datetime.datetime.utcfromtimestamp(
             NOW_SECONDS).replace(tzinfo=UTC)
@@ -335,7 +522,7 @@ class TestBigQuery(unittest.TestCase):
         ]
         ROW_IDS = range(len(ROWS))
 
-        dataset = self.temp_dataset(_make_dataset_id('create_rows_then_dump'))
+        dataset = self.temp_dataset(_make_dataset_id('insert_rows_then_dump'))
         TABLE_ID = 'test_table'
         schema = [
             bigquery.SchemaField('full_name', 'STRING', mode='REQUIRED'),
@@ -348,7 +535,7 @@ class TestBigQuery(unittest.TestCase):
         self.to_delete.insert(0, table)
         self.assertTrue(_table_exists(table))
 
-        errors = Config.CLIENT.create_rows(table, ROWS, row_ids=ROW_IDS)
+        errors = Config.CLIENT.insert_rows(table, ROWS, row_ids=ROW_IDS)
         self.assertEqual(len(errors), 0)
 
         rows = ()
@@ -363,45 +550,9 @@ class TestBigQuery(unittest.TestCase):
         self.assertEqual(sorted(row_tuples, key=by_age),
                          sorted(ROWS, key=by_age))
 
-    def test_load_table_from_local_file_then_dump_table(self):
-        from google.cloud._testing import _NamedTemporaryFile
-
-        TABLE_NAME = 'test_table'
-
-        dataset = self.temp_dataset(_make_dataset_id('load_local_then_dump'))
-        table_ref = dataset.table(TABLE_NAME)
-        table_arg = Table(table_ref, schema=SCHEMA)
-        table = retry_403(Config.CLIENT.create_table)(table_arg)
-        self.to_delete.insert(0, table)
-
-        with _NamedTemporaryFile() as temp:
-            with open(temp.name, 'w') as csv_write:
-                writer = csv.writer(csv_write)
-                writer.writerow(HEADER_ROW)
-                writer.writerows(ROWS)
-
-            with open(temp.name, 'rb') as csv_read:
-                config = bigquery.LoadJobConfig()
-                config.source_format = 'CSV'
-                config.skip_leading_rows = 1
-                config.create_disposition = 'CREATE_NEVER'
-                config.write_disposition = 'WRITE_EMPTY'
-                config.schema = table.schema
-                job = Config.CLIENT.load_table_from_file(
-                    csv_read, table_ref, job_config=config)
-
-        # Retry until done.
-        job.result(timeout=JOB_TIMEOUT)
-
-        self.assertEqual(job.output_rows, len(ROWS))
-
-        rows = self._fetch_single_page(table)
-        row_tuples = [r.values() for r in rows]
-        by_age = operator.itemgetter(1)
-        self.assertEqual(sorted(row_tuples, key=by_age),
-                         sorted(ROWS, key=by_age))
-
     def test_load_table_from_local_avro_file_then_dump_table(self):
+        from google.cloud.bigquery.job import SourceFormat
+        from google.cloud.bigquery.job import WriteDisposition
         TABLE_NAME = 'test_table_avro'
         ROWS = [
             ("violet", 400),
@@ -419,8 +570,8 @@ class TestBigQuery(unittest.TestCase):
 
         with open(os.path.join(WHERE, 'data', 'colors.avro'), 'rb') as avrof:
             config = bigquery.LoadJobConfig()
-            config.source_format = 'AVRO'
-            config.write_disposition = 'WRITE_TRUNCATE'
+            config.source_format = SourceFormat.AVRO
+            config.write_disposition = WriteDisposition.WRITE_TRUNCATE
             job = Config.CLIENT.load_table_from_file(
                 avrof, table_ref, job_config=config)
         # Retry until done.
@@ -435,7 +586,49 @@ class TestBigQuery(unittest.TestCase):
         self.assertEqual(sorted(row_tuples, key=by_wavelength),
                          sorted(ROWS, key=by_wavelength))
 
+    def test_load_avro_from_uri_then_dump_table(self):
+        from google.cloud.bigquery.job import CreateDisposition
+        from google.cloud.bigquery.job import SourceFormat
+        from google.cloud.bigquery.job import WriteDisposition
+        table_name = 'test_table'
+        rows = [
+            ("violet", 400),
+            ("indigo", 445),
+            ("blue", 475),
+            ("green", 510),
+            ("yellow", 570),
+            ("orange", 590),
+            ("red", 650)
+        ]
+        with open(os.path.join(WHERE, 'data', 'colors.avro'), 'rb') as f:
+            GS_URL = self._write_avro_to_storage(
+                'bq_load_test' + unique_resource_id(), 'colors.avro', f)
+
+        dataset = self.temp_dataset(_make_dataset_id('bq_load_test'))
+        table_arg = dataset.table(table_name)
+        table = retry_403(Config.CLIENT.create_table)(Table(table_arg))
+        self.to_delete.insert(0, table)
+
+        config = bigquery.LoadJobConfig()
+        config.create_disposition = CreateDisposition.CREATE_NEVER
+        config.source_format = SourceFormat.AVRO
+        config.write_disposition = WriteDisposition.WRITE_EMPTY
+        job = Config.CLIENT.load_table_from_uri(
+            GS_URL, table_arg, job_config=config)
+        job.result(timeout=JOB_TIMEOUT)
+        self.assertEqual(job.output_rows, len(rows))
+
+        table = Config.CLIENT.get_table(table)
+        fetched = self._fetch_single_page(table)
+        row_tuples = [r.values() for r in fetched]
+        self.assertEqual(sorted(row_tuples, key=lambda x: x[1]),
+                         sorted(rows, key=lambda x: x[1]))
+
     def test_load_table_from_uri_then_dump_table(self):
+        from google.cloud.bigquery.job import CreateDisposition
+        from google.cloud.bigquery.job import SourceFormat
+        from google.cloud.bigquery.job import WriteDisposition
+
         TABLE_ID = 'test_table'
         GS_URL = self._write_csv_to_storage(
             'bq_load_test' + unique_resource_id(), 'person_ages.csv',
@@ -448,10 +641,10 @@ class TestBigQuery(unittest.TestCase):
         self.to_delete.insert(0, table)
 
         config = bigquery.LoadJobConfig()
-        config.create_disposition = 'CREATE_NEVER'
+        config.create_disposition = CreateDisposition.CREATE_NEVER
         config.skip_leading_rows = 1
-        config.source_format = 'CSV'
-        config.write_disposition = 'WRITE_EMPTY'
+        config.source_format = SourceFormat.CSV
+        config.write_disposition = WriteDisposition.WRITE_EMPTY
         job = Config.CLIENT.load_table_from_uri(
             GS_URL, dataset.table(TABLE_ID), job_config=config)
 
@@ -467,64 +660,117 @@ class TestBigQuery(unittest.TestCase):
         self.assertEqual(sorted(row_tuples, key=by_age),
                          sorted(ROWS, key=by_age))
 
-    def test_load_table_from_uri_w_autodetect_schema_then_get_job(self):
-        from google.cloud.bigquery import SchemaField
-        from google.cloud.bigquery.job import LoadJob
+    def test_load_table_from_file_w_explicit_location(self):
+        # Create a temporary bucket for extract files.
+        storage_client = storage.Client()
+        bucket_name = 'bq_load_table_eu_extract_test' + unique_resource_id()
+        bucket = storage_client.bucket(bucket_name)
+        bucket.location = 'eu'
+        self.to_delete.append(bucket)
+        bucket.create()
 
-        rows = ROWS * 100
-        # BigQuery internally uses the first 100 rows to detect schema
+        # Create a temporary dataset & table in the EU.
+        table_bytes = six.BytesIO(b'a,3\nb,2\nc,1\n')
+        client = Config.CLIENT
+        dataset = self.temp_dataset(
+            _make_dataset_id('eu_load_file'), location='EU')
+        table_ref = dataset.table('letters')
+        job_config = bigquery.LoadJobConfig()
+        job_config.skip_leading_rows = 0
+        job_config.schema = [
+            bigquery.SchemaField('letter', 'STRING'),
+            bigquery.SchemaField('value', 'INTEGER'),
+        ]
 
-        gs_url = self._write_csv_to_storage(
-            'bq_load_test' + unique_resource_id(), 'person_ages.csv',
-            HEADER_ROW, rows)
-        dataset = self.temp_dataset(_make_dataset_id('load_gcs_then_dump'))
-        table_ref = dataset.table('test_table')
-        JOB_ID = 'load_table_w_autodetect_{}'.format(str(uuid.uuid4()))
+        # Load the file to an EU dataset with an EU load job.
+        load_job = client.load_table_from_file(
+            table_bytes, table_ref, location='EU', job_config=job_config)
+        load_job.result()
+        job_id = load_job.job_id
 
-        config = bigquery.LoadJobConfig()
-        config.autodetect = True
-        job = Config.CLIENT.load_table_from_uri(
-            gs_url, table_ref, job_config=config, job_id=JOB_ID)
+        # Can get the job from the EU.
+        load_job = client.get_job(job_id, location='EU')
+        self.assertEqual(job_id, load_job.job_id)
+        self.assertEqual('EU', load_job.location)
+        self.assertTrue(load_job.exists())
 
-        # Allow for 90 seconds of "warm up" before rows visible.  See
-        # https://cloud.google.com/bigquery/streaming-data-into-bigquery#dataavailability
-        # 8 tries -> 1 + 2 + 4 + 8 + 16 + 32 + 64 = 127 seconds
-        retry = RetryInstanceState(_job_done, max_tries=8)
-        retry(job.reload)()
+        # Cannot get the job from the US.
+        with self.assertRaises(NotFound):
+            client.get_job(job_id, location='US')
 
-        table = Config.CLIENT.get_table(table_ref)
-        self.to_delete.insert(0, table)
-        field_name = SchemaField(
-            u'Full_Name', u'string', u'NULLABLE', None, ())
-        field_age = SchemaField(u'Age', u'integer', u'NULLABLE', None, ())
-        self.assertEqual(table.schema, [field_name, field_age])
+        load_job_us = client.get_job(job_id)
+        load_job_us._properties['jobReference']['location'] = 'US'
+        self.assertFalse(load_job_us.exists())
+        with self.assertRaises(NotFound):
+            load_job_us.reload()
 
-        actual_rows = self._fetch_single_page(table)
-        actual_row_tuples = [r.values() for r in actual_rows]
-        by_age = operator.itemgetter(1)
+        # Can cancel the job from the EU.
+        self.assertTrue(load_job.cancel())
+        load_job = client.cancel_job(job_id, location='EU')
+        self.assertEqual(job_id, load_job.job_id)
+        self.assertEqual('EU', load_job.location)
+
+        # Cannot cancel the job from the US.
+        with self.assertRaises(NotFound):
+            client.cancel_job(job_id, location='US')
+        with self.assertRaises(NotFound):
+            load_job_us.cancel()
+
+        # Can list the table rows.
+        table = client.get_table(table_ref)
+        self.assertEqual(table.num_rows, 3)
+        rows = [(row.letter, row.value) for row in client.list_rows(table)]
         self.assertEqual(
-            sorted(actual_row_tuples, key=by_age), sorted(rows, key=by_age))
+            list(sorted(rows)), [('a', 3), ('b', 2), ('c', 1)])
 
-        fetched_job = Config.CLIENT.get_job(JOB_ID)
+        # Verify location behavior with queries
+        query_config = bigquery.QueryJobConfig()
+        query_config.dry_run = True
 
-        self.assertIsInstance(fetched_job, LoadJob)
-        self.assertEqual(fetched_job.job_id, JOB_ID)
-        self.assertEqual(fetched_job.autodetect, True)
+        query_string = 'SELECT * FROM `{}.letters` LIMIT 1'.format(
+            dataset.dataset_id)
 
-    def _write_csv_to_storage(self, bucket_name, blob_name, header_row,
-                              data_rows):
-        from google.cloud._testing import _NamedTemporaryFile
-        from google.cloud.storage import Client as StorageClient
+        eu_query = client.query(
+            query_string,
+            location='EU',
+            job_config=query_config)
+        self.assertTrue(eu_query.done)
 
-        storage_client = StorageClient()
+        # Cannot query from US.
+        with self.assertRaises(BadRequest):
+            list(client.query(
+                    query_string,
+                    location='US',
+                    job_config=query_config))
+
+        # Cannot copy from US.
+        with self.assertRaises(BadRequest):
+            client.copy_table(
+                table_ref, dataset.table('letters2_us'),
+                location='US').result()
+
+        # Cannot extract from US.
+        with self.assertRaises(BadRequest):
+            client.extract_table(
+                table_ref,
+                'gs://{}/letters-us.csv'.format(bucket_name),
+                location='US').result()
+
+    def _create_storage(self, bucket_name, blob_name):
+        storage_client = storage.Client()
 
         # In the **very** rare case the bucket name is reserved, this
         # fails with a ConnectionError.
         bucket = storage_client.create_bucket(bucket_name)
         self.to_delete.append(bucket)
 
-        blob = bucket.blob(blob_name)
+        return bucket.blob(blob_name)
 
+    def _write_csv_to_storage(self, bucket_name, blob_name, header_row,
+                              data_rows):
+        from google.cloud._testing import _NamedTemporaryFile
+
+        blob = self._create_storage(bucket_name, blob_name)
         with _NamedTemporaryFile() as temp:
             with open(temp.name, 'w') as csv_write:
                 writer = csv.writer(csv_write)
@@ -535,7 +781,13 @@ class TestBigQuery(unittest.TestCase):
                 blob.upload_from_file(csv_read, content_type='text/csv')
 
         self.to_delete.insert(0, blob)
+        return 'gs://{}/{}'.format(bucket_name, blob_name)
 
+    def _write_avro_to_storage(self, bucket_name, blob_name, avro_file):
+        blob = self._create_storage(bucket_name, blob_name)
+        blob.upload_from_file(avro_file,
+                              content_type='application/x-avro-binary')
+        self.to_delete.insert(0, blob)
         return 'gs://{}/{}'.format(bucket_name, blob_name)
 
     def _load_table_for_extract_table(
@@ -599,35 +851,6 @@ class TestBigQuery(unittest.TestCase):
         got = destination.download_as_string().decode('utf-8')
         self.assertIn('Bharney Rhubble', got)
 
-    def test_extract_table_w_job_config(self):
-        from google.cloud.storage import Client as StorageClient
-
-        storage_client = StorageClient()
-        local_id = unique_resource_id()
-        bucket_name = 'bq_extract_test' + local_id
-        blob_name = 'person_ages.csv'
-        dataset_id = _make_dataset_id('load_gcs_then_extract')
-        table_id = 'test_table'
-        table_ref = Config.CLIENT.dataset(dataset_id).table(table_id)
-        table = Table(table_ref)
-        self.to_delete.insert(0, table)
-        self._load_table_for_extract_table(
-            storage_client, ROWS, bucket_name, blob_name, table_ref)
-        bucket = storage_client.bucket(bucket_name)
-        destination_blob_name = 'person_ages_out.csv'
-        destination = bucket.blob(destination_blob_name)
-        destination_uri = 'gs://{}/person_ages_out.csv'.format(bucket_name)
-
-        job_config = bigquery.ExtractJobConfig()
-        job_config.destination_format = 'NEWLINE_DELIMITED_JSON'
-        job = Config.CLIENT.extract_table(
-            table, destination_uri, job_config=job_config)
-        job.result()
-
-        self.to_delete.insert(0, destination)
-        got = destination.download_as_string().decode('utf-8')
-        self.assertIn('"Bharney Rhubble"', got)
-
     def test_copy_table(self):
         # If we create a new table to copy from, the test won't work
         # because the new rows will be stored in the streaming buffer,
@@ -672,6 +895,27 @@ class TestBigQuery(unittest.TestCase):
         # them here.  The best we can do is not that the API call didn't
         # raise an error, and that the job completed (in the `retry()`
         # above).
+
+    def test_get_failed_job(self):
+        # issue 4246
+        from google.api_core.exceptions import BadRequest
+
+        JOB_ID = 'invalid_{}'.format(str(uuid.uuid4()))
+        QUERY = 'SELECT TIMESTAMP_ADD(@ts_value, INTERVAL 1 HOUR);'
+        PARAM = bigquery.ScalarQueryParameter(
+            'ts_value', 'TIMESTAMP', 1.4810976E9)
+
+        job_config = bigquery.QueryJobConfig()
+        job_config.query_parameters = [PARAM]
+
+        with self.assertRaises(BadRequest):
+            Config.CLIENT.query(
+                QUERY, job_id=JOB_ID, job_config=job_config).result()
+
+        job = Config.CLIENT.get_job(JOB_ID)
+
+        with self.assertRaises(ValueError):
+            job.query_parameters
 
     def test_query_w_legacy_sql_types(self):
         naive = datetime.datetime(2016, 12, 5, 12, 41, 9)
@@ -719,6 +963,7 @@ class TestBigQuery(unittest.TestCase):
         stamp_microseconds = stamp + '.250000'
         zoned = naive.replace(tzinfo=UTC)
         zoned_microseconds = naive_microseconds.replace(tzinfo=UTC)
+        numeric = decimal.Decimal('123456789.123456789')
         return [
             {
                 'sql': 'SELECT 1',
@@ -766,6 +1011,10 @@ class TestBigQuery(unittest.TestCase):
                 'expected': naive.time(),
             },
             {
+                'sql': 'SELECT NUMERIC "%s"' % (numeric,),
+                'expected': numeric,
+            },
+            {
                 'sql': 'SELECT (1, 2)',
                 'expected': {'_field_1': 1, '_field_2': 2},
             },
@@ -804,6 +1053,10 @@ class TestBigQuery(unittest.TestCase):
                 'sql': 'SELECT ARRAY(SELECT STRUCT([1, 2]))',
                 'expected': [{u'_field_1': [1, 2]}],
             },
+            {
+                'sql': 'SELECT ST_GeogPoint(1, 2)',
+                'expected': 'POINT(1 2)',
+            },
         ]
 
     def test_query_w_standard_sql_types(self):
@@ -820,6 +1073,18 @@ class TestBigQuery(unittest.TestCase):
         with self.assertRaises(BadRequest):
             Config.CLIENT.query('invalid syntax;').result()
 
+    def test_query_w_wrong_config(self):
+        from google.cloud.bigquery.job import LoadJobConfig
+
+        good_query = 'SELECT 1;'
+        rows = list(Config.CLIENT.query('SELECT 1;').result())
+        assert rows[0][0] == 1
+
+        bad_config = LoadJobConfig()
+        bad_config.destination = Config.CLIENT.dataset('dset').table('tbl')
+        with self.assertRaises(Exception):
+            Config.CLIENT.query(good_query, job_config=bad_config).result()
+
     def test_query_w_timeout(self):
         query_job = Config.CLIENT.query(
             'SELECT * FROM `bigquery-public-data.github_repos.commits`;',
@@ -828,6 +1093,82 @@ class TestBigQuery(unittest.TestCase):
         with self.assertRaises(concurrent.futures.TimeoutError):
             # 1 second is much too short for this query.
             query_job.result(timeout=1)
+
+    def test_query_statistics(self):
+        """
+        A system test to exercise some of the extended query statistics.
+
+        Note:  We construct a query that should need at least three stages by
+        specifying a JOIN query.  Exact plan and stats are effectively
+        non-deterministic, so we're largely interested in confirming values
+        are present.
+        """
+
+        job_config = bigquery.QueryJobConfig()
+        job_config.use_query_cache = False
+
+        query_job = Config.CLIENT.query(
+            """
+            SELECT
+              COUNT(1)
+            FROM
+            (
+              SELECT
+                year,
+                wban_number
+              FROM `bigquery-public-data.samples.gsod`
+              LIMIT 1000
+            ) lside
+            INNER JOIN
+            (
+              SELECT
+                year,
+                state
+              FROM `bigquery-public-data.samples.natality`
+              LIMIT 1000
+            ) rside
+            ON
+            lside.year = rside.year
+            """,
+            location='US',
+            job_config=job_config)
+
+        # run the job to completion
+        query_job.result()
+
+        # Assert top-level stats
+        self.assertFalse(query_job.cache_hit)
+        self.assertIsNotNone(query_job.destination)
+        self.assertTrue(query_job.done)
+        self.assertFalse(query_job.dry_run)
+        self.assertIsNone(query_job.num_dml_affected_rows)
+        self.assertEqual(query_job.priority, 'INTERACTIVE')
+        self.assertGreater(query_job.total_bytes_billed, 1)
+        self.assertGreater(query_job.total_bytes_processed, 1)
+        self.assertEqual(query_job.statement_type, 'SELECT')
+        self.assertGreater(query_job.slot_millis, 1)
+
+        # Make assertions on the shape of the query plan.
+        plan = query_job.query_plan
+        self.assertGreaterEqual(len(plan), 3)
+        first_stage = plan[0]
+        self.assertIsNotNone(first_stage.start)
+        self.assertIsNotNone(first_stage.end)
+        self.assertIsNotNone(first_stage.entry_id)
+        self.assertIsNotNone(first_stage.name)
+        self.assertGreater(first_stage.parallel_inputs, 0)
+        self.assertGreater(first_stage.completed_parallel_inputs, 0)
+        self.assertGreater(first_stage.shuffle_output_bytes, 0)
+        self.assertEqual(first_stage.status, 'COMPLETE')
+
+        # Query plan is a digraph.  Ensure it has inter-stage links,
+        # but not every stage has inputs.
+        stages_with_inputs = 0
+        for entry in plan:
+            if len(entry.input_stages) > 0:
+                stages_with_inputs = stages_with_inputs + 1
+        self.assertGreater(stages_with_inputs, 0)
+        self.assertGreater(len(plan), stages_with_inputs)
 
     def test_dbapi_w_standard_sql_types(self):
         examples = self._generate_standard_sql_types_examples()
@@ -853,6 +1194,9 @@ class TestBigQuery(unittest.TestCase):
 
     def _load_table_for_dml(self, rows, dataset_id, table_id):
         from google.cloud._testing import _NamedTemporaryFile
+        from google.cloud.bigquery.job import CreateDisposition
+        from google.cloud.bigquery.job import SourceFormat
+        from google.cloud.bigquery.job import WriteDisposition
 
         dataset = self.temp_dataset(dataset_id)
         greeting = bigquery.SchemaField(
@@ -870,10 +1214,10 @@ class TestBigQuery(unittest.TestCase):
 
             with open(temp.name, 'rb') as csv_read:
                 config = bigquery.LoadJobConfig()
-                config.source_format = 'CSV'
+                config.source_format = SourceFormat.CSV
                 config.skip_leading_rows = 1
-                config.create_disposition = 'CREATE_NEVER'
-                config.write_disposition = 'WRITE_EMPTY'
+                config.create_disposition = CreateDisposition.CREATE_NEVER
+                config.write_disposition = WriteDisposition.WRITE_EMPTY
                 job = Config.CLIENT.load_table_from_file(
                     csv_read, table_ref, job_config=config)
 
@@ -882,7 +1226,7 @@ class TestBigQuery(unittest.TestCase):
         self._fetch_single_page(table)
 
     def test_query_w_dml(self):
-        dataset_name = _make_dataset_id('dml_tests')
+        dataset_name = _make_dataset_id('dml_query')
         table_name = 'test_table'
         self._load_table_for_dml([('Hello World',)], dataset_name, table_name)
         query_template = """UPDATE {}.{}
@@ -898,7 +1242,7 @@ class TestBigQuery(unittest.TestCase):
         self.assertEqual(query_job.num_dml_affected_rows, 1)
 
     def test_dbapi_w_dml(self):
-        dataset_name = _make_dataset_id('dml_tests')
+        dataset_name = _make_dataset_id('dml_dbapi')
         table_name = 'test_table'
         self._load_table_for_dml([('Hello World',)], dataset_name, table_name)
         query_template = """UPDATE {}.{}
@@ -926,6 +1270,10 @@ class TestBigQuery(unittest.TestCase):
         pi = 3.1415926
         pi_param = ScalarQueryParameter(
             name='pi', type_='FLOAT64', value=pi)
+        pi_numeric = decimal.Decimal('3.141592654')
+        pi_numeric_param = ScalarQueryParameter(
+            name='pi_numeric_param', type_='NUMERIC',
+            value=pi_numeric)
         truthy = True
         truthy_param = ScalarQueryParameter(
             name='truthy', type_='BOOL', value=truthy)
@@ -1000,6 +1348,11 @@ class TestBigQuery(unittest.TestCase):
                 'sql': 'SELECT @pi',
                 'expected': pi,
                 'query_parameters': [pi_param],
+            },
+            {
+                'sql': 'SELECT @pi_numeric_param',
+                'expected': pi_numeric,
+                'query_parameters': [pi_numeric_param],
             },
             {
                 'sql': 'SELECT @truthy',
@@ -1192,32 +1545,6 @@ class TestBigQuery(unittest.TestCase):
             row = Config.CURSOR.fetchone()
             self.assertIsNone(row, msg=msg)
 
-    def test_dump_table_w_public_data(self):
-        PUBLIC = 'bigquery-public-data'
-        DATASET_ID = 'samples'
-        TABLE_NAME = 'natality'
-
-        table_ref = DatasetReference(PUBLIC, DATASET_ID).table(TABLE_NAME)
-        table = Config.CLIENT.get_table(table_ref)
-        self._fetch_single_page(table)
-
-    def test_dump_table_w_public_data_selected_fields(self):
-        PUBLIC = 'bigquery-public-data'
-        DATASET_ID = 'samples'
-        TABLE_NAME = 'natality'
-        selected_fields = [
-            bigquery.SchemaField('year', 'INTEGER', mode='NULLABLE'),
-            bigquery.SchemaField('month', 'INTEGER', mode='NULLABLE'),
-            bigquery.SchemaField('day', 'INTEGER', mode='NULLABLE'),
-        ]
-        table_ref = DatasetReference(PUBLIC, DATASET_ID).table(TABLE_NAME)
-
-        rows = self._fetch_single_page(
-            table_ref, selected_fields=selected_fields)
-
-        self.assertGreater(len(rows), 0)
-        self.assertEqual(len(rows[0]), 3)
-
     def test_large_query_w_public_data(self):
         PUBLIC = 'bigquery-public-data'
         DATASET_ID = 'samples'
@@ -1244,52 +1571,29 @@ class TestBigQuery(unittest.TestCase):
         row_tuples = [r.values() for r in query_job]
         self.assertEqual(row_tuples, [(1,)])
 
-    def test_query_table_def(self):
-        gs_url = self._write_csv_to_storage(
-            'bq_external_test' + unique_resource_id(), 'person_ages.csv',
-            HEADER_ROW, ROWS)
+    @unittest.skipIf(pandas is None, 'Requires `pandas`')
+    def test_query_results_to_dataframe(self):
+        QUERY = """
+            SELECT id, author, time_ts, dead
+            from `bigquery-public-data.hacker_news.comments`
+            LIMIT 10
+        """
 
-        job_config = bigquery.QueryJobConfig()
-        table_id = 'flintstones'
-        ec = bigquery.ExternalConfig('CSV')
-        ec.source_uris = [gs_url]
-        ec.schema = SCHEMA
-        ec.options.skip_leading_rows = 1  # skip the header row
-        job_config.table_definitions = {table_id: ec}
-        sql = 'SELECT * FROM %s' % table_id
+        df = Config.CLIENT.query(QUERY).result().to_dataframe()
 
-        got_rows = Config.CLIENT.query(sql, job_config=job_config)
+        self.assertIsInstance(df, pandas.DataFrame)
+        self.assertEqual(len(df), 10)  # verify the number of rows
+        column_names = ['id', 'author', 'time_ts', 'dead']
+        self.assertEqual(list(df), column_names)  # verify the column names
+        exp_datatypes = {'id': int, 'author': six.text_type,
+                         'time_ts': pandas.Timestamp, 'dead': bool}
+        for index, row in df.iterrows():
+            for col in column_names:
+                # all the schema fields are nullable, so None is acceptable
+                if not row[col] is None:
+                    self.assertIsInstance(row[col], exp_datatypes[col])
 
-        row_tuples = [r.values() for r in got_rows]
-        by_age = operator.itemgetter(1)
-        self.assertEqual(sorted(row_tuples, key=by_age),
-                         sorted(ROWS, key=by_age))
-
-    def test_query_external_table(self):
-        gs_url = self._write_csv_to_storage(
-            'bq_external_test' + unique_resource_id(), 'person_ages.csv',
-            HEADER_ROW, ROWS)
-        dataset_id = _make_dataset_id('query_external_table')
-        dataset = self.temp_dataset(dataset_id)
-        table_id = 'flintstones'
-        table_arg = Table(dataset.table(table_id), schema=SCHEMA)
-        ec = bigquery.ExternalConfig('CSV')
-        ec.source_uris = [gs_url]
-        ec.options.skip_leading_rows = 1  # skip the header row
-        table_arg.external_data_configuration = ec
-        table = Config.CLIENT.create_table(table_arg)
-        self.to_delete.insert(0, table)
-
-        sql = 'SELECT * FROM %s.%s' % (dataset_id, table_id)
-
-        got_rows = Config.CLIENT.query(sql)
-
-        row_tuples = [r.values() for r in got_rows]
-        by_age = operator.itemgetter(1)
-        self.assertEqual(sorted(row_tuples, key=by_age),
-                         sorted(ROWS, key=by_age))
-
-    def test_create_rows_nested_nested(self):
+    def test_insert_rows_nested_nested(self):
         # See #2951
         SF = bigquery.SchemaField
         schema = [
@@ -1316,14 +1620,14 @@ class TestBigQuery(unittest.TestCase):
         table = retry_403(Config.CLIENT.create_table)(table_arg)
         self.to_delete.insert(0, table)
 
-        Config.CLIENT.create_rows(table, to_insert)
+        Config.CLIENT.insert_rows(table, to_insert)
 
         retry = RetryResult(_has_rows, max_tries=8)
         rows = retry(self._fetch_single_page)(table)
         row_tuples = [r.values() for r in rows]
         self.assertEqual(row_tuples, to_insert)
 
-    def test_create_rows_nested_nested_dictionary(self):
+    def test_insert_rows_nested_nested_dictionary(self):
         # See #2951
         SF = bigquery.SchemaField
         schema = [
@@ -1350,7 +1654,7 @@ class TestBigQuery(unittest.TestCase):
         table = retry_403(Config.CLIENT.create_table)(table_arg)
         self.to_delete.insert(0, table)
 
-        Config.CLIENT.create_rows(table, to_insert)
+        Config.CLIENT.insert_rows(table, to_insert)
 
         retry = RetryResult(_has_rows, max_tries=8)
         rows = retry(self._fetch_single_page)(table)
@@ -1376,7 +1680,7 @@ class TestBigQuery(unittest.TestCase):
             for line in rows_file:
                 to_insert.append(json.loads(line))
 
-        errors = Config.CLIENT.create_rows_json(table, to_insert)
+        errors = Config.CLIENT.insert_rows_json(table, to_insert)
         self.assertEqual(len(errors), 0)
 
         retry = RetryResult(_has_rows, max_tries=8)
@@ -1418,12 +1722,156 @@ class TestBigQuery(unittest.TestCase):
                                   '%Y-%m-%dT%H:%M:%S')
             e_favtime = datetime.datetime(*parts[0:6])
             self.assertEqual(found[7], e_favtime)
+            self.assertEqual(found[8],
+                             decimal.Decimal(expected['FavoriteNumber']))
 
-    def temp_dataset(self, dataset_id):
-        dataset = retry_403(Config.CLIENT.create_dataset)(
-            Dataset(Config.CLIENT.dataset(dataset_id)))
+    def _fetch_dataframe(self, query):
+        return Config.CLIENT.query(query).result().to_dataframe()
+
+    @unittest.skipIf(pandas is None, 'Requires `pandas`')
+    def test_nested_table_to_dataframe(self):
+        from google.cloud.bigquery.job import SourceFormat
+        from google.cloud.bigquery.job import WriteDisposition
+
+        SF = bigquery.SchemaField
+        schema = [
+            SF('string_col', 'STRING', mode='NULLABLE'),
+            SF('record_col', 'RECORD', mode='NULLABLE', fields=[
+                SF('nested_string', 'STRING', mode='NULLABLE'),
+                SF('nested_repeated', 'INTEGER', mode='REPEATED'),
+                SF('nested_record', 'RECORD', mode='NULLABLE', fields=[
+                    SF('nested_nested_string', 'STRING', mode='NULLABLE'),
+                ]),
+            ]),
+        ]
+        record = {
+            'nested_string': 'another string value',
+            'nested_repeated': [0, 1, 2],
+            'nested_record': {'nested_nested_string': 'some deep insight'},
+        }
+        to_insert = [
+            {'string_col': 'Some value', 'record_col': record},
+        ]
+        rows = [json.dumps(row) for row in to_insert]
+        body = six.BytesIO('{}\n'.format('\n'.join(rows)).encode('ascii'))
+        table_id = 'test_table'
+        dataset = self.temp_dataset(_make_dataset_id('nested_df'))
+        table = dataset.table(table_id)
+        self.to_delete.insert(0, table)
+        job_config = bigquery.LoadJobConfig()
+        job_config.write_disposition = WriteDisposition.WRITE_TRUNCATE
+        job_config.source_format = SourceFormat.NEWLINE_DELIMITED_JSON
+        job_config.schema = schema
+        # Load a table using a local JSON file from memory.
+        Config.CLIENT.load_table_from_file(
+            body, table, job_config=job_config).result()
+
+        df = Config.CLIENT.list_rows(
+            table, selected_fields=schema).to_dataframe()
+
+        self.assertIsInstance(df, pandas.DataFrame)
+        self.assertEqual(len(df), 1)  # verify the number of rows
+        exp_columns = ['string_col', 'record_col']
+        self.assertEqual(list(df), exp_columns)  # verify the column names
+        row = df.iloc[0]
+        # verify the row content
+        self.assertEqual(row['string_col'], 'Some value')
+        self.assertEqual(row['record_col'], record)
+        # verify that nested data can be accessed with indices/keys
+        self.assertEqual(row['record_col']['nested_repeated'][0], 0)
+        self.assertEqual(
+            row['record_col']['nested_record']['nested_nested_string'],
+            'some deep insight')
+
+    def test_list_rows_empty_table(self):
+        from google.cloud.bigquery.table import RowIterator
+
+        dataset_id = _make_dataset_id('empty_table')
+        dataset = self.temp_dataset(dataset_id)
+        table_ref = dataset.table('empty_table')
+        table = Config.CLIENT.create_table(bigquery.Table(table_ref))
+
+        # It's a bit silly to list rows for an empty table, but this does
+        # happen as the result of a DDL query from an IPython magic command.
+        rows = Config.CLIENT.list_rows(table)
+        self.assertIsInstance(rows, RowIterator)
+        self.assertEqual(tuple(rows), ())
+
+    def test_list_rows_page_size(self):
+        from google.cloud.bigquery.job import SourceFormat
+        from google.cloud.bigquery.job import WriteDisposition
+
+        num_items = 7
+        page_size = 3
+        num_pages, num_last_page = divmod(num_items, page_size)
+
+        SF = bigquery.SchemaField
+        schema = [SF('string_col', 'STRING', mode='NULLABLE')]
+        to_insert = [{'string_col': 'item%d' % i} for i in range(num_items)]
+        rows = [json.dumps(row) for row in to_insert]
+        body = six.BytesIO('{}\n'.format('\n'.join(rows)).encode('ascii'))
+
+        table_id = 'test_table'
+        dataset = self.temp_dataset(_make_dataset_id('nested_df'))
+        table = dataset.table(table_id)
+        self.to_delete.insert(0, table)
+        job_config = bigquery.LoadJobConfig()
+        job_config.write_disposition = WriteDisposition.WRITE_TRUNCATE
+        job_config.source_format = SourceFormat.NEWLINE_DELIMITED_JSON
+        job_config.schema = schema
+        # Load a table using a local JSON file from memory.
+        Config.CLIENT.load_table_from_file(
+            body, table, job_config=job_config).result()
+
+        df = Config.CLIENT.list_rows(
+            table, selected_fields=schema, page_size=page_size)
+        pages = df.pages
+
+        for i in range(num_pages):
+            page = next(pages)
+            self.assertEqual(page.num_items, page_size)
+        page = next(pages)
+        self.assertEqual(page.num_items, num_last_page)
+
+    def temp_dataset(self, dataset_id, location=None):
+        dataset = Dataset(Config.CLIENT.dataset(dataset_id))
+        if location:
+            dataset.location = location
+        dataset = retry_403(Config.CLIENT.create_dataset)(dataset)
         self.to_delete.append(dataset)
         return dataset
+
+
+@pytest.mark.skipif(pandas is None, reason='Requires `pandas`')
+@pytest.mark.skipif(IPython is None, reason='Requires `ipython`')
+@pytest.mark.usefixtures('ipython_interactive')
+def test_bigquery_magic():
+    ip = IPython.get_ipython()
+    ip.extension_manager.load_extension('google.cloud.bigquery')
+    sql = """
+        SELECT
+            CONCAT(
+            'https://stackoverflow.com/questions/',
+            CAST(id as STRING)) as url,
+            view_count
+        FROM `bigquery-public-data.stackoverflow.posts_questions`
+        WHERE tags like '%google-bigquery%'
+        ORDER BY view_count DESC
+        LIMIT 10
+    """
+    with io.capture_output() as captured:
+        result = ip.run_cell_magic('bigquery', '', sql)
+
+    lines = re.split('\n|\r', captured.stdout)
+    # Removes blanks & terminal code (result of display clearing)
+    updates = list(filter(lambda x: bool(x) and x != '\x1b[2K', lines))
+    assert re.match("Executing query with job ID: .*", updates[0])
+    assert all(re.match("Query executing: .*s", line)
+               for line in updates[1:-1])
+    assert re.match("Query complete after .*s", updates[-1])
+    assert isinstance(result, pandas.DataFrame)
+    assert len(result) == 10                      # verify row count
+    assert list(result) == ['url', 'view_count']  # verify column names
 
 
 def _job_done(instance):
@@ -1445,3 +1893,21 @@ def _table_exists(t):
         return True
     except NotFound:
         return False
+
+
+@pytest.fixture(scope='session')
+def ipython():
+    config = tools.default_config()
+    config.TerminalInteractiveShell.simple_prompt = True
+    shell = interactiveshell.TerminalInteractiveShell.instance(config=config)
+    return shell
+
+
+@pytest.fixture()
+def ipython_interactive(request, ipython):
+    """Activate IPython's builtin hooks
+
+    for the duration of the test scope.
+    """
+    with ipython.builtin_trap:
+        yield ipython

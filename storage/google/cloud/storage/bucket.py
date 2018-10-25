@@ -18,10 +18,12 @@ import base64
 import copy
 import datetime
 import json
+import warnings
 
 import six
 
 from google.api_core import page_iterator
+from google.api_core import datetime_helpers
 from google.cloud._helpers import _datetime_to_rfc3339
 from google.cloud._helpers import _NOW
 from google.cloud._helpers import _rfc3339_to_datetime
@@ -37,6 +39,12 @@ from google.cloud.storage.blob import Blob
 from google.cloud.storage.blob import _get_encryption_headers
 from google.cloud.storage.notification import BucketNotification
 from google.cloud.storage.notification import NONE_PAYLOAD_FORMAT
+
+
+_LOCATION_SETTER_MESSAGE = (
+    "Assignment to 'Bucket.location' is deprecated, as it is only "
+    "valid before the bucket is created. Instead, pass the location "
+    "to `Bucket.create`.")
 
 
 def _blobs_page_start(iterator, page, response):
@@ -96,6 +104,170 @@ def _item_to_notification(iterator, item):
     :returns: The next notification being iterated.
     """
     return BucketNotification.from_api_repr(item, bucket=iterator.bucket)
+
+
+class LifecycleRuleConditions(dict):
+    """Map a single lifecycle rule for a bucket.
+
+    See: https://cloud.google.com/storage/docs/lifecycle
+
+    :type age: int
+    :param age: (optional) apply rule action to items whos age, in days,
+                exceeds this value.
+
+    :type created_before: datetime.date
+    :param created_before: (optional) apply rule action to items created
+                           before this date.
+
+    :type is_live: bool
+    :param is_live: (optional) if true, apply rule action to non-versioned
+                    items, or to items with no newer versions. If false, apply
+                    rule action to versioned items with at least one newer
+                    version.
+
+    :type matches_storage_class: list(str), one or more of
+                                 :attr:`Bucket._STORAGE_CLASSES`.
+    :param matches_storage_class: (optional) apply rule action to items which
+                                  whose storage class matches this value.
+
+    :type number_of_newer_versions: int
+    :param number_of_newer_versions: (optional) apply rule action to versioned
+                                     items having N newer versions.
+
+    :raises ValueError: if no arguments are passed.
+    """
+    def __init__(self, age=None, created_before=None, is_live=None,
+                 matches_storage_class=None, number_of_newer_versions=None,
+                 _factory=False):
+        conditions = {}
+
+        if age is not None:
+            conditions['age'] = age
+
+        if created_before is not None:
+            conditions['createdBefore'] = created_before.isoformat()
+
+        if is_live is not None:
+            conditions['isLive'] = is_live
+
+        if matches_storage_class is not None:
+            conditions['matchesStorageClass'] = matches_storage_class
+
+        if number_of_newer_versions is not None:
+            conditions['numNewerVersions'] = number_of_newer_versions
+
+        if not _factory and not conditions:
+            raise ValueError("Supply at least one condition")
+
+        super(LifecycleRuleConditions, self).__init__(conditions)
+
+    @classmethod
+    def from_api_repr(cls, resource):
+        """Factory:  construct instance from resource.
+
+        :type resource: dict
+        :param resource: mapping as returned from API call.
+
+        :rtype: :class:`LifecycleRuleConditions`
+        :returns: Instance created from resource.
+        """
+        instance = cls(_factory=True)
+        instance.update(resource)
+        return instance
+
+    @property
+    def age(self):
+        """Conditon's age value."""
+        return self.get('age')
+
+    @property
+    def created_before(self):
+        """Conditon's created_before value."""
+        before = self.get('createdBefore')
+        if before is not None:
+            return datetime_helpers.from_iso8601_date(before)
+
+    @property
+    def is_live(self):
+        """Conditon's 'is_live' value."""
+        return self.get('isLive')
+
+    @property
+    def matches_storage_class(self):
+        """Conditon's 'matches_storage_class' value."""
+        return self.get('matchesStorageClass')
+
+    @property
+    def number_of_newer_versions(self):
+        """Conditon's 'number_of_newer_versions' value."""
+        return self.get('numNewerVersions')
+
+
+class LifecycleRuleDelete(dict):
+    """Map a lifecycle rule deleting matching items.
+
+    :type kw: dict
+    :params kw: arguments passed to :class:`LifecycleRuleConditions`.
+    """
+    def __init__(self, **kw):
+        conditions = LifecycleRuleConditions(**kw)
+        rule = {
+            'action': {
+                'type': 'Delete',
+            },
+            'condition': dict(conditions),
+        }
+        super(LifecycleRuleDelete, self).__init__(rule)
+
+    @classmethod
+    def from_api_repr(cls, resource):
+        """Factory:  construct instance from resource.
+
+        :type resource: dict
+        :param resource: mapping as returned from API call.
+
+        :rtype: :class:`LifecycleRuleDelete`
+        :returns: Instance created from resource.
+        """
+        instance = cls(_factory=True)
+        instance.update(resource)
+        return instance
+
+
+class LifecycleRuleSetStorageClass(dict):
+    """Map a lifecycle rule upating storage class of matching items.
+
+    :type storage_class: str, one of :attr:`Bucket._STORAGE_CLASSES`.
+    :param storage_class: new storage class to assign to matching items.
+
+    :type kw: dict
+    :params kw: arguments passed to :class:`LifecycleRuleConditions`.
+    """
+    def __init__(self, storage_class, **kw):
+        conditions = LifecycleRuleConditions(**kw)
+        rule = {
+            'action': {
+                'type': 'SetStorageClass',
+                'storageClass': storage_class,
+            },
+            'condition': dict(conditions),
+        }
+        super(LifecycleRuleSetStorageClass, self).__init__(rule)
+
+    @classmethod
+    def from_api_repr(cls, resource):
+        """Factory:  construct instance from resource.
+
+        :type resource: dict
+        :param resource: mapping as returned from API call.
+
+        :rtype: :class:`LifecycleRuleDelete`
+        :returns: Instance created from resource.
+        """
+        action = resource['action']
+        instance = cls(action['storageClass'], _factory=True)
+        instance.update(resource)
+        return instance
 
 
 class Bucket(_PropertyMixin):
@@ -171,7 +343,8 @@ class Bucket(_PropertyMixin):
         """
         return self._user_project
 
-    def blob(self, blob_name, chunk_size=None, encryption_key=None):
+    def blob(self, blob_name, chunk_size=None,
+             encryption_key=None, kms_key_name=None):
         """Factory constructor for blob object.
 
         .. note::
@@ -183,18 +356,22 @@ class Bucket(_PropertyMixin):
 
         :type chunk_size: int
         :param chunk_size: The size of a chunk of data whenever iterating
-                           (1 MB). This must be a multiple of 256 KB per the
-                           API specification.
+                           (in bytes). This must be a multiple of 256 KB per
+                           the API specification.
 
         :type encryption_key: bytes
         :param encryption_key:
             Optional 32 byte encryption key for customer-supplied encryption.
 
+        :type kms_key_name: str
+        :param kms_key_name:
+            Optional resource name of KMS key used to encrypt blob's content.
+
         :rtype: :class:`google.cloud.storage.blob.Blob`
         :returns: The blob object created.
         """
         return Blob(name=blob_name, bucket=self, chunk_size=chunk_size,
-                    encryption_key=encryption_key)
+                    encryption_key=encryption_key, kms_key_name=kms_key_name)
 
     def notification(self, topic_name,
                      topic_project=None,
@@ -251,7 +428,7 @@ class Bucket(_PropertyMixin):
         except NotFound:
             return False
 
-    def create(self, client=None, project=None):
+    def create(self, client=None, project=None, location=None):
         """Creates current bucket.
 
         If the bucket already exists, will raise
@@ -263,16 +440,21 @@ class Bucket(_PropertyMixin):
 
         :type client: :class:`~google.cloud.storage.client.Client` or
                       ``NoneType``
-        :param client: Optional. The client to use.  If not passed, falls back
+        :param client: Optional. The client to use. If not passed, falls back
                        to the ``client`` stored on the current bucket.
 
         :type project: str
-        :param project: (Optional) the project under which the  bucket is to
-                        be created.  If not passed, uses the project set on
+        :param project: Optional. The project under which the bucket is to
+                        be created. If not passed, uses the project set on
                         the client.
         :raises ValueError: if :attr:`user_project` is set.
         :raises ValueError: if ``project`` is None and client's
                             :attr:`project` is also None.
+
+        :type location: str
+        :param location: Optional. The location of the bucket. If not passed,
+                         the default location, US, will be used. See
+                         https://cloud.google.com/storage/docs/bucket-locations
         """
         if self.user_project is not None:
             raise ValueError("Cannot create bucket with 'user_project' set.")
@@ -289,6 +471,10 @@ class Bucket(_PropertyMixin):
         query_params = {'project': project}
         properties = {key: self._properties[key] for key in self._changes}
         properties['name'] = self.name
+
+        if location is not None:
+            properties['location'] = location
+
         api_response = client._connection.api_request(
             method='POST', path='/b', query_params=query_params,
             data=properties, _target_object=self)
@@ -654,7 +840,7 @@ class Bucket(_PropertyMixin):
                     raise
 
     def copy_blob(self, blob, destination_bucket, new_name=None,
-                  client=None, preserve_acl=True):
+                  client=None, preserve_acl=True, source_generation=None):
         """Copy the given blob to the given bucket, optionally with a new name.
 
         If :attr:`user_project` is set, bills the API request to that project.
@@ -678,6 +864,10 @@ class Bucket(_PropertyMixin):
         :param preserve_acl: Optional. Copies ACL from old blob to new blob.
                              Default: True.
 
+        :type source_generation: long
+        :param source_generation: Optional. The generation of the blob to be
+                                  copied.
+
         :rtype: :class:`google.cloud.storage.blob.Blob`
         :returns: The new Blob.
         """
@@ -686,6 +876,9 @@ class Bucket(_PropertyMixin):
 
         if self.user_project is not None:
             query_params['userProject'] = self.user_project
+
+        if source_generation is not None:
+            query_params['sourceGeneration'] = source_generation
 
         if new_name is None:
             new_name = blob.name
@@ -697,7 +890,7 @@ class Bucket(_PropertyMixin):
             path=api_path,
             query_params=query_params,
             _target_object=new_blob,
-            )
+        )
 
         if not preserve_acl:
             new_blob.acl.save(acl={}, client=client)
@@ -779,6 +972,47 @@ class Bucket(_PropertyMixin):
         """
         self._patch_property('cors', entries)
 
+    default_event_based_hold = _scalar_property('defaultEventBasedHold')
+    """Are uploaded objects automatically placed under an even-based hold?
+
+    If True, uploaded objects will be placed under an event-based hold to
+    be released at a future time. When released an object will then begin
+    the retention period determined by the policy retention period for the
+    object bucket.
+
+    See https://cloud.google.com/storage/docs/json_api/v1/buckets
+
+    If the property is not set locally, returns ``None``.
+
+    :rtype: bool or ``NoneType``
+    """
+
+    @property
+    def default_kms_key_name(self):
+        """Retrieve / set default KMS encryption key for objects in the bucket.
+
+        See https://cloud.google.com/storage/docs/json_api/v1/buckets
+
+        :setter: Set default KMS encryption key for items in this bucket.
+        :getter: Get default KMS encryption key for items in this bucket.
+
+        :rtype: str
+        :returns: Default KMS encryption key, or ``None`` if not set.
+        """
+        encryption_config = self._properties.get('encryption', {})
+        return encryption_config.get('defaultKmsKeyName')
+
+    @default_kms_key_name.setter
+    def default_kms_key_name(self, value):
+        """Set default KMS encryption key for objects in the bucket.
+
+        :type value: str or None
+        :param value: new KMS key name (None to clear any existing key).
+        """
+        encryption_config = self._properties.get('encryption', {})
+        encryption_config['defaultKmsKeyName'] = value
+        self._patch_property('encryption', encryption_config)
+
     @property
     def labels(self):
         """Retrieve or set labels assigned to this bucket.
@@ -838,8 +1072,8 @@ class Bucket(_PropertyMixin):
              https://cloud.google.com/storage/docs/json_api/v1/buckets
 
         :rtype: str or ``NoneType``
-        :returns: The bucket etag or ``None`` if the property is not
-                  set locally.
+        :returns: The bucket etag or ``None`` if the bucket's
+                  resource has not been loaded from the server.
         """
         return self._properties.get('etag')
 
@@ -850,8 +1084,8 @@ class Bucket(_PropertyMixin):
         See https://cloud.google.com/storage/docs/json_api/v1/buckets
 
         :rtype: str or ``NoneType``
-        :returns: The ID of the bucket or ``None`` if the property is not
-                  set locally.
+        :returns: The ID of the bucket or ``None`` if the bucket's
+                  resource has not been loaded from the server.
         """
         return self._properties.get('id')
 
@@ -879,11 +1113,18 @@ class Bucket(_PropertyMixin):
         :setter: Set lifestyle rules for this bucket.
         :getter: Gets the lifestyle rules for this bucket.
 
-        :rtype: list(dict)
+        :rtype: generator(dict)
         :returns: A sequence of mappings describing each lifecycle rule.
         """
         info = self._properties.get('lifecycle', {})
-        return [copy.deepcopy(rule) for rule in info.get('rule', ())]
+        for rule in info.get('rule', ()):
+            action_type = rule['action']['type']
+            if action_type == 'Delete':
+                yield LifecycleRuleDelete.from_api_repr(rule)
+            elif action_type == 'SetStorageClass':
+                yield LifecycleRuleSetStorageClass.from_api_repr(rule)
+            else:
+                raise ValueError("Unknown lifecycle rule: {}".format(rule))
 
     @lifecycle_rules.setter
     def lifecycle_rules(self, rules):
@@ -895,18 +1136,87 @@ class Bucket(_PropertyMixin):
         :type entries: list of dictionaries
         :param entries: A sequence of mappings describing each lifecycle rule.
         """
+        rules = [dict(rule) for rule in rules]  # Convert helpers if needed
         self._patch_property('lifecycle', {'rule': rules})
 
-    location = _scalar_property('location')
-    """Retrieve location configured for this bucket.
+    def clear_lifecyle_rules(self):
+        """Set lifestyle rules configured for this bucket.
 
-    See https://cloud.google.com/storage/docs/json_api/v1/buckets and
-    https://cloud.google.com/storage/docs/bucket-locations
+        See https://cloud.google.com/storage/docs/lifecycle and
+             https://cloud.google.com/storage/docs/json_api/v1/buckets
+        """
+        self.lifecycle_rules = []
 
-    If the property is not set locally, returns ``None``.
+    def add_lifecycle_delete_rule(self, **kw):
+        """Add a "delete" rule to lifestyle rules configured for this bucket.
 
-    :rtype: str or ``NoneType``
-    """
+        See https://cloud.google.com/storage/docs/lifecycle and
+             https://cloud.google.com/storage/docs/json_api/v1/buckets
+
+        .. literalinclude:: snippets.py
+          :start-after: [START add_lifecycle_delete_rule]
+          :end-before: [END add_lifecycle_delete_rule]
+
+        :type kw: dict
+        :params kw: arguments passed to :class:`LifecycleRuleConditions`.
+        """
+        rules = list(self.lifecycle_rules)
+        rules.append(LifecycleRuleDelete(**kw))
+        self.lifecycle_rules = rules
+
+    def add_lifecycle_set_storage_class_rule(self, storage_class, **kw):
+        """Add a "delete" rule to lifestyle rules configured for this bucket.
+
+        See https://cloud.google.com/storage/docs/lifecycle and
+             https://cloud.google.com/storage/docs/json_api/v1/buckets
+
+        .. literalinclude:: snippets.py
+          :start-after: [START add_lifecycle_set_storage_class_rule]
+          :end-before: [END add_lifecycle_set_storage_class_rule]
+
+        :type storage_class: str, one of :attr:`_STORAGE_CLASSES`.
+        :param storage_class: new storage class to assign to matching items.
+
+        :type kw: dict
+        :params kw: arguments passed to :class:`LifecycleRuleConditions`.
+        """
+        rules = list(self.lifecycle_rules)
+        rules.append(LifecycleRuleSetStorageClass(storage_class, **kw))
+        self.lifecycle_rules = rules
+
+    _location = _scalar_property('location')
+
+    @property
+    def location(self):
+        """Retrieve location configured for this bucket.
+
+        See https://cloud.google.com/storage/docs/json_api/v1/buckets and
+        https://cloud.google.com/storage/docs/bucket-locations
+
+        Returns ``None`` if the property has not been set before creation,
+        or if the bucket's resource has not been loaded from the server.
+        :rtype: str or ``NoneType``
+        """
+        return self._location
+
+    @location.setter
+    def location(self, value):
+        """(Deprecated) Set `Bucket.location`
+
+        This can only be set at bucket **creation** time.
+
+        See https://cloud.google.com/storage/docs/json_api/v1/buckets and
+        https://cloud.google.com/storage/docs/bucket-locations
+
+        .. warning::
+
+            Assignment to 'Bucket.location' is deprecated, as it is only
+            valid before the bucket is created. Instead, pass the location
+            to `Bucket.create`.
+        """
+        warnings.warn(
+            _LOCATION_SETTER_MESSAGE, DeprecationWarning, stacklevel=2)
+        self._location = value
 
     def get_logging(self):
         """Return info about access logging for this bucket.
@@ -948,8 +1258,8 @@ class Bucket(_PropertyMixin):
         See https://cloud.google.com/storage/docs/json_api/v1/buckets
 
         :rtype: int or ``NoneType``
-        :returns: The metageneration of the bucket or ``None`` if the property
-                  is not set locally.
+        :returns: The metageneration of the bucket or ``None`` if the bucket's
+                  resource has not been loaded from the server.
         """
         metageneration = self._properties.get('metageneration')
         if metageneration is not None:
@@ -962,8 +1272,8 @@ class Bucket(_PropertyMixin):
         See https://cloud.google.com/storage/docs/json_api/v1/buckets
 
         :rtype: dict or ``NoneType``
-        :returns: Mapping of owner's role/ID. If the property is not set
-                  locally, returns ``None``.
+        :returns: Mapping of owner's role/ID. Returns ``None`` if the bucket's
+                  resource has not been loaded from the server.
         """
         return copy.deepcopy(self._properties.get('owner'))
 
@@ -974,12 +1284,72 @@ class Bucket(_PropertyMixin):
         See https://cloud.google.com/storage/docs/json_api/v1/buckets
 
         :rtype: int or ``NoneType``
-        :returns: The project number that owns the bucket or ``None`` if the
-                  property is not set locally.
+        :returns: The project number that owns the bucket or ``None`` if
+                  the bucket's resource has not been loaded from the server.
         """
         project_number = self._properties.get('projectNumber')
         if project_number is not None:
             return int(project_number)
+
+    @property
+    def retention_policy_effective_time(self):
+        """Retrieve the effective time of the bucket's retention policy.
+
+        :rtype: datetime.datetime or ``NoneType``
+        :returns: point-in time at which the bucket's retention policy is
+                  effective, or ``None`` if the property is not
+                  set locally.
+        """
+        policy = self._properties.get('retentionPolicy')
+        if policy is not None:
+            timestamp = policy.get('effectiveTime')
+            if timestamp is not None:
+                return _rfc3339_to_datetime(timestamp)
+
+    @property
+    def retention_policy_locked(self):
+        """Retrieve whthere the bucket's retention policy is locked.
+
+        :rtype: bool
+        :returns: True if the bucket's policy is locked, or else False
+                  if the policy is not locked, or the property is not
+                  set locally.
+        """
+        policy = self._properties.get('retentionPolicy')
+        if policy is not None:
+            return policy.get('isLocked')
+
+    @property
+    def retention_period(self):
+        """Retrieve or set the retention period for items in the bucket.
+
+        :rtype: int or ``NoneType``
+        :returns: number of seconds to retain items after upload or release
+                  from event-based lock, or ``None`` if the property is not
+                  set locally.
+        """
+        policy = self._properties.get('retentionPolicy')
+        if policy is not None:
+            period = policy.get('retentionPeriod')
+            if period is not None:
+                return int(period)
+
+    @retention_period.setter
+    def retention_period(self, value):
+        """Set the retention period for items in the bucket.
+
+        :type value: int
+        :param value:
+            number of seconds to retain items after upload or release from
+            event-based lock.
+
+        :raises ValueError: if the bucket's retention policy is locked.
+        """
+        policy = self._properties.setdefault('retentionPolicy', {})
+        if value is not None:
+            value = str(value)
+        policy['retentionPeriod'] = value
+        self._patch_property('retentionPolicy', policy)
 
     @property
     def self_link(self):
@@ -988,8 +1358,8 @@ class Bucket(_PropertyMixin):
         See https://cloud.google.com/storage/docs/json_api/v1/buckets
 
         :rtype: str or ``NoneType``
-        :returns: The self link for the bucket or ``None`` if the property is
-                  not set locally.
+        :returns: The self link for the bucket or ``None`` if
+                  the bucket's resource has not been loaded from the server.
         """
         return self._properties.get('selfLink')
 
@@ -1031,7 +1401,8 @@ class Bucket(_PropertyMixin):
 
         :rtype: :class:`datetime.datetime` or ``NoneType``
         :returns: Datetime object parsed from RFC3339 valid timestamp, or
-                  ``None`` if the property is not set locally.
+                  ``None`` if the bucket's resource has not been loaded
+                  from the server.
         """
         value = self._properties.get('timeCreated')
         if value is not None:
@@ -1069,9 +1440,8 @@ class Bucket(_PropertyMixin):
     def requester_pays(self):
         """Does the requester pay for API requests for this bucket?
 
-        .. note::
-
-           No public docs exist yet for the "requester pays" feature.
+        See https://cloud.google.com/storage/docs/requester-pays for
+        details.
 
         :setter: Update whether requester pays for this bucket.
         :getter: Query whether requester pays for this bucket.
@@ -1244,11 +1614,7 @@ class Bucket(_PropertyMixin):
         return resp.get('permissions', [])
 
     def make_public(self, recursive=False, future=False, client=None):
-        """Make a bucket public.
-
-        If ``recursive=True`` and the bucket contains more than 256
-        objects / blobs this will cowardly refuse to make the objects public.
-        This is to prevent extremely long runtime of this method.
+        """Update bucket's ACL, granting read access to anonymous users.
 
         :type recursive: bool
         :param recursive: If True, this will make all blobs inside the bucket
@@ -1262,6 +1628,14 @@ class Bucket(_PropertyMixin):
                       ``NoneType``
         :param client: Optional. The client to use.  If not passed, falls back
                        to the ``client`` stored on the current bucket.
+
+        :raises ValueError:
+            If ``recursive`` is True, and the bucket contains more than 256
+            blobs.  This is to prevent extremely long runtime of this
+            method.  For such buckets, iterate over the blobs returned by
+            :meth:`list_blobs` and call
+            :meth:`~google.cloud.storage.blob.Blob.make_public`
+            for each blob.
         """
         self.acl.all().grant_read()
         self.acl.save(client=client)
@@ -1280,15 +1654,69 @@ class Bucket(_PropertyMixin):
                 client=client))
             if len(blobs) > self._MAX_OBJECTS_FOR_ITERATION:
                 message = (
-                    'Refusing to make public recursively with more than '
-                    '%d objects. If you actually want to make every object '
-                    'in this bucket public, please do it on the objects '
-                    'yourself.'
+                    "Refusing to make public recursively with more than "
+                    "%d objects. If you actually want to make every object "
+                    "in this bucket public, iterate through the blobs "
+                    "returned by 'Bucket.list_blobs()' and call "
+                    "'make_public' on each one."
                 ) % (self._MAX_OBJECTS_FOR_ITERATION,)
                 raise ValueError(message)
 
             for blob in blobs:
                 blob.acl.all().grant_read()
+                blob.acl.save(client=client)
+
+    def make_private(self, recursive=False, future=False, client=None):
+        """Update bucket's ACL, revoking read access for anonymous users.
+
+        :type recursive: bool
+        :param recursive: If True, this will make all blobs inside the bucket
+                          private as well.
+
+        :type future: bool
+        :param future: If True, this will make all objects created in the
+                       future private as well.
+
+        :type client: :class:`~google.cloud.storage.client.Client` or
+                      ``NoneType``
+        :param client: Optional. The client to use.  If not passed, falls back
+                       to the ``client`` stored on the current bucket.
+
+        :raises ValueError:
+            If ``recursive`` is True, and the bucket contains more than 256
+            blobs.  This is to prevent extremely long runtime of this
+            method.  For such buckets, iterate over the blobs returned by
+            :meth:`list_blobs` and call
+            :meth:`~google.cloud.storage.blob.Blob.make_private`
+            for each blob.
+        """
+        self.acl.all().revoke_read()
+        self.acl.save(client=client)
+
+        if future:
+            doa = self.default_object_acl
+            if not doa.loaded:
+                doa.reload(client=client)
+            doa.all().revoke_read()
+            doa.save(client=client)
+
+        if recursive:
+            blobs = list(self.list_blobs(
+                projection='full',
+                max_results=self._MAX_OBJECTS_FOR_ITERATION + 1,
+                client=client))
+            if len(blobs) > self._MAX_OBJECTS_FOR_ITERATION:
+                message = (
+                    'Refusing to make private recursively with more than '
+                    '%d objects. If you actually want to make every object '
+                    "in this bucket private, iterate through the blobs "
+                    "returned by 'Bucket.list_blobs()' and call "
+                    "'make_private' on each one."
+                ) % (self._MAX_OBJECTS_FOR_ITERATION,)
+                raise ValueError(message)
+
+            for blob in blobs:
+                blob.acl.all().revoke_read()
                 blob.acl.save(client=client)
 
     def generate_upload_policy(
@@ -1355,3 +1783,37 @@ class Bucket(_PropertyMixin):
         }
 
         return fields
+
+    def lock_retention_policy(self, client=None):
+        """Lock the bucket's retention policy.
+
+        :raises ValueError:
+            if the bucket has no metageneration (i.e., new or never reloaded);
+            if the bucket has no retention policy assigned;
+            if the bucket's retention policy is already locked.
+        """
+        if 'metageneration' not in self._properties:
+            raise ValueError(
+                "Bucket has no retention policy assigned: try 'reload'?")
+
+        policy = self._properties.get('retentionPolicy')
+
+        if policy is None:
+            raise ValueError(
+                "Bucket has no retention policy assigned: try 'reload'?")
+
+        if policy.get('isLocked'):
+            raise ValueError("Bucket's retention policy is already locked.")
+
+        client = self._require_client(client)
+
+        query_params = {'ifMetagenerationMatch': self.metageneration}
+
+        if self.user_project is not None:
+            query_params['userProject'] = self.user_project
+
+        path = '/b/{}/lockRetentionPolicy'.format(self.name)
+        api_response = client._connection.api_request(
+            method='POST', path=path, query_params=query_params,
+            _target_object=self)
+        self._set_properties(api_response)

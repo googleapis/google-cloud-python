@@ -26,14 +26,12 @@ class Test_entry_from_resource(unittest.TestCase):
 
         return entry_from_resource(resource, client, loggers)
 
-    def test_unknown_type(self):
-        with self.assertRaises(ValueError):
-            self._call_fut({}, None, {})
-
     def _payload_helper(self, key, class_name):
         import mock
 
-        resource = {key: 'yup'}
+        resource = {}
+        if key is not None:
+            resource[key] = 'yup'
         client = object()
         loggers = {}
         mock_class = EntryMock()
@@ -44,6 +42,9 @@ class Test_entry_from_resource(unittest.TestCase):
 
         self.assertIs(result, mock_class.sentinel)
         self.assertEqual(mock_class.called, (resource, client, loggers))
+
+    def test_wo_payload(self):
+        self._payload_helper(None, 'LogEntry')
 
     def test_text_payload(self):
         self._payload_helper('textPayload', 'TextEntry')
@@ -105,15 +106,23 @@ class Test_retrieve_metadata_server(unittest.TestCase):
         self.assertIsNone(metadata)
 
     def test_request_exception(self):
+        import requests
+
         metadata_key = 'test_url_cannot_connect'
         metadata_url = 'http://metadata.invalid/'
 
-        patch = mock.patch(
+        requests_get_mock = mock.Mock(spec=['__call__'])
+        requests_get_mock.side_effect = requests.exceptions.RequestException
+
+        requests_get_patch = mock.patch('requests.get', requests_get_mock)
+
+        url_patch = mock.patch(
             'google.cloud.logging._helpers.METADATA_URL',
             new=metadata_url)
 
-        with patch:
-            metadata = self._call_fut(metadata_key)
+        with requests_get_patch:
+            with url_patch:
+                metadata = self._call_fut(metadata_key)
 
         self.assertIsNone(metadata)
 

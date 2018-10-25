@@ -28,6 +28,7 @@ pip-log.txt
 .nox
 .tox
 .cache
+.pytest_cache
 htmlcov
 
 # Translations
@@ -44,9 +45,13 @@ htmlcov
 # JetBrains
 .idea
 
+# VS Code
+.vscode
+
 # Built documentation
 docs/_build
 docs/_build_doc2dash
+bigquery/docs/generated
 
 # Virtual environment
 env/

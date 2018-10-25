@@ -52,32 +52,29 @@ VALUES = list(0.1 * i for i in range(DIMENSIONS[1]))
 ARRAY = [VALUES] * DIMENSIONS[0]
 
 
-def parse_timestamps():  # pragma: NO COVER
-    import datetime
-    from google.cloud._helpers import _RFC3339_MICROS
+def parse_timestamps():
+    from google.api_core import datetime_helpers
 
-    return [datetime.datetime.strptime(t, _RFC3339_MICROS)
-            for t in TIMESTAMPS]
+    return [
+        datetime_helpers.from_rfc3339(t).replace(tzinfo=None)
+        for t in TIMESTAMPS]
 
 
-def generate_query_results():  # pragma: NO COVER
-    from google.cloud.monitoring.metric import Metric
-    from google.cloud.monitoring.resource import Resource
-    from google.cloud.monitoring.timeseries import Point
-    from google.cloud.monitoring.timeseries import TimeSeries
+def generate_query_results():
+    from google.cloud.monitoring_v3 import types
 
     def P(timestamp, value):
-        return Point(
-            start_time=timestamp,
-            end_time=timestamp,
-            value=value,
-        )
+        interval = types.TimeInterval()
+        interval.start_time.FromJsonString(timestamp)
+        interval.end_time.FromJsonString(timestamp)
+        return types.Point(interval=interval, value={'double_value': value})
 
     for metric_labels, resource_labels, value in zip(
             METRIC_LABELS, RESOURCE_LABELS, VALUES):
-        yield TimeSeries(
-            metric=Metric(type=METRIC_TYPE, labels=metric_labels),
-            resource=Resource(type=RESOURCE_TYPE, labels=resource_labels),
+        yield types.TimeSeries(
+            metric=types.Metric(type=METRIC_TYPE, labels=metric_labels),
+            resource=types.MonitoredResource(
+                type=RESOURCE_TYPE, labels=resource_labels),
             metric_kind=METRIC_KIND,
             value_type=VALUE_TYPE,
             points=[P(t, value) for t in TIMESTAMPS],
@@ -85,10 +82,10 @@ def generate_query_results():  # pragma: NO COVER
 
 
 @unittest.skipUnless(HAVE_PANDAS, 'No pandas')
-class Test__build_dataframe(unittest.TestCase):  # pragma: NO COVER
+class Test__build_dataframe(unittest.TestCase):
 
     def _call_fut(self, *args, **kwargs):
-        from google.cloud.monitoring._dataframe import _build_dataframe
+        from google.cloud.monitoring_v3._dataframe import _build_dataframe
 
         return _build_dataframe(*args, **kwargs)
 
@@ -107,7 +104,9 @@ class Test__build_dataframe(unittest.TestCase):  # pragma: NO COVER
         self.assertEqual(dataframe.shape, DIMENSIONS)
         self.assertEqual(dataframe.values.tolist(), ARRAY)
 
-        self.assertEqual(list(dataframe.columns), INSTANCE_NAMES)
+        expected_headers = [(instance_name,)
+                            for instance_name in INSTANCE_NAMES]
+        self.assertEqual(list(dataframe.columns), expected_headers)
         self.assertIsNone(dataframe.columns.name)
 
         self.assertEqual(list(dataframe.index), parse_timestamps())
@@ -141,9 +140,10 @@ class Test__build_dataframe(unittest.TestCase):  # pragma: NO COVER
         self.assertEqual(dataframe.shape, DIMENSIONS)
         self.assertEqual(dataframe.values.tolist(), ARRAY)
 
-        self.assertEqual(list(dataframe.columns), INSTANCE_IDS)
+        expected_headers = [(instance_id,) for instance_id in INSTANCE_IDS]
+        self.assertEqual(list(dataframe.columns), expected_headers)
         self.assertEqual(dataframe.columns.names, NAMES)
-        self.assertEqual(dataframe.columns.name, NAME)
+        self.assertIsNone(dataframe.columns.name)
 
         self.assertEqual(list(dataframe.index), parse_timestamps())
         self.assertIsNone(dataframe.index.name)
@@ -192,7 +192,7 @@ class Test__build_dataframe(unittest.TestCase):  # pragma: NO COVER
         dataframe = self._call_fut([], labels=NAMES)
         self.assertEqual(dataframe.shape, (0, 0))
         self.assertEqual(dataframe.columns.names, NAMES)
-        self.assertEqual(dataframe.columns.name, NAME)
+        self.assertIsNone(dataframe.columns.name)
         self.assertIsNone(dataframe.index.name)
         self.assertIsInstance(dataframe.index, pandas.DatetimeIndex)
 
@@ -202,7 +202,7 @@ class Test__build_dataframe(unittest.TestCase):  # pragma: NO COVER
         dataframe = self._call_fut([])
         self.assertEqual(dataframe.shape, (0, 0))
         self.assertEqual(dataframe.columns.names, NAMES)
-        self.assertEqual(dataframe.columns.name, NAME)
+        self.assertIsNone(dataframe.columns.name)
         self.assertIsNone(dataframe.index.name)
         self.assertIsInstance(dataframe.index, pandas.DatetimeIndex)
 
@@ -210,7 +210,8 @@ class Test__build_dataframe(unittest.TestCase):  # pragma: NO COVER
 class Test__sorted_resource_labels(unittest.TestCase):
 
     def _call_fut(self, labels):
-        from google.cloud.monitoring._dataframe import _sorted_resource_labels
+        from google.cloud.monitoring_v3._dataframe import (
+            _sorted_resource_labels)
 
         return _sorted_resource_labels(labels)
 
@@ -218,13 +219,13 @@ class Test__sorted_resource_labels(unittest.TestCase):
         self.assertEqual(self._call_fut([]), [])
 
     def test_sorted(self):
-        from google.cloud.monitoring._dataframe import TOP_RESOURCE_LABELS
+        from google.cloud.monitoring_v3._dataframe import TOP_RESOURCE_LABELS
 
         EXPECTED = TOP_RESOURCE_LABELS + ('other-1', 'other-2')
         self.assertSequenceEqual(self._call_fut(EXPECTED), EXPECTED)
 
     def test_reversed(self):
-        from google.cloud.monitoring._dataframe import TOP_RESOURCE_LABELS
+        from google.cloud.monitoring_v3._dataframe import TOP_RESOURCE_LABELS
 
         EXPECTED = TOP_RESOURCE_LABELS + ('other-1', 'other-2')
         INPUT = list(reversed(EXPECTED))

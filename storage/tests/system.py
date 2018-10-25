@@ -14,6 +14,7 @@
 
 import os
 import tempfile
+import re
 import time
 import unittest
 
@@ -23,12 +24,17 @@ import six
 from google.cloud import exceptions
 from google.cloud import storage
 from google.cloud.storage._helpers import _base64_md5hash
+from google.cloud.storage.bucket import LifecycleRuleDelete
+from google.cloud.storage.bucket import LifecycleRuleSetStorageClass
+from google.cloud import kms
 
 from test_utils.retry import RetryErrors
 from test_utils.system import unique_resource_id
 
 
 USER_PROJECT = os.environ.get('GOOGLE_CLOUD_TESTS_USER_PROJECT')
+RUNNING_IN_VPCSC = os.getenv(
+    'GOOGLE_CLOUD_TESTS_IN_VPCSC', '').lower() == 'true'
 
 
 def _bad_copy(bad_request):
@@ -39,6 +45,8 @@ def _bad_copy(bad_request):
 
 
 retry_429 = RetryErrors(exceptions.TooManyRequests)
+retry_429_503 = RetryErrors([
+    exceptions.TooManyRequests, exceptions.ServiceUnavailable])
 retry_bad_copy = RetryErrors(exceptions.BadRequest,
                              error_predicate=_bad_copy)
 
@@ -76,8 +84,28 @@ def setUpModule():
 
 
 def tearDownModule():
-    retry = RetryErrors(exceptions.Conflict)
+    errors = (exceptions.Conflict, exceptions.TooManyRequests)
+    retry = RetryErrors(errors, max_tries=6)
     retry(Config.TEST_BUCKET.delete)(force=True)
+
+
+class TestClient(unittest.TestCase):
+
+    def test_get_service_account_email(self):
+        domain = 'gs-project-accounts.iam.gserviceaccount.com'
+
+        email = Config.CLIENT.get_service_account_email()
+
+        new_style = re.compile(
+            r'service-(?P<projnum>[^@]+)@' + domain)
+        old_style = re.compile(
+            r'{}@{}'.format(Config.CLIENT.project, domain))
+        patterns = [new_style, old_style]
+        matches = [pattern.match(email) for pattern in patterns]
+
+        self.assertTrue(any(
+            match for match in matches if match is not None
+        ))
 
 
 class TestStorageBuckets(unittest.TestCase):
@@ -94,9 +122,36 @@ class TestStorageBuckets(unittest.TestCase):
         new_bucket_name = 'a-new-bucket' + unique_resource_id('-')
         self.assertRaises(exceptions.NotFound,
                           Config.CLIENT.get_bucket, new_bucket_name)
-        created = Config.CLIENT.create_bucket(new_bucket_name)
+        created = retry_429(Config.CLIENT.create_bucket)(new_bucket_name)
         self.case_buckets_to_delete.append(new_bucket_name)
         self.assertEqual(created.name, new_bucket_name)
+
+    def test_lifecycle_rules(self):
+        new_bucket_name = 'w-lifcycle-rules' + unique_resource_id('-')
+        self.assertRaises(exceptions.NotFound,
+                          Config.CLIENT.get_bucket, new_bucket_name)
+        bucket = Config.CLIENT.bucket(new_bucket_name)
+        bucket.add_lifecycle_delete_rule(age=42)
+        bucket.add_lifecycle_set_storage_class_rule(
+            'COLDLINE', is_live=False, matches_storage_class=['NEARLINE'])
+
+        expected_rules = [
+            LifecycleRuleDelete(age=42),
+            LifecycleRuleSetStorageClass(
+                'COLDLINE',
+                is_live=False, matches_storage_class=['NEARLINE']),
+        ]
+
+        retry_429(bucket.create)(location='us')
+
+        self.case_buckets_to_delete.append(new_bucket_name)
+        self.assertEqual(bucket.name, new_bucket_name)
+        self.assertEqual(list(bucket.lifecycle_rules), expected_rules)
+
+        bucket.clear_lifecyle_rules()
+        bucket.patch()
+
+        self.assertEqual(list(bucket.lifecycle_rules), [])
 
     def test_list_buckets(self):
         buckets_to_create = [
@@ -180,7 +235,7 @@ class TestStorageBuckets(unittest.TestCase):
     @unittest.skipUnless(USER_PROJECT, 'USER_PROJECT not set in environment.')
     def test_bucket_acls_iam_with_user_project(self):
         new_bucket_name = 'acl-w-user-project' + unique_resource_id('-')
-        created = Config.CLIENT.create_bucket(
+        Config.CLIENT.create_bucket(
             new_bucket_name, requester_pays=True)
         self.case_buckets_to_delete.append(new_bucket_name)
 
@@ -408,6 +463,29 @@ class TestStorageWriteFiles(TestStorageFiles):
         acl.save()
         self.assertFalse(acl.has_entity('allUsers'))
 
+    def test_upload_blob_acl(self):
+        control = self.bucket.blob('logo')
+        control_data = self.FILES['logo']
+
+        blob = self.bucket.blob('SmallFile')
+        file_data = self.FILES['simple']
+
+        try:
+            control.upload_from_filename(control_data['path'])
+            blob.upload_from_filename(file_data['path'],
+                                      predefined_acl='publicRead')
+        finally:
+            self.case_blobs_to_delete.append(blob)
+            self.case_blobs_to_delete.append(control)
+
+        control_acl = control.acl
+        self.assertNotIn('READER', control_acl.all().get_roles())
+        acl = blob.acl
+        self.assertIn('READER', acl.all().get_roles())
+        acl.all().revoke_read()
+        self.assertSequenceEqual(acl.all().get_roles(), set([]))
+        self.assertEqual(control_acl.all().get_roles(), acl.all().get_roles())
+
     def test_write_metadata(self):
         filename = self.FILES['logo']['path']
         blob_name = os.path.basename(filename)
@@ -455,6 +533,7 @@ class TestStorageWriteFiles(TestStorageFiles):
 
 class TestUnicode(unittest.TestCase):
 
+    @unittest.skipIf(RUNNING_IN_VPCSC, 'Test is not VPCSC compatible.')
     def test_fetch_object_and_check_content(self):
         client = storage.Client()
         bucket = client.bucket('storage-library-test-bucket')
@@ -554,19 +633,23 @@ class TestStoragePseudoHierarchy(TestStorageFiles):
         # Make sure bucket empty before beginning.
         _empty_bucket(cls.bucket)
 
+        cls.suite_blobs_to_delete = []
         simple_path = cls.FILES['simple']['path']
-        blob = storage.Blob(cls.FILENAMES[0], bucket=cls.bucket)
-        blob.upload_from_filename(simple_path)
-        cls.suite_blobs_to_delete = [blob]
-        for filename in cls.FILENAMES[1:]:
-            new_blob = retry_bad_copy(cls.bucket.copy_blob)(
-                blob, cls.bucket, filename)
-            cls.suite_blobs_to_delete.append(new_blob)
+        for filename in cls.FILENAMES:
+            blob = storage.Blob(filename, bucket=cls.bucket)
+            blob.upload_from_filename(simple_path)
+            cls.suite_blobs_to_delete.append(blob)
 
     @classmethod
     def tearDownClass(cls):
         for blob in cls.suite_blobs_to_delete:
             blob.delete()
+
+    @RetryErrors(unittest.TestCase.failureException)
+    def test_blob_get_w_delimiter(self):
+        for filename in self.FILENAMES:
+            blob = self.bucket.blob(filename)
+            self.assertTrue(blob.exists(), filename)
 
     @RetryErrors(unittest.TestCase.failureException)
     def test_root_level_w_delimiter(self):
@@ -647,6 +730,30 @@ class TestStorageSignURLs(TestStorageFiles):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.content, self.LOCAL_FILE)
 
+    def test_create_signed_read_url_lowercase_method(self):
+        blob = self.bucket.blob('LogoToSign.jpg')
+        expiration = int(time.time() + 10)
+        signed_url = blob.generate_signed_url(expiration, method='get',
+                                              client=Config.CLIENT)
+
+        response = requests.get(signed_url)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.content, self.LOCAL_FILE)
+
+    def test_create_signed_read_url_w_non_ascii_name(self):
+        blob = self.bucket.blob(u'Caf\xe9.txt')
+        payload = b'Test signed URL for blob w/ non-ASCII name'
+        blob.upload_from_string(payload)
+        self.case_blobs_to_delete.append(blob)
+
+        expiration = int(time.time() + 10)
+        signed_url = blob.generate_signed_url(expiration, method='GET',
+                                              client=Config.CLIENT)
+
+        response = requests.get(signed_url)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.content, payload)
+
     def test_create_signed_delete_url(self):
         blob = self.bucket.blob('LogoToSign.jpg')
         expiration = int(time.time() + 283473274)
@@ -682,6 +789,26 @@ class TestStorageCompose(TestStorageFiles):
         destination.compose([source_1, source_2])
         self.case_blobs_to_delete.append(destination)
 
+        composed = destination.download_as_string()
+        self.assertEqual(composed, SOURCE_1 + SOURCE_2)
+
+    def test_compose_create_new_blob_wo_content_type(self):
+        SOURCE_1 = b'AAA\n'
+        source_1 = self.bucket.blob('source-1')
+        source_1.upload_from_string(SOURCE_1)
+        self.case_blobs_to_delete.append(source_1)
+
+        SOURCE_2 = b'BBB\n'
+        source_2 = self.bucket.blob('source-2')
+        source_2.upload_from_string(SOURCE_2)
+        self.case_blobs_to_delete.append(source_2)
+
+        destination = self.bucket.blob('destination')
+
+        destination.compose([source_1, source_2])
+        self.case_blobs_to_delete.append(destination)
+
+        self.assertIsNone(destination.content_type)
         composed = destination.download_as_string()
         self.assertEqual(composed, SOURCE_1 + SOURCE_2)
 
@@ -849,7 +976,7 @@ class TestStorageNotificationCRUD(unittest.TestCase):
         return 'projects/{}/topics/{}'.format(
             Config.CLIENT.project, self.TOPIC_NAME)
 
-    def _intialize_topic(self):
+    def _initialize_topic(self):
         try:
             from google.cloud.pubsub_v1 import PublisherClient
         except ImportError:
@@ -860,15 +987,13 @@ class TestStorageNotificationCRUD(unittest.TestCase):
         binding = policy.bindings.add()
         binding.role = 'roles/pubsub.publisher'
         binding.members.append(
-            'serviceAccount:{}'
-            '@gs-project-accounts.iam.gserviceaccount.com'.format(
-                Config.CLIENT.project))
+            'serviceAccount:{}'.format(
+                Config.CLIENT.get_service_account_email()))
         self.publisher_client.set_iam_policy(self.topic_path, policy)
-
 
     def setUp(self):
         self.case_buckets_to_delete = []
-        self._intialize_topic()
+        self._initialize_topic()
 
     def tearDown(self):
         retry_429(self.publisher_client.delete_topic)(self.topic_path)
@@ -898,7 +1023,7 @@ class TestStorageNotificationCRUD(unittest.TestCase):
         self.case_buckets_to_delete.append(new_bucket_name)
         self.assertEqual(list(bucket.list_notifications()), [])
         notification = bucket.notification(self.TOPIC_NAME)
-        retry_429(notification.create)()
+        retry_429_503(notification.create)()
         try:
             self.assertTrue(notification.exists())
             self.assertIsNotNone(notification.notification_id)
@@ -919,7 +1044,7 @@ class TestStorageNotificationCRUD(unittest.TestCase):
             blob_name_prefix=self.BLOB_NAME_PREFIX,
             payload_format=self.payload_format(),
         )
-        retry_429(notification.create)()
+        retry_429_503(notification.create)()
         try:
             self.assertTrue(notification.exists())
             self.assertIsNotNone(notification.notification_id)
@@ -936,7 +1061,7 @@ class TestStorageNotificationCRUD(unittest.TestCase):
     @unittest.skipUnless(USER_PROJECT, 'USER_PROJECT not set in environment.')
     def test_notification_w_user_project(self):
         new_bucket_name = 'notification-minimal' + unique_resource_id('-')
-        bucket = retry_429(Config.CLIENT.create_bucket)(
+        retry_429(Config.CLIENT.create_bucket)(
             new_bucket_name, requester_pays=True)
         self.case_buckets_to_delete.append(new_bucket_name)
         with_user_project = Config.CLIENT.bucket(
@@ -958,9 +1083,367 @@ class TestAnonymousClient(unittest.TestCase):
 
     PUBLIC_BUCKET = 'gcp-public-data-landsat'
 
+    @unittest.skipIf(RUNNING_IN_VPCSC, 'Test is not VPCSC compatible.')
     def test_access_to_public_bucket(self):
         anonymous = storage.Client.create_anonymous_client()
         bucket = anonymous.bucket(self.PUBLIC_BUCKET)
         blob, = bucket.list_blobs(max_results=1)
         with tempfile.TemporaryFile() as stream:
             blob.download_to_file(stream)
+
+
+class TestKMSIntegration(TestStorageFiles):
+
+    FILENAMES = (
+        'file01.txt',
+    )
+
+    KEYRING_NAME = 'gcs-test'
+    KEY_NAME = 'gcs-test'
+    ALT_KEY_NAME = 'gcs-test-alternate'
+
+    def _kms_key_name(self, key_name=None):
+        if key_name is None:
+            key_name = self.KEY_NAME
+
+        return (
+            "projects/{}/"
+            "locations/{}/"
+            "keyRings/{}/"
+            "cryptoKeys/{}"
+        ).format(
+            Config.CLIENT.project,
+            self.bucket.location.lower(),
+            self.KEYRING_NAME,
+            key_name,
+        )
+
+    @classmethod
+    def setUpClass(cls):
+        super(TestKMSIntegration, cls).setUpClass()
+
+    def setUp(self):
+        super(TestKMSIntegration, self).setUp()
+        client = kms.KeyManagementServiceClient()
+        project = Config.CLIENT.project
+        location = self.bucket.location.lower()
+        keyring_name = self.KEYRING_NAME
+        purpose = kms.enums.CryptoKey.CryptoKeyPurpose.ENCRYPT_DECRYPT
+
+        # If the keyring doesn't exist create it.
+        keyring_path = client.key_ring_path(project, location, keyring_name)
+
+        try:
+            client.get_key_ring(keyring_path)
+        except exceptions.NotFound:
+            parent = client.location_path(project, location)
+            client.create_key_ring(parent, keyring_name, {})
+
+            # Mark this service account as an owner of the new keyring
+            service_account = Config.CLIENT.get_service_account_email()
+            policy = {
+                "bindings": [
+                    {
+                        "role": "roles/cloudkms.cryptoKeyEncrypterDecrypter",
+                        "members": [
+                            "serviceAccount:" + service_account,
+                        ]
+                    }
+                ]
+            }
+            client.set_iam_policy(keyring_path, policy)
+
+        # Populate the keyring with the keys we use in the tests
+        key_names = [
+            'gcs-test',
+            'gcs-test-alternate',
+            'explicit-kms-key-name',
+            'default-kms-key-name',
+            'override-default-kms-key-name',
+            'alt-default-kms-key-name',
+        ]
+        for key_name in key_names:
+            key_path = client.crypto_key_path(
+                project, location, keyring_name, key_name)
+            try:
+                client.get_crypto_key(key_path)
+            except exceptions.NotFound:
+                key = {'purpose': purpose}
+                client.create_crypto_key(keyring_path, key_name, key)
+
+    def test_blob_w_explicit_kms_key_name(self):
+        BLOB_NAME = 'explicit-kms-key-name'
+        file_data = self.FILES['simple']
+        kms_key_name = self._kms_key_name()
+        blob = self.bucket.blob(BLOB_NAME, kms_key_name=kms_key_name)
+        blob.upload_from_filename(file_data['path'])
+        self.case_blobs_to_delete.append(blob)
+        with open(file_data['path'], 'rb') as _file_data:
+            self.assertEqual(blob.download_as_string(), _file_data.read())
+        # We don't know the current version of the key.
+        self.assertTrue(blob.kms_key_name.startswith(kms_key_name))
+
+        listed, = list(self.bucket.list_blobs())
+        self.assertTrue(listed.kms_key_name.startswith(kms_key_name))
+
+    def test_bucket_w_default_kms_key_name(self):
+        BLOB_NAME = 'default-kms-key-name'
+        OVERRIDE_BLOB_NAME = 'override-default-kms-key-name'
+        ALT_BLOB_NAME = 'alt-default-kms-key-name'
+        CLEARTEXT_BLOB_NAME = 'cleartext'
+
+        file_data = self.FILES['simple']
+
+        with open(file_data['path'], 'rb') as _file_data:
+            contents = _file_data.read()
+
+        kms_key_name = self._kms_key_name()
+        self.bucket.default_kms_key_name = kms_key_name
+        self.bucket.patch()
+        self.assertEqual(self.bucket.default_kms_key_name, kms_key_name)
+
+        defaulted_blob = self.bucket.blob(BLOB_NAME)
+        defaulted_blob.upload_from_filename(file_data['path'])
+        self.case_blobs_to_delete.append(defaulted_blob)
+
+        self.assertEqual(defaulted_blob.download_as_string(), contents)
+        # We don't know the current version of the key.
+        self.assertTrue(defaulted_blob.kms_key_name.startswith(kms_key_name))
+
+        alt_kms_key_name = self._kms_key_name(self.ALT_KEY_NAME)
+
+        override_blob = self.bucket.blob(
+            OVERRIDE_BLOB_NAME, kms_key_name=alt_kms_key_name)
+        override_blob.upload_from_filename(file_data['path'])
+        self.case_blobs_to_delete.append(override_blob)
+
+        self.assertEqual(override_blob.download_as_string(), contents)
+        # We don't know the current version of the key.
+        self.assertTrue(
+            override_blob.kms_key_name.startswith(alt_kms_key_name))
+
+        self.bucket.default_kms_key_name = alt_kms_key_name
+        self.bucket.patch()
+
+        alt_blob = self.bucket.blob(ALT_BLOB_NAME)
+        alt_blob.upload_from_filename(file_data['path'])
+        self.case_blobs_to_delete.append(alt_blob)
+
+        self.assertEqual(alt_blob.download_as_string(), contents)
+        # We don't know the current version of the key.
+        self.assertTrue(alt_blob.kms_key_name.startswith(alt_kms_key_name))
+
+        self.bucket.default_kms_key_name = None
+        self.bucket.patch()
+
+        cleartext_blob = self.bucket.blob(CLEARTEXT_BLOB_NAME)
+        cleartext_blob.upload_from_filename(file_data['path'])
+        self.case_blobs_to_delete.append(cleartext_blob)
+
+        self.assertEqual(cleartext_blob.download_as_string(), contents)
+        self.assertIsNone(cleartext_blob.kms_key_name)
+
+    def test_rewrite_rotate_csek_to_cmek(self):
+        BLOB_NAME = 'rotating-keys'
+        file_data = self.FILES['simple']
+
+        SOURCE_KEY = os.urandom(32)
+        source = self.bucket.blob(BLOB_NAME, encryption_key=SOURCE_KEY)
+        source.upload_from_filename(file_data['path'])
+        self.case_blobs_to_delete.append(source)
+        source_data = source.download_as_string()
+
+        kms_key_name = self._kms_key_name()
+
+        # We can't verify it, but ideally we would check that the following
+        # URL was resolvable with our credentials
+        # KEY_URL = 'https://cloudkms.googleapis.com/v1/{}'.format(
+        #     kms_key_name)
+
+        dest = self.bucket.blob(BLOB_NAME, kms_key_name=kms_key_name)
+        token, rewritten, total = dest.rewrite(source)
+
+        while token is not None:
+            token, rewritten, total = dest.rewrite(source, token=token)
+
+        # Not adding 'dest' to 'self.case_blobs_to_delete':  it is the
+        # same object as 'source'.
+
+        self.assertIsNone(token)
+        self.assertEqual(rewritten, len(source_data))
+        self.assertEqual(total, len(source_data))
+
+        self.assertEqual(dest.download_as_string(), source_data)
+
+
+class TestRetentionPolicy(unittest.TestCase):
+
+    def setUp(self):
+        self.case_buckets_to_delete = []
+
+    def tearDown(self):
+        for bucket_name in self.case_buckets_to_delete:
+            bucket = Config.CLIENT.bucket(bucket_name)
+            retry_429(bucket.delete)()
+
+    def test_bucket_w_retention_period(self):
+        import datetime
+        from google.api_core import exceptions
+
+        period_secs = 10
+
+        new_bucket_name = 'w-retention-period' + unique_resource_id('-')
+        bucket = Config.CLIENT.create_bucket(new_bucket_name)
+        self.case_buckets_to_delete.append(new_bucket_name)
+
+        bucket.retention_period = period_secs
+        bucket.default_event_based_hold = False
+        bucket.patch()
+
+        self.assertEqual(bucket.retention_period, period_secs)
+        self.assertIsInstance(
+            bucket.retention_policy_effective_time, datetime.datetime)
+        self.assertFalse(bucket.default_event_based_hold)
+        self.assertFalse(bucket.retention_policy_locked)
+
+        blob_name = 'test-blob'
+        payload = b'DEADBEEF'
+        blob = bucket.blob(blob_name)
+        blob.upload_from_string(payload)
+
+        other = bucket.get_blob(blob_name)
+
+        self.assertFalse(other.event_based_hold)
+        self.assertFalse(other.temporary_hold)
+        self.assertIsInstance(
+            other.retention_expiration_time, datetime.datetime)
+
+        with self.assertRaises(exceptions.Forbidden):
+            other.delete()
+
+        bucket.retention_period = None
+        bucket.patch()
+
+        self.assertIsNone(bucket.retention_period)
+        self.assertIsNone(bucket.retention_policy_effective_time)
+        self.assertFalse(bucket.default_event_based_hold)
+        self.assertFalse(bucket.retention_policy_locked)
+
+        other.reload()
+
+        self.assertFalse(other.event_based_hold)
+        self.assertFalse(other.temporary_hold)
+        self.assertIsNone(other.retention_expiration_time)
+
+        other.delete()
+
+    def test_bucket_w_default_event_based_hold(self):
+        from google.api_core import exceptions
+
+        new_bucket_name = 'w-def-ebh' + unique_resource_id('-')
+        self.assertRaises(exceptions.NotFound,
+                          Config.CLIENT.get_bucket, new_bucket_name)
+        bucket = Config.CLIENT.create_bucket(new_bucket_name)
+        self.case_buckets_to_delete.append(new_bucket_name)
+
+        bucket.default_event_based_hold = True
+        bucket.patch()
+
+        self.assertTrue(bucket.default_event_based_hold)
+        self.assertIsNone(bucket.retention_period)
+        self.assertIsNone(bucket.retention_policy_effective_time)
+        self.assertFalse(bucket.retention_policy_locked)
+
+        blob_name = 'test-blob'
+        payload = b'DEADBEEF'
+        blob = bucket.blob(blob_name)
+        blob.upload_from_string(payload)
+
+        other = bucket.get_blob(blob_name)
+
+        self.assertTrue(other.event_based_hold)
+        self.assertFalse(other.temporary_hold)
+        self.assertIsNone(other.retention_expiration_time)
+
+        with self.assertRaises(exceptions.Forbidden):
+            other.delete()
+
+        other.event_based_hold = False
+        other.patch()
+
+        other.delete()
+
+        bucket.default_event_based_hold = False
+        bucket.patch()
+
+        self.assertFalse(bucket.default_event_based_hold)
+        self.assertIsNone(bucket.retention_period)
+        self.assertIsNone(bucket.retention_policy_effective_time)
+        self.assertFalse(bucket.retention_policy_locked)
+
+        blob.upload_from_string(payload)
+        self.assertFalse(other.event_based_hold)
+        self.assertFalse(other.temporary_hold)
+        self.assertIsNone(other.retention_expiration_time)
+
+        blob.delete()
+
+    def test_blob_w_temporary_hold(self):
+        from google.api_core import exceptions
+
+        new_bucket_name = 'w-tmp-hold' + unique_resource_id('-')
+        self.assertRaises(exceptions.NotFound,
+                          Config.CLIENT.get_bucket, new_bucket_name)
+        bucket = Config.CLIENT.create_bucket(new_bucket_name)
+        self.case_buckets_to_delete.append(new_bucket_name)
+
+        blob_name = 'test-blob'
+        payload = b'DEADBEEF'
+        blob = bucket.blob(blob_name)
+        blob.upload_from_string(payload)
+
+        other = bucket.get_blob(blob_name)
+        other.temporary_hold = True
+        other.patch()
+
+        self.assertTrue(other.temporary_hold)
+        self.assertFalse(other.event_based_hold)
+        self.assertIsNone(other.retention_expiration_time)
+
+        with self.assertRaises(exceptions.Forbidden):
+            other.delete()
+
+        other.temporary_hold = False
+        other.patch()
+
+        other.delete()
+
+    def test_bucket_lock_retention_policy(self):
+        import datetime
+        from google.api_core import exceptions
+
+        period_secs = 10
+
+        new_bucket_name = 'loc-ret-policy' + unique_resource_id('-')
+        self.assertRaises(exceptions.NotFound,
+                          Config.CLIENT.get_bucket, new_bucket_name)
+        bucket = Config.CLIENT.create_bucket(new_bucket_name)
+        self.case_buckets_to_delete.append(new_bucket_name)
+
+        bucket.retention_period = period_secs
+        bucket.patch()
+
+        self.assertEqual(bucket.retention_period, period_secs)
+        self.assertIsInstance(
+            bucket.retention_policy_effective_time, datetime.datetime)
+        self.assertFalse(bucket.default_event_based_hold)
+        self.assertFalse(bucket.retention_policy_locked)
+
+        bucket.lock_retention_policy()
+
+        bucket.reload()
+        self.assertTrue(bucket.retention_policy_locked)
+
+        bucket.retention_period = None
+        with self.assertRaises(exceptions.Forbidden):
+            bucket.patch()

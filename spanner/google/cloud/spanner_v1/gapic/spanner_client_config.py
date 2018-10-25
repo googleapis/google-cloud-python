@@ -37,6 +37,11 @@ config = {
                     "retry_codes_name": "idempotent",
                     "retry_params_name": "default"
                 },
+                "ListSessions": {
+                    "timeout_millis": 30000,
+                    "retry_codes_name": "idempotent",
+                    "retry_params_name": "default"
+                },
                 "DeleteSession": {
                     "timeout_millis": 30000,
                     "retry_codes_name": "idempotent",
@@ -73,6 +78,16 @@ config = {
                     "retry_params_name": "long_running"
                 },
                 "Rollback": {
+                    "timeout_millis": 30000,
+                    "retry_codes_name": "idempotent",
+                    "retry_params_name": "default"
+                },
+                "PartitionQuery": {
+                    "timeout_millis": 30000,
+                    "retry_codes_name": "idempotent",
+                    "retry_params_name": "default"
+                },
+                "PartitionRead": {
                     "timeout_millis": 30000,
                     "retry_codes_name": "idempotent",
                     "retry_params_name": "default"

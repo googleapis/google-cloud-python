@@ -14,10 +14,10 @@
 
 """Classes for representing documents for the Google Cloud Firestore API."""
 
-
 import copy
 
-from google.cloud import exceptions
+import six
+
 from google.cloud.firestore_v1beta1 import _helpers
 
 
@@ -193,7 +193,7 @@ class DocumentReference(object):
         write_results = batch.commit()
         return _first_write_result(write_results)
 
-    def set(self, document_data, option=None):
+    def set(self, document_data, merge=False):
         """Replace the current document in the Firestore database.
 
         A write ``option`` can be specified to indicate preconditions of
@@ -220,7 +220,7 @@ class DocumentReference(object):
             result contains an ``update_time`` field.
         """
         batch = self._client.batch()
-        batch.set(self, document_data, option=option)
+        batch.set(self, document_data, merge=merge)
         write_results = batch.commit()
         return _first_write_result(write_results)
 
@@ -377,9 +377,7 @@ class DocumentReference(object):
         Args:
             option (Optional[~.firestore_v1beta1.client.WriteOption]): A
                write option to make assertions / preconditions on the server
-               state of the document before applying changes. Note that
-               ``create_if_missing`` can't be used here since it does not
-               apply (i.e. a "delete" cannot "create").
+               state of the document before applying changes.
 
         Returns:
             google.protobuf.timestamp_pb2.Timestamp: The time that the delete
@@ -387,15 +385,11 @@ class DocumentReference(object):
             when the delete was sent (i.e. nothing was deleted), this method
             will still succeed and will still return the time that the
             request was received by the server.
-
-        Raises:
-            ValueError: If the ``create_if_missing`` write option is used.
         """
         write_pb = _helpers.pb_for_delete(self._document_path, option)
-        with _helpers.remap_gax_error_on_commit():
-            commit_response = self._client._firestore_api.commit(
-                self._client._database_string, [write_pb], transaction=None,
-                options=self._client._call_options)
+        commit_response = self._client._firestore_api.commit(
+            self._client._database_string, [write_pb], transaction=None,
+            metadata=self._client._rpc_metadata)
 
         return commit_response.commit_time
 
@@ -420,18 +414,36 @@ class DocumentReference(object):
 
         Returns:
             ~.firestore_v1beta1.document.DocumentSnapshot: A snapshot of
-            the current document.
-
-        Raises:
-            ~google.cloud.exceptions.NotFound: If the document does not exist.
+                the current document. If the document does not exist at
+                the time of `snapshot`, the snapshot `reference`, `data`,
+                `update_time`, and `create_time` attributes will all be
+                `None` and `exists` will be `False`.
         """
+        if isinstance(field_paths, six.string_types):
+            raise ValueError(
+                "'field_paths' must be a sequence of paths, not a string.")
         snapshot_generator = self._client.get_all(
             [self], field_paths=field_paths, transaction=transaction)
-        snapshot = _consume_single_get(snapshot_generator)
-        if snapshot is None:
-            raise exceptions.NotFound(self._document_path)
-        else:
-            return snapshot
+        return _consume_single_get(snapshot_generator)
+
+    def collections(self, page_size=None):
+        """List subcollections of the current document.
+
+        Args:
+            page_size (Optional[int]]): Iterator page size.
+
+        Returns:
+            Sequence[~.firestore_v1beta1.collection.CollectionReference]:
+                iterator of subcollections of the current document. If the
+                document does not exist at the time of `snapshot`, the
+                iterator will be empty
+        """
+        iterator = self._client._firestore_api.list_collection_ids(
+            self._document_path, page_size=page_size,
+            metadata=self._client._rpc_metadata)
+        iterator.document = self
+        iterator.item_to_value = _item_to_collection_ref
+        return iterator
 
 
 class DocumentSnapshot(object):
@@ -567,12 +579,16 @@ class DocumentSnapshot(object):
                 field names).
 
         Returns:
-            Any: (A copy of) the value stored for the ``field_path``.
+            Any or None:
+                (A copy of) the value stored for the ``field_path`` or
+                None if snapshot document does not exist.
 
         Raises:
             KeyError: If the ``field_path`` does not match nested data
                 in the snapshot.
         """
+        if not self._exists:
+            return None
         nested_data = _helpers.get_nested_value(field_path, self._data)
         return copy.deepcopy(nested_data)
 
@@ -583,8 +599,12 @@ class DocumentSnapshot(object):
         but the data stored in the snapshot must remain immutable.
 
         Returns:
-            Dict[str, Any]: The data in the snapshot.
+            Dict[str, Any] or None:
+                The data in the snapshot.  Returns None if reference
+                does not exist.
         """
+        if not self._exists:
+            return None
         return copy.deepcopy(self._data)
 
 
@@ -661,3 +681,14 @@ def _first_write_result(write_results):
         raise ValueError('Expected at least one write result')
 
     return write_results[0]
+
+
+def _item_to_collection_ref(iterator, item):
+    """Convert collection ID to collection ref.
+
+    Args:
+        iterator (google.api_core.page_iterator.GRPCIterator):
+            iterator response
+        item (str): ID of the collection
+    """
+    return iterator.document.collection(item)

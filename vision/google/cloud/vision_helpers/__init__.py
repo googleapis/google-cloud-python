@@ -15,7 +15,7 @@
 from __future__ import absolute_import
 import io
 
-from google.gax.utils import protobuf
+from google.api_core import protobuf_helpers as protobuf
 
 
 class VisionHelpers(object):
@@ -25,7 +25,7 @@ class VisionHelpers(object):
     in a multiple-inheritance construction alongside the applicable GAPIC.
     See the :class:`~google.cloud.vision_v1.ImageAnnotatorClient`.
     """
-    def annotate_image(self, request, options=None):
+    def annotate_image(self, request, retry=None, timeout=None):
         """Run image detection and annotation for an image.
 
         Example:
@@ -40,8 +40,12 @@ class VisionHelpers(object):
 
         Args:
             request (:class:`~.vision_v1.types.AnnotateImageRequest`)
-            options (:class:`google.gax.CallOptions`): Overrides the default
-                settings for this call, e.g, timeout, retries, etc.
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will not
+                be retried.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
 
         Returns:
             :class:`~.vision_v1.types.AnnotateImageResponse` The API response.
@@ -64,7 +68,7 @@ class VisionHelpers(object):
         # This method allows features not to be specified, and you get all
         # of them.
         protobuf.setdefault(request, 'features', self._get_all_features())
-        r = self.batch_annotate_images([request], options=options)
+        r = self.batch_annotate_images([request], retry=retry, timeout=timeout)
         return r.responses[0]
 
     def _get_all_features(self):
@@ -73,11 +77,6 @@ class VisionHelpers(object):
         Returns:
             list: A list of all available features.
         """
-        answer = []
-        for key, value in self.enums.Feature.Type.__dict__.items():
-            if key.upper() != key:
-                continue
-            if not isinstance(value, int) or value == 0:
-                continue
-            answer.append({'type': value})
-        return answer
+        return [
+            {'type': feature}
+            for feature in self.enums.Feature.Type if feature != 0]

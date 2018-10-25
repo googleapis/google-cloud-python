@@ -18,7 +18,7 @@ import os
 import traceback
 
 try:
-    from google.cloud.error_reporting._gax import make_report_error_api
+    from google.cloud.error_reporting._gapic import make_report_error_api
     _HAVE_GRPC = True
 except ImportError:  # pragma: NO COVER
     _HAVE_GRPC = False
@@ -115,7 +115,7 @@ class Client(ClientWithProject):
 
     :type _use_grpc: bool
     :param _use_grpc: (Optional) Explicitly specifies whether
-                      to use the gRPC transport (via GAX) or HTTP. If unset,
+                      to use the gRPC transport or HTTP. If unset,
                       falls back to the ``GOOGLE_CLOUD_DISABLE_GRPC``
                       environment variable.
                       This parameter should be considered private, and could
@@ -156,7 +156,7 @@ class Client(ClientWithProject):
         https://cloud.google.com/logging/docs/reference/v2/rest/v2/projects.logs
 
         :rtype:
-            :class:`_gax._ErrorReportingGaxApi`
+            :class:`_gapic._ErrorReportingGapicApi`
             or
             :class:`._logging._ErrorReportingLoggingAPI`
         :returns: A class that implements the report errors API.

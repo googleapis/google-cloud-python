@@ -7,9 +7,7 @@ from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
 
 
 class FirestoreStub(object):
-  """Specification of the Firestore API.
-
-  The Cloud Firestore service.
+  """The Cloud Firestore service.
 
   This service exposes several types of comparable timestamps:
 
@@ -101,9 +99,7 @@ class FirestoreStub(object):
 
 
 class FirestoreServicer(object):
-  """Specification of the Firestore API.
-
-  The Cloud Firestore service.
+  """The Cloud Firestore service.
 
   This service exposes several types of comparable timestamps:
 

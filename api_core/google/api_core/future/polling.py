@@ -28,6 +28,10 @@ class _OperationNotComplete(Exception):
     pass
 
 
+RETRY_PREDICATE = retry.if_exception_type(_OperationNotComplete)
+DEFAULT_RETRY = retry.Retry(predicate=RETRY_PREDICATE)
+
+
 class PollingFuture(base.Future):
     """A Future that needs to poll some service to check its status.
 
@@ -36,9 +40,16 @@ class PollingFuture(base.Future):
 
     .. note: Privacy here is intended to prevent the final class from
     overexposing, not to prevent subclasses from accessing methods.
+
+    Args:
+        retry (google.api_core.retry.Retry): The retry configuration used
+            when polling. This can be used to control how often :meth:`done`
+            is polled. Regardless of the retry's ``deadline``, it will be
+            overridden by the ``timeout`` argument to :meth:`result`.
     """
-    def __init__(self):
+    def __init__(self, retry=DEFAULT_RETRY):
         super(PollingFuture, self).__init__()
+        self._retry = retry
         self._result = None
         self._exception = None
         self._result_set = False
@@ -77,9 +88,7 @@ class PollingFuture(base.Future):
         if self._result_set:
             return
 
-        retry_ = retry.Retry(
-            predicate=retry.if_exception_type(_OperationNotComplete),
-            deadline=timeout)
+        retry_ = self._retry.with_deadline(timeout)
 
         try:
             retry_(self._done_or_raise)()

@@ -41,18 +41,15 @@ class TraceServiceServicer(object):
   """
 
   def BatchWriteSpans(self, request, context):
-    """Sends new spans to Stackdriver Trace or updates existing traces. If the
-    name of a trace that you send matches that of an existing trace, new spans
-    are added to the existing trace. Attempt to update existing spans results
-    undefined behavior. If the name does not match, a new trace is created
-    with given set of spans.
+    """Sends new spans to new or existing traces. You cannot update
+    existing spans.
     """
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')
     raise NotImplementedError('Method not implemented!')
 
   def CreateSpan(self, request, context):
-    """Creates a new Span.
+    """Creates a new span.
     """
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')

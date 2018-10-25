@@ -101,28 +101,28 @@ class Entity(dict):
 
     .. testsetup:: entity-dict
 
-       from google.cloud import datastore
+        from google.cloud import datastore
 
-       entity = datastore.Entity()
-       entity['age'] = 20
-       entity['name'] = 'JJ'
+        entity = datastore.Entity()
+        entity['age'] = 20
+        entity['name'] = 'JJ'
 
     .. doctest:: entity-dict
 
-       >>> sorted(entity.keys())
-       ['age', 'name']
-       >>> sorted(entity.items())
-       [('age', 20), ('name', 'JJ')]
+        >>> sorted(entity.keys())
+        ['age', 'name']
+        >>> sorted(entity.items())
+        [('age', 20), ('name', 'JJ')]
 
     .. note::
 
-       When saving an entity to the backend, values which are "text"
-       (``unicode`` in Python2, ``str`` in Python3) will be saved using
-       the 'text_value' field, after being encoded to UTF-8.  When
-       retrieved from the back-end, such values will be decoded to "text"
-       again.  Values which are "bytes" (``str`` in Python2, ``bytes`` in
-       Python3), will be saved using the 'blob_value' field, without
-       any decoding / encoding step.
+        When saving an entity to the backend, values which are "text"
+        (``unicode`` in Python2, ``str`` in Python3) will be saved using
+        the 'text_value' field, after being encoded to UTF-8.  When
+        retrieved from the back-end, such values will be decoded to "text"
+        again.  Values which are "bytes" (``str`` in Python2, ``bytes`` in
+        Python3), will be saved using the 'blob_value' field, without
+        any decoding / encoding step.
 
     :type key: :class:`google.cloud.datastore.key.Key`
     :param key: Optional key to be set on entity.
@@ -175,13 +175,30 @@ class Entity(dict):
         """Get the kind of the current entity.
 
         .. note::
-          This relies entirely on the :class:`google.cloud.datastore.key.Key`
-          set on the entity.  That means that we're not storing the kind
-          of the entity at all, just the properties and a pointer to a
-          Key which knows its Kind.
+
+            This relies entirely on the :class:`google.cloud.datastore.key.Key`
+            set on the entity.  That means that we're not storing the kind
+            of the entity at all, just the properties and a pointer to a
+            Key which knows its Kind.
         """
         if self.key:
             return self.key.kind
+
+    @property
+    def id(self):
+        """Get the ID of the current entity.
+
+        .. note::
+
+            This relies entirely on the :class:`google.cloud.datastore.key.Key`
+            set on the entity.  That means that we're not storing the ID
+            of the entity at all, just the properties and a pointer to a
+            Key which knows its ID.
+        """
+        if self.key is None:
+            return None
+        else:
+            return self.key.id
 
     def __repr__(self):
         if self.key:

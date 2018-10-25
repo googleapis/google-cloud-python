@@ -17,7 +17,6 @@
 
 import six
 
-from google.cloud._helpers import _to_bytes
 from google.cloud.client import Client as BaseClient
 
 from google.cloud.translate_v2._http import Connection
@@ -104,7 +103,7 @@ class Client(BaseClient):
         :param values: String or list of strings that will have
                        language detected.
 
-        :rtype: str or list
+        :rtype: dict or list
         :returns: A list of dictionaries for each queried value. Each
                   dictionary typically contains three keys
 
@@ -129,11 +128,13 @@ class Client(BaseClient):
             single_value = True
             values = [values]
 
-        query_params = []
-        query_params.extend(('q', _to_bytes(value, 'utf-8'))
-                            for value in values)
+        data = {
+            'q': values,
+        }
+
         response = self._connection.api_request(
-            method='GET', path='/detect', query_params=query_params)
+            method='POST', path='/detect', data=data)
+
         detections = response.get('data', {}).get('detections', ())
 
         if len(values) != len(detections):
@@ -219,19 +220,17 @@ class Client(BaseClient):
         if isinstance(customization_ids, six.string_types):
             customization_ids = [customization_ids]
 
-        query_params = [('target', target_language)]
-        query_params.extend(('q', _to_bytes(value, 'utf-8'))
-                            for value in values)
-        query_params.extend(('cid', cid) for cid in customization_ids)
-        if format_ is not None:
-            query_params.append(('format', format_))
-        if source_language is not None:
-            query_params.append(('source', source_language))
-        if model is not None:
-            query_params.append(('model', model))
+        data = {
+            'target': target_language,
+            'q': values,
+            'cid': customization_ids,
+            'format': format_,
+            'source': source_language,
+            'model': model
+        }
 
         response = self._connection.api_request(
-            method='POST', path='', query_params=query_params)
+            method='POST', path='', data=data)
 
         translations = response.get('data', {}).get('translations', ())
         if len(values) != len(translations):

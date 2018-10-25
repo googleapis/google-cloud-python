@@ -16,22 +16,17 @@
 
 
 import collections
-import contextlib
 import datetime
-import sys
+import re
 
-import google.gax
-import google.gax.errors
-import google.gax.grpc
 from google.protobuf import struct_pb2
 from google.type import latlng_pb2
 import grpc
 import six
 
+from google.cloud import exceptions
 from google.cloud._helpers import _datetime_to_pb_timestamp
 from google.cloud._helpers import _pb_timestamp_to_datetime
-from google.cloud import exceptions
-
 from google.cloud.firestore_v1beta1 import constants
 from google.cloud.firestore_v1beta1.gapic import enums
 from google.cloud.firestore_v1beta1.proto import common_pb2
@@ -47,10 +42,6 @@ FIELD_PATH_WRONG_TYPE = (
     'The data at {!r} is not a dictionary, so it cannot contain the key {!r}')
 FIELD_PATH_DELIMITER = '.'
 DOCUMENT_PATH_DELIMITER = '/'
-_NO_CREATE_TEMPLATE = (
-    'The ``create_if_missing`` option cannot be used '
-    'on ``{}()`` requests.')
-NO_CREATE_ON_DELETE = _NO_CREATE_TEMPLATE.format('delete')
 INACTIVE_TXN = (
     'Transaction not in progress, cannot be used in API requests.')
 READ_AFTER_WRITE_ERROR = 'Attempted read after write in a transaction.'
@@ -117,6 +108,97 @@ class GeoPoint(object):
             return NotImplemented
         else:
             return not equality_val
+
+
+class FieldPath(object):
+    """ Field Path object for client use.
+
+    Args:
+        parts: (one or more strings)
+            Indicating path of the key to be used.
+    """
+    simple_field_name = re.compile('^[_a-zA-Z][_a-zA-Z0-9]*$')
+
+    def __init__(self, *parts):
+        for part in parts:
+            if not isinstance(part, six.string_types) or not part:
+                error = 'One or more components is not a string or is empty.'
+                raise ValueError(error)
+        self.parts = tuple(parts)
+
+    def __repr__(self):
+        paths = ""
+        for part in self.parts:
+            paths += "'" + part + "',"
+        paths = paths[:-1]
+        return 'FieldPath({})'.format(paths)
+
+    @staticmethod
+    def from_string(string):
+        """ Creates a FieldPath from a unicode string representation.
+
+        This method splits on the character `.` and disallows the
+        characters `~*/[]`. To create a FieldPath whose components have
+        those characters, call the constructor.
+
+        Args:
+            :type string: str
+            :param string: A unicode string which cannot contain
+                           `~*/[]` characters, cannot exceed 1500 bytes,
+                           and cannot be empty.
+
+        Returns:
+            A :class: `FieldPath` instance with the string split on "."
+            as arguments to `FieldPath`.
+        """
+        invalid_characters = '~*/[]'
+        for invalid_character in invalid_characters:
+            if invalid_character in string:
+                raise ValueError('Invalid characters in string.')
+        string = string.split('.')
+        return FieldPath(*string)
+
+    def to_api_repr(self):
+        """ Returns quoted string representation of the FieldPath
+
+        Returns: :rtype: str
+            Quoted string representation of the path stored
+            within this FieldPath conforming to the Firestore API
+            specification
+        """
+        api_repr = []
+        for part in self.parts:
+            match = re.match(self.simple_field_name, part)
+            if match and match.group(0) == part:
+                api_repr.append(part)
+            else:
+                replaced = part.replace('\\', '\\\\').replace('`', '\\`')
+                api_repr.append('`' + replaced + '`')
+        return '.'.join(api_repr)
+
+    def __hash__(self):
+        return hash(self.to_api_repr())
+
+    def __eq__(self, other):
+        if isinstance(other, FieldPath):
+            return self.parts == other.parts
+        return NotImplemented
+
+    def __add__(self, other):
+        """Adds `other` field path to end of this field path.
+
+        Args:
+            other (~google.cloud.firestore_v1beta1._helpers.FieldPath, str):
+                The field path to add to the end of this `FieldPath`.
+        """
+        if isinstance(other, FieldPath):
+            parts = self.parts + other.parts
+            return FieldPath(*parts)
+        elif isinstance(other, six.string_types):
+            parts = self.parts + FieldPath.from_string(other).parts
+            return FieldPath(*parts)
+        else:
+            return NotImplemented
 
 
 class FieldPathHelper(object):
@@ -222,14 +304,15 @@ class FieldPathHelper(object):
         Returns:
             ValueError: Always.
         """
-        conflict_parts = [field_path]
+        conflict_parts = list(field_path.parts)
         while conflicting_paths is not self.PATH_END:
             # Grab any item, we are just looking for one example.
             part, conflicting_paths = next(six.iteritems(conflicting_paths))
             conflict_parts.append(part)
 
         conflict = get_field_path(conflict_parts)
-        msg = self.FIELD_PATH_CONFLICT.format(field_path, conflict)
+        msg = self.FIELD_PATH_CONFLICT.format(
+            field_path.to_api_repr(), conflict)
         return ValueError(msg)
 
     def add_field_path_end(
@@ -281,7 +364,9 @@ class FieldPathHelper(object):
         Raises:
             ValueError: If there is an ambiguity.
         """
-        parts = parse_field_path(field_path)
+        if isinstance(field_path, six.string_types):
+            field_path = FieldPath.from_string(field_path)
+        parts = field_path.parts
         to_update = self.get_update_values(value)
         curr_paths = self.unpacked_field_paths
         for index, part in enumerate(parts[:-1]):
@@ -705,7 +790,7 @@ def get_doc_id(document_pb, expected_prefix):
     return document_id
 
 
-def remove_server_timestamp(document_data):
+def process_server_timestamp(document_data, split_on_dots=True):
     """Remove all server timestamp sentinel values from data.
 
     If the data is nested, for example:
@@ -727,7 +812,7 @@ def remove_server_timestamp(document_data):
 
     .. code-block:: python
 
-       >>> field_paths, actual_data = remove_server_timestamp(data)
+       >>> field_paths, actual_data = process_server_timestamp(data)
        >>> field_paths
        ['top1.bottom2', 'top4']
        >>> actual_data
@@ -739,37 +824,78 @@ def remove_server_timestamp(document_data):
        }
 
     Args:
-        document_data (dict): Property names and values to use for
-            sending a change to a document.
+        document_data (dict):
+            Property names and values to use for sending a change to
+            a document.
+
+        split_on_dots (bool):
+            Whether to split the property names on dots at the top level
+            (for updates only).
 
     Returns:
-        Tuple[List[str, ...], Dict[str, Any]]: A two-tuple of
+        List[List[str, ...], Dict[str, Any]], List[List[str, ...]: A
+        three-tuple of:
 
-        * A list of all field paths that use the server timestamp sentinel
+        * A list of all transform paths that use the server timestamp sentinel
         * The remaining keys in ``document_data`` after removing the
           server timestamp sentinels
+        * A list of all field paths that do not use the server timestamp
+          sentinel
     """
-    field_paths = []
+    transform_paths = []
     actual_data = {}
+    field_paths = []
     for field_name, value in six.iteritems(document_data):
+        if split_on_dots:
+            top_level_path = FieldPath(*field_name.split("."))
+        else:
+            top_level_path = FieldPath.from_string(field_name)
         if isinstance(value, dict):
-            sub_field_paths, sub_data = remove_server_timestamp(value)
-            field_paths.extend(
-                get_field_path([field_name, sub_path])
-                for sub_path in sub_field_paths
-            )
+            if len(value) == 0:
+                actual_data[field_name] = value
+                continue
+            sub_transform_paths, sub_data, sub_field_paths = (
+                process_server_timestamp(value, False))
+            for sub_transform_path in sub_transform_paths:
+                transform_path = FieldPath.from_string(field_name)
+                transform_path.parts = (
+                    transform_path.parts + sub_transform_path.parts)
+                transform_paths.extend([transform_path])
             if sub_data:
                 # Only add a key to ``actual_data`` if there is data.
                 actual_data[field_name] = sub_data
+                for sub_field_path in sub_field_paths:
+                    field_path = FieldPath.from_string(field_name)
+                    field_path.parts = field_path.parts + sub_field_path.parts
+                    field_paths.append(field_path)
         elif value is constants.SERVER_TIMESTAMP:
-            field_paths.append(field_name)
+            transform_paths.append(top_level_path)
         else:
             actual_data[field_name] = value
+            field_paths.append(top_level_path)
+    if not transform_paths:
+        actual_data = document_data
+    return transform_paths, actual_data, field_paths
 
-    if field_paths:
-        return field_paths, actual_data
-    else:
-        return field_paths, document_data
+
+def canonicalize_field_paths(field_paths):
+    """Converts non-simple field paths to quoted field paths
+
+    Args:
+        field_paths (Sequence[str]): A list of field paths
+
+    Returns:
+        Sequence[str]:
+            The same list of field paths except non-simple field names
+            in the `.` delimited field path have been converted
+            into quoted unicode field paths. Simple field paths match
+            the regex ^[_a-zA-Z][_a-zA-Z0-9]*$.  See `Document`_ page for
+            more information.
+
+    .. _Document: https://cloud.google.com/firestore/docs/reference/rpc/google.firestore.v1beta1#google.firestore.v1beta1.Document  # NOQA
+    """
+    field_paths = [path.to_api_repr() for path in field_paths]
+    return sorted(field_paths)  # for testing purposes
 
 
 def get_transform_pb(document_path, transform_paths):
@@ -786,6 +912,7 @@ def get_transform_pb(document_path, transform_paths):
         google.cloud.firestore_v1beta1.types.Write: A
         ``Write`` protobuf instance for a document transform.
     """
+    transform_paths = canonicalize_field_paths(transform_paths)
     return write_pb2.Write(
         transform=write_pb2.DocumentTransform(
             document=document_path,
@@ -800,37 +927,46 @@ def get_transform_pb(document_path, transform_paths):
     )
 
 
-def pbs_for_set(document_path, document_data, option):
+def pbs_for_set(document_path, document_data, merge=False, exists=None):
     """Make ``Write`` protobufs for ``set()`` methods.
 
     Args:
         document_path (str): A fully-qualified document path.
         document_data (dict): Property names and values to use for
             replacing a document.
-        option (optional[~.firestore_v1beta1.client.WriteOption]): A
-           write option to make assertions / preconditions on the server
-           state of the document before applying changes.
+        merge (bool): Whether to merge the fields or replace them
+        exists (bool): If set, a precondition to indicate whether the
+            document should exist or not. Used for create.
 
     Returns:
         List[google.cloud.firestore_v1beta1.types.Write]: One
         or two ``Write`` protobuf instances for ``set()``.
     """
-    transform_paths, actual_data = remove_server_timestamp(document_data)
-
+    transform_paths, actual_data, field_paths = process_server_timestamp(
+        document_data, False)
     update_pb = write_pb2.Write(
         update=document_pb2.Document(
             name=document_path,
             fields=encode_dict(actual_data),
         ),
     )
-    if option is not None:
-        option.modify_write(update_pb)
+    if exists is not None:
+        update_pb.current_document.CopyFrom(
+            common_pb2.Precondition(exists=exists))
+
+    if merge:
+        field_paths = canonicalize_field_paths(field_paths)
+        mask = common_pb2.DocumentMask(field_paths=sorted(field_paths))
+        update_pb.update_mask.CopyFrom(mask)
 
     write_pbs = [update_pb]
     if transform_paths:
         # NOTE: We **explicitly** don't set any write option on
         #       the ``transform_pb``.
         transform_pb = get_transform_pb(document_path, transform_paths)
+        if not actual_data:
+            write_pbs = [transform_pb]
+            return write_pbs
         write_pbs.append(transform_pb)
 
     return write_pbs
@@ -855,10 +991,14 @@ def pbs_for_update(client, document_path, field_updates, option):
     """
     if option is None:
         # Default uses ``exists=True``.
-        option = client.write_option(create_if_missing=False)
+        option = client.write_option(exists=True)
 
-    transform_paths, actual_updates = remove_server_timestamp(field_updates)
+    transform_paths, actual_updates, field_paths = (
+        process_server_timestamp(field_updates))
+    if not (transform_paths or actual_updates):
+        raise ValueError('There are only ServerTimeStamp objects or is empty.')
     update_values, field_paths = FieldPathHelper.to_field_paths(actual_updates)
+    field_paths = canonicalize_field_paths(field_paths)
 
     update_pb = write_pb2.Write(
         update=document_pb2.Document(
@@ -868,7 +1008,7 @@ def pbs_for_update(client, document_path, field_updates, option):
         update_mask=common_pb2.DocumentMask(field_paths=field_paths),
     )
     # Due to the default, we don't have to check if ``None``.
-    option.modify_write(update_pb)
+    option.modify_write(update_pb, field_paths=field_paths)
     write_pbs = [update_pb]
 
     if transform_paths:
@@ -895,7 +1035,7 @@ def pb_for_delete(document_path, option):
     """
     write_pb = write_pb2.Write(delete=document_path)
     if option is not None:
-        option.modify_write(write_pb, no_create_msg=NO_CREATE_ON_DELETE)
+        option.modify_write(write_pb)
 
     return write_pb
 
@@ -930,35 +1070,13 @@ def get_transaction_id(transaction, read_operation=True):
         return transaction.id
 
 
-@contextlib.contextmanager
-def remap_gax_error_on_commit():
-    """Remap GAX exceptions that happen in context.
-
-    Remaps gRPC exceptions that can occur during the ``Comitt`` RPC to
-    the classes defined in :mod:`~google.cloud.exceptions`.
-    """
-    try:
-        yield
-    except google.gax.errors.GaxError as exc:
-        status_code = google.gax.grpc.exc_to_code(exc.cause)
-        error_class = _GRPC_ERROR_MAPPING.get(status_code)
-        if error_class is None:
-            raise
-        else:
-            new_exc = error_class(exc.cause.details())
-            six.reraise(error_class, new_exc, sys.exc_info()[2])
-
-
-def options_with_prefix(database_string):
-    """Create GAPIC options w / cloud resource prefix.
+def metadata_with_prefix(prefix, **kw):
+    """Create RPC metadata containing a prefix.
 
     Args:
-        database_string (str): A database string of the form
-            ``projects/{project_id}/databases/{database_id}``.
+        prefix (str): appropriate resource path.
 
     Returns:
-        ~google.gax.CallOptions: GAPIC call options with supplied prefix.
+        List[Tuple[str, str]]: RPC metadata with supplied prefix
     """
-    return google.gax.CallOptions(
-        metadata=[('google-cloud-resource-prefix', database_string)],
-    )
+    return [('google-cloud-resource-prefix', prefix)]

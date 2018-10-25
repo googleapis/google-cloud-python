@@ -24,14 +24,15 @@ from google.api_core import grpc_helpers
 from google.cloud.pubsub_v1 import _gapic
 from google.cloud.pubsub_v1 import types
 from google.cloud.pubsub_v1.gapic import subscriber_client
-from google.cloud.pubsub_v1.subscriber.policy import thread
+from google.cloud.pubsub_v1.subscriber import futures
+from google.cloud.pubsub_v1.subscriber._protocol import streaming_pull_manager
 
 
 __version__ = pkg_resources.get_distribution('google-cloud-pubsub').version
 
 
 @_gapic.add_methods(subscriber_client.SubscriberClient,
-                    blacklist=('pull', 'streaming_pull'))
+                    blacklist=('streaming_pull',))
 class Client(object):
     """A subscriber client for Google Cloud Pub/Sub.
 
@@ -40,19 +41,13 @@ class Client(object):
     get sensible defaults.
 
     Args:
-        policy_class (class): A class that describes how to handle
-            subscriptions. You may subclass the
-            :class:`.pubsub_v1.subscriber.policy.base.BasePolicy`
-            class in order to define your own consumer. This is primarily
-            provided to allow use of different concurrency models; the default
-            is based on :class:`threading.Thread`.
         kwargs (dict): Any additional arguments provided are sent as keyword
             keyword arguments to the underlying
             :class:`~.gapic.pubsub.v1.subscriber_client.SubscriberClient`.
             Generally, you should not need to set additional keyword
             arguments.
     """
-    def __init__(self, policy_class=thread.Policy, **kwargs):
+    def __init__(self, **kwargs):
         # Sanity check: Is our goal to use the emulator?
         # If so, create a grpc insecure channel with the emulator host
         # as the target.
@@ -78,11 +73,7 @@ class Client(object):
 
         # Add the metrics headers, and instantiate the underlying GAPIC
         # client.
-        self.api = subscriber_client.SubscriberClient(**kwargs)
-
-        # The subcription class is responsible to retrieving and dispatching
-        # messages.
-        self._policy_class = policy_class
+        self._api = subscriber_client.SubscriberClient(**kwargs)
 
     @property
     def target(self):
@@ -93,40 +84,97 @@ class Client(object):
         """
         return subscriber_client.SubscriberClient.SERVICE_ADDRESS
 
-    def subscribe(self, subscription, callback=None, flow_control=()):
-        """Return a representation of an individual subscription.
+    @property
+    def api(self):
+        """The underlying gapic API client."""
+        return self._api
 
-        This method creates and returns a ``Consumer`` object (that is, a
-        :class:`~.pubsub_v1.subscriber.consumer.base.BaseConsumer`)
-        subclass) bound to the topic. It does `not` create the subcription
-        on the backend (or do any API call at all); it simply returns an
-        object capable of doing these things.
+    def subscribe(
+            self, subscription, callback, flow_control=(),
+            scheduler=None):
+        """Asynchronously start receiving messages on a given subscription.
 
-        If the ``callback`` argument is provided, then the :meth:`open` method
-        is automatically called on the returned object. If ``callback`` is
-        not provided, the subscription is returned unopened.
+        This method starts a background thread to begin pulling messages from
+        a Pub/Sub subscription and scheduling them to be processed using the
+        provided ``callback``.
 
-        .. note::
-            It only makes sense to provide ``callback`` here if you have
-            already created the subscription manually in the API.
+        The ``callback`` will be called with an individual
+        :class:`google.cloud.pubsub_v1.subscriber.message.Message`. It is the
+        responsibility of the callback to either call ``ack()`` or ``nack()``
+        on the message when it finished processing. If an exception occurs in
+        the callback during processing, the exception is logged and the message
+        is ``nack()`` ed.
+
+        The ``flow_control`` argument can be used to control the rate of at
+        which messages are pulled. The settings are relatively conservative by
+        default to prevent "message hoarding" - a situation where the client
+        pulls a large number of messages but can not process them fast enough
+        leading it to "starve" other clients of messages. Increasing these
+        settings may lead to faster throughput for messages that do not take
+        a long time to process.
+
+        This method starts the receiver in the background and returns a
+        *Future* representing its execution. Waiting on the future (calling
+        ``result()``) will block forever or until a non-recoverable error
+        is encountered (such as loss of network connectivity). Cancelling the
+        future will signal the process to shutdown gracefully and exit.
+
+        .. note:: This uses Pub/Sub's *streaming pull* feature. This feature
+            properties that may be surprising. Please take a look at
+            https://cloud.google.com/pubsub/docs/pull#streamingpull for
+            more details on how streaming pull behaves compared to the
+            synchronous pull method.
+
+        Example:
+
+        .. code-block:: python
+
+            from google.cloud.pubsub_v1 import subscriber
+
+            subscriber_client = pubsub.SubscriberClient()
+
+            # existing subscription
+            subscription = subscriber_client.subscription_path(
+                'my-project-id', 'my-subscription')
+
+            def callback(message):
+                print(message)
+                message.ack()
+
+            future = subscriber.subscribe(
+                subscription, callback)
+
+            try:
+                future.result()
+            except KeyboardInterrupt:
+                future.cancel()
 
         Args:
             subscription (str): The name of the subscription. The
                 subscription should have already been created (for example,
                 by using :meth:`create_subscription`).
-            callback (function): The callback function. This function receives
-                the :class:`~.pubsub_v1.types.PubsubMessage` as its only
-                argument.
+            callback (Callable[~.pubsub_v1.subscriber.message.Message]):
+                The callback function. This function receives the message as
+                its only argument and will be called from a different thread/
+                process depending on the scheduling strategy.
             flow_control (~.pubsub_v1.types.FlowControl): The flow control
                 settings. Use this to prevent situations where you are
                 inundated with too many messages at once.
+            scheduler (~.pubsub_v1.subscriber.scheduler.Scheduler): An optional
+                *scheduler* to use when executing the callback. This controls
+                how callbacks are executed concurrently.
 
         Returns:
-            ~.pubsub_v1.subscriber.consumer.base.BaseConsumer: An instance
-                of the defined ``consumer_class`` on the client.
+            google.cloud.pubsub_v1.futures.StreamingPullFuture: A Future object
+                that can be used to manage the background stream.
         """
         flow_control = types.FlowControl(*flow_control)
-        subscr = self._policy_class(self, subscription, flow_control)
-        if callable(callback):
-            subscr.open(callback)
-        return subscr
+
+        manager = streaming_pull_manager.StreamingPullManager(
+            self, subscription, flow_control=flow_control, scheduler=scheduler)
+
+        future = futures.StreamingPullFuture(manager)
+
+        manager.open(callback)
+
+        return future

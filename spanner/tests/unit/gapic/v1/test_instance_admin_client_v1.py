@@ -1,10 +1,12 @@
-# Copyright 2017, Google LLC All rights reserved.
+# -*- coding: utf-8 -*-
+#
+# Copyright 2018 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#     http://www.apache.org/licenses/LICENSE-2.0
+#     https://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,10 +15,8 @@
 # limitations under the License.
 """Unit tests."""
 
-import mock
-import unittest
+import pytest
 
-from google.gax import errors
 from google.rpc import status_pb2
 
 from google.cloud import spanner_admin_instance_v1
@@ -28,23 +28,48 @@ from google.protobuf import empty_pb2
 from google.protobuf import field_mask_pb2
 
 
+class MultiCallableStub(object):
+    """Stub for the grpc.UnaryUnaryMultiCallable interface."""
+
+    def __init__(self, method, channel_stub):
+        self.method = method
+        self.channel_stub = channel_stub
+
+    def __call__(self, request, timeout=None, metadata=None, credentials=None):
+        self.channel_stub.requests.append((self.method, request))
+
+        response = None
+        if self.channel_stub.responses:
+            response = self.channel_stub.responses.pop()
+
+        if isinstance(response, Exception):
+            raise response
+
+        if response:
+            return response
+
+
+class ChannelStub(object):
+    """Stub for the grpc.Channel interface."""
+
+    def __init__(self, responses=[]):
+        self.responses = responses
+        self.requests = []
+
+    def unary_unary(self,
+                    method,
+                    request_serializer=None,
+                    response_deserializer=None):
+        return MultiCallableStub(method, self)
+
+
 class CustomException(Exception):
     pass
 
 
-class TestInstanceAdminClient(unittest.TestCase):
-    @mock.patch('google.gax.config.create_stub', spec=True)
-    def test_list_instance_configs(self, mock_create_stub):
-        # Mock gRPC layer
-        grpc_stub = mock.Mock()
-        mock_create_stub.return_value = grpc_stub
-
-        client = spanner_admin_instance_v1.InstanceAdminClient()
-
-        # Mock request
-        parent = client.project_path('[PROJECT]')
-
-        # Mock response
+class TestInstanceAdminClient(object):
+    def test_list_instance_configs(self):
+        # Setup Expected Response
         next_page_token = ''
         instance_configs_element = {}
         instance_configs = [instance_configs_element]
@@ -54,104 +79,74 @@ class TestInstanceAdminClient(unittest.TestCase):
         }
         expected_response = spanner_instance_admin_pb2.ListInstanceConfigsResponse(
             **expected_response)
-        grpc_stub.ListInstanceConfigs.return_value = expected_response
+
+        # Mock the API response
+        channel = ChannelStub(responses=[expected_response])
+        client = spanner_admin_instance_v1.InstanceAdminClient(channel=channel)
+
+        # Setup Request
+        parent = client.project_path('[PROJECT]')
 
         paged_list_response = client.list_instance_configs(parent)
         resources = list(paged_list_response)
-        self.assertEqual(1, len(resources))
-        self.assertEqual(expected_response.instance_configs[0], resources[0])
+        assert len(resources) == 1
 
-        grpc_stub.ListInstanceConfigs.assert_called_once()
-        args, kwargs = grpc_stub.ListInstanceConfigs.call_args
-        self.assertEqual(len(args), 2)
-        self.assertEqual(len(kwargs), 1)
-        self.assertIn('metadata', kwargs)
-        actual_request = args[0]
+        assert expected_response.instance_configs[0] == resources[0]
 
+        assert len(channel.requests) == 1
         expected_request = spanner_instance_admin_pb2.ListInstanceConfigsRequest(
             parent=parent)
-        self.assertEqual(expected_request, actual_request)
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
 
-    @mock.patch('google.gax.config.API_ERRORS', (CustomException, ))
-    @mock.patch('google.gax.config.create_stub', spec=True)
-    def test_list_instance_configs_exception(self, mock_create_stub):
-        # Mock gRPC layer
-        grpc_stub = mock.Mock()
-        mock_create_stub.return_value = grpc_stub
+    def test_list_instance_configs_exception(self):
+        channel = ChannelStub(responses=[CustomException()])
+        client = spanner_admin_instance_v1.InstanceAdminClient(channel=channel)
 
-        client = spanner_admin_instance_v1.InstanceAdminClient()
-
-        # Mock request
+        # Setup request
         parent = client.project_path('[PROJECT]')
 
-        # Mock exception response
-        grpc_stub.ListInstanceConfigs.side_effect = CustomException()
-
         paged_list_response = client.list_instance_configs(parent)
-        self.assertRaises(errors.GaxError, list, paged_list_response)
+        with pytest.raises(CustomException):
+            list(paged_list_response)
 
-    @mock.patch('google.gax.config.create_stub', spec=True)
-    def test_get_instance_config(self, mock_create_stub):
-        # Mock gRPC layer
-        grpc_stub = mock.Mock()
-        mock_create_stub.return_value = grpc_stub
-
-        client = spanner_admin_instance_v1.InstanceAdminClient()
-
-        # Mock request
-        name = client.instance_config_path('[PROJECT]', '[INSTANCE_CONFIG]')
-
-        # Mock response
+    def test_get_instance_config(self):
+        # Setup Expected Response
         name_2 = 'name2-1052831874'
         display_name = 'displayName1615086568'
         expected_response = {'name': name_2, 'display_name': display_name}
         expected_response = spanner_instance_admin_pb2.InstanceConfig(
             **expected_response)
-        grpc_stub.GetInstanceConfig.return_value = expected_response
 
-        response = client.get_instance_config(name)
-        self.assertEqual(expected_response, response)
+        # Mock the API response
+        channel = ChannelStub(responses=[expected_response])
+        client = spanner_admin_instance_v1.InstanceAdminClient(channel=channel)
 
-        grpc_stub.GetInstanceConfig.assert_called_once()
-        args, kwargs = grpc_stub.GetInstanceConfig.call_args
-        self.assertEqual(len(args), 2)
-        self.assertEqual(len(kwargs), 1)
-        self.assertIn('metadata', kwargs)
-        actual_request = args[0]
-
-        expected_request = spanner_instance_admin_pb2.GetInstanceConfigRequest(
-            name=name)
-        self.assertEqual(expected_request, actual_request)
-
-    @mock.patch('google.gax.config.API_ERRORS', (CustomException, ))
-    @mock.patch('google.gax.config.create_stub', spec=True)
-    def test_get_instance_config_exception(self, mock_create_stub):
-        # Mock gRPC layer
-        grpc_stub = mock.Mock()
-        mock_create_stub.return_value = grpc_stub
-
-        client = spanner_admin_instance_v1.InstanceAdminClient()
-
-        # Mock request
+        # Setup Request
         name = client.instance_config_path('[PROJECT]', '[INSTANCE_CONFIG]')
 
-        # Mock exception response
-        grpc_stub.GetInstanceConfig.side_effect = CustomException()
+        response = client.get_instance_config(name)
+        assert expected_response == response
 
-        self.assertRaises(errors.GaxError, client.get_instance_config, name)
+        assert len(channel.requests) == 1
+        expected_request = spanner_instance_admin_pb2.GetInstanceConfigRequest(
+            name=name)
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
 
-    @mock.patch('google.gax.config.create_stub', spec=True)
-    def test_list_instances(self, mock_create_stub):
-        # Mock gRPC layer
-        grpc_stub = mock.Mock()
-        mock_create_stub.return_value = grpc_stub
+    def test_get_instance_config_exception(self):
+        # Mock the API response
+        channel = ChannelStub(responses=[CustomException()])
+        client = spanner_admin_instance_v1.InstanceAdminClient(channel=channel)
 
-        client = spanner_admin_instance_v1.InstanceAdminClient()
+        # Setup request
+        name = client.instance_config_path('[PROJECT]', '[INSTANCE_CONFIG]')
 
-        # Mock request
-        parent = client.project_path('[PROJECT]')
+        with pytest.raises(CustomException):
+            client.get_instance_config(name)
 
-        # Mock response
+    def test_list_instances(self):
+        # Setup Expected Response
         next_page_token = ''
         instances_element = {}
         instances = [instances_element]
@@ -161,54 +156,39 @@ class TestInstanceAdminClient(unittest.TestCase):
         }
         expected_response = spanner_instance_admin_pb2.ListInstancesResponse(
             **expected_response)
-        grpc_stub.ListInstances.return_value = expected_response
+
+        # Mock the API response
+        channel = ChannelStub(responses=[expected_response])
+        client = spanner_admin_instance_v1.InstanceAdminClient(channel=channel)
+
+        # Setup Request
+        parent = client.project_path('[PROJECT]')
 
         paged_list_response = client.list_instances(parent)
         resources = list(paged_list_response)
-        self.assertEqual(1, len(resources))
-        self.assertEqual(expected_response.instances[0], resources[0])
+        assert len(resources) == 1
 
-        grpc_stub.ListInstances.assert_called_once()
-        args, kwargs = grpc_stub.ListInstances.call_args
-        self.assertEqual(len(args), 2)
-        self.assertEqual(len(kwargs), 1)
-        self.assertIn('metadata', kwargs)
-        actual_request = args[0]
+        assert expected_response.instances[0] == resources[0]
 
+        assert len(channel.requests) == 1
         expected_request = spanner_instance_admin_pb2.ListInstancesRequest(
             parent=parent)
-        self.assertEqual(expected_request, actual_request)
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
 
-    @mock.patch('google.gax.config.API_ERRORS', (CustomException, ))
-    @mock.patch('google.gax.config.create_stub', spec=True)
-    def test_list_instances_exception(self, mock_create_stub):
-        # Mock gRPC layer
-        grpc_stub = mock.Mock()
-        mock_create_stub.return_value = grpc_stub
+    def test_list_instances_exception(self):
+        channel = ChannelStub(responses=[CustomException()])
+        client = spanner_admin_instance_v1.InstanceAdminClient(channel=channel)
 
-        client = spanner_admin_instance_v1.InstanceAdminClient()
-
-        # Mock request
+        # Setup request
         parent = client.project_path('[PROJECT]')
 
-        # Mock exception response
-        grpc_stub.ListInstances.side_effect = CustomException()
-
         paged_list_response = client.list_instances(parent)
-        self.assertRaises(errors.GaxError, list, paged_list_response)
+        with pytest.raises(CustomException):
+            list(paged_list_response)
 
-    @mock.patch('google.gax.config.create_stub', spec=True)
-    def test_get_instance(self, mock_create_stub):
-        # Mock gRPC layer
-        grpc_stub = mock.Mock()
-        mock_create_stub.return_value = grpc_stub
-
-        client = spanner_admin_instance_v1.InstanceAdminClient()
-
-        # Mock request
-        name = client.instance_path('[PROJECT]', '[INSTANCE]')
-
-        # Mock response
+    def test_get_instance(self):
+        # Setup Expected Response
         name_2 = 'name2-1052831874'
         config = 'config-1354792126'
         display_name = 'displayName1615086568'
@@ -221,53 +201,36 @@ class TestInstanceAdminClient(unittest.TestCase):
         }
         expected_response = spanner_instance_admin_pb2.Instance(
             **expected_response)
-        grpc_stub.GetInstance.return_value = expected_response
 
-        response = client.get_instance(name)
-        self.assertEqual(expected_response, response)
+        # Mock the API response
+        channel = ChannelStub(responses=[expected_response])
+        client = spanner_admin_instance_v1.InstanceAdminClient(channel=channel)
 
-        grpc_stub.GetInstance.assert_called_once()
-        args, kwargs = grpc_stub.GetInstance.call_args
-        self.assertEqual(len(args), 2)
-        self.assertEqual(len(kwargs), 1)
-        self.assertIn('metadata', kwargs)
-        actual_request = args[0]
-
-        expected_request = spanner_instance_admin_pb2.GetInstanceRequest(
-            name=name)
-        self.assertEqual(expected_request, actual_request)
-
-    @mock.patch('google.gax.config.API_ERRORS', (CustomException, ))
-    @mock.patch('google.gax.config.create_stub', spec=True)
-    def test_get_instance_exception(self, mock_create_stub):
-        # Mock gRPC layer
-        grpc_stub = mock.Mock()
-        mock_create_stub.return_value = grpc_stub
-
-        client = spanner_admin_instance_v1.InstanceAdminClient()
-
-        # Mock request
+        # Setup Request
         name = client.instance_path('[PROJECT]', '[INSTANCE]')
 
-        # Mock exception response
-        grpc_stub.GetInstance.side_effect = CustomException()
+        response = client.get_instance(name)
+        assert expected_response == response
 
-        self.assertRaises(errors.GaxError, client.get_instance, name)
+        assert len(channel.requests) == 1
+        expected_request = spanner_instance_admin_pb2.GetInstanceRequest(
+            name=name)
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
 
-    @mock.patch('google.gax.config.create_stub', spec=True)
-    def test_create_instance(self, mock_create_stub):
-        # Mock gRPC layer
-        grpc_stub = mock.Mock()
-        mock_create_stub.return_value = grpc_stub
+    def test_get_instance_exception(self):
+        # Mock the API response
+        channel = ChannelStub(responses=[CustomException()])
+        client = spanner_admin_instance_v1.InstanceAdminClient(channel=channel)
 
-        client = spanner_admin_instance_v1.InstanceAdminClient()
+        # Setup request
+        name = client.instance_path('[PROJECT]', '[INSTANCE]')
 
-        # Mock request
-        parent = client.project_path('[PROJECT]')
-        instance_id = 'instanceId-2101995259'
-        instance = {}
+        with pytest.raises(CustomException):
+            client.get_instance(name)
 
-        # Mock response
+    def test_create_instance(self):
+        # Setup Expected Response
         name = 'name3373707'
         config = 'config-1354792126'
         display_name = 'displayName1615086568'
@@ -283,58 +246,48 @@ class TestInstanceAdminClient(unittest.TestCase):
         operation = operations_pb2.Operation(
             name='operations/test_create_instance', done=True)
         operation.response.Pack(expected_response)
-        grpc_stub.CreateInstance.return_value = operation
 
-        response = client.create_instance(parent, instance_id, instance)
-        self.assertEqual(expected_response, response.result())
+        # Mock the API response
+        channel = ChannelStub(responses=[operation])
+        client = spanner_admin_instance_v1.InstanceAdminClient(channel=channel)
 
-        grpc_stub.CreateInstance.assert_called_once()
-        args, kwargs = grpc_stub.CreateInstance.call_args
-        self.assertEqual(len(args), 2)
-        self.assertEqual(len(kwargs), 1)
-        self.assertIn('metadata', kwargs)
-        actual_request = args[0]
-
-        expected_request = spanner_instance_admin_pb2.CreateInstanceRequest(
-            parent=parent, instance_id=instance_id, instance=instance)
-        self.assertEqual(expected_request, actual_request)
-
-    @mock.patch('google.gax.config.create_stub', spec=True)
-    def test_create_instance_exception(self, mock_create_stub):
-        # Mock gRPC layer
-        grpc_stub = mock.Mock()
-        mock_create_stub.return_value = grpc_stub
-
-        client = spanner_admin_instance_v1.InstanceAdminClient()
-
-        # Mock request
+        # Setup Request
         parent = client.project_path('[PROJECT]')
         instance_id = 'instanceId-2101995259'
         instance = {}
 
-        # Mock exception response
+        response = client.create_instance(parent, instance_id, instance)
+        result = response.result()
+        assert expected_response == result
+
+        assert len(channel.requests) == 1
+        expected_request = spanner_instance_admin_pb2.CreateInstanceRequest(
+            parent=parent, instance_id=instance_id, instance=instance)
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_create_instance_exception(self):
+        # Setup Response
         error = status_pb2.Status()
         operation = operations_pb2.Operation(
             name='operations/test_create_instance_exception', done=True)
         operation.error.CopyFrom(error)
-        grpc_stub.CreateInstance.return_value = operation
+
+        # Mock the API response
+        channel = ChannelStub(responses=[operation])
+        client = spanner_admin_instance_v1.InstanceAdminClient(channel=channel)
+
+        # Setup Request
+        parent = client.project_path('[PROJECT]')
+        instance_id = 'instanceId-2101995259'
+        instance = {}
 
         response = client.create_instance(parent, instance_id, instance)
-        self.assertEqual(error, response.exception())
+        exception = response.exception()
+        assert exception.errors[0] == error
 
-    @mock.patch('google.gax.config.create_stub', spec=True)
-    def test_update_instance(self, mock_create_stub):
-        # Mock gRPC layer
-        grpc_stub = mock.Mock()
-        mock_create_stub.return_value = grpc_stub
-
-        client = spanner_admin_instance_v1.InstanceAdminClient()
-
-        # Mock request
-        instance = {}
-        field_mask = {}
-
-        # Mock response
+    def test_update_instance(self):
+        # Setup Expected Response
         name = 'name3373707'
         config = 'config-1354792126'
         display_name = 'displayName1615086568'
@@ -350,233 +303,171 @@ class TestInstanceAdminClient(unittest.TestCase):
         operation = operations_pb2.Operation(
             name='operations/test_update_instance', done=True)
         operation.response.Pack(expected_response)
-        grpc_stub.UpdateInstance.return_value = operation
 
-        response = client.update_instance(instance, field_mask)
-        self.assertEqual(expected_response, response.result())
+        # Mock the API response
+        channel = ChannelStub(responses=[operation])
+        client = spanner_admin_instance_v1.InstanceAdminClient(channel=channel)
 
-        grpc_stub.UpdateInstance.assert_called_once()
-        args, kwargs = grpc_stub.UpdateInstance.call_args
-        self.assertEqual(len(args), 2)
-        self.assertEqual(len(kwargs), 1)
-        self.assertIn('metadata', kwargs)
-        actual_request = args[0]
-
-        expected_request = spanner_instance_admin_pb2.UpdateInstanceRequest(
-            instance=instance, field_mask=field_mask)
-        self.assertEqual(expected_request, actual_request)
-
-    @mock.patch('google.gax.config.create_stub', spec=True)
-    def test_update_instance_exception(self, mock_create_stub):
-        # Mock gRPC layer
-        grpc_stub = mock.Mock()
-        mock_create_stub.return_value = grpc_stub
-
-        client = spanner_admin_instance_v1.InstanceAdminClient()
-
-        # Mock request
+        # Setup Request
         instance = {}
         field_mask = {}
 
-        # Mock exception response
+        response = client.update_instance(instance, field_mask)
+        result = response.result()
+        assert expected_response == result
+
+        assert len(channel.requests) == 1
+        expected_request = spanner_instance_admin_pb2.UpdateInstanceRequest(
+            instance=instance, field_mask=field_mask)
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_update_instance_exception(self):
+        # Setup Response
         error = status_pb2.Status()
         operation = operations_pb2.Operation(
             name='operations/test_update_instance_exception', done=True)
         operation.error.CopyFrom(error)
-        grpc_stub.UpdateInstance.return_value = operation
+
+        # Mock the API response
+        channel = ChannelStub(responses=[operation])
+        client = spanner_admin_instance_v1.InstanceAdminClient(channel=channel)
+
+        # Setup Request
+        instance = {}
+        field_mask = {}
 
         response = client.update_instance(instance, field_mask)
-        self.assertEqual(error, response.exception())
+        exception = response.exception()
+        assert exception.errors[0] == error
 
-    @mock.patch('google.gax.config.create_stub', spec=True)
-    def test_delete_instance(self, mock_create_stub):
-        # Mock gRPC layer
-        grpc_stub = mock.Mock()
-        mock_create_stub.return_value = grpc_stub
+    def test_delete_instance(self):
+        channel = ChannelStub()
+        client = spanner_admin_instance_v1.InstanceAdminClient(channel=channel)
 
-        client = spanner_admin_instance_v1.InstanceAdminClient()
-
-        # Mock request
+        # Setup Request
         name = client.instance_path('[PROJECT]', '[INSTANCE]')
 
         client.delete_instance(name)
 
-        grpc_stub.DeleteInstance.assert_called_once()
-        args, kwargs = grpc_stub.DeleteInstance.call_args
-        self.assertEqual(len(args), 2)
-        self.assertEqual(len(kwargs), 1)
-        self.assertIn('metadata', kwargs)
-        actual_request = args[0]
-
+        assert len(channel.requests) == 1
         expected_request = spanner_instance_admin_pb2.DeleteInstanceRequest(
             name=name)
-        self.assertEqual(expected_request, actual_request)
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
 
-    @mock.patch('google.gax.config.API_ERRORS', (CustomException, ))
-    @mock.patch('google.gax.config.create_stub', spec=True)
-    def test_delete_instance_exception(self, mock_create_stub):
-        # Mock gRPC layer
-        grpc_stub = mock.Mock()
-        mock_create_stub.return_value = grpc_stub
+    def test_delete_instance_exception(self):
+        # Mock the API response
+        channel = ChannelStub(responses=[CustomException()])
+        client = spanner_admin_instance_v1.InstanceAdminClient(channel=channel)
 
-        client = spanner_admin_instance_v1.InstanceAdminClient()
-
-        # Mock request
+        # Setup request
         name = client.instance_path('[PROJECT]', '[INSTANCE]')
 
-        # Mock exception response
-        grpc_stub.DeleteInstance.side_effect = CustomException()
+        with pytest.raises(CustomException):
+            client.delete_instance(name)
 
-        self.assertRaises(errors.GaxError, client.delete_instance, name)
-
-    @mock.patch('google.gax.config.create_stub', spec=True)
-    def test_set_iam_policy(self, mock_create_stub):
-        # Mock gRPC layer
-        grpc_stub = mock.Mock()
-        mock_create_stub.return_value = grpc_stub
-
-        client = spanner_admin_instance_v1.InstanceAdminClient()
-
-        # Mock request
-        resource = client.instance_path('[PROJECT]', '[INSTANCE]')
-        policy = {}
-
-        # Mock response
+    def test_set_iam_policy(self):
+        # Setup Expected Response
         version = 351608024
         etag = b'21'
         expected_response = {'version': version, 'etag': etag}
         expected_response = policy_pb2.Policy(**expected_response)
-        grpc_stub.SetIamPolicy.return_value = expected_response
+
+        # Mock the API response
+        channel = ChannelStub(responses=[expected_response])
+        client = spanner_admin_instance_v1.InstanceAdminClient(channel=channel)
+
+        # Setup Request
+        resource = client.instance_path('[PROJECT]', '[INSTANCE]')
+        policy = {}
 
         response = client.set_iam_policy(resource, policy)
-        self.assertEqual(expected_response, response)
+        assert expected_response == response
 
-        grpc_stub.SetIamPolicy.assert_called_once()
-        args, kwargs = grpc_stub.SetIamPolicy.call_args
-        self.assertEqual(len(args), 2)
-        self.assertEqual(len(kwargs), 1)
-        self.assertIn('metadata', kwargs)
-        actual_request = args[0]
-
+        assert len(channel.requests) == 1
         expected_request = iam_policy_pb2.SetIamPolicyRequest(
             resource=resource, policy=policy)
-        self.assertEqual(expected_request, actual_request)
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
 
-    @mock.patch('google.gax.config.API_ERRORS', (CustomException, ))
-    @mock.patch('google.gax.config.create_stub', spec=True)
-    def test_set_iam_policy_exception(self, mock_create_stub):
-        # Mock gRPC layer
-        grpc_stub = mock.Mock()
-        mock_create_stub.return_value = grpc_stub
+    def test_set_iam_policy_exception(self):
+        # Mock the API response
+        channel = ChannelStub(responses=[CustomException()])
+        client = spanner_admin_instance_v1.InstanceAdminClient(channel=channel)
 
-        client = spanner_admin_instance_v1.InstanceAdminClient()
-
-        # Mock request
+        # Setup request
         resource = client.instance_path('[PROJECT]', '[INSTANCE]')
         policy = {}
 
-        # Mock exception response
-        grpc_stub.SetIamPolicy.side_effect = CustomException()
+        with pytest.raises(CustomException):
+            client.set_iam_policy(resource, policy)
 
-        self.assertRaises(errors.GaxError, client.set_iam_policy, resource,
-                          policy)
-
-    @mock.patch('google.gax.config.create_stub', spec=True)
-    def test_get_iam_policy(self, mock_create_stub):
-        # Mock gRPC layer
-        grpc_stub = mock.Mock()
-        mock_create_stub.return_value = grpc_stub
-
-        client = spanner_admin_instance_v1.InstanceAdminClient()
-
-        # Mock request
-        resource = client.instance_path('[PROJECT]', '[INSTANCE]')
-
-        # Mock response
+    def test_get_iam_policy(self):
+        # Setup Expected Response
         version = 351608024
         etag = b'21'
         expected_response = {'version': version, 'etag': etag}
         expected_response = policy_pb2.Policy(**expected_response)
-        grpc_stub.GetIamPolicy.return_value = expected_response
+
+        # Mock the API response
+        channel = ChannelStub(responses=[expected_response])
+        client = spanner_admin_instance_v1.InstanceAdminClient(channel=channel)
+
+        # Setup Request
+        resource = client.instance_path('[PROJECT]', '[INSTANCE]')
 
         response = client.get_iam_policy(resource)
-        self.assertEqual(expected_response, response)
+        assert expected_response == response
 
-        grpc_stub.GetIamPolicy.assert_called_once()
-        args, kwargs = grpc_stub.GetIamPolicy.call_args
-        self.assertEqual(len(args), 2)
-        self.assertEqual(len(kwargs), 1)
-        self.assertIn('metadata', kwargs)
-        actual_request = args[0]
-
+        assert len(channel.requests) == 1
         expected_request = iam_policy_pb2.GetIamPolicyRequest(
             resource=resource)
-        self.assertEqual(expected_request, actual_request)
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
 
-    @mock.patch('google.gax.config.API_ERRORS', (CustomException, ))
-    @mock.patch('google.gax.config.create_stub', spec=True)
-    def test_get_iam_policy_exception(self, mock_create_stub):
-        # Mock gRPC layer
-        grpc_stub = mock.Mock()
-        mock_create_stub.return_value = grpc_stub
+    def test_get_iam_policy_exception(self):
+        # Mock the API response
+        channel = ChannelStub(responses=[CustomException()])
+        client = spanner_admin_instance_v1.InstanceAdminClient(channel=channel)
 
-        client = spanner_admin_instance_v1.InstanceAdminClient()
-
-        # Mock request
+        # Setup request
         resource = client.instance_path('[PROJECT]', '[INSTANCE]')
 
-        # Mock exception response
-        grpc_stub.GetIamPolicy.side_effect = CustomException()
+        with pytest.raises(CustomException):
+            client.get_iam_policy(resource)
 
-        self.assertRaises(errors.GaxError, client.get_iam_policy, resource)
-
-    @mock.patch('google.gax.config.create_stub', spec=True)
-    def test_test_iam_permissions(self, mock_create_stub):
-        # Mock gRPC layer
-        grpc_stub = mock.Mock()
-        mock_create_stub.return_value = grpc_stub
-
-        client = spanner_admin_instance_v1.InstanceAdminClient()
-
-        # Mock request
-        resource = client.instance_path('[PROJECT]', '[INSTANCE]')
-        permissions = []
-
-        # Mock response
+    def test_test_iam_permissions(self):
+        # Setup Expected Response
         expected_response = {}
         expected_response = iam_policy_pb2.TestIamPermissionsResponse(
             **expected_response)
-        grpc_stub.TestIamPermissions.return_value = expected_response
 
-        response = client.test_iam_permissions(resource, permissions)
-        self.assertEqual(expected_response, response)
+        # Mock the API response
+        channel = ChannelStub(responses=[expected_response])
+        client = spanner_admin_instance_v1.InstanceAdminClient(channel=channel)
 
-        grpc_stub.TestIamPermissions.assert_called_once()
-        args, kwargs = grpc_stub.TestIamPermissions.call_args
-        self.assertEqual(len(args), 2)
-        self.assertEqual(len(kwargs), 1)
-        self.assertIn('metadata', kwargs)
-        actual_request = args[0]
-
-        expected_request = iam_policy_pb2.TestIamPermissionsRequest(
-            resource=resource, permissions=permissions)
-        self.assertEqual(expected_request, actual_request)
-
-    @mock.patch('google.gax.config.API_ERRORS', (CustomException, ))
-    @mock.patch('google.gax.config.create_stub', spec=True)
-    def test_test_iam_permissions_exception(self, mock_create_stub):
-        # Mock gRPC layer
-        grpc_stub = mock.Mock()
-        mock_create_stub.return_value = grpc_stub
-
-        client = spanner_admin_instance_v1.InstanceAdminClient()
-
-        # Mock request
+        # Setup Request
         resource = client.instance_path('[PROJECT]', '[INSTANCE]')
         permissions = []
 
-        # Mock exception response
-        grpc_stub.TestIamPermissions.side_effect = CustomException()
+        response = client.test_iam_permissions(resource, permissions)
+        assert expected_response == response
 
-        self.assertRaises(errors.GaxError, client.test_iam_permissions,
-                          resource, permissions)
+        assert len(channel.requests) == 1
+        expected_request = iam_policy_pb2.TestIamPermissionsRequest(
+            resource=resource, permissions=permissions)
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_test_iam_permissions_exception(self):
+        # Mock the API response
+        channel = ChannelStub(responses=[CustomException()])
+        client = spanner_admin_instance_v1.InstanceAdminClient(channel=channel)
+
+        # Setup request
+        resource = client.instance_path('[PROJECT]', '[INSTANCE]')
+        permissions = []
+
+        with pytest.raises(CustomException):
+            client.test_iam_permissions(resource, permissions)

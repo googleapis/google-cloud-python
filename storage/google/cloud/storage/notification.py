@@ -28,11 +28,15 @@ JSON_API_V1_PAYLOAD_FORMAT = 'JSON_API_V1'
 NONE_PAYLOAD_FORMAT = 'NONE'
 
 _TOPIC_REF_FMT = '//pubsub.googleapis.com/projects/{}/topics/{}'
-_PROJECT_PATTERN = r'(?P<project>[a-z]+-[a-z]+-\d+)'
+_PROJECT_PATTERN = r'(?P<project>[a-z][a-z0-9-]{4,28}[a-z0-9])'
 _TOPIC_NAME_PATTERN = r'(?P<name>[A-Za-z](\w|[-_.~+%])+)'
 _TOPIC_REF_PATTERN = _TOPIC_REF_FMT.format(
     _PROJECT_PATTERN, _TOPIC_NAME_PATTERN)
 _TOPIC_REF_RE = re.compile(_TOPIC_REF_PATTERN)
+_BAD_TOPIC = (
+    'Resource has invalid topic: {}; see '
+    'https://cloud.google.com/storage/docs/json_api/v1/'
+    'notifications/insert#topic')
 
 
 class BucketNotification(object):
@@ -110,25 +114,12 @@ class BucketNotification(object):
 
         :rtype: :class:`BucketNotification`
         :returns: the new notification instance
-        :raises ValueError:
-            if resource is missing 'topic' key, or if it is not formatted
-            per the spec documented in
-            https://cloud.google.com/storage/docs/json_api/v1/notifications/insert#topic
         """
         topic_path = resource.get('topic')
         if topic_path is None:
             raise ValueError('Resource has no topic')
 
-        match = _TOPIC_REF_RE.match(topic_path)
-        if match is None:
-            raise ValueError(
-                'Resource has invalid topic: {}; see {}'.format(
-                    topic_path,
-                    'https://cloud.google.com/storage/docs/json_api/v1/'
-                    'notifications/insert#topic'))
-
-        name = match.group('name')
-        project = match.group('project')
+        name, project = _parse_topic_path(topic_path)
         instance = cls(bucket, name, topic_project=project)
         instance._properties = resource
 
@@ -360,3 +351,40 @@ class BucketNotification(object):
             path=self.path,
             query_params=query_params,
         )
+
+
+def _parse_topic_path(topic_path):
+    """Verify that a topic path is in the correct format.
+
+    .. _resource manager docs: https://cloud.google.com/resource-manager/\
+                               reference/rest/v1beta1/projects#\
+                               Project.FIELDS.project_id
+    .. _topic spec: https://cloud.google.com/storage/docs/json_api/v1/\
+                    notifications/insert#topic
+
+    Expected to be of the form:
+
+        //pubsub.googleapis.com/projects/{project}/topics/{topic}
+
+    where the ``project`` value must be "6 to 30 lowercase letters, digits,
+    or hyphens. It must start with a letter. Trailing hyphens are prohibited."
+    (see `resource manager docs`_) and ``topic`` must have length at least two,
+    must start with a letter and may only contain alphanumeric characters or
+    ``-``, ``_``, ``.``, ``~``, ``+`` or ``%`` (i.e characters used for URL
+    encoding, see `topic spec`_).
+
+    Args:
+        topic_path (str): The topic path to be verified.
+
+    Returns:
+        Tuple[str, str]: The ``project`` and ``topic`` parsed from the
+        ``topic_path``.
+
+    Raises:
+        ValueError: If the topic path is invalid.
+    """
+    match = _TOPIC_REF_RE.match(topic_path)
+    if match is None:
+        raise ValueError(_BAD_TOPIC.format(topic_path))
+
+    return match.group('name'), match.group('project')

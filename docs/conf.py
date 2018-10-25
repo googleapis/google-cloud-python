@@ -26,6 +26,11 @@
 import email
 import os
 import pkg_resources
+import shutil
+
+from sphinx.util import logging
+
+logger = logging.getLogger(__name__)
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
@@ -50,10 +55,16 @@ extensions = [
 ]
 
 # Add any paths that contain templates here, relative to this directory.
-templates_path = []
+templates_path = ['_templates']
+
+# Allow markdown includes (so releases.md can include CHANGLEOG.md)
+# http://www.sphinx-doc.org/en/master/markdown.html
+source_parsers = {
+   '.md': 'recommonmark.parser.CommonMarkParser',
+}
 
 # The suffix of source filenames.
-source_suffix = '.rst'
+source_suffix = ['.rst', '.md']
 
 # The encoding of source files.
 #source_encoding = 'utf-8-sig'
@@ -253,7 +264,14 @@ latex_documents = [
 # -- Options for warnings ------------------------------------------------------
 
 
-suppress_warnings = []
+suppress_warnings = [
+    # Temporarily suppress ths to avoid "more than one target found for
+    # cross-reference" warning, which are intractable for us to avoid while in
+    # a mono-repo.
+    # See https://github.com/sphinx-doc/sphinx/blob
+    # /2a65ffeef5c107c19084fabdd706cdff3f52d93c/sphinx/domains/python.py#L843
+    'ref.python'
+]
 
 
 # -- Options for manual page output --------------------------------------------
@@ -293,6 +311,10 @@ texinfo_documents = [
 # and parameter definitions from the __init__ docstring.
 autoclass_content = 'both'
 
+# Automatically generate API reference stubs from autosummary.
+# http://www.sphinx-doc.org/en/master/ext/autosummary.html#generating-stub-pages-automatically
+autosummary_generate = True
+
 # Configuration for intersphinx:
 intersphinx_mapping = {
     'google-auth': ('https://google-auth.readthedocs.io/en/stable', None),
@@ -302,3 +324,28 @@ intersphinx_mapping = {
     'pandas': ('http://pandas.pydata.org/pandas-docs/stable/', None),
     'python': ('https://docs.python.org/3', None),
 }
+
+# Static HTML pages, e.g. to support redirects
+# See: https://tech.signavio.com/2017/managing-sphinx-redirects
+# HTML pages to be copied from source to target
+static_html_pages = [
+    'datastore/usage.html',
+    'dns/usage.html',
+    'bigquery/usage.html',
+    'runtimeconfig/usage.html',
+    'spanner/usage.html',
+    'trace/starting.html',
+]
+
+def copy_static_html_pages(app, exception):
+    if exception is None and app.builder.name == 'html':
+        for static_html_page in static_html_pages:
+            target_path = app.outdir + '/' + static_html_page
+            src_path = app.srcdir + '/' + static_html_page
+            if os.path.isfile(src_path):
+                logger.info(
+                    'Copying static html: %s -> %s', src_path, target_path)
+                shutil.copyfile(src_path, target_path)
+
+def setup(app):
+    app.connect('build-finished', copy_static_html_pages)

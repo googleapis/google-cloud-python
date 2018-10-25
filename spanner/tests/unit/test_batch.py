@@ -15,8 +15,6 @@
 
 import unittest
 
-from google.cloud._testing import _GAXBaseAPI
-
 
 TABLE_NAME = 'citizens'
 COLUMNS = ['email', 'first_name', 'last_name', 'age']
@@ -194,43 +192,19 @@ class TestBatch(_BaseTest):
             batch.commit()
 
     def test_commit_grpc_error(self):
-        from google.gax.errors import GaxError
-        from google.cloud.spanner_v1.proto.transaction_pb2 import (
-            TransactionOptions)
-        from google.cloud.spanner_v1.proto.mutation_pb2 import (
-            Mutation as MutationPB)
+        from google.api_core.exceptions import Unknown
         from google.cloud.spanner_v1.keyset import KeySet
 
         keys = [[0], [1], [2]]
         keyset = KeySet(keys=keys)
         database = _Database()
-        api = database.spanner_api = _FauxSpannerAPI(
-            _random_gax_error=True)
+        database.spanner_api = _FauxSpannerAPI(_rpc_error=True)
         session = _Session(database)
         batch = self._make_one(session)
         batch.delete(TABLE_NAME, keyset=keyset)
 
-        with self.assertRaises(GaxError):
+        with self.assertRaises(Unknown):
             batch.commit()
-
-        (session, mutations, single_use_txn, options) = api._committed
-        self.assertEqual(session, self.SESSION_NAME)
-        self.assertTrue(len(mutations), 1)
-        mutation = mutations[0]
-        self.assertIsInstance(mutation, MutationPB)
-        self.assertTrue(mutation.HasField('delete'))
-        delete = mutation.delete
-        self.assertEqual(delete.table, TABLE_NAME)
-        keyset_pb = delete.key_set
-        self.assertEqual(len(keyset_pb.ranges), 0)
-        self.assertEqual(len(keyset_pb.keys), len(keys))
-        for found, expected in zip(keyset_pb.keys, keys):
-            self.assertEqual(
-                [int(value.string_value) for value in found.values], expected)
-        self.assertIsInstance(single_use_txn, TransactionOptions)
-        self.assertTrue(single_use_txn.HasField('read_write'))
-        self.assertEqual(options.kwargs['metadata'],
-                         [('google-cloud-resource-prefix', database.name)])
 
     def test_commit_ok(self):
         import datetime
@@ -255,13 +229,13 @@ class TestBatch(_BaseTest):
         self.assertEqual(committed, now)
         self.assertEqual(batch.committed, committed)
 
-        (session, mutations, single_use_txn, options) = api._committed
+        (session, mutations, single_use_txn, metadata) = api._committed
         self.assertEqual(session, self.SESSION_NAME)
         self.assertEqual(mutations, batch._mutations)
         self.assertIsInstance(single_use_txn, TransactionOptions)
         self.assertTrue(single_use_txn.HasField('read_write'))
-        self.assertEqual(options.kwargs['metadata'],
-                         [('google-cloud-resource-prefix', database.name)])
+        self.assertEqual(
+            metadata, [('google-cloud-resource-prefix', database.name)])
 
     def test_context_mgr_already_committed(self):
         import datetime
@@ -302,13 +276,13 @@ class TestBatch(_BaseTest):
 
         self.assertEqual(batch.committed, now)
 
-        (session, mutations, single_use_txn, options) = api._committed
+        (session, mutations, single_use_txn, metadata) = api._committed
         self.assertEqual(session, self.SESSION_NAME)
         self.assertEqual(mutations, batch._mutations)
         self.assertIsInstance(single_use_txn, TransactionOptions)
         self.assertTrue(single_use_txn.HasField('read_write'))
-        self.assertEqual(options.kwargs['metadata'],
-                         [('google-cloud-resource-prefix', database.name)])
+        self.assertEqual(
+            metadata, [('google-cloud-resource-prefix', database.name)])
 
     def test_context_mgr_failure(self):
         import datetime
@@ -349,18 +323,23 @@ class _Database(object):
     name = 'testing'
 
 
-class _FauxSpannerAPI(_GAXBaseAPI):
+class _FauxSpannerAPI():
 
     _create_instance_conflict = False
     _instance_not_found = False
     _committed = None
+    _rpc_error = False
+
+    def __init__(self, **kwargs):
+        self.__dict__.update(**kwargs)
 
     def commit(self, session, mutations,
-               transaction_id='', single_use_transaction=None, options=None):
-        from google.gax.errors import GaxError
+               transaction_id='', single_use_transaction=None, metadata=None):
+        from google.api_core.exceptions import Unknown
 
         assert transaction_id == ''
-        self._committed = (session, mutations, single_use_transaction, options)
-        if self._random_gax_error:
-            raise GaxError('error')
+        self._committed = (
+            session, mutations, single_use_transaction, metadata)
+        if self._rpc_error:
+            raise Unknown('error')
         return self._commit_response

@@ -47,6 +47,15 @@ CREATE TABLE string_plus_array_of_string (
     name STRING(16),
     tags ARRAY<STRING(16)> )
     PRIMARY KEY (id);
+CREATE INDEX name ON contacts(first_name, last_name);
+CREATE TABLE users_history (
+     id INT64 NOT NULL,
+     commit_ts TIMESTAMP NOT NULL OPTIONS
+        (allow_commit_timestamp=true),
+     name STRING(MAX) NOT NULL,
+     email STRING(MAX),
+     deleted BOOL NOT NULL )
+     PRIMARY KEY(id, commit_ts DESC);
 """
 
 DDL_STATEMENTS = [stmt.strip() for stmt in DDL.split(';') if stmt.strip()]

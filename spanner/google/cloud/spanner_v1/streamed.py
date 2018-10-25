@@ -48,15 +48,6 @@ class StreamedResultSet(object):
         self._source = source       # Source snapshot
 
     @property
-    def rows(self):
-        """Fully-processed rows.
-
-        :rtype: list of row-data lists.
-        :returns: list of completed row data, from proceesd PRS responses.
-        """
-        return self._rows
-
-    @property
     def fields(self):
         """Field descriptors for result set columns.
 
@@ -115,7 +106,7 @@ class StreamedResultSet(object):
                 self._rows.append(self._current_row)
                 self._current_row = []
 
-    def consume_next(self):
+    def _consume_next(self):
         """Consume the next partial result set from the stream.
 
         Parse the result set into new/existing rows in :attr:`_rows`
@@ -142,19 +133,14 @@ class StreamedResultSet(object):
 
         self._merge_values(values)
 
-    def consume_all(self):
-        """Consume the streamed responses until there are no more."""
-        while True:
-            try:
-                self.consume_next()
-            except StopIteration:
-                break
-
     def __iter__(self):
         iter_rows, self._rows[:] = self._rows[:], ()
         while True:
             if not iter_rows:
-                self.consume_next()  # raises StopIteration
+                try:
+                    self._consume_next()
+                except StopIteration:
+                    return
                 iter_rows, self._rows[:] = self._rows[:], ()
             while iter_rows:
                 yield iter_rows.pop(0)

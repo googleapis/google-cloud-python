@@ -18,23 +18,24 @@ Sends logs to the Stackdriver Logging API with the appropriate resource
 and labels for App Engine logs.
 """
 
+import logging
 import os
 
 from google.cloud.logging.handlers._helpers import get_trace_id
-from google.cloud.logging.handlers.handlers import CloudLoggingHandler
 from google.cloud.logging.handlers.transports import BackgroundThreadTransport
 from google.cloud.logging.resource import Resource
 
 _DEFAULT_GAE_LOGGER_NAME = 'app'
 
-_GAE_PROJECT_ENV = 'GCLOUD_PROJECT'
+_GAE_PROJECT_ENV_FLEX = 'GCLOUD_PROJECT'
+_GAE_PROJECT_ENV_STANDARD = 'GOOGLE_CLOUD_PROJECT'
 _GAE_SERVICE_ENV = 'GAE_SERVICE'
 _GAE_VERSION_ENV = 'GAE_VERSION'
 
 _TRACE_ID_LABEL = 'appengine.googleapis.com/trace_id'
 
 
-class AppEngineHandler(CloudLoggingHandler):
+class AppEngineHandler(logging.StreamHandler):
     """A logging handler that sends App Engine-formatted logs to Stackdriver.
 
     :type client: :class:`~google.cloud.logging.client.Client`
@@ -48,13 +49,18 @@ class AppEngineHandler(CloudLoggingHandler):
     """
 
     def __init__(self, client,
+                 name=_DEFAULT_GAE_LOGGER_NAME,
                  transport=BackgroundThreadTransport):
-        super(AppEngineHandler, self).__init__(
-            client,
-            name=_DEFAULT_GAE_LOGGER_NAME,
-            transport=transport,
-            resource=self.get_gae_resource(),
-            labels=self.get_gae_labels())
+        super(AppEngineHandler, self).__init__()
+        self.name = name
+        self.client = client
+        self.transport = transport(client, name)
+        self.project_id = os.environ.get(
+            _GAE_PROJECT_ENV_FLEX,
+            os.environ.get(_GAE_PROJECT_ENV_STANDARD, ''))
+        self.module_id = os.environ.get(_GAE_SERVICE_ENV, '')
+        self.version_id = os.environ.get(_GAE_VERSION_ENV, '')
+        self.resource = self.get_gae_resource()
 
     def get_gae_resource(self):
         """Return the GAE resource using the environment variables.
@@ -65,9 +71,9 @@ class AppEngineHandler(CloudLoggingHandler):
         gae_resource = Resource(
             type='gae_app',
             labels={
-                'project_id': os.environ.get(_GAE_PROJECT_ENV),
-                'module_id': os.environ.get(_GAE_SERVICE_ENV),
-                'version_id': os.environ.get(_GAE_VERSION_ENV),
+                'project_id': self.project_id,
+                'module_id': self.module_id,
+                'version_id': self.version_id,
             },
         )
         return gae_resource
@@ -88,3 +94,27 @@ class AppEngineHandler(CloudLoggingHandler):
             gae_labels[_TRACE_ID_LABEL] = trace_id
 
         return gae_labels
+
+    def emit(self, record):
+        """Actually log the specified logging record.
+
+        Overrides the default emit behavior of ``StreamHandler``.
+
+        See https://docs.python.org/2/library/logging.html#handler-objects
+
+        :type record: :class:`logging.LogRecord`
+        :param record: The record to be logged.
+        """
+        message = super(AppEngineHandler, self).format(record)
+        gae_labels = self.get_gae_labels()
+        trace_id = ('projects/%s/traces/%s' % (self.project_id,
+                                               gae_labels[_TRACE_ID_LABEL])
+                    if _TRACE_ID_LABEL in gae_labels
+                    else None)
+        self.transport.send(
+            record,
+            message,
+            resource=self.resource,
+            labels=gae_labels,
+            trace=trace_id,
+        )

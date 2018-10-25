@@ -134,7 +134,7 @@ def entity_from_protobuf(pb):
         # Check if ``value_pb`` was excluded from index. Lists need to be
         # special-cased and we require all ``exclude_from_indexes`` values
         # in a list agree.
-        if is_list:
+        if is_list and len(value) > 0:
             exclude_values = set(value_pb.exclude_from_indexes
                                  for value_pb in value_pb.array_value.values)
             if len(exclude_values) != 1:

@@ -1,156 +1,172 @@
-# Copyright 2017, Google LLC All rights reserved.
+# -*- coding: utf-8 -*-
+#
+# Copyright 2018 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#     http://www.apache.org/licenses/LICENSE-2.0
+#     https://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-#
-# EDITING INSTRUCTIONS
-# This file was generated from the file
-# https://github.com/google/googleapis/blob/master/google/cloud/videointelligence/v1beta2/video_intelligence.proto,
-# and updates to that file get reflected here through a refresh process.
-# For the short term, the refresh process will only be runnable by Google engineers.
-#
-# The only allowed edits are to method and file documentation. A 3-way
-# merge preserves those additions if the generated source changes.
 """Accesses the google.cloud.videointelligence.v1beta2 VideoIntelligenceService API."""
 
-import collections
-import json
-import os
 import pkg_resources
-import platform
+import warnings
 
-from google.gapic.longrunning import operations_client
-from google.gax import api_callable
-from google.gax import config
-from google.gax import path_template
-import google.gax
+from google.oauth2 import service_account
+import google.api_core.gapic_v1.client_info
+import google.api_core.gapic_v1.config
+import google.api_core.gapic_v1.method
+import google.api_core.grpc_helpers
+import google.api_core.operation
+import google.api_core.operations_v1
+import grpc
 
 from google.cloud.videointelligence_v1beta2.gapic import enums
 from google.cloud.videointelligence_v1beta2.gapic import video_intelligence_service_client_config
+from google.cloud.videointelligence_v1beta2.gapic.transports import video_intelligence_service_grpc_transport
 from google.cloud.videointelligence_v1beta2.proto import video_intelligence_pb2
+from google.cloud.videointelligence_v1beta2.proto import video_intelligence_pb2_grpc
+from google.longrunning import operations_pb2
+
+_GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
+    'google-cloud-videointelligence', ).version
 
 
 class VideoIntelligenceServiceClient(object):
     """Service that implements Google Cloud Video Intelligence API."""
 
-    SERVICE_ADDRESS = 'videointelligence.googleapis.com'
+    SERVICE_ADDRESS = 'videointelligence.googleapis.com:443'
     """The default address of the service."""
 
-    DEFAULT_SERVICE_PORT = 443
-    """The default port of the service."""
+    # The name of the interface for this client. This is the key used to
+    # find the method configuration in the client_config dictionary.
+    _INTERFACE_NAME = 'google.cloud.videointelligence.v1beta2.VideoIntelligenceService'
 
-    # The scopes needed to make gRPC calls to all of the methods defined in
-    # this service
-    _ALL_SCOPES = ('https://www.googleapis.com/auth/cloud-platform', )
+    @classmethod
+    def from_service_account_file(cls, filename, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials
+        file.
+
+        Args:
+            filename (str): The path to the service account private key json
+                file.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            VideoIntelligenceServiceClient: The constructed client.
+        """
+        credentials = service_account.Credentials.from_service_account_file(
+            filename)
+        kwargs['credentials'] = credentials
+        return cls(*args, **kwargs)
+
+    from_service_account_json = from_service_account_file
 
     def __init__(self,
+                 transport=None,
                  channel=None,
                  credentials=None,
-                 ssl_credentials=None,
-                 scopes=None,
-                 client_config=None,
-                 lib_name=None,
-                 lib_version='',
-                 metrics_headers=()):
+                 client_config=video_intelligence_service_client_config.config,
+                 client_info=None):
         """Constructor.
 
         Args:
-            channel (~grpc.Channel): A ``Channel`` instance through
-                which to make calls.
-            credentials (~google.auth.credentials.Credentials): The authorization
-                credentials to attach to requests. These credentials identify this
-                application to the service.
-            ssl_credentials (~grpc.ChannelCredentials): A
-                ``ChannelCredentials`` instance for use with an SSL-enabled
-                channel.
-            scopes (Sequence[str]): A list of OAuth2 scopes to attach to requests.
-            client_config (dict):
-                A dictionary for call options for each method. See
-                :func:`google.gax.construct_settings` for the structure of
-                this data. Falls back to the default config if not specified
-                or the specified config is missing data points.
-            lib_name (str): The API library software used for calling
-                the service. (Unless you are writing an API client itself,
-                leave this as default.)
-            lib_version (str): The API library software version used
-                for calling the service. (Unless you are writing an API client
-                itself, leave this as default.)
-            metrics_headers (dict): A dictionary of values for tracking
-                client library metrics. Ultimately serializes to a string
-                (e.g. 'foo/1.2.3 bar/3.14.1'). This argument should be
-                considered private.
+            transport (Union[~.VideoIntelligenceServiceGrpcTransport,
+                    Callable[[~.Credentials, type], ~.VideoIntelligenceServiceGrpcTransport]): A transport
+                instance, responsible for actually making the API calls.
+                The default transport uses the gRPC protocol.
+                This argument may also be a callable which returns a
+                transport instance. Callables will be sent the credentials
+                as the first argument and the default transport class as
+                the second argument.
+            channel (grpc.Channel): DEPRECATED. A ``Channel`` instance
+                through which to make calls. This argument is mutually exclusive
+                with ``credentials``; providing both will raise an exception.
+            credentials (google.auth.credentials.Credentials): The
+                authorization credentials to attach to requests. These
+                credentials identify this application to the service. If none
+                are specified, the client will attempt to ascertain the
+                credentials from the environment.
+                This argument is mutually exclusive with providing a
+                transport instance to ``transport``; doing so will raise
+                an exception.
+            client_config (dict): DEPRECATED. A dictionary of call options for
+                each method. If not specified, the default configuration is used.
+            client_info (google.api_core.gapic_v1.client_info.ClientInfo):
+                The client info used to send a user-agent string along with
+                API requests. If ``None``, then default info will be used.
+                Generally, you only need to set this if you're developing
+                your own client library.
         """
-        # Unless the calling application specifically requested
-        # OAuth scopes, request everything.
-        if scopes is None:
-            scopes = self._ALL_SCOPES
+        # Raise deprecation warnings for things we want to go away.
+        if client_config:
+            warnings.warn('The `client_config` argument is deprecated.',
+                          PendingDeprecationWarning)
+        if channel:
+            warnings.warn(
+                'The `channel` argument is deprecated; use '
+                '`transport` instead.', PendingDeprecationWarning)
 
-        # Initialize an empty client config, if none is set.
-        if client_config is None:
-            client_config = {}
+        # Instantiate the transport.
+        # The transport is responsible for handling serialization and
+        # deserialization and actually sending data to the service.
+        if transport:
+            if callable(transport):
+                self.transport = transport(
+                    credentials=credentials,
+                    default_class=video_intelligence_service_grpc_transport.
+                    VideoIntelligenceServiceGrpcTransport,
+                )
+            else:
+                if credentials:
+                    raise ValueError(
+                        'Received both a transport instance and '
+                        'credentials; these are mutually exclusive.')
+                self.transport = transport
+        else:
+            self.transport = video_intelligence_service_grpc_transport.VideoIntelligenceServiceGrpcTransport(
+                address=self.SERVICE_ADDRESS,
+                channel=channel,
+                credentials=credentials,
+            )
 
-        # Initialize metrics_headers as an ordered dictionary
-        # (cuts down on cardinality of the resulting string slightly).
-        metrics_headers = collections.OrderedDict(metrics_headers)
-        metrics_headers['gl-python'] = platform.python_version()
+        if client_info is None:
+            client_info = (
+                google.api_core.gapic_v1.client_info.DEFAULT_CLIENT_INFO)
+        client_info.gapic_version = _GAPIC_LIBRARY_VERSION
+        self._client_info = client_info
 
-        # The library may or may not be set, depending on what is
-        # calling this client. Newer client libraries set the library name
-        # and version.
-        if lib_name:
-            metrics_headers[lib_name] = lib_version
+        # Parse out the default settings for retry and timeout for each RPC
+        # from the client configuration.
+        # (Ordinarily, these are the defaults specified in the `*_config.py`
+        # file next to this one.)
+        self._method_configs = google.api_core.gapic_v1.config.parse_method_configs(
+            client_config['interfaces'][self._INTERFACE_NAME], )
 
-        # Finally, track the GAPIC package version.
-        metrics_headers['gapic'] = pkg_resources.get_distribution(
-            'google-cloud-videointelligence', ).version
-
-        # Load the configuration defaults.
-        defaults = api_callable.construct_settings(
-            'google.cloud.videointelligence.v1beta2.VideoIntelligenceService',
-            video_intelligence_service_client_config.config,
-            client_config,
-            config.STATUS_CODE_NAMES,
-            metrics_headers=metrics_headers, )
-        self.video_intelligence_service_stub = config.create_stub(
-            video_intelligence_pb2.VideoIntelligenceServiceStub,
-            channel=channel,
-            service_path=self.SERVICE_ADDRESS,
-            service_port=self.DEFAULT_SERVICE_PORT,
-            credentials=credentials,
-            scopes=scopes,
-            ssl_credentials=ssl_credentials)
-
-        self.operations_client = operations_client.OperationsClient(
-            service_path=self.SERVICE_ADDRESS,
-            channel=channel,
-            credentials=credentials,
-            ssl_credentials=ssl_credentials,
-            scopes=scopes,
-            client_config=client_config,
-            metrics_headers=metrics_headers, )
-
-        self._annotate_video = api_callable.create_api_call(
-            self.video_intelligence_service_stub.AnnotateVideo,
-            settings=defaults['annotate_video'])
+        # Save a dictionary of cached API call functions.
+        # These are the actual callables which invoke the proper
+        # transport methods, wrapped with `wrap_method` to add retry,
+        # timeout, and the like.
+        self._inner_api_calls = {}
 
     # Service calls
     def annotate_video(self,
-                       input_uri,
-                       features,
+                       input_uri=None,
                        input_content=None,
+                       features=None,
                        video_context=None,
                        output_uri=None,
                        location_id=None,
-                       options=None):
+                       retry=google.api_core.gapic_v1.method.DEFAULT,
+                       timeout=google.api_core.gapic_v1.method.DEFAULT,
+                       metadata=None):
         """
         Performs asynchronous video annotation. Progress and results can be
         retrieved through the ``google.longrunning.Operations`` interface.
@@ -163,10 +179,11 @@ class VideoIntelligenceServiceClient(object):
             >>>
             >>> client = videointelligence_v1beta2.VideoIntelligenceServiceClient()
             >>>
-            >>> input_uri = ''
-            >>> features = []
+            >>> input_uri = 'gs://demomaker/cat.mp4'
+            >>> features_element = enums.Feature.LABEL_DETECTION
+            >>> features = [features_element]
             >>>
-            >>> response = client.annotate_video(input_uri, features)
+            >>> response = client.annotate_video(input_uri=input_uri, features=features)
             >>>
             >>> def callback(operation_future):
             ...     # Handle result.
@@ -188,9 +205,10 @@ class VideoIntelligenceServiceClient(object):
                 multiple videos. Supported wildcards: '*' to match 0 or more characters;
                 '?' to match 1 character. If unset, the input video should be embedded
                 in the request as ``input_content``. If set, ``input_content`` should be unset.
+            input_content (bytes): The video data bytes.
+                If unset, the input video(s) should be specified via ``input_uri``.
+                If set, ``input_uri`` should be unset.
             features (list[~google.cloud.videointelligence_v1beta2.types.Feature]): Requested video annotation features.
-            input_content (bytes): The video data bytes. Encoding: base64. If unset, the input video(s)
-                should be specified via ``input_uri``. If set, ``input_uri`` should be unset.
             video_context (Union[dict, ~google.cloud.videointelligence_v1beta2.types.VideoContext]): Additional video context and/or feature-specific parameters.
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.videointelligence_v1beta2.types.VideoContext`
@@ -203,24 +221,49 @@ class VideoIntelligenceServiceClient(object):
             location_id (str): Optional cloud region where annotation should take place. Supported cloud
                 regions: ``us-east1``, ``us-west1``, ``europe-west1``, ``asia-east1``. If no region
                 is specified, a region will be determined based on video file location.
-            options (~google.gax.CallOptions): Overrides the default
-                settings for this call, e.g, timeout, retries etc.
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will not
+                be retried.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
 
         Returns:
             A :class:`~google.cloud.videointelligence_v1beta2.types._OperationFuture` instance.
 
         Raises:
-            :exc:`google.gax.errors.GaxError` if the RPC is aborted.
-            :exc:`ValueError` if the parameters are invalid.
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
         """
+        # Wrap the transport method to add retry and timeout logic.
+        if 'annotate_video' not in self._inner_api_calls:
+            self._inner_api_calls[
+                'annotate_video'] = google.api_core.gapic_v1.method.wrap_method(
+                    self.transport.annotate_video,
+                    default_retry=self._method_configs['AnnotateVideo'].retry,
+                    default_timeout=self._method_configs['AnnotateVideo'].
+                    timeout,
+                    client_info=self._client_info,
+                )
+
         request = video_intelligence_pb2.AnnotateVideoRequest(
             input_uri=input_uri,
-            features=features,
             input_content=input_content,
+            features=features,
             video_context=video_context,
             output_uri=output_uri,
-            location_id=location_id)
-        return google.gax._OperationFuture(
-            self._annotate_video(request, options), self.operations_client,
+            location_id=location_id,
+        )
+        operation = self._inner_api_calls['annotate_video'](
+            request, retry=retry, timeout=timeout, metadata=metadata)
+        return google.api_core.operation.from_gapic(
+            operation,
+            self.transport._operations_client,
             video_intelligence_pb2.AnnotateVideoResponse,
-            video_intelligence_pb2.AnnotateVideoProgress, options)
+            metadata_type=video_intelligence_pb2.AnnotateVideoProgress,
+        )

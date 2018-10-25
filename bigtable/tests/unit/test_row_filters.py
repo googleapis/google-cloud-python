@@ -285,41 +285,53 @@ class TestTimestampRange(unittest.TestCase):
         comparison_val = (time_range1 != time_range2)
         self.assertFalse(comparison_val)
 
-    def _to_pb_helper(self, start_micros=None, end_micros=None):
+    def _to_pb_helper(self, pb_kwargs, start=None, end=None):
         import datetime
         from google.cloud._helpers import _EPOCH
-
-        pb_kwargs = {}
-
-        start = None
-        if start_micros is not None:
-            start = _EPOCH + datetime.timedelta(microseconds=start_micros)
-            pb_kwargs['start_timestamp_micros'] = start_micros
-        end = None
-        if end_micros is not None:
-            end = _EPOCH + datetime.timedelta(microseconds=end_micros)
-            pb_kwargs['end_timestamp_micros'] = end_micros
+        if start is not None:
+            start = _EPOCH + datetime.timedelta(microseconds=start)
+        if end is not None:
+            end = _EPOCH + datetime.timedelta(microseconds=end)
         time_range = self._make_one(start=start, end=end)
-
         expected_pb = _TimestampRangePB(**pb_kwargs)
-        self.assertEqual(time_range.to_pb(), expected_pb)
+        time_pb = time_range.to_pb()
+        self.assertEqual(
+            time_pb.start_timestamp_micros,
+            expected_pb.start_timestamp_micros)
+        self.assertEqual(
+            time_pb.end_timestamp_micros,
+            expected_pb.end_timestamp_micros)
+        self.assertEqual(time_pb, expected_pb)
 
     def test_to_pb(self):
-        # Makes sure already milliseconds granularity
-        start_micros = 30871000
-        end_micros = 12939371000
-        self._to_pb_helper(start_micros=start_micros,
-                           end_micros=end_micros)
+        start_micros = 30871234
+        end_micros = 12939371234
+        start_millis = start_micros // 1000 * 1000
+        self.assertEqual(start_millis, 30871000)
+        end_millis = end_micros // 1000 * 1000 + 1000
+        self.assertEqual(end_millis, 12939372000)
+        pb_kwargs = {}
+        pb_kwargs['start_timestamp_micros'] = start_millis
+        pb_kwargs['end_timestamp_micros'] = end_millis
+        self._to_pb_helper(pb_kwargs, start=start_micros, end=end_micros)
 
     def test_to_pb_start_only(self):
         # Makes sure already milliseconds granularity
         start_micros = 30871000
-        self._to_pb_helper(start_micros=start_micros)
+        start_millis = start_micros // 1000 * 1000
+        self.assertEqual(start_millis, 30871000)
+        pb_kwargs = {}
+        pb_kwargs['start_timestamp_micros'] = start_millis
+        self._to_pb_helper(pb_kwargs, start=start_micros, end=None)
 
     def test_to_pb_end_only(self):
         # Makes sure already milliseconds granularity
         end_micros = 12939371000
-        self._to_pb_helper(end_micros=end_micros)
+        end_millis = end_micros // 1000 * 1000
+        self.assertEqual(end_millis, 12939371000)
+        pb_kwargs = {}
+        pb_kwargs['end_timestamp_micros'] = end_millis
+        self._to_pb_helper(pb_kwargs, start=None, end=end_micros)
 
 
 class TestTimestampRangeFilter(unittest.TestCase):
@@ -1018,49 +1030,49 @@ class TestConditionalRowFilter(unittest.TestCase):
 
 
 def _ColumnRangePB(*args, **kw):
-    from google.cloud.bigtable._generated import (
+    from google.cloud.bigtable_v2.proto import (
         data_pb2 as data_v2_pb2)
 
     return data_v2_pb2.ColumnRange(*args, **kw)
 
 
 def _RowFilterPB(*args, **kw):
-    from google.cloud.bigtable._generated import (
+    from google.cloud.bigtable_v2.proto import (
         data_pb2 as data_v2_pb2)
 
     return data_v2_pb2.RowFilter(*args, **kw)
 
 
 def _RowFilterChainPB(*args, **kw):
-    from google.cloud.bigtable._generated import (
+    from google.cloud.bigtable_v2.proto import (
         data_pb2 as data_v2_pb2)
 
     return data_v2_pb2.RowFilter.Chain(*args, **kw)
 
 
 def _RowFilterConditionPB(*args, **kw):
-    from google.cloud.bigtable._generated import (
+    from google.cloud.bigtable_v2.proto import (
         data_pb2 as data_v2_pb2)
 
     return data_v2_pb2.RowFilter.Condition(*args, **kw)
 
 
 def _RowFilterInterleavePB(*args, **kw):
-    from google.cloud.bigtable._generated import (
+    from google.cloud.bigtable_v2.proto import (
         data_pb2 as data_v2_pb2)
 
     return data_v2_pb2.RowFilter.Interleave(*args, **kw)
 
 
 def _TimestampRangePB(*args, **kw):
-    from google.cloud.bigtable._generated import (
+    from google.cloud.bigtable_v2.proto import (
         data_pb2 as data_v2_pb2)
 
     return data_v2_pb2.TimestampRange(*args, **kw)
 
 
 def _ValueRangePB(*args, **kw):
-    from google.cloud.bigtable._generated import (
+    from google.cloud.bigtable_v2.proto import (
         data_pb2 as data_v2_pb2)
 
     return data_v2_pb2.ValueRange(*args, **kw)

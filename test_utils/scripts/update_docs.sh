@@ -24,13 +24,24 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 # Function to build the docs.
 function build_docs {
     rm -rf docs/_build/
-    sphinx-build -W -b html -d docs/_build/doctrees docs/ docs/_build/html/
+    rm -rf docs/bigquery/generated
+    # -W -> warnings as errors
+    # -T -> show full traceback on exception
+    # -N -> no color
+    sphinx-build \
+        -W -T -N \
+        -b html \
+        -d docs/_build/doctrees \
+        docs/ \
+        docs/_build/html/
     return $?
 }
 
 # Only update docs if we are on CircleCI.
 if [[ "${CIRCLE_BRANCH}" == "master" ]] && [[ -z "${CIRCLE_PR_NUMBER}" ]]; then
     echo "Building new docs on a merged commit."
+elif [[ "$1" == "kokoro" ]]; then
+    echo "Building and publishing docs on Kokoro."
 elif [[ -n "${CIRCLE_TAG}" ]]; then
     echo "Building new docs on a tag (but will not deploy)."
     build_docs
@@ -57,27 +68,10 @@ else
     SPHINX_RELEASE=$(git log -1 --pretty=%h) build_docs
 fi
 
-# Get the current version.
-# This is only likely to work from within nox, because the google-cloud
-# package must be installed.
-CURRENT_VERSION=$(python ${DIR}/get_version.py)
-
 # Update gh-pages with the created docs.
 cd ${GH_PAGES_DIR}
-if [[ -n "${CIRCLE_TAG}" ]]; then
-    if [[ -d ${CURRENT_VERSION} ]]; then
-        echo "The directory ${CURRENT_VERSION} already exists."
-        exit 1
-    fi
-    git rm -fr stable/
-
-    # Put the new release in stable and with the actual version.
-    cp -R ../docs/_build/html/ stable/
-    cp -R ../docs/_build/html/ "${CURRENT_VERSION}/"
-else
-    git rm -fr latest/
-    cp -R ../docs/_build/html/ latest/
-fi
+git rm -fr latest/
+cp -R ../docs/_build/html/ latest/
 
 # Update the files push to gh-pages.
 git add .
@@ -90,8 +84,8 @@ if [[ -z "$(git status --porcelain)" ]]; then
 fi
 
 # Commit to gh-pages branch to apply changes.
-git config --global user.email "googleapis-publisher@google.com"
-git config --global user.name "Google APIs Publisher"
+git config --global user.email "dpebot@google.com"
+git config --global user.name "dpebot"
 git commit -m "Update docs after merge to master."
 
 # NOTE: This may fail if two docs updates (on merges to master)

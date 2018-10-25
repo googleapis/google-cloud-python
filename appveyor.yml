@@ -49,9 +49,13 @@ install:
 test_script:
   # Run the project tests
   - "%PYTHON%\\Scripts\\nox.exe -f api_core\\nox.py -s default"
+  - "%PYTHON%\\Scripts\\nox.exe -f asset\\nox.py -s default"
   - "%PYTHON%\\Scripts\\nox.exe -f bigquery\\nox.py -s default"
+  - "%PYTHON%\\Scripts\\nox.exe -f bigquery_datatransfer\\nox.py -s default"
   - "%PYTHON%\\Scripts\\nox.exe -f bigtable\\nox.py -s default"
+  - "%PYTHON%\\Scripts\\nox.exe -f container\\nox.py -s default"
   - "%PYTHON%\\Scripts\\nox.exe -f core\\nox.py -s default"
+  - "%PYTHON%\\Scripts\\nox.exe -f dataproc\\nox.py -s default"
   - "%PYTHON%\\Scripts\\nox.exe -f datastore\\nox.py -s default"
   - "%PYTHON%\\Scripts\\nox.exe -f dns\\nox.py -s default"
   - "%PYTHON%\\Scripts\\nox.exe -f error_reporting\\nox.py -s default"

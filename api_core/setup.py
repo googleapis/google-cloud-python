@@ -1,4 +1,4 @@
-# Copyright 2016 Google LLC
+# Copyright 2018 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,68 +12,86 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import io
 import os
 
-from setuptools import find_packages
-from setuptools import setup
+import setuptools
 
 
-PACKAGE_ROOT = os.path.abspath(os.path.dirname(__file__))
+# Package metadata.
 
-with open(os.path.join(PACKAGE_ROOT, 'README.rst')) as file_obj:
-    README = file_obj.read()
+name = 'google-api-core'
+description = 'Google API client core library'
+version = '1.6.0a1'
+# Should be one of:
+# 'Development Status :: 3 - Alpha'
+# 'Development Status :: 4 - Beta'
+# 'Development Status :: 5 - Production/Stable'
+release_status = 'Development Status :: 5 - Production/Stable'
+dependencies = [
+    'googleapis-common-protos<2.0dev,>=1.5.3',
+    'protobuf>=3.4.0',
+    'google-auth<2.0.0dev,>=0.4.0',
+    'requests<3.0.0dev,>=2.18.0',
+    'setuptools>=34.0.0',
+    'six>=1.10.0',
+    'pytz',
+    'futures>=3.2.0;python_version<"3.2"'
+]
+extras = {
+    'grpc': 'grpcio>=1.8.2',
+    'grpcio-gcp': 'grpcio-gcp>=0.2.2'
+}
 
 
-SETUP_BASE = {
-    'author': 'Google Cloud Platform',
-    'author_email': 'googleapis-publisher@google.com',
-    'scripts': [],
-    'url': 'https://github.com/GoogleCloudPlatform/google-cloud-python',
-    'license': 'Apache 2.0',
-    'platforms': 'Posix; MacOS X; Windows',
-    'include_package_data': True,
-    'zip_safe': False,
-    'classifiers': [
-        'Development Status :: 4 - Beta',
+# Setup boilerplate below this line.
+
+package_root = os.path.abspath(os.path.dirname(__file__))
+
+readme_filename = os.path.join(package_root, 'README.rst')
+with io.open(readme_filename, encoding='utf-8') as readme_file:
+    readme = readme_file.read()
+
+# Only include packages under the 'google' namespace. Do not include tests,
+# benchmarks, etc.
+packages = [
+    package for package in setuptools.find_packages()
+    if package.startswith('google')]
+
+# Determine which namespaces are needed.
+namespaces = ['google']
+if 'google.cloud' in packages:
+    namespaces.append('google.cloud')
+
+
+setuptools.setup(
+    name=name,
+    version=version,
+    description=description,
+    long_description=readme,
+    author='Google LLC',
+    author_email='googleapis-packages@google.com',
+    license='Apache 2.0',
+    url='https://github.com/GoogleCloudPlatform/google-cloud-python',
+    classifiers=[
+        release_status,
         'Intended Audience :: Developers',
         'License :: OSI Approved :: Apache Software License',
-        'Operating System :: OS Independent',
+        'Programming Language :: Python',
         'Programming Language :: Python :: 2',
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7',
+        'Operating System :: OS Independent',
         'Topic :: Internet',
     ],
-}
-
-
-REQUIREMENTS = [
-    'googleapis-common-protos >= 1.5.3, < 2.0dev',
-    'protobuf >= 3.0.0',
-    'google-auth >= 0.4.0, < 2.0.0dev',
-    'requests >= 2.18.0, < 3.0.0dev',
-    'setuptools >= 34.0.0',
-    'six >= 1.10.0',
-    # pytz does not adhere to semver and uses a year.month based scheme.
-    # Any valid version of pytz should work for us.
-    'pytz',
-]
-
-EXTRAS_REQUIREMENTS = {
-    ':python_version<"3.2"': ['futures >= 3.0.0'],
-    'grpc': ['grpcio >= 1.7.0'],
-}
-
-setup(
-    name='google-api-core',
-    version='0.1.2.dev1',
-    description='Core Google API Client Library',
-    long_description=README,
-    namespace_packages=['google'],
-    packages=find_packages(exclude=('tests*',)),
-    install_requires=REQUIREMENTS,
-    extras_require=EXTRAS_REQUIREMENTS,
-    **SETUP_BASE
+    platforms='Posix; MacOS X; Windows',
+    packages=packages,
+    namespace_packages=namespaces,
+    install_requires=dependencies,
+    extras_require=extras,
+    include_package_data=True,
+    zip_safe=False,
 )

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Copyright 2017 Google LLC All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -86,6 +87,202 @@ class TestGeoPoint(unittest.TestCase):
         self.assertIs(geo_pt1.__ne__(geo_pt2), NotImplemented)
 
 
+class TestFieldPath(unittest.TestCase):
+
+    @staticmethod
+    def _get_target_class():
+        from google.cloud.firestore_v1beta1._helpers import FieldPath
+        return FieldPath
+
+    def _make_one(self, *args, **kwargs):
+        klass = self._get_target_class()
+        return klass(*args, **kwargs)
+
+    def test_none_fails(self):
+        with self.assertRaises(ValueError):
+            self._make_one('a', None, 'b')
+
+    def test_empty_string_in_part_fails(self):
+        with self.assertRaises(ValueError):
+            self._make_one('a', '', 'b')
+
+    def test_integer_fails(self):
+        with self.assertRaises(ValueError):
+            self._make_one('a', 3, 'b')
+
+    def test_iterable_fails(self):
+        with self.assertRaises(ValueError):
+            self._make_one('a', ['a'], 'b')
+
+    def test_invalid_chars_in_constructor(self):
+        parts = '~*/[].'
+        for part in parts:
+            field_path = self._make_one(part)
+            self.assertEqual(field_path.parts, (part, ))
+
+    def test_component(self):
+        field_path = self._make_one('a..b')
+        self.assertEqual(field_path.parts, ('a..b',))
+
+    def test_constructor_iterable(self):
+        field_path = self._make_one('a', 'b', 'c')
+        self.assertEqual(field_path.parts, ('a', 'b', 'c'))
+
+    def test_unicode(self):
+        field_path = self._make_one('一', '二', '三')
+        self.assertEqual(field_path.parts, ('一', '二', '三'))
+
+    def test_to_api_repr_a(self):
+        parts = 'a'
+        field_path = self._make_one(parts)
+        self.assertEqual(field_path.to_api_repr(), 'a')
+
+    def test_to_api_repr_backtick(self):
+        parts = '`'
+        field_path = self._make_one(parts)
+        self.assertEqual(field_path.to_api_repr(), r'`\``')
+
+    def test_to_api_repr_dot(self):
+        parts = '.'
+        field_path = self._make_one(parts)
+        self.assertEqual(field_path.to_api_repr(), '`.`')
+
+    def test_to_api_repr_slash(self):
+        parts = '\\'
+        field_path = self._make_one(parts)
+        self.assertEqual(field_path.to_api_repr(), r'`\\`')
+
+    def test_to_api_repr_double_slash(self):
+        parts = r'\\'
+        field_path = self._make_one(parts)
+        self.assertEqual(field_path.to_api_repr(), r'`\\\\`')
+
+    def test_to_api_repr_underscore(self):
+        parts = '_33132'
+        field_path = self._make_one(parts)
+        self.assertEqual(field_path.to_api_repr(), '_33132')
+
+    def test_to_api_repr_unicode_non_simple(self):
+        parts = '一'
+        field_path = self._make_one(parts)
+        self.assertEqual(field_path.to_api_repr(), '`一`')
+
+    def test_to_api_repr_number_non_simple(self):
+        parts = '03'
+        field_path = self._make_one(parts)
+        self.assertEqual(field_path.to_api_repr(), '`03`')
+
+    def test_to_api_repr_simple_with_dot(self):
+        field_path = self._make_one('a.b')
+        self.assertEqual(field_path.to_api_repr(), '`a.b`')
+
+    def test_to_api_repr_non_simple_with_dot(self):
+        parts = 'a.一'
+        field_path = self._make_one(parts)
+        self.assertEqual(field_path.to_api_repr(), '`a.一`')
+
+    def test_to_api_repr_simple(self):
+        parts = 'a0332432'
+        field_path = self._make_one(parts)
+        self.assertEqual(field_path.to_api_repr(), 'a0332432')
+
+    def test_to_api_repr_chain(self):
+        parts = 'a', '`', '\\', '_3', '03', 'a03', '\\\\', 'a0332432', '一'
+        field_path = self._make_one(*parts)
+        self.assertEqual(field_path.to_api_repr(),
+                         r'a.`\``.`\\`._3.`03`.a03.`\\\\`.a0332432.`一`')
+
+    def test_from_string(self):
+        field_path = self._get_target_class().from_string('a.b.c')
+        self.assertEqual(field_path.parts, ('a', 'b', 'c'))
+        self.assertEqual(field_path.to_api_repr(), 'a.b.c')
+
+    def test_from_string_non_simple(self):
+        field_path = self._get_target_class().from_string('a.一')
+        self.assertEqual(field_path.parts, ('a', '一'))
+        self.assertEqual(field_path.to_api_repr(), 'a.`一`')
+
+    def test_list_splat(self):
+        parts = ['a', 'b', 'c']
+        field_path = self._make_one(*parts)
+        self.assertEqual(field_path.parts, ('a', 'b', 'c'))
+
+    def test_tuple_splat(self):
+        parts = ('a', 'b', 'c')
+        field_path = self._make_one(*parts)
+        self.assertEqual(field_path.parts, ('a', 'b', 'c'))
+
+    def test_invalid_chars_from_string_fails(self):
+        parts = '~*/[].'
+        for part in parts:
+            with self.assertRaises(ValueError):
+                self._get_target_class().from_string(part)
+
+    def test_empty_string_fails(self):
+        parts = ''
+        with self.assertRaises(ValueError):
+            self._get_target_class().from_string(parts)
+
+    def test_empty_field_name_fails(self):
+        parts = 'a..b'
+        with self.assertRaises(ValueError):
+            self._get_target_class().from_string(parts)
+
+    def test_list_fails(self):
+        parts = ['a', 'b', 'c']
+        with self.assertRaises(ValueError):
+            self._make_one(parts)
+
+    def test_tuple_fails(self):
+        parts = ('a', 'b', 'c')
+        with self.assertRaises(ValueError):
+            self._make_one(parts)
+
+    def test_equality(self):
+        field_path = self._make_one('a', 'b')
+        string_path = self._get_target_class().from_string('a.b')
+        self.assertEqual(field_path, string_path)
+
+    def test_non_equal_types(self):
+        import mock
+        mock = mock.Mock()
+        mock.parts = 'a', 'b'
+        field_path = self._make_one('a', 'b')
+        self.assertNotEqual(field_path, mock)
+
+    def test_key(self):
+        field_path = self._make_one('a321', 'b456')
+        field_path_same = self._get_target_class().from_string('a321.b456')
+        field_path_different = self._make_one('a321', 'b457')
+        keys = {
+            field_path: '',
+            field_path_same: '',
+            field_path_different: ''
+        }
+        for key in keys:
+            if key == field_path_different:
+                self.assertNotEqual(key, field_path)
+            else:
+                self.assertEqual(key, field_path)
+
+    def test___add__(self):
+        path1 = 'a123', 'b456'
+        path2 = 'c789', 'd012'
+        path3 = 'c789.d012'
+        field_path1 = self._make_one(*path1)
+        field_path1_string = self._make_one(*path1)
+        field_path2 = self._make_one(*path2)
+        field_path1 += field_path2
+        field_path1_string += path3
+        field_path2 = field_path2 + self._make_one(*path1)
+        self.assertEqual(field_path1, self._make_one(*(path1 + path2)))
+        self.assertEqual(field_path2, self._make_one(*(path2 + path1)))
+        self.assertEqual(field_path1_string, field_path1)
+        self.assertNotEqual(field_path1, field_path2)
+        with self.assertRaises(TypeError):
+            field_path1 + 305
+
+
 class TestFieldPathHelper(unittest.TestCase):
 
     @staticmethod
@@ -140,11 +337,12 @@ class TestFieldPathHelper(unittest.TestCase):
         helper = self._make_one(None)
         key = 'end'
         conflicting_paths = {key: helper.PATH_END}
-        field_path = 'start'
+        field_path = _helpers.FieldPath.from_string('start')
         err_val = helper.path_end_conflict(field_path, conflicting_paths)
         self.assertIsInstance(err_val, ValueError)
-        conflict = _helpers.get_field_path([field_path, key])
-        err_msg = helper.FIELD_PATH_CONFLICT.format(field_path, conflict)
+        conflict = _helpers.get_field_path([field_path.to_api_repr(), key])
+        err_msg = helper.FIELD_PATH_CONFLICT.format(
+            field_path.to_api_repr(), conflict)
         self.assertEqual(err_val.args, (err_msg,))
 
     def test_path_end_conflict_multiple_matches(self):
@@ -162,18 +360,22 @@ class TestFieldPathHelper(unittest.TestCase):
             ('nope', helper.PATH_END),
         ))
 
-        field_path = 'start'
+        field_path = _helpers.FieldPath.from_string('start')
         err_val = helper.path_end_conflict(field_path, conflicting_paths)
         self.assertIsInstance(err_val, ValueError)
-        conflict = _helpers.get_field_path([field_path, middle_part, end_part])
-        err_msg = helper.FIELD_PATH_CONFLICT.format(field_path, conflict)
+        conflict = _helpers.get_field_path(
+            [field_path.to_api_repr(), middle_part, end_part])
+        err_msg = helper.FIELD_PATH_CONFLICT.format(
+            field_path.to_api_repr(), conflict)
         self.assertEqual(err_val.args, (err_msg,))
 
     def test_add_field_path_end_success(self):
+        from google.cloud.firestore_v1beta1 import _helpers
+
         helper = self._make_one(None)
         curr_paths = {}
         to_update = {}
-        field_path = 'a.b.c'
+        field_path = _helpers.FieldPath.from_string('a.b.c')
         value = 1029830
         final_part = 'c'
         ret_val = helper.add_field_path_end(
@@ -186,41 +388,49 @@ class TestFieldPathHelper(unittest.TestCase):
         self.assertEqual(helper.field_paths, [field_path])
 
     def test_add_field_path_end_failure(self):
+        from google.cloud.firestore_v1beta1 import _helpers
+
         helper = self._make_one(None)
         curr_paths = {'c': {'d': helper.PATH_END}}
         to_update = {'c': {'d': 'jewelry'}}
-        helper.field_paths = ['a.b.c.d']
+        helper.field_paths = [_helpers.FieldPath.from_string('a.b.c.d')]
 
-        field_path = 'a.b.c'
+        field_path = _helpers.FieldPath.from_string('a.b.c')
         value = 1029830
         final_part = 'c'
         with self.assertRaises(ValueError) as exc_info:
             helper.add_field_path_end(
                 field_path, value, final_part, curr_paths, to_update)
 
-        err_msg = helper.FIELD_PATH_CONFLICT.format(field_path, 'a.b.c.d')
+        err_msg = helper.FIELD_PATH_CONFLICT.format(
+            field_path.to_api_repr(), 'a.b.c.d')
         self.assertEqual(exc_info.exception.args, (err_msg,))
         self.assertEqual(curr_paths, {'c': {'d': helper.PATH_END}})
         self.assertEqual(to_update, {'c': {'d': 'jewelry'}})
-        self.assertEqual(helper.field_paths, ['a.b.c.d'])
+        self.assertEqual(
+            helper.field_paths, [_helpers.FieldPath.from_string('a.b.c.d')])
 
     def test_add_value_at_field_path_first_with_field(self):
-        helper = self._make_one(None)
+        from google.cloud.firestore_v1beta1 import _helpers
 
-        field_path = 'zap'
+        helper = self._make_one(None)
+        field_path = _helpers.FieldPath.from_string('zap')
         value = 121
         ret_val = helper.add_value_at_field_path(field_path, value)
 
         self.assertIsNone(ret_val)
-        self.assertEqual(helper.update_values, {field_path: value})
+        self.assertEqual(
+            helper.update_values, {field_path.to_api_repr(): value})
         self.assertEqual(helper.field_paths, [field_path])
         self.assertEqual(
-            helper.unpacked_field_paths, {field_path: helper.PATH_END})
+            helper.unpacked_field_paths,
+            {field_path.to_api_repr(): helper.PATH_END})
 
     def test_add_value_at_field_path_first_with_path(self):
-        helper = self._make_one(None)
+        from google.cloud.firestore_v1beta1 import _helpers
 
-        field_path = 'a.b.c'
+        helper = self._make_one(None)
+        field_path = _helpers.FieldPath.from_string('a.b.c')
         value = b'\x01\x02'
         ret_val = helper.add_value_at_field_path(field_path, value)
 
@@ -231,29 +441,54 @@ class TestFieldPathHelper(unittest.TestCase):
             helper.unpacked_field_paths, {'a': {'b': {'c': helper.PATH_END}}})
 
     def test_add_value_at_field_paths_at_same_level(self):
-        helper = self._make_one(None)
+        from google.cloud.firestore_v1beta1 import _helpers
 
-        field_path = 'a.c'
+        helper = self._make_one(None)
+        field_path = _helpers.FieldPath.from_string('a.c')
         value = False
         helper.update_values = {'a': {'b': 80}}
-        helper.field_paths = ['a.b']
+        helper.field_paths = [_helpers.FieldPath.from_string('a.b')]
         helper.unpacked_field_paths = {'a': {'b': helper.PATH_END}}
-
         ret_val = helper.add_value_at_field_path(field_path, value)
 
         self.assertIsNone(ret_val)
         self.assertEqual(helper.update_values, {'a': {'b': 80, 'c': value}})
-        self.assertEqual(helper.field_paths, ['a.b', field_path])
+        self.assertEqual(
+            helper.field_paths,
+            [_helpers.FieldPath.from_string('a.b'), field_path])
         self.assertEqual(
             helper.unpacked_field_paths,
             {'a': {'b': helper.PATH_END, 'c': helper.PATH_END}})
 
+    def test_add_value_at_field_paths_non_simple_field_names(self):
+        from google.cloud.firestore_v1beta1 import _helpers
+
+        helper = self._make_one(None)
+        field_path = _helpers.FieldPath.from_string('a.一')
+        value = [1, 2, 3]
+        helper.update_values = {'a': {'b': 80}}
+        helper.field_paths = [_helpers.FieldPath.from_string('a.b')]
+        helper.unpacked_field_paths = {'a': {'b': helper.PATH_END}}
+        helper.add_value_at_field_path(field_path, value)
+
+        self.assertEqual(helper.update_values, {'a': {'b': 80,
+                                                      '一': value}
+                                                })
+        self.assertEqual(
+            helper.field_paths,
+            [_helpers.FieldPath.from_string('a.b'), field_path])
+        self.assertEqual(
+            helper.unpacked_field_paths,
+            {'a': {'b': helper.PATH_END,
+                   '一': helper.PATH_END}})
+
     def test_add_value_at_field_path_delete(self):
+        from google.cloud.firestore_v1beta1 import _helpers
         from google.cloud.firestore_v1beta1.constants import DELETE_FIELD
 
         helper = self._make_one(None)
 
-        field_path = 'foo.bar'
+        field_path = _helpers.FieldPath.from_string('foo.bar')
         value = DELETE_FIELD
         ret_val = helper.add_value_at_field_path(field_path, value)
 
@@ -264,12 +499,14 @@ class TestFieldPathHelper(unittest.TestCase):
             helper.unpacked_field_paths, {'foo': {'bar': helper.PATH_END}})
 
     def test_add_value_at_field_path_failure_adding_more_specific_path(self):
+        from google.cloud.firestore_v1beta1 import _helpers
+
         helper = self._make_one(None)
 
-        field_path = 'DD.F'
+        field_path = _helpers.FieldPath.from_string('DD.F')
         value = 99
         helper.update_values = {'DD': {'E': 19}}
-        helper.field_paths = ['DD']
+        helper.field_paths = [_helpers.FieldPath.from_string('DD')]
         helper.unpacked_field_paths = {'DD': helper.PATH_END}
         with self.assertRaises(ValueError) as exc_info:
             helper.add_value_at_field_path(field_path, value)
@@ -278,13 +515,17 @@ class TestFieldPathHelper(unittest.TestCase):
         self.assertEqual(exc_info.exception.args, (err_msg,))
         # Make sure inputs are unchanged.
         self.assertEqual(helper.update_values, {'DD': {'E': 19}})
-        self.assertEqual(helper.field_paths, ['DD'])
+        self.assertEqual(
+            helper.field_paths,
+            [_helpers.FieldPath.from_string('DD')])
         self.assertEqual(helper.unpacked_field_paths, {'DD': helper.PATH_END})
 
     def test_add_value_at_field_path_failure_adding_more_generic_path(self):
+        from google.cloud.firestore_v1beta1 import _helpers
+
         helper = self._make_one(None)
 
-        field_path = 'x.y'
+        field_path = _helpers.FieldPath.from_string('x.y')
         value = {'t': False}
         helper.update_values = {'x': {'y': {'z': 104.5}}}
         helper.field_paths = ['x.y.z']
@@ -292,7 +533,8 @@ class TestFieldPathHelper(unittest.TestCase):
         with self.assertRaises(ValueError) as exc_info:
             helper.add_value_at_field_path(field_path, value)
 
-        err_msg = helper.FIELD_PATH_CONFLICT.format(field_path, 'x.y.z')
+        err_msg = helper.FIELD_PATH_CONFLICT.format(
+            field_path.to_api_repr(), 'x.y.z')
         self.assertEqual(exc_info.exception.args, (err_msg,))
         # Make sure inputs are unchanged.
         self.assertEqual(helper.update_values, {'x': {'y': {'z': 104.5}}})
@@ -301,32 +543,49 @@ class TestFieldPathHelper(unittest.TestCase):
             helper.unpacked_field_paths, {'x': {'y': {'z': helper.PATH_END}}})
 
     def test_parse(self):
+        import six
+        from google.cloud.firestore_v1beta1 import _helpers
+
+        a_b_c = _helpers.FieldPath.from_string('a.b.c')
         # "Cheat" and use OrderedDict-s so that iteritems() is deterministic.
         field_updates = collections.OrderedDict((
-            ('a.b.c', 10),
-            ('d', None),
-            ('e.f1', [u'no', b'yes']),
-            ('e.f2', 4.5),
-            ('g', {'key': True}),
+            (a_b_c, 10),
+            (_helpers.FieldPath.from_string('d'), None),
+            (_helpers.FieldPath.from_string('e.f1'), [u'no', b'yes']),
+            (_helpers.FieldPath.from_string('e.f2'), 4.5),
+            (_helpers.FieldPath.from_string('e.f3'), (3, 1)),
+            (_helpers.FieldPath.from_string('g'), {'key': True}),
+            (_helpers.FieldPath('h', 'i'), '3'),
+            (_helpers.FieldPath('j.k', 'l.m'), set(['2', '3'])),
+            (_helpers.FieldPath('a', '一'), {1: 2}),
+            (_helpers.FieldPath('a.一'), {3: 4}),
         ))
         helper = self._make_one(field_updates)
         update_values, field_paths = helper.parse()
-
         expected_updates = {
             'a': {
                 'b': {
-                    'c': field_updates['a.b.c'],
+                    'c': field_updates[a_b_c],
                 },
+                '一': field_updates[_helpers.FieldPath('a', '一')]
             },
-            'd': field_updates['d'],
+            'd': field_updates[_helpers.FieldPath.from_string('d')],
             'e': {
-                'f1': field_updates['e.f1'],
-                'f2': field_updates['e.f2'],
+                'f1': field_updates[_helpers.FieldPath.from_string('e.f1')],
+                'f2': field_updates[_helpers.FieldPath.from_string('e.f2')],
+                'f3': field_updates[_helpers.FieldPath.from_string('e.f3')]
             },
-            'g': field_updates['g'],
+            'g': field_updates[_helpers.FieldPath.from_string('g')],
+            'h': {
+                'i': field_updates[_helpers.FieldPath('h', 'i')]
+            },
+            'j.k': {
+                'l.m': field_updates[_helpers.FieldPath('j.k', 'l.m')]
+            },
+            'a.一': field_updates[_helpers.FieldPath('a.一')]
         }
         self.assertEqual(update_values, expected_updates)
-        self.assertEqual(field_paths, list(field_updates.keys()))
+        self.assertEqual(field_paths, list(six.iterkeys(field_updates)))
 
     def test_parse_with_delete(self):
         from google.cloud.firestore_v1beta1.constants import DELETE_FIELD
@@ -336,11 +595,13 @@ class TestFieldPathHelper(unittest.TestCase):
             ('a', 10),
             ('b', DELETE_FIELD),
         ))
-
         helper = self._make_one(field_updates)
         update_values, field_paths = helper.parse()
         self.assertEqual(update_values, {'a': field_updates['a']})
-        self.assertEqual(field_paths, list(field_updates.keys()))
+        self.assertEqual(
+            [field_path.parts[0] for field_path in field_paths],
+            list(field_updates.keys())
+        )
 
     def test_parse_with_conflict(self):
         # "Cheat" and use OrderedDict-s so that iteritems() is deterministic.
@@ -356,13 +617,27 @@ class TestFieldPathHelper(unittest.TestCase):
         self.assertEqual(exc_info.exception.args, (err_msg,))
 
     def test_to_field_paths(self):
-        field_path = 'a.b'
+        from google.cloud.firestore_v1beta1 import _helpers
+
+        field_path = _helpers.FieldPath.from_string('a.b')
         field_updates = {field_path: 99}
         klass = self._get_target_class()
 
         update_values, field_paths = klass.to_field_paths(field_updates)
-        self.assertEqual(update_values, {'a': {'b': field_updates[field_path]}})
+        self.assertEqual(
+            update_values, {'a': {'b': field_updates[field_path]}})
         self.assertEqual(field_paths, [field_path])
+
+    def test_conflict_same_field_paths(self):
+        from google.cloud.firestore_v1beta1 import _helpers
+
+        field_path_from_string = _helpers.FieldPath.from_string('a.b')
+        field_path_class = _helpers.FieldPath('a', 'b')
+        # User error in this case
+        field_updates = {field_path_from_string: '',
+                         field_path_class: ''}
+        self.assertEqual(field_path_from_string, field_path_class)
+        self.assertEqual(len(field_updates), 1)
 
 
 class Test_verify_path(unittest.TestCase):
@@ -492,7 +767,8 @@ class Test_encode_value(unittest.TestCase):
         self.assertEqual(result, expected)
 
     def test_array(self):
-        from google.cloud.firestore_v1beta1.proto.document_pb2 import ArrayValue
+        from google.cloud.firestore_v1beta1.proto.document_pb2 import (
+            ArrayValue)
 
         result = self._call_fut([
             99,
@@ -540,7 +816,8 @@ class Test_encode_dict(unittest.TestCase):
     def test_many_types(self):
         from google.protobuf import struct_pb2
         from google.protobuf import timestamp_pb2
-        from google.cloud.firestore_v1beta1.proto.document_pb2 import ArrayValue
+        from google.cloud.firestore_v1beta1.proto.document_pb2 import (
+            ArrayValue)
         from google.cloud.firestore_v1beta1.proto.document_pb2 import MapValue
 
         dt_seconds = 1497397225
@@ -600,7 +877,8 @@ class Test_reference_value_to_document(unittest.TestCase):
 
     @staticmethod
     def _call_fut(reference_value, client):
-        from google.cloud.firestore_v1beta1._helpers import reference_value_to_document
+        from google.cloud.firestore_v1beta1._helpers import (
+            reference_value_to_document)
 
         return reference_value_to_document(reference_value, client)
 
@@ -674,7 +952,7 @@ class Test_decode_value(unittest.TestCase):
         value = _value_pb(double_value=float_val)
         self.assertEqual(self._call_fut(value), float_val)
 
-    @unittest.skipIf((3,) <= sys.version_info < (3,4,4),
+    @unittest.skipIf((3,) <= sys.version_info < (3, 4, 4),
                      'known datetime bug (bpo-23517) in Python')
     def test_datetime(self):
         from google.protobuf import timestamp_pb2
@@ -814,14 +1092,16 @@ class Test_decode_dict(unittest.TestCase):
 
         return decode_dict(value_fields, client)
 
-    @unittest.skipIf((3,) <= sys.version_info < (3,4,4),
+    @unittest.skipIf((3,) <= sys.version_info < (3, 4, 4),
                      'known datetime bug (bpo-23517) in Python')
     def test_many_types(self):
         from google.protobuf import struct_pb2
         from google.protobuf import timestamp_pb2
-        from google.cloud.firestore_v1beta1.proto.document_pb2 import ArrayValue
+        from google.cloud.firestore_v1beta1.proto.document_pb2 import (
+            ArrayValue)
         from google.cloud.firestore_v1beta1.proto.document_pb2 import MapValue
         from google.cloud._helpers import UTC
+        from google.cloud.firestore_v1beta1._helpers import FieldPath
 
         dt_seconds = 1394037350
         dt_nanos = 667285000
@@ -849,6 +1129,8 @@ class Test_decode_dict(unittest.TestCase):
                 'fred': _value_pb(string_value=u'zap'),
                 'thud': _value_pb(boolean_value=False),
             })),
+            FieldPath('a', 'b', 'c').to_api_repr():
+            _value_pb(boolean_value=False)
         }
         expected = {
             'foo': None,
@@ -866,6 +1148,7 @@ class Test_decode_dict(unittest.TestCase):
                 'fred': u'zap',
                 'thud': False,
             },
+            'a.b.c': False
         }
         self.assertEqual(self._call_fut(value_fields), expected)
 
@@ -892,6 +1175,13 @@ class Test_parse_field_path(unittest.TestCase):
 
     def test_it(self):
         self.assertEqual(self._call_fut('a.b.c'), ['a', 'b', 'c'])
+
+    def test_api_repr(self):
+        from google.cloud.firestore_v1beta1._helpers import FieldPath
+
+        self.assertEqual(
+            self._call_fut(FieldPath('a', 'b', 'c').to_api_repr()),
+            ['a', 'b', 'c'])
 
 
 class Test_get_nested_value(unittest.TestCase):
@@ -925,7 +1215,8 @@ class Test_get_nested_value(unittest.TestCase):
             self.DATA['top1']['middle2']['bottom3'])
 
     def test_missing_top_level(self):
-        from google.cloud.firestore_v1beta1._helpers import FIELD_PATH_MISSING_TOP
+        from google.cloud.firestore_v1beta1._helpers import (
+            FIELD_PATH_MISSING_TOP)
 
         field_path = 'top8'
         with self.assertRaises(KeyError) as exc_info:
@@ -935,7 +1226,8 @@ class Test_get_nested_value(unittest.TestCase):
         self.assertEqual(exc_info.exception.args, (err_msg,))
 
     def test_missing_key(self):
-        from google.cloud.firestore_v1beta1._helpers import FIELD_PATH_MISSING_KEY
+        from google.cloud.firestore_v1beta1._helpers import (
+            FIELD_PATH_MISSING_KEY)
 
         with self.assertRaises(KeyError) as exc_info:
             self._call_fut('top1.middle2.nope', self.DATA)
@@ -944,7 +1236,8 @@ class Test_get_nested_value(unittest.TestCase):
         self.assertEqual(exc_info.exception.args, (err_msg,))
 
     def test_bad_type(self):
-        from google.cloud.firestore_v1beta1._helpers import FIELD_PATH_WRONG_TYPE
+        from google.cloud.firestore_v1beta1._helpers import (
+            FIELD_PATH_WRONG_TYPE)
 
         with self.assertRaises(KeyError) as exc_info:
             self._call_fut('top6.middle7', self.DATA)
@@ -997,28 +1290,37 @@ class Test_get_doc_id(unittest.TestCase):
         self.assertEqual(exc_args[3], wrong_prefix)
 
 
-class Test_remove_server_timestamp(unittest.TestCase):
+class Test_process_server_timestamp(unittest.TestCase):
 
     @staticmethod
     def _call_fut(document_data):
-        from google.cloud.firestore_v1beta1._helpers import remove_server_timestamp
+        from google.cloud.firestore_v1beta1._helpers import (
+            process_server_timestamp)
 
-        return remove_server_timestamp(document_data)
+        return process_server_timestamp(document_data)
 
     def test_no_fields(self):
         import collections
+        from google.cloud.firestore_v1beta1 import _helpers
 
         data = collections.OrderedDict((
             ('one', 1),
             ('two', 2.25),
             ('three', [False, True, True]),
         ))
-        field_paths, actual_data = self._call_fut(data)
-        self.assertEqual(field_paths, [])
+        expected_field_paths = [
+            _helpers.FieldPath('one'),
+            _helpers.FieldPath('two'),
+            _helpers.FieldPath('three')
+        ]
+        transform_paths, actual_data, field_paths = self._call_fut(data)
+        self.assertEqual(transform_paths, [])
+        self.assertEqual(field_paths, expected_field_paths)
         self.assertIs(actual_data, data)
 
     def test_simple_fields(self):
         import collections
+        from google.cloud.firestore_v1beta1 import _helpers
         from google.cloud.firestore_v1beta1.constants import SERVER_TIMESTAMP
 
         # "Cheat" and use OrderedDict-s so that iteritems() is deterministic.
@@ -1035,19 +1337,31 @@ class Test_remove_server_timestamp(unittest.TestCase):
             ('top5', 200),
             ('top6', nested2),
         ))
-        field_paths, actual_data = self._call_fut(data)
-        self.assertEqual(
-            field_paths, ['top1.bottom2', 'top4', 'top6.bottom7'])
+        expected_transform_paths = [
+            _helpers.FieldPath('top1', 'bottom2'),
+            _helpers.FieldPath('top4'),
+            _helpers.FieldPath('top6', 'bottom7')
+        ]
+        expected_field_paths = [
+            _helpers.FieldPath('top1', 'bottom3'),
+            _helpers.FieldPath('top5')]
         expected_data = {
             'top1': {
                 'bottom3': data['top1']['bottom3'],
             },
             'top5': data['top5'],
         }
+        transform_paths, actual_data, field_paths = self._call_fut(data)
+        self.assertEqual(
+            transform_paths,
+            expected_transform_paths
+        )
+        self.assertEqual(field_paths, expected_field_paths)
         self.assertEqual(actual_data, expected_data)
 
     def test_field_updates(self):
         import collections
+        from google.cloud.firestore_v1beta1 import _helpers
         from google.cloud.firestore_v1beta1.constants import SERVER_TIMESTAMP
 
         # "Cheat" and use OrderedDict-s so that iteritems() is deterministic.
@@ -1056,10 +1370,68 @@ class Test_remove_server_timestamp(unittest.TestCase):
             ('c.d', {'e': SERVER_TIMESTAMP}),
             ('f.g', SERVER_TIMESTAMP),
         ))
-        field_paths, actual_data = self._call_fut(data)
-        self.assertEqual(field_paths, ['c.d.e', 'f.g'])
+        transform_paths, actual_data, field_paths = self._call_fut(data)
+        self.assertEqual(transform_paths, [_helpers.FieldPath('c', 'd', 'e'),
+                                           _helpers.FieldPath('f', 'g')])
+
         expected_data = {'a': {'b': data['a']['b']}}
         self.assertEqual(actual_data, expected_data)
+
+    def test_field_updates_w_empty_value(self):
+        import collections
+        from google.cloud.firestore_v1beta1 import _helpers
+        from google.cloud.firestore_v1beta1.constants import SERVER_TIMESTAMP
+
+        # "Cheat" and use OrderedDict-s so that iteritems() is deterministic.
+        data = collections.OrderedDict((
+            ('a', {'b': 10}),
+            ('c.d', {'e': SERVER_TIMESTAMP}),
+            ('f.g', SERVER_TIMESTAMP),
+            ('h', {}),
+        ))
+        transform_paths, actual_data, field_paths = self._call_fut(data)
+        self.assertEqual(
+            transform_paths,
+            [_helpers.FieldPath('c', 'd', 'e'),
+             _helpers.FieldPath('f', 'g')])
+
+        expected_data = {'a': {'b': data['a']['b']}, 'h': {}}
+        self.assertEqual(actual_data, expected_data)
+
+
+class Test_canonicalize_field_paths(unittest.TestCase):
+
+    @staticmethod
+    def _call_fut(field_paths):
+        from google.cloud.firestore_v1beta1 import _helpers
+
+        return _helpers.canonicalize_field_paths(field_paths)
+
+    def _test_helper(self, to_convert):
+        from google.cloud.firestore_v1beta1 import _helpers
+
+        paths = [
+            _helpers.FieldPath.from_string(path) for path in to_convert
+        ]
+        found = self._call_fut(paths)
+
+        self.assertEqual(found, sorted(to_convert.values()))
+
+    def test_w_native_strings(self):
+        to_convert = {
+            '0abc.deq': '`0abc`.deq',
+            'abc.654': 'abc.`654`',
+            '321.0deq._321': '`321`.`0deq`._321',
+        }
+        self._test_helper(to_convert)
+
+    def test_w_unicode(self):
+        to_convert = {
+            u'0abc.deq': '`0abc`.deq',
+            u'abc.654': 'abc.`654`',
+            u'321.0deq._321': '`321`.`0deq`._321',
+        }
+        self._test_helper(to_convert)
 
 
 class Test_get_transform_pb(unittest.TestCase):
@@ -1071,25 +1443,29 @@ class Test_get_transform_pb(unittest.TestCase):
         return get_transform_pb(document_path, transform_paths)
 
     def test_it(self):
+        from google.cloud.firestore_v1beta1 import _helpers
         from google.cloud.firestore_v1beta1.gapic import enums
         from google.cloud.firestore_v1beta1.proto import write_pb2
 
         document_path = _make_ref_string(
             u'cereal', u'deebee', u'buzzf', u'beep')
-        transform_paths = ['man.bear', 'pig', 'apple.x.y']
+        transform_paths = [
+            _helpers.FieldPath.from_string('man.bear'),
+            _helpers.FieldPath.from_string('pig'),
+            _helpers.FieldPath.from_string('apple.x.y')]
         transform_pb = self._call_fut(document_path, transform_paths)
 
         server_val = enums.DocumentTransform.FieldTransform.ServerValue
         transform1 = write_pb2.DocumentTransform.FieldTransform(
-            field_path='man.bear',
+            field_path='apple.x.y',
             set_to_server_value=server_val.REQUEST_TIME,
         )
         transform2 = write_pb2.DocumentTransform.FieldTransform(
-            field_path='pig',
+            field_path='man.bear',
             set_to_server_value=server_val.REQUEST_TIME,
         )
         transform3 = write_pb2.DocumentTransform.FieldTransform(
-            field_path='apple.x.y',
+            field_path='pig',
             set_to_server_value=server_val.REQUEST_TIME,
         )
 
@@ -1105,76 +1481,107 @@ class Test_get_transform_pb(unittest.TestCase):
 class Test_pbs_for_set(unittest.TestCase):
 
     @staticmethod
-    def _call_fut(document_path, document_data, option):
+    def _call_fut(document_path, document_data, merge=False, exists=None):
         from google.cloud.firestore_v1beta1._helpers import pbs_for_set
 
-        return pbs_for_set(document_path, document_data, option)
+        return pbs_for_set(
+            document_path, document_data, merge=merge, exists=exists)
 
-    def _helper(self, option=None, do_transform=False, **write_kwargs):
-        from google.cloud.firestore_v1beta1.gapic import enums
+    @staticmethod
+    def _make_write_w_document(document_path, **data):
         from google.cloud.firestore_v1beta1.proto import document_pb2
         from google.cloud.firestore_v1beta1.proto import write_pb2
-        from google.cloud.firestore_v1beta1.constants import SERVER_TIMESTAMP
+        from google.cloud.firestore_v1beta1._helpers import encode_dict
 
-        document_path = _make_ref_string(
-            u'little', u'town', u'of', u'ham')
-        field_name1 = 'cheese'
-        value1 = 1.5
-        field_name2 = 'crackers'
-        value2 = True
-        field_name3 = 'butter'
-
-        document_data = {
-            field_name1: value1,
-            field_name2: value2,
-        }
-        if do_transform:
-            document_data[field_name3] = SERVER_TIMESTAMP
-
-        write_pbs = self._call_fut(document_path, document_data, option)
-
-        expected_update_pb = write_pb2.Write(
+        return write_pb2.Write(
             update=document_pb2.Document(
                 name=document_path,
-                fields={
-                    field_name1: _value_pb(double_value=value1),
-                    field_name2: _value_pb(boolean_value=value2),
-                },
+                fields=encode_dict(data),
             ),
-            **write_kwargs
         )
-        expected_pbs = [expected_update_pb]
+
+    @staticmethod
+    def _make_write_w_transform(document_path, fields):
+        from google.cloud.firestore_v1beta1.proto import write_pb2
+        from google.cloud.firestore_v1beta1.gapic import enums
+
+        server_val = enums.DocumentTransform.FieldTransform.ServerValue
+        transforms = [
+            write_pb2.DocumentTransform.FieldTransform(
+                field_path=field, set_to_server_value=server_val.REQUEST_TIME)
+            for field in fields
+        ]
+
+        return write_pb2.Write(
+            transform=write_pb2.DocumentTransform(
+                document=document_path,
+                field_transforms=transforms,
+            ),
+        )
+
+    def _helper(self, merge=False, do_transform=False, exists=None,
+                empty_val=False):
+        from google.cloud.firestore_v1beta1.constants import SERVER_TIMESTAMP
+        from google.cloud.firestore_v1beta1.proto import common_pb2
+
+        document_path = _make_ref_string(u'little', u'town', u'of', u'ham')
+        document_data = {
+            'cheese': 1.5,
+            'crackers': True,
+        }
 
         if do_transform:
-            server_val = enums.DocumentTransform.FieldTransform.ServerValue
-            expected_transform_pb = write_pb2.Write(
-                transform=write_pb2.DocumentTransform(
-                    document=document_path,
-                    field_transforms=[
-                        write_pb2.DocumentTransform.FieldTransform(
-                            field_path=field_name3,
-                            set_to_server_value=server_val.REQUEST_TIME,
-                        ),
-                    ],
-                ),
+            document_data['butter'] = SERVER_TIMESTAMP
+
+        if empty_val:
+            document_data['mustard'] = {}
+
+        write_pbs = self._call_fut(
+            document_path, document_data, merge, exists)
+
+        if empty_val:
+            update_pb = self._make_write_w_document(
+                document_path, cheese=1.5, crackers=True, mustard={},
             )
-            expected_pbs.append(expected_transform_pb)
+        else:
+            update_pb = self._make_write_w_document(
+                document_path, cheese=1.5, crackers=True,
+            )
+        expected_pbs = [update_pb]
+
+        if merge:
+            field_paths = sorted(['cheese', 'crackers'])
+            update_pb.update_mask.CopyFrom(
+                common_pb2.DocumentMask(field_paths=field_paths))
+
+        if exists is not None:
+            update_pb.current_document.CopyFrom(
+                common_pb2.Precondition(exists=exists))
+
+        if do_transform:
+            expected_pbs.append(
+                self._make_write_w_transform(document_path, fields=['butter']))
 
         self.assertEqual(write_pbs, expected_pbs)
 
-    def test_without_option(self):
+    def test_without_merge(self):
         self._helper()
 
-    def test_with_option(self):
-        from google.cloud.firestore_v1beta1.proto import common_pb2
-        from google.cloud.firestore_v1beta1.client import CreateIfMissingOption
+    def test_with_merge(self):
+        self._helper(merge=True)
 
-        option = CreateIfMissingOption(False)
-        precondition = common_pb2.Precondition(exists=True)
-        self._helper(option=option, current_document=precondition)
+    def test_with_exists_false(self):
+        self._helper(exists=False)
 
-    def test_update_and_transform(self):
+    def test_with_exists_true(self):
+        self._helper(exists=True)
+
+    def test_w_transform(self):
         self._helper(do_transform=True)
+
+    def test_w_transform_and_empty_value(self):
+        # Exercise #5944
+        self._helper(do_transform=True, empty_val=True)
 
 
 class Test_pbs_for_update(unittest.TestCase):
@@ -1186,12 +1593,14 @@ class Test_pbs_for_update(unittest.TestCase):
         return pbs_for_update(client, document_path, field_updates, option)
 
     def _helper(self, option=None, do_transform=False, **write_kwargs):
+        from google.cloud.firestore_v1beta1 import _helpers
+        from google.cloud.firestore_v1beta1.client import Client
+        from google.cloud.firestore_v1beta1.client import ExistsOption
+        from google.cloud.firestore_v1beta1.constants import SERVER_TIMESTAMP
         from google.cloud.firestore_v1beta1.gapic import enums
         from google.cloud.firestore_v1beta1.proto import common_pb2
         from google.cloud.firestore_v1beta1.proto import document_pb2
         from google.cloud.firestore_v1beta1.proto import write_pb2
-        from google.cloud.firestore_v1beta1.client import Client
-        from google.cloud.firestore_v1beta1.constants import SERVER_TIMESTAMP
 
         document_path = _make_ref_string(
             u'toy', u'car', u'onion', u'garlic')
@@ -1219,22 +1628,25 @@ class Test_pbs_for_update(unittest.TestCase):
             update_mask=common_pb2.DocumentMask(field_paths=[field_path1]),
             **write_kwargs
         )
+        if isinstance(option, ExistsOption):
+            precondition = common_pb2.Precondition(exists=False)
+            expected_update_pb.current_document.CopyFrom(precondition)
         expected_pbs = [expected_update_pb]
         if do_transform:
+            transform_paths = _helpers.FieldPath.from_string(field_path2)
             server_val = enums.DocumentTransform.FieldTransform.ServerValue
             expected_transform_pb = write_pb2.Write(
                 transform=write_pb2.DocumentTransform(
                     document=document_path,
                     field_transforms=[
                         write_pb2.DocumentTransform.FieldTransform(
-                            field_path=field_path2,
+                            field_path=transform_paths.to_api_repr(),
                             set_to_server_value=server_val.REQUEST_TIME,
                         ),
                     ],
                 ),
             )
             expected_pbs.append(expected_transform_pb)
-
         self.assertEqual(write_pbs, expected_pbs)
 
     def test_without_option(self):
@@ -1243,11 +1655,10 @@ class Test_pbs_for_update(unittest.TestCase):
         precondition = common_pb2.Precondition(exists=True)
         self._helper(current_document=precondition)
 
-    def test_with_option(self):
-        from google.cloud.firestore_v1beta1.proto import common_pb2
-        from google.cloud.firestore_v1beta1.client import CreateIfMissingOption
+    def test_with_exists_option(self):
+        from google.cloud.firestore_v1beta1.client import ExistsOption
 
-        option = CreateIfMissingOption(True)
+        option = ExistsOption(False)
         self._helper(option=option)
 
     def test_update_and_transform(self):
@@ -1294,16 +1705,6 @@ class Test_pb_for_delete(unittest.TestCase):
         precondition = common_pb2.Precondition(update_time=update_time)
         self._helper(option=option, current_document=precondition)
 
-    def test_bad_option(self):
-        from google.cloud.firestore_v1beta1._helpers import NO_CREATE_ON_DELETE
-        from google.cloud.firestore_v1beta1.client import CreateIfMissingOption
-
-        option = CreateIfMissingOption(True)
-        with self.assertRaises(ValueError) as exc_info:
-            self._helper(option=option)
-
-        self.assertEqual(exc_info.exception.args, (NO_CREATE_ON_DELETE,))
-
 
 class Test_get_transaction_id(unittest.TestCase):
 
@@ -1337,7 +1738,6 @@ class Test_get_transaction_id(unittest.TestCase):
             self._call_fut(transaction)
 
     def test_after_writes_allowed(self):
-        from google.cloud.firestore_v1beta1._helpers import ReadAfterWriteError
         from google.cloud.firestore_v1beta1.transaction import Transaction
 
         transaction = Transaction(mock.sentinel.client)
@@ -1359,102 +1759,22 @@ class Test_get_transaction_id(unittest.TestCase):
         self.assertEqual(self._call_fut(transaction), txn_id)
 
 
-class Test_remap_gax_error_on_commit(unittest.TestCase):
-
-    @staticmethod
-    def _call_fut():
-        from google.cloud.firestore_v1beta1._helpers import remap_gax_error_on_commit
-
-        return remap_gax_error_on_commit()
-
-    @staticmethod
-    def _fake_method(exc, result=None):
-        if exc is None:
-            return result
-        else:
-            raise exc
-
-    @staticmethod
-    def _make_rendezvous(status_code, details):
-        from grpc import _channel
-        from google.cloud import exceptions
-
-        exc_state = _channel._RPCState((), None, None, status_code, details)
-        return exceptions.GrpcRendezvous(exc_state, None, None, None)
-
-    def _make_gax_error(self, err_name, details):
-        from google.gax import errors
-        import grpc
-
-        # First, create low-level GrpcRendezvous exception.
-        status_code = getattr(grpc.StatusCode, err_name)
-        cause = self._make_rendezvous(status_code, details)
-        # Then put it into a high-level GaxError.
-        return errors.GaxError('RPC failed', cause=cause)
-
-    def test_success(self):
-        expected = object()
-        with self._call_fut():
-            result = self._fake_method(None, expected)
-        self.assertIs(result, expected)
-
-    def test_non_grpc_err(self):
-        exc = RuntimeError('Not a gRPC error')
-        with self.assertRaises(RuntimeError):
-            with self._call_fut():
-                self._fake_method(exc)
-
-    def test_already_exists(self):
-        from google.cloud import exceptions
-
-        exc = self._make_gax_error(
-            'ALREADY_EXISTS', 'entity already exists: app: ...')
-        with self.assertRaises(exceptions.Conflict):
-            with self._call_fut():
-                self._fake_method(exc)
-
-    def test_not_found(self):
-        from google.cloud import exceptions
-
-        exc = self._make_gax_error(
-            'NOT_FOUND', 'no entity to update: app: ...')
-        with self.assertRaises(exceptions.NotFound):
-            with self._call_fut():
-                self._fake_method(exc)
-
-    def test_gax_error_not_mapped(self):
-        from google.gax import errors
-
-        exc = self._make_gax_error(
-            'INVALID_ARGUMENT', 'transaction closed')
-        with self.assertRaises(errors.GaxError) as exc_info:
-            with self._call_fut():
-                self._fake_method(exc)
-
-        self.assertIs(exc_info.exception, exc)
-
-
-class Test_options_with_prefix(unittest.TestCase):
+class Test_metadata_with_prefix(unittest.TestCase):
 
     @staticmethod
     def _call_fut(database_string):
-        from google.cloud.firestore_v1beta1._helpers import options_with_prefix
+        from google.cloud.firestore_v1beta1._helpers import (
+            metadata_with_prefix)
 
-        return options_with_prefix(database_string)
+        return metadata_with_prefix(database_string)
 
     def test_it(self):
-        import google.gax
-
         database_string = u'projects/prahj/databases/dee-bee'
-        options = self._call_fut(database_string)
+        metadata = self._call_fut(database_string)
 
-        self.assertIsInstance(options, google.gax.CallOptions)
-        expected_kwargs = {
-            'metadata': [
-                ('google-cloud-resource-prefix', database_string),
-            ],
-        }
-        self.assertEqual(options.kwargs, expected_kwargs)
+        self.assertEqual(metadata, [
+            ('google-cloud-resource-prefix', database_string),
+        ])
 
 
 def _value_pb(**kwargs):

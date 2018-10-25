@@ -17,7 +17,6 @@ from __future__ import absolute_import
 import copy
 import os
 import pkg_resources
-import threading
 
 import grpc
 import six
@@ -27,7 +26,7 @@ from google.api_core import grpc_helpers
 from google.cloud.pubsub_v1 import _gapic
 from google.cloud.pubsub_v1 import types
 from google.cloud.pubsub_v1.gapic import publisher_client
-from google.cloud.pubsub_v1.publisher.batch import thread
+from google.cloud.pubsub_v1.publisher._batch import thread
 
 
 __version__ = pkg_resources.get_distribution('google-cloud-pubsub').version
@@ -44,18 +43,17 @@ class Client(object):
     Args:
         batch_settings (~google.cloud.pubsub_v1.types.BatchSettings): The
             settings for batch publishing.
-        batch_class (class): A class that describes how to handle
-            batches. You may subclass the
-            :class:`.pubsub_v1.publisher.batch.base.BaseBatch` class in
-            order to define your own batcher. This is primarily provided to
-            allow use of different concurrency models; the default
-            is based on :class:`threading.Thread`.
         kwargs (dict): Any additional arguments provided are sent as keyword
             arguments to the underlying
             :class:`~.gapic.pubsub.v1.publisher_client.PublisherClient`.
             Generally, you should not need to set additional keyword arguments.
+            Before being passed along to the GAPIC constructor, a channel may
+            be added if ``credentials`` are passed explicitly or if the
+            Pub / Sub emulator is detected as running.
     """
-    def __init__(self, batch_settings=(), batch_class=thread.Batch, **kwargs):
+    _batch_class = thread.Batch
+
+    def __init__(self, batch_settings=(), **kwargs):
         # Sanity check: Is our goal to use the emulator?
         # If so, create a grpc insecure channel with the emulator host
         # as the target.
@@ -85,8 +83,7 @@ class Client(object):
 
         # The batches on the publisher client are responsible for holding
         # messages. One batch exists for each topic.
-        self._batch_class = batch_class
-        self._batch_lock = threading.Lock()
+        self._batch_lock = self._batch_class.make_lock()
         self._batches = {}
 
     @property
@@ -98,30 +95,34 @@ class Client(object):
         """
         return publisher_client.PublisherClient.SERVICE_ADDRESS
 
-    def batch(self, topic, message, create=True, autocommit=True):
+    def _batch(self, topic, create=False, autocommit=True):
         """Return the current batch for the provided topic.
 
-        This will create a new batch only if no batch currently exists.
+        This will create a new batch if ``create=True`` or if no batch
+        currently exists.
 
         Args:
             topic (str): A string representing the topic.
-            message (~google.cloud.pubsub_v1.types.PubsubMessage): The message
-                that will be committed.
-            create (bool): Whether to create a new batch if no batch is
-                found. Defaults to True.
-            autocommit (bool): Whether to autocommit this batch.
-                This is primarily useful for debugging.
+            create (bool): Whether to create a new batch. Defaults to
+                :data:`False`. If :data:`True`, this will create a new batch
+                even if one already exists.
+            autocommit (bool): Whether to autocommit this batch. This is
+                primarily useful for debugging and testing, since it allows
+                the caller to avoid some side effects that batch creation
+                might have (e.g. spawning a worker to publish a batch).
 
         Returns:
-            ~.pubsub_v1.batch.Batch: The batch object.
+            ~.pubsub_v1._batch.Batch: The batch object.
         """
         # If there is no matching batch yet, then potentially create one
         # and place it on the batches dictionary.
         with self._batch_lock:
-            batch = self._batches.get(topic, None)
-            if batch is None or not batch.will_accept(message):
-                if not create:
-                    return None
+            if not create:
+                batch = self._batches.get(topic)
+                if batch is None:
+                    create = True
+
+            if create:
                 batch = self._batch_class(
                     autocommit=autocommit,
                     client=self,
@@ -130,7 +131,6 @@ class Client(object):
                 )
                 self._batches[topic] = batch
 
-        # Simply return the appropriate batch.
         return batch
 
     def publish(self, topic, data, **attrs):
@@ -173,8 +173,10 @@ class Client(object):
         # Sanity check: Is the data being sent as a bytestring?
         # If it is literally anything else, complain loudly about it.
         if not isinstance(data, six.binary_type):
-            raise TypeError('Data being published to Pub/Sub must be sent '
-                            'as a bytestring.')
+            raise TypeError(
+                'Data being published to Pub/Sub must be sent '
+                'as a bytestring.'
+            )
 
         # Coerce all attributes to text strings.
         for k, v in copy.copy(attrs).items():
@@ -183,11 +185,20 @@ class Client(object):
             if isinstance(v, six.binary_type):
                 attrs[k] = v.decode('utf-8')
                 continue
-            raise TypeError('All attributes being published to Pub/Sub must '
-                            'be sent as text strings.')
+            raise TypeError(
+                'All attributes being published to Pub/Sub must '
+                'be sent as text strings.'
+            )
 
         # Create the Pub/Sub message object.
         message = types.PubsubMessage(data=data, attributes=attrs)
 
         # Delegate the publishing to the batch.
-        return self.batch(topic, message=message).publish(message)
+        batch = self._batch(topic)
+        future = None
+        while future is None:
+            future = batch.publish(message)
+            if future is None:
+                batch = self._batch(topic, create=True)
+
+        return future

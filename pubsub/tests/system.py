@@ -15,154 +15,203 @@
 from __future__ import absolute_import
 
 import datetime
+import threading
 import time
-import uuid
 
-import mock
+import pytest
 import six
 
-from google import auth
+import google.auth
 from google.cloud import pubsub_v1
 
 
-def _resource_name(resource_type):
-    """Return a randomly selected name for a resource.
-
-    Args:
-        resource_type (str): The resource for which a name is being
-            generated. Should be singular (e.g. "topic", "subscription")
-    """
-    return 'projects/{project}/{resource_type}s/st-n{random}'.format(
-        project=auth.default()[1],
-        random=str(uuid.uuid4())[0:8],
-        resource_type=resource_type,
-    )
+from test_utils.system import unique_resource_id
 
 
-def test_publish_messages():
-    publisher = pubsub_v1.PublisherClient()
-    topic_name = _resource_name('topic')
+@pytest.fixture(scope=u'module')
+def project():
+    _, default_project = google.auth.default()
+    yield default_project
+
+
+@pytest.fixture(scope=u'module')
+def publisher():
+    yield pubsub_v1.PublisherClient()
+
+
+@pytest.fixture(scope=u'module')
+def subscriber():
+    yield pubsub_v1.SubscriberClient()
+
+
+@pytest.fixture
+def topic_path(project, publisher):
+    topic_name = 't' + unique_resource_id('-')
+    yield publisher.topic_path(project, topic_name)
+
+
+@pytest.fixture
+def subscription_path(project, subscriber):
+    sub_name = 's' + unique_resource_id('-')
+    yield subscriber.subscription_path(project, sub_name)
+
+
+@pytest.fixture
+def cleanup():
+    registry = []
+    yield registry
+
+    # Perform all clean up.
+    for to_call, argument in registry:
+        to_call(argument)
+
+
+def test_publish_messages(publisher, topic_path, cleanup):
     futures = []
+    # Make sure the topic gets deleted.
+    cleanup.append((publisher.delete_topic, topic_path))
 
-    try:
-        publisher.create_topic(topic_name)
-        for i in range(0, 500):
-            futures.append(
-                publisher.publish(
-                    topic_name,
-                    b'The hail in Wales falls mainly on the snails.',
-                    num=str(i),
-                ),
-            )
-        for future in futures:
-            result = future.result()
-            assert isinstance(result, (six.text_type, six.binary_type))
-    finally:
-        publisher.delete_topic(topic_name)
+    publisher.create_topic(topic_path)
+    for index in six.moves.range(500):
+        futures.append(
+            publisher.publish(
+                topic_path,
+                b'The hail in Wales falls mainly on the snails.',
+                num=str(index),
+            ),
+        )
+    for future in futures:
+        result = future.result()
+        assert isinstance(result, six.string_types)
 
 
-def test_subscribe_to_messages():
-    publisher = pubsub_v1.PublisherClient()
-    subscriber = pubsub_v1.SubscriberClient()
-    topic_name = _resource_name('topic')
-    sub_name = _resource_name('subscription')
+def test_subscribe_to_messages(
+        publisher, topic_path, subscriber, subscription_path, cleanup):
+    # Make sure the topic and subscription get deleted.
+    cleanup.append((publisher.delete_topic, topic_path))
+    cleanup.append((subscriber.delete_subscription, subscription_path))
 
-    try:
-        # Create a topic.
-        publisher.create_topic(topic_name)
+    # Create a topic.
+    publisher.create_topic(topic_path)
 
-        # Subscribe to the topic. This must happen before the messages
-        # are published.
-        subscriber.create_subscription(sub_name, topic_name)
-        subscription = subscriber.subscribe(sub_name)
+    # Subscribe to the topic. This must happen before the messages
+    # are published.
+    subscriber.create_subscription(subscription_path, topic_path)
 
-        # Publish some messages.
-        futures = [publisher.publish(
-            topic_name,
+    # Publish some messages.
+    futures = [
+        publisher.publish(
+            topic_path,
             b'Wooooo! The claaaaaw!',
-            num=str(i),
-        ) for i in range(0, 50)]
+            num=str(index),
+        )
+        for index in six.moves.range(50)
+    ]
 
-        # Make sure the publish completes.
-        [f.result() for f in futures]
+    # Make sure the publish completes.
+    for future in futures:
+        future.result()
 
-        # The callback should process the message numbers to prove
-        # that we got everything at least once.
-        callback = mock.Mock(wraps=lambda message: message.ack())
+    # Actually open the subscription and hold it open for a few seconds.
+    # The callback should process the message numbers to prove
+    # that we got everything at least once.
+    callback = AckCallback()
+    future = subscriber.subscribe(subscription_path, callback)
+    for second in six.moves.range(10):
+        time.sleep(1)
 
-        # Actually open the subscription and hold it open for a few seconds.
-        subscription.open(callback)
-        for second in range(0, 10):
-            time.sleep(1)
+        # The callback should have fired at least fifty times, but it
+        # may take some time.
+        if callback.calls >= 50:
+            return
 
-            # The callback should have fired at least fifty times, but it
-            # may take some time.
-            if callback.call_count >= 50:
-                return
+    # Okay, we took too long; fail out.
+    assert callback.calls >= 50
 
-        # Okay, we took too long; fail out.
-        assert callback.call_count >= 50
-    finally:
-        publisher.delete_topic(topic_name)
+    future.cancel()
 
 
-def test_subscribe_to_messages_async_callbacks():
-    publisher = pubsub_v1.PublisherClient()
-    subscriber = pubsub_v1.SubscriberClient()
-    topic_name = _resource_name('topic')
-    sub_name = _resource_name('subscription')
+def test_subscribe_to_messages_async_callbacks(
+        publisher, topic_path, subscriber, subscription_path, cleanup):
+    # Make sure the topic and subscription get deleted.
+    cleanup.append((publisher.delete_topic, topic_path))
+    cleanup.append((subscriber.delete_subscription, subscription_path))
 
-    try:
-        # Create a topic.
-        publisher.create_topic(topic_name)
+    # Create a topic.
+    publisher.create_topic(topic_path)
 
-        # Subscribe to the topic. This must happen before the messages
-        # are published.
-        subscriber.create_subscription(sub_name, topic_name)
-        subscription = subscriber.subscribe(sub_name)
+    # Subscribe to the topic. This must happen before the messages
+    # are published.
+    subscriber.create_subscription(subscription_path, topic_path)
 
-        # Publish some messages.
-        futures = [publisher.publish(
-            topic_name,
+    # Publish some messages.
+    futures = [
+        publisher.publish(
+            topic_path,
             b'Wooooo! The claaaaaw!',
-            num=str(i),
-        ) for i in range(0, 2)]
+            num=str(index),
+        )
+        for index in six.moves.range(2)
+    ]
 
-        # Make sure the publish completes.
-        [f.result() for f in futures]
+    # Make sure the publish completes.
+    for future in futures:
+        future.result()
 
-        # We want to make sure that the callback was called asynchronously. So
-        # track when each call happened and make sure below.
-        call_times = []
+    # We want to make sure that the callback was called asynchronously. So
+    # track when each call happened and make sure below.
+    callback = TimesCallback(2)
 
-        def process_message(message):
-            # list.append() is thread-safe.
-            call_times.append(datetime.datetime.now())
-            time.sleep(2)
-            message.ack()
+    # Actually open the subscription and hold it open for a few seconds.
+    future = subscriber.subscribe(subscription_path, callback)
+    for second in six.moves.range(5):
+        time.sleep(4)
 
-        callback = mock.Mock(wraps=process_message)
-        side_effect = mock.Mock()
-        callback.side_effect = side_effect
+        # The callback should have fired at least two times, but it may
+        # take some time.
+        if callback.calls >= 2:
+            first, last = sorted(callback.call_times[:2])
+            diff = last - first
+            # "Ensure" the first two callbacks were executed asynchronously
+            # (sequentially would have resulted in a difference of 2+
+            # seconds).
+            assert diff.days == 0
+            assert diff.seconds < callback.sleep_time
 
-        # Actually open the subscription and hold it open for a few seconds.
-        subscription.open(callback)
-        for second in range(0, 5):
-            time.sleep(4)
+    # Okay, we took too long; fail out.
+    assert callback.calls >= 2
 
-            # The callback should have fired at least two times, but it may
-            # take some time.
-            if callback.call_count >= 2 and side_effect.call_count >= 2:
-                first = min(call_times[:2])
-                last = max(call_times[:2])
-                diff = last - first
-                # "Ensure" the first two callbacks were executed asynchronously
-                # (sequentially would have resulted in a difference of 2+
-                # seconds).
-                assert diff.days == 0
-                assert diff.seconds < 2
+    future.cancel()
 
-        # Okay, we took too long; fail out.
-        assert callback.call_count >= 2
-    finally:
-        publisher.delete_topic(topic_name)
+
+class AckCallback(object):
+
+    def __init__(self):
+        self.calls = 0
+        self.lock = threading.Lock()
+
+    def __call__(self, message):
+        message.ack()
+        # Only increment the number of calls **after** finishing.
+        with self.lock:
+            self.calls += 1
+
+
+class TimesCallback(object):
+
+    def __init__(self, sleep_time):
+        self.sleep_time = sleep_time
+        self.calls = 0
+        self.call_times = []
+        self.lock = threading.Lock()
+
+    def __call__(self, message):
+        now = datetime.datetime.now()
+        time.sleep(self.sleep_time)
+        message.ack()
+        # Only increment the number of calls **after** finishing.
+        with self.lock:
+            # list.append() is thread-safe, but we still wait until
+            # ``calls`` is incremented to do it.
+            self.call_times.append(now)
+            self.calls += 1

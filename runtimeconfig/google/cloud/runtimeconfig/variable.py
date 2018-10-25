@@ -36,8 +36,11 @@
 """
 
 import base64
+import datetime
 
-from google.cloud._helpers import _rfc3339_to_datetime
+import pytz
+
+from google.api_core import datetime_helpers
 from google.cloud.exceptions import NotFound
 from google.cloud.runtimeconfig._helpers import variable_name_from_full_name
 
@@ -139,10 +142,10 @@ class Variable(object):
 
         :rtype: str
         :returns:
-            If set, one of "UPDATED", "DELETED", or
-            "VARIABLE_STATE_UNSPECIFIED", else ``None``.
+            If set, one of "UPDATED", "DELETED", or defaults to
+            "VARIABLE_STATE_UNSPECIFIED".
         """
-        return self._properties.get('state')
+        return self._properties.get('state', STATE_UNSPECIFIED)
 
     @property
     def update_time(self):
@@ -151,13 +154,28 @@ class Variable(object):
         See
         https://cloud.google.com/deployment-manager/runtime-configurator/reference/rest/v1beta1/projects.configs.variables
 
-        :rtype: :class:`datetime.datetime` or ``NoneType``
-        :returns: Datetime object parsed from RFC3339 valid timestamp, or
-                  ``None`` if the property is not set locally.
+        Returns:
+            :class:`~api_core.datetime_helpers.DatetimeWithNanoseconds`,
+            :class:`datetime.datetime` or ``NoneType``:
+            Datetime object parsed from RFC3339 valid timestamp, or
+            ``None`` if the property is not set locally.
+
+        Raises:
+            ValueError: if value is not a valid RFC3339 timestamp
         """
         value = self._properties.get('updateTime')
         if value is not None:
-            value = _rfc3339_to_datetime(value)
+            try:
+                value = datetime.datetime.strptime(
+                    value, datetime_helpers._RFC3339_MICROS)
+            except ValueError:
+                DatetimeNS = datetime_helpers.DatetimeWithNanoseconds
+                value = DatetimeNS.from_rfc3339(value)
+            naive = (
+                value.tzinfo is None
+                or value.tzinfo.utcoffset(value) is None)
+            if naive:
+                value = pytz.utc.localize(value)
         return value
 
     def _require_client(self, client):

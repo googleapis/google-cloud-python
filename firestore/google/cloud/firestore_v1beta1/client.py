@@ -24,11 +24,8 @@ In the hierarchy of API concepts
   :class:`~.firestore_v1beta1.document.DocumentReference`
 """
 
-from google.cloud._helpers import make_secure_channel
-from google.cloud._http import DEFAULT_USER_AGENT
 from google.cloud.client import ClientWithProject
 
-from google.cloud.firestore_v1beta1 import __version__
 from google.cloud.firestore_v1beta1 import _helpers
 from google.cloud.firestore_v1beta1 import types
 from google.cloud.firestore_v1beta1.batch import WriteBatch
@@ -42,8 +39,7 @@ from google.cloud.firestore_v1beta1.transaction import Transaction
 DEFAULT_DATABASE = '(default)'
 """str: The default database used in a :class:`~.firestore.client.Client`."""
 _BAD_OPTION_ERR = (
-    'Exactly one of ``create_if_missing``, ``last_update_time`` '
-    'and ``exists`` must be provided.')
+    'Exactly one of ``last_update_time`` or ``exists`` must be provided.')
 _BAD_DOC_TEMPLATE = (
     'Document {!r} appeared in response but was not present among references')
 _ACTIVE_TXN = 'There is already an active transaction.'
@@ -78,7 +74,7 @@ class Client(ClientWithProject):
 
     _firestore_api_internal = None
     _database_string_internal = None
-    _call_options_internal = None
+    _rpc_metadata_internal = None
 
     def __init__(self, project=None, credentials=None,
                  database=DEFAULT_DATABASE):
@@ -98,7 +94,8 @@ class Client(ClientWithProject):
             GAPIC client with the credentials of the current client.
         """
         if self._firestore_api_internal is None:
-            self._firestore_api_internal = _make_firestore_api(self)
+            self._firestore_api_internal = firestore_client.FirestoreClient(
+                credentials=self._credentials)
 
         return self._firestore_api_internal
 
@@ -128,18 +125,18 @@ class Client(ClientWithProject):
         return self._database_string_internal
 
     @property
-    def _call_options(self):
-        """The call options for this client's associated database.
+    def _rpc_metadata(self):
+        """The RPC metadata for this client's associated database.
 
         Returns:
-            ~google.gax.CallOptions: GAPIC call options with a resource prefix
+            Sequence[Tuple(str, str)]: RPC metadata with resource prefix
             for the database associated with this client.
         """
-        if self._call_options_internal is None:
-            self._call_options_internal = _helpers.options_with_prefix(
+        if self._rpc_metadata_internal is None:
+            self._rpc_metadata_internal = _helpers.metadata_with_prefix(
                 self._database_string)
 
-        return self._call_options_internal
+        return self._rpc_metadata_internal
 
     def collection(self, *collection_path):
         """Get a reference to a collection.
@@ -252,25 +249,23 @@ class Client(ClientWithProject):
         :meth:`~.DocumentReference.update` and
         :meth:`~.DocumentReference.delete`.
 
-        Exactly one of three keyword arguments must be provided:
+        One of the following keyword arguments must be provided:
 
-        * ``create_if_missing`` (:class:`bool`): Indicates if the document
-          should be created if it doesn't already exist.
         * ``last_update_time`` (:class:`google.protobuf.timestamp_pb2.\
-           Timestamp`): A timestamp. When set, the target document must exist
-           and have been last updated at that time. Protobuf ``update_time``
-           timestamps are typically returned from methods that perform write
-           operations as part of a "write result" protobuf or directly.
+               Timestamp`): A timestamp. When set, the target document must
+               exist and have been last updated at that time. Protobuf
+               ``update_time`` timestamps are typically returned from methods
+               that perform write operations as part of a "write result"
+               protobuf or directly.
         * ``exists`` (:class:`bool`): Indicates if the document being modified
-          should already exist.
+              should already exist.
 
         Providing no argument would make the option have no effect (so
         it is not allowed). Providing multiple would be an apparent
         contradiction, since ``last_update_time`` assumes that the
         document **was** updated (it can't have been updated if it
-        doesn't exist) and both ``create_if_missing`` and ``exists`` indicate
-        that it is unknown if the document exists or not (but in different
-        ways).
+        doesn't exist) and ``exists`` indicate that it is unknown if the
+        document exists or not.
 
         Args:
             kwargs (Dict[str, Any]): The keyword arguments described above.
@@ -283,9 +278,7 @@ class Client(ClientWithProject):
             raise TypeError(_BAD_OPTION_ERR)
 
         name, value = kwargs.popitem()
-        if name == 'create_if_missing':
-            return CreateIfMissingOption(value)
-        elif name == 'last_update_time':
+        if name == 'last_update_time':
             return LastUpdateOption(value)
         elif name == 'exists':
             return ExistsOption(value)
@@ -333,7 +326,7 @@ class Client(ClientWithProject):
         response_iterator = self._firestore_api.batch_get_documents(
             self._database_string, document_paths, mask,
             transaction=_helpers.get_transaction_id(transaction),
-            options=self._call_options)
+            metadata=self._rpc_metadata)
 
         for get_doc_response in response_iterator:
             yield _parse_batch_get(get_doc_response, reference_map, self)
@@ -424,72 +417,11 @@ class LastUpdateOption(WriteOption):
         write_pb.current_document.CopyFrom(current_doc)
 
 
-class CreateIfMissingOption(WriteOption):
-    """Option used to assert "create if missing" on a write operation.
-
-    This will typically be created by
-    :meth:`~.firestore_v1beta1.client.Client.write_option`.
-
-    Args:
-        create_if_missing (bool): Indicates if the document should be created
-            if it doesn't already exist.
-    """
-
-    def __init__(self, create_if_missing):
-        self._create_if_missing = create_if_missing
-
-    def modify_write(self, write_pb, no_create_msg=None):
-        """Modify a ``Write`` protobuf based on the state of this write option.
-
-        If:
-
-        * ``create_if_missing=False``, adds a precondition that requires
-          existence
-        * ``create_if_missing=True``, does not add any precondition
-        * ``no_create_msg`` is passed, raises an exception. For example, in a
-          :meth:`~.DocumentReference.delete`, no "create" can occur, so it
-          wouldn't make sense to "create if missing".
-
-        Args:
-            write_pb (google.cloud.firestore_v1beta1.types.Write): A
-                ``Write`` protobuf instance to be modified with a precondition
-                determined by the state of this option.
-            no_create_msg (Optional[str]): A message to use to indicate that
-                a create operation is not allowed.
-
-        Raises:
-            ValueError: If ``no_create_msg`` is passed.
-        """
-        if no_create_msg is not None:
-            raise ValueError(no_create_msg)
-        elif not self._create_if_missing:
-            current_doc = types.Precondition(exists=True)
-            write_pb.current_document.CopyFrom(current_doc)
-
-
 class ExistsOption(WriteOption):
     """Option used to assert existence on a write operation.
 
     This will typically be created by
     :meth:`~.firestore_v1beta1.client.Client.write_option`.
-
-    This option is closely related to
-    :meth:`~.firestore_v1beta1.client.CreateIfMissingOption`,
-    but a "create if missing". In fact,
-
-    .. code-block:: python
-
-       >>> ExistsOption(exists=True)
-
-    is (mostly) equivalent to
-
-    .. code-block:: python
-
-       >>> CreateIfMissingOption(create_if_missing=False)
-
-    The only difference being that "create if missing" cannot be used
-    on some operations (e.g. :meth:`~.DocumentReference.delete`)
-    while "exists" can.
 
     Args:
         exists (bool): Indicates if the document being modified
@@ -516,24 +448,6 @@ class ExistsOption(WriteOption):
         """
         current_doc = types.Precondition(exists=self._exists)
         write_pb.current_document.CopyFrom(current_doc)
-
-
-def _make_firestore_api(client):
-    """Create an instance of the GAPIC Firestore client.
-
-    Args:
-        client (~.firestore_v1beta1.client.Client): The client that holds
-            configuration details.
-
-    Returns:
-        ~.gapic.firestore.v1beta1.firestore_client.FirestoreClient: A
-        Firestore GAPIC client instance with the proper credentials.
-    """
-    host = firestore_client.FirestoreClient.SERVICE_ADDRESS
-    channel = make_secure_channel(
-        client._credentials, DEFAULT_USER_AGENT, host)
-    return firestore_client.FirestoreClient(
-        channel=channel, lib_name='gccl', lib_version=__version__)
 
 
 def _reference_info(references):
@@ -603,8 +517,7 @@ def _parse_batch_get(get_doc_response, reference_map, client):
             a document factory.
 
     Returns:
-        Optional[.DocumentSnapshot]: The retrieved snapshot. If the
-        snapshot is :data:`None`, that means the document is ``missing``.
+       [.DocumentSnapshot]: The retrieved snapshot.
 
     Raises:
         ValueError: If the response has a ``result`` field (a oneof) other
@@ -622,13 +535,19 @@ def _parse_batch_get(get_doc_response, reference_map, client):
             read_time=get_doc_response.read_time,
             create_time=get_doc_response.found.create_time,
             update_time=get_doc_response.found.update_time)
-        return snapshot
     elif result_type == 'missing':
-        return None
+        snapshot = DocumentSnapshot(
+            None,
+            None,
+            exists=False,
+            read_time=get_doc_response.read_time,
+            create_time=None,
+            update_time=None)
     else:
         raise ValueError(
             '`BatchGetDocumentsResponse.result` (a oneof) had a field other '
             'than `found` or `missing` set, or was unset')
+    return snapshot
 
 
 def _get_doc_mask(field_paths):

@@ -12,10 +12,28 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from __future__ import absolute_import
+
+from pkg_resources import get_distribution
+__version__ = get_distribution('google-cloud-trace').version
+
 from google.cloud.trace.client import Client
+from google.cloud.trace_v2 import types
+from google.cloud.trace_v2.gapic import enums
+from google.cloud.trace_v2.gapic import trace_service_client
 
 
-__all__ = ['Client', 'SCOPE']
+class TraceServiceClient(trace_service_client.TraceServiceClient):
+    __doc__ = trace_service_client.TraceServiceClient.__doc__
+    enums = enums
 
+
+__all__ = (
+    '__version__',
+    'enums',
+    'types',
+    'TraceServiceClient',
+    'Client',
+    'SCOPE',)
 
 SCOPE = Client.SCOPE

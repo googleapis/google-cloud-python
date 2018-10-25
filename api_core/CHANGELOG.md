@@ -4,9 +4,140 @@
 
 [1]: https://pypi.org/project/google-api-core/#history
 
+## 1.6.0a1
+
+10-18-2018 16:26 PDT
+
+### New Features
+- Add methods to api_core used by new autogenerator. ([#6267](https://github.com/googleapis/google-cloud-python/pull/6267))
+
+### Internal / Testing Changes
+- Fix branch coverage for un-called callbacks. ([#6242](https://github.com/googleapis/google-cloud-python/pull/6242))
+- Fix import order, appeasing lint. ([#6240](https://github.com/googleapis/google-cloud-python/pull/6240))
+- Add / fix badges for PyPI / versions. ([#6158](https://github.com/googleapis/google-cloud-python/pull/6158))
+
+## 1.5.0
+
+### New Features
+- Add bidi, Bidirection Streaming, to api-core ([#6211](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6211))
+
+
+### Internal / Testing Changes
+- Use new Nox ([#6175](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6175))
+
+## 1.4.1
+
+### Dependencies
+- Pin minimum protobuf dependency to 3.4.0. ([#6132](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6132))
+
+### Internal / Testing Changes
+- Add type-checking via pytype to api_core. ([#6116](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6116))
+
+## 1.4.0
+
+### Dependencies
+
+- Add support for gRPC connection management (available when using optional grpc_gcp dependency) ([#5553](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/5553)) ([#5904](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/5904))
+- Update classifiers to drop Python 3.4 and add Python 3.7 ([#5702](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/5702))
+
+## 1.3.0
+
+### New Features
+
+- Add protobuf_helpers.field_mask to calculate a field mask from two messages (#5320)
+
+## 1.2.1
+
+### Implementation Changes
+- Make client_info work without gRPC installed. (#5075)
+- Rename `x-goog-header-params` to `x-goog-request-params` (#5495)
+
+## 1.2.0
+
+### Implementation Changes
+- Add close method to grpc Channel (#5333)
+
+### Internal / Testing Changes
+- Fix tests after grpcio update (#5333)
+- Add Test runs for Python 3.7 and remove 3.4 (#5295)
+
+## 1.1.2
+
+### Packaging
+- Update setuptools before packaging (#5265)
+
+## 1.1.1
+
+### Internal / Testing Changes
+- Use `install_requires` for platform dependencies instead of `extras_require` (#4991)
+- Update trove classifer to '5 - Production/Stable'
+
+## 1.1.0
+
+### Interface additions
+
+- Add `datetime_helpers.DatetimeWithNanoSeconds` (#4979)
+
+### Implementation changes
+
+- Use a class to wrap grpc streaming errors instead of monkey-patching (#4995)
+
+## 1.0.0
+
+This is the stable v1.0.0 release of google-api-core for Python. Releases after
+this will not contain breaking changes.
+
+### Interface changes and additions
+
+- Made `api_core.page_iterator.PageIterator.item_to_value` public
+- Added ability to specify retry for `Operation` and `polling.Future`. (#4922)
+
+## 0.1.4
+
+### New Features
+
+- Add `ChannelStub` to `grpc_helpers` for testing gRPC-based clients. (#4705)
+
+### Notable Implementation Changes
+
+- Fix handling of gapic metadata when specified as `None`. (#4701)
+
+## 0.1.3
+
+### Notable Implementation Changes
+
+- Apply scopes to explicitly provided credentials if needed (#4594).
+- Removing `google.api_core.gapic_v1.method.METRICS_METADATA_KEY`. It
+  can be accessed via
+  `google.api_core.gapic_v1.client_info.METRICS_METADATA_KEY` (#4588).
+
+### Dependencies
+
+- Upgrading to latest `grpcio==1.8.2` (#4642). For details, see
+  related gRPC [bug](https://github.com/grpc/grpc/issues/9688)
+  and [fix](https://github.com/grpc/grpc/pull/13665).
+
+PyPI: https://pypi.org/project/google-api-core/0.1.3/
+
+## 0.1.2
+
+- Upgrading `concurrent.futures` backport from `>= 3.0.0`
+  to `>= 3.2.0` (#4521).
+- Moved `datetime`-related helpers from `google.cloud.core` to
+  `google.api_core.datetime_helpers` (#4399).
+- Added missing `client_info` to `gapic_v1/__init__.py`'s
+  `__all__` (#4567).
+- Added helpers for routing headers to `gapic_v1` (#4336).
+
+PyPI: https://pypi.org/project/google-api-core/0.1.2/
+
 ## 0.1.1
 
+### Dependencies
+
 - Upgrading `grpcio` dependency from `1.2.0, < 1.6dev` to `>= 1.7.0` (#4280)
+
+PyPI: https://pypi.org/project/google-api-core/0.1.1/
 
 ## 0.1.0
 
@@ -37,3 +168,5 @@ relevant changes from that package are included here.
 - Port gax proto helper methods (#4249)
 - Remove gapic_v1.method.wrap_with_paging (#4257)
 - Add final set of protobuf helpers to api_core (#4259)
+
+PyPI: https://pypi.org/project/google-api-core/0.1.0/

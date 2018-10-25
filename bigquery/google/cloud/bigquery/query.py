@@ -81,10 +81,11 @@ class ScalarQueryParameter(_AbstractQueryParameter):
 
     :type type_: str
     :param type_: name of parameter type.  One of 'STRING', 'INT64',
-                  'FLOAT64', 'BOOL', 'TIMESTAMP', 'DATETIME', or 'DATE'.
+                  'FLOAT64', 'NUMERIC', 'BOOL', 'TIMESTAMP', 'DATETIME', or
+                  'DATE'.
 
-    :type value: str, int, float, bool, :class:`datetime.datetime`, or
-                 :class:`datetime.date`.
+    :type value: str, int, float, :class:`decimal.Decimal`, bool,
+                 :class:`datetime.datetime`, or :class:`datetime.date`.
     :param value: the scalar parameter value.
     """
     def __init__(self, name, type_, value):
@@ -99,9 +100,11 @@ class ScalarQueryParameter(_AbstractQueryParameter):
         :type type_: str
         :param type_:
             name of parameter type.  One of 'STRING', 'INT64',
-            'FLOAT64', 'BOOL', 'TIMESTAMP', 'DATETIME', or 'DATE'.
+            'FLOAT64', 'NUMERIC', 'BOOL', 'TIMESTAMP', 'DATETIME', or
+            'DATE'.
 
-        :type value: str, int, float, bool, :class:`datetime.datetime`, or
+        :type value: str, int, float, :class:`decimal.Decimal`, bool,
+                     :class:`datetime.datetime`, or
                      :class:`datetime.date`.
         :param value: the scalar parameter value.
 
@@ -185,7 +188,7 @@ class ArrayQueryParameter(_AbstractQueryParameter):
     :type array_type: str
     :param array_type:
         name of type of array elements.  One of `'STRING'`, `'INT64'`,
-        `'FLOAT64'`, `'BOOL'`, `'TIMESTAMP'`, or `'DATE'`.
+        `'FLOAT64'`, `'NUMERIC'`, `'BOOL'`, `'TIMESTAMP'`, or `'DATE'`.
 
     :type values: list of appropriate scalar type.
     :param values: the parameter array values.
@@ -202,7 +205,7 @@ class ArrayQueryParameter(_AbstractQueryParameter):
         :type array_type: str
         :param array_type:
             name of type of array elements.  One of `'STRING'`, `'INT64'`,
-            `'FLOAT64'`, `'BOOL'`, `'TIMESTAMP'`, or `'DATE'`.
+            `'FLOAT64'`, `'NUMERIC'`, `'BOOL'`, `'TIMESTAMP'`, or `'DATE'`.
 
         :type values: list of appropriate scalar type
         :param values: the parameter array values.
@@ -461,7 +464,7 @@ class StructQueryParameter(_AbstractQueryParameter):
         return 'StructQueryParameter{}'.format(self._key())
 
 
-class QueryResults(object):
+class _QueryResults(object):
     """Results of a query.
 
     See:

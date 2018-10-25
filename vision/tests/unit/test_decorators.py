@@ -52,13 +52,40 @@ class DecoratorTests(unittest.TestCase):
 
 
 class SingleFeatureMethodTests(unittest.TestCase):
+
     @mock.patch.object(vision.ImageAnnotatorClient, 'annotate_image')
     def test_runs_generic_single_image(self, ai):
         ai.return_value = vision.types.AnnotateImageResponse()
 
         # Prove that other aspects of the AnnotateImageRequest, such as the
         # image context, will be preserved.
-        SENTINEL = object()
+        SENTINEL = mock.sentinel.image_context
+
+        # Make a face detection request.
+        client = vision.ImageAnnotatorClient(
+            credentials=mock.Mock(spec=Credentials),
+        )
+        image = {'source': {'image_uri': 'gs://my-test-bucket/image.jpg'}}
+        max_results = 50
+        response = client.face_detection(image, image_context=SENTINEL,
+                                         max_results=max_results)
+        assert isinstance(response, vision.types.AnnotateImageResponse)
+
+        # Assert that the single-image method was called as expected.
+        ai.assert_called_once_with({
+            'features': [{'type': vision.enums.Feature.Type.FACE_DETECTION,
+                          'max_results': max_results}],
+            'image': image,
+            'image_context': SENTINEL,
+        }, retry=None, timeout=None)
+
+    @mock.patch.object(vision.ImageAnnotatorClient, 'annotate_image')
+    def test_runs_generic_single_image_without_max_results(self, ai):
+        ai.return_value = vision.types.AnnotateImageResponse()
+
+        # Prove that other aspects of the AnnotateImageRequest, such as the
+        # image context, will be preserved.
+        SENTINEL = mock.sentinel.image_context
 
         # Make a face detection request.
         client = vision.ImageAnnotatorClient(
@@ -73,4 +100,4 @@ class SingleFeatureMethodTests(unittest.TestCase):
             'features': [{'type': vision.enums.Feature.Type.FACE_DETECTION}],
             'image': image,
             'image_context': SENTINEL,
-        }, options=None)
+        }, retry=None, timeout=None)

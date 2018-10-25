@@ -25,9 +25,10 @@ You'll typically use these to get started with the API:
    >>> key
    <Key('EntityKind', 1234), project=...>
    >>> entity = datastore.Entity(key)
+   >>> entity['question'] = u'Life, universe?'  # Explicit unicode for text
    >>> entity['answer'] = 42
    >>> entity
-   <Entity('EntityKind', 1234) {'answer': 42}>
+   <Entity('EntityKind', 1234) {'question': 'Life, universe?', 'answer': 42}>
    >>> query = client.query(kind='EntityKind')
 
 The main concepts with this API are:

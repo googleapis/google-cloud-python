@@ -192,6 +192,18 @@ class TestEntity(unittest.TestCase):
 
         self.assertFalse(entity1 == entity2)
 
+    def test_id(self):
+        from google.cloud.datastore.key import Key
+
+        key = Key(_KIND, _ID, project=_PROJECT)
+        entity = self._make_one(key=key)
+        self.assertEqual(entity.id,  _ID)
+
+    def test_id_none(self):
+
+        entity = self._make_one(key=None)
+        self.assertEqual(entity.id,  None)
+
     def test___repr___no_key_empty(self):
         entity = self._make_one()
         self.assertEqual(repr(entity), '<Entity {}>')

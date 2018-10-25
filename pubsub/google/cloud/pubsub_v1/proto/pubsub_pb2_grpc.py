@@ -5,9 +5,183 @@ from google.cloud.pubsub_v1.proto import pubsub_pb2 as google_dot_cloud_dot_pubs
 from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
 
 
+class PublisherStub(object):
+  """The service that an application uses to manipulate topics, and to send
+  messages to a topic.
+  """
+
+  def __init__(self, channel):
+    """Constructor.
+
+    Args:
+      channel: A grpc.Channel.
+    """
+    self.CreateTopic = channel.unary_unary(
+        '/google.pubsub.v1.Publisher/CreateTopic',
+        request_serializer=google_dot_cloud_dot_pubsub__v1_dot_proto_dot_pubsub__pb2.Topic.SerializeToString,
+        response_deserializer=google_dot_cloud_dot_pubsub__v1_dot_proto_dot_pubsub__pb2.Topic.FromString,
+        )
+    self.UpdateTopic = channel.unary_unary(
+        '/google.pubsub.v1.Publisher/UpdateTopic',
+        request_serializer=google_dot_cloud_dot_pubsub__v1_dot_proto_dot_pubsub__pb2.UpdateTopicRequest.SerializeToString,
+        response_deserializer=google_dot_cloud_dot_pubsub__v1_dot_proto_dot_pubsub__pb2.Topic.FromString,
+        )
+    self.Publish = channel.unary_unary(
+        '/google.pubsub.v1.Publisher/Publish',
+        request_serializer=google_dot_cloud_dot_pubsub__v1_dot_proto_dot_pubsub__pb2.PublishRequest.SerializeToString,
+        response_deserializer=google_dot_cloud_dot_pubsub__v1_dot_proto_dot_pubsub__pb2.PublishResponse.FromString,
+        )
+    self.GetTopic = channel.unary_unary(
+        '/google.pubsub.v1.Publisher/GetTopic',
+        request_serializer=google_dot_cloud_dot_pubsub__v1_dot_proto_dot_pubsub__pb2.GetTopicRequest.SerializeToString,
+        response_deserializer=google_dot_cloud_dot_pubsub__v1_dot_proto_dot_pubsub__pb2.Topic.FromString,
+        )
+    self.ListTopics = channel.unary_unary(
+        '/google.pubsub.v1.Publisher/ListTopics',
+        request_serializer=google_dot_cloud_dot_pubsub__v1_dot_proto_dot_pubsub__pb2.ListTopicsRequest.SerializeToString,
+        response_deserializer=google_dot_cloud_dot_pubsub__v1_dot_proto_dot_pubsub__pb2.ListTopicsResponse.FromString,
+        )
+    self.ListTopicSubscriptions = channel.unary_unary(
+        '/google.pubsub.v1.Publisher/ListTopicSubscriptions',
+        request_serializer=google_dot_cloud_dot_pubsub__v1_dot_proto_dot_pubsub__pb2.ListTopicSubscriptionsRequest.SerializeToString,
+        response_deserializer=google_dot_cloud_dot_pubsub__v1_dot_proto_dot_pubsub__pb2.ListTopicSubscriptionsResponse.FromString,
+        )
+    self.ListTopicSnapshots = channel.unary_unary(
+        '/google.pubsub.v1.Publisher/ListTopicSnapshots',
+        request_serializer=google_dot_cloud_dot_pubsub__v1_dot_proto_dot_pubsub__pb2.ListTopicSnapshotsRequest.SerializeToString,
+        response_deserializer=google_dot_cloud_dot_pubsub__v1_dot_proto_dot_pubsub__pb2.ListTopicSnapshotsResponse.FromString,
+        )
+    self.DeleteTopic = channel.unary_unary(
+        '/google.pubsub.v1.Publisher/DeleteTopic',
+        request_serializer=google_dot_cloud_dot_pubsub__v1_dot_proto_dot_pubsub__pb2.DeleteTopicRequest.SerializeToString,
+        response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
+        )
+
+
+class PublisherServicer(object):
+  """The service that an application uses to manipulate topics, and to send
+  messages to a topic.
+  """
+
+  def CreateTopic(self, request, context):
+    """Creates the given topic with the given name. See the
+    <a href="/pubsub/docs/admin#resource_names"> resource name rules</a>.
+    """
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details('Method not implemented!')
+    raise NotImplementedError('Method not implemented!')
+
+  def UpdateTopic(self, request, context):
+    """Updates an existing topic. Note that certain properties of a
+    topic are not modifiable.
+    """
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details('Method not implemented!')
+    raise NotImplementedError('Method not implemented!')
+
+  def Publish(self, request, context):
+    """Adds one or more messages to the topic. Returns `NOT_FOUND` if the topic
+    does not exist.
+    """
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details('Method not implemented!')
+    raise NotImplementedError('Method not implemented!')
+
+  def GetTopic(self, request, context):
+    """Gets the configuration of a topic.
+    """
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details('Method not implemented!')
+    raise NotImplementedError('Method not implemented!')
+
+  def ListTopics(self, request, context):
+    """Lists matching topics.
+    """
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details('Method not implemented!')
+    raise NotImplementedError('Method not implemented!')
+
+  def ListTopicSubscriptions(self, request, context):
+    """Lists the names of the subscriptions on this topic.
+    """
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details('Method not implemented!')
+    raise NotImplementedError('Method not implemented!')
+
+  def ListTopicSnapshots(self, request, context):
+    """Lists the names of the snapshots on this topic.<br><br>
+    <b>ALPHA:</b> This feature is part of an alpha release. This API might be
+    changed in backward-incompatible ways and is not recommended for production
+    use. It is not subject to any SLA or deprecation policy.
+    """
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details('Method not implemented!')
+    raise NotImplementedError('Method not implemented!')
+
+  def DeleteTopic(self, request, context):
+    """Deletes the topic with the given name. Returns `NOT_FOUND` if the topic
+    does not exist. After a topic is deleted, a new topic may be created with
+    the same name; this is an entirely new topic with none of the old
+    configuration or subscriptions. Existing subscriptions to this topic are
+    not deleted, but their `topic` field is set to `_deleted-topic_`.
+    """
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details('Method not implemented!')
+    raise NotImplementedError('Method not implemented!')
+
+
+def add_PublisherServicer_to_server(servicer, server):
+  rpc_method_handlers = {
+      'CreateTopic': grpc.unary_unary_rpc_method_handler(
+          servicer.CreateTopic,
+          request_deserializer=google_dot_cloud_dot_pubsub__v1_dot_proto_dot_pubsub__pb2.Topic.FromString,
+          response_serializer=google_dot_cloud_dot_pubsub__v1_dot_proto_dot_pubsub__pb2.Topic.SerializeToString,
+      ),
+      'UpdateTopic': grpc.unary_unary_rpc_method_handler(
+          servicer.UpdateTopic,
+          request_deserializer=google_dot_cloud_dot_pubsub__v1_dot_proto_dot_pubsub__pb2.UpdateTopicRequest.FromString,
+          response_serializer=google_dot_cloud_dot_pubsub__v1_dot_proto_dot_pubsub__pb2.Topic.SerializeToString,
+      ),
+      'Publish': grpc.unary_unary_rpc_method_handler(
+          servicer.Publish,
+          request_deserializer=google_dot_cloud_dot_pubsub__v1_dot_proto_dot_pubsub__pb2.PublishRequest.FromString,
+          response_serializer=google_dot_cloud_dot_pubsub__v1_dot_proto_dot_pubsub__pb2.PublishResponse.SerializeToString,
+      ),
+      'GetTopic': grpc.unary_unary_rpc_method_handler(
+          servicer.GetTopic,
+          request_deserializer=google_dot_cloud_dot_pubsub__v1_dot_proto_dot_pubsub__pb2.GetTopicRequest.FromString,
+          response_serializer=google_dot_cloud_dot_pubsub__v1_dot_proto_dot_pubsub__pb2.Topic.SerializeToString,
+      ),
+      'ListTopics': grpc.unary_unary_rpc_method_handler(
+          servicer.ListTopics,
+          request_deserializer=google_dot_cloud_dot_pubsub__v1_dot_proto_dot_pubsub__pb2.ListTopicsRequest.FromString,
+          response_serializer=google_dot_cloud_dot_pubsub__v1_dot_proto_dot_pubsub__pb2.ListTopicsResponse.SerializeToString,
+      ),
+      'ListTopicSubscriptions': grpc.unary_unary_rpc_method_handler(
+          servicer.ListTopicSubscriptions,
+          request_deserializer=google_dot_cloud_dot_pubsub__v1_dot_proto_dot_pubsub__pb2.ListTopicSubscriptionsRequest.FromString,
+          response_serializer=google_dot_cloud_dot_pubsub__v1_dot_proto_dot_pubsub__pb2.ListTopicSubscriptionsResponse.SerializeToString,
+      ),
+      'ListTopicSnapshots': grpc.unary_unary_rpc_method_handler(
+          servicer.ListTopicSnapshots,
+          request_deserializer=google_dot_cloud_dot_pubsub__v1_dot_proto_dot_pubsub__pb2.ListTopicSnapshotsRequest.FromString,
+          response_serializer=google_dot_cloud_dot_pubsub__v1_dot_proto_dot_pubsub__pb2.ListTopicSnapshotsResponse.SerializeToString,
+      ),
+      'DeleteTopic': grpc.unary_unary_rpc_method_handler(
+          servicer.DeleteTopic,
+          request_deserializer=google_dot_cloud_dot_pubsub__v1_dot_proto_dot_pubsub__pb2.DeleteTopicRequest.FromString,
+          response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
+      ),
+  }
+  generic_handler = grpc.method_handlers_generic_handler(
+      'google.pubsub.v1.Publisher', rpc_method_handlers)
+  server.add_generic_rpc_handlers((generic_handler,))
+
+
 class SubscriberStub(object):
   """The service that an application uses to manipulate subscriptions and to
-  consume messages from a subscription via the `Pull` method.
+  consume messages from a subscription via the `Pull` method or by
+  establishing a bi-directional stream using the `StreamingPull` method.
   """
 
   def __init__(self, channel):
@@ -66,6 +240,11 @@ class SubscriberStub(object):
         request_serializer=google_dot_cloud_dot_pubsub__v1_dot_proto_dot_pubsub__pb2.ModifyPushConfigRequest.SerializeToString,
         response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
         )
+    self.GetSnapshot = channel.unary_unary(
+        '/google.pubsub.v1.Subscriber/GetSnapshot',
+        request_serializer=google_dot_cloud_dot_pubsub__v1_dot_proto_dot_pubsub__pb2.GetSnapshotRequest.SerializeToString,
+        response_deserializer=google_dot_cloud_dot_pubsub__v1_dot_proto_dot_pubsub__pb2.Snapshot.FromString,
+        )
     self.ListSnapshots = channel.unary_unary(
         '/google.pubsub.v1.Subscriber/ListSnapshots',
         request_serializer=google_dot_cloud_dot_pubsub__v1_dot_proto_dot_pubsub__pb2.ListSnapshotsRequest.SerializeToString,
@@ -95,11 +274,13 @@ class SubscriberStub(object):
 
 class SubscriberServicer(object):
   """The service that an application uses to manipulate subscriptions and to
-  consume messages from a subscription via the `Pull` method.
+  consume messages from a subscription via the `Pull` method or by
+  establishing a bi-directional stream using the `StreamingPull` method.
   """
 
   def CreateSubscription(self, request, context):
-    """Creates a subscription to a given topic.
+    """Creates a subscription to a given topic. See the
+    <a href="/pubsub/docs/admin#resource_names"> resource name rules</a>.
     If the subscription already exists, returns `ALREADY_EXISTS`.
     If the corresponding topic doesn't exist, returns `NOT_FOUND`.
 
@@ -124,10 +305,6 @@ class SubscriberServicer(object):
   def UpdateSubscription(self, request, context):
     """Updates an existing subscription. Note that certain properties of a
     subscription, such as its topic, are not modifiable.
-    NOTE:  The style guide requires body: "subscription" instead of body: "*".
-    Keeping the latter for internal consistency in V1, however it should be
-    corrected in V2.  See
-    https://cloud.google.com/apis/design/standard_methods#update for details.
     """
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')
@@ -176,8 +353,7 @@ class SubscriberServicer(object):
     raise NotImplementedError('Method not implemented!')
 
   def Pull(self, request, context):
-    """Pulls messages from the server. Returns an empty list if there are no
-    messages available in the backlog. The server may return `UNAVAILABLE` if
+    """Pulls messages from the server. The server may return `UNAVAILABLE` if
     there are too many concurrent pull requests pending for the given
     subscription.
     """
@@ -186,18 +362,13 @@ class SubscriberServicer(object):
     raise NotImplementedError('Method not implemented!')
 
   def StreamingPull(self, request_iterator, context):
-    """(EXPERIMENTAL) StreamingPull is an experimental feature. This RPC will
-    respond with UNIMPLEMENTED errors unless you have been invited to test
-    this feature. Contact cloud-pubsub@google.com with any questions.
-
-    Establishes a stream with the server, which sends messages down to the
+    """Establishes a stream with the server, which sends messages down to the
     client. The client streams acknowledgements and ack deadline modifications
     back to the server. The server will close the stream and return the status
-    on any error. The server may close the stream with status `OK` to reassign
-    server-side resources, in which case, the client should re-establish the
-    stream. `UNAVAILABLE` may also be returned in the case of a transient error
-    (e.g., a server restart). These should also be retried by the client. Flow
-    control can be achieved by configuring the underlying RPC channel.
+    on any error. The server may close the stream with status `UNAVAILABLE` to
+    reassign server-side resources, in which case, the client should
+    re-establish the stream. Flow control can be achieved by configuring the
+    underlying RPC channel.
     """
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')
@@ -215,43 +386,64 @@ class SubscriberServicer(object):
     context.set_details('Method not implemented!')
     raise NotImplementedError('Method not implemented!')
 
+  def GetSnapshot(self, request, context):
+    """Gets the configuration details of a snapshot.<br><br>
+    <b>ALPHA:</b> This feature is part of an alpha release. This API might be
+    changed in backward-incompatible ways and is not recommended for production
+    use. It is not subject to any SLA or deprecation policy.
+    """
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details('Method not implemented!')
+    raise NotImplementedError('Method not implemented!')
+
   def ListSnapshots(self, request, context):
-    """Lists the existing snapshots.
+    """Lists the existing snapshots.<br><br>
+    <b>ALPHA:</b> This feature is part of an alpha release. This API might be
+    changed in backward-incompatible ways and is not recommended for production
+    use. It is not subject to any SLA or deprecation policy.
     """
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')
     raise NotImplementedError('Method not implemented!')
 
   def CreateSnapshot(self, request, context):
-    """Creates a snapshot from the requested subscription.
+    """Creates a snapshot from the requested subscription.<br><br>
+    <b>ALPHA:</b> This feature is part of an alpha release. This API might be
+    changed in backward-incompatible ways and is not recommended for production
+    use. It is not subject to any SLA or deprecation policy.<br><br>
     If the snapshot already exists, returns `ALREADY_EXISTS`.
     If the requested subscription doesn't exist, returns `NOT_FOUND`.
-
-    If the name is not provided in the request, the server will assign a random
+    If the backlog in the subscription is too old -- and the resulting snapshot
+    would expire in less than 1 hour -- then `FAILED_PRECONDITION` is returned.
+    See also the `Snapshot.expire_time` field. If the name is not provided in
+    the request, the server will assign a random
     name for this snapshot on the same project as the subscription, conforming
-    to the
-    [resource name format](https://cloud.google.com/pubsub/docs/overview#names).
-    The generated name is populated in the returned Snapshot object.
-    Note that for REST API requests, you must specify a name in the request.
+    to the [resource name format](https://cloud.google.com/pubsub/docs/overview#names).
+    The generated
+    name is populated in the returned Snapshot object. Note that for REST API
+    requests, you must specify a name in the request.
     """
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')
     raise NotImplementedError('Method not implemented!')
 
   def UpdateSnapshot(self, request, context):
-    """Updates an existing snapshot. Note that certain properties of a snapshot
-    are not modifiable.
-    NOTE:  The style guide requires body: "snapshot" instead of body: "*".
-    Keeping the latter for internal consistency in V1, however it should be
-    corrected in V2.  See
-    https://cloud.google.com/apis/design/standard_methods#update for details.
+    """Updates an existing snapshot.<br><br>
+    <b>ALPHA:</b> This feature is part of an alpha release. This API might be
+    changed in backward-incompatible ways and is not recommended for production
+    use. It is not subject to any SLA or deprecation policy.
+    Note that certain properties of a snapshot are not modifiable.
     """
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')
     raise NotImplementedError('Method not implemented!')
 
   def DeleteSnapshot(self, request, context):
-    """Removes an existing snapshot. All messages retained in the snapshot
+    """Removes an existing snapshot. <br><br>
+    <b>ALPHA:</b> This feature is part of an alpha release. This API might be
+    changed in backward-incompatible ways and is not recommended for production
+    use. It is not subject to any SLA or deprecation policy.
+    When the snapshot is deleted, all messages retained in the snapshot
     are immediately dropped. After a snapshot is deleted, a new one may be
     created with the same name, but the new one has no association with the old
     snapshot or its subscription, unless the same subscription is specified.
@@ -262,7 +454,10 @@ class SubscriberServicer(object):
 
   def Seek(self, request, context):
     """Seeks an existing subscription to a point in time or to a given snapshot,
-    whichever is provided in the request.
+    whichever is provided in the request.<br><br>
+    <b>ALPHA:</b> This feature is part of an alpha release. This API might be
+    changed in backward-incompatible ways and is not recommended for production
+    use. It is not subject to any SLA or deprecation policy.
     """
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')
@@ -321,6 +516,11 @@ def add_SubscriberServicer_to_server(servicer, server):
           request_deserializer=google_dot_cloud_dot_pubsub__v1_dot_proto_dot_pubsub__pb2.ModifyPushConfigRequest.FromString,
           response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
       ),
+      'GetSnapshot': grpc.unary_unary_rpc_method_handler(
+          servicer.GetSnapshot,
+          request_deserializer=google_dot_cloud_dot_pubsub__v1_dot_proto_dot_pubsub__pb2.GetSnapshotRequest.FromString,
+          response_serializer=google_dot_cloud_dot_pubsub__v1_dot_proto_dot_pubsub__pb2.Snapshot.SerializeToString,
+      ),
       'ListSnapshots': grpc.unary_unary_rpc_method_handler(
           servicer.ListSnapshots,
           request_deserializer=google_dot_cloud_dot_pubsub__v1_dot_proto_dot_pubsub__pb2.ListSnapshotsRequest.FromString,
@@ -349,161 +549,4 @@ def add_SubscriberServicer_to_server(servicer, server):
   }
   generic_handler = grpc.method_handlers_generic_handler(
       'google.pubsub.v1.Subscriber', rpc_method_handlers)
-  server.add_generic_rpc_handlers((generic_handler,))
-
-
-class PublisherStub(object):
-  """The service that an application uses to manipulate topics, and to send
-  messages to a topic.
-  """
-
-  def __init__(self, channel):
-    """Constructor.
-
-    Args:
-      channel: A grpc.Channel.
-    """
-    self.CreateTopic = channel.unary_unary(
-        '/google.pubsub.v1.Publisher/CreateTopic',
-        request_serializer=google_dot_cloud_dot_pubsub__v1_dot_proto_dot_pubsub__pb2.Topic.SerializeToString,
-        response_deserializer=google_dot_cloud_dot_pubsub__v1_dot_proto_dot_pubsub__pb2.Topic.FromString,
-        )
-    self.UpdateTopic = channel.unary_unary(
-        '/google.pubsub.v1.Publisher/UpdateTopic',
-        request_serializer=google_dot_cloud_dot_pubsub__v1_dot_proto_dot_pubsub__pb2.UpdateTopicRequest.SerializeToString,
-        response_deserializer=google_dot_cloud_dot_pubsub__v1_dot_proto_dot_pubsub__pb2.Topic.FromString,
-        )
-    self.Publish = channel.unary_unary(
-        '/google.pubsub.v1.Publisher/Publish',
-        request_serializer=google_dot_cloud_dot_pubsub__v1_dot_proto_dot_pubsub__pb2.PublishRequest.SerializeToString,
-        response_deserializer=google_dot_cloud_dot_pubsub__v1_dot_proto_dot_pubsub__pb2.PublishResponse.FromString,
-        )
-    self.GetTopic = channel.unary_unary(
-        '/google.pubsub.v1.Publisher/GetTopic',
-        request_serializer=google_dot_cloud_dot_pubsub__v1_dot_proto_dot_pubsub__pb2.GetTopicRequest.SerializeToString,
-        response_deserializer=google_dot_cloud_dot_pubsub__v1_dot_proto_dot_pubsub__pb2.Topic.FromString,
-        )
-    self.ListTopics = channel.unary_unary(
-        '/google.pubsub.v1.Publisher/ListTopics',
-        request_serializer=google_dot_cloud_dot_pubsub__v1_dot_proto_dot_pubsub__pb2.ListTopicsRequest.SerializeToString,
-        response_deserializer=google_dot_cloud_dot_pubsub__v1_dot_proto_dot_pubsub__pb2.ListTopicsResponse.FromString,
-        )
-    self.ListTopicSubscriptions = channel.unary_unary(
-        '/google.pubsub.v1.Publisher/ListTopicSubscriptions',
-        request_serializer=google_dot_cloud_dot_pubsub__v1_dot_proto_dot_pubsub__pb2.ListTopicSubscriptionsRequest.SerializeToString,
-        response_deserializer=google_dot_cloud_dot_pubsub__v1_dot_proto_dot_pubsub__pb2.ListTopicSubscriptionsResponse.FromString,
-        )
-    self.DeleteTopic = channel.unary_unary(
-        '/google.pubsub.v1.Publisher/DeleteTopic',
-        request_serializer=google_dot_cloud_dot_pubsub__v1_dot_proto_dot_pubsub__pb2.DeleteTopicRequest.SerializeToString,
-        response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
-        )
-
-
-class PublisherServicer(object):
-  """The service that an application uses to manipulate topics, and to send
-  messages to a topic.
-  """
-
-  def CreateTopic(self, request, context):
-    """Creates the given topic with the given name.
-    """
-    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-    context.set_details('Method not implemented!')
-    raise NotImplementedError('Method not implemented!')
-
-  def UpdateTopic(self, request, context):
-    """Updates an existing topic. Note that certain properties of a topic are not
-    modifiable.  Options settings follow the style guide:
-    NOTE:  The style guide requires body: "topic" instead of body: "*".
-    Keeping the latter for internal consistency in V1, however it should be
-    corrected in V2.  See
-    https://cloud.google.com/apis/design/standard_methods#update for details.
-    """
-    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-    context.set_details('Method not implemented!')
-    raise NotImplementedError('Method not implemented!')
-
-  def Publish(self, request, context):
-    """Adds one or more messages to the topic. Returns `NOT_FOUND` if the topic
-    does not exist. The message payload must not be empty; it must contain
-    either a non-empty data field, or at least one attribute.
-    """
-    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-    context.set_details('Method not implemented!')
-    raise NotImplementedError('Method not implemented!')
-
-  def GetTopic(self, request, context):
-    """Gets the configuration of a topic.
-    """
-    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-    context.set_details('Method not implemented!')
-    raise NotImplementedError('Method not implemented!')
-
-  def ListTopics(self, request, context):
-    """Lists matching topics.
-    """
-    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-    context.set_details('Method not implemented!')
-    raise NotImplementedError('Method not implemented!')
-
-  def ListTopicSubscriptions(self, request, context):
-    """Lists the name of the subscriptions for this topic.
-    """
-    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-    context.set_details('Method not implemented!')
-    raise NotImplementedError('Method not implemented!')
-
-  def DeleteTopic(self, request, context):
-    """Deletes the topic with the given name. Returns `NOT_FOUND` if the topic
-    does not exist. After a topic is deleted, a new topic may be created with
-    the same name; this is an entirely new topic with none of the old
-    configuration or subscriptions. Existing subscriptions to this topic are
-    not deleted, but their `topic` field is set to `_deleted-topic_`.
-    """
-    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-    context.set_details('Method not implemented!')
-    raise NotImplementedError('Method not implemented!')
-
-
-def add_PublisherServicer_to_server(servicer, server):
-  rpc_method_handlers = {
-      'CreateTopic': grpc.unary_unary_rpc_method_handler(
-          servicer.CreateTopic,
-          request_deserializer=google_dot_cloud_dot_pubsub__v1_dot_proto_dot_pubsub__pb2.Topic.FromString,
-          response_serializer=google_dot_cloud_dot_pubsub__v1_dot_proto_dot_pubsub__pb2.Topic.SerializeToString,
-      ),
-      'UpdateTopic': grpc.unary_unary_rpc_method_handler(
-          servicer.UpdateTopic,
-          request_deserializer=google_dot_cloud_dot_pubsub__v1_dot_proto_dot_pubsub__pb2.UpdateTopicRequest.FromString,
-          response_serializer=google_dot_cloud_dot_pubsub__v1_dot_proto_dot_pubsub__pb2.Topic.SerializeToString,
-      ),
-      'Publish': grpc.unary_unary_rpc_method_handler(
-          servicer.Publish,
-          request_deserializer=google_dot_cloud_dot_pubsub__v1_dot_proto_dot_pubsub__pb2.PublishRequest.FromString,
-          response_serializer=google_dot_cloud_dot_pubsub__v1_dot_proto_dot_pubsub__pb2.PublishResponse.SerializeToString,
-      ),
-      'GetTopic': grpc.unary_unary_rpc_method_handler(
-          servicer.GetTopic,
-          request_deserializer=google_dot_cloud_dot_pubsub__v1_dot_proto_dot_pubsub__pb2.GetTopicRequest.FromString,
-          response_serializer=google_dot_cloud_dot_pubsub__v1_dot_proto_dot_pubsub__pb2.Topic.SerializeToString,
-      ),
-      'ListTopics': grpc.unary_unary_rpc_method_handler(
-          servicer.ListTopics,
-          request_deserializer=google_dot_cloud_dot_pubsub__v1_dot_proto_dot_pubsub__pb2.ListTopicsRequest.FromString,
-          response_serializer=google_dot_cloud_dot_pubsub__v1_dot_proto_dot_pubsub__pb2.ListTopicsResponse.SerializeToString,
-      ),
-      'ListTopicSubscriptions': grpc.unary_unary_rpc_method_handler(
-          servicer.ListTopicSubscriptions,
-          request_deserializer=google_dot_cloud_dot_pubsub__v1_dot_proto_dot_pubsub__pb2.ListTopicSubscriptionsRequest.FromString,
-          response_serializer=google_dot_cloud_dot_pubsub__v1_dot_proto_dot_pubsub__pb2.ListTopicSubscriptionsResponse.SerializeToString,
-      ),
-      'DeleteTopic': grpc.unary_unary_rpc_method_handler(
-          servicer.DeleteTopic,
-          request_deserializer=google_dot_cloud_dot_pubsub__v1_dot_proto_dot_pubsub__pb2.DeleteTopicRequest.FromString,
-          response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
-      ),
-  }
-  generic_handler = grpc.method_handlers_generic_handler(
-      'google.pubsub.v1.Publisher', rpc_method_handlers)
   server.add_generic_rpc_handlers((generic_handler,))

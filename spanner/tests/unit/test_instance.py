@@ -14,7 +14,7 @@
 
 import unittest
 
-from google.cloud._testing import _GAXBaseAPI
+import mock
 
 
 class TestInstance(unittest.TestCase):
@@ -185,26 +185,16 @@ class TestInstance(unittest.TestCase):
         self.assertNotEqual(instance1, instance2)
 
     def test_create_grpc_error(self):
-        from google.gax.errors import GaxError
+        from google.api_core.exceptions import Unknown
 
         client = _Client(self.PROJECT)
-        api = client.instance_admin_api = _FauxInstanceAdminAPI(
-            _random_gax_error=True)
+        client.instance_admin_api = _FauxInstanceAdminAPI(
+            _rpc_error=True)
         instance = self._make_one(self.INSTANCE_ID, client,
                                   configuration_name=self.CONFIG_NAME)
 
-        with self.assertRaises(GaxError):
+        with self.assertRaises(Unknown):
             instance.create()
-
-        (parent, instance_id, instance, options) = api._created_instance
-        self.assertEqual(parent, self.PARENT)
-        self.assertEqual(instance_id, self.INSTANCE_ID)
-        self.assertEqual(instance.name, self.INSTANCE_NAME)
-        self.assertEqual(instance.config, self.CONFIG_NAME)
-        self.assertEqual(instance.display_name, self.INSTANCE_ID)
-        self.assertEqual(instance.node_count, 1)
-        self.assertEqual(options.kwargs['metadata'],
-                         [('google-cloud-resource-prefix', instance.name)])
 
     def test_create_already_exists(self):
         from google.cloud.exceptions import Conflict
@@ -218,15 +208,15 @@ class TestInstance(unittest.TestCase):
         with self.assertRaises(Conflict):
             instance.create()
 
-        (parent, instance_id, instance, options) = api._created_instance
+        (parent, instance_id, instance, metadata) = api._created_instance
         self.assertEqual(parent, self.PARENT)
         self.assertEqual(instance_id, self.INSTANCE_ID)
         self.assertEqual(instance.name, self.INSTANCE_NAME)
         self.assertEqual(instance.config, self.CONFIG_NAME)
         self.assertEqual(instance.display_name, self.INSTANCE_ID)
         self.assertEqual(instance.node_count, 1)
-        self.assertEqual(options.kwargs['metadata'],
-                         [('google-cloud-resource-prefix', instance.name)])
+        self.assertEqual(
+            metadata, [('google-cloud-resource-prefix', instance.name)])
 
     def test_create_success(self):
         op_future = _FauxOperationFuture()
@@ -242,31 +232,26 @@ class TestInstance(unittest.TestCase):
 
         self.assertIs(future, op_future)
 
-        (parent, instance_id, instance, options) = api._created_instance
+        (parent, instance_id, instance, metadata) = api._created_instance
         self.assertEqual(parent, self.PARENT)
         self.assertEqual(instance_id, self.INSTANCE_ID)
         self.assertEqual(instance.name, self.INSTANCE_NAME)
         self.assertEqual(instance.config, self.CONFIG_NAME)
         self.assertEqual(instance.display_name, self.DISPLAY_NAME)
         self.assertEqual(instance.node_count, self.NODE_COUNT)
-        self.assertEqual(options.kwargs['metadata'],
-                         [('google-cloud-resource-prefix', instance.name)])
+        self.assertEqual(
+            metadata, [('google-cloud-resource-prefix', instance.name)])
 
     def test_exists_instance_grpc_error(self):
-        from google.gax.errors import GaxError
+        from google.api_core.exceptions import Unknown
 
         client = _Client(self.PROJECT)
-        api = client.instance_admin_api = _FauxInstanceAdminAPI(
-            _random_gax_error=True)
+        client.instance_admin_api = _FauxInstanceAdminAPI(
+            _rpc_error=True)
         instance = self._make_one(self.INSTANCE_ID, client, self.CONFIG_NAME)
 
-        with self.assertRaises(GaxError):
+        with self.assertRaises(Unknown):
             instance.exists()
-
-        name, options = api._got_instance
-        self.assertEqual(name, self.INSTANCE_NAME)
-        self.assertEqual(options.kwargs['metadata'],
-                         [('google-cloud-resource-prefix', instance.name)])
 
     def test_exists_instance_not_found(self):
         client = _Client(self.PROJECT)
@@ -277,10 +262,10 @@ class TestInstance(unittest.TestCase):
 
         self.assertFalse(instance.exists())
 
-        name, options = api._got_instance
+        name, metadata = api._got_instance
         self.assertEqual(name, self.INSTANCE_NAME)
-        self.assertEqual(options.kwargs['metadata'],
-                         [('google-cloud-resource-prefix', instance.name)])
+        self.assertEqual(
+            metadata, [('google-cloud-resource-prefix', instance.name)])
 
     def test_exists_success(self):
         from google.cloud.spanner_admin_instance_v1.proto import (
@@ -299,26 +284,21 @@ class TestInstance(unittest.TestCase):
 
         self.assertTrue(instance.exists())
 
-        name, options = api._got_instance
+        name, metadata = api._got_instance
         self.assertEqual(name, self.INSTANCE_NAME)
-        self.assertEqual(options.kwargs['metadata'],
-                         [('google-cloud-resource-prefix', instance.name)])
+        self.assertEqual(
+            metadata, [('google-cloud-resource-prefix', instance.name)])
 
     def test_reload_instance_grpc_error(self):
-        from google.gax.errors import GaxError
+        from google.api_core.exceptions import Unknown
 
         client = _Client(self.PROJECT)
-        api = client.instance_admin_api = _FauxInstanceAdminAPI(
-            _random_gax_error=True)
+        client.instance_admin_api = _FauxInstanceAdminAPI(
+            _rpc_error=True)
         instance = self._make_one(self.INSTANCE_ID, client, self.CONFIG_NAME)
 
-        with self.assertRaises(GaxError):
+        with self.assertRaises(Unknown):
             instance.reload()
-
-        name, options = api._got_instance
-        self.assertEqual(name, self.INSTANCE_NAME)
-        self.assertEqual(options.kwargs['metadata'],
-                         [('google-cloud-resource-prefix', instance.name)])
 
     def test_reload_instance_not_found(self):
         from google.cloud.exceptions import NotFound
@@ -332,10 +312,10 @@ class TestInstance(unittest.TestCase):
         with self.assertRaises(NotFound):
             instance.reload()
 
-        name, options = api._got_instance
+        name, metadata = api._got_instance
         self.assertEqual(name, self.INSTANCE_NAME)
-        self.assertEqual(options.kwargs['metadata'],
-                         [('google-cloud-resource-prefix', instance.name)])
+        self.assertEqual(
+            metadata, [('google-cloud-resource-prefix', instance.name)])
 
     def test_reload_success(self):
         from google.cloud.spanner_admin_instance_v1.proto import (
@@ -358,33 +338,22 @@ class TestInstance(unittest.TestCase):
         self.assertEqual(instance.node_count, self.NODE_COUNT)
         self.assertEqual(instance.display_name, self.DISPLAY_NAME)
 
-        name, options = api._got_instance
+        name, metadata = api._got_instance
         self.assertEqual(name, self.INSTANCE_NAME)
-        self.assertEqual(options.kwargs['metadata'],
-                         [('google-cloud-resource-prefix', instance.name)])
+        self.assertEqual(
+            metadata, [('google-cloud-resource-prefix', instance.name)])
 
     def test_update_grpc_error(self):
-        from google.gax.errors import GaxError
-        from google.cloud.spanner_v1.instance import DEFAULT_NODE_COUNT
+        from google.api_core.exceptions import Unknown
 
         client = _Client(self.PROJECT)
-        api = client.instance_admin_api = _FauxInstanceAdminAPI(
-            _random_gax_error=True)
+        client.instance_admin_api = _FauxInstanceAdminAPI(
+            _rpc_error=True)
         instance = self._make_one(self.INSTANCE_ID, client,
                                   configuration_name=self.CONFIG_NAME)
 
-        with self.assertRaises(GaxError):
+        with self.assertRaises(Unknown):
             instance.update()
-
-        instance, field_mask, options = api._updated_instance
-        self.assertEqual(field_mask.paths,
-                         ['config', 'display_name', 'node_count'])
-        self.assertEqual(instance.name, self.INSTANCE_NAME)
-        self.assertEqual(instance.config, self.CONFIG_NAME)
-        self.assertEqual(instance.display_name, self.INSTANCE_ID)
-        self.assertEqual(instance.node_count, DEFAULT_NODE_COUNT)
-        self.assertEqual(options.kwargs['metadata'],
-                         [('google-cloud-resource-prefix', instance.name)])
 
     def test_update_not_found(self):
         from google.cloud.exceptions import NotFound
@@ -399,15 +368,15 @@ class TestInstance(unittest.TestCase):
         with self.assertRaises(NotFound):
             instance.update()
 
-        instance, field_mask, options = api._updated_instance
+        instance, field_mask, metadata = api._updated_instance
         self.assertEqual(field_mask.paths,
                          ['config', 'display_name', 'node_count'])
         self.assertEqual(instance.name, self.INSTANCE_NAME)
         self.assertEqual(instance.config, self.CONFIG_NAME)
         self.assertEqual(instance.display_name, self.INSTANCE_ID)
         self.assertEqual(instance.node_count, DEFAULT_NODE_COUNT)
-        self.assertEqual(options.kwargs['metadata'],
-                         [('google-cloud-resource-prefix', instance.name)])
+        self.assertEqual(
+            metadata, [('google-cloud-resource-prefix', instance.name)])
 
     def test_update_success(self):
         op_future = _FauxOperationFuture()
@@ -423,31 +392,26 @@ class TestInstance(unittest.TestCase):
 
         self.assertIs(future, op_future)
 
-        instance, field_mask, options = api._updated_instance
+        instance, field_mask, metadata = api._updated_instance
         self.assertEqual(field_mask.paths,
                          ['config', 'display_name', 'node_count'])
         self.assertEqual(instance.name, self.INSTANCE_NAME)
         self.assertEqual(instance.config, self.CONFIG_NAME)
         self.assertEqual(instance.display_name, self.DISPLAY_NAME)
         self.assertEqual(instance.node_count, self.NODE_COUNT)
-        self.assertEqual(options.kwargs['metadata'],
-                         [('google-cloud-resource-prefix', instance.name)])
+        self.assertEqual(
+            metadata, [('google-cloud-resource-prefix', instance.name)])
 
     def test_delete_grpc_error(self):
-        from google.gax.errors import GaxError
+        from google.api_core.exceptions import Unknown
 
         client = _Client(self.PROJECT)
-        api = client.instance_admin_api = _FauxInstanceAdminAPI(
-            _random_gax_error=True)
+        client.instance_admin_api = _FauxInstanceAdminAPI(
+            _rpc_error=True)
         instance = self._make_one(self.INSTANCE_ID, client)
 
-        with self.assertRaises(GaxError):
+        with self.assertRaises(Unknown):
             instance.delete()
-
-        name, options = api._deleted_instance
-        self.assertEqual(name, self.INSTANCE_NAME)
-        self.assertEqual(options.kwargs['metadata'],
-                         [('google-cloud-resource-prefix', instance.name)])
 
     def test_delete_not_found(self):
         from google.cloud.exceptions import NotFound
@@ -460,10 +424,10 @@ class TestInstance(unittest.TestCase):
         with self.assertRaises(NotFound):
             instance.delete()
 
-        name, options = api._deleted_instance
+        name, metadata = api._deleted_instance
         self.assertEqual(name, self.INSTANCE_NAME)
-        self.assertEqual(options.kwargs['metadata'],
-                         [('google-cloud-resource-prefix', instance.name)])
+        self.assertEqual(
+            metadata, [('google-cloud-resource-prefix', instance.name)])
 
     def test_delete_success(self):
         from google.protobuf.empty_pb2 import Empty
@@ -475,10 +439,10 @@ class TestInstance(unittest.TestCase):
 
         instance.delete()
 
-        name, options = api._deleted_instance
+        name, metadata = api._deleted_instance
         self.assertEqual(name, self.INSTANCE_NAME)
-        self.assertEqual(options.kwargs['metadata'],
-                         [('google-cloud-resource-prefix', instance.name)])
+        self.assertEqual(
+            metadata, [('google-cloud-resource-prefix', instance.name)])
 
     def test_database_factory_defaults(self):
         from google.cloud.spanner_v1.database import Database
@@ -517,66 +481,78 @@ class TestInstance(unittest.TestCase):
         self.assertIs(database._pool, pool)
         self.assertIs(pool._bound, database)
 
-    def test_list_databases_wo_paging(self):
-        from google.cloud._testing import _GAXPageIterator
-        from google.gax import INITIAL_PAGE
+    def test_list_databases(self):
+        from google.cloud.spanner_admin_database_v1.gapic import (
+            database_admin_client)
+        from google.cloud.spanner_admin_database_v1.proto import (
+            spanner_database_admin_pb2)
         from google.cloud.spanner_v1.database import Database
 
-        NEXT_TOKEN = 'TOKEN'
-        database_pb = _DatabasePB(name=self.DATABASE_NAME)
-        response = _GAXPageIterator([database_pb], page_token=NEXT_TOKEN)
+        api = database_admin_client.DatabaseAdminClient(mock.Mock())
         client = _Client(self.PROJECT)
-        api = client.database_admin_api = _FauxDatabaseAdminAPI()
-        api._list_databases_response = response
+        client.database_admin_api = api
         instance = self._make_one(self.INSTANCE_ID, client)
 
-        iterator = instance.list_databases()
-        next_token = iterator.next_page_token
-        databases = list(iterator)
+        databases_pb = spanner_database_admin_pb2.ListDatabasesResponse(
+            databases=[
+                spanner_database_admin_pb2.Database(
+                    name='{}/databases/aa'.format(self.INSTANCE_NAME)),
+                spanner_database_admin_pb2.Database(
+                    name='{}/databases/bb'.format(self.INSTANCE_NAME))
+            ]
+        )
 
-        self.assertEqual(len(databases), 1)
-        database = databases[0]
-        self.assertTrue(isinstance(database, Database))
-        self.assertEqual(database.name, self.DATABASE_NAME)
-        self.assertEqual(next_token, NEXT_TOKEN)
+        ld_api = api._inner_api_calls['list_databases'] = mock.Mock(
+            return_value=databases_pb)
 
-        instance_name, page_size, options = api._listed_databases
-        self.assertEqual(instance_name, self.INSTANCE_NAME)
-        self.assertEqual(page_size, None)
-        self.assertIs(options.page_token, INITIAL_PAGE)
-        self.assertEqual(options.kwargs['metadata'],
-                         [('google-cloud-resource-prefix', instance.name)])
+        response = instance.list_databases()
+        databases = list(response)
 
-    def test_list_databases_w_paging(self):
-        from google.cloud._testing import _GAXPageIterator
-        from google.cloud.spanner_v1.database import Database
+        self.assertIsInstance(databases[0], Database)
+        self.assertTrue(databases[0].name.endswith('/aa'))
+        self.assertTrue(databases[1].name.endswith('/bb'))
 
-        SIZE = 15
-        TOKEN = 'TOKEN'
-        database_pb = _DatabasePB(name=self.DATABASE_NAME)
-        response = _GAXPageIterator([database_pb])
+        ld_api.assert_called_once_with(
+            spanner_database_admin_pb2.ListDatabasesRequest(
+                parent=self.INSTANCE_NAME),
+            metadata=[('google-cloud-resource-prefix', instance.name)],
+            retry=mock.ANY,
+            timeout=mock.ANY)
+
+    def test_list_databases_w_options(self):
+        from google.cloud.spanner_admin_database_v1.gapic import (
+            database_admin_client)
+        from google.cloud.spanner_admin_database_v1.proto import (
+            spanner_database_admin_pb2)
+
+        api = database_admin_client.DatabaseAdminClient(mock.Mock())
         client = _Client(self.PROJECT)
-        api = client.database_admin_api = _FauxDatabaseAdminAPI()
-        api._list_databases_response = response
+        client.database_admin_api = api
         instance = self._make_one(self.INSTANCE_ID, client)
 
-        iterator = instance.list_databases(
-            page_size=SIZE, page_token=TOKEN)
-        next_token = iterator.next_page_token
-        databases = list(iterator)
+        databases_pb = spanner_database_admin_pb2.ListDatabasesResponse(
+            databases=[]
+        )
 
-        self.assertEqual(len(databases), 1)
-        database = databases[0]
-        self.assertTrue(isinstance(database, Database))
-        self.assertEqual(database.name, self.DATABASE_NAME)
-        self.assertEqual(next_token, None)
+        ld_api = api._inner_api_calls['list_databases'] = mock.Mock(
+            return_value=databases_pb)
 
-        instance_name, page_size, options = api._listed_databases
-        self.assertEqual(instance_name, self.INSTANCE_NAME)
-        self.assertEqual(page_size, SIZE)
-        self.assertEqual(options.page_token, TOKEN)
-        self.assertEqual(options.kwargs['metadata'],
-                         [('google-cloud-resource-prefix', instance.name)])
+        page_size = 42
+        page_token = 'token'
+        response = instance.list_databases(
+            page_size=page_size, page_token=page_token)
+        databases = list(response)
+
+        self.assertEqual(databases, [])
+
+        ld_api.assert_called_once_with(
+            spanner_database_admin_pb2.ListDatabasesRequest(
+                parent=self.INSTANCE_NAME,
+                page_size=page_size,
+                page_token=page_token),
+            metadata=[('google-cloud-resource-prefix', instance.name)],
+            retry=mock.ANY,
+            timeout=mock.ANY)
 
 
 class _Client(object):
@@ -597,68 +573,54 @@ class _Client(object):
                 other.timeout_seconds == self.timeout_seconds)
 
 
-class _DatabasePB(object):
-
-    def __init__(self, name):
-        self.name = name
-
-
-class _FauxInstanceAdminAPI(_GAXBaseAPI):
+class _FauxInstanceAdminAPI(object):
 
     _create_instance_conflict = False
     _instance_not_found = False
+    _rpc_error = False
 
-    def _make_grpc_already_exists(self):
-        from grpc.beta.interfaces import StatusCode
+    def __init__(self, **kwargs):
+        self.__dict__.update(**kwargs)
 
-        return self._make_grpc_error(StatusCode.ALREADY_EXISTS)
+    def create_instance(self, parent, instance_id, instance, metadata=None):
+        from google.api_core.exceptions import AlreadyExists, Unknown
 
-    def create_instance(self, parent, instance_id, instance, options=None):
-        from google.gax.errors import GaxError
-
-        self._created_instance = (parent, instance_id, instance, options)
-        if self._random_gax_error:
-            raise GaxError('error')
+        self._created_instance = (parent, instance_id, instance, metadata)
+        if self._rpc_error:
+            raise Unknown('error')
         if self._create_instance_conflict:
-            raise GaxError('conflict', self._make_grpc_already_exists())
+            raise AlreadyExists('conflict')
         return self._create_instance_response
 
-    def get_instance(self, name, options=None):
-        from google.gax.errors import GaxError
+    def get_instance(self, name, metadata=None):
+        from google.api_core.exceptions import NotFound, Unknown
 
-        self._got_instance = (name, options)
-        if self._random_gax_error:
-            raise GaxError('error')
+        self._got_instance = (name, metadata)
+        if self._rpc_error:
+            raise Unknown('error')
         if self._instance_not_found:
-            raise GaxError('not found', self._make_grpc_not_found())
+            raise NotFound('error')
         return self._get_instance_response
 
-    def update_instance(self, instance, field_mask, options=None):
-        from google.gax.errors import GaxError
+    def update_instance(self, instance, field_mask, metadata=None):
+        from google.api_core.exceptions import NotFound, Unknown
 
-        self._updated_instance = (instance, field_mask, options)
-        if self._random_gax_error:
-            raise GaxError('error')
+        self._updated_instance = (instance, field_mask, metadata)
+        if self._rpc_error:
+            raise Unknown('error')
         if self._instance_not_found:
-            raise GaxError('not found', self._make_grpc_not_found())
+            raise NotFound('error')
         return self._update_instance_response
 
-    def delete_instance(self, name, options=None):
-        from google.gax.errors import GaxError
+    def delete_instance(self, name, metadata=None):
+        from google.api_core.exceptions import NotFound, Unknown
 
-        self._deleted_instance = name, options
-        if self._random_gax_error:
-            raise GaxError('error')
+        self._deleted_instance = name, metadata
+        if self._rpc_error:
+            raise Unknown('error')
         if self._instance_not_found:
-            raise GaxError('not found', self._make_grpc_not_found())
+            raise NotFound('error')
         return self._delete_instance_response
-
-
-class _FauxDatabaseAdminAPI(object):
-
-    def list_databases(self, name, page_size, options):
-        self._listed_databases = (name, page_size, options)
-        return self._list_databases_response
 
 
 class _FauxOperationFuture(object):

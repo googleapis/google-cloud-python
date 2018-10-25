@@ -28,6 +28,14 @@ from google.cloud.spanner_v1.pool import BurstyPool
 from google.cloud.spanner_v1.pool import FixedSizePool
 
 
+COMMIT_TIMESTAMP = 'spanner.commit_timestamp()'
+"""Placeholder be used to store commit timestamp of a transaction in a column.
+
+This value can only be used for timestamp columns that have set the option
+``(allow_commit_timestamp=true)`` in the schema.
+"""
+
+
 __all__ = (
     # google.cloud.spanner_v1
     '__version__',
@@ -48,4 +56,7 @@ __all__ = (
 
     # google.cloud.spanner_v1.gapic
     'enums',
+
+    # local
+    'COMMIT_TIMESTAMP',
 )

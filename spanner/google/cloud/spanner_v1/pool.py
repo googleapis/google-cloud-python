@@ -26,9 +26,27 @@ _NOW = datetime.datetime.utcnow  # unit tests may replace
 
 
 class AbstractSessionPool(object):
-    """Specifies required API for concrete session pool implementations."""
+    """Specifies required API for concrete session pool implementations.
 
+    :type labels: dict (str -> str) or None
+    :param labels: (Optional) user-assigned labels for sessions created
+                    by the pool.
+    """
     _database = None
+
+    def __init__(self, labels=None):
+        if labels is None:
+            labels = {}
+        self._labels = labels
+
+    @property
+    def labels(self):
+        """User-assigned labels for sesions created by the pool.
+
+        :rtype: dict (str -> str)
+        :returns: labels assigned by the user
+        """
+        return self._labels
 
     def bind(self, database):
         """Associate the pool with a database.
@@ -80,6 +98,16 @@ class AbstractSessionPool(object):
         """
         raise NotImplementedError()
 
+    def _new_session(self):
+        """Helper for concrete methods creating session instances.
+
+        :rtype: :class:`~google.cloud.spanner_v1.session.Session`
+        :returns: new session instance.
+        """
+        if self.labels:
+            return self._database.session(labels=self.labels)
+        return self._database.session()
+
     def session(self, **kwargs):
         """Check out a session from the pool.
 
@@ -115,11 +143,17 @@ class FixedSizePool(AbstractSessionPool):
     :type default_timeout: int
     :param default_timeout: default timeout, in seconds, to wait for
                                  a returned session.
+
+    :type labels: dict (str -> str) or None
+    :param labels: (Optional) user-assigned labels for sessions created
+                    by the pool.
     """
     DEFAULT_SIZE = 10
     DEFAULT_TIMEOUT = 10
 
-    def __init__(self, size=DEFAULT_SIZE, default_timeout=DEFAULT_TIMEOUT):
+    def __init__(self, size=DEFAULT_SIZE, default_timeout=DEFAULT_TIMEOUT,
+                 labels=None):
+        super(FixedSizePool, self).__init__(labels=labels)
         self.size = size
         self.default_timeout = default_timeout
         self._sessions = queue.Queue(size)
@@ -134,7 +168,7 @@ class FixedSizePool(AbstractSessionPool):
         self._database = database
 
         while not self._sessions.full():
-            session = database.session()
+            session = self._new_session()
             session.create()
             self._sessions.put(session)
 
@@ -198,9 +232,14 @@ class BurstyPool(AbstractSessionPool):
 
     :type target_size: int
     :param target_size: max pool size
+
+    :type labels: dict (str -> str) or None
+    :param labels: (Optional) user-assigned labels for sessions created
+                    by the pool.
     """
 
-    def __init__(self, target_size=10):
+    def __init__(self, target_size=10, labels=None):
+        super(BurstyPool, self).__init__(labels=labels)
         self.target_size = target_size
         self._database = None
         self._sessions = queue.Queue(target_size)
@@ -224,11 +263,11 @@ class BurstyPool(AbstractSessionPool):
         try:
             session = self._sessions.get_nowait()
         except queue.Empty:
-            session = self._database.session()
+            session = self._new_session()
             session.create()
         else:
             if not session.exists():
-                session = self._database.session()
+                session = self._new_session()
                 session.create()
         return session
 
@@ -290,9 +329,15 @@ class PingingPool(AbstractSessionPool):
 
     :type ping_interval: int
     :param ping_interval: interval at which to ping sessions.
+
+    :type labels: dict (str -> str) or None
+    :param labels: (Optional) user-assigned labels for sessions created
+                    by the pool.
     """
 
-    def __init__(self, size=10, default_timeout=10, ping_interval=3000):
+    def __init__(self, size=10, default_timeout=10, ping_interval=3000,
+                 labels=None):
+        super(PingingPool, self).__init__(labels=labels)
         self.size = size
         self.default_timeout = default_timeout
         self._delta = datetime.timedelta(seconds=ping_interval)
@@ -308,7 +353,7 @@ class PingingPool(AbstractSessionPool):
         self._database = database
 
         for _ in xrange(self.size):
-            session = database.session()
+            session = self._new_session()
             session.create()
             self.put(session)
 
@@ -330,7 +375,7 @@ class PingingPool(AbstractSessionPool):
 
         if _NOW() > ping_after:
             if not session.exists():
-                session = self._database.session()
+                session = self._new_session()
                 session.create()
 
         return session
@@ -373,7 +418,7 @@ class PingingPool(AbstractSessionPool):
                 self._sessions.put((ping_after, session))
                 break
             if not session.exists():  # stale
-                session = self._database.session()
+                session = self._new_session()
                 session.create()
             # Re-add to queue with new expiration
             self.put(session)
@@ -400,13 +445,18 @@ class TransactionPingingPool(PingingPool):
 
     :type ping_interval: int
     :param ping_interval: interval at which to ping sessions.
+
+    :type labels: dict (str -> str) or None
+    :param labels: (Optional) user-assigned labels for sessions created
+                    by the pool.
     """
 
-    def __init__(self, size=10, default_timeout=10, ping_interval=3000):
+    def __init__(self, size=10, default_timeout=10, ping_interval=3000,
+                 labels=None):
         self._pending_sessions = queue.Queue()
 
         super(TransactionPingingPool, self).__init__(
-            size, default_timeout, ping_interval)
+            size, default_timeout, ping_interval, labels=labels)
 
         self.begin_pending_transactions()
 

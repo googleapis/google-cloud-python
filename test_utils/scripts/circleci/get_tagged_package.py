@@ -26,7 +26,7 @@ import sys
 TAG_RE = re.compile(r"""
     ^
     (?P<pkg>
-        (([a-z]+)-)*)            # pkg-name-with-hyphens- (empty allowed)
+        (([a-z]+)[_-])*)  # pkg-name-with-hyphens-or-underscores (empty allowed)
     ([0-9]+)\.([0-9]+)\.([0-9]+)  # Version x.y.z (x, y, z all ints)
     $
 """, re.VERBOSE)

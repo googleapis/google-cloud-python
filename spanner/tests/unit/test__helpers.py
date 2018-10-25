@@ -16,101 +16,6 @@
 import unittest
 
 
-class TestTimestampWithNanoseconds(unittest.TestCase):
-
-    def _get_target_class(self):
-        from google.cloud.spanner_v1._helpers import TimestampWithNanoseconds
-
-        return TimestampWithNanoseconds
-
-    def _make_one(self, *args, **kw):
-        return self._get_target_class()(*args, **kw)
-
-    def test_ctor_wo_nanos(self):
-        stamp = self._make_one(2016, 12, 20, 21, 13, 47, 123456)
-        self.assertEqual(stamp.year, 2016)
-        self.assertEqual(stamp.month, 12)
-        self.assertEqual(stamp.day, 20)
-        self.assertEqual(stamp.hour, 21)
-        self.assertEqual(stamp.minute, 13)
-        self.assertEqual(stamp.second, 47)
-        self.assertEqual(stamp.microsecond, 123456)
-        self.assertEqual(stamp.nanosecond, 0)
-
-    def test_ctor_w_nanos(self):
-        stamp = self._make_one(
-            2016, 12, 20, 21, 13, 47, nanosecond=123456789)
-        self.assertEqual(stamp.year, 2016)
-        self.assertEqual(stamp.month, 12)
-        self.assertEqual(stamp.day, 20)
-        self.assertEqual(stamp.hour, 21)
-        self.assertEqual(stamp.minute, 13)
-        self.assertEqual(stamp.second, 47)
-        self.assertEqual(stamp.microsecond, 123456)
-        self.assertEqual(stamp.nanosecond, 123456789)
-
-    def test_ctor_w_micros_positional_and_nanos(self):
-        with self.assertRaises(TypeError):
-            self._make_one(
-                2016, 12, 20, 21, 13, 47, 123456, nanosecond=123456789)
-
-    def test_ctor_w_micros_keyword_and_nanos(self):
-        with self.assertRaises(TypeError):
-            self._make_one(
-                2016, 12, 20, 21, 13, 47,
-                microsecond=123456, nanosecond=123456789)
-
-    def test_rfc339_wo_nanos(self):
-        stamp = self._make_one(2016, 12, 20, 21, 13, 47, 123456)
-        self.assertEqual(stamp.rfc3339(),
-                         '2016-12-20T21:13:47.123456Z')
-
-    def test_rfc339_w_nanos(self):
-        stamp = self._make_one(2016, 12, 20, 21, 13, 47, nanosecond=123456789)
-        self.assertEqual(stamp.rfc3339(),
-                         '2016-12-20T21:13:47.123456789Z')
-
-    def test_rfc339_w_nanos_no_trailing_zeroes(self):
-        stamp = self._make_one(2016, 12, 20, 21, 13, 47, nanosecond=100000000)
-        self.assertEqual(stamp.rfc3339(),
-                         '2016-12-20T21:13:47.1Z')
-
-    def test_from_rfc3339_w_invalid(self):
-        klass = self._get_target_class()
-        STAMP = '2016-12-20T21:13:47'
-        with self.assertRaises(ValueError):
-            klass.from_rfc3339(STAMP)
-
-    def test_from_rfc3339_wo_fraction(self):
-        from google.cloud._helpers import UTC
-
-        klass = self._get_target_class()
-        STAMP = '2016-12-20T21:13:47Z'
-        expected = self._make_one(2016, 12, 20, 21, 13, 47, tzinfo=UTC)
-        stamp = klass.from_rfc3339(STAMP)
-        self.assertEqual(stamp, expected)
-
-    def test_from_rfc3339_w_partial_precision(self):
-        from google.cloud._helpers import UTC
-
-        klass = self._get_target_class()
-        STAMP = '2016-12-20T21:13:47.1Z'
-        expected = self._make_one(2016, 12, 20, 21, 13, 47,
-                                  microsecond=100000, tzinfo=UTC)
-        stamp = klass.from_rfc3339(STAMP)
-        self.assertEqual(stamp, expected)
-
-    def test_from_rfc3339_w_full_precision(self):
-        from google.cloud._helpers import UTC
-
-        klass = self._get_target_class()
-        STAMP = '2016-12-20T21:13:47.123456789Z'
-        expected = self._make_one(2016, 12, 20, 21, 13, 47,
-                                  nanosecond=123456789, tzinfo=UTC)
-        stamp = klass.from_rfc3339(STAMP)
-        self.assertEqual(stamp, expected)
-
-
 class Test_make_value_pb(unittest.TestCase):
 
     def _callFUT(self, *args, **kw):
@@ -149,6 +54,17 @@ class Test_make_value_pb(unittest.TestCase):
         from google.protobuf.struct_pb2 import ListValue
 
         value_pb = self._callFUT([u'a', u'b', u'c'])
+        self.assertIsInstance(value_pb, Value)
+        self.assertIsInstance(value_pb.list_value, ListValue)
+        values = value_pb.list_value.values
+        self.assertEqual([value.string_value for value in values],
+                         [u'a', u'b', u'c'])
+
+    def test_w_tuple(self):
+        from google.protobuf.struct_pb2 import Value
+        from google.protobuf.struct_pb2 import ListValue
+
+        value_pb = self._callFUT((u'a', u'b', u'c'))
         self.assertIsInstance(value_pb, Value)
         self.assertIsInstance(value_pb.list_value, ListValue)
         values = value_pb.list_value.values
@@ -209,25 +125,37 @@ class Test_make_value_pb(unittest.TestCase):
         self.assertEqual(value_pb.string_value, today.isoformat())
 
     def test_w_timestamp_w_nanos(self):
+        import pytz
         from google.protobuf.struct_pb2 import Value
-        from google.cloud._helpers import UTC
-        from google.cloud.spanner_v1._helpers import TimestampWithNanoseconds
+        from google.api_core import datetime_helpers
 
-        when = TimestampWithNanoseconds(
-            2016, 12, 20, 21, 13, 47, nanosecond=123456789, tzinfo=UTC)
+        when = datetime_helpers.DatetimeWithNanoseconds(
+            2016, 12, 20, 21, 13, 47, nanosecond=123456789, tzinfo=pytz.UTC)
         value_pb = self._callFUT(when)
         self.assertIsInstance(value_pb, Value)
         self.assertEqual(value_pb.string_value, when.rfc3339())
 
+    def test_w_listvalue(self):
+        from google.protobuf.struct_pb2 import Value
+        from google.cloud.spanner_v1._helpers import _make_list_value_pb
+
+        list_value = _make_list_value_pb([1, 2, 3])
+        value_pb = self._callFUT(list_value)
+        self.assertIsInstance(value_pb, Value)
+        self.assertEqual(value_pb.list_value, list_value)
+
     def test_w_datetime(self):
         import datetime
+        import pytz
         from google.protobuf.struct_pb2 import Value
-        from google.cloud._helpers import UTC, _datetime_to_rfc3339
+        from google.api_core import datetime_helpers
 
-        now = datetime.datetime.utcnow().replace(tzinfo=UTC)
+        now = datetime.datetime.utcnow().replace(tzinfo=pytz.UTC)
         value_pb = self._callFUT(now)
         self.assertIsInstance(value_pb, Value)
-        self.assertEqual(value_pb.string_value, _datetime_to_rfc3339(now))
+        self.assertEqual(
+            value_pb.string_value,
+            datetime_helpers.to_rfc3339(now))
 
     def test_w_unknown_type(self):
         with self.assertRaises(ValueError):
@@ -382,34 +310,46 @@ class Test_parse_value_pb(unittest.TestCase):
         self.assertEqual(self._callFUT(value_pb, field_type), VALUE)
 
     def test_w_timestamp_wo_nanos(self):
+        import pytz
         from google.protobuf.struct_pb2 import Value
-        from google.cloud.spanner_v1.proto.type_pb2 import Type, TIMESTAMP
-        from google.cloud._helpers import UTC, _datetime_to_rfc3339
-        from google.cloud.spanner_v1._helpers import TimestampWithNanoseconds
+        from google.api_core import datetime_helpers
+        from google.cloud.spanner_v1.proto.type_pb2 import TIMESTAMP
+        from google.cloud.spanner_v1.proto.type_pb2 import Type
 
-        VALUE = TimestampWithNanoseconds(
-            2016, 12, 20, 21, 13, 47, microsecond=123456, tzinfo=UTC)
+        value = datetime_helpers.DatetimeWithNanoseconds(
+            2016, 12, 20, 21, 13, 47,
+            microsecond=123456,
+            tzinfo=pytz.UTC)
         field_type = Type(code=TIMESTAMP)
-        value_pb = Value(string_value=_datetime_to_rfc3339(VALUE))
+        value_pb = Value(
+            string_value=datetime_helpers.to_rfc3339(value))
 
         parsed = self._callFUT(value_pb, field_type)
-        self.assertIsInstance(parsed, TimestampWithNanoseconds)
-        self.assertEqual(parsed, VALUE)
+        self.assertIsInstance(
+            parsed,
+            datetime_helpers.DatetimeWithNanoseconds)
+        self.assertEqual(parsed, value)
 
     def test_w_timestamp_w_nanos(self):
+        import pytz
         from google.protobuf.struct_pb2 import Value
-        from google.cloud.spanner_v1.proto.type_pb2 import Type, TIMESTAMP
-        from google.cloud._helpers import UTC, _datetime_to_rfc3339
-        from google.cloud.spanner_v1._helpers import TimestampWithNanoseconds
+        from google.api_core import datetime_helpers
+        from google.cloud.spanner_v1.proto.type_pb2 import TIMESTAMP
+        from google.cloud.spanner_v1.proto.type_pb2 import Type
 
-        VALUE = TimestampWithNanoseconds(
-            2016, 12, 20, 21, 13, 47, nanosecond=123456789, tzinfo=UTC)
+        value = datetime_helpers.DatetimeWithNanoseconds(
+            2016, 12, 20, 21, 13, 47,
+            nanosecond=123456789,
+            tzinfo=pytz.UTC)
         field_type = Type(code=TIMESTAMP)
-        value_pb = Value(string_value=_datetime_to_rfc3339(VALUE))
+        value_pb = Value(
+            string_value=datetime_helpers.to_rfc3339(value))
 
         parsed = self._callFUT(value_pb, field_type)
-        self.assertIsInstance(parsed, TimestampWithNanoseconds)
-        self.assertEqual(parsed, VALUE)
+        self.assertIsInstance(
+            parsed,
+            datetime_helpers.DatetimeWithNanoseconds)
+        self.assertEqual(parsed, value)
 
     def test_w_array_empty(self):
         from google.protobuf.struct_pb2 import Value
@@ -515,29 +455,15 @@ class Test_SessionWrapper(unittest.TestCase):
         self.assertIs(base._session, session)
 
 
-class Test_options_with_prefix(unittest.TestCase):
+class Test_metadata_with_prefix(unittest.TestCase):
 
     def _call_fut(self, *args, **kw):
-        from google.cloud.spanner_v1._helpers import _options_with_prefix
+        from google.cloud.spanner_v1._helpers import _metadata_with_prefix
 
-        return _options_with_prefix(*args, **kw)
+        return _metadata_with_prefix(*args, **kw)
 
-    def test_wo_kwargs(self):
-        from google.gax import CallOptions
-
-        PREFIX = 'prefix'
-        options = self._call_fut(PREFIX)
-        self.assertIsInstance(options, CallOptions)
-        self.assertEqual(options.kwargs['metadata'],
-                         [('google-cloud-resource-prefix', PREFIX)])
-
-    def test_w_kwargs(self):
-        from google.gax import CallOptions
-
-        PREFIX = 'prefix'
-        TOKEN = 'token'
-        options = self._call_fut('prefix', page_token=TOKEN)
-        self.assertIsInstance(options, CallOptions)
-        self.assertEqual(options.kwargs['metadata'],
-                         [('google-cloud-resource-prefix', PREFIX)])
-        self.assertEqual(options.page_token, TOKEN)
+    def test(self):
+        prefix = 'prefix'
+        metadata = self._call_fut(prefix)
+        self.assertEqual(
+            metadata, [('google-cloud-resource-prefix', prefix)])

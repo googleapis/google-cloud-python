@@ -17,38 +17,34 @@ from __future__ import absolute_import
 from google.cloud.pubsub_v1 import futures
 
 
-class Future(futures.Future):
-    """Encapsulation of the asynchronous execution of an action.
+class StreamingPullFuture(futures.Future):
+    """Represents a process that asynchronously performs streaming pull and
+    schedules messages to be processed.
 
-    This object is returned from opening a Pub/Sub subscription, and is the
-    interface to block on the subscription or query its status.
-
-    This object should not be created directly, but is returned by other
-    methods in this library.
-
-    Args:
-        policy (~.pubsub_v1.subscriber.policy.base.BasePolicy): The policy
-            that creates this Future.
+    This future is resolved when the process is stopped (via :meth:`cancel`) or
+    if it encounters an unrecoverable error. Calling `.result()` will cause
+    the calling thread to block indefinitely.
     """
-    def __init__(self, policy):
-        self._policy = policy
-        super(Future, self).__init__()
 
-    def running(self):
-        """Return whether this subscription is opened with this Future.
+    def __init__(self, manager):
+        super(StreamingPullFuture, self).__init__()
+        self._manager = manager
+        self._manager.add_close_callback(self._on_close_callback)
+        self._cancelled = True
 
-        .. note::
+    def _on_close_callback(self, manager, result):
+        if result is None:
+            self.set_result(True)
+        else:
+            self.set_exception(result)
 
-            A ``False`` value here does not necessarily mean that the
-            subscription is closed; it merely means that _this_ future is
-            not the future applicable to it.
-
-            Since futures have a single result (or exception) and there is
-            not a concept of resetting them, a closing re-opening of a
-            subscription will therefore return a new future.
-
-        Returns:
-            bool: ``True`` if this subscription is opened with this future,
-                ``False`` otherwise.
+    def cancel(self):
+        """Stops pulling messages and shutdowns the background thread consuming
+        messages.
         """
-        return self._policy.future is self
+        self._cancelled = True
+        return self._manager.close()
+
+    def cancelled(self):
+        """bool: True if the subscription has been cancelled."""
+        return self._cancelled

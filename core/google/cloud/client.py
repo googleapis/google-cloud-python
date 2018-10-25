@@ -94,20 +94,24 @@ class Client(_ClientFactoryMixin):
     Callers and subclasses may seek to use the private key from
     ``credentials`` to sign data.
 
-    :type credentials: :class:`~google.auth.credentials.Credentials`
-    :param credentials: (Optional) The OAuth2 Credentials to use for this
-                        client. If not passed (and if no ``_http`` object is
-                        passed), falls back to the default inferred from the
-                        environment.
+    Args:
+        credentials (google.auth.credentials.Credentials):
+            (Optional) The OAuth2 Credentials to use for this client. If not
+            passed (and if no ``_http`` object is passed), falls back to the
+            default inferred from the environment.
+        _http (requests.Session):
+            (Optional) HTTP object to make requests. Can be any object that
+            defines ``request()`` with the same interface as
+            :meth:`requests.Session.request`. If not passed, an ``_http``
+            object is created that is bound to the ``credentials`` for the
+            current object.
+            This parameter should be considered private, and could change in
+            the future.
 
-    :type _http: :class:`~requests.Session`
-    :param _http: (Optional) HTTP object to make requests. Can be any object
-                  that defines ``request()`` with the same interface as
-                  :meth:`requests.Session.request`. If not passed, an
-                  ``_http`` object is created that is bound to the
-                  ``credentials`` for the current object.
-                  This parameter should be considered private, and could
-                  change in the future.
+    Raises:
+        google.auth.exceptions.DefaultCredentialsError:
+            Raised if ``credentials`` is not specified and the library fails
+            to acquire default credentials.
     """
 
     SCOPE = None

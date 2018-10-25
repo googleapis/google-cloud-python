@@ -14,29 +14,37 @@
 
 """User friendly container for Cloud Spanner Database."""
 
+import copy
+import functools
 import re
 import threading
 
+from google.api_core.gapic_v1 import client_info
 import google.auth.credentials
-from google.gax.errors import GaxError
-from google.gax.grpc import exc_to_code
-from google.cloud.spanner_v1.gapic.spanner_client import SpannerClient
-from grpc import StatusCode
+from google.protobuf.struct_pb2 import Struct
+from google.cloud.exceptions import NotFound
 import six
 
 # pylint: disable=ungrouped-imports
-from google.cloud.exceptions import Conflict
-from google.cloud.exceptions import NotFound
 from google.cloud.spanner_v1 import __version__
-from google.cloud.spanner_v1._helpers import _options_with_prefix
+from google.cloud.spanner_v1._helpers import _make_value_pb
+from google.cloud.spanner_v1._helpers import _metadata_with_prefix
 from google.cloud.spanner_v1.batch import Batch
+from google.cloud.spanner_v1.gapic.spanner_client import SpannerClient
+from google.cloud.spanner_v1.keyset import KeySet
 from google.cloud.spanner_v1.pool import BurstyPool
 from google.cloud.spanner_v1.pool import SessionCheckout
 from google.cloud.spanner_v1.session import Session
+from google.cloud.spanner_v1.snapshot import _restart_on_unavailable
 from google.cloud.spanner_v1.snapshot import Snapshot
+from google.cloud.spanner_v1.streamed import StreamedResultSet
+from google.cloud.spanner_v1.proto.transaction_pb2 import (
+    TransactionSelector, TransactionOptions)
 # pylint: enable=ungrouped-imports
 
 
+_CLIENT_INFO = client_info.ClientInfo(
+    client_library_version=__version__)
 SPANNER_DATA_SCOPE = 'https://www.googleapis.com/auth/spanner.data'
 
 
@@ -164,9 +172,8 @@ class Database(object):
             if isinstance(credentials, google.auth.credentials.Scoped):
                 credentials = credentials.with_scopes((SPANNER_DATA_SCOPE,))
             self._spanner_api = SpannerClient(
-                lib_name='gccl',
-                lib_version=__version__,
                 credentials=credentials,
+                client_info=_CLIENT_INFO,
             )
         return self._spanner_api
 
@@ -191,31 +198,19 @@ class Database(object):
         :returns: a future used to poll the status of the create request
         :raises Conflict: if the database already exists
         :raises NotFound: if the instance owning the database does not exist
-        :raises GaxError:
-            for errors other than ``ALREADY_EXISTS`` returned from the call
         """
         api = self._instance._client.database_admin_api
-        options = _options_with_prefix(self.name)
+        metadata = _metadata_with_prefix(self.name)
         db_name = self.database_id
         if '-' in db_name:
             db_name = '`%s`' % (db_name,)
 
-        try:
-            future = api.create_database(
-                parent=self._instance.name,
-                create_statement='CREATE DATABASE %s' % (db_name,),
-                extra_statements=list(self._ddl_statements),
-                options=options,
-            )
-        except GaxError as exc:
-            if exc_to_code(exc.cause) == StatusCode.ALREADY_EXISTS:
-                raise Conflict(self.name)
-            elif exc_to_code(exc.cause) == StatusCode.NOT_FOUND:
-                raise NotFound('Instance not found: {name}'.format(
-                    name=self._instance.name,
-                ))
-            raise
-
+        future = api.create_database(
+            parent=self._instance.name,
+            create_statement='CREATE DATABASE %s' % (db_name,),
+            extra_statements=list(self._ddl_statements),
+            metadata=metadata,
+        )
         return future
 
     def exists(self):
@@ -226,18 +221,14 @@ class Database(object):
 
         :rtype: bool
         :returns: True if the database exists, else false.
-        :raises GaxError:
-            for errors other than ``NOT_FOUND`` returned from the call
         """
         api = self._instance._client.database_admin_api
-        options = _options_with_prefix(self.name)
+        metadata = _metadata_with_prefix(self.name)
 
         try:
-            api.get_database_ddl(self.name, options=options)
-        except GaxError as exc:
-            if exc_to_code(exc.cause) == StatusCode.NOT_FOUND:
-                return False
-            raise
+            api.get_database_ddl(self.name, metadata=metadata)
+        except NotFound:
+            return False
         return True
 
     def reload(self):
@@ -249,18 +240,10 @@ class Database(object):
         https://cloud.google.com/spanner/reference/rpc/google.spanner.admin.database.v1#google.spanner.admin.database.v1.DatabaseAdmin.GetDatabaseDDL
 
         :raises NotFound: if the database does not exist
-        :raises GaxError:
-            for errors other than ``NOT_FOUND`` returned from the call
         """
         api = self._instance._client.database_admin_api
-        options = _options_with_prefix(self.name)
-
-        try:
-            response = api.get_database_ddl(self.name, options=options)
-        except GaxError as exc:
-            if exc_to_code(exc.cause) == StatusCode.NOT_FOUND:
-                raise NotFound(self.name)
-            raise
+        metadata = _metadata_with_prefix(self.name)
+        response = api.get_database_ddl(self.name, metadata=metadata)
         self._ddl_statements = tuple(response.statements)
 
     def update_ddl(self, ddl_statements):
@@ -271,24 +254,19 @@ class Database(object):
         See
         https://cloud.google.com/spanner/reference/rpc/google.spanner.admin.database.v1#google.spanner.admin.database.v1.DatabaseAdmin.UpdateDatabase
 
+        :type ddl_statements: Sequence[str]
+        :param ddl_statements: a list of DDL statements to use on this database
+
         :rtype: :class:`google.api_core.operation.Operation`
         :returns: an operation instance
         :raises NotFound: if the database does not exist
-        :raises GaxError:
-            for errors other than ``NOT_FOUND`` returned from the call
         """
         client = self._instance._client
         api = client.database_admin_api
-        options = _options_with_prefix(self.name)
+        metadata = _metadata_with_prefix(self.name)
 
-        try:
-            future = api.update_database_ddl(
-                self.name, ddl_statements, '', options=options)
-        except GaxError as exc:
-            if exc_to_code(exc.cause) == StatusCode.NOT_FOUND:
-                raise NotFound(self.name)
-            raise
-
+        future = api.update_database_ddl(
+            self.name, ddl_statements, '', metadata=metadata)
         return future
 
     def drop(self):
@@ -298,22 +276,77 @@ class Database(object):
         https://cloud.google.com/spanner/reference/rpc/google.spanner.admin.database.v1#google.spanner.admin.database.v1.DatabaseAdmin.DropDatabase
         """
         api = self._instance._client.database_admin_api
-        options = _options_with_prefix(self.name)
+        metadata = _metadata_with_prefix(self.name)
+        api.drop_database(self.name, metadata=metadata)
 
-        try:
-            api.drop_database(self.name, options=options)
-        except GaxError as exc:
-            if exc_to_code(exc.cause) == StatusCode.NOT_FOUND:
-                raise NotFound(self.name)
-            raise
+    def execute_partitioned_dml(
+            self, dml, params=None, param_types=None):
+        """Execute a partitionable DML statement.
 
-    def session(self):
+        :type dml: str
+        :param dml: DML statement
+
+        :type params: dict, {str -> column value}
+        :param params: values for parameter replacement.  Keys must match
+                       the names used in ``dml``.
+
+        :type param_types: dict[str -> Union[dict, .types.Type]]
+        :param param_types:
+            (Optional) maps explicit types for one or more param values;
+            required if parameters are passed.
+
+        :rtype: int
+        :returns: Count of rows affected by the DML statement.
+        """
+        if params is not None:
+            if param_types is None:
+                raise ValueError(
+                    "Specify 'param_types' when passing 'params'.")
+            params_pb = Struct(fields={
+                key: _make_value_pb(value) for key, value in params.items()})
+        else:
+            params_pb = None
+
+        api = self.spanner_api
+
+        txn_options = TransactionOptions(
+            partitioned_dml=TransactionOptions.PartitionedDml())
+
+        metadata = _metadata_with_prefix(self.name)
+
+        with SessionCheckout(self._pool) as session:
+
+            txn = api.begin_transaction(
+                session.name, txn_options, metadata=metadata)
+
+            txn_selector = TransactionSelector(id=txn.id)
+
+            restart = functools.partial(
+                api.execute_streaming_sql,
+                session.name,
+                dml,
+                transaction=txn_selector,
+                params=params_pb,
+                param_types=param_types,
+                metadata=metadata)
+
+            iterator = _restart_on_unavailable(restart)
+
+            result_set = StreamedResultSet(iterator)
+            list(result_set)  # consume all partials
+
+            return result_set.stats.row_count_lower_bound
+
+    def session(self, labels=None):
         """Factory to create a session for this database.
+
+        :type labels: dict (str -> str) or None
+        :param labels: (Optional) user-assigned labels for the session.
 
         :rtype: :class:`~google.cloud.spanner_v1.session.Session`
         :returns: a session bound to this database.
         """
-        return Session(self)
+        return Session(self, labels=labels)
 
     def snapshot(self, **kw):
         """Return an object which wraps a snapshot.
@@ -344,6 +377,25 @@ class Database(object):
         :returns: new wrapper
         """
         return BatchCheckout(self)
+
+    def batch_snapshot(self, read_timestamp=None, exact_staleness=None):
+        """Return an object which wraps a batch read / query.
+
+        :type read_timestamp: :class:`datetime.datetime`
+        :param read_timestamp: Execute all reads at the given timestamp.
+
+        :type exact_staleness: :class:`datetime.timedelta`
+        :param exact_staleness: Execute all reads at a timestamp that is
+                                ``exact_staleness`` old.
+
+        :rtype: :class:`~google.cloud.spanner_v1.database.BatchSnapshot`
+        :returns: new wrapper
+        """
+        return BatchSnapshot(
+            self,
+            read_timestamp=read_timestamp,
+            exact_staleness=exact_staleness,
+        )
 
     def run_in_transaction(self, func, *args, **kw):
         """Perform a unit of work in a transaction, retrying on abort.
@@ -389,7 +441,7 @@ class BatchCheckout(object):
     Caller must *not* use the batch to perform API requests outside the scope
     of the context manager.
 
-    :type database: :class:`~google.cloud.spannder.database.Database`
+    :type database: :class:`~google.cloud.spanner.database.Database`
     :param database: database to use
     """
     def __init__(self, database):
@@ -420,7 +472,7 @@ class SnapshotCheckout(object):
     Caller must *not* use the snapshot to perform API requests outside the
     scope of the context manager.
 
-    :type database: :class:`~google.cloud.spannder.database.Database`
+    :type database: :class:`~google.cloud.spanner.database.Database`
     :param database: database to use
 
     :type kw: dict
@@ -441,6 +493,267 @@ class SnapshotCheckout(object):
     def __exit__(self, exc_type, exc_val, exc_tb):
         """End ``with`` block."""
         self._database._pool.put(self._session)
+
+
+class BatchSnapshot(object):
+    """Wrapper for generating and processing read / query batches.
+
+    :type database: :class:`~google.cloud.spanner.database.Database`
+    :param database: database to use
+
+    :type read_timestamp: :class:`datetime.datetime`
+    :param read_timestamp: Execute all reads at the given timestamp.
+
+    :type exact_staleness: :class:`datetime.timedelta`
+    :param exact_staleness: Execute all reads at a timestamp that is
+                            ``exact_staleness`` old.
+    """
+    def __init__(self, database, read_timestamp=None, exact_staleness=None):
+        self._database = database
+        self._session = None
+        self._snapshot = None
+        self._read_timestamp = read_timestamp
+        self._exact_staleness = exact_staleness
+
+    @classmethod
+    def from_dict(cls, database, mapping):
+        """Reconstruct an instance from a mapping.
+
+        :type database: :class:`~google.cloud.spanner.database.Database`
+        :param database: database to use
+
+        :type mapping: mapping
+        :param mapping: serialized state of the instance
+
+        :rtype: :class:`BatchSnapshot`
+        """
+        instance = cls(database)
+        session = instance._session = database.session()
+        session._session_id = mapping['session_id']
+        snapshot = instance._snapshot = session.snapshot()
+        snapshot._transaction_id = mapping['transaction_id']
+        return instance
+
+    def to_dict(self):
+        """Return state as a dictionary.
+
+        Result can be used to serialize the instance and reconstitute
+        it later using :meth:`from_dict`.
+
+        :rtype: dict
+        """
+        session = self._get_session()
+        snapshot = self._get_snapshot()
+        return {
+            'session_id': session._session_id,
+            'transaction_id': snapshot._transaction_id,
+        }
+
+    def _get_session(self):
+        """Create session as needed.
+
+        .. note::
+
+           Caller is responsible for cleaning up the session after
+           all partitions have been processed.
+        """
+        if self._session is None:
+            session = self._session = self._database.session()
+            session.create()
+        return self._session
+
+    def _get_snapshot(self):
+        """Create snapshot if needed."""
+        if self._snapshot is None:
+            self._snapshot = self._get_session().snapshot(
+                read_timestamp=self._read_timestamp,
+                exact_staleness=self._exact_staleness,
+                multi_use=True)
+            self._snapshot.begin()
+        return self._snapshot
+
+    def read(self, *args, **kw):
+        """Convenience method:  perform read operation via snapshot.
+
+        See :meth:`~google.cloud.spanner_v1.snapshot.Snapshot.read`.
+        """
+        return self._get_snapshot().read(*args, **kw)
+
+    def execute_sql(self, *args, **kw):
+        """Convenience method:  perform query operation via snapshot.
+
+        See :meth:`~google.cloud.spanner_v1.snapshot.Snapshot.execute_sql`.
+        """
+        return self._get_snapshot().execute_sql(*args, **kw)
+
+    def generate_read_batches(
+            self, table, columns, keyset,
+            index='', partition_size_bytes=None, max_partitions=None):
+        """Start a partitioned batch read operation.
+
+        Uses the ``PartitionRead`` API request to initiate the partitioned
+        read.  Returns a list of batch information needed to perform the
+        actual reads.
+
+        :type table: str
+        :param table: name of the table from which to fetch data
+
+        :type columns: list of str
+        :param columns: names of columns to be retrieved
+
+        :type keyset: :class:`~google.cloud.spanner_v1.keyset.KeySet`
+        :param keyset: keys / ranges identifying rows to be retrieved
+
+        :type index: str
+        :param index: (Optional) name of index to use, rather than the
+                      table's primary key
+
+        :type partition_size_bytes: int
+        :param partition_size_bytes:
+            (Optional) desired size for each partition generated.  The service
+            uses this as a hint, the actual partition size may differ.
+
+        :type max_partitions: int
+        :param max_partitions:
+            (Optional) desired maximum number of partitions generated. The
+            service uses this as a hint, the actual number of partitions may
+            differ.
+
+        :rtype: iterable of dict
+        :returns:
+            mappings of information used peform actual partitioned reads via
+            :meth:`process_read_batch`.
+        """
+        partitions = self._get_snapshot().partition_read(
+            table=table, columns=columns, keyset=keyset, index=index,
+            partition_size_bytes=partition_size_bytes,
+            max_partitions=max_partitions)
+
+        read_info = {
+            'table': table,
+            'columns': columns,
+            'keyset': keyset._to_dict(),
+            'index': index,
+        }
+        for partition in partitions:
+            yield {'partition': partition, 'read': read_info.copy()}
+
+    def process_read_batch(self, batch):
+        """Process a single, partitioned read.
+
+        :type batch: mapping
+        :param batch:
+            one of the mappings returned from an earlier call to
+            :meth:`generate_read_batches`.
+
+        :rtype: :class:`~google.cloud.spanner_v1.streamed.StreamedResultSet`
+        :returns: a result set instance which can be used to consume rows.
+        """
+        kwargs = copy.deepcopy(batch['read'])
+        keyset_dict = kwargs.pop('keyset')
+        kwargs['keyset'] = KeySet._from_dict(keyset_dict)
+        return self._get_snapshot().read(
+            partition=batch['partition'], **kwargs)
+
+    def generate_query_batches(
+            self, sql, params=None, param_types=None,
+            partition_size_bytes=None, max_partitions=None):
+        """Start a partitioned query operation.
+
+        Uses the ``PartitionQuery`` API request to start a partitioned
+        query operation.  Returns a list of batch information needed to
+        peform the actual queries.
+
+        :type sql: str
+        :param sql: SQL query statement
+
+        :type params: dict, {str -> column value}
+        :param params: values for parameter replacement.  Keys must match
+                       the names used in ``sql``.
+
+        :type param_types: dict[str -> Union[dict, .types.Type]]
+        :param param_types:
+            (Optional) maps explicit types for one or more param values;
+            required if parameters are passed.
+
+        :type partition_size_bytes: int
+        :param partition_size_bytes:
+            (Optional) desired size for each partition generated.  The service
+            uses this as a hint, the actual partition size may differ.
+
+        :type partition_size_bytes: int
+        :param partition_size_bytes:
+            (Optional) desired size for each partition generated.  The service
+            uses this as a hint, the actual partition size may differ.
+
+        :type max_partitions: int
+        :param max_partitions:
+            (Optional) desired maximum number of partitions generated. The
+            service uses this as a hint, the actual number of partitions may
+            differ.
+
+        :rtype: iterable of dict
+        :returns:
+            mappings of information used peform actual partitioned reads via
+            :meth:`process_read_batch`.
+        """
+        partitions = self._get_snapshot().partition_query(
+            sql=sql, params=params, param_types=param_types,
+            partition_size_bytes=partition_size_bytes,
+            max_partitions=max_partitions)
+
+        query_info = {'sql': sql}
+        if params:
+            query_info['params'] = params
+            query_info['param_types'] = param_types
+
+        for partition in partitions:
+            yield {'partition': partition, 'query': query_info}
+
+    def process_query_batch(self, batch):
+        """Process a single, partitioned query.
+
+        :type batch: mapping
+        :param batch:
+            one of the mappings returned from an earlier call to
+            :meth:`generate_query_batches`.
+
+        :rtype: :class:`~google.cloud.spanner_v1.streamed.StreamedResultSet`
+        :returns: a result set instance which can be used to consume rows.
+        """
+        return self._get_snapshot().execute_sql(
+            partition=batch['partition'], **batch['query'])
+
+    def process(self, batch):
+        """Process a single, partitioned query or read.
+
+        :type batch: mapping
+        :param batch:
+            one of the mappings returned from an earlier call to
+            :meth:`generate_query_batches`.
+
+        :rtype: :class:`~google.cloud.spanner_v1.streamed.StreamedResultSet`
+        :returns: a result set instance which can be used to consume rows.
+        :raises ValueError: if batch does not contain either 'read' or 'query'
+        """
+        if 'query' in batch:
+            return self.process_query_batch(batch)
+        if 'read' in batch:
+            return self.process_read_batch(batch)
+        raise ValueError("Invalid batch")
+
+    def close(self):
+        """Clean up underlying session.
+
+        .. note::
+
+           If the transaction has been shared across multiple machines,
+           calling this on any machine would invalidate the transaction
+           everywhere. Ideally this would be called when data has been read
+           from all the partitions.
+        """
+        if self._session is not None:
+            self._session.delete()
 
 
 def _check_ddl_statements(value):

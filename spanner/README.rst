@@ -1,54 +1,83 @@
 Python Client for Cloud Spanner
 ===============================
 
-    Python idiomatic client for `Cloud Spanner`_.
+|GA| |pypi| |versions|
 
+`Cloud Spanner`_ is the world's first fully managed relational database service
+to offer both strong consistency and horizontal scalability for
+mission-critical online transaction processing (OLTP) applications. With Cloud
+Spanner you enjoy all the traditional benefits of a relational database; but
+unlike any other relational database service, Cloud Spanner scales horizontally
+to hundreds or thousands of servers to handle the biggest transactional
+workloads.
+
+
+- `Client Library Documentation`_
+- `Product Documentation`_
+
+.. |GA| image:: https://img.shields.io/badge/support-GA-gold.svg
+   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#general-availability
+.. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-spanner.svg
+   :target: https://pypi.org/project/google-cloud-spanner/
+.. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-spanner.svg
+   :target: https://pypi.org/project/google-cloud-spanner/
 .. _Cloud Spanner: https://cloud.google.com/spanner/
-
-|pypi| |versions|
-
--  `Documentation`_
-
-.. _Documentation: https://googlecloudplatform.github.io/google-cloud-python/latest/spanner/usage.html
+.. _Client Library Documentation: https://googlecloudplatform.github.io/google-cloud-python/latest/spanner/index.html
+.. _Product Documentation:  https://cloud.google.com/spanner/docs
 
 Quick Start
 -----------
 
+In order to use this library, you first need to go through the following steps:
+
+1. `Select or create a Cloud Platform project.`_
+2. `Enable billing for your project.`_
+3. `Enable the Google Cloud Datastore API.`_
+4. `Setup Authentication.`_
+
+.. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
+.. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
+.. _Enable the Google Cloud Datastore API.:  https://cloud.google.com/datastore
+.. _Setup Authentication.: https://googlecloudplatform.github.io/google-cloud-python/latest/core/auth.html
+
+Installation
+~~~~~~~~~~~~
+
+Install this library in a `virtualenv`_ using pip. `virtualenv`_ is a tool to
+create isolated Python environments. The basic problem it addresses is one of
+dependencies and versions, and indirectly permissions.
+
+With `virtualenv`_, it's possible to install this library without needing system
+install permissions, and without clashing with the installed system
+dependencies.
+
+.. _`virtualenv`: https://virtualenv.pypa.io/en/latest/
+
+
+Mac/Linux
+^^^^^^^^^
+
 .. code-block:: console
 
-    $ pip install --upgrade google-cloud-spanner
-
-For more information on setting up your Python development environment,
-such as installing ``pip`` and ``virtualenv`` on your system, please refer
-to `Python Development Environment Setup Guide`_ for Google Cloud Platform.
-
-.. _Python Development Environment Setup Guide: https://cloud.google.com/python/setup
+    pip install virtualenv
+    virtualenv <your-env>
+    source <your-env>/bin/activate
+    <your-env>/bin/pip install google-cloud-datastore
 
 
-Authentication
---------------
+Windows
+^^^^^^^
 
-With ``google-cloud-python`` we try to make authentication as painless as
-possible. Check out the `Authentication section`_ in our documentation to
-learn more. You may also find the `authentication document`_ shared by all
-the ``google-cloud-*`` libraries to be helpful.
+.. code-block:: console
 
-.. _Authentication section: https://google-cloud-python.readthedocs.io/en/latest/core/auth.html
-.. _authentication document: https://github.com/GoogleCloudPlatform/google-cloud-common/tree/master/authentication
+    pip install virtualenv
+    virtualenv <your-env>
+    <your-env>\Scripts\activate
+    <your-env>\Scripts\pip.exe install google-cloud-datastore
 
 
-Using the API
+Example Usage
 -------------
-
-Cloud Spanner is the world’s first fully managed relational database service
-to offer both strong consistency and horizontal scalability for
-mission-critical online transaction processing (OLTP) applications. With Cloud
-Spanner you enjoy all the traditional benefits of a relational database; but
-unlike any other relational database service, Cloud Spanner scales
-horizontally to hundreds or thousands of servers to handle the biggest
-transactional workloads. (`About Cloud Spanner`_)
-
-.. _About Cloud Spanner: https://cloud.google.com/spanner/
 
 
 Executing Arbitrary SQL in a Transaction
@@ -152,15 +181,10 @@ if any of the records does not already exist.
     )
 
 
-Learn More
-----------
+Next Steps
+~~~~~~~~~~
 
-See the ``google-cloud-python`` API `Cloud Spanner documentation`_ to learn how
-to connect to Cloud Spanner using this Client Library.
-
-.. _Cloud Spanner documentation: https://googlecloudplatform.github.io/google-cloud-python/latest/spanner/usage.html
-
-.. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-spanner.svg
-   :target: https://pypi.org/project/google-cloud-spanner/
-.. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-spanner.svg
-   :target: https://pypi.org/project/google-cloud-spanner/
+- See the `Client Library Documentation`_ to learn how to connect to Cloud
+  Spanner using this Client Library.
+- Read the `Product documentation`_ to learn
+  more about the product and see How-to Guides.

@@ -14,9 +14,6 @@
 
 import unittest
 
-from google.gax.errors import GaxError
-from grpc import StatusCode
-from grpc._channel import _RPCState
 import mock
 
 
@@ -90,6 +87,31 @@ class TestWriteBatch(unittest.TestCase):
                     field: _value_pb(string_value=value),
                 },
             ),
+        )
+        self.assertEqual(batch._write_pbs, [new_write_pb])
+
+    def test_set_merge(self):
+        from google.cloud.firestore_v1beta1.proto import document_pb2
+        from google.cloud.firestore_v1beta1.proto import write_pb2
+
+        client = _make_client()
+        batch = self._make_one(client)
+        self.assertEqual(batch._write_pbs, [])
+
+        reference = client.document('another', 'one')
+        field = 'zapzap'
+        value = u'meadows and flowers'
+        document_data = {field: value}
+        ret_val = batch.set(reference, document_data, merge=True)
+        self.assertIsNone(ret_val)
+        new_write_pb = write_pb2.Write(
+            update=document_pb2.Document(
+                name=reference._document_path,
+                fields={
+                    field: _value_pb(string_value=value),
+                },
+            ),
+            update_mask={'field_paths': [field]}
         )
         self.assertEqual(batch._write_pbs, [new_write_pb])
 
@@ -170,7 +192,7 @@ class TestWriteBatch(unittest.TestCase):
         # Verify the mocks.
         firestore_api.commit.assert_called_once_with(
             client._database_string, write_pbs, transaction=None,
-            options=client._call_options)
+            metadata=client._rpc_metadata)
 
 
 def _value_pb(**kwargs):

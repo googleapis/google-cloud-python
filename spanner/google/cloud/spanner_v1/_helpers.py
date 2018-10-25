@@ -19,81 +19,13 @@ import math
 
 import six
 
-from google.gax import CallOptions
 from google.protobuf.struct_pb2 import ListValue
 from google.protobuf.struct_pb2 import Value
-from google.cloud.spanner_v1.proto import type_pb2
 
+from google.api_core import datetime_helpers
 from google.cloud._helpers import _date_from_iso8601_date
 from google.cloud._helpers import _datetime_to_rfc3339
-from google.cloud._helpers import _RFC3339_NANOS
-from google.cloud._helpers import _RFC3339_NO_FRACTION
-from google.cloud._helpers import UTC
-
-
-class TimestampWithNanoseconds(datetime.datetime):
-    """Track nanosecond in addition to normal datetime attrs.
-
-    nanosecond can be passed only as a keyword argument.
-    """
-    __slots__ = ('_nanosecond',)
-
-    # pylint: disable=arguments-differ
-    def __new__(cls, *args, **kw):
-        nanos = kw.pop('nanosecond', 0)
-        if nanos > 0:
-            if 'microsecond' in kw:
-                raise TypeError(
-                    "Specify only one of 'microsecond' or 'nanosecond'")
-            kw['microsecond'] = nanos // 1000
-        inst = datetime.datetime.__new__(cls, *args, **kw)
-        inst._nanosecond = nanos or 0
-        return inst
-    # pylint: disable=arguments-differ
-
-    @property
-    def nanosecond(self):
-        """Read-only: nanosecond precision."""
-        return self._nanosecond
-
-    def rfc3339(self):
-        """RFC 3339-compliant timestamp.
-
-        :rtype: str
-        :returns: Timestamp string according to RFC 3339 spec.
-        """
-        if self._nanosecond == 0:
-            return _datetime_to_rfc3339(self)
-        nanos = str(self._nanosecond).rstrip('0')
-        return '%s.%sZ' % (self.strftime(_RFC3339_NO_FRACTION), nanos)
-
-    @classmethod
-    def from_rfc3339(cls, stamp):
-        """Parse RFC 3339-compliant timestamp, preserving nanoseconds.
-
-        :type stamp: str
-        :param stamp: RFC 3339 stamp, with up to nanosecond precision
-
-        :rtype: :class:`TimestampWithNanoseconds`
-        :returns: an instance matching the timestamp string
-        :raises ValueError: if ``stamp`` does not match the expected format
-        """
-        with_nanos = _RFC3339_NANOS.match(stamp)
-        if with_nanos is None:
-            raise ValueError(
-                'Timestamp: %r, does not match pattern: %r' % (
-                    stamp, _RFC3339_NANOS.pattern))
-        bare = datetime.datetime.strptime(
-            with_nanos.group('no_fraction'), _RFC3339_NO_FRACTION)
-        fraction = with_nanos.group('nanos')
-        if fraction is None:
-            nanos = 0
-        else:
-            scale = 9 - len(fraction)
-            nanos = int(fraction) * (10 ** scale)
-        return cls(bare.year, bare.month, bare.day,
-                   bare.hour, bare.minute, bare.second,
-                   nanosecond=nanos, tzinfo=UTC)
+from google.cloud.spanner_v1.proto import type_pb2
 
 
 def _try_to_coerce_bytes(bytestring):
@@ -126,7 +58,7 @@ def _make_value_pb(value):
     """
     if value is None:
         return Value(null_value='NULL_VALUE')
-    if isinstance(value, list):
+    if isinstance(value, (list, tuple)):
         return Value(list_value=_make_list_value_pb(value))
     if isinstance(value, bool):
         return Value(bool_value=value)
@@ -141,7 +73,7 @@ def _make_value_pb(value):
             else:
                 return Value(string_value='-Infinity')
         return Value(number_value=value)
-    if isinstance(value, TimestampWithNanoseconds):
+    if isinstance(value, datetime_helpers.DatetimeWithNanoseconds):
         return Value(string_value=value.rfc3339())
     if isinstance(value, datetime.datetime):
         return Value(string_value=_datetime_to_rfc3339(value))
@@ -152,6 +84,8 @@ def _make_value_pb(value):
         return Value(string_value=value)
     if isinstance(value, six.text_type):
         return Value(string_value=value)
+    if isinstance(value, ListValue):
+        return Value(list_value=value)
     raise ValueError("Unknown type: %s" % (value,))
 # pylint: enable=too-many-return-statements,too-many-branches
 
@@ -212,7 +146,8 @@ def _parse_value_pb(value_pb, field_type):
     elif field_type.code == type_pb2.DATE:
         result = _date_from_iso8601_date(value_pb.string_value)
     elif field_type.code == type_pb2.TIMESTAMP:
-        result = TimestampWithNanoseconds.from_rfc3339(value_pb.string_value)
+        DatetimeWithNanoseconds = datetime_helpers.DatetimeWithNanoseconds
+        result = DatetimeWithNanoseconds.from_rfc3339(value_pb.string_value)
     elif field_type.code == type_pb2.ARRAY:
         result = [
             _parse_value_pb(item_pb, field_type.array_element_type)
@@ -258,17 +193,13 @@ class _SessionWrapper(object):
         self._session = session
 
 
-def _options_with_prefix(prefix, **kw):
-    """Create GAPIC options w/ prefix.
+def _metadata_with_prefix(prefix, **kw):
+    """Create RPC metadata containing a prefix.
 
-    :type prefix: str
-    :param prefix: appropriate resource path
+    Args:
+        prefix (str): appropriate resource path.
 
-    :type kw: dict
-    :param kw: other keyword arguments passed to the constructor
-
-    :rtype: :class:`~google.gax.CallOptions`
-    :returns: GAPIC call options with supplied prefix
+    Returns:
+        List[Tuple[str, str]]: RPC metadata with supplied prefix
     """
-    return CallOptions(
-        metadata=[('google-cloud-resource-prefix', prefix)], **kw)
+    return [('google-cloud-resource-prefix', prefix)]

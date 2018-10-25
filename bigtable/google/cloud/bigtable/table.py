@@ -15,47 +15,38 @@
 """User-friendly container for Google Cloud Bigtable Table."""
 
 
+from grpc import StatusCode
+
 from google.api_core.exceptions import RetryError
+from google.api_core.exceptions import NotFound
 from google.api_core.retry import if_exception_type
 from google.api_core.retry import Retry
-from google.cloud.bigtable._generated import (
-    bigtable_pb2 as data_messages_v2_pb2)
-from google.cloud.bigtable._generated import (
-    bigtable_table_admin_pb2 as table_admin_messages_v2_pb2)
-from google.cloud.bigtable._generated import (
-    table_pb2 as table_v2_pb2)
+from google.api_core.gapic_v1.method import wrap_method
+from google.cloud._helpers import _to_bytes
 from google.cloud.bigtable.column_family import _gc_rule_from_pb
 from google.cloud.bigtable.column_family import ColumnFamily
+from google.cloud.bigtable.batcher import MutationsBatcher
+from google.cloud.bigtable.batcher import (FLUSH_COUNT, MAX_ROW_BYTES)
 from google.cloud.bigtable.row import AppendRow
 from google.cloud.bigtable.row import ConditionalRow
 from google.cloud.bigtable.row import DirectRow
 from google.cloud.bigtable.row_data import PartialRowsData
-from google.gax import RetryOptions, BackoffSettings
-from google.cloud.bigtable.retry import ReadRowsIterator, _create_row_request
-from grpc import StatusCode
-
-BACKOFF_SETTINGS = BackoffSettings(
-    initial_retry_delay_millis=10,
-    retry_delay_multiplier=1.3,
-    max_retry_delay_millis=30000,
-    initial_rpc_timeout_millis=25 * 60 * 1000,
-    rpc_timeout_multiplier=1.0,
-    max_rpc_timeout_millis=25 * 60 * 1000,
-    total_timeout_millis=30 * 60 * 1000
-)
-
-RETRY_CODES = [
-    StatusCode.DEADLINE_EXCEEDED,
-    StatusCode.ABORTED,
-    StatusCode.INTERNAL,
-    StatusCode.UNAVAILABLE
-]
+from google.cloud.bigtable.row_set import RowSet
+from google.cloud.bigtable.row_set import RowRange
+from google.cloud.bigtable import enums
+from google.cloud.bigtable_v2.proto import (
+    bigtable_pb2 as data_messages_v2_pb2)
+from google.cloud.bigtable_admin_v2.proto import (
+    table_pb2 as admin_messages_v2_pb2)
+from google.cloud.bigtable_admin_v2.proto import (
+    bigtable_table_admin_pb2 as table_admin_messages_v2_pb2)
 
 
 # Maximum number of mutations in bulk (MutateRowsRequest message):
 # (https://cloud.google.com/bigtable/docs/reference/data/rpc/
 #  google.bigtable.v2#google.bigtable.v2.MutateRowRequest)
 _MAX_BULK_MUTATIONS = 100000
+VIEW_NAME_ONLY = enums.Table.View.NAME_ONLY
 
 
 class _BigtableRetryableError(Exception):
@@ -96,7 +87,6 @@ class Table(object):
     We can use a :class:`Table` to:
 
     * :meth:`create` the table
-    * :meth:`rename` the table
     * :meth:`delete` the table
     * :meth:`list_column_families` in the table
 
@@ -105,11 +95,15 @@ class Table(object):
 
     :type instance: :class:`~google.cloud.bigtable.instance.Instance`
     :param instance: The instance that owns the table.
+
+    :type app_profile_id: str
+    :param app_profile_id: (Optional) The unique name of the AppProfile.
     """
 
-    def __init__(self, table_id, instance):
+    def __init__(self, table_id, instance, app_profile_id=None):
         self.table_id = table_id
         self._instance = instance
+        self._app_profile_id = app_profile_id
 
     @property
     def name(self):
@@ -127,7 +121,11 @@ class Table(object):
         :rtype: str
         :returns: The table name.
         """
-        return self._instance.name + '/tables/' + self.table_id
+        project = self._instance._client.project
+        instance_id = self._instance.instance_id
+        table_client = self._instance._client.table_data_client
+        return table_client.table_path(
+            project=project, instance=instance_id, table=self.table_id)
 
     def column_family(self, column_family_id, gc_rule=None):
         """Factory to create a column family associated with this table.
@@ -187,7 +185,7 @@ class Table(object):
     def __ne__(self, other):
         return not self == other
 
-    def create(self, initial_split_keys=None, column_families=()):
+    def create(self, initial_split_keys=[], column_families={}):
         """Creates this table.
 
         .. note::
@@ -197,47 +195,45 @@ class Table(object):
             this response.
 
         :type initial_split_keys: list
-        :param initial_split_keys: (Optional) List of row keys that will be
-                                   used to initially split the table into
-                                   several tablets (Tablets are similar to
-                                   HBase regions). Given two split keys,
-                                   ``"s1"`` and ``"s2"``, three tablets will be
-                                   created, spanning the key ranges:
-                                   ``[, s1)``, ``[s1, s2)``, ``[s2, )``.
+        :param initial_split_keys: (Optional) list of row keys in bytes that
+                                   will be used to initially split the table
+                                   into several tablets.
 
-        :type column_families: list
-        :param column_families: (Optional) List or other iterable of
-                                :class:`.ColumnFamily` instances.
+        :type column_families: dict
+        :param column_failies: (Optional) A map columns to create.  The key is
+                               the column_id str and the value is a
+                               :class:`GarbageCollectionRule`
         """
-        if initial_split_keys is not None:
-            split_pb = table_admin_messages_v2_pb2.CreateTableRequest.Split
-            initial_split_keys = [
-                split_pb(key=key) for key in initial_split_keys]
+        table_client = self._instance._client.table_admin_client
+        instance_name = self._instance.name
 
-        table_pb = None
-        if column_families:
-            table_pb = table_v2_pb2.Table()
-            for col_fam in column_families:
-                curr_id = col_fam.column_family_id
-                table_pb.column_families[curr_id].CopyFrom(col_fam.to_pb())
+        families = {id: ColumnFamily(id, self, rule).to_pb()
+                    for (id, rule) in column_families.items()}
+        table = admin_messages_v2_pb2.Table(column_families=families)
 
-        request_pb = table_admin_messages_v2_pb2.CreateTableRequest(
-            initial_splits=initial_split_keys or [],
-            parent=self._instance.name,
-            table_id=self.table_id,
-            table=table_pb,
-        )
-        client = self._instance._client
-        # We expect a `._generated.table_pb2.Table`
-        client._table_stub.CreateTable(request_pb)
+        split = table_admin_messages_v2_pb2.CreateTableRequest.Split
+        splits = [split(key=_to_bytes(key)) for key in initial_split_keys]
+
+        table_client.create_table(parent=instance_name, table_id=self.table_id,
+                                  table=table, initial_splits=splits)
+
+    def exists(self):
+        """Check whether the table exists.
+
+        :rtype: bool
+        :returns: True if the table exists, else False.
+        """
+        table_client = self._instance._client.table_admin_client
+        try:
+            table_client.get_table(name=self.name, view=VIEW_NAME_ONLY)
+            return True
+        except NotFound:
+            return False
 
     def delete(self):
         """Delete this table."""
-        request_pb = table_admin_messages_v2_pb2.DeleteTableRequest(
-            name=self.name)
-        client = self._instance._client
-        # We expect a `google.protobuf.empty_pb2.Empty`
-        client._table_stub.DeleteTable(request_pb)
+        table_client = self._instance._client.table_admin_client
+        table_client.delete_table(name=self.name)
 
     def list_column_families(self):
         """List the column families owned by this table.
@@ -250,11 +246,8 @@ class Table(object):
                  family name from the response does not agree with the computed
                  name from the column family ID.
         """
-        request_pb = table_admin_messages_v2_pb2.GetTableRequest(
-            name=self.name)
-        client = self._instance._client
-        # We expect a `._generated.table_pb2.Table`
-        table_pb = client._table_stub.GetTable(request_pb)
+        table_client = self._instance._client.table_admin_client
+        table_pb = table_client.get_table(self.name)
 
         result = {}
         for column_family_id, value_pb in table_pb.column_families.items():
@@ -263,6 +256,22 @@ class Table(object):
                                                gc_rule=gc_rule)
             result[column_family_id] = column_family
         return result
+
+    def get_cluster_states(self):
+        """List the cluster states owned by this table.
+
+        :rtype: dict
+        :returns: Dictionary of cluster states for this table.
+                  Keys are cluster ids and values are
+                  :class: 'ClusterState' instances.
+        """
+
+        REPLICATION_VIEW = enums.Table.View.REPLICATION_VIEW
+        table_client = self._instance._client.table_admin_client
+        table_pb = table_client.get_table(self.name, view=REPLICATION_VIEW)
+
+        return {cluster_id: ClusterState(value_pb.replication_state)
+                for cluster_id, value_pb in table_pb.cluster_states.items()}
 
     def read_row(self, row_key, filter_=None):
         """Read a single row from this table.
@@ -280,22 +289,16 @@ class Table(object):
         :raises: :class:`ValueError <exceptions.ValueError>` if a commit row
                  chunk is never encountered.
         """
-        request_pb = _create_row_request(self.name, row_key=row_key,
-                                         filter_=filter_)
-        client = self._instance._client
-        response_iterator = client._data_stub.ReadRows(request_pb)
-        rows_data = PartialRowsData(response_iterator)
-        rows_data.consume_all()
-        if rows_data.state not in (rows_data.NEW_ROW, rows_data.START):
-            raise ValueError('The row remains partial / is not committed.')
-
-        if len(rows_data.rows) == 0:
-            return None
-
-        return rows_data.rows[row_key]
+        row_set = RowSet()
+        row_set.add_row_key(row_key)
+        result_iter = iter(self.read_rows(filter_=filter_, row_set=row_set))
+        row = next(result_iter, None)
+        if next(result_iter, None) is not None:
+            raise ValueError('More than one row was returned.')
+        return row
 
     def read_rows(self, start_key=None, end_key=None, limit=None,
-                  filter_=None, end_inclusive=False, backoff_settings=None):
+                  filter_=None, end_inclusive=False, row_set=None):
         """Read rows from this table.
 
         :type start_key: bytes
@@ -322,22 +325,58 @@ class Table(object):
         :param end_inclusive: (Optional) Whether the ``end_key`` should be
                       considered inclusive. The default is False (exclusive).
 
+        :type row_set: :class:`row_set.RowSet`
+        :param filter_: (Optional) The row set containing multiple row keys and
+                        row_ranges.
+
         :rtype: :class:`.PartialRowsData`
-        :returns: A :class:`.PartialRowsData` convenience wrapper for consuming
+        :returns: A :class:`.PartialRowsData` a generator for consuming
                   the streamed results.
         """
-        client = self._instance._client
-        if backoff_settings is None:
-            backoff_settings = BACKOFF_SETTINGS
-        RETRY_OPTIONS = RetryOptions(
-            retry_codes=RETRY_CODES,
-            backoff_settings=backoff_settings
-        )
+        request_pb = _create_row_request(
+            self.name, start_key=start_key, end_key=end_key,
+            filter_=filter_, limit=limit, end_inclusive=end_inclusive,
+            app_profile_id=self._app_profile_id, row_set=row_set)
+        data_client = self._instance._client.table_data_client
+        return PartialRowsData(
+            data_client.transport.read_rows,
+            request_pb)
 
-        retrying_iterator = ReadRowsIterator(client, self.name, start_key,
-                                             end_key, filter_, limit,
-                                             end_inclusive, RETRY_OPTIONS)
-        return PartialRowsData(retrying_iterator)
+    def yield_rows(self, **kwargs):
+        """Read rows from this table.
+
+        .. warning::
+           This method will be removed in future releases.  Please use
+           ``read_rows`` instead.
+
+        :type start_key: bytes
+        :param start_key: (Optional) The beginning of a range of row keys to
+                          read from. The range will include ``start_key``. If
+                          left empty, will be interpreted as the empty string.
+
+        :type end_key: bytes
+        :param end_key: (Optional) The end of a range of row keys to read from.
+                        The range will not include ``end_key``. If left empty,
+                        will be interpreted as an infinite string.
+
+        :type limit: int
+        :param limit: (Optional) The read will terminate after committing to N
+                      rows' worth of results. The default (zero) is to return
+                      all results.
+
+        :type filter_: :class:`.RowFilter`
+        :param filter_: (Optional) The filter to apply to the contents of the
+                        specified row(s). If unset, reads every column in
+                        each row.
+
+        :type row_set: :class:`row_set.RowSet`
+        :param filter_: (Optional) The row set containing multiple row keys and
+                        row_ranges.
+
+        :rtype: :class:`.PartialRowData`
+        :returns: A :class:`.PartialRowData` for each row returned
+        """
+        return self.read_rows(**kwargs)
 
     def mutate_rows(self, rows, retry=DEFAULT_RETRY):
         """Mutates multiple rows in bulk.
@@ -369,7 +408,8 @@ class Table(object):
                   sent. These will be in the same order as the `rows`.
         """
         retryable_mutate_rows = _RetryableMutateRowsWorker(
-            self._instance._client, self.name, rows)
+            self._instance._client, self.name, rows,
+            app_profile_id=self._app_profile_id)
         return retryable_mutate_rows(retry=retry)
 
     def sample_row_keys(self):
@@ -403,11 +443,80 @@ class Table(object):
                   or by casting to a :class:`list` and can be cancelled by
                   calling ``cancel()``.
         """
-        request_pb = data_messages_v2_pb2.SampleRowKeysRequest(
-            table_name=self.name)
-        client = self._instance._client
-        response_iterator = client._data_stub.SampleRowKeys(request_pb)
+        data_client = self._instance._client.table_data_client
+        response_iterator = data_client.sample_row_keys(
+            self.name, app_profile_id=self._app_profile_id)
+
         return response_iterator
+
+    def truncate(self, timeout=None):
+        """Truncate the table
+
+        :type timeout: float
+        :param timeout: (Optional) The amount of time, in seconds, to wait
+                        for the request to complete.
+
+        :raise: google.api_core.exceptions.GoogleAPICallError: If the
+                request failed for any reason.
+                google.api_core.exceptions.RetryError: If the request failed
+                due to a retryable error and retry attempts failed.
+                ValueError: If the parameters are invalid.
+        """
+        client = self._instance._client
+        table_admin_client = client.table_admin_client
+        if timeout:
+            table_admin_client.drop_row_range(
+                self.name, delete_all_data_from_table=True, timeout=timeout)
+        else:
+            table_admin_client.drop_row_range(
+                self.name, delete_all_data_from_table=True)
+
+    def drop_by_prefix(self, row_key_prefix, timeout=None):
+        """
+        :type row_prefix: bytes
+        :param row_prefix: Delete all rows that start with this row key
+                            prefix. Prefix cannot be zero length.
+
+        :type timeout: float
+        :param timeout: (Optional) The amount of time, in seconds, to wait
+                        for the request to complete.
+
+        :raise: google.api_core.exceptions.GoogleAPICallError: If the
+                request failed for any reason.
+                google.api_core.exceptions.RetryError: If the request failed
+                due to a retryable error and retry attempts failed.
+                ValueError: If the parameters are invalid.
+        """
+        client = self._instance._client
+        table_admin_client = client.table_admin_client
+        if timeout:
+            table_admin_client.drop_row_range(
+                self.name, row_key_prefix=_to_bytes(row_key_prefix),
+                timeout=timeout)
+        else:
+            table_admin_client.drop_row_range(
+                self.name, row_key_prefix=_to_bytes(row_key_prefix))
+
+    def mutations_batcher(self, flush_count=FLUSH_COUNT,
+                          max_row_bytes=MAX_ROW_BYTES):
+        """Factory to create a mutation batcher associated with this instance.
+
+        :type table: class
+        :param table: class:`~google.cloud.bigtable.table.Table`.
+
+        :type flush_count: int
+        :param flush_count: (Optional) Maximum number of rows per batch. If it
+                reaches the max number of rows it calls finish_batch() to
+                mutate the current row batch. Default is FLUSH_COUNT (1000
+                rows).
+
+        :type max_row_bytes: int
+        :param max_row_bytes: (Optional) Max number of row mutations size to
+                flush. If it reaches the max number of row mutations size it
+                calls finish_batch() to mutate the current row batch.
+                Default is MAX_ROW_BYTES (5 MB).
+        """
+        return MutationsBatcher(self, flush_count, max_row_bytes)
 
 
 class _RetryableMutateRowsWorker(object):
@@ -426,10 +535,11 @@ class _RetryableMutateRowsWorker(object):
     )
     # pylint: enable=unsubscriptable-object
 
-    def __init__(self, client, table_name, rows):
+    def __init__(self, client, table_name, rows, app_profile_id=None):
         self.client = client
         self.table_name = table_name
         self.rows = rows
+        self.app_profile_id = app_profile_id
         self.responses_statuses = [None] * len(self.rows)
 
     def __call__(self, retry=DEFAULT_RETRY):
@@ -491,9 +601,23 @@ class _RetryableMutateRowsWorker(object):
             return self.responses_statuses
 
         mutate_rows_request = _mutate_rows_request(
-            self.table_name, retryable_rows)
-        responses = self.client._data_stub.MutateRows(
-            mutate_rows_request)
+            self.table_name, retryable_rows,
+            app_profile_id=self.app_profile_id)
+        data_client = self.client.table_data_client
+        inner_api_calls = data_client._inner_api_calls
+        if 'mutate_rows' not in inner_api_calls:
+            default_retry = data_client._method_configs['MutateRows'].retry,
+            default_timeout = data_client._method_configs['MutateRows'].timeout
+            data_client._inner_api_calls[
+                'mutate_rows'] = wrap_method(
+                    data_client.transport.mutate_rows,
+                    default_retry=default_retry,
+                    default_timeout=default_timeout,
+                    client_info=data_client._client_info,
+                )
+
+        responses = data_client._inner_api_calls['mutate_rows'](
+            mutate_rows_request, retry=None)
 
         num_responses = 0
         num_retryable_responses = 0
@@ -518,7 +642,153 @@ class _RetryableMutateRowsWorker(object):
         return self.responses_statuses
 
 
-def _mutate_rows_request(table_name, rows):
+class ClusterState(object):
+    """Representation of a Cluster State.
+
+    :type replication_state: int
+    :param replication_state: enum value for cluster state
+        Possible replications_state values are
+        0 for STATE_NOT_KNOWN: The replication state of the table is
+        unknown in this cluster.
+        1 for INITIALIZING: The cluster was recently created, and the
+        table must finish copying
+        over pre-existing data from other clusters before it can
+        begin receiving live replication updates and serving
+        ``Data API`` requests.
+        2 for PLANNED_MAINTENANCE: The table is temporarily unable to
+        serve
+        ``Data API`` requests from this
+        cluster due to planned internal maintenance.
+        3 for UNPLANNED_MAINTENANCE: The table is temporarily unable
+        to serve
+        ``Data API`` requests from this
+        cluster due to unplanned or emergency maintenance.
+        4 for READY: The table can serve
+        ``Data API`` requests from this
+        cluster. Depending on replication delay, reads may not
+        immediately reflect the state of the table in other clusters.
+    """
+
+    def __init__(self, replication_state):
+        self.replication_state = replication_state
+
+    def __repr__(self):
+        """Representation of  cluster state instance as string value
+        for cluster state.
+
+        :rtype: ClusterState instance
+        :returns: ClusterState instance as representation of string
+                  value for cluster state.
+        """
+        replication_dict = {
+            enums.Table.ReplicationState.STATE_NOT_KNOWN: "STATE_NOT_KNOWN",
+            enums.Table.ReplicationState.INITIALIZING: "INITIALIZING",
+            enums.Table.ReplicationState.PLANNED_MAINTENANCE:
+                "PLANNED_MAINTENANCE",
+            enums.Table.ReplicationState.UNPLANNED_MAINTENANCE:
+                "UNPLANNED_MAINTENANCE",
+            enums.Table.ReplicationState.READY: "READY"
+        }
+        return replication_dict[self.replication_state]
+
+    def __eq__(self, other):
+        """Checks if two ClusterState instances(self and other) are
+        equal on the basis of instance variable 'replication_state'.
+
+        :type other: ClusterState
+        :param other: ClusterState instance to compare with.
+
+        :rtype: Boolean value
+        :returns: True if  two cluster state instances have same
+                  replication_state.
+        """
+        if not isinstance(other, self.__class__):
+            return False
+        return self.replication_state == other.replication_state
+
+    def __ne__(self, other):
+        """Checks if two ClusterState instances(self and other) are
+        not equal.
+
+        :type other: ClusterState.
+        :param other: ClusterState instance to compare with.
+
+        :rtype: Boolean value.
+        :returns: True if  two cluster state instances are not equal.
+        """
+        return not self == other
+
+
+def _create_row_request(table_name, start_key=None, end_key=None,
+                        filter_=None, limit=None, end_inclusive=False,
+                        app_profile_id=None, row_set=None):
+    """Creates a request to read rows in a table.
+
+    :type table_name: str
+    :param table_name: The name of the table to read from.
+
+    :type start_key: bytes
+    :param start_key: (Optional) The beginning of a range of row keys to
+                      read from. The range will include ``start_key``. If
+                      left empty, will be interpreted as the empty string.
+
+    :type end_key: bytes
+    :param end_key: (Optional) The end of a range of row keys to read from.
+                    The range will not include ``end_key``. If left empty,
+                    will be interpreted as an infinite string.
+
+    :type filter_: :class:`.RowFilter`
+    :param filter_: (Optional) The filter to apply to the contents of the
+                    specified row(s). If unset, reads the entire table.
+
+    :type limit: int
+    :param limit: (Optional) The read will terminate after committing to N
+                  rows' worth of results. The default (zero) is to return
+                  all results.
+
+    :type end_inclusive: bool
+    :param end_inclusive: (Optional) Whether the ``end_key`` should be
+                  considered inclusive. The default is False (exclusive).
+
+    :type: app_profile_id: str
+    :param app_profile_id: (Optional) The unique name of the AppProfile.
+
+    :type row_set: :class:`row_set.RowSet`
+    :param filter_: (Optional) The row set containing multiple row keys and
+                    row_ranges.
+
+    :rtype: :class:`data_messages_v2_pb2.ReadRowsRequest`
+    :returns: The ``ReadRowsRequest`` protobuf corresponding to the inputs.
+    :raises: :class:`ValueError <exceptions.ValueError>` if both
+             ``row_set`` and one of ``start_key`` or ``end_key`` are set
+    """
+    request_kwargs = {'table_name': table_name}
+    if ((start_key is not None or end_key is not None) and
+            row_set is not None):
+        raise ValueError('Row range and row set cannot be '
+                         'set simultaneously')
+
+    if filter_ is not None:
+        request_kwargs['filter'] = filter_.to_pb()
+    if limit is not None:
+        request_kwargs['rows_limit'] = limit
+    if app_profile_id is not None:
+        request_kwargs['app_profile_id'] = app_profile_id
+
+    message = data_messages_v2_pb2.ReadRowsRequest(**request_kwargs)
+
+    if start_key is not None or end_key is not None:
+        row_set = RowSet()
+        row_set.add_row_range(RowRange(start_key, end_key,
+                                       end_inclusive=end_inclusive))
+
+    if row_set is not None:
+        row_set._update_message_request(message)
+
+    return message
+
+
+def _mutate_rows_request(table_name, rows, app_profile_id=None):
     """Creates a request to mutate rows in a table.
 
     :type table_name: str
@@ -527,23 +797,23 @@ def _mutate_rows_request(table_name, rows):
     :type rows: list
     :param rows: List or other iterable of :class:`.DirectRow` instances.
 
+    :type: app_profile_id: str
+    :param app_profile_id: (Optional) The unique name of the AppProfile.
+
     :rtype: :class:`data_messages_v2_pb2.MutateRowsRequest`
     :returns: The ``MutateRowsRequest`` protobuf corresponding to the inputs.
     :raises: :exc:`~.table.TooManyMutationsError` if the number of mutations is
              greater than 100,000
     """
-    request_pb = data_messages_v2_pb2.MutateRowsRequest(table_name=table_name)
+    request_pb = data_messages_v2_pb2.MutateRowsRequest(
+        table_name=table_name, app_profile_id=app_profile_id)
     mutations_count = 0
     for row in rows:
         _check_row_table_name(table_name, row)
         _check_row_type(row)
-        entry = request_pb.entries.add()
-        entry.row_key = row.row_key
-        # NOTE: Since `_check_row_type` has verified `row` is a `DirectRow`,
-        #  the mutations have no state.
-        for mutation in row._get_mutations(None):
-            mutations_count += 1
-            entry.mutations.add().CopyFrom(mutation)
+        mutations = row._get_mutations()
+        request_pb.entries.add(row_key=row.row_key, mutations=mutations)
+        mutations_count += len(mutations)
     if mutations_count > _MAX_BULK_MUTATIONS:
         raise TooManyMutationsError('Maximum number of mutations is %s' %
                                     (_MAX_BULK_MUTATIONS,))

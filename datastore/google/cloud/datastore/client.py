@@ -31,7 +31,7 @@ from google.cloud.environment_vars import GCD_DATASET
 from google.cloud.environment_vars import GCD_HOST
 
 try:
-    from google.cloud.datastore._gax import make_datastore_api
+    from google.cloud.datastore._gapic import make_datastore_api
     _HAVE_GRPC = True
 except ImportError:  # pragma: NO COVER
     make_datastore_api = None
@@ -86,7 +86,7 @@ def _extended_lookup(datastore_api, project, key_pbs,
 
     :type datastore_api:
         :class:`google.cloud.datastore._http.HTTPDatastoreAPI`
-        or :class:`google.cloud.datastore._gax.GAPICDatastoreAPI`
+        or :class:`google.cloud.datastore_v1.gapic.DatastoreClient`
     :param datastore_api: The datastore API object used to connect
                           to datastore.
 
@@ -220,6 +220,16 @@ class Client(ClientWithProject):
     def _determine_default(project):
         """Helper:  override default project detection."""
         return _determine_default_project(project)
+
+    @property
+    def base_url(self):
+        """Getter for API base URL."""
+        return self._base_url
+
+    @base_url.setter
+    def base_url(self, value):
+        """Setter for API base URL."""
+        self._base_url = value
 
     @property
     def _datastore_api(self):
@@ -511,9 +521,13 @@ class Client(ClientWithProject):
         """Proxy to :class:`google.cloud.datastore.batch.Batch`."""
         return Batch(self)
 
-    def transaction(self):
-        """Proxy to :class:`google.cloud.datastore.transaction.Transaction`."""
-        return Transaction(self)
+    def transaction(self, **kwargs):
+        """Proxy to :class:`google.cloud.datastore.transaction.Transaction`.
+
+        :type kwargs: dict
+        :param kwargs: Keyword arguments to be passed in.
+        """
+        return Transaction(self, **kwargs)
 
     def query(self, **kwargs):
         """Proxy to :class:`google.cloud.datastore.query.Query`.

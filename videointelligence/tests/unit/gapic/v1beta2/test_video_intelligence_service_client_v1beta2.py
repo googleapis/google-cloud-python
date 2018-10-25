@@ -13,10 +13,8 @@
 # limitations under the License.
 """Unit tests."""
 
-import mock
-import unittest
+import pytest
 
-from google.gax import errors
 from google.rpc import status_pb2
 
 from google.cloud import videointelligence_v1beta2
@@ -24,64 +22,81 @@ from google.cloud.videointelligence_v1beta2.proto import video_intelligence_pb2
 from google.longrunning import operations_pb2
 
 
+class MultiCallableStub(object):
+    """Stub for the grpc.UnaryUnaryMultiCallable interface."""
+
+    def __init__(self, method, channel_stub):
+        self.method = method
+        self.channel_stub = channel_stub
+
+    def __call__(self, request, timeout=None, metadata=None, credentials=None):
+        self.channel_stub.requests.append((self.method, request))
+
+        response = None
+        if self.channel_stub.responses:
+            response = self.channel_stub.responses.pop()
+
+        if isinstance(response, Exception):
+            raise response
+
+        if response:
+            return response
+
+
+class ChannelStub(object):
+    """Stub for the grpc.Channel interface."""
+
+    def __init__(self, responses=[]):
+        self.responses = responses
+        self.requests = []
+
+    def unary_unary(self,
+                    method,
+                    request_serializer=None,
+                    response_deserializer=None):
+        return MultiCallableStub(method, self)
+
+
 class CustomException(Exception):
     pass
 
 
-class TestVideoIntelligenceServiceClient(unittest.TestCase):
-    @mock.patch('google.gax.config.create_stub', spec=True)
-    def test_annotate_video(self, mock_create_stub):
-        # Mock gRPC layer
-        grpc_stub = mock.Mock()
-        mock_create_stub.return_value = grpc_stub
-
-        client = videointelligence_v1beta2.VideoIntelligenceServiceClient()
-
-        # Mock request
-        input_uri = 'inputUri1707300727'
-        features = []
-
-        # Mock response
+class TestVideoIntelligenceServiceClient(object):
+    def test_annotate_video(self):
+        # Setup Expected Response
         expected_response = {}
         expected_response = video_intelligence_pb2.AnnotateVideoResponse(
             **expected_response)
         operation = operations_pb2.Operation(
             name='operations/test_annotate_video', done=True)
         operation.response.Pack(expected_response)
-        grpc_stub.AnnotateVideo.return_value = operation
 
-        response = client.annotate_video(input_uri, features)
-        self.assertEqual(expected_response, response.result())
+        # Mock the API response
+        channel = ChannelStub(responses=[operation])
+        client = videointelligence_v1beta2.VideoIntelligenceServiceClient(
+            channel=channel)
 
-        grpc_stub.AnnotateVideo.assert_called_once()
-        args, kwargs = grpc_stub.AnnotateVideo.call_args
-        self.assertEqual(len(args), 2)
-        self.assertEqual(len(kwargs), 1)
-        self.assertIn('metadata', kwargs)
-        actual_request = args[0]
+        response = client.annotate_video()
+        result = response.result()
+        assert expected_response == result
 
-        expected_request = video_intelligence_pb2.AnnotateVideoRequest(
-            input_uri=input_uri, features=features)
-        self.assertEqual(expected_request, actual_request)
+        assert len(channel.requests) == 1
+        expected_request = video_intelligence_pb2.AnnotateVideoRequest()
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
 
-    @mock.patch('google.gax.config.create_stub', spec=True)
-    def test_annotate_video_exception(self, mock_create_stub):
-        # Mock gRPC layer
-        grpc_stub = mock.Mock()
-        mock_create_stub.return_value = grpc_stub
-
-        client = videointelligence_v1beta2.VideoIntelligenceServiceClient()
-
-        # Mock request
-        input_uri = 'inputUri1707300727'
-        features = []
-
-        # Mock exception response
+    def test_annotate_video_exception(self):
+        # Setup Response
         error = status_pb2.Status()
         operation = operations_pb2.Operation(
             name='operations/test_annotate_video_exception', done=True)
         operation.error.CopyFrom(error)
-        grpc_stub.AnnotateVideo.return_value = operation
 
-        response = client.annotate_video(input_uri, features)
-        self.assertEqual(error, response.exception())
+        # Mock the API response
+        channel = ChannelStub(responses=[operation])
+        client = videointelligence_v1beta2.VideoIntelligenceServiceClient(
+            channel=channel)
+
+        response = client.annotate_video()
+        exception = response.exception()
+        assert exception.errors[0] == error

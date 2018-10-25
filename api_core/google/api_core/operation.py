@@ -53,20 +53,24 @@ class Operation(polling.PollingFuture):
     Args:
         operation (google.longrunning.operations_pb2.Operation): The
             initial operation.
-        refresh (Callable[[], Operation]): A callable that returns the
-            latest state of the operation.
+        refresh (Callable[[], ~.api_core.operation.Operation]): A callable that
+            returns the latest state of the operation.
         cancel (Callable[[], None]): A callable that tries to cancel
             the operation.
         result_type (func:`type`): The protobuf type for the operation's
             result.
         metadata_type (func:`type`): The protobuf type for the operation's
             metadata.
+        retry (google.api_core.retry.Retry): The retry configuration used
+            when polling. This can be used to control how often :meth:`done`
+            is polled. Regardless of the retry's ``deadline``, it will be
+            overridden by the ``timeout`` argument to :meth:`result`.
     """
 
     def __init__(
             self, operation, refresh, cancel,
-            result_type, metadata_type=None):
-        super(Operation, self).__init__()
+            result_type, metadata_type=None, retry=polling.DEFAULT_RETRY):
+        super(Operation, self).__init__(retry=retry)
         self._operation = operation
         self._refresh = refresh
         self._cancel = cancel
@@ -89,6 +93,18 @@ class Operation(polling.PollingFuture):
 
         return protobuf_helpers.from_any_pb(
             self._metadata_type, self._operation.metadata)
+
+    @classmethod
+    def deserialize(self, payload):
+        """Deserialize a ``google.longrunning.Operation`` protocol buffer.
+
+        Args:
+            payload (bytes): A serialized operation protocol buffer.
+
+        Returns:
+            ~.operations_pb2.Operation: An Operation protobuf object.
+        """
+        return operations_pb2.Operation.FromString(payload)
 
     def _set_result_from_operation(self):
         """Set the result or exception from the operation if it is complete."""
@@ -205,7 +221,8 @@ def from_http_json(operation, api_request, result_type, **kwargs):
         kwargs: Keyword args passed into the :class:`Operation` constructor.
 
     Returns:
-        Operation: The operation future to track the given operation.
+        ~.api_core.operation.Operation: The operation future to track the given
+            operation.
     """
     operation_proto = json_format.ParseDict(
         operation, operations_pb2.Operation())
@@ -261,7 +278,8 @@ def from_grpc(operation, operations_stub, result_type, **kwargs):
         kwargs: Keyword args passed into the :class:`Operation` constructor.
 
     Returns:
-        Operation: The operation future to track the given operation.
+        ~.api_core.operation.Operation: The operation future to track the given
+            operation.
     """
     refresh = functools.partial(
         _refresh_grpc, operations_stub, operation.name)
@@ -288,7 +306,8 @@ def from_gapic(operation, operations_client, result_type, **kwargs):
         kwargs: Keyword args passed into the :class:`Operation` constructor.
 
     Returns:
-        Operation: The operation future to track the given operation.
+        ~.api_core.operation.Operation: The operation future to track the given
+            operation.
     """
     refresh = functools.partial(
         operations_client.get_operation, operation.name)

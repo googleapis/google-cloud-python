@@ -94,6 +94,19 @@ def test_invoke_wrapped_method_with_metadata():
     assert ('a', 'b') in metadata
 
 
+def test_invoke_wrapped_method_with_metadata_as_none():
+    method = mock.Mock(spec=['__call__'])
+
+    wrapped_method = google.api_core.gapic_v1.method.wrap_method(method)
+
+    wrapped_method(mock.sentinel.request, metadata=None)
+
+    method.assert_called_once_with(mock.sentinel.request, metadata=mock.ANY)
+    metadata = method.call_args[1]['metadata']
+    # Metadata should have just one items: the client info metadata.
+    assert len(metadata) == 1
+
+
 @mock.patch('time.sleep')
 def test_wrap_method_with_default_retry_and_timeout(unusued_sleep):
     method = mock.Mock(

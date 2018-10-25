@@ -86,7 +86,7 @@ class Cursor(object):
         of modified rows.
 
         :type query_results:
-            :class:`~google.cloud.bigquery.query.QueryResults`
+            :class:`~google.cloud.bigquery.query._QueryResults`
         :param query_results: results of a query
         """
         total_rows = 0
@@ -153,10 +153,10 @@ class Cursor(object):
         # Wait for the query to finish.
         try:
             self._query_job.result()
-        except google.cloud.exceptions.GoogleCloudError:
-            raise exceptions.DatabaseError(self._query_job.errors)
+        except google.cloud.exceptions.GoogleCloudError as exc:
+            raise exceptions.DatabaseError(exc)
 
-        query_results = self._query_job.query_results()
+        query_results = self._query_job._query_results
         self._set_rowcount(query_results)
         self._set_description(query_results.schema)
 
@@ -190,10 +190,11 @@ class Cursor(object):
 
         if self._query_data is None:
             client = self.connection._client
-            # TODO(tswast): pass in page size to list_rows based on arraysize
             rows_iter = client.list_rows(
                 self._query_job.destination,
-                selected_fields=self._query_job.query_results().schema)
+                selected_fields=self._query_job._query_results.schema,
+                page_size=self.arraysize
+            )
             self._query_data = iter(rows_iter)
 
     def fetchone(self):

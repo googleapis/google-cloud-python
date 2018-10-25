@@ -18,31 +18,33 @@ import operator
 import os
 import re
 
-from google.auth._default import _load_credentials_from_file
-from google.gax.errors import GaxError
-from google.gax.grpc import exc_to_code
+from google.oauth2 import service_account
 from google.protobuf import timestamp_pb2
-from grpc import StatusCode
 import pytest
 import six
 
+from google.api_core.exceptions import AlreadyExists
+from google.api_core.exceptions import FailedPrecondition
+from google.api_core.exceptions import InvalidArgument
+from google.api_core.exceptions import NotFound
 from google.cloud._helpers import _pb_timestamp_to_datetime
 from google.cloud._helpers import UTC
-from google.cloud.exceptions import Conflict
-from google.cloud.exceptions import NotFound
 from google.cloud import firestore
 from test_utils.system import unique_resource_id
 
 
 FIRESTORE_CREDS = os.environ.get('FIRESTORE_APPLICATION_CREDENTIALS')
+FIRESTORE_PROJECT = os.environ.get('GCLOUD_PROJECT')
 RANDOM_ID_REGEX = re.compile('^[a-zA-Z0-9]{20}$')
-MISSING_ENTITY = 'no entity to update: '
-ALREADY_EXISTS = 'entity already exists: '
+MISSING_DOCUMENT = 'No document to update: '
+DOCUMENT_EXISTS = 'Document already exists: '
 
 
 @pytest.fixture(scope=u'module')
 def client():
-    credentials, project = _load_credentials_from_file(FIRESTORE_CREDS)
+    credentials = service_account.Credentials.from_service_account_file(
+        FIRESTORE_CREDS)
+    project = FIRESTORE_PROJECT or credentials.project_id
     yield firestore.Client(project=project, credentials=credentials)
 
 
@@ -77,11 +79,8 @@ def test_create_document(client, cleanup):
     # Allow a bit of clock skew, but make sure timestamps are close.
     assert -300.0 < delta.total_seconds() < 300.0
 
-    with pytest.raises(Conflict) as exc_info:
-        document.create({})
-
-    assert exc_info.value.message.startswith(ALREADY_EXISTS)
-    assert document_id in exc_info.value.message
+    with pytest.raises(AlreadyExists):
+        document.create(data)
 
     # Verify the server times.
     snapshot = document.get()
@@ -105,6 +104,28 @@ def test_create_document(client, cleanup):
     assert stored_data == expected_data
 
 
+def test_create_document_w_subcollection(client, cleanup):
+    document_id = 'shun' + unique_resource_id('-')
+    document = client.document('collek', document_id)
+    # Add to clean-up before API request (in case ``create()`` fails).
+    cleanup(document)
+
+    data = {
+        'now': firestore.SERVER_TIMESTAMP,
+    }
+    document.create(data)
+
+    child_ids = ['child1', 'child2']
+
+    for child_id in child_ids:
+        subcollection = document.collection(child_id)
+        _, subdoc = subcollection.add({'foo': 'bar'})
+        cleanup(subdoc)
+
+    children = document.collections()
+    assert sorted(child.id for child in children) == sorted(child_ids)
+
+
 def test_cannot_use_foreign_key(client, cleanup):
     document_id = 'cannot' + unique_resource_id('-')
     document = client.document('foreign-key', document_id)
@@ -117,13 +138,8 @@ def test_cannot_use_foreign_key(client, cleanup):
         database='dee-bee')
     assert other_client._database_string != client._database_string
     fake_doc = other_client.document('foo', 'bar')
-    # NOTE: google-gax **does not** raise a GaxError for INVALID_ARGUMENT.
-    with pytest.raises(ValueError) as exc_info:
+    with pytest.raises(InvalidArgument):
         document.create({'ref': fake_doc})
-
-    assert len(exc_info.value.args) == 1
-    err_msg = exc_info.value.args[0]
-    assert err_msg == 'RPC failed'
 
 
 def assert_timestamp_less(timestamp_pb1, timestamp_pb2):
@@ -132,31 +148,33 @@ def assert_timestamp_less(timestamp_pb1, timestamp_pb2):
     assert dt_val1 < dt_val2
 
 
+def test_no_document(client, cleanup):
+    document_id = 'no_document' + unique_resource_id('-')
+    document = client.document('abcde', document_id)
+    snapshot = document.get()
+    assert snapshot.to_dict() is None
+
+
 def test_document_set(client, cleanup):
     document_id = 'for-set' + unique_resource_id('-')
     document = client.document('i-did-it', document_id)
     # Add to clean-up before API request (in case ``set()`` fails).
     cleanup(document)
 
-    # 0. Make sure the document doesn't exist yet using an option.
-    option0 = client.write_option(create_if_missing=False)
-    with pytest.raises(NotFound) as exc_info:
-        document.set({'no': 'way'}, option=option0)
+    # 0. Make sure the document doesn't exist yet
+    snapshot = document.get()
+    assert snapshot.to_dict() is None
 
-    assert exc_info.value.message.startswith(MISSING_ENTITY)
-    assert document_id in exc_info.value.message
-
-    # 1. Use ``set()`` to create the document (using an option).
+    # 1. Use ``create()`` to create the document.
     data1 = {'foo': 88}
-    option1 = client.write_option(create_if_missing=True)
-    write_result1 = document.set(data1, option=option1)
+    write_result1 = document.create(data1)
     snapshot1 = document.get()
     assert snapshot1.to_dict() == data1
     # Make sure the update is what created the document.
     assert snapshot1.create_time == snapshot1.update_time
     assert snapshot1.update_time == write_result1.update_time
 
-    # 2. Call ``set()`` again to overwrite (no option).
+    # 2. Call ``set()`` again to overwrite.
     data2 = {'bar': None}
     write_result2 = document.set(data2)
     snapshot2 = document.get()
@@ -165,33 +183,118 @@ def test_document_set(client, cleanup):
     assert snapshot2.create_time == snapshot1.create_time
     assert snapshot2.update_time == write_result2.update_time
 
-    # 3. Call ``set()`` with a valid "last timestamp" option.
-    data3 = {'skates': 88}
-    option3 = client.write_option(last_update_time=snapshot2.update_time)
-    write_result3 = document.set(data3, option=option3)
-    snapshot3 = document.get()
-    assert snapshot3.to_dict() == data3
+
+def test_document_integer_field(client, cleanup):
+    document_id = 'for-set' + unique_resource_id('-')
+    document = client.document('i-did-it', document_id)
+    # Add to clean-up before API request (in case ``set()`` fails).
+    cleanup(document)
+
+    data1 = {
+        '1a': {
+            '2b': '3c',
+            'ab': '5e'},
+        '6f': {
+            '7g': '8h',
+            'cd': '0j'}
+    }
+    document.create(data1)
+
+    data2 = {'1a.ab': '4d', '6f.7g': '9h'}
+    option2 = client.write_option(exists=True)
+    document.update(data2, option=option2)
+    snapshot = document.get()
+    expected = {
+        '1a': {
+            '2b': '3c',
+            'ab': '4d'},
+        '6f': {
+            '7g': '9h',
+            'cd': '0j'}
+    }
+    assert snapshot.to_dict() == expected
+
+
+def test_document_set_merge(client, cleanup):
+    document_id = 'for-set' + unique_resource_id('-')
+    document = client.document('i-did-it', document_id)
+    # Add to clean-up before API request (in case ``set()`` fails).
+    cleanup(document)
+
+    # 0. Make sure the document doesn't exist yet
+    snapshot = document.get()
+    assert not snapshot.exists
+
+    # 1. Use ``create()`` to create the document.
+    data1 = {'name': 'Sam',
+             'address': {'city': 'SF',
+                         'state': 'CA'}}
+    write_result1 = document.create(data1)
+    snapshot1 = document.get()
+    assert snapshot1.to_dict() == data1
+    # Make sure the update is what created the document.
+    assert snapshot1.create_time == snapshot1.update_time
+    assert snapshot1.update_time == write_result1.update_time
+
+    # 2. Call ``set()`` to merge
+    data2 = {'address': {'city': 'LA'}}
+    write_result2 = document.set(data2, merge=True)
+    snapshot2 = document.get()
+    assert snapshot2.to_dict() == {'name': 'Sam',
+                                   'address': {'city': 'LA',
+                                               'state': 'CA'}}
     # Make sure the create time hasn't changed.
-    assert snapshot3.create_time == snapshot1.create_time
-    assert snapshot3.update_time == write_result3.update_time
+    assert snapshot2.create_time == snapshot1.create_time
+    assert snapshot2.update_time == write_result2.update_time
 
-    # 4. Call ``set()`` with invalid (in the past) "last timestamp" option.
-    assert_timestamp_less(option3._last_update_time, snapshot3.update_time)
-    with pytest.raises(GaxError) as exc_info:
-        document.set({'bad': 'time-past'}, option=option3)
 
-    assert exc_to_code(exc_info.value.cause) == StatusCode.FAILED_PRECONDITION
+def test_document_set_w_int_field(client, cleanup):
+    document_id = 'set-int-key' + unique_resource_id('-')
+    document = client.document('i-did-it', document_id)
+    # Add to clean-up before API request (in case ``set()`` fails).
+    cleanup(document)
 
-    # 5. Call ``set()`` with invalid (in the future) "last timestamp" option.
-    timestamp_pb = timestamp_pb2.Timestamp(
-        seconds=snapshot3.update_time.nanos + 120,
-        nanos=snapshot3.update_time.nanos,
-    )
-    option5 = client.write_option(last_update_time=timestamp_pb)
-    with pytest.raises(GaxError) as exc_info:
-        document.set({'bad': 'time-future'}, option=option5)
+    # 0. Make sure the document doesn't exist yet
+    snapshot = document.get()
+    assert not snapshot.exists
 
-    assert exc_to_code(exc_info.value.cause) == StatusCode.FAILED_PRECONDITION
+    # 1. Use ``create()`` to create the document.
+    before = {'testing': '1'}
+    document.create(before)
+
+    # 2. Replace using ``set()``.
+    data = {'14': {'status': 'active'}}
+    document.set(data)
+
+    # 3. Verify replaced data.
+    snapshot1 = document.get()
+    assert snapshot1.to_dict() == data
+
+
+def test_document_update_w_int_field(client, cleanup):
+    # Attempt to reproduce #5489.
+    document_id = 'update-int-key' + unique_resource_id('-')
+    document = client.document('i-did-it', document_id)
+    # Add to clean-up before API request (in case ``set()`` fails).
+    cleanup(document)
+
+    # 0. Make sure the document doesn't exist yet
+    snapshot = document.get()
+    assert not snapshot.exists
+
+    # 1. Use ``create()`` to create the document.
+    before = {'testing': '1'}
+    document.create(before)
+
+    # 2. Add values using ``update()``.
+    data = {'14': {'status': 'active'}}
+    document.update(data)
+
+    # 3. Verify updated data.
+    expected = before.copy()
+    expected.update(data)
+    snapshot1 = document.get()
+    assert snapshot1.to_dict() == expected
 
 
 def test_update_document(client, cleanup):
@@ -203,14 +306,14 @@ def test_update_document(client, cleanup):
     # 0. Try to update before the document exists.
     with pytest.raises(NotFound) as exc_info:
         document.update({'not': 'there'})
-    assert exc_info.value.message.startswith(MISSING_ENTITY)
+    assert exc_info.value.message.startswith(MISSING_DOCUMENT)
     assert document_id in exc_info.value.message
 
     # 1. Try to update before the document exists (now with an option).
-    option1 = client.write_option(create_if_missing=False)
+    option1 = client.write_option(exists=True)
     with pytest.raises(NotFound) as exc_info:
         document.update({'still': 'not-there'}, option=option1)
-    assert exc_info.value.message.startswith(MISSING_ENTITY)
+    assert exc_info.value.message.startswith(MISSING_DOCUMENT)
     assert document_id in exc_info.value.message
 
     # 2. Update and create the document (with an option).
@@ -223,7 +326,7 @@ def test_update_document(client, cleanup):
         },
         'other': True,
     }
-    option2 = client.write_option(create_if_missing=True)
+    option2 = client.write_option(exists=False)
     write_result2 = document.update(data, option=option2)
 
     # 3. Send an update without a field path (no option).
@@ -259,10 +362,8 @@ def test_update_document(client, cleanup):
 
     # 5. Call ``update()`` with invalid (in the past) "last timestamp" option.
     assert_timestamp_less(option4._last_update_time, snapshot4.update_time)
-    with pytest.raises(GaxError) as exc_info:
+    with pytest.raises(FailedPrecondition) as exc_info:
         document.update({'bad': 'time-past'}, option=option4)
-
-    assert exc_to_code(exc_info.value.cause) == StatusCode.FAILED_PRECONDITION
 
     # 6. Call ``update()`` with invalid (in future) "last timestamp" option.
     timestamp_pb = timestamp_pb2.Timestamp(
@@ -270,10 +371,8 @@ def test_update_document(client, cleanup):
         nanos=snapshot4.update_time.nanos,
     )
     option6 = client.write_option(last_update_time=timestamp_pb)
-    with pytest.raises(GaxError) as exc_info:
-        document.set({'bad': 'time-future'}, option=option6)
-
-    assert exc_to_code(exc_info.value.cause) == StatusCode.FAILED_PRECONDITION
+    with pytest.raises(FailedPrecondition) as exc_info:
+        document.update({'bad': 'time-future'}, option=option6)
 
 
 def check_snapshot(snapshot, document, data, write_result):
@@ -292,10 +391,7 @@ def test_document_get(client, cleanup):
     cleanup(document)
 
     # First make sure it doesn't exist.
-    with pytest.raises(NotFound) as exc_info:
-        document.get()
-
-    assert exc_info.value.message == document._document_path
+    assert not document.get().exists
 
     ref_doc = client.document('top', 'middle1', 'middle2', 'bottom')
     data = {
@@ -336,10 +432,8 @@ def test_document_delete(client, cleanup):
         nanos=snapshot1.update_time.nanos,
     )
     option1 = client.write_option(last_update_time=timestamp_pb)
-    with pytest.raises(GaxError) as exc_info:
+    with pytest.raises(FailedPrecondition):
         document.delete(option=option1)
-
-    assert exc_to_code(exc_info.value.cause) == StatusCode.FAILED_PRECONDITION
 
     # 2. Call ``delete()`` with invalid (in future) "last timestamp" option.
     timestamp_pb = timestamp_pb2.Timestamp(
@@ -347,10 +441,8 @@ def test_document_delete(client, cleanup):
         nanos=snapshot1.update_time.nanos,
     )
     option2 = client.write_option(last_update_time=timestamp_pb)
-    with pytest.raises(GaxError) as exc_info:
+    with pytest.raises(FailedPrecondition):
         document.delete(option=option2)
-
-    assert exc_to_code(exc_info.value.cause) == StatusCode.FAILED_PRECONDITION
 
     # 3. Actually ``delete()`` the document.
     delete_time3 = document.delete()
@@ -614,8 +706,10 @@ def test_get_all(client, cleanup):
     snapshots = list(client.get_all(
         [document1, document2, document3]))
 
-    assert snapshots.count(None) == 1
-    snapshots.remove(None)
+    assert snapshots[0].exists
+    assert snapshots[1].exists
+    assert not snapshots[2].exists
+    snapshots = [snapshot for snapshot in snapshots if snapshot.exists]
     id_attr = operator.attrgetter('id')
     snapshots.sort(key=id_attr)
 
@@ -699,5 +793,4 @@ def test_batch(client, cleanup):
     assert_timestamp_less(snapshot2.create_time, write_result2.update_time)
     assert snapshot2.update_time == write_result2.update_time
 
-    with pytest.raises(NotFound):
-        document3.get()
+    assert not document3.get().exists

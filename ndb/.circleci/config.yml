@@ -1,0 +1,30 @@
+---
+version: 2
+jobs:
+  build:
+    working_directory: /var/code/ndb-rewrite/
+    docker:
+      - image: dhermes/python-multi:latest
+    steps:
+      - checkout
+      - run:
+          name: Update to latest `nox`
+          command: python3.7 -m pip install --upgrade nox
+      - run:
+          name: Unit tests in Python 3.5
+          command: python3.7 -m nox -s unit-3.5
+      - run:
+          name: Unit tests in Python 3.6
+          command: python3.7 -m nox -s unit-3.6
+      - run:
+          name: Unit tests in Python 3.7
+          command: python3.7 -m nox -s unit-3.7
+      - run:
+          name: Unit tests in pypy3
+          command: python3.7 -m nox -s unit-pypy3
+      - run:
+          name: Build docs
+          command: python3.7 -m nox -s docs
+      - run:
+          name: Run / verify doctests
+          command: python3.7 -m nox -s doctest

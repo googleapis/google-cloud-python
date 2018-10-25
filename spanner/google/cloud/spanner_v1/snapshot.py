@@ -24,9 +24,10 @@ from google.api_core.exceptions import ServiceUnavailable
 from google.cloud._helpers import _datetime_to_pb_timestamp
 from google.cloud._helpers import _timedelta_to_duration_pb
 from google.cloud.spanner_v1._helpers import _make_value_pb
-from google.cloud.spanner_v1._helpers import _options_with_prefix
+from google.cloud.spanner_v1._helpers import _metadata_with_prefix
 from google.cloud.spanner_v1._helpers import _SessionWrapper
 from google.cloud.spanner_v1.streamed import StreamedResultSet
+from google.cloud.spanner_v1.types import PartitionOptions
 
 
 def _restart_on_unavailable(restart):
@@ -35,7 +36,7 @@ def _restart_on_unavailable(restart):
     :type restart: callable
     :param restart: curried function returning iterator
     """
-    resume_token = ''
+    resume_token = b''
     item_buffer = []
     iterator = restart()
     while True:
@@ -70,6 +71,7 @@ class _SnapshotBase(_SessionWrapper):
     _multi_use = False
     _transaction_id = None
     _read_request_count = 0
+    _execute_sql_count = 0
 
     def _make_txn_selector(self):  # pylint: disable=redundant-returns-doc
         """Helper for :meth:`read` / :meth:`execute_sql`.
@@ -82,7 +84,7 @@ class _SnapshotBase(_SessionWrapper):
         """
         raise NotImplementedError
 
-    def read(self, table, columns, keyset, index='', limit=0):
+    def read(self, table, columns, keyset, index='', limit=0, partition=None):
         """Perform a ``StreamingRead`` API request for rows in a table.
 
         :type table: str
@@ -99,10 +101,17 @@ class _SnapshotBase(_SessionWrapper):
                       table's primary key
 
         :type limit: int
-        :param limit: (Optional) maximum number of rows to return
+        :param limit: (Optional) maximum number of rows to return.
+                      Incompatible with ``partition``.
+
+        :type partition: bytes
+        :param partition: (Optional) one of the partition tokens returned
+                          from :meth:`partition_read`.  Incompatible with
+                          ``limit``.
 
         :rtype: :class:`~google.cloud.spanner_v1.streamed.StreamedResultSet`
         :returns: a result set instance which can be used to consume rows.
+
         :raises ValueError:
             for reuse of single-use snapshots, or if a transaction ID is
             already pending for multiple-use snapshots.
@@ -115,14 +124,14 @@ class _SnapshotBase(_SessionWrapper):
 
         database = self._session._database
         api = database.spanner_api
-        options = _options_with_prefix(database.name)
+        metadata = _metadata_with_prefix(database.name)
         transaction = self._make_txn_selector()
 
         restart = functools.partial(
             api.streaming_read,
-            self._session.name, table, columns, keyset.to_pb(),
+            self._session.name, table, columns, keyset._to_pb(),
             transaction=transaction, index=index, limit=limit,
-            options=options)
+            partition_token=partition, metadata=metadata)
 
         iterator = _restart_on_unavailable(restart)
 
@@ -133,8 +142,9 @@ class _SnapshotBase(_SessionWrapper):
         else:
             return StreamedResultSet(iterator)
 
-    def execute_sql(self, sql, params=None, param_types=None, query_mode=None):
-        """Perform an ``ExecuteStreamingSql`` API request for rows in a table.
+    def execute_sql(self, sql, params=None, param_types=None,
+                    query_mode=None, partition=None):
+        """Perform an ``ExecuteStreamingSql`` API request.
 
         :type sql: str
         :param sql: SQL query statement
@@ -143,7 +153,7 @@ class _SnapshotBase(_SessionWrapper):
         :param params: values for parameter replacement.  Keys must match
                        the names used in ``sql``.
 
-        :type param_types: dict
+        :type param_types: dict[str -> Union[dict, .types.Type]]
         :param param_types:
             (Optional) maps explicit types for one or more param values;
             required if parameters are passed.
@@ -153,8 +163,13 @@ class _SnapshotBase(_SessionWrapper):
         :param query_mode: Mode governing return of results / query plan. See
             https://cloud.google.com/spanner/reference/rpc/google.spanner.v1#google.spanner.v1.ExecuteSqlRequest.QueryMode1
 
+        :type partition: bytes
+        :param partition: (Optional) one of the partition tokens returned
+                          from :meth:`partition_query`.
+
         :rtype: :class:`~google.cloud.spanner_v1.streamed.StreamedResultSet`
         :returns: a result set instance which can be used to consume rows.
+
         :raises ValueError:
             for reuse of single-use snapshots, or if a transaction ID is
             already pending for multiple-use snapshots.
@@ -175,24 +190,164 @@ class _SnapshotBase(_SessionWrapper):
             params_pb = None
 
         database = self._session._database
-        options = _options_with_prefix(database.name)
+        metadata = _metadata_with_prefix(database.name)
         transaction = self._make_txn_selector()
         api = database.spanner_api
 
         restart = functools.partial(
             api.execute_streaming_sql,
-            self._session.name, sql,
-            transaction=transaction, params=params_pb, param_types=param_types,
-            query_mode=query_mode, options=options)
+            self._session.name,
+            sql,
+            transaction=transaction,
+            params=params_pb,
+            param_types=param_types,
+            query_mode=query_mode,
+            partition_token=partition,
+            seqno=self._execute_sql_count,
+            metadata=metadata)
 
         iterator = _restart_on_unavailable(restart)
 
         self._read_request_count += 1
+        self._execute_sql_count += 1
 
         if self._multi_use:
             return StreamedResultSet(iterator, source=self)
         else:
             return StreamedResultSet(iterator)
+
+    def partition_read(self, table, columns, keyset, index='',
+                       partition_size_bytes=None, max_partitions=None):
+        """Perform a ``ParitionRead`` API request for rows in a table.
+
+        :type table: str
+        :param table: name of the table from which to fetch data
+
+        :type columns: list of str
+        :param columns: names of columns to be retrieved
+
+        :type keyset: :class:`~google.cloud.spanner_v1.keyset.KeySet`
+        :param keyset: keys / ranges identifying rows to be retrieved
+
+        :type index: str
+        :param index: (Optional) name of index to use, rather than the
+                      table's primary key
+
+        :type partition_size_bytes: int
+        :param partition_size_bytes:
+            (Optional) desired size for each partition generated.  The service
+            uses this as a hint, the actual partition size may differ.
+
+        :type max_partitions: int
+        :param max_partitions:
+            (Optional) desired maximum number of partitions generated. The
+            service uses this as a hint, the actual number of partitions may
+            differ.
+
+        :rtype: iterable of bytes
+        :returns: a sequence of partition tokens
+
+        :raises ValueError:
+            for single-use snapshots, or if a transaction ID is
+            already associtated with the snapshot.
+        """
+        if not self._multi_use:
+            raise ValueError("Cannot use single-use snapshot.")
+
+        if self._transaction_id is None:
+            raise ValueError("Transaction not started.")
+
+        database = self._session._database
+        api = database.spanner_api
+        metadata = _metadata_with_prefix(database.name)
+        transaction = self._make_txn_selector()
+        partition_options = PartitionOptions(
+            partition_size_bytes=partition_size_bytes,
+            max_partitions=max_partitions,
+        )
+
+        response = api.partition_read(
+            session=self._session.name,
+            table=table,
+            columns=columns,
+            key_set=keyset._to_pb(),
+            transaction=transaction,
+            index=index,
+            partition_options=partition_options,
+            metadata=metadata,
+        )
+
+        return [partition.partition_token for partition in response.partitions]
+
+    def partition_query(self, sql, params=None, param_types=None,
+                        partition_size_bytes=None, max_partitions=None):
+        """Perform a ``ParitionQuery`` API request.
+
+        :type sql: str
+        :param sql: SQL query statement
+
+        :type params: dict, {str -> column value}
+        :param params: values for parameter replacement.  Keys must match
+                       the names used in ``sql``.
+
+        :type param_types: dict[str -> Union[dict, .types.Type]]
+        :param param_types:
+            (Optional) maps explicit types for one or more param values;
+            required if parameters are passed.
+
+        :type partition_size_bytes: int
+        :param partition_size_bytes:
+            (Optional) desired size for each partition generated.  The service
+            uses this as a hint, the actual partition size may differ.
+
+        :type max_partitions: int
+        :param max_partitions:
+            (Optional) desired maximum number of partitions generated. The
+            service uses this as a hint, the actual number of partitions may
+            differ.
+
+        :rtype: iterable of bytes
+        :returns: a sequence of partition tokens
+
+        :raises ValueError:
+            for single-use snapshots, or if a transaction ID is
+            already associtated with the snapshot.
+        """
+        if not self._multi_use:
+            raise ValueError("Cannot use single-use snapshot.")
+
+        if self._transaction_id is None:
+            raise ValueError("Transaction not started.")
+
+        if params is not None:
+            if param_types is None:
+                raise ValueError(
+                    "Specify 'param_types' when passing 'params'.")
+            params_pb = Struct(fields={
+                key: _make_value_pb(value) for key, value in params.items()})
+        else:
+            params_pb = None
+
+        database = self._session._database
+        api = database.spanner_api
+        metadata = _metadata_with_prefix(database.name)
+        transaction = self._make_txn_selector()
+        partition_options = PartitionOptions(
+            partition_size_bytes=partition_size_bytes,
+            max_partitions=max_partitions,
+        )
+
+        response = api.partition_query(
+            session=self._session.name,
+            sql=sql,
+            transaction=transaction,
+            params=params_pb,
+            param_types=param_types,
+            partition_options=partition_options,
+            metadata=metadata,
+        )
+
+        return [partition.partition_token for partition in response.partitions]
 
 
 class Snapshot(_SnapshotBase):
@@ -286,11 +441,12 @@ class Snapshot(_SnapshotBase):
 
         :rtype: bytes
         :returns: the ID for the newly-begun transaction.
+
         :raises ValueError:
             if the transaction is already begun, committed, or rolled back.
         """
         if not self._multi_use:
-            raise ValueError("Cannot call 'begin' single-use snapshots")
+            raise ValueError("Cannot call 'begin' on single-use snapshots")
 
         if self._transaction_id is not None:
             raise ValueError("Read-only transaction already begun")
@@ -300,9 +456,9 @@ class Snapshot(_SnapshotBase):
 
         database = self._session._database
         api = database.spanner_api
-        options = _options_with_prefix(database.name)
+        metadata = _metadata_with_prefix(database.name)
         txn_selector = self._make_txn_selector()
         response = api.begin_transaction(
-            self._session.name, txn_selector.begin, options=options)
+            self._session.name, txn_selector.begin, metadata=metadata)
         self._transaction_id = response.id
         return self._transaction_id

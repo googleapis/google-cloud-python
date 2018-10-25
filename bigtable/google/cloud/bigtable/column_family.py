@@ -16,9 +16,9 @@
 
 
 from google.cloud import _helpers
-from google.cloud.bigtable._generated import (
+from google.cloud.bigtable_admin_v2.proto import (
     table_pb2 as table_v2_pb2)
-from google.cloud.bigtable._generated import (
+from google.cloud.bigtable_admin_v2.proto import (
     bigtable_table_admin_pb2 as table_admin_v2_pb2)
 
 
@@ -221,17 +221,15 @@ class ColumnFamily(object):
     def create(self):
         """Create this column family."""
         column_family = self.to_pb()
-        request_pb = table_admin_v2_pb2.ModifyColumnFamiliesRequest(
-            name=self._table.name)
-        request_pb.modifications.add(
-            id=self.column_family_id,
-            create=column_family,
-        )
+        modification = (
+            table_admin_v2_pb2.ModifyColumnFamiliesRequest.Modification(
+                id=self.column_family_id, create=column_family))
+
         client = self._table._instance._client
-        # We expect a `.table_v2_pb2.ColumnFamily`. We ignore it since the only
         # data it contains are the GC rule and the column family ID already
         # stored on this instance.
-        client._table_stub.ModifyColumnFamilies(request_pb)
+        client.table_admin_client.modify_column_families(
+            self._table.name, [modification])
 
     def update(self):
         """Update this column family.
@@ -242,27 +240,27 @@ class ColumnFamily(object):
             you will simply be referring to a different column family.
         """
         column_family = self.to_pb()
-        request_pb = table_admin_v2_pb2.ModifyColumnFamiliesRequest(
-            name=self._table.name)
-        request_pb.modifications.add(
-            id=self.column_family_id,
-            update=column_family)
+        modification = (
+            table_admin_v2_pb2.ModifyColumnFamiliesRequest.Modification(
+                id=self.column_family_id, update=column_family))
+
         client = self._table._instance._client
-        # We expect a `.table_v2_pb2.ColumnFamily`. We ignore it since the only
         # data it contains are the GC rule and the column family ID already
         # stored on this instance.
-        client._table_stub.ModifyColumnFamilies(request_pb)
+        client.table_admin_client.modify_column_families(
+            self._table.name, [modification])
 
     def delete(self):
         """Delete this column family."""
-        request_pb = table_admin_v2_pb2.ModifyColumnFamiliesRequest(
-            name=self._table.name)
-        request_pb.modifications.add(
-            id=self.column_family_id,
-            drop=True)
+        modification = (
+            table_admin_v2_pb2.ModifyColumnFamiliesRequest.Modification(
+                id=self.column_family_id, drop=True))
+
         client = self._table._instance._client
-        # We expect a `google.protobuf.empty_pb2.Empty`
-        client._table_stub.ModifyColumnFamilies(request_pb)
+        # data it contains are the GC rule and the column family ID already
+        # stored on this instance.
+        client.table_admin_client.modify_column_families(
+            self._table.name, [modification])
 
 
 def _gc_rule_from_pb(gc_rule_pb):

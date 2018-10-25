@@ -1,10 +1,12 @@
-# Copyright 2017, Google LLC All rights reserved.
+# -*- coding: utf-8 -*-
+#
+# Copyright 2018 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#     http://www.apache.org/licenses/LICENSE-2.0
+#     https://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,8 +15,10 @@
 # limitations under the License.
 """Wrappers for protocol buffer enum types."""
 
+import enum
 
-class Likelihood(object):
+
+class Likelihood(enum.IntEnum):
     """
     A bucketized representation of likelihood, which is intended to give clients
     highly stable results across model upgrades.
@@ -37,7 +41,7 @@ class Likelihood(object):
 
 class TextAnnotation(object):
     class DetectedBreak(object):
-        class BreakType(object):
+        class BreakType(enum.IntEnum):
             """
             Enum to denote the type of break found. New line, space etc.
 
@@ -46,10 +50,9 @@ class TextAnnotation(object):
               SPACE (int): Regular space.
               SURE_SPACE (int): Sure space (very wide).
               EOL_SURE_SPACE (int): Line-wrapping break.
-              HYPHEN (int): End-line hyphen that is not present in text; does
-              LINE_BREAK (int): not co-occur with SPACE, LEADER_SPACE, or
-              LINE_BREAK.
-              Line break that ends a paragraph.
+              HYPHEN (int): End-line hyphen that is not present in text; does not co-occur with
+              ``SPACE``, ``LEADER_SPACE``, or ``LINE_BREAK``.
+              LINE_BREAK (int): Line break that ends a paragraph.
             """
             UNKNOWN = 0
             SPACE = 1
@@ -60,7 +63,7 @@ class TextAnnotation(object):
 
 
 class Block(object):
-    class BlockType(object):
+    class BlockType(enum.IntEnum):
         """
         Type of a block (text, image etc) as identified by OCR.
 
@@ -81,9 +84,9 @@ class Block(object):
 
 
 class Feature(object):
-    class Type(object):
+    class Type(enum.IntEnum):
         """
-        Type of image feature.
+        Type of Google Cloud Vision API feature to be extracted.
 
         Attributes:
           TYPE_UNSPECIFIED (int): Unspecified feature type.
@@ -91,13 +94,18 @@ class Feature(object):
           LANDMARK_DETECTION (int): Run landmark detection.
           LOGO_DETECTION (int): Run logo detection.
           LABEL_DETECTION (int): Run label detection.
-          TEXT_DETECTION (int): Run OCR.
+          TEXT_DETECTION (int): Run text detection / optical character recognition (OCR). Text detection
+          is optimized for areas of text within a larger image; if the image is
+          a document, use ``DOCUMENT_TEXT_DETECTION`` instead.
           DOCUMENT_TEXT_DETECTION (int): Run dense text document OCR. Takes precedence when both
-          DOCUMENT_TEXT_DETECTION and TEXT_DETECTION are present.
-          SAFE_SEARCH_DETECTION (int): Run computer vision models to compute image safe-search properties.
-          IMAGE_PROPERTIES (int): Compute a set of image properties, such as the image's dominant colors.
+          ``DOCUMENT_TEXT_DETECTION`` and ``TEXT_DETECTION`` are present.
+          SAFE_SEARCH_DETECTION (int): Run Safe Search to detect potentially unsafe
+          or undesirable content.
+          IMAGE_PROPERTIES (int): Compute a set of image properties, such as the
+          image's dominant colors.
           CROP_HINTS (int): Run crop hints.
           WEB_DETECTION (int): Run web detection.
+          OBJECT_LOCALIZATION (int): Run localizer for object detection.
         """
         TYPE_UNSPECIFIED = 0
         FACE_DETECTION = 1
@@ -110,11 +118,12 @@ class Feature(object):
         IMAGE_PROPERTIES = 7
         CROP_HINTS = 9
         WEB_DETECTION = 10
+        OBJECT_LOCALIZATION = 19
 
 
 class FaceAnnotation(object):
     class Landmark(object):
-        class Type(object):
+        class Type(enum.IntEnum):
             """
             Face landmark (feature) type.
             Left and right are defined from the vantage of the viewer of the image
@@ -193,3 +202,22 @@ class FaceAnnotation(object):
             CHIN_GNATHION = 32
             CHIN_LEFT_GONION = 33
             CHIN_RIGHT_GONION = 34
+
+
+class OperationMetadata(object):
+    class State(enum.IntEnum):
+        """
+        Batch operation states.
+
+        Attributes:
+          STATE_UNSPECIFIED (int): Invalid.
+          CREATED (int): Request is received.
+          RUNNING (int): Request is actively being processed.
+          DONE (int): The batch processing is done.
+          CANCELLED (int): The batch processing was cancelled.
+        """
+        STATE_UNSPECIFIED = 0
+        CREATED = 1
+        RUNNING = 2
+        DONE = 3
+        CANCELLED = 4

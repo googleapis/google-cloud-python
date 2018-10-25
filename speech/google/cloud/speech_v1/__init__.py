@@ -1,4 +1,4 @@
-# Copyright 2017, Google LLC All rights reserved.
+# Copyright 2017 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,8 +14,8 @@
 
 from __future__ import absolute_import
 
-from google.cloud.gapic.speech.v1 import speech_client
-from google.cloud.gapic.speech.v1 import enums
+from google.cloud.speech_v1.gapic import speech_client
+from google.cloud.speech_v1.gapic import enums
 
 from google.cloud.speech_v1.helpers import SpeechHelpers
 from google.cloud.speech_v1 import types

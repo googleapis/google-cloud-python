@@ -48,7 +48,7 @@ class TestClient(unittest.TestCase):
         client = self._make_one(project=self.PROJECT, credentials=creds)
         self.assertEqual(client.project, self.PROJECT)
 
-    def test_logging_api_wo_gax(self):
+    def test_logging_api_wo_gapic(self):
         from google.cloud.logging._http import _LoggingAPI
 
         client = self._make_one(self.PROJECT,
@@ -64,7 +64,7 @@ class TestClient(unittest.TestCase):
         again = client.logging_api
         self.assertIs(again, api)
 
-    def test_logging_api_w_gax(self):
+    def test_logging_api_w_gapic(self):
         clients = []
         api_obj = object()
 
@@ -76,10 +76,9 @@ class TestClient(unittest.TestCase):
         client = self._make_one(project=self.PROJECT, credentials=creds,
                                 _use_grpc=True)
 
-        patch = mock.patch(
-            'google.cloud.logging.client.make_gax_logging_api',
-            new=make_api)
-        with patch:
+        patch = mock.patch('google.cloud.logging.client._gapic')
+        with patch as gapic_module:
+            gapic_module.make_logging_api.side_effect = make_api
             api = client.logging_api
 
         self.assertIs(api, api_obj)
@@ -88,7 +87,7 @@ class TestClient(unittest.TestCase):
         again = client.logging_api
         self.assertIs(again, api)
 
-    def test_no_gax_ctor(self):
+    def test_no_gapic_ctor(self):
         from google.cloud.logging._http import _LoggingAPI
 
         creds = _make_credentials()
@@ -102,7 +101,7 @@ class TestClient(unittest.TestCase):
         api = client.logging_api
         self.assertIsInstance(api, _LoggingAPI)
 
-    def test_sinks_api_wo_gax(self):
+    def test_sinks_api_wo_gapic(self):
         from google.cloud.logging._http import _SinksAPI
 
         client = self._make_one(
@@ -118,7 +117,7 @@ class TestClient(unittest.TestCase):
         again = client.sinks_api
         self.assertIs(again, api)
 
-    def test_sinks_api_w_gax(self):
+    def test_sinks_api_w_gapic(self):
         clients = []
         api_obj = object()
 
@@ -130,10 +129,9 @@ class TestClient(unittest.TestCase):
         client = self._make_one(project=self.PROJECT, credentials=creds,
                                 _use_grpc=True)
 
-        patch = mock.patch(
-            'google.cloud.logging.client.make_gax_sinks_api',
-            new=make_api)
-        with patch:
+        patch = mock.patch('google.cloud.logging.client._gapic')
+        with patch as gapic_module:
+            gapic_module.make_sinks_api.side_effect = make_api
             api = client.sinks_api
 
         self.assertIs(api, api_obj)
@@ -142,7 +140,7 @@ class TestClient(unittest.TestCase):
         again = client.sinks_api
         self.assertIs(again, api)
 
-    def test_metrics_api_wo_gax(self):
+    def test_metrics_api_wo_gapic(self):
         from google.cloud.logging._http import _MetricsAPI
 
         client = self._make_one(
@@ -158,7 +156,7 @@ class TestClient(unittest.TestCase):
         again = client.metrics_api
         self.assertIs(again, api)
 
-    def test_metrics_api_w_gax(self):
+    def test_metrics_api_w_gapic(self):
         clients = []
         api_obj = object()
 
@@ -170,10 +168,9 @@ class TestClient(unittest.TestCase):
         client = self._make_one(project=self.PROJECT, credentials=creds,
                                 _use_grpc=True)
 
-        patch = mock.patch(
-            'google.cloud.logging.client.make_gax_metrics_api',
-            new=make_api)
-        with patch:
+        patch = mock.patch('google.cloud.logging.client._gapic')
+        with patch as gapic_module:
+            gapic_module.make_metrics_api.side_effect = make_api
             api = client.metrics_api
 
         self.assertIs(api, api_obj)

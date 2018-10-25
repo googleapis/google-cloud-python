@@ -32,6 +32,8 @@ def add_methods(source_class, blacklist=()):
         # Similarly, for instance methods, we need to send self.api rather
         # than self, since that is where the actual methods were declared.
         instance_method = True
+
+        # If this is a bound method it's a classmethod.
         self = getattr(wrapped_fx, '__self__', None)
         if issubclass(type(self), type):
             instance_method = False
@@ -39,10 +41,11 @@ def add_methods(source_class, blacklist=()):
         # Okay, we have figured out what kind of method this is; send
         # down the correct wrapper function.
         if instance_method:
-            fx = lambda self, *a, **kw: wrapped_fx(self.api, *a, **kw)
+            fx = lambda self, *a, **kw: wrapped_fx(self.api, *a, **kw)  # noqa
             return functools.wraps(wrapped_fx)(fx)
-        fx = lambda self, *a, **kw: wrapped_fx(*a, **kw)
-        return functools.wraps(wrapped_fx)(fx)
+
+        fx = lambda *a, **kw: wrapped_fx(*a, **kw)  # noqa
+        return staticmethod(functools.wraps(wrapped_fx)(fx))
 
     def actual_decorator(cls):
         # Reflectively iterate over most of the methods on the source class

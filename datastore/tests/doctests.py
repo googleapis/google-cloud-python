@@ -19,8 +19,6 @@ import unittest
 
 import six
 
-import sphinx
-
 from google.cloud import datastore
 
 

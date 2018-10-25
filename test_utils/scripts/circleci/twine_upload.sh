@@ -27,9 +27,10 @@ SCRIPT="$(dirname "${BASH_SOURCE[0]}")/get_tagged_package.py"
 # Determine the package directory being deploying on this tag.
 PKG_DIR="$(python ${SCRIPT})"
 
+# Ensure that we have the latest versions of Twine, Wheel, and Setuptools.
+python3 -m pip install --upgrade twine wheel setuptools
+
 # Move into the package, build the distribution and upload.
 cd ${PKG_DIR}
 python3 setup.py sdist bdist_wheel
-
-pip3 install twine
 twine upload dist/*

@@ -24,10 +24,9 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='google/cloud/spanner_v1/proto/result_set.proto',
   package='google.spanner.v1',
   syntax='proto3',
-  serialized_pb=_b('\n.google/cloud/spanner_v1/proto/result_set.proto\x12\x11google.spanner.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x1cgoogle/protobuf/struct.proto\x1a.google/cloud/spanner_v1/proto/query_plan.proto\x1a/google/cloud/spanner_v1/proto/transaction.proto\x1a(google/cloud/spanner_v1/proto/type.proto\"\x9f\x01\n\tResultSet\x12\x36\n\x08metadata\x18\x01 \x01(\x0b\x32$.google.spanner.v1.ResultSetMetadata\x12(\n\x04rows\x18\x02 \x03(\x0b\x32\x1a.google.protobuf.ListValue\x12\x30\n\x05stats\x18\x03 \x01(\x0b\x32!.google.spanner.v1.ResultSetStats\"\xd1\x01\n\x10PartialResultSet\x12\x36\n\x08metadata\x18\x01 \x01(\x0b\x32$.google.spanner.v1.ResultSetMetadata\x12&\n\x06values\x18\x02 \x03(\x0b\x32\x16.google.protobuf.Value\x12\x15\n\rchunked_value\x18\x03 \x01(\x08\x12\x14\n\x0cresume_token\x18\x04 \x01(\x0c\x12\x30\n\x05stats\x18\x05 \x01(\x0b\x32!.google.spanner.v1.ResultSetStats\"y\n\x11ResultSetMetadata\x12/\n\x08row_type\x18\x01 \x01(\x0b\x32\x1d.google.spanner.v1.StructType\x12\x33\n\x0btransaction\x18\x02 \x01(\x0b\x32\x1e.google.spanner.v1.Transaction\"p\n\x0eResultSetStats\x12\x30\n\nquery_plan\x18\x01 \x01(\x0b\x32\x1c.google.spanner.v1.QueryPlan\x12,\n\x0bquery_stats\x18\x02 \x01(\x0b\x32\x17.google.protobuf.StructB}\n\x15\x63om.google.spanner.v1B\x0eResultSetProtoP\x01Z8google.golang.org/genproto/googleapis/spanner/v1;spanner\xaa\x02\x17Google.Cloud.Spanner.V1b\x06proto3')
+  serialized_pb=_b('\n.google/cloud/spanner_v1/proto/result_set.proto\x12\x11google.spanner.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x1cgoogle/protobuf/struct.proto\x1a.google/cloud/spanner_v1/proto/query_plan.proto\x1a/google/cloud/spanner_v1/proto/transaction.proto\x1a(google/cloud/spanner_v1/proto/type.proto\"\x9f\x01\n\tResultSet\x12\x36\n\x08metadata\x18\x01 \x01(\x0b\x32$.google.spanner.v1.ResultSetMetadata\x12(\n\x04rows\x18\x02 \x03(\x0b\x32\x1a.google.protobuf.ListValue\x12\x30\n\x05stats\x18\x03 \x01(\x0b\x32!.google.spanner.v1.ResultSetStats\"\xd1\x01\n\x10PartialResultSet\x12\x36\n\x08metadata\x18\x01 \x01(\x0b\x32$.google.spanner.v1.ResultSetMetadata\x12&\n\x06values\x18\x02 \x03(\x0b\x32\x16.google.protobuf.Value\x12\x15\n\rchunked_value\x18\x03 \x01(\x08\x12\x14\n\x0cresume_token\x18\x04 \x01(\x0c\x12\x30\n\x05stats\x18\x05 \x01(\x0b\x32!.google.spanner.v1.ResultSetStats\"y\n\x11ResultSetMetadata\x12/\n\x08row_type\x18\x01 \x01(\x0b\x32\x1d.google.spanner.v1.StructType\x12\x33\n\x0btransaction\x18\x02 \x01(\x0b\x32\x1e.google.spanner.v1.Transaction\"\xb9\x01\n\x0eResultSetStats\x12\x30\n\nquery_plan\x18\x01 \x01(\x0b\x32\x1c.google.spanner.v1.QueryPlan\x12,\n\x0bquery_stats\x18\x02 \x01(\x0b\x32\x17.google.protobuf.Struct\x12\x19\n\x0frow_count_exact\x18\x03 \x01(\x03H\x00\x12\x1f\n\x15row_count_lower_bound\x18\x04 \x01(\x03H\x00\x42\x0b\n\trow_countB\x9a\x01\n\x15\x63om.google.spanner.v1B\x0eResultSetProtoP\x01Z8google.golang.org/genproto/googleapis/spanner/v1;spanner\xf8\x01\x01\xaa\x02\x17Google.Cloud.Spanner.V1\xca\x02\x17Google\\Cloud\\Spanner\\V1b\x06proto3')
   ,
   dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR,google_dot_protobuf_dot_struct__pb2.DESCRIPTOR,google_dot_cloud_dot_spanner__v1_dot_proto_dot_query__plan__pb2.DESCRIPTOR,google_dot_cloud_dot_spanner__v1_dot_proto_dot_transaction__pb2.DESCRIPTOR,google_dot_cloud_dot_spanner__v1_dot_proto_dot_type__pb2.DESCRIPTOR,])
-_sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 
 
@@ -45,21 +44,21 @@ _RESULTSET = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='rows', full_name='google.spanner.v1.ResultSet.rows', index=1,
       number=2, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='stats', full_name='google.spanner.v1.ResultSet.stats', index=2,
       number=3, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -90,35 +89,35 @@ _PARTIALRESULTSET = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='values', full_name='google.spanner.v1.PartialResultSet.values', index=1,
       number=2, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='chunked_value', full_name='google.spanner.v1.PartialResultSet.chunked_value', index=2,
       number=3, type=8, cpp_type=7, label=1,
       has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='resume_token', full_name='google.spanner.v1.PartialResultSet.resume_token', index=3,
       number=4, type=12, cpp_type=9, label=1,
       has_default_value=False, default_value=_b(""),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='stats', full_name='google.spanner.v1.PartialResultSet.stats', index=4,
       number=5, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -149,14 +148,14 @@ _RESULTSETMETADATA = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='transaction', full_name='google.spanner.v1.ResultSetMetadata.transaction', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -187,14 +186,28 @@ _RESULTSETSTATS = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='query_stats', full_name='google.spanner.v1.ResultSetStats.query_stats', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='row_count_exact', full_name='google.spanner.v1.ResultSetStats.row_count_exact', index=2,
+      number=3, type=3, cpp_type=2, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='row_count_lower_bound', full_name='google.spanner.v1.ResultSetStats.row_count_lower_bound', index=3,
+      number=4, type=3, cpp_type=2, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -206,9 +219,12 @@ _RESULTSETSTATS = _descriptor.Descriptor(
   syntax='proto3',
   extension_ranges=[],
   oneofs=[
+    _descriptor.OneofDescriptor(
+      name='row_count', full_name='google.spanner.v1.ResultSetStats.row_count',
+      index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=765,
-  serialized_end=877,
+  serialized_start=766,
+  serialized_end=951,
 )
 
 _RESULTSET.fields_by_name['metadata'].message_type = _RESULTSETMETADATA
@@ -221,10 +237,17 @@ _RESULTSETMETADATA.fields_by_name['row_type'].message_type = google_dot_cloud_do
 _RESULTSETMETADATA.fields_by_name['transaction'].message_type = google_dot_cloud_dot_spanner__v1_dot_proto_dot_transaction__pb2._TRANSACTION
 _RESULTSETSTATS.fields_by_name['query_plan'].message_type = google_dot_cloud_dot_spanner__v1_dot_proto_dot_query__plan__pb2._QUERYPLAN
 _RESULTSETSTATS.fields_by_name['query_stats'].message_type = google_dot_protobuf_dot_struct__pb2._STRUCT
+_RESULTSETSTATS.oneofs_by_name['row_count'].fields.append(
+  _RESULTSETSTATS.fields_by_name['row_count_exact'])
+_RESULTSETSTATS.fields_by_name['row_count_exact'].containing_oneof = _RESULTSETSTATS.oneofs_by_name['row_count']
+_RESULTSETSTATS.oneofs_by_name['row_count'].fields.append(
+  _RESULTSETSTATS.fields_by_name['row_count_lower_bound'])
+_RESULTSETSTATS.fields_by_name['row_count_lower_bound'].containing_oneof = _RESULTSETSTATS.oneofs_by_name['row_count']
 DESCRIPTOR.message_types_by_name['ResultSet'] = _RESULTSET
 DESCRIPTOR.message_types_by_name['PartialResultSet'] = _PARTIALRESULTSET
 DESCRIPTOR.message_types_by_name['ResultSetMetadata'] = _RESULTSETMETADATA
 DESCRIPTOR.message_types_by_name['ResultSetStats'] = _RESULTSETSTATS
+_sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 ResultSet = _reflection.GeneratedProtocolMessageType('ResultSet', (_message.Message,), dict(
   DESCRIPTOR = _RESULTSET,
@@ -245,10 +268,16 @@ ResultSet = _reflection.GeneratedProtocolMessageType('ResultSet', (_message.Mess
           e]. Elements are encoded based on type as described
           [here][google.spanner.v1.TypeCode].
       stats:
-          Query plan and execution statistics for the query that
+          Query plan and execution statistics for the SQL statement that
           produced this result set. These can be requested by setting [E
           xecuteSqlRequest.query\_mode][google.spanner.v1.ExecuteSqlRequ
-          est.query\_mode].
+          est.query\_mode]. DML statements always produce stats
+          containing the number of rows modified, unless executed using
+          the [ExecuteSqlRequest.QueryMode.PLAN][google.spanner.v1.Execu
+          teSqlRequest.QueryMode.PLAN] [ExecuteSqlRequest.query\_mode][g
+          oogle.spanner.v1.ExecuteSqlRequest.query\_mode]. Other fields
+          may or may not be populated, based on the [ExecuteSqlRequest.q
+          uery\_mode][google.spanner.v1.ExecuteSqlRequest.query\_mode].
   """,
   # @@protoc_insertion_point(class_scope:google.spanner.v1.ResultSet)
   ))
@@ -326,11 +355,12 @@ PartialResultSet = _reflection.GeneratedProtocolMessageType('PartialResultSet', 
           including ``resume_token``. Note that executing any other
           transaction in the same session invalidates the token.
       stats:
-          Query plan and execution statistics for the query that
+          Query plan and execution statistics for the statement that
           produced this streaming result set. These can be requested by
           setting [ExecuteSqlRequest.query\_mode][google.spanner.v1.Exec
           uteSqlRequest.query\_mode] and are sent only once with the
-          last response in the stream.
+          last response in the stream. This field will also be present
+          in the last response for DML statements.
   """,
   # @@protoc_insertion_point(class_scope:google.spanner.v1.PartialResultSet)
   ))
@@ -378,6 +408,14 @@ ResultSetStats = _reflection.GeneratedProtocolMessageType('ResultSetStats', (_me
           return the statistics as follows:  ::      {
           "rows_returned": "3",       "elapsed_time": "1.22 secs",
           "cpu_time": "1.19 secs"     }
+      row_count:
+          The number of rows modified by the DML statement.
+      row_count_exact:
+          Standard DML returns an exact count of rows that were
+          modified.
+      row_count_lower_bound:
+          Partitioned DML does not offer exactly-once semantics, so it
+          returns a lower bound of the rows modified.
   """,
   # @@protoc_insertion_point(class_scope:google.spanner.v1.ResultSetStats)
   ))
@@ -385,15 +423,5 @@ _sym_db.RegisterMessage(ResultSetStats)
 
 
 DESCRIPTOR.has_options = True
-DESCRIPTOR._options = _descriptor._ParseOptions(descriptor_pb2.FileOptions(), _b('\n\025com.google.spanner.v1B\016ResultSetProtoP\001Z8google.golang.org/genproto/googleapis/spanner/v1;spanner\252\002\027Google.Cloud.Spanner.V1'))
-try:
-  # THESE ELEMENTS WILL BE DEPRECATED.
-  # Please use the generated *_pb2_grpc.py files instead.
-  import grpc
-  from grpc.beta import implementations as beta_implementations
-  from grpc.beta import interfaces as beta_interfaces
-  from grpc.framework.common import cardinality
-  from grpc.framework.interfaces.face import utilities as face_utilities
-except ImportError:
-  pass
+DESCRIPTOR._options = _descriptor._ParseOptions(descriptor_pb2.FileOptions(), _b('\n\025com.google.spanner.v1B\016ResultSetProtoP\001Z8google.golang.org/genproto/googleapis/spanner/v1;spanner\370\001\001\252\002\027Google.Cloud.Spanner.V1\312\002\027Google\\Cloud\\Spanner\\V1'))
 # @@protoc_insertion_point(module_scope)

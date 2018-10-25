@@ -16,17 +16,18 @@
 
 import base64
 import datetime
+import decimal
 
-from google.api_core import retry
 from google.cloud._helpers import UTC
 from google.cloud._helpers import _date_from_iso8601_date
 from google.cloud._helpers import _datetime_from_microseconds
 from google.cloud._helpers import _microseconds_from_datetime
 from google.cloud._helpers import _RFC3339_NO_FRACTION
-from google.cloud._helpers import _time_from_iso8601_time_naive
 from google.cloud._helpers import _to_bytes
 
 _RFC3339_MICROS_NO_ZULU = '%Y-%m-%dT%H:%M:%S.%f'
+_TIMEONLY_WO_MICROS = '%H:%M:%S'
+_TIMEONLY_W_MICROS = '%H:%M:%S.%f'
 
 
 def _not_null(value, field):
@@ -44,6 +45,12 @@ def _float_from_json(value, field):
     """Coerce 'value' to a float, if set or not nullable."""
     if _not_null(value, field):
         return float(value)
+
+
+def _decimal_from_json(value, field):
+    """Coerce 'value' to a Decimal, if set or not nullable."""
+    if _not_null(value, field):
+        return decimal.Decimal(value)
 
 
 def _bool_from_json(value, field):
@@ -136,8 +143,13 @@ def _date_from_json(value, field):
 def _time_from_json(value, field):
     """Coerce 'value' to a datetime date, if set or not nullable"""
     if _not_null(value, field):
-        # value will be a string, in HH:MM:SS form.
-        return _time_from_iso8601_time_naive(value)
+        if len(value) == 8:  # HH:MM:SS
+            fmt = _TIMEONLY_WO_MICROS
+        elif len(value) == 15:  # HH:MM:SS.micros
+            fmt = _TIMEONLY_W_MICROS
+        else:
+            raise ValueError("Unknown time format: {}".format(value))
+        return datetime.datetime.strptime(value, fmt).time()
 
 
 def _record_from_json(value, field):
@@ -160,9 +172,11 @@ _CELLDATA_FROM_JSON = {
     'INT64': _int_from_json,
     'FLOAT': _float_from_json,
     'FLOAT64': _float_from_json,
+    'NUMERIC': _decimal_from_json,
     'BOOLEAN': _bool_from_json,
     'BOOL': _bool_from_json,
     'STRING': _string_from_json,
+    'GEOGRAPHY': _string_from_json,
     'BYTES': _bytes_from_json,
     'TIMESTAMP': _timestamp_from_json,
     'DATETIME': _datetime_from_json,
@@ -225,6 +239,13 @@ def _int_to_json(value):
 
 def _float_to_json(value):
     """Coerce 'value' to an JSON-compatible representation."""
+    return value
+
+
+def _decimal_to_json(value):
+    """Coerce 'value' to a JSON-compatible representation."""
+    if isinstance(value, decimal.Decimal):
+        value = str(value)
     return value
 
 
@@ -293,6 +314,7 @@ _SCALAR_VALUE_TO_JSON_ROW = {
     'INT64': _int_to_json,
     'FLOAT': _float_to_json,
     'FLOAT64': _float_to_json,
+    'NUMERIC': _decimal_to_json,
     'BOOLEAN': _bool_to_json,
     'BOOL': _bool_to_json,
     'BYTES': _bytes_to_json,
@@ -314,187 +336,128 @@ def _snake_to_camel_case(value):
     return words[0] + ''.join(map(str.capitalize, words[1:]))
 
 
-class _ApiResourceProperty(object):
-    """Base property implementation.
+def _get_sub_prop(container, keys, default=None):
+    """Get a nested value from a dictionary.
 
-    Values will be stored on a `_properties` helper attribute of the
-    property's job instance.
+    This method works like ``dict.get(key)``, but for nested values.
 
-    :type name: str
-    :param name:  name of the property
+    Arguments:
+        container (dict):
+            A dictionary which may contain other dictionaries as values.
+        keys (iterable):
+            A sequence of keys to attempt to get the value for. Each item in
+            the sequence represents a deeper nesting. The first key is for
+            the top level. If there is a dictionary there, the second key
+            attempts to get the value within that, and so on.
+        default (object):
+            (Optional) Value to returned if any of the keys are not found.
+            Defaults to ``None``.
 
-    :type resource_name: str
-    :param resource_name:  name of the property in the resource dictionary
+    Examples:
+        Get a top-level value (equivalent to ``container.get('key')``).
+
+        >>> _get_sub_prop({'key': 'value'}, ['key'])
+        'value'
+
+        Get a top-level value, providing a default (equivalent to
+        ``container.get('key', default='default')``).
+
+        >>> _get_sub_prop({'nothere': 123}, ['key'], default='not found')
+        'not found'
+
+        Get a nested value.
+
+        >>> _get_sub_prop({'key': {'subkey': 'value'}}, ['key', 'subkey'])
+        'value'
+
+    Returns:
+        object: The value if present or the default.
     """
-
-    def __init__(self, name, resource_name):
-        self.name = name
-        self.resource_name = resource_name
-
-    def __get__(self, instance, owner):
-        """Descriptor protocol:  accessor"""
-        if instance is None:
-            return self
-        return instance._properties.get(self.resource_name)
-
-    def _validate(self, value):
-        """Subclasses override to impose validation policy."""
-        pass
-
-    def __set__(self, instance, value):
-        """Descriptor protocol:  mutator"""
-        self._validate(value)
-        instance._properties[self.resource_name] = value
-
-    def __delete__(self, instance):
-        """Descriptor protocol:  deleter"""
-        del instance._properties[self.resource_name]
+    sub_val = container
+    for key in keys:
+        if key not in sub_val:
+            return default
+        sub_val = sub_val[key]
+    return sub_val
 
 
-class _TypedApiResourceProperty(_ApiResourceProperty):
-    """Property implementation:  validates based on value type.
+def _set_sub_prop(container, keys, value):
+    """Set a nested value in a dictionary.
 
-    :type name: str
-    :param name:  name of the property
+    Arguments:
+        container (dict):
+            A dictionary which may contain other dictionaries as values.
+        keys (iterable):
+            A sequence of keys to attempt to set the value for. Each item in
+            the sequence represents a deeper nesting. The first key is for
+            the top level. If there is a dictionary there, the second key
+            attempts to get the value within that, and so on.
+        value (object): Value to set within the container.
 
-    :type resource_name: str
-    :param resource_name:  name of the property in the resource dictionary
+    Examples:
+        Set a top-level value (equivalent to ``container['key'] = 'value'``).
 
-    :type property_type: type or sequence of types
-    :param property_type: type to be validated
+        >>> container = {}
+        >>> _set_sub_prop(container, ['key'], 'value')
+        >>> container
+        {'key': 'value'}
+
+        Set a nested value.
+
+        >>> container = {}
+        >>> _set_sub_prop(container, ['key', 'subkey'], 'value')
+        >>> container
+        {'key': {'subkey': 'value'}}
+
+        Replace a nested value.
+
+        >>> container = {'key': {'subkey': 'prev'}}
+        >>> _set_sub_prop(container, ['key', 'subkey'], 'new')
+        >>> container
+        {'key': {'subkey': 'new'}}
     """
-    def __init__(self, name, resource_name, property_type):
-        super(_TypedApiResourceProperty, self).__init__(
-            name, resource_name)
-        self.property_type = property_type
-
-    def _validate(self, value):
-        """Ensure that 'value' is of the appropriate type.
-
-        :raises: ValueError on a type mismatch.
-        """
-        if value is None:
-            return
-        if not isinstance(value, self.property_type):
-            raise ValueError('Required type: %s' % (self.property_type,))
+    sub_val = container
+    for key in keys[:-1]:
+        if key not in sub_val:
+            sub_val[key] = {}
+        sub_val = sub_val[key]
+    sub_val[keys[-1]] = value
 
 
-class _ListApiResourceProperty(_ApiResourceProperty):
-    """Property implementation:  validates based on value type.
+def _del_sub_prop(container, keys):
+    """Remove a nested key fro a dictionary.
 
-    :type name: str
-    :param name:  name of the property
+    Arguments:
+        container (dict):
+            A dictionary which may contain other dictionaries as values.
+        keys (iterable):
+            A sequence of keys to attempt to clear the value for. Each item in
+            the sequence represents a deeper nesting. The first key is for
+            the top level. If there is a dictionary there, the second key
+            attempts to get the value within that, and so on.
 
-    :type resource_name: str
-    :param resource_name:  name of the property in the resource dictionary
+    Examples:
+        Remove a top-level value (equivalent to ``del container['key']``).
 
-    :type property_type: type or sequence of types
-    :param property_type: type to be validated
+        >>> container = {'key': 'value'}
+        >>> _del_sub_prop(container, ['key'])
+        >>> container
+        {}
+
+        Remove a nested value.
+
+        >>> container = {'key': {'subkey': 'value'}}
+        >>> _del_sub_prop(container, ['key', 'subkey'])
+        >>> container
+        {'key': {}}
     """
-    def __init__(self, name, resource_name, property_type):
-        super(_ListApiResourceProperty, self).__init__(
-            name, resource_name)
-        self.property_type = property_type
-
-    def __get__(self, instance, owner):
-        """Descriptor protocol:  accessor"""
-        if instance is None:
-            return self
-        return instance._properties.get(self.resource_name, [])
-
-    def _validate(self, value):
-        """Ensure that 'value' is of the appropriate type.
-
-        :raises: ValueError on a type mismatch.
-        """
-        if value is None:
-            raise ValueError((
-                'Required type: list of {}. '
-                'To unset, use del or set to empty list').format(
-                    self.property_type,))
-        if not all(isinstance(item, self.property_type) for item in value):
-            raise ValueError(
-                'Required type: list of %s' % (self.property_type,))
-
-
-class _EnumApiResourceProperty(_ApiResourceProperty):
-    """Pseudo-enumeration class.
-
-    :type name: str
-    :param name:  name of the property.
-
-    :type resource_name: str
-    :param resource_name:  name of the property in the resource dictionary
-    """
-
-
-def _item_to_row(iterator, resource):
-    """Convert a JSON row to the native object.
-
-    .. note::
-
-        This assumes that the ``schema`` attribute has been
-        added to the iterator after being created, which
-        should be done by the caller.
-
-    :type iterator: :class:`~google.api_core.page_iterator.Iterator`
-    :param iterator: The iterator that is currently in use.
-
-    :type resource: dict
-    :param resource: An item to be converted to a row.
-
-    :rtype: :class:`~google.cloud.bigquery.table.Row`
-    :returns: The next row in the page.
-    """
-    from google.cloud.bigquery import Row
-
-    return Row(_row_tuple_from_json(resource, iterator.schema),
-               iterator._field_to_index)
-
-
-# pylint: disable=unused-argument
-def _rows_page_start(iterator, page, response):
-    """Grab total rows when :class:`~google.cloud.iterator.Page` starts.
-
-    :type iterator: :class:`~google.api_core.page_iterator.Iterator`
-    :param iterator: The iterator that is currently in use.
-
-    :type page: :class:`~google.api_core.page_iterator.Page`
-    :param page: The page that was just created.
-
-    :type response: dict
-    :param response: The JSON API response for a page of rows in a table.
-    """
-    total_rows = response.get('totalRows')
-    if total_rows is not None:
-        total_rows = int(total_rows)
-    iterator.total_rows = total_rows
-# pylint: enable=unused-argument
-
-
-def _should_retry(exc):
-    """Predicate for determining when to retry.
-
-    We retry if and only if the 'reason' is 'backendError'
-    or 'rateLimitExceeded'.
-    """
-    if not hasattr(exc, 'errors'):
-        return False
-    if len(exc.errors) == 0:
-        return False
-    reason = exc.errors[0]['reason']
-    return reason == 'backendError' or reason == 'rateLimitExceeded'
-
-
-DEFAULT_RETRY = retry.Retry(predicate=_should_retry)
-"""The default retry object.
-
-Any method with a ``retry`` parameter will be retried automatically,
-with reasonable defaults. To disable retry, pass ``retry=None``.
-To modify the default retry behavior, call a ``with_XXX`` method
-on ``DEFAULT_RETRY``. For example, to change the deadline to 30 seconds,
-pass ``retry=bigquery.DEFAULT_RETRY.with_deadline(30)``.
-"""
+    sub_val = container
+    for key in keys[:-1]:
+        if key not in sub_val:
+            sub_val[key] = {}
+        sub_val = sub_val[key]
+    if keys[-1] in sub_val:
+        del sub_val[keys[-1]]
 
 
 def _int_or_none(value):
@@ -503,3 +466,9 @@ def _int_or_none(value):
         return value
     if value is not None:
         return int(value)
+
+
+def _str_or_none(value):
+    """Helper: serialize value to JSON string."""
+    if value is not None:
+        return str(value)

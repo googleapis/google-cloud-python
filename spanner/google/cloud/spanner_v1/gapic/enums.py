@@ -1,10 +1,12 @@
-# Copyright 2017, Google LLC All rights reserved.
+# -*- coding: utf-8 -*-
+#
+# Copyright 2018 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#     http://www.apache.org/licenses/LICENSE-2.0
+#     https://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,8 +15,10 @@
 # limitations under the License.
 """Wrappers for protocol buffer enum types."""
 
+import enum
 
-class NullValue(object):
+
+class NullValue(enum.IntEnum):
     """
     ``NullValue`` is a singleton enumeration to represent the null value for the
     ``Value`` type union.
@@ -27,7 +31,7 @@ class NullValue(object):
     NULL_VALUE = 0
 
 
-class TypeCode(object):
+class TypeCode(enum.IntEnum):
     """
     ``TypeCode`` is used as part of ``Type`` to
     indicate the type of a Cloud Spanner value.
@@ -45,6 +49,12 @@ class TypeCode(object):
       ``\"-Infinity\"``.
       TIMESTAMP (int): Encoded as ``string`` in RFC 3339 timestamp format. The time zone
       must be present, and must be ``\"Z\"``.
+
+      If the schema has the column option
+      ``allow_commit_timestamp=true``, the placeholder string
+      ``\"spanner.commit_timestamp()\"`` can be used to instruct the system
+      to insert the commit timestamp associated with the transaction
+      commit.
       DATE (int): Encoded as ``string`` in RFC 3339 date format.
       STRING (int): Encoded as ``string``.
       BYTES (int): Encoded as a base64-encoded ``string``, as described in RFC 4648,
@@ -67,7 +77,7 @@ class TypeCode(object):
 
 
 class PlanNode(object):
-    class Kind(object):
+    class Kind(enum.IntEnum):
         """
         The kind of ``PlanNode``. Distinguishes between the two different kinds of
         nodes that can appear in a query plan.
@@ -88,17 +98,16 @@ class PlanNode(object):
 
 
 class ExecuteSqlRequest(object):
-    class QueryMode(object):
+    class QueryMode(enum.IntEnum):
         """
-        Mode in which the query must be processed.
+        Mode in which the statement must be processed.
 
         Attributes:
-          NORMAL (int): The default mode where only the query result, without any information
-          about the query plan is returned.
-          PLAN (int): This mode returns only the query plan, without any result rows or
+          NORMAL (int): The default mode. Only the statement results are returned.
+          PLAN (int): This mode returns only the query plan, without any results or
           execution statistics information.
           PROFILE (int): This mode returns both the query plan and the execution statistics along
-          with the result rows.
+          with the results.
         """
         NORMAL = 0
         PLAN = 1

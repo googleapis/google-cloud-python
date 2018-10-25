@@ -14,7 +14,6 @@ _sym_db = _symbol_database.Default()
 
 
 from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
-from google.api import auth_pb2 as google_dot_api_dot_auth__pb2
 from google.iam.v1 import iam_policy_pb2 as google_dot_iam_dot_v1_dot_iam__policy__pb2
 from google.iam.v1 import policy_pb2 as google_dot_iam_dot_v1_dot_policy__pb2
 from google.longrunning import operations_pb2 as google_dot_longrunning_dot_operations__pb2
@@ -27,10 +26,9 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='google/cloud/spanner/admin/instance_v1/proto/spanner_instance_admin.proto',
   package='google.spanner.admin.instance.v1',
   syntax='proto3',
-  serialized_pb=_b('\nIgoogle/cloud/spanner/admin/instance_v1/proto/spanner_instance_admin.proto\x12 google.spanner.admin.instance.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x15google/api/auth.proto\x1a\x1egoogle/iam/v1/iam_policy.proto\x1a\x1agoogle/iam/v1/policy.proto\x1a#google/longrunning/operations.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a google/protobuf/field_mask.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"4\n\x0eInstanceConfig\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x14\n\x0c\x64isplay_name\x18\x02 \x01(\t\"\xc3\x02\n\x08Instance\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0e\n\x06\x63onfig\x18\x02 \x01(\t\x12\x14\n\x0c\x64isplay_name\x18\x03 \x01(\t\x12\x12\n\nnode_count\x18\x05 \x01(\x05\x12?\n\x05state\x18\x06 \x01(\x0e\x32\x30.google.spanner.admin.instance.v1.Instance.State\x12\x46\n\x06labels\x18\x07 \x03(\x0b\x32\x36.google.spanner.admin.instance.v1.Instance.LabelsEntry\x1a-\n\x0bLabelsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"7\n\x05State\x12\x15\n\x11STATE_UNSPECIFIED\x10\x00\x12\x0c\n\x08\x43REATING\x10\x01\x12\t\n\x05READY\x10\x02\"S\n\x1aListInstanceConfigsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x11\n\tpage_size\x18\x02 \x01(\x05\x12\x12\n\npage_token\x18\x03 \x01(\t\"\x82\x01\n\x1bListInstanceConfigsResponse\x12J\n\x10instance_configs\x18\x01 \x03(\x0b\x32\x30.google.spanner.admin.instance.v1.InstanceConfig\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\"(\n\x18GetInstanceConfigRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"\"\n\x12GetInstanceRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"z\n\x15\x43reateInstanceRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x13\n\x0binstance_id\x18\x02 \x01(\t\x12<\n\x08instance\x18\x03 \x01(\x0b\x32*.google.spanner.admin.instance.v1.Instance\"]\n\x14ListInstancesRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x11\n\tpage_size\x18\x02 \x01(\x05\x12\x12\n\npage_token\x18\x03 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x04 \x01(\t\"o\n\x15ListInstancesResponse\x12=\n\tinstances\x18\x01 \x03(\x0b\x32*.google.spanner.admin.instance.v1.Instance\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\"\x85\x01\n\x15UpdateInstanceRequest\x12<\n\x08instance\x18\x01 \x01(\x0b\x32*.google.spanner.admin.instance.v1.Instance\x12.\n\nfield_mask\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.FieldMask\"%\n\x15\x44\x65leteInstanceRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"\xe5\x01\n\x16\x43reateInstanceMetadata\x12<\n\x08instance\x18\x01 \x01(\x0b\x32*.google.spanner.admin.instance.v1.Instance\x12.\n\nstart_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12/\n\x0b\x63\x61ncel_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12,\n\x08\x65nd_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\"\xe5\x01\n\x16UpdateInstanceMetadata\x12<\n\x08instance\x18\x01 \x01(\x0b\x32*.google.spanner.admin.instance.v1.Instance\x12.\n\nstart_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12/\n\x0b\x63\x61ncel_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12,\n\x08\x65nd_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp2\xe6\x0c\n\rInstanceAdmin\x12\xc3\x01\n\x13ListInstanceConfigs\x12<.google.spanner.admin.instance.v1.ListInstanceConfigsRequest\x1a=.google.spanner.admin.instance.v1.ListInstanceConfigsResponse\"/\x82\xd3\xe4\x93\x02)\x12\'/v1/{parent=projects/*}/instanceConfigs\x12\xb2\x01\n\x11GetInstanceConfig\x12:.google.spanner.admin.instance.v1.GetInstanceConfigRequest\x1a\x30.google.spanner.admin.instance.v1.InstanceConfig\"/\x82\xd3\xe4\x93\x02)\x12\'/v1/{name=projects/*/instanceConfigs/*}\x12\xab\x01\n\rListInstances\x12\x36.google.spanner.admin.instance.v1.ListInstancesRequest\x1a\x37.google.spanner.admin.instance.v1.ListInstancesResponse\")\x82\xd3\xe4\x93\x02#\x12!/v1/{parent=projects/*}/instances\x12\x9a\x01\n\x0bGetInstance\x12\x34.google.spanner.admin.instance.v1.GetInstanceRequest\x1a*.google.spanner.admin.instance.v1.Instance\")\x82\xd3\xe4\x93\x02#\x12!/v1/{name=projects/*/instances/*}\x12\x96\x01\n\x0e\x43reateInstance\x12\x37.google.spanner.admin.instance.v1.CreateInstanceRequest\x1a\x1d.google.longrunning.Operation\",\x82\xd3\xe4\x93\x02&\"!/v1/{parent=projects/*}/instances:\x01*\x12\x9f\x01\n\x0eUpdateInstance\x12\x37.google.spanner.admin.instance.v1.UpdateInstanceRequest\x1a\x1d.google.longrunning.Operation\"5\x82\xd3\xe4\x93\x02/2*/v1/{instance.name=projects/*/instances/*}:\x01*\x12\x8c\x01\n\x0e\x44\x65leteInstance\x12\x37.google.spanner.admin.instance.v1.DeleteInstanceRequest\x1a\x16.google.protobuf.Empty\")\x82\xd3\xe4\x93\x02#*!/v1/{name=projects/*/instances/*}\x12\x88\x01\n\x0cSetIamPolicy\x12\".google.iam.v1.SetIamPolicyRequest\x1a\x15.google.iam.v1.Policy\"=\x82\xd3\xe4\x93\x02\x37\"2/v1/{resource=projects/*/instances/*}:setIamPolicy:\x01*\x12\x88\x01\n\x0cGetIamPolicy\x12\".google.iam.v1.GetIamPolicyRequest\x1a\x15.google.iam.v1.Policy\"=\x82\xd3\xe4\x93\x02\x37\"2/v1/{resource=projects/*/instances/*}:getIamPolicy:\x01*\x12\xae\x01\n\x12TestIamPermissions\x12(.google.iam.v1.TestIamPermissionsRequest\x1a).google.iam.v1.TestIamPermissionsResponse\"C\x82\xd3\xe4\x93\x02=\"8/v1/{resource=projects/*/instances/*}:testIamPermissions:\x01*B\xb6\x01\n$com.google.spanner.admin.instance.v1B\x19SpannerInstanceAdminProtoP\x01ZHgoogle.golang.org/genproto/googleapis/spanner/admin/instance/v1;instance\xaa\x02&Google.Cloud.Spanner.Admin.Instance.V1b\x06proto3')
+  serialized_pb=_b('\nIgoogle/cloud/spanner/admin/instance_v1/proto/spanner_instance_admin.proto\x12 google.spanner.admin.instance.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x1egoogle/iam/v1/iam_policy.proto\x1a\x1agoogle/iam/v1/policy.proto\x1a#google/longrunning/operations.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a google/protobuf/field_mask.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"4\n\x0eInstanceConfig\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x14\n\x0c\x64isplay_name\x18\x02 \x01(\t\"\xc3\x02\n\x08Instance\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0e\n\x06\x63onfig\x18\x02 \x01(\t\x12\x14\n\x0c\x64isplay_name\x18\x03 \x01(\t\x12\x12\n\nnode_count\x18\x05 \x01(\x05\x12?\n\x05state\x18\x06 \x01(\x0e\x32\x30.google.spanner.admin.instance.v1.Instance.State\x12\x46\n\x06labels\x18\x07 \x03(\x0b\x32\x36.google.spanner.admin.instance.v1.Instance.LabelsEntry\x1a-\n\x0bLabelsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"7\n\x05State\x12\x15\n\x11STATE_UNSPECIFIED\x10\x00\x12\x0c\n\x08\x43REATING\x10\x01\x12\t\n\x05READY\x10\x02\"S\n\x1aListInstanceConfigsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x11\n\tpage_size\x18\x02 \x01(\x05\x12\x12\n\npage_token\x18\x03 \x01(\t\"\x82\x01\n\x1bListInstanceConfigsResponse\x12J\n\x10instance_configs\x18\x01 \x03(\x0b\x32\x30.google.spanner.admin.instance.v1.InstanceConfig\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\"(\n\x18GetInstanceConfigRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"\"\n\x12GetInstanceRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"z\n\x15\x43reateInstanceRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x13\n\x0binstance_id\x18\x02 \x01(\t\x12<\n\x08instance\x18\x03 \x01(\x0b\x32*.google.spanner.admin.instance.v1.Instance\"]\n\x14ListInstancesRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x11\n\tpage_size\x18\x02 \x01(\x05\x12\x12\n\npage_token\x18\x03 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x04 \x01(\t\"o\n\x15ListInstancesResponse\x12=\n\tinstances\x18\x01 \x03(\x0b\x32*.google.spanner.admin.instance.v1.Instance\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\"\x85\x01\n\x15UpdateInstanceRequest\x12<\n\x08instance\x18\x01 \x01(\x0b\x32*.google.spanner.admin.instance.v1.Instance\x12.\n\nfield_mask\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.FieldMask\"%\n\x15\x44\x65leteInstanceRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"\xe5\x01\n\x16\x43reateInstanceMetadata\x12<\n\x08instance\x18\x01 \x01(\x0b\x32*.google.spanner.admin.instance.v1.Instance\x12.\n\nstart_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12/\n\x0b\x63\x61ncel_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12,\n\x08\x65nd_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\"\xe5\x01\n\x16UpdateInstanceMetadata\x12<\n\x08instance\x18\x01 \x01(\x0b\x32*.google.spanner.admin.instance.v1.Instance\x12.\n\nstart_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12/\n\x0b\x63\x61ncel_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12,\n\x08\x65nd_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp2\xe6\x0c\n\rInstanceAdmin\x12\xc3\x01\n\x13ListInstanceConfigs\x12<.google.spanner.admin.instance.v1.ListInstanceConfigsRequest\x1a=.google.spanner.admin.instance.v1.ListInstanceConfigsResponse\"/\x82\xd3\xe4\x93\x02)\x12\'/v1/{parent=projects/*}/instanceConfigs\x12\xb2\x01\n\x11GetInstanceConfig\x12:.google.spanner.admin.instance.v1.GetInstanceConfigRequest\x1a\x30.google.spanner.admin.instance.v1.InstanceConfig\"/\x82\xd3\xe4\x93\x02)\x12\'/v1/{name=projects/*/instanceConfigs/*}\x12\xab\x01\n\rListInstances\x12\x36.google.spanner.admin.instance.v1.ListInstancesRequest\x1a\x37.google.spanner.admin.instance.v1.ListInstancesResponse\")\x82\xd3\xe4\x93\x02#\x12!/v1/{parent=projects/*}/instances\x12\x9a\x01\n\x0bGetInstance\x12\x34.google.spanner.admin.instance.v1.GetInstanceRequest\x1a*.google.spanner.admin.instance.v1.Instance\")\x82\xd3\xe4\x93\x02#\x12!/v1/{name=projects/*/instances/*}\x12\x96\x01\n\x0e\x43reateInstance\x12\x37.google.spanner.admin.instance.v1.CreateInstanceRequest\x1a\x1d.google.longrunning.Operation\",\x82\xd3\xe4\x93\x02&\"!/v1/{parent=projects/*}/instances:\x01*\x12\x9f\x01\n\x0eUpdateInstance\x12\x37.google.spanner.admin.instance.v1.UpdateInstanceRequest\x1a\x1d.google.longrunning.Operation\"5\x82\xd3\xe4\x93\x02/2*/v1/{instance.name=projects/*/instances/*}:\x01*\x12\x8c\x01\n\x0e\x44\x65leteInstance\x12\x37.google.spanner.admin.instance.v1.DeleteInstanceRequest\x1a\x16.google.protobuf.Empty\")\x82\xd3\xe4\x93\x02#*!/v1/{name=projects/*/instances/*}\x12\x88\x01\n\x0cSetIamPolicy\x12\".google.iam.v1.SetIamPolicyRequest\x1a\x15.google.iam.v1.Policy\"=\x82\xd3\xe4\x93\x02\x37\"2/v1/{resource=projects/*/instances/*}:setIamPolicy:\x01*\x12\x88\x01\n\x0cGetIamPolicy\x12\".google.iam.v1.GetIamPolicyRequest\x1a\x15.google.iam.v1.Policy\"=\x82\xd3\xe4\x93\x02\x37\"2/v1/{resource=projects/*/instances/*}:getIamPolicy:\x01*\x12\xae\x01\n\x12TestIamPermissions\x12(.google.iam.v1.TestIamPermissionsRequest\x1a).google.iam.v1.TestIamPermissionsResponse\"C\x82\xd3\xe4\x93\x02=\"8/v1/{resource=projects/*/instances/*}:testIamPermissions:\x01*B\xdf\x01\n$com.google.spanner.admin.instance.v1B\x19SpannerInstanceAdminProtoP\x01ZHgoogle.golang.org/genproto/googleapis/spanner/admin/instance/v1;instance\xaa\x02&Google.Cloud.Spanner.Admin.Instance.V1\xca\x02&Google\\Cloud\\Spanner\\Admin\\Instance\\V1b\x06proto3')
   ,
-  dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR,google_dot_api_dot_auth__pb2.DESCRIPTOR,google_dot_iam_dot_v1_dot_iam__policy__pb2.DESCRIPTOR,google_dot_iam_dot_v1_dot_policy__pb2.DESCRIPTOR,google_dot_longrunning_dot_operations__pb2.DESCRIPTOR,google_dot_protobuf_dot_empty__pb2.DESCRIPTOR,google_dot_protobuf_dot_field__mask__pb2.DESCRIPTOR,google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,])
-_sym_db.RegisterFileDescriptor(DESCRIPTOR)
+  dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR,google_dot_iam_dot_v1_dot_iam__policy__pb2.DESCRIPTOR,google_dot_iam_dot_v1_dot_policy__pb2.DESCRIPTOR,google_dot_longrunning_dot_operations__pb2.DESCRIPTOR,google_dot_protobuf_dot_empty__pb2.DESCRIPTOR,google_dot_protobuf_dot_field__mask__pb2.DESCRIPTOR,google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,])
 
 
 
@@ -55,8 +53,8 @@ _INSTANCE_STATE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=680,
-  serialized_end=735,
+  serialized_start=657,
+  serialized_end=712,
 )
 _sym_db.RegisterEnumDescriptor(_INSTANCE_STATE)
 
@@ -74,14 +72,14 @@ _INSTANCECONFIG = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='display_name', full_name='google.spanner.admin.instance.v1.InstanceConfig.display_name', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -94,8 +92,8 @@ _INSTANCECONFIG = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=357,
-  serialized_end=409,
+  serialized_start=334,
+  serialized_end=386,
 )
 
 
@@ -112,14 +110,14 @@ _INSTANCE_LABELSENTRY = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='value', full_name='google.spanner.admin.instance.v1.Instance.LabelsEntry.value', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -132,8 +130,8 @@ _INSTANCE_LABELSENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=633,
-  serialized_end=678,
+  serialized_start=610,
+  serialized_end=655,
 )
 
 _INSTANCE = _descriptor.Descriptor(
@@ -149,42 +147,42 @@ _INSTANCE = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='config', full_name='google.spanner.admin.instance.v1.Instance.config', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='display_name', full_name='google.spanner.admin.instance.v1.Instance.display_name', index=2,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='node_count', full_name='google.spanner.admin.instance.v1.Instance.node_count', index=3,
       number=5, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='state', full_name='google.spanner.admin.instance.v1.Instance.state', index=4,
       number=6, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='labels', full_name='google.spanner.admin.instance.v1.Instance.labels', index=5,
       number=7, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -198,8 +196,8 @@ _INSTANCE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=412,
-  serialized_end=735,
+  serialized_start=389,
+  serialized_end=712,
 )
 
 
@@ -216,21 +214,21 @@ _LISTINSTANCECONFIGSREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='page_size', full_name='google.spanner.admin.instance.v1.ListInstanceConfigsRequest.page_size', index=1,
       number=2, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='page_token', full_name='google.spanner.admin.instance.v1.ListInstanceConfigsRequest.page_token', index=2,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -243,8 +241,8 @@ _LISTINSTANCECONFIGSREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=737,
-  serialized_end=820,
+  serialized_start=714,
+  serialized_end=797,
 )
 
 
@@ -261,14 +259,14 @@ _LISTINSTANCECONFIGSRESPONSE = _descriptor.Descriptor(
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='next_page_token', full_name='google.spanner.admin.instance.v1.ListInstanceConfigsResponse.next_page_token', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -281,8 +279,8 @@ _LISTINSTANCECONFIGSRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=823,
-  serialized_end=953,
+  serialized_start=800,
+  serialized_end=930,
 )
 
 
@@ -299,7 +297,7 @@ _GETINSTANCECONFIGREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -312,8 +310,8 @@ _GETINSTANCECONFIGREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=955,
-  serialized_end=995,
+  serialized_start=932,
+  serialized_end=972,
 )
 
 
@@ -330,7 +328,7 @@ _GETINSTANCEREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -343,8 +341,8 @@ _GETINSTANCEREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=997,
-  serialized_end=1031,
+  serialized_start=974,
+  serialized_end=1008,
 )
 
 
@@ -361,21 +359,21 @@ _CREATEINSTANCEREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='instance_id', full_name='google.spanner.admin.instance.v1.CreateInstanceRequest.instance_id', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='instance', full_name='google.spanner.admin.instance.v1.CreateInstanceRequest.instance', index=2,
       number=3, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -388,8 +386,8 @@ _CREATEINSTANCEREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1033,
-  serialized_end=1155,
+  serialized_start=1010,
+  serialized_end=1132,
 )
 
 
@@ -406,28 +404,28 @@ _LISTINSTANCESREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='page_size', full_name='google.spanner.admin.instance.v1.ListInstancesRequest.page_size', index=1,
       number=2, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='page_token', full_name='google.spanner.admin.instance.v1.ListInstancesRequest.page_token', index=2,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='filter', full_name='google.spanner.admin.instance.v1.ListInstancesRequest.filter', index=3,
       number=4, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -440,8 +438,8 @@ _LISTINSTANCESREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1157,
-  serialized_end=1250,
+  serialized_start=1134,
+  serialized_end=1227,
 )
 
 
@@ -458,14 +456,14 @@ _LISTINSTANCESRESPONSE = _descriptor.Descriptor(
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='next_page_token', full_name='google.spanner.admin.instance.v1.ListInstancesResponse.next_page_token', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -478,8 +476,8 @@ _LISTINSTANCESRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1252,
-  serialized_end=1363,
+  serialized_start=1229,
+  serialized_end=1340,
 )
 
 
@@ -496,14 +494,14 @@ _UPDATEINSTANCEREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='field_mask', full_name='google.spanner.admin.instance.v1.UpdateInstanceRequest.field_mask', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -516,8 +514,8 @@ _UPDATEINSTANCEREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1366,
-  serialized_end=1499,
+  serialized_start=1343,
+  serialized_end=1476,
 )
 
 
@@ -534,7 +532,7 @@ _DELETEINSTANCEREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -547,8 +545,8 @@ _DELETEINSTANCEREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1501,
-  serialized_end=1538,
+  serialized_start=1478,
+  serialized_end=1515,
 )
 
 
@@ -565,28 +563,28 @@ _CREATEINSTANCEMETADATA = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='start_time', full_name='google.spanner.admin.instance.v1.CreateInstanceMetadata.start_time', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='cancel_time', full_name='google.spanner.admin.instance.v1.CreateInstanceMetadata.cancel_time', index=2,
       number=3, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='end_time', full_name='google.spanner.admin.instance.v1.CreateInstanceMetadata.end_time', index=3,
       number=4, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -599,8 +597,8 @@ _CREATEINSTANCEMETADATA = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1541,
-  serialized_end=1770,
+  serialized_start=1518,
+  serialized_end=1747,
 )
 
 
@@ -617,28 +615,28 @@ _UPDATEINSTANCEMETADATA = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='start_time', full_name='google.spanner.admin.instance.v1.UpdateInstanceMetadata.start_time', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='cancel_time', full_name='google.spanner.admin.instance.v1.UpdateInstanceMetadata.cancel_time', index=2,
       number=3, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='end_time', full_name='google.spanner.admin.instance.v1.UpdateInstanceMetadata.end_time', index=3,
       number=4, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -651,8 +649,8 @@ _UPDATEINSTANCEMETADATA = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1773,
-  serialized_end=2002,
+  serialized_start=1750,
+  serialized_end=1979,
 )
 
 _INSTANCE_LABELSENTRY.containing_type = _INSTANCE
@@ -685,6 +683,7 @@ DESCRIPTOR.message_types_by_name['UpdateInstanceRequest'] = _UPDATEINSTANCEREQUE
 DESCRIPTOR.message_types_by_name['DeleteInstanceRequest'] = _DELETEINSTANCEREQUEST
 DESCRIPTOR.message_types_by_name['CreateInstanceMetadata'] = _CREATEINSTANCEMETADATA
 DESCRIPTOR.message_types_by_name['UpdateInstanceMetadata'] = _UPDATEINSTANCEMETADATA
+_sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 InstanceConfig = _reflection.GeneratedProtocolMessageType('InstanceConfig', (_message.Message,), dict(
   DESCRIPTOR = _INSTANCECONFIG,
@@ -740,7 +739,11 @@ Instance = _reflection.GeneratedProtocolMessageType('Instance', (_message.Messag
           in UIs. Must be unique per project and between 4 and 30
           characters in length.
       node_count:
-          Required. The number of nodes allocated to this instance.
+          Required. The number of nodes allocated to this instance. This
+          may be zero in API responses for instances that are not yet in
+          state ``READY``.  See `the documentation <https://cloud.google
+          .com/spanner/docs/instances#node_count>`__ for more
+          information about nodes.
       state:
           Output only. The current instance state. For [CreateInstance][
           google.spanner.admin.instance.v1.InstanceAdmin.CreateInstance]
@@ -908,16 +911,17 @@ ListInstancesRequest = _reflection.GeneratedProtocolMessageType('ListInstancesRe
       filter:
           An expression for filtering the results of the request. Filter
           rules are case insensitive. The fields eligible for filtering
-          are:  -  name -  display\_name -  labels.key where key is the
-          name of a label  Some examples of using filters are:  -
-          name:\* --> The instance has a name. -  name:Howl --> The
-          instance's name contains the string "howl". -  name:HOWL -->
-          Equivalent to above. -  NAME:howl --> Equivalent to above. -
-          labels.env:\* --> The instance has the label "env". -
-          labels.env:dev --> The instance has the label "env" and the
-          value of    the label contains the string "dev". -  name:howl
-          labels.env:dev --> The instance's name contains "howl" and
-          it has the label "env" with its value containing "dev".
+          are:  -  ``name`` -  ``display_name`` -  ``labels.key`` where
+          key is the name of a label  Some examples of using filters
+          are:  -  ``name:*`` --> The instance has a name. -
+          ``name:Howl`` --> The instance's name contains the string
+          "howl". -  ``name:HOWL`` --> Equivalent to above. -
+          ``NAME:howl`` --> Equivalent to above. -  ``labels.env:*`` -->
+          The instance has the label "env". -  ``labels.env:dev`` -->
+          The instance has the label "env" and the value    of the label
+          contains the string "dev". -  ``name:howl labels.env:dev`` -->
+          The instance's name contains "howl"    and it has the label
+          "env" with its value containing "dev".
   """,
   # @@protoc_insertion_point(class_scope:google.spanner.admin.instance.v1.ListInstancesRequest)
   ))
@@ -1040,779 +1044,112 @@ _sym_db.RegisterMessage(UpdateInstanceMetadata)
 
 
 DESCRIPTOR.has_options = True
-DESCRIPTOR._options = _descriptor._ParseOptions(descriptor_pb2.FileOptions(), _b('\n$com.google.spanner.admin.instance.v1B\031SpannerInstanceAdminProtoP\001ZHgoogle.golang.org/genproto/googleapis/spanner/admin/instance/v1;instance\252\002&Google.Cloud.Spanner.Admin.Instance.V1'))
+DESCRIPTOR._options = _descriptor._ParseOptions(descriptor_pb2.FileOptions(), _b('\n$com.google.spanner.admin.instance.v1B\031SpannerInstanceAdminProtoP\001ZHgoogle.golang.org/genproto/googleapis/spanner/admin/instance/v1;instance\252\002&Google.Cloud.Spanner.Admin.Instance.V1\312\002&Google\\Cloud\\Spanner\\Admin\\Instance\\V1'))
 _INSTANCE_LABELSENTRY.has_options = True
 _INSTANCE_LABELSENTRY._options = _descriptor._ParseOptions(descriptor_pb2.MessageOptions(), _b('8\001'))
-try:
-  # THESE ELEMENTS WILL BE DEPRECATED.
-  # Please use the generated *_pb2_grpc.py files instead.
-  import grpc
-  from grpc.beta import implementations as beta_implementations
-  from grpc.beta import interfaces as beta_interfaces
-  from grpc.framework.common import cardinality
-  from grpc.framework.interfaces.face import utilities as face_utilities
 
+_INSTANCEADMIN = _descriptor.ServiceDescriptor(
+  name='InstanceAdmin',
+  full_name='google.spanner.admin.instance.v1.InstanceAdmin',
+  file=DESCRIPTOR,
+  index=0,
+  options=None,
+  serialized_start=1982,
+  serialized_end=3620,
+  methods=[
+  _descriptor.MethodDescriptor(
+    name='ListInstanceConfigs',
+    full_name='google.spanner.admin.instance.v1.InstanceAdmin.ListInstanceConfigs',
+    index=0,
+    containing_service=None,
+    input_type=_LISTINSTANCECONFIGSREQUEST,
+    output_type=_LISTINSTANCECONFIGSRESPONSE,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002)\022\'/v1/{parent=projects/*}/instanceConfigs')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='GetInstanceConfig',
+    full_name='google.spanner.admin.instance.v1.InstanceAdmin.GetInstanceConfig',
+    index=1,
+    containing_service=None,
+    input_type=_GETINSTANCECONFIGREQUEST,
+    output_type=_INSTANCECONFIG,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002)\022\'/v1/{name=projects/*/instanceConfigs/*}')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='ListInstances',
+    full_name='google.spanner.admin.instance.v1.InstanceAdmin.ListInstances',
+    index=2,
+    containing_service=None,
+    input_type=_LISTINSTANCESREQUEST,
+    output_type=_LISTINSTANCESRESPONSE,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002#\022!/v1/{parent=projects/*}/instances')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='GetInstance',
+    full_name='google.spanner.admin.instance.v1.InstanceAdmin.GetInstance',
+    index=3,
+    containing_service=None,
+    input_type=_GETINSTANCEREQUEST,
+    output_type=_INSTANCE,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002#\022!/v1/{name=projects/*/instances/*}')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='CreateInstance',
+    full_name='google.spanner.admin.instance.v1.InstanceAdmin.CreateInstance',
+    index=4,
+    containing_service=None,
+    input_type=_CREATEINSTANCEREQUEST,
+    output_type=google_dot_longrunning_dot_operations__pb2._OPERATION,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002&\"!/v1/{parent=projects/*}/instances:\001*')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='UpdateInstance',
+    full_name='google.spanner.admin.instance.v1.InstanceAdmin.UpdateInstance',
+    index=5,
+    containing_service=None,
+    input_type=_UPDATEINSTANCEREQUEST,
+    output_type=google_dot_longrunning_dot_operations__pb2._OPERATION,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002/2*/v1/{instance.name=projects/*/instances/*}:\001*')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='DeleteInstance',
+    full_name='google.spanner.admin.instance.v1.InstanceAdmin.DeleteInstance',
+    index=6,
+    containing_service=None,
+    input_type=_DELETEINSTANCEREQUEST,
+    output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002#*!/v1/{name=projects/*/instances/*}')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='SetIamPolicy',
+    full_name='google.spanner.admin.instance.v1.InstanceAdmin.SetIamPolicy',
+    index=7,
+    containing_service=None,
+    input_type=google_dot_iam_dot_v1_dot_iam__policy__pb2._SETIAMPOLICYREQUEST,
+    output_type=google_dot_iam_dot_v1_dot_policy__pb2._POLICY,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\0027\"2/v1/{resource=projects/*/instances/*}:setIamPolicy:\001*')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='GetIamPolicy',
+    full_name='google.spanner.admin.instance.v1.InstanceAdmin.GetIamPolicy',
+    index=8,
+    containing_service=None,
+    input_type=google_dot_iam_dot_v1_dot_iam__policy__pb2._GETIAMPOLICYREQUEST,
+    output_type=google_dot_iam_dot_v1_dot_policy__pb2._POLICY,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\0027\"2/v1/{resource=projects/*/instances/*}:getIamPolicy:\001*')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='TestIamPermissions',
+    full_name='google.spanner.admin.instance.v1.InstanceAdmin.TestIamPermissions',
+    index=9,
+    containing_service=None,
+    input_type=google_dot_iam_dot_v1_dot_iam__policy__pb2._TESTIAMPERMISSIONSREQUEST,
+    output_type=google_dot_iam_dot_v1_dot_iam__policy__pb2._TESTIAMPERMISSIONSRESPONSE,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002=\"8/v1/{resource=projects/*/instances/*}:testIamPermissions:\001*')),
+  ),
+])
+_sym_db.RegisterServiceDescriptor(_INSTANCEADMIN)
 
-  class InstanceAdminStub(object):
-    """Cloud Spanner Instance Admin API
+DESCRIPTOR.services_by_name['InstanceAdmin'] = _INSTANCEADMIN
 
-    The Cloud Spanner Instance Admin API can be used to create, delete,
-    modify and list instances. Instances are dedicated Cloud Spanner serving
-    and storage resources to be used by Cloud Spanner databases.
-
-    Each instance has a "configuration", which dictates where the
-    serving resources for the Cloud Spanner instance are located (e.g.,
-    US-central, Europe). Configurations are created by Google based on
-    resource availability.
-
-    Cloud Spanner billing is based on the instances that exist and their
-    sizes. After an instance exists, there are no additional
-    per-database or per-operation charges for use of the instance
-    (though there may be additional network bandwidth charges).
-    Instances offer isolation: problems with databases in one instance
-    will not affect other instances. However, within an instance
-    databases can affect each other. For example, if one database in an
-    instance receives a lot of requests and consumes most of the
-    instance resources, fewer resources are available for other
-    databases in that instance, and their performance may suffer.
-    """
-
-    def __init__(self, channel):
-      """Constructor.
-
-      Args:
-        channel: A grpc.Channel.
-      """
-      self.ListInstanceConfigs = channel.unary_unary(
-          '/google.spanner.admin.instance.v1.InstanceAdmin/ListInstanceConfigs',
-          request_serializer=ListInstanceConfigsRequest.SerializeToString,
-          response_deserializer=ListInstanceConfigsResponse.FromString,
-          )
-      self.GetInstanceConfig = channel.unary_unary(
-          '/google.spanner.admin.instance.v1.InstanceAdmin/GetInstanceConfig',
-          request_serializer=GetInstanceConfigRequest.SerializeToString,
-          response_deserializer=InstanceConfig.FromString,
-          )
-      self.ListInstances = channel.unary_unary(
-          '/google.spanner.admin.instance.v1.InstanceAdmin/ListInstances',
-          request_serializer=ListInstancesRequest.SerializeToString,
-          response_deserializer=ListInstancesResponse.FromString,
-          )
-      self.GetInstance = channel.unary_unary(
-          '/google.spanner.admin.instance.v1.InstanceAdmin/GetInstance',
-          request_serializer=GetInstanceRequest.SerializeToString,
-          response_deserializer=Instance.FromString,
-          )
-      self.CreateInstance = channel.unary_unary(
-          '/google.spanner.admin.instance.v1.InstanceAdmin/CreateInstance',
-          request_serializer=CreateInstanceRequest.SerializeToString,
-          response_deserializer=google_dot_longrunning_dot_operations__pb2.Operation.FromString,
-          )
-      self.UpdateInstance = channel.unary_unary(
-          '/google.spanner.admin.instance.v1.InstanceAdmin/UpdateInstance',
-          request_serializer=UpdateInstanceRequest.SerializeToString,
-          response_deserializer=google_dot_longrunning_dot_operations__pb2.Operation.FromString,
-          )
-      self.DeleteInstance = channel.unary_unary(
-          '/google.spanner.admin.instance.v1.InstanceAdmin/DeleteInstance',
-          request_serializer=DeleteInstanceRequest.SerializeToString,
-          response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
-          )
-      self.SetIamPolicy = channel.unary_unary(
-          '/google.spanner.admin.instance.v1.InstanceAdmin/SetIamPolicy',
-          request_serializer=google_dot_iam_dot_v1_dot_iam__policy__pb2.SetIamPolicyRequest.SerializeToString,
-          response_deserializer=google_dot_iam_dot_v1_dot_policy__pb2.Policy.FromString,
-          )
-      self.GetIamPolicy = channel.unary_unary(
-          '/google.spanner.admin.instance.v1.InstanceAdmin/GetIamPolicy',
-          request_serializer=google_dot_iam_dot_v1_dot_iam__policy__pb2.GetIamPolicyRequest.SerializeToString,
-          response_deserializer=google_dot_iam_dot_v1_dot_policy__pb2.Policy.FromString,
-          )
-      self.TestIamPermissions = channel.unary_unary(
-          '/google.spanner.admin.instance.v1.InstanceAdmin/TestIamPermissions',
-          request_serializer=google_dot_iam_dot_v1_dot_iam__policy__pb2.TestIamPermissionsRequest.SerializeToString,
-          response_deserializer=google_dot_iam_dot_v1_dot_iam__policy__pb2.TestIamPermissionsResponse.FromString,
-          )
-
-
-  class InstanceAdminServicer(object):
-    """Cloud Spanner Instance Admin API
-
-    The Cloud Spanner Instance Admin API can be used to create, delete,
-    modify and list instances. Instances are dedicated Cloud Spanner serving
-    and storage resources to be used by Cloud Spanner databases.
-
-    Each instance has a "configuration", which dictates where the
-    serving resources for the Cloud Spanner instance are located (e.g.,
-    US-central, Europe). Configurations are created by Google based on
-    resource availability.
-
-    Cloud Spanner billing is based on the instances that exist and their
-    sizes. After an instance exists, there are no additional
-    per-database or per-operation charges for use of the instance
-    (though there may be additional network bandwidth charges).
-    Instances offer isolation: problems with databases in one instance
-    will not affect other instances. However, within an instance
-    databases can affect each other. For example, if one database in an
-    instance receives a lot of requests and consumes most of the
-    instance resources, fewer resources are available for other
-    databases in that instance, and their performance may suffer.
-    """
-
-    def ListInstanceConfigs(self, request, context):
-      """Lists the supported instance configurations for a given project.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def GetInstanceConfig(self, request, context):
-      """Gets information about a particular instance configuration.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def ListInstances(self, request, context):
-      """Lists all instances in the given project.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def GetInstance(self, request, context):
-      """Gets information about a particular instance.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def CreateInstance(self, request, context):
-      """Creates an instance and begins preparing it to begin serving. The
-      returned [long-running operation][google.longrunning.Operation]
-      can be used to track the progress of preparing the new
-      instance. The instance name is assigned by the caller. If the
-      named instance already exists, `CreateInstance` returns
-      `ALREADY_EXISTS`.
-
-      Immediately upon completion of this request:
-
-      * The instance is readable via the API, with all requested attributes
-      but no allocated resources. Its state is `CREATING`.
-
-      Until completion of the returned operation:
-
-      * Cancelling the operation renders the instance immediately unreadable
-      via the API.
-      * The instance can be deleted.
-      * All other attempts to modify the instance are rejected.
-
-      Upon completion of the returned operation:
-
-      * Billing for all successfully-allocated resources begins (some types
-      may have lower than the requested levels).
-      * Databases can be created in the instance.
-      * The instance's allocated resource levels are readable via the API.
-      * The instance's state becomes `READY`.
-
-      The returned [long-running operation][google.longrunning.Operation] will
-      have a name of the format `<instance_name>/operations/<operation_id>` and
-      can be used to track creation of the instance.  The
-      [metadata][google.longrunning.Operation.metadata] field type is
-      [CreateInstanceMetadata][google.spanner.admin.instance.v1.CreateInstanceMetadata].
-      The [response][google.longrunning.Operation.response] field type is
-      [Instance][google.spanner.admin.instance.v1.Instance], if successful.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def UpdateInstance(self, request, context):
-      """Updates an instance, and begins allocating or releasing resources
-      as requested. The returned [long-running
-      operation][google.longrunning.Operation] can be used to track the
-      progress of updating the instance. If the named instance does not
-      exist, returns `NOT_FOUND`.
-
-      Immediately upon completion of this request:
-
-      * For resource types for which a decrease in the instance's allocation
-      has been requested, billing is based on the newly-requested level.
-
-      Until completion of the returned operation:
-
-      * Cancelling the operation sets its metadata's
-      [cancel_time][google.spanner.admin.instance.v1.UpdateInstanceMetadata.cancel_time], and begins
-      restoring resources to their pre-request values. The operation
-      is guaranteed to succeed at undoing all resource changes,
-      after which point it terminates with a `CANCELLED` status.
-      * All other attempts to modify the instance are rejected.
-      * Reading the instance via the API continues to give the pre-request
-      resource levels.
-
-      Upon completion of the returned operation:
-
-      * Billing begins for all successfully-allocated resources (some types
-      may have lower than the requested levels).
-      * All newly-reserved resources are available for serving the instance's
-      tables.
-      * The instance's new resource levels are readable via the API.
-
-      The returned [long-running operation][google.longrunning.Operation] will
-      have a name of the format `<instance_name>/operations/<operation_id>` and
-      can be used to track the instance modification.  The
-      [metadata][google.longrunning.Operation.metadata] field type is
-      [UpdateInstanceMetadata][google.spanner.admin.instance.v1.UpdateInstanceMetadata].
-      The [response][google.longrunning.Operation.response] field type is
-      [Instance][google.spanner.admin.instance.v1.Instance], if successful.
-
-      Authorization requires `spanner.instances.update` permission on
-      resource [name][google.spanner.admin.instance.v1.Instance.name].
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def DeleteInstance(self, request, context):
-      """Deletes an instance.
-
-      Immediately upon completion of the request:
-
-      * Billing ceases for all of the instance's reserved resources.
-
-      Soon afterward:
-
-      * The instance and *all of its databases* immediately and
-      irrevocably disappear from the API. All data in the databases
-      is permanently deleted.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def SetIamPolicy(self, request, context):
-      """Sets the access control policy on an instance resource. Replaces any
-      existing policy.
-
-      Authorization requires `spanner.instances.setIamPolicy` on
-      [resource][google.iam.v1.SetIamPolicyRequest.resource].
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def GetIamPolicy(self, request, context):
-      """Gets the access control policy for an instance resource. Returns an empty
-      policy if an instance exists but does not have a policy set.
-
-      Authorization requires `spanner.instances.getIamPolicy` on
-      [resource][google.iam.v1.GetIamPolicyRequest.resource].
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def TestIamPermissions(self, request, context):
-      """Returns permissions that the caller has on the specified instance resource.
-
-      Attempting this RPC on a non-existent Cloud Spanner instance resource will
-      result in a NOT_FOUND error if the user has `spanner.instances.list`
-      permission on the containing Google Cloud Project. Otherwise returns an
-      empty set of permissions.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-
-  def add_InstanceAdminServicer_to_server(servicer, server):
-    rpc_method_handlers = {
-        'ListInstanceConfigs': grpc.unary_unary_rpc_method_handler(
-            servicer.ListInstanceConfigs,
-            request_deserializer=ListInstanceConfigsRequest.FromString,
-            response_serializer=ListInstanceConfigsResponse.SerializeToString,
-        ),
-        'GetInstanceConfig': grpc.unary_unary_rpc_method_handler(
-            servicer.GetInstanceConfig,
-            request_deserializer=GetInstanceConfigRequest.FromString,
-            response_serializer=InstanceConfig.SerializeToString,
-        ),
-        'ListInstances': grpc.unary_unary_rpc_method_handler(
-            servicer.ListInstances,
-            request_deserializer=ListInstancesRequest.FromString,
-            response_serializer=ListInstancesResponse.SerializeToString,
-        ),
-        'GetInstance': grpc.unary_unary_rpc_method_handler(
-            servicer.GetInstance,
-            request_deserializer=GetInstanceRequest.FromString,
-            response_serializer=Instance.SerializeToString,
-        ),
-        'CreateInstance': grpc.unary_unary_rpc_method_handler(
-            servicer.CreateInstance,
-            request_deserializer=CreateInstanceRequest.FromString,
-            response_serializer=google_dot_longrunning_dot_operations__pb2.Operation.SerializeToString,
-        ),
-        'UpdateInstance': grpc.unary_unary_rpc_method_handler(
-            servicer.UpdateInstance,
-            request_deserializer=UpdateInstanceRequest.FromString,
-            response_serializer=google_dot_longrunning_dot_operations__pb2.Operation.SerializeToString,
-        ),
-        'DeleteInstance': grpc.unary_unary_rpc_method_handler(
-            servicer.DeleteInstance,
-            request_deserializer=DeleteInstanceRequest.FromString,
-            response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
-        ),
-        'SetIamPolicy': grpc.unary_unary_rpc_method_handler(
-            servicer.SetIamPolicy,
-            request_deserializer=google_dot_iam_dot_v1_dot_iam__policy__pb2.SetIamPolicyRequest.FromString,
-            response_serializer=google_dot_iam_dot_v1_dot_policy__pb2.Policy.SerializeToString,
-        ),
-        'GetIamPolicy': grpc.unary_unary_rpc_method_handler(
-            servicer.GetIamPolicy,
-            request_deserializer=google_dot_iam_dot_v1_dot_iam__policy__pb2.GetIamPolicyRequest.FromString,
-            response_serializer=google_dot_iam_dot_v1_dot_policy__pb2.Policy.SerializeToString,
-        ),
-        'TestIamPermissions': grpc.unary_unary_rpc_method_handler(
-            servicer.TestIamPermissions,
-            request_deserializer=google_dot_iam_dot_v1_dot_iam__policy__pb2.TestIamPermissionsRequest.FromString,
-            response_serializer=google_dot_iam_dot_v1_dot_iam__policy__pb2.TestIamPermissionsResponse.SerializeToString,
-        ),
-    }
-    generic_handler = grpc.method_handlers_generic_handler(
-        'google.spanner.admin.instance.v1.InstanceAdmin', rpc_method_handlers)
-    server.add_generic_rpc_handlers((generic_handler,))
-
-
-  class BetaInstanceAdminServicer(object):
-    """The Beta API is deprecated for 0.15.0 and later.
-
-    It is recommended to use the GA API (classes and functions in this
-    file not marked beta) for all further purposes. This class was generated
-    only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0."""
-    """Cloud Spanner Instance Admin API
-
-    The Cloud Spanner Instance Admin API can be used to create, delete,
-    modify and list instances. Instances are dedicated Cloud Spanner serving
-    and storage resources to be used by Cloud Spanner databases.
-
-    Each instance has a "configuration", which dictates where the
-    serving resources for the Cloud Spanner instance are located (e.g.,
-    US-central, Europe). Configurations are created by Google based on
-    resource availability.
-
-    Cloud Spanner billing is based on the instances that exist and their
-    sizes. After an instance exists, there are no additional
-    per-database or per-operation charges for use of the instance
-    (though there may be additional network bandwidth charges).
-    Instances offer isolation: problems with databases in one instance
-    will not affect other instances. However, within an instance
-    databases can affect each other. For example, if one database in an
-    instance receives a lot of requests and consumes most of the
-    instance resources, fewer resources are available for other
-    databases in that instance, and their performance may suffer.
-    """
-    def ListInstanceConfigs(self, request, context):
-      """Lists the supported instance configurations for a given project.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def GetInstanceConfig(self, request, context):
-      """Gets information about a particular instance configuration.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def ListInstances(self, request, context):
-      """Lists all instances in the given project.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def GetInstance(self, request, context):
-      """Gets information about a particular instance.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def CreateInstance(self, request, context):
-      """Creates an instance and begins preparing it to begin serving. The
-      returned [long-running operation][google.longrunning.Operation]
-      can be used to track the progress of preparing the new
-      instance. The instance name is assigned by the caller. If the
-      named instance already exists, `CreateInstance` returns
-      `ALREADY_EXISTS`.
-
-      Immediately upon completion of this request:
-
-      * The instance is readable via the API, with all requested attributes
-      but no allocated resources. Its state is `CREATING`.
-
-      Until completion of the returned operation:
-
-      * Cancelling the operation renders the instance immediately unreadable
-      via the API.
-      * The instance can be deleted.
-      * All other attempts to modify the instance are rejected.
-
-      Upon completion of the returned operation:
-
-      * Billing for all successfully-allocated resources begins (some types
-      may have lower than the requested levels).
-      * Databases can be created in the instance.
-      * The instance's allocated resource levels are readable via the API.
-      * The instance's state becomes `READY`.
-
-      The returned [long-running operation][google.longrunning.Operation] will
-      have a name of the format `<instance_name>/operations/<operation_id>` and
-      can be used to track creation of the instance.  The
-      [metadata][google.longrunning.Operation.metadata] field type is
-      [CreateInstanceMetadata][google.spanner.admin.instance.v1.CreateInstanceMetadata].
-      The [response][google.longrunning.Operation.response] field type is
-      [Instance][google.spanner.admin.instance.v1.Instance], if successful.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def UpdateInstance(self, request, context):
-      """Updates an instance, and begins allocating or releasing resources
-      as requested. The returned [long-running
-      operation][google.longrunning.Operation] can be used to track the
-      progress of updating the instance. If the named instance does not
-      exist, returns `NOT_FOUND`.
-
-      Immediately upon completion of this request:
-
-      * For resource types for which a decrease in the instance's allocation
-      has been requested, billing is based on the newly-requested level.
-
-      Until completion of the returned operation:
-
-      * Cancelling the operation sets its metadata's
-      [cancel_time][google.spanner.admin.instance.v1.UpdateInstanceMetadata.cancel_time], and begins
-      restoring resources to their pre-request values. The operation
-      is guaranteed to succeed at undoing all resource changes,
-      after which point it terminates with a `CANCELLED` status.
-      * All other attempts to modify the instance are rejected.
-      * Reading the instance via the API continues to give the pre-request
-      resource levels.
-
-      Upon completion of the returned operation:
-
-      * Billing begins for all successfully-allocated resources (some types
-      may have lower than the requested levels).
-      * All newly-reserved resources are available for serving the instance's
-      tables.
-      * The instance's new resource levels are readable via the API.
-
-      The returned [long-running operation][google.longrunning.Operation] will
-      have a name of the format `<instance_name>/operations/<operation_id>` and
-      can be used to track the instance modification.  The
-      [metadata][google.longrunning.Operation.metadata] field type is
-      [UpdateInstanceMetadata][google.spanner.admin.instance.v1.UpdateInstanceMetadata].
-      The [response][google.longrunning.Operation.response] field type is
-      [Instance][google.spanner.admin.instance.v1.Instance], if successful.
-
-      Authorization requires `spanner.instances.update` permission on
-      resource [name][google.spanner.admin.instance.v1.Instance.name].
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def DeleteInstance(self, request, context):
-      """Deletes an instance.
-
-      Immediately upon completion of the request:
-
-      * Billing ceases for all of the instance's reserved resources.
-
-      Soon afterward:
-
-      * The instance and *all of its databases* immediately and
-      irrevocably disappear from the API. All data in the databases
-      is permanently deleted.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def SetIamPolicy(self, request, context):
-      """Sets the access control policy on an instance resource. Replaces any
-      existing policy.
-
-      Authorization requires `spanner.instances.setIamPolicy` on
-      [resource][google.iam.v1.SetIamPolicyRequest.resource].
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def GetIamPolicy(self, request, context):
-      """Gets the access control policy for an instance resource. Returns an empty
-      policy if an instance exists but does not have a policy set.
-
-      Authorization requires `spanner.instances.getIamPolicy` on
-      [resource][google.iam.v1.GetIamPolicyRequest.resource].
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def TestIamPermissions(self, request, context):
-      """Returns permissions that the caller has on the specified instance resource.
-
-      Attempting this RPC on a non-existent Cloud Spanner instance resource will
-      result in a NOT_FOUND error if the user has `spanner.instances.list`
-      permission on the containing Google Cloud Project. Otherwise returns an
-      empty set of permissions.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-
-
-  class BetaInstanceAdminStub(object):
-    """The Beta API is deprecated for 0.15.0 and later.
-
-    It is recommended to use the GA API (classes and functions in this
-    file not marked beta) for all further purposes. This class was generated
-    only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0."""
-    """Cloud Spanner Instance Admin API
-
-    The Cloud Spanner Instance Admin API can be used to create, delete,
-    modify and list instances. Instances are dedicated Cloud Spanner serving
-    and storage resources to be used by Cloud Spanner databases.
-
-    Each instance has a "configuration", which dictates where the
-    serving resources for the Cloud Spanner instance are located (e.g.,
-    US-central, Europe). Configurations are created by Google based on
-    resource availability.
-
-    Cloud Spanner billing is based on the instances that exist and their
-    sizes. After an instance exists, there are no additional
-    per-database or per-operation charges for use of the instance
-    (though there may be additional network bandwidth charges).
-    Instances offer isolation: problems with databases in one instance
-    will not affect other instances. However, within an instance
-    databases can affect each other. For example, if one database in an
-    instance receives a lot of requests and consumes most of the
-    instance resources, fewer resources are available for other
-    databases in that instance, and their performance may suffer.
-    """
-    def ListInstanceConfigs(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Lists the supported instance configurations for a given project.
-      """
-      raise NotImplementedError()
-    ListInstanceConfigs.future = None
-    def GetInstanceConfig(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Gets information about a particular instance configuration.
-      """
-      raise NotImplementedError()
-    GetInstanceConfig.future = None
-    def ListInstances(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Lists all instances in the given project.
-      """
-      raise NotImplementedError()
-    ListInstances.future = None
-    def GetInstance(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Gets information about a particular instance.
-      """
-      raise NotImplementedError()
-    GetInstance.future = None
-    def CreateInstance(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Creates an instance and begins preparing it to begin serving. The
-      returned [long-running operation][google.longrunning.Operation]
-      can be used to track the progress of preparing the new
-      instance. The instance name is assigned by the caller. If the
-      named instance already exists, `CreateInstance` returns
-      `ALREADY_EXISTS`.
-
-      Immediately upon completion of this request:
-
-      * The instance is readable via the API, with all requested attributes
-      but no allocated resources. Its state is `CREATING`.
-
-      Until completion of the returned operation:
-
-      * Cancelling the operation renders the instance immediately unreadable
-      via the API.
-      * The instance can be deleted.
-      * All other attempts to modify the instance are rejected.
-
-      Upon completion of the returned operation:
-
-      * Billing for all successfully-allocated resources begins (some types
-      may have lower than the requested levels).
-      * Databases can be created in the instance.
-      * The instance's allocated resource levels are readable via the API.
-      * The instance's state becomes `READY`.
-
-      The returned [long-running operation][google.longrunning.Operation] will
-      have a name of the format `<instance_name>/operations/<operation_id>` and
-      can be used to track creation of the instance.  The
-      [metadata][google.longrunning.Operation.metadata] field type is
-      [CreateInstanceMetadata][google.spanner.admin.instance.v1.CreateInstanceMetadata].
-      The [response][google.longrunning.Operation.response] field type is
-      [Instance][google.spanner.admin.instance.v1.Instance], if successful.
-      """
-      raise NotImplementedError()
-    CreateInstance.future = None
-    def UpdateInstance(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Updates an instance, and begins allocating or releasing resources
-      as requested. The returned [long-running
-      operation][google.longrunning.Operation] can be used to track the
-      progress of updating the instance. If the named instance does not
-      exist, returns `NOT_FOUND`.
-
-      Immediately upon completion of this request:
-
-      * For resource types for which a decrease in the instance's allocation
-      has been requested, billing is based on the newly-requested level.
-
-      Until completion of the returned operation:
-
-      * Cancelling the operation sets its metadata's
-      [cancel_time][google.spanner.admin.instance.v1.UpdateInstanceMetadata.cancel_time], and begins
-      restoring resources to their pre-request values. The operation
-      is guaranteed to succeed at undoing all resource changes,
-      after which point it terminates with a `CANCELLED` status.
-      * All other attempts to modify the instance are rejected.
-      * Reading the instance via the API continues to give the pre-request
-      resource levels.
-
-      Upon completion of the returned operation:
-
-      * Billing begins for all successfully-allocated resources (some types
-      may have lower than the requested levels).
-      * All newly-reserved resources are available for serving the instance's
-      tables.
-      * The instance's new resource levels are readable via the API.
-
-      The returned [long-running operation][google.longrunning.Operation] will
-      have a name of the format `<instance_name>/operations/<operation_id>` and
-      can be used to track the instance modification.  The
-      [metadata][google.longrunning.Operation.metadata] field type is
-      [UpdateInstanceMetadata][google.spanner.admin.instance.v1.UpdateInstanceMetadata].
-      The [response][google.longrunning.Operation.response] field type is
-      [Instance][google.spanner.admin.instance.v1.Instance], if successful.
-
-      Authorization requires `spanner.instances.update` permission on
-      resource [name][google.spanner.admin.instance.v1.Instance.name].
-      """
-      raise NotImplementedError()
-    UpdateInstance.future = None
-    def DeleteInstance(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Deletes an instance.
-
-      Immediately upon completion of the request:
-
-      * Billing ceases for all of the instance's reserved resources.
-
-      Soon afterward:
-
-      * The instance and *all of its databases* immediately and
-      irrevocably disappear from the API. All data in the databases
-      is permanently deleted.
-      """
-      raise NotImplementedError()
-    DeleteInstance.future = None
-    def SetIamPolicy(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Sets the access control policy on an instance resource. Replaces any
-      existing policy.
-
-      Authorization requires `spanner.instances.setIamPolicy` on
-      [resource][google.iam.v1.SetIamPolicyRequest.resource].
-      """
-      raise NotImplementedError()
-    SetIamPolicy.future = None
-    def GetIamPolicy(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Gets the access control policy for an instance resource. Returns an empty
-      policy if an instance exists but does not have a policy set.
-
-      Authorization requires `spanner.instances.getIamPolicy` on
-      [resource][google.iam.v1.GetIamPolicyRequest.resource].
-      """
-      raise NotImplementedError()
-    GetIamPolicy.future = None
-    def TestIamPermissions(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Returns permissions that the caller has on the specified instance resource.
-
-      Attempting this RPC on a non-existent Cloud Spanner instance resource will
-      result in a NOT_FOUND error if the user has `spanner.instances.list`
-      permission on the containing Google Cloud Project. Otherwise returns an
-      empty set of permissions.
-      """
-      raise NotImplementedError()
-    TestIamPermissions.future = None
-
-
-  def beta_create_InstanceAdmin_server(servicer, pool=None, pool_size=None, default_timeout=None, maximum_timeout=None):
-    """The Beta API is deprecated for 0.15.0 and later.
-
-    It is recommended to use the GA API (classes and functions in this
-    file not marked beta) for all further purposes. This function was
-    generated only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0"""
-    request_deserializers = {
-      ('google.spanner.admin.instance.v1.InstanceAdmin', 'CreateInstance'): CreateInstanceRequest.FromString,
-      ('google.spanner.admin.instance.v1.InstanceAdmin', 'DeleteInstance'): DeleteInstanceRequest.FromString,
-      ('google.spanner.admin.instance.v1.InstanceAdmin', 'GetIamPolicy'): google_dot_iam_dot_v1_dot_iam__policy__pb2.GetIamPolicyRequest.FromString,
-      ('google.spanner.admin.instance.v1.InstanceAdmin', 'GetInstance'): GetInstanceRequest.FromString,
-      ('google.spanner.admin.instance.v1.InstanceAdmin', 'GetInstanceConfig'): GetInstanceConfigRequest.FromString,
-      ('google.spanner.admin.instance.v1.InstanceAdmin', 'ListInstanceConfigs'): ListInstanceConfigsRequest.FromString,
-      ('google.spanner.admin.instance.v1.InstanceAdmin', 'ListInstances'): ListInstancesRequest.FromString,
-      ('google.spanner.admin.instance.v1.InstanceAdmin', 'SetIamPolicy'): google_dot_iam_dot_v1_dot_iam__policy__pb2.SetIamPolicyRequest.FromString,
-      ('google.spanner.admin.instance.v1.InstanceAdmin', 'TestIamPermissions'): google_dot_iam_dot_v1_dot_iam__policy__pb2.TestIamPermissionsRequest.FromString,
-      ('google.spanner.admin.instance.v1.InstanceAdmin', 'UpdateInstance'): UpdateInstanceRequest.FromString,
-    }
-    response_serializers = {
-      ('google.spanner.admin.instance.v1.InstanceAdmin', 'CreateInstance'): google_dot_longrunning_dot_operations__pb2.Operation.SerializeToString,
-      ('google.spanner.admin.instance.v1.InstanceAdmin', 'DeleteInstance'): google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
-      ('google.spanner.admin.instance.v1.InstanceAdmin', 'GetIamPolicy'): google_dot_iam_dot_v1_dot_policy__pb2.Policy.SerializeToString,
-      ('google.spanner.admin.instance.v1.InstanceAdmin', 'GetInstance'): Instance.SerializeToString,
-      ('google.spanner.admin.instance.v1.InstanceAdmin', 'GetInstanceConfig'): InstanceConfig.SerializeToString,
-      ('google.spanner.admin.instance.v1.InstanceAdmin', 'ListInstanceConfigs'): ListInstanceConfigsResponse.SerializeToString,
-      ('google.spanner.admin.instance.v1.InstanceAdmin', 'ListInstances'): ListInstancesResponse.SerializeToString,
-      ('google.spanner.admin.instance.v1.InstanceAdmin', 'SetIamPolicy'): google_dot_iam_dot_v1_dot_policy__pb2.Policy.SerializeToString,
-      ('google.spanner.admin.instance.v1.InstanceAdmin', 'TestIamPermissions'): google_dot_iam_dot_v1_dot_iam__policy__pb2.TestIamPermissionsResponse.SerializeToString,
-      ('google.spanner.admin.instance.v1.InstanceAdmin', 'UpdateInstance'): google_dot_longrunning_dot_operations__pb2.Operation.SerializeToString,
-    }
-    method_implementations = {
-      ('google.spanner.admin.instance.v1.InstanceAdmin', 'CreateInstance'): face_utilities.unary_unary_inline(servicer.CreateInstance),
-      ('google.spanner.admin.instance.v1.InstanceAdmin', 'DeleteInstance'): face_utilities.unary_unary_inline(servicer.DeleteInstance),
-      ('google.spanner.admin.instance.v1.InstanceAdmin', 'GetIamPolicy'): face_utilities.unary_unary_inline(servicer.GetIamPolicy),
-      ('google.spanner.admin.instance.v1.InstanceAdmin', 'GetInstance'): face_utilities.unary_unary_inline(servicer.GetInstance),
-      ('google.spanner.admin.instance.v1.InstanceAdmin', 'GetInstanceConfig'): face_utilities.unary_unary_inline(servicer.GetInstanceConfig),
-      ('google.spanner.admin.instance.v1.InstanceAdmin', 'ListInstanceConfigs'): face_utilities.unary_unary_inline(servicer.ListInstanceConfigs),
-      ('google.spanner.admin.instance.v1.InstanceAdmin', 'ListInstances'): face_utilities.unary_unary_inline(servicer.ListInstances),
-      ('google.spanner.admin.instance.v1.InstanceAdmin', 'SetIamPolicy'): face_utilities.unary_unary_inline(servicer.SetIamPolicy),
-      ('google.spanner.admin.instance.v1.InstanceAdmin', 'TestIamPermissions'): face_utilities.unary_unary_inline(servicer.TestIamPermissions),
-      ('google.spanner.admin.instance.v1.InstanceAdmin', 'UpdateInstance'): face_utilities.unary_unary_inline(servicer.UpdateInstance),
-    }
-    server_options = beta_implementations.server_options(request_deserializers=request_deserializers, response_serializers=response_serializers, thread_pool=pool, thread_pool_size=pool_size, default_timeout=default_timeout, maximum_timeout=maximum_timeout)
-    return beta_implementations.server(method_implementations, options=server_options)
-
-
-  def beta_create_InstanceAdmin_stub(channel, host=None, metadata_transformer=None, pool=None, pool_size=None):
-    """The Beta API is deprecated for 0.15.0 and later.
-
-    It is recommended to use the GA API (classes and functions in this
-    file not marked beta) for all further purposes. This function was
-    generated only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0"""
-    request_serializers = {
-      ('google.spanner.admin.instance.v1.InstanceAdmin', 'CreateInstance'): CreateInstanceRequest.SerializeToString,
-      ('google.spanner.admin.instance.v1.InstanceAdmin', 'DeleteInstance'): DeleteInstanceRequest.SerializeToString,
-      ('google.spanner.admin.instance.v1.InstanceAdmin', 'GetIamPolicy'): google_dot_iam_dot_v1_dot_iam__policy__pb2.GetIamPolicyRequest.SerializeToString,
-      ('google.spanner.admin.instance.v1.InstanceAdmin', 'GetInstance'): GetInstanceRequest.SerializeToString,
-      ('google.spanner.admin.instance.v1.InstanceAdmin', 'GetInstanceConfig'): GetInstanceConfigRequest.SerializeToString,
-      ('google.spanner.admin.instance.v1.InstanceAdmin', 'ListInstanceConfigs'): ListInstanceConfigsRequest.SerializeToString,
-      ('google.spanner.admin.instance.v1.InstanceAdmin', 'ListInstances'): ListInstancesRequest.SerializeToString,
-      ('google.spanner.admin.instance.v1.InstanceAdmin', 'SetIamPolicy'): google_dot_iam_dot_v1_dot_iam__policy__pb2.SetIamPolicyRequest.SerializeToString,
-      ('google.spanner.admin.instance.v1.InstanceAdmin', 'TestIamPermissions'): google_dot_iam_dot_v1_dot_iam__policy__pb2.TestIamPermissionsRequest.SerializeToString,
-      ('google.spanner.admin.instance.v1.InstanceAdmin', 'UpdateInstance'): UpdateInstanceRequest.SerializeToString,
-    }
-    response_deserializers = {
-      ('google.spanner.admin.instance.v1.InstanceAdmin', 'CreateInstance'): google_dot_longrunning_dot_operations__pb2.Operation.FromString,
-      ('google.spanner.admin.instance.v1.InstanceAdmin', 'DeleteInstance'): google_dot_protobuf_dot_empty__pb2.Empty.FromString,
-      ('google.spanner.admin.instance.v1.InstanceAdmin', 'GetIamPolicy'): google_dot_iam_dot_v1_dot_policy__pb2.Policy.FromString,
-      ('google.spanner.admin.instance.v1.InstanceAdmin', 'GetInstance'): Instance.FromString,
-      ('google.spanner.admin.instance.v1.InstanceAdmin', 'GetInstanceConfig'): InstanceConfig.FromString,
-      ('google.spanner.admin.instance.v1.InstanceAdmin', 'ListInstanceConfigs'): ListInstanceConfigsResponse.FromString,
-      ('google.spanner.admin.instance.v1.InstanceAdmin', 'ListInstances'): ListInstancesResponse.FromString,
-      ('google.spanner.admin.instance.v1.InstanceAdmin', 'SetIamPolicy'): google_dot_iam_dot_v1_dot_policy__pb2.Policy.FromString,
-      ('google.spanner.admin.instance.v1.InstanceAdmin', 'TestIamPermissions'): google_dot_iam_dot_v1_dot_iam__policy__pb2.TestIamPermissionsResponse.FromString,
-      ('google.spanner.admin.instance.v1.InstanceAdmin', 'UpdateInstance'): google_dot_longrunning_dot_operations__pb2.Operation.FromString,
-    }
-    cardinalities = {
-      'CreateInstance': cardinality.Cardinality.UNARY_UNARY,
-      'DeleteInstance': cardinality.Cardinality.UNARY_UNARY,
-      'GetIamPolicy': cardinality.Cardinality.UNARY_UNARY,
-      'GetInstance': cardinality.Cardinality.UNARY_UNARY,
-      'GetInstanceConfig': cardinality.Cardinality.UNARY_UNARY,
-      'ListInstanceConfigs': cardinality.Cardinality.UNARY_UNARY,
-      'ListInstances': cardinality.Cardinality.UNARY_UNARY,
-      'SetIamPolicy': cardinality.Cardinality.UNARY_UNARY,
-      'TestIamPermissions': cardinality.Cardinality.UNARY_UNARY,
-      'UpdateInstance': cardinality.Cardinality.UNARY_UNARY,
-    }
-    stub_options = beta_implementations.stub_options(host=host, metadata_transformer=metadata_transformer, request_serializers=request_serializers, response_deserializers=response_deserializers, thread_pool=pool, thread_pool_size=pool_size)
-    return beta_implementations.dynamic_stub(channel, 'google.spanner.admin.instance.v1.InstanceAdmin', cardinalities, options=stub_options)
-except ImportError:
-  pass
 # @@protoc_insertion_point(module_scope)

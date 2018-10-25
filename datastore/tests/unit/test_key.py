@@ -35,6 +35,9 @@ class TestKey(unittest.TestCase):
     _URLSAFE_EXAMPLE2 = b'agZzfmZpcmVyDwsSBEtpbmQiBVRoaW5nDA'
     _URLSAFE_APP2 = 's~fire'
     _URLSAFE_FLAT_PATH2 = ('Kind', 'Thing')
+    _URLSAFE_EXAMPLE3 = b'ahhzfnNhbXBsZS1hcHAtbm8tbG9jYXRpb25yCgsSBFpvcnAYWAw'
+    _URLSAFE_APP3 = 'sample-app-no-location'
+    _URLSAFE_FLAT_PATH3 = ('Zorp', 88)
 
     @staticmethod
     def _get_target_class():
@@ -408,6 +411,13 @@ class TestKey(unittest.TestCase):
         # Make sure it started with base64 padding.
         self.assertNotEqual(len(self._URLSAFE_EXAMPLE2) % 4, 0)
 
+    def test_to_legacy_urlsafe_with_location_prefix(self):
+        key = self._make_one(
+            *self._URLSAFE_FLAT_PATH3,
+            project=self._URLSAFE_APP3)
+        urlsafe = key.to_legacy_urlsafe(location_prefix='s~')
+        self.assertEqual(urlsafe, self._URLSAFE_EXAMPLE3)
+
     def test_from_legacy_urlsafe(self):
         klass = self._get_target_class()
         key = klass.from_legacy_urlsafe(self._URLSAFE_EXAMPLE1)
@@ -429,6 +439,15 @@ class TestKey(unittest.TestCase):
         self.assertEqual('s~' + key.project, self._URLSAFE_APP2)
         self.assertIsNone(key.namespace)
         self.assertEqual(key.flat_path, self._URLSAFE_FLAT_PATH2)
+
+    def test_from_legacy_urlsafe_with_location_prefix(self):
+        klass = self._get_target_class()
+        # Make sure it will have base64 padding added.
+        key = klass.from_legacy_urlsafe(self._URLSAFE_EXAMPLE3)
+
+        self.assertEqual(key.project, self._URLSAFE_APP3)
+        self.assertIsNone(key.namespace)
+        self.assertEqual(key.flat_path, self._URLSAFE_FLAT_PATH3)
 
     def test_is_partial_no_name_or_id(self):
         key = self._make_one('KIND', project=self._DEFAULT_PROJECT)
@@ -690,7 +709,8 @@ class Test__to_legacy_path(unittest.TestCase):
         kind2 = 'child'
         name2 = 'naem'
 
-        dict_path = [{'kind': kind1, 'id': id1}, {'kind': kind2, 'name': name2}]
+        dict_path = [
+            {'kind': kind1, 'id': id1}, {'kind': kind2, 'name': name2}]
         path_pb = self._call_fut(dict_path)
 
         element_pb1 = _make_element_pb(type=kind1, id=id1)

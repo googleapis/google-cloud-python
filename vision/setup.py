@@ -1,10 +1,10 @@
-# Copyright 2016 Google LLC
+# Copyright 2018 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#     http://www.apache.org/licenses/LICENSE-2.0
+#     https://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,55 +15,59 @@
 import io
 import os
 
-from setuptools import find_packages
-from setuptools import setup
+import setuptools
 
+name = 'google-cloud-vision'
+description = 'Cloud Vision API API client library'
+version = '0.34.0'
+release_status = 'Development Status :: 4 - Beta'
+dependencies = [
+    'google-api-core[grpc] >= 1.1.0, < 2.0.0dev',
+    'enum34; python_version < "3.4"',
+]
 
-PACKAGE_ROOT = os.path.abspath(os.path.dirname(__file__))
+package_root = os.path.abspath(os.path.dirname(__file__))
 
-with io.open(os.path.join(PACKAGE_ROOT, 'README.rst'), 'r') as readme_file:
+readme_filename = os.path.join(package_root, 'README.rst')
+with io.open(readme_filename, encoding='utf-8') as readme_file:
     readme = readme_file.read()
 
-REQUIREMENTS = [
-    'google-cloud-core[grpc] >= 0.28.0, < 0.29dev',
-    'google-api-core >= 0.1.1, < 0.2.0dev',
-    'google-gax >= 0.15.14, < 0.16dev',
+packages = [
+    package for package in setuptools.find_packages()
+    if package.startswith('google')
 ]
-EXTRAS_REQUIRE = {
-    ':python_version<"3.4"': ['enum34'],
-}
 
-setup(
-    author='Google Cloud Platform',
-    author_email='googleapis-publisher@google.com',
-    name='google-cloud-vision',
-    version='0.28.1.dev1',
-    description='Python Client for Google Cloud Vision',
+namespaces = ['google']
+if 'google.cloud' in packages:
+    namespaces.append('google.cloud')
+
+setuptools.setup(
+    name=name,
+    version=version,
+    description=description,
     long_description=readme,
-    namespace_packages=[
-        'google',
-        'google.cloud',
-    ],
-    packages=find_packages(exclude=('tests*',)),
-    install_requires=REQUIREMENTS,
-    extras_require=EXTRAS_REQUIRE,
-    url='https://github.com/GoogleCloudPlatform/google-cloud-python',
+    author='Google LLC',
+    author_email='googleapis-packages@google.com',
     license='Apache 2.0',
-    platforms='Posix; MacOS X; Windows',
-    include_package_data=True,
-    zip_safe=False,
-    scripts=[],
+    url='https://github.com/GoogleCloudPlatform/google-cloud-python',
     classifiers=[
-        'Development Status :: 4 - Beta',
+        release_status,
         'Intended Audience :: Developers',
         'License :: OSI Approved :: Apache Software License',
-        'Operating System :: OS Independent',
+        'Programming Language :: Python',
         'Programming Language :: Python :: 2',
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
+        'Operating System :: OS Independent',
         'Topic :: Internet',
     ],
+    platforms='Posix; MacOS X; Windows',
+    packages=packages,
+    namespace_packages=namespaces,
+    install_requires=dependencies,
+    include_package_data=True,
+    zip_safe=False,
 )

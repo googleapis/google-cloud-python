@@ -18,14 +18,10 @@ import logging
 import os
 
 try:
-    from google.cloud.logging._gax import make_gax_logging_api
-    from google.cloud.logging._gax import make_gax_metrics_api
-    from google.cloud.logging._gax import make_gax_sinks_api
+    from google.cloud.logging import _gapic
 except ImportError:  # pragma: NO COVER
     _HAVE_GRPC = False
-    make_gax_logging_api = None
-    make_gax_metrics_api = None
-    make_gax_sinks_api = None
+    _gapic = None
 else:
     _HAVE_GRPC = True
 
@@ -53,8 +49,8 @@ _USE_GRPC = _HAVE_GRPC and not _DISABLE_GRPC
 _APPENGINE_FLEXIBLE_ENV_VM = 'GAE_APPENGINE_HOSTNAME'
 """Environment variable set in App Engine when vm:true is set."""
 
-_APPENGINE_FLEXIBLE_ENV_FLEX = 'GAE_INSTANCE'
-"""Environment variable set in App Engine when env:flex is set."""
+_APPENGINE_INSTANCE_ID = 'GAE_INSTANCE'
+"""Environment variable set in App Engine standard and flexible environment."""
 
 _GKE_CLUSTER_NAME = 'instance/attributes/cluster-name'
 """Attribute in metadata server when in GKE environment."""
@@ -85,7 +81,7 @@ class Client(ClientWithProject):
 
     :type _use_grpc: bool
     :param _use_grpc: (Optional) Explicitly specifies whether
-                      to use the gRPC transport (via GAX) or HTTP. If unset,
+                      to use the gRPC transport or HTTP. If unset,
                       falls back to the ``GOOGLE_CLOUD_DISABLE_GRPC``
                       environment variable
                       This parameter should be considered private, and could
@@ -122,7 +118,7 @@ class Client(ClientWithProject):
         """
         if self._logging_api is None:
             if self._use_grpc:
-                self._logging_api = make_gax_logging_api(self)
+                self._logging_api = _gapic.make_logging_api(self)
             else:
                 self._logging_api = JSONLoggingAPI(self)
         return self._logging_api
@@ -136,7 +132,7 @@ class Client(ClientWithProject):
         """
         if self._sinks_api is None:
             if self._use_grpc:
-                self._sinks_api = make_gax_sinks_api(self)
+                self._sinks_api = _gapic.make_sinks_api(self)
             else:
                 self._sinks_api = JSONSinksAPI(self)
         return self._sinks_api
@@ -150,7 +146,7 @@ class Client(ClientWithProject):
         """
         if self._metrics_api is None:
             if self._use_grpc:
-                self._metrics_api = make_gax_metrics_api(self)
+                self._metrics_api = _gapic.make_metrics_api(self)
             else:
                 self._metrics_api = JSONMetricsAPI(self)
         return self._metrics_api
@@ -305,7 +301,7 @@ class Client(ClientWithProject):
         gke_cluster_name = retrieve_metadata_server(_GKE_CLUSTER_NAME)
 
         if (_APPENGINE_FLEXIBLE_ENV_VM in os.environ or
-                _APPENGINE_FLEXIBLE_ENV_FLEX in os.environ):
+                _APPENGINE_INSTANCE_ID in os.environ):
             return AppEngineHandler(self)
         elif gke_cluster_name is not None:
             return ContainerEngineHandler()

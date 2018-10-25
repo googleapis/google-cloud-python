@@ -164,7 +164,8 @@ class TestDocumentReference(unittest.TestCase):
         self.assertEqual(document.id, document_id)
 
     def test_parent_property(self):
-        from google.cloud.firestore_v1beta1.collection import CollectionReference
+        from google.cloud.firestore_v1beta1.collection import (
+            CollectionReference)
 
         collection_id = 'grocery-store'
         document_id = 'market'
@@ -177,7 +178,8 @@ class TestDocumentReference(unittest.TestCase):
         self.assertEqual(parent._path, (collection_id,))
 
     def test_collection_factory(self):
-        from google.cloud.firestore_v1beta1.collection import CollectionReference
+        from google.cloud.firestore_v1beta1.collection import (
+            CollectionReference)
 
         collection_id = 'grocery-store'
         document_id = 'market'
@@ -233,22 +235,56 @@ class TestDocumentReference(unittest.TestCase):
             document._document_path, document_data)
         firestore_api.commit.assert_called_once_with(
             client._database_string, [write_pb], transaction=None,
-            options=client._call_options)
+            metadata=client._rpc_metadata)
+
+    def test_create_empty(self):
+        # Create a minimal fake GAPIC with a dummy response.
+        from google.cloud.firestore_v1beta1.document import DocumentReference
+        from google.cloud.firestore_v1beta1.document import DocumentSnapshot
+        firestore_api = mock.Mock(spec=['commit'])
+        document_reference = mock.create_autospec(DocumentReference)
+        snapshot = mock.create_autospec(DocumentSnapshot)
+        snapshot.exists = True
+        document_reference.get.return_value = snapshot
+        commit_response = mock.Mock(
+            write_results=[document_reference],
+            get=[snapshot],
+            spec=['write_results'])
+        firestore_api.commit.return_value = commit_response
+
+        # Attach the fake GAPIC to a real client.
+        client = _make_client('dignity')
+        client._firestore_api_internal = firestore_api
+        client.get_all = mock.MagicMock()
+        client.get_all.exists.return_value = True
+
+        # Actually make a document and call create().
+        document = self._make_one('foo', 'twelve', client=client)
+        document_data = {}
+        write_result = document.create(document_data)
+        self.assertTrue(write_result.get().exists)
 
     @staticmethod
-    def _write_pb_for_set(document_path, document_data):
+    def _write_pb_for_set(document_path, document_data, merge):
+        from google.cloud.firestore_v1beta1.proto import common_pb2
         from google.cloud.firestore_v1beta1.proto import document_pb2
         from google.cloud.firestore_v1beta1.proto import write_pb2
         from google.cloud.firestore_v1beta1 import _helpers
-
-        return write_pb2.Write(
+        write_pbs = write_pb2.Write(
             update=document_pb2.Document(
                 name=document_path,
                 fields=_helpers.encode_dict(document_data),
             ),
         )
+        if merge:
+            _, _, field_paths = _helpers.process_server_timestamp(
+                document_data)
+            field_paths = _helpers.canonicalize_field_paths(field_paths)
+            mask = common_pb2.DocumentMask(field_paths=sorted(field_paths))
+            write_pbs.update_mask.CopyFrom(mask)
+        return write_pbs
 
-    def _set_helper(self, **option_kwargs):
+    def _set_helper(self, merge=False, **option_kwargs):
         # Create a minimal fake GAPIC with a dummy response.
         firestore_api = mock.Mock(spec=['commit'])
         commit_response = mock.Mock(
@@ -266,28 +302,22 @@ class TestDocumentReference(unittest.TestCase):
             'And': 500,
             'Now': b'\xba\xaa\xaa \xba\xaa\xaa',
         }
-        if option_kwargs:
-            option = client.write_option(**option_kwargs)
-            write_result = document.set(document_data, option=option)
-        else:
-            option = None
-            write_result = document.set(document_data)
+        write_result = document.set(document_data, merge)
 
         # Verify the response and the mocks.
         self.assertIs(write_result, mock.sentinel.write_result)
         write_pb = self._write_pb_for_set(
-            document._document_path, document_data)
-        if option is not None:
-            option.modify_write(write_pb)
+            document._document_path, document_data, merge)
+
         firestore_api.commit.assert_called_once_with(
             client._database_string, [write_pb], transaction=None,
-            options=client._call_options)
+            metadata=client._rpc_metadata)
 
     def test_set(self):
         self._set_helper()
 
-    def test_set_with_option(self):
-        self._set_helper(create_if_missing=False)
+    def test_set_merge(self):
+        self._set_helper(merge=True)
 
     @staticmethod
     def _write_pb_for_update(document_path, update_values, field_paths):
@@ -344,18 +374,37 @@ class TestDocumentReference(unittest.TestCase):
         }
         field_paths = list(field_updates.keys())
         write_pb = self._write_pb_for_update(
-            document._document_path, update_values, field_paths)
+            document._document_path, update_values, sorted(field_paths))
         if option is not None:
             option.modify_write(write_pb)
         firestore_api.commit.assert_called_once_with(
             client._database_string, [write_pb], transaction=None,
-            options=client._call_options)
+            metadata=client._rpc_metadata)
 
     def test_update(self):
         self._update_helper()
 
-    def test_update_with_option(self):
-        self._update_helper(create_if_missing=False)
+    def test_update_with_exists(self):
+        self._update_helper(exists=True)
+
+    def test_empty_update(self):
+        # Create a minimal fake GAPIC with a dummy response.
+        firestore_api = mock.Mock(spec=['commit'])
+        commit_response = mock.Mock(
+            write_results=[mock.sentinel.write_result],
+            spec=['write_results'])
+        firestore_api.commit.return_value = commit_response
+
+        # Attach the fake GAPIC to a real client.
+        client = _make_client('potato-chip')
+        client._firestore_api_internal = firestore_api
+
+        # Actually make a document and call create().
+        document = self._make_one('baked', 'Alaska', client=client)
+        # "Cheat" and use OrderedDict-s so that iteritems() is deterministic.
+        field_updates = {}
+        with self.assertRaises(ValueError):
+            document.update(field_updates)
 
     def _delete_helper(self, **option_kwargs):
         from google.cloud.firestore_v1beta1.proto import write_pb2
@@ -386,7 +435,7 @@ class TestDocumentReference(unittest.TestCase):
             option.modify_write(write_pb)
         firestore_api.commit.assert_called_once_with(
             client._database_string, [write_pb], transaction=None,
-            options=client._call_options)
+            metadata=client._rpc_metadata)
 
     def test_delete(self):
         self._delete_helper()
@@ -400,12 +449,12 @@ class TestDocumentReference(unittest.TestCase):
         )
         self._delete_helper(last_update_time=timestamp_pb)
 
-    def test_delete_with_bad_option(self):
-        from google.cloud.firestore_v1beta1._helpers import NO_CREATE_ON_DELETE
+    def test_get_w_single_field_path(self):
+        client = mock.Mock(spec=[])
 
-        with self.assertRaises(ValueError) as exc_info:
-            self._delete_helper(create_if_missing=True)
-        self.assertEqual(exc_info.exception.args, (NO_CREATE_ON_DELETE,))
+        document = self._make_one('yellow', 'mellow', client=client)
+        with self.assertRaises(ValueError):
+            document.get('foo')
 
     def test_get_success(self):
         # Create a minimal fake client with a dummy response.
@@ -443,10 +492,12 @@ class TestDocumentReference(unittest.TestCase):
             [document], field_paths=None, transaction=transaction)
 
     def test_get_not_found(self):
-        from google.cloud.exceptions import NotFound
+        from google.cloud.firestore_v1beta1.document import DocumentSnapshot
 
         # Create a minimal fake client with a dummy response.
-        response_iterator = iter([None])
+        read_time = 123
+        expected = DocumentSnapshot(None, None, False, read_time, None, None)
+        response_iterator = iter([expected])
         client = mock.Mock(
             _database_string='sprinklez',
             spec=['_database_string', 'get_all'])
@@ -455,12 +506,70 @@ class TestDocumentReference(unittest.TestCase):
         # Actually make a document and call get().
         document = self._make_one('house', 'cowse', client=client)
         field_paths = ['x.y', 'x.z', 't']
-        with self.assertRaises(NotFound):
-            document.get(field_paths=field_paths)
+        snapshot = document.get(field_paths=field_paths)
+        self.assertIsNone(snapshot.reference)
+        self.assertIsNone(snapshot._data)
+        self.assertFalse(snapshot.exists)
+        self.assertEqual(snapshot.read_time, expected.read_time)
+        self.assertIsNone(snapshot.create_time)
+        self.assertIsNone(snapshot.update_time)
 
         # Verify the response and the mocks.
         client.get_all.assert_called_once_with(
             [document], field_paths=field_paths, transaction=None)
+
+    def _collections_helper(self, page_size=None):
+        from google.api_core.page_iterator import Iterator
+        from google.api_core.page_iterator import Page
+        from google.cloud.firestore_v1beta1.collection import (
+            CollectionReference)
+        from google.cloud.firestore_v1beta1.gapic.firestore_client import (
+            FirestoreClient)
+
+        class _Iterator(Iterator):
+
+            def __init__(self, pages):
+                super(_Iterator, self).__init__(client=None)
+                self._pages = pages
+
+            def _next_page(self):
+                if self._pages:
+                    page, self._pages = self._pages[0], self._pages[1:]
+                    return Page(self, page, self.item_to_value)
+
+        collection_ids = ['coll-1', 'coll-2']
+        iterator = _Iterator(pages=[collection_ids])
+        api_client = mock.create_autospec(FirestoreClient)
+        api_client.list_collection_ids.return_value = iterator
+
+        client = _make_client()
+        client._firestore_api_internal = api_client
+
+        # Actually make a document and call delete().
+        document = self._make_one('where', 'we-are', client=client)
+        if page_size is not None:
+            collections = list(document.collections(page_size=page_size))
+        else:
+            collections = list(document.collections())
+
+        # Verify the response and the mocks.
+        self.assertEqual(len(collections), len(collection_ids))
+        for collection, collection_id in zip(collections, collection_ids):
+            self.assertIsInstance(collection, CollectionReference)
+            self.assertEqual(collection.parent, document)
+            self.assertEqual(collection.id, collection_id)
+
+        api_client.list_collection_ids.assert_called_once_with(
+            document._document_path,
+            page_size=page_size,
+            metadata=client._rpc_metadata,
+        )
+
+    def test_collections_wo_page_size(self):
+        self._collections_helper()
+
+    def test_collections_w_page_size(self):
+        self._collections_helper(page_size=10)
 
 
 class TestDocumentSnapshot(unittest.TestCase):
@@ -536,6 +645,10 @@ class TestDocumentSnapshot(unittest.TestCase):
         with self.assertRaises(KeyError):
             snapshot.get('two')
 
+    def test_nonexistent_snapshot(self):
+        snapshot = self._make_one(None, None, False, None, None, None)
+        self.assertIsNone(snapshot.get('one'))
+
     def test_to_dict(self):
         data = {
             'a': 10,
@@ -550,6 +663,11 @@ class TestDocumentSnapshot(unittest.TestCase):
         as_dict['b'].append('hi')
         self.assertEqual(data, snapshot.to_dict())
         self.assertNotEqual(data, as_dict)
+
+    def test_non_existent(self):
+        snapshot = self._make_one(None, None, False, None, None, None)
+        as_dict = snapshot.to_dict()
+        self.assertIsNone(as_dict)
 
 
 class Test__get_document_path(unittest.TestCase):

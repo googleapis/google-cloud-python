@@ -14,53 +14,40 @@
 
 from __future__ import absolute_import
 from types import GeneratorType
-import unittest
 
 import mock
 
+import google.auth.credentials
+from google.cloud.speech_v1 import SpeechClient
+from google.cloud.speech_v1 import types
 
-class TestSpeechClient(unittest.TestCase):
 
-    @staticmethod
-    def _make_one():
-        import google.auth.credentials
-        from google.cloud.speech_v1 import SpeechClient
+def make_speech_client():
+    credentials = mock.Mock(spec=google.auth.credentials.Credentials)
+    return SpeechClient(credentials=credentials)
 
-        credentials = mock.Mock(spec=google.auth.credentials.Credentials)
-        return SpeechClient(credentials=credentials)
 
-    def test_inherited_method(self):
-        from google.cloud.speech_v1 import types
+def test_streaming_recognize():
+    client = make_speech_client()
 
-        client = self._make_one()
+    config = types.StreamingRecognitionConfig()
+    requests = [types.StreamingRecognizeRequest(audio_content=b'...')]
+    super_patch = mock.patch(
+        'google.cloud.speech_v1.speech_client.SpeechClient.'
+        'streaming_recognize',
+        autospec=True)
 
-        config = types.RecognitionConfig(encoding='FLAC')
-        audio = types.RecognitionAudio(uri='http://foo.com/bar.wav')
-        with mock.patch.object(client, '_recognize') as recognize:
-            client.recognize(config, audio)
+    with super_patch as streaming_recognize:
+        client.streaming_recognize(config, requests)
 
-            # Assert that the underlying GAPIC method was called as expected.
-            recognize.assert_called_once_with(types.RecognizeRequest(
-                config=config,
-                audio=audio,
-            ), None)
-
-    def test_streaming_recognize(self):
-        from google.cloud.speech_v1 import types
-
-        client = self._make_one()
-
-        config = types.StreamingRecognitionConfig()
-        requests = [types.StreamingRecognizeRequest(audio_content=b'...')]
-        with mock.patch.object(client, '_streaming_recognize') as sr:
-            client.streaming_recognize(config, requests)
-
-            # Assert that we called streaming recognize with an iterable
-            # that evalutes to the correct format.
-            _, args, _ = sr.mock_calls[0]
-            api_requests = args[0]
-            assert isinstance(api_requests, GeneratorType)
-            assert list(api_requests) == [
-                types.StreamingRecognizeRequest(streaming_config=config),
-                requests[0],
-            ]
+    # Assert that we called streaming recognize with an iterable
+    # that evaluates to the correct format.
+    _, args, kwargs = streaming_recognize.mock_calls[0]
+    api_requests = args[1]
+    assert isinstance(api_requests, GeneratorType)
+    assert list(api_requests) == [
+        types.StreamingRecognizeRequest(streaming_config=config),
+        requests[0],
+    ]
+    assert 'retry' in kwargs
+    assert 'timeout' in kwargs

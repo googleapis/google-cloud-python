@@ -1,10 +1,12 @@
-# Copyright 2017, Google LLC All rights reserved.
+# -*- coding: utf-8 -*-
+#
+# Copyright 2018 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#     http://www.apache.org/licenses/LICENSE-2.0
+#     https://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,10 +15,8 @@
 # limitations under the License.
 """Unit tests."""
 
-import mock
-import unittest
+import pytest
 
-from google.gax import errors
 from google.rpc import status_pb2
 
 from google.cloud import spanner_admin_database_v1
@@ -27,23 +27,48 @@ from google.longrunning import operations_pb2
 from google.protobuf import empty_pb2
 
 
+class MultiCallableStub(object):
+    """Stub for the grpc.UnaryUnaryMultiCallable interface."""
+
+    def __init__(self, method, channel_stub):
+        self.method = method
+        self.channel_stub = channel_stub
+
+    def __call__(self, request, timeout=None, metadata=None, credentials=None):
+        self.channel_stub.requests.append((self.method, request))
+
+        response = None
+        if self.channel_stub.responses:
+            response = self.channel_stub.responses.pop()
+
+        if isinstance(response, Exception):
+            raise response
+
+        if response:
+            return response
+
+
+class ChannelStub(object):
+    """Stub for the grpc.Channel interface."""
+
+    def __init__(self, responses=[]):
+        self.responses = responses
+        self.requests = []
+
+    def unary_unary(self,
+                    method,
+                    request_serializer=None,
+                    response_deserializer=None):
+        return MultiCallableStub(method, self)
+
+
 class CustomException(Exception):
     pass
 
 
-class TestDatabaseAdminClient(unittest.TestCase):
-    @mock.patch('google.gax.config.create_stub', spec=True)
-    def test_list_databases(self, mock_create_stub):
-        # Mock gRPC layer
-        grpc_stub = mock.Mock()
-        mock_create_stub.return_value = grpc_stub
-
-        client = spanner_admin_database_v1.DatabaseAdminClient()
-
-        # Mock request
-        parent = client.instance_path('[PROJECT]', '[INSTANCE]')
-
-        # Mock response
+class TestDatabaseAdminClient(object):
+    def test_list_databases(self):
+        # Setup Expected Response
         next_page_token = ''
         databases_element = {}
         databases = [databases_element]
@@ -53,55 +78,39 @@ class TestDatabaseAdminClient(unittest.TestCase):
         }
         expected_response = spanner_database_admin_pb2.ListDatabasesResponse(
             **expected_response)
-        grpc_stub.ListDatabases.return_value = expected_response
+
+        # Mock the API response
+        channel = ChannelStub(responses=[expected_response])
+        client = spanner_admin_database_v1.DatabaseAdminClient(channel=channel)
+
+        # Setup Request
+        parent = client.instance_path('[PROJECT]', '[INSTANCE]')
 
         paged_list_response = client.list_databases(parent)
         resources = list(paged_list_response)
-        self.assertEqual(1, len(resources))
-        self.assertEqual(expected_response.databases[0], resources[0])
+        assert len(resources) == 1
 
-        grpc_stub.ListDatabases.assert_called_once()
-        args, kwargs = grpc_stub.ListDatabases.call_args
-        self.assertEqual(len(args), 2)
-        self.assertEqual(len(kwargs), 1)
-        self.assertIn('metadata', kwargs)
-        actual_request = args[0]
+        assert expected_response.databases[0] == resources[0]
 
+        assert len(channel.requests) == 1
         expected_request = spanner_database_admin_pb2.ListDatabasesRequest(
             parent=parent)
-        self.assertEqual(expected_request, actual_request)
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
 
-    @mock.patch('google.gax.config.API_ERRORS', (CustomException, ))
-    @mock.patch('google.gax.config.create_stub', spec=True)
-    def test_list_databases_exception(self, mock_create_stub):
-        # Mock gRPC layer
-        grpc_stub = mock.Mock()
-        mock_create_stub.return_value = grpc_stub
+    def test_list_databases_exception(self):
+        channel = ChannelStub(responses=[CustomException()])
+        client = spanner_admin_database_v1.DatabaseAdminClient(channel=channel)
 
-        client = spanner_admin_database_v1.DatabaseAdminClient()
-
-        # Mock request
+        # Setup request
         parent = client.instance_path('[PROJECT]', '[INSTANCE]')
-
-        # Mock exception response
-        grpc_stub.ListDatabases.side_effect = CustomException()
 
         paged_list_response = client.list_databases(parent)
-        self.assertRaises(errors.GaxError, list, paged_list_response)
+        with pytest.raises(CustomException):
+            list(paged_list_response)
 
-    @mock.patch('google.gax.config.create_stub', spec=True)
-    def test_create_database(self, mock_create_stub):
-        # Mock gRPC layer
-        grpc_stub = mock.Mock()
-        mock_create_stub.return_value = grpc_stub
-
-        client = spanner_admin_database_v1.DatabaseAdminClient()
-
-        # Mock request
-        parent = client.instance_path('[PROJECT]', '[INSTANCE]')
-        create_statement = 'createStatement552974828'
-
-        # Mock response
+    def test_create_database(self):
+        # Setup Expected Response
         name = 'name3373707'
         expected_response = {'name': name}
         expected_response = spanner_database_admin_pb2.Database(
@@ -109,398 +118,295 @@ class TestDatabaseAdminClient(unittest.TestCase):
         operation = operations_pb2.Operation(
             name='operations/test_create_database', done=True)
         operation.response.Pack(expected_response)
-        grpc_stub.CreateDatabase.return_value = operation
 
-        response = client.create_database(parent, create_statement)
-        self.assertEqual(expected_response, response.result())
+        # Mock the API response
+        channel = ChannelStub(responses=[operation])
+        client = spanner_admin_database_v1.DatabaseAdminClient(channel=channel)
 
-        grpc_stub.CreateDatabase.assert_called_once()
-        args, kwargs = grpc_stub.CreateDatabase.call_args
-        self.assertEqual(len(args), 2)
-        self.assertEqual(len(kwargs), 1)
-        self.assertIn('metadata', kwargs)
-        actual_request = args[0]
-
-        expected_request = spanner_database_admin_pb2.CreateDatabaseRequest(
-            parent=parent, create_statement=create_statement)
-        self.assertEqual(expected_request, actual_request)
-
-    @mock.patch('google.gax.config.create_stub', spec=True)
-    def test_create_database_exception(self, mock_create_stub):
-        # Mock gRPC layer
-        grpc_stub = mock.Mock()
-        mock_create_stub.return_value = grpc_stub
-
-        client = spanner_admin_database_v1.DatabaseAdminClient()
-
-        # Mock request
+        # Setup Request
         parent = client.instance_path('[PROJECT]', '[INSTANCE]')
         create_statement = 'createStatement552974828'
 
-        # Mock exception response
+        response = client.create_database(parent, create_statement)
+        result = response.result()
+        assert expected_response == result
+
+        assert len(channel.requests) == 1
+        expected_request = spanner_database_admin_pb2.CreateDatabaseRequest(
+            parent=parent, create_statement=create_statement)
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_create_database_exception(self):
+        # Setup Response
         error = status_pb2.Status()
         operation = operations_pb2.Operation(
             name='operations/test_create_database_exception', done=True)
         operation.error.CopyFrom(error)
-        grpc_stub.CreateDatabase.return_value = operation
+
+        # Mock the API response
+        channel = ChannelStub(responses=[operation])
+        client = spanner_admin_database_v1.DatabaseAdminClient(channel=channel)
+
+        # Setup Request
+        parent = client.instance_path('[PROJECT]', '[INSTANCE]')
+        create_statement = 'createStatement552974828'
 
         response = client.create_database(parent, create_statement)
-        self.assertEqual(error, response.exception())
+        exception = response.exception()
+        assert exception.errors[0] == error
 
-    @mock.patch('google.gax.config.create_stub', spec=True)
-    def test_get_database(self, mock_create_stub):
-        # Mock gRPC layer
-        grpc_stub = mock.Mock()
-        mock_create_stub.return_value = grpc_stub
-
-        client = spanner_admin_database_v1.DatabaseAdminClient()
-
-        # Mock request
-        name = client.database_path('[PROJECT]', '[INSTANCE]', '[DATABASE]')
-
-        # Mock response
+    def test_get_database(self):
+        # Setup Expected Response
         name_2 = 'name2-1052831874'
         expected_response = {'name': name_2}
         expected_response = spanner_database_admin_pb2.Database(
             **expected_response)
-        grpc_stub.GetDatabase.return_value = expected_response
 
-        response = client.get_database(name)
-        self.assertEqual(expected_response, response)
+        # Mock the API response
+        channel = ChannelStub(responses=[expected_response])
+        client = spanner_admin_database_v1.DatabaseAdminClient(channel=channel)
 
-        grpc_stub.GetDatabase.assert_called_once()
-        args, kwargs = grpc_stub.GetDatabase.call_args
-        self.assertEqual(len(args), 2)
-        self.assertEqual(len(kwargs), 1)
-        self.assertIn('metadata', kwargs)
-        actual_request = args[0]
-
-        expected_request = spanner_database_admin_pb2.GetDatabaseRequest(
-            name=name)
-        self.assertEqual(expected_request, actual_request)
-
-    @mock.patch('google.gax.config.API_ERRORS', (CustomException, ))
-    @mock.patch('google.gax.config.create_stub', spec=True)
-    def test_get_database_exception(self, mock_create_stub):
-        # Mock gRPC layer
-        grpc_stub = mock.Mock()
-        mock_create_stub.return_value = grpc_stub
-
-        client = spanner_admin_database_v1.DatabaseAdminClient()
-
-        # Mock request
+        # Setup Request
         name = client.database_path('[PROJECT]', '[INSTANCE]', '[DATABASE]')
 
-        # Mock exception response
-        grpc_stub.GetDatabase.side_effect = CustomException()
+        response = client.get_database(name)
+        assert expected_response == response
 
-        self.assertRaises(errors.GaxError, client.get_database, name)
+        assert len(channel.requests) == 1
+        expected_request = spanner_database_admin_pb2.GetDatabaseRequest(
+            name=name)
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
 
-    @mock.patch('google.gax.config.create_stub', spec=True)
-    def test_update_database_ddl(self, mock_create_stub):
-        # Mock gRPC layer
-        grpc_stub = mock.Mock()
-        mock_create_stub.return_value = grpc_stub
+    def test_get_database_exception(self):
+        # Mock the API response
+        channel = ChannelStub(responses=[CustomException()])
+        client = spanner_admin_database_v1.DatabaseAdminClient(channel=channel)
 
-        client = spanner_admin_database_v1.DatabaseAdminClient()
+        # Setup request
+        name = client.database_path('[PROJECT]', '[INSTANCE]', '[DATABASE]')
 
-        # Mock request
-        database = client.database_path('[PROJECT]', '[INSTANCE]',
-                                        '[DATABASE]')
-        statements = []
+        with pytest.raises(CustomException):
+            client.get_database(name)
 
-        # Mock response
+    def test_update_database_ddl(self):
+        # Setup Expected Response
         expected_response = {}
         expected_response = empty_pb2.Empty(**expected_response)
         operation = operations_pb2.Operation(
             name='operations/test_update_database_ddl', done=True)
         operation.response.Pack(expected_response)
-        grpc_stub.UpdateDatabaseDdl.return_value = operation
 
-        response = client.update_database_ddl(database, statements)
-        self.assertEqual(expected_response, response.result())
+        # Mock the API response
+        channel = ChannelStub(responses=[operation])
+        client = spanner_admin_database_v1.DatabaseAdminClient(channel=channel)
 
-        grpc_stub.UpdateDatabaseDdl.assert_called_once()
-        args, kwargs = grpc_stub.UpdateDatabaseDdl.call_args
-        self.assertEqual(len(args), 2)
-        self.assertEqual(len(kwargs), 1)
-        self.assertIn('metadata', kwargs)
-        actual_request = args[0]
-
-        expected_request = spanner_database_admin_pb2.UpdateDatabaseDdlRequest(
-            database=database, statements=statements)
-        self.assertEqual(expected_request, actual_request)
-
-    @mock.patch('google.gax.config.create_stub', spec=True)
-    def test_update_database_ddl_exception(self, mock_create_stub):
-        # Mock gRPC layer
-        grpc_stub = mock.Mock()
-        mock_create_stub.return_value = grpc_stub
-
-        client = spanner_admin_database_v1.DatabaseAdminClient()
-
-        # Mock request
+        # Setup Request
         database = client.database_path('[PROJECT]', '[INSTANCE]',
                                         '[DATABASE]')
         statements = []
 
-        # Mock exception response
+        response = client.update_database_ddl(database, statements)
+        result = response.result()
+        assert expected_response == result
+
+        assert len(channel.requests) == 1
+        expected_request = spanner_database_admin_pb2.UpdateDatabaseDdlRequest(
+            database=database, statements=statements)
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_update_database_ddl_exception(self):
+        # Setup Response
         error = status_pb2.Status()
         operation = operations_pb2.Operation(
             name='operations/test_update_database_ddl_exception', done=True)
         operation.error.CopyFrom(error)
-        grpc_stub.UpdateDatabaseDdl.return_value = operation
+
+        # Mock the API response
+        channel = ChannelStub(responses=[operation])
+        client = spanner_admin_database_v1.DatabaseAdminClient(channel=channel)
+
+        # Setup Request
+        database = client.database_path('[PROJECT]', '[INSTANCE]',
+                                        '[DATABASE]')
+        statements = []
 
         response = client.update_database_ddl(database, statements)
-        self.assertEqual(error, response.exception())
+        exception = response.exception()
+        assert exception.errors[0] == error
 
-    @mock.patch('google.gax.config.create_stub', spec=True)
-    def test_drop_database(self, mock_create_stub):
-        # Mock gRPC layer
-        grpc_stub = mock.Mock()
-        mock_create_stub.return_value = grpc_stub
+    def test_drop_database(self):
+        channel = ChannelStub()
+        client = spanner_admin_database_v1.DatabaseAdminClient(channel=channel)
 
-        client = spanner_admin_database_v1.DatabaseAdminClient()
-
-        # Mock request
+        # Setup Request
         database = client.database_path('[PROJECT]', '[INSTANCE]',
                                         '[DATABASE]')
 
         client.drop_database(database)
 
-        grpc_stub.DropDatabase.assert_called_once()
-        args, kwargs = grpc_stub.DropDatabase.call_args
-        self.assertEqual(len(args), 2)
-        self.assertEqual(len(kwargs), 1)
-        self.assertIn('metadata', kwargs)
-        actual_request = args[0]
-
+        assert len(channel.requests) == 1
         expected_request = spanner_database_admin_pb2.DropDatabaseRequest(
             database=database)
-        self.assertEqual(expected_request, actual_request)
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
 
-    @mock.patch('google.gax.config.API_ERRORS', (CustomException, ))
-    @mock.patch('google.gax.config.create_stub', spec=True)
-    def test_drop_database_exception(self, mock_create_stub):
-        # Mock gRPC layer
-        grpc_stub = mock.Mock()
-        mock_create_stub.return_value = grpc_stub
+    def test_drop_database_exception(self):
+        # Mock the API response
+        channel = ChannelStub(responses=[CustomException()])
+        client = spanner_admin_database_v1.DatabaseAdminClient(channel=channel)
 
-        client = spanner_admin_database_v1.DatabaseAdminClient()
-
-        # Mock request
+        # Setup request
         database = client.database_path('[PROJECT]', '[INSTANCE]',
                                         '[DATABASE]')
 
-        # Mock exception response
-        grpc_stub.DropDatabase.side_effect = CustomException()
+        with pytest.raises(CustomException):
+            client.drop_database(database)
 
-        self.assertRaises(errors.GaxError, client.drop_database, database)
-
-    @mock.patch('google.gax.config.create_stub', spec=True)
-    def test_get_database_ddl(self, mock_create_stub):
-        # Mock gRPC layer
-        grpc_stub = mock.Mock()
-        mock_create_stub.return_value = grpc_stub
-
-        client = spanner_admin_database_v1.DatabaseAdminClient()
-
-        # Mock request
-        database = client.database_path('[PROJECT]', '[INSTANCE]',
-                                        '[DATABASE]')
-
-        # Mock response
+    def test_get_database_ddl(self):
+        # Setup Expected Response
         expected_response = {}
         expected_response = spanner_database_admin_pb2.GetDatabaseDdlResponse(
             **expected_response)
-        grpc_stub.GetDatabaseDdl.return_value = expected_response
 
-        response = client.get_database_ddl(database)
-        self.assertEqual(expected_response, response)
+        # Mock the API response
+        channel = ChannelStub(responses=[expected_response])
+        client = spanner_admin_database_v1.DatabaseAdminClient(channel=channel)
 
-        grpc_stub.GetDatabaseDdl.assert_called_once()
-        args, kwargs = grpc_stub.GetDatabaseDdl.call_args
-        self.assertEqual(len(args), 2)
-        self.assertEqual(len(kwargs), 1)
-        self.assertIn('metadata', kwargs)
-        actual_request = args[0]
-
-        expected_request = spanner_database_admin_pb2.GetDatabaseDdlRequest(
-            database=database)
-        self.assertEqual(expected_request, actual_request)
-
-    @mock.patch('google.gax.config.API_ERRORS', (CustomException, ))
-    @mock.patch('google.gax.config.create_stub', spec=True)
-    def test_get_database_ddl_exception(self, mock_create_stub):
-        # Mock gRPC layer
-        grpc_stub = mock.Mock()
-        mock_create_stub.return_value = grpc_stub
-
-        client = spanner_admin_database_v1.DatabaseAdminClient()
-
-        # Mock request
+        # Setup Request
         database = client.database_path('[PROJECT]', '[INSTANCE]',
                                         '[DATABASE]')
 
-        # Mock exception response
-        grpc_stub.GetDatabaseDdl.side_effect = CustomException()
+        response = client.get_database_ddl(database)
+        assert expected_response == response
 
-        self.assertRaises(errors.GaxError, client.get_database_ddl, database)
+        assert len(channel.requests) == 1
+        expected_request = spanner_database_admin_pb2.GetDatabaseDdlRequest(
+            database=database)
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
 
-    @mock.patch('google.gax.config.create_stub', spec=True)
-    def test_set_iam_policy(self, mock_create_stub):
-        # Mock gRPC layer
-        grpc_stub = mock.Mock()
-        mock_create_stub.return_value = grpc_stub
+    def test_get_database_ddl_exception(self):
+        # Mock the API response
+        channel = ChannelStub(responses=[CustomException()])
+        client = spanner_admin_database_v1.DatabaseAdminClient(channel=channel)
 
-        client = spanner_admin_database_v1.DatabaseAdminClient()
-
-        # Mock request
-        resource = client.database_path('[PROJECT]', '[INSTANCE]',
+        # Setup request
+        database = client.database_path('[PROJECT]', '[INSTANCE]',
                                         '[DATABASE]')
-        policy = {}
 
-        # Mock response
+        with pytest.raises(CustomException):
+            client.get_database_ddl(database)
+
+    def test_set_iam_policy(self):
+        # Setup Expected Response
         version = 351608024
         etag = b'21'
         expected_response = {'version': version, 'etag': etag}
         expected_response = policy_pb2.Policy(**expected_response)
-        grpc_stub.SetIamPolicy.return_value = expected_response
+
+        # Mock the API response
+        channel = ChannelStub(responses=[expected_response])
+        client = spanner_admin_database_v1.DatabaseAdminClient(channel=channel)
+
+        # Setup Request
+        resource = client.database_path('[PROJECT]', '[INSTANCE]',
+                                        '[DATABASE]')
+        policy = {}
 
         response = client.set_iam_policy(resource, policy)
-        self.assertEqual(expected_response, response)
+        assert expected_response == response
 
-        grpc_stub.SetIamPolicy.assert_called_once()
-        args, kwargs = grpc_stub.SetIamPolicy.call_args
-        self.assertEqual(len(args), 2)
-        self.assertEqual(len(kwargs), 1)
-        self.assertIn('metadata', kwargs)
-        actual_request = args[0]
-
+        assert len(channel.requests) == 1
         expected_request = iam_policy_pb2.SetIamPolicyRequest(
             resource=resource, policy=policy)
-        self.assertEqual(expected_request, actual_request)
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
 
-    @mock.patch('google.gax.config.API_ERRORS', (CustomException, ))
-    @mock.patch('google.gax.config.create_stub', spec=True)
-    def test_set_iam_policy_exception(self, mock_create_stub):
-        # Mock gRPC layer
-        grpc_stub = mock.Mock()
-        mock_create_stub.return_value = grpc_stub
+    def test_set_iam_policy_exception(self):
+        # Mock the API response
+        channel = ChannelStub(responses=[CustomException()])
+        client = spanner_admin_database_v1.DatabaseAdminClient(channel=channel)
 
-        client = spanner_admin_database_v1.DatabaseAdminClient()
-
-        # Mock request
+        # Setup request
         resource = client.database_path('[PROJECT]', '[INSTANCE]',
                                         '[DATABASE]')
         policy = {}
 
-        # Mock exception response
-        grpc_stub.SetIamPolicy.side_effect = CustomException()
+        with pytest.raises(CustomException):
+            client.set_iam_policy(resource, policy)
 
-        self.assertRaises(errors.GaxError, client.set_iam_policy, resource,
-                          policy)
-
-    @mock.patch('google.gax.config.create_stub', spec=True)
-    def test_get_iam_policy(self, mock_create_stub):
-        # Mock gRPC layer
-        grpc_stub = mock.Mock()
-        mock_create_stub.return_value = grpc_stub
-
-        client = spanner_admin_database_v1.DatabaseAdminClient()
-
-        # Mock request
-        resource = client.database_path('[PROJECT]', '[INSTANCE]',
-                                        '[DATABASE]')
-
-        # Mock response
+    def test_get_iam_policy(self):
+        # Setup Expected Response
         version = 351608024
         etag = b'21'
         expected_response = {'version': version, 'etag': etag}
         expected_response = policy_pb2.Policy(**expected_response)
-        grpc_stub.GetIamPolicy.return_value = expected_response
+
+        # Mock the API response
+        channel = ChannelStub(responses=[expected_response])
+        client = spanner_admin_database_v1.DatabaseAdminClient(channel=channel)
+
+        # Setup Request
+        resource = client.database_path('[PROJECT]', '[INSTANCE]',
+                                        '[DATABASE]')
 
         response = client.get_iam_policy(resource)
-        self.assertEqual(expected_response, response)
+        assert expected_response == response
 
-        grpc_stub.GetIamPolicy.assert_called_once()
-        args, kwargs = grpc_stub.GetIamPolicy.call_args
-        self.assertEqual(len(args), 2)
-        self.assertEqual(len(kwargs), 1)
-        self.assertIn('metadata', kwargs)
-        actual_request = args[0]
-
+        assert len(channel.requests) == 1
         expected_request = iam_policy_pb2.GetIamPolicyRequest(
             resource=resource)
-        self.assertEqual(expected_request, actual_request)
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
 
-    @mock.patch('google.gax.config.API_ERRORS', (CustomException, ))
-    @mock.patch('google.gax.config.create_stub', spec=True)
-    def test_get_iam_policy_exception(self, mock_create_stub):
-        # Mock gRPC layer
-        grpc_stub = mock.Mock()
-        mock_create_stub.return_value = grpc_stub
+    def test_get_iam_policy_exception(self):
+        # Mock the API response
+        channel = ChannelStub(responses=[CustomException()])
+        client = spanner_admin_database_v1.DatabaseAdminClient(channel=channel)
 
-        client = spanner_admin_database_v1.DatabaseAdminClient()
-
-        # Mock request
+        # Setup request
         resource = client.database_path('[PROJECT]', '[INSTANCE]',
                                         '[DATABASE]')
 
-        # Mock exception response
-        grpc_stub.GetIamPolicy.side_effect = CustomException()
+        with pytest.raises(CustomException):
+            client.get_iam_policy(resource)
 
-        self.assertRaises(errors.GaxError, client.get_iam_policy, resource)
-
-    @mock.patch('google.gax.config.create_stub', spec=True)
-    def test_test_iam_permissions(self, mock_create_stub):
-        # Mock gRPC layer
-        grpc_stub = mock.Mock()
-        mock_create_stub.return_value = grpc_stub
-
-        client = spanner_admin_database_v1.DatabaseAdminClient()
-
-        # Mock request
-        resource = client.database_path('[PROJECT]', '[INSTANCE]',
-                                        '[DATABASE]')
-        permissions = []
-
-        # Mock response
+    def test_test_iam_permissions(self):
+        # Setup Expected Response
         expected_response = {}
         expected_response = iam_policy_pb2.TestIamPermissionsResponse(
             **expected_response)
-        grpc_stub.TestIamPermissions.return_value = expected_response
 
-        response = client.test_iam_permissions(resource, permissions)
-        self.assertEqual(expected_response, response)
+        # Mock the API response
+        channel = ChannelStub(responses=[expected_response])
+        client = spanner_admin_database_v1.DatabaseAdminClient(channel=channel)
 
-        grpc_stub.TestIamPermissions.assert_called_once()
-        args, kwargs = grpc_stub.TestIamPermissions.call_args
-        self.assertEqual(len(args), 2)
-        self.assertEqual(len(kwargs), 1)
-        self.assertIn('metadata', kwargs)
-        actual_request = args[0]
-
-        expected_request = iam_policy_pb2.TestIamPermissionsRequest(
-            resource=resource, permissions=permissions)
-        self.assertEqual(expected_request, actual_request)
-
-    @mock.patch('google.gax.config.API_ERRORS', (CustomException, ))
-    @mock.patch('google.gax.config.create_stub', spec=True)
-    def test_test_iam_permissions_exception(self, mock_create_stub):
-        # Mock gRPC layer
-        grpc_stub = mock.Mock()
-        mock_create_stub.return_value = grpc_stub
-
-        client = spanner_admin_database_v1.DatabaseAdminClient()
-
-        # Mock request
+        # Setup Request
         resource = client.database_path('[PROJECT]', '[INSTANCE]',
                                         '[DATABASE]')
         permissions = []
 
-        # Mock exception response
-        grpc_stub.TestIamPermissions.side_effect = CustomException()
+        response = client.test_iam_permissions(resource, permissions)
+        assert expected_response == response
 
-        self.assertRaises(errors.GaxError, client.test_iam_permissions,
-                          resource, permissions)
+        assert len(channel.requests) == 1
+        expected_request = iam_policy_pb2.TestIamPermissionsRequest(
+            resource=resource, permissions=permissions)
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_test_iam_permissions_exception(self):
+        # Mock the API response
+        channel = ChannelStub(responses=[CustomException()])
+        client = spanner_admin_database_v1.DatabaseAdminClient(channel=channel)
+
+        # Setup request
+        resource = client.database_path('[PROJECT]', '[INSTANCE]',
+                                        '[DATABASE]')
+        permissions = []
+
+        with pytest.raises(CustomException):
+            client.test_iam_permissions(resource, permissions)
