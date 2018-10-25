@@ -904,7 +904,8 @@ class Bucket(_PropertyMixin):
         If :attr:`user_project` is set, bills the API request to that project.
 
         Effectively, copies blob to the same bucket with a new name, then
-        deletes the blob.
+        deletes the blob. In case the new and old names are the same, the blob
+        is returned without any operations occurring.
 
         .. warning::
 
@@ -926,6 +927,9 @@ class Bucket(_PropertyMixin):
         :rtype: :class:`Blob`
         :returns: The newly-renamed blob.
         """
+        if blob.name == new_name:
+            return blob
+
         new_blob = self.copy_blob(blob, self, new_name, client=client)
         blob.delete(client=client)
         return new_blob
