@@ -10,33 +10,42 @@ Be sure to check out all submodules:
 $ git clone --recursive https://github.com/dhermes/py-crc32c
 ```
 
-## Building Wheel
+## Prerequisites
+
+On Linux:
+
+- `docker`
+- `python3.7`
+
+On OS X:
+
+- `make`
+- [Official][1] `python.org` Python 2.7, 3.5, 3.6 and 3.7
+
+On Windows: TBD.
+
+## Building Wheels
+
+On Linux:
 
 ```
-$ docker pull quay.io/pypa/manylinux1_x86_64
-$ docker run \
->   --rm \
->   --tty \
->   --interactive \
->   --volume $(pwd):/var/code/py-crc32c/ \
->   quay.io/pypa/manylinux1_x86_64 \
->   /var/code/py-crc32c/build.sh
-...
-New WHEEL info tags: cp37-cp37m-manylinux1_x86_64
-
-Fixed-up wheel written to /var/code/py-crc32c/py_crc32c-0.0.1-cp37-cp37m-manylinux1_x86_64.whl
-...
+./scripts/manylinux/build.sh
 ```
 
-(Similar work will need to be done for `quay.io/pypa/manylinux1_i686`.)
-
-## Verify Wheel
-
-To verify that the `manylinux` wheel works as expected,
-run `check-37.sh` on a host Linux OS:
+On OS X:
 
 ```
-$ ./check-37.sh
+./scripts/osx/build.sh
+```
+
+On Windows: TBD.
+
+## Verify Wheels
+
+On Linux (i.e. a host OS, not a `docker` container):
+
+```
+$ ./scripts/manylinux/check-37.sh
 ...
 + venv/bin/python check_cffi_crc32c.py
 _crc32c_cffi: <module 'crc32c._crc32c_cffi' from '.../py-crc32c/venv/lib/python3.7/site-packages/crc32c/_crc32c_cffi.abi3.so'>
@@ -58,3 +67,27 @@ Archive:  wheels/py_crc32c-0.0.1-cp37-cp37m-manylinux1_x86_64.whl
     57972                     8 files
 ...
 ```
+
+On OS X:
+
+```
+$ ./scripts/osx/check.sh
+...
++ venv37/bin/python .../py-crc32c/check_cffi_crc32c.py
+_crc32c_cffi: <module 'crc32c._crc32c_cffi' from '.../py-crc32c/venv37/lib/python3.7/site-packages/crc32c/_crc32c_cffi.abi3.so'>
+_crc32c_cffi.lib: <Lib object for 'crc32c._crc32c_cffi'>
+dir(_crc32c_cffi.lib): ['crc32c_extend', 'crc32c_value']
++ /Library/Frameworks/Python.framework/Versions/3.7/bin/delocate-listdeps --all --depending .../py-crc32c/wheels/py_crc32c-0.0.1-cp37-cp37m-macosx_10_6_intel.whl
+/usr/lib/libSystem.B.dylib:
+    crc32c/_crc32c_cffi.abi3.so
+    crc32c/.dylibs/libcrc32c.dylib
+/usr/lib/libc++.1.dylib:
+    crc32c/.dylibs/libcrc32c.dylib
+@loader_path/.dylibs/libcrc32c.dylib:
+    crc32c/_crc32c_cffi.abi3.so
+...
+```
+
+On Windows: TBD.
+
+[1]: https://www.python.org/downloads/
