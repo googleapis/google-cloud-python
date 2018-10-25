@@ -1,0 +1,7 @@
+auditwheel >= 1.9.0; sys_platform == 'linux' or sys_platform == 'linux2'
+cffi >= 1.11.5
+delocate >= 0.7.4; sys_platform == 'darwin'
+setuptools >= 40.4.3
+virtualenv >= 16.0.0
+# See: https://github.com/pypa/auditwheel/issues/102
+wheel != 0.32.*, >= 0.31.1
