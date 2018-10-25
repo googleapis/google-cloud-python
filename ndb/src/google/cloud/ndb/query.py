@@ -339,14 +339,17 @@ class ParameterNode(Node):
             used (Dict[Union[str, int], bool]): A mapping of already used
                 parameters.
 
-        Raises:
-            NotImplementedError: Always. This is because the implementation
-                will rely on as-yet-unimplemented features in
-                :class:`~google.cloud.ndb.model.Property`.
+        Returns:
+            Union[~google.cloud.ndb.query.DisjunctionNode, \
+                ~google.cloud.ndb.query.FilterNode, \
+                ~google.cloud.ndb.query.FalseNode]: A node corresponding to
+            the value substituted.
         """
-        raise NotImplementedError(
-            "Some features of Property need to be implemented first"
-        )
+        value = self._param.resolve(bindings, used)
+        if self._op == _IN_OP:
+            return self._prop._IN(value)
+        else:
+            return self._prop._comparison(self._op, value)
 
 
 class FilterNode(Node):
