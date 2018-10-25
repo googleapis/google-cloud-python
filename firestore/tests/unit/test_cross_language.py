@@ -105,55 +105,57 @@ def _run_testcase(testcase, call, firestore_api, client):
             metadata=client._rpc_metadata)
 
 
-@pytest.mark.parametrize('test_proto', _CREATE_TESTPROTOS)
-def test_create_testprotos(test_proto):
-    testcase = test_proto.create
-    firestore_api = _mock_firestore_api()
-    client, document = _make_client_document(firestore_api, testcase)
-    data = convert_data(json.loads(testcase.json_data))
-    call = functools.partial(document.create, data)
-    _run_testcase(testcase, call, firestore_api, client)
+# @pytest.mark.parametrize('test_proto', _CREATE_TESTPROTOS)
+# def test_create_testprotos(test_proto):
+#     testcase = test_proto.create
+#     firestore_api = _mock_firestore_api()
+#     client, document = _make_client_document(firestore_api, testcase)
+#     data = convert_data(json.loads(testcase.json_data))
+#     call = functools.partial(document.create, data)
+#     _run_testcase(testcase, call, firestore_api, client)
 
 
-@pytest.mark.parametrize('test_proto', _GET_TESTPROTOS)
-def test_get_testprotos(test_proto):
-    testcase = test_proto.get
-    try:
-        testcase.is_error
-    except AttributeError:
-        return
-    firestore_api = _mock_firestore_api()
-    client, document = _make_client_document(firestore_api, testcase)
-    call = functools.partial(document.get, None, None)
-    _run_testcase(testcase, call, firestore_api, client)
+# @pytest.mark.parametrize('test_proto', _GET_TESTPROTOS)
+# def test_get_testprotos(test_proto):
+#     testcase = test_proto.get
+#     try:
+#         testcase.is_error
+#     except AttributeError:
+#         return
+#     firestore_api = _mock_firestore_api()
+#     client, document = _make_client_document(firestore_api, testcase)
+#     call = functools.partial(document.get, None, None)
+#     _run_testcase(testcase, call, firestore_api, client)
 
 
 @pytest.mark.parametrize('test_proto', _SET_TESTPROTOS)
 def test_set_testprotos(test_proto):
+#    if not test_proto.description == 'Merge with a field':
+#        return
     testcase = test_proto.set
     firestore_api = _mock_firestore_api()
     client, document = _make_client_document(firestore_api, testcase)
     data = convert_data(json.loads(testcase.json_data))
     if testcase.HasField("option"):
-        merge = True
-    else:
-        merge = False
-    call = functools.partial(document.set, data, merge)
-    _run_testcase(testcase, call, firestore_api, client)
-
-
-@pytest.mark.parametrize('test_proto', _UPDATE_TESTPROTOS)
-def test_update_testprotos(test_proto):
-    testcase = test_proto.update
-    firestore_api = _mock_firestore_api()
-    client, document = _make_client_document(firestore_api, testcase)
-    data = convert_data(json.loads(testcase.json_data))
-    if testcase.HasField("precondition"):
-        option = convert_precondition(testcase.precondition)
+        option = convert_set_option(testcase.option)
     else:
         option = None
-    call = functools.partial(document.update, data, option)
+    call = functools.partial(document.set, data, option)
     _run_testcase(testcase, call, firestore_api, client)
+
+
+# @pytest.mark.parametrize('test_proto', _UPDATE_TESTPROTOS)
+# def test_update_testprotos(test_proto):
+#     testcase = test_proto.update
+#     firestore_api = _mock_firestore_api()
+#     client, document = _make_client_document(firestore_api, testcase)
+#     data = convert_data(json.loads(testcase.json_data))
+#     if testcase.HasField("precondition"):
+#         option = convert_precondition(testcase.precondition)
+#     else:
+#         option = None
+#     call = functools.partial(document.update, data, option)
+#     _run_testcase(testcase, call, firestore_api, client)
 
 
 @pytest.mark.skip(
@@ -163,17 +165,17 @@ def test_update_paths_testprotos(test_proto):
     pass
 
 
-@pytest.mark.parametrize('test_proto', _DELETE_TESTPROTOS)
-def test_delete_testprotos(test_proto):
-    testcase = test_proto.delete
-    firestore_api = _mock_firestore_api()
-    client, document = _make_client_document(firestore_api, testcase)
-    if testcase.HasField("precondition"):
-        option = convert_precondition(testcase.precondition)
-    else:
-        option = None
-    call = functools.partial(document.delete, option)
-    _run_testcase(testcase, call, firestore_api, client)
+# @pytest.mark.parametrize('test_proto', _DELETE_TESTPROTOS)
+# def test_delete_testprotos(test_proto):
+#     testcase = test_proto.delete
+#     firestore_api = _mock_firestore_api()
+#     client, document = _make_client_document(firestore_api, testcase)
+#     if testcase.HasField("precondition"):
+#         option = convert_precondition(testcase.precondition)
+#     else:
+#         option = None
+#     call = functools.partial(document.delete, option)
+#     _run_testcase(testcase, call, firestore_api, client)
 
 
 @pytest.mark.skip(reason="Watch aka listen not yet implemented in Python.")
@@ -198,6 +200,17 @@ def convert_data(v):
     else:
         return v
 
+
+def convert_set_option(option):
+    from google.cloud.firestore_v1beta1.client import MergeOption
+    from google.cloud.firestore_v1beta1 import _helpers
+    fields = []
+    if option.all:
+        return MergeOption()
+    else:
+        for field in option.fields:
+            fields.append(_helpers.FieldPath(*field.field).to_api_repr())
+        return MergeOption(field_paths=fields)
 
 def convert_precondition(precond):
     from google.cloud.firestore_v1beta1 import Client

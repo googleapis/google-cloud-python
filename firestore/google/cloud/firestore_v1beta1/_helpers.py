@@ -540,6 +540,29 @@ def encode_dict(values_dict):
     }
 
 
+def extract_field_paths(document_data):
+    """Extract field paths from document data
+    Args:
+       document_data (dict): The dictionary of the actual set data.
+    Returns:
+       List[~.firestore_v1beta1._helpers.FieldPath]:
+           A list of `FieldPath` instances from the actual data.
+    """
+    field_paths = []
+    for field_name, value in six.iteritems(document_data):
+        if isinstance(value, dict):
+            sub_field_paths = extract_field_paths(value)
+            for sub_path in sub_field_paths:
+                paths = [field_name]
+                paths.extend(sub_path.parts)
+                field_path = FieldPath(*paths)
+                field_paths.append(field_path)
+        else:
+            path = FieldPath(field_name)
+            field_paths.append(path)
+    return field_paths
+
+
 def reference_value_to_document(reference_value, client):
     """Convert a reference value string to a document.
 
@@ -930,16 +953,16 @@ def get_transform_pb(document_path, transform_paths):
     )
 
 
-def pbs_for_set(document_path, document_data, merge=False, exists=None):
+def pbs_for_set(document_path, document_data, option):
     """Make ``Write`` protobufs for ``set()`` methods.
 
     Args:
         document_path (str): A fully-qualified document path.
         document_data (dict): Property names and values to use for
             replacing a document.
-        merge (bool): Whether to merge the fields or replace them
-        exists (bool): If set, a precondition to indicate whether the
-            document should exist or not. Used for create.
+        option (optional[~.firestore_v1beta1.client.WriteOption]): A
+           write option to make assertions / preconditions on the server
+           state of the document before applying changes.
 
     Returns:
         List[google.cloud.firestore_v1beta1.types.Write]: One
@@ -953,14 +976,21 @@ def pbs_for_set(document_path, document_data, merge=False, exists=None):
             fields=encode_dict(actual_data),
         ),
     )
-    if exists is not None:
-        update_pb.current_document.CopyFrom(
-            common_pb2.Precondition(exists=exists))
 
-    if merge:
-        field_paths = canonicalize_field_paths(field_paths)
-        mask = common_pb2.DocumentMask(field_paths=sorted(field_paths))
-        update_pb.update_mask.CopyFrom(mask)
+    if option is not None:
+        if hasattr(option, '__iter__'):
+            # list of options
+            options = option
+        else:
+            # it's a single option, not a list of options
+            options = [option]
+
+        canonicalized_field_paths = canonicalize_field_paths(field_paths)
+        for option in options:
+            option.modify_write(
+                update_pb,
+                field_paths=canonicalized_field_paths
+            )
 
     write_pbs = [update_pb]
     if transform_paths:
@@ -1011,7 +1041,14 @@ def pbs_for_update(client, document_path, field_updates, option):
         update_mask=common_pb2.DocumentMask(field_paths=field_paths),
     )
     # Due to the default, we don't have to check if ``None``.
-    option.modify_write(update_pb, field_paths=field_paths)
+    if hasattr(option, '__iter__'):
+        options = option
+    else:
+        options = [option]
+
+    for option in options:
+        option.modify_write(update_pb, field_paths=field_paths)
+
     write_pbs = [update_pb]
 
     if transform_paths:
@@ -1038,7 +1075,12 @@ def pb_for_delete(document_path, option):
     """
     write_pb = write_pb2.Write(delete=document_path)
     if option is not None:
-        option.modify_write(write_pb)
+        if hasattr(option, '__iter__'):
+            options = option
+        else:
+            options = [option]
+        for option in options:
+            option.modify_write(write_pb)
 
     return write_pb
 

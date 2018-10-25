@@ -23,6 +23,7 @@ In the hierarchy of API concepts
 * a :class:`~.firestore_v1beta1.client.Client` owns a
   :class:`~.firestore_v1beta1.document.DocumentReference`
 """
+import six
 
 from google.cloud.client import ClientWithProject
 
@@ -33,13 +34,18 @@ from google.cloud.firestore_v1beta1.collection import CollectionReference
 from google.cloud.firestore_v1beta1.document import DocumentReference
 from google.cloud.firestore_v1beta1.document import DocumentSnapshot
 from google.cloud.firestore_v1beta1.gapic import firestore_client
+from google.cloud.firestore_v1beta1.proto import common_pb2
+from google.cloud.firestore_v1beta1.proto import document_pb2
+from google.cloud.firestore_v1beta1.proto import write_pb2
 from google.cloud.firestore_v1beta1.transaction import Transaction
 
 
 DEFAULT_DATABASE = '(default)'
 """str: The default database used in a :class:`~.firestore.client.Client`."""
 _BAD_OPTION_ERR = (
-    'Exactly one of ``last_update_time`` or ``exists`` must be provided.')
+    'Exactly one of ``last_update_time``, ``merge`` or ``exists`` '
+    'must be provided.'
+)
 _BAD_DOC_TEMPLATE = (
     'Document {!r} appeared in response but was not present among references')
 _ACTIVE_TXN = 'There is already an active transaction.'
@@ -259,6 +265,9 @@ class Client(ClientWithProject):
                protobuf or directly.
         * ``exists`` (:class:`bool`): Indicates if the document being modified
               should already exist.
+        * ``merge`` (Any):
+              Indicates if the document should be merged.
+              **Note**: argument is ignored
 
         Providing no argument would make the option have no effect (so
         it is not allowed). Providing multiple would be an apparent
@@ -282,6 +291,8 @@ class Client(ClientWithProject):
             return LastUpdateOption(value)
         elif name == 'exists':
             return ExistsOption(value)
+        elif name == 'merge':
+            return MergeOption()
         else:
             extra = '{!r} was provided'.format(name)
             raise TypeError(_BAD_OPTION_ERR, extra)
@@ -416,6 +427,49 @@ class LastUpdateOption(WriteOption):
             update_time=self._last_update_time)
         write_pb.current_document.CopyFrom(current_doc)
 
+class MergeOption(WriteOption):
+    """Option used to merge on a write operation.
+     This will typically be created by
+    :meth:`~.firestore_v1beta1.client.Client.write_option`.
+    """
+    def __init__(self, field_paths=None):
+        if field_paths is not None:
+            # merge some
+            self.field_paths = sorted(field_paths)
+        else:
+            # merge all
+            self.field_paths = None
+
+    def modify_write(
+            self, write_pb, field_paths=None, **unused_kwargs):
+        """Modify a ``Write`` protobuf based on the state of this write option.
+         Args:
+            write_pb (google.cloud.firestore_v1beta1.types.Write): A
+                ``Write`` protobuf instance to be modified with a precondition
+                determined by the state of this option.
+            field_paths (Sequence[str]):
+                The actual field names to use for replacing a document.
+            unused_kwargs (Dict[str, Any]): Keyword arguments accepted by
+                other subclasses that are unused here.
+        """
+        if self.field_paths is not None:
+            # If paths are specified in the constructor, we use those
+            # instead of the ones we are passed here as a param.
+            field_paths = self.field_paths
+        if field_paths:
+            # filter out all of fields from the write protobuf that
+            # are unnecessary, in order to comply with the conformance tests
+            new_update = document_pb2.Document(
+                name=write_pb.update.name,
+                fields = {
+                    k: v for k, v in
+                    six.iteritems(dict(write_pb.update.fields))
+                        if k in field_paths
+                },
+                )
+            write_pb.update.CopyFrom(new_update)
+        mask = common_pb2.DocumentMask(field_paths=field_paths)
+        write_pb.update_mask.CopyFrom(mask)
 
 class ExistsOption(WriteOption):
     """Option used to assert existence on a write operation.

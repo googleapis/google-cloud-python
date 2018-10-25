@@ -57,11 +57,10 @@ class WriteBatch(object):
             document_data (dict): Property names and values to use for
                 creating a document.
         """
-        write_pbs = _helpers.pbs_for_set(
-            reference._document_path, document_data, merge=False, exists=False)
-        self._add_write_pbs(write_pbs)
+        option = self._client.write_option(exists=False)
+        self.set(reference, document_data, option=option)
 
-    def set(self, reference, document_data, merge=False):
+    def set(self, reference, document_data, option=None):
         """Add a "change" to replace a document.
 
         See
@@ -74,12 +73,12 @@ class WriteBatch(object):
                 A document reference that will have values set in this batch.
             document_data (dict):
                 Property names and values to use for replacing a document.
-            merge (Optional[bool]):
-                If True, apply merging instead of overwriting the state
-                of the document.
+            option (Optional[~.firestore_v1beta1.client.WriteOption]): A
+               write option to make assertions / preconditions on the server
+               state of the document before applying changes.
         """
         write_pbs = _helpers.pbs_for_set(
-            reference._document_path, document_data, merge=merge)
+            reference._document_path, document_data, option)
         self._add_write_pbs(write_pbs)
 
     def update(self, reference, field_updates, option=None):
