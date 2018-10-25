@@ -1771,7 +1771,6 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         self._bind_test_helper(BYTES, b'DEADBEEF', [b'FACEDACE', b'DEADBEEF'])
 
     def test_execute_sql_w_timestamp_bindings(self):
-        import datetime
         import pytz
         from google.api_core.datetime_helpers import DatetimeWithNanoseconds
 
