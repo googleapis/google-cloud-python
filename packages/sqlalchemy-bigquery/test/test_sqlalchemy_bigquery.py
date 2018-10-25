@@ -25,8 +25,10 @@ ONE_ROW_CONTENTS_EXPANDED = [
     datetime.datetime(2013, 10, 10, 11, 27, 16),
     datetime.time(11, 27, 16),
     b'\xef',
+    {u'age': 100, u'name': u'John Doe'},
     'John Doe',
     100,
+    {u'record': {u'age': 200, u'name': u'John Doe 2'}}, {u'age': 200, u'name': u'John Doe 2'},
     'John Doe 2',
     200,
     [1, 2, 3],
@@ -77,8 +79,11 @@ SAMPLE_COLUMNS = [
     {'name': 'datetime', 'type': types.DATETIME(), 'nullable': True, 'default': None},
     {'name': 'time', 'type': types.TIME(), 'nullable': True, 'default': None},
     {'name': 'bytes', 'type': types.BINARY(), 'nullable': True, 'default': None},
+    {'name': 'record', 'type': types.JSON(), 'nullable': True, 'default': None},
     {'name': 'record.name', 'type': types.String(), 'nullable': True, 'default': None},
     {'name': 'record.age', 'type': types.Integer(), 'nullable': True, 'default': None},
+    {'name': 'nested_record', 'type': types.JSON(), 'nullable': True, 'default': None},
+    {'name': 'nested_record.record', 'type': types.JSON(), 'nullable': True, 'default': None},
     {'name': 'nested_record.record.name', 'type': types.String(), 'nullable': True, 'default': None},
     {'name': 'nested_record.record.age', 'type': types.Integer(), 'nullable': True, 'default': None},
     {'name': 'array', 'type': types.ARRAY(types.Integer()), 'nullable': True, 'default': None},
@@ -200,7 +205,7 @@ def test_dataset_location(engine_with_location):
 
 def test_reflect_select(table, table_using_test_dataset):
     for table in [table, table_using_test_dataset]:
-        assert len(table.c) == 14
+        assert len(table.c) == 17
 
         assert isinstance(table.c.integer, Column)
         assert isinstance(table.c.integer.type, types.Integer)
