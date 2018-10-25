@@ -629,7 +629,7 @@ class TestTable(unittest.TestCase):
                                app_profile_id=app_profile_id)
 
         # Create request_pb
-        request = object()  # Returned by our mock.
+        request = retry = object()  # Returned by our mock.
         mock_created = []
 
         def mock_create_row_request(table_name, **kwargs):
@@ -639,7 +639,7 @@ class TestTable(unittest.TestCase):
         # Create expected_result.
         expected_result = PartialRowsData(
             client._table_data_client.transport.read_rows,
-            request)
+            request, retry)
 
         # Perform the method and check the result.
         start_key = b'start-key'
@@ -649,9 +649,10 @@ class TestTable(unittest.TestCase):
         with _Monkey(MUT, _create_row_request=mock_create_row_request):
             result = table.read_rows(
                 start_key=start_key, end_key=end_key, filter_=filter_obj,
-                limit=limit)
+                limit=limit, retry=retry)
 
         self.assertEqual(result.rows, expected_result.rows)
+        self.assertEqual(result.retry, expected_result.retry)
         created_kwargs = {
             'start_key': start_key,
             'end_key': end_key,
@@ -662,6 +663,67 @@ class TestTable(unittest.TestCase):
             'row_set': None
         }
         self.assertEqual(mock_created, [(table.name, created_kwargs)])
+
+    def test_read_retry_rows(self):
+        from google.cloud.bigtable_v2.gapic import bigtable_client
+        from google.cloud.bigtable_admin_v2.gapic import (
+            bigtable_table_admin_client)
+        from google.api_core import retry
+
+        data_api = bigtable_client.BigtableClient(mock.Mock())
+        table_api = bigtable_table_admin_client.BigtableTableAdminClient(
+            mock.Mock())
+        credentials = _make_credentials()
+        client = self._make_client(project='project-id',
+                                   credentials=credentials, admin=True)
+        client._table_data_client = data_api
+        client._table_admin_client = table_api
+        instance = client.instance(instance_id=self.INSTANCE_ID)
+        table = self._make_one(self.TABLE_ID, instance)
+
+        retry_read_rows = retry.Retry(
+            predicate=_read_rows_retry_exception,
+        )
+
+        # Create response_iterator
+        chunk_1 = _ReadRowsResponseCellChunkPB(
+            row_key=self.ROW_KEY_1,
+            family_name=self.FAMILY_NAME,
+            qualifier=self.QUALIFIER,
+            timestamp_micros=self.TIMESTAMP_MICROS,
+            value=self.VALUE,
+            commit_row=True
+        )
+
+        chunk_2 = _ReadRowsResponseCellChunkPB(
+            row_key=self.ROW_KEY_2,
+            family_name=self.FAMILY_NAME,
+            qualifier=self.QUALIFIER,
+            timestamp_micros=self.TIMESTAMP_MICROS,
+            value=self.VALUE,
+            commit_row=True
+        )
+
+        response_1 = _ReadRowsResponseV2([chunk_1])
+        response_2 = _ReadRowsResponseV2([chunk_2])
+        response_failure_iterator_1 = _MockFailureIterator_1()
+        response_failure_iterator_2 = _MockFailureIterator_2([response_1])
+        response_iterator = _MockReadRowsIterator(response_2)
+
+        # Patch the stub used by the API method.
+        client._table_data_client.transport.read_rows = mock.Mock(
+            side_effect=[
+                response_failure_iterator_1, response_failure_iterator_2,
+                response_iterator])
+
+        rows = []
+        for row in table.read_rows(start_key=self.ROW_KEY_1,
+                                   end_key=self.ROW_KEY_2,
+                                   retry=retry_read_rows):
+            rows.append(row)
+
+        result = rows[1]
+        self.assertEqual(result.row_key, self.ROW_KEY_2)
 
     def test_yield_retry_rows(self):
         from google.cloud.bigtable_v2.gapic import bigtable_client
@@ -1716,10 +1778,7 @@ class _MockReadRowsIterator(object):
     __next__ = next
 
 
-class _MockFailureIterator_1(object):
-
-    def next(self):
-        class DeadlineExceeded(grpc.RpcError, grpc.Call):
+class DeadlineExceeded(grpc.RpcError, grpc.Call):
             """ErrorDeadlineExceeded exception"""
 
             def code(self):
@@ -1728,6 +1787,10 @@ class _MockFailureIterator_1(object):
             def details(self):
                 return "Failed to read from server"
 
+
+class _MockFailureIterator_1(object):
+
+    def next(self):
         raise DeadlineExceeded()
 
     __next__ = next
@@ -1740,15 +1803,6 @@ class _MockFailureIterator_2(object):
         self.calls = 0
 
     def next(self):
-        class DeadlineExceeded(grpc.RpcError, grpc.Call):
-            """ErrorDeadlineExceeded exception"""
-
-            def code(self):
-                return grpc.StatusCode.DEADLINE_EXCEEDED
-
-            def details(self):
-                return "Failed to read from server"
-
         self.calls += 1
         if self.calls == 1:
             return self.iter_values[0]
@@ -1786,3 +1840,7 @@ def _ClusterStatePB(replication_state):
     return table_v2_pb2.Table.ClusterState(
         replication_state=replication_state
     )
+
+
+def _read_rows_retry_exception(exc):
+    return isinstance(exc, DeadlineExceeded)
