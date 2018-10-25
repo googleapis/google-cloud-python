@@ -92,10 +92,10 @@ class _Worker(object):
         than the grace_period. This means this is effectively the longest
         amount of time the background thread will hold onto log entries
         before sending them to the server.
-        
+
     :type includer_logger_name: bool
     :param include_logger_name: (optional) Include python_logger field in
-        jsonPayload. Turn this off to enable json detection in log messages.      
+        jsonPayload. Turn this off to enable json detection in log messages.
     """
 
     def __init__(self, cloud_logger, grace_period=_DEFAULT_GRACE_PERIOD,
@@ -259,7 +259,7 @@ class _Worker(object):
         :param span_id: (optional) span_id within the trace for the log entry.
                         Specify the trace parameter if span_id is set.
         """
-        
+
         log_record = {
             'info': {
                 'message': message,
@@ -270,11 +270,10 @@ class _Worker(object):
             'trace': trace,
             'span_id': span_id,
         }
-        
+
         if self._include_logger_name:
-            log_record['info']['python_logger'] = record.name 
+            log_record['info']['python_logger'] = record.name
         self._queue.put_nowait(log_record)
-        
 
     def flush(self):
         """Submit any pending log records."""
@@ -304,11 +303,11 @@ class BackgroundThreadTransport(Transport):
         than the grace_period. This means this is effectively the longest
         amount of time the background thread will hold onto log entries
         before sending them to the server.
-        
+
     :type includer_logger_name: bool
     :param include_logger_name: (optional) Include python_logger field in
                                 jsonPayload. Turn this off to enable jso
-                                detection in log messages.      
+                                detection in log messages.
     """
 
     def __init__(self, client, name, grace_period=_DEFAULT_GRACE_PERIOD,

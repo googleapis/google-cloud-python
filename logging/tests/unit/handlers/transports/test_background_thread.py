@@ -296,7 +296,9 @@ class Test_Worker(unittest.TestCase):
         worker._thread_main()
 
         self.assertEqual(len(worker._cloud_logger._batch.all_entries), 1)
-        self.assertFalse('python_logger' in worker._cloud_logger._batch.all_entries[0])
+        self.assertFalse(
+            'python_logger' in worker._cloud_logger._batch.all_entries[0]
+        )
 
     def test__thread_main_error(self):
         from google.cloud.logging.handlers.transports import background_thread
