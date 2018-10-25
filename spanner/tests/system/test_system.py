@@ -1544,7 +1544,7 @@ class TestSessionAPI(unittest.TestCase, _TestData):
             "ORDER BY C1 ASC)"
         )
         self._db.snapshot(multi_use=True)
-        
+
         self._check_sql_results(
             self._db,
             sql=SQL,
