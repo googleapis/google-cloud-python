@@ -12,10 +12,9 @@ Api Reference
 
 Changelog
 ---------
-
-For a list of all ``google-cloud-datastore`` releases:
+For a list of all ``google-cloud-automl`` releases:
 
 .. toctree::
-   :maxdepth: 2
+    :maxdepth: 2
 
-   changelog
+    changelog
