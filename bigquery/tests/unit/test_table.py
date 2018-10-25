@@ -876,22 +876,26 @@ class TestTable(unittest.TestCase, _SchemaBase):
         self.assertIsNone(table.time_partitioning)
 
     def test_partitioning_type_setter(self):
+        import warnings
         from google.cloud.bigquery.table import TimePartitioningType
 
         dataset = DatasetReference(self.PROJECT, self.DS_ID)
         table_ref = dataset.table(self.TABLE_NAME)
         table = self._make_one(table_ref)
 
-        with mock.patch('warnings.warn') as warn_patch:
+        with warnings.catch_warnings(record=True) as warned:
             self.assertIsNone(table.partitioning_type)
 
             table.partitioning_type = TimePartitioningType.DAY
 
             self.assertEqual(table.partitioning_type, 'DAY')
 
-        assert warn_patch.called
+        self.assertEqual(len(warned), 3)
+        for warning in warned:
+            self.assertIs(warning.category, PendingDeprecationWarning)
 
     def test_partitioning_type_setter_w_time_partitioning_set(self):
+        import warnings
         from google.cloud.bigquery.table import TimePartitioning
 
         dataset = DatasetReference(self.PROJECT, self.DS_ID)
@@ -899,14 +903,17 @@ class TestTable(unittest.TestCase, _SchemaBase):
         table = self._make_one(table_ref)
         table.time_partitioning = TimePartitioning()
 
-        with mock.patch('warnings.warn') as warn_patch:
+        with warnings.catch_warnings(record=True) as warned:
             table.partitioning_type = 'NEW_FAKE_TYPE'
 
             self.assertEqual(table.partitioning_type, 'NEW_FAKE_TYPE')
 
-        assert warn_patch.called
+        self.assertEqual(len(warned), 2)
+        for warning in warned:
+            self.assertIs(warning.category, PendingDeprecationWarning)
 
     def test_partitioning_expiration_setter_w_time_partitioning_set(self):
+        import warnings
         from google.cloud.bigquery.table import TimePartitioning
 
         dataset = DatasetReference(self.PROJECT, self.DS_ID)
@@ -914,19 +921,23 @@ class TestTable(unittest.TestCase, _SchemaBase):
         table = self._make_one(table_ref)
         table.time_partitioning = TimePartitioning()
 
-        with mock.patch('warnings.warn') as warn_patch:
+        with warnings.catch_warnings(record=True) as warned:
             table.partition_expiration = 100000
 
             self.assertEqual(table.partition_expiration, 100000)
 
-        assert warn_patch.called
+        self.assertEqual(len(warned), 2)
+        for warning in warned:
+            self.assertIs(warning.category, PendingDeprecationWarning)
 
     def test_partition_expiration_setter(self):
+        import warnings
+
         dataset = DatasetReference(self.PROJECT, self.DS_ID)
         table_ref = dataset.table(self.TABLE_NAME)
         table = self._make_one(table_ref)
 
-        with mock.patch('warnings.warn') as warn_patch:
+        with warnings.catch_warnings(record=True) as warned:
             self.assertIsNone(table.partition_expiration)
 
             table.partition_expiration = 100
@@ -935,7 +946,9 @@ class TestTable(unittest.TestCase, _SchemaBase):
             # defaults to 'DAY' when expiration is set and type is not set
             self.assertEqual(table.partitioning_type, 'DAY')
 
-        assert warn_patch.called
+        self.assertEqual(len(warned), 4)
+        for warning in warned:
+            self.assertIs(warning.category, PendingDeprecationWarning)
 
     def test_clustering_fields_setter_w_fields(self):
         dataset = DatasetReference(self.PROJECT, self.DS_ID)
@@ -1069,6 +1082,8 @@ class TestTableListItem(unittest.TestCase):
         return self._get_target_class()(*args, **kw)
 
     def test_ctor(self):
+        import warnings
+
         project = 'test-project'
         dataset_id = 'test_dataset'
         table_id = 'coffee_table'
@@ -1107,10 +1122,16 @@ class TestTableListItem(unittest.TestCase):
         self.assertEqual(table.time_partitioning.type_, 'DAY')
         self.assertEqual(table.time_partitioning.expiration_ms, 10000)
         self.assertEqual(table.time_partitioning.field, 'mycolumn')
-        self.assertEqual(table.partitioning_type, 'DAY')
-        self.assertEqual(table.partition_expiration, 10000)
         self.assertEqual(table.labels['some-stuff'], 'this-is-a-label')
         self.assertIsNone(table.view_use_legacy_sql)
+
+        with warnings.catch_warnings(record=True) as warned:
+            self.assertEqual(table.partitioning_type, 'DAY')
+            self.assertEqual(table.partition_expiration, 10000)
+
+        self.assertEqual(len(warned), 2)
+        for warning in warned:
+            self.assertIs(warning.category, PendingDeprecationWarning)
 
     def test_ctor_view(self):
         project = 'test-project'
@@ -1142,6 +1163,8 @@ class TestTableListItem(unittest.TestCase):
         self.assertTrue(table.view_use_legacy_sql)
 
     def test_ctor_missing_properties(self):
+        import warnings
+
         resource = {
             'tableReference': {
                 'projectId': 'testproject',
@@ -1157,10 +1180,16 @@ class TestTableListItem(unittest.TestCase):
         self.assertIsNone(table.friendly_name)
         self.assertIsNone(table.table_type)
         self.assertIsNone(table.time_partitioning)
-        self.assertIsNone(table.partitioning_type)
-        self.assertIsNone(table.partition_expiration)
         self.assertEqual(table.labels, {})
         self.assertIsNone(table.view_use_legacy_sql)
+
+        with warnings.catch_warnings(record=True) as warned:
+            self.assertIsNone(table.partitioning_type)
+            self.assertIsNone(table.partition_expiration)
+
+        self.assertEqual(len(warned), 2)
+        for warning in warned:
+            self.assertIs(warning.category, PendingDeprecationWarning)
 
     def test_ctor_wo_project(self):
         resource = {
