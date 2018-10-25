@@ -204,7 +204,7 @@ class TestBigQuery(unittest.TestCase):
         self.assertTrue(_dataset_exists(dataset))
         self.assertIsNone(dataset.friendly_name)
         self.assertIsNone(dataset.description)
-        self.assertEquals(dataset.labels, {})
+        self.assertEqual(dataset.labels, {})
 
         dataset.friendly_name = 'Friendly'
         dataset.description = 'Description'
@@ -400,7 +400,7 @@ class TestBigQuery(unittest.TestCase):
         self.assertTrue(_table_exists(table))
         self.assertIsNone(table.friendly_name)
         self.assertIsNone(table.description)
-        self.assertEquals(table.labels, {})
+        self.assertEqual(table.labels, {})
         table.friendly_name = 'Friendly'
         table.description = 'Description'
         table.labels = {'priority': 'high', 'color': 'blue'}
