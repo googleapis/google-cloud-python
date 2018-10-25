@@ -10,19 +10,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import cffi
+import crc32c._crc32c_cffi
 
 
-_HEADER = """\
-uint32_t crc32c_extend(uint32_t crc, const uint8_t* data, size_t count);
-uint32_t crc32c_value(const uint8_t* data, size_t count);
-"""
-FFIBUILDER = cffi.FFI()
-FFIBUILDER.cdef(_HEADER)
-FFIBUILDER.set_source(
-    "crc32c._crc32c_cffi", '#include "crc32c/crc32c.h"', libraries=["crc32c"]
-)
+def extend(*args, **kwargs):
+    return crc32c._crc32c_cffi.lib.crc32c_extend(*args, **kwargs)
 
 
-if __name__ == "__main__":
-    FFIBUILDER.compile(verbose=True)
+def value(*args, **kwargs):
+    return crc32c._crc32c_cffi.lib.crc32c_value(*args, **kwargs)

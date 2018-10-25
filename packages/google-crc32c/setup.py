@@ -10,10 +10,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import os
+
 import setuptools
 
 
 def main():
+    build_path = os.path.join("src", "crc32c_build.py")
+    builder = "{}:FFIBUILDER".format(build_path)
+    cffi_dep = "cffi >= 1.0.0"
     setuptools.setup(
         name="py_crc32c",
         version="0.0.1",
@@ -23,14 +28,14 @@ def main():
         long_description="TODO",
         scripts=(),
         url="https://github.com/dhermes/py-crc32c",
-        packages=[],
+        packages=["crc32c"],
         package_dir={"": "src"},
         license="Apache 2.0",
         platforms="Posix; MacOS X; Windows",
         zip_safe=True,
-        setup_requires=["cffi >= 1.0.0"],
-        cffi_modules=["src/crc32c_build.py:FFIBUILDER"],
-        install_requires=["cffi >= 1.0.0"],
+        setup_requires=[cffi_dep],
+        cffi_modules=[builder],
+        install_requires=[cffi_dep],
         classifiers=[
             "Development Status :: 2 - Pre-Alpha",
             "Intended Audience :: Developers",
