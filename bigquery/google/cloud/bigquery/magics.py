@@ -103,10 +103,9 @@
 
 from __future__ import print_function
 
-import json
+import ast
 import time
 from concurrent import futures
-from json import JSONDecodeError
 
 try:
     import IPython
@@ -256,6 +255,7 @@ def _run_query(client, query, job_config=None):
           'cleared after the query is finished.'))
 @magic_arguments.argument(
     '--params',
+    nargs='+',
     default=None,
     help=('Parameters to format the query string. If present, it should be a '
           'parsable JSON string. The parsed dictionary will be used for string'
@@ -278,9 +278,9 @@ def _cell_magic(line, query):
 
     if args.params is not None:
         try:
-            params = json.loads(args.params)
-        except JSONDecodeError as e:
-            raise JSONDecodeError('--params is not a correctly formatted JSON string', e.doc, e.pos)
+            params = ast.literal_eval(''.join(args.params))
+        except Exception:
+            raise SyntaxError('--params is not a correctly formatted JSON string')
 
         query = query.format(**params)
 
