@@ -852,6 +852,25 @@ class Property(ModelAttribute):
         """
         return entity._values.get(self._name, default)
 
+    def _opt_call_to_base_type(self, value):
+        """Call :meth:`_to_base_type` if necessary.
+
+        If ``value`` is a :class:`_BaseValue`, return it unchanged.
+        Otherwise, call all :meth:`_validate` and :meth:`_to_base_type` methods
+        and wrap it in a :class:`_BaseValue`.
+
+        Args:
+            value (Any): The value to invoke :meth:`_call_to_base_type`
+               for.
+
+        Returns:
+            _BaseValue: The original value (if :class:`_BaseValue`) or the
+            value converted to the base type and wrapped.
+        """
+        if not isinstance(value, _BaseValue):
+            value = _BaseValue(self._call_to_base_type(value))
+        return value
+
     def _call_to_base_type(self, value):
         """Call all ``_validate()`` and ``_to_base_type()`` methods on value.
 
