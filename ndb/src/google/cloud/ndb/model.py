@@ -867,7 +867,10 @@ class Property(ModelAttribute):
         if cache:
             hit = cache.get(names)
             if hit is not None:
-                return hit
+                if reverse:
+                    return list(reversed(hit))
+                else:
+                    return hit
         else:
             cache = {}
             cls._find_methods_cache = cache
@@ -879,11 +882,11 @@ class Property(ModelAttribute):
                 if method is not None:
                     methods.append(method)
 
-        if reverse:
-            methods.reverse()
-
         cache[names] = methods
-        return methods
+        if reverse:
+            return list(reversed(methods))
+        else:
+            return methods
 
     def _apply_list(self, methods):
         """Chain together a list of callables for transforming a value.

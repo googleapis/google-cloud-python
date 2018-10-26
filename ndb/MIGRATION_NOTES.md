@@ -74,6 +74,8 @@ The primary differences come from:
 - I dropped `Property._positional` since keyword-only arguments are native
   Python 3 syntax and dropped `Property._attributes`  in favor of an
   approach using `inspect.signature()`
+- A bug in `Property._find_methods` was fixed where `reverse=True` was applied
+  **before** caching and then not respected when pulling from the cache
 
 ## Comments
 

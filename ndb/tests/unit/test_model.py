@@ -762,7 +762,9 @@ class TestProperty:
             SomeProperty.IN,
         ]
         # Check cache
-        assert SomeProperty._find_methods_cache == {("IN", "find_me"): methods}
+        assert SomeProperty._find_methods_cache == {
+            ("IN", "find_me"): list(reversed(methods))
+        }
 
     def test__find_methods_cached(self):
         SomeProperty = self._property_subtype()
@@ -770,6 +772,16 @@ class TestProperty:
         methods = unittest.mock.sentinel.methods
         SomeProperty._find_methods_cache = {("IN", "find_me"): methods}
         assert SomeProperty._find_methods("IN", "find_me") is methods
+
+    def test__find_methods_cached_reverse(self):
+        SomeProperty = self._property_subtype()
+        # Set cache
+        methods = ["a", "b"]
+        SomeProperty._find_methods_cache = {("IN", "find_me"): methods}
+        assert SomeProperty._find_methods("IN", "find_me", reverse=True) == [
+            "b",
+            "a",
+        ]
 
     def test__find_methods_not_in_cache(self):
         SomeProperty = self._property_subtype()
