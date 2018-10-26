@@ -348,7 +348,7 @@ class Property(ModelAttribute):
     _write_empty_list = False
     # Non-public class attributes.
     _CREATION_COUNTER = 0
-    _find_methods_cache = {}
+    _FIND_METHODS_CACHE = {}
 
     def __init__(
         self,
@@ -865,7 +865,7 @@ class Property(ModelAttribute):
         """
         # Get cache on current class / set cache if it doesn't exist.
         key = "{}.{}".format(cls.__module__, cls.__qualname__)
-        cache = cls._find_methods_cache.setdefault(key, {})
+        cache = cls._FIND_METHODS_CACHE.setdefault(key, {})
         hit = cache.get(names)
         if hit is not None:
             if reverse:

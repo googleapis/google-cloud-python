@@ -25,7 +25,7 @@ import pytest
 
 @pytest.fixture
 def property_clean_cache():
-    """Reset the ``_find_methods_cache`` class attribute on ``Property``
+    """Reset the ``_FIND_METHODS_CACHE`` class attribute on ``Property``
 
     This property is set at runtime (with calls to ``_find_methods()``), so
     this fixture allows resetting the class to its original state.
@@ -33,4 +33,4 @@ def property_clean_cache():
     try:
         yield
     finally:
-        model.Property._find_methods_cache.clear()
+        model.Property._FIND_METHODS_CACHE.clear()

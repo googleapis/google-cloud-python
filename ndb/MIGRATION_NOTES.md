@@ -78,7 +78,7 @@ The primary differences come from:
   **before** caching and then not respected when pulling from the cache
 - The `Property._find_methods_cache` has been changed. Previously it would be
   set on each `Property` subclass and populated dynamically on first use.
-  Now `Property._find_methods_cache` is set to `{}` when the `Property` class
+  Now `Property._FIND_METHODS_CACHE` is set to `{}` when the `Property` class
   is created and there is another level of keys (based on fully-qualified
   class name) in the cache.
 

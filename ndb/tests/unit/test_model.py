@@ -477,7 +477,7 @@ class TestProperty:
         filter_node = prop._comparison("=", None)
         assert filter_node == query.FilterNode(b"height", "=", None)
         # Cache is untouched.
-        assert model.Property._find_methods_cache == {}
+        assert model.Property._FIND_METHODS_CACHE == {}
 
     @staticmethod
     def test___eq__(property_clean_cache):
@@ -555,7 +555,7 @@ class TestProperty:
             prop._IN([10, 20, 81])
 
         # Cache is untouched.
-        assert model.Property._find_methods_cache == {}
+        assert model.Property._FIND_METHODS_CACHE == {}
 
     @staticmethod
     def test__IN_wrong_container():
@@ -564,7 +564,7 @@ class TestProperty:
             prop._IN({1: "a", 11: "b"})
 
         # Cache is untouched.
-        assert model.Property._find_methods_cache == {}
+        assert model.Property._FIND_METHODS_CACHE == {}
 
     @staticmethod
     def test__IN(property_clean_cache):
@@ -611,7 +611,7 @@ class TestProperty:
         result = prop._do_validate(value)
         assert result is value
         # Cache is untouched.
-        assert model.Property._find_methods_cache == {}
+        assert model.Property._FIND_METHODS_CACHE == {}
 
     @staticmethod
     def test__do_validate_validator_none(property_clean_cache):
@@ -749,7 +749,7 @@ class TestProperty:
     def test__find_methods(self, property_clean_cache):
         SomeProperty = self._property_subtype()
         # Make sure cache is empty.
-        assert model.Property._find_methods_cache == {}
+        assert model.Property._FIND_METHODS_CACHE == {}
 
         methods = SomeProperty._find_methods("IN", "find_me")
         assert methods == [
@@ -761,14 +761,14 @@ class TestProperty:
         key = "{}.{}".format(
             SomeProperty.__module__, SomeProperty.__qualname__
         )
-        assert model.Property._find_methods_cache == {
+        assert model.Property._FIND_METHODS_CACHE == {
             key: {("IN", "find_me"): methods}
         }
 
     def test__find_methods_reverse(self, property_clean_cache):
         SomeProperty = self._property_subtype()
         # Make sure cache is empty.
-        assert model.Property._find_methods_cache == {}
+        assert model.Property._FIND_METHODS_CACHE == {}
 
         methods = SomeProperty._find_methods("IN", "find_me", reverse=True)
         assert methods == [
@@ -780,7 +780,7 @@ class TestProperty:
         key = "{}.{}".format(
             SomeProperty.__module__, SomeProperty.__qualname__
         )
-        assert model.Property._find_methods_cache == {
+        assert model.Property._FIND_METHODS_CACHE == {
             key: {("IN", "find_me"): list(reversed(methods))}
         }
 
@@ -791,7 +791,7 @@ class TestProperty:
         key = "{}.{}".format(
             SomeProperty.__module__, SomeProperty.__qualname__
         )
-        model.Property._find_methods_cache = {
+        model.Property._FIND_METHODS_CACHE = {
             key: {("IN", "find_me"): methods}
         }
         assert SomeProperty._find_methods("IN", "find_me") is methods
@@ -803,7 +803,7 @@ class TestProperty:
         key = "{}.{}".format(
             SomeProperty.__module__, SomeProperty.__qualname__
         )
-        model.Property._find_methods_cache = {
+        model.Property._FIND_METHODS_CACHE = {
             key: {("IN", "find_me"): methods}
         }
         assert SomeProperty._find_methods("IN", "find_me", reverse=True) == [
@@ -814,7 +814,7 @@ class TestProperty:
     def test__find_methods_not_in_cache(self):
         SomeProperty = self._property_subtype()
         # Set cache
-        SomeProperty._find_methods_cache = {("find_me",): None}
+        SomeProperty._FIND_METHODS_CACHE = {("find_me",): None}
 
         methods = [SomeProperty.IN, SomeProperty.find_me, model.Property.IN]
         assert SomeProperty._find_methods("IN", "find_me") == methods
