@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import types
 import unittest.mock
 
 import pytest
@@ -465,7 +466,7 @@ class TestProperty:
             prop._comparison("!=", "red")
 
     @staticmethod
-    def test__comparison():
+    def test__comparison(property_clean_cache):
         prop = model.Property("sentiment", indexed=True)
         filter_node = prop._comparison(">=", 0.0)
         assert filter_node == query.FilterNode(b"sentiment", ">=", 0.0)
@@ -475,9 +476,11 @@ class TestProperty:
         prop = model.Property("height", indexed=True)
         filter_node = prop._comparison("=", None)
         assert filter_node == query.FilterNode(b"height", "=", None)
+        # Cache is untouched.
+        assert model.Property._FIND_METHODS_CACHE == {}
 
     @staticmethod
-    def test___eq__():
+    def test___eq__(property_clean_cache):
         prop = model.Property("name", indexed=True)
         value = 1337
         expected = query.FilterNode(b"name", "=", value)
@@ -488,7 +491,7 @@ class TestProperty:
         assert filter_node_right == expected
 
     @staticmethod
-    def test___ne__():
+    def test___ne__(property_clean_cache):
         prop = model.Property("name", indexed=True)
         value = 7.0
         expected = query.DisjunctionNode(
@@ -502,7 +505,7 @@ class TestProperty:
         assert or_node_right == expected
 
     @staticmethod
-    def test___lt__():
+    def test___lt__(property_clean_cache):
         prop = model.Property("name", indexed=True)
         value = 2.0
         expected = query.FilterNode(b"name", "<", value)
@@ -513,7 +516,7 @@ class TestProperty:
         assert filter_node_right == expected
 
     @staticmethod
-    def test___le__():
+    def test___le__(property_clean_cache):
         prop = model.Property("name", indexed=True)
         value = 20.0
         expected = query.FilterNode(b"name", "<=", value)
@@ -524,7 +527,7 @@ class TestProperty:
         assert filter_node_right == expected
 
     @staticmethod
-    def test___gt__():
+    def test___gt__(property_clean_cache):
         prop = model.Property("name", indexed=True)
         value = "new"
         expected = query.FilterNode(b"name", ">", value)
@@ -535,7 +538,7 @@ class TestProperty:
         assert filter_node_right == expected
 
     @staticmethod
-    def test___ge__():
+    def test___ge__(property_clean_cache):
         prop = model.Property("name", indexed=True)
         value = "old"
         expected = query.FilterNode(b"name", ">=", value)
@@ -551,14 +554,20 @@ class TestProperty:
         with pytest.raises(exceptions.BadFilterError):
             prop._IN([10, 20, 81])
 
+        # Cache is untouched.
+        assert model.Property._FIND_METHODS_CACHE == {}
+
     @staticmethod
     def test__IN_wrong_container():
         prop = model.Property("name", indexed=True)
         with pytest.raises(exceptions.BadArgumentError):
             prop._IN({1: "a", 11: "b"})
 
+        # Cache is untouched.
+        assert model.Property._FIND_METHODS_CACHE == {}
+
     @staticmethod
-    def test__IN():
+    def test__IN(property_clean_cache):
         prop = model.Property("name", indexed=True)
         or_node = prop._IN(["a", None, "xy"])
         expected = query.DisjunctionNode(
@@ -581,6 +590,245 @@ class TestProperty:
         prop = model.Property("name")
         with pytest.raises(NotImplementedError):
             +prop
+
+    @staticmethod
+    def test__do_validate(property_clean_cache):
+        validator = unittest.mock.Mock(spec=())
+        value = 18
+        choices = (1, 2, validator.return_value)
+
+        prop = model.Property(name="foo", validator=validator, choices=choices)
+        result = prop._do_validate(value)
+        assert result is validator.return_value
+        # Check validator call.
+        validator.assert_called_once_with(prop, value)
+
+    @staticmethod
+    def test__do_validate_base_value():
+        value = model._BaseValue(b"\x00\x01")
+
+        prop = model.Property(name="foo")
+        result = prop._do_validate(value)
+        assert result is value
+        # Cache is untouched.
+        assert model.Property._FIND_METHODS_CACHE == {}
+
+    @staticmethod
+    def test__do_validate_validator_none(property_clean_cache):
+        validator = unittest.mock.Mock(spec=(), return_value=None)
+        value = 18
+
+        prop = model.Property(name="foo", validator=validator)
+        result = prop._do_validate(value)
+        assert result == value
+        # Check validator call.
+        validator.assert_called_once_with(prop, value)
+
+    @staticmethod
+    def test__do_validate_not_in_choices(property_clean_cache):
+        value = 18
+        prop = model.Property(name="foo", choices=(1, 2))
+
+        with pytest.raises(exceptions.BadValueError):
+            prop._do_validate(value)
+
+    @staticmethod
+    def test__do_validate_call_validation(property_clean_cache):
+        class SimpleProperty(model.Property):
+            def _validate(self, value):
+                value.append("SimpleProperty._validate")
+                return value
+
+        value = []
+        prop = SimpleProperty(name="foo")
+        result = prop._do_validate(value)
+        assert result is value
+        assert value == ["SimpleProperty._validate"]
+
+    @staticmethod
+    def _property_subtype_chain():
+        class A(model.Property):
+            def _validate(self, value):
+                value.append("A._validate")
+                return value
+
+            def _to_base_type(self, value):
+                value.append("A._to_base_type")
+                return value
+
+        class B(A):
+            def _validate(self, value):
+                value.append("B._validate")
+                return value
+
+            def _to_base_type(self, value):
+                value.append("B._to_base_type")
+                return value
+
+        class C(B):
+            def _validate(self, value):
+                value.append("C._validate")
+                return value
+
+        value = []
+
+        prop_a = A(name="name-a")
+        assert value is prop_a._validate(value)
+        assert value == ["A._validate"]
+        assert value is prop_a._to_base_type(value)
+        assert value == ["A._validate", "A._to_base_type"]
+        prop_b = B(name="name-b")
+        assert value is prop_b._validate(value)
+        assert value == ["A._validate", "A._to_base_type", "B._validate"]
+        assert value is prop_b._to_base_type(value)
+        assert value == [
+            "A._validate",
+            "A._to_base_type",
+            "B._validate",
+            "B._to_base_type",
+        ]
+        prop_c = C(name="name-c")
+        assert value is prop_c._validate(value)
+        assert value == [
+            "A._validate",
+            "A._to_base_type",
+            "B._validate",
+            "B._to_base_type",
+            "C._validate",
+        ]
+
+        return A, B, C
+
+    def test__call_to_base_type(self, property_clean_cache):
+        _, _, PropertySubclass = self._property_subtype_chain()
+        prop = PropertySubclass(name="prop")
+        value = []
+        assert value is prop._call_to_base_type(value)
+        assert value == [
+            "C._validate",
+            "B._validate",
+            "B._to_base_type",
+            "A._validate",
+            "A._to_base_type",
+        ]
+
+    def test__call_shallow_validation(self, property_clean_cache):
+        _, _, PropertySubclass = self._property_subtype_chain()
+        prop = PropertySubclass(name="prop")
+        value = []
+        assert value is prop._call_shallow_validation(value)
+        assert value == ["C._validate", "B._validate"]
+
+    @staticmethod
+    def test__call_shallow_validation_no_break(property_clean_cache):
+        class SimpleProperty(model.Property):
+            def _validate(self, value):
+                value.append("SimpleProperty._validate")
+                return value
+
+        prop = SimpleProperty(name="simple")
+        value = []
+        assert value is prop._call_shallow_validation(value)
+        assert value == ["SimpleProperty._validate"]
+
+    @staticmethod
+    def _property_subtype():
+        class SomeProperty(model.Property):
+            def find_me(self):
+                return self._name
+
+            def IN(self):
+                return len(self._name) < 20
+
+        prop = SomeProperty(name="hi")
+        assert prop.find_me() == b"hi"
+        assert prop.IN()
+
+        return SomeProperty
+
+    def test__find_methods(self, property_clean_cache):
+        SomeProperty = self._property_subtype()
+        # Make sure cache is empty.
+        assert model.Property._FIND_METHODS_CACHE == {}
+
+        methods = SomeProperty._find_methods("IN", "find_me")
+        assert methods == [
+            SomeProperty.IN,
+            SomeProperty.find_me,
+            model.Property.IN,
+        ]
+        # Check cache
+        key = "{}.{}".format(
+            SomeProperty.__module__, SomeProperty.__qualname__
+        )
+        assert model.Property._FIND_METHODS_CACHE == {
+            key: {("IN", "find_me"): methods}
+        }
+
+    def test__find_methods_reverse(self, property_clean_cache):
+        SomeProperty = self._property_subtype()
+        # Make sure cache is empty.
+        assert model.Property._FIND_METHODS_CACHE == {}
+
+        methods = SomeProperty._find_methods("IN", "find_me", reverse=True)
+        assert methods == [
+            model.Property.IN,
+            SomeProperty.find_me,
+            SomeProperty.IN,
+        ]
+        # Check cache
+        key = "{}.{}".format(
+            SomeProperty.__module__, SomeProperty.__qualname__
+        )
+        assert model.Property._FIND_METHODS_CACHE == {
+            key: {("IN", "find_me"): list(reversed(methods))}
+        }
+
+    def test__find_methods_cached(self, property_clean_cache):
+        SomeProperty = self._property_subtype()
+        # Set cache
+        methods = unittest.mock.sentinel.methods
+        key = "{}.{}".format(
+            SomeProperty.__module__, SomeProperty.__qualname__
+        )
+        model.Property._FIND_METHODS_CACHE = {
+            key: {("IN", "find_me"): methods}
+        }
+        assert SomeProperty._find_methods("IN", "find_me") is methods
+
+    def test__find_methods_cached_reverse(self, property_clean_cache):
+        SomeProperty = self._property_subtype()
+        # Set cache
+        methods = ["a", "b"]
+        key = "{}.{}".format(
+            SomeProperty.__module__, SomeProperty.__qualname__
+        )
+        model.Property._FIND_METHODS_CACHE = {
+            key: {("IN", "find_me"): methods}
+        }
+        assert SomeProperty._find_methods("IN", "find_me", reverse=True) == [
+            "b",
+            "a",
+        ]
+
+    @staticmethod
+    def test__apply_list():
+        method1 = unittest.mock.Mock(spec=())
+        method2 = unittest.mock.Mock(spec=(), return_value=None)
+        method3 = unittest.mock.Mock(spec=())
+
+        prop = model.Property(name="benji")
+        to_call = prop._apply_list([method1, method2, method3])
+        assert isinstance(to_call, types.FunctionType)
+
+        value = unittest.mock.sentinel.value
+        result = to_call(value)
+        assert result is method3.return_value
+
+        # Check mocks.
+        method1.assert_called_once_with(prop, value)
+        method2.assert_called_once_with(prop, method1.return_value)
+        method3.assert_called_once_with(prop, method1.return_value)
 
 
 class TestModelKey:
