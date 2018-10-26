@@ -888,6 +888,38 @@ class Property(ModelAttribute):
         """
         return self._apply_to_values(entity, self._opt_call_to_base_type)
 
+    def _get_base_value_unwrapped_as_list(self, entity):
+        """Like _get_base_value(), but always returns a list.
+
+        Args:
+            entity (Model): An entity to get a value from.
+
+        Returns:
+            List[Any]: The unwrapped base values. For an unrepeated
+            property, if the value is missing or :data:`None`, returns
+            ``[None]``; for a repeated property, if the original value is
+            missing or :data:`None` or empty, returns ``[]``.
+
+        Raises:
+            ValueError: If the property is repeated but the base value is not
+                a :class:`list` or :data:`None`.
+            ValueError: If the property is not repeated but the base value is
+                not a :class:`_BaseValue`.
+        """
+        wrapped = self._get_base_value(entity)
+        if self._repeated:
+            if not isinstance(wrapped, list):
+                raise ValueError("Expected the wrapped quantity to be a list.")
+            return [w.b_val for w in wrapped]
+        else:
+            if wrapped is None:
+                return [None]
+            if not isinstance(wrapped, _BaseValue):
+                raise ValueError(
+                    "Expected the wrapped quantity to be a _BaseValue."
+                )
+            return [wrapped.b_val]
+
     def _opt_call_from_base_type(self, value):
         """Call :meth:`_from_base_type` if necessary.
 
