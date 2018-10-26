@@ -670,6 +670,66 @@ class TestProperty:
         assert entity._values == {prop._name: unittest.mock.sentinel.value}
 
     @staticmethod
+    def test__set_value(property_clean_cache):
+        entity = unittest.mock.Mock(
+            _projection=False,
+            _values={},
+            spec=("_projection", "_values"),
+        )
+        prop = model.Property(name="foo", repeated=False)
+        prop._set_value(entity, 19)
+        assert entity._values == {prop._name: 19}
+
+    @staticmethod
+    def test__set_value_none():
+        entity = unittest.mock.Mock(
+            _projection=False,
+            _values={},
+            spec=("_projection", "_values"),
+        )
+        prop = model.Property(name="foo", repeated=False)
+        prop._set_value(entity, None)
+        assert entity._values == {prop._name: None}
+        # Cache is untouched.
+        assert model.Property._FIND_METHODS_CACHE == {}
+
+    @staticmethod
+    def test__set_value_repeated(property_clean_cache):
+        entity = unittest.mock.Mock(
+            _projection=False,
+            _values={},
+            spec=("_projection", "_values"),
+        )
+        prop = model.Property(name="foo", repeated=True)
+        prop._set_value(entity, (11, 12, 13))
+        assert entity._values == {prop._name: [11, 12, 13]}
+
+    @staticmethod
+    def test__set_value_repeated_bad_container():
+        entity = unittest.mock.Mock(
+            _projection=False,
+            _values={},
+            spec=("_projection", "_values"),
+        )
+        prop = model.Property(name="foo", repeated=True)
+        with pytest.raises(exceptions.BadValueError):
+            prop._set_value(entity, None)
+        # Cache is untouched.
+        assert model.Property._FIND_METHODS_CACHE == {}
+
+    @staticmethod
+    def test__set_value_projection():
+        entity = unittest.mock.Mock(
+            _projection=True,
+            spec=("_projection",),
+        )
+        prop = model.Property(name="foo", repeated=True)
+        with pytest.raises(model.ReadonlyPropertyError):
+            prop._set_value(entity, None)
+        # Cache is untouched.
+        assert model.Property._FIND_METHODS_CACHE == {}
+
+    @staticmethod
     def test__has_value():
         prop = model.Property(name="foo")
         values = {prop._name: 88}

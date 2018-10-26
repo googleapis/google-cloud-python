@@ -794,6 +794,40 @@ class Property(ModelAttribute):
         """
         entity._values[self._name] = value
 
+    def _set_value(self, entity, value):
+        """Set a value in an entity for a property.
+
+        This performs validation first. For a repeated property the value
+        should be a list (or similar container).
+
+        Args:
+            entity (Model): An entity to set a value on.
+            value (Any): The value to be stored for this property.
+
+        Raises:
+            ReadonlyPropertyError: If the ``entity`` is the result of a
+                projection query.
+            .BadValueError: If the current property is repeated but the
+                ``value`` is not a basic container (:class:`list`,
+                :class:`tuple`, :class:`set` or :class:`frozenset`).
+        """
+        if entity._projection:
+            raise ReadonlyPropertyError(
+                "You cannot set property values of a projection entity"
+            )
+
+        if self._repeated:
+            if not isinstance(value, (list, tuple, set, frozenset)):
+                raise exceptions.BadValueError(
+                    "Expected list or tuple, got {!r}".format(value)
+                )
+            value = [self._do_validate(v) for v in value]
+        else:
+            if value is not None:
+                value = self._do_validate(value)
+
+        self._store_value(entity, value)
+
     def _has_value(self, entity, unused_rest=None):
         """Determine if the entity has a value for this property.
 
