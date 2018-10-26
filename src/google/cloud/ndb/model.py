@@ -348,6 +348,7 @@ class Property(ModelAttribute):
     _write_empty_list = False
     # Non-public class attributes.
     _CREATION_COUNTER = 0
+    _FIND_METHODS_CACHE = {}
 
     def __init__(
         self,
@@ -554,6 +555,8 @@ class Property(ModelAttribute):
             )
 
         if value is not None:
+            value = self._do_validate(value)
+            value = self._call_to_base_type(value)
             value = self._datastore_type(value)
 
         return query.FilterNode(self._name, op, value)
@@ -638,6 +641,8 @@ class Property(ModelAttribute):
         values = []
         for sub_value in value:
             if sub_value is not None:
+                sub_value = self._do_validate(sub_value)
+                sub_value = self._call_to_base_type(sub_value)
                 sub_value = self._datastore_type(sub_value)
             values.append(sub_value)
 
@@ -684,6 +689,236 @@ class Property(ModelAttribute):
                 a low-level datastore query module.
         """
         raise NotImplementedError("Missing datastore_query.PropertyOrder")
+
+    def _do_validate(self, value):
+        """Call all validations on the value.
+
+        This transforms the ``value`` via:
+
+        * Calling the derived ``_validate()`` method(s) (on subclasses that
+          don't define ``_to_base_type``),
+        * Calling the custom validator function
+
+        After transforming, it checks if the transformed value is in
+        ``choices`` (if defined).
+
+        It's possible that one of the ``_validate()`` methods will raise
+        an exception.
+
+        If ``value`` is a base-value, this will do nothing and return it.
+
+        .. note::
+
+            This does not call all composable ``_validate()`` methods.
+            It only calls ``_validate()`` methods up to the
+            first class in the hierarchy that defines a ``_to_base_type()``
+            method, when the MRO is traversed looking for ``_validate()`` and
+            ``_to_base_type()`` methods.
+
+        .. note::
+
+            For a repeated property this method should be called
+            for each value in the list, not for the list as a whole.
+
+        Args:
+            value (Any): The value to be converted / validated.
+
+        Returns:
+            Any: The transformed ``value``, possibly modified in an idempotent
+            way.
+        """
+        if isinstance(value, _BaseValue):
+            return value
+
+        value = self._call_shallow_validation(value)
+
+        if self._validator is not None:
+            new_value = self._validator(self, value)
+            if new_value is not None:
+                value = new_value
+
+        if self._choices is not None:
+            if value not in self._choices:
+                raise exceptions.BadValueError(
+                    "Value {!r} for property {} is not an allowed "
+                    "choice".format(value, self._name)
+                )
+
+        return value
+
+    def _call_to_base_type(self, value):
+        """Call all ``_validate()`` and ``_to_base_type()`` methods on value.
+
+        This calls the methods in the method resolution order of the
+        property's class. For example, given the hierarchy
+
+        .. code-block:: python
+
+            class A(Property):
+                def _validate(self, value):
+                    ...
+                def _to_base_type(self, value):
+                    ...
+
+            class B(A):
+                def _validate(self, value):
+                    ...
+                def _to_base_type(self, value):
+                    ...
+
+            class C(B):
+                def _validate(self, value):
+                    ...
+
+        the full list of methods (in order) is:
+
+        * ``C._validate()``
+        * ``B._validate()``
+        * ``B._to_base_type()``
+        * ``A._validate()``
+        * ``A._to_base_type()``
+
+        Args:
+            value (Any): The value to be converted / validated.
+
+        Returns:
+            Any: The transformed ``value``.
+        """
+        methods = self._find_methods("_validate", "_to_base_type")
+        call = self._apply_list(methods)
+        return call(value)
+
+    def _call_shallow_validation(self, value):
+        """Call the "initial" set of ``_validate()`` methods.
+
+        This is similar to :meth:`_call_to_base_type` except it only calls
+        those ``_validate()`` methods that can be called without needing to
+        call ``_to_base_type()``.
+
+        An example: suppose the class hierarchy is
+
+        .. code-block:: python
+
+            class A(Property):
+                def _validate(self, value):
+                    ...
+                def _to_base_type(self, value):
+                    ...
+
+            class B(A):
+                def _validate(self, value):
+                    ...
+                def _to_base_type(self, value):
+                    ...
+
+            class C(B):
+                def _validate(self, value):
+                    ...
+
+        The full list of methods (in order) called by
+        :meth:`_call_to_base_type` is:
+
+        * ``C._validate()``
+        * ``B._validate()``
+        * ``B._to_base_type()``
+        * ``A._validate()``
+        * ``A._to_base_type()``
+
+        whereas the full list of methods (in order) called here stops once
+        a ``_to_base_type`` method is encountered:
+
+        * ``C._validate()``
+        * ``B._validate()``
+
+        Args:
+            value (Any): The value to be converted / validated.
+
+        Returns:
+            Any: The transformed ``value``.
+        """
+        methods = []
+        for method in self._find_methods("_validate", "_to_base_type"):
+            # Stop if ``_to_base_type`` is encountered.
+            if method.__name__ != "_validate":
+                break
+            methods.append(method)
+
+        call = self._apply_list(methods)
+        return call(value)
+
+    @classmethod
+    def _find_methods(cls, *names, reverse=False):
+        """Compute a list of composable methods.
+
+        Because this is a common operation and the class hierarchy is
+        static, the outcome is cached (assuming that for a particular list
+        of names the reversed flag is either always on, or always off).
+
+        Args:
+            names (Tuple[str, ...]): One or more method names to look up on
+                the current class or base classes.
+            reverse (bool): Optional flag, default False; if True, the list is
+              reversed.
+
+        Returns:
+            List[Callable]: Class method objects.
+        """
+        # Get cache on current class / set cache if it doesn't exist.
+        key = "{}.{}".format(cls.__module__, cls.__qualname__)
+        cache = cls._FIND_METHODS_CACHE.setdefault(key, {})
+        hit = cache.get(names)
+        if hit is not None:
+            if reverse:
+                return list(reversed(hit))
+            else:
+                return hit
+
+        methods = []
+        for klass in cls.__mro__:
+            for name in names:
+                method = klass.__dict__.get(name)
+                if method is not None:
+                    methods.append(method)
+
+        cache[names] = methods
+        if reverse:
+            return list(reversed(methods))
+        else:
+            return methods
+
+    def _apply_list(self, methods):
+        """Chain together a list of callables for transforming a value.
+
+        .. note::
+
+            Each callable in ``methods`` is an unbound instance method, e.g.
+            accessed via ``Property.foo`` rather than ``instance.foo``.
+            Therefore, calling these methods will require ``self`` as the
+            first argument.
+
+        If one of the method returns :data:`None`, the previous value is kept;
+        otherwise the last value is replace.
+
+        Exceptions thrown by a method in ``methods`` are not caught, so it
+        is up to the caller to catch them.
+
+        Args:
+            methods (Iterable[Callable[[Any], Any]]): An iterable of methods
+                to apply to a value.
+
+        Returns:
+            Callable[[Any], Any]: A callable that takes a single value and
+            applies each method in ``methods`` to it.
+        """
+
+        def call(value):
+            for method in methods:
+                new_value = method(self, value)
+                if new_value is not None:
+                    value = new_value
+            return value
+
+        return call
 
 
 class ModelKey(Property):
