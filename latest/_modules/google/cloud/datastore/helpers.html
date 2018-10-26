@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.datastore.helpers &#8212; google-cloud a2e79cc documentation</title>
+    <title>google.cloud.datastore.helpers &#8212; google-cloud 0c13d62 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -248,8 +248,6 @@
 
     <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">entity</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
         <span class="n">value_is_list</span> <span class="o">=</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">value_is_list</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">continue</span>
 
         <span class="n">value_pb</span> <span class="o">=</span> <span class="n">_new_value_pb</span><span class="p">(</span><span class="n">entity_pb</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
         <span class="c1"># Set the appropriate value.</span>
@@ -489,10 +487,14 @@
         <span class="n">entity_pb</span> <span class="o">=</span> <span class="n">entity_to_protobuf</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
         <span class="n">value_pb</span><span class="o">.</span><span class="n">entity_value</span><span class="o">.</span><span class="n">CopyFrom</span><span class="p">(</span><span class="n">entity_pb</span><span class="p">)</span>
     <span class="k">elif</span> <span class="n">attr</span> <span class="o">==</span> <span class="s1">&#39;array_value&#39;</span><span class="p">:</span>
-        <span class="n">l_pb</span> <span class="o">=</span> <span class="n">value_pb</span><span class="o">.</span><span class="n">array_value</span><span class="o">.</span><span class="n">values</span>
-        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">val</span><span class="p">:</span>
-            <span class="n">i_pb</span> <span class="o">=</span> <span class="n">l_pb</span><span class="o">.</span><span class="n">add</span><span class="p">()</span>
-            <span class="n">_set_protobuf_value</span><span class="p">(</span><span class="n">i_pb</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">array_value</span> <span class="o">=</span> <span class="n">entity_pb2</span><span class="o">.</span><span class="n">ArrayValue</span><span class="p">(</span><span class="n">values</span><span class="o">=</span><span class="p">[])</span>
+            <span class="n">value_pb</span><span class="o">.</span><span class="n">array_value</span><span class="o">.</span><span class="n">CopyFrom</span><span class="p">(</span><span class="n">array_value</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">l_pb</span> <span class="o">=</span> <span class="n">value_pb</span><span class="o">.</span><span class="n">array_value</span><span class="o">.</span><span class="n">values</span>
+            <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">val</span><span class="p">:</span>
+                <span class="n">i_pb</span> <span class="o">=</span> <span class="n">l_pb</span><span class="o">.</span><span class="n">add</span><span class="p">()</span>
+                <span class="n">_set_protobuf_value</span><span class="p">(</span><span class="n">i_pb</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span>
     <span class="k">elif</span> <span class="n">attr</span> <span class="o">==</span> <span class="s1">&#39;geo_point_value&#39;</span><span class="p">:</span>
         <span class="n">value_pb</span><span class="o">.</span><span class="n">geo_point_value</span><span class="o">.</span><span class="n">CopyFrom</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>  <span class="c1"># scalar, just assign</span>
