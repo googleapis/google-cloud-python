@@ -782,6 +782,42 @@ class Property(ModelAttribute):
         if self._name is None:
             self._name = code_name
 
+    def _store_value(self, entity, value):
+        """Store a value in an entity for this property.
+
+        This assumes validation has already taken place. For a repeated
+        property the value should be a list.
+
+        Args:
+            entity (Model): An entity to set a value on.
+            value (Any): The value to be stored for this property.
+        """
+        entity._values[self._name] = value
+
+    def _has_value(self, entity, unused_rest=None):
+        """Determine if the entity has a value for this property.
+
+        Args:
+            entity (Model): An entity to check if the current property has
+                a value set.
+            unused_rest (None): An always unused keyword.
+        """
+        return self._name in entity._values
+
+    def _retrieve_value(self, entity, default=None):
+        """Retrieve the value for this property from an entity.
+
+        This returns :data:`None` if no value is set, or the ``default``
+        argument if given. For a repeated property this returns a list if a
+        value is set, otherwise :data:`None`. No additional transformations
+        are applied.
+
+        Args:
+            entity (Model): An entity to get a value from.
+            default (Optional[Any]): The default value to use as fallback.
+        """
+        return entity._values.get(self._name, default)
+
     def _call_to_base_type(self, value):
         """Call all ``_validate()`` and ``_to_base_type()`` methods on value.
 
