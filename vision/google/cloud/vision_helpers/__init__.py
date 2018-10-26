@@ -40,8 +40,12 @@ class VisionHelpers(object):
 
         Args:
             request (:class:`~.vision_v1.types.AnnotateImageRequest`)
-            options (:class:`google.gax.CallOptions`): Overrides the default
-                settings for this call, e.g, timeout, retries, etc.
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will not
+                be retried.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
 
         Returns:
             :class:`~.vision_v1.types.AnnotateImageResponse` The API response.

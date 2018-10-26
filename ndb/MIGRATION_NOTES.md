@@ -65,6 +65,15 @@ The primary differences come from:
   cases, the underlying representation of the class has changed (such as `Key`)
   due to newly available helper libraries or due to missing behavior from
   the legacy runtime.
+- `query.PostFilterNode.__eq__` compares `self.predicate` to `other.predicate`
+  rather than using `self.__dict__ == other.__dict__`
+- `__slots__` have been added to most non-exception types for a number of
+  reasons. The first is the naive "performance" win and the second is that
+  this will make it transparent whenever `ndb` users refer to non-existent
+  "private" or "protected" instance attributes
+- I dropped `Property._positional` since keyword-only arguments are native
+  Python 3 syntax and dropped `Property._attributes`  in favor of an
+  approach using `inspect.signature()`
 
 ## Comments
 
@@ -92,3 +101,28 @@ The primary differences come from:
   a new `Property()` instance is created. This increment is not threadsafe.
   However, `ndb` was designed for `Property()` instances to be created at
   import time, so this may not be an issue.
+- `ndb.model._BaseValue` for "wrapping" non-user values should probably
+  be dropped or redesigned if possible.
+- Since we want "compatibility", suggestions in `TODO` comments have not been
+  implemented. However, that policy can be changed if desired.
+- It seems that `query.ConjunctionNode.__new__` had an unreachable line
+  that returned a `FalseNode`. This return has been changed to a
+  `RuntimeError` just it case it **is** actually reached.
+- For ``AND`` and ``OR`` to compare equal, the nodes must come in the
+  same order. So ``AND(a > 7, b > 6)`` is not equal to ``AND(b > 6, a > 7)``.
+- It seems that `query.ConjunctionNode.__new__` had an unreachable line
+  that returned a `FalseNode`. This return has been changed to a
+  `RuntimeError` just it case it **is** actually reached.
+- For ``AND`` and ``OR`` to compare equal, the nodes must come in the
+  same order. So ``AND(a > 7, b > 6)`` is not equal to ``AND(b > 6, a > 7)``.
+- The whole `bytes` vs. `str` issue needs to be considered package-wide.
+  For example, the `Property()` constructor always encoded Python 2 `unicode`
+  to a Python 2 `str` (i.e. `bytes`) with the `utf-8` encoding. This fits
+  in some sense: the property name in the [protobuf definition][1] is a
+  `string` (i.e. UTF-8 encoded text). However, there is a bit of a disconnect
+  with other types that use property names, e.g. `FilterNode`.
+- There is a giant web of module interdependency, so runtime imports (to avoid
+  import cycles) are very common. For example `model.Property` depends on
+  `query` but `query` depends on `model`.
+
+[1]: https://github.com/googleapis/googleapis/blob/3afba2fd062df0c89ecd62d97f912192b8e0e0ae/google/datastore/v1/entity.proto#L203

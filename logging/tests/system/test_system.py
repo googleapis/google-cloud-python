@@ -140,12 +140,12 @@ class TestLogging(unittest.TestCase):
 
         self.assertIsInstance(protobuf_entry, entries.ProtobufEntry)
         if Config.CLIENT._use_grpc:
-            self.assertIsNone(protobuf_entry.payload)
+            self.assertIsNone(protobuf_entry.payload_json)
             self.assertIsInstance(protobuf_entry.payload_pb, any_pb2.Any)
             self.assertEqual(protobuf_entry.payload_pb.type_url, type_url)
         else:
             self.assertIsNone(protobuf_entry.payload_pb)
-            self.assertEqual(protobuf_entry.payload['@type'], type_url)
+            self.assertEqual(protobuf_entry.payload_json['@type'], type_url)
 
     def test_log_text(self):
         TEXT_PAYLOAD = 'System test: test_log_text'
@@ -157,6 +157,8 @@ class TestLogging(unittest.TestCase):
         self.assertEqual(entries[0].payload, TEXT_PAYLOAD)
 
     def test_log_text_with_timestamp(self):
+        import datetime
+
         text_payload = 'System test: test_log_text_with_timestamp'
         logger = Config.CLIENT.logger(self._logger_name('log_text_ts'))
         now = datetime.datetime.utcnow()
@@ -168,6 +170,7 @@ class TestLogging(unittest.TestCase):
         self.assertEqual(len(entries), 1)
         self.assertEqual(entries[0].payload, text_payload)
         self.assertEqual(entries[0].timestamp, now.replace(tzinfo=UTC))
+        self.assertIsInstance(entries[0].received_timestamp, datetime.datetime)
 
     def test_log_text_with_resource(self):
         text_payload = 'System test: test_log_text_with_timestamp'

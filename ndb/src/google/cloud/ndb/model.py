@@ -15,6 +15,8 @@
 """Model classes for datastore objects and properties for models."""
 
 
+import inspect
+
 from google.cloud.ndb import exceptions
 from google.cloud.ndb import key as key_module
 
@@ -121,10 +123,10 @@ class IndexProperty:
     __slots__ = ("_name", "_direction")
 
     def __new__(cls, *, name, direction):
-        self = super(IndexProperty, cls).__new__(cls)
-        self._name = name
-        self._direction = direction
-        return self
+        instance = super(IndexProperty, cls).__new__(cls)
+        instance._name = name
+        instance._direction = direction
+        return instance
 
     @property
     def name(self):
@@ -162,11 +164,11 @@ class Index:
     __slots__ = ("_kind", "_properties", "_ancestor")
 
     def __new__(cls, *, kind, properties, ancestor):
-        self = super(Index, cls).__new__(cls)
-        self._kind = kind
-        self._properties = properties
-        self._ancestor = ancestor
-        return self
+        instance = super(Index, cls).__new__(cls)
+        instance._kind = kind
+        instance._properties = properties
+        instance._ancestor = ancestor
+        return instance
 
     @property
     def kind(self):
@@ -214,11 +216,11 @@ class IndexState:
     __slots__ = ("_definition", "_state", "_id")
 
     def __new__(cls, *, definition, state, id):
-        self = super(IndexState, cls).__new__(cls)
-        self._definition = definition
-        self._state = state
-        self._id = id
-        return self
+        instance = super(IndexState, cls).__new__(cls)
+        instance._definition = definition
+        instance._state = state
+        instance._id = id
+        return instance
 
     @property
     def definition(self):
@@ -265,6 +267,8 @@ class IndexState:
 
 
 class ModelAdapter:
+    __slots__ = ()
+
     def __init__(self, *args, **kwargs):
         raise NotImplementedError
 
@@ -276,6 +280,8 @@ def make_connection(*args, **kwargs):
 class ModelAttribute:
     """Base for classes that implement a ``_fix_up()`` method."""
 
+    __slots__ = ()
+
     def _fix_up(self, cls, code_name):
         """Fix-up property name. To be implemented by subclasses.
 
@@ -283,6 +289,50 @@ class ModelAttribute:
             cls (type): The model class that owns the property.
             code_name (str): The name of the :class:`Property` being fixed up.
         """
+
+
+class _BaseValue:
+    """A marker object wrapping a "base type" value.
+
+    This is used to be able to tell whether ``entity._values[name]`` is a
+    user value (i.e. of a type that the Python code understands) or a
+    base value (i.e of a type that serialization understands).
+    User values are unwrapped; base values are wrapped in a
+    :class:`_BaseValue` instance.
+
+    Args:
+        b_val (Any): The base value to be wrapped.
+
+    Raises:
+        TypeError: If ``b_val`` is :data:`None`.
+        TypeError: If ``b_val`` is a list.
+    """
+
+    __slots__ = ("b_val",)
+
+    def __init__(self, b_val):
+        if b_val is None:
+            raise TypeError("Cannot wrap None")
+        if isinstance(b_val, list):
+            raise TypeError("Lists cannot be wrapped. Received", b_val)
+        self.b_val = b_val
+
+    def __repr__(self):
+        return "_BaseValue({!r})".format(self.b_val)
+
+    def __eq__(self, other):
+        """Compare two :class:`_BaseValue` instances."""
+        if not isinstance(other, _BaseValue):
+            return NotImplemented
+
+        return self.b_val == other.b_val
+
+    def __ne__(self, other):
+        """Inequality comparison operation."""
+        return not self == other
+
+    def __hash__(self):
+        raise TypeError("_BaseValue is not immutable")
 
 
 class Property(ModelAttribute):
@@ -439,113 +489,353 @@ class Property(ModelAttribute):
 
         return validator
 
+    def __repr__(self):
+        """Return a compact unambiguous string representation of a property.
+
+        This cycles through all stored attributes and displays the ones that
+        differ from the default values.
+        """
+        args = []
+        cls = self.__class__
+        signature = inspect.signature(self.__init__)
+        for name, parameter in signature.parameters.items():
+            attr = "_{}".format(name)
+            instance_val = getattr(self, attr)
+            default_val = getattr(cls, attr)
+
+            if instance_val is not default_val:
+                if isinstance(instance_val, type):
+                    as_str = instance_val.__qualname__
+                else:
+                    as_str = repr(instance_val)
+
+                if parameter.kind == inspect.Parameter.KEYWORD_ONLY:
+                    as_str = "{}={}".format(name, as_str)
+                args.append(as_str)
+
+        return "{}({})".format(self.__class__.__name__, ", ".join(args))
+
+    def _datastore_type(self, value):
+        """Internal hook used by property filters.
+
+        Sometimes the low-level query interface needs a specific data type
+        in order for the right filter to be constructed. See
+        :meth:`_comparison`.
+
+        Args:
+            value (Any): The value to be converted to a low-level type.
+
+        Returns:
+            Any: The passed-in ``value``, always. Subclasses may alter this
+            behavior.
+        """
+        return value
+
+    def _comparison(self, op, value):
+        """Internal helper for comparison operators.
+
+        Args:
+            op (str): The comparison operator. One of ``=``, ``!=``, ``<``,
+                ``<=``, ``>``, ``>=`` or ``in``.
+
+        Returns:
+            FilterNode: A FilterNode instance representing the requested
+            comparison.
+
+        Raises:
+            BadFilterError: If the current property is not indexed.
+        """
+        # Import late to avoid circular imports.
+        from google.cloud.ndb import query
+
+        if not self._indexed:
+            raise exceptions.BadFilterError(
+                "Cannot query for unindexed property {}".format(self._name)
+            )
+
+        if value is not None:
+            value = self._datastore_type(value)
+
+        return query.FilterNode(self._name, op, value)
+
+    # Comparison operators on Property instances don't compare the
+    # properties; instead they return ``FilterNode``` instances that can be
+    # used in queries.
+
+    def __eq__(self, value):
+        """FilterNode: Represents the ``=`` comparison."""
+        return self._comparison("=", value)
+
+    def __ne__(self, value):
+        """FilterNode: Represents the ``!=`` comparison."""
+        return self._comparison("!=", value)
+
+    def __lt__(self, value):
+        """FilterNode: Represents the ``<`` comparison."""
+        return self._comparison("<", value)
+
+    def __le__(self, value):
+        """FilterNode: Represents the ``<=`` comparison."""
+        return self._comparison("<=", value)
+
+    def __gt__(self, value):
+        """FilterNode: Represents the ``>`` comparison."""
+        return self._comparison(">", value)
+
+    def __ge__(self, value):
+        """FilterNode: Represents the ``>=`` comparison."""
+        return self._comparison(">=", value)
+
+    def _IN(self, value):
+        """For the ``in`` comparison operator.
+
+        The ``in`` operator cannot be overloaded in the way we want
+        to, so we define a method. For example:
+
+        .. code-block:: python
+
+            Employee.query(Employee.rank.IN([4, 5, 6]))
+
+        Note that the method is called ``_IN()`` but may normally be invoked
+        as ``IN()``; ``_IN()`` is provided for the case that a
+        :class:`.StructuredProperty` refers to a model that has a property
+        named ``IN``.
+
+        Args:
+            value (Iterable[Any]): The set of values that the property value
+                must be contained in.
+
+        Returns:
+            Union[~google.cloud.ndb.query.DisjunctionNode, \
+                ~google.cloud.ndb.query.FilterNode, \
+                ~google.cloud.ndb.query.FalseNode]: A node corresponding
+            to the desired in filter.
+
+            * If ``value`` is empty, this will return a :class:`.FalseNode`
+            * If ``len(value) == 1``, this will return a :class:`.FilterNode`
+            * Otherwise, this will return a :class:`.DisjunctionNode`
+
+        Raises:
+            ~google.cloud.ndb.exceptions.BadFilterError: If the current
+                property is not indexed.
+            ~google.cloud.ndb.exceptions.BadArgumentError: If ``value`` is not
+                a basic container (:class:`list`, :class:`tuple`, :class:`set`
+                or :class:`frozenset`).
+        """
+        # Import late to avoid circular imports.
+        from google.cloud.ndb import query
+
+        if not self._indexed:
+            raise exceptions.BadFilterError(
+                "Cannot query for unindexed property {}".format(self._name)
+            )
+
+        if not isinstance(value, (list, tuple, set, frozenset)):
+            raise exceptions.BadArgumentError(
+                "Expected list, tuple or set, got {!r}".format(value)
+            )
+
+        values = []
+        for sub_value in value:
+            if sub_value is not None:
+                sub_value = self._datastore_type(sub_value)
+            values.append(sub_value)
+
+        return query.FilterNode(self._name, "in", values)
+
+    IN = _IN
+    """Used to check if a property value is contained in a set of values.
+
+    For example:
+
+    .. code-block:: python
+
+        Employee.query(Employee.rank.IN([4, 5, 6]))
+    """
+
+    def __neg__(self):
+        """Return a descending sort order on this property.
+
+        For example:
+
+        .. code-block:: python
+
+            Employee.query().order(-Employee.rank)
+
+        Raises:
+            NotImplementedError: Always, the original implementation relied on
+                a low-level datastore query module.
+        """
+        raise NotImplementedError("Missing datastore_query.PropertyOrder")
+
+    def __pos__(self):
+        """Return an ascending sort order on this property.
+
+        Note that this is redundant but provided for consistency with
+        :meth:`__neg__`. For example, the following two are equivalent:
+
+        .. code-block:: python
+
+            Employee.query().order(+Employee.rank)
+            Employee.query().order(Employee.rank)
+
+        Raises:
+            NotImplementedError: Always, the original implementation relied on
+                a low-level datastore query module.
+        """
+        raise NotImplementedError("Missing datastore_query.PropertyOrder")
+
 
 class ModelKey(Property):
+    __slots__ = ()
+
     def __init__(self, *args, **kwargs):
         raise NotImplementedError
 
 
 class BooleanProperty(Property):
+    __slots__ = ()
+
     def __init__(self, *args, **kwargs):
         raise NotImplementedError
 
 
 class IntegerProperty(Property):
+    __slots__ = ()
+
     def __init__(self, *args, **kwargs):
         raise NotImplementedError
 
 
 class FloatProperty(Property):
+    __slots__ = ()
+
     def __init__(self, *args, **kwargs):
         raise NotImplementedError
 
 
 class BlobProperty(Property):
+    __slots__ = ()
+
     def __init__(self, *args, **kwargs):
         raise NotImplementedError
 
 
 class TextProperty(BlobProperty):
+    __slots__ = ()
+
     def __init__(self, *args, **kwargs):
         raise NotImplementedError
 
 
 class StringProperty(TextProperty):
+    __slots__ = ()
+
     def __init__(self, *args, **kwargs):
         raise NotImplementedError
 
 
 class GeoPtProperty(Property):
+    __slots__ = ()
+
     def __init__(self, *args, **kwargs):
         raise NotImplementedError
 
 
 class PickleProperty(BlobProperty):
+    __slots__ = ()
+
     def __init__(self, *args, **kwargs):
         raise NotImplementedError
 
 
 class JsonProperty(BlobProperty):
+    __slots__ = ()
+
     def __init__(self, *args, **kwargs):
         raise NotImplementedError
 
 
 class UserProperty(Property):
+    __slots__ = ()
+
     def __init__(self, *args, **kwargs):
         raise NotImplementedError
 
 
 class KeyProperty(Property):
+    __slots__ = ()
+
     def __init__(self, *args, **kwargs):
         raise NotImplementedError
 
 
 class BlobKeyProperty(Property):
+    __slots__ = ()
+
     def __init__(self, *args, **kwargs):
         raise NotImplementedError
 
 
 class DateTimeProperty(Property):
+    __slots__ = ()
+
     def __init__(self, *args, **kwargs):
         raise NotImplementedError
 
 
 class DateProperty(DateTimeProperty):
+    __slots__ = ()
+
     def __init__(self, *args, **kwargs):
         raise NotImplementedError
 
 
 class TimeProperty(DateTimeProperty):
+    __slots__ = ()
+
     def __init__(self, *args, **kwargs):
         raise NotImplementedError
 
 
 class StructuredProperty(Property):
+    __slots__ = ()
+
     def __init__(self, *args, **kwargs):
         raise NotImplementedError
 
 
 class LocalStructuredProperty(BlobProperty):
+    __slots__ = ()
+
     def __init__(self, *args, **kwargs):
         raise NotImplementedError
 
 
 class GenericProperty(Property):
+    __slots__ = ()
+
     def __init__(self, *args, **kwargs):
         raise NotImplementedError
 
 
 class ComputedProperty(GenericProperty):
+    __slots__ = ()
+
     def __init__(self, *args, **kwargs):
         raise NotImplementedError
 
 
 class MetaModel(type):
+    __slots__ = ()
+
     def __new__(self, *args, **kwargs):
         raise NotImplementedError
 
 
 class Model:
+    __slots__ = ()
+
     def __init__(self, *args, **kwargs):
         raise NotImplementedError
 
@@ -561,6 +851,8 @@ class Model:
 
 
 class Expando(Model):
+    __slots__ = ()
+
     def __init__(self, *args, **kwargs):
         raise NotImplementedError
 

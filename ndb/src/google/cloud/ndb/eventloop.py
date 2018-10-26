@@ -35,6 +35,8 @@ def add_idle(*args, **kwargs):
 
 
 class EventLoop:
+    __slots__ = ()
+
     def __init__(self, *args, **kwargs):
         raise NotImplementedError
 

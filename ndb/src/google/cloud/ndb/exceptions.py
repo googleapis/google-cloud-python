@@ -20,7 +20,13 @@ legacy Google App Engine runtime.
 """
 
 
-__all__ = ["Error", "BadValueError", "BadArgumentError", "Rollback"]
+__all__ = [
+    "Error",
+    "BadValueError",
+    "BadArgumentError",
+    "Rollback",
+    "BadFilterError",
+]
 
 
 class Error(Exception):
@@ -48,3 +54,20 @@ class Rollback(Error):
     Note that *any* exception raised by a transaction function will cause a
     rollback. Hence, this exception type is purely for convenience.
     """
+
+
+class BadQueryError(Error):
+    """Raised by Query when a query or query string is invalid."""
+
+
+class BadFilterError(Error):
+    """Indicates a filter value is invalid.
+
+    Raised by ``Query.__setitem__()`` and ``Query.Run()`` when a filter string
+    is invalid.
+    """
+
+    def __init__(self, filter):
+        self.filter = filter
+        message = "invalid filter: {}.".format(self.filter).encode("utf-8")
+        super(BadFilterError, self).__init__(message)

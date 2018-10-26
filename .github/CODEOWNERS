@@ -18,36 +18,26 @@ docs/core/*               @theacodes
 
 # Tim Swast and Alix Hamilton share responsibility for BigQuery.
 bigquery/*                @tswast @alixhami
-docs/bigquery/*           @tswast @alixhami
 
 # Danny Hermes and Tres Seaver co-authored the BigTable library.
 bigtable/*                @dhermes @tseaver
-docs/bigtable/*           @dhermes @tseaver
 
 # Danny Hermes is the primary maintainer of the Datastore library.
 datastore/*               @dhermes
-docs/datastore/*          @dhermes
 
 # Bill Prin is the primary maintainer of the Stackdriver libraries.
 error_reporting/*         @waprin
-docs/error_reporting/*    @waprin
 monitoring/*              @waprin @supriyagarg @rimey
-docs/monitoring/*         @waprin @supriyagarg @rimey
 logging/*                 @waprin @tseaver
-docs/logging/*            @waprin @tseaver
 
 # Danny Hermes is the primary author of resource manager
 resourcemanager/*         @dhermes
-docs/resourcemanager/*    @dhermes
 
 # Tim Swast is the primary author of Runtime Config.
 runtimeconfig/*           @tswast
-docs/runtimeconfig/*      @tswast
 
 # Vikas Kedia is the product owner and Tres Seaver the author for Spanner.
 spanner/*                 @vkedia @tseaver
-docs/spanner/*            @vkedia @tseaver
 
 # Doug Greiman and Angela Li are the owners of trace.
 trace/*                   @liyanhui1228 @duggelz
-docs/trace/*              @liyanhui1228 @duggelz

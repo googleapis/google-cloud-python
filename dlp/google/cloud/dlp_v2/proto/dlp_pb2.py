@@ -8571,8 +8571,9 @@ OutputStorageConfig = _reflection.GeneratedProtocolMessageType('OutputStorageCon
           appending to an existing table, any columns from the
           predefined schema that are missing will be added. No columns
           in the existing table will be deleted.  If unspecified, then
-          all available columns will be used for a new table, and no
-          changes will be made to an existing table.
+          all available columns will be used for a new table or an
+          (existing) table with no schema, and no changes will be made
+          to an existing table that has a schema.
   """,
   # @@protoc_insertion_point(class_scope:google.privacy.dlp.v2.OutputStorageConfig)
   ))
@@ -8847,7 +8848,7 @@ PrivacyMetric = _reflection.GeneratedProtocolMessageType('PrivacyMetric', (_mess
         entity_id:
             Optional message indicating that multiple rows might be
             associated to a single individual. If the same entity\_id is
-            associated to multiple quasi-identifier tuples over distict
+            associated to multiple quasi-identifier tuples over distinct
             rows, we consider the entire collection of tuples as the
             composite quasi-identifier. This collection is a multiset: the
             order in which the different tuples appear in the dataset is
@@ -9417,6 +9418,8 @@ QuoteInfo = _reflection.GeneratedProtocolMessageType('QuoteInfo', (_message.Mess
   Attributes:
       parsed_quote:
           Object representation of the quote.
+      date_time:
+          The date time indicated by the quote.
   """,
   # @@protoc_insertion_point(class_scope:google.privacy.dlp.v2.QuoteInfo)
   ))
@@ -9439,7 +9442,7 @@ DateTime = _reflection.GeneratedProtocolMessageType('DateTime', (_message.Messag
   DESCRIPTOR = _DATETIME,
   __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
   ,
-  __doc__ = """Message for a date time object.
+  __doc__ = """Message for a date time object. e.g. 2018-01-01, 5th August.
   
   
   Attributes:
@@ -10256,7 +10259,7 @@ JobTrigger = _reflection.GeneratedProtocolMessageType('JobTrigger', (_message.Me
           least one object.
       errors:
           A stream of errors encountered when the trigger was activated.
-          Repeated errors may result in the JobTrigger automaticaly
+          Repeated errors may result in the JobTrigger automatically
           being paused. Will return the last 100 errors. Whenever the
           JobTrigger is modified this list will be cleared. Output only
           field.

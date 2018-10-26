@@ -16,8 +16,10 @@ import unittest.mock
 
 import pytest
 
+from google.cloud.ndb import exceptions
 from google.cloud.ndb import key
 from google.cloud.ndb import model
+from google.cloud.ndb import query
 import tests.unit.utils
 
 
@@ -284,6 +286,49 @@ class TestModelAttribute:
         assert attr._fix_up(model.Model, "birthdate") is None
 
 
+class Test_BaseValue:
+    @staticmethod
+    def test_constructor():
+        wrapped = model._BaseValue(17)
+        assert wrapped.b_val == 17
+
+    @staticmethod
+    def test_constructor_invalid_input():
+        with pytest.raises(TypeError):
+            model._BaseValue(None)
+        with pytest.raises(TypeError):
+            model._BaseValue([1, 2])
+
+    @staticmethod
+    def test___repr__():
+        wrapped = model._BaseValue(b"abc")
+        assert repr(wrapped) == "_BaseValue(b'abc')"
+
+    @staticmethod
+    def test___eq__():
+        wrapped1 = model._BaseValue("one val")
+        wrapped2 = model._BaseValue(25.5)
+        wrapped3 = unittest.mock.sentinel.base_value
+        assert wrapped1 == wrapped1
+        assert not wrapped1 == wrapped2
+        assert not wrapped1 == wrapped3
+
+    @staticmethod
+    def test___ne__():
+        wrapped1 = model._BaseValue("one val")
+        wrapped2 = model._BaseValue(25.5)
+        wrapped3 = unittest.mock.sentinel.base_value
+        assert not wrapped1 != wrapped1
+        assert wrapped1 != wrapped2
+        assert wrapped1 != wrapped3
+
+    @staticmethod
+    def test___hash__():
+        wrapped = model._BaseValue((11, 12, 88))
+        with pytest.raises(TypeError):
+            hash(wrapped)
+
+
 @pytest.fixture
 def zero_prop_counter():
     counter_val = model.Property._CREATION_COUNTER
@@ -372,6 +417,170 @@ class TestProperty:
             )
         # Check that the creation counter was not updated.
         assert model.Property._CREATION_COUNTER == 0
+
+    def test_repr(self):
+        prop = model.Property(
+            "val",
+            indexed=False,
+            repeated=False,
+            required=True,
+            default="zorp",
+            choices=("zorp", "zap", "zip"),
+            validator=self._example_validator,
+            verbose_name="VALUE FOR READING",
+            write_empty_list=False,
+        )
+        expected = (
+            "Property(b'val', indexed=False, required=True, "
+            "default='zorp', choices={}, validator={}, "
+            "verbose_name='VALUE FOR READING')".format(
+                prop._choices, prop._validator
+            )
+        )
+        assert repr(prop) == expected
+
+    @staticmethod
+    def test_repr_subclass():
+        class SimpleProperty(model.Property):
+            _foo_type = None
+            _bar = "eleventy"
+
+            def __init__(self, *, foo_type, bar):
+                self._foo_type = foo_type
+                self._bar = bar
+
+        prop = SimpleProperty(foo_type=list, bar="nope")
+        assert repr(prop) == "SimpleProperty(foo_type=list, bar='nope')"
+
+    @staticmethod
+    def test__datastore_type():
+        prop = model.Property("foo")
+        value = unittest.mock.sentinel.value
+        assert prop._datastore_type(value) is value
+
+    @staticmethod
+    def test__comparison_indexed():
+        prop = model.Property("color", indexed=False)
+        with pytest.raises(exceptions.BadFilterError):
+            prop._comparison("!=", "red")
+
+    @staticmethod
+    def test__comparison():
+        prop = model.Property("sentiment", indexed=True)
+        filter_node = prop._comparison(">=", 0.0)
+        assert filter_node == query.FilterNode(b"sentiment", ">=", 0.0)
+
+    @staticmethod
+    def test__comparison_empty_value():
+        prop = model.Property("height", indexed=True)
+        filter_node = prop._comparison("=", None)
+        assert filter_node == query.FilterNode(b"height", "=", None)
+
+    @staticmethod
+    def test___eq__():
+        prop = model.Property("name", indexed=True)
+        value = 1337
+        expected = query.FilterNode(b"name", "=", value)
+
+        filter_node_left = prop == value
+        assert filter_node_left == expected
+        filter_node_right = value == prop
+        assert filter_node_right == expected
+
+    @staticmethod
+    def test___ne__():
+        prop = model.Property("name", indexed=True)
+        value = 7.0
+        expected = query.DisjunctionNode(
+            query.FilterNode(b"name", "<", value),
+            query.FilterNode(b"name", ">", value),
+        )
+
+        or_node_left = prop != value
+        assert or_node_left == expected
+        or_node_right = value != prop
+        assert or_node_right == expected
+
+    @staticmethod
+    def test___lt__():
+        prop = model.Property("name", indexed=True)
+        value = 2.0
+        expected = query.FilterNode(b"name", "<", value)
+
+        filter_node_left = prop < value
+        assert filter_node_left == expected
+        filter_node_right = value > prop
+        assert filter_node_right == expected
+
+    @staticmethod
+    def test___le__():
+        prop = model.Property("name", indexed=True)
+        value = 20.0
+        expected = query.FilterNode(b"name", "<=", value)
+
+        filter_node_left = prop <= value
+        assert filter_node_left == expected
+        filter_node_right = value >= prop
+        assert filter_node_right == expected
+
+    @staticmethod
+    def test___gt__():
+        prop = model.Property("name", indexed=True)
+        value = "new"
+        expected = query.FilterNode(b"name", ">", value)
+
+        filter_node_left = prop > value
+        assert filter_node_left == expected
+        filter_node_right = value < prop
+        assert filter_node_right == expected
+
+    @staticmethod
+    def test___ge__():
+        prop = model.Property("name", indexed=True)
+        value = "old"
+        expected = query.FilterNode(b"name", ">=", value)
+
+        filter_node_left = prop >= value
+        assert filter_node_left == expected
+        filter_node_right = value <= prop
+        assert filter_node_right == expected
+
+    @staticmethod
+    def test__IN_not_indexed():
+        prop = model.Property("name", indexed=False)
+        with pytest.raises(exceptions.BadFilterError):
+            prop._IN([10, 20, 81])
+
+    @staticmethod
+    def test__IN_wrong_container():
+        prop = model.Property("name", indexed=True)
+        with pytest.raises(exceptions.BadArgumentError):
+            prop._IN({1: "a", 11: "b"})
+
+    @staticmethod
+    def test__IN():
+        prop = model.Property("name", indexed=True)
+        or_node = prop._IN(["a", None, "xy"])
+        expected = query.DisjunctionNode(
+            query.FilterNode(b"name", "=", "a"),
+            query.FilterNode(b"name", "=", None),
+            query.FilterNode(b"name", "=", "xy"),
+        )
+        assert or_node == expected
+        # Also verify the alias
+        assert or_node == prop.IN(["a", None, "xy"])
+
+    @staticmethod
+    def test___neg__():
+        prop = model.Property("name")
+        with pytest.raises(NotImplementedError):
+            -prop
+
+    @staticmethod
+    def test___pos__():
+        prop = model.Property("name")
+        with pytest.raises(NotImplementedError):
+            +prop
 
 
 class TestModelKey:
