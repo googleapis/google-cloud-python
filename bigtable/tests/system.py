@@ -96,7 +96,6 @@ def setUpModule():
     from google.cloud.exceptions import GrpcRendezvous
 
     if _HAVE_OPENCENSUS:
-        import pdb; pdb.set_trace()
         exporter = stackdriver_exporter.StackdriverExporter()
         tracer = Tracer(exporter=exporter)
         trace_integration(tracer)
