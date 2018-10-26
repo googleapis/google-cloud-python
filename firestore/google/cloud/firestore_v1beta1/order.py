@@ -74,8 +74,6 @@ class Order(object):
                 return -1
             return 1
 
-        # TODO: may be able to use helpers.decode_value and do direct compares
-        # after converting to python types
         value_type = left.WhichOneof('value_type')
 
         if value_type == 'null_value':
@@ -108,7 +106,6 @@ class Order(object):
         left_bytes = left.bytes_value
         right_bytes = right.bytes_value
 
-        # TODO: Should verify bytes comparisons in python work as expected
         return Order._compare_to(left_bytes, right_bytes)
 
     @staticmethod

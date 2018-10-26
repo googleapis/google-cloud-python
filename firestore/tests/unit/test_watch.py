@@ -334,7 +334,8 @@ class TestWatch(unittest.TestCase):
         proto.target_change.target_change_type = 'unknown'
         with self.assertRaises(Exception) as exc:
             inst.on_snapshot(proto)
-        self.assertTrue(inst._consumer.stopped)
+        self.assertTrue(inst._consumer is None)
+        self.assertTrue(inst._rpc is None)
         self.assertEqual(
             str(exc.exception),
             'Unknown target change type: unknown '

@@ -69,6 +69,9 @@ DocTreeEntry = collections.namedtuple('DocTreeEntry', ['value', 'index'])
 
 
 class WatchDocTree(object):
+    # TODO: Currently this uses a dict. Other implementations us an rbtree.
+    # The performance of this implementation should be investigated and may
+    # require modifying the underlying datastructure to a rbtree.
     def __init__(self):
         self._dict = {}
         self._index = 0
@@ -183,8 +186,7 @@ class Watch(object):
                         this watch.
                     read_time (string): The ISO 8601 time at which this
                         snapshot was obtained.
-                    # TODO: Go had an err here and node.js provided size.
-                    # TODO: do we want to include either?
+
             document_snapshot_cls: instance of DocumentSnapshot
             document_reference_cls: instance of DocumentReference
         """
@@ -222,8 +224,7 @@ class Watch(object):
         # Initialize state for on_snapshot
         # The sorted tree of QueryDocumentSnapshots as sent in the last
         # snapshot. We only look at the keys.
-        # TODO: using ordered dict right now but not great maybe
-        self.doc_tree = WatchDocTree()  # TODO: rbtree(this._comparator)
+        self.doc_tree = WatchDocTree()
 
         # A map of document names to QueryDocumentSnapshots for the last sent
         # snapshot.
@@ -277,12 +278,17 @@ class Watch(object):
                 self._consumer.stop()
             self._consumer = None
 
-            # TODO: Verify we don't have other helper threads that need to be
-            # shut down here.
-
             self._rpc = None
             self._closed = True
             _LOGGER.debug('Finished stopping manager.')
+
+        if reason:
+            # Raise an exception if a reason is provided
+            _LOGGER.debug("reason for closing: %s" % reason)
+            if isinstance(reason, Exception):
+                raise reason
+            raise RuntimeError(reason)
+
 
     def _on_rpc_done(self, future):
         """Triggered whenever the underlying RPC terminates without recovery.
@@ -372,13 +378,6 @@ class Watch(object):
         _LOGGER.debug("on_snapshot: target change: ADD")
         assert WATCH_TARGET_ID == proto.target_change.target_ids[0], \
             'Unexpected target ID sent by server'
-        # TODO : do anything here? Node didn't so I think this isn't
-        # the right thing to do
-        # wr = WatchResult(
-        #     None,
-        #     self._document_reference.id,
-        #     ChangeType.ADDED)
-        # self._snapshot_callback(wr)
 
     def _on_snapshot_target_change_remove(self, proto):
         _LOGGER.debug("on_snapshot: target change: REMOVE")
@@ -431,13 +430,8 @@ class Watch(object):
             if meth is None:
                 _LOGGER.info('on_snapshot: Unknown target change ' +
                              str(target_change_type))
-                self._consumer.stop()
-                # closeStream(
-                #   new Error('Unknown target change type: ' +
-                #       JSON.stringify(change))
-                # TODO : make this exit the inner function and stop processing?
-                raise Exception('Unknown target change type: %s ' %
-                                str(target_change_type))  # XXX Exception?
+                self.close(reason='Unknown target change type: %s ' %
+                           str(target_change_type))
             else:
                 try:
                     meth(proto)
@@ -501,11 +495,6 @@ class Watch(object):
                     update_time=document.update_time)
 
                 self.change_map[document.name] = snapshot
-                # TODO: ensure we call this later, on current returend.
-                # wr = WatchResult(snapshot,
-                #                    self._document_reference.id,
-                #                    ChangeType.MODIFIED)
-                # self._snapshot_callback(wr)
 
             elif removed:
                 _LOGGER.debug('on_snapshot: document change: REMOVED')
@@ -516,10 +505,6 @@ class Watch(object):
             _LOGGER.debug('on_snapshot: document change: DELETE/REMOVE')
             name = (proto.document_delete or proto.document_remove).document
             self.change_map[name] = ChangeType.REMOVED
-            # wr = WatchResult(None,
-            #                    self._document_reference.id,
-            #                    ChangeType.REMOVED)
-            # self._snapshot_callback(wr)
 
         elif (proto.filter):
             _LOGGER.debug('on_snapshot: filter update')
@@ -532,23 +517,14 @@ class Watch(object):
 
         else:
             _LOGGER.debug("UNKNOWN TYPE. UHOH")
-            self._consumer.stop()
-            raise Exception(
-                'Unknown listen response type: %s' % proto
-                )  # XXX Exception?
-            # TODO: can we stop but raise an error?
-            #   closeStream(
-            #     new Error('Unknown listen response type: ' +
-            #        JSON.stringify(proto))
-            #   )
+            self.close(reason=ValueError(
+                       'Unknown listen response type: %s' % proto))
 
     def push(self, read_time, next_resume_token):
         """
         Assembles a new snapshot from the current set of changes and invokes
         the user's callback. Clears the current changes on completion.
         """
-        # TODO: may need to lock here to avoid races on collecting snapshots
-        # and sending them to the user.
         deletes, adds, updates = Watch._extract_changes(
             self.doc_map,
             self.change_map,
@@ -564,7 +540,8 @@ class Watch(object):
         )
 
         if not self.has_pushed or len(appliedChanges):
-            # TODO: the tree should be ordered. Sort here for now.
+            # TODO: It is possible in the future we will have the tree order
+            # on insert. For now, we sort here.
             key = functools.cmp_to_key(self._comparator)
             keys = sorted(updated_tree.keys(), key=key)
 
@@ -623,7 +600,6 @@ class Watch(object):
             # XXX probably should not expose IndexError when doc doesnt exist
             existing = updated_tree.find(old_document)
             old_index = existing.index
-            # TODO: was existing.remove returning tree (presumably immuatable?)
             updated_tree = updated_tree.remove(old_document)
             del updated_map[name]
             return (DocumentChange(ChangeType.REMOVED,
@@ -729,7 +705,7 @@ class Watch(object):
         self.change_map.clear()
         self.resume_token = None
 
-        # TODO: mark each document as deleted. If documents are not delete
+        # Mark each document as deleted. If documents are not deleted
         # they will be sent again by the server.
         for name, snapshot in self.doc_tree.items():
             self.change_map[name] = ChangeType.REMOVED
