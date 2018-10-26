@@ -13,8 +13,9 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-"""Accesses the google.container.v1 ClusterManager API."""
+"""Accesses the google.container.v1beta1 ClusterManager API."""
 
+import functools
 import pkg_resources
 import warnings
 
@@ -23,6 +24,8 @@ import google.api_core.gapic_v1.client_info
 import google.api_core.gapic_v1.config
 import google.api_core.gapic_v1.method
 import google.api_core.grpc_helpers
+import google.api_core.page_iterator
+import google.api_core.path_template
 import grpc
 
 from google.cloud.container_v1.gapic import cluster_manager_client_config
@@ -30,6 +33,8 @@ from google.cloud.container_v1.gapic import enums
 from google.cloud.container_v1.gapic.transports import cluster_manager_grpc_transport
 from google.cloud.container_v1.proto import cluster_service_pb2
 from google.cloud.container_v1.proto import cluster_service_pb2_grpc
+from google.iam.v1 import iam_policy_pb2
+from google.iam.v1 import policy_pb2
 from google.protobuf import empty_pb2
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
@@ -37,14 +42,14 @@ _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
 
 
 class ClusterManagerClient(object):
-    """Google Container Engine Cluster Manager v1"""
+    """Google Kubernetes Engine Cluster Manager v1beta1"""
 
     SERVICE_ADDRESS = 'container.googleapis.com:443'
     """The default address of the service."""
 
     # The name of the interface for this client. This is the key used to
     # find the method configuration in the client_config dictionary.
-    _INTERFACE_NAME = 'google.container.v1.ClusterManager'
+    _INTERFACE_NAME = 'google.container.v1beta1.ClusterManager'
 
     @classmethod
     def from_service_account_file(cls, filename, *args, **kwargs):
@@ -66,6 +71,54 @@ class ClusterManagerClient(object):
         return cls(*args, **kwargs)
 
     from_service_account_json = from_service_account_file
+
+    @classmethod
+    def project_path(cls, project):
+        """Return a fully-qualified project string."""
+        return google.api_core.path_template.expand(
+            'projects/{project}',
+            project=project,
+        )
+
+    @classmethod
+    def location_path(cls, project, location):
+        """Return a fully-qualified location string."""
+        return google.api_core.path_template.expand(
+            'projects/{project}/locations/{location}',
+            project=project,
+            location=location,
+        )
+
+    @classmethod
+    def cluster_path(cls, project, location, cluster):
+        """Return a fully-qualified cluster string."""
+        return google.api_core.path_template.expand(
+            'projects/{project}/locations/{location}/clusters/{cluster}',
+            project=project,
+            location=location,
+            cluster=cluster,
+        )
+
+    @classmethod
+    def node_pool_path(cls, project, location, cluster, node_pool):
+        """Return a fully-qualified node_pool string."""
+        return google.api_core.path_template.expand(
+            'projects/{project}/locations/{location}/clusters/{cluster}/nodePools/{node_pool}',
+            project=project,
+            location=location,
+            cluster=cluster,
+            node_pool=node_pool,
+        )
+
+    @classmethod
+    def operation_path(cls, project, location, operation_):
+        """Return a fully-qualified operation string."""
+        return google.api_core.path_template.expand(
+            'projects/{project}/locations/{location}/operations/{operation}',
+            project=project,
+            location=location,
+            operation=operation_,
+        )
 
     def __init__(self,
                  transport=None,
@@ -156,8 +209,9 @@ class ClusterManagerClient(object):
 
     # Service calls
     def list_clusters(self,
-                      project_id,
-                      zone,
+                      parent,
+                      project_id=None,
+                      zone=None,
                       retry=google.api_core.gapic_v1.method.DEFAULT,
                       timeout=google.api_core.gapic_v1.method.DEFAULT,
                       metadata=None):
@@ -170,20 +224,21 @@ class ClusterManagerClient(object):
             >>>
             >>> client = container_v1.ClusterManagerClient()
             >>>
-            >>> # TODO: Initialize ``project_id``:
-            >>> project_id = ''
+            >>> parent = client.location_path('[PROJECT]', '[LOCATION]')
             >>>
-            >>> # TODO: Initialize ``zone``:
-            >>> zone = ''
-            >>>
-            >>> response = client.list_clusters(project_id, zone)
+            >>> response = client.list_clusters(parent)
 
         Args:
-            project_id (str): The Google Developers Console [project ID or project
+            parent (str): The parent (project and location) where the clusters will be listed.
+                Specified in the format 'projects/*/locations/*'.
+                Location \"-\" matches all zones and all regions.
+            project_id (str): Deprecated. The Google Developers Console [project ID or project
                 number](https://support.google.com/cloud/answer/6158840).
-            zone (str): The name of the Google Compute Engine
+                This field has been deprecated and replaced by the parent field.
+            zone (str): Deprecated. The name of the Google Compute Engine
                 `zone <https://cloud.google.com/compute/docs/zones#available>`_ in which the cluster
                 resides, or \"-\" for all zones.
+                This field has been deprecated and replaced by the parent field.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -215,6 +270,7 @@ class ClusterManagerClient(object):
                 )
 
         request = cluster_service_pb2.ListClustersRequest(
+            parent=parent,
             project_id=project_id,
             zone=zone,
         )
@@ -222,38 +278,37 @@ class ClusterManagerClient(object):
             request, retry=retry, timeout=timeout, metadata=metadata)
 
     def get_cluster(self,
-                    project_id,
-                    zone,
-                    cluster_id,
+                    name,
+                    project_id=None,
+                    zone=None,
+                    cluster_id=None,
                     retry=google.api_core.gapic_v1.method.DEFAULT,
                     timeout=google.api_core.gapic_v1.method.DEFAULT,
                     metadata=None):
         """
-        Gets the details of a specific cluster.
+        Gets the details for a specific cluster.
 
         Example:
             >>> from google.cloud import container_v1
             >>>
             >>> client = container_v1.ClusterManagerClient()
             >>>
-            >>> # TODO: Initialize ``project_id``:
-            >>> project_id = ''
+            >>> name = client.cluster_path('[PROJECT]', '[LOCATION]', '[CLUSTER]')
             >>>
-            >>> # TODO: Initialize ``zone``:
-            >>> zone = ''
-            >>>
-            >>> # TODO: Initialize ``cluster_id``:
-            >>> cluster_id = ''
-            >>>
-            >>> response = client.get_cluster(project_id, zone, cluster_id)
+            >>> response = client.get_cluster(name)
 
         Args:
-            project_id (str): The Google Developers Console [project ID or project
+            name (str): The name (project, location, cluster) of the cluster to retrieve.
+                Specified in the format 'projects/*/locations/*/clusters/*'.
+            project_id (str): Deprecated. The Google Developers Console [project ID or project
                 number](https://support.google.com/cloud/answer/6158840).
-            zone (str): The name of the Google Compute Engine
+                This field has been deprecated and replaced by the name field.
+            zone (str): Deprecated. The name of the Google Compute Engine
                 `zone <https://cloud.google.com/compute/docs/zones#available>`_ in which the cluster
                 resides.
-            cluster_id (str): The name of the cluster to retrieve.
+                This field has been deprecated and replaced by the name field.
+            cluster_id (str): Deprecated. The name of the cluster to retrieve.
+                This field has been deprecated and replaced by the name field.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -284,6 +339,7 @@ class ClusterManagerClient(object):
                 )
 
         request = cluster_service_pb2.GetClusterRequest(
+            name=name,
             project_id=project_id,
             zone=zone,
             cluster_id=cluster_id,
@@ -292,9 +348,10 @@ class ClusterManagerClient(object):
             request, retry=retry, timeout=timeout, metadata=metadata)
 
     def create_cluster(self,
-                       project_id,
-                       zone,
                        cluster,
+                       parent,
+                       project_id=None,
+                       zone=None,
                        retry=google.api_core.gapic_v1.method.DEFAULT,
                        timeout=google.api_core.gapic_v1.method.DEFAULT,
                        metadata=None):
@@ -318,27 +375,26 @@ class ClusterManagerClient(object):
             >>>
             >>> client = container_v1.ClusterManagerClient()
             >>>
-            >>> # TODO: Initialize ``project_id``:
-            >>> project_id = ''
-            >>>
-            >>> # TODO: Initialize ``zone``:
-            >>> zone = ''
-            >>>
             >>> # TODO: Initialize ``cluster``:
             >>> cluster = {}
+            >>> parent = client.location_path('[PROJECT]', '[LOCATION]')
             >>>
-            >>> response = client.create_cluster(project_id, zone, cluster)
+            >>> response = client.create_cluster(cluster, parent)
 
         Args:
-            project_id (str): The Google Developers Console [project ID or project
-                number](https://support.google.com/cloud/answer/6158840).
-            zone (str): The name of the Google Compute Engine
-                `zone <https://cloud.google.com/compute/docs/zones#available>`_ in which the cluster
-                resides.
             cluster (Union[dict, ~google.cloud.container_v1.types.Cluster]): A [cluster
-                resource](/container-engine/reference/rest/v1/projects.zones.clusters)
+                resource](/container-engine/reference/rest/v1beta1/projects.zones.clusters)
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.container_v1.types.Cluster`
+            parent (str): The parent (project and location) where the cluster will be created.
+                Specified in the format 'projects/*/locations/*'.
+            project_id (str): Deprecated. The Google Developers Console [project ID or project
+                number](https://support.google.com/cloud/answer/6158840).
+                This field has been deprecated and replaced by the parent field.
+            zone (str): Deprecated. The name of the Google Compute Engine
+                `zone <https://cloud.google.com/compute/docs/zones#available>`_ in which the cluster
+                resides.
+                This field has been deprecated and replaced by the parent field.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -370,53 +426,52 @@ class ClusterManagerClient(object):
                 )
 
         request = cluster_service_pb2.CreateClusterRequest(
+            cluster=cluster,
+            parent=parent,
             project_id=project_id,
             zone=zone,
-            cluster=cluster,
         )
         return self._inner_api_calls['create_cluster'](
             request, retry=retry, timeout=timeout, metadata=metadata)
 
     def update_cluster(self,
-                       project_id,
-                       zone,
-                       cluster_id,
                        update,
+                       name,
+                       project_id=None,
+                       zone=None,
+                       cluster_id=None,
                        retry=google.api_core.gapic_v1.method.DEFAULT,
                        timeout=google.api_core.gapic_v1.method.DEFAULT,
                        metadata=None):
         """
-        Updates the settings of a specific cluster.
+        Updates the settings for a specific cluster.
 
         Example:
             >>> from google.cloud import container_v1
             >>>
             >>> client = container_v1.ClusterManagerClient()
             >>>
-            >>> # TODO: Initialize ``project_id``:
-            >>> project_id = ''
-            >>>
-            >>> # TODO: Initialize ``zone``:
-            >>> zone = ''
-            >>>
-            >>> # TODO: Initialize ``cluster_id``:
-            >>> cluster_id = ''
-            >>>
             >>> # TODO: Initialize ``update``:
             >>> update = {}
+            >>> name = client.cluster_path('[PROJECT]', '[LOCATION]', '[CLUSTER]')
             >>>
-            >>> response = client.update_cluster(project_id, zone, cluster_id, update)
+            >>> response = client.update_cluster(update, name)
 
         Args:
-            project_id (str): The Google Developers Console [project ID or project
-                number](https://support.google.com/cloud/answer/6158840).
-            zone (str): The name of the Google Compute Engine
-                `zone <https://cloud.google.com/compute/docs/zones#available>`_ in which the cluster
-                resides.
-            cluster_id (str): The name of the cluster to upgrade.
             update (Union[dict, ~google.cloud.container_v1.types.ClusterUpdate]): A description of the update.
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.container_v1.types.ClusterUpdate`
+            name (str): The name (project, location, cluster) of the cluster to update.
+                Specified in the format 'projects/*/locations/*/clusters/*'.
+            project_id (str): Deprecated. The Google Developers Console [project ID or project
+                number](https://support.google.com/cloud/answer/6158840).
+                This field has been deprecated and replaced by the name field.
+            zone (str): Deprecated. The name of the Google Compute Engine
+                `zone <https://cloud.google.com/compute/docs/zones#available>`_ in which the cluster
+                resides.
+                This field has been deprecated and replaced by the name field.
+            cluster_id (str): Deprecated. The name of the cluster to upgrade.
+                This field has been deprecated and replaced by the name field.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -448,21 +503,23 @@ class ClusterManagerClient(object):
                 )
 
         request = cluster_service_pb2.UpdateClusterRequest(
+            update=update,
+            name=name,
             project_id=project_id,
             zone=zone,
             cluster_id=cluster_id,
-            update=update,
         )
         return self._inner_api_calls['update_cluster'](
             request, retry=retry, timeout=timeout, metadata=metadata)
 
     def update_node_pool(self,
-                         project_id,
-                         zone,
-                         cluster_id,
-                         node_pool_id,
                          node_version,
                          image_type,
+                         name,
+                         project_id=None,
+                         zone=None,
+                         cluster_id=None,
+                         node_pool_id=None,
                          retry=google.api_core.gapic_v1.method.DEFAULT,
                          timeout=google.api_core.gapic_v1.method.DEFAULT,
                          metadata=None):
@@ -474,38 +531,42 @@ class ClusterManagerClient(object):
             >>>
             >>> client = container_v1.ClusterManagerClient()
             >>>
-            >>> # TODO: Initialize ``project_id``:
-            >>> project_id = ''
-            >>>
-            >>> # TODO: Initialize ``zone``:
-            >>> zone = ''
-            >>>
-            >>> # TODO: Initialize ``cluster_id``:
-            >>> cluster_id = ''
-            >>>
-            >>> # TODO: Initialize ``node_pool_id``:
-            >>> node_pool_id = ''
-            >>>
             >>> # TODO: Initialize ``node_version``:
             >>> node_version = ''
             >>>
             >>> # TODO: Initialize ``image_type``:
             >>> image_type = ''
+            >>> name = client.node_pool_path('[PROJECT]', '[LOCATION]', '[CLUSTER]', '[NODE_POOL]')
             >>>
-            >>> response = client.update_node_pool(project_id, zone, cluster_id, node_pool_id, node_version, image_type)
+            >>> response = client.update_node_pool(node_version, image_type, name)
 
         Args:
-            project_id (str): The Google Developers Console [project ID or project
+            node_version (str): The Kubernetes version to change the nodes to (typically an
+                upgrade).
+
+                Users may specify either explicit versions offered by Kubernetes Engine or
+                version aliases, which have the following behavior:
+
+                - \"latest\": picks the highest valid Kubernetes version
+                - \"1.X\": picks the highest valid patch+gke.N patch in the 1.X version
+                - \"1.X.Y\": picks the highest valid gke.N patch in the 1.X.Y version
+                - \"1.X.Y-gke.N\": picks an explicit Kubernetes version
+                - \"-\": picks the Kubernetes master version
+            image_type (str): The desired image type for the node pool.
+            name (str): The name (project, location, cluster, node pool) of the node pool to
+                update. Specified in the format
+                'projects/*/locations/*/clusters/*/nodePools/*'.
+            project_id (str): Deprecated. The Google Developers Console [project ID or project
                 number](https://support.google.com/cloud/answer/6158840).
-            zone (str): The name of the Google Compute Engine
+                This field has been deprecated and replaced by the name field.
+            zone (str): Deprecated. The name of the Google Compute Engine
                 `zone <https://cloud.google.com/compute/docs/zones#available>`_ in which the cluster
                 resides.
-            cluster_id (str): The name of the cluster to upgrade.
-            node_pool_id (str): The name of the node pool to upgrade.
-            node_version (str): The Kubernetes version to change the nodes to (typically an
-                upgrade). Use ``-`` to upgrade to the latest version supported by
-                the server.
-            image_type (str): The desired image type for the node pool.
+                This field has been deprecated and replaced by the name field.
+            cluster_id (str): Deprecated. The name of the cluster to upgrade.
+                This field has been deprecated and replaced by the name field.
+            node_pool_id (str): Deprecated. The name of the node pool to upgrade.
+                This field has been deprecated and replaced by the name field.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -537,23 +598,25 @@ class ClusterManagerClient(object):
                 )
 
         request = cluster_service_pb2.UpdateNodePoolRequest(
+            node_version=node_version,
+            image_type=image_type,
+            name=name,
             project_id=project_id,
             zone=zone,
             cluster_id=cluster_id,
             node_pool_id=node_pool_id,
-            node_version=node_version,
-            image_type=image_type,
         )
         return self._inner_api_calls['update_node_pool'](
             request, retry=retry, timeout=timeout, metadata=metadata)
 
     def set_node_pool_autoscaling(
             self,
-            project_id,
-            zone,
-            cluster_id,
-            node_pool_id,
             autoscaling,
+            name,
+            project_id=None,
+            zone=None,
+            cluster_id=None,
+            node_pool_id=None,
             retry=google.api_core.gapic_v1.method.DEFAULT,
             timeout=google.api_core.gapic_v1.method.DEFAULT,
             metadata=None):
@@ -565,34 +628,30 @@ class ClusterManagerClient(object):
             >>>
             >>> client = container_v1.ClusterManagerClient()
             >>>
-            >>> # TODO: Initialize ``project_id``:
-            >>> project_id = ''
-            >>>
-            >>> # TODO: Initialize ``zone``:
-            >>> zone = ''
-            >>>
-            >>> # TODO: Initialize ``cluster_id``:
-            >>> cluster_id = ''
-            >>>
-            >>> # TODO: Initialize ``node_pool_id``:
-            >>> node_pool_id = ''
-            >>>
             >>> # TODO: Initialize ``autoscaling``:
             >>> autoscaling = {}
+            >>> name = client.node_pool_path('[PROJECT]', '[LOCATION]', '[CLUSTER]', '[NODE_POOL]')
             >>>
-            >>> response = client.set_node_pool_autoscaling(project_id, zone, cluster_id, node_pool_id, autoscaling)
+            >>> response = client.set_node_pool_autoscaling(autoscaling, name)
 
         Args:
-            project_id (str): The Google Developers Console [project ID or project
-                number](https://support.google.com/cloud/answer/6158840).
-            zone (str): The name of the Google Compute Engine
-                `zone <https://cloud.google.com/compute/docs/zones#available>`_ in which the cluster
-                resides.
-            cluster_id (str): The name of the cluster to upgrade.
-            node_pool_id (str): The name of the node pool to upgrade.
             autoscaling (Union[dict, ~google.cloud.container_v1.types.NodePoolAutoscaling]): Autoscaling configuration for the node pool.
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.container_v1.types.NodePoolAutoscaling`
+            name (str): The name (project, location, cluster, node pool) of the node pool to set
+                autoscaler settings. Specified in the format
+                'projects/*/locations/*/clusters/*/nodePools/*'.
+            project_id (str): Deprecated. The Google Developers Console [project ID or project
+                number](https://support.google.com/cloud/answer/6158840).
+                This field has been deprecated and replaced by the name field.
+            zone (str): Deprecated. The name of the Google Compute Engine
+                `zone <https://cloud.google.com/compute/docs/zones#available>`_ in which the cluster
+                resides.
+                This field has been deprecated and replaced by the name field.
+            cluster_id (str): Deprecated. The name of the cluster to upgrade.
+                This field has been deprecated and replaced by the name field.
+            node_pool_id (str): Deprecated. The name of the node pool to upgrade.
+                This field has been deprecated and replaced by the name field.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -625,57 +684,56 @@ class ClusterManagerClient(object):
                 )
 
         request = cluster_service_pb2.SetNodePoolAutoscalingRequest(
+            autoscaling=autoscaling,
+            name=name,
             project_id=project_id,
             zone=zone,
             cluster_id=cluster_id,
             node_pool_id=node_pool_id,
-            autoscaling=autoscaling,
         )
         return self._inner_api_calls['set_node_pool_autoscaling'](
             request, retry=retry, timeout=timeout, metadata=metadata)
 
     def set_logging_service(self,
-                            project_id,
-                            zone,
-                            cluster_id,
                             logging_service,
+                            name,
+                            project_id=None,
+                            zone=None,
+                            cluster_id=None,
                             retry=google.api_core.gapic_v1.method.DEFAULT,
                             timeout=google.api_core.gapic_v1.method.DEFAULT,
                             metadata=None):
         """
-        Sets the logging service of a specific cluster.
+        Sets the logging service for a specific cluster.
 
         Example:
             >>> from google.cloud import container_v1
             >>>
             >>> client = container_v1.ClusterManagerClient()
             >>>
-            >>> # TODO: Initialize ``project_id``:
-            >>> project_id = ''
-            >>>
-            >>> # TODO: Initialize ``zone``:
-            >>> zone = ''
-            >>>
-            >>> # TODO: Initialize ``cluster_id``:
-            >>> cluster_id = ''
-            >>>
             >>> # TODO: Initialize ``logging_service``:
             >>> logging_service = ''
+            >>> name = client.cluster_path('[PROJECT]', '[LOCATION]', '[CLUSTER]')
             >>>
-            >>> response = client.set_logging_service(project_id, zone, cluster_id, logging_service)
+            >>> response = client.set_logging_service(logging_service, name)
 
         Args:
-            project_id (str): The Google Developers Console [project ID or project
-                number](https://support.google.com/cloud/answer/6158840).
-            zone (str): The name of the Google Compute Engine
-                `zone <https://cloud.google.com/compute/docs/zones#available>`_ in which the cluster
-                resides.
-            cluster_id (str): The name of the cluster to upgrade.
             logging_service (str): The logging service the cluster should use to write metrics.
                 Currently available options:
 
                 * \"logging.googleapis.com\" - the Google Cloud Logging service
                 * \"none\" - no metrics will be exported from the cluster
+            name (str): The name (project, location, cluster) of the cluster to set logging.
+                Specified in the format 'projects/*/locations/*/clusters/*'.
+            project_id (str): Deprecated. The Google Developers Console [project ID or project
+                number](https://support.google.com/cloud/answer/6158840).
+                This field has been deprecated and replaced by the name field.
+            zone (str): Deprecated. The name of the Google Compute Engine
+                `zone <https://cloud.google.com/compute/docs/zones#available>`_ in which the cluster
+                resides.
+                This field has been deprecated and replaced by the name field.
+            cluster_id (str): Deprecated. The name of the cluster to upgrade.
+                This field has been deprecated and replaced by the name field.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -708,56 +766,55 @@ class ClusterManagerClient(object):
                 )
 
         request = cluster_service_pb2.SetLoggingServiceRequest(
+            logging_service=logging_service,
+            name=name,
             project_id=project_id,
             zone=zone,
             cluster_id=cluster_id,
-            logging_service=logging_service,
         )
         return self._inner_api_calls['set_logging_service'](
             request, retry=retry, timeout=timeout, metadata=metadata)
 
     def set_monitoring_service(self,
-                               project_id,
-                               zone,
-                               cluster_id,
                                monitoring_service,
+                               name,
+                               project_id=None,
+                               zone=None,
+                               cluster_id=None,
                                retry=google.api_core.gapic_v1.method.DEFAULT,
                                timeout=google.api_core.gapic_v1.method.DEFAULT,
                                metadata=None):
         """
-        Sets the monitoring service of a specific cluster.
+        Sets the monitoring service for a specific cluster.
 
         Example:
             >>> from google.cloud import container_v1
             >>>
             >>> client = container_v1.ClusterManagerClient()
             >>>
-            >>> # TODO: Initialize ``project_id``:
-            >>> project_id = ''
-            >>>
-            >>> # TODO: Initialize ``zone``:
-            >>> zone = ''
-            >>>
-            >>> # TODO: Initialize ``cluster_id``:
-            >>> cluster_id = ''
-            >>>
             >>> # TODO: Initialize ``monitoring_service``:
             >>> monitoring_service = ''
+            >>> name = client.cluster_path('[PROJECT]', '[LOCATION]', '[CLUSTER]')
             >>>
-            >>> response = client.set_monitoring_service(project_id, zone, cluster_id, monitoring_service)
+            >>> response = client.set_monitoring_service(monitoring_service, name)
 
         Args:
-            project_id (str): The Google Developers Console [project ID or project
-                number](https://support.google.com/cloud/answer/6158840).
-            zone (str): The name of the Google Compute Engine
-                `zone <https://cloud.google.com/compute/docs/zones#available>`_ in which the cluster
-                resides.
-            cluster_id (str): The name of the cluster to upgrade.
             monitoring_service (str): The monitoring service the cluster should use to write metrics.
                 Currently available options:
 
                 * \"monitoring.googleapis.com\" - the Google Cloud Monitoring service
                 * \"none\" - no metrics will be exported from the cluster
+            name (str): The name (project, location, cluster) of the cluster to set monitoring.
+                Specified in the format 'projects/*/locations/*/clusters/*'.
+            project_id (str): Deprecated. The Google Developers Console [project ID or project
+                number](https://support.google.com/cloud/answer/6158840).
+                This field has been deprecated and replaced by the name field.
+            zone (str): Deprecated. The name of the Google Compute Engine
+                `zone <https://cloud.google.com/compute/docs/zones#available>`_ in which the cluster
+                resides.
+                This field has been deprecated and replaced by the name field.
+            cluster_id (str): Deprecated. The name of the cluster to upgrade.
+                This field has been deprecated and replaced by the name field.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -790,55 +847,54 @@ class ClusterManagerClient(object):
                 )
 
         request = cluster_service_pb2.SetMonitoringServiceRequest(
+            monitoring_service=monitoring_service,
+            name=name,
             project_id=project_id,
             zone=zone,
             cluster_id=cluster_id,
-            monitoring_service=monitoring_service,
         )
         return self._inner_api_calls['set_monitoring_service'](
             request, retry=retry, timeout=timeout, metadata=metadata)
 
     def set_addons_config(self,
-                          project_id,
-                          zone,
-                          cluster_id,
                           addons_config,
+                          name,
+                          project_id=None,
+                          zone=None,
+                          cluster_id=None,
                           retry=google.api_core.gapic_v1.method.DEFAULT,
                           timeout=google.api_core.gapic_v1.method.DEFAULT,
                           metadata=None):
         """
-        Sets the addons of a specific cluster.
+        Sets the addons for a specific cluster.
 
         Example:
             >>> from google.cloud import container_v1
             >>>
             >>> client = container_v1.ClusterManagerClient()
             >>>
-            >>> # TODO: Initialize ``project_id``:
-            >>> project_id = ''
-            >>>
-            >>> # TODO: Initialize ``zone``:
-            >>> zone = ''
-            >>>
-            >>> # TODO: Initialize ``cluster_id``:
-            >>> cluster_id = ''
-            >>>
             >>> # TODO: Initialize ``addons_config``:
             >>> addons_config = {}
+            >>> name = client.cluster_path('[PROJECT]', '[LOCATION]', '[CLUSTER]')
             >>>
-            >>> response = client.set_addons_config(project_id, zone, cluster_id, addons_config)
+            >>> response = client.set_addons_config(addons_config, name)
 
         Args:
-            project_id (str): The Google Developers Console [project ID or project
-                number](https://support.google.com/cloud/answer/6158840).
-            zone (str): The name of the Google Compute Engine
-                `zone <https://cloud.google.com/compute/docs/zones#available>`_ in which the cluster
-                resides.
-            cluster_id (str): The name of the cluster to upgrade.
             addons_config (Union[dict, ~google.cloud.container_v1.types.AddonsConfig]): The desired configurations for the various addons available to run in the
                 cluster.
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.container_v1.types.AddonsConfig`
+            name (str): The name (project, location, cluster) of the cluster to set addons.
+                Specified in the format 'projects/*/locations/*/clusters/*'.
+            project_id (str): Deprecated. The Google Developers Console [project ID or project
+                number](https://support.google.com/cloud/answer/6158840).
+                This field has been deprecated and replaced by the name field.
+            zone (str): Deprecated. The name of the Google Compute Engine
+                `zone <https://cloud.google.com/compute/docs/zones#available>`_ in which the cluster
+                resides.
+                This field has been deprecated and replaced by the name field.
+            cluster_id (str): Deprecated. The name of the cluster to upgrade.
+                This field has been deprecated and replaced by the name field.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -871,51 +927,39 @@ class ClusterManagerClient(object):
                 )
 
         request = cluster_service_pb2.SetAddonsConfigRequest(
+            addons_config=addons_config,
+            name=name,
             project_id=project_id,
             zone=zone,
             cluster_id=cluster_id,
-            addons_config=addons_config,
         )
         return self._inner_api_calls['set_addons_config'](
             request, retry=retry, timeout=timeout, metadata=metadata)
 
     def set_locations(self,
-                      project_id,
-                      zone,
-                      cluster_id,
                       locations,
+                      name,
+                      project_id=None,
+                      zone=None,
+                      cluster_id=None,
                       retry=google.api_core.gapic_v1.method.DEFAULT,
                       timeout=google.api_core.gapic_v1.method.DEFAULT,
                       metadata=None):
         """
-        Sets the locations of a specific cluster.
+        Sets the locations for a specific cluster.
 
         Example:
             >>> from google.cloud import container_v1
             >>>
             >>> client = container_v1.ClusterManagerClient()
             >>>
-            >>> # TODO: Initialize ``project_id``:
-            >>> project_id = ''
-            >>>
-            >>> # TODO: Initialize ``zone``:
-            >>> zone = ''
-            >>>
-            >>> # TODO: Initialize ``cluster_id``:
-            >>> cluster_id = ''
-            >>>
             >>> # TODO: Initialize ``locations``:
             >>> locations = []
+            >>> name = client.cluster_path('[PROJECT]', '[LOCATION]', '[CLUSTER]')
             >>>
-            >>> response = client.set_locations(project_id, zone, cluster_id, locations)
+            >>> response = client.set_locations(locations, name)
 
         Args:
-            project_id (str): The Google Developers Console [project ID or project
-                number](https://support.google.com/cloud/answer/6158840).
-            zone (str): The name of the Google Compute Engine
-                `zone <https://cloud.google.com/compute/docs/zones#available>`_ in which the cluster
-                resides.
-            cluster_id (str): The name of the cluster to upgrade.
             locations (list[str]): The desired list of Google Compute Engine
                 `locations <https://cloud.google.com/compute/docs/zones#available>`_ in which the cluster's nodes
                 should be located. Changing the locations a cluster is in will result
@@ -923,6 +967,17 @@ class ClusterManagerClient(object):
                 whether locations are being added or removed.
 
                 This list must always include the cluster's primary zone.
+            name (str): The name (project, location, cluster) of the cluster to set locations.
+                Specified in the format 'projects/*/locations/*/clusters/*'.
+            project_id (str): Deprecated. The Google Developers Console [project ID or project
+                number](https://support.google.com/cloud/answer/6158840).
+                This field has been deprecated and replaced by the name field.
+            zone (str): Deprecated. The name of the Google Compute Engine
+                `zone <https://cloud.google.com/compute/docs/zones#available>`_ in which the cluster
+                resides.
+                This field has been deprecated and replaced by the name field.
+            cluster_id (str): Deprecated. The name of the cluster to upgrade.
+                This field has been deprecated and replaced by the name field.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -954,54 +1009,60 @@ class ClusterManagerClient(object):
                 )
 
         request = cluster_service_pb2.SetLocationsRequest(
+            locations=locations,
+            name=name,
             project_id=project_id,
             zone=zone,
             cluster_id=cluster_id,
-            locations=locations,
         )
         return self._inner_api_calls['set_locations'](
             request, retry=retry, timeout=timeout, metadata=metadata)
 
     def update_master(self,
-                      project_id,
-                      zone,
-                      cluster_id,
                       master_version,
+                      name,
+                      project_id=None,
+                      zone=None,
+                      cluster_id=None,
                       retry=google.api_core.gapic_v1.method.DEFAULT,
                       timeout=google.api_core.gapic_v1.method.DEFAULT,
                       metadata=None):
         """
-        Updates the master of a specific cluster.
+        Updates the master for a specific cluster.
 
         Example:
             >>> from google.cloud import container_v1
             >>>
             >>> client = container_v1.ClusterManagerClient()
             >>>
-            >>> # TODO: Initialize ``project_id``:
-            >>> project_id = ''
-            >>>
-            >>> # TODO: Initialize ``zone``:
-            >>> zone = ''
-            >>>
-            >>> # TODO: Initialize ``cluster_id``:
-            >>> cluster_id = ''
-            >>>
             >>> # TODO: Initialize ``master_version``:
             >>> master_version = ''
+            >>> name = client.cluster_path('[PROJECT]', '[LOCATION]', '[CLUSTER]')
             >>>
-            >>> response = client.update_master(project_id, zone, cluster_id, master_version)
+            >>> response = client.update_master(master_version, name)
 
         Args:
-            project_id (str): The Google Developers Console [project ID or project
+            master_version (str): The Kubernetes version to change the master to.
+
+                Users may specify either explicit versions offered by
+                Kubernetes Engine or version aliases, which have the following behavior:
+
+                - \"latest\": picks the highest valid Kubernetes version
+                - \"1.X\": picks the highest valid patch+gke.N patch in the 1.X version
+                - \"1.X.Y\": picks the highest valid gke.N patch in the 1.X.Y version
+                - \"1.X.Y-gke.N\": picks an explicit Kubernetes version
+                - \"-\": picks the default Kubernetes version
+            name (str): The name (project, location, cluster) of the cluster to update.
+                Specified in the format 'projects/*/locations/*/clusters/*'.
+            project_id (str): Deprecated. The Google Developers Console [project ID or project
                 number](https://support.google.com/cloud/answer/6158840).
-            zone (str): The name of the Google Compute Engine
+                This field has been deprecated and replaced by the name field.
+            zone (str): Deprecated. The name of the Google Compute Engine
                 `zone <https://cloud.google.com/compute/docs/zones#available>`_ in which the cluster
                 resides.
-            cluster_id (str): The name of the cluster to upgrade.
-            master_version (str): The Kubernetes version to change the master to. The only valid value is the
-                latest supported version. Use \"-\" to have the server automatically select
-                the latest version.
+                This field has been deprecated and replaced by the name field.
+            cluster_id (str): Deprecated. The name of the cluster to upgrade.
+                This field has been deprecated and replaced by the name field.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -1033,27 +1094,30 @@ class ClusterManagerClient(object):
                 )
 
         request = cluster_service_pb2.UpdateMasterRequest(
+            master_version=master_version,
+            name=name,
             project_id=project_id,
             zone=zone,
             cluster_id=cluster_id,
-            master_version=master_version,
         )
         return self._inner_api_calls['update_master'](
             request, retry=retry, timeout=timeout, metadata=metadata)
 
     def set_master_auth(self,
-                        project_id,
-                        zone,
-                        cluster_id,
                         action,
                         update,
+                        name,
+                        project_id=None,
+                        zone=None,
+                        cluster_id=None,
                         retry=google.api_core.gapic_v1.method.DEFAULT,
                         timeout=google.api_core.gapic_v1.method.DEFAULT,
                         metadata=None):
         """
         Used to set master auth materials. Currently supports :-
-        Changing the admin password of a specific cluster.
-        This can be either via password generation or explicitly set the password.
+        Changing the admin password for a specific cluster.
+        This can be either via password generation or explicitly set.
+        Modify basic_auth.csv and reset the K8S API server.
 
         Example:
             >>> from google.cloud import container_v1
@@ -1061,34 +1125,31 @@ class ClusterManagerClient(object):
             >>>
             >>> client = container_v1.ClusterManagerClient()
             >>>
-            >>> # TODO: Initialize ``project_id``:
-            >>> project_id = ''
-            >>>
-            >>> # TODO: Initialize ``zone``:
-            >>> zone = ''
-            >>>
-            >>> # TODO: Initialize ``cluster_id``:
-            >>> cluster_id = ''
-            >>>
             >>> # TODO: Initialize ``action``:
             >>> action = enums.SetMasterAuthRequest.Action.UNKNOWN
             >>>
             >>> # TODO: Initialize ``update``:
             >>> update = {}
+            >>> name = client.cluster_path('[PROJECT]', '[LOCATION]', '[CLUSTER]')
             >>>
-            >>> response = client.set_master_auth(project_id, zone, cluster_id, action, update)
+            >>> response = client.set_master_auth(action, update, name)
 
         Args:
-            project_id (str): The Google Developers Console [project ID or project
-                number](https://support.google.com/cloud/answer/6158840).
-            zone (str): The name of the Google Compute Engine
-                `zone <https://cloud.google.com/compute/docs/zones#available>`_ in which the cluster
-                resides.
-            cluster_id (str): The name of the cluster to upgrade.
             action (~google.cloud.container_v1.types.Action): The exact form of action to be taken on the master auth.
             update (Union[dict, ~google.cloud.container_v1.types.MasterAuth]): A description of the update.
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.container_v1.types.MasterAuth`
+            name (str): The name (project, location, cluster) of the cluster to set auth.
+                Specified in the format 'projects/*/locations/*/clusters/*'.
+            project_id (str): Deprecated. The Google Developers Console [project ID or project
+                number](https://support.google.com/cloud/answer/6158840).
+                This field has been deprecated and replaced by the name field.
+            zone (str): Deprecated. The name of the Google Compute Engine
+                `zone <https://cloud.google.com/compute/docs/zones#available>`_ in which the cluster
+                resides.
+                This field has been deprecated and replaced by the name field.
+            cluster_id (str): Deprecated. The name of the cluster to upgrade.
+                This field has been deprecated and replaced by the name field.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -1120,19 +1181,21 @@ class ClusterManagerClient(object):
                 )
 
         request = cluster_service_pb2.SetMasterAuthRequest(
+            action=action,
+            update=update,
+            name=name,
             project_id=project_id,
             zone=zone,
             cluster_id=cluster_id,
-            action=action,
-            update=update,
         )
         return self._inner_api_calls['set_master_auth'](
             request, retry=retry, timeout=timeout, metadata=metadata)
 
     def delete_cluster(self,
-                       project_id,
-                       zone,
-                       cluster_id,
+                       name,
+                       project_id=None,
+                       zone=None,
+                       cluster_id=None,
                        retry=google.api_core.gapic_v1.method.DEFAULT,
                        timeout=google.api_core.gapic_v1.method.DEFAULT,
                        metadata=None):
@@ -1152,24 +1215,22 @@ class ClusterManagerClient(object):
             >>>
             >>> client = container_v1.ClusterManagerClient()
             >>>
-            >>> # TODO: Initialize ``project_id``:
-            >>> project_id = ''
+            >>> name = client.cluster_path('[PROJECT]', '[LOCATION]', '[CLUSTER]')
             >>>
-            >>> # TODO: Initialize ``zone``:
-            >>> zone = ''
-            >>>
-            >>> # TODO: Initialize ``cluster_id``:
-            >>> cluster_id = ''
-            >>>
-            >>> response = client.delete_cluster(project_id, zone, cluster_id)
+            >>> response = client.delete_cluster(name)
 
         Args:
-            project_id (str): The Google Developers Console [project ID or project
+            name (str): The name (project, location, cluster) of the cluster to delete.
+                Specified in the format 'projects/*/locations/*/clusters/*'.
+            project_id (str): Deprecated. The Google Developers Console [project ID or project
                 number](https://support.google.com/cloud/answer/6158840).
-            zone (str): The name of the Google Compute Engine
+                This field has been deprecated and replaced by the name field.
+            zone (str): Deprecated. The name of the Google Compute Engine
                 `zone <https://cloud.google.com/compute/docs/zones#available>`_ in which the cluster
                 resides.
-            cluster_id (str): The name of the cluster to delete.
+                This field has been deprecated and replaced by the name field.
+            cluster_id (str): Deprecated. The name of the cluster to delete.
+                This field has been deprecated and replaced by the name field.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -1201,6 +1262,7 @@ class ClusterManagerClient(object):
                 )
 
         request = cluster_service_pb2.DeleteClusterRequest(
+            name=name,
             project_id=project_id,
             zone=zone,
             cluster_id=cluster_id,
@@ -1209,8 +1271,9 @@ class ClusterManagerClient(object):
             request, retry=retry, timeout=timeout, metadata=metadata)
 
     def list_operations(self,
-                        project_id,
-                        zone,
+                        parent,
+                        project_id=None,
+                        zone=None,
                         retry=google.api_core.gapic_v1.method.DEFAULT,
                         timeout=google.api_core.gapic_v1.method.DEFAULT,
                         metadata=None):
@@ -1222,19 +1285,20 @@ class ClusterManagerClient(object):
             >>>
             >>> client = container_v1.ClusterManagerClient()
             >>>
-            >>> # TODO: Initialize ``project_id``:
-            >>> project_id = ''
+            >>> parent = client.location_path('[PROJECT]', '[LOCATION]')
             >>>
-            >>> # TODO: Initialize ``zone``:
-            >>> zone = ''
-            >>>
-            >>> response = client.list_operations(project_id, zone)
+            >>> response = client.list_operations(parent)
 
         Args:
-            project_id (str): The Google Developers Console [project ID or project
+            parent (str): The parent (project and location) where the operations will be listed.
+                Specified in the format 'projects/*/locations/*'.
+                Location \"-\" matches all zones and all regions.
+            project_id (str): Deprecated. The Google Developers Console [project ID or project
                 number](https://support.google.com/cloud/answer/6158840).
-            zone (str): The name of the Google Compute Engine `zone <https://cloud.google.com/compute/docs/zones#available>`_
-                to return operations for, or ``-`` for all zones.
+                This field has been deprecated and replaced by the parent field.
+            zone (str): Deprecated. The name of the Google Compute Engine
+                `zone <https://cloud.google.com/compute/docs/zones#available>`_ to return operations for, or ``-`` for
+                all zones. This field has been deprecated and replaced by the parent field.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -1266,6 +1330,7 @@ class ClusterManagerClient(object):
                 )
 
         request = cluster_service_pb2.ListOperationsRequest(
+            parent=parent,
             project_id=project_id,
             zone=zone,
         )
@@ -1273,9 +1338,10 @@ class ClusterManagerClient(object):
             request, retry=retry, timeout=timeout, metadata=metadata)
 
     def get_operation(self,
-                      project_id,
-                      zone,
-                      operation_id,
+                      name,
+                      project_id=None,
+                      zone=None,
+                      operation_id=None,
                       retry=google.api_core.gapic_v1.method.DEFAULT,
                       timeout=google.api_core.gapic_v1.method.DEFAULT,
                       metadata=None):
@@ -1287,24 +1353,22 @@ class ClusterManagerClient(object):
             >>>
             >>> client = container_v1.ClusterManagerClient()
             >>>
-            >>> # TODO: Initialize ``project_id``:
-            >>> project_id = ''
+            >>> name = client.operation_path('[PROJECT]', '[LOCATION]', '[OPERATION]')
             >>>
-            >>> # TODO: Initialize ``zone``:
-            >>> zone = ''
-            >>>
-            >>> # TODO: Initialize ``operation_id``:
-            >>> operation_id = ''
-            >>>
-            >>> response = client.get_operation(project_id, zone, operation_id)
+            >>> response = client.get_operation(name)
 
         Args:
-            project_id (str): The Google Developers Console [project ID or project
+            name (str): The name (project, location, operation id) of the operation to get.
+                Specified in the format 'projects/*/locations/*/operations/*'.
+            project_id (str): Deprecated. The Google Developers Console [project ID or project
                 number](https://support.google.com/cloud/answer/6158840).
-            zone (str): The name of the Google Compute Engine
+                This field has been deprecated and replaced by the name field.
+            zone (str): Deprecated. The name of the Google Compute Engine
                 `zone <https://cloud.google.com/compute/docs/zones#available>`_ in which the cluster
                 resides.
-            operation_id (str): The server-assigned ``name`` of the operation.
+                This field has been deprecated and replaced by the name field.
+            operation_id (str): Deprecated. The server-assigned ``name`` of the operation.
+                This field has been deprecated and replaced by the name field.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -1336,6 +1400,7 @@ class ClusterManagerClient(object):
                 )
 
         request = cluster_service_pb2.GetOperationRequest(
+            name=name,
             project_id=project_id,
             zone=zone,
             operation_id=operation_id,
@@ -1344,9 +1409,10 @@ class ClusterManagerClient(object):
             request, retry=retry, timeout=timeout, metadata=metadata)
 
     def cancel_operation(self,
-                         project_id,
-                         zone,
-                         operation_id,
+                         name,
+                         project_id=None,
+                         zone=None,
+                         operation_id=None,
                          retry=google.api_core.gapic_v1.method.DEFAULT,
                          timeout=google.api_core.gapic_v1.method.DEFAULT,
                          metadata=None):
@@ -1358,23 +1424,21 @@ class ClusterManagerClient(object):
             >>>
             >>> client = container_v1.ClusterManagerClient()
             >>>
-            >>> # TODO: Initialize ``project_id``:
-            >>> project_id = ''
+            >>> name = client.operation_path('[PROJECT]', '[LOCATION]', '[OPERATION]')
             >>>
-            >>> # TODO: Initialize ``zone``:
-            >>> zone = ''
-            >>>
-            >>> # TODO: Initialize ``operation_id``:
-            >>> operation_id = ''
-            >>>
-            >>> client.cancel_operation(project_id, zone, operation_id)
+            >>> client.cancel_operation(name)
 
         Args:
-            project_id (str): The Google Developers Console [project ID or project
+            name (str): The name (project, location, operation id) of the operation to cancel.
+                Specified in the format 'projects/*/locations/*/operations/*'.
+            project_id (str): Deprecated. The Google Developers Console [project ID or project
                 number](https://support.google.com/cloud/answer/6158840).
-            zone (str): The name of the Google Compute Engine
+                This field has been deprecated and replaced by the name field.
+            zone (str): Deprecated. The name of the Google Compute Engine
                 `zone <https://cloud.google.com/compute/docs/zones#available>`_ in which the operation resides.
-            operation_id (str): The server-assigned ``name`` of the operation.
+                This field has been deprecated and replaced by the name field.
+            operation_id (str): Deprecated. The server-assigned ``name`` of the operation.
+                This field has been deprecated and replaced by the name field.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -1404,6 +1468,7 @@ class ClusterManagerClient(object):
                 )
 
         request = cluster_service_pb2.CancelOperationRequest(
+            name=name,
             project_id=project_id,
             zone=zone,
             operation_id=operation_id,
@@ -1412,32 +1477,33 @@ class ClusterManagerClient(object):
             request, retry=retry, timeout=timeout, metadata=metadata)
 
     def get_server_config(self,
-                          project_id,
-                          zone,
+                          name,
+                          project_id=None,
+                          zone=None,
                           retry=google.api_core.gapic_v1.method.DEFAULT,
                           timeout=google.api_core.gapic_v1.method.DEFAULT,
                           metadata=None):
         """
-        Returns configuration info about the Container Engine service.
+        Returns configuration info about the Kubernetes Engine service.
 
         Example:
             >>> from google.cloud import container_v1
             >>>
             >>> client = container_v1.ClusterManagerClient()
             >>>
-            >>> # TODO: Initialize ``project_id``:
-            >>> project_id = ''
+            >>> name = client.location_path('[PROJECT]', '[LOCATION]')
             >>>
-            >>> # TODO: Initialize ``zone``:
-            >>> zone = ''
-            >>>
-            >>> response = client.get_server_config(project_id, zone)
+            >>> response = client.get_server_config(name)
 
         Args:
-            project_id (str): The Google Developers Console [project ID or project
+            name (str): The name (project and location) of the server config to get
+                Specified in the format 'projects/*/locations/*'.
+            project_id (str): Deprecated. The Google Developers Console [project ID or project
                 number](https://support.google.com/cloud/answer/6158840).
-            zone (str): The name of the Google Compute Engine `zone <https://cloud.google.com/compute/docs/zones#available>`_
-                to return operations for.
+                This field has been deprecated and replaced by the name field.
+            zone (str): Deprecated. The name of the Google Compute Engine
+                `zone <https://cloud.google.com/compute/docs/zones#available>`_ to return operations for.
+                This field has been deprecated and replaced by the name field.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -1470,6 +1536,7 @@ class ClusterManagerClient(object):
                 )
 
         request = cluster_service_pb2.GetServerConfigRequest(
+            name=name,
             project_id=project_id,
             zone=zone,
         )
@@ -1477,9 +1544,10 @@ class ClusterManagerClient(object):
             request, retry=retry, timeout=timeout, metadata=metadata)
 
     def list_node_pools(self,
-                        project_id,
-                        zone,
-                        cluster_id,
+                        parent,
+                        project_id=None,
+                        zone=None,
+                        cluster_id=None,
                         retry=google.api_core.gapic_v1.method.DEFAULT,
                         timeout=google.api_core.gapic_v1.method.DEFAULT,
                         metadata=None):
@@ -1491,24 +1559,22 @@ class ClusterManagerClient(object):
             >>>
             >>> client = container_v1.ClusterManagerClient()
             >>>
-            >>> # TODO: Initialize ``project_id``:
-            >>> project_id = ''
+            >>> parent = client.cluster_path('[PROJECT]', '[LOCATION]', '[CLUSTER]')
             >>>
-            >>> # TODO: Initialize ``zone``:
-            >>> zone = ''
-            >>>
-            >>> # TODO: Initialize ``cluster_id``:
-            >>> cluster_id = ''
-            >>>
-            >>> response = client.list_node_pools(project_id, zone, cluster_id)
+            >>> response = client.list_node_pools(parent)
 
         Args:
-            project_id (str): The Google Developers Console [project ID or project
+            parent (str): The parent (project, location, cluster id) where the node pools will be
+                listed. Specified in the format 'projects/*/locations/*/clusters/*'.
+            project_id (str): Deprecated. The Google Developers Console [project ID or project
                 number](https://developers.google.com/console/help/new/#projectnumber).
-            zone (str): The name of the Google Compute Engine
+                This field has been deprecated and replaced by the parent field.
+            zone (str): Deprecated. The name of the Google Compute Engine
                 `zone <https://cloud.google.com/compute/docs/zones#available>`_ in which the cluster
                 resides.
-            cluster_id (str): The name of the cluster.
+                This field has been deprecated and replaced by the parent field.
+            cluster_id (str): Deprecated. The name of the cluster.
+                This field has been deprecated and replaced by the parent field.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -1540,6 +1606,7 @@ class ClusterManagerClient(object):
                 )
 
         request = cluster_service_pb2.ListNodePoolsRequest(
+            parent=parent,
             project_id=project_id,
             zone=zone,
             cluster_id=cluster_id,
@@ -1548,10 +1615,11 @@ class ClusterManagerClient(object):
             request, retry=retry, timeout=timeout, metadata=metadata)
 
     def get_node_pool(self,
-                      project_id,
-                      zone,
-                      cluster_id,
-                      node_pool_id,
+                      name,
+                      project_id=None,
+                      zone=None,
+                      cluster_id=None,
+                      node_pool_id=None,
                       retry=google.api_core.gapic_v1.method.DEFAULT,
                       timeout=google.api_core.gapic_v1.method.DEFAULT,
                       metadata=None):
@@ -1563,28 +1631,25 @@ class ClusterManagerClient(object):
             >>>
             >>> client = container_v1.ClusterManagerClient()
             >>>
-            >>> # TODO: Initialize ``project_id``:
-            >>> project_id = ''
+            >>> name = client.node_pool_path('[PROJECT]', '[LOCATION]', '[CLUSTER]', '[NODE_POOL]')
             >>>
-            >>> # TODO: Initialize ``zone``:
-            >>> zone = ''
-            >>>
-            >>> # TODO: Initialize ``cluster_id``:
-            >>> cluster_id = ''
-            >>>
-            >>> # TODO: Initialize ``node_pool_id``:
-            >>> node_pool_id = ''
-            >>>
-            >>> response = client.get_node_pool(project_id, zone, cluster_id, node_pool_id)
+            >>> response = client.get_node_pool(name)
 
         Args:
-            project_id (str): The Google Developers Console [project ID or project
+            name (str): The name (project, location, cluster, node pool id) of the node pool to
+                get. Specified in the format
+                'projects/*/locations/*/clusters/*/nodePools/*'.
+            project_id (str): Deprecated. The Google Developers Console [project ID or project
                 number](https://developers.google.com/console/help/new/#projectnumber).
-            zone (str): The name of the Google Compute Engine
+                This field has been deprecated and replaced by the name field.
+            zone (str): Deprecated. The name of the Google Compute Engine
                 `zone <https://cloud.google.com/compute/docs/zones#available>`_ in which the cluster
                 resides.
-            cluster_id (str): The name of the cluster.
-            node_pool_id (str): The name of the node pool.
+                This field has been deprecated and replaced by the name field.
+            cluster_id (str): Deprecated. The name of the cluster.
+                This field has been deprecated and replaced by the name field.
+            node_pool_id (str): Deprecated. The name of the node pool.
+                This field has been deprecated and replaced by the name field.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -1616,6 +1681,7 @@ class ClusterManagerClient(object):
                 )
 
         request = cluster_service_pb2.GetNodePoolRequest(
+            name=name,
             project_id=project_id,
             zone=zone,
             cluster_id=cluster_id,
@@ -1625,10 +1691,11 @@ class ClusterManagerClient(object):
             request, retry=retry, timeout=timeout, metadata=metadata)
 
     def create_node_pool(self,
-                         project_id,
-                         zone,
-                         cluster_id,
                          node_pool,
+                         parent,
+                         project_id=None,
+                         zone=None,
+                         cluster_id=None,
                          retry=google.api_core.gapic_v1.method.DEFAULT,
                          timeout=google.api_core.gapic_v1.method.DEFAULT,
                          metadata=None):
@@ -1640,30 +1707,28 @@ class ClusterManagerClient(object):
             >>>
             >>> client = container_v1.ClusterManagerClient()
             >>>
-            >>> # TODO: Initialize ``project_id``:
-            >>> project_id = ''
-            >>>
-            >>> # TODO: Initialize ``zone``:
-            >>> zone = ''
-            >>>
-            >>> # TODO: Initialize ``cluster_id``:
-            >>> cluster_id = ''
-            >>>
             >>> # TODO: Initialize ``node_pool``:
             >>> node_pool = {}
+            >>> parent = client.cluster_path('[PROJECT]', '[LOCATION]', '[CLUSTER]')
             >>>
-            >>> response = client.create_node_pool(project_id, zone, cluster_id, node_pool)
+            >>> response = client.create_node_pool(node_pool, parent)
 
         Args:
-            project_id (str): The Google Developers Console [project ID or project
-                number](https://developers.google.com/console/help/new/#projectnumber).
-            zone (str): The name of the Google Compute Engine
-                `zone <https://cloud.google.com/compute/docs/zones#available>`_ in which the cluster
-                resides.
-            cluster_id (str): The name of the cluster.
             node_pool (Union[dict, ~google.cloud.container_v1.types.NodePool]): The node pool to create.
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.container_v1.types.NodePool`
+            parent (str): The parent (project, location, cluster id) where the node pool will be
+                created. Specified in the format
+                'projects/*/locations/*/clusters/*'.
+            project_id (str): Deprecated. The Google Developers Console [project ID or project
+                number](https://developers.google.com/console/help/new/#projectnumber).
+                This field has been deprecated and replaced by the parent field.
+            zone (str): Deprecated. The name of the Google Compute Engine
+                `zone <https://cloud.google.com/compute/docs/zones#available>`_ in which the cluster
+                resides.
+                This field has been deprecated and replaced by the parent field.
+            cluster_id (str): Deprecated. The name of the cluster.
+                This field has been deprecated and replaced by the parent field.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -1695,19 +1760,21 @@ class ClusterManagerClient(object):
                 )
 
         request = cluster_service_pb2.CreateNodePoolRequest(
+            node_pool=node_pool,
+            parent=parent,
             project_id=project_id,
             zone=zone,
             cluster_id=cluster_id,
-            node_pool=node_pool,
         )
         return self._inner_api_calls['create_node_pool'](
             request, retry=retry, timeout=timeout, metadata=metadata)
 
     def delete_node_pool(self,
-                         project_id,
-                         zone,
-                         cluster_id,
-                         node_pool_id,
+                         name,
+                         project_id=None,
+                         zone=None,
+                         cluster_id=None,
+                         node_pool_id=None,
                          retry=google.api_core.gapic_v1.method.DEFAULT,
                          timeout=google.api_core.gapic_v1.method.DEFAULT,
                          metadata=None):
@@ -1719,28 +1786,25 @@ class ClusterManagerClient(object):
             >>>
             >>> client = container_v1.ClusterManagerClient()
             >>>
-            >>> # TODO: Initialize ``project_id``:
-            >>> project_id = ''
+            >>> name = client.node_pool_path('[PROJECT]', '[LOCATION]', '[CLUSTER]', '[NODE_POOL]')
             >>>
-            >>> # TODO: Initialize ``zone``:
-            >>> zone = ''
-            >>>
-            >>> # TODO: Initialize ``cluster_id``:
-            >>> cluster_id = ''
-            >>>
-            >>> # TODO: Initialize ``node_pool_id``:
-            >>> node_pool_id = ''
-            >>>
-            >>> response = client.delete_node_pool(project_id, zone, cluster_id, node_pool_id)
+            >>> response = client.delete_node_pool(name)
 
         Args:
-            project_id (str): The Google Developers Console [project ID or project
+            name (str): The name (project, location, cluster, node pool id) of the node pool to
+                delete. Specified in the format
+                'projects/*/locations/*/clusters/*/nodePools/*'.
+            project_id (str): Deprecated. The Google Developers Console [project ID or project
                 number](https://developers.google.com/console/help/new/#projectnumber).
-            zone (str): The name of the Google Compute Engine
+                This field has been deprecated and replaced by the name field.
+            zone (str): Deprecated. The name of the Google Compute Engine
                 `zone <https://cloud.google.com/compute/docs/zones#available>`_ in which the cluster
                 resides.
-            cluster_id (str): The name of the cluster.
-            node_pool_id (str): The name of the node pool to delete.
+                This field has been deprecated and replaced by the name field.
+            cluster_id (str): Deprecated. The name of the cluster.
+                This field has been deprecated and replaced by the name field.
+            node_pool_id (str): Deprecated. The name of the node pool to delete.
+                This field has been deprecated and replaced by the name field.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -1772,6 +1836,7 @@ class ClusterManagerClient(object):
                 )
 
         request = cluster_service_pb2.DeleteNodePoolRequest(
+            name=name,
             project_id=project_id,
             zone=zone,
             cluster_id=cluster_id,
@@ -1782,10 +1847,11 @@ class ClusterManagerClient(object):
 
     def rollback_node_pool_upgrade(
             self,
-            project_id,
-            zone,
-            cluster_id,
-            node_pool_id,
+            name,
+            project_id=None,
+            zone=None,
+            cluster_id=None,
+            node_pool_id=None,
             retry=google.api_core.gapic_v1.method.DEFAULT,
             timeout=google.api_core.gapic_v1.method.DEFAULT,
             metadata=None):
@@ -1798,28 +1864,25 @@ class ClusterManagerClient(object):
             >>>
             >>> client = container_v1.ClusterManagerClient()
             >>>
-            >>> # TODO: Initialize ``project_id``:
-            >>> project_id = ''
+            >>> name = client.node_pool_path('[PROJECT]', '[LOCATION]', '[CLUSTER]', '[NODE_POOL]')
             >>>
-            >>> # TODO: Initialize ``zone``:
-            >>> zone = ''
-            >>>
-            >>> # TODO: Initialize ``cluster_id``:
-            >>> cluster_id = ''
-            >>>
-            >>> # TODO: Initialize ``node_pool_id``:
-            >>> node_pool_id = ''
-            >>>
-            >>> response = client.rollback_node_pool_upgrade(project_id, zone, cluster_id, node_pool_id)
+            >>> response = client.rollback_node_pool_upgrade(name)
 
         Args:
-            project_id (str): The Google Developers Console [project ID or project
+            name (str): The name (project, location, cluster, node pool id) of the node poll to
+                rollback upgrade.
+                Specified in the format 'projects/*/locations/*/clusters/*/nodePools/*'.
+            project_id (str): Deprecated. The Google Developers Console [project ID or project
                 number](https://support.google.com/cloud/answer/6158840).
-            zone (str): The name of the Google Compute Engine
+                This field has been deprecated and replaced by the name field.
+            zone (str): Deprecated. The name of the Google Compute Engine
                 `zone <https://cloud.google.com/compute/docs/zones#available>`_ in which the cluster
                 resides.
-            cluster_id (str): The name of the cluster to rollback.
-            node_pool_id (str): The name of the node pool to rollback.
+                This field has been deprecated and replaced by the name field.
+            cluster_id (str): Deprecated. The name of the cluster to rollback.
+                This field has been deprecated and replaced by the name field.
+            node_pool_id (str): Deprecated. The name of the node pool to rollback.
+                This field has been deprecated and replaced by the name field.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -1852,6 +1915,7 @@ class ClusterManagerClient(object):
                 )
 
         request = cluster_service_pb2.RollbackNodePoolUpgradeRequest(
+            name=name,
             project_id=project_id,
             zone=zone,
             cluster_id=cluster_id,
@@ -1862,11 +1926,12 @@ class ClusterManagerClient(object):
 
     def set_node_pool_management(
             self,
-            project_id,
-            zone,
-            cluster_id,
-            node_pool_id,
             management,
+            name,
+            project_id=None,
+            zone=None,
+            cluster_id=None,
+            node_pool_id=None,
             retry=google.api_core.gapic_v1.method.DEFAULT,
             timeout=google.api_core.gapic_v1.method.DEFAULT,
             metadata=None):
@@ -1878,34 +1943,30 @@ class ClusterManagerClient(object):
             >>>
             >>> client = container_v1.ClusterManagerClient()
             >>>
-            >>> # TODO: Initialize ``project_id``:
-            >>> project_id = ''
-            >>>
-            >>> # TODO: Initialize ``zone``:
-            >>> zone = ''
-            >>>
-            >>> # TODO: Initialize ``cluster_id``:
-            >>> cluster_id = ''
-            >>>
-            >>> # TODO: Initialize ``node_pool_id``:
-            >>> node_pool_id = ''
-            >>>
             >>> # TODO: Initialize ``management``:
             >>> management = {}
+            >>> name = client.node_pool_path('[PROJECT]', '[LOCATION]', '[CLUSTER]', '[NODE_POOL]')
             >>>
-            >>> response = client.set_node_pool_management(project_id, zone, cluster_id, node_pool_id, management)
+            >>> response = client.set_node_pool_management(management, name)
 
         Args:
-            project_id (str): The Google Developers Console [project ID or project
-                number](https://support.google.com/cloud/answer/6158840).
-            zone (str): The name of the Google Compute Engine
-                `zone <https://cloud.google.com/compute/docs/zones#available>`_ in which the cluster
-                resides.
-            cluster_id (str): The name of the cluster to update.
-            node_pool_id (str): The name of the node pool to update.
             management (Union[dict, ~google.cloud.container_v1.types.NodeManagement]): NodeManagement configuration for the node pool.
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.container_v1.types.NodeManagement`
+            name (str): The name (project, location, cluster, node pool id) of the node pool to set
+                management properties. Specified in the format
+                'projects/*/locations/*/clusters/*/nodePools/*'.
+            project_id (str): Deprecated. The Google Developers Console [project ID or project
+                number](https://support.google.com/cloud/answer/6158840).
+                This field has been deprecated and replaced by the name field.
+            zone (str): Deprecated. The name of the Google Compute Engine
+                `zone <https://cloud.google.com/compute/docs/zones#available>`_ in which the cluster
+                resides.
+                This field has been deprecated and replaced by the name field.
+            cluster_id (str): Deprecated. The name of the cluster to update.
+                This field has been deprecated and replaced by the name field.
+            node_pool_id (str): Deprecated. The name of the node pool to update.
+                This field has been deprecated and replaced by the name field.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -1938,21 +1999,23 @@ class ClusterManagerClient(object):
                 )
 
         request = cluster_service_pb2.SetNodePoolManagementRequest(
+            management=management,
+            name=name,
             project_id=project_id,
             zone=zone,
             cluster_id=cluster_id,
             node_pool_id=node_pool_id,
-            management=management,
         )
         return self._inner_api_calls['set_node_pool_management'](
             request, retry=retry, timeout=timeout, metadata=metadata)
 
     def set_labels(self,
-                   project_id,
-                   zone,
-                   cluster_id,
                    resource_labels,
                    label_fingerprint,
+                   name,
+                   project_id=None,
+                   zone=None,
+                   cluster_id=None,
                    retry=google.api_core.gapic_v1.method.DEFAULT,
                    timeout=google.api_core.gapic_v1.method.DEFAULT,
                    metadata=None):
@@ -1964,37 +2027,34 @@ class ClusterManagerClient(object):
             >>>
             >>> client = container_v1.ClusterManagerClient()
             >>>
-            >>> # TODO: Initialize ``project_id``:
-            >>> project_id = ''
-            >>>
-            >>> # TODO: Initialize ``zone``:
-            >>> zone = ''
-            >>>
-            >>> # TODO: Initialize ``cluster_id``:
-            >>> cluster_id = ''
-            >>>
             >>> # TODO: Initialize ``resource_labels``:
             >>> resource_labels = {}
             >>>
             >>> # TODO: Initialize ``label_fingerprint``:
             >>> label_fingerprint = ''
+            >>> name = client.cluster_path('[PROJECT]', '[LOCATION]', '[CLUSTER]')
             >>>
-            >>> response = client.set_labels(project_id, zone, cluster_id, resource_labels, label_fingerprint)
+            >>> response = client.set_labels(resource_labels, label_fingerprint, name)
 
         Args:
-            project_id (str): The Google Developers Console [project ID or project
-                number](https://developers.google.com/console/help/new/#projectnumber).
-            zone (str): The name of the Google Compute Engine
-                `zone <https://cloud.google.com/compute/docs/zones#available>`_ in which the cluster
-                resides.
-            cluster_id (str): The name of the cluster.
             resource_labels (dict[str -> str]): The labels to set for that cluster.
             label_fingerprint (str): The fingerprint of the previous set of labels for this resource,
                 used to detect conflicts. The fingerprint is initially generated by
-                Container Engine and changes after every request to modify or update
+                Kubernetes Engine and changes after every request to modify or update
                 labels. You must always provide an up-to-date fingerprint hash when
                 updating or changing labels. Make a <code>get()</code> request to the
                 resource to get the latest fingerprint.
+            name (str): The name (project, location, cluster id) of the cluster to set labels.
+                Specified in the format 'projects/*/locations/*/clusters/*'.
+            project_id (str): Deprecated. The Google Developers Console [project ID or project
+                number](https://developers.google.com/console/help/new/#projectnumber).
+                This field has been deprecated and replaced by the name field.
+            zone (str): Deprecated. The name of the Google Compute Engine
+                `zone <https://cloud.google.com/compute/docs/zones#available>`_ in which the cluster
+                resides.
+                This field has been deprecated and replaced by the name field.
+            cluster_id (str): Deprecated. The name of the cluster.
+                This field has been deprecated and replaced by the name field.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -2025,20 +2085,22 @@ class ClusterManagerClient(object):
                 )
 
         request = cluster_service_pb2.SetLabelsRequest(
+            resource_labels=resource_labels,
+            label_fingerprint=label_fingerprint,
+            name=name,
             project_id=project_id,
             zone=zone,
             cluster_id=cluster_id,
-            resource_labels=resource_labels,
-            label_fingerprint=label_fingerprint,
         )
         return self._inner_api_calls['set_labels'](
             request, retry=retry, timeout=timeout, metadata=metadata)
 
     def set_legacy_abac(self,
-                        project_id,
-                        zone,
-                        cluster_id,
                         enabled,
+                        name,
+                        project_id=None,
+                        zone=None,
+                        cluster_id=None,
                         retry=google.api_core.gapic_v1.method.DEFAULT,
                         timeout=google.api_core.gapic_v1.method.DEFAULT,
                         metadata=None):
@@ -2050,28 +2112,25 @@ class ClusterManagerClient(object):
             >>>
             >>> client = container_v1.ClusterManagerClient()
             >>>
-            >>> # TODO: Initialize ``project_id``:
-            >>> project_id = ''
-            >>>
-            >>> # TODO: Initialize ``zone``:
-            >>> zone = ''
-            >>>
-            >>> # TODO: Initialize ``cluster_id``:
-            >>> cluster_id = ''
-            >>>
             >>> # TODO: Initialize ``enabled``:
             >>> enabled = False
+            >>> name = client.cluster_path('[PROJECT]', '[LOCATION]', '[CLUSTER]')
             >>>
-            >>> response = client.set_legacy_abac(project_id, zone, cluster_id, enabled)
+            >>> response = client.set_legacy_abac(enabled, name)
 
         Args:
-            project_id (str): The Google Developers Console [project ID or project
+            enabled (bool): Whether ABAC authorization will be enabled in the cluster.
+            name (str): The name (project, location, cluster id) of the cluster to set legacy abac.
+                Specified in the format 'projects/*/locations/*/clusters/*'.
+            project_id (str): Deprecated. The Google Developers Console [project ID or project
                 number](https://support.google.com/cloud/answer/6158840).
-            zone (str): The name of the Google Compute Engine
+                This field has been deprecated and replaced by the name field.
+            zone (str): Deprecated. The name of the Google Compute Engine
                 `zone <https://cloud.google.com/compute/docs/zones#available>`_ in which the cluster
                 resides.
-            cluster_id (str): The name of the cluster to update.
-            enabled (bool): Whether ABAC authorization will be enabled in the cluster.
+                This field has been deprecated and replaced by the name field.
+            cluster_id (str): Deprecated. The name of the cluster to update.
+                This field has been deprecated and replaced by the name field.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -2103,18 +2162,21 @@ class ClusterManagerClient(object):
                 )
 
         request = cluster_service_pb2.SetLegacyAbacRequest(
+            enabled=enabled,
+            name=name,
             project_id=project_id,
             zone=zone,
             cluster_id=cluster_id,
-            enabled=enabled,
         )
         return self._inner_api_calls['set_legacy_abac'](
             request, retry=retry, timeout=timeout, metadata=metadata)
 
     def start_i_p_rotation(self,
-                           project_id,
-                           zone,
-                           cluster_id,
+                           name,
+                           rotate_credentials,
+                           project_id=None,
+                           zone=None,
+                           cluster_id=None,
                            retry=google.api_core.gapic_v1.method.DEFAULT,
                            timeout=google.api_core.gapic_v1.method.DEFAULT,
                            metadata=None):
@@ -2126,24 +2188,26 @@ class ClusterManagerClient(object):
             >>>
             >>> client = container_v1.ClusterManagerClient()
             >>>
-            >>> # TODO: Initialize ``project_id``:
-            >>> project_id = ''
+            >>> name = client.cluster_path('[PROJECT]', '[LOCATION]', '[CLUSTER]')
             >>>
-            >>> # TODO: Initialize ``zone``:
-            >>> zone = ''
+            >>> # TODO: Initialize ``rotate_credentials``:
+            >>> rotate_credentials = False
             >>>
-            >>> # TODO: Initialize ``cluster_id``:
-            >>> cluster_id = ''
-            >>>
-            >>> response = client.start_i_p_rotation(project_id, zone, cluster_id)
+            >>> response = client.start_i_p_rotation(name, rotate_credentials)
 
         Args:
-            project_id (str): The Google Developers Console [project ID or project
+            name (str): The name (project, location, cluster id) of the cluster to start IP
+                rotation. Specified in the format 'projects/*/locations/*/clusters/*'.
+            rotate_credentials (bool): Whether to rotate credentials during IP rotation.
+            project_id (str): Deprecated. The Google Developers Console [project ID or project
                 number](https://developers.google.com/console/help/new/#projectnumber).
-            zone (str): The name of the Google Compute Engine
+                This field has been deprecated and replaced by the name field.
+            zone (str): Deprecated. The name of the Google Compute Engine
                 `zone <https://cloud.google.com/compute/docs/zones#available>`_ in which the cluster
                 resides.
-            cluster_id (str): The name of the cluster.
+                This field has been deprecated and replaced by the name field.
+            cluster_id (str): Deprecated. The name of the cluster.
+                This field has been deprecated and replaced by the name field.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -2176,6 +2240,8 @@ class ClusterManagerClient(object):
                 )
 
         request = cluster_service_pb2.StartIPRotationRequest(
+            name=name,
+            rotate_credentials=rotate_credentials,
             project_id=project_id,
             zone=zone,
             cluster_id=cluster_id,
@@ -2184,9 +2250,10 @@ class ClusterManagerClient(object):
             request, retry=retry, timeout=timeout, metadata=metadata)
 
     def complete_i_p_rotation(self,
-                              project_id,
-                              zone,
-                              cluster_id,
+                              name,
+                              project_id=None,
+                              zone=None,
+                              cluster_id=None,
                               retry=google.api_core.gapic_v1.method.DEFAULT,
                               timeout=google.api_core.gapic_v1.method.DEFAULT,
                               metadata=None):
@@ -2198,24 +2265,22 @@ class ClusterManagerClient(object):
             >>>
             >>> client = container_v1.ClusterManagerClient()
             >>>
-            >>> # TODO: Initialize ``project_id``:
-            >>> project_id = ''
+            >>> name = client.cluster_path('[PROJECT]', '[LOCATION]', '[CLUSTER]')
             >>>
-            >>> # TODO: Initialize ``zone``:
-            >>> zone = ''
-            >>>
-            >>> # TODO: Initialize ``cluster_id``:
-            >>> cluster_id = ''
-            >>>
-            >>> response = client.complete_i_p_rotation(project_id, zone, cluster_id)
+            >>> response = client.complete_i_p_rotation(name)
 
         Args:
-            project_id (str): The Google Developers Console [project ID or project
+            name (str): The name (project, location, cluster id) of the cluster to complete IP
+                rotation. Specified in the format 'projects/*/locations/*/clusters/*'.
+            project_id (str): Deprecated. The Google Developers Console [project ID or project
                 number](https://developers.google.com/console/help/new/#projectnumber).
-            zone (str): The name of the Google Compute Engine
+                This field has been deprecated and replaced by the name field.
+            zone (str): Deprecated. The name of the Google Compute Engine
                 `zone <https://cloud.google.com/compute/docs/zones#available>`_ in which the cluster
                 resides.
-            cluster_id (str): The name of the cluster.
+                This field has been deprecated and replaced by the name field.
+            cluster_id (str): Deprecated. The name of the cluster.
+                This field has been deprecated and replaced by the name field.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -2248,6 +2313,7 @@ class ClusterManagerClient(object):
                 )
 
         request = cluster_service_pb2.CompleteIPRotationRequest(
+            name=name,
             project_id=project_id,
             zone=zone,
             cluster_id=cluster_id,
@@ -2256,48 +2322,45 @@ class ClusterManagerClient(object):
             request, retry=retry, timeout=timeout, metadata=metadata)
 
     def set_node_pool_size(self,
-                           project_id,
-                           zone,
-                           cluster_id,
-                           node_pool_id,
                            node_count,
+                           name,
+                           project_id=None,
+                           zone=None,
+                           cluster_id=None,
+                           node_pool_id=None,
                            retry=google.api_core.gapic_v1.method.DEFAULT,
                            timeout=google.api_core.gapic_v1.method.DEFAULT,
                            metadata=None):
         """
-        Sets the size of a specific node pool.
+        Sets the size for a specific node pool.
 
         Example:
             >>> from google.cloud import container_v1
             >>>
             >>> client = container_v1.ClusterManagerClient()
             >>>
-            >>> # TODO: Initialize ``project_id``:
-            >>> project_id = ''
-            >>>
-            >>> # TODO: Initialize ``zone``:
-            >>> zone = ''
-            >>>
-            >>> # TODO: Initialize ``cluster_id``:
-            >>> cluster_id = ''
-            >>>
-            >>> # TODO: Initialize ``node_pool_id``:
-            >>> node_pool_id = ''
-            >>>
             >>> # TODO: Initialize ``node_count``:
             >>> node_count = 0
+            >>> name = client.node_pool_path('[PROJECT]', '[LOCATION]', '[CLUSTER]', '[NODE_POOL]')
             >>>
-            >>> response = client.set_node_pool_size(project_id, zone, cluster_id, node_pool_id, node_count)
+            >>> response = client.set_node_pool_size(node_count, name)
 
         Args:
-            project_id (str): The Google Developers Console [project ID or project
+            node_count (int): The desired node count for the pool.
+            name (str): The name (project, location, cluster, node pool id) of the node pool to set
+                size.
+                Specified in the format 'projects/*/locations/*/clusters/*/nodePools/*'.
+            project_id (str): Deprecated. The Google Developers Console [project ID or project
                 number](https://support.google.com/cloud/answer/6158840).
-            zone (str): The name of the Google Compute Engine
+                This field has been deprecated and replaced by the name field.
+            zone (str): Deprecated. The name of the Google Compute Engine
                 `zone <https://cloud.google.com/compute/docs/zones#available>`_ in which the cluster
                 resides.
-            cluster_id (str): The name of the cluster to update.
-            node_pool_id (str): The name of the node pool to update.
-            node_count (int): The desired node count for the pool.
+                This field has been deprecated and replaced by the name field.
+            cluster_id (str): Deprecated. The name of the cluster to update.
+                This field has been deprecated and replaced by the name field.
+            node_pool_id (str): Deprecated. The name of the node pool to update.
+                This field has been deprecated and replaced by the name field.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -2330,20 +2393,22 @@ class ClusterManagerClient(object):
                 )
 
         request = cluster_service_pb2.SetNodePoolSizeRequest(
+            node_count=node_count,
+            name=name,
             project_id=project_id,
             zone=zone,
             cluster_id=cluster_id,
             node_pool_id=node_pool_id,
-            node_count=node_count,
         )
         return self._inner_api_calls['set_node_pool_size'](
             request, retry=retry, timeout=timeout, metadata=metadata)
 
     def set_network_policy(self,
-                           project_id,
-                           zone,
-                           cluster_id,
                            network_policy,
+                           name,
+                           project_id=None,
+                           zone=None,
+                           cluster_id=None,
                            retry=google.api_core.gapic_v1.method.DEFAULT,
                            timeout=google.api_core.gapic_v1.method.DEFAULT,
                            metadata=None):
@@ -2355,30 +2420,27 @@ class ClusterManagerClient(object):
             >>>
             >>> client = container_v1.ClusterManagerClient()
             >>>
-            >>> # TODO: Initialize ``project_id``:
-            >>> project_id = ''
-            >>>
-            >>> # TODO: Initialize ``zone``:
-            >>> zone = ''
-            >>>
-            >>> # TODO: Initialize ``cluster_id``:
-            >>> cluster_id = ''
-            >>>
             >>> # TODO: Initialize ``network_policy``:
             >>> network_policy = {}
+            >>> name = client.cluster_path('[PROJECT]', '[LOCATION]', '[CLUSTER]')
             >>>
-            >>> response = client.set_network_policy(project_id, zone, cluster_id, network_policy)
+            >>> response = client.set_network_policy(network_policy, name)
 
         Args:
-            project_id (str): The Google Developers Console [project ID or project
-                number](https://developers.google.com/console/help/new/#projectnumber).
-            zone (str): The name of the Google Compute Engine
-                `zone <https://cloud.google.com/compute/docs/zones#available>`_ in which the cluster
-                resides.
-            cluster_id (str): The name of the cluster.
             network_policy (Union[dict, ~google.cloud.container_v1.types.NetworkPolicy]): Configuration options for the NetworkPolicy feature.
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.container_v1.types.NetworkPolicy`
+            name (str): The name (project, location, cluster id) of the cluster to set networking
+                policy. Specified in the format 'projects/*/locations/*/clusters/*'.
+            project_id (str): Deprecated. The Google Developers Console [project ID or project
+                number](https://developers.google.com/console/help/new/#projectnumber).
+                This field has been deprecated and replaced by the name field.
+            zone (str): Deprecated. The name of the Google Compute Engine
+                `zone <https://cloud.google.com/compute/docs/zones#available>`_ in which the cluster
+                resides.
+                This field has been deprecated and replaced by the name field.
+            cluster_id (str): Deprecated. The name of the cluster.
+                This field has been deprecated and replaced by the name field.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -2411,19 +2473,21 @@ class ClusterManagerClient(object):
                 )
 
         request = cluster_service_pb2.SetNetworkPolicyRequest(
+            network_policy=network_policy,
+            name=name,
             project_id=project_id,
             zone=zone,
             cluster_id=cluster_id,
-            network_policy=network_policy,
         )
         return self._inner_api_calls['set_network_policy'](
             request, retry=retry, timeout=timeout, metadata=metadata)
 
     def set_maintenance_policy(self,
-                               project_id,
-                               zone,
-                               cluster_id,
                                maintenance_policy,
+                               name,
+                               project_id=None,
+                               zone=None,
+                               cluster_id=None,
                                retry=google.api_core.gapic_v1.method.DEFAULT,
                                timeout=google.api_core.gapic_v1.method.DEFAULT,
                                metadata=None):
@@ -2435,31 +2499,26 @@ class ClusterManagerClient(object):
             >>>
             >>> client = container_v1.ClusterManagerClient()
             >>>
-            >>> # TODO: Initialize ``project_id``:
-            >>> project_id = ''
-            >>>
-            >>> # TODO: Initialize ``zone``:
-            >>> zone = ''
-            >>>
-            >>> # TODO: Initialize ``cluster_id``:
-            >>> cluster_id = ''
-            >>>
             >>> # TODO: Initialize ``maintenance_policy``:
             >>> maintenance_policy = {}
+            >>> name = client.cluster_path('[PROJECT]', '[LOCATION]', '[CLUSTER]')
             >>>
-            >>> response = client.set_maintenance_policy(project_id, zone, cluster_id, maintenance_policy)
+            >>> response = client.set_maintenance_policy(maintenance_policy, name)
 
         Args:
+            maintenance_policy (Union[dict, ~google.cloud.container_v1.types.MaintenancePolicy]): The maintenance policy to be set for the cluster. An empty field
+                clears the existing maintenance policy.
+                If a dict is provided, it must be of the same form as the protobuf
+                message :class:`~google.cloud.container_v1.types.MaintenancePolicy`
+            name (str): The name (project, location, cluster id) of the cluster to set maintenance
+                policy.
+                Specified in the format 'projects/*/locations/*/clusters/*'.
             project_id (str): The Google Developers Console [project ID or project
                 number](https://support.google.com/cloud/answer/6158840).
             zone (str): The name of the Google Compute Engine
                 `zone <https://cloud.google.com/compute/docs/zones#available>`_ in which the cluster
                 resides.
             cluster_id (str): The name of the cluster to update.
-            maintenance_policy (Union[dict, ~google.cloud.container_v1.types.MaintenancePolicy]): The maintenance policy to be set for the cluster. An empty field
-                clears the existing maintenance policy.
-                If a dict is provided, it must be of the same form as the protobuf
-                message :class:`~google.cloud.container_v1.types.MaintenancePolicy`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -2492,10 +2551,165 @@ class ClusterManagerClient(object):
                 )
 
         request = cluster_service_pb2.SetMaintenancePolicyRequest(
+            maintenance_policy=maintenance_policy,
+            name=name,
             project_id=project_id,
             zone=zone,
             cluster_id=cluster_id,
-            maintenance_policy=maintenance_policy,
         )
         return self._inner_api_calls['set_maintenance_policy'](
+            request, retry=retry, timeout=timeout, metadata=metadata)
+
+    def list_usable_subnetworks(
+            self,
+            parent,
+            filter_,
+            page_size=None,
+            retry=google.api_core.gapic_v1.method.DEFAULT,
+            timeout=google.api_core.gapic_v1.method.DEFAULT,
+            metadata=None):
+        """
+        Lists subnetworks that are usable for creating clusters in a project.
+
+        Example:
+            >>> from google.cloud import container_v1
+            >>>
+            >>> client = container_v1.ClusterManagerClient()
+            >>>
+            >>> parent = client.project_path('[PROJECT]')
+            >>>
+            >>> # TODO: Initialize ``filter_``:
+            >>> filter_ = ''
+            >>>
+            >>> # Iterate over all results
+            >>> for element in client.list_usable_subnetworks(parent, filter_):
+            ...     # process element
+            ...     pass
+            >>>
+            >>>
+            >>> # Alternatively:
+            >>>
+            >>> # Iterate over results one page at a time
+            >>> for page in client.list_usable_subnetworks(parent, filter_, options=CallOptions(page_token=INITIAL_PAGE)):
+            ...     for element in page:
+            ...         # process element
+            ...         pass
+
+        Args:
+            parent (str): The parent project where subnetworks are usable.
+                Specified in the format 'projects/*'.
+            filter_ (str): Filtering currently only supports equality on the networkProjectId and must
+                be in the form: \"networkProjectId=[PROJECTID]\", where ``networkProjectId``
+                is the project which owns the listed subnetworks. This defaults to the
+                parent project ID.
+            page_size (int): The maximum number of resources contained in the
+                underlying API response. If page streaming is performed per-
+                resource, this parameter does not affect the return value. If page
+                streaming is performed per-page, this determines the maximum number
+                of resources in a page.
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will not
+                be retried.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Returns:
+            A :class:`~google.gax.PageIterator` instance. By default, this
+            is an iterable of :class:`~google.cloud.container_v1.types.UsableSubnetwork` instances.
+            This object can also be configured to iterate over the pages
+            of the response through the `options` parameter.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        # Wrap the transport method to add retry and timeout logic.
+        if 'list_usable_subnetworks' not in self._inner_api_calls:
+            self._inner_api_calls[
+                'list_usable_subnetworks'] = google.api_core.gapic_v1.method.wrap_method(
+                    self.transport.list_usable_subnetworks,
+                    default_retry=self.
+                    _method_configs['ListUsableSubnetworks'].retry,
+                    default_timeout=self.
+                    _method_configs['ListUsableSubnetworks'].timeout,
+                    client_info=self._client_info,
+                )
+
+        request = cluster_service_pb2.ListUsableSubnetworksRequest(
+            parent=parent,
+            filter=filter_,
+            page_size=page_size,
+        )
+        iterator = google.api_core.page_iterator.GRPCIterator(
+            client=None,
+            method=functools.partial(
+                self._inner_api_calls['list_usable_subnetworks'],
+                retry=retry,
+                timeout=timeout,
+                metadata=metadata),
+            request=request,
+            items_field='subnetworks',
+            request_token_field='page_token',
+            response_token_field='next_page_token',
+        )
+        return iterator
+
+    def list_locations(self,
+                       parent,
+                       retry=google.api_core.gapic_v1.method.DEFAULT,
+                       timeout=google.api_core.gapic_v1.method.DEFAULT,
+                       metadata=None):
+        """
+        Used to fetch locations that offer GKE.
+
+        Example:
+            >>> from google.cloud import container_v1
+            >>>
+            >>> client = container_v1.ClusterManagerClient()
+            >>>
+            >>> parent = client.project_path('[PROJECT]')
+            >>>
+            >>> response = client.list_locations(parent)
+
+        Args:
+            parent (str): Contains the name of the resource requested.
+                Specified in the format 'projects/*'.
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will not
+                be retried.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Returns:
+            A :class:`~google.cloud.container_v1.types.ListLocationsResponse` instance.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        # Wrap the transport method to add retry and timeout logic.
+        if 'list_locations' not in self._inner_api_calls:
+            self._inner_api_calls[
+                'list_locations'] = google.api_core.gapic_v1.method.wrap_method(
+                    self.transport.list_locations,
+                    default_retry=self._method_configs['ListLocations'].retry,
+                    default_timeout=self._method_configs['ListLocations'].
+                    timeout,
+                    client_info=self._client_info,
+                )
+
+        request = cluster_service_pb2.ListLocationsRequest(parent=parent, )
+        return self._inner_api_calls['list_locations'](
             request, retry=retry, timeout=timeout, metadata=metadata)
