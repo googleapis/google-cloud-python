@@ -871,6 +871,24 @@ class Property(ModelAttribute):
             value = self._call_from_base_type(value.b_val)
         return value
 
+    def _value_to_repr(self, value):
+        """Turn a value (base or not) into its repr().
+
+        This exists so that property classes can override it separately.
+
+        This manually applies ``_from_base_type()`` so as not to have a side
+        effect on what's contained in the entity. Printing a value should not
+        change it.
+
+        Args:
+            value (Any): The value to convert to a pretty-print ``repr``.
+
+        Returns:
+            str: The ``repr`` of the "true" value.
+        """
+        val = self._opt_call_from_base_type(value)
+        return repr(val)
+
     def _opt_call_to_base_type(self, value):
         """Call :meth:`_to_base_type` if necessary.
 

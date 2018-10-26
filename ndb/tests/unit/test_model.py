@@ -758,6 +758,16 @@ class TestProperty:
         assert prop._opt_call_from_base_type(value) == 17.0
 
     @staticmethod
+    def test__value_to_repr(property_clean_cache):
+        class SimpleProperty(model.Property):
+            def _from_base_type(self, value):
+                return value * 3.0
+
+        prop = SimpleProperty(name="prop")
+        value = model._BaseValue(9.25)
+        assert prop._value_to_repr(value) == "27.75"
+
+    @staticmethod
     def test__opt_call_to_base_type(property_clean_cache):
         class SimpleProperty(model.Property):
             def _validate(self, value):
