@@ -811,14 +811,6 @@ class TestProperty:
             "a",
         ]
 
-    def test__find_methods_not_in_cache(self):
-        SomeProperty = self._property_subtype()
-        # Set cache
-        SomeProperty._FIND_METHODS_CACHE = {("find_me",): None}
-
-        methods = [SomeProperty.IN, SomeProperty.find_me, model.Property.IN]
-        assert SomeProperty._find_methods("IN", "find_me") == methods
-
     @staticmethod
     def test__apply_list():
         method1 = unittest.mock.Mock(spec=())
