@@ -269,7 +269,7 @@ def test_bigquery_magic_with_formatting_params():
     magics.context.credentials = mock.create_autospec(
         google.auth.credentials.Credentials, instance=True)
 
-    sql = 'SELECT {num} AS num'
+    sql = 'SELECT @num AS num'
     result = pandas.DataFrame([17], columns=['num'])
     assert 'myvariable' not in ip.user_ns
 

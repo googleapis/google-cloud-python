@@ -116,6 +116,7 @@ except ImportError:  # pragma: NO COVER
 
 import google.auth
 from google.cloud import bigquery
+from google.cloud.bigquery.dbapi._helpers import to_query_parameters
 
 
 class Context(object):
@@ -276,17 +277,17 @@ def _cell_magic(line, query):
     """
     args = magic_arguments.parse_argstring(_cell_magic, line)
 
+    params = []
     if args.params is not None:
         try:
-            params = ast.literal_eval(''.join(args.params))
+            params = to_query_parameters(ast.literal_eval(''.join(args.params)))
         except Exception:
             raise SyntaxError('--params is not a correctly formatted JSON string')
-
-        query = query.format(**params)
 
     project = args.project or context.project
     client = bigquery.Client(project=project, credentials=context.credentials)
     job_config = bigquery.job.QueryJobConfig()
+    job_config.query_parameters = params
     job_config.use_legacy_sql = args.use_legacy_sql
     query_job = _run_query(client, query, job_config)
 
