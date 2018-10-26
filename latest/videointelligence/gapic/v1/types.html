@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Types for Cloud Video Intelligence API Client &#8212; google-cloud 82d71cb documentation</title>
+    <title>Types for Cloud Video Intelligence API Client &#8212; google-cloud 56b6d78 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -606,6 +606,173 @@ to the original image. Range: [0, 1].</p>
 </dd></dl>
 
 <dl class="class">
+<dt id="google.cloud.videointelligence_v1.types.SpeechContext">
+<em class="property">class </em><code class="descclassname">google.cloud.videointelligence_v1.types.</code><code class="descname">SpeechContext</code><a class="headerlink" href="#google.cloud.videointelligence_v1.types.SpeechContext" title="Permalink to this definition">#</a></dt>
+<dd><p>Provides “hints” to the speech recognizer to favor specific words and
+phrases in the results.</p>
+<dl class="attribute">
+<dt id="google.cloud.videointelligence_v1.types.SpeechContext.phrases">
+<code class="descname">phrases</code><a class="headerlink" href="#google.cloud.videointelligence_v1.types.SpeechContext.phrases" title="Permalink to this definition">#</a></dt>
+<dd><p><em>Optional</em> A list of strings containing words and phrases
+“hints” so that the speech recognition is more likely to
+recognize them. This can be used to improve the accuracy for
+specific words and phrases, for example, if specific commands
+are typically spoken by the user. This can also be used to add
+additional words to the vocabulary of the recognizer. See
+<a class="reference external" href="https://cloud.google.com/speech/limits#content">usage limits</a>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.videointelligence_v1.types.SpeechRecognitionAlternative">
+<em class="property">class </em><code class="descclassname">google.cloud.videointelligence_v1.types.</code><code class="descname">SpeechRecognitionAlternative</code><a class="headerlink" href="#google.cloud.videointelligence_v1.types.SpeechRecognitionAlternative" title="Permalink to this definition">#</a></dt>
+<dd><p>Alternative hypotheses (a.k.a. n-best list).</p>
+<dl class="attribute">
+<dt id="google.cloud.videointelligence_v1.types.SpeechRecognitionAlternative.transcript">
+<code class="descname">transcript</code><a class="headerlink" href="#google.cloud.videointelligence_v1.types.SpeechRecognitionAlternative.transcript" title="Permalink to this definition">#</a></dt>
+<dd><p>Transcript text representing the words that the user spoke.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.videointelligence_v1.types.SpeechRecognitionAlternative.confidence">
+<code class="descname">confidence</code><a class="headerlink" href="#google.cloud.videointelligence_v1.types.SpeechRecognitionAlternative.confidence" title="Permalink to this definition">#</a></dt>
+<dd><p>The confidence estimate between 0.0 and 1.0. A higher number
+indicates an estimated greater likelihood that the recognized
+words are correct. This field is typically provided only for
+the top hypothesis, and only for <code class="docutils literal notranslate"><span class="pre">is_final=true</span></code> results.
+Clients should not rely on the <code class="docutils literal notranslate"><span class="pre">confidence</span></code> field as it is
+not guaranteed to be accurate or consistent. The default of
+0.0 is a sentinel value indicating <code class="docutils literal notranslate"><span class="pre">confidence</span></code> was not set.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.videointelligence_v1.types.SpeechRecognitionAlternative.words">
+<code class="descname">words</code><a class="headerlink" href="#google.cloud.videointelligence_v1.types.SpeechRecognitionAlternative.words" title="Permalink to this definition">#</a></dt>
+<dd><p>A list of word-specific information for each recognized word.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.videointelligence_v1.types.SpeechTranscription">
+<em class="property">class </em><code class="descclassname">google.cloud.videointelligence_v1.types.</code><code class="descname">SpeechTranscription</code><a class="headerlink" href="#google.cloud.videointelligence_v1.types.SpeechTranscription" title="Permalink to this definition">#</a></dt>
+<dd><p>A speech recognition result corresponding to a portion of the audio.</p>
+<dl class="attribute">
+<dt id="google.cloud.videointelligence_v1.types.SpeechTranscription.alternatives">
+<code class="descname">alternatives</code><a class="headerlink" href="#google.cloud.videointelligence_v1.types.SpeechTranscription.alternatives" title="Permalink to this definition">#</a></dt>
+<dd><p>May contain one or more recognition hypotheses (up to the
+maximum specified in <code class="docutils literal notranslate"><span class="pre">max_alternatives</span></code>). These alternatives
+are ordered in terms of accuracy, with the top (first)
+alternative being the most probable, as ranked by the
+recognizer.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.videointelligence_v1.types.SpeechTranscription.language_code">
+<code class="descname">language_code</code><a class="headerlink" href="#google.cloud.videointelligence_v1.types.SpeechTranscription.language_code" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. The <a class="reference external" href="https://www.rfc-editor.org/rfc/bcp/bcp47.txt">BCP-47</a> language tag of the language
+in this result. This language code was detected to have the
+most likelihood of being spoken in the audio.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.videointelligence_v1.types.SpeechTranscriptionConfig">
+<em class="property">class </em><code class="descclassname">google.cloud.videointelligence_v1.types.</code><code class="descname">SpeechTranscriptionConfig</code><a class="headerlink" href="#google.cloud.videointelligence_v1.types.SpeechTranscriptionConfig" title="Permalink to this definition">#</a></dt>
+<dd><p>Config for SPEECH_TRANSCRIPTION.</p>
+<dl class="attribute">
+<dt id="google.cloud.videointelligence_v1.types.SpeechTranscriptionConfig.language_code">
+<code class="descname">language_code</code><a class="headerlink" href="#google.cloud.videointelligence_v1.types.SpeechTranscriptionConfig.language_code" title="Permalink to this definition">#</a></dt>
+<dd><p><em>Required</em> The language of the supplied audio as a <a class="reference external" href="https://www.rfc-editor.org/rfc/bcp/bcp47.txt">BCP-47</a> language
+tag. Example: “en-US”. See <a class="reference external" href="https://cloud.google.com/speech/docs/languages">Language Support</a> for a list
+of the currently supported language codes.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.videointelligence_v1.types.SpeechTranscriptionConfig.max_alternatives">
+<code class="descname">max_alternatives</code><a class="headerlink" href="#google.cloud.videointelligence_v1.types.SpeechTranscriptionConfig.max_alternatives" title="Permalink to this definition">#</a></dt>
+<dd><p><em>Optional</em> Maximum number of recognition hypotheses to be
+returned. Specifically, the maximum number of
+<code class="docutils literal notranslate"><span class="pre">SpeechRecognitionAlternative</span></code> messages within each
+<code class="docutils literal notranslate"><span class="pre">SpeechTranscription</span></code>. The server may return fewer than
+<code class="docutils literal notranslate"><span class="pre">max_alternatives</span></code>. Valid values are <code class="docutils literal notranslate"><span class="pre">0</span></code>-<code class="docutils literal notranslate"><span class="pre">30</span></code>. A value
+of <code class="docutils literal notranslate"><span class="pre">0</span></code> or <code class="docutils literal notranslate"><span class="pre">1</span></code> will return a maximum of one. If omitted,
+will return a maximum of one.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.videointelligence_v1.types.SpeechTranscriptionConfig.filter_profanity">
+<code class="descname">filter_profanity</code><a class="headerlink" href="#google.cloud.videointelligence_v1.types.SpeechTranscriptionConfig.filter_profanity" title="Permalink to this definition">#</a></dt>
+<dd><p><em>Optional</em> If set to <code class="docutils literal notranslate"><span class="pre">true</span></code>, the server will attempt to
+filter out profanities, replacing all but the initial
+character in each filtered word with asterisks, e.g.
+“f***”. If set to <code class="docutils literal notranslate"><span class="pre">false</span></code> or omitted, profanities won’t
+be filtered out.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.videointelligence_v1.types.SpeechTranscriptionConfig.speech_contexts">
+<code class="descname">speech_contexts</code><a class="headerlink" href="#google.cloud.videointelligence_v1.types.SpeechTranscriptionConfig.speech_contexts" title="Permalink to this definition">#</a></dt>
+<dd><p><em>Optional</em> A means to provide context to assist the speech
+recognition.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.videointelligence_v1.types.SpeechTranscriptionConfig.enable_automatic_punctuation">
+<code class="descname">enable_automatic_punctuation</code><a class="headerlink" href="#google.cloud.videointelligence_v1.types.SpeechTranscriptionConfig.enable_automatic_punctuation" title="Permalink to this definition">#</a></dt>
+<dd><p><em>Optional</em> If ‘true’, adds punctuation to recognition result
+hypotheses. This feature is only available in select
+languages. Setting this for requests in other languages has no
+effect at all. The default ‘false’ value does not add
+punctuation to result hypotheses. NOTE: “This is currently
+offered as an experimental service, complimentary to all
+users. In the future this may be exclusively available as a
+premium feature.”</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.videointelligence_v1.types.SpeechTranscriptionConfig.audio_tracks">
+<code class="descname">audio_tracks</code><a class="headerlink" href="#google.cloud.videointelligence_v1.types.SpeechTranscriptionConfig.audio_tracks" title="Permalink to this definition">#</a></dt>
+<dd><p><em>Optional</em> For file formats, such as MXF or MKV, supporting
+multiple audio tracks, specify up to two tracks. Default:
+track 0.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.videointelligence_v1.types.SpeechTranscriptionConfig.enable_speaker_diarization">
+<code class="descname">enable_speaker_diarization</code><a class="headerlink" href="#google.cloud.videointelligence_v1.types.SpeechTranscriptionConfig.enable_speaker_diarization" title="Permalink to this definition">#</a></dt>
+<dd><p><em>Optional</em> If ‘true’, enables speaker detection for each
+recognized word in the top alternative of the recognition
+result using a speaker_tag provided in the WordInfo. Note:
+When this is true, we send all the words from the beginning of
+the audio for the top alternative in every consecutive
+responses. This is done in order to improve our speaker tags
+as our models learn to identify the speakers in the
+conversation over time.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.videointelligence_v1.types.SpeechTranscriptionConfig.diarization_speaker_count">
+<code class="descname">diarization_speaker_count</code><a class="headerlink" href="#google.cloud.videointelligence_v1.types.SpeechTranscriptionConfig.diarization_speaker_count" title="Permalink to this definition">#</a></dt>
+<dd><p><em>Optional</em> If set, specifies the estimated number of speakers
+in the conversation. If not set, defaults to ‘2’. Ignored
+unless enable_speaker_diarization is set to true.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.videointelligence_v1.types.SpeechTranscriptionConfig.enable_word_confidence">
+<code class="descname">enable_word_confidence</code><a class="headerlink" href="#google.cloud.videointelligence_v1.types.SpeechTranscriptionConfig.enable_word_confidence" title="Permalink to this definition">#</a></dt>
+<dd><p><em>Optional</em> If <code class="docutils literal notranslate"><span class="pre">true</span></code>, the top result includes a list of
+words and the confidence for those words. If <code class="docutils literal notranslate"><span class="pre">false</span></code>, no
+word-level confidence information is returned. The default is
+<code class="docutils literal notranslate"><span class="pre">false</span></code>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="google.cloud.videointelligence_v1.types.Status">
 <em class="property">class </em><code class="descclassname">google.cloud.videointelligence_v1.types.</code><code class="descname">Status</code><a class="headerlink" href="#google.cloud.videointelligence_v1.types.Status" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
@@ -707,6 +874,12 @@ face.</p>
 </dd></dl>
 
 <dl class="attribute">
+<dt id="google.cloud.videointelligence_v1.types.VideoAnnotationResults.speech_transcriptions">
+<code class="descname">speech_transcriptions</code><a class="headerlink" href="#google.cloud.videointelligence_v1.types.VideoAnnotationResults.speech_transcriptions" title="Permalink to this definition">#</a></dt>
+<dd><p>Speech transcription.</p>
+</dd></dl>
+
+<dl class="attribute">
 <dt id="google.cloud.videointelligence_v1.types.VideoAnnotationResults.error">
 <code class="descname">error</code><a class="headerlink" href="#google.cloud.videointelligence_v1.types.VideoAnnotationResults.error" title="Permalink to this definition">#</a></dt>
 <dd><p>If set, indicates an error. Note that for a single
@@ -752,6 +925,12 @@ unspecified, each video is treated as a single segment.</p>
 <dd><p>Config for FACE_DETECTION.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt id="google.cloud.videointelligence_v1.types.VideoContext.speech_transcription_config">
+<code class="descname">speech_transcription_config</code><a class="headerlink" href="#google.cloud.videointelligence_v1.types.VideoContext.speech_transcription_config" title="Permalink to this definition">#</a></dt>
+<dd><p>Config for SPEECH_TRANSCRIPTION.</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -770,6 +949,62 @@ corresponding to the start of the segment (inclusive).</p>
 <code class="descname">end_time_offset</code><a class="headerlink" href="#google.cloud.videointelligence_v1.types.VideoSegment.end_time_offset" title="Permalink to this definition">#</a></dt>
 <dd><p>Time-offset, relative to the beginning of the video,
 corresponding to the end of the segment (inclusive).</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.videointelligence_v1.types.WordInfo">
+<em class="property">class </em><code class="descclassname">google.cloud.videointelligence_v1.types.</code><code class="descname">WordInfo</code><a class="headerlink" href="#google.cloud.videointelligence_v1.types.WordInfo" title="Permalink to this definition">#</a></dt>
+<dd><p>Word-specific information for recognized words. Word information is only
+included in the response when certain request parameters are set, such
+as <code class="docutils literal notranslate"><span class="pre">enable_word_time_offsets</span></code>.</p>
+<dl class="attribute">
+<dt id="google.cloud.videointelligence_v1.types.WordInfo.start_time">
+<code class="descname">start_time</code><a class="headerlink" href="#google.cloud.videointelligence_v1.types.WordInfo.start_time" title="Permalink to this definition">#</a></dt>
+<dd><p>Time offset relative to the beginning of the audio, and
+corresponding to the start of the spoken word. This field is
+only set if <code class="docutils literal notranslate"><span class="pre">enable_word_time_offsets=true</span></code> and only in the
+top hypothesis. This is an experimental feature and the
+accuracy of the time offset can vary.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.videointelligence_v1.types.WordInfo.end_time">
+<code class="descname">end_time</code><a class="headerlink" href="#google.cloud.videointelligence_v1.types.WordInfo.end_time" title="Permalink to this definition">#</a></dt>
+<dd><p>Time offset relative to the beginning of the audio, and
+corresponding to the end of the spoken word. This field is
+only set if <code class="docutils literal notranslate"><span class="pre">enable_word_time_offsets=true</span></code> and only in the
+top hypothesis. This is an experimental feature and the
+accuracy of the time offset can vary.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.videointelligence_v1.types.WordInfo.word">
+<code class="descname">word</code><a class="headerlink" href="#google.cloud.videointelligence_v1.types.WordInfo.word" title="Permalink to this definition">#</a></dt>
+<dd><p>The word corresponding to this set of information.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.videointelligence_v1.types.WordInfo.confidence">
+<code class="descname">confidence</code><a class="headerlink" href="#google.cloud.videointelligence_v1.types.WordInfo.confidence" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. The confidence estimate between 0.0 and 1.0. A
+higher number indicates an estimated greater likelihood that
+the recognized words are correct. This field is set only for
+the top alternative. This field is not guaranteed to be
+accurate and users should not rely on it to be always
+provided. The default of 0.0 is a sentinel value indicating
+<code class="docutils literal notranslate"><span class="pre">confidence</span></code> was not set.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.videointelligence_v1.types.WordInfo.speaker_tag">
+<code class="descname">speaker_tag</code><a class="headerlink" href="#google.cloud.videointelligence_v1.types.WordInfo.speaker_tag" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. A distinct integer value is assigned for every
+speaker within the audio. This field specifies which one of
+those speakers was detected to have spoken this word. Value
+ranges from 1 up to diarization_speaker_count, and is only
+set if speaker diarization is enabled.</p>
 </dd></dl>
 
 </dd></dl>
