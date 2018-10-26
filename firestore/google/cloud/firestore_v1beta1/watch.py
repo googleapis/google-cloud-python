@@ -289,7 +289,6 @@ class Watch(object):
                 raise reason
             raise RuntimeError(reason)
 
-
     def _on_rpc_done(self, future):
         """Triggered whenever the underlying RPC terminates without recovery.
 
