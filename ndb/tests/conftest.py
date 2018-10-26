@@ -33,4 +33,4 @@ def property_clean_cache():
     try:
         yield
     finally:
-        del model.Property._find_methods_cache
+        model.Property._find_methods_cache.clear()

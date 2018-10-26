@@ -348,6 +348,7 @@ class Property(ModelAttribute):
     _write_empty_list = False
     # Non-public class attributes.
     _CREATION_COUNTER = 0
+    _find_methods_cache = {}
 
     def __init__(
         self,
@@ -863,17 +864,14 @@ class Property(ModelAttribute):
             List[Callable]: Class method objects.
         """
         # Get cache on current class / set cache if it doesn't exist.
-        cache = cls.__dict__.get("_find_methods_cache")
-        if cache:
-            hit = cache.get(names)
-            if hit is not None:
-                if reverse:
-                    return list(reversed(hit))
-                else:
-                    return hit
-        else:
-            cache = {}
-            cls._find_methods_cache = cache
+        key = "{}.{}".format(cls.__module__, cls.__qualname__)
+        cache = cls._find_methods_cache.setdefault(key, {})
+        hit = cache.get(names)
+        if hit is not None:
+            if reverse:
+                return list(reversed(hit))
+            else:
+                return hit
 
         methods = []
         for klass in cls.__mro__:
