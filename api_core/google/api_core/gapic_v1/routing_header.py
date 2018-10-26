@@ -20,6 +20,8 @@ requests, especially for services that are regional.
 Generally, these headers are specified as gRPC metadata.
 """
 
+import sys
+
 from six.moves.urllib.parse import urlencode
 
 ROUTING_METADATA_KEY = 'x-goog-request-params'
@@ -35,7 +37,13 @@ def to_routing_header(params):
     Returns:
         str: The routing header string.
     """
-    return urlencode(params)
+    if sys.version_info[0] < 3:
+        # Python 2 does not have the "safe" parameter for urlencode.
+        return urlencode(params).replace('%2F', '/')
+    return urlencode(
+        params,
+        # Per Google API policy (go/api-url-encoding), / is not encoded.
+        safe='/')
 
 
 def to_grpc_metadata(params):

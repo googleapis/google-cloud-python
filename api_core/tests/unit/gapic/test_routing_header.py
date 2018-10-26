@@ -22,6 +22,12 @@ def test_to_routing_header():
     assert value == "name=meep&book.read=1"
 
 
+def test_to_routing_header_with_slashes():
+    params = [('name', 'me/ep'), ('book.read', '1&2')]
+    value = routing_header.to_routing_header(params)
+    assert value == "name=me/ep&book.read=1%262"
+
+
 def test_to_grpc_metadata():
     params = [('name', 'meep'), ('book.read', '1')]
     metadata = routing_header.to_grpc_metadata(params)
