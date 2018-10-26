@@ -646,6 +646,111 @@ class TestProperty:
         assert value == ["SimpleProperty._validate"]
 
     @staticmethod
+    def test__fix_up():
+        prop = model.Property(name="foo")
+        assert prop._code_name is None
+        prop._fix_up(None, "bar")
+        assert prop._code_name == "bar"
+
+    @staticmethod
+    def test__fix_up_no_name():
+        prop = model.Property()
+        assert prop._name is None
+        assert prop._code_name is None
+
+        prop._fix_up(None, "both")
+        assert prop._code_name == "both"
+        assert prop._name == "both"
+
+    @staticmethod
+    def test__store_value():
+        entity = unittest.mock.Mock(_values={}, spec=("_values",))
+        prop = model.Property(name="foo")
+        prop._store_value(entity, unittest.mock.sentinel.value)
+        assert entity._values == {prop._name: unittest.mock.sentinel.value}
+
+    @staticmethod
+    def test__set_value(property_clean_cache):
+        entity = unittest.mock.Mock(
+            _projection=False,
+            _values={},
+            spec=("_projection", "_values"),
+        )
+        prop = model.Property(name="foo", repeated=False)
+        prop._set_value(entity, 19)
+        assert entity._values == {prop._name: 19}
+
+    @staticmethod
+    def test__set_value_none():
+        entity = unittest.mock.Mock(
+            _projection=False,
+            _values={},
+            spec=("_projection", "_values"),
+        )
+        prop = model.Property(name="foo", repeated=False)
+        prop._set_value(entity, None)
+        assert entity._values == {prop._name: None}
+        # Cache is untouched.
+        assert model.Property._FIND_METHODS_CACHE == {}
+
+    @staticmethod
+    def test__set_value_repeated(property_clean_cache):
+        entity = unittest.mock.Mock(
+            _projection=False,
+            _values={},
+            spec=("_projection", "_values"),
+        )
+        prop = model.Property(name="foo", repeated=True)
+        prop._set_value(entity, (11, 12, 13))
+        assert entity._values == {prop._name: [11, 12, 13]}
+
+    @staticmethod
+    def test__set_value_repeated_bad_container():
+        entity = unittest.mock.Mock(
+            _projection=False,
+            _values={},
+            spec=("_projection", "_values"),
+        )
+        prop = model.Property(name="foo", repeated=True)
+        with pytest.raises(exceptions.BadValueError):
+            prop._set_value(entity, None)
+        # Cache is untouched.
+        assert model.Property._FIND_METHODS_CACHE == {}
+
+    @staticmethod
+    def test__set_value_projection():
+        entity = unittest.mock.Mock(
+            _projection=True,
+            spec=("_projection",),
+        )
+        prop = model.Property(name="foo", repeated=True)
+        with pytest.raises(model.ReadonlyPropertyError):
+            prop._set_value(entity, None)
+        # Cache is untouched.
+        assert model.Property._FIND_METHODS_CACHE == {}
+
+    @staticmethod
+    def test__has_value():
+        prop = model.Property(name="foo")
+        values = {prop._name: 88}
+        entity1 = unittest.mock.Mock(_values=values, spec=("_values",))
+        entity2 = unittest.mock.Mock(_values={}, spec=("_values",))
+
+        assert prop._has_value(entity1)
+        assert not prop._has_value(entity2)
+
+    @staticmethod
+    def test__retrieve_value():
+        prop = model.Property(name="foo")
+        values = {prop._name: b"\x00\x01"}
+        entity1 = unittest.mock.Mock(_values=values, spec=("_values",))
+        entity2 = unittest.mock.Mock(_values={}, spec=("_values",))
+
+        assert prop._retrieve_value(entity1) == b"\x00\x01"
+        assert prop._retrieve_value(entity2) is None
+        assert prop._retrieve_value(entity2, default=b"zip") == b"zip"
+
+    @staticmethod
     def _property_subtype_chain():
         class A(model.Property):
             def _validate(self, value):
