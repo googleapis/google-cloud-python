@@ -38,7 +38,7 @@ class TestCrossLanguage(unittest.TestCase):
                 os.path.splitext(os.path.basename(test_filename))[0])
             try:
                 self.run_write_test(test_proto, desc)
-            except Exception as error:
+            except Exception:
                 failed += 1
                 # print(desc, test_proto)  # for debugging
                 # print(error.args[0])  # for debugging
