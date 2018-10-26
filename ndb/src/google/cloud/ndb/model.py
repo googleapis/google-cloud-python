@@ -852,6 +852,25 @@ class Property(ModelAttribute):
         """
         return entity._values.get(self._name, default)
 
+    def _opt_call_from_base_type(self, value):
+        """Call :meth:`_from_base_type` if necessary.
+
+        If ``value`` is a :class:`_BaseValue`, unwrap it and call all
+        :math:`_from_base_type` methods. Otherwise, return the value
+        unchanged.
+
+        Args:
+            value (Any): The value to invoke :meth:`_call_from_base_type`
+               for.
+
+        Returns:
+            Any: The original value (if not :class:`_BaseValue`) or the value
+            converted from the base type.
+        """
+        if isinstance(value, _BaseValue):
+            value = self._call_from_base_type(value.b_val)
+        return value
+
     def _opt_call_to_base_type(self, value):
         """Call :meth:`_to_base_type` if necessary.
 

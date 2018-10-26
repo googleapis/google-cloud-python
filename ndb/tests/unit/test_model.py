@@ -740,6 +740,24 @@ class TestProperty:
         assert prop._retrieve_value(entity2, default=b"zip") == b"zip"
 
     @staticmethod
+    def test__opt_call_from_base_type():
+        prop = model.Property(name="prop")
+        value = b"\x00\x01"
+        assert value is prop._opt_call_from_base_type(value)
+        # Cache is untouched.
+        assert model.Property._FIND_METHODS_CACHE == {}
+
+    @staticmethod
+    def test__opt_call_from_base_type_wrapped(property_clean_cache):
+        class SimpleProperty(model.Property):
+            def _from_base_type(self, value):
+                return value * 2.0
+
+        prop = SimpleProperty(name="prop")
+        value = model._BaseValue(8.5)
+        assert prop._opt_call_from_base_type(value) == 17.0
+
+    @staticmethod
     def test__opt_call_to_base_type(property_clean_cache):
         class SimpleProperty(model.Property):
             def _validate(self, value):
