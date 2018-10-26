@@ -37,6 +37,18 @@ def test_encode_chunk_with_floats():
     assert "1.05153" in csv_string
 
 
+def test_encode_chunk_with_newlines():
+    """See: https://github.com/pydata/pandas-gbq/issues/180
+    """
+    df = pandas.DataFrame({"s": ["abcd", "ef\ngh", "ij\r\nkl"]})
+    csv_buffer = load.encode_chunk(df)
+    csv_bytes = csv_buffer.read()
+    csv_string = csv_bytes.decode("utf-8")
+    assert "abcd" in csv_string
+    assert '"ef\ngh"' in csv_string
+    assert '"ij\r\nkl"' in csv_string
+
+
 def test_encode_chunks_splits_dataframe():
     df = pandas.DataFrame(numpy.random.randn(6, 4), index=range(6))
     chunks = list(load.encode_chunks(df, chunksize=2))

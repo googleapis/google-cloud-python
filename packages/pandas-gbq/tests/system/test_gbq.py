@@ -1167,6 +1167,35 @@ class TestToGBQIntegration(object):
 
         assert len(result_df) == test_size
 
+    def test_upload_data_with_newlines(self, project_id):
+        test_id = "data_with_newlines"
+        test_size = 2
+        df = DataFrame({"s": ["abcd", "ef\ngh"]})
+
+        gbq.to_gbq(
+            df,
+            self.destination_table + test_id,
+            project_id=project_id,
+            private_key=self.credentials,
+        )
+
+        result_df = gbq.read_gbq(
+            "SELECT * FROM {0}".format(self.destination_table + test_id),
+            project_id=project_id,
+            private_key=self.credentials,
+            dialect="legacy",
+        )
+
+        assert len(result_df) == test_size
+
+        if sys.version_info.major < 3:
+            pytest.skip(msg="Unicode comparison in Py2 not working")
+
+        result = result_df["s"].sort_values()
+        expected = df["s"].sort_values()
+
+        tm.assert_numpy_array_equal(expected.values, result.values)
+
     def test_upload_data_flexible_column_order(self, project_id):
         test_id = "13"
         test_size = 10
