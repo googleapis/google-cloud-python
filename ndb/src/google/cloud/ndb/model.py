@@ -852,6 +852,42 @@ class Property(ModelAttribute):
         """
         return entity._values.get(self._name, default)
 
+    def _get_user_value(self, entity):
+        """Return the user value for this property of the given entity.
+
+        This implies removing the :class:`_BaseValue` wrapper if present, and
+        if it is, calling all ``_from_base_type()`` methods, in the reverse
+        method resolution order of the property's class. It also handles
+        default values and repeated properties.
+
+        Args:
+            entity (Model): An entity to get a value from.
+
+        Returns:
+            Any: The original value (if not :class:`_BaseValue`) or the wrapped
+            value converted from the base type.
+        """
+        return self._apply_to_values(entity, self._opt_call_from_base_type)
+
+    def _get_base_value(self, entity):
+        """Return the base value for this property of the given entity.
+
+        This implies calling all ``_to_base_type()`` methods, in the method
+        resolution order of the property's class, and adding a
+        :class:`_BaseValue` wrapper, if one is not already present. (If one
+        is present, no work is done.)  It also handles default values and
+        repeated properties.
+
+        Args:
+            entity (Model): An entity to get a value from.
+
+        Returns:
+            Union[_BaseValue, List[_BaseValue]]: The original value
+            (if :class:`_BaseValue`) or the value converted to the base type
+            and wrapped.
+        """
+        return self._apply_to_values(entity, self._opt_call_to_base_type)
+
     def _opt_call_from_base_type(self, value):
         """Call :meth:`_from_base_type` if necessary.
 

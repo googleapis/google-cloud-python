@@ -740,6 +740,48 @@ class TestProperty:
         assert prop._retrieve_value(entity2, default=b"zip") == b"zip"
 
     @staticmethod
+    def test__get_user_value():
+        prop = model.Property(name="prop")
+        value = b"\x00\x01"
+        values = {prop._name: value}
+        entity = unittest.mock.Mock(_values=values, spec=("_values",))
+        assert value is prop._get_user_value(entity)
+        # Cache is untouched.
+        assert model.Property._FIND_METHODS_CACHE == {}
+
+    @staticmethod
+    def test__get_user_value_wrapped(property_clean_cache):
+        class SimpleProperty(model.Property):
+            def _from_base_type(self, value):
+                return value * 2.0
+
+        prop = SimpleProperty(name="prop")
+        values = {prop._name: model._BaseValue(9.5)}
+        entity = unittest.mock.Mock(_values=values, spec=("_values",))
+        assert prop._get_user_value(entity) == 19.0
+
+    @staticmethod
+    def test__get_base_value(property_clean_cache):
+        class SimpleProperty(model.Property):
+            def _validate(self, value):
+                return value + 1
+
+        prop = SimpleProperty(name="prop")
+        values = {prop._name: 20}
+        entity = unittest.mock.Mock(_values=values, spec=("_values",))
+        assert prop._get_base_value(entity) == model._BaseValue(21)
+
+    @staticmethod
+    def test__get_base_value_wrapped():
+        prop = model.Property(name="prop")
+        value = model._BaseValue(b"\x00\x01")
+        values = {prop._name: value}
+        entity = unittest.mock.Mock(_values=values, spec=("_values",))
+        assert value is prop._get_base_value(entity)
+        # Cache is untouched.
+        assert model.Property._FIND_METHODS_CACHE == {}
+
+    @staticmethod
     def test__opt_call_from_base_type():
         prop = model.Property(name="prop")
         value = b"\x00\x01"
