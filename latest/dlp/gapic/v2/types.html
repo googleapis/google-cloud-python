@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Types for Cloud Data Loss Prevention (DLP) API Client &#8212; google-cloud 448e0ec97d documentation</title>
+    <title>Types for Cloud Data Loss Prevention (DLP) API Client &#8212; google-cloud 82d71cb documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -525,6 +525,14 @@ number of rows scanned is rounded down. Must be between 0 and
 specified. Cannot be used in conjunction with TimespanConfig.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.BigQueryOptions.excluded_fields">
+<code class="descname">excluded_fields</code><a class="headerlink" href="#google.cloud.dlp_v2.types.BigQueryOptions.excluded_fields" title="Permalink to this definition">#</a></dt>
+<dd><p>References to fields excluded from scanning. This allows you
+to skip inspection of entire columns which you know have no
+findings.</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -767,7 +775,8 @@ bytes_limit_per_file_percent can be specified.</p>
 <code class="descname">file_types</code><a class="headerlink" href="#google.cloud.dlp_v2.types.CloudStorageOptions.file_types" title="Permalink to this definition">#</a></dt>
 <dd><p>List of file type groups to include in the scan. If empty, all
 files are scanned and available data format processors are
-applied.</p>
+applied. In addition, the binary content of the selected files
+is always scanned as well.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1590,7 +1599,7 @@ and crypto_key.</p>
 <dl class="class">
 <dt id="google.cloud.dlp_v2.types.DateTime">
 <em class="property">class </em><code class="descclassname">google.cloud.dlp_v2.types.</code><code class="descname">DateTime</code><a class="headerlink" href="#google.cloud.dlp_v2.types.DateTime" title="Permalink to this definition">#</a></dt>
-<dd><p>Message for a date time object.</p>
+<dd><p>Message for a date time object. e.g. 2018-01-01, 5th August.</p>
 <dl class="attribute">
 <dt id="google.cloud.dlp_v2.types.DateTime.date">
 <code class="descname">date</code><a class="headerlink" href="#google.cloud.dlp_v2.types.DateTime.date" title="Permalink to this definition">#</a></dt>
@@ -2333,7 +2342,8 @@ the finding.</p>
 <dd><p>Name of the information type. Either a name of your choosing
 when creating a CustomInfoType, or one of the names listed at
 <a class="reference external" href="https://cloud.google.com/dlp/docs/infotypes-reference">https://cloud.google.com/dlp/docs/infotypes-reference</a> when
-specifying a built-in type.</p>
+specifying a built-in type. InfoType names should conform to
+the pattern [a-zA-Z0-9_]{1,64}.</p>
 </dd></dl>
 
 </dd></dl>
@@ -2774,7 +2784,7 @@ least one object.</p>
 <dt id="google.cloud.dlp_v2.types.JobTrigger.errors">
 <code class="descname">errors</code><a class="headerlink" href="#google.cloud.dlp_v2.types.JobTrigger.errors" title="Permalink to this definition">#</a></dt>
 <dd><p>A stream of errors encountered when the trigger was activated.
-Repeated errors may result in the JobTrigger automaticaly
+Repeated errors may result in the JobTrigger automatically
 being paused. Will return the last 100 errors. Whenever the
 JobTrigger is modified this list will be cleared. Output only
 field.</p>
@@ -3399,8 +3409,9 @@ Risk jobs. Columns are derived from the <code class="docutils literal notranslat
 appending to an existing table, any columns from the
 predefined schema that are missing will be added. No columns
 in the existing table will be deleted.  If unspecified, then
-all available columns will be used for a new table, and no
-changes will be made to an existing table.</p>
+all available columns will be used for a new table or an
+(existing) table with no schema, and no changes will be made
+to an existing table that has a schema.</p>
 </dd></dl>
 
 </dd></dl>
@@ -3505,7 +3516,7 @@ structs themselves or nested within a repeated field.</p>
 <code class="descname">entity_id</code><a class="headerlink" href="#google.cloud.dlp_v2.types.PrivacyMetric.KAnonymityConfig.entity_id" title="Permalink to this definition">#</a></dt>
 <dd><p>Optional message indicating that multiple rows might be
 associated to a single individual. If the same entity_id is
-associated to multiple quasi-identifier tuples over distict
+associated to multiple quasi-identifier tuples over distinct
 rows, we consider the entire collection of tuples as the
 composite quasi-identifier. This collection is a multiset: the
 order in which the different tuples appear in the dataset is
@@ -3693,6 +3704,12 @@ model from the distribution of values in the input data</p>
 <dt id="google.cloud.dlp_v2.types.QuoteInfo.parsed_quote">
 <code class="descname">parsed_quote</code><a class="headerlink" href="#google.cloud.dlp_v2.types.QuoteInfo.parsed_quote" title="Permalink to this definition">#</a></dt>
 <dd><p>Object representation of the quote.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.QuoteInfo.date_time">
+<code class="descname">date_time</code><a class="headerlink" href="#google.cloud.dlp_v2.types.QuoteInfo.date_time" title="Permalink to this definition">#</a></dt>
+<dd><p>The date time indicated by the quote.</p>
 </dd></dl>
 
 </dd></dl>

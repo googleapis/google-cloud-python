@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.dlp_v2.proto.dlp_pb2 &#8212; google-cloud 448e0ec97d documentation</title>
+    <title>google.cloud.dlp_v2.proto.dlp_pb2 &#8212; google-cloud 82d71cb documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -8607,8 +8607,9 @@
 <span class="s2">          appending to an existing table, any columns from the</span>
 <span class="s2">          predefined schema that are missing will be added. No columns</span>
 <span class="s2">          in the existing table will be deleted.  If unspecified, then</span>
-<span class="s2">          all available columns will be used for a new table, and no</span>
-<span class="s2">          changes will be made to an existing table.</span>
+<span class="s2">          all available columns will be used for a new table or an</span>
+<span class="s2">          (existing) table with no schema, and no changes will be made</span>
+<span class="s2">          to an existing table that has a schema.</span>
 <span class="s2">  &quot;&quot;&quot;</span><span class="p">,</span>
   <span class="c1"># @@protoc_insertion_point(class_scope:google.privacy.dlp.v2.OutputStorageConfig)</span>
   <span class="p">))</span>
@@ -8883,7 +8884,7 @@
 <span class="s2">        entity_id:</span>
 <span class="s2">            Optional message indicating that multiple rows might be</span>
 <span class="s2">            associated to a single individual. If the same entity\_id is</span>
-<span class="s2">            associated to multiple quasi-identifier tuples over distict</span>
+<span class="s2">            associated to multiple quasi-identifier tuples over distinct</span>
 <span class="s2">            rows, we consider the entire collection of tuples as the</span>
 <span class="s2">            composite quasi-identifier. This collection is a multiset: the</span>
 <span class="s2">            order in which the different tuples appear in the dataset is</span>
@@ -9453,6 +9454,8 @@
 <span class="s2">  Attributes:</span>
 <span class="s2">      parsed_quote:</span>
 <span class="s2">          Object representation of the quote.</span>
+<span class="s2">      date_time:</span>
+<span class="s2">          The date time indicated by the quote.</span>
 <span class="s2">  &quot;&quot;&quot;</span><span class="p">,</span>
   <span class="c1"># @@protoc_insertion_point(class_scope:google.privacy.dlp.v2.QuoteInfo)</span>
   <span class="p">))</span>
@@ -9475,7 +9478,7 @@
   <span class="n">DESCRIPTOR</span> <span class="o">=</span> <span class="n">_DATETIME</span><span class="p">,</span>
   <span class="vm">__module__</span> <span class="o">=</span> <span class="s1">&#39;google.cloud.dlp_v2.proto.dlp_pb2&#39;</span>
   <span class="p">,</span>
-  <span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;Message for a date time object.</span>
+  <span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;Message for a date time object. e.g. 2018-01-01, 5th August.</span>
 <span class="s2">  </span>
 <span class="s2">  </span>
 <span class="s2">  Attributes:</span>
@@ -10292,7 +10295,7 @@
 <span class="s2">          least one object.</span>
 <span class="s2">      errors:</span>
 <span class="s2">          A stream of errors encountered when the trigger was activated.</span>
-<span class="s2">          Repeated errors may result in the JobTrigger automaticaly</span>
+<span class="s2">          Repeated errors may result in the JobTrigger automatically</span>
 <span class="s2">          being paused. Will return the last 100 errors. Whenever the</span>
 <span class="s2">          JobTrigger is modified this list will be cleared. Output only</span>
 <span class="s2">          field.</span>
