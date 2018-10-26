@@ -440,34 +440,35 @@ class MergeOption(WriteOption):
             # merge all
             self.field_paths = None
 
-    def modify_write(
-            self, write_pb, field_paths=None, **unused_kwargs):
+    def modify_write(self, write_pb, **unused_kwargs):
         """Modify a ``Write`` protobuf based on the state of this write option.
          Args:
             write_pb (google.cloud.firestore_v1beta1.types.Write): A
                 ``Write`` protobuf instance to be modified with a precondition
                 determined by the state of this option.
-            field_paths (Sequence[str]):
-                The actual field names to use for replacing a document.
             unused_kwargs (Dict[str, Any]): Keyword arguments accepted by
                 other subclasses that are unused here.
         """
-        if self.field_paths is not None:
-            # If paths are specified in the constructor, we use those
-            # instead of the ones we are passed here as a param.
-            field_paths = self.field_paths
-        if field_paths:
+        if self.field_paths:
             # filter out all of fields from the write protobuf that
             # are unnecessary, in order to comply with the conformance tests
+            field_paths = self.field_paths
+            document_vals = _helpers.decode_dict(
+                write_pb.update.fields,
+                None # XXX must be client
+            )
+            filtered_doc_vals = _helpers.filter_document_data_by_field_paths(
+                document_vals,
+                field_paths,
+                )
+            filtered_field_vals = _helpers.encode_dict(filtered_doc_vals)
             new_update = document_pb2.Document(
-                name=write_pb.update.name,
-                fields = {
-                    k: v for k, v in
-                    six.iteritems(dict(write_pb.update.fields))
-                        if k in field_paths
-                },
+                name = write_pb.update.name,
+                fields = filtered_field_vals,
                 )
             write_pb.update.CopyFrom(new_update)
+        else:
+            field_paths = unused_kwargs.get('field_paths') # XXX reenable
         mask = common_pb2.DocumentMask(field_paths=field_paths)
         write_pb.update_mask.CopyFrom(mask)
 

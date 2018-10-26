@@ -562,6 +562,19 @@ def extract_field_paths(document_data):
             field_paths.append(path)
     return field_paths
 
+def filter_document_data_by_field_paths(document_data, field_paths):
+    flattened = {}
+    for path in field_paths:
+        flattened[path] = get_nested_value(path, document_data)
+    toplevel = filtered = {}
+    for path, value in six.iteritems(flattened):
+        parts = FieldPath.from_string(path).parts
+        for part in parts:
+            parent, lastpart = filtered, part
+            filtered[part] = {}
+            filtered = filtered[part]
+        parent[lastpart] = value
+    return toplevel
 
 def reference_value_to_document(reference_value, client):
     """Convert a reference value string to a document.
