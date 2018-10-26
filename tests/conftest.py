@@ -30,7 +30,9 @@ def property_clean_cache():
     This property is set at runtime (with calls to ``_find_methods()``), so
     this fixture allows resetting the class to its original state.
     """
+    assert model.Property._FIND_METHODS_CACHE == {}
     try:
         yield
     finally:
+        assert model.Property._FIND_METHODS_CACHE != {}
         model.Property._FIND_METHODS_CACHE.clear()
