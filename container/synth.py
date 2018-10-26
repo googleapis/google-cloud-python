@@ -18,17 +18,16 @@ from synthtool import gcp
 
 gapic = gcp.GAPICGenerator()
 
+versions = ['v1alpha1', 'v1beta1', 'v1']
 
-#----------------------------------------------------------------------------
-# Generate container client
-#----------------------------------------------------------------------------
-library = gapic.py_library(
-    'container',
-    'v1',
-    config_path='/google/container/artman_container.yaml',
-    artman_output_name='container-v1')
+for version in versions:
+    library = gapic.py_library(
+        'container',
+        version,
+        config_path='/google/container/artman_container.yaml',
+        artman_output_name=f'container-{version}')
 
-s.move(library / 'google/cloud/container_v1')
+    s.move(library / f'google/cloud/container_{version}')
 
 # Issues exist where python files should define the source encoding
 # https://github.com/googleapis/gapic-generator/issues/2097
