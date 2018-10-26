@@ -236,6 +236,7 @@ class GbqConnector(object):
         dialect="legacy",
         location=None,
         try_credentials=None,
+        credentials=None,
     ):
         global context
         from google.api_core.exceptions import GoogleAPIError
@@ -249,11 +250,14 @@ class GbqConnector(object):
         self.private_key = private_key
         self.auth_local_webserver = auth_local_webserver
         self.dialect = dialect
+        self.credentials = credentials
         self.credentials_path = _get_credentials_file()
+        default_project = None
 
         # Load credentials from cache.
-        self.credentials = context.credentials
-        default_project = context.project
+        if not self.credentials:
+            self.credentials = context.credentials
+            default_project = context.project
 
         # Credentials were explicitly asked for, so don't use the cache.
         if private_key or reauth or not self.credentials:
@@ -563,7 +567,7 @@ class GbqConnector(object):
 
     def delete_and_recreate_table(self, dataset_id, table_id, table_schema):
         table = _Table(
-            self.project_id, dataset_id, private_key=self.private_key
+            self.project_id, dataset_id, credentials=self.credentials
         )
         table.delete(table_id)
         table.create(table_id, table_schema)
@@ -621,12 +625,13 @@ def read_gbq(
     index_col=None,
     col_order=None,
     reauth=False,
-    private_key=None,
     auth_local_webserver=False,
     dialect=None,
     location=None,
     configuration=None,
+    credentials=None,
     verbose=None,
+    private_key=None,
 ):
     r"""Load data from Google BigQuery using google-cloud-python
 
@@ -655,10 +660,6 @@ def read_gbq(
     reauth : boolean, default False
         Force Google BigQuery to re-authenticate the user. This is useful
         if multiple accounts are used.
-    private_key : str, optional
-        Service account private key in JSON format. Can be file path
-        or string contents. This is useful for remote server
-        authentication (eg. Jupyter/IPython notebook on remote host).
     auth_local_webserver : boolean, default False
         Use the `local webserver flow`_ instead of the `console flow`_
         when getting user credentials.
@@ -699,10 +700,28 @@ def read_gbq(
 
         For more information see `BigQuery REST API Reference
         <https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query>`__.
+    credentials : google.auth.credentials.Credentials, optional
+        Credentials for accessing Google APIs. Use this parameter to override
+        default credentials, such as to use Compute Engine
+        :class:`google.auth.compute_engine.Credentials` or Service Account
+        :class:`google.oauth2.service_account.Credentials` directly.
+
+        .. versionadded:: 0.8.0
     verbose : None, deprecated
         Deprecated in Pandas-GBQ 0.4.0. Use the `logging module
         to adjust verbosity instead
         <https://pandas-gbq.readthedocs.io/en/latest/intro.html#logging>`__.
+    private_key : str, deprecated
+        Deprecated in pandas-gbq version 0.8.0. Use the ``credentials``
+        parameter and
+        :func:`google.oauth2.service_account.Credentials.from_service_account_info`
+        or
+        :func:`google.oauth2.service_account.Credentials.from_service_account_file`
+        instead.
+
+        Service account private key in JSON format. Can be file path
+        or string contents. This is useful for remote server
+        authentication (eg. Jupyter/IPython notebook on remote host).
 
     Returns
     -------
@@ -736,10 +755,11 @@ def read_gbq(
     connector = GbqConnector(
         project_id,
         reauth=reauth,
-        private_key=private_key,
         dialect=dialect,
         auth_local_webserver=auth_local_webserver,
         location=location,
+        credentials=credentials,
+        private_key=private_key,
     )
     schema, rows = connector.run_query(query, configuration=configuration)
     final_df = _parse_data(schema, rows)
@@ -779,12 +799,13 @@ def to_gbq(
     chunksize=None,
     reauth=False,
     if_exists="fail",
-    private_key=None,
     auth_local_webserver=False,
     table_schema=None,
     location=None,
     progress_bar=True,
+    credentials=None,
     verbose=None,
+    private_key=None,
 ):
     """Write a DataFrame to a Google BigQuery table.
 
@@ -822,10 +843,6 @@ def to_gbq(
             If table exists, drop it, recreate it, and insert data.
         ``'append'``
             If table exists, insert data. Create if does not exist.
-    private_key : str, optional
-        Service account private key in JSON format. Can be file path
-        or string contents. This is useful for remote server
-        authentication (eg. Jupyter/IPython notebook on remote host).
     auth_local_webserver : bool, default False
         Use the `local webserver flow`_ instead of the `console flow`_
         when getting user credentials.
@@ -861,10 +878,28 @@ def to_gbq(
         chunk by chunk.
 
         .. versionadded:: 0.5.0
+    credentials : google.auth.credentials.Credentials, optional
+        Credentials for accessing Google APIs. Use this parameter to override
+        default credentials, such as to use Compute Engine
+        :class:`google.auth.compute_engine.Credentials` or Service Account
+        :class:`google.oauth2.service_account.Credentials` directly.
+
+        .. versionadded:: 0.8.0
     verbose : bool, deprecated
         Deprecated in Pandas-GBQ 0.4.0. Use the `logging module
         to adjust verbosity instead
         <https://pandas-gbq.readthedocs.io/en/latest/intro.html#logging>`__.
+    private_key : str, deprecated
+        Deprecated in pandas-gbq version 0.8.0. Use the ``credentials``
+        parameter and
+        :func:`google.oauth2.service_account.Credentials.from_service_account_info`
+        or
+        :func:`google.oauth2.service_account.Credentials.from_service_account_file`
+        instead.
+
+        Service account private key in JSON format. Can be file path
+        or string contents. This is useful for remote server
+        authentication (eg. Jupyter/IPython notebook on remote host).
     """
 
     _test_google_api_imports()
@@ -889,21 +924,21 @@ def to_gbq(
     connector = GbqConnector(
         project_id,
         reauth=reauth,
-        private_key=private_key,
         auth_local_webserver=auth_local_webserver,
         location=location,
         # Avoid reads when writing tables.
         # https://github.com/pydata/pandas-gbq/issues/202
         try_credentials=lambda project, creds: creds,
+        credentials=credentials,
+        private_key=private_key,
     )
     dataset_id, table_id = destination_table.rsplit(".", 1)
 
     table = _Table(
         project_id,
         dataset_id,
-        reauth=reauth,
-        private_key=private_key,
         location=location,
+        credentials=connector.credentials,
     )
 
     if not table_schema:
@@ -980,12 +1015,17 @@ class _Table(GbqConnector):
         project_id,
         dataset_id,
         reauth=False,
-        private_key=None,
         location=None,
+        credentials=None,
+        private_key=None,
     ):
         self.dataset_id = dataset_id
         super(_Table, self).__init__(
-            project_id, reauth, private_key, location=location
+            project_id,
+            reauth,
+            location=location,
+            credentials=credentials,
+            private_key=private_key,
         )
 
     def exists(self, table_id):
@@ -1031,12 +1071,12 @@ class _Table(GbqConnector):
                 "Table {0} already " "exists".format(table_id)
             )
 
-        if not _Dataset(self.project_id, private_key=self.private_key).exists(
+        if not _Dataset(self.project_id, credentials=self.credentials).exists(
             self.dataset_id
         ):
             _Dataset(
                 self.project_id,
-                private_key=self.private_key,
+                credentials=self.credentials,
                 location=self.location,
             ).create(self.dataset_id)
 
@@ -1084,10 +1124,19 @@ class _Table(GbqConnector):
 
 class _Dataset(GbqConnector):
     def __init__(
-        self, project_id, reauth=False, private_key=None, location=None
+        self,
+        project_id,
+        reauth=False,
+        location=None,
+        credentials=None,
+        private_key=None,
     ):
         super(_Dataset, self).__init__(
-            project_id, reauth, private_key, location=location
+            project_id,
+            reauth,
+            credentials=credentials,
+            location=location,
+            private_key=private_key,
         )
 
     def exists(self, dataset_id):

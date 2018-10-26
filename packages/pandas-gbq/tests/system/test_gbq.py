@@ -4,6 +4,7 @@ import sys
 import uuid
 from datetime import datetime
 
+import google.oauth2.service_account
 import numpy as np
 import pandas.util.testing as tm
 import pytest
@@ -12,6 +13,7 @@ from pandas import DataFrame, NaT, compat
 from pandas.compat import range, u
 
 from pandas_gbq import gbq
+
 
 TABLE_ID = "new_test"
 
@@ -34,13 +36,15 @@ def project(request, project_id):
 
 
 @pytest.fixture()
-def credentials(private_key_contents):
-    return private_key_contents
+def credentials(private_key_path):
+    return google.oauth2.service_account.Credentials.from_service_account_file(
+        private_key_path
+    )
 
 
 @pytest.fixture()
 def gbq_connector(project, credentials):
-    return gbq.GbqConnector(project, private_key=credentials)
+    return gbq.GbqConnector(project, credentials=credentials)
 
 
 @pytest.fixture(scope="module")
@@ -97,12 +101,12 @@ def tokyo_table(bigquery_client, tokyo_dataset):
 
 @pytest.fixture()
 def gbq_dataset(project, credentials):
-    return gbq._Dataset(project, private_key=credentials)
+    return gbq._Dataset(project, credentials=credentials)
 
 
 @pytest.fixture()
 def gbq_table(project, credentials, random_dataset_id):
-    return gbq._Table(project, random_dataset_id, private_key=credentials)
+    return gbq._Table(project, random_dataset_id, credentials=credentials)
 
 
 def make_mixed_dataframe_v2(test_size):
@@ -146,7 +150,7 @@ class TestGBQConnectorIntegration(object):
 def test_should_read(project, credentials):
     query = 'SELECT "PI" AS valid_string'
     df = gbq.read_gbq(
-        query, project_id=project, private_key=credentials, dialect="legacy"
+        query, project_id=project, credentials=credentials, dialect="legacy"
     )
     tm.assert_frame_equal(df, DataFrame({"valid_string": ["PI"]}))
 
@@ -157,7 +161,7 @@ class TestReadGBQIntegration(object):
         # - PER-TEST FIXTURES -
         # put here any instruction you want to be run *BEFORE* *EVERY* test is
         # executed.
-        self.gbq_connector = gbq.GbqConnector(project, private_key=credentials)
+        self.gbq_connector = gbq.GbqConnector(project, credentials=credentials)
         self.credentials = credentials
 
     def test_should_properly_handle_empty_strings(self, project_id):
@@ -165,7 +169,7 @@ class TestReadGBQIntegration(object):
         df = gbq.read_gbq(
             query,
             project_id=project_id,
-            private_key=self.credentials,
+            credentials=self.credentials,
             dialect="legacy",
         )
         tm.assert_frame_equal(df, DataFrame({"empty_string": [""]}))
@@ -175,7 +179,7 @@ class TestReadGBQIntegration(object):
         df = gbq.read_gbq(
             query,
             project_id=project_id,
-            private_key=self.credentials,
+            credentials=self.credentials,
             dialect="legacy",
         )
         tm.assert_frame_equal(df, DataFrame({"null_string": [None]}))
@@ -185,7 +189,7 @@ class TestReadGBQIntegration(object):
         df = gbq.read_gbq(
             query,
             project_id=project_id,
-            private_key=self.credentials,
+            credentials=self.credentials,
             dialect="legacy",
         )
         tm.assert_frame_equal(df, DataFrame({"valid_integer": [3]}))
@@ -197,7 +201,7 @@ class TestReadGBQIntegration(object):
         df = gbq.read_gbq(
             query,
             project_id=project_id,
-            private_key=self.credentials,
+            credentials=self.credentials,
             dialect="legacy",
         )
         tm.assert_frame_equal(df, DataFrame({"nullable_integer": [1, None]}))
@@ -207,7 +211,7 @@ class TestReadGBQIntegration(object):
         df = gbq.read_gbq(
             query,
             project_id=project_id,
-            private_key=self.credentials,
+            credentials=self.credentials,
             dialect="legacy",
         )
         tm.assert_frame_equal(df, DataFrame({"valid_long": [1 << 62]}))
@@ -219,7 +223,7 @@ class TestReadGBQIntegration(object):
         df = gbq.read_gbq(
             query,
             project_id=project_id,
-            private_key=self.credentials,
+            credentials=self.credentials,
             dialect="legacy",
         )
         tm.assert_frame_equal(
@@ -231,7 +235,7 @@ class TestReadGBQIntegration(object):
         df = gbq.read_gbq(
             query,
             project_id=project_id,
-            private_key=self.credentials,
+            credentials=self.credentials,
             dialect="legacy",
         )
         tm.assert_frame_equal(df, DataFrame({"null_integer": [None]}))
@@ -243,7 +247,7 @@ class TestReadGBQIntegration(object):
         df = gbq.read_gbq(
             query,
             project_id=project_id,
-            private_key=self.credentials,
+            credentials=self.credentials,
             dialect="legacy",
         )
         tm.assert_frame_equal(df, DataFrame({"valid_float": [pi]}))
@@ -257,7 +261,7 @@ class TestReadGBQIntegration(object):
         df = gbq.read_gbq(
             query,
             project_id=project_id,
-            private_key=self.credentials,
+            credentials=self.credentials,
             dialect="legacy",
         )
         tm.assert_frame_equal(df, DataFrame({"nullable_float": [pi, None]}))
@@ -269,7 +273,7 @@ class TestReadGBQIntegration(object):
         df = gbq.read_gbq(
             query,
             project_id=project_id,
-            private_key=self.credentials,
+            credentials=self.credentials,
             dialect="legacy",
         )
         tm.assert_frame_equal(
@@ -285,7 +289,7 @@ class TestReadGBQIntegration(object):
         df = gbq.read_gbq(
             query,
             project_id=project_id,
-            private_key=self.credentials,
+            credentials=self.credentials,
             dialect="legacy",
         )
         tm.assert_frame_equal(
@@ -297,7 +301,7 @@ class TestReadGBQIntegration(object):
         df = gbq.read_gbq(
             query,
             project_id=project_id,
-            private_key=self.credentials,
+            credentials=self.credentials,
             dialect="legacy",
         )
         tm.assert_frame_equal(df, DataFrame({"null_float": [np.nan]}))
@@ -307,7 +311,7 @@ class TestReadGBQIntegration(object):
         df = gbq.read_gbq(
             query,
             project_id=project_id,
-            private_key=self.credentials,
+            credentials=self.credentials,
             dialect="legacy",
         )
         tm.assert_frame_equal(
@@ -322,7 +326,7 @@ class TestReadGBQIntegration(object):
         df = gbq.read_gbq(
             query,
             project_id=project_id,
-            private_key=self.credentials,
+            credentials=self.credentials,
             dialect="legacy",
         )
         tm.assert_frame_equal(
@@ -359,7 +363,7 @@ class TestReadGBQIntegration(object):
         df = gbq.read_gbq(
             query,
             project_id=project_id,
-            private_key=self.credentials,
+            credentials=self.credentials,
             dialect="standard",
         )
         assert df["_"].dtype == type_
@@ -369,7 +373,7 @@ class TestReadGBQIntegration(object):
         df = gbq.read_gbq(
             query,
             project_id=project_id,
-            private_key=self.credentials,
+            credentials=self.credentials,
             dialect="legacy",
         )
         tm.assert_frame_equal(df, DataFrame({"null_timestamp": [NaT]}))
@@ -379,7 +383,7 @@ class TestReadGBQIntegration(object):
         df = gbq.read_gbq(
             query,
             project_id=project_id,
-            private_key=self.credentials,
+            credentials=self.credentials,
             dialect="legacy",
         )
         tm.assert_frame_equal(df, DataFrame({"null_boolean": [None]}))
@@ -391,7 +395,7 @@ class TestReadGBQIntegration(object):
         df = gbq.read_gbq(
             query,
             project_id=project_id,
-            private_key=self.credentials,
+            credentials=self.credentials,
             dialect="legacy",
         )
         tm.assert_frame_equal(
@@ -411,7 +415,7 @@ class TestReadGBQIntegration(object):
         df = gbq.read_gbq(
             query,
             project_id=project_id,
-            private_key=self.credentials,
+            credentials=self.credentials,
             dialect="legacy",
         )
         tm.assert_frame_equal(df, correct_test_datatype)
@@ -422,7 +426,7 @@ class TestReadGBQIntegration(object):
             query,
             project_id=project_id,
             index_col="string_1",
-            private_key=self.credentials,
+            credentials=self.credentials,
             dialect="legacy",
         )
         correct_frame = DataFrame(
@@ -437,7 +441,7 @@ class TestReadGBQIntegration(object):
             query,
             project_id=project_id,
             col_order=col_order,
-            private_key=self.credentials,
+            credentials=self.credentials,
             dialect="legacy",
         )
         correct_frame = DataFrame(
@@ -455,7 +459,7 @@ class TestReadGBQIntegration(object):
                 query,
                 project_id=project_id,
                 col_order=col_order,
-                private_key=self.credentials,
+                credentials=self.credentials,
                 dialect="legacy",
             )
 
@@ -467,7 +471,7 @@ class TestReadGBQIntegration(object):
             project_id=project_id,
             index_col="string_1",
             col_order=col_order,
-            private_key=self.credentials,
+            credentials=self.credentials,
             dialect="legacy",
         )
         correct_frame = DataFrame(
@@ -488,7 +492,7 @@ class TestReadGBQIntegration(object):
                 project_id=project_id,
                 index_col="string_bbb",
                 col_order=col_order,
-                private_key=self.credentials,
+                credentials=self.credentials,
                 dialect="legacy",
             )
 
@@ -497,7 +501,7 @@ class TestReadGBQIntegration(object):
             gbq.read_gbq(
                 "SELCET * FORM [publicdata:samples.shakespeare]",
                 project_id=project_id,
-                private_key=self.credentials,
+                credentials=self.credentials,
                 dialect="legacy",
             )
 
@@ -506,7 +510,7 @@ class TestReadGBQIntegration(object):
             gbq.read_gbq(
                 "SELCET * FROM [publicdata:samples.shakespeare]",
                 project_id="not-my-project",
-                private_key=self.credentials,
+                credentials=self.credentials,
                 dialect="legacy",
             )
 
@@ -515,7 +519,7 @@ class TestReadGBQIntegration(object):
             gbq.read_gbq(
                 "SELECT * FROM [publicdata:samples.nope]",
                 project_id=project_id,
-                private_key=self.credentials,
+                credentials=self.credentials,
                 dialect="legacy",
             )
 
@@ -527,7 +531,7 @@ class TestReadGBQIntegration(object):
             "SELECT id FROM [publicdata:samples.wikipedia] "
             "GROUP EACH BY id ORDER BY id ASC LIMIT {0}".format(test_size),
             project_id=project_id,
-            private_key=self.credentials,
+            credentials=self.credentials,
             dialect="legacy",
         )
         assert len(df.drop_duplicates()) == test_size
@@ -540,7 +544,7 @@ class TestReadGBQIntegration(object):
             "FROM [publicdata:samples.wikipedia] "
             "WHERE timestamp=-9999999",
             project_id=project_id,
-            private_key=self.credentials,
+            credentials=self.credentials,
             dialect="legacy",
         )
         page_array = np.zeros(
@@ -561,7 +565,7 @@ class TestReadGBQIntegration(object):
         df = gbq.read_gbq(
             "SELECT 3 as v",
             project_id=project_id,
-            private_key=self.credentials,
+            credentials=self.credentials,
             dialect="standard",
         )
         expected_result = DataFrame(dict(v=[3]))
@@ -577,7 +581,7 @@ class TestReadGBQIntegration(object):
                 legacy_sql,
                 project_id=project_id,
                 dialect="standard",
-                private_key=self.credentials,
+                credentials=self.credentials,
             )
 
         # Test that a legacy sql statement succeeds when
@@ -586,7 +590,7 @@ class TestReadGBQIntegration(object):
             legacy_sql,
             project_id=project_id,
             dialect="legacy",
-            private_key=self.credentials,
+            credentials=self.credentials,
         )
         assert len(df.drop_duplicates()) == 10
 
@@ -602,7 +606,7 @@ class TestReadGBQIntegration(object):
             gbq.read_gbq(
                 standard_sql,
                 project_id=project_id,
-                private_key=self.credentials,
+                credentials=self.credentials,
                 dialect="legacy",
             )
 
@@ -612,7 +616,7 @@ class TestReadGBQIntegration(object):
             standard_sql,
             project_id=project_id,
             dialect="standard",
-            private_key=self.credentials,
+            credentials=self.credentials,
         )
         assert len(df.drop_duplicates()) == 10
 
@@ -642,7 +646,7 @@ class TestReadGBQIntegration(object):
             gbq.read_gbq(
                 sql_statement,
                 project_id=project_id,
-                private_key=self.credentials,
+                credentials=self.credentials,
                 dialect="legacy",
             )
 
@@ -651,7 +655,7 @@ class TestReadGBQIntegration(object):
         df = gbq.read_gbq(
             sql_statement,
             project_id=project_id,
-            private_key=self.credentials,
+            credentials=self.credentials,
             configuration=config,
             dialect="legacy",
         )
@@ -667,7 +671,7 @@ class TestReadGBQIntegration(object):
             gbq.read_gbq(
                 query_no_use,
                 project_id=project_id,
-                private_key=self.credentials,
+                credentials=self.credentials,
                 configuration=config,
                 dialect="legacy",
             )
@@ -675,7 +679,7 @@ class TestReadGBQIntegration(object):
         df = gbq.read_gbq(
             None,
             project_id=project_id,
-            private_key=self.credentials,
+            credentials=self.credentials,
             configuration=config,
             dialect="legacy",
         )
@@ -703,7 +707,7 @@ class TestReadGBQIntegration(object):
             gbq.read_gbq(
                 sql_statement,
                 project_id=project_id,
-                private_key=self.credentials,
+                credentials=self.credentials,
                 configuration=config,
                 dialect="legacy",
             )
@@ -721,7 +725,7 @@ class TestReadGBQIntegration(object):
             gbq.read_gbq(
                 sql_statement,
                 project_id=project_id,
-                private_key=self.credentials,
+                credentials=self.credentials,
                 configuration=config,
                 dialect="legacy",
             )
@@ -734,7 +738,7 @@ class TestReadGBQIntegration(object):
             gbq.read_gbq(
                 sql_statement,
                 project_id=project_id,
-                private_key=self.credentials,
+                credentials=self.credentials,
                 configuration=config,
                 dialect="legacy",
             )
@@ -760,7 +764,7 @@ class TestReadGBQIntegration(object):
         df = gbq.read_gbq(
             query,
             project_id=project_id,
-            private_key=self.credentials,
+            credentials=self.credentials,
             dialect="standard",
         )
         expected = DataFrame(
@@ -774,7 +778,7 @@ class TestReadGBQIntegration(object):
         df = gbq.read_gbq(
             query,
             project_id=project_id,
-            private_key=self.credentials,
+            credentials=self.credentials,
             dialect="standard",
         )
         tm.assert_frame_equal(
@@ -794,7 +798,7 @@ class TestReadGBQIntegration(object):
         df = gbq.read_gbq(
             query,
             project_id=project_id,
-            private_key=self.credentials,
+            credentials=self.credentials,
             dialect="standard",
         )
         expected = DataFrame(
@@ -818,7 +822,7 @@ class TestReadGBQIntegration(object):
         df = gbq.read_gbq(
             query,
             project_id=project_id,
-            private_key=self.credentials,
+            credentials=self.credentials,
             dialect="standard",
         )
         tm.assert_frame_equal(
@@ -860,7 +864,7 @@ class TestToGBQIntegration(object):
         # put here any instruction you want to be run *BEFORE* *EVERY* test is
         # executed.
         self.table = gbq._Table(
-            project, random_dataset_id, private_key=credentials
+            project, random_dataset_id, credentials=credentials
         )
         self.destination_table = "{}.{}".format(random_dataset_id, TABLE_ID)
         self.credentials = credentials
@@ -875,7 +879,7 @@ class TestToGBQIntegration(object):
             self.destination_table + test_id,
             project_id,
             chunksize=10000,
-            private_key=self.credentials,
+            credentials=self.credentials,
         )
 
         result = gbq.read_gbq(
@@ -883,7 +887,7 @@ class TestToGBQIntegration(object):
                 self.destination_table + test_id
             ),
             project_id=project_id,
-            private_key=self.credentials,
+            credentials=self.credentials,
             dialect="legacy",
         )
         assert result["num_rows"][0] == test_size
@@ -900,7 +904,7 @@ class TestToGBQIntegration(object):
                 df,
                 self.destination_table + test_id,
                 project_id,
-                private_key=self.credentials,
+                credentials=self.credentials,
             )
 
         # Test the if_exists parameter with value 'fail'
@@ -910,7 +914,7 @@ class TestToGBQIntegration(object):
                 self.destination_table + test_id,
                 project_id,
                 if_exists="fail",
-                private_key=self.credentials,
+                credentials=self.credentials,
             )
 
     def test_upload_data_if_table_exists_append(self, project_id):
@@ -925,7 +929,7 @@ class TestToGBQIntegration(object):
             self.destination_table + test_id,
             project_id,
             chunksize=10000,
-            private_key=self.credentials,
+            credentials=self.credentials,
         )
 
         # Test the if_exists parameter with value 'append'
@@ -934,7 +938,7 @@ class TestToGBQIntegration(object):
             self.destination_table + test_id,
             project_id,
             if_exists="append",
-            private_key=self.credentials,
+            credentials=self.credentials,
         )
 
         result = gbq.read_gbq(
@@ -942,7 +946,7 @@ class TestToGBQIntegration(object):
                 self.destination_table + test_id
             ),
             project_id=project_id,
-            private_key=self.credentials,
+            credentials=self.credentials,
             dialect="legacy",
         )
         assert result["num_rows"][0] == test_size * 2
@@ -954,7 +958,7 @@ class TestToGBQIntegration(object):
                 self.destination_table + test_id,
                 project_id,
                 if_exists="append",
-                private_key=self.credentials,
+                credentials=self.credentials,
             )
 
     def test_upload_subset_columns_if_table_exists_append(self, project_id):
@@ -971,7 +975,7 @@ class TestToGBQIntegration(object):
             self.destination_table + test_id,
             project_id,
             chunksize=10000,
-            private_key=self.credentials,
+            credentials=self.credentials,
         )
 
         # Test the if_exists parameter with value 'append'
@@ -980,7 +984,7 @@ class TestToGBQIntegration(object):
             self.destination_table + test_id,
             project_id,
             if_exists="append",
-            private_key=self.credentials,
+            credentials=self.credentials,
         )
 
         result = gbq.read_gbq(
@@ -988,7 +992,7 @@ class TestToGBQIntegration(object):
                 self.destination_table + test_id
             ),
             project_id=project_id,
-            private_key=self.credentials,
+            credentials=self.credentials,
             dialect="legacy",
         )
         assert result["num_rows"][0] == test_size * 2
@@ -1005,7 +1009,7 @@ class TestToGBQIntegration(object):
             self.destination_table + test_id,
             project_id,
             chunksize=10000,
-            private_key=self.credentials,
+            credentials=self.credentials,
         )
 
         # Test the if_exists parameter with the value 'replace'.
@@ -1014,7 +1018,7 @@ class TestToGBQIntegration(object):
             self.destination_table + test_id,
             project_id,
             if_exists="replace",
-            private_key=self.credentials,
+            credentials=self.credentials,
         )
 
         result = gbq.read_gbq(
@@ -1022,7 +1026,7 @@ class TestToGBQIntegration(object):
                 self.destination_table + test_id
             ),
             project_id=project_id,
-            private_key=self.credentials,
+            credentials=self.credentials,
             dialect="legacy",
         )
         assert result["num_rows"][0] == 5
@@ -1039,7 +1043,7 @@ class TestToGBQIntegration(object):
                 self.destination_table + test_id,
                 project_id,
                 if_exists="xxxxx",
-                private_key=self.credentials,
+                credentials=self.credentials,
             )
 
     def test_google_upload_errors_should_raise_exception(self, project_id):
@@ -1063,7 +1067,7 @@ class TestToGBQIntegration(object):
                 bad_df,
                 self.destination_table + test_id,
                 project_id,
-                private_key=self.credentials,
+                credentials=self.credentials,
             )
 
     def test_upload_chinese_unicode_data(self, project_id):
@@ -1078,14 +1082,14 @@ class TestToGBQIntegration(object):
             df,
             self.destination_table + test_id,
             project_id,
-            private_key=self.credentials,
+            credentials=self.credentials,
             chunksize=10000,
         )
 
         result_df = gbq.read_gbq(
             "SELECT * FROM {0}".format(self.destination_table + test_id),
             project_id=project_id,
-            private_key=self.credentials,
+            credentials=self.credentials,
             dialect="legacy",
         )
 
@@ -1118,14 +1122,14 @@ class TestToGBQIntegration(object):
             df,
             self.destination_table + test_id,
             project_id=project_id,
-            private_key=self.credentials,
+            credentials=self.credentials,
             chunksize=10000,
         )
 
         result_df = gbq.read_gbq(
             "SELECT * FROM {0}".format(self.destination_table + test_id),
             project_id=project_id,
-            private_key=self.credentials,
+            credentials=self.credentials,
             dialect="legacy",
         )
 
@@ -1155,13 +1159,13 @@ class TestToGBQIntegration(object):
             df,
             self.destination_table + test_id,
             project_id=project_id,
-            private_key=self.credentials,
+            credentials=self.credentials,
         )
 
         result_df = gbq.read_gbq(
             "SELECT * FROM {0}".format(self.destination_table + test_id),
             project_id=project_id,
-            private_key=self.credentials,
+            credentials=self.credentials,
             dialect="legacy",
         )
 
@@ -1176,13 +1180,13 @@ class TestToGBQIntegration(object):
             df,
             self.destination_table + test_id,
             project_id=project_id,
-            private_key=self.credentials,
+            credentials=self.credentials,
         )
 
         result_df = gbq.read_gbq(
             "SELECT * FROM {0}".format(self.destination_table + test_id),
             project_id=project_id,
-            private_key=self.credentials,
+            credentials=self.credentials,
             dialect="legacy",
         )
 
@@ -1207,7 +1211,7 @@ class TestToGBQIntegration(object):
             self.destination_table + test_id,
             project_id,
             chunksize=10000,
-            private_key=self.credentials,
+            credentials=self.credentials,
         )
 
         df_columns_reversed = df[df.columns[::-1]]
@@ -1217,7 +1221,7 @@ class TestToGBQIntegration(object):
             self.destination_table + test_id,
             project_id,
             if_exists="append",
-            private_key=self.credentials,
+            credentials=self.credentials,
         )
 
     def test_upload_data_with_valid_user_schema(self, project_id):
@@ -1236,7 +1240,7 @@ class TestToGBQIntegration(object):
             df,
             destination_table,
             project_id,
-            private_key=self.credentials,
+            credentials=self.credentials,
             table_schema=test_schema,
         )
         dataset, table = destination_table.split(".")
@@ -1261,7 +1265,7 @@ class TestToGBQIntegration(object):
                 df,
                 destination_table,
                 project_id,
-                private_key=self.credentials,
+                credentials=self.credentials,
                 table_schema=test_schema,
             )
 
@@ -1281,7 +1285,7 @@ class TestToGBQIntegration(object):
                 df,
                 destination_table,
                 project_id,
-                private_key=self.credentials,
+                credentials=self.credentials,
                 table_schema=test_schema,
             )
 
@@ -1299,13 +1303,13 @@ class TestToGBQIntegration(object):
             df,
             self.destination_table + test_id,
             project_id=project_id,
-            private_key=self.credentials,
+            credentials=self.credentials,
         )
 
         result_df = gbq.read_gbq(
             "SELECT * FROM {0}".format(self.destination_table + test_id),
             project_id=project_id,
-            private_key=self.credentials,
+            credentials=self.credentials,
             dialect="legacy",
         )
 
@@ -1331,7 +1335,7 @@ class TestToGBQIntegration(object):
             df,
             destination_table,
             project_id,
-            private_key=self.credentials,
+            credentials=self.credentials,
             table_schema=test_schema,
         )
         dataset, table = destination_table.split(".")
@@ -1351,7 +1355,7 @@ class TestToGBQIntegration(object):
             df,
             tokyo_destination,
             project_id,
-            private_key=self.credentials,
+            credentials=self.credentials,
             location="asia-northeast1",
         )
 
@@ -1375,7 +1379,7 @@ class TestToGBQIntegration(object):
             df,
             non_existing_tokyo_destination,
             project_id,
-            private_key=self.credentials,
+            credentials=self.credentials,
             location="asia-northeast1",
         )
 
@@ -1455,7 +1459,7 @@ def test_create_table_data_dataset_does_not_exist(
 ):
     table_id = "test_create_table_data_dataset_does_not_exist"
     table_with_new_dataset = gbq._Table(
-        project, random_dataset_id, private_key=credentials
+        project, random_dataset_id, credentials=credentials
     )
     df = make_mixed_dataframe_v2(10)
     table_with_new_dataset.create(table_id, gbq._generate_bq_schema(df))

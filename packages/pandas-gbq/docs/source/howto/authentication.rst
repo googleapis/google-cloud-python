@@ -18,11 +18,38 @@ Create a service account key via the `service account key creation page
 the Google Cloud Platform Console. Select the JSON key type and download the
 key file.
 
-To use service account credentials, set the ``private_key`` parameter to one
-of:
+To use service account credentials, set the ``credentials`` parameter to the result of a call to:
 
-* A file path to the JSON file.
-* A string containing the JSON file contents.
+* :func:`google.oauth2.service_account.Credentials.from_service_account_file`,
+    which accepts a file path to the JSON file.
+
+    .. code:: python
+
+        credentials = google.oauth2.service_account.Credentials.from_service_account_file(
+            'path/to/key.json',
+        )
+        df = pandas_gbq.read_gbq(sql, project_id="YOUR-PROJECT-ID", credentials=credentials)
+
+* :func:`google.oauth2.service_account.Credentials.from_service_account_info`,
+    which accepts a dictionary corresponding to the JSON file contents.
+
+    .. code:: python
+
+        credentials = google.oauth2.service_account.Credentials.from_service_account_info(
+            {
+                "type": "service_account",
+                "project_id": "YOUR-PROJECT-ID",
+                "private_key_id": "6747200734a1f2b9d8d62fc0b9414c5f2461db0e",
+                "private_key": "-----BEGIN PRIVATE KEY-----\nM...I==\n-----END PRIVATE KEY-----\n",
+                "client_email": "service-account@YOUR-PROJECT-ID.iam.gserviceaccount.com",
+                "client_id": "12345678900001",
+                "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+                "token_uri": "https://accounts.google.com/o/oauth2/token",
+                "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+                "client_x509_cert_url": "https://www.googleapis.com/...iam.gserviceaccount.com"
+            },
+        )
+        df = pandas_gbq.read_gbq(sql, project_id="YOUR-PROJECT-ID", credentials=credentials)
 
 See the `Getting started with authentication on Google Cloud Platform
 <https://cloud.google.com/docs/authentication/getting-started>`_ guide for

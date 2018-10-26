@@ -1,10 +1,25 @@
 Changelog
 =========
 
-.. _changelog-0.7.1:
+.. _changelog-0.8.0:
 
-0.7.1 / unreleased
+0.8.0 / unreleased
 --------------------
+
+Breaking changes
+~~~~~~~~~~~~~~~~
+
+- **Deprecate** ``private_key`` parameter to :func:`pandas_gbq.read_gbq` and
+  :func:`pandas_gbq.to_gbq` in favor of new ``credentials`` argument. Instead,
+  create a credentials object using
+  :func:`google.oauth2.service_account.Credentials.from_service_account_info`
+  or
+  :func:`google.oauth2.service_account.Credentials.from_service_account_file`.
+  See the :doc:`authentication how-to guide <howto/authentication>` for
+  examples. (:issue:`161`, :issue:`TODO`)
+
+Enhancements
+~~~~~~~~~~~~
 
 - Allow newlines in data passed to ``to_gbq``. (:issue:`180`)
 
