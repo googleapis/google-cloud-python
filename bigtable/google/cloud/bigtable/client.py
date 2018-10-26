@@ -271,8 +271,8 @@ class Client(ClientWithProject):
         For example:
 
         .. literalinclude:: snippets.py
-            :start-after: [START bigtable_list_clusters]
-            :end-before: [END bigtable_list_clusters]
+            :start-after: [START bigtable_list_clusters_in_project]
+            :end-before: [END bigtable_list_clusters_in_project]
 
         :rtype: tuple
         :returns:

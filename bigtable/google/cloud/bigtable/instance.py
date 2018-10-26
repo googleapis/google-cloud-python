@@ -187,7 +187,14 @@ class Instance(object):
         return not self == other
 
     def reload(self):
-        """Reload the metadata for this instance."""
+        """Reload the metadata for this instance.
+
+        For example:
+
+        .. literalinclude:: snippets.py
+            :start-after: [START bigtable_reload_instance]
+            :end-before: [END bigtable_reload_instance]
+        """
         instance_pb = self._client.instance_admin_client.get_instance(
             self.name)
 
@@ -298,6 +305,12 @@ class Instance(object):
 
     def update(self):
         """Updates an instance within a project.
+
+        For example:
+
+        .. literalinclude:: snippets.py
+            :start-after: [START bigtable_update_instance]
+            :end-before: [END bigtable_update_instance]
 
         .. note::
 
@@ -412,8 +425,8 @@ class Instance(object):
         For example:
 
         .. literalinclude:: snippets.py
-            :start-after: [START bigtable_list_clusters]
-            :end-before: [END bigtable_list_clusters]
+            :start-after: [START bigtable_list_clusters_on_instance]
+            :end-before: [END bigtable_list_clusters_on_instance]
 
         :rtype: tuple
         :returns:
@@ -481,6 +494,12 @@ class Instance(object):
                     allow_transactional_writes=None):
         """Factory to create AppProfile associated with this instance.
 
+        For example:
+
+        .. literalinclude:: snippets.py
+            :start-after: [START bigtable_create_app_profile]
+            :end-before: [END bigtable_create_app_profile]
+
         :type app_profile_id: str
         :param app_profile_id: The ID of the AppProfile. Must be of the form
                                ``[_a-zA-Z0-9][-_.a-zA-Z0-9]*``.
@@ -516,6 +535,12 @@ class Instance(object):
 
     def list_app_profiles(self):
         """Lists information about AppProfiles in an instance.
+
+        For example:
+
+        .. literalinclude:: snippets.py
+            :start-after: [START bigtable_list_app_profiles]
+            :end-before: [END bigtable_list_app_profiles]
 
         :rtype: :list:[`~google.cloud.bigtable.app_profile.AppProfile`]
         :returns: A :list:[`~google.cloud.bigtable.app_profile.AppProfile`].
@@ -585,16 +610,11 @@ class Instance(object):
         """Returns permissions that the caller has on the specified instance
         resource.
 
-        .. code-block:: python
+        For example:
 
-            from google.cloud.bigtable.client import Client
-
-            client = Client(admin=True)
-            instance = client.instance('[INSTANCE_ID]')
-            permissions = ["bigtable.tables.create",
-                           "bigtable.clusters.create"]
-            permissions_allowed = instance.test_iam_permissions(permissions)
-            print (permissions_allowed)
+        .. literalinclude:: snippets.py
+            :start-after: [START bigtable_test_iam_permissions]
+            :end-before: [END bigtable_test_iam_permissions]
 
         :type permissions: list
         :param permissions: The set of permissions to check for
