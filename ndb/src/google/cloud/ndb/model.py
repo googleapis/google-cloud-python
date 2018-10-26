@@ -1026,6 +1026,42 @@ class Property(ModelAttribute):
 
         return call
 
+    def _apply_to_values(self, entity, function):
+        """Apply a function to the property value / values of a given entity.
+
+        This retrieves the property value, applies the function, and then
+        stores the value back. For a repeated property, the function is
+        applied separately to each of the values in the list. The
+        resulting value or list of values is both stored back in the
+        entity and returned from this method.
+
+        Args:
+            entity (Model): An entity to get a value from.
+            function (Callable[[Any], Any]): A transformation to apply to
+                the value.
+
+        Returns:
+            Any: The transformed value store on the entity for this property.
+        """
+        value = self._retrieve_value(entity, self._default)
+        if self._repeated:
+            if value is None:
+                value = []
+                self._store_value(entity, value)
+            else:
+                # NOTE: This assumes, but does not check, that ``value`` is
+                #       iterable. This relies on ``_set_value`` having checked
+                #       and converted to a ``list`` for a repeated property.
+                value[:] = map(function, value)
+        else:
+            if value is not None:
+                new_value = function(value)
+                if new_value is not None and new_value is not value:
+                    self._store_value(entity, new_value)
+                    value = new_value
+
+        return value
+
 
 class ModelKey(Property):
     __slots__ = ()

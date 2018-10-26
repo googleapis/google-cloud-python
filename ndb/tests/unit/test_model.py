@@ -672,9 +672,7 @@ class TestProperty:
     @staticmethod
     def test__set_value(property_clean_cache):
         entity = unittest.mock.Mock(
-            _projection=False,
-            _values={},
-            spec=("_projection", "_values"),
+            _projection=False, _values={}, spec=("_projection", "_values")
         )
         prop = model.Property(name="foo", repeated=False)
         prop._set_value(entity, 19)
@@ -683,9 +681,7 @@ class TestProperty:
     @staticmethod
     def test__set_value_none():
         entity = unittest.mock.Mock(
-            _projection=False,
-            _values={},
-            spec=("_projection", "_values"),
+            _projection=False, _values={}, spec=("_projection", "_values")
         )
         prop = model.Property(name="foo", repeated=False)
         prop._set_value(entity, None)
@@ -696,9 +692,7 @@ class TestProperty:
     @staticmethod
     def test__set_value_repeated(property_clean_cache):
         entity = unittest.mock.Mock(
-            _projection=False,
-            _values={},
-            spec=("_projection", "_values"),
+            _projection=False, _values={}, spec=("_projection", "_values")
         )
         prop = model.Property(name="foo", repeated=True)
         prop._set_value(entity, (11, 12, 13))
@@ -707,9 +701,7 @@ class TestProperty:
     @staticmethod
     def test__set_value_repeated_bad_container():
         entity = unittest.mock.Mock(
-            _projection=False,
-            _values={},
-            spec=("_projection", "_values"),
+            _projection=False, _values={}, spec=("_projection", "_values")
         )
         prop = model.Property(name="foo", repeated=True)
         with pytest.raises(exceptions.BadValueError):
@@ -719,10 +711,7 @@ class TestProperty:
 
     @staticmethod
     def test__set_value_projection():
-        entity = unittest.mock.Mock(
-            _projection=True,
-            spec=("_projection",),
-        )
+        entity = unittest.mock.Mock(_projection=True, spec=("_projection",))
         prop = model.Property(name="foo", repeated=True)
         with pytest.raises(model.ReadonlyPropertyError):
             prop._set_value(entity, None)
@@ -934,6 +923,101 @@ class TestProperty:
         method1.assert_called_once_with(prop, value)
         method2.assert_called_once_with(prop, method1.return_value)
         method3.assert_called_once_with(prop, method1.return_value)
+
+    @staticmethod
+    def test__apply_to_values():
+        value = "foo"
+        prop = model.Property(name="bar", repeated=False)
+        entity = unittest.mock.Mock(
+            _values={prop._name: value}, spec=("_values",)
+        )
+        function = unittest.mock.Mock(spec=(), return_value="foo2")
+
+        result = prop._apply_to_values(entity, function)
+        assert result == function.return_value
+        assert entity._values == {prop._name: result}
+        # Check mocks.
+        function.assert_called_once_with(value)
+
+    @staticmethod
+    def test__apply_to_values_when_none():
+        prop = model.Property(name="bar", repeated=False, default=None)
+        entity = unittest.mock.Mock(_values={}, spec=("_values",))
+        function = unittest.mock.Mock(spec=())
+
+        result = prop._apply_to_values(entity, function)
+        assert result is None
+        assert entity._values == {}
+        # Check mocks.
+        function.assert_not_called()
+
+    @staticmethod
+    def test__apply_to_values_transformed_none():
+        value = 7.5
+        prop = model.Property(name="bar", repeated=False)
+        entity = unittest.mock.Mock(
+            _values={prop._name: value}, spec=("_values",)
+        )
+        function = unittest.mock.Mock(spec=(), return_value=None)
+
+        result = prop._apply_to_values(entity, function)
+        assert result == value
+        assert entity._values == {prop._name: result}
+        # Check mocks.
+        function.assert_called_once_with(value)
+
+    @staticmethod
+    def test__apply_to_values_transformed_unchanged():
+        value = unittest.mock.sentinel.value
+        prop = model.Property(name="bar", repeated=False)
+        entity = unittest.mock.Mock(
+            _values={prop._name: value}, spec=("_values",)
+        )
+        function = unittest.mock.Mock(spec=(), return_value=value)
+
+        result = prop._apply_to_values(entity, function)
+        assert result == value
+        assert entity._values == {prop._name: result}
+        # Check mocks.
+        function.assert_called_once_with(value)
+
+    @staticmethod
+    def test__apply_to_values_repeated():
+        value = [1, 2, 3]
+        prop = model.Property(name="bar", repeated=True)
+        entity = unittest.mock.Mock(
+            _values={prop._name: value}, spec=("_values",)
+        )
+        function = unittest.mock.Mock(spec=(), return_value=42)
+
+        result = prop._apply_to_values(entity, function)
+        assert result == [
+            function.return_value,
+            function.return_value,
+            function.return_value,
+        ]
+        assert result is value  # Check modify in-place.
+        assert entity._values == {prop._name: result}
+        # Check mocks.
+        assert function.call_count == 3
+        calls = [
+            unittest.mock.call(1),
+            unittest.mock.call(2),
+            unittest.mock.call(3),
+        ]
+        function.assert_has_calls(calls)
+
+    @staticmethod
+    def test__apply_to_values_repeated_when_none():
+        prop = model.Property(name="bar", repeated=True, default=None)
+        entity = unittest.mock.Mock(_values={}, spec=("_values",))
+        function = unittest.mock.Mock(spec=())
+
+        result = prop._apply_to_values(entity, function)
+        assert result == []
+        assert entity._values == {prop._name: result}
+        # Check mocks.
+        function.assert_not_called()
 
 
 class TestModelKey:
