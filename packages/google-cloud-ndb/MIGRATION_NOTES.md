@@ -74,6 +74,13 @@ The primary differences come from:
 - I dropped `Property._positional` since keyword-only arguments are native
   Python 3 syntax and dropped `Property._attributes`  in favor of an
   approach using `inspect.signature()`
+- A bug in `Property._find_methods` was fixed where `reverse=True` was applied
+  **before** caching and then not respected when pulling from the cache
+- The `Property._find_methods_cache` has been changed. Previously it would be
+  set on each `Property` subclass and populated dynamically on first use.
+  Now `Property._FIND_METHODS_CACHE` is set to `{}` when the `Property` class
+  is created and there is another level of keys (based on fully-qualified
+  class name) in the cache.
 
 ## Comments
 
