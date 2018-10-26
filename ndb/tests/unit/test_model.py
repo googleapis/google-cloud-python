@@ -759,6 +759,18 @@ class TestProperty:
         assert model.Property._FIND_METHODS_CACHE == {}
 
     @staticmethod
+    def test__call_from_base_type(property_clean_cache):
+        class SimpleProperty(model.Property):
+            def _from_base_type(self, value):
+                value.append("SimpleProperty._from_base_type")
+                return value
+
+        prop = SimpleProperty(name="prop")
+        value = []
+        assert value is prop._call_from_base_type(value)
+        assert value == ["SimpleProperty._from_base_type"]
+
+    @staticmethod
     def _property_subtype_chain():
         class A(model.Property):
             def _validate(self, value):
