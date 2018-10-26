@@ -28,12 +28,14 @@ class Feature(enum.IntEnum):
       SHOT_CHANGE_DETECTION (int): Shot change detection.
       EXPLICIT_CONTENT_DETECTION (int): Explicit content detection.
       FACE_DETECTION (int): Human face detection and tracking.
+      SPEECH_TRANSCRIPTION (int): Speech transcription.
     """
     FEATURE_UNSPECIFIED = 0
     LABEL_DETECTION = 1
     SHOT_CHANGE_DETECTION = 2
     EXPLICIT_CONTENT_DETECTION = 3
     FACE_DETECTION = 4
+    SPEECH_TRANSCRIPTION = 6
 
 
 class LabelDetectionMode(enum.IntEnum):
