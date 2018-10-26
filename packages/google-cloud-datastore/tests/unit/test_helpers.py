@@ -294,7 +294,11 @@ class Test_entity_to_protobuf(unittest.TestCase):
         entity['foo'] = []
         entity_pb = self._call_fut(entity)
 
-        self._compare_entity_proto(entity_pb, entity_pb2.Entity())
+        expected_pb = entity_pb2.Entity()
+        prop = expected_pb.properties.get_or_create('foo')
+        prop.array_value.CopyFrom(entity_pb2.ArrayValue(values=[]))
+
+        self._compare_entity_proto(entity_pb, expected_pb)
 
     def test_inverts_to_protobuf(self):
         from google.cloud.datastore_v1.proto import entity_pb2

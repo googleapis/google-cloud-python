@@ -547,3 +547,15 @@ class TestDatastoreTransaction(TestDatastore):
                 # transaction.
                 entity_in_txn[contention_prop_name] = u'inside'
                 txn.put(entity_in_txn)
+
+    def test_empty_array_put(self):
+        local_client = clone_client(Config.CLIENT)
+
+        key = local_client.key('EmptyArray', 1234)
+        local_client = datastore.Client()
+        entity = datastore.Entity(key=key)
+        entity['children'] = []
+        local_client.put(entity)
+        retrieved = local_client.get(entity.key)
+
+        self.assertEqual(entity['children'], retrieved['children'])
