@@ -166,17 +166,16 @@ class Test_Worker(unittest.TestCase):
         grace_period = 50
         max_batch_size = 50
         max_latency = 0.1
-        include_logger_name = True
 
         worker = self._make_one(
             logger, grace_period=grace_period, max_batch_size=max_batch_size,
-            max_latency=max_latency, include_logger_name=include_logger_name)
+            max_latency=max_latency)
 
         self.assertEqual(worker._cloud_logger, logger)
         self.assertEqual(worker._grace_period, grace_period)
         self.assertEqual(worker._max_batch_size, max_batch_size)
         self.assertEqual(worker._max_latency, max_latency)
-        self.assertEqual(worker._include_logger_name, include_logger_name)
+        self.assertTrue(worker._include_logger_name)
         self.assertFalse(worker.is_alive)
         self.assertIsNone(worker._thread)
 
@@ -288,6 +287,7 @@ class Test_Worker(unittest.TestCase):
         from google.cloud.logging.handlers.transports import background_thread
 
         worker = self._make_one(_Logger(self.NAME), include_logger_name=False)
+        self.assertFalse(worker._include_logger_name)
 
         # Enqueue one record and the termination signal.
         self._enqueue_record(worker, '1')
