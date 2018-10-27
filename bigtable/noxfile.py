@@ -129,5 +129,6 @@ def snippets(session):
     session.install('-e', os.path.join('..', 'bigtable'))
     session.install('-e', '../test_utils/')
     session.install('-e', '.')
-    session.run('py.test', os.path.join('docs', \
-                                        'snippets.py'), *session.posargs)
+    session.run('py.test', '--quiet', \
+                os.path.join('docs', 'snippets.py'), \
+                *session.posargs)
