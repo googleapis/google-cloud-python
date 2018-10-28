@@ -472,6 +472,7 @@ class MergeOption(WriteOption):
         mask = common_pb2.DocumentMask(field_paths=field_paths)
         write_pb.update_mask.CopyFrom(mask)
 
+
 class ExistsOption(WriteOption):
     """Option used to assert existence on a write operation.
 

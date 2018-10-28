@@ -130,6 +130,8 @@ def _run_testcase(testcase, call, firestore_api, client):
 
 @pytest.mark.parametrize('test_proto', _SET_TESTPROTOS)
 def test_set_testprotos(test_proto):
+#    if test_proto.description != "Merge with FieldPaths":
+#        return
     testcase = test_proto.set
     firestore_api = _mock_firestore_api()
     client, document = _make_client_document(firestore_api, testcase)

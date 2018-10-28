@@ -120,8 +120,6 @@ class FieldPath(object):
         parts: (one or more strings)
             Indicating path of the key to be used.
     """
-    simple_field_name = re.compile('^[_a-zA-Z][_a-zA-Z0-9]*$')
-
     def __init__(self, *parts):
         for part in parts:
             if not isinstance(part, six.string_types) or not part:
@@ -154,6 +152,7 @@ class FieldPath(object):
             A :class: `FieldPath` instance with the string split on "."
             as arguments to `FieldPath`.
         """
+        # XXX this should just handle things with the invalid chars
         invalid_characters = '~*/[]'
         for invalid_character in invalid_characters:
             if invalid_character in string:
@@ -169,15 +168,7 @@ class FieldPath(object):
             within this FieldPath conforming to the Firestore API
             specification
         """
-        api_repr = []
-        for part in self.parts:
-            match = re.match(self.simple_field_name, part)
-            if match and match.group(0) == part:
-                api_repr.append(part)
-            else:
-                replaced = part.replace('\\', '\\\\').replace('`', '\\`')
-                api_repr.append('`' + replaced + '`')
-        return '.'.join(api_repr)
+        return get_field_path(self.parts)
 
     def __hash__(self):
         return hash(self.to_api_repr())
@@ -562,19 +553,26 @@ def extract_field_paths(document_data):
             field_paths.append(path)
     return field_paths
 
+
 def filter_document_data_by_field_paths(document_data, field_paths):
     flattened = {}
+    toplevel = filtered = {}
+
     for path in field_paths:
         flattened[path] = get_nested_value(path, document_data)
-    toplevel = filtered = {}
+
     for path, value in six.iteritems(flattened):
-        parts = FieldPath.from_string(path).parts
+        parts = parse_field_path(path)
+
         for part in parts:
             parent, lastpart = filtered, part
             filtered[part] = {}
             filtered = filtered[part]
+
         parent[lastpart] = value
+
     return toplevel
+
 
 def reference_value_to_document(reference_value, client):
     """Convert a reference value string to a document.
@@ -709,22 +707,88 @@ def get_field_path(field_names):
     Returns:
         str: The ``.``-delimited field path.
     """
-    return FIELD_PATH_DELIMITER.join(field_names)
+    simple_field_name = re.compile('^[_a-zA-Z][_a-zA-Z0-9]*$')
+    result = []
+
+    for field_name in field_names:
+        match = re.match(simple_field_name, field_name)
+        if match and match.group(0) == field_name:
+            result.append(field_name)
+        else:
+            replaced = field_name.replace('\\', '\\\\').replace('`', '\\`')
+            result.append('`' + replaced + '`')
+
+    return FIELD_PATH_DELIMITER.join(result)
 
 
-def parse_field_path(field_path):
+def parse_field_path(api_repr):
     """Parse a **field path** from into a list of nested field names.
 
     See :func:`field_path` for more on **field paths**.
 
     Args:
-        field_path (str): The ``.``-delimited field path to parse.
+        api_repr (str):
+            The unique Firestore api representation which consists of
+            either simple or UTF-8 field names. It cannot exceed
+            1500 bytes, and cannot be empty. Simple field names match
+            `'^[_a-zA-Z][_a-zA-Z0-9]*$'`. All other field names are
+            escaped with ```.
 
     Returns:
         List[str, ...]: The list of field names in the field path.
     """
-    return field_path.split(FIELD_PATH_DELIMITER)
+    # code dredged back up from
+    # https://github.com/googleapis/google-cloud-python/pull/5109/files
+    field_names = []
+    while api_repr:
+        field_name, api_repr = _parse_field_name(api_repr)
+        # non-simple field name
+        if field_name[0] == '`' and field_name[-1] == '`':
+            field_name = field_name[1:-1]
+            field_name = field_name.replace('\\`', '`')
+            field_name = field_name.replace('\\\\', '\\')
+        field_names.append(field_name)
+    return field_names
 
+
+def _parse_field_name(api_repr):
+    """
+    Parses the api_repr into the first field name and the rest
+         Args:
+            api_repr (str): The unique Firestore api representation.
+         Returns:
+            Tuple[str, str]:
+                A tuple with the first field name and the api_repr
+                of the rest.
+    """
+    # XXX code dredged back up from
+    # https://github.com/googleapis/google-cloud-python/pull/5109/files;
+    # probably needs some speeding up
+    
+    if not '.' in api_repr:
+        return api_repr, None
+        
+    if api_repr[0] != '`':  # first field name is simple
+        index = api_repr.index('.')
+        return api_repr[:index], api_repr[index+1:]  # skips delimiter
+    else:
+        index = 1
+        while index < len(api_repr):
+            if api_repr[index] == '\\':  # escape character
+                index += 2
+                if api_repr[index-1] == '`':  # skips escaped backticks
+                    value = (
+                        api_repr[:index+1], api_repr[index+2:])
+                    index = len(api_repr)  # to please coverage
+            elif api_repr[index] == '`':  # end of unicode field name
+                value = (
+                    api_repr[:index+1],
+                    api_repr[index+2:])  # skips delimiter
+                index = len(api_repr)  # to please coverage
+            else:
+                index += 1
+        return value
+    
 
 def get_nested_value(field_path, data):
     """Get a (potentially nested) value from a dictionary.
