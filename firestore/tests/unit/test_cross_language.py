@@ -137,10 +137,10 @@ def test_set_testprotos(test_proto):
     client, document = _make_client_document(firestore_api, testcase)
     data = convert_data(json.loads(testcase.json_data))
     if testcase.HasField("option"):
-        option = convert_set_option(testcase.option)
+        merge = convert_set_option(testcase.option)
     else:
-        option = None
-    call = functools.partial(document.set, data, option)
+        merge = False
+    call = functools.partial(document.set, data, merge=merge)
     _run_testcase(testcase, call, firestore_api, client)
 
 
@@ -202,15 +202,16 @@ def convert_data(v):
 
 
 def convert_set_option(option):
-    from google.cloud.firestore_v1beta1.client import MergeOption
     from google.cloud.firestore_v1beta1 import _helpers
     fields = []
     if option.all:
-        return MergeOption()
-    else:
+        return True
+    elif option.fields:
         for field in option.fields:
             fields.append(_helpers.FieldPath(*field.field).to_api_repr())
-        return MergeOption(field_paths=fields)
+        return fields
+    else:
+        return False
 
 def convert_precondition(precond):
     from google.cloud.firestore_v1beta1 import Client

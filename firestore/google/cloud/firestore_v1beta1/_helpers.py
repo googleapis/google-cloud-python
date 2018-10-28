@@ -764,10 +764,10 @@ def _parse_field_name(api_repr):
     # XXX code dredged back up from
     # https://github.com/googleapis/google-cloud-python/pull/5109/files;
     # probably needs some speeding up
-    
+
     if not '.' in api_repr:
         return api_repr, None
-        
+
     if api_repr[0] != '`':  # first field name is simple
         index = api_repr.index('.')
         return api_repr[:index], api_repr[index+1:]  # skips delimiter
@@ -788,7 +788,7 @@ def _parse_field_name(api_repr):
             else:
                 index += 1
         return value
-    
+
 
 def get_nested_value(field_path, data):
     """Get a (potentially nested) value from a dictionary.
@@ -1030,21 +1030,27 @@ def get_transform_pb(document_path, transform_paths):
     )
 
 
-def pbs_for_set(document_path, document_data, option):
+def pbs_for_set(document_path, document_data, merge=False, exists=None):
     """Make ``Write`` protobufs for ``set()`` methods.
 
     Args:
         document_path (str): A fully-qualified document path.
         document_data (dict): Property names and values to use for
             replacing a document.
-        option (optional[~.firestore_v1beta1.client.WriteOption]): A
-           write option to make assertions / preconditions on the server
-           state of the document before applying changes.
+        merge (bool): Whether to merge the fields or replace them
+        exists (bool): If set, a precondition to indicate whether the
+            document should exist or not. Used for create.
 
     Returns:
         List[google.cloud.firestore_v1beta1.types.Write]: One
         or two ``Write`` protobuf instances for ``set()``.
     """
+    merged = False
+    if hasattr(merge, '__iter__'): # merge is a list of field paths
+        document_data = filter_document_data_by_field_paths(
+            document_data, field_paths=sorted(merge))
+        merged = True
+
     transform_paths, actual_data, field_paths = process_server_timestamp(
         document_data, False)
     update_pb = write_pb2.Write(
@@ -1054,20 +1060,18 @@ def pbs_for_set(document_path, document_data, option):
         ),
     )
 
-    if option is not None:
-        if hasattr(option, '__iter__'):
-            # list of options
-            options = option
-        else:
-            # it's a single option, not a list of options
-            options = [option]
+    if not merged: # not merged *yet*
+        if merge: # it's not an iterable, it's True, so do a merge all
+            merge = sorted([fp.to_api_repr() for fp in field_paths])
+            merged = True
 
-        canonicalized_field_paths = canonicalize_field_paths(field_paths)
-        for option in options:
-            option.modify_write(
-                update_pb,
-                field_paths=canonicalized_field_paths
-            )
+    if merged:
+        mask = common_pb2.DocumentMask(field_paths=merge)
+        update_pb.update_mask.CopyFrom(mask)
+
+    if exists is not None:
+        update_pb.current_document.CopyFrom(
+            common_pb2.Precondition(exists=exists))
 
     write_pbs = [update_pb]
     if transform_paths:
@@ -1118,13 +1122,7 @@ def pbs_for_update(client, document_path, field_updates, option):
         update_mask=common_pb2.DocumentMask(field_paths=field_paths),
     )
     # Due to the default, we don't have to check if ``None``.
-    if hasattr(option, '__iter__'):
-        options = option
-    else:
-        options = [option]
-
-    for option in options:
-        option.modify_write(update_pb, field_paths=field_paths)
+    option.modify_write(update_pb, field_paths=field_paths)
 
     write_pbs = [update_pb]
 
@@ -1152,12 +1150,7 @@ def pb_for_delete(document_path, option):
     """
     write_pb = write_pb2.Write(delete=document_path)
     if option is not None:
-        if hasattr(option, '__iter__'):
-            options = option
-        else:
-            options = [option]
-        for option in options:
-            option.modify_write(write_pb)
+        option.modify_write(write_pb)
 
     return write_pb
 

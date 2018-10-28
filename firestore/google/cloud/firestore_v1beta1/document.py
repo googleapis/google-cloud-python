@@ -194,7 +194,7 @@ class DocumentReference(object):
         write_results = batch.commit()
         return _first_write_result(write_results)
 
-    def set(self, document_data, option=None):
+    def set(self, document_data, merge=False):
         """Replace the current document in the Firestore database.
 
         A write ``option`` can be specified to indicate preconditions of
@@ -211,9 +211,9 @@ class DocumentReference(object):
         Args:
             document_data (dict): Property names and values to use for
                 replacing a document.
-            option (Optional[~.firestore_v1beta1.client.WriteOption]): A
-               write option to make assertions / preconditions on the server
-               state of the document before applying changes.
+            merge (Optional[bool] or Optional[List<apispec>]):
+                If True, apply merging instead of overwriting the state
+                of the document.
 
         Returns:
             google.cloud.firestore_v1beta1.types.WriteResult: The
@@ -221,7 +221,7 @@ class DocumentReference(object):
             result contains an ``update_time`` field.
         """
         batch = self._client.batch()
-        batch.set(self, document_data, option=option)
+        batch.set(self, document_data, merge=merge)
         write_results = batch.commit()
         return _first_write_result(write_results)
 
@@ -659,7 +659,6 @@ def _get_document_path(client, path):
     """
     parts = (client._database_string, 'documents') + path
     return _helpers.DOCUMENT_PATH_DELIMITER.join(parts)
-
 
 def _consume_single_get(response_iterator):
     """Consume a gRPC stream that should contain a single response.
