@@ -1314,6 +1314,33 @@ class Property(ModelAttribute):
                 "property".format(self._name, rest, self._name)
             )
 
+    def _get_for_dict(self, entity):
+        """Retrieve the value like ``_get_value()``.
+
+        This is intended to be processed for ``_to_dict()``.
+
+        Property subclasses can override this if they want the dictionary
+        returned by ``entity._to_dict()`` to contain a different value. The
+        main use case is allowing :class:`StructuredProperty` and
+        :class:`LocalStructuredProperty` to allow the default ``_get_value()``
+        behavior.
+
+        * If you override ``_get_for_dict()`` to return a different type, you
+          must override ``_validate()`` to accept values of that type and
+          convert them back to the original type.
+
+        * If you override ``_get_for_dict()``, you must handle repeated values
+          and :data:`None` correctly. However, ``_validate()`` does not need to
+          handle these.
+
+        Args:
+            entity (Model): An entity to get a value from.
+
+        Returns:
+            Any: The user value stored for the current property.
+        """
+        return self._get_value(entity)
+
 
 class ModelKey(Property):
     __slots__ = ()

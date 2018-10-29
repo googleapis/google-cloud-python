@@ -1236,7 +1236,7 @@ class TestProperty:
         assert model.Property._FIND_METHODS_CACHE == {}
 
     @staticmethod
-    def test_instance_descriptors():
+    def test_instance_descriptors(property_clean_cache):
         class Model:
             prop = model.Property(name="prop", required=True)
 
@@ -1285,6 +1285,18 @@ class TestProperty:
         prop = model.Property(name="prop", indexed=True)
         with pytest.raises(model.InvalidPropertyError):
             prop._check_property(rest="a.b.c")
+
+    @staticmethod
+    def test__get_for_dict():
+        prop = model.Property(name="prop")
+        value = b"\x00\x01"
+        values = {prop._name: value}
+        entity = unittest.mock.Mock(
+            _projection=None, _values=values, spec=("_projection", "_values")
+        )
+        assert value is prop._get_for_dict(entity)
+        # Cache is untouched.
+        assert model.Property._FIND_METHODS_CACHE == {}
 
 
 class TestModelKey:
