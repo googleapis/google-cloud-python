@@ -1215,6 +1215,21 @@ class Property(ModelAttribute):
 
         return self._get_user_value(entity)
 
+    def _delete_value(self, entity):
+        """Delete the value for this property from an entity.
+
+        .. note::
+
+            If no value exists this is a no-op; deleted values will not be
+            serialized but requesting their value will return :data:`None` (or
+            an empty list in the case of a repeated property).
+
+        Args:
+            entity (Model): An entity to get a value from.
+        """
+        if self._name in entity._values:
+            del entity._values[self._name]
+
 
 class ModelKey(Property):
     __slots__ = ()

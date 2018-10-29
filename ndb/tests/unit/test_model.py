@@ -1188,6 +1188,23 @@ class TestProperty:
         # Cache is untouched.
         assert model.Property._FIND_METHODS_CACHE == {}
 
+    @staticmethod
+    def test__delete_value():
+        prop = model.Property(name="prop")
+        value = b"\x00\x01"
+        values = {prop._name: value}
+        entity = unittest.mock.Mock(_values=values, spec=("_values",))
+        prop._delete_value(entity)
+        assert values == {}
+
+    @staticmethod
+    def test__delete_value_no_op():
+        prop = model.Property(name="prop")
+        values = {}
+        entity = unittest.mock.Mock(_values=values, spec=("_values",))
+        prop._delete_value(entity)
+        assert values == {}
+
 
 class TestModelKey:
     @staticmethod
