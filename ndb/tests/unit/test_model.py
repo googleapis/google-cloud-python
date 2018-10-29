@@ -1269,6 +1269,23 @@ class TestProperty:
         prop = model.Property(name="prop")
         assert prop._prepare_for_put(None) is None
 
+    @staticmethod
+    def test__check_property():
+        prop = model.Property(name="prop")
+        assert prop._check_property() is None
+
+    @staticmethod
+    def test__check_property_not_indexed():
+        prop = model.Property(name="prop", indexed=False)
+        with pytest.raises(model.InvalidPropertyError):
+            prop._check_property(require_indexed=True)
+
+    @staticmethod
+    def test__check_property_with_subproperty():
+        prop = model.Property(name="prop", indexed=True)
+        with pytest.raises(model.InvalidPropertyError):
+            prop._check_property(rest="a.b.c")
+
 
 class TestModelKey:
     @staticmethod

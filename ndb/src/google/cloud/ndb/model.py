@@ -1245,7 +1245,12 @@ class Property(ModelAttribute):
         )
 
     def __get__(self, entity, unused_cls=None):
-        """Descriptor protocol: get the value from the entity."""
+        """Descriptor protocol: get the value from the entity.
+
+        Args:
+            entity (Model): An entity to get a value from.
+            unused_cls (type): The class that owns this instance.
+        """
         if entity is None:
             # Handle the case where ``__get__`` is called on the class
             # rather than an instance.
@@ -1253,15 +1258,61 @@ class Property(ModelAttribute):
         return self._get_value(entity)
 
     def __set__(self, entity, value):
-        """Descriptor protocol: set the value on the entity."""
+        """Descriptor protocol: set the value on the entity.
+
+        Args:
+            entity (Model): An entity to set a value on.
+            value (Any): The value to set.
+        """
         self._set_value(entity, value)
 
     def __delete__(self, entity):
-        """Descriptor protocol: delete the value from the entity."""
+        """Descriptor protocol: delete the value from the entity.
+
+        Args:
+            entity (Model): An entity to delete a value from.
+        """
         self._delete_value(entity)
 
     def _prepare_for_put(self, entity):
+        """Allow this property to define a pre-put hook.
+
+        This base class implementation does nothing, but subclasses may
+        provide hooks.
+
+        Args:
+            entity (Model): An entity with values.
+        """
         pass
+
+    def _check_property(self, rest=None, require_indexed=True):
+        """Check this property for specific requirements.
+
+        Called by ``Model._check_properties()``.
+
+        Args:
+            rest: Optional subproperty to check, of the form
+                ``name1.name2...nameN``.
+            required_indexed (bool): Indicates if the current property must
+                be indexed.
+
+        Raises:
+            InvalidPropertyError: If ``require_indexed`` is :data:`True`
+                but the current property is not indexed.
+            InvalidPropertyError: If a subproperty is specified via ``rest``
+                (:class:`StructuredProperty` overrides this method to handle
+                subproperties).
+        """
+        if require_indexed and not self._indexed:
+            raise InvalidPropertyError(
+                "Property is unindexed {}".format(self._name)
+            )
+
+        if rest:
+            raise InvalidPropertyError(
+                "Referencing subproperty {}.{} but {} is not a structured "
+                "property".format(self._name, rest, self._name)
+            )
 
 
 class ModelKey(Property):
