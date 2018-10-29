@@ -21,7 +21,7 @@ def clone_git_on_borg_repo(repo_url):
     subprocess.check_call(["git", "clone", repo_url])
     repo = Path(repo_url)
     os.chdir(repo.name)
-    subprocess.check_call(["git", "remote", "add", "direct", repo_url])
+    subprocess.check_call(["git", "remote", "add", "direct", "https://devrel.googlesource.com/_direct/cloud-docs/library-reference-docs"])
 
     return repo
 
