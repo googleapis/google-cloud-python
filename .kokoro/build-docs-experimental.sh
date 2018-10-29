@@ -10,45 +10,23 @@ cd ${KOKORO_ARTIFACTS_DIR}/github/google-cloud-python
 # Install Requirements
 pip install --upgrade -r docs/requirements.txt
 
-cd ${KOKORO_ARTIFACTS_DIR}/github/google-cloud-python/${PACKAGE}
+PACKAGE_ROOT=${KOKORO_ARTIFACTS_DIR}/github/google-cloud-python/${PACKAGE}
+PACKAGE_VERSION=$(python ${KOKORO_ARTIFACTS_DIR}/github/google-cloud-python/test_utils/scripts/get_package_version.py ${PACKAGE_ROOT})
+PACKAGE_DOCUMENTATION=${PACKAGE_ROOT}/docs/_build/html
 
-VERSION=$(python ${KOKORO_ARTIFACTS_DIR}/github/google-cloud-python/test_utils/scripts/get_package_version.py .)
+cd ${PACKAGE_ROOT}
 
-# Build documentation
-function build_docs {
-    rm -rf docs/_build/
-    # -W -> warnings as errors
-    # -T -> show full traceback on exception
-    # -N -> no color
-    sphinx-build \
-        -W -T -N \
-        -b html \
-        -d docs/_build/doctrees \
-        docs/ \
-        docs/_build/html/
-    return $?
-}
+rm -rf docs/_build/
 
-build_docs
+# -W -> warnings as errors
+# -T -> show full traceback on exception
+# -N -> no color
+sphinx-build \
+    -W -T -N \
+    -b html \
+    -d docs/_build/doctrees \
+    docs/ \
+    ${PACKAGE_DOCUMENTATION}
 
-# Run the GOB cookie daemon
-git clone https://gerrit.googlesource.com/gcompute-tools ${KOKORO_ARTIFACTS_DIR}/gcompute-tools
-${KOKORO_ARTIFACTS_DIR}/gcompute-tools/git-cookie-authdaemon
-
-# Clone Git-on-Borg docs repository
-git clone https://devrel.googlesource.com/cloud-docs/library-reference-docs
-
-cd library-reference-docs
-
-# Set up remote to use cookie and bypass gerrit
-git remote add direct https://devrel.googlesource.com/_direct/cloud-docs/library-reference-docs
-
-# Copy docmentation
-mkdir -p python/${PACKAGE}/${VERSION}
-cp -R ../docs/_build/html/* python/${PACKAGE}/${VERSION}
-
-# Update the files
-git add .
-git status
-git commit -m "Publish documentation for ${PACKAGE} v${VERSION}"
-git push direct master
+# docs-publisher will push the docs to git-on-borg repo
+python3 docs-publisher.py
