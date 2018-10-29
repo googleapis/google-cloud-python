@@ -6,7 +6,7 @@
 
 ## 1.5.1
 
-10-15-2018 09:04 PDT
+10-29-2018 13:15 PDT
 
 ### Internal / Testing Changes
 - Don't URL-encode slashes in gRPC request headers ([#6310](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6310))
