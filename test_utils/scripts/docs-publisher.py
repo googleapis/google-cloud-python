@@ -17,17 +17,20 @@ def run_cookie_daemon(kokoro_artifacts_dir):
     subprocess.check_call([gcompute_tools / "git-cookie-authdaemon"])
 
 
-def clone_git_on_borg_repo(repo_url):
-    subprocess.check_call(["git", "clone", repo_url])
-    repo = Path(repo_url)
-    os.chdir(repo.name)
+def clone_git_on_borg_repo():
+    cwd = os.getcwd()
+
+    repo_name = "library-reference-docs"
+    subprocess.check_call(["git", "clone","https://devrel.googlesource.com/cloud-docs/library-reference-docs"])
+    os.chdir(repo_name)
     subprocess.check_call(["git", "remote", "add", "direct", "https://devrel.googlesource.com/_direct/cloud-docs/library-reference-docs"])
+    os.chdir(cwd)
 
-    return repo
+    return repo_name
 
 
-def push_changes(repo, language, package, version):
-    subprocess.check_call(["git", "add", repo])
+def push_changes(language, package, version):
+    subprocess.check_call(["git", "add", "."])
     subprocess.check_call(["git", "status"])
     commit_msg = f"Publish documentation for {language}/{package}/{version}"
     subprocess.check_call(["git", "commit", "-m", commit_msg])
@@ -45,11 +48,15 @@ def main():
     os.chdir(package_root)
     run_cookie_daemon(kokoro_artifacts_dir)
 
-    repo_url = "https://devrel.googlesource.com/cloud-docs/library-reference-docs"
-    repo = clone_git_on_borg_repo(repo_url)
+    repo = clone_git_on_borg_repo()
 
     # Copy docs to repo
-    shutil.copytree(package_documentation, repo / language / package / version)
+    dest = Path(repo, language, package, version)
+    if os.path.isdir(dest):
+      shutil.rmtree(dest)
+
+    shutil.copytree(package_documentation, Path(repo, language, package, version))
+    os.chdir(repo)
     push_changes(repo, language, package, version)  # Commit and push
 
 
