@@ -4,6 +4,25 @@
 
 [1]: https://pypi.org/project/google-cloud-datastore/#history
 
+## 1.7.1
+
+10-29-2018 10:38 PDT
+
+### Implementation Changes
+- Propagate empty arrays in entity values. ([#6285](https://github.com/googleapis/google-cloud-python/pull/6285))
+- Expose 'Client.base_url' property to allow alternate endpoints. ([#5821](https://github.com/googleapis/google-cloud-python/pull/5821))
+
+### Documentation
+- Normalize use of support level badges ([#6159](https://github.com/googleapis/google-cloud-python/pull/6159))
+- Redirect renamed 'usage.html'/'client.html' -> 'index.html'. ([#5996](https://github.com/googleapis/google-cloud-python/pull/5996))
+- Replace links to '/stable/' with '/latest/'. ([#5901](https://github.com/googleapis/google-cloud-python/pull/5901))
+
+### Internal / Testing Changes
+- Use new Nox ([#6175](https://github.com/googleapis/google-cloud-python/pull/6175))
+- Add 'synth.py'. ([#6078](https://github.com/googleapis/google-cloud-python/pull/6078))
+- Prep datastore docs for repo split. ([#5919](https://github.com/googleapis/google-cloud-python/pull/5919))
+- Use inplace installs under `nox` ([#5865](https://github.com/googleapis/google-cloud-python/pull/5865))
+
 ## 1.7.0
 
 ### Implementation Changes
