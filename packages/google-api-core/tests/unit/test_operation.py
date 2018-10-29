@@ -221,11 +221,3 @@ def test_from_gapic():
     assert future._metadata_type == struct_pb2.Struct
     assert future.operation.name == TEST_OPERATION_NAME
     assert future.done
-
-
-def test_deserialize():
-    op = make_operation_proto(name='foobarbaz')
-    serialized = op.SerializeToString()
-    deserialized_op = operation.Operation.deserialize(serialized)
-    assert op.name == deserialized_op.name
-    assert type(op) is type(deserialized_op)
