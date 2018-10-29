@@ -1151,6 +1151,43 @@ class TestProperty:
         # Check mocks.
         function.assert_not_called()
 
+    @staticmethod
+    def test__get_value():
+        prop = model.Property(name="prop")
+        value = b"\x00\x01"
+        values = {prop._name: value}
+        entity = unittest.mock.Mock(
+            _projection=(), _values=values, spec=("_projection", "_values")
+        )
+        assert value is prop._get_value(entity)
+        # Cache is untouched.
+        assert model.Property._FIND_METHODS_CACHE == {}
+
+    @staticmethod
+    def test__get_value_projected_present():
+        prop = model.Property(name="prop")
+        value = 92.5
+        values = {prop._name: value}
+        entity = unittest.mock.Mock(
+            _projection=(prop._name,),
+            _values=values,
+            spec=("_projection", "_values"),
+        )
+        assert value is prop._get_value(entity)
+        # Cache is untouched.
+        assert model.Property._FIND_METHODS_CACHE == {}
+
+    @staticmethod
+    def test__get_value_projected_absent():
+        prop = model.Property(name="prop")
+        entity = unittest.mock.Mock(
+            _projection=("nope",), spec=("_projection",)
+        )
+        with pytest.raises(model.UnprojectedPropertyError):
+            prop._get_value(entity)
+        # Cache is untouched.
+        assert model.Property._FIND_METHODS_CACHE == {}
+
 
 class TestModelKey:
     @staticmethod

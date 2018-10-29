@@ -1190,6 +1190,31 @@ class Property(ModelAttribute):
 
         return value
 
+    def _get_value(self, entity):
+        """Get the value for this property from an entity.
+
+        For a repeated property this initializes the value to an empty
+        list if it is not set.
+
+        Args:
+            entity (Model): An entity to get a value from.
+
+        Returns:
+            Any: The user value stored for the current property.
+
+        Raises:
+            UnprojectedPropertyError: If the ``entity`` is the result of a
+                projection query and the current property is not one of the
+                projected properties.
+        """
+        if entity._projection:
+            if self._name not in entity._projection:
+                raise UnprojectedPropertyError(
+                    "Property {} is not in the projection".format(self._name)
+                )
+
+        return self._get_user_value(entity)
+
 
 class ModelKey(Property):
     __slots__ = ()
