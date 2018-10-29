@@ -27,7 +27,9 @@ In the hierarchy of API concepts
 * a :class:`~google.cloud.bigtable.table.Table` owns a
   :class:`~google.cloud.bigtable.row.Row` (and all the cells in the row)
 """
+import os
 import warnings
+import grpc
 
 from google.api_core.gapic_v1 import client_info
 
@@ -42,6 +44,7 @@ from google.cloud.client import ClientWithProject
 
 from google.cloud.bigtable_admin_v2 import enums
 from google.cloud.bigtable.cluster import _CLUSTER_NAME_RE
+from google.cloud.environment_vars import BIGTABLE_EMULATOR
 
 
 INSTANCE_TYPE_PRODUCTION = enums.Instance.Type.PRODUCTION
@@ -109,6 +112,10 @@ class Client(ClientWithProject):
         #       It **may** use those scopes in ``with_scopes_if_required``.
         self._read_only = bool(read_only)
         self._admin = bool(admin)
+        self._emulator_host = os.getenv(BIGTABLE_EMULATOR)
+        
+        if self._emulator_host is not None:
+            self._emulator_channel = grpc.insecure_channel(self._emulator_host)
 
         if channel is not None:
             warnings.warn(
@@ -161,9 +168,14 @@ class Client(ClientWithProject):
         :returns: A BigtableClient object.
         """
         if self._table_data_client is None:
-            self._table_data_client = (
-                bigtable_v2.BigtableClient(credentials=self._credentials,
-                                           client_info=_CLIENT_INFO))
+            if self._emulator_host is None:
+                self._table_data_client = (
+                    bigtable_v2.BigtableClient(credentials=self._credentials,
+                                               client_info=_CLIENT_INFO))
+            else:
+                self._table_data_client = (
+                    bigtable_v2.BigtableClient(channel=self._emulator_channel,
+                                               client_info=_CLIENT_INFO))
 
         return self._table_data_client
 
@@ -180,9 +192,17 @@ class Client(ClientWithProject):
         if self._table_admin_client is None:
             if not self._admin:
                 raise ValueError('Client is not an admin client.')
-            self._table_admin_client = (
-                bigtable_admin_v2.BigtableTableAdminClient(
-                    credentials=self._credentials, client_info=_CLIENT_INFO))
+            
+            if self._emulator_host is None:
+                self._table_admin_client = (
+                    bigtable_admin_v2.BigtableTableAdminClient(
+                        credentials=self._credentials,
+                        client_info=_CLIENT_INFO))
+            else:
+                self._table_admin_client = (
+                    bigtable_admin_v2.BigtableTableAdminClient(
+                        channel=self._emulator_channel,
+                        client_info=_CLIENT_INFO))
 
         return self._table_admin_client
 
@@ -199,9 +219,17 @@ class Client(ClientWithProject):
         if self._instance_admin_client is None:
             if not self._admin:
                 raise ValueError('Client is not an admin client.')
-            self._instance_admin_client = (
-                bigtable_admin_v2.BigtableInstanceAdminClient(
-                    credentials=self._credentials, client_info=_CLIENT_INFO))
+            
+            if self._emulator_host is None:
+                self._instance_admin_client = (
+                    bigtable_admin_v2.BigtableInstanceAdminClient(
+                        credentials=self._credentials,
+                        client_info=_CLIENT_INFO))
+            else:
+                self._instance_admin_client = (
+                    bigtable_admin_v2.BigtableInstanceAdminClient(
+                        channel=self._emulator_channel,
+                        client_info=_CLIENT_INFO))
         return self._instance_admin_client
 
     def instance(self, instance_id, display_name=None,
