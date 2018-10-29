@@ -1230,6 +1230,20 @@ class Property(ModelAttribute):
         if self._name in entity._values:
             del entity._values[self._name]
 
+    def _is_initialized(self, entity):
+        """Ask if the entity has a value for this property.
+
+        This returns :data:`False` if a value is stored but the stored value
+        is :data:`None`.
+
+        Args:
+            entity (Model): An entity to get a value from.
+        """
+        return not self._required or (
+            (self._has_value(entity) or self._default is not None)
+            and self._get_value(entity) is not None
+        )
+
 
 class ModelKey(Property):
     __slots__ = ()

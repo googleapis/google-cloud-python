@@ -1157,7 +1157,7 @@ class TestProperty:
         value = b"\x00\x01"
         values = {prop._name: value}
         entity = unittest.mock.Mock(
-            _projection=(), _values=values, spec=("_projection", "_values")
+            _projection=None, _values=values, spec=("_projection", "_values")
         )
         assert value is prop._get_value(entity)
         # Cache is untouched.
@@ -1204,6 +1204,36 @@ class TestProperty:
         entity = unittest.mock.Mock(_values=values, spec=("_values",))
         prop._delete_value(entity)
         assert values == {}
+
+    @staticmethod
+    def test__is_initialized_not_required():
+        prop = model.Property(name="prop", required=False)
+        entity = unittest.mock.sentinel.entity
+        assert prop._is_initialized(entity)
+        # Cache is untouched.
+        assert model.Property._FIND_METHODS_CACHE == {}
+
+    @staticmethod
+    def test__is_initialized_default_fallback():
+        prop = model.Property(name="prop", required=True, default=11111)
+        values = {}
+        entity = unittest.mock.Mock(
+            _projection=None, _values=values, spec=("_projection", "_values")
+        )
+        assert prop._is_initialized(entity)
+        # Cache is untouched.
+        assert model.Property._FIND_METHODS_CACHE == {}
+
+    @staticmethod
+    def test__is_initialized_set_to_none():
+        prop = model.Property(name="prop", required=True)
+        values = {prop._name: None}
+        entity = unittest.mock.Mock(
+            _projection=None, _values=values, spec=("_projection", "_values")
+        )
+        assert not prop._is_initialized(entity)
+        # Cache is untouched.
+        assert model.Property._FIND_METHODS_CACHE == {}
 
 
 class TestModelKey:
