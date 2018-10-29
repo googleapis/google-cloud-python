@@ -208,6 +208,12 @@ class Client(ClientWithProject):
                  instance_type=None, labels=None):
         """Factory to create a instance associated with this client.
 
+        For example:
+
+        .. literalinclude:: snippets.py
+            :start-after: [START bigtable_create_prod_instance]
+            :end-before: [END bigtable_create_prod_instance]
+
         :type instance_id: str
         :param instance_id: The ID of the instance.
 
@@ -246,6 +252,12 @@ class Client(ClientWithProject):
     def list_instances(self):
         """List instances owned by the project.
 
+        For example:
+
+        .. literalinclude:: snippets.py
+            :start-after: [START bigtable_list_instances]
+            :end-before: [END bigtable_list_instances]
+
         :rtype: tuple
         :returns:
             (instances, failed_locations), where 'instances' is list of
@@ -260,6 +272,12 @@ class Client(ClientWithProject):
 
     def list_clusters(self):
         """List the clusters in the project.
+
+        For example:
+
+        .. literalinclude:: snippets.py
+            :start-after: [START bigtable_list_clusters_in_project]
+            :end-before: [END bigtable_list_clusters_in_project]
 
         :rtype: tuple
         :returns:

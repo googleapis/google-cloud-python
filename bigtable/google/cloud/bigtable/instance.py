@@ -187,7 +187,14 @@ class Instance(object):
         return not self == other
 
     def reload(self):
-        """Reload the metadata for this instance."""
+        """Reload the metadata for this instance.
+
+        For example:
+
+        .. literalinclude:: snippets.py
+            :start-after: [START bigtable_reload_instance]
+            :end-before: [END bigtable_reload_instance]
+        """
         instance_pb = self._client.instance_admin_client.get_instance(
             self.name)
 
@@ -197,6 +204,12 @@ class Instance(object):
 
     def exists(self):
         """Check whether the instance already exists.
+
+        For example:
+
+        .. literalinclude:: snippets.py
+            :start-after: [START bigtable_check_instance_exists]
+            :end-before: [END bigtable_check_instance_exists]
 
         :rtype: bool
         :returns: True if the table exists, else False.
@@ -212,6 +225,12 @@ class Instance(object):
                serve_nodes=None,
                default_storage_type=None, clusters=None):
         """Create this instance.
+
+        For example:
+
+        .. literalinclude:: snippets.py
+            :start-after: [START bigtable_create_prod_instance]
+            :end-before: [END bigtable_create_prod_instance]
 
         .. note::
 
@@ -287,6 +306,12 @@ class Instance(object):
     def update(self):
         """Updates an instance within a project.
 
+        For example:
+
+        .. literalinclude:: snippets.py
+            :start-after: [START bigtable_update_instance]
+            :end-before: [END bigtable_update_instance]
+
         .. note::
 
             Updates any or all of the following values:
@@ -324,6 +349,12 @@ class Instance(object):
     def delete(self):
         """Delete this instance.
 
+        For example:
+
+        .. literalinclude:: snippets.py
+            :start-after: [START bigtable_delete_instance]
+            :end-before: [END bigtable_delete_instance]
+
         Marks an instance and all of its tables for permanent deletion
         in 7 days.
 
@@ -348,6 +379,12 @@ class Instance(object):
     def cluster(self, cluster_id, location_id=None,
                 serve_nodes=None, default_storage_type=None):
         """Factory to create a cluster associated with this instance.
+
+        For example:
+
+        .. literalinclude:: snippets.py
+            :start-after: [START bigtable_create_cluster]
+            :end-before: [END bigtable_create_cluster]
 
         :type cluster_id: str
         :param cluster_id: The ID of the cluster.
@@ -385,6 +422,12 @@ class Instance(object):
     def list_clusters(self):
         """List the clusters in this instance.
 
+        For example:
+
+        .. literalinclude:: snippets.py
+            :start-after: [START bigtable_list_clusters_on_instance]
+            :end-before: [END bigtable_list_clusters_on_instance]
+
         :rtype: tuple
         :returns:
             (clusters, failed_locations), where 'clusters' is list of
@@ -400,6 +443,12 @@ class Instance(object):
     def table(self, table_id, app_profile_id=None):
         """Factory to create a table associated with this instance.
 
+        For example:
+
+        .. literalinclude:: snippets.py
+            :start-after: [START bigtable_create_table]
+            :end-before: [END bigtable_create_table]
+
         :type table_id: str
         :param table_id: The ID of the table.
 
@@ -413,6 +462,12 @@ class Instance(object):
 
     def list_tables(self):
         """List the tables in this instance.
+
+        For example:
+
+        .. literalinclude:: snippets.py
+            :start-after: [START bigtable_list_tables]
+            :end-before: [END bigtable_list_tables]
 
         :rtype: list of :class:`Table <google.cloud.bigtable.table.Table>`
         :returns: The list of tables owned by the instance.
@@ -438,6 +493,12 @@ class Instance(object):
                     description=None, cluster_id=None,
                     allow_transactional_writes=None):
         """Factory to create AppProfile associated with this instance.
+
+        For example:
+
+        .. literalinclude:: snippets.py
+            :start-after: [START bigtable_create_app_profile]
+            :end-before: [END bigtable_create_app_profile]
 
         :type app_profile_id: str
         :param app_profile_id: The ID of the AppProfile. Must be of the form
@@ -475,6 +536,12 @@ class Instance(object):
     def list_app_profiles(self):
         """Lists information about AppProfiles in an instance.
 
+        For example:
+
+        .. literalinclude:: snippets.py
+            :start-after: [START bigtable_list_app_profiles]
+            :end-before: [END bigtable_list_app_profiles]
+
         :rtype: :list:[`~google.cloud.bigtable.app_profile.AppProfile`]
         :returns: A :list:[`~google.cloud.bigtable.app_profile.AppProfile`].
                   By default, this is a list of
@@ -487,15 +554,11 @@ class Instance(object):
     def get_iam_policy(self):
         """Gets the access control policy for an instance resource.
 
-        .. code-block:: python
+        For example:
 
-            from google.cloud.bigtable.client import Client
-            from google.cloud.bigtable.policy import Policy
-
-            client = Client(admin=True)
-            instance = client.instance('[INSTANCE_ID]')
-            policy_latest = instance.get_iam_policy()
-            print (policy_latest.bigtable_viewers)
+        .. literalinclude:: snippets.py
+            :start-after: [START bigtable_get_iam_policy]
+            :end-before: [END bigtable_get_iam_policy]
 
         :rtype: :class:`google.cloud.bigtable.policy.Policy`
         :returns: The current IAM policy of this instance
@@ -511,21 +574,11 @@ class Instance(object):
         For more information about policy, please see documentation of
         class `google.cloud.bigtable.policy.Policy`
 
-        .. code-block:: python
+        For example:
 
-            from google.cloud.bigtable.client import Client
-            from google.cloud.bigtable.policy import Policy
-            from google.cloud.bigtable.policy import BIGTABLE_ADMIN_ROLE
-
-            client = Client(admin=True)
-            instance = client.instance('[INSTANCE_ID]')
-            ins_policy = instance.get_iam_policy()
-            ins_policy[BIGTABLE_ADMIN_ROLE] = [
-                Policy.user("test_iam@test.com"),
-                Policy.service_account("sv_account@gmail.com")]
-
-            policy_latest = instance.set_iam_policy()
-            print (policy_latest.bigtable_admins)
+        .. literalinclude:: snippets.py
+            :start-after: [START bigtable_set_iam_policy]
+            :end-before: [END bigtable_set_iam_policy]
 
         :type policy: :class:`google.cloud.bigtable.policy.Policy`
         :param policy: A new IAM policy to replace the current IAM policy
@@ -543,16 +596,11 @@ class Instance(object):
         """Returns permissions that the caller has on the specified instance
         resource.
 
-        .. code-block:: python
+        For example:
 
-            from google.cloud.bigtable.client import Client
-
-            client = Client(admin=True)
-            instance = client.instance('[INSTANCE_ID]')
-            permissions = ["bigtable.tables.create",
-                           "bigtable.clusters.create"]
-            permissions_allowed = instance.test_iam_permissions(permissions)
-            print (permissions_allowed)
+        .. literalinclude:: snippets.py
+            :start-after: [START bigtable_test_iam_permissions]
+            :end-before: [END bigtable_test_iam_permissions]
 
         :type permissions: list
         :param permissions: The set of permissions to check for
