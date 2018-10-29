@@ -852,6 +852,134 @@ class Property(ModelAttribute):
         """
         return entity._values.get(self._name, default)
 
+    def _get_user_value(self, entity):
+        """Return the user value for this property of the given entity.
+
+        This implies removing the :class:`_BaseValue` wrapper if present, and
+        if it is, calling all ``_from_base_type()`` methods, in the reverse
+        method resolution order of the property's class. It also handles
+        default values and repeated properties.
+
+        Args:
+            entity (Model): An entity to get a value from.
+
+        Returns:
+            Any: The original value (if not :class:`_BaseValue`) or the wrapped
+            value converted from the base type.
+        """
+        return self._apply_to_values(entity, self._opt_call_from_base_type)
+
+    def _get_base_value(self, entity):
+        """Return the base value for this property of the given entity.
+
+        This implies calling all ``_to_base_type()`` methods, in the method
+        resolution order of the property's class, and adding a
+        :class:`_BaseValue` wrapper, if one is not already present. (If one
+        is present, no work is done.)  It also handles default values and
+        repeated properties.
+
+        Args:
+            entity (Model): An entity to get a value from.
+
+        Returns:
+            Union[_BaseValue, List[_BaseValue]]: The original value
+            (if :class:`_BaseValue`) or the value converted to the base type
+            and wrapped.
+        """
+        return self._apply_to_values(entity, self._opt_call_to_base_type)
+
+    def _get_base_value_unwrapped_as_list(self, entity):
+        """Like _get_base_value(), but always returns a list.
+
+        Args:
+            entity (Model): An entity to get a value from.
+
+        Returns:
+            List[Any]: The unwrapped base values. For an unrepeated
+            property, if the value is missing or :data:`None`, returns
+            ``[None]``; for a repeated property, if the original value is
+            missing or :data:`None` or empty, returns ``[]``.
+        """
+        wrapped = self._get_base_value(entity)
+        if self._repeated:
+            return [w.b_val for w in wrapped]
+        else:
+            if wrapped is None:
+                return [None]
+            return [wrapped.b_val]
+
+    def _opt_call_from_base_type(self, value):
+        """Call :meth:`_from_base_type` if necessary.
+
+        If ``value`` is a :class:`_BaseValue`, unwrap it and call all
+        :math:`_from_base_type` methods. Otherwise, return the value
+        unchanged.
+
+        Args:
+            value (Any): The value to invoke :meth:`_call_from_base_type`
+               for.
+
+        Returns:
+            Any: The original value (if not :class:`_BaseValue`) or the value
+            converted from the base type.
+        """
+        if isinstance(value, _BaseValue):
+            value = self._call_from_base_type(value.b_val)
+        return value
+
+    def _value_to_repr(self, value):
+        """Turn a value (base or not) into its repr().
+
+        This exists so that property classes can override it separately.
+
+        This manually applies ``_from_base_type()`` so as not to have a side
+        effect on what's contained in the entity. Printing a value should not
+        change it.
+
+        Args:
+            value (Any): The value to convert to a pretty-print ``repr``.
+
+        Returns:
+            str: The ``repr`` of the "true" value.
+        """
+        val = self._opt_call_from_base_type(value)
+        return repr(val)
+
+    def _opt_call_to_base_type(self, value):
+        """Call :meth:`_to_base_type` if necessary.
+
+        If ``value`` is a :class:`_BaseValue`, return it unchanged.
+        Otherwise, call all :meth:`_validate` and :meth:`_to_base_type` methods
+        and wrap it in a :class:`_BaseValue`.
+
+        Args:
+            value (Any): The value to invoke :meth:`_call_to_base_type`
+               for.
+
+        Returns:
+            _BaseValue: The original value (if :class:`_BaseValue`) or the
+            value converted to the base type and wrapped.
+        """
+        if not isinstance(value, _BaseValue):
+            value = _BaseValue(self._call_to_base_type(value))
+        return value
+
+    def _call_from_base_type(self, value):
+        """Call all ``_from_base_type()`` methods on the value.
+
+        This calls the methods in the reverse method resolution order of
+        the property's class.
+
+        Args:
+            value (Any): The value to be converted.
+
+        Returns:
+            Any: The transformed ``value``.
+        """
+        methods = self._find_methods("_from_base_type", reverse=True)
+        call = self._apply_list(methods)
+        return call(value)
+
     def _call_to_base_type(self, value):
         """Call all ``_validate()`` and ``_to_base_type()`` methods on value.
 
@@ -1025,6 +1153,42 @@ class Property(ModelAttribute):
             return value
 
         return call
+
+    def _apply_to_values(self, entity, function):
+        """Apply a function to the property value / values of a given entity.
+
+        This retrieves the property value, applies the function, and then
+        stores the value back. For a repeated property, the function is
+        applied separately to each of the values in the list. The
+        resulting value or list of values is both stored back in the
+        entity and returned from this method.
+
+        Args:
+            entity (Model): An entity to get a value from.
+            function (Callable[[Any], Any]): A transformation to apply to
+                the value.
+
+        Returns:
+            Any: The transformed value store on the entity for this property.
+        """
+        value = self._retrieve_value(entity, self._default)
+        if self._repeated:
+            if value is None:
+                value = []
+                self._store_value(entity, value)
+            else:
+                # NOTE: This assumes, but does not check, that ``value`` is
+                #       iterable. This relies on ``_set_value`` having checked
+                #       and converted to a ``list`` for a repeated property.
+                value[:] = map(function, value)
+        else:
+            if value is not None:
+                new_value = function(value)
+                if new_value is not None and new_value is not value:
+                    self._store_value(entity, new_value)
+                    value = new_value
+
+        return value
 
 
 class ModelKey(Property):
