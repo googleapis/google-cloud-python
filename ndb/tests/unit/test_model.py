@@ -801,20 +801,6 @@ class TestProperty:
         assert model.Property._FIND_METHODS_CACHE == {}
 
     @staticmethod
-    def test__get_base_value_unwrapped_as_list_invalid(property_clean_cache):
-        class SimpleProperty(model.Property):
-            def _validate(self, value):
-                self._repeated = False  # Switch from repeated midflight.
-                return value + 6
-
-        prop = SimpleProperty(name="prop", repeated=True)
-        values = {prop._name: [20]}
-        entity = unittest.mock.Mock(_values=values, spec=("_values",))
-        with pytest.raises(ValueError):
-            prop._get_base_value_unwrapped_as_list(entity)
-        assert values == {prop._name: [model._BaseValue(26)]}
-
-    @staticmethod
     def test__get_base_value_unwrapped_as_list_repeated(property_clean_cache):
         class SimpleProperty(model.Property):
             def _validate(self, value):
@@ -825,21 +811,6 @@ class TestProperty:
         entity = unittest.mock.Mock(_values=values, spec=("_values",))
         expected = [2.0, 3.0, 4.0]
         assert prop._get_base_value_unwrapped_as_list(entity) == expected
-
-    @staticmethod
-    def test__get_base_value_unwrapped_as_list_repeated_invalid(
-        property_clean_cache
-    ):
-        class SimpleProperty(model.Property):
-            def _validate(self, value):
-                self._repeated = True  # Switch to repeated midflight.
-                return value + 6
-
-        prop = SimpleProperty(name="prop", repeated=False)
-        values = {prop._name: 11}
-        entity = unittest.mock.Mock(_values=values, spec=("_values",))
-        with pytest.raises(ValueError):
-            prop._get_base_value_unwrapped_as_list(entity)
 
     @staticmethod
     def test__opt_call_from_base_type():
