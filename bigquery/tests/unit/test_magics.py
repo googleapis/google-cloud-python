@@ -186,7 +186,7 @@ def test_bigquery_magic_with_result_saved_to_variable():
 
     sql = 'SELECT 17 AS num'
     result = pandas.DataFrame([17], columns=['num'])
-    assert 'myvariable' not in ip.user_ns
+    assert 'df' not in ip.user_ns
 
     run_query_patch = mock.patch(
         'google.cloud.bigquery.magics._run_query', autospec=True)
@@ -263,7 +263,7 @@ def test_bigquery_magic_with_project():
 
 @pytest.mark.usefixtures('ipython_interactive')
 @pytest.mark.skipif(pandas is None, reason='Requires `pandas`')
-def test_bigquery_magic_with_formatting_params():
+def test_bigquery_magic_with_formatting_params_with_string():
     ip = IPython.get_ipython()
     ip.extension_manager.load_extension('google.cloud.bigquery')
     magics.context.credentials = mock.create_autospec(
@@ -271,7 +271,7 @@ def test_bigquery_magic_with_formatting_params():
 
     sql = 'SELECT @num AS num'
     result = pandas.DataFrame([17], columns=['num'])
-    assert 'myvariable' not in ip.user_ns
+    assert 'params_string_df' not in ip.user_ns
 
     run_query_patch = mock.patch(
         'google.cloud.bigquery.magics._run_query', autospec=True)
@@ -281,11 +281,42 @@ def test_bigquery_magic_with_formatting_params():
     with run_query_patch as run_query_mock:
         run_query_mock.return_value = query_job_mock
 
-        ip.run_cell_magic('bigquery', 'df --params {"num":17}', sql)
+        ip.run_cell_magic('bigquery', 'params_string_df --params {"num":17}', sql)
         run_query_mock.assert_called_once_with(mock.ANY, sql.format(num=17), mock.ANY)
 
-    assert 'df' in ip.user_ns        # verify that variable exists
-    df = ip.user_ns['df']
+    assert 'params_string_df' in ip.user_ns        # verify that variable exists
+    df = ip.user_ns['params_string_df']
     assert len(df) == len(result)    # verify row count
     assert list(df) == list(result)  # verify column names
 
+
+@pytest.mark.usefixtures('ipython_interactive')
+@pytest.mark.skipif(pandas is None, reason='Requires `pandas`')
+def test_bigquery_magic_with_formatting_params_with_expanded_dict():
+    ip = IPython.get_ipython()
+    ip.extension_manager.load_extension('google.cloud.bigquery')
+    magics.context.credentials = mock.create_autospec(
+        google.auth.credentials.Credentials, instance=True)
+
+    sql = 'SELECT @num AS num'
+    result = pandas.DataFrame([17], columns=['num'])
+    assert 'params_dict_df' not in ip.user_ns
+
+    run_query_patch = mock.patch(
+        'google.cloud.bigquery.magics._run_query', autospec=True)
+    query_job_mock = mock.create_autospec(
+        google.cloud.bigquery.job.QueryJob, instance=True)
+    query_job_mock.to_dataframe.return_value = result
+    with run_query_patch as run_query_mock:
+        run_query_mock.return_value = query_job_mock
+
+        params = {"num": 17}
+        # Insert dictionary into user namespace so that it can be expanded
+        ip.user_ns['params'] = params
+        ip.run_cell_magic('bigquery', 'params_dict_df --params $params', sql)
+        run_query_mock.assert_called_once_with(mock.ANY, sql.format(num=17), mock.ANY)
+
+    assert 'params_dict_df' in ip.user_ns        # verify that variable exists
+    df = ip.user_ns['params_dict_df']
+    assert len(df) == len(result)    # verify row count
+    assert list(df) == list(result)  # verify column names

@@ -41,7 +41,7 @@
         will be cleared after the query is finished.
     * ``--params <params dictionary>`` (optional, line argument):
         If present, the argument must be a parsable JSON string. This dictionary
-        will be used to format values enclosed within {} in the query.
+        will be used to format values preceded by ``@`` in the query.
     * ``<query>`` (required, cell argument):
         SQL query to run.
 
@@ -99,6 +99,18 @@
            ...: 1    Patricia  1568495
            ...: 2   Elizabeth  1519946
 
+        In [5]: %%bigquery df --params {"num": 17}
+           ...: SELECT @num AS num
+        Out[5]:
+           ...:    num
+           ...: 0   17
+        In [6]: # Expand a dictionary instead of writing it's string value
+        In [6]: params = {"num": 17}
+        In [7]: %%bigquery df --params $params
+           ...: SELECT @num AS num
+        Out[7]:
+           ...:    num
+           ...: 0   17
 """
 
 from __future__ import print_function
@@ -116,7 +128,7 @@ except ImportError:  # pragma: NO COVER
 
 import google.auth
 from google.cloud import bigquery
-from google.cloud.bigquery.dbapi._helpers import to_query_parameters
+from google.cloud.bigquery.dbapi import _helpers
 
 
 class Context(object):
@@ -280,7 +292,7 @@ def _cell_magic(line, query):
     params = []
     if args.params is not None:
         try:
-            params = to_query_parameters(ast.literal_eval(''.join(args.params)))
+            params = _helpers.to_query_parameters(ast.literal_eval(''.join(args.params)))
         except Exception:
             raise SyntaxError('--params is not a correctly formatted JSON string')
 
