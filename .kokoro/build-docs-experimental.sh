@@ -29,4 +29,4 @@ sphinx-build \
     ${PACKAGE_DOCUMENTATION}
 
 # docs-publisher will push the docs to git-on-borg repo
-python3 docs-publisher.py
+python ${KOKORO_ARTIFACTS_DIR}/github/google-cloud-python/test_utils/scripts/docs-publisher.py
