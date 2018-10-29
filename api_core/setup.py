@@ -22,7 +22,7 @@ import setuptools
 
 name = 'google-api-core'
 description = 'Google API client core library'
-version = '1.6.0a1'
+version = '2018.10.29'
 # Should be one of:
 # 'Development Status :: 3 - Alpha'
 # 'Development Status :: 4 - Beta'

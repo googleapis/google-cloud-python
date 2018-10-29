@@ -4,6 +4,17 @@
 
 [1]: https://pypi.org/project/google-api-core/#history
 
+## 2018.10.29
+
+10-29-2018 13:29 PDT
+
+
+### Implementation Changes
+- Don't URL-encode slashes in gRPC request headers. ([#6310](https://github.com/googleapis/google-cloud-python/pull/6310))
+
+### Internal / Testing Changes
+- Back out changes from [#6267](https://github.com/googleapis/google-cloud-python/pull/6267) / `api_core-1.6.0a1` release. ([#6328](https://github.com/googleapis/google-cloud-python/pull/6328))
+
 ## 1.6.0a1
 
 10-18-2018 16:26 PDT
