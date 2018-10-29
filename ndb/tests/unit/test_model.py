@@ -1264,6 +1264,11 @@ class TestProperty:
 
         assert Model.prop2 is prop
 
+    @staticmethod
+    def test__prepare_for_put():
+        prop = model.Property(name="prop")
+        assert prop._prepare_for_put(None) is None
+
 
 class TestModelKey:
     @staticmethod

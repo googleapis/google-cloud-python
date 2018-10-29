@@ -1260,6 +1260,9 @@ class Property(ModelAttribute):
         """Descriptor protocol: delete the value from the entity."""
         self._delete_value(entity)
 
+    def _prepare_for_put(self, entity):
+        pass
+
 
 class ModelKey(Property):
     __slots__ = ()
