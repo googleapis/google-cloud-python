@@ -21,7 +21,7 @@
 - Use new Nox ([#6175](https://github.com/googleapis/google-cloud-python/pull/6175))
 - Add 'synth.py'. ([#6078](https://github.com/googleapis/google-cloud-python/pull/6078))
 - Prep datastore docs for repo split. ([#5919](https://github.com/googleapis/google-cloud-python/pull/5919))
-- Nox: use inplace installs ([#5865](https://github.com/googleapis/google-cloud-python/pull/5865))
+- Use inplace installs under `nox` ([#5865](https://github.com/googleapis/google-cloud-python/pull/5865))
 
 ## 1.7.0
 
