@@ -14,7 +14,7 @@ def run_cookie_daemon(kokoro_artifacts_dir):
             gcompute_tools,
         ]
     )
-    subprocess.check_call([gcompute_tools / "git-cookie-daemon"])
+    subprocess.check_call([gcompute_tools / "git-cookie-authdaemon"])
 
 
 def clone_git_on_borg_repo(repo_url):

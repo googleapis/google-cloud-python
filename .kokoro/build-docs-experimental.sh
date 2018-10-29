@@ -10,10 +10,10 @@ cd ${KOKORO_ARTIFACTS_DIR}/github/google-cloud-python
 # Install Requirements
 pip install --upgrade -r docs/requirements.txt
 
-GITHUB_PACKAGE_ROOT=${KOKORO_ARTIFACTS_DIR}/github/google-cloud-python/${PACKAGE}
-GITHUB_PACKAGE_VERSION=$(python ${KOKORO_ARTIFACTS_DIR}/github/google-cloud-python/test_utils/scripts/get_package_version.py ${GITHUB_PACKAGE_ROOT})
-GITHUB_PACKAGE_LANGUAGE="python"
-GITHUB_PACKAGE_DOCUMENTATION=${GITHUB_PACKAGE_ROOT}/docs/_build/html
+export GITHUB_PACKAGE_ROOT=${KOKORO_ARTIFACTS_DIR}/github/google-cloud-python/${PACKAGE}
+export GITHUB_PACKAGE_VERSION=$(python ${KOKORO_ARTIFACTS_DIR}/github/google-cloud-python/test_utils/scripts/get_package_version.py ${GITHUB_PACKAGE_ROOT})
+export GITHUB_PACKAGE_LANGUAGE="python"
+export GITHUB_PACKAGE_DOCUMENTATION=${GITHUB_PACKAGE_ROOT}/docs/_build/html
 
 cd ${GITHUB_PACKAGE_ROOT}
 
