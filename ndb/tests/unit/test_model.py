@@ -1235,6 +1235,35 @@ class TestProperty:
         # Cache is untouched.
         assert model.Property._FIND_METHODS_CACHE == {}
 
+    @staticmethod
+    def test_instance_descriptors():
+        class Model:
+            prop = model.Property(name="prop", required=True)
+
+            def __init__(self):
+                self._projection = None
+                self._values = {}
+
+        m = Model()
+        value = 1234.5
+        # __set__
+        m.prop = value
+        assert m._values == {b"prop": value}
+        # __get__
+        assert m.prop == value
+        # __delete__
+        del m.prop
+        assert m._values == {}
+
+    @staticmethod
+    def test_class_descriptors():
+        prop = model.Property(name="prop", required=True)
+
+        class Model:
+            prop2 = prop
+
+        assert Model.prop2 is prop
+
 
 class TestModelKey:
     @staticmethod

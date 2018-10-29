@@ -1244,6 +1244,22 @@ class Property(ModelAttribute):
             and self._get_value(entity) is not None
         )
 
+    def __get__(self, entity, unused_cls=None):
+        """Descriptor protocol: get the value from the entity."""
+        if entity is None:
+            # Handle the case where ``__get__`` is called on the class
+            # rather than an instance.
+            return self
+        return self._get_value(entity)
+
+    def __set__(self, entity, value):
+        """Descriptor protocol: set the value on the entity."""
+        self._set_value(entity, value)
+
+    def __delete__(self, entity):
+        """Descriptor protocol: delete the value from the entity."""
+        self._delete_value(entity)
+
 
 class ModelKey(Property):
     __slots__ = ()
