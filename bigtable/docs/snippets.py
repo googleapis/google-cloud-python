@@ -370,5 +370,37 @@ def test_bigtable_test_iam_permissions():
     assert permissions_allowed == permissions
 
 
+def test_bigtable_get_iam_policy():
+    # [START bigtable_get_iam_policy]
+    from google.cloud.bigtable import Client
+
+    client = Client(admin=True)
+    instance = client.instance(INSTANCE_ID)
+    policy_latest = instance.get_iam_policy()
+    # [END bigtable_get_iam_policy]
+
+    assert len(policy_latest.bigtable_viewers) is not 0
+
+
+def test_bigtable_set_iam_policy():
+    # [START bigtable_set_iam_policy]
+    from google.cloud.bigtable import Client
+    from google.cloud.bigtable.policy import Policy
+    from google.cloud.bigtable.policy import BIGTABLE_ADMIN_ROLE
+
+    client = Client(admin=True)
+    instance = client.instance(INSTANCE_ID)
+    instance.reload()
+    ins_policy = Policy()
+    ins_policy[BIGTABLE_ADMIN_ROLE] = [
+        Policy.user("test_iam@test.com"),
+        Policy.service_account("sv_account@gmail.com")]
+
+    policy_latest = instance.set_iam_policy(ins_policy)
+    # [END bigtable_set_iam_policy]
+
+    assert len(policy_latest.bigtable_admins) is not 0
+
+
 if __name__ == '__main__':
     pytest.main()
