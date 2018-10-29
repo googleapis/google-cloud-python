@@ -554,15 +554,11 @@ class Instance(object):
     def get_iam_policy(self):
         """Gets the access control policy for an instance resource.
 
-        .. code-block:: python
+        For example:
 
-            from google.cloud.bigtable.client import Client
-            from google.cloud.bigtable.policy import Policy
-
-            client = Client(admin=True)
-            instance = client.instance('[INSTANCE_ID]')
-            policy_latest = instance.get_iam_policy()
-            print (policy_latest.bigtable_viewers)
+        .. literalinclude:: snippets.py
+            :start-after: [START bigtable_get_iam_policy]
+            :end-before: [END bigtable_get_iam_policy]
 
         :rtype: :class:`google.cloud.bigtable.policy.Policy`
         :returns: The current IAM policy of this instance
@@ -578,21 +574,11 @@ class Instance(object):
         For more information about policy, please see documentation of
         class `google.cloud.bigtable.policy.Policy`
 
-        .. code-block:: python
+        For example:
 
-            from google.cloud.bigtable.client import Client
-            from google.cloud.bigtable.policy import Policy
-            from google.cloud.bigtable.policy import BIGTABLE_ADMIN_ROLE
-
-            client = Client(admin=True)
-            instance = client.instance('[INSTANCE_ID]')
-            ins_policy = instance.get_iam_policy()
-            ins_policy[BIGTABLE_ADMIN_ROLE] = [
-                Policy.user("test_iam@test.com"),
-                Policy.service_account("sv_account@gmail.com")]
-
-            policy_latest = instance.set_iam_policy()
-            print (policy_latest.bigtable_admins)
+        .. literalinclude:: snippets.py
+            :start-after: [START bigtable_set_iam_policy]
+            :end-before: [END bigtable_set_iam_policy]
 
         :type policy: :class:`google.cloud.bigtable.policy.Policy`
         :param policy: A new IAM policy to replace the current IAM policy
