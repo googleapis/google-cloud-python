@@ -3,6 +3,7 @@ import shutil
 import subprocess
 from pathlib import Path
 
+
 def run_cookie_daemon(kokoro_artifacts_dir):
     gcompute_tools = Path(kokoro_artifacts_dir, "gcompute-tools")
     subprocess.check_call(
@@ -10,10 +11,10 @@ def run_cookie_daemon(kokoro_artifacts_dir):
             "git",
             "clone",
             "https://gerrit.googlesource.com/gcompute-tools",
-            gcompute_tools),
+            gcompute_tools,
         ]
     )
-    subprocess.check_call([gcompute_tools / "git-cookie-daemon")])
+    subprocess.check_call([gcompute_tools / "git-cookie-daemon"])
 
 
 def clone_git_on_borg_repo(repo_url):
@@ -25,7 +26,7 @@ def clone_git_on_borg_repo(repo_url):
     return repo
 
 
-def push_changes(repo):
+def push_changes(repo, language, package, version):
     subprocess.check_call(["git", "add", repo])
     subprocess.check_call(["git", "status"])
     commit_msg = f"Publish documentation for {language}/{package}/{version}"
@@ -36,7 +37,8 @@ def push_changes(repo):
 def main():
     kokoro_artifacts_dir = os.environ["KOKORO_ARTIFACTS_DIR"]
     package = os.environ["PACKAGE"]
-    package_version = os.environ["PACKAGE_VERSION"]
+    language = os.environ["PACKAGE_LANGUAGE"]
+    version = os.environ["PACKAGE_VERSION"]
     package_root = os.environ["PACKAGE_ROOT"]
     package_documentation = os.environ["PACKAGE_DOCUMENTATION"]
 
@@ -48,7 +50,7 @@ def main():
 
     # Copy docs to repo
     shutil.copytree(package_documentation, repo / language / package / version)
-    push_changes(repo) # Commit and push
+    push_changes(repo, language, package, version)  # Commit and push
 
 
 if __name__ == "__main__":

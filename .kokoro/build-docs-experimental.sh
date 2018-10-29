@@ -12,6 +12,7 @@ pip install --upgrade -r docs/requirements.txt
 
 PACKAGE_ROOT=${KOKORO_ARTIFACTS_DIR}/github/google-cloud-python/${PACKAGE}
 PACKAGE_VERSION=$(python ${KOKORO_ARTIFACTS_DIR}/github/google-cloud-python/test_utils/scripts/get_package_version.py ${PACKAGE_ROOT})
+PACKAGE_LANGUAGE=python
 PACKAGE_DOCUMENTATION=${PACKAGE_ROOT}/docs/_build/html
 
 cd ${PACKAGE_ROOT}
