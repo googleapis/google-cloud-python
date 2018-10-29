@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-api-core/#history
 
+## 1.5.1
+
+10-15-2018 09:04 PDT
+
+### Internal / Testing Changes
+- Don't URL-encode slashes in gRPC request headers ([#6310](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6310))
+- Fix branch coverage ([#6242](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6242))
+- Fix import order lint error.  ([#6240](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6240))
+
+### Documentation
+- Fix badges for PyPI / versions.  ([#6158](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6158))
+
 ## 1.5.0
 
 ### New Features
