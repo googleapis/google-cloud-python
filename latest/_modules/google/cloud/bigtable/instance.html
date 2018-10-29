@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigtable.instance &#8212; google-cloud 8e10e22 documentation</title>
+    <title>google.cloud.bigtable.instance &#8212; google-cloud a7d8058 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -223,7 +223,14 @@
         <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span> <span class="o">==</span> <span class="n">other</span>
 
 <div class="viewcode-block" id="Instance.reload"><a class="viewcode-back" href="../../../../bigtable/instance.html#google.cloud.bigtable.instance.Instance.reload">[docs]</a>    <span class="k">def</span> <span class="nf">reload</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Reload the metadata for this instance.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Reload the metadata for this instance.</span>
+
+<span class="sd">        For example:</span>
+
+<span class="sd">        .. literalinclude:: snippets.py</span>
+<span class="sd">            :start-after: [START bigtable_reload_instance]</span>
+<span class="sd">            :end-before: [END bigtable_reload_instance]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">instance_pb</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">instance_admin_client</span><span class="o">.</span><span class="n">get_instance</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
 
@@ -233,6 +240,12 @@
 
 <div class="viewcode-block" id="Instance.exists"><a class="viewcode-back" href="../../../../bigtable/instance.html#google.cloud.bigtable.instance.Instance.exists">[docs]</a>    <span class="k">def</span> <span class="nf">exists</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Check whether the instance already exists.</span>
+
+<span class="sd">        For example:</span>
+
+<span class="sd">        .. literalinclude:: snippets.py</span>
+<span class="sd">            :start-after: [START bigtable_check_instance_exists]</span>
+<span class="sd">            :end-before: [END bigtable_check_instance_exists]</span>
 
 <span class="sd">        :rtype: bool</span>
 <span class="sd">        :returns: True if the table exists, else False.</span>
@@ -248,6 +261,12 @@
                <span class="n">serve_nodes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                <span class="n">default_storage_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">clusters</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Create this instance.</span>
+
+<span class="sd">        For example:</span>
+
+<span class="sd">        .. literalinclude:: snippets.py</span>
+<span class="sd">            :start-after: [START bigtable_create_prod_instance]</span>
+<span class="sd">            :end-before: [END bigtable_create_prod_instance]</span>
 
 <span class="sd">        .. note::</span>
 
@@ -323,6 +342,12 @@
 <div class="viewcode-block" id="Instance.update"><a class="viewcode-back" href="../../../../bigtable/instance.html#google.cloud.bigtable.instance.Instance.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Updates an instance within a project.</span>
 
+<span class="sd">        For example:</span>
+
+<span class="sd">        .. literalinclude:: snippets.py</span>
+<span class="sd">            :start-after: [START bigtable_update_instance]</span>
+<span class="sd">            :end-before: [END bigtable_update_instance]</span>
+
 <span class="sd">        .. note::</span>
 
 <span class="sd">            Updates any or all of the following values:</span>
@@ -360,6 +385,12 @@
 <div class="viewcode-block" id="Instance.delete"><a class="viewcode-back" href="../../../../bigtable/instance.html#google.cloud.bigtable.instance.Instance.delete">[docs]</a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Delete this instance.</span>
 
+<span class="sd">        For example:</span>
+
+<span class="sd">        .. literalinclude:: snippets.py</span>
+<span class="sd">            :start-after: [START bigtable_delete_instance]</span>
+<span class="sd">            :end-before: [END bigtable_delete_instance]</span>
+
 <span class="sd">        Marks an instance and all of its tables for permanent deletion</span>
 <span class="sd">        in 7 days.</span>
 
@@ -384,6 +415,12 @@
 <div class="viewcode-block" id="Instance.cluster"><a class="viewcode-back" href="../../../../bigtable/instance.html#google.cloud.bigtable.instance.Instance.cluster">[docs]</a>    <span class="k">def</span> <span class="nf">cluster</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cluster_id</span><span class="p">,</span> <span class="n">location_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                 <span class="n">serve_nodes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">default_storage_type</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Factory to create a cluster associated with this instance.</span>
+
+<span class="sd">        For example:</span>
+
+<span class="sd">        .. literalinclude:: snippets.py</span>
+<span class="sd">            :start-after: [START bigtable_create_cluster]</span>
+<span class="sd">            :end-before: [END bigtable_create_cluster]</span>
 
 <span class="sd">        :type cluster_id: str</span>
 <span class="sd">        :param cluster_id: The ID of the cluster.</span>
@@ -421,6 +458,12 @@
 <div class="viewcode-block" id="Instance.list_clusters"><a class="viewcode-back" href="../../../../bigtable/instance.html#google.cloud.bigtable.instance.Instance.list_clusters">[docs]</a>    <span class="k">def</span> <span class="nf">list_clusters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;List the clusters in this instance.</span>
 
+<span class="sd">        For example:</span>
+
+<span class="sd">        .. literalinclude:: snippets.py</span>
+<span class="sd">            :start-after: [START bigtable_list_clusters_on_instance]</span>
+<span class="sd">            :end-before: [END bigtable_list_clusters_on_instance]</span>
+
 <span class="sd">        :rtype: tuple</span>
 <span class="sd">        :returns:</span>
 <span class="sd">            (clusters, failed_locations), where &#39;clusters&#39; is list of</span>
@@ -436,6 +479,12 @@
 <div class="viewcode-block" id="Instance.table"><a class="viewcode-back" href="../../../../bigtable/instance.html#google.cloud.bigtable.instance.Instance.table">[docs]</a>    <span class="k">def</span> <span class="nf">table</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table_id</span><span class="p">,</span> <span class="n">app_profile_id</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Factory to create a table associated with this instance.</span>
 
+<span class="sd">        For example:</span>
+
+<span class="sd">        .. literalinclude:: snippets.py</span>
+<span class="sd">            :start-after: [START bigtable_create_table]</span>
+<span class="sd">            :end-before: [END bigtable_create_table]</span>
+
 <span class="sd">        :type table_id: str</span>
 <span class="sd">        :param table_id: The ID of the table.</span>
 
@@ -449,6 +498,12 @@
 
 <div class="viewcode-block" id="Instance.list_tables"><a class="viewcode-back" href="../../../../bigtable/instance.html#google.cloud.bigtable.instance.Instance.list_tables">[docs]</a>    <span class="k">def</span> <span class="nf">list_tables</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;List the tables in this instance.</span>
+
+<span class="sd">        For example:</span>
+
+<span class="sd">        .. literalinclude:: snippets.py</span>
+<span class="sd">            :start-after: [START bigtable_list_tables]</span>
+<span class="sd">            :end-before: [END bigtable_list_tables]</span>
 
 <span class="sd">        :rtype: list of :class:`Table &lt;google.cloud.bigtable.table.Table&gt;`</span>
 <span class="sd">        :returns: The list of tables owned by the instance.</span>
@@ -474,6 +529,12 @@
                     <span class="n">description</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cluster_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                     <span class="n">allow_transactional_writes</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Factory to create AppProfile associated with this instance.</span>
+
+<span class="sd">        For example:</span>
+
+<span class="sd">        .. literalinclude:: snippets.py</span>
+<span class="sd">            :start-after: [START bigtable_create_app_profile]</span>
+<span class="sd">            :end-before: [END bigtable_create_app_profile]</span>
 
 <span class="sd">        :type app_profile_id: str</span>
 <span class="sd">        :param app_profile_id: The ID of the AppProfile. Must be of the form</span>
@@ -511,6 +572,12 @@
 <div class="viewcode-block" id="Instance.list_app_profiles"><a class="viewcode-back" href="../../../../bigtable/instance.html#google.cloud.bigtable.instance.Instance.list_app_profiles">[docs]</a>    <span class="k">def</span> <span class="nf">list_app_profiles</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Lists information about AppProfiles in an instance.</span>
 
+<span class="sd">        For example:</span>
+
+<span class="sd">        .. literalinclude:: snippets.py</span>
+<span class="sd">            :start-after: [START bigtable_list_app_profiles]</span>
+<span class="sd">            :end-before: [END bigtable_list_app_profiles]</span>
+
 <span class="sd">        :rtype: :list:[`~google.cloud.bigtable.app_profile.AppProfile`]</span>
 <span class="sd">        :returns: A :list:[`~google.cloud.bigtable.app_profile.AppProfile`].</span>
 <span class="sd">                  By default, this is a list of</span>
@@ -523,15 +590,11 @@
 <div class="viewcode-block" id="Instance.get_iam_policy"><a class="viewcode-back" href="../../../../bigtable/instance.html#google.cloud.bigtable.instance.Instance.get_iam_policy">[docs]</a>    <span class="k">def</span> <span class="nf">get_iam_policy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Gets the access control policy for an instance resource.</span>
 
-<span class="sd">        .. code-block:: python</span>
+<span class="sd">        For example:</span>
 
-<span class="sd">            from google.cloud.bigtable.client import Client</span>
-<span class="sd">            from google.cloud.bigtable.policy import Policy</span>
-
-<span class="sd">            client = Client(admin=True)</span>
-<span class="sd">            instance = client.instance(&#39;[INSTANCE_ID]&#39;)</span>
-<span class="sd">            policy_latest = instance.get_iam_policy()</span>
-<span class="sd">            print (policy_latest.bigtable_viewers)</span>
+<span class="sd">        .. literalinclude:: snippets.py</span>
+<span class="sd">            :start-after: [START bigtable_get_iam_policy]</span>
+<span class="sd">            :end-before: [END bigtable_get_iam_policy]</span>
 
 <span class="sd">        :rtype: :class:`google.cloud.bigtable.policy.Policy`</span>
 <span class="sd">        :returns: The current IAM policy of this instance</span>
@@ -547,21 +610,11 @@
 <span class="sd">        For more information about policy, please see documentation of</span>
 <span class="sd">        class `google.cloud.bigtable.policy.Policy`</span>
 
-<span class="sd">        .. code-block:: python</span>
+<span class="sd">        For example:</span>
 
-<span class="sd">            from google.cloud.bigtable.client import Client</span>
-<span class="sd">            from google.cloud.bigtable.policy import Policy</span>
-<span class="sd">            from google.cloud.bigtable.policy import BIGTABLE_ADMIN_ROLE</span>
-
-<span class="sd">            client = Client(admin=True)</span>
-<span class="sd">            instance = client.instance(&#39;[INSTANCE_ID]&#39;)</span>
-<span class="sd">            ins_policy = instance.get_iam_policy()</span>
-<span class="sd">            ins_policy[BIGTABLE_ADMIN_ROLE] = [</span>
-<span class="sd">                Policy.user(&quot;test_iam@test.com&quot;),</span>
-<span class="sd">                Policy.service_account(&quot;sv_account@gmail.com&quot;)]</span>
-
-<span class="sd">            policy_latest = instance.set_iam_policy()</span>
-<span class="sd">            print (policy_latest.bigtable_admins)</span>
+<span class="sd">        .. literalinclude:: snippets.py</span>
+<span class="sd">            :start-after: [START bigtable_set_iam_policy]</span>
+<span class="sd">            :end-before: [END bigtable_set_iam_policy]</span>
 
 <span class="sd">        :type policy: :class:`google.cloud.bigtable.policy.Policy`</span>
 <span class="sd">        :param policy: A new IAM policy to replace the current IAM policy</span>
@@ -579,16 +632,11 @@
         <span class="sd">&quot;&quot;&quot;Returns permissions that the caller has on the specified instance</span>
 <span class="sd">        resource.</span>
 
-<span class="sd">        .. code-block:: python</span>
+<span class="sd">        For example:</span>
 
-<span class="sd">            from google.cloud.bigtable.client import Client</span>
-
-<span class="sd">            client = Client(admin=True)</span>
-<span class="sd">            instance = client.instance(&#39;[INSTANCE_ID]&#39;)</span>
-<span class="sd">            permissions = [&quot;bigtable.tables.create&quot;,</span>
-<span class="sd">                           &quot;bigtable.clusters.create&quot;]</span>
-<span class="sd">            permissions_allowed = instance.test_iam_permissions(permissions)</span>
-<span class="sd">            print (permissions_allowed)</span>
+<span class="sd">        .. literalinclude:: snippets.py</span>
+<span class="sd">            :start-after: [START bigtable_test_iam_permissions]</span>
+<span class="sd">            :end-before: [END bigtable_test_iam_permissions]</span>
 
 <span class="sd">        :type permissions: list</span>
 <span class="sd">        :param permissions: The set of permissions to check for</span>
