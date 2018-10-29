@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Changelog &#8212; google-cloud 0c13d62e80 documentation</title>
+    <title>Changelog &#8212; google-cloud 8e10e22 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -39,23 +39,51 @@
 <span id="changelog"></span><h1>Changelog<a class="headerlink" href="#changelog" title="Permalink to this headline">#</a></h1>
 <p><a class="reference external" href="https://pypi.org/project/google-cloud-datastore/#history">PyPI History</a></p>
 <div class="section" id="">
-<span id="id1"></span><h2>1.7.0<a class="headerlink" href="#" title="Permalink to this headline">#</a></h2>
+<span id="id1"></span><h2>1.7.1<a class="headerlink" href="#" title="Permalink to this headline">#</a></h2>
+<p>10-29-2018 10:38 PDT</p>
 <div class="section" id="implementation-changes">
 <span id="implementation-changes"></span><h3>Implementation Changes<a class="headerlink" href="#implementation-changes" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li>Propagate empty arrays in entity values. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6285">#6285</a>)</li>
+<li>Expose ‘Client.base_url’ property to allow alternate endpoints. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/5821">#5821</a>)</li>
+</ul>
+</div>
+<div class="section" id="documentation">
+<span id="documentation"></span><h3>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li>Normalize use of support level badges (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6159">#6159</a>)</li>
+<li>Redirect renamed ‘usage.html’/’client.html’ -&gt; ‘index.html’. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/5996">#5996</a>)</li>
+<li>Replace links to ‘/stable/’ with ‘/latest/’. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/5901">#5901</a>)</li>
+</ul>
+</div>
+<div class="section" id="internal-testing-changes">
+<span id="internal-testing-changes"></span><h3>Internal / Testing Changes<a class="headerlink" href="#internal-testing-changes" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li>Use new Nox (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6175">#6175</a>)</li>
+<li>Add ‘synth.py’. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6078">#6078</a>)</li>
+<li>Prep datastore docs for repo split. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/5919">#5919</a>)</li>
+<li>Use inplace installs under <code class="docutils literal notranslate"><span class="pre">nox</span></code> (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/5865">#5865</a>)</li>
+</ul>
+</div>
+</div>
+<div class="section" id="">
+<span id="id2"></span><h2>1.7.0<a class="headerlink" href="#" title="Permalink to this headline">#</a></h2>
+<div class="section" id="implementation-changes">
+<span id="id3"></span><h3>Implementation Changes<a class="headerlink" href="#implementation-changes" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li>Do not pass ‘offset’ once the query iterator has a cursor (#5503)</li>
 <li>Add test runs for Python 3.7 and remove run for 3.4 (#5295)</li>
 </ul>
 </div>
 <div class="section" id="documentation">
-<span id="documentation"></span><h3>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">#</a></h3>
+<span id="id4"></span><h3>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li>minor fix to datastore example (#5452)</li>
 <li>Add example showing explicit unicode for text values in entities. (#5263)</li>
 </ul>
 </div>
 <div class="section" id="internal-testing-changes">
-<span id="internal-testing-changes"></span><h3>Internal / Testing Changes<a class="headerlink" href="#internal-testing-changes" title="Permalink to this headline">#</a></h3>
+<span id="id5"></span><h3>Internal / Testing Changes<a class="headerlink" href="#internal-testing-changes" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li>Modify system tests to use prerelease versions of grpcio (#5304)</li>
 <li>Avoid overwriting ‘<strong>module</strong>’ of messages from shared modules. (#5364)</li>
@@ -65,9 +93,9 @@
 </div>
 </div>
 <div class="section" id="">
-<span id="id2"></span><h2>1.6.0<a class="headerlink" href="#" title="Permalink to this headline">#</a></h2>
+<span id="id6"></span><h2>1.6.0<a class="headerlink" href="#" title="Permalink to this headline">#</a></h2>
 <div class="section" id="implementation-changes">
-<span id="id3"></span><h3>Implementation changes<a class="headerlink" href="#implementation-changes" title="Permalink to this headline">#</a></h3>
+<span id="id7"></span><h3>Implementation changes<a class="headerlink" href="#implementation-changes" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li>Don’t check <code class="docutils literal notranslate"><span class="pre">exclude_from_indexes</span></code> for empty lists. (#4915)</li>
 </ul>
@@ -90,7 +118,7 @@
 </div>
 </div>
 <div class="section" id="">
-<span id="id4"></span><h2>1.5.0<a class="headerlink" href="#" title="Permalink to this headline">#</a></h2>
+<span id="id8"></span><h2>1.5.0<a class="headerlink" href="#" title="Permalink to this headline">#</a></h2>
 <div class="section" id="interface-additions">
 <span id="interface-additions"></span><h3>Interface additions<a class="headerlink" href="#interface-additions" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
@@ -101,7 +129,7 @@
 </ul>
 </div>
 <div class="section" id="implementation-changes">
-<span id="id5"></span><h3>Implementation changes<a class="headerlink" href="#implementation-changes" title="Permalink to this headline">#</a></h3>
+<span id="id9"></span><h3>Implementation changes<a class="headerlink" href="#implementation-changes" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li>The underlying autogenerated code was rengereated to pick up new features and bugfixes. (#4348, #4877)</li>
 <li>Updated the HTTP implementation to match the gRPC implementation. (#4388)</li>
@@ -109,7 +137,7 @@
 </ul>
 </div>
 <div class="section" id="documentation">
-<span id="id6"></span><h3>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">#</a></h3>
+<span id="id10"></span><h3>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li>Entity doc consistency (#4641)</li>
 <li>Fixing “Fore” -&gt; “For” typo in README docs. (#4317)</li>
@@ -125,7 +153,7 @@
 </div>
 </div>
 <div class="section" id="">
-<span id="id7"></span><h2>1.4.0<a class="headerlink" href="#" title="Permalink to this headline">#</a></h2>
+<span id="id11"></span><h2>1.4.0<a class="headerlink" href="#" title="Permalink to this headline">#</a></h2>
 <div class="section" id="interface-changes-additions">
 <span id="interface-changes-additions"></span><h3>Interface changes / additions<a class="headerlink" href="#interface-changes-additions" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
@@ -133,14 +161,14 @@
 </ul>
 </div>
 <div class="section" id="documentation">
-<span id="id8"></span><h3>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">#</a></h3>
+<span id="id12"></span><h3>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li>Added link to “Python Development Environment Setup Guide” in
 project README (#4187, h/t to &#64;michaelawyu)</li>
 </ul>
 </div>
 <div class="section" id="dependencies">
-<span id="id9"></span><h3>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline">#</a></h3>
+<span id="id13"></span><h3>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li>Upgrading to <code class="docutils literal notranslate"><span class="pre">google-cloud-core</span> <span class="pre">&gt;=</span> <span class="pre">0.28.0</span></code> and adding dependency
 on <code class="docutils literal notranslate"><span class="pre">google-api-core</span></code> (#4221, #4280)</li>
