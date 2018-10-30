@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigtable.table &#8212; google-cloud 5ee4953 documentation</title>
+    <title>google.cloud.bigtable.table &#8212; google-cloud d20978c documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -879,7 +879,7 @@
 <span class="sd">    :raises: :exc:`~.table.TableMismatchError` if the row does not belong to</span>
 <span class="sd">             the table.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">row</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">name</span> <span class="o">!=</span> <span class="n">table_name</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">row</span><span class="o">.</span><span class="n">table</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">row</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">name</span> <span class="o">!=</span> <span class="n">table_name</span><span class="p">:</span>
         <span class="k">raise</span> <span class="n">TableMismatchError</span><span class="p">(</span>
             <span class="s1">&#39;Row </span><span class="si">%s</span><span class="s1"> is a part of </span><span class="si">%s</span><span class="s1"> table. Current table: </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span>
             <span class="p">(</span><span class="n">row</span><span class="o">.</span><span class="n">row_key</span><span class="p">,</span> <span class="n">row</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">table_name</span><span class="p">))</span>
