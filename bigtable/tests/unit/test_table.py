@@ -49,7 +49,7 @@ class Test___mutate_rows_request(unittest.TestCase):
         table = mock.Mock(name='table', spec=['name'])
         table.name = 'table'
         rows = [DirectRow(row_key=b'row_key', table=table),
-                DirectRow(row_key=b'row_key_2', table=table)]
+                DirectRow(row_key=b'row_key_2')]
         rows[0].set_cell('cf1', b'c1', b'1')
         rows[1].set_cell('cf1', b'c1', b'2')
         result = self._call_fut('table', rows)
