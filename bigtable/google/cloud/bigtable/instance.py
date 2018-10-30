@@ -388,7 +388,7 @@ class Instance(object):
         :rtype: :class:`google.cloud.bigtable.policy.Policy`
         :returns: The current IAM policy of this instance
         """
-        instance_admin_client = self._client._instance_admin_client
+        instance_admin_client = self._client.instance_admin_client
         resp = instance_admin_client.get_iam_policy(resource=self.name)
         return Policy.from_api_repr(self._to_dict_from_policy_pb(resp))
 
@@ -412,7 +412,7 @@ class Instance(object):
         :rtype: :class:`google.cloud.bigtable.policy.Policy`
         :returns: The current IAM policy of this instance.
         """
-        instance_admin_client = self._client._instance_admin_client
+        instance_admin_client = self._client.instance_admin_client
         resp = instance_admin_client.set_iam_policy(
             resource=self.name, policy=policy.to_api_repr())
         return Policy.from_api_repr(self._to_dict_from_policy_pb(resp))
@@ -439,7 +439,7 @@ class Instance(object):
         :rtype: list
         :returns: A List(string) of permissions allowed on the instance
         """
-        instance_admin_client = self._client._instance_admin_client
+        instance_admin_client = self._client.instance_admin_client
         resp = instance_admin_client.test_iam_permissions(
             resource=self.name, permissions=permissions)
         return list(resp.permissions)
@@ -629,5 +629,5 @@ class Instance(object):
                   :class:`~google.cloud.bigtable.app_profile.AppProfile`
                   instances.
         """
-        resp = self._client._instance_admin_client.list_app_profiles(self.name)
+        resp = self._client.instance_admin_client.list_app_profiles(self.name)
         return [AppProfile.from_pb(app_profile, self) for app_profile in resp]
