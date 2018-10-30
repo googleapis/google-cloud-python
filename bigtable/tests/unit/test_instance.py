@@ -21,33 +21,6 @@ from ._testing import _make_credentials
 from google.cloud.bigtable.cluster import Cluster
 
 
-class MultiCallableStub(object):
-    """Stub for the grpc.UnaryUnaryMultiCallable interface."""
-
-    def __init__(self, method, channel_stub):
-        self.method = method
-        self.channel_stub = channel_stub
-
-    def __call__(self, request, timeout=None, metadata=None, credentials=None):
-        self.channel_stub.requests.append((self.method, request))
-
-        return self.channel_stub.responses.pop()
-
-
-class ChannelStub(object):
-    """Stub for the grpc.Channel interface."""
-
-    def __init__(self, responses=[]):
-        self.responses = responses
-        self.requests = []
-
-    def unary_unary(self,
-                    method,
-                    request_serializer=None,
-                    response_deserializer=None):
-        return MultiCallableStub(method, self)
-
-
 class TestInstance(unittest.TestCase):
 
     PROJECT = 'project'
@@ -172,8 +145,9 @@ class TestInstance(unittest.TestCase):
             instance_pb2 as data_v2_pb2)
         from google.cloud.bigtable import enums
 
-        client = _Client(project=self.PROJECT)
-
+        credentials = _make_credentials()
+        client = self._make_client(
+            project=self.PROJECT, credentials=credentials, admin=True)
         instance_type = enums.Instance.Type.PRODUCTION
         state = enums.Instance.State.READY
         instance_pb = data_v2_pb2.Instance(
@@ -210,7 +184,9 @@ class TestInstance(unittest.TestCase):
             instance_pb2 as data_v2_pb2)
 
         ALT_PROJECT = 'ALT_PROJECT'
-        client = _Client(project=ALT_PROJECT)
+        credentials = _make_credentials()
+        client = self._make_client(
+            project=ALT_PROJECT, credentials=credentials, admin=True)
 
         self.assertNotEqual(self.PROJECT, ALT_PROJECT)
 
@@ -998,15 +974,3 @@ class TestInstance(unittest.TestCase):
 
         self.assertIsInstance(app_profile_2, AppProfile)
         self.assertEqual(app_profile_2.name, app_profile_name2)
-
-
-class _Client(object):
-
-    def __init__(self, project):
-        self.project = project
-        self.project_name = 'projects/' + self.project
-        self._operations_stub = mock.sentinel.operations_stub
-
-    def __eq__(self, other):
-        return (other.project == self.project and
-                other.project_name == self.project_name)
