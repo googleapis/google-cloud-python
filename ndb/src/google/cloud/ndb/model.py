@@ -1190,6 +1190,157 @@ class Property(ModelAttribute):
 
         return value
 
+    def _get_value(self, entity):
+        """Get the value for this property from an entity.
+
+        For a repeated property this initializes the value to an empty
+        list if it is not set.
+
+        Args:
+            entity (Model): An entity to get a value from.
+
+        Returns:
+            Any: The user value stored for the current property.
+
+        Raises:
+            UnprojectedPropertyError: If the ``entity`` is the result of a
+                projection query and the current property is not one of the
+                projected properties.
+        """
+        if entity._projection:
+            if self._name not in entity._projection:
+                raise UnprojectedPropertyError(
+                    "Property {} is not in the projection".format(self._name)
+                )
+
+        return self._get_user_value(entity)
+
+    def _delete_value(self, entity):
+        """Delete the value for this property from an entity.
+
+        .. note::
+
+            If no value exists this is a no-op; deleted values will not be
+            serialized but requesting their value will return :data:`None` (or
+            an empty list in the case of a repeated property).
+
+        Args:
+            entity (Model): An entity to get a value from.
+        """
+        if self._name in entity._values:
+            del entity._values[self._name]
+
+    def _is_initialized(self, entity):
+        """Ask if the entity has a value for this property.
+
+        This returns :data:`False` if a value is stored but the stored value
+        is :data:`None`.
+
+        Args:
+            entity (Model): An entity to get a value from.
+        """
+        return not self._required or (
+            (self._has_value(entity) or self._default is not None)
+            and self._get_value(entity) is not None
+        )
+
+    def __get__(self, entity, unused_cls=None):
+        """Descriptor protocol: get the value from the entity.
+
+        Args:
+            entity (Model): An entity to get a value from.
+            unused_cls (type): The class that owns this instance.
+        """
+        if entity is None:
+            # Handle the case where ``__get__`` is called on the class
+            # rather than an instance.
+            return self
+        return self._get_value(entity)
+
+    def __set__(self, entity, value):
+        """Descriptor protocol: set the value on the entity.
+
+        Args:
+            entity (Model): An entity to set a value on.
+            value (Any): The value to set.
+        """
+        self._set_value(entity, value)
+
+    def __delete__(self, entity):
+        """Descriptor protocol: delete the value from the entity.
+
+        Args:
+            entity (Model): An entity to delete a value from.
+        """
+        self._delete_value(entity)
+
+    def _prepare_for_put(self, entity):
+        """Allow this property to define a pre-put hook.
+
+        This base class implementation does nothing, but subclasses may
+        provide hooks.
+
+        Args:
+            entity (Model): An entity with values.
+        """
+        pass
+
+    def _check_property(self, rest=None, require_indexed=True):
+        """Check this property for specific requirements.
+
+        Called by ``Model._check_properties()``.
+
+        Args:
+            rest: Optional subproperty to check, of the form
+                ``name1.name2...nameN``.
+            required_indexed (bool): Indicates if the current property must
+                be indexed.
+
+        Raises:
+            InvalidPropertyError: If ``require_indexed`` is :data:`True`
+                but the current property is not indexed.
+            InvalidPropertyError: If a subproperty is specified via ``rest``
+                (:class:`StructuredProperty` overrides this method to handle
+                subproperties).
+        """
+        if require_indexed and not self._indexed:
+            raise InvalidPropertyError(
+                "Property is unindexed {}".format(self._name)
+            )
+
+        if rest:
+            raise InvalidPropertyError(
+                "Referencing subproperty {}.{} but {} is not a structured "
+                "property".format(self._name, rest, self._name)
+            )
+
+    def _get_for_dict(self, entity):
+        """Retrieve the value like ``_get_value()``.
+
+        This is intended to be processed for ``_to_dict()``.
+
+        Property subclasses can override this if they want the dictionary
+        returned by ``entity._to_dict()`` to contain a different value. The
+        main use case is allowing :class:`StructuredProperty` and
+        :class:`LocalStructuredProperty` to allow the default ``_get_value()``
+        behavior.
+
+        * If you override ``_get_for_dict()`` to return a different type, you
+          must override ``_validate()`` to accept values of that type and
+          convert them back to the original type.
+
+        * If you override ``_get_for_dict()``, you must handle repeated values
+          and :data:`None` correctly. However, ``_validate()`` does not need to
+          handle these.
+
+        Args:
+            entity (Model): An entity to get a value from.
+
+        Returns:
+            Any: The user value stored for the current property.
+        """
+        return self._get_value(entity)
+
 
 class ModelKey(Property):
     __slots__ = ()
