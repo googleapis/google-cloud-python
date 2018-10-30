@@ -156,9 +156,6 @@ class TestInstance(unittest.TestCase):
         from google.cloud.bigtable.instance import Instance
         from google.cloud.bigtable.instance import Cluster
 
-        instance_api = (
-            bigtable_instance_admin_client.BigtableInstanceAdminClient(
-                mock.Mock()))
         credentials = _make_credentials()
         client = self._make_client(project=self.PROJECT,
                                    credentials=credentials, admin=True)
@@ -167,10 +164,11 @@ class TestInstance(unittest.TestCase):
         failed_location = 'FAILED'
         cluster_id1 = 'cluster-id1'
         cluster_id2 = 'cluster-id2'
-        cluster_name1 = (client.instance_admin_client.cluster_path(
-                         self.PROJECT, self.INSTANCE_ID, cluster_id1))
-        cluster_name2 = (client.instance_admin_client.cluster_path(
-                         self.PROJECT, self.INSTANCE_ID, cluster_id2))
+        cluster_path_template = 'projects/{}/instances/{}/clusters/{}'
+        cluster_name1 = cluster_path_template.format(
+                         self.PROJECT, self.INSTANCE_ID, cluster_id1)
+        cluster_name2 = cluster_path_template.format(
+                         self.PROJECT, self.INSTANCE_ID, cluster_id2)
 
         # Create response_pb
         response_pb = messages_v2_pb2.ListClustersResponse(
@@ -188,10 +186,11 @@ class TestInstance(unittest.TestCase):
         )
 
         # Patch the stub used by the API method.
+        instance_api = mock.create_autospec(
+            bigtable_instance_admin_client.BigtableInstanceAdminClient)
+        instance_api.list_clusters.side_effect = [response_pb]
+        instance_api.cluster_path = cluster_path_template.format
         client._instance_admin_client = instance_api
-        instance_admin_client = client._instance_admin_client
-        instance_stub = instance_admin_client.transport
-        instance_stub.list_clusters.side_effect = [response_pb]
 
         # Perform the method and check the result.
         clusters, failed_locations = instance.list_clusters()
