@@ -115,7 +115,7 @@ def cover(session):
     session.run('coverage', 'erase')
 
 
-@nox.session(python='3.7')
+@nox.session(python=['2.7', '3.7'])
 def snippets(session):
     """Run the system test suite."""
     # Sanity check: Only run system tests if the environment variable is set.
@@ -126,9 +126,11 @@ def snippets(session):
     session.install('mock', 'pytest')
     for local_dep in LOCAL_DEPS:
         session.install('-e', local_dep)
-    session.install('-e', os.path.join('..', 'bigtable'))
     session.install('-e', '../test_utils/')
     session.install('-e', '.')
-    session.run('py.test', '--quiet', \
-                os.path.join('docs', 'snippets.py'), \
-                *session.posargs)
+    session.run(
+        'py.test',
+        '--quiet',
+        os.path.join('docs', 'snippets.py'),
+        *session.posargs,
+    )
