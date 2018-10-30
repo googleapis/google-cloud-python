@@ -428,126 +428,129 @@ class TestInstance(unittest.TestCase):
         alt_instance_2 = self._make_one(non_existing_instance_id, client)
         self.assertTrue(alt_instance_1.exists())
         self.assertFalse(alt_instance_2.exists())
+
         with self.assertRaises(exceptions.BadRequest):
             alt_instance_2.exists()
 
-    def test_create_check_conflicts(self):
+    def test_create_check_location_and_clusters(self):
         instance = self._make_one(self.INSTANCE_ID, None)
+
         with self.assertRaises(ValueError):
-            instance.create(location_id=self.LOCATION_ID,
-                            clusters=[object(), object()])
+            instance.create(
+                location_id=self.LOCATION_ID, clusters=[object(), object()])
+
+    def test_create_check_serve_nodes_and_clusters(self):
+        instance = self._make_one(self.INSTANCE_ID, None)
+
         with self.assertRaises(ValueError):
-            instance.create(serve_nodes=3,
-                            clusters=[object(), object()])
+            instance.create(
+                serve_nodes=3, clusters=[object(), object()])
+
+    def test_create_check_default_storage_type_and_clusters(self):
+        instance = self._make_one(self.INSTANCE_ID, None)
+
         with self.assertRaises(ValueError):
-            instance.create(default_storage_type=1,
-                            clusters=[object(), object()])
+            instance.create(
+                default_storage_type=1, clusters=[object(), object()])
+
+    def _instance_api_response_for_create(self):
+        import datetime
+        from google.api_core import operation
+        from google.longrunning import operations_pb2
+        from google.protobuf.any_pb2 import Any
+        from google.cloud._helpers import _datetime_to_pb_timestamp
+        from google.cloud.bigtable_admin_v2.gapic import (
+            bigtable_instance_admin_client)
+        from google.cloud.bigtable_admin_v2.proto import (
+            bigtable_instance_admin_pb2 as messages_v2_pb2)
+        from google.cloud.bigtable_admin_v2.types import instance_pb2
+
+        NOW = datetime.datetime.utcnow()
+        NOW_PB = _datetime_to_pb_timestamp(NOW)
+        metadata = messages_v2_pb2.CreateInstanceMetadata(request_time=NOW_PB)
+        type_url = 'type.googleapis.com/{}'.format(
+            messages_v2_pb2.CreateInstanceMetadata.DESCRIPTOR.full_name)
+        response_pb = operations_pb2.Operation(
+            name=self.OP_NAME,
+            metadata=Any(
+                type_url=type_url,
+                value=metadata.SerializeToString(),
+            )
+        )
+        response = operation.from_gapic(
+            response_pb,
+            mock.Mock(),
+            instance_pb2.Instance,
+            metadata_type=messages_v2_pb2.CreateInstanceMetadata,
+        )
+        project_path_template = 'projects/{}'
+        location_path_template = 'projects/{}/locations/{}'
+        instance_api = mock.create_autospec(
+            bigtable_instance_admin_client.BigtableInstanceAdminClient)
+        instance_api.create_instance.return_value = response
+        instance_api.project_path = project_path_template.format
+        instance_api.location_path = location_path_template.format
+        return instance_api, response
 
     def test_create(self):
-        import datetime
-        from google.api_core import operation
-        from google.longrunning import operations_pb2
-        from google.protobuf.any_pb2 import Any
-        from google.cloud.bigtable_admin_v2.proto import (
-            bigtable_instance_admin_pb2 as messages_v2_pb2)
-        from google.cloud._helpers import _datetime_to_pb_timestamp
         from google.cloud.bigtable import enums
-        from google.cloud.bigtable_admin_v2.gapic import (
-            bigtable_instance_admin_client)
+        from google.cloud.bigtable_admin_v2.types import instance_pb2
 
-        NOW = datetime.datetime.utcnow()
-        NOW_PB = _datetime_to_pb_timestamp(NOW)
         credentials = _make_credentials()
-        client = self._make_client(project=self.PROJECT,
-                                   credentials=credentials, admin=True)
-        instance = self._make_one(self.INSTANCE_ID, client,
-                                  self.DISPLAY_NAME,
-                                  enums.Instance.Type.PRODUCTION,
-                                  self.LABELS)
+        client = self._make_client(
+            project=self.PROJECT, credentials=credentials, admin=True)
+        instance = self._make_one(
+            self.INSTANCE_ID,
+            client,
+            self.DISPLAY_NAME,
+            enums.Instance.Type.PRODUCTION,
+            self.LABELS,
+        )
+        instance_api, response = self._instance_api_response_for_create()
+        client._instance_admin_client = instance_api
+        serve_nodes = 3
 
-        # Create response_pb
-        metadata = messages_v2_pb2.CreateInstanceMetadata(request_time=NOW_PB)
-        type_url = 'type.googleapis.com/{}'.format(
-            messages_v2_pb2.CreateInstanceMetadata.DESCRIPTOR.full_name)
-        response_pb = operations_pb2.Operation(
-            name=self.OP_NAME,
-            metadata=Any(
-                type_url=type_url,
-                value=metadata.SerializeToString(),
-            )
+        result = instance.create(
+            location_id=self.LOCATION_ID,
+            serve_nodes=serve_nodes,
         )
 
-        # Patch the stub used by the API method.
-        channel = ChannelStub(responses=[response_pb])
-        instance_api = (
-            bigtable_instance_admin_client.BigtableInstanceAdminClient(
-                channel=channel))
-        client._instance_admin_client = instance_api
-
-        # Perform the method and check the result.
-        serve_nodes = 3
+        cluster_pb = instance_pb2.Cluster(
+            location=instance_api.location_path(
+                self.PROJECT, self.LOCATION_ID),
+            serve_nodes=serve_nodes,
+            default_storage_type=enums.StorageType.UNSPECIFIED,
+        )
+        instance_pb = instance_pb2.Instance(
+            display_name=self.DISPLAY_NAME,
+            type=enums.Instance.Type.PRODUCTION,
+            labels=self.LABELS,
+        )
         cluster_id = '{}-cluster'.format(self.INSTANCE_ID)
-        # cluster = instance.cluster(cluster_id, location_id=self.LOCATION_ID,
-        #                            serve_nodes=serve_nodes)
-        # result = instance.create(clusters=[cluster])
+        instance_api.create_instance.assert_called_once_with(
+            parent=instance_api.project_path(self.PROJECT),
+            instance_id=self.INSTANCE_ID,
+            instance=instance_pb,
+            clusters={cluster_id: cluster_pb},
+        )
 
-        # TODO: replace this example with above once the otpion is removed
-        # from instance.create() method
-        result = instance.create(location_id=self.LOCATION_ID,
-                                 serve_nodes=serve_nodes)
-
-        actual_request = channel.requests[0][1]
-
-        cluster = self._create_cluster_pb(
-            instance_api, cluster_id, self.LOCATION_ID, serve_nodes,
-            enums.StorageType.UNSPECIFIED)
-
-        expected_request = self._create_instance_request({cluster_id: cluster})
-        self.assertEqual(expected_request, actual_request)
-        self.assertIsInstance(result, operation.Operation)
-        self.assertEqual(result.operation.name, self.OP_NAME)
-        self.assertIsInstance(result.metadata,
-                              messages_v2_pb2.CreateInstanceMetadata)
+        self.assertIs(result, response)
 
     def test_create_w_clusters(self):
-        import datetime
-        from google.api_core import operation
-        from google.longrunning import operations_pb2
-        from google.protobuf.any_pb2 import Any
-        from google.cloud.bigtable_admin_v2.proto import (
-            bigtable_instance_admin_pb2 as messages_v2_pb2)
-        from google.cloud._helpers import _datetime_to_pb_timestamp
         from google.cloud.bigtable import enums
-        from google.cloud.bigtable_admin_v2.gapic import (
-            bigtable_instance_admin_client)
+        from google.cloud.bigtable_admin_v2.types import instance_pb2
 
-        NOW = datetime.datetime.utcnow()
-        NOW_PB = _datetime_to_pb_timestamp(NOW)
         credentials = _make_credentials()
-        client = self._make_client(project=self.PROJECT,
-                                   credentials=credentials, admin=True)
-        instance = self._make_one(self.INSTANCE_ID, client,
-                                  self.DISPLAY_NAME,
-                                  enums.Instance.Type.PRODUCTION,
-                                  self.LABELS)
-
-        # Create response_pb
-        metadata = messages_v2_pb2.CreateInstanceMetadata(request_time=NOW_PB)
-        type_url = 'type.googleapis.com/{}'.format(
-            messages_v2_pb2.CreateInstanceMetadata.DESCRIPTOR.full_name)
-        response_pb = operations_pb2.Operation(
-            name=self.OP_NAME,
-            metadata=Any(
-                type_url=type_url,
-                value=metadata.SerializeToString(),
-            )
+        client = self._make_client(
+            project=self.PROJECT, credentials=credentials, admin=True)
+        instance = self._make_one(
+            self.INSTANCE_ID,
+            client,
+            self.DISPLAY_NAME,
+            enums.Instance.Type.PRODUCTION,
+            self.LABELS,
         )
-
-        # Patch the stub used by the API method.
-        channel = ChannelStub(responses=[response_pb])
-        instance_api = (
-            bigtable_instance_admin_client.BigtableInstanceAdminClient(
-                channel=channel))
+        instance_api, response = self._instance_api_response_for_create()
         client._instance_admin_client = instance_api
 
         # Perform the method and check the result.
@@ -564,54 +567,37 @@ class TestInstance(unittest.TestCase):
             Cluster(cluster_id_2, instance,
                     location_id=location_id_2,
                     serve_nodes=serve_nodes_2)]
+
         result = instance.create(clusters=clusters)
-        actual_request = channel.requests[0][1]
 
-        cluster_1_pb = self._create_cluster_pb(
-            instance_api, cluster_id_1, location_id_1, serve_nodes_1,
-            enums.StorageType.UNSPECIFIED)
-
-        cluster_2_pb = self._create_cluster_pb(
-            instance_api, cluster_id_2, location_id_2, serve_nodes_2,
-            enums.StorageType.UNSPECIFIED)
-
-        expected_request = self._create_instance_request(
-            {cluster_id_1: cluster_1_pb,
-             cluster_id_2: cluster_2_pb}
+        cluster_pb_1 = instance_pb2.Cluster(
+            location=instance_api.location_path(
+                self.PROJECT, location_id_1),
+            serve_nodes=serve_nodes_1,
+            default_storage_type=enums.StorageType.UNSPECIFIED,
         )
-        self.assertEqual(expected_request, actual_request)
-        self.assertIsInstance(result, operation.Operation)
-        self.assertEqual(result.operation.name, self.OP_NAME)
-        self.assertIsInstance(result.metadata,
-                              messages_v2_pb2.CreateInstanceMetadata)
-
-    def _create_cluster_pb(self, instance_api, cluster_id, location_id,
-                           serve_nodes, storage_type):
-        from google.cloud.bigtable_admin_v2.types import instance_pb2
-
-        location = instance_api.location_path(
-            self.PROJECT, location_id)
-        return instance_pb2.Cluster(
-            location=location,
-            serve_nodes=serve_nodes,
-            default_storage_type=storage_type)
-
-    def _create_instance_request(self, clusters):
-        from google.cloud.bigtable_admin_v2.proto import (
-            bigtable_instance_admin_pb2 as messages_v2_pb2)
-        from google.cloud.bigtable_admin_v2.types import instance_pb2
-        from google.cloud.bigtable import enums
-
-        instance = instance_pb2.Instance(display_name=self.DISPLAY_NAME,
-                                         type=enums.Instance.Type.PRODUCTION,
-                                         labels=self.LABELS)
-
-        return messages_v2_pb2.CreateInstanceRequest(
-            parent='projects/{}'.format(self.PROJECT),
+        cluster_pb_2 = instance_pb2.Cluster(
+            location=instance_api.location_path(
+                self.PROJECT, location_id_2),
+            serve_nodes=serve_nodes_2,
+            default_storage_type=enums.StorageType.UNSPECIFIED,
+        )
+        instance_pb = instance_pb2.Instance(
+            display_name=self.DISPLAY_NAME,
+            type=enums.Instance.Type.PRODUCTION,
+            labels=self.LABELS,
+        )
+        instance_api.create_instance.assert_called_once_with(
+            parent=instance_api.project_path(self.PROJECT),
             instance_id=self.INSTANCE_ID,
-            instance=instance,
-            clusters=clusters
+            instance=instance_pb,
+            clusters={
+                cluster_id_1: cluster_pb_1,
+                cluster_id_2: cluster_pb_2,
+            },
         )
+
+        self.assertIs(result, response)
 
     def test_update(self):
         import datetime
