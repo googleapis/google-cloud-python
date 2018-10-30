@@ -40,8 +40,9 @@
         query is finished. By default, this information will be displayed but
         will be cleared after the query is finished.
     * ``--params <params dictionary>`` (optional, line argument):
-        If present, the argument must be a parsable JSON string. This dictionary
-        will be used to format values preceded by ``@`` in the query.
+        If present, the argument must be a parsable JSON string or a reference to dictionary
+        which is serializable to JSON (preceding the dictionary with $).
+        This dictionary will be used to format values preceded by ``@`` in the query.
     * ``<query>`` (required, cell argument):
         SQL query to run.
 
@@ -102,13 +103,6 @@
         In [5]: %%bigquery df --params {"num": 17}
            ...: SELECT @num AS num
         Out[5]:
-           ...:    num
-           ...: 0   17
-        In [6]: # Expand a dictionary instead of writing it's string value
-        In [6]: params = {"num": 17}
-        In [7]: %%bigquery df --params $params
-           ...: SELECT @num AS num
-        Out[7]:
            ...:    num
            ...: 0   17
 """
