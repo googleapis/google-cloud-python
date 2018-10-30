@@ -704,23 +704,21 @@ class TestInstance(unittest.TestCase):
         from google.cloud.bigtable_admin_v2.gapic import (
             bigtable_instance_admin_client)
 
-        api = bigtable_instance_admin_client.BigtableInstanceAdminClient(
-            mock.Mock())
         credentials = _make_credentials()
         client = self._make_client(project=self.PROJECT,
                                    credentials=credentials, admin=True)
         instance = self._make_one(self.INSTANCE_ID, client)
+        instance_api = mock.create_autospec(
+            bigtable_instance_admin_client.BigtableInstanceAdminClient)
+        instance_api.delete_instance.return_value = None
+        client._instance_admin_client = instance_api
 
-        # Mock api calls
-        client._instance_admin_client = api
-
-        # Create expected_result.
-        expected_result = None  # delete() has no return value.
-
-        # Perform the method and check the result.
         result = instance.delete()
 
-        self.assertEqual(result, expected_result)
+        instance_api.delete_instance.assert_called_once_with(
+            instance.name)
+
+        self.assertIsNone(result)
 
     def _list_tables_helper(self, table_name=None):
         from google.cloud.bigtable_admin_v2.proto import (
