@@ -382,8 +382,7 @@ def test_bigtable_set_iam_policy_then_get_iam_policy():
 
     # [END bigtable_set_iam_policy]
 
-    service_account_email = '{}@appspot.gserviceaccount.com'.format(
-        Config.CLIENT.project)
+    service_account_email = Config.CLIENT._credentials.service_account_email
 
     # [START bigtable_set_iam_policy]
     client = Client(admin=True)
