@@ -1776,6 +1776,28 @@ class Test_metadata_with_prefix(unittest.TestCase):
             ('google-cloud-resource-prefix', database_string),
         ])
 
+class Test_filter_document_data_by_field_paths(unittest.TestCase):
+
+    @staticmethod
+    def _call_fut(document_data, field_paths):
+        from google.cloud.firestore_v1beta1._helpers import (
+            filter_document_data_by_field_paths,
+            )
+
+        return filter_document_data_by_field_paths(document_data, field_paths)
+
+    def test_it(self):
+        result = self._call_fut({'a':{'b':{'c':1, 'd':2}}, 'x':1}, ('a.b.c',))
+        self.assertEqual(result, {'a':{'b':{'c':1}}})
+
+        result = self._call_fut({'a':{'b':{'c':1, 'd':2}, 'x':1}}, ('a.b',))
+        self.assertEqual(result, {'a':{'b':{'c':1, 'd':2}}})
+
+        result = self._call_fut({'a':{'b':{'c':1, 'd':2}}, 'x':1}, ('a',))
+        self.assertEqual(result, {'a':{'b':{'c':1, 'd':2}}})
+
+        result = self._call_fut({'h': {'f': 5, 'g': 6}, 'e': 7}, ('h.f', 'h.g'))
+        self.assertEqual(result, {'h': {'f': 5, 'g': 6}})
 
 def _value_pb(**kwargs):
     from google.cloud.firestore_v1beta1.proto.document_pb2 import Value

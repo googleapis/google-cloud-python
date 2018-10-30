@@ -564,17 +564,18 @@ def extract_field_paths(document_data):
 
 def filter_document_data_by_field_paths(document_data, field_paths):
     flattened = {}
-    toplevel = filtered = {}
+    toplevel = {}
 
     for path in field_paths:
         flattened[path] = get_nested_value(path, document_data)
 
     for path, value in six.iteritems(flattened):
+        filtered = toplevel
         parts = parse_field_path(path)
 
         for part in parts:
             parent, lastpart = filtered, part
-            filtered[part] = {}
+            filtered.setdefault(part, {})
             filtered = filtered[part]
 
         parent[lastpart] = value
@@ -1093,22 +1094,43 @@ def _pbs_for_set_with_merge(document_path, document_data, merge, exists):
 
         for apispec_or_path in merge:
             if isinstance(apispec_or_path, FieldPath):
-                new_merge.append(apispec_or_path)
+                merge_fp = apispec_or_path
             else:
-                new_merge.append(FieldPath(*parse_field_path(apispec_or_path)))
+                merge_fp = FieldPath(*parse_field_path(apispec_or_path))
+            new_merge.append(merge_fp)
 
-        merge = new_merge
-
-        for merge_fp in new_merge:
             for fp in field_paths:
                 if merge_fp.eq_or_parent(fp):
                     data_merge.append(fp)
             if merge_fp in transform_paths:
                 transform_merge.append(merge_fp)
 
+        merge = new_merge
+
+        # the conformance tests require that one merge path may not be the
+        # prefix of another, XXX quadratic is expensive, fix
+        for fp1 in merge:
+            for fp2 in merge:
+                if fp1 != fp2 and fp1.eq_or_parent(fp2):
+                    raise ValueError(
+                        'a merge path may not be a parent of another merge '
+                        'path'
+                    )
+
+        # the conformance tests require that an exception be raised if any
+        # merge spec is not in the data, and the below happens to raise a
+        # keyerror XXX do this without so much expense, maybe by ensuring that
+        # each of the merge fieldpaths are in the union of transform_merge and
+        # data_merge
+        filter_document_data_by_field_paths(
+            document_data,
+            field_paths = [fp.to_api_repr() for fp in merge]
+            )
+
+        # XXX dont pass apireprs to filter_d_d_b_p, pass FieldPaths
         actual_data = filter_document_data_by_field_paths(
             document_data,
-            field_paths = sorted([fp.to_api_repr() for fp in data_merge]),
+            field_paths = [fp.to_api_repr() for fp in data_merge],
         )
 
     else: # non-iterable, non-False value means MergeAll
@@ -1116,20 +1138,24 @@ def _pbs_for_set_with_merge(document_path, document_data, merge, exists):
         transform_merge = transform_paths
         merge = sorted(data_merge + transform_merge)
 
-    update_pb = write_pb2.Write()
+    write_pb = write_pb2.Write()
 
     if actual_data:
         update = document_pb2.Document(
             name=document_path,
             fields=encode_dict(actual_data),
         )
-        update_pb.update.CopyFrom(update)
+        write_pb.update.CopyFrom(update)
+
+    if exists is not None:
+        write_pb.current_document.CopyFrom(
+            common_pb2.Precondition(exists=exists))
 
     mask_paths = [fp.to_api_repr() for fp in merge if not fp in transform_merge]
 
     if mask_paths:
         mask = common_pb2.DocumentMask(field_paths=mask_paths)
-        update_pb.update_mask.CopyFrom(mask)
+        write_pb.update_mask.CopyFrom(mask)
 
     new_transform_paths = []
     for merge_fp in merge:
@@ -1138,18 +1164,7 @@ def _pbs_for_set_with_merge(document_path, document_data, merge, exists):
         new_transform_paths.extend(t_merge_fps)
     transform_paths = new_transform_paths
 
-    update_pb.update.CopyFrom(
-        document_pb2.Document(
-            name=document_path,
-            fields=encode_dict(actual_data),
-        )
-    )
-
-    if exists is not None:
-        update_pb.current_document.CopyFrom(
-            common_pb2.Precondition(exists=exists))
-
-    write_pbs = [update_pb]
+    write_pbs = [write_pb]
 
     if transform_paths:
         transform_pb = get_transform_pb(document_path, transform_paths)

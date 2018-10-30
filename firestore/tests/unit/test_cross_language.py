@@ -135,8 +135,8 @@ def _run_testcase(testcase, call, firestore_api, client):
 
 @pytest.mark.parametrize('test_proto', _SET_TESTPROTOS)
 def test_set_testprotos(test_proto):
-#    if test_proto.description != "set-merge: If is ServerTimestamp not in Merge, no transform (set-st-nomerge.textproto)":
-#        return
+    # if not 'set-24' in test_proto.description:
+    #     return
     testcase = test_proto.set
     firestore_api = _mock_firestore_api()
     client, document = _make_client_document(firestore_api, testcase)
@@ -163,11 +163,11 @@ def test_set_testprotos(test_proto):
 #     _run_testcase(testcase, call, firestore_api, client)
 
 
-@pytest.mark.skip(
-    reason="Python has no way to call update with a list of field paths.")
-@pytest.mark.parametrize('test_proto', _UPDATE_PATHS_TESTPROTOS)
-def test_update_paths_testprotos(test_proto):
-    pass
+# @pytest.mark.skip(
+#     reason="Python has no way to call update with a list of field paths.")
+# @pytest.mark.parametrize('test_proto', _UPDATE_PATHS_TESTPROTOS)
+# def test_update_paths_testprotos(test_proto):
+#     pass
 
 
 # @pytest.mark.parametrize('test_proto', _DELETE_TESTPROTOS)
@@ -183,10 +183,10 @@ def test_update_paths_testprotos(test_proto):
 #     _run_testcase(testcase, call, firestore_api, client)
 
 
-@pytest.mark.skip(reason="Watch aka listen not yet implemented in Python.")
-@pytest.mark.parametrize('test_proto', _LISTEN_TESTPROTOS)
-def test_listen_paths_testprotos(test_proto):
-    pass
+# @pytest.mark.skip(reason="Watch aka listen not yet implemented in Python.")
+# @pytest.mark.parametrize('test_proto', _LISTEN_TESTPROTOS)
+# def test_listen_paths_testprotos(test_proto):
+#     pass
 
 
 def convert_data(v):
