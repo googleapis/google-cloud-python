@@ -348,7 +348,6 @@ class Property(ModelAttribute):
     _verbose_name = None
     _write_empty_list = False
     # Non-public class attributes.
-    _CREATION_COUNTER = 0
     _FIND_METHODS_CACHE = {}
 
     def __init__(
@@ -385,9 +384,6 @@ class Property(ModelAttribute):
             self._verbose_name = verbose_name
         if write_empty_list is not None:
             self._write_empty_list = write_empty_list
-        # Keep a unique creation counter. Note that this is not threadsafe.
-        Property._CREATION_COUNTER += 1
-        self._creation_counter = Property._CREATION_COUNTER
 
     @staticmethod
     def _verify_name(name):
