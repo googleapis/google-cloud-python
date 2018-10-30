@@ -10,15 +10,27 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# NOTE: ``__config__`` **must** be the first import because it (may)
-#       modify the search path used to locate shared libraries.
-import crc32c.__config__
-import crc32c._crc32c_cffi
+import os
+
+import pkg_resources
 
 
-def extend(*args, **kwargs):
-    return crc32c._crc32c_cffi.lib.crc32c_extend(*args, **kwargs)
+def modify_path():
+    """Modify the module search path."""
+    # Only modify path on Windows.
+    if os.name != "nt":
+        return
+
+    path = os.environ.get("PATH")
+    if path is None:
+        return
+
+    try:
+        extra_dll_dir = pkg_resources.resource_filename("crc32c", "extra-dll")
+        if os.path.isdir(extra_dll_dir):
+            os.environ["PATH"] = path + os.pathsep + extra_dll_dir
+    except ImportError:
+        pass
 
 
-def value(*args, **kwargs):
-    return crc32c._crc32c_cffi.lib.crc32c_value(*args, **kwargs)
+modify_path()

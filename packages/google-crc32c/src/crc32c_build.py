@@ -20,8 +20,11 @@ def get_kwargs():
     if install_prefix is None:
         return {}
     install_prefix = os.path.realpath(install_prefix)
+    library_dirs = [os.path.join(install_prefix, "lib")]
+    if os.name == "nt":
+        library_dirs.append(os.path.join(install_prefix, "bin"))
     return {
-        "library_dirs": [os.path.join(install_prefix, "lib")],
+        "library_dirs": library_dirs,
         "include_dirs": [os.path.join(install_prefix, "include")],
     }
 

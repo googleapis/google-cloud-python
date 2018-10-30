@@ -11,8 +11,36 @@
 # limitations under the License.
 
 import os
+import shutil
 
 import setuptools
+import setuptools.command.build_ext
+
+
+_EXTRA_DLL = "extra-dll"
+_DLL_FILENAME = "crc32c.dll"
+
+
+def copy_dll(build_lib):
+    if os.name != "nt":
+        return
+
+    install_prefix = os.environ.get("CRC32C_INSTALL_PREFIX")
+    if install_prefix is None:
+        return
+
+    installed_dll = os.path.join(install_prefix, "bin", _DLL_FILENAME)
+    lib_dlls = os.path.join(build_lib, "crc32c", _EXTRA_DLL)
+    os.makedirs(lib_dlls)
+    relocated_dll = os.path.join(lib_dlls, _DLL_FILENAME)
+    shutil.copyfile(installed_dll, relocated_dll)
+
+
+class BuildExtWithDLL(setuptools.command.build_ext.build_ext):
+    def run(self):
+        copy_dll(self.build_lib)
+        result = setuptools.command.build_ext.build_ext.run(self)
+        return result
 
 
 def main():
@@ -32,6 +60,7 @@ def main():
         package_dir={"": "src"},
         license="Apache 2.0",
         platforms="Posix; MacOS X; Windows",
+        package_data={"crc32c": [os.path.join(_EXTRA_DLL, _DLL_FILENAME)]},
         zip_safe=True,
         setup_requires=[cffi_dep],
         cffi_modules=[builder],
@@ -48,6 +77,7 @@ def main():
             "Programming Language :: Python :: 3.6",
             "Programming Language :: Python :: 3.7",
         ],
+        cmdclass={"build_ext": BuildExtWithDLL},
     )
 
 
