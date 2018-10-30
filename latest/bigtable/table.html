@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Table &#8212; google-cloud 7b41d69 documentation</title>
+    <title>Table &#8212; google-cloud 9d6e68f documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -76,7 +76,7 @@ immediately reflect the state of the table in other clusters.</td>
 <dl class="data">
 <dt id="google.cloud.bigtable.table.DEFAULT_RETRY">
 <code class="descclassname">google.cloud.bigtable.table.</code><code class="descname">DEFAULT_RETRY</code><em class="property"> = &lt;google.api_core.retry.Retry object&gt;</em><a class="headerlink" href="#google.cloud.bigtable.table.DEFAULT_RETRY" title="Permalink to this definition">#</a></dt>
-<dd><p>The default retry stategy to be used on retry-able errors.</p>
+<dd><p>The default retry strategy to be used on retry-able errors.</p>
 <p>Used by <a class="reference internal" href="#google.cloud.bigtable.table.Table.mutate_rows" title="google.cloud.bigtable.table.Table.mutate_rows"><code class="xref py py-meth docutils literal notranslate"><span class="pre">mutate_rows()</span></code></a>.</p>
 </dd></dl>
 
@@ -372,7 +372,7 @@ chunk is never encountered.</p>
 
 <dl class="method">
 <dt id="google.cloud.bigtable.table.Table.read_rows">
-<code class="descname">read_rows</code><span class="sig-paren">(</span><em>start_key=None</em>, <em>end_key=None</em>, <em>limit=None</em>, <em>filter_=None</em>, <em>end_inclusive=False</em>, <em>row_set=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/table.html#Table.read_rows"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.table.Table.read_rows" title="Permalink to this definition">#</a></dt>
+<code class="descname">read_rows</code><span class="sig-paren">(</span><em>start_key=None</em>, <em>end_key=None</em>, <em>limit=None</em>, <em>filter_=None</em>, <em>end_inclusive=False</em>, <em>row_set=None</em>, <em>retry=&lt;google.api_core.retry.Retry object&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/table.html#Table.read_rows"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.table.Table.read_rows" title="Permalink to this definition">#</a></dt>
 <dd><p>Read rows from this table.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -395,6 +395,11 @@ each row.</li>
 considered inclusive. The default is False (exclusive).</li>
 <li><strong>filter</strong> – (Optional) The row set containing multiple row keys and
 row_ranges.</li>
+<li><strong>retry</strong> (<a class="reference internal" href="../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><code class="xref py py-class docutils literal notranslate"><span class="pre">Retry</span></code></a>) – (Optional) Retry delay and deadline arguments. To override, the
+default value <code class="xref py py-attr docutils literal notranslate"><span class="pre">DEFAULT_RETRY_READ_ROWS</span></code> can be used and
+modified with the <a class="reference internal" href="../core/retry.html#google.api_core.retry.Retry.with_delay" title="google.api_core.retry.Retry.with_delay"><code class="xref py py-meth docutils literal notranslate"><span class="pre">with_delay()</span></code></a>
+method or the <a class="reference internal" href="../core/retry.html#google.api_core.retry.Retry.with_deadline" title="google.api_core.retry.Retry.with_deadline"><code class="xref py py-meth docutils literal notranslate"><span class="pre">with_deadline()</span></code></a>
+method.</li>
 </ul>
 </td>
 </tr>

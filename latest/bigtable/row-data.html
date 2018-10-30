@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Row Data &#8212; google-cloud 7b41d69 documentation</title>
+    <title>Row Data &#8212; google-cloud 9d6e68f documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -74,6 +74,14 @@
 </table>
 </dd></dl>
 
+</dd></dl>
+
+<dl class="data">
+<dt id="google.cloud.bigtable.row_data.DEFAULT_RETRY_READ_ROWS">
+<code class="descclassname">google.cloud.bigtable.row_data.</code><code class="descname">DEFAULT_RETRY_READ_ROWS</code><em class="property"> = &lt;google.api_core.retry.Retry object&gt;</em><a class="headerlink" href="#google.cloud.bigtable.row_data.DEFAULT_RETRY_READ_ROWS" title="Permalink to this definition">#</a></dt>
+<dd><p>The default retry strategy to be used on retry-able errors.</p>
+<p>Used by
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">_read_next_response()</span></code>.</p>
 </dd></dl>
 
 <dl class="exception">
@@ -317,7 +325,7 @@ column qualiers are combined (with <code class="docutils literal notranslate"><s
 
 <dl class="class">
 <dt id="google.cloud.bigtable.row_data.PartialRowsData">
-<em class="property">class </em><code class="descclassname">google.cloud.bigtable.row_data.</code><code class="descname">PartialRowsData</code><span class="sig-paren">(</span><em>read_method</em>, <em>request</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/row_data.html#PartialRowsData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.row_data.PartialRowsData" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="descclassname">google.cloud.bigtable.row_data.</code><code class="descname">PartialRowsData</code><span class="sig-paren">(</span><em>read_method</em>, <em>request</em>, <em>retry=&lt;google.api_core.retry.Retry object&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/row_data.html#PartialRowsData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.row_data.PartialRowsData" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Convenience wrapper for consuming a <code class="docutils literal notranslate"><span class="pre">ReadRows</span></code> streaming response.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -333,6 +341,12 @@ the point just beyond the last successfully read row,
 identified by self.last_scanned_row_key. The retry happens
 inside of the Retry class, using a predicate for the
 expected exceptions during iteration.</li>
+<li><strong>retry</strong> (<a class="reference internal" href="../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><code class="xref py py-class docutils literal notranslate"><span class="pre">Retry</span></code></a>) – (Optional) Retry delay and deadline arguments. To override,
+the default value <a class="reference internal" href="#google.cloud.bigtable.row_data.DEFAULT_RETRY_READ_ROWS" title="google.cloud.bigtable.row_data.DEFAULT_RETRY_READ_ROWS"><code class="xref py py-attr docutils literal notranslate"><span class="pre">DEFAULT_RETRY_READ_ROWS</span></code></a> can be
+used and modified with the
+<a class="reference internal" href="../core/retry.html#google.api_core.retry.Retry.with_delay" title="google.api_core.retry.Retry.with_delay"><code class="xref py py-meth docutils literal notranslate"><span class="pre">with_delay()</span></code></a> method
+or the
+<a class="reference internal" href="../core/retry.html#google.api_core.retry.Retry.with_deadline" title="google.api_core.retry.Retry.with_deadline"><code class="xref py py-meth docutils literal notranslate"><span class="pre">with_deadline()</span></code></a> method.</li>
 </ul>
 </td>
 </tr>
