@@ -58,11 +58,12 @@ class Config(object):
     This is a mutable stand-in to allow test set-up to modify
     global state.
     """
+    CLIENT = None
     INSTANCE = None
 
 
 def setup_module():
-    client = Client(admin=True)
+    client = Config.CLIENT = Client(admin=True)
     Config.INSTANCE = client.instance(INSTANCE_ID,
                                       instance_type=PRODUCTION,
                                       labels=LABELS)
@@ -337,6 +338,7 @@ def test_bigtable_delete_instance():
     client = Client(admin=True)
     instance_id_to_delete = "inst-my-" + unique_resource_id('-')
     # [END bigtable_delete_instance]
+
     cluster_id = "clus-my-" + unique_resource_id('-')
 
     instance = client.instance(instance_id_to_delete,
@@ -354,6 +356,7 @@ def test_bigtable_delete_instance():
     instance_to_delete = client.instance(instance_id_to_delete)
     instance_to_delete.delete()
     # [END bigtable_delete_instance]
+
     assert not instance_to_delete.exists()
 
 
@@ -367,39 +370,44 @@ def test_bigtable_test_iam_permissions():
     permissions = ["bigtable.clusters.create", "bigtable.tables.create"]
     permissions_allowed = instance.test_iam_permissions(permissions)
     # [END bigtable_test_iam_permissions]
+
     assert permissions_allowed == permissions
 
 
-def test_bigtable_get_iam_policy():
-    # [START bigtable_get_iam_policy]
-    from google.cloud.bigtable import Client
-
-    client = Client(admin=True)
-    instance = client.instance(INSTANCE_ID)
-    policy_latest = instance.get_iam_policy()
-    # [END bigtable_get_iam_policy]
-
-    assert len(policy_latest.bigtable_viewers) is not 0
-
-
-def test_bigtable_set_iam_policy():
+def test_bigtable_set_iam_policy_then_get_iam_policy():
     # [START bigtable_set_iam_policy]
     from google.cloud.bigtable import Client
     from google.cloud.bigtable.policy import Policy
     from google.cloud.bigtable.policy import BIGTABLE_ADMIN_ROLE
 
+    # [END bigtable_set_iam_policy]
+
+    service_account_email = '{}@appspot.gserviceaccount.com'.format(
+        Config.CLIENT.project)
+
+    # [START bigtable_set_iam_policy]
     client = Client(admin=True)
     instance = client.instance(INSTANCE_ID)
     instance.reload()
-    ins_policy = Policy()
-    ins_policy[BIGTABLE_ADMIN_ROLE] = [
-        Policy.user("test_iam@test.com"),
-        Policy.service_account("sv_account@gmail.com")]
+    new_policy = Policy()
+    new_policy[BIGTABLE_ADMIN_ROLE] = [
+        Policy.service_account(service_account_email),
+    ]
 
-    policy_latest = instance.set_iam_policy(ins_policy)
+    policy_latest = instance.set_iam_policy(new_policy)
     # [END bigtable_set_iam_policy]
 
     assert len(policy_latest.bigtable_admins) is not 0
+
+    # [START bigtable_get_iam_policy]
+    from google.cloud.bigtable import Client
+
+    client = Client(admin=True)
+    instance = client.instance(INSTANCE_ID)
+    policy = instance.get_iam_policy()
+    # [END bigtable_get_iam_policy]
+
+    assert len(policy.bigtable_admins) is not 0
 
 
 if __name__ == '__main__':
