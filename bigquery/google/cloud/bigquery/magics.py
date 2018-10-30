@@ -21,7 +21,7 @@
     .. code-block:: python
 
         %%bigquery [<destination_var>] [--project <project>] [--use_legacy_sql]
-                   [--verbose]
+                   [--verbose] [--params <params>]
         <query>
 
     Parameters:
@@ -39,6 +39,20 @@
         amount of time for the query to complete will not be cleared after the
         query is finished. By default, this information will be displayed but
         will be cleared after the query is finished.
+    * ``--params <params>`` (optional, line argument):
+        If present, the argument following the ``--params`` flag must be
+        either:
+
+        * :class:`str` - A JSON string representation of a dictionary in the
+          format ``{"param_name": "param_value"}`` (ex. ``{"num": 17}``). Use
+          of the parameter in the query should be indicated with
+          ``@param_name``. See ``In[5]`` in the Examples section below.
+
+        * :class:`dict` reference - A reference to a ``dict`` in the format
+          ``{"param_name": "param_value"}``, where the value types must be JSON
+          serializable. The variable reference is indicated by a ``$`` before
+          the variable name (ex. ``$my_dict_var``). See ``In[6]`` and ``In[7]``
+          in the Examples section below.
     * ``<query>`` (required, cell argument):
         SQL query to run.
 
@@ -54,7 +68,7 @@
         the bigquery IPython extension (see ``In[1]``) and setting up
         Application Default Credentials.
 
-    .. code-block:: python
+    .. code-block:: none
 
         In [1]: %load_ext google.cloud.bigquery
 
@@ -96,10 +110,26 @@
            ...: 1    Patricia  1568495
            ...: 2   Elizabeth  1519946
 
+        In [5]: %%bigquery df --params {"num": 17}
+           ...: SELECT @num AS num
+
+        Out[5]:     num
+           ...: -------
+           ...: 0    17
+
+        In [6]: params = {"num": 17}
+
+        In [7]: %%bigquery df --params $params
+           ...: SELECT @num AS num
+
+        Out[7]:     num
+           ...: -------
+           ...: 0    17
 """
 
 from __future__ import print_function
 
+import ast
 import time
 from concurrent import futures
 
@@ -112,6 +142,7 @@ except ImportError:  # pragma: NO COVER
 
 import google.auth
 from google.cloud import bigquery
+from google.cloud.bigquery.dbapi import _helpers
 
 
 class Context(object):
@@ -249,6 +280,16 @@ def _run_query(client, query, job_config=None):
           'amount of time for the query to finish. By default, this '
           'information will be displayed as the query runs, but will be '
           'cleared after the query is finished.'))
+@magic_arguments.argument(
+    '--params',
+    nargs='+',
+    default=None,
+    help=('Parameters to format the query string. If present, the --params '
+          'flag should be followed by a string representation of a dictionary '
+          'in the format {\'param_name\': \'param_value\'} (ex. {"num": 17}), '
+          'or a reference to a dictionary in the same format. The dictionary '
+          'reference can be made by including a \'$\' before the variable '
+          'name (ex. $my_dict_var).'))
 def _cell_magic(line, query):
     """Underlying function for bigquery cell magic
 
@@ -265,9 +306,20 @@ def _cell_magic(line, query):
     """
     args = magic_arguments.parse_argstring(_cell_magic, line)
 
+    params = []
+    if args.params is not None:
+        try:
+            params = _helpers.to_query_parameters(
+                ast.literal_eval(''.join(args.params)))
+        except Exception:
+            raise SyntaxError(
+                '--params is not a correctly formatted JSON string or a JSON '
+                'serializable dictionary')
+
     project = args.project or context.project
     client = bigquery.Client(project=project, credentials=context.credentials)
     job_config = bigquery.job.QueryJobConfig()
+    job_config.query_parameters = params
     job_config.use_legacy_sql = args.use_legacy_sql
     query_job = _run_query(client, query, job_config)
 
