@@ -4,23 +4,20 @@
 
 [1]: https://pypi.org/project/google-api-core/#history
 
-## 1.6.0a1
+## 1.5.1
 
-10-18-2018 16:26 PDT
+10-29-2018 13:29 PDT
 
-### New Features
-- Add methods to api_core used by new autogenerator. ([#6267](https://github.com/googleapis/google-cloud-python/pull/6267))
+### Implementation Changes
+- Don't URL-encode slashes in gRPC request headers. ([#6310](https://github.com/googleapis/google-cloud-python/pull/6310))
 
 ### Internal / Testing Changes
-- Fix branch coverage for un-called callbacks. ([#6242](https://github.com/googleapis/google-cloud-python/pull/6242))
-- Fix import order, appeasing lint. ([#6240](https://github.com/googleapis/google-cloud-python/pull/6240))
-- Add / fix badges for PyPI / versions. ([#6158](https://github.com/googleapis/google-cloud-python/pull/6158))
+- Back out changes from [#6267](https://github.com/googleapis/google-cloud-python/pull/6267) / `api_core-1.6.0a1` release. ([#6328](https://github.com/googleapis/google-cloud-python/pull/6328))
 
 ## 1.5.0
 
 ### New Features
 - Add bidi, Bidirection Streaming, to api-core ([#6211](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6211))
-
 
 ### Internal / Testing Changes
 - Use new Nox ([#6175](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6175))
