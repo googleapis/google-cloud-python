@@ -281,13 +281,15 @@ def test_bigquery_magic_with_formatting_params_with_string():
     with run_query_patch as run_query_mock:
         run_query_mock.return_value = query_job_mock
 
-        ip.run_cell_magic('bigquery', 'params_string_df --params {"num":17}', sql)
-        run_query_mock.assert_called_once_with(mock.ANY, sql.format(num=17), mock.ANY)
+        ip.run_cell_magic(
+            'bigquery', 'params_string_df --params {"num":17}', sql)
+        run_query_mock.assert_called_once_with(
+            mock.ANY, sql.format(num=17), mock.ANY)
 
-    assert 'params_string_df' in ip.user_ns        # verify that variable exists
+    assert 'params_string_df' in ip.user_ns  # verify that the variable exists
     df = ip.user_ns['params_string_df']
-    assert len(df) == len(result)    # verify row count
-    assert list(df) == list(result)  # verify column names
+    assert len(df) == len(result)            # verify row count
+    assert list(df) == list(result)          # verify column names
 
 
 @pytest.mark.usefixtures('ipython_interactive')
@@ -314,9 +316,10 @@ def test_bigquery_magic_with_formatting_params_with_expanded_dict():
         # Insert dictionary into user namespace so that it can be expanded
         ip.user_ns['params'] = params
         ip.run_cell_magic('bigquery', 'params_dict_df --params $params', sql)
-        run_query_mock.assert_called_once_with(mock.ANY, sql.format(num=17), mock.ANY)
+        run_query_mock.assert_called_once_with(
+            mock.ANY, sql.format(num=17), mock.ANY)
 
-    assert 'params_dict_df' in ip.user_ns        # verify that variable exists
+    assert 'params_dict_df' in ip.user_ns  # verify that the variable exists
     df = ip.user_ns['params_dict_df']
-    assert len(df) == len(result)    # verify row count
-    assert list(df) == list(result)  # verify column names
+    assert len(df) == len(result)          # verify row count
+    assert list(df) == list(result)        # verify column names
