@@ -33,7 +33,7 @@ for version in versions:
         "asset",
         version,
         config_path=f"/google/cloud/asset/artman_cloudasset_{version}.yaml",
-        artman_output_name=f"cloudasset-{version}",
+        artman_output_name=f"asset-{version}",
     )
 
     s.move(library, excludes=excludes)
