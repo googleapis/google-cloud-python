@@ -14,9 +14,9 @@
 
 
 import unittest
-import grpc
 import mock
 
+from google.api_core.exceptions import DeadlineExceeded
 from ._testing import _make_credentials
 from google.cloud.bigtable.row_set import RowRange
 from google.cloud.bigtable_v2.proto import (
@@ -1189,20 +1189,10 @@ class _MockCancellableIterator(object):
     __next__ = next
 
 
-class DeadlineExceeded(grpc.RpcError, grpc.Call):
-            """ErrorDeadlineExceeded exception"""
-
-            def code(self):
-                return grpc.StatusCode.DEADLINE_EXCEEDED
-
-            def details(self):
-                return "Failed to read from server"
-
-
 class _MockFailureIterator_1(object):
 
     def next(self):
-        raise DeadlineExceeded()
+        raise DeadlineExceeded("Failed to read from server")
 
     __next__ = next
 

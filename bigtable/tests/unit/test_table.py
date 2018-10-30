@@ -15,9 +15,9 @@
 
 import unittest
 
-import grpc
 import mock
 from ._testing import _make_credentials
+from google.api_core.exceptions import DeadlineExceeded
 
 
 class Test___mutate_rows_request(unittest.TestCase):
@@ -1778,20 +1778,10 @@ class _MockReadRowsIterator(object):
     __next__ = next
 
 
-class DeadlineExceeded(grpc.RpcError, grpc.Call):
-            """ErrorDeadlineExceeded exception"""
-
-            def code(self):
-                return grpc.StatusCode.DEADLINE_EXCEEDED
-
-            def details(self):
-                return "Failed to read from server"
-
-
 class _MockFailureIterator_1(object):
 
     def next(self):
-        raise DeadlineExceeded()
+        raise DeadlineExceeded("Failed to read from server")
 
     __next__ = next
 
@@ -1807,7 +1797,7 @@ class _MockFailureIterator_2(object):
         if self.calls == 1:
             return self.iter_values[0]
         else:
-            raise DeadlineExceeded()
+            raise DeadlineExceeded("Failed to read from server")
 
     __next__ = next
 
