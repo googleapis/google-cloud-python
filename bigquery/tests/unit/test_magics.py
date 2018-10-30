@@ -263,7 +263,7 @@ def test_bigquery_magic_with_project():
 
 @pytest.mark.usefixtures('ipython_interactive')
 @pytest.mark.skipif(pandas is None, reason='Requires `pandas`')
-def test_bigquery_magic_with_formatting_params_with_string():
+def test_bigquery_magic_with_string_params():
     ip = IPython.get_ipython()
     ip.extension_manager.load_extension('google.cloud.bigquery')
     magics.context.credentials = mock.create_autospec(
@@ -294,7 +294,7 @@ def test_bigquery_magic_with_formatting_params_with_string():
 
 @pytest.mark.usefixtures('ipython_interactive')
 @pytest.mark.skipif(pandas is None, reason='Requires `pandas`')
-def test_bigquery_magic_with_formatting_params_with_expanded_dict():
+def test_bigquery_magic_with_dict_params():
     ip = IPython.get_ipython()
     ip.extension_manager.load_extension('google.cloud.bigquery')
     magics.context.credentials = mock.create_autospec(
@@ -323,3 +323,18 @@ def test_bigquery_magic_with_formatting_params_with_expanded_dict():
     df = ip.user_ns['params_dict_df']
     assert len(df) == len(result)          # verify row count
     assert list(df) == list(result)        # verify column names
+
+
+@pytest.mark.usefixtures('ipython_interactive')
+@pytest.mark.skipif(pandas is None, reason='Requires `pandas`')
+def test_bigquery_magic_with_improperly_formatted_params():
+    ip = IPython.get_ipython()
+    ip.extension_manager.load_extension('google.cloud.bigquery')
+    magics.context.credentials = mock.create_autospec(
+        google.auth.credentials.Credentials, instance=True)
+
+    sql = 'SELECT @num AS num'
+
+    with pytest.raises(SyntaxError):
+        ip.run_cell_magic(
+            'bigquery', '--params {17}', sql)
