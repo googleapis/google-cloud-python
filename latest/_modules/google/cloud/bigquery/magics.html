@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigquery.magics &#8212; google-cloud d20978c documentation</title>
+    <title>google.cloud.bigquery.magics &#8212; google-cloud 1d4b4f9 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -57,7 +57,7 @@
 <span class="sd">    .. code-block:: python</span>
 
 <span class="sd">        %%bigquery [&lt;destination_var&gt;] [--project &lt;project&gt;] [--use_legacy_sql]</span>
-<span class="sd">                   [--verbose]</span>
+<span class="sd">                   [--verbose] [--params &lt;params&gt;]</span>
 <span class="sd">        &lt;query&gt;</span>
 
 <span class="sd">    Parameters:</span>
@@ -75,6 +75,20 @@
 <span class="sd">        amount of time for the query to complete will not be cleared after the</span>
 <span class="sd">        query is finished. By default, this information will be displayed but</span>
 <span class="sd">        will be cleared after the query is finished.</span>
+<span class="sd">    * ``--params &lt;params&gt;`` (optional, line argument):</span>
+<span class="sd">        If present, the argument following the ``--params`` flag must be</span>
+<span class="sd">        either:</span>
+
+<span class="sd">        * :class:`str` - A JSON string representation of a dictionary in the</span>
+<span class="sd">          format ``{&quot;param_name&quot;: &quot;param_value&quot;}`` (ex. ``{&quot;num&quot;: 17}``). Use</span>
+<span class="sd">          of the parameter in the query should be indicated with</span>
+<span class="sd">          ``@param_name``. See ``In[5]`` in the Examples section below.</span>
+
+<span class="sd">        * :class:`dict` reference - A reference to a ``dict`` in the format</span>
+<span class="sd">          ``{&quot;param_name&quot;: &quot;param_value&quot;}``, where the value types must be JSON</span>
+<span class="sd">          serializable. The variable reference is indicated by a ``$`` before</span>
+<span class="sd">          the variable name (ex. ``$my_dict_var``). See ``In[6]`` and ``In[7]``</span>
+<span class="sd">          in the Examples section below.</span>
 <span class="sd">    * ``&lt;query&gt;`` (required, cell argument):</span>
 <span class="sd">        SQL query to run.</span>
 
@@ -90,7 +104,7 @@
 <span class="sd">        the bigquery IPython extension (see ``In[1]``) and setting up</span>
 <span class="sd">        Application Default Credentials.</span>
 
-<span class="sd">    .. code-block:: python</span>
+<span class="sd">    .. code-block:: none</span>
 
 <span class="sd">        In [1]: %load_ext google.cloud.bigquery</span>
 
@@ -132,10 +146,26 @@
 <span class="sd">           ...: 1    Patricia  1568495</span>
 <span class="sd">           ...: 2   Elizabeth  1519946</span>
 
+<span class="sd">        In [5]: %%bigquery df --params {&quot;num&quot;: 17}</span>
+<span class="sd">           ...: SELECT @num AS num</span>
+
+<span class="sd">        Out[5]:     num</span>
+<span class="sd">           ...: -------</span>
+<span class="sd">           ...: 0    17</span>
+
+<span class="sd">        In [6]: params = {&quot;num&quot;: 17}</span>
+
+<span class="sd">        In [7]: %%bigquery df --params $params</span>
+<span class="sd">           ...: SELECT @num AS num</span>
+
+<span class="sd">        Out[7]:     num</span>
+<span class="sd">           ...: -------</span>
+<span class="sd">           ...: 0    17</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span>
 
+<span class="kn">import</span> <span class="nn">ast</span>
 <span class="kn">import</span> <span class="nn">time</span>
 <span class="kn">from</span> <span class="nn">concurrent</span> <span class="k">import</span> <span class="n">futures</span>
 
@@ -148,6 +178,7 @@
 
 <span class="kn">import</span> <span class="nn">google.auth</span>
 <span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">bigquery</span>
+<span class="kn">from</span> <span class="nn">google.cloud.bigquery.dbapi</span> <span class="k">import</span> <span class="n">_helpers</span>
 
 
 <div class="viewcode-block" id="Context"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.magics.Context.html#google.cloud.bigquery.magics.Context">[docs]</a><span class="k">class</span> <span class="nc">Context</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -285,6 +316,16 @@
           <span class="s1">&#39;amount of time for the query to finish. By default, this &#39;</span>
           <span class="s1">&#39;information will be displayed as the query runs, but will be &#39;</span>
           <span class="s1">&#39;cleared after the query is finished.&#39;</span><span class="p">))</span>
+<span class="nd">@magic_arguments</span><span class="o">.</span><span class="n">argument</span><span class="p">(</span>
+    <span class="s1">&#39;--params&#39;</span><span class="p">,</span>
+    <span class="n">nargs</span><span class="o">=</span><span class="s1">&#39;+&#39;</span><span class="p">,</span>
+    <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">help</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;Parameters to format the query string. If present, the --params &#39;</span>
+          <span class="s1">&#39;flag should be followed by a string representation of a dictionary &#39;</span>
+          <span class="s1">&#39;in the format {</span><span class="se">\&#39;</span><span class="s1">param_name</span><span class="se">\&#39;</span><span class="s1">: </span><span class="se">\&#39;</span><span class="s1">param_value</span><span class="se">\&#39;</span><span class="s1">} (ex. {&quot;num&quot;: 17}), &#39;</span>
+          <span class="s1">&#39;or a reference to a dictionary in the same format. The dictionary &#39;</span>
+          <span class="s1">&#39;reference can be made by including a </span><span class="se">\&#39;</span><span class="s1">$</span><span class="se">\&#39;</span><span class="s1"> before the variable &#39;</span>
+          <span class="s1">&#39;name (ex. $my_dict_var).&#39;</span><span class="p">))</span>
 <span class="k">def</span> <span class="nf">_cell_magic</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">query</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Underlying function for bigquery cell magic</span>
 
@@ -301,9 +342,20 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">args</span> <span class="o">=</span> <span class="n">magic_arguments</span><span class="o">.</span><span class="n">parse_argstring</span><span class="p">(</span><span class="n">_cell_magic</span><span class="p">,</span> <span class="n">line</span><span class="p">)</span>
 
+    <span class="n">params</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">params</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">params</span> <span class="o">=</span> <span class="n">_helpers</span><span class="o">.</span><span class="n">to_query_parameters</span><span class="p">(</span>
+                <span class="n">ast</span><span class="o">.</span><span class="n">literal_eval</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">params</span><span class="p">)))</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">SyntaxError</span><span class="p">(</span>
+                <span class="s1">&#39;--params is not a correctly formatted JSON string or a JSON &#39;</span>
+                <span class="s1">&#39;serializable dictionary&#39;</span><span class="p">)</span>
+
     <span class="n">project</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">project</span> <span class="ow">or</span> <span class="n">context</span><span class="o">.</span><span class="n">project</span>
     <span class="n">client</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">Client</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="n">context</span><span class="o">.</span><span class="n">credentials</span><span class="p">)</span>
     <span class="n">job_config</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">job</span><span class="o">.</span><span class="n">QueryJobConfig</span><span class="p">()</span>
+    <span class="n">job_config</span><span class="o">.</span><span class="n">query_parameters</span> <span class="o">=</span> <span class="n">params</span>
     <span class="n">job_config</span><span class="o">.</span><span class="n">use_legacy_sql</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">use_legacy_sql</span>
     <span class="n">query_job</span> <span class="o">=</span> <span class="n">_run_query</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">job_config</span><span class="p">)</span>
 

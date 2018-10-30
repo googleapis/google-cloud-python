@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigtable.instance &#8212; google-cloud d20978c documentation</title>
+    <title>google.cloud.bigtable.instance &#8212; google-cloud 1d4b4f9 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -142,6 +142,17 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">labels</span> <span class="o">=</span> <span class="n">labels</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_state</span> <span class="o">=</span> <span class="n">_state</span>
 
+    <span class="k">def</span> <span class="nf">_update_from_pb</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance_pb</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Refresh self from the server-provided protobuf.</span>
+<span class="sd">        Helper for :meth:`from_pb` and :meth:`reload`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">instance_pb</span><span class="o">.</span><span class="n">display_name</span><span class="p">:</span>  <span class="c1"># Simple field (string)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Instance protobuf does not contain display_name&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">display_name</span> <span class="o">=</span> <span class="n">instance_pb</span><span class="o">.</span><span class="n">display_name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">type_</span> <span class="o">=</span> <span class="n">instance_pb</span><span class="o">.</span><span class="n">type</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">labels</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">instance_pb</span><span class="o">.</span><span class="n">labels</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_state</span> <span class="o">=</span> <span class="n">instance_pb</span><span class="o">.</span><span class="n">state</span>
+
 <div class="viewcode-block" id="Instance.from_pb"><a class="viewcode-back" href="../../../../bigtable/instance.html#google.cloud.bigtable.instance.Instance.from_pb">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_pb</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">instance_pb</span><span class="p">,</span> <span class="n">client</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Creates an instance instance from a protobuf.</span>
@@ -172,17 +183,6 @@
         <span class="n">result</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="n">instance_id</span><span class="p">,</span> <span class="n">client</span><span class="p">)</span>
         <span class="n">result</span><span class="o">.</span><span class="n">_update_from_pb</span><span class="p">(</span><span class="n">instance_pb</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">result</span></div>
-
-    <span class="k">def</span> <span class="nf">_update_from_pb</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance_pb</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Refresh self from the server-provided protobuf.</span>
-<span class="sd">        Helper for :meth:`from_pb` and :meth:`reload`.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">instance_pb</span><span class="o">.</span><span class="n">display_name</span><span class="p">:</span>  <span class="c1"># Simple field (string)</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Instance protobuf does not contain display_name&#39;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">display_name</span> <span class="o">=</span> <span class="n">instance_pb</span><span class="o">.</span><span class="n">display_name</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">type_</span> <span class="o">=</span> <span class="n">instance_pb</span><span class="o">.</span><span class="n">type</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">labels</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">instance_pb</span><span class="o">.</span><span class="n">labels</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_state</span> <span class="o">=</span> <span class="n">instance_pb</span><span class="o">.</span><span class="n">state</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -221,41 +221,6 @@
 
     <span class="k">def</span> <span class="nf">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span> <span class="o">==</span> <span class="n">other</span>
-
-<div class="viewcode-block" id="Instance.reload"><a class="viewcode-back" href="../../../../bigtable/instance.html#google.cloud.bigtable.instance.Instance.reload">[docs]</a>    <span class="k">def</span> <span class="nf">reload</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Reload the metadata for this instance.</span>
-
-<span class="sd">        For example:</span>
-
-<span class="sd">        .. literalinclude:: snippets.py</span>
-<span class="sd">            :start-after: [START bigtable_reload_instance]</span>
-<span class="sd">            :end-before: [END bigtable_reload_instance]</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">instance_pb</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">instance_admin_client</span><span class="o">.</span><span class="n">get_instance</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-
-        <span class="c1"># NOTE: _update_from_pb does not check that the project and</span>
-        <span class="c1">#       instance ID on the response match the request.</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_update_from_pb</span><span class="p">(</span><span class="n">instance_pb</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="Instance.exists"><a class="viewcode-back" href="../../../../bigtable/instance.html#google.cloud.bigtable.instance.Instance.exists">[docs]</a>    <span class="k">def</span> <span class="nf">exists</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Check whether the instance already exists.</span>
-
-<span class="sd">        For example:</span>
-
-<span class="sd">        .. literalinclude:: snippets.py</span>
-<span class="sd">            :start-after: [START bigtable_check_instance_exists]</span>
-<span class="sd">            :end-before: [END bigtable_check_instance_exists]</span>
-
-<span class="sd">        :rtype: bool</span>
-<span class="sd">        :returns: True if the table exists, else False.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">instance_admin_client</span><span class="o">.</span><span class="n">get_instance</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-            <span class="k">return</span> <span class="kc">True</span>
-        <span class="c1"># NOTE: There could be other exceptions that are returned to the user.</span>
-        <span class="k">except</span> <span class="n">NotFound</span><span class="p">:</span>
-            <span class="k">return</span> <span class="kc">False</span></div>
 
 <div class="viewcode-block" id="Instance.create"><a class="viewcode-back" href="../../../../bigtable/instance.html#google.cloud.bigtable.instance.Instance.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">location_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                <span class="n">serve_nodes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -339,6 +304,41 @@
             <span class="n">parent</span><span class="o">=</span><span class="n">parent</span><span class="p">,</span> <span class="n">instance_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">instance_id</span><span class="p">,</span> <span class="n">instance</span><span class="o">=</span><span class="n">instance_pb</span><span class="p">,</span>
             <span class="n">clusters</span><span class="o">=</span><span class="p">{</span><span class="n">c</span><span class="o">.</span><span class="n">cluster_id</span><span class="p">:</span> <span class="n">c</span><span class="o">.</span><span class="n">_to_pb</span><span class="p">()</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">clusters</span><span class="p">})</span></div>
 
+<div class="viewcode-block" id="Instance.exists"><a class="viewcode-back" href="../../../../bigtable/instance.html#google.cloud.bigtable.instance.Instance.exists">[docs]</a>    <span class="k">def</span> <span class="nf">exists</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Check whether the instance already exists.</span>
+
+<span class="sd">        For example:</span>
+
+<span class="sd">        .. literalinclude:: snippets.py</span>
+<span class="sd">            :start-after: [START bigtable_check_instance_exists]</span>
+<span class="sd">            :end-before: [END bigtable_check_instance_exists]</span>
+
+<span class="sd">        :rtype: bool</span>
+<span class="sd">        :returns: True if the table exists, else False.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">instance_admin_client</span><span class="o">.</span><span class="n">get_instance</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="c1"># NOTE: There could be other exceptions that are returned to the user.</span>
+        <span class="k">except</span> <span class="n">NotFound</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span></div>
+
+<div class="viewcode-block" id="Instance.reload"><a class="viewcode-back" href="../../../../bigtable/instance.html#google.cloud.bigtable.instance.Instance.reload">[docs]</a>    <span class="k">def</span> <span class="nf">reload</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Reload the metadata for this instance.</span>
+
+<span class="sd">        For example:</span>
+
+<span class="sd">        .. literalinclude:: snippets.py</span>
+<span class="sd">            :start-after: [START bigtable_reload_instance]</span>
+<span class="sd">            :end-before: [END bigtable_reload_instance]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">instance_pb</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">instance_admin_client</span><span class="o">.</span><span class="n">get_instance</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+
+        <span class="c1"># NOTE: _update_from_pb does not check that the project and</span>
+        <span class="c1">#       instance ID on the response match the request.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_update_from_pb</span><span class="p">(</span><span class="n">instance_pb</span><span class="p">)</span></div>
+
 <div class="viewcode-block" id="Instance.update"><a class="viewcode-back" href="../../../../bigtable/instance.html#google.cloud.bigtable.instance.Instance.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Updates an instance within a project.</span>
 
@@ -411,6 +411,87 @@
 <span class="sd">          permanently deleted.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">instance_admin_client</span><span class="o">.</span><span class="n">delete_instance</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Instance.get_iam_policy"><a class="viewcode-back" href="../../../../bigtable/instance.html#google.cloud.bigtable.instance.Instance.get_iam_policy">[docs]</a>    <span class="k">def</span> <span class="nf">get_iam_policy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Gets the access control policy for an instance resource.</span>
+
+<span class="sd">        For example:</span>
+
+<span class="sd">        .. literalinclude:: snippets.py</span>
+<span class="sd">            :start-after: [START bigtable_get_iam_policy]</span>
+<span class="sd">            :end-before: [END bigtable_get_iam_policy]</span>
+
+<span class="sd">        :rtype: :class:`google.cloud.bigtable.policy.Policy`</span>
+<span class="sd">        :returns: The current IAM policy of this instance</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">instance_admin_client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">instance_admin_client</span>
+        <span class="n">resp</span> <span class="o">=</span> <span class="n">instance_admin_client</span><span class="o">.</span><span class="n">get_iam_policy</span><span class="p">(</span><span class="n">resource</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Policy</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_to_dict_from_policy_pb</span><span class="p">(</span><span class="n">resp</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="Instance.set_iam_policy"><a class="viewcode-back" href="../../../../bigtable/instance.html#google.cloud.bigtable.instance.Instance.set_iam_policy">[docs]</a>    <span class="k">def</span> <span class="nf">set_iam_policy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">policy</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Sets the access control policy on an instance resource. Replaces any</span>
+<span class="sd">        existing policy.</span>
+
+<span class="sd">        For more information about policy, please see documentation of</span>
+<span class="sd">        class `google.cloud.bigtable.policy.Policy`</span>
+
+<span class="sd">        For example:</span>
+
+<span class="sd">        .. literalinclude:: snippets.py</span>
+<span class="sd">            :start-after: [START bigtable_set_iam_policy]</span>
+<span class="sd">            :end-before: [END bigtable_set_iam_policy]</span>
+
+<span class="sd">        :type policy: :class:`google.cloud.bigtable.policy.Policy`</span>
+<span class="sd">        :param policy: A new IAM policy to replace the current IAM policy</span>
+<span class="sd">                       of this instance</span>
+
+<span class="sd">        :rtype: :class:`google.cloud.bigtable.policy.Policy`</span>
+<span class="sd">        :returns: The current IAM policy of this instance.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">instance_admin_client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">instance_admin_client</span>
+        <span class="n">resp</span> <span class="o">=</span> <span class="n">instance_admin_client</span><span class="o">.</span><span class="n">set_iam_policy</span><span class="p">(</span>
+            <span class="n">resource</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">policy</span><span class="o">=</span><span class="n">policy</span><span class="o">.</span><span class="n">to_api_repr</span><span class="p">())</span>
+        <span class="k">return</span> <span class="n">Policy</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_to_dict_from_policy_pb</span><span class="p">(</span><span class="n">resp</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="Instance.test_iam_permissions"><a class="viewcode-back" href="../../../../bigtable/instance.html#google.cloud.bigtable.instance.Instance.test_iam_permissions">[docs]</a>    <span class="k">def</span> <span class="nf">test_iam_permissions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">permissions</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns permissions that the caller has on the specified instance</span>
+<span class="sd">        resource.</span>
+
+<span class="sd">        For example:</span>
+
+<span class="sd">        .. literalinclude:: snippets.py</span>
+<span class="sd">            :start-after: [START bigtable_test_iam_permissions]</span>
+<span class="sd">            :end-before: [END bigtable_test_iam_permissions]</span>
+
+<span class="sd">        :type permissions: list</span>
+<span class="sd">        :param permissions: The set of permissions to check for</span>
+<span class="sd">               the ``resource``. Permissions with wildcards (such as &#39;*&#39;</span>
+<span class="sd">               or &#39;storage.*&#39;) are not allowed. For more information see</span>
+<span class="sd">               `IAM Overview</span>
+<span class="sd">               &lt;https://cloud.google.com/iam/docs/overview#permissions&gt;`_.</span>
+<span class="sd">               `Bigtable Permissions</span>
+<span class="sd">               &lt;https://cloud.google.com/bigtable/docs/access-control&gt;`_.</span>
+
+<span class="sd">        :rtype: list</span>
+<span class="sd">        :returns: A List(string) of permissions allowed on the instance</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">instance_admin_client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">instance_admin_client</span>
+        <span class="n">resp</span> <span class="o">=</span> <span class="n">instance_admin_client</span><span class="o">.</span><span class="n">test_iam_permissions</span><span class="p">(</span>
+            <span class="n">resource</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">permissions</span><span class="o">=</span><span class="n">permissions</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">resp</span><span class="o">.</span><span class="n">permissions</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">_to_dict_from_policy_pb</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">policy</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns a dictionary representation of resource returned from</span>
+<span class="sd">        the getIamPolicy API to use as parameter for</span>
+<span class="sd">        :meth: google.cloud.iam.Policy.from_api_repr</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">pb_dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">bindings</span> <span class="o">=</span> <span class="p">[{</span><span class="s1">&#39;role&#39;</span><span class="p">:</span> <span class="n">binding</span><span class="o">.</span><span class="n">role</span><span class="p">,</span> <span class="s1">&#39;members&#39;</span><span class="p">:</span> <span class="n">binding</span><span class="o">.</span><span class="n">members</span><span class="p">}</span>
+                    <span class="k">for</span> <span class="n">binding</span> <span class="ow">in</span> <span class="n">policy</span><span class="o">.</span><span class="n">bindings</span><span class="p">]</span>
+        <span class="n">pb_dict</span><span class="p">[</span><span class="s1">&#39;etag&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">policy</span><span class="o">.</span><span class="n">etag</span>
+        <span class="n">pb_dict</span><span class="p">[</span><span class="s1">&#39;version&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">policy</span><span class="o">.</span><span class="n">version</span>
+        <span class="n">pb_dict</span><span class="p">[</span><span class="s1">&#39;bindings&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">bindings</span>
+        <span class="k">return</span> <span class="n">pb_dict</span>
 
 <div class="viewcode-block" id="Instance.cluster"><a class="viewcode-back" href="../../../../bigtable/instance.html#google.cloud.bigtable.instance.Instance.cluster">[docs]</a>    <span class="k">def</span> <span class="nf">cluster</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cluster_id</span><span class="p">,</span> <span class="n">location_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                 <span class="n">serve_nodes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">default_storage_type</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -584,89 +665,8 @@
 <span class="sd">                  :class:`~google.cloud.bigtable.app_profile.AppProfile`</span>
 <span class="sd">                  instances.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_instance_admin_client</span><span class="o">.</span><span class="n">list_app_profiles</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-        <span class="k">return</span> <span class="p">[</span><span class="n">AppProfile</span><span class="o">.</span><span class="n">from_pb</span><span class="p">(</span><span class="n">app_profile</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span> <span class="k">for</span> <span class="n">app_profile</span> <span class="ow">in</span> <span class="n">resp</span><span class="p">]</span></div>
-
-<div class="viewcode-block" id="Instance.get_iam_policy"><a class="viewcode-back" href="../../../../bigtable/instance.html#google.cloud.bigtable.instance.Instance.get_iam_policy">[docs]</a>    <span class="k">def</span> <span class="nf">get_iam_policy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Gets the access control policy for an instance resource.</span>
-
-<span class="sd">        For example:</span>
-
-<span class="sd">        .. literalinclude:: snippets.py</span>
-<span class="sd">            :start-after: [START bigtable_get_iam_policy]</span>
-<span class="sd">            :end-before: [END bigtable_get_iam_policy]</span>
-
-<span class="sd">        :rtype: :class:`google.cloud.bigtable.policy.Policy`</span>
-<span class="sd">        :returns: The current IAM policy of this instance</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">instance_admin_client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_instance_admin_client</span>
-        <span class="n">resp</span> <span class="o">=</span> <span class="n">instance_admin_client</span><span class="o">.</span><span class="n">get_iam_policy</span><span class="p">(</span><span class="n">resource</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">Policy</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_to_dict_from_policy_pb</span><span class="p">(</span><span class="n">resp</span><span class="p">))</span></div>
-
-<div class="viewcode-block" id="Instance.set_iam_policy"><a class="viewcode-back" href="../../../../bigtable/instance.html#google.cloud.bigtable.instance.Instance.set_iam_policy">[docs]</a>    <span class="k">def</span> <span class="nf">set_iam_policy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">policy</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Sets the access control policy on an instance resource. Replaces any</span>
-<span class="sd">        existing policy.</span>
-
-<span class="sd">        For more information about policy, please see documentation of</span>
-<span class="sd">        class `google.cloud.bigtable.policy.Policy`</span>
-
-<span class="sd">        For example:</span>
-
-<span class="sd">        .. literalinclude:: snippets.py</span>
-<span class="sd">            :start-after: [START bigtable_set_iam_policy]</span>
-<span class="sd">            :end-before: [END bigtable_set_iam_policy]</span>
-
-<span class="sd">        :type policy: :class:`google.cloud.bigtable.policy.Policy`</span>
-<span class="sd">        :param policy: A new IAM policy to replace the current IAM policy</span>
-<span class="sd">                       of this instance</span>
-
-<span class="sd">        :rtype: :class:`google.cloud.bigtable.policy.Policy`</span>
-<span class="sd">        :returns: The current IAM policy of this instance.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">instance_admin_client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_instance_admin_client</span>
-        <span class="n">resp</span> <span class="o">=</span> <span class="n">instance_admin_client</span><span class="o">.</span><span class="n">set_iam_policy</span><span class="p">(</span>
-            <span class="n">resource</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">policy</span><span class="o">=</span><span class="n">policy</span><span class="o">.</span><span class="n">to_api_repr</span><span class="p">())</span>
-        <span class="k">return</span> <span class="n">Policy</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_to_dict_from_policy_pb</span><span class="p">(</span><span class="n">resp</span><span class="p">))</span></div>
-
-<div class="viewcode-block" id="Instance.test_iam_permissions"><a class="viewcode-back" href="../../../../bigtable/instance.html#google.cloud.bigtable.instance.Instance.test_iam_permissions">[docs]</a>    <span class="k">def</span> <span class="nf">test_iam_permissions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">permissions</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Returns permissions that the caller has on the specified instance</span>
-<span class="sd">        resource.</span>
-
-<span class="sd">        For example:</span>
-
-<span class="sd">        .. literalinclude:: snippets.py</span>
-<span class="sd">            :start-after: [START bigtable_test_iam_permissions]</span>
-<span class="sd">            :end-before: [END bigtable_test_iam_permissions]</span>
-
-<span class="sd">        :type permissions: list</span>
-<span class="sd">        :param permissions: The set of permissions to check for</span>
-<span class="sd">               the ``resource``. Permissions with wildcards (such as &#39;*&#39;</span>
-<span class="sd">               or &#39;storage.*&#39;) are not allowed. For more information see</span>
-<span class="sd">               `IAM Overview</span>
-<span class="sd">               &lt;https://cloud.google.com/iam/docs/overview#permissions&gt;`_.</span>
-<span class="sd">               `Bigtable Permissions</span>
-<span class="sd">               &lt;https://cloud.google.com/bigtable/docs/access-control&gt;`_.</span>
-
-<span class="sd">        :rtype: list</span>
-<span class="sd">        :returns: A List(string) of permissions allowed on the instance</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">instance_admin_client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_instance_admin_client</span>
-        <span class="n">resp</span> <span class="o">=</span> <span class="n">instance_admin_client</span><span class="o">.</span><span class="n">test_iam_permissions</span><span class="p">(</span>
-            <span class="n">resource</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">permissions</span><span class="o">=</span><span class="n">permissions</span><span class="p">)</span>
-        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">resp</span><span class="o">.</span><span class="n">permissions</span><span class="p">)</span></div>
-
-    <span class="k">def</span> <span class="nf">_to_dict_from_policy_pb</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">policy</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Returns a dictionary representation of resource returned from</span>
-<span class="sd">        the getIamPolicy API to use as parameter for</span>
-<span class="sd">        :meth: google.cloud.iam.Policy.from_api_repr</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">pb_dict</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="n">bindings</span> <span class="o">=</span> <span class="p">[{</span><span class="s1">&#39;role&#39;</span><span class="p">:</span> <span class="n">binding</span><span class="o">.</span><span class="n">role</span><span class="p">,</span> <span class="s1">&#39;members&#39;</span><span class="p">:</span> <span class="n">binding</span><span class="o">.</span><span class="n">members</span><span class="p">}</span>
-                    <span class="k">for</span> <span class="n">binding</span> <span class="ow">in</span> <span class="n">policy</span><span class="o">.</span><span class="n">bindings</span><span class="p">]</span>
-        <span class="n">pb_dict</span><span class="p">[</span><span class="s1">&#39;etag&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">policy</span><span class="o">.</span><span class="n">etag</span>
-        <span class="n">pb_dict</span><span class="p">[</span><span class="s1">&#39;version&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">policy</span><span class="o">.</span><span class="n">version</span>
-        <span class="n">pb_dict</span><span class="p">[</span><span class="s1">&#39;bindings&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">bindings</span>
-        <span class="k">return</span> <span class="n">pb_dict</span></div>
+        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">instance_admin_client</span><span class="o">.</span><span class="n">list_app_profiles</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">AppProfile</span><span class="o">.</span><span class="n">from_pb</span><span class="p">(</span><span class="n">app_profile</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span> <span class="k">for</span> <span class="n">app_profile</span> <span class="ow">in</span> <span class="n">resp</span><span class="p">]</span></div></div>
 </pre></div>
 
           </div>

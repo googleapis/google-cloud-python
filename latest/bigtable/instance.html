@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Instance &#8212; google-cloud d20978c documentation</title>
+    <title>Instance &#8212; google-cloud 1d4b4f9 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -393,7 +393,7 @@ on the client.</p>
 
     <span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="n">admin</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="n">instance</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">instance</span><span class="p">(</span><span class="n">INSTANCE_ID</span><span class="p">)</span>
-    <span class="n">policy_latest</span> <span class="o">=</span> <span class="n">instance</span><span class="o">.</span><span class="n">get_iam_policy</span><span class="p">()</span>
+    <span class="n">policy</span> <span class="o">=</span> <span class="n">instance</span><span class="o">.</span><span class="n">get_iam_policy</span><span class="p">()</span>
 </pre></div>
 </div>
 <table class="docutils field-list" frame="void" rules="none">
@@ -538,15 +538,6 @@ class <cite>google.cloud.bigtable.policy.Policy</cite></p>
     <span class="kn">from</span> <span class="nn">google.cloud.bigtable.policy</span> <span class="k">import</span> <span class="n">Policy</span>
     <span class="kn">from</span> <span class="nn">google.cloud.bigtable.policy</span> <span class="k">import</span> <span class="n">BIGTABLE_ADMIN_ROLE</span>
 
-    <span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="n">admin</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="n">instance</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">instance</span><span class="p">(</span><span class="n">INSTANCE_ID</span><span class="p">)</span>
-    <span class="n">instance</span><span class="o">.</span><span class="n">reload</span><span class="p">()</span>
-    <span class="n">ins_policy</span> <span class="o">=</span> <span class="n">Policy</span><span class="p">()</span>
-    <span class="n">ins_policy</span><span class="p">[</span><span class="n">BIGTABLE_ADMIN_ROLE</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="n">Policy</span><span class="o">.</span><span class="n">user</span><span class="p">(</span><span class="s2">&quot;test_iam@test.com&quot;</span><span class="p">),</span>
-        <span class="n">Policy</span><span class="o">.</span><span class="n">service_account</span><span class="p">(</span><span class="s2">&quot;sv_account@gmail.com&quot;</span><span class="p">)]</span>
-
-    <span class="n">policy_latest</span> <span class="o">=</span> <span class="n">instance</span><span class="o">.</span><span class="n">set_iam_policy</span><span class="p">(</span><span class="n">ins_policy</span><span class="p">)</span>
 </pre></div>
 </div>
 <table class="docutils field-list" frame="void" rules="none">
