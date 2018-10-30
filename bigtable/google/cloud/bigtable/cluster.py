@@ -176,7 +176,7 @@ class Cluster(object):
 
         For example:
 
-        .. literalinclude:: snippets.py
+        .. literalinclude:: snippets_cluster.py
             :start-after: [START bigtable_reload_cluster]
             :end-before: [END bigtable_reload_cluster]
         """
@@ -192,7 +192,7 @@ class Cluster(object):
 
         For example:
 
-        .. literalinclude:: snippets.py
+        .. literalinclude:: snippets_cluster.py
             :start-after: [START bigtable_check_cluster_exists]
             :end-before: [END bigtable_check_cluster_exists]
 
@@ -212,7 +212,7 @@ class Cluster(object):
 
         For example:
 
-        .. literalinclude:: snippets.py
+        .. literalinclude:: snippets_cluster.py
             :start-after: [START bigtable_create_cluster]
             :end-before: [END bigtable_create_cluster]
 
@@ -244,7 +244,7 @@ class Cluster(object):
 
         For example:
 
-        .. literalinclude:: snippets.py
+        .. literalinclude:: snippets_cluster.py
             :start-after: [START bigtable_update_cluster]
             :end-before: [END bigtable_update_cluster]
 
@@ -287,7 +287,7 @@ class Cluster(object):
 
         For example:
 
-        .. literalinclude:: snippets.py
+        .. literalinclude:: snippets_cluster.py
             :start-after: [START bigtable_delete_cluster]
             :end-before: [END bigtable_delete_cluster]
 

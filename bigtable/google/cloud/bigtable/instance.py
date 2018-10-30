@@ -191,7 +191,7 @@ class Instance(object):
 
         For example:
 
-        .. literalinclude:: snippets.py
+        .. literalinclude:: snippets_instance.py
             :start-after: [START bigtable_reload_instance]
             :end-before: [END bigtable_reload_instance]
         """
@@ -207,7 +207,7 @@ class Instance(object):
 
         For example:
 
-        .. literalinclude:: snippets.py
+        .. literalinclude:: snippets_instance.py
             :start-after: [START bigtable_check_instance_exists]
             :end-before: [END bigtable_check_instance_exists]
 
@@ -228,7 +228,7 @@ class Instance(object):
 
         For example:
 
-        .. literalinclude:: snippets.py
+        .. literalinclude:: snippets_instance.py
             :start-after: [START bigtable_create_prod_instance]
             :end-before: [END bigtable_create_prod_instance]
 
@@ -308,7 +308,7 @@ class Instance(object):
 
         For example:
 
-        .. literalinclude:: snippets.py
+        .. literalinclude:: snippets_instance.py
             :start-after: [START bigtable_update_instance]
             :end-before: [END bigtable_update_instance]
 
@@ -351,7 +351,7 @@ class Instance(object):
 
         For example:
 
-        .. literalinclude:: snippets.py
+        .. literalinclude:: snippets_instance.py
             :start-after: [START bigtable_delete_instance]
             :end-before: [END bigtable_delete_instance]
 
@@ -382,7 +382,7 @@ class Instance(object):
 
         For example:
 
-        .. literalinclude:: snippets.py
+        .. literalinclude:: snippets_instance.py
             :start-after: [START bigtable_create_cluster]
             :end-before: [END bigtable_create_cluster]
 
@@ -424,7 +424,7 @@ class Instance(object):
 
         For example:
 
-        .. literalinclude:: snippets.py
+        .. literalinclude:: snippets_instance.py
             :start-after: [START bigtable_list_clusters_on_instance]
             :end-before: [END bigtable_list_clusters_on_instance]
 
@@ -445,7 +445,7 @@ class Instance(object):
 
         For example:
 
-        .. literalinclude:: snippets.py
+        .. literalinclude:: snippets_instance.py
             :start-after: [START bigtable_create_table]
             :end-before: [END bigtable_create_table]
 
@@ -465,7 +465,7 @@ class Instance(object):
 
         For example:
 
-        .. literalinclude:: snippets.py
+        .. literalinclude:: snippets_instance.py
             :start-after: [START bigtable_list_tables]
             :end-before: [END bigtable_list_tables]
 
@@ -496,7 +496,7 @@ class Instance(object):
 
         For example:
 
-        .. literalinclude:: snippets.py
+        .. literalinclude:: snippets_instance.py
             :start-after: [START bigtable_create_app_profile]
             :end-before: [END bigtable_create_app_profile]
 
@@ -538,7 +538,7 @@ class Instance(object):
 
         For example:
 
-        .. literalinclude:: snippets.py
+        .. literalinclude:: snippets_instance.py
             :start-after: [START bigtable_list_app_profiles]
             :end-before: [END bigtable_list_app_profiles]
 
@@ -556,7 +556,7 @@ class Instance(object):
 
         For example:
 
-        .. literalinclude:: snippets.py
+        .. literalinclude:: snippets_instance.py
             :start-after: [START bigtable_get_iam_policy]
             :end-before: [END bigtable_get_iam_policy]
 
@@ -576,7 +576,7 @@ class Instance(object):
 
         For example:
 
-        .. literalinclude:: snippets.py
+        .. literalinclude:: snippets_instance.py
             :start-after: [START bigtable_set_iam_policy]
             :end-before: [END bigtable_set_iam_policy]
 
@@ -598,7 +598,7 @@ class Instance(object):
 
         For example:
 
-        .. literalinclude:: snippets.py
+        .. literalinclude:: snippets_instance.py
             :start-after: [START bigtable_test_iam_permissions]
             :end-before: [END bigtable_test_iam_permissions]
 

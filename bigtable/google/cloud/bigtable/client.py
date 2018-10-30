@@ -210,7 +210,7 @@ class Client(ClientWithProject):
 
         For example:
 
-        .. literalinclude:: snippets.py
+        .. literalinclude:: snippets_client.py
             :start-after: [START bigtable_create_prod_instance]
             :end-before: [END bigtable_create_prod_instance]
 
@@ -254,7 +254,7 @@ class Client(ClientWithProject):
 
         For example:
 
-        .. literalinclude:: snippets.py
+        .. literalinclude:: snippets_client.py
             :start-after: [START bigtable_list_instances]
             :end-before: [END bigtable_list_instances]
 
@@ -275,7 +275,7 @@ class Client(ClientWithProject):
 
         For example:
 
-        .. literalinclude:: snippets.py
+        .. literalinclude:: snippets_client.py
             :start-after: [START bigtable_list_clusters_in_project]
             :end-before: [END bigtable_list_clusters_in_project]
 

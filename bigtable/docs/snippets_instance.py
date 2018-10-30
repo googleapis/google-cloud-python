@@ -136,6 +136,21 @@ def test_bigtable_create_additional_cluster():
     cluster.delete()
 
 
+def test_bigtable_create_table():
+    # [START bigtable_create_table]
+    from google.cloud.bigtable import Client
+    from google.cloud.bigtable import column_family
+
+    client = Client(admin=True)
+    instance = client.instance(INSTANCE_ID)
+    table = instance.table("table_my")
+    # Define the GC policy to retain only the most recent 2 versions.
+    max_versions_rule = column_family.MaxVersionsGCRule(2)
+    table.create(column_families={'cf1': max_versions_rule})
+    # [END bigtable_create_table]
+    assert table.exists()
+
+
 def test_bigtable_create_app_profile():
     # [START bigtable_create_app_profile]
     from google.cloud.bigtable import Client
@@ -159,16 +174,6 @@ def test_bigtable_create_app_profile():
     app_profile.delete(ignore_warnings=True)
 
 
-def test_bigtable_list_instances():
-    # [START bigtable_list_instances]
-    from google.cloud.bigtable import Client
-
-    client = Client(admin=True)
-    (instances_list, failed_locations_list) = client.list_instances()
-    # [END bigtable_list_instances]
-    assert len(instances_list) is not 0
-
-
 def test_bigtable_list_clusters_on_instance():
     # [START bigtable_list_clusters_on_instance]
     from google.cloud.bigtable import Client
@@ -180,14 +185,15 @@ def test_bigtable_list_clusters_on_instance():
     assert len(clusters_list) is not 0
 
 
-def test_bigtable_list_clusters_in_project():
-    # [START bigtable_list_clusters_in_project]
+def test_bigtable_list_tables():
+    # [START bigtable_list_tables]
     from google.cloud.bigtable import Client
 
     client = Client(admin=True)
-    (clusters_list, failed_locations_list) = client.list_clusters()
-    # [END bigtable_list_clusters_in_project]
-    assert len(clusters_list) is not 0
+    instance = client.instance(INSTANCE_ID)
+    tables_list = instance.list_tables()
+    # [END bigtable_list_tables]
+    assert len(tables_list) is not 0
 
 
 def test_bigtable_list_app_profiles():
@@ -220,18 +226,6 @@ def test_bigtable_instance_exists():
     assert instance_exists
 
 
-def test_bigtable_cluster_exists():
-    # [START bigtable_check_cluster_exists]
-    from google.cloud.bigtable import Client
-
-    client = Client(admin=True)
-    instance = client.instance(INSTANCE_ID)
-    cluster = instance.cluster(CLUSTER_ID)
-    cluster_exists = cluster.exists()
-    # [END bigtable_check_cluster_exists]
-    assert cluster_exists
-
-
 def test_bigtable_reload_instance():
     # [START bigtable_reload_instance]
     from google.cloud.bigtable import Client
@@ -241,18 +235,6 @@ def test_bigtable_reload_instance():
     instance.reload()
     # [END bigtable_reload_instance]
     assert instance.type_ is PRODUCTION.value
-
-
-def test_bigtable_reload_cluster():
-    # [START bigtable_reload_cluster]
-    from google.cloud.bigtable import Client
-
-    client = Client(admin=True)
-    instance = client.instance(INSTANCE_ID)
-    cluster = instance.cluster(CLUSTER_ID)
-    cluster.reload()
-    # [END bigtable_reload_cluster]
-    assert cluster.serve_nodes is SERVER_NODES
 
 
 def test_bigtable_update_instance():
@@ -266,68 +248,6 @@ def test_bigtable_update_instance():
     instance.update()
     # [END bigtable_update_instance]
     assert instance.display_name is display_name
-
-
-def test_bigtable_update_cluster():
-    # [START bigtable_update_cluster]
-    from google.cloud.bigtable import Client
-
-    client = Client(admin=True)
-    instance = client.instance(INSTANCE_ID)
-    cluster = instance.cluster(CLUSTER_ID)
-    cluster.serve_nodes = 8
-    cluster.update()
-    # [END bigtable_update_cluster]
-    assert cluster.serve_nodes is 8
-
-
-def test_bigtable_create_table():
-    # [START bigtable_create_table]
-    from google.cloud.bigtable import Client
-    from google.cloud.bigtable import column_family
-
-    client = Client(admin=True)
-    instance = client.instance(INSTANCE_ID)
-    table = instance.table("table_my")
-    # Define the GC policy to retain only the most recent 2 versions.
-    max_versions_rule = column_family.MaxVersionsGCRule(2)
-    table.create(column_families={'cf1': max_versions_rule})
-    # [END bigtable_create_table]
-    assert table.exists()
-
-
-def test_bigtable_list_tables():
-    # [START bigtable_list_tables]
-    from google.cloud.bigtable import Client
-
-    client = Client(admin=True)
-    instance = client.instance(INSTANCE_ID)
-    tables_list = instance.list_tables()
-    # [END bigtable_list_tables]
-    assert len(tables_list) is not 0
-
-
-def test_bigtable_delete_cluster():
-    # [START bigtable_delete_cluster]
-    from google.cloud.bigtable import Client
-
-    client = Client(admin=True)
-    instance = client.instance(INSTANCE_ID)
-    cluster_id = "clus-my-" + unique_resource_id('-')
-    # [END bigtable_delete_cluster]
-
-    cluster = instance.cluster(cluster_id, location_id=ALT_LOCATION_ID,
-                               serve_nodes=SERVER_NODES,
-                               default_storage_type=STORAGE_TYPE)
-    operation = cluster.create()
-    # We want to make sure the operation completes.
-    operation.result(timeout=1000)
-
-    # [START bigtable_delete_cluster]
-    cluster_to_delete = instance.cluster(cluster_id)
-    cluster_to_delete.delete()
-    # [END bigtable_delete_cluster]
-    assert not cluster_to_delete.exists()
 
 
 def test_bigtable_delete_instance():

@@ -130,5 +130,11 @@ def snippets(session):
     session.install('-e', '../test_utils/')
     session.install('-e', '.')
     session.run('py.test', '--quiet', \
-                os.path.join('docs', 'snippets.py'), \
+                os.path.join('docs', 'snippets_client.py'), \
+                *session.posargs)
+    session.run('py.test', '--quiet', \
+                os.path.join('docs', 'snippets_cluster.py'), \
+                *session.posargs)
+    session.run('py.test', '--quiet', \
+                os.path.join('docs', 'snippets_instance.py'), \
                 *session.posargs)
