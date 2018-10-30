@@ -22,7 +22,15 @@ On OS X:
 - `make`
 - [Official][1] `python.org` Python 2.7, 3.5, 3.6 and 3.7
 
-On Windows: TBD.
+On Windows:
+
+- `cmake`
+- [Official][1] `python.org` Python 3.5, 3.6 and 3.7
+- Visual Studio 15 2017 (just the compiler toolchain)
+
+Unfortunately, `libcrc32c` relies on many C++11 features, so
+building a Python 2.7 extension with the
+[Visual C++ Compiler for Python 2.7][2] is infeasible.
 
 ## Building Wheels
 
@@ -38,7 +46,7 @@ On OS X:
 ./scripts/osx/build.sh
 ```
 
-On Windows: TBD.
+On Windows: see `.appveyor.yml`.
 
 ## Verify Wheels
 
@@ -91,3 +99,4 @@ dir(_crc32c_cffi.lib): ['crc32c_extend', 'crc32c_value']
 On Windows: TBD.
 
 [1]: https://www.python.org/downloads/
+[2]: https://aka.ms/vcpython27
