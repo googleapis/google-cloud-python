@@ -1004,21 +1004,19 @@ class TestInstance(unittest.TestCase):
 
         permissions = ["bigtable.tables.create", "bigtable.clusters.create"]
 
-        expected_request = iam_policy_pb2.TestIamPermissionsRequest(
-            resource=instance.name,
+        response = iam_policy_pb2.TestIamPermissionsResponse(
             permissions=permissions)
 
-        # Patch the stub used by the API method.
-        channel = ChannelStub(responses=[expected_request])
-        instance_api = (
-            bigtable_instance_admin_client.BigtableInstanceAdminClient(
-                channel=channel))
+        instance_api = mock.create_autospec(
+            bigtable_instance_admin_client.BigtableInstanceAdminClient)
+        instance_api.test_iam_permissions.return_value = response
         client._instance_admin_client = instance_api
 
         result = instance.test_iam_permissions(permissions)
-        actual_request = channel.requests[0][1]
-        self.assertEqual(actual_request, expected_request)
+
         self.assertEqual(result, permissions)
+        instance_api.test_iam_permissions.assert_called_once_with(
+            resource=instance.name, permissions=permissions)
 
 
 class _Client(object):
