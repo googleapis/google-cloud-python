@@ -1151,6 +1151,153 @@ class TestProperty:
         # Check mocks.
         function.assert_not_called()
 
+    @staticmethod
+    def test__get_value():
+        prop = model.Property(name="prop")
+        value = b"\x00\x01"
+        values = {prop._name: value}
+        entity = unittest.mock.Mock(
+            _projection=None, _values=values, spec=("_projection", "_values")
+        )
+        assert value is prop._get_value(entity)
+        # Cache is untouched.
+        assert model.Property._FIND_METHODS_CACHE == {}
+
+    @staticmethod
+    def test__get_value_projected_present():
+        prop = model.Property(name="prop")
+        value = 92.5
+        values = {prop._name: value}
+        entity = unittest.mock.Mock(
+            _projection=(prop._name,),
+            _values=values,
+            spec=("_projection", "_values"),
+        )
+        assert value is prop._get_value(entity)
+        # Cache is untouched.
+        assert model.Property._FIND_METHODS_CACHE == {}
+
+    @staticmethod
+    def test__get_value_projected_absent():
+        prop = model.Property(name="prop")
+        entity = unittest.mock.Mock(
+            _projection=("nope",), spec=("_projection",)
+        )
+        with pytest.raises(model.UnprojectedPropertyError):
+            prop._get_value(entity)
+        # Cache is untouched.
+        assert model.Property._FIND_METHODS_CACHE == {}
+
+    @staticmethod
+    def test__delete_value():
+        prop = model.Property(name="prop")
+        value = b"\x00\x01"
+        values = {prop._name: value}
+        entity = unittest.mock.Mock(_values=values, spec=("_values",))
+        prop._delete_value(entity)
+        assert values == {}
+
+    @staticmethod
+    def test__delete_value_no_op():
+        prop = model.Property(name="prop")
+        values = {}
+        entity = unittest.mock.Mock(_values=values, spec=("_values",))
+        prop._delete_value(entity)
+        assert values == {}
+
+    @staticmethod
+    def test__is_initialized_not_required():
+        prop = model.Property(name="prop", required=False)
+        entity = unittest.mock.sentinel.entity
+        assert prop._is_initialized(entity)
+        # Cache is untouched.
+        assert model.Property._FIND_METHODS_CACHE == {}
+
+    @staticmethod
+    def test__is_initialized_default_fallback():
+        prop = model.Property(name="prop", required=True, default=11111)
+        values = {}
+        entity = unittest.mock.Mock(
+            _projection=None, _values=values, spec=("_projection", "_values")
+        )
+        assert prop._is_initialized(entity)
+        # Cache is untouched.
+        assert model.Property._FIND_METHODS_CACHE == {}
+
+    @staticmethod
+    def test__is_initialized_set_to_none():
+        prop = model.Property(name="prop", required=True)
+        values = {prop._name: None}
+        entity = unittest.mock.Mock(
+            _projection=None, _values=values, spec=("_projection", "_values")
+        )
+        assert not prop._is_initialized(entity)
+        # Cache is untouched.
+        assert model.Property._FIND_METHODS_CACHE == {}
+
+    @staticmethod
+    def test_instance_descriptors(property_clean_cache):
+        class Model:
+            prop = model.Property(name="prop", required=True)
+
+            def __init__(self):
+                self._projection = None
+                self._values = {}
+
+        m = Model()
+        value = 1234.5
+        # __set__
+        m.prop = value
+        assert m._values == {b"prop": value}
+        # __get__
+        assert m.prop == value
+        # __delete__
+        del m.prop
+        assert m._values == {}
+
+    @staticmethod
+    def test_class_descriptors():
+        prop = model.Property(name="prop", required=True)
+
+        class Model:
+            prop2 = prop
+
+        assert Model.prop2 is prop
+
+    @staticmethod
+    def test__prepare_for_put():
+        prop = model.Property(name="prop")
+        assert prop._prepare_for_put(None) is None
+
+    @staticmethod
+    def test__check_property():
+        prop = model.Property(name="prop")
+        assert prop._check_property() is None
+
+    @staticmethod
+    def test__check_property_not_indexed():
+        prop = model.Property(name="prop", indexed=False)
+        with pytest.raises(model.InvalidPropertyError):
+            prop._check_property(require_indexed=True)
+
+    @staticmethod
+    def test__check_property_with_subproperty():
+        prop = model.Property(name="prop", indexed=True)
+        with pytest.raises(model.InvalidPropertyError):
+            prop._check_property(rest="a.b.c")
+
+    @staticmethod
+    def test__get_for_dict():
+        prop = model.Property(name="prop")
+        value = b"\x00\x01"
+        values = {prop._name: value}
+        entity = unittest.mock.Mock(
+            _projection=None, _values=values, spec=("_projection", "_values")
+        )
+        assert value is prop._get_for_dict(entity)
+        # Cache is untouched.
+        assert model.Property._FIND_METHODS_CACHE == {}
+
 
 class TestModelKey:
     @staticmethod
