@@ -843,7 +843,7 @@ def _check_row_table_name(table_name, row):
     :raises: :exc:`~.table.TableMismatchError` if the row does not belong to
              the table.
     """
-    if row.table.name != table_name:
+    if row.table is not None and row.table.name != table_name:
         raise TableMismatchError(
             'Row %s is a part of %s table. Current table: %s' %
             (row.row_key, row.table.name, table_name))
