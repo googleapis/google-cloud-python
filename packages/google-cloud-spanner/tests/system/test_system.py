@@ -1536,6 +1536,25 @@ class TestSessionAPI(unittest.TestCase, _TestData):
                 [[['a', 1], ['b', 2]]],
             ])
 
+    def test_execute_sql_returning_empty_array_of_struct(self):
+        SQL = (
+            "SELECT ARRAY(SELECT AS STRUCT C1, C2 "
+            "FROM (SELECT 2 AS C1) X "
+            "JOIN (SELECT 1 AS C2) Y "
+            "ON X.C1 = Y.C2 "
+            "ORDER BY C1 ASC)"
+        )
+        self._db.snapshot(multi_use=True)
+
+        self._check_sql_results(
+            self._db,
+            sql=SQL,
+            params=None,
+            param_types=None,
+            expected=[
+                [[]],
+            ])
+
     def test_invalid_type(self):
         table = 'counters'
         columns = ('name', 'value')
