@@ -837,17 +837,24 @@ class TestInstance(unittest.TestCase):
         self.assertEqual(app_profile2.allow_transactional_writes, ALLOW_WRITES)
 
     def test_list_app_profiles(self):
+        from google.api_core.page_iterator import Iterator
+        from google.api_core.page_iterator import Page
         from google.cloud.bigtable_admin_v2.gapic import (
             bigtable_instance_admin_client)
-        from google.cloud.bigtable_admin_v2.proto import (
-            bigtable_instance_admin_pb2 as messages_v2_pb2)
         from google.cloud.bigtable_admin_v2.proto import (
             instance_pb2 as data_v2_pb2)
         from google.cloud.bigtable.app_profile import AppProfile
 
-        instance_api = (
-            bigtable_instance_admin_client.BigtableInstanceAdminClient(
-                mock.Mock()))
+        class _Iterator(Iterator):
+
+            def __init__(self, pages):
+                super(_Iterator, self).__init__(client=None)
+                self._pages = pages
+
+            def _next_page(self):
+                if self._pages:
+                    page, self._pages = self._pages[0], self._pages[1:]
+                    return Page(self, page, self.item_to_value)
 
         credentials = _make_credentials()
         client = self._make_client(project=self.PROJECT,
@@ -855,35 +862,33 @@ class TestInstance(unittest.TestCase):
         instance = self._make_one(self.INSTANCE_ID, client)
 
         # Setup Expected Response
-        next_page_token = ''
+        app_profile_path_template = 'projects/{}/instances/{}/appProfiles/{}'
         app_profile_id1 = 'app-profile-id1'
         app_profile_id2 = 'app-profile-id2'
-        app_profile_name1 = (client.instance_admin_client.app_profile_path(
-            self.PROJECT, self.INSTANCE_ID, app_profile_id1))
-        app_profile_name2 = (client.instance_admin_client.app_profile_path(
-            self.PROJECT, self.INSTANCE_ID, app_profile_id2))
+        app_profile_name1 = app_profile_path_template.format(
+            self.PROJECT, self.INSTANCE_ID, app_profile_id1)
+        app_profile_name2 = app_profile_path_template.format(
+            self.PROJECT, self.INSTANCE_ID, app_profile_id2)
         routing_policy = data_v2_pb2.AppProfile.MultiClusterRoutingUseAny()
 
-        expected_response = messages_v2_pb2.ListAppProfilesResponse(
-            next_page_token=next_page_token,
-            app_profiles=[
-                data_v2_pb2.AppProfile(
-                    name=app_profile_name1,
-                    multi_cluster_routing_use_any=routing_policy,
-                ),
-                data_v2_pb2.AppProfile(
-                    name=app_profile_name2,
-                    multi_cluster_routing_use_any=routing_policy,
-                )
-            ],
-        )
+        app_profiles = [
+            data_v2_pb2.AppProfile(
+                name=app_profile_name1,
+                multi_cluster_routing_use_any=routing_policy,
+            ),
+            data_v2_pb2.AppProfile(
+                name=app_profile_name2,
+                multi_cluster_routing_use_any=routing_policy,
+            )
+        ]
+        iterator = _Iterator(pages=[app_profiles])
 
         # Patch the stub used by the API method.
+        instance_api = mock.create_autospec(
+            bigtable_instance_admin_client.BigtableInstanceAdminClient)
         client._instance_admin_client = instance_api
-        bigtable_instance_stub = (
-            client._instance_admin_client.transport)
-        bigtable_instance_stub.list_app_profiles.side_effect = [
-            expected_response]
+        instance_api.app_profile_path = app_profile_path_template.format
+        instance_api.list_app_profiles.return_value = iterator
 
         # Perform the method and check the result.
         app_profiles = instance.list_app_profiles()
