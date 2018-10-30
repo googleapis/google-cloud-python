@@ -170,12 +170,20 @@ class FieldPath(object):
         """
         return get_field_path(self.parts)
 
+    def eq_or_parent(self, other):
+        return self.parts[:len(other.parts)] == other.parts[:len(self.parts)]
+
     def __hash__(self):
         return hash(self.to_api_repr())
 
     def __eq__(self, other):
         if isinstance(other, FieldPath):
             return self.parts == other.parts
+        return NotImplemented
+
+    def __lt__(self, other):
+        if isinstance(other, FieldPath):
+            return self.parts < other.parts
         return NotImplemented
 
     def __add__(self, other):
@@ -1045,42 +1053,106 @@ def pbs_for_set(document_path, document_data, merge=False, exists=None):
         List[google.cloud.firestore_v1beta1.types.Write]: One
         or two ``Write`` protobuf instances for ``set()``.
     """
-    merged = False
-    if hasattr(merge, '__iter__'): # merge is a list of field paths
-        document_data = filter_document_data_by_field_paths(
-            document_data, field_paths=sorted(merge))
-        merged = True
-
+    if merge is not False:
+        return _pbs_for_set_with_merge(
+            document_path, document_data, merge, exists
+        )
     transform_paths, actual_data, field_paths = process_server_timestamp(
         document_data, False)
+
     update_pb = write_pb2.Write(
         update=document_pb2.Document(
             name=document_path,
             fields=encode_dict(actual_data),
-        ),
+        )
     )
-
-    if not merged: # not merged *yet*
-        if merge: # it's not an iterable, it's True, so do a merge all
-            merge = sorted([fp.to_api_repr() for fp in field_paths])
-            merged = True
-
-    if merged:
-        mask = common_pb2.DocumentMask(field_paths=merge)
-        update_pb.update_mask.CopyFrom(mask)
 
     if exists is not None:
         update_pb.current_document.CopyFrom(
             common_pb2.Precondition(exists=exists))
 
     write_pbs = [update_pb]
+
     if transform_paths:
-        # NOTE: We **explicitly** don't set any write option on
-        #       the ``transform_pb``.
         transform_pb = get_transform_pb(document_path, transform_paths)
-        if not actual_data:
-            write_pbs = [transform_pb]
-            return write_pbs
+        write_pbs.append(transform_pb)
+
+    return write_pbs
+
+def _pbs_for_set_with_merge(document_path, document_data, merge, exists):
+    data_merge = []
+    transform_merge = []
+
+    transform_paths, actual_data, field_paths = process_server_timestamp(
+        document_data, False)
+
+    if hasattr(merge, '__iter__'):
+        # merge is list of paths provided by enduser; convert merge
+        # elements into FieldPaths if they aren't already
+        new_merge = []
+
+        for apispec_or_path in merge:
+            if isinstance(apispec_or_path, FieldPath):
+                new_merge.append(apispec_or_path)
+            else:
+                new_merge.append(FieldPath(*parse_field_path(apispec_or_path)))
+
+        merge = new_merge
+
+        for merge_fp in new_merge:
+            for fp in field_paths:
+                if merge_fp.eq_or_parent(fp):
+                    data_merge.append(fp)
+            if merge_fp in transform_paths:
+                transform_merge.append(merge_fp)
+
+        actual_data = filter_document_data_by_field_paths(
+            document_data,
+            field_paths = sorted([fp.to_api_repr() for fp in data_merge]),
+        )
+
+    else: # non-iterable, non-False value means MergeAll
+        data_merge = field_paths
+        transform_merge = transform_paths
+        merge = sorted(data_merge + transform_merge)
+
+    update_pb = write_pb2.Write()
+
+    if actual_data:
+        update = document_pb2.Document(
+            name=document_path,
+            fields=encode_dict(actual_data),
+        )
+        update_pb.update.CopyFrom(update)
+
+    mask_paths = [fp.to_api_repr() for fp in merge if not fp in transform_merge]
+
+    if mask_paths:
+        mask = common_pb2.DocumentMask(field_paths=mask_paths)
+        update_pb.update_mask.CopyFrom(mask)
+
+    new_transform_paths = []
+    for merge_fp in merge:
+        t_merge_fps = [
+            fp for fp in transform_paths if merge_fp.eq_or_parent(fp) ]
+        new_transform_paths.extend(t_merge_fps)
+    transform_paths = new_transform_paths
+
+    update_pb.update.CopyFrom(
+        document_pb2.Document(
+            name=document_path,
+            fields=encode_dict(actual_data),
+        )
+    )
+
+    if exists is not None:
+        update_pb.current_document.CopyFrom(
+            common_pb2.Precondition(exists=exists))
+
+    write_pbs = [update_pb]
+
+    if transform_paths:
+        transform_pb = get_transform_pb(document_path, transform_paths)
         write_pbs.append(transform_pb)
 
     return write_pbs

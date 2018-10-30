@@ -15,6 +15,7 @@
 import functools
 import glob
 import json
+import os
 
 import mock
 import pytest
@@ -31,6 +32,10 @@ def _load_testproto(filename):
         tp_text = tp_file.read()
     test_proto = test_pb2.Test()
     text_format.Merge(tp_text, test_proto)
+
+    test_proto.description = (
+        test_proto.description + ' (%s)' % os.path.split(filename)[-1]
+        )
     return test_proto
 
 
@@ -130,7 +135,7 @@ def _run_testcase(testcase, call, firestore_api, client):
 
 @pytest.mark.parametrize('test_proto', _SET_TESTPROTOS)
 def test_set_testprotos(test_proto):
-#    if test_proto.description != "Merge with FieldPaths":
+#    if test_proto.description != "set-merge: If is ServerTimestamp not in Merge, no transform (set-st-nomerge.textproto)":
 #        return
     testcase = test_proto.set
     firestore_api = _mock_firestore_api()
