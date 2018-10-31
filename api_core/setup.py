@@ -29,7 +29,7 @@ version = '1.5.1'
 # 'Development Status :: 5 - Production/Stable'
 release_status = 'Development Status :: 5 - Production/Stable'
 dependencies = [
-    'googleapis-common-protos<2.0dev,>=1.5.3',
+    'googleapis-common-protos<2.0dev,>=1.5.3,!=1.5.4',
     'protobuf>=3.4.0',
     'google-auth<2.0.0dev,>=0.4.0',
     'requests<3.0.0dev,>=2.18.0',
