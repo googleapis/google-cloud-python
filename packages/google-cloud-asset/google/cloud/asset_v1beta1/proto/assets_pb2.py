@@ -292,10 +292,11 @@ Asset = _reflection.GeneratedProtocolMessageType('Asset', (_message.Message,), d
   
   Attributes:
       name:
-          The full name of the asset. For example: ``//compute.googleapi
-          s.com/projects/my_project_123/zones/zone1/instances/instance1`
-          `. See `Resource Names <https://cloud.google.com/apis/design/r
-          esource_names#full_resource_name>`__ for more information.
+
+          The full name of the asset. For example:
+          ``//compute.googleapis.com/projects/my_project_123/zones/zone1/instances/instance1``.
+          See https://cloud.google.com/apis/design/resource_names#full_resource_name
+          for more information.
       asset_type:
           Type of the asset. Example: "google.compute.disk".
       resource:
