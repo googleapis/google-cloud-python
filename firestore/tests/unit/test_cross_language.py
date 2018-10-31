@@ -147,23 +147,23 @@ def _run_testcase(testcase, call, firestore_api, client):
             metadata=client._rpc_metadata)
 
 
-# @pytest.mark.parametrize('test_proto', _CREATE_TESTPROTOS)
-# def test_create_testprotos(test_proto):
-#     testcase = test_proto.create
-#     firestore_api = _mock_firestore_api()
-#     client, document = _make_client_document(firestore_api, testcase)
-#     data = convert_data(json.loads(testcase.json_data))
-#     call = functools.partial(document.create, data)
-#     _run_testcase(testcase, call, firestore_api, client)
+@pytest.mark.parametrize('test_proto', _CREATE_TESTPROTOS)
+def test_create_testprotos(test_proto):
+    testcase = test_proto.create
+    firestore_api = _mock_firestore_api()
+    client, document = _make_client_document(firestore_api, testcase)
+    data = convert_data(json.loads(testcase.json_data))
+    call = functools.partial(document.create, data)
+    _run_testcase(testcase, call, firestore_api, client)
 
 
-# @pytest.mark.parametrize('test_proto', _GET_TESTPROTOS)
-# def test_get_testprotos(test_proto):
-#     testcase = test_proto.get
-#     firestore_api = _mock_firestore_api()
-#     client, document = _make_client_document(firestore_api, testcase)
-#     call = functools.partial(document.get, None, None)
-#     _run_testcase(testcase, call, firestore_api, client)
+@pytest.mark.parametrize('test_proto', _GET_TESTPROTOS)
+def test_get_testprotos(test_proto):
+    testcase = test_proto.get
+    firestore_api = _mock_firestore_api()
+    client, document = _make_client_document(firestore_api, testcase)
+    call = functools.partial(document.get, None, None)
+    _run_testcase(testcase, call, firestore_api, client)
 
 
 @pytest.mark.parametrize('test_proto', _SET_TESTPROTOS)
@@ -180,43 +180,43 @@ def test_set_testprotos(test_proto):
     _run_testcase(testcase, call, firestore_api, client)
 
 
-# @pytest.mark.parametrize('test_proto', _UPDATE_TESTPROTOS)
-# def test_update_testprotos(test_proto):
-#     testcase = test_proto.update
-#     firestore_api = _mock_firestore_api()
-#     client, document = _make_client_document(firestore_api, testcase)
-#     data = convert_data(json.loads(testcase.json_data))
-#     if testcase.HasField("precondition"):
-#         option = convert_precondition(testcase.precondition)
-#     else:
-#         option = None
-#     call = functools.partial(document.update, data, option)
-#     _run_testcase(testcase, call, firestore_api, client)
+@pytest.mark.parametrize('test_proto', _UPDATE_TESTPROTOS)
+def test_update_testprotos(test_proto):
+    testcase = test_proto.update
+    firestore_api = _mock_firestore_api()
+    client, document = _make_client_document(firestore_api, testcase)
+    data = convert_data(json.loads(testcase.json_data))
+    if testcase.HasField("precondition"):
+        option = convert_precondition(testcase.precondition)
+    else:
+        option = None
+    call = functools.partial(document.update, data, option)
+    _run_testcase(testcase, call, firestore_api, client)
 
 
-# @pytest.mark.skip(
-#     reason="Python has no way to call update with a list of field paths.")
-# @pytest.mark.parametrize('test_proto', _UPDATE_PATHS_TESTPROTOS)
-# def test_update_paths_testprotos(test_proto):
-#     pass
+@pytest.mark.skip(
+    reason="Python has no way to call update with a list of field paths.")
+@pytest.mark.parametrize('test_proto', _UPDATE_PATHS_TESTPROTOS)
+def test_update_paths_testprotos(test_proto):
+    pass
 
-# @pytest.mark.parametrize('test_proto', _DELETE_TESTPROTOS)
-# def test_delete_testprotos(test_proto):
-#     testcase = test_proto.delete
-#     firestore_api = _mock_firestore_api()
-#     client, document = _make_client_document(firestore_api, testcase)
-#     if testcase.HasField("precondition"):
-#         option = convert_precondition(testcase.precondition)
-#     else:
-#         option = None
-#     call = functools.partial(document.delete, option)
-#     _run_testcase(testcase, call, firestore_api, client)
+@pytest.mark.parametrize('test_proto', _DELETE_TESTPROTOS)
+def test_delete_testprotos(test_proto):
+    testcase = test_proto.delete
+    firestore_api = _mock_firestore_api()
+    client, document = _make_client_document(firestore_api, testcase)
+    if testcase.HasField("precondition"):
+        option = convert_precondition(testcase.precondition)
+    else:
+        option = None
+    call = functools.partial(document.delete, option)
+    _run_testcase(testcase, call, firestore_api, client)
 
 
-# @pytest.mark.skip(reason="Watch aka listen not yet implemented in Python.")
-# @pytest.mark.parametrize('test_proto', _LISTEN_TESTPROTOS)
-# def test_listen_paths_testprotos(test_proto):
-#     pass
+@pytest.mark.skip(reason="Watch aka listen not yet implemented in Python.")
+@pytest.mark.parametrize('test_proto', _LISTEN_TESTPROTOS)
+def test_listen_paths_testprotos(test_proto):
+    pass
 
 
 def convert_data(v):
