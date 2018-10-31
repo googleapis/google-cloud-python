@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.asset_v1beta1.gapic.asset_service_client &#8212; google-cloud f576d14 documentation</title>
+    <title>google.cloud.asset_v1beta1.gapic.asset_service_client &#8212; google-cloud 1ac2b0d documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -214,9 +214,9 @@
                       <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
                       <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Exports assets with time and resource types to a given Google Cloud Storage</span>
+<span class="sd">        Exports assets with time and resource types to a given Cloud Storage</span>
 <span class="sd">        location. The output format is newline-delimited JSON.</span>
-<span class="sd">        This API implements the ``google.longrunning.Operation`` API allowing users</span>
+<span class="sd">        This API implements the ``google.longrunning.Operation`` API allowing you</span>
 <span class="sd">        to keep track of the export.</span>
 
 <span class="sd">        Example:</span>
@@ -241,9 +241,9 @@
 <span class="sd">            &gt;&gt;&gt; metadata = response.metadata()</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            parent (str): Required. The relative name of the root asset. Can only be an organization</span>
-<span class="sd">                number (such as \&quot;organizations/123\&quot;), or a project id (such as</span>
-<span class="sd">                \&quot;projects/my-project-id\&quot;) or a project number (such as \&quot;projects/12345\&quot;).</span>
+<span class="sd">            parent (str): Required. The relative name of the root asset. This can only be an organization</span>
+<span class="sd">                number (such as \&quot;organizations/123\&quot;), a project ID (such as</span>
+<span class="sd">                \&quot;projects/my-project-id\&quot;), or a project number (such as \&quot;projects/12345\&quot;).</span>
 <span class="sd">            output_config (Union[dict, ~google.cloud.asset_v1beta1.types.OutputConfig]): Required. Output configuration indicating where the results will be output</span>
 <span class="sd">                to. All results will be in newline delimited JSON format.</span>
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
@@ -255,7 +255,7 @@
 <span class="sd">                results.</span>
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.asset_v1beta1.types.Timestamp`</span>
-<span class="sd">            asset_types (list[str]): A list of asset types of which to take a snapshot for. Example:</span>
+<span class="sd">            asset_types (list[str]): A list of asset types of which to take a snapshot for. For example:</span>
 <span class="sd">                \&quot;google.compute.disk\&quot;. If specified, only matching assets will be returned.</span>
 <span class="sd">            content_type (~google.cloud.asset_v1beta1.types.ContentType): Asset content type. If not specified, no content but the asset name will be</span>
 <span class="sd">                returned.</span>
@@ -315,11 +315,11 @@
             <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
             <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Batch gets assets update history that overlaps a time window.</span>
+<span class="sd">        Batch gets the update history of assets that overlap a time window.</span>
 <span class="sd">        For RESOURCE content, this API outputs history with asset in both</span>
 <span class="sd">        non-delete or deleted status.</span>
-<span class="sd">        For IAM_POLICY content, this API only outputs history when asset and its</span>
-<span class="sd">        attached IAM POLICY both exist. So there may be gaps in the output history.</span>
+<span class="sd">        For IAM_POLICY content, this API outputs history when the asset and its</span>
+<span class="sd">        attached IAM POLICY both exist. This can create gaps in the output history.</span>
 
 <span class="sd">        Example:</span>
 <span class="sd">            &gt;&gt;&gt; from google.cloud import asset_v1beta1</span>
@@ -339,18 +339,18 @@
 
 <span class="sd">        Args:</span>
 <span class="sd">            parent (str): Required. The relative name of the root asset. It can only be an</span>
-<span class="sd">                organization number (such as \&quot;organizations/123\&quot;), or a project id (such as</span>
-<span class="sd">                \&quot;projects/my-project-id\&quot;)\&quot;or a project number (such as \&quot;projects/12345\&quot;).</span>
+<span class="sd">                organization number (such as \&quot;organizations/123\&quot;), a project ID (such as</span>
+<span class="sd">                \&quot;projects/my-project-id\&quot;)\&quot;, or a project number (such as \&quot;projects/12345\&quot;).</span>
 <span class="sd">            content_type (~google.cloud.asset_v1beta1.types.ContentType): Required. The content type.</span>
 <span class="sd">            read_time_window (Union[dict, ~google.cloud.asset_v1beta1.types.TimeWindow]): Required. The time window for the asset history. The start time is</span>
 <span class="sd">                required. The returned results contain all temporal assets whose time</span>
 <span class="sd">                window overlap with read_time_window.</span>
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.asset_v1beta1.types.TimeWindow`</span>
-<span class="sd">            asset_names (list[str]): A list of the full names of the assets. See:</span>
-<span class="sd">                https://cloud.google.com/apis/design/resource_names#full_resource_name</span>
-<span class="sd">                Example:</span>
-<span class="sd">                \&quot;//compute.googleapis.com/projects/my_project_123/zones/zone1/instances/instance1\&quot;.</span>
+<span class="sd">            asset_names (list[str]): A list of the full names of the assets. For example:</span>
+<span class="sd">                ``//compute.googleapis.com/projects/my_project_123/zones/zone1/instances/instance1``.</span>
+<span class="sd">                See `Resource Names &lt;https://cloud.google.com/apis/design/resource_names#full_resource_name&gt;`_</span>
+<span class="sd">                for more info.</span>
 
 <span class="sd">                The request becomes a no-op if the asset name list is empty, and the max</span>
 <span class="sd">                size of the asset name list is 100 in one request.</span>

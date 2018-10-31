@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Python Logging Handler Threaded Transport &#8212; google-cloud f576d14 documentation</title>
+    <title>Python Logging Handler Threaded Transport &#8212; google-cloud 1ac2b0d documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -41,7 +41,7 @@
 <p>Uses a background worker to log to Stackdriver Logging asynchronously.</p>
 <dl class="class">
 <dt id="google.cloud.logging.handlers.transports.background_thread.BackgroundThreadTransport">
-<em class="property">class </em><code class="descclassname">google.cloud.logging.handlers.transports.background_thread.</code><code class="descname">BackgroundThreadTransport</code><span class="sig-paren">(</span><em>client</em>, <em>name</em>, <em>grace_period=5.0</em>, <em>batch_size=10</em>, <em>max_latency=0</em>, <em>include_logger_name=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/logging/handlers/transports/background_thread.html#BackgroundThreadTransport"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.logging.handlers.transports.background_thread.BackgroundThreadTransport" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="descclassname">google.cloud.logging.handlers.transports.background_thread.</code><code class="descname">BackgroundThreadTransport</code><span class="sig-paren">(</span><em>client</em>, <em>name</em>, <em>grace_period=5.0</em>, <em>batch_size=10</em>, <em>max_latency=0</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/logging/handlers/transports/background_thread.html#BackgroundThreadTransport"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.logging.handlers.transports.background_thread.BackgroundThreadTransport" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="transports-base.html#google.cloud.logging.handlers.transports.base.Transport" title="google.cloud.logging.handlers.transports.base.Transport"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.logging.handlers.transports.base.Transport</span></code></a></p>
 <p>Asynchronous transport that uses a background thread.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -60,9 +60,6 @@ sending a new batch. It is strongly recommended to keep this smaller
 than the grace_period. This means this is effectively the longest
 amount of time the background thread will hold onto log entries
 before sending them to the server.</li>
-<li><strong>include_logger_name</strong> – (optional) Include python_logger field in
-jsonPayload. Turn this off to enable jso
-detection in log messages.</li>
 </ul>
 </td>
 </tr>

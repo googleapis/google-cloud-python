@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Types for Cloud Asset API Client &#8212; google-cloud f576d14 documentation</title>
+    <title>Types for Cloud Asset API Client &#8212; google-cloud 1ac2b0d documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -45,15 +45,15 @@
 <dl class="class">
 <dt id="google.cloud.asset_v1beta1.types.Asset">
 <em class="property">class </em><code class="descclassname">google.cloud.asset_v1beta1.types.</code><code class="descname">Asset</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.Asset" title="Permalink to this definition">#</a></dt>
-<dd><p>Cloud asset. This include all Google Cloud Platform resources, as well
-as IAM policies and other non-GCP assets.</p>
+<dd><p>Cloud asset. This includes all Google Cloud Platform resources, Cloud
+IAM policies, and other non-GCP assets.</p>
 <dl class="attribute">
 <dt id="google.cloud.asset_v1beta1.types.Asset.name">
 <code class="descname">name</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.Asset.name" title="Permalink to this definition">#</a></dt>
-<dd><p>The full name of the asset. See: <a class="reference external" href="https://cloud.google.com/apis">https://cloud.google.com/apis</a>
-/design/resource_names#full_resource_name Example: “//compu
-te.googleapis.com/projects/my_project_123/zones/zone1/instan
-ces/instance1”.</p>
+<dd><p>The full name of the asset. For example:
+<code class="docutils literal notranslate"><span class="pre">//compute.googleapis.com/projects/my_project_123/zones/zone1/instances/instance1</span></code>.
+See <a class="reference external" href="https://cloud.google.com/apis/design/resource_names#full_resource_name">https://cloud.google.com/apis/design/resource_names#full_resource_name</a>
+for more information.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -71,9 +71,9 @@ ces/instance1”.</p>
 <dl class="attribute">
 <dt id="google.cloud.asset_v1beta1.types.Asset.iam_policy">
 <code class="descname">iam_policy</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.Asset.iam_policy" title="Permalink to this definition">#</a></dt>
-<dd><p>Representation of the actual IAM policy set on a cloud
-resource. For each resource, there must be at most one IAM
-policy set on it.</p>
+<dd><p>Representation of the actual Cloud IAM policy set on a cloud
+resource. For each resource, there must be at most one Cloud
+IAM policy set on it.</p>
 </dd></dl>
 
 </dd></dl>
@@ -86,20 +86,20 @@ policy set on it.</p>
 <dt id="google.cloud.asset_v1beta1.types.BatchGetAssetsHistoryRequest.parent">
 <code class="descname">parent</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.BatchGetAssetsHistoryRequest.parent" title="Permalink to this definition">#</a></dt>
 <dd><p>Required. The relative name of the root asset. It can only be
-an organization number (such as “organizations/123”), or a
-project id (such as “projects/my-project-id”)”or a project
+an organization number (such as “organizations/123”), a
+project ID (such as “projects/my-project-id”)”, or a project
 number (such as “projects/12345”).</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.asset_v1beta1.types.BatchGetAssetsHistoryRequest.asset_names">
 <code class="descname">asset_names</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.BatchGetAssetsHistoryRequest.asset_names" title="Permalink to this definition">#</a></dt>
-<dd><p>A list of the full names of the assets. See: <a class="reference external" href="https://cloud.goo">https://cloud.goo</a>
-gle.com/apis/design/resource_names#full_resource_name
-Example: “//compute.googleapis.com/projects/my_project_123/z
-ones/zone1/instances/instance1”.  The request becomes a no-op
-if the asset name list is empty, and the max size of the asset
-name list is 100 in one request.</p>
+<dd><p>A list of the full names of the assets. For example: <code class="docutils literal notranslate"><span class="pre">//compu</span>
+<span class="pre">te.googleapis.com/projects/my_project_123/zones/zone1/instance</span>
+<span class="pre">s/instance1</span></code>. See <a class="reference external" href="https://cloud.google.com/apis/design/resource_names#full_resource_name">Resource Names</a> for more
+info.  The request becomes a no-op if the asset name list is
+empty, and the max size of the asset name list is 100 in one
+request.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -260,9 +260,9 @@ resource. Follows the same format of Binding.members. Required</p>
 <dl class="attribute">
 <dt id="google.cloud.asset_v1beta1.types.ExportAssetsRequest.parent">
 <code class="descname">parent</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.ExportAssetsRequest.parent" title="Permalink to this definition">#</a></dt>
-<dd><p>Required. The relative name of the root asset. Can only be an
-organization number (such as “organizations/123”), or a
-project id (such as “projects/my-project-id”) or a project
+<dd><p>Required. The relative name of the root asset. This can only
+be an organization number (such as “organizations/123”), a
+project ID (such as “projects/my-project-id”), or a project
 number (such as “projects/12345”).</p>
 </dd></dl>
 
@@ -280,8 +280,8 @@ results.</p>
 <dl class="attribute">
 <dt id="google.cloud.asset_v1beta1.types.ExportAssetsRequest.asset_types">
 <code class="descname">asset_types</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.ExportAssetsRequest.asset_types" title="Permalink to this definition">#</a></dt>
-<dd><p>A list of asset types of which to take a snapshot for.
-Example: “google.compute.disk”. If specified, only matching
+<dd><p>A list of asset types of which to take a snapshot for. For
+example: “google.compute.disk”. If specified, only matching
 assets will be returned.</p>
 </dd></dl>
 
@@ -358,14 +358,14 @@ to. All results are in JSON format.</p>
 <dl class="class">
 <dt id="google.cloud.asset_v1beta1.types.GcsDestination">
 <em class="property">class </em><code class="descclassname">google.cloud.asset_v1beta1.types.</code><code class="descname">GcsDestination</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.GcsDestination" title="Permalink to this definition">#</a></dt>
-<dd><p>A Google Cloud Storage (GCS) location.</p>
+<dd><p>A Cloud Storage location.</p>
 <dl class="attribute">
 <dt id="google.cloud.asset_v1beta1.types.GcsDestination.uri">
 <code class="descname">uri</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.GcsDestination.uri" title="Permalink to this definition">#</a></dt>
-<dd><p>The path of the GCS objects. It’s the same path that is used
-by gsutil, for example: “gs://bucket_name/object_path”. See:
-https://cloud.google.com/storage/docs/viewing-editing-metadata
-for more information.</p>
+<dd><p>The path of the Cloud Storage objects. It’s the same path that
+is used by gsutil. For example:
+“gs://bucket_name/object_path”. See <a class="reference external" href="https://cloud.google.com/storage/docs/viewing-editing-metadata">Viewing and Editing
+Object Metadata</a> for more information.</p>
 </dd></dl>
 
 </dd></dl>
@@ -453,7 +453,7 @@ for more information.</p>
 <dl class="attribute">
 <dt id="google.cloud.asset_v1beta1.types.OutputConfig.gcs_destination">
 <code class="descname">gcs_destination</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.OutputConfig.gcs_destination" title="Permalink to this definition">#</a></dt>
-<dd><p>Destination on Google Cloud Storage (GCS).</p>
+<dd><p>Destination on Cloud Storage.</p>
 </dd></dl>
 
 </dd></dl>
@@ -547,9 +547,9 @@ overwritten blindly.</p>
 <dt id="google.cloud.asset_v1beta1.types.Resource.discovery_document_uri">
 <code class="descname">discovery_document_uri</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.Resource.discovery_document_uri" title="Permalink to this definition">#</a></dt>
 <dd><p>The URL of the discovery document containing the resource’s
-JSON schema. Example: “<a class="reference external" href="https://www.googleapis.com/discovery/v1">https://www.googleapis.com/discovery/v1</a>
-/apis/compute/v1/rest”. It will be left unspecified for
-resources without a discovery-based API, such as Cloud
+JSON schema. For example: <code class="docutils literal notranslate"><span class="pre">&quot;https://www.googleapis.com/discov</span>
+<span class="pre">ery/v1/apis/compute/v1/rest&quot;</span></code>. It will be left unspecified
+for resources without a discovery-based API, such as Cloud
 Bigtable.</p>
 </dd></dl>
 
@@ -574,14 +574,12 @@ without a REST API.</p>
 <dl class="attribute">
 <dt id="google.cloud.asset_v1beta1.types.Resource.parent">
 <code class="descname">parent</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.Resource.parent" title="Permalink to this definition">#</a></dt>
-<dd><p>The full name of the immediate parent of this resource. See: h
-ttps://cloud.google.com/apis/design/resource_names#full_reso
-urce_name  For GCP assets, it is the parent resource defined
-in the IAM policy hierarchy:
-https://cloud.google.com/iam/docs/overview#policy_hierarchy.
-Example: “//cloudresourcemanager.googleapis.com/projects/my_p
-roject_123”.  For third-party assets, it is up to the users
-to define.</p>
+<dd><p>The full name of the immediate parent of this resource. See
+<a class="reference external" href="https://cloud.google.com/apis/design/resource_names#full_resource_name">Resource Names</a> for more information.  For GCP
+assets, it is the parent resource defined in the <a class="reference external" href="https://cloud.google.com/iam/docs/overview#policy_hierarchy">Cloud IAM
+policy hierarchy</a>. For example: <code class="docutils literal notranslate"><span class="pre">&quot;//cloudresourcemanager.go</span>
+<span class="pre">ogleapis.com/projects/my_project_123&quot;</span></code>.  For third-party
+assets, it is up to the users to define.</p>
 </dd></dl>
 
 <dl class="attribute">
