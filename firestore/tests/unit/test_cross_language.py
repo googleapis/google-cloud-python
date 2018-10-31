@@ -27,6 +27,10 @@ from google.cloud.firestore_v1beta1.proto import write_pb2
 
 _MISSING_FEATURES = [
     # tests having to do with the ArrayUnion, ArrayRemove, and Delete transforms
+    'create-all-transforms.textproto',
+    'create-arrayremove-multi.textproto',
+    'create-arrayremove-noarray-nested.textproto',
+    'create-arrayremove-noarray.textproto',
     'set-26.textproto',
     'set-all-transforms.textproto',
     'set-arrayremove-multi.textproto',
@@ -43,6 +47,18 @@ _MISSING_FEATURES = [
     'set-del-merge.textproto',
     'set-del-mergeall.textproto',
     'set-del-nomerge.textproto',
+    'update-all-transforms.textproto',
+    'update-arrayremove-alone.textproto',
+    'update-arrayremove-multi.textproto',
+    'update-arrayremove-nested.textproto',
+    'update-arrayremove-noarray-nested.textproto',
+    'update-arrayremove-noarray.textproto',
+    'update-arrayremove.textproto',
+    'update-arrayunion-alone.textproto',
+    'update-arrayunion-multi.textproto',
+    'update-arrayunion-nested.textproto',
+    'update-arrayunion-noarray-nested.textproto',
+    'update-arrayunion-noarray.textproto',
     ]
 
 
@@ -118,7 +134,7 @@ def _make_client_document(firestore_api, testcase):
 
 
 def _run_testcase(testcase, call, firestore_api, client):
-    if testcase.is_error:
+    if getattr(testcase, 'is_error', False):
         # TODO: is there a subclass of Exception we can check for?
         with pytest.raises(Exception):
             call()
@@ -144,10 +160,6 @@ def _run_testcase(testcase, call, firestore_api, client):
 # @pytest.mark.parametrize('test_proto', _GET_TESTPROTOS)
 # def test_get_testprotos(test_proto):
 #     testcase = test_proto.get
-#     try:
-#         testcase.is_error
-#     except AttributeError:
-#         return
 #     firestore_api = _mock_firestore_api()
 #     client, document = _make_client_document(firestore_api, testcase)
 #     call = functools.partial(document.get, None, None)
@@ -156,8 +168,6 @@ def _run_testcase(testcase, call, firestore_api, client):
 
 @pytest.mark.parametrize('test_proto', _SET_TESTPROTOS)
 def test_set_testprotos(test_proto):
-    # if not 'set-24' in test_proto.description:
-    #     return
     testcase = test_proto.set
     firestore_api = _mock_firestore_api()
     client, document = _make_client_document(firestore_api, testcase)
@@ -189,7 +199,6 @@ def test_set_testprotos(test_proto):
 # @pytest.mark.parametrize('test_proto', _UPDATE_PATHS_TESTPROTOS)
 # def test_update_paths_testprotos(test_proto):
 #     pass
-
 
 # @pytest.mark.parametrize('test_proto', _DELETE_TESTPROTOS)
 # def test_delete_testprotos(test_proto):
