@@ -1063,7 +1063,8 @@ def pbs_for_set(document_path, document_data, merge=False, exists=None):
         document_data, False)
 
     create_empty = False
-    if document_data and not actual_data: # produce an empty set op
+    if (document_data and not actual_data) or (not document_data):
+        # produce an empty set op
         create_empty = True
 
     write_pbs = []
