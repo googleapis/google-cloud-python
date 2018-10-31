@@ -28,7 +28,12 @@ class _OperationNotComplete(Exception):
     pass
 
 
-RETRY_PREDICATE = retry.if_exception_type(_OperationNotComplete)
+RETRY_PREDICATE = retry.if_exception_type(
+    _OperationNotComplete,
+    exceptions.TooManyRequests,
+    exceptions.InternalServerError,
+    exceptions.BadGateway,
+)
 DEFAULT_RETRY = retry.Retry(predicate=RETRY_PREDICATE)
 
 
