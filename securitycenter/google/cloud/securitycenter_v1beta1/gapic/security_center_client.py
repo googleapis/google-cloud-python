@@ -614,18 +614,12 @@ class SecurityCenterClient(object):
                 Possible \"state\" values when compare_duration is specified:
 
                 * \"ADDED\": indicates that the asset was not present before
-                ::
-
-                             compare_duration, but present at reference_time.
+                  compare_duration, but present at reference_time.
                 * \"REMOVED\": indicates that the asset was present at the start of
-                ::
-
-                             compare_duration, but not present at reference_time.
+                  compare_duration, but not present at reference_time.
                 * \"ACTIVE_AT_BOTH\": indicates that the asset was present at both the
-                ::
-
-                             start and the end of the time period defined by
-                             compare_duration and reference_time.
+                  start and the end of the time period defined by
+                  compare_duration and reference_time.
 
                 This field is ignored if ``state`` is not a field in ``group_by``.
                 If a dict is provided, it must be of the same form as the protobuf
@@ -935,18 +929,12 @@ class SecurityCenterClient(object):
                 Possible \"state\" values when compare_duration is specified:
 
                 * \"ADDED\": indicates that the asset was not present before
-                ::
-
-                             compare_duration, but present at read_time.
+                  compare_duration, but present at read_time.
                 * \"REMOVED\": indicates that the asset was present at the start of
-                ::
-
-                             compare_duration, but not present at read_time.
+                  compare_duration, but not present at read_time.
                 * \"ACTIVE\": indicates that the asset was present at both the
-                ::
-
-                             start and the end of the time period defined by
-                             compare_duration and read_time.
+                  start and the end of the time period defined by
+                  compare_duration and read_time.
 
                 If compare_duration is not specified, then the only possible state is
                 \"UNUSED\", which indicates that the asset is present at read_time.
