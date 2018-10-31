@@ -29,8 +29,15 @@ _MISSING_FEATURES = [
     # tests having to do with the ArrayUnion, ArrayRemove, and Delete transforms
     'create-all-transforms.textproto',
     'create-arrayremove-multi.textproto',
+    'create-arrayremove-nested.textproto',
     'create-arrayremove-noarray-nested.textproto',
     'create-arrayremove-noarray.textproto',
+    'create-arrayremove.textproto',
+    'create-arrayunion-multi.textproto',
+    'create-arrayunion-nested.textproto',
+    'create-arrayunion-noarray-nested.textproto',
+    'create-arrayunion-noarray.textproto',
+    'create-arrayunion.textproto',
     'set-26.textproto',
     'set-all-transforms.textproto',
     'set-arrayremove-multi.textproto',
@@ -59,6 +66,7 @@ _MISSING_FEATURES = [
     'update-arrayunion-nested.textproto',
     'update-arrayunion-noarray-nested.textproto',
     'update-arrayunion-noarray.textproto',
+    'update-arrayunion.textproto',
     ]
 
 
