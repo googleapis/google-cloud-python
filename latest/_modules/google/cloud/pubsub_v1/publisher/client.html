@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.pubsub_v1.publisher.client &#8212; google-cloud 65b03c8 documentation</title>
+    <title>google.cloud.pubsub_v1.publisher.client &#8212; google-cloud 43b7232 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -189,8 +189,8 @@
 <span class="sd">        period of time has elapsed.</span>
 
 <span class="sd">        Example:</span>
-<span class="sd">            &gt;&gt;&gt; from google.cloud.pubsub_v1 import publisher_client</span>
-<span class="sd">            &gt;&gt;&gt; client = publisher_client.PublisherClient()</span>
+<span class="sd">            &gt;&gt;&gt; from google.cloud import pubsub_v1</span>
+<span class="sd">            &gt;&gt;&gt; client = pubsub_v1.PublisherClient()</span>
 <span class="sd">            &gt;&gt;&gt; topic = client.topic_path(&#39;[PROJECT]&#39;, &#39;[TOPIC]&#39;)</span>
 <span class="sd">            &gt;&gt;&gt; data = b&#39;The rain in Wales falls mainly on the snails.&#39;</span>
 <span class="sd">            &gt;&gt;&gt; response = client.publish(topic, data, username=&#39;guido&#39;)</span>
