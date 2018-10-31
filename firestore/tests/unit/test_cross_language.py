@@ -25,23 +25,44 @@ from google.cloud.firestore_v1beta1.proto import firestore_pb2
 from google.cloud.firestore_v1beta1.proto import test_pb2
 from google.cloud.firestore_v1beta1.proto import write_pb2
 
+_MISSING_FEATURES = [
+    # tests having to do with the ArrayUnion, ArrayRemove, and Delete transforms
+    'set-26.textproto',
+    'set-all-transforms.textproto',
+    'set-arrayremove-multi.textproto',
+    'set-arrayremove-nested.textproto',
+    'set-arrayremove-noarray-nested.textproto',
+    'set-arrayremove-noarray.textproto',
+    'set-arrayremove.textproto',
+    'set-arrayunion-multi.textproto',
+    'set-arrayunion-nested.textproto',
+    'set-arrayunion-noarray-nested.textproto',
+    'set-arrayunion-noarray.textproto',
+    'set-arrayunion.textproto',
+    'set-del-merge-alone.textproto',
+    'set-del-merge.textproto',
+    'set-del-mergeall.textproto',
+    'set-del-nomerge.textproto',
+    ]
+
 
 def _load_testproto(filename):
-
     with open(filename, 'r') as tp_file:
         tp_text = tp_file.read()
     test_proto = test_pb2.Test()
     text_format.Merge(tp_text, test_proto)
-
+    shortname = os.path.split(filename)[-1]
     test_proto.description = (
-        test_proto.description + ' (%s)' % os.path.split(filename)[-1]
+        test_proto.description + ' (%s)' % shortname
         )
     return test_proto
 
 
 _ALL_TESTPROTOS = [
     _load_testproto(filename) for filename in sorted(
-        glob.glob('tests/unit/testdata/*.textproto'))]
+        glob.glob('tests/unit/testdata/*.textproto'))
+    if not os.path.split(filename)[-1] in _MISSING_FEATURES
+]
 
 _CREATE_TESTPROTOS = [
     test_proto for test_proto in _ALL_TESTPROTOS
