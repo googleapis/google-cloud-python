@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+#
 # Copyright 2018 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,21 +17,29 @@
 
 import functools
 import pkg_resources
+import warnings
 
+from google.oauth2 import service_account
 import google.api_core.gapic_v1.client_info
 import google.api_core.gapic_v1.config
 import google.api_core.gapic_v1.method
 import google.api_core.grpc_helpers
 import google.api_core.page_iterator
 import google.api_core.path_template
+import grpc
 
 from google.api import monitored_resource_pb2
 from google.cloud.logging_v2.gapic import enums
 from google.cloud.logging_v2.gapic import metrics_service_v2_client_config
+from google.cloud.logging_v2.gapic.transports import metrics_service_v2_grpc_transport
 from google.cloud.logging_v2.proto import log_entry_pb2
 from google.cloud.logging_v2.proto import logging_config_pb2
+from google.cloud.logging_v2.proto import logging_config_pb2_grpc
 from google.cloud.logging_v2.proto import logging_metrics_pb2
+from google.cloud.logging_v2.proto import logging_metrics_pb2_grpc
 from google.cloud.logging_v2.proto import logging_pb2
+from google.cloud.logging_v2.proto import logging_pb2_grpc
+from google.protobuf import empty_pb2
 from google.protobuf import field_mask_pb2
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
@@ -42,19 +52,30 @@ class MetricsServiceV2Client(object):
     SERVICE_ADDRESS = 'logging.googleapis.com:443'
     """The default address of the service."""
 
-    # The scopes needed to make gRPC calls to all of the methods defined in
-    # this service
-    _DEFAULT_SCOPES = (
-        'https://www.googleapis.com/auth/cloud-platform',
-        'https://www.googleapis.com/auth/cloud-platform.read-only',
-        'https://www.googleapis.com/auth/logging.admin',
-        'https://www.googleapis.com/auth/logging.read',
-        'https://www.googleapis.com/auth/logging.write',
-    )
-
-    # The name of the interface for this client. This is the key used to find
-    # method configuration in the client_config dictionary.
+    # The name of the interface for this client. This is the key used to
+    # find the method configuration in the client_config dictionary.
     _INTERFACE_NAME = 'google.logging.v2.MetricsServiceV2'
+
+    @classmethod
+    def from_service_account_file(cls, filename, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials
+        file.
+
+        Args:
+            filename (str): The path to the service account private key json
+                file.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            MetricsServiceV2Client: The constructed client.
+        """
+        credentials = service_account.Credentials.from_service_account_file(
+            filename)
+        kwargs['credentials'] = credentials
+        return cls(*args, **kwargs)
+
+    from_service_account_json = from_service_account_file
 
     @classmethod
     def project_path(cls, project):
@@ -74,6 +95,7 @@ class MetricsServiceV2Client(object):
         )
 
     def __init__(self,
+                 transport=None,
                  channel=None,
                  credentials=None,
                  client_config=metrics_service_v2_client_config.config,
@@ -81,87 +103,83 @@ class MetricsServiceV2Client(object):
         """Constructor.
 
         Args:
-            channel (grpc.Channel): A ``Channel`` instance through
-                which to make calls. This argument is mutually exclusive
+            transport (Union[~.MetricsServiceV2GrpcTransport,
+                    Callable[[~.Credentials, type], ~.MetricsServiceV2GrpcTransport]): A transport
+                instance, responsible for actually making the API calls.
+                The default transport uses the gRPC protocol.
+                This argument may also be a callable which returns a
+                transport instance. Callables will be sent the credentials
+                as the first argument and the default transport class as
+                the second argument.
+            channel (grpc.Channel): DEPRECATED. A ``Channel`` instance
+                through which to make calls. This argument is mutually exclusive
                 with ``credentials``; providing both will raise an exception.
             credentials (google.auth.credentials.Credentials): The
                 authorization credentials to attach to requests. These
                 credentials identify this application to the service. If none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            client_config (dict): A dictionary of call options for each
-                method. If not specified, the default configuration is used.
+                This argument is mutually exclusive with providing a
+                transport instance to ``transport``; doing so will raise
+                an exception.
+            client_config (dict): DEPRECATED. A dictionary of call options for
+                each method. If not specified, the default configuration is used.
             client_info (google.api_core.gapic_v1.client_info.ClientInfo):
                 The client info used to send a user-agent string along with
                 API requests. If ``None``, then default info will be used.
                 Generally, you only need to set this if you're developing
                 your own client library.
         """
-        # If both `channel` and `credentials` are specified, raise an
-        # exception (channels come with credentials baked in already).
-        if channel is not None and credentials is not None:
-            raise ValueError(
-                'The `channel` and `credentials` arguments to {} are mutually '
-                'exclusive.'.format(self.__class__.__name__), )
+        # Raise deprecation warnings for things we want to go away.
+        if client_config:
+            warnings.warn('The `client_config` argument is deprecated.',
+                          PendingDeprecationWarning)
+        if channel:
+            warnings.warn(
+                'The `channel` argument is deprecated; use '
+                '`transport` instead.', PendingDeprecationWarning)
 
-        # Create the channel.
-        if channel is None:
-            channel = google.api_core.grpc_helpers.create_channel(
-                self.SERVICE_ADDRESS,
+        # Instantiate the transport.
+        # The transport is responsible for handling serialization and
+        # deserialization and actually sending data to the service.
+        if transport:
+            if callable(transport):
+                self.transport = transport(
+                    credentials=credentials,
+                    default_class=metrics_service_v2_grpc_transport.
+                    MetricsServiceV2GrpcTransport,
+                )
+            else:
+                if credentials:
+                    raise ValueError(
+                        'Received both a transport instance and '
+                        'credentials; these are mutually exclusive.')
+                self.transport = transport
+        else:
+            self.transport = metrics_service_v2_grpc_transport.MetricsServiceV2GrpcTransport(
+                address=self.SERVICE_ADDRESS,
+                channel=channel,
                 credentials=credentials,
-                scopes=self._DEFAULT_SCOPES,
             )
-
-        # Create the gRPC stubs.
-        self.metrics_service_v2_stub = (
-            logging_metrics_pb2.MetricsServiceV2Stub(channel))
 
         if client_info is None:
             client_info = (
                 google.api_core.gapic_v1.client_info.DEFAULT_CLIENT_INFO)
         client_info.gapic_version = _GAPIC_LIBRARY_VERSION
+        self._client_info = client_info
 
         # Parse out the default settings for retry and timeout for each RPC
         # from the client configuration.
         # (Ordinarily, these are the defaults specified in the `*_config.py`
         # file next to this one.)
-        method_configs = google.api_core.gapic_v1.config.parse_method_configs(
+        self._method_configs = google.api_core.gapic_v1.config.parse_method_configs(
             client_config['interfaces'][self._INTERFACE_NAME], )
 
-        # Write the "inner API call" methods to the class.
-        # These are wrapped versions of the gRPC stub methods, with retry and
-        # timeout configuration applied, called by the public methods on
-        # this class.
-        self._list_log_metrics = google.api_core.gapic_v1.method.wrap_method(
-            self.metrics_service_v2_stub.ListLogMetrics,
-            default_retry=method_configs['ListLogMetrics'].retry,
-            default_timeout=method_configs['ListLogMetrics'].timeout,
-            client_info=client_info,
-        )
-        self._get_log_metric = google.api_core.gapic_v1.method.wrap_method(
-            self.metrics_service_v2_stub.GetLogMetric,
-            default_retry=method_configs['GetLogMetric'].retry,
-            default_timeout=method_configs['GetLogMetric'].timeout,
-            client_info=client_info,
-        )
-        self._create_log_metric = google.api_core.gapic_v1.method.wrap_method(
-            self.metrics_service_v2_stub.CreateLogMetric,
-            default_retry=method_configs['CreateLogMetric'].retry,
-            default_timeout=method_configs['CreateLogMetric'].timeout,
-            client_info=client_info,
-        )
-        self._update_log_metric = google.api_core.gapic_v1.method.wrap_method(
-            self.metrics_service_v2_stub.UpdateLogMetric,
-            default_retry=method_configs['UpdateLogMetric'].retry,
-            default_timeout=method_configs['UpdateLogMetric'].timeout,
-            client_info=client_info,
-        )
-        self._delete_log_metric = google.api_core.gapic_v1.method.wrap_method(
-            self.metrics_service_v2_stub.DeleteLogMetric,
-            default_retry=method_configs['DeleteLogMetric'].retry,
-            default_timeout=method_configs['DeleteLogMetric'].timeout,
-            client_info=client_info,
-        )
+        # Save a dictionary of cached API call functions.
+        # These are the actual callables which invoke the proper
+        # transport methods, wrapped with `wrap_method` to add retry,
+        # timeout, and the like.
+        self._inner_api_calls = {}
 
     # Service calls
     def list_log_metrics(self,
@@ -180,13 +198,15 @@ class MetricsServiceV2Client(object):
             >>>
             >>> parent = client.project_path('[PROJECT]')
             >>>
-            >>>
             >>> # Iterate over all results
             >>> for element in client.list_log_metrics(parent):
             ...     # process element
             ...     pass
             >>>
-            >>> # Or iterate over results one page at a time
+            >>>
+            >>> # Alternatively:
+            >>>
+            >>> # Iterate over results one page at a time
             >>> for page in client.list_log_metrics(parent, options=CallOptions(page_token=INITIAL_PAGE)):
             ...     for element in page:
             ...         # process element
@@ -225,9 +245,17 @@ class MetricsServiceV2Client(object):
                     to a retryable error and retry attempts failed.
             ValueError: If the parameters are invalid.
         """
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
+        # Wrap the transport method to add retry and timeout logic.
+        if 'list_log_metrics' not in self._inner_api_calls:
+            self._inner_api_calls[
+                'list_log_metrics'] = google.api_core.gapic_v1.method.wrap_method(
+                    self.transport.list_log_metrics,
+                    default_retry=self._method_configs['ListLogMetrics'].retry,
+                    default_timeout=self._method_configs['ListLogMetrics'].
+                    timeout,
+                    client_info=self._client_info,
+                )
+
         request = logging_metrics_pb2.ListLogMetricsRequest(
             parent=parent,
             page_size=page_size,
@@ -235,7 +263,7 @@ class MetricsServiceV2Client(object):
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
             method=functools.partial(
-                self._list_log_metrics,
+                self._inner_api_calls['list_log_metrics'],
                 retry=retry,
                 timeout=timeout,
                 metadata=metadata),
@@ -288,12 +316,20 @@ class MetricsServiceV2Client(object):
                     to a retryable error and retry attempts failed.
             ValueError: If the parameters are invalid.
         """
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
+        # Wrap the transport method to add retry and timeout logic.
+        if 'get_log_metric' not in self._inner_api_calls:
+            self._inner_api_calls[
+                'get_log_metric'] = google.api_core.gapic_v1.method.wrap_method(
+                    self.transport.get_log_metric,
+                    default_retry=self._method_configs['GetLogMetric'].retry,
+                    default_timeout=self._method_configs['GetLogMetric'].
+                    timeout,
+                    client_info=self._client_info,
+                )
+
         request = logging_metrics_pb2.GetLogMetricRequest(
             metric_name=metric_name, )
-        return self._get_log_metric(
+        return self._inner_api_calls['get_log_metric'](
             request, retry=retry, timeout=timeout, metadata=metadata)
 
     def create_log_metric(self,
@@ -311,6 +347,8 @@ class MetricsServiceV2Client(object):
             >>> client = logging_v2.MetricsServiceV2Client()
             >>>
             >>> parent = client.project_path('[PROJECT]')
+            >>>
+            >>> # TODO: Initialize ``metric``:
             >>> metric = {}
             >>>
             >>> response = client.create_log_metric(parent, metric)
@@ -346,14 +384,23 @@ class MetricsServiceV2Client(object):
                     to a retryable error and retry attempts failed.
             ValueError: If the parameters are invalid.
         """
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
+        # Wrap the transport method to add retry and timeout logic.
+        if 'create_log_metric' not in self._inner_api_calls:
+            self._inner_api_calls[
+                'create_log_metric'] = google.api_core.gapic_v1.method.wrap_method(
+                    self.transport.create_log_metric,
+                    default_retry=self._method_configs['CreateLogMetric'].
+                    retry,
+                    default_timeout=self._method_configs['CreateLogMetric'].
+                    timeout,
+                    client_info=self._client_info,
+                )
+
         request = logging_metrics_pb2.CreateLogMetricRequest(
             parent=parent,
             metric=metric,
         )
-        return self._create_log_metric(
+        return self._inner_api_calls['create_log_metric'](
             request, retry=retry, timeout=timeout, metadata=metadata)
 
     def update_log_metric(self,
@@ -371,6 +418,8 @@ class MetricsServiceV2Client(object):
             >>> client = logging_v2.MetricsServiceV2Client()
             >>>
             >>> metric_name = client.metric_path('[PROJECT]', '[METRIC]')
+            >>>
+            >>> # TODO: Initialize ``metric``:
             >>> metric = {}
             >>>
             >>> response = client.update_log_metric(metric_name, metric)
@@ -407,14 +456,23 @@ class MetricsServiceV2Client(object):
                     to a retryable error and retry attempts failed.
             ValueError: If the parameters are invalid.
         """
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
+        # Wrap the transport method to add retry and timeout logic.
+        if 'update_log_metric' not in self._inner_api_calls:
+            self._inner_api_calls[
+                'update_log_metric'] = google.api_core.gapic_v1.method.wrap_method(
+                    self.transport.update_log_metric,
+                    default_retry=self._method_configs['UpdateLogMetric'].
+                    retry,
+                    default_timeout=self._method_configs['UpdateLogMetric'].
+                    timeout,
+                    client_info=self._client_info,
+                )
+
         request = logging_metrics_pb2.UpdateLogMetricRequest(
             metric_name=metric_name,
             metric=metric,
         )
-        return self._update_log_metric(
+        return self._inner_api_calls['update_log_metric'](
             request, retry=retry, timeout=timeout, metadata=metadata)
 
     def delete_log_metric(self,
@@ -456,10 +514,19 @@ class MetricsServiceV2Client(object):
                     to a retryable error and retry attempts failed.
             ValueError: If the parameters are invalid.
         """
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
+        # Wrap the transport method to add retry and timeout logic.
+        if 'delete_log_metric' not in self._inner_api_calls:
+            self._inner_api_calls[
+                'delete_log_metric'] = google.api_core.gapic_v1.method.wrap_method(
+                    self.transport.delete_log_metric,
+                    default_retry=self._method_configs['DeleteLogMetric'].
+                    retry,
+                    default_timeout=self._method_configs['DeleteLogMetric'].
+                    timeout,
+                    client_info=self._client_info,
+                )
+
         request = logging_metrics_pb2.DeleteLogMetricRequest(
             metric_name=metric_name, )
-        self._delete_log_metric(
+        self._inner_api_calls['delete_log_metric'](
             request, retry=retry, timeout=timeout, metadata=metadata)
