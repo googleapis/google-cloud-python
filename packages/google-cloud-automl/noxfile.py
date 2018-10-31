@@ -18,13 +18,20 @@ import os
 import nox
 
 
-def default(session):
-  # Install all test dependencies, then install this package in-place.
-  session.install('pytest')
-  session.install('-e', '.')
+LOCAL_DEPS = (
+    os.path.join('..', 'api_core'),
+)
 
-  # Run py.test against the unit tests.
-  session.run('py.test', '--quiet', os.path.join('tests', 'unit'))
+
+def default(session):
+    # Install all test dependencies, then install this package in-place.
+    session.install('pytest')
+    for local_dep in LOCAL_DEPS:
+        session.install('-e', local_dep)
+    session.install('-e', '.')
+
+    # Run py.test against the unit tests.
+    session.run('py.test', '--quiet', os.path.join('tests', 'unit'))
 
 
 @nox.session(python=['2.7', '3.5', '3.6', '3.7'])
