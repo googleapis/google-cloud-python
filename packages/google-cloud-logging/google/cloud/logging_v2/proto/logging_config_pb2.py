@@ -24,10 +24,9 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='google/cloud/logging_v2/proto/logging_config.proto',
   package='google.logging.v2',
   syntax='proto3',
-  serialized_pb=_b('\n2google/cloud/logging_v2/proto/logging_config.proto\x12\x11google.logging.v2\x1a\x1cgoogle/api/annotations.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a google/protobuf/field_mask.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xd7\x02\n\x07LogSink\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x13\n\x0b\x64\x65stination\x18\x03 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x05 \x01(\t\x12G\n\x15output_version_format\x18\x06 \x01(\x0e\x32(.google.logging.v2.LogSink.VersionFormat\x12\x17\n\x0fwriter_identity\x18\x08 \x01(\t\x12\x18\n\x10include_children\x18\t \x01(\x08\x12.\n\nstart_time\x18\n \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12,\n\x08\x65nd_time\x18\x0b \x01(\x0b\x32\x1a.google.protobuf.Timestamp\"?\n\rVersionFormat\x12\x1e\n\x1aVERSION_FORMAT_UNSPECIFIED\x10\x00\x12\x06\n\x02V2\x10\x01\x12\x06\n\x02V1\x10\x02\"I\n\x10ListSinksRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x12\n\npage_token\x18\x02 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05\"W\n\x11ListSinksResponse\x12)\n\x05sinks\x18\x01 \x03(\x0b\x32\x1a.google.logging.v2.LogSink\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\"#\n\x0eGetSinkRequest\x12\x11\n\tsink_name\x18\x01 \x01(\t\"m\n\x11\x43reateSinkRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12(\n\x04sink\x18\x02 \x01(\x0b\x32\x1a.google.logging.v2.LogSink\x12\x1e\n\x16unique_writer_identity\x18\x03 \x01(\x08\"\xa1\x01\n\x11UpdateSinkRequest\x12\x11\n\tsink_name\x18\x01 \x01(\t\x12(\n\x04sink\x18\x02 \x01(\x0b\x32\x1a.google.logging.v2.LogSink\x12\x1e\n\x16unique_writer_identity\x18\x03 \x01(\x08\x12/\n\x0bupdate_mask\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.FieldMask\"&\n\x11\x44\x65leteSinkRequest\x12\x11\n\tsink_name\x18\x01 \x01(\t\"S\n\x0cLogExclusion\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x02 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x03 \x01(\t\x12\x10\n\x08\x64isabled\x18\x04 \x01(\x08\"N\n\x15ListExclusionsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x12\n\npage_token\x18\x02 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05\"f\n\x16ListExclusionsResponse\x12\x33\n\nexclusions\x18\x01 \x03(\x0b\x32\x1f.google.logging.v2.LogExclusion\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\"#\n\x13GetExclusionRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"\\\n\x16\x43reateExclusionRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x32\n\texclusion\x18\x02 \x01(\x0b\x32\x1f.google.logging.v2.LogExclusion\"\x8b\x01\n\x16UpdateExclusionRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x32\n\texclusion\x18\x02 \x01(\x0b\x32\x1f.google.logging.v2.LogExclusion\x12/\n\x0bupdate_mask\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.FieldMask\"&\n\x16\x44\x65leteExclusionRequest\x12\x0c\n\x04name\x18\x01 \x01(\t2\x80\n\n\x0f\x43onfigServiceV2\x12v\n\tListSinks\x12#.google.logging.v2.ListSinksRequest\x1a$.google.logging.v2.ListSinksResponse\"\x1e\x82\xd3\xe4\x93\x02\x18\x12\x16/v2/{parent=*/*}/sinks\x12m\n\x07GetSink\x12!.google.logging.v2.GetSinkRequest\x1a\x1a.google.logging.v2.LogSink\"#\x82\xd3\xe4\x93\x02\x1d\x12\x1b/v2/{sink_name=*/*/sinks/*}\x12t\n\nCreateSink\x12$.google.logging.v2.CreateSinkRequest\x1a\x1a.google.logging.v2.LogSink\"$\x82\xd3\xe4\x93\x02\x1e\"\x16/v2/{parent=*/*}/sinks:\x04sink\x12y\n\nUpdateSink\x12$.google.logging.v2.UpdateSinkRequest\x1a\x1a.google.logging.v2.LogSink\")\x82\xd3\xe4\x93\x02#\x1a\x1b/v2/{sink_name=*/*/sinks/*}:\x04sink\x12o\n\nDeleteSink\x12$.google.logging.v2.DeleteSinkRequest\x1a\x16.google.protobuf.Empty\"#\x82\xd3\xe4\x93\x02\x1d*\x1b/v2/{sink_name=*/*/sinks/*}\x12\x8a\x01\n\x0eListExclusions\x12(.google.logging.v2.ListExclusionsRequest\x1a).google.logging.v2.ListExclusionsResponse\"#\x82\xd3\xe4\x93\x02\x1d\x12\x1b/v2/{parent=*/*}/exclusions\x12|\n\x0cGetExclusion\x12&.google.logging.v2.GetExclusionRequest\x1a\x1f.google.logging.v2.LogExclusion\"#\x82\xd3\xe4\x93\x02\x1d\x12\x1b/v2/{name=*/*/exclusions/*}\x12\x8d\x01\n\x0f\x43reateExclusion\x12).google.logging.v2.CreateExclusionRequest\x1a\x1f.google.logging.v2.LogExclusion\".\x82\xd3\xe4\x93\x02(\"\x1b/v2/{parent=*/*}/exclusions:\texclusion\x12\x8d\x01\n\x0fUpdateExclusion\x12).google.logging.v2.UpdateExclusionRequest\x1a\x1f.google.logging.v2.LogExclusion\".\x82\xd3\xe4\x93\x02(2\x1b/v2/{name=*/*/exclusions/*}:\texclusion\x12y\n\x0f\x44\x65leteExclusion\x12).google.logging.v2.DeleteExclusionRequest\x1a\x16.google.protobuf.Empty\"#\x82\xd3\xe4\x93\x02\x1d*\x1b/v2/{name=*/*/exclusions/*}B\x9e\x01\n\x15\x63om.google.logging.v2B\x12LoggingConfigProtoP\x01Z8google.golang.org/genproto/googleapis/logging/v2;logging\xf8\x01\x01\xaa\x02\x17Google.Cloud.Logging.V2\xca\x02\x17Google\\Cloud\\Logging\\V2b\x06proto3')
+  serialized_pb=_b('\n2google/cloud/logging_v2/proto/logging_config.proto\x12\x11google.logging.v2\x1a\x1cgoogle/api/annotations.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a google/protobuf/field_mask.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xe3\x02\n\x07LogSink\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x13\n\x0b\x64\x65stination\x18\x03 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x05 \x01(\t\x12K\n\x15output_version_format\x18\x06 \x01(\x0e\x32(.google.logging.v2.LogSink.VersionFormatB\x02\x18\x01\x12\x17\n\x0fwriter_identity\x18\x08 \x01(\t\x12\x18\n\x10include_children\x18\t \x01(\x08\x12\x32\n\nstart_time\x18\n \x01(\x0b\x32\x1a.google.protobuf.TimestampB\x02\x18\x01\x12\x30\n\x08\x65nd_time\x18\x0b \x01(\x0b\x32\x1a.google.protobuf.TimestampB\x02\x18\x01\"?\n\rVersionFormat\x12\x1e\n\x1aVERSION_FORMAT_UNSPECIFIED\x10\x00\x12\x06\n\x02V2\x10\x01\x12\x06\n\x02V1\x10\x02\"I\n\x10ListSinksRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x12\n\npage_token\x18\x02 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05\"W\n\x11ListSinksResponse\x12)\n\x05sinks\x18\x01 \x03(\x0b\x32\x1a.google.logging.v2.LogSink\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\"#\n\x0eGetSinkRequest\x12\x11\n\tsink_name\x18\x01 \x01(\t\"m\n\x11\x43reateSinkRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12(\n\x04sink\x18\x02 \x01(\x0b\x32\x1a.google.logging.v2.LogSink\x12\x1e\n\x16unique_writer_identity\x18\x03 \x01(\x08\"\xa1\x01\n\x11UpdateSinkRequest\x12\x11\n\tsink_name\x18\x01 \x01(\t\x12(\n\x04sink\x18\x02 \x01(\x0b\x32\x1a.google.logging.v2.LogSink\x12\x1e\n\x16unique_writer_identity\x18\x03 \x01(\x08\x12/\n\x0bupdate_mask\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.FieldMask\"&\n\x11\x44\x65leteSinkRequest\x12\x11\n\tsink_name\x18\x01 \x01(\t\"S\n\x0cLogExclusion\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x02 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x03 \x01(\t\x12\x10\n\x08\x64isabled\x18\x04 \x01(\x08\"N\n\x15ListExclusionsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x12\n\npage_token\x18\x02 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05\"f\n\x16ListExclusionsResponse\x12\x33\n\nexclusions\x18\x01 \x03(\x0b\x32\x1f.google.logging.v2.LogExclusion\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\"#\n\x13GetExclusionRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"\\\n\x16\x43reateExclusionRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x32\n\texclusion\x18\x02 \x01(\x0b\x32\x1f.google.logging.v2.LogExclusion\"\x8b\x01\n\x16UpdateExclusionRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x32\n\texclusion\x18\x02 \x01(\x0b\x32\x1f.google.logging.v2.LogExclusion\x12/\n\x0bupdate_mask\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.FieldMask\"&\n\x16\x44\x65leteExclusionRequest\x12\x0c\n\x04name\x18\x01 \x01(\t2\x94\x19\n\x0f\x43onfigServiceV2\x12\x87\x02\n\tListSinks\x12#.google.logging.v2.ListSinksRequest\x1a$.google.logging.v2.ListSinksResponse\"\xae\x01\x82\xd3\xe4\x93\x02\xa7\x01\x12\x16/v2/{parent=*/*}/sinksZ\x1f\x12\x1d/v2/{parent=projects/*}/sinksZ$\x12\"/v2/{parent=organizations/*}/sinksZ\x1e\x12\x1c/v2/{parent=folders/*}/sinksZ&\x12$/v2/{parent=billingAccounts/*}/sinks\x12\x92\x02\n\x07GetSink\x12!.google.logging.v2.GetSinkRequest\x1a\x1a.google.logging.v2.LogSink\"\xc7\x01\x82\xd3\xe4\x93\x02\xc0\x01\x12\x1b/v2/{sink_name=*/*/sinks/*}Z$\x12\"/v2/{sink_name=projects/*/sinks/*}Z)\x12\'/v2/{sink_name=organizations/*/sinks/*}Z#\x12!/v2/{sink_name=folders/*/sinks/*}Z+\x12)/v2/{sink_name=billingAccounts/*/sinks/*}\x12\x9d\x02\n\nCreateSink\x12$.google.logging.v2.CreateSinkRequest\x1a\x1a.google.logging.v2.LogSink\"\xcc\x01\x82\xd3\xe4\x93\x02\xc5\x01\"\x16/v2/{parent=*/*}/sinks:\x04sinkZ%\"\x1d/v2/{parent=projects/*}/sinks:\x04sinkZ*\"\"/v2/{parent=organizations/*}/sinks:\x04sinkZ$\"\x1c/v2/{parent=folders/*}/sinks:\x04sinkZ,\"$/v2/{parent=billingAccounts/*}/sinks:\x04sink\x12\xf1\x03\n\nUpdateSink\x12$.google.logging.v2.UpdateSinkRequest\x1a\x1a.google.logging.v2.LogSink\"\xa0\x03\x82\xd3\xe4\x93\x02\x99\x03\x1a\x1b/v2/{sink_name=*/*/sinks/*}:\x04sinkZ*\x1a\"/v2/{sink_name=projects/*/sinks/*}:\x04sinkZ/\x1a\'/v2/{sink_name=organizations/*/sinks/*}:\x04sinkZ)\x1a!/v2/{sink_name=folders/*/sinks/*}:\x04sinkZ1\x1a)/v2/{sink_name=billingAccounts/*/sinks/*}:\x04sinkZ*2\"/v2/{sink_name=projects/*/sinks/*}:\x04sinkZ/2\'/v2/{sink_name=organizations/*/sinks/*}:\x04sinkZ)2!/v2/{sink_name=folders/*/sinks/*}:\x04sinkZ12)/v2/{sink_name=billingAccounts/*/sinks/*}:\x04sink\x12\x94\x02\n\nDeleteSink\x12$.google.logging.v2.DeleteSinkRequest\x1a\x16.google.protobuf.Empty\"\xc7\x01\x82\xd3\xe4\x93\x02\xc0\x01*\x1b/v2/{sink_name=*/*/sinks/*}Z$*\"/v2/{sink_name=projects/*/sinks/*}Z)*\'/v2/{sink_name=organizations/*/sinks/*}Z#*!/v2/{sink_name=folders/*/sinks/*}Z+*)/v2/{sink_name=billingAccounts/*/sinks/*}\x12\xaf\x02\n\x0eListExclusions\x12(.google.logging.v2.ListExclusionsRequest\x1a).google.logging.v2.ListExclusionsResponse\"\xc7\x01\x82\xd3\xe4\x93\x02\xc0\x01\x12\x1b/v2/{parent=*/*}/exclusionsZ$\x12\"/v2/{parent=projects/*}/exclusionsZ)\x12\'/v2/{parent=organizations/*}/exclusionsZ#\x12!/v2/{parent=folders/*}/exclusionsZ+\x12)/v2/{parent=billingAccounts/*}/exclusions\x12\xa1\x02\n\x0cGetExclusion\x12&.google.logging.v2.GetExclusionRequest\x1a\x1f.google.logging.v2.LogExclusion\"\xc7\x01\x82\xd3\xe4\x93\x02\xc0\x01\x12\x1b/v2/{name=*/*/exclusions/*}Z$\x12\"/v2/{name=projects/*/exclusions/*}Z)\x12\'/v2/{name=organizations/*/exclusions/*}Z#\x12!/v2/{name=folders/*/exclusions/*}Z+\x12)/v2/{name=billingAccounts/*/exclusions/*}\x12\xde\x02\n\x0f\x43reateExclusion\x12).google.logging.v2.CreateExclusionRequest\x1a\x1f.google.logging.v2.LogExclusion\"\xfe\x01\x82\xd3\xe4\x93\x02\xf7\x01\"\x1b/v2/{parent=*/*}/exclusions:\texclusionZ/\"\"/v2/{parent=projects/*}/exclusions:\texclusionZ4\"\'/v2/{parent=organizations/*}/exclusions:\texclusionZ.\"!/v2/{parent=folders/*}/exclusions:\texclusionZ6\")/v2/{parent=billingAccounts/*}/exclusions:\texclusion\x12\xde\x02\n\x0fUpdateExclusion\x12).google.logging.v2.UpdateExclusionRequest\x1a\x1f.google.logging.v2.LogExclusion\"\xfe\x01\x82\xd3\xe4\x93\x02\xf7\x01\x32\x1b/v2/{name=*/*/exclusions/*}:\texclusionZ/2\"/v2/{name=projects/*/exclusions/*}:\texclusionZ42\'/v2/{name=organizations/*/exclusions/*}:\texclusionZ.2!/v2/{name=folders/*/exclusions/*}:\texclusionZ62)/v2/{name=billingAccounts/*/exclusions/*}:\texclusion\x12\x9e\x02\n\x0f\x44\x65leteExclusion\x12).google.logging.v2.DeleteExclusionRequest\x1a\x16.google.protobuf.Empty\"\xc7\x01\x82\xd3\xe4\x93\x02\xc0\x01*\x1b/v2/{name=*/*/exclusions/*}Z$*\"/v2/{name=projects/*/exclusions/*}Z)*\'/v2/{name=organizations/*/exclusions/*}Z#*!/v2/{name=folders/*/exclusions/*}Z+*)/v2/{name=billingAccounts/*/exclusions/*}B\x9e\x01\n\x15\x63om.google.logging.v2B\x12LoggingConfigProtoP\x01Z8google.golang.org/genproto/googleapis/logging/v2;logging\xf8\x01\x01\xaa\x02\x17Google.Cloud.Logging.V2\xca\x02\x17Google\\Cloud\\Logging\\V2b\x06proto3')
   ,
   dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR,google_dot_protobuf_dot_empty__pb2.DESCRIPTOR,google_dot_protobuf_dot_field__mask__pb2.DESCRIPTOR,google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,])
-_sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 
 
@@ -52,8 +51,8 @@ _LOGSINK_VERSIONFORMAT = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=480,
-  serialized_end=543,
+  serialized_start=492,
+  serialized_end=555,
 )
 _sym_db.RegisterEnumDescriptor(_LOGSINK_VERSIONFORMAT)
 
@@ -71,56 +70,56 @@ _LOGSINK = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='destination', full_name='google.logging.v2.LogSink.destination', index=1,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='filter', full_name='google.logging.v2.LogSink.filter', index=2,
       number=5, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='output_version_format', full_name='google.logging.v2.LogSink.output_version_format', index=3,
       number=6, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=_descriptor._ParseOptions(descriptor_pb2.FieldOptions(), _b('\030\001')), file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='writer_identity', full_name='google.logging.v2.LogSink.writer_identity', index=4,
       number=8, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='include_children', full_name='google.logging.v2.LogSink.include_children', index=5,
       number=9, type=8, cpp_type=7, label=1,
       has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='start_time', full_name='google.logging.v2.LogSink.start_time', index=6,
       number=10, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=_descriptor._ParseOptions(descriptor_pb2.FieldOptions(), _b('\030\001')), file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='end_time', full_name='google.logging.v2.LogSink.end_time', index=7,
       number=11, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=_descriptor._ParseOptions(descriptor_pb2.FieldOptions(), _b('\030\001')), file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -135,7 +134,7 @@ _LOGSINK = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=200,
-  serialized_end=543,
+  serialized_end=555,
 )
 
 
@@ -152,21 +151,21 @@ _LISTSINKSREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='page_token', full_name='google.logging.v2.ListSinksRequest.page_token', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='page_size', full_name='google.logging.v2.ListSinksRequest.page_size', index=2,
       number=3, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -179,8 +178,8 @@ _LISTSINKSREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=545,
-  serialized_end=618,
+  serialized_start=557,
+  serialized_end=630,
 )
 
 
@@ -197,14 +196,14 @@ _LISTSINKSRESPONSE = _descriptor.Descriptor(
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='next_page_token', full_name='google.logging.v2.ListSinksResponse.next_page_token', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -217,8 +216,8 @@ _LISTSINKSRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=620,
-  serialized_end=707,
+  serialized_start=632,
+  serialized_end=719,
 )
 
 
@@ -235,7 +234,7 @@ _GETSINKREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -248,8 +247,8 @@ _GETSINKREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=709,
-  serialized_end=744,
+  serialized_start=721,
+  serialized_end=756,
 )
 
 
@@ -266,21 +265,21 @@ _CREATESINKREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='sink', full_name='google.logging.v2.CreateSinkRequest.sink', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='unique_writer_identity', full_name='google.logging.v2.CreateSinkRequest.unique_writer_identity', index=2,
       number=3, type=8, cpp_type=7, label=1,
       has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -293,8 +292,8 @@ _CREATESINKREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=746,
-  serialized_end=855,
+  serialized_start=758,
+  serialized_end=867,
 )
 
 
@@ -311,28 +310,28 @@ _UPDATESINKREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='sink', full_name='google.logging.v2.UpdateSinkRequest.sink', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='unique_writer_identity', full_name='google.logging.v2.UpdateSinkRequest.unique_writer_identity', index=2,
       number=3, type=8, cpp_type=7, label=1,
       has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='update_mask', full_name='google.logging.v2.UpdateSinkRequest.update_mask', index=3,
       number=4, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -345,8 +344,8 @@ _UPDATESINKREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=858,
-  serialized_end=1019,
+  serialized_start=870,
+  serialized_end=1031,
 )
 
 
@@ -363,7 +362,7 @@ _DELETESINKREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -376,8 +375,8 @@ _DELETESINKREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1021,
-  serialized_end=1059,
+  serialized_start=1033,
+  serialized_end=1071,
 )
 
 
@@ -394,28 +393,28 @@ _LOGEXCLUSION = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='description', full_name='google.logging.v2.LogExclusion.description', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='filter', full_name='google.logging.v2.LogExclusion.filter', index=2,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='disabled', full_name='google.logging.v2.LogExclusion.disabled', index=3,
       number=4, type=8, cpp_type=7, label=1,
       has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -428,8 +427,8 @@ _LOGEXCLUSION = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1061,
-  serialized_end=1144,
+  serialized_start=1073,
+  serialized_end=1156,
 )
 
 
@@ -446,21 +445,21 @@ _LISTEXCLUSIONSREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='page_token', full_name='google.logging.v2.ListExclusionsRequest.page_token', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='page_size', full_name='google.logging.v2.ListExclusionsRequest.page_size', index=2,
       number=3, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -473,8 +472,8 @@ _LISTEXCLUSIONSREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1146,
-  serialized_end=1224,
+  serialized_start=1158,
+  serialized_end=1236,
 )
 
 
@@ -491,14 +490,14 @@ _LISTEXCLUSIONSRESPONSE = _descriptor.Descriptor(
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='next_page_token', full_name='google.logging.v2.ListExclusionsResponse.next_page_token', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -511,8 +510,8 @@ _LISTEXCLUSIONSRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1226,
-  serialized_end=1328,
+  serialized_start=1238,
+  serialized_end=1340,
 )
 
 
@@ -529,7 +528,7 @@ _GETEXCLUSIONREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -542,8 +541,8 @@ _GETEXCLUSIONREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1330,
-  serialized_end=1365,
+  serialized_start=1342,
+  serialized_end=1377,
 )
 
 
@@ -560,14 +559,14 @@ _CREATEEXCLUSIONREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='exclusion', full_name='google.logging.v2.CreateExclusionRequest.exclusion', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -580,8 +579,8 @@ _CREATEEXCLUSIONREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1367,
-  serialized_end=1459,
+  serialized_start=1379,
+  serialized_end=1471,
 )
 
 
@@ -598,21 +597,21 @@ _UPDATEEXCLUSIONREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='exclusion', full_name='google.logging.v2.UpdateExclusionRequest.exclusion', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='update_mask', full_name='google.logging.v2.UpdateExclusionRequest.update_mask', index=2,
       number=3, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -625,8 +624,8 @@ _UPDATEEXCLUSIONREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1462,
-  serialized_end=1601,
+  serialized_start=1474,
+  serialized_end=1613,
 )
 
 
@@ -643,7 +642,7 @@ _DELETEEXCLUSIONREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -656,8 +655,8 @@ _DELETEEXCLUSIONREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1603,
-  serialized_end=1641,
+  serialized_start=1615,
+  serialized_end=1653,
 )
 
 _LOGSINK.fields_by_name['output_version_format'].enum_type = _LOGSINK_VERSIONFORMAT
@@ -686,6 +685,7 @@ DESCRIPTOR.message_types_by_name['GetExclusionRequest'] = _GETEXCLUSIONREQUEST
 DESCRIPTOR.message_types_by_name['CreateExclusionRequest'] = _CREATEEXCLUSIONREQUEST
 DESCRIPTOR.message_types_by_name['UpdateExclusionRequest'] = _UPDATEEXCLUSIONREQUEST
 DESCRIPTOR.message_types_by_name['DeleteExclusionRequest'] = _DELETEEXCLUSIONREQUEST
+_sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 LogSink = _reflection.GeneratedProtocolMessageType('LogSink', (_message.Message,), dict(
   DESCRIPTOR = _LOGSINK,
@@ -727,8 +727,8 @@ LogSink = _reflection.GeneratedProtocolMessageType('LogSink', (_message.Message,
           cannot be changed.
       writer_identity:
           Output only. An IAM identity—a service account or group—under
-          which Stackdriver Logging writes the exported log entries to
-          the sink's destination. This field is set by `sinks.create
+          which Logging writes the exported log entries to the sink's
+          destination. This field is set by `sinks.create
           </logging/docs/api/reference/rest/v2/projects.sinks/create>`__
           and `sinks.update </logging/docs/api/reference/rest/v2/project
           s.sinks/update>`__, based on the setting of
@@ -857,14 +857,14 @@ CreateSinkRequest = _reflection.GeneratedProtocolMessageType('CreateSinkRequest'
           ``writer_identity`` in the new sink. If this value is omitted
           or set to false, and if the sink's parent is a project, then
           the value returned as ``writer_identity`` is the same group or
-          service account used by Stackdriver Logging before the
-          addition of writer identities to this API. The sink's
-          destination must be in the same project as the sink itself.
-          If this field is set to true, or if the sink is owned by a
-          non-project resource such as an organization, then the value
-          of ``writer_identity`` will be a unique service account used
-          only for exports from the new sink. For more information, see
-          ``writer_identity`` in [LogSink][google.logging.v2.LogSink].
+          service account used by Logging before the addition of writer
+          identities to this API. The sink's destination must be in the
+          same project as the sink itself.  If this field is set to
+          true, or if the sink is owned by a non-project resource such
+          as an organization, then the value of ``writer_identity`` will
+          be a unique service account used only for exports from the new
+          sink. For more information, see ``writer_identity`` in
+          [LogSink][google.logging.v2.LogSink].
   """,
   # @@protoc_insertion_point(class_scope:google.logging.v2.CreateSinkRequest)
   ))
@@ -912,8 +912,8 @@ UpdateSinkRequest = _reflection.GeneratedProtocolMessageType('UpdateSinkRequest'
           some point in the future, behavior will be removed and
           specifying an empty updateMask will be an error.  For a
           detailed ``FieldMask`` definition, see
-          https://developers.google.com/protocol-
-          buffers/docs/reference/google.protobuf#fieldmask  Example:
+          https://developers.google.com/protocol-buffers/docs/reference/
+          google.protobuf#google.protobuf.FieldMask  Example:
           ``updateMask=filter``.
   """,
   # @@protoc_insertion_point(class_scope:google.logging.v2.UpdateSinkRequest)
@@ -945,12 +945,12 @@ LogExclusion = _reflection.GeneratedProtocolMessageType('LogExclusion', (_messag
   DESCRIPTOR = _LOGEXCLUSION,
   __module__ = 'google.cloud.logging_v2.proto.logging_config_pb2'
   ,
-  __doc__ = """Specifies a set of log entries that are not to be stored in Stackdriver
-  Logging. If your project receives a large volume of logs, you might be
-  able to use exclusions to reduce your chargeable logs. Exclusions are
-  processed after log sinks, so you can export log entries before they are
-  excluded. Audit log entries and log entries from Amazon Web Services are
-  never excluded.
+  __doc__ = """Specifies a set of log entries that are not to be stored in Logging. If
+  your project receives a large volume of logs, you might be able to use
+  exclusions to reduce your chargeable logs. Exclusions are processed
+  after log sinks, so you can export log entries before they are excluded.
+  Audit log entries and log entries from Amazon Web Services are never
+  excluded.
   
   
   Attributes:
@@ -968,15 +968,14 @@ LogExclusion = _reflection.GeneratedProtocolMessageType('LogExclusion', (_messag
           </logging/docs/view/advanced_filters#sample>`__, you can
           exclude less than 100% of the matching log entries. For
           example, the following filter matches 99% of low-severity log
-          entries from load balancers:  ::
-          "resource.type=http_load_balancer severity<ERROR
-          sample(insertId, 0.99)"
+          entries from load balancers:
+          ``"resource.type=http_load_balancer severity<ERROR
+          sample(insertId, 0.99)"``
       disabled:
           Optional. If set to True, then this exclusion is disabled and
           it does not exclude any log entries. You can use
-          `exclusions.patch </logging/docs/alpha-exclusion/docs/referenc
-          e/v2/rest/v2/projects.exclusions/patch>`__ to change the value
-          of this field.
+          `exclusions.patch </logging/docs/reference/v2/rest/v2/projects
+          .exclusions/patch>`__ to change the value of this field.
   """,
   # @@protoc_insertion_point(class_scope:google.logging.v2.LogExclusion)
   ))
@@ -1135,442 +1134,115 @@ _sym_db.RegisterMessage(DeleteExclusionRequest)
 
 DESCRIPTOR.has_options = True
 DESCRIPTOR._options = _descriptor._ParseOptions(descriptor_pb2.FileOptions(), _b('\n\025com.google.logging.v2B\022LoggingConfigProtoP\001Z8google.golang.org/genproto/googleapis/logging/v2;logging\370\001\001\252\002\027Google.Cloud.Logging.V2\312\002\027Google\\Cloud\\Logging\\V2'))
-try:
-  # THESE ELEMENTS WILL BE DEPRECATED.
-  # Please use the generated *_pb2_grpc.py files instead.
-  import grpc
-  from grpc.beta import implementations as beta_implementations
-  from grpc.beta import interfaces as beta_interfaces
-  from grpc.framework.common import cardinality
-  from grpc.framework.interfaces.face import utilities as face_utilities
+_LOGSINK.fields_by_name['output_version_format'].has_options = True
+_LOGSINK.fields_by_name['output_version_format']._options = _descriptor._ParseOptions(descriptor_pb2.FieldOptions(), _b('\030\001'))
+_LOGSINK.fields_by_name['start_time'].has_options = True
+_LOGSINK.fields_by_name['start_time']._options = _descriptor._ParseOptions(descriptor_pb2.FieldOptions(), _b('\030\001'))
+_LOGSINK.fields_by_name['end_time'].has_options = True
+_LOGSINK.fields_by_name['end_time']._options = _descriptor._ParseOptions(descriptor_pb2.FieldOptions(), _b('\030\001'))
 
+_CONFIGSERVICEV2 = _descriptor.ServiceDescriptor(
+  name='ConfigServiceV2',
+  full_name='google.logging.v2.ConfigServiceV2',
+  file=DESCRIPTOR,
+  index=0,
+  options=None,
+  serialized_start=1656,
+  serialized_end=4876,
+  methods=[
+  _descriptor.MethodDescriptor(
+    name='ListSinks',
+    full_name='google.logging.v2.ConfigServiceV2.ListSinks',
+    index=0,
+    containing_service=None,
+    input_type=_LISTSINKSREQUEST,
+    output_type=_LISTSINKSRESPONSE,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002\247\001\022\026/v2/{parent=*/*}/sinksZ\037\022\035/v2/{parent=projects/*}/sinksZ$\022\"/v2/{parent=organizations/*}/sinksZ\036\022\034/v2/{parent=folders/*}/sinksZ&\022$/v2/{parent=billingAccounts/*}/sinks')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='GetSink',
+    full_name='google.logging.v2.ConfigServiceV2.GetSink',
+    index=1,
+    containing_service=None,
+    input_type=_GETSINKREQUEST,
+    output_type=_LOGSINK,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002\300\001\022\033/v2/{sink_name=*/*/sinks/*}Z$\022\"/v2/{sink_name=projects/*/sinks/*}Z)\022\'/v2/{sink_name=organizations/*/sinks/*}Z#\022!/v2/{sink_name=folders/*/sinks/*}Z+\022)/v2/{sink_name=billingAccounts/*/sinks/*}')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='CreateSink',
+    full_name='google.logging.v2.ConfigServiceV2.CreateSink',
+    index=2,
+    containing_service=None,
+    input_type=_CREATESINKREQUEST,
+    output_type=_LOGSINK,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002\305\001\"\026/v2/{parent=*/*}/sinks:\004sinkZ%\"\035/v2/{parent=projects/*}/sinks:\004sinkZ*\"\"/v2/{parent=organizations/*}/sinks:\004sinkZ$\"\034/v2/{parent=folders/*}/sinks:\004sinkZ,\"$/v2/{parent=billingAccounts/*}/sinks:\004sink')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='UpdateSink',
+    full_name='google.logging.v2.ConfigServiceV2.UpdateSink',
+    index=3,
+    containing_service=None,
+    input_type=_UPDATESINKREQUEST,
+    output_type=_LOGSINK,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002\231\003\032\033/v2/{sink_name=*/*/sinks/*}:\004sinkZ*\032\"/v2/{sink_name=projects/*/sinks/*}:\004sinkZ/\032\'/v2/{sink_name=organizations/*/sinks/*}:\004sinkZ)\032!/v2/{sink_name=folders/*/sinks/*}:\004sinkZ1\032)/v2/{sink_name=billingAccounts/*/sinks/*}:\004sinkZ*2\"/v2/{sink_name=projects/*/sinks/*}:\004sinkZ/2\'/v2/{sink_name=organizations/*/sinks/*}:\004sinkZ)2!/v2/{sink_name=folders/*/sinks/*}:\004sinkZ12)/v2/{sink_name=billingAccounts/*/sinks/*}:\004sink')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='DeleteSink',
+    full_name='google.logging.v2.ConfigServiceV2.DeleteSink',
+    index=4,
+    containing_service=None,
+    input_type=_DELETESINKREQUEST,
+    output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002\300\001*\033/v2/{sink_name=*/*/sinks/*}Z$*\"/v2/{sink_name=projects/*/sinks/*}Z)*\'/v2/{sink_name=organizations/*/sinks/*}Z#*!/v2/{sink_name=folders/*/sinks/*}Z+*)/v2/{sink_name=billingAccounts/*/sinks/*}')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='ListExclusions',
+    full_name='google.logging.v2.ConfigServiceV2.ListExclusions',
+    index=5,
+    containing_service=None,
+    input_type=_LISTEXCLUSIONSREQUEST,
+    output_type=_LISTEXCLUSIONSRESPONSE,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002\300\001\022\033/v2/{parent=*/*}/exclusionsZ$\022\"/v2/{parent=projects/*}/exclusionsZ)\022\'/v2/{parent=organizations/*}/exclusionsZ#\022!/v2/{parent=folders/*}/exclusionsZ+\022)/v2/{parent=billingAccounts/*}/exclusions')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='GetExclusion',
+    full_name='google.logging.v2.ConfigServiceV2.GetExclusion',
+    index=6,
+    containing_service=None,
+    input_type=_GETEXCLUSIONREQUEST,
+    output_type=_LOGEXCLUSION,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002\300\001\022\033/v2/{name=*/*/exclusions/*}Z$\022\"/v2/{name=projects/*/exclusions/*}Z)\022\'/v2/{name=organizations/*/exclusions/*}Z#\022!/v2/{name=folders/*/exclusions/*}Z+\022)/v2/{name=billingAccounts/*/exclusions/*}')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='CreateExclusion',
+    full_name='google.logging.v2.ConfigServiceV2.CreateExclusion',
+    index=7,
+    containing_service=None,
+    input_type=_CREATEEXCLUSIONREQUEST,
+    output_type=_LOGEXCLUSION,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002\367\001\"\033/v2/{parent=*/*}/exclusions:\texclusionZ/\"\"/v2/{parent=projects/*}/exclusions:\texclusionZ4\"\'/v2/{parent=organizations/*}/exclusions:\texclusionZ.\"!/v2/{parent=folders/*}/exclusions:\texclusionZ6\")/v2/{parent=billingAccounts/*}/exclusions:\texclusion')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='UpdateExclusion',
+    full_name='google.logging.v2.ConfigServiceV2.UpdateExclusion',
+    index=8,
+    containing_service=None,
+    input_type=_UPDATEEXCLUSIONREQUEST,
+    output_type=_LOGEXCLUSION,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002\367\0012\033/v2/{name=*/*/exclusions/*}:\texclusionZ/2\"/v2/{name=projects/*/exclusions/*}:\texclusionZ42\'/v2/{name=organizations/*/exclusions/*}:\texclusionZ.2!/v2/{name=folders/*/exclusions/*}:\texclusionZ62)/v2/{name=billingAccounts/*/exclusions/*}:\texclusion')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='DeleteExclusion',
+    full_name='google.logging.v2.ConfigServiceV2.DeleteExclusion',
+    index=9,
+    containing_service=None,
+    input_type=_DELETEEXCLUSIONREQUEST,
+    output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002\300\001*\033/v2/{name=*/*/exclusions/*}Z$*\"/v2/{name=projects/*/exclusions/*}Z)*\'/v2/{name=organizations/*/exclusions/*}Z#*!/v2/{name=folders/*/exclusions/*}Z+*)/v2/{name=billingAccounts/*/exclusions/*}')),
+  ),
+])
+_sym_db.RegisterServiceDescriptor(_CONFIGSERVICEV2)
 
-  class ConfigServiceV2Stub(object):
-    """Service for configuring sinks used to export log entries outside of
-    Stackdriver Logging.
-    """
+DESCRIPTOR.services_by_name['ConfigServiceV2'] = _CONFIGSERVICEV2
 
-    def __init__(self, channel):
-      """Constructor.
-
-      Args:
-        channel: A grpc.Channel.
-      """
-      self.ListSinks = channel.unary_unary(
-          '/google.logging.v2.ConfigServiceV2/ListSinks',
-          request_serializer=ListSinksRequest.SerializeToString,
-          response_deserializer=ListSinksResponse.FromString,
-          )
-      self.GetSink = channel.unary_unary(
-          '/google.logging.v2.ConfigServiceV2/GetSink',
-          request_serializer=GetSinkRequest.SerializeToString,
-          response_deserializer=LogSink.FromString,
-          )
-      self.CreateSink = channel.unary_unary(
-          '/google.logging.v2.ConfigServiceV2/CreateSink',
-          request_serializer=CreateSinkRequest.SerializeToString,
-          response_deserializer=LogSink.FromString,
-          )
-      self.UpdateSink = channel.unary_unary(
-          '/google.logging.v2.ConfigServiceV2/UpdateSink',
-          request_serializer=UpdateSinkRequest.SerializeToString,
-          response_deserializer=LogSink.FromString,
-          )
-      self.DeleteSink = channel.unary_unary(
-          '/google.logging.v2.ConfigServiceV2/DeleteSink',
-          request_serializer=DeleteSinkRequest.SerializeToString,
-          response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
-          )
-      self.ListExclusions = channel.unary_unary(
-          '/google.logging.v2.ConfigServiceV2/ListExclusions',
-          request_serializer=ListExclusionsRequest.SerializeToString,
-          response_deserializer=ListExclusionsResponse.FromString,
-          )
-      self.GetExclusion = channel.unary_unary(
-          '/google.logging.v2.ConfigServiceV2/GetExclusion',
-          request_serializer=GetExclusionRequest.SerializeToString,
-          response_deserializer=LogExclusion.FromString,
-          )
-      self.CreateExclusion = channel.unary_unary(
-          '/google.logging.v2.ConfigServiceV2/CreateExclusion',
-          request_serializer=CreateExclusionRequest.SerializeToString,
-          response_deserializer=LogExclusion.FromString,
-          )
-      self.UpdateExclusion = channel.unary_unary(
-          '/google.logging.v2.ConfigServiceV2/UpdateExclusion',
-          request_serializer=UpdateExclusionRequest.SerializeToString,
-          response_deserializer=LogExclusion.FromString,
-          )
-      self.DeleteExclusion = channel.unary_unary(
-          '/google.logging.v2.ConfigServiceV2/DeleteExclusion',
-          request_serializer=DeleteExclusionRequest.SerializeToString,
-          response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
-          )
-
-
-  class ConfigServiceV2Servicer(object):
-    """Service for configuring sinks used to export log entries outside of
-    Stackdriver Logging.
-    """
-
-    def ListSinks(self, request, context):
-      """Lists sinks.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def GetSink(self, request, context):
-      """Gets a sink.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def CreateSink(self, request, context):
-      """Creates a sink that exports specified log entries to a destination.  The
-      export of newly-ingested log entries begins immediately, unless the sink's
-      `writer_identity` is not permitted to write to the destination.  A sink can
-      export log entries only from the resource owning the sink.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def UpdateSink(self, request, context):
-      """Updates a sink.  This method replaces the following fields in the existing
-      sink with values from the new sink: `destination`, and `filter`.
-      The updated sink might also have a new `writer_identity`; see the
-      `unique_writer_identity` field.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def DeleteSink(self, request, context):
-      """Deletes a sink. If the sink has a unique `writer_identity`, then that
-      service account is also deleted.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def ListExclusions(self, request, context):
-      """Lists all the exclusions in a parent resource.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def GetExclusion(self, request, context):
-      """Gets the description of an exclusion.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def CreateExclusion(self, request, context):
-      """Creates a new exclusion in a specified parent resource.
-      Only log entries belonging to that resource can be excluded.
-      You can have up to 10 exclusions in a resource.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def UpdateExclusion(self, request, context):
-      """Changes one or more properties of an existing exclusion.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def DeleteExclusion(self, request, context):
-      """Deletes an exclusion.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-
-  def add_ConfigServiceV2Servicer_to_server(servicer, server):
-    rpc_method_handlers = {
-        'ListSinks': grpc.unary_unary_rpc_method_handler(
-            servicer.ListSinks,
-            request_deserializer=ListSinksRequest.FromString,
-            response_serializer=ListSinksResponse.SerializeToString,
-        ),
-        'GetSink': grpc.unary_unary_rpc_method_handler(
-            servicer.GetSink,
-            request_deserializer=GetSinkRequest.FromString,
-            response_serializer=LogSink.SerializeToString,
-        ),
-        'CreateSink': grpc.unary_unary_rpc_method_handler(
-            servicer.CreateSink,
-            request_deserializer=CreateSinkRequest.FromString,
-            response_serializer=LogSink.SerializeToString,
-        ),
-        'UpdateSink': grpc.unary_unary_rpc_method_handler(
-            servicer.UpdateSink,
-            request_deserializer=UpdateSinkRequest.FromString,
-            response_serializer=LogSink.SerializeToString,
-        ),
-        'DeleteSink': grpc.unary_unary_rpc_method_handler(
-            servicer.DeleteSink,
-            request_deserializer=DeleteSinkRequest.FromString,
-            response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
-        ),
-        'ListExclusions': grpc.unary_unary_rpc_method_handler(
-            servicer.ListExclusions,
-            request_deserializer=ListExclusionsRequest.FromString,
-            response_serializer=ListExclusionsResponse.SerializeToString,
-        ),
-        'GetExclusion': grpc.unary_unary_rpc_method_handler(
-            servicer.GetExclusion,
-            request_deserializer=GetExclusionRequest.FromString,
-            response_serializer=LogExclusion.SerializeToString,
-        ),
-        'CreateExclusion': grpc.unary_unary_rpc_method_handler(
-            servicer.CreateExclusion,
-            request_deserializer=CreateExclusionRequest.FromString,
-            response_serializer=LogExclusion.SerializeToString,
-        ),
-        'UpdateExclusion': grpc.unary_unary_rpc_method_handler(
-            servicer.UpdateExclusion,
-            request_deserializer=UpdateExclusionRequest.FromString,
-            response_serializer=LogExclusion.SerializeToString,
-        ),
-        'DeleteExclusion': grpc.unary_unary_rpc_method_handler(
-            servicer.DeleteExclusion,
-            request_deserializer=DeleteExclusionRequest.FromString,
-            response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
-        ),
-    }
-    generic_handler = grpc.method_handlers_generic_handler(
-        'google.logging.v2.ConfigServiceV2', rpc_method_handlers)
-    server.add_generic_rpc_handlers((generic_handler,))
-
-
-  class BetaConfigServiceV2Servicer(object):
-    """The Beta API is deprecated for 0.15.0 and later.
-
-    It is recommended to use the GA API (classes and functions in this
-    file not marked beta) for all further purposes. This class was generated
-    only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0."""
-    """Service for configuring sinks used to export log entries outside of
-    Stackdriver Logging.
-    """
-    def ListSinks(self, request, context):
-      """Lists sinks.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def GetSink(self, request, context):
-      """Gets a sink.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def CreateSink(self, request, context):
-      """Creates a sink that exports specified log entries to a destination.  The
-      export of newly-ingested log entries begins immediately, unless the sink's
-      `writer_identity` is not permitted to write to the destination.  A sink can
-      export log entries only from the resource owning the sink.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def UpdateSink(self, request, context):
-      """Updates a sink.  This method replaces the following fields in the existing
-      sink with values from the new sink: `destination`, and `filter`.
-      The updated sink might also have a new `writer_identity`; see the
-      `unique_writer_identity` field.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def DeleteSink(self, request, context):
-      """Deletes a sink. If the sink has a unique `writer_identity`, then that
-      service account is also deleted.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def ListExclusions(self, request, context):
-      """Lists all the exclusions in a parent resource.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def GetExclusion(self, request, context):
-      """Gets the description of an exclusion.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def CreateExclusion(self, request, context):
-      """Creates a new exclusion in a specified parent resource.
-      Only log entries belonging to that resource can be excluded.
-      You can have up to 10 exclusions in a resource.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def UpdateExclusion(self, request, context):
-      """Changes one or more properties of an existing exclusion.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def DeleteExclusion(self, request, context):
-      """Deletes an exclusion.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-
-
-  class BetaConfigServiceV2Stub(object):
-    """The Beta API is deprecated for 0.15.0 and later.
-
-    It is recommended to use the GA API (classes and functions in this
-    file not marked beta) for all further purposes. This class was generated
-    only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0."""
-    """Service for configuring sinks used to export log entries outside of
-    Stackdriver Logging.
-    """
-    def ListSinks(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Lists sinks.
-      """
-      raise NotImplementedError()
-    ListSinks.future = None
-    def GetSink(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Gets a sink.
-      """
-      raise NotImplementedError()
-    GetSink.future = None
-    def CreateSink(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Creates a sink that exports specified log entries to a destination.  The
-      export of newly-ingested log entries begins immediately, unless the sink's
-      `writer_identity` is not permitted to write to the destination.  A sink can
-      export log entries only from the resource owning the sink.
-      """
-      raise NotImplementedError()
-    CreateSink.future = None
-    def UpdateSink(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Updates a sink.  This method replaces the following fields in the existing
-      sink with values from the new sink: `destination`, and `filter`.
-      The updated sink might also have a new `writer_identity`; see the
-      `unique_writer_identity` field.
-      """
-      raise NotImplementedError()
-    UpdateSink.future = None
-    def DeleteSink(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Deletes a sink. If the sink has a unique `writer_identity`, then that
-      service account is also deleted.
-      """
-      raise NotImplementedError()
-    DeleteSink.future = None
-    def ListExclusions(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Lists all the exclusions in a parent resource.
-      """
-      raise NotImplementedError()
-    ListExclusions.future = None
-    def GetExclusion(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Gets the description of an exclusion.
-      """
-      raise NotImplementedError()
-    GetExclusion.future = None
-    def CreateExclusion(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Creates a new exclusion in a specified parent resource.
-      Only log entries belonging to that resource can be excluded.
-      You can have up to 10 exclusions in a resource.
-      """
-      raise NotImplementedError()
-    CreateExclusion.future = None
-    def UpdateExclusion(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Changes one or more properties of an existing exclusion.
-      """
-      raise NotImplementedError()
-    UpdateExclusion.future = None
-    def DeleteExclusion(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Deletes an exclusion.
-      """
-      raise NotImplementedError()
-    DeleteExclusion.future = None
-
-
-  def beta_create_ConfigServiceV2_server(servicer, pool=None, pool_size=None, default_timeout=None, maximum_timeout=None):
-    """The Beta API is deprecated for 0.15.0 and later.
-
-    It is recommended to use the GA API (classes and functions in this
-    file not marked beta) for all further purposes. This function was
-    generated only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0"""
-    request_deserializers = {
-      ('google.logging.v2.ConfigServiceV2', 'CreateExclusion'): CreateExclusionRequest.FromString,
-      ('google.logging.v2.ConfigServiceV2', 'CreateSink'): CreateSinkRequest.FromString,
-      ('google.logging.v2.ConfigServiceV2', 'DeleteExclusion'): DeleteExclusionRequest.FromString,
-      ('google.logging.v2.ConfigServiceV2', 'DeleteSink'): DeleteSinkRequest.FromString,
-      ('google.logging.v2.ConfigServiceV2', 'GetExclusion'): GetExclusionRequest.FromString,
-      ('google.logging.v2.ConfigServiceV2', 'GetSink'): GetSinkRequest.FromString,
-      ('google.logging.v2.ConfigServiceV2', 'ListExclusions'): ListExclusionsRequest.FromString,
-      ('google.logging.v2.ConfigServiceV2', 'ListSinks'): ListSinksRequest.FromString,
-      ('google.logging.v2.ConfigServiceV2', 'UpdateExclusion'): UpdateExclusionRequest.FromString,
-      ('google.logging.v2.ConfigServiceV2', 'UpdateSink'): UpdateSinkRequest.FromString,
-    }
-    response_serializers = {
-      ('google.logging.v2.ConfigServiceV2', 'CreateExclusion'): LogExclusion.SerializeToString,
-      ('google.logging.v2.ConfigServiceV2', 'CreateSink'): LogSink.SerializeToString,
-      ('google.logging.v2.ConfigServiceV2', 'DeleteExclusion'): google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
-      ('google.logging.v2.ConfigServiceV2', 'DeleteSink'): google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
-      ('google.logging.v2.ConfigServiceV2', 'GetExclusion'): LogExclusion.SerializeToString,
-      ('google.logging.v2.ConfigServiceV2', 'GetSink'): LogSink.SerializeToString,
-      ('google.logging.v2.ConfigServiceV2', 'ListExclusions'): ListExclusionsResponse.SerializeToString,
-      ('google.logging.v2.ConfigServiceV2', 'ListSinks'): ListSinksResponse.SerializeToString,
-      ('google.logging.v2.ConfigServiceV2', 'UpdateExclusion'): LogExclusion.SerializeToString,
-      ('google.logging.v2.ConfigServiceV2', 'UpdateSink'): LogSink.SerializeToString,
-    }
-    method_implementations = {
-      ('google.logging.v2.ConfigServiceV2', 'CreateExclusion'): face_utilities.unary_unary_inline(servicer.CreateExclusion),
-      ('google.logging.v2.ConfigServiceV2', 'CreateSink'): face_utilities.unary_unary_inline(servicer.CreateSink),
-      ('google.logging.v2.ConfigServiceV2', 'DeleteExclusion'): face_utilities.unary_unary_inline(servicer.DeleteExclusion),
-      ('google.logging.v2.ConfigServiceV2', 'DeleteSink'): face_utilities.unary_unary_inline(servicer.DeleteSink),
-      ('google.logging.v2.ConfigServiceV2', 'GetExclusion'): face_utilities.unary_unary_inline(servicer.GetExclusion),
-      ('google.logging.v2.ConfigServiceV2', 'GetSink'): face_utilities.unary_unary_inline(servicer.GetSink),
-      ('google.logging.v2.ConfigServiceV2', 'ListExclusions'): face_utilities.unary_unary_inline(servicer.ListExclusions),
-      ('google.logging.v2.ConfigServiceV2', 'ListSinks'): face_utilities.unary_unary_inline(servicer.ListSinks),
-      ('google.logging.v2.ConfigServiceV2', 'UpdateExclusion'): face_utilities.unary_unary_inline(servicer.UpdateExclusion),
-      ('google.logging.v2.ConfigServiceV2', 'UpdateSink'): face_utilities.unary_unary_inline(servicer.UpdateSink),
-    }
-    server_options = beta_implementations.server_options(request_deserializers=request_deserializers, response_serializers=response_serializers, thread_pool=pool, thread_pool_size=pool_size, default_timeout=default_timeout, maximum_timeout=maximum_timeout)
-    return beta_implementations.server(method_implementations, options=server_options)
-
-
-  def beta_create_ConfigServiceV2_stub(channel, host=None, metadata_transformer=None, pool=None, pool_size=None):
-    """The Beta API is deprecated for 0.15.0 and later.
-
-    It is recommended to use the GA API (classes and functions in this
-    file not marked beta) for all further purposes. This function was
-    generated only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0"""
-    request_serializers = {
-      ('google.logging.v2.ConfigServiceV2', 'CreateExclusion'): CreateExclusionRequest.SerializeToString,
-      ('google.logging.v2.ConfigServiceV2', 'CreateSink'): CreateSinkRequest.SerializeToString,
-      ('google.logging.v2.ConfigServiceV2', 'DeleteExclusion'): DeleteExclusionRequest.SerializeToString,
-      ('google.logging.v2.ConfigServiceV2', 'DeleteSink'): DeleteSinkRequest.SerializeToString,
-      ('google.logging.v2.ConfigServiceV2', 'GetExclusion'): GetExclusionRequest.SerializeToString,
-      ('google.logging.v2.ConfigServiceV2', 'GetSink'): GetSinkRequest.SerializeToString,
-      ('google.logging.v2.ConfigServiceV2', 'ListExclusions'): ListExclusionsRequest.SerializeToString,
-      ('google.logging.v2.ConfigServiceV2', 'ListSinks'): ListSinksRequest.SerializeToString,
-      ('google.logging.v2.ConfigServiceV2', 'UpdateExclusion'): UpdateExclusionRequest.SerializeToString,
-      ('google.logging.v2.ConfigServiceV2', 'UpdateSink'): UpdateSinkRequest.SerializeToString,
-    }
-    response_deserializers = {
-      ('google.logging.v2.ConfigServiceV2', 'CreateExclusion'): LogExclusion.FromString,
-      ('google.logging.v2.ConfigServiceV2', 'CreateSink'): LogSink.FromString,
-      ('google.logging.v2.ConfigServiceV2', 'DeleteExclusion'): google_dot_protobuf_dot_empty__pb2.Empty.FromString,
-      ('google.logging.v2.ConfigServiceV2', 'DeleteSink'): google_dot_protobuf_dot_empty__pb2.Empty.FromString,
-      ('google.logging.v2.ConfigServiceV2', 'GetExclusion'): LogExclusion.FromString,
-      ('google.logging.v2.ConfigServiceV2', 'GetSink'): LogSink.FromString,
-      ('google.logging.v2.ConfigServiceV2', 'ListExclusions'): ListExclusionsResponse.FromString,
-      ('google.logging.v2.ConfigServiceV2', 'ListSinks'): ListSinksResponse.FromString,
-      ('google.logging.v2.ConfigServiceV2', 'UpdateExclusion'): LogExclusion.FromString,
-      ('google.logging.v2.ConfigServiceV2', 'UpdateSink'): LogSink.FromString,
-    }
-    cardinalities = {
-      'CreateExclusion': cardinality.Cardinality.UNARY_UNARY,
-      'CreateSink': cardinality.Cardinality.UNARY_UNARY,
-      'DeleteExclusion': cardinality.Cardinality.UNARY_UNARY,
-      'DeleteSink': cardinality.Cardinality.UNARY_UNARY,
-      'GetExclusion': cardinality.Cardinality.UNARY_UNARY,
-      'GetSink': cardinality.Cardinality.UNARY_UNARY,
-      'ListExclusions': cardinality.Cardinality.UNARY_UNARY,
-      'ListSinks': cardinality.Cardinality.UNARY_UNARY,
-      'UpdateExclusion': cardinality.Cardinality.UNARY_UNARY,
-      'UpdateSink': cardinality.Cardinality.UNARY_UNARY,
-    }
-    stub_options = beta_implementations.stub_options(host=host, metadata_transformer=metadata_transformer, request_serializers=request_serializers, response_deserializers=response_deserializers, thread_pool=pool, thread_pool_size=pool_size)
-    return beta_implementations.dynamic_stub(channel, 'google.logging.v2.ConfigServiceV2', cardinalities, options=stub_options)
-except ImportError:
-  pass
 # @@protoc_insertion_point(module_scope)
