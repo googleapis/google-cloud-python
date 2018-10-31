@@ -153,8 +153,8 @@ class Client(object):
         period of time has elapsed.
 
         Example:
-            >>> from google.cloud.pubsub_v1 import publisher_client
-            >>> client = publisher_client.PublisherClient()
+            >>> from google.cloud import pubsub_v1
+            >>> client = pubsub_v1.PublisherClient()
             >>> topic = client.topic_path('[PROJECT]', '[TOPIC]')
             >>> data = b'The rain in Wales falls mainly on the snails.'
             >>> response = client.publish(topic, data, username='guido')

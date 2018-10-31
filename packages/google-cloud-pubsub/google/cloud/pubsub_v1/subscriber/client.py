@@ -129,9 +129,9 @@ class Client(object):
 
         .. code-block:: python
 
-            from google.cloud.pubsub_v1 import subscriber
+            from google.cloud import pubsub_v1
 
-            subscriber_client = pubsub.SubscriberClient()
+            subscriber_client = pubsub_v1.SubscriberClient()
 
             # existing subscription
             subscription = subscriber_client.subscription_path(
