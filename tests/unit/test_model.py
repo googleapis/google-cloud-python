@@ -330,25 +330,12 @@ class Test_BaseValue:
             hash(wrapped)
 
 
-@pytest.fixture
-def zero_prop_counter():
-    counter_val = model.Property._CREATION_COUNTER
-    model.Property._CREATION_COUNTER = 0
-    try:
-        yield
-    finally:
-        model.Property._CREATION_COUNTER = counter_val
-
-
 class TestProperty:
     @staticmethod
-    def test_constructor_defaults(zero_prop_counter):
+    def test_constructor_defaults():
         prop = model.Property()
-        # Check that the creation counter was updated.
-        assert model.Property._CREATION_COUNTER == 1
-        assert prop._creation_counter == 1
         # Check that none of the constructor defaults were used.
-        assert prop.__dict__ == {"_creation_counter": 1}
+        assert prop.__dict__ == {}
 
     @staticmethod
     def _example_validator(prop, value):
@@ -360,7 +347,7 @@ class TestProperty:
         assert validated == "abcde"
         assert self._example_validator(None, validated) == "abcde"
 
-    def test_constructor_explicit(self, zero_prop_counter):
+    def test_constructor_explicit(self):
         prop = model.Property(
             name="val",
             indexed=False,
@@ -381,43 +368,32 @@ class TestProperty:
         assert prop._validator is self._example_validator
         assert prop._verbose_name == "VALUE FOR READING"
         assert not prop._write_empty_list
-        # Check that the creation counter was updated.
-        assert model.Property._CREATION_COUNTER == 1
-        assert prop._creation_counter == 1
 
     @staticmethod
-    def test_constructor_invalid_name(zero_prop_counter):
+    def test_constructor_invalid_name():
         with pytest.raises(TypeError):
             model.Property(name=["not", "a", "string"])
         with pytest.raises(ValueError):
             model.Property(name="has.a.dot")
-        # Check that the creation counter was not updated.
-        assert model.Property._CREATION_COUNTER == 0
 
     @staticmethod
-    def test_constructor_repeated_not_allowed(zero_prop_counter):
+    def test_constructor_repeated_not_allowed():
         with pytest.raises(ValueError):
             model.Property(name="a", repeated=True, required=True)
         with pytest.raises(ValueError):
             model.Property(name="b", repeated=True, default="zim")
-        # Check that the creation counter was not updated.
-        assert model.Property._CREATION_COUNTER == 0
 
     @staticmethod
-    def test_constructor_invalid_choices(zero_prop_counter):
+    def test_constructor_invalid_choices():
         with pytest.raises(TypeError):
             model.Property(name="a", choices={"wrong": "container"})
-        # Check that the creation counter was not updated.
-        assert model.Property._CREATION_COUNTER == 0
 
     @staticmethod
-    def test_constructor_invalid_validator(zero_prop_counter):
+    def test_constructor_invalid_validator():
         with pytest.raises(TypeError):
             model.Property(
                 name="a", validator=unittest.mock.sentinel.validator
             )
-        # Check that the creation counter was not updated.
-        assert model.Property._CREATION_COUNTER == 0
 
     def test_repr(self):
         prop = model.Property(
