@@ -56,8 +56,10 @@ The primary differences come from:
   original implementation didn't allow in excess of 500 bytes, but it seems
   the limit has been raised by the backend. (FWIW, Danny's opinion is that
   the backend should enforce these limits, not the library.)
-- I renamed `Property.__creation_counter_global` to
-  `Property._CREATION_COUNTER`.
+- `Property.__creation_counter_global` has been removed as it seems to have
+  been included for a feature that was never implemented. See 
+  [Issue #175][1] for original rationale for including it and [Issue #6317][2]
+  for discussion of its removal.
 - `ndb` uses "private" instance attributes in many places, e.g. `Key.__app`.
   The current implementation (for now) just uses "protected" attribute names,
   e.g. `Key._key` (the implementation has changed in the rewrite). We may want
@@ -125,11 +127,13 @@ The primary differences come from:
 - The whole `bytes` vs. `str` issue needs to be considered package-wide.
   For example, the `Property()` constructor always encoded Python 2 `unicode`
   to a Python 2 `str` (i.e. `bytes`) with the `utf-8` encoding. This fits
-  in some sense: the property name in the [protobuf definition][1] is a
+  in some sense: the property name in the [protobuf definition][3] is a
   `string` (i.e. UTF-8 encoded text). However, there is a bit of a disconnect
   with other types that use property names, e.g. `FilterNode`.
 - There is a giant web of module interdependency, so runtime imports (to avoid
   import cycles) are very common. For example `model.Property` depends on
   `query` but `query` depends on `model`.
 
-[1]: https://github.com/googleapis/googleapis/blob/3afba2fd062df0c89ecd62d97f912192b8e0e0ae/google/datastore/v1/entity.proto#L203
+[1]: https://github.com/GoogleCloudPlatform/datastore-ndb-python/issues/175
+[2]: https://github.com/googleapis/google-cloud-python/issues/6317
+[3]: https://github.com/googleapis/googleapis/blob/3afba2fd062df0c89ecd62d97f912192b8e0e0ae/google/datastore/v1/entity.proto#L203
