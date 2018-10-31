@@ -1058,21 +1058,30 @@ def pbs_for_set(document_path, document_data, merge=False, exists=None):
         return _pbs_for_set_with_merge(
             document_path, document_data, merge, exists
         )
+
     transform_paths, actual_data, field_paths = process_server_timestamp(
         document_data, False)
 
-    update_pb = write_pb2.Write(
-        update=document_pb2.Document(
-            name=document_path,
-            fields=encode_dict(actual_data),
+    create_empty = False
+    if document_data and not actual_data: # produce an empty set op
+        create_empty = True
+
+    write_pbs = []
+
+    if actual_data or create_empty:
+
+        write_pb = write_pb2.Write(
+            update=document_pb2.Document(
+                name=document_path,
+                fields=encode_dict(actual_data),
+            )
         )
-    )
 
-    if exists is not None:
-        update_pb.current_document.CopyFrom(
-            common_pb2.Precondition(exists=exists))
+        if exists is not None:
+            write_pb.current_document.CopyFrom(
+                common_pb2.Precondition(exists=exists))
 
-    write_pbs = [update_pb]
+        write_pbs.append(write_pb)
 
     if transform_paths:
         transform_pb = get_transform_pb(document_path, transform_paths)
@@ -1083,6 +1092,10 @@ def pbs_for_set(document_path, document_data, merge=False, exists=None):
 def _pbs_for_set_with_merge(document_path, document_data, merge, exists):
     data_merge = []
     transform_merge = []
+
+    create_empty = False
+    if not document_data:
+        create_empty = True
 
     transform_paths, actual_data, field_paths = process_server_timestamp(
         document_data, False)
@@ -1138,24 +1151,29 @@ def _pbs_for_set_with_merge(document_path, document_data, merge, exists):
         transform_merge = transform_paths
         merge = sorted(data_merge + transform_merge)
 
+    write_pbs = []
     write_pb = write_pb2.Write()
 
-    if actual_data:
+    if actual_data or create_empty:
         update = document_pb2.Document(
             name=document_path,
             fields=encode_dict(actual_data),
         )
         write_pb.update.CopyFrom(update)
 
+        mask_paths = [
+            fp.to_api_repr() for fp in merge if not fp in transform_merge
+        ]
+
+        if mask_paths or create_empty:
+            mask = common_pb2.DocumentMask(field_paths=mask_paths)
+            write_pb.update_mask.CopyFrom(mask)
+
+        write_pbs.append(write_pb)
+
     if exists is not None:
         write_pb.current_document.CopyFrom(
             common_pb2.Precondition(exists=exists))
-
-    mask_paths = [fp.to_api_repr() for fp in merge if not fp in transform_merge]
-
-    if mask_paths:
-        mask = common_pb2.DocumentMask(field_paths=mask_paths)
-        write_pb.update_mask.CopyFrom(mask)
 
     new_transform_paths = []
     for merge_fp in merge:
@@ -1163,8 +1181,6 @@ def _pbs_for_set_with_merge(document_path, document_data, merge, exists):
             fp for fp in transform_paths if merge_fp.eq_or_parent(fp) ]
         new_transform_paths.extend(t_merge_fps)
     transform_paths = new_transform_paths
-
-    write_pbs = [write_pb]
 
     if transform_paths:
         transform_pb = get_transform_pb(document_path, transform_paths)
