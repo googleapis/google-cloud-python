@@ -1,0 +1,1595 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Client for Cloud Security Command Center API &#8212; google-cloud bebbb07 documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Types for Cloud Security Command Center API Client" href="types.html" />
+    <link rel="prev" title="Python Client for Cloud Security Command Center API (Alpha)" href="../../index.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="module-google.cloud.securitycenter_v1beta1">
+<span id="client-for-cloud-security-command-center-api"></span><h1>Client for Cloud Security Command Center API<a class="headerlink" href="#module-google.cloud.securitycenter_v1beta1" title="Permalink to this headline">#</a></h1>
+<dl class="class">
+<dt id="google.cloud.securitycenter_v1beta1.SecurityCenterClient">
+<em class="property">class </em><code class="descclassname">google.cloud.securitycenter_v1beta1.</code><code class="descname">SecurityCenterClient</code><span class="sig-paren">(</span><em>transport=None, channel=None, credentials=None, client_config={'interfaces': {'google.cloud.securitycenter.v1beta1.SecurityCenter': {'methods': {'CreateFinding': {'retry_codes_name': 'non_idempotent', 'retry_params_name': 'default', 'timeout_millis': 60000}, 'CreateSource': {'retry_codes_name': 'non_idempotent', 'retry_params_name': 'default', 'timeout_millis': 60000}, 'GetIamPolicy': {'retry_codes_name': 'idempotent', 'retry_params_name': 'default', 'timeout_millis': 60000}, 'GetOrganizationSettings': {'retry_codes_name': 'idempotent', 'retry_params_name': 'default', 'timeout_millis': 60000}, 'GetSource': {'retry_codes_name': 'idempotent', 'retry_params_name': 'default', 'timeout_millis': 60000}, 'GroupAssets': {'retry_codes_name': 'idempotent', 'retry_params_name': 'default', 'timeout_millis': 60000}, 'GroupFindings': {'retry_codes_name': 'idempotent', 'retry_params_name': 'default', 'timeout_millis': 60000}, 'ListAssets': {'retry_codes_name': 'idempotent', 'retry_params_name': 'default', 'timeout_millis': 60000}, 'ListFindings': {'retry_codes_name': 'idempotent', 'retry_params_name': 'default', 'timeout_millis': 60000}, 'ListSources': {'retry_codes_name': 'idempotent', 'retry_params_name': 'default', 'timeout_millis': 60000}, 'RunAssetDiscovery': {'retry_codes_name': 'non_idempotent', 'retry_params_name': 'default', 'timeout_millis': 60000}, 'SetFindingState': {'retry_codes_name': 'non_idempotent', 'retry_params_name': 'default', 'timeout_millis': 60000}, 'SetIamPolicy': {'retry_codes_name': 'non_idempotent', 'retry_params_name': 'default', 'timeout_millis': 60000}, 'TestIamPermissions': {'retry_codes_name': 'idempotent', 'retry_params_name': 'default', 'timeout_millis': 60000}, 'UpdateFinding': {'retry_codes_name': 'non_idempotent', 'retry_params_name': 'default', 'timeout_millis': 60000}, 'UpdateOrganizationSettings': {'retry_codes_name': 'non_idempotent', 'retry_params_name': 'default', 'timeout_millis': 60000}, 'UpdateSecurityMarks': {'retry_codes_name': 'non_idempotent', 'retry_params_name': 'default', 'timeout_millis': 60000}, 'UpdateSource': {'retry_codes_name': 'non_idempotent', 'retry_params_name': 'default', 'timeout_millis': 60000}}, 'retry_codes': {'idempotent': ['DEADLINE_EXCEEDED', 'UNAVAILABLE'], 'non_idempotent': []}, 'retry_params': {'default': {'initial_retry_delay_millis': 100, 'initial_rpc_timeout_millis': 20000, 'max_retry_delay_millis': 60000, 'max_rpc_timeout_millis': 20000, 'retry_delay_multiplier': 1.3, 'rpc_timeout_multiplier': 1.0, 'total_timeout_millis': 600000}}}}}, client_info=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/securitycenter_v1beta1.html#SecurityCenterClient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.SecurityCenterClient" title="Permalink to this definition">#</a></dt>
+<dd><p>V1 Beta APIs for Security Center service.</p>
+<p>Constructor.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>(</strong><strong>Union</strong><strong>[</strong><strong>SecurityCenterGrpcTransport</strong><strong>,</strong> (<em>transport</em>) – Callable[[~.Credentials, type], ~.SecurityCenterGrpcTransport]): A transport
+instance, responsible for actually making the API calls.
+The default transport uses the gRPC protocol.
+This argument may also be a callable which returns a
+transport instance. Callables will be sent the credentials
+as the first argument and the default transport class as
+the second argument.</li>
+<li><strong>channel</strong> (<a class="reference external" href="https://grpc.io/grpc/python/grpc.html#grpc.Channel" title="(in grpcio v1.8.0)"><em>grpc.Channel</em></a>) – DEPRECATED. A <code class="docutils literal notranslate"><span class="pre">Channel</span></code> instance
+through which to make calls. This argument is mutually exclusive
+with <code class="docutils literal notranslate"><span class="pre">credentials</span></code>; providing both will raise an exception.</li>
+<li><strong>credentials</strong> (<a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.credentials.html#google.auth.credentials.Credentials" title="(in google-auth v1.5.1)"><em>google.auth.credentials.Credentials</em></a>) – The
+authorization credentials to attach to requests. These
+credentials identify this application to the service. If none
+are specified, the client will attempt to ascertain the
+credentials from the environment.
+This argument is mutually exclusive with providing a
+transport instance to <code class="docutils literal notranslate"><span class="pre">transport</span></code>; doing so will raise
+an exception.</li>
+<li><strong>client_config</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – DEPRECATED. A dictionary of call options for
+each method. If not specified, the default configuration is used.</li>
+<li><strong>client_info</strong> (<em>google.api_core.gapic_v1.client_info.ClientInfo</em>) – The client info used to send a user-agent string along with
+API requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code>, then default info will be used.
+Generally, you only need to set this if you’re developing
+your own client library.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="classmethod">
+<dt id="google.cloud.securitycenter_v1beta1.SecurityCenterClient.asset_security_marks_path">
+<em class="property">classmethod </em><code class="descname">asset_security_marks_path</code><span class="sig-paren">(</span><em>organization</em>, <em>asset</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/securitycenter_v1beta1/gapic/security_center_client.html#SecurityCenterClient.asset_security_marks_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.SecurityCenterClient.asset_security_marks_path" title="Permalink to this definition">#</a></dt>
+<dd><p>Return a fully-qualified asset_security_marks string.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.securitycenter_v1beta1.SecurityCenterClient.create_finding">
+<code class="descname">create_finding</code><span class="sig-paren">(</span><em>parent</em>, <em>finding_id</em>, <em>finding</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/securitycenter_v1beta1/gapic/security_center_client.html#SecurityCenterClient.create_finding"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.SecurityCenterClient.create_finding" title="Permalink to this definition">#</a></dt>
+<dd><p>Creates a finding. The corresponding source must exist for finding creation
+to succeed.</p>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">securitycenter_v1beta1</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">securitycenter_v1beta1</span><span class="o">.</span><span class="n">SecurityCenterClient</span><span class="p">()</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">parent</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">source_path</span><span class="p">(</span><span class="s1">&#39;[ORGANIZATION]&#39;</span><span class="p">,</span> <span class="s1">&#39;[SOURCE]&#39;</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``finding_id``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">finding_id</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``finding``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">finding</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">create_finding</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">finding_id</span><span class="p">,</span> <span class="n">finding</span><span class="p">)</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Resource name of the new finding’s parent. Its format should be
+“organizations/[organization_id]/sources/[source_id]”.</li>
+<li><strong>finding_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Unique identifier provided by the client within the parent scope.
+It must be alphanumeric and less than or equal to 32 characters and
+greater than 0 characters in length.</li>
+<li><strong>finding</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.securitycenter_v1beta1.types.Finding" title="google.cloud.securitycenter_v1beta1.types.Finding"><em>Finding</em></a><em>]</em>) – The Finding being created. The name and security_marks will be ignored as
+they are both output only fields on this resource.
+If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.securitycenter_v1beta1.types.Finding" title="google.cloud.securitycenter_v1beta1.types.Finding"><code class="xref py py-class docutils literal notranslate"><span class="pre">Finding</span></code></a></li>
+<li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
+be retried.</li>
+<li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
+for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
+specified, the timeout applies to each individual attempt.</li>
+<li><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
+that is provided to the method.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="types.html#google.cloud.securitycenter_v1beta1.types.Finding" title="google.cloud.securitycenter_v1beta1.types.Finding"><code class="xref py py-class docutils literal notranslate"><span class="pre">Finding</span></code></a> instance.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
+failed for any reason.</li>
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
+to a retryable error and retry attempts failed.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.securitycenter_v1beta1.SecurityCenterClient.create_source">
+<code class="descname">create_source</code><span class="sig-paren">(</span><em>parent</em>, <em>source</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/securitycenter_v1beta1/gapic/security_center_client.html#SecurityCenterClient.create_source"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.SecurityCenterClient.create_source" title="Permalink to this definition">#</a></dt>
+<dd><p>Creates a source.</p>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">securitycenter_v1beta1</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">securitycenter_v1beta1</span><span class="o">.</span><span class="n">SecurityCenterClient</span><span class="p">()</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">parent</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">organization_path</span><span class="p">(</span><span class="s1">&#39;[ORGANIZATION]&#39;</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``source``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">source</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">create_source</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">source</span><span class="p">)</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Resource name of the new source’s parent. Its format should be
+“organizations/[organization_id]”.</li>
+<li><strong>source</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.securitycenter_v1beta1.types.Source" title="google.cloud.securitycenter_v1beta1.types.Source"><em>Source</em></a><em>]</em>) – The Source being created, only the display_name and description will be
+used. All other fields will be ignored.
+If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.securitycenter_v1beta1.types.Source" title="google.cloud.securitycenter_v1beta1.types.Source"><code class="xref py py-class docutils literal notranslate"><span class="pre">Source</span></code></a></li>
+<li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
+be retried.</li>
+<li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
+for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
+specified, the timeout applies to each individual attempt.</li>
+<li><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
+that is provided to the method.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="types.html#google.cloud.securitycenter_v1beta1.types.Source" title="google.cloud.securitycenter_v1beta1.types.Source"><code class="xref py py-class docutils literal notranslate"><span class="pre">Source</span></code></a> instance.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
+failed for any reason.</li>
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
+to a retryable error and retry attempts failed.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.securitycenter_v1beta1.SecurityCenterClient.enums">
+<code class="descname">enums</code><em class="property"> = &lt;module 'google.cloud.securitycenter_v1beta1.gapic.enums' from '/var/code/gcp/securitycenter/google/cloud/securitycenter_v1beta1/gapic/enums.py'&gt;</em><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.SecurityCenterClient.enums" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="classmethod">
+<dt id="google.cloud.securitycenter_v1beta1.SecurityCenterClient.finding_path">
+<em class="property">classmethod </em><code class="descname">finding_path</code><span class="sig-paren">(</span><em>organization</em>, <em>source</em>, <em>finding</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/securitycenter_v1beta1/gapic/security_center_client.html#SecurityCenterClient.finding_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.SecurityCenterClient.finding_path" title="Permalink to this definition">#</a></dt>
+<dd><p>Return a fully-qualified finding string.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="google.cloud.securitycenter_v1beta1.SecurityCenterClient.from_service_account_file">
+<em class="property">classmethod </em><code class="descname">from_service_account_file</code><span class="sig-paren">(</span><em>filename</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/securitycenter_v1beta1/gapic/security_center_client.html#SecurityCenterClient.from_service_account_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.SecurityCenterClient.from_service_account_file" title="Permalink to this definition">#</a></dt>
+<dd><p>Creates an instance of this client using the provided credentials
+file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The path to the service account private key json
+file.</li>
+<li><strong>args</strong> – Additional arguments to pass to the constructor.</li>
+<li><strong>kwargs</strong> – Additional arguments to pass to the constructor.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The constructed client.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#google.cloud.securitycenter_v1beta1.SecurityCenterClient" title="google.cloud.securitycenter_v1beta1.SecurityCenterClient">SecurityCenterClient</a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="google.cloud.securitycenter_v1beta1.SecurityCenterClient.from_service_account_json">
+<em class="property">classmethod </em><code class="descname">from_service_account_json</code><span class="sig-paren">(</span><em>filename</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.SecurityCenterClient.from_service_account_json" title="Permalink to this definition">#</a></dt>
+<dd><p>Creates an instance of this client using the provided credentials
+file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The path to the service account private key json
+file.</li>
+<li><strong>args</strong> – Additional arguments to pass to the constructor.</li>
+<li><strong>kwargs</strong> – Additional arguments to pass to the constructor.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The constructed client.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#google.cloud.securitycenter_v1beta1.SecurityCenterClient" title="google.cloud.securitycenter_v1beta1.SecurityCenterClient">SecurityCenterClient</a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.securitycenter_v1beta1.SecurityCenterClient.get_iam_policy">
+<code class="descname">get_iam_policy</code><span class="sig-paren">(</span><em>resource</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/securitycenter_v1beta1/gapic/security_center_client.html#SecurityCenterClient.get_iam_policy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.SecurityCenterClient.get_iam_policy" title="Permalink to this definition">#</a></dt>
+<dd><p>Gets the access control policy on the specified Source.</p>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">securitycenter_v1beta1</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">securitycenter_v1beta1</span><span class="o">.</span><span class="n">SecurityCenterClient</span><span class="p">()</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">resource</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">source_path</span><span class="p">(</span><span class="s1">&#39;[ORGANIZATION]&#39;</span><span class="p">,</span> <span class="s1">&#39;[SOURCE]&#39;</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_iam_policy</span><span class="p">(</span><span class="n">resource</span><span class="p">)</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>resource</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – REQUIRED: The resource for which the policy is being requested.
+<code class="docutils literal notranslate"><span class="pre">resource</span></code> is usually specified as a path. For example, a Project
+resource is specified as <code class="docutils literal notranslate"><span class="pre">projects/{project}</span></code>.</li>
+<li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
+be retried.</li>
+<li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
+for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
+specified, the timeout applies to each individual attempt.</li>
+<li><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
+that is provided to the method.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="types.html#google.cloud.securitycenter_v1beta1.types.Policy" title="google.cloud.securitycenter_v1beta1.types.Policy"><code class="xref py py-class docutils literal notranslate"><span class="pre">Policy</span></code></a> instance.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
+failed for any reason.</li>
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
+to a retryable error and retry attempts failed.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.securitycenter_v1beta1.SecurityCenterClient.get_organization_settings">
+<code class="descname">get_organization_settings</code><span class="sig-paren">(</span><em>name</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/securitycenter_v1beta1/gapic/security_center_client.html#SecurityCenterClient.get_organization_settings"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.SecurityCenterClient.get_organization_settings" title="Permalink to this definition">#</a></dt>
+<dd><p>Gets the settings for an organization.</p>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">securitycenter_v1beta1</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">securitycenter_v1beta1</span><span class="o">.</span><span class="n">SecurityCenterClient</span><span class="p">()</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">name</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">organization_settings_path</span><span class="p">(</span><span class="s1">&#39;[ORGANIZATION]&#39;</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_organization_settings</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Name of the organization to get organization settings for. Its format is
+“organizations/[organization_id]/organizationSettings”.</li>
+<li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
+be retried.</li>
+<li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
+for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
+specified, the timeout applies to each individual attempt.</li>
+<li><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
+that is provided to the method.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="types.html#google.cloud.securitycenter_v1beta1.types.OrganizationSettings" title="google.cloud.securitycenter_v1beta1.types.OrganizationSettings"><code class="xref py py-class docutils literal notranslate"><span class="pre">OrganizationSettings</span></code></a> instance.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
+failed for any reason.</li>
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
+to a retryable error and retry attempts failed.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.securitycenter_v1beta1.SecurityCenterClient.get_source">
+<code class="descname">get_source</code><span class="sig-paren">(</span><em>name</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/securitycenter_v1beta1/gapic/security_center_client.html#SecurityCenterClient.get_source"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.SecurityCenterClient.get_source" title="Permalink to this definition">#</a></dt>
+<dd><p>Gets a source.</p>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">securitycenter_v1beta1</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">securitycenter_v1beta1</span><span class="o">.</span><span class="n">SecurityCenterClient</span><span class="p">()</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">name</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">source_path</span><span class="p">(</span><span class="s1">&#39;[ORGANIZATION]&#39;</span><span class="p">,</span> <span class="s1">&#39;[SOURCE]&#39;</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_source</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Relative resource name of the source. Its format is
+“organizations/[organization_id]/source/[source_id]”.</li>
+<li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
+be retried.</li>
+<li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
+for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
+specified, the timeout applies to each individual attempt.</li>
+<li><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
+that is provided to the method.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="types.html#google.cloud.securitycenter_v1beta1.types.Source" title="google.cloud.securitycenter_v1beta1.types.Source"><code class="xref py py-class docutils literal notranslate"><span class="pre">Source</span></code></a> instance.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
+failed for any reason.</li>
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
+to a retryable error and retry attempts failed.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.securitycenter_v1beta1.SecurityCenterClient.group_assets">
+<code class="descname">group_assets</code><span class="sig-paren">(</span><em>parent</em>, <em>group_by</em>, <em>filter_=None</em>, <em>compare_duration=None</em>, <em>read_time=None</em>, <em>page_size=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/securitycenter_v1beta1/gapic/security_center_client.html#SecurityCenterClient.group_assets"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.SecurityCenterClient.group_assets" title="Permalink to this definition">#</a></dt>
+<dd><p>Filters an organization’s assets and  groups them by their specified
+properties.</p>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">securitycenter_v1beta1</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">securitycenter_v1beta1</span><span class="o">.</span><span class="n">SecurityCenterClient</span><span class="p">()</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">parent</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">organization_path</span><span class="p">(</span><span class="s1">&#39;[ORGANIZATION]&#39;</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``group_by``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">group_by</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Iterate over all results</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">group_assets</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">group_by</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="c1"># process element</span>
+<span class="gp">... </span>    <span class="k">pass</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Alternatively:</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Iterate over results one page at a time</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">group_assets</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">group_by</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">CallOptions</span><span class="p">(</span><span class="n">page_token</span><span class="o">=</span><span class="n">INITIAL_PAGE</span><span class="p">)):</span>
+<span class="gp">... </span>    <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">page</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="c1"># process element</span>
+<span class="gp">... </span>        <span class="k">pass</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Name of the organization to groupBy. Its format is
+“organizations/[organization_id]”.</li>
+<li><strong>group_by</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Expression that defines what assets fields to use for grouping. The string
+value should follow SQL syntax: comma separated list of fields. For
+example:
+“security_center_properties.resource_project,security_center_properties.project”.</p>
+<p>The following fields are supported when compare_duration is not set:</p>
+<ul>
+<li>security_center_properties.resource_name</li>
+<li>security_center_properties.resource_project</li>
+<li>security_center_properties.resource_type</li>
+<li>security_center_properties.resource_parent</li>
+</ul>
+<p>The following fields are supported when compare_duration is set:</p>
+<ul>
+<li>security_center_properties.resource_type</li>
+</ul>
+</li>
+<li><strong>filter</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Expression that defines the filter to apply across assets.
+The expression is a list of zero or more restrictions combined via logical
+operators <code class="docutils literal notranslate"><span class="pre">AND</span></code> and <code class="docutils literal notranslate"><span class="pre">OR</span></code>.
+Parentheses are not supported, and <code class="docutils literal notranslate"><span class="pre">OR</span></code> has higher precedence than <code class="docutils literal notranslate"><span class="pre">AND</span></code>.</p>
+<p>Restrictions have the form <code class="docutils literal notranslate"><span class="pre">&lt;field&gt;</span> <span class="pre">&lt;operator&gt;</span> <span class="pre">&lt;value&gt;</span></code> and may have a <code class="docutils literal notranslate"><span class="pre">-</span></code>
+character in front of them to indicate negation. The fields map to those
+defined in the Asset resource. Examples include:</p>
+<ul>
+<li>name</li>
+<li>security_center_properties.resource_name</li>
+<li>resource_properties.a_property</li>
+<li>security_marks.marks.marka</li>
+</ul>
+<p>The supported operators are:</p>
+<ul>
+<li><code class="docutils literal notranslate"><span class="pre">=</span></code> for all value types.</li>
+<li><code class="docutils literal notranslate"><span class="pre">&gt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&gt;=</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;=</span></code> for integer values.</li>
+<li><code class="docutils literal notranslate"><span class="pre">:</span></code>, meaning substring matching, for strings.</li>
+</ul>
+<p>The supported value types are:</p>
+<ul>
+<li>string literals in quotes.</li>
+<li>integer literals without quotes.</li>
+<li>boolean literals <code class="docutils literal notranslate"><span class="pre">true</span></code> and <code class="docutils literal notranslate"><span class="pre">false</span></code> without quotes.</li>
+</ul>
+<p>For example, <code class="docutils literal notranslate"><span class="pre">resource_properties.size</span> <span class="pre">=</span> <span class="pre">100</span></code> is a valid filter string.</p>
+</li>
+<li><strong>compare_duration</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.securitycenter_v1beta1.types.Duration" title="google.cloud.securitycenter_v1beta1.types.Duration"><em>Duration</em></a><em>]</em>) – <p>When compare_duration is set, the Asset’s “state” property is updated to
+indicate whether the asset was added, removed, or remained present during
+the compare_duration period of time that precedes the read_time. This is
+the time between (read_time - compare_duration) and read_time.</p>
+<p>The state value is derived based on the presence of the asset at the two
+points in time. Intermediate state changes between the two times don’t
+affect the result. For example, the results aren’t affected if the asset is
+removed and re-created again.</p>
+<p>Possible “state” values when compare_duration is specified:</p>
+<ul>
+<li>”ADDED”: indicates that the asset was not present before
+compare_duration, but present at reference_time.</li>
+<li>”REMOVED”: indicates that the asset was present at the start of
+compare_duration, but not present at reference_time.</li>
+<li>”ACTIVE_AT_BOTH”: indicates that the asset was present at both the
+start and the end of the time period defined by
+compare_duration and reference_time.</li>
+</ul>
+<p>This field is ignored if <code class="docutils literal notranslate"><span class="pre">state</span></code> is not a field in <code class="docutils literal notranslate"><span class="pre">group_by</span></code>.
+If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.securitycenter_v1beta1.types.Duration" title="google.cloud.securitycenter_v1beta1.types.Duration"><code class="xref py py-class docutils literal notranslate"><span class="pre">Duration</span></code></a></p>
+</li>
+<li><strong>read_time</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.securitycenter_v1beta1.types.Timestamp" title="google.cloud.securitycenter_v1beta1.types.Timestamp"><em>Timestamp</em></a><em>]</em>) – Time used as a reference point when filtering assets. The filter is limited
+to assets existing at the supplied time and their values are those at that
+specific time. Absence of this field will default to the API’s version of
+NOW.
+If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.securitycenter_v1beta1.types.Timestamp" title="google.cloud.securitycenter_v1beta1.types.Timestamp"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timestamp</span></code></a></li>
+<li><strong>page_size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – The maximum number of resources contained in the
+underlying API response. If page streaming is performed per-
+resource, this parameter does not affect the return value. If page
+streaming is performed per-page, this determines the maximum number
+of resources in a page.</li>
+<li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
+be retried.</li>
+<li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
+for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
+specified, the timeout applies to each individual attempt.</li>
+<li><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
+that is provided to the method.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.html#google.gax.PageIterator" title="(in google-gax v0.16.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">PageIterator</span></code></a> instance. By default, this
+is an iterable of <a class="reference internal" href="types.html#google.cloud.securitycenter_v1beta1.types.GroupResult" title="google.cloud.securitycenter_v1beta1.types.GroupResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">GroupResult</span></code></a> instances.
+This object can also be configured to iterate over the pages
+of the response through the <cite>options</cite> parameter.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
+failed for any reason.</li>
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
+to a retryable error and retry attempts failed.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.securitycenter_v1beta1.SecurityCenterClient.group_findings">
+<code class="descname">group_findings</code><span class="sig-paren">(</span><em>parent</em>, <em>group_by</em>, <em>filter_=None</em>, <em>read_time=None</em>, <em>page_size=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/securitycenter_v1beta1/gapic/security_center_client.html#SecurityCenterClient.group_findings"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.SecurityCenterClient.group_findings" title="Permalink to this definition">#</a></dt>
+<dd><p>Filters an organization or source’s findings and  groups them by their
+specified properties.</p>
+<p>To group across all sources provide a <code class="docutils literal notranslate"><span class="pre">-</span></code> as the source id.
+Example: /v1beta1/organizations/123/sources/-/findings</p>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">securitycenter_v1beta1</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">securitycenter_v1beta1</span><span class="o">.</span><span class="n">SecurityCenterClient</span><span class="p">()</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">parent</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">source_path</span><span class="p">(</span><span class="s1">&#39;[ORGANIZATION]&#39;</span><span class="p">,</span> <span class="s1">&#39;[SOURCE]&#39;</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``group_by``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">group_by</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Iterate over all results</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">group_findings</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">group_by</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="c1"># process element</span>
+<span class="gp">... </span>    <span class="k">pass</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Alternatively:</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Iterate over results one page at a time</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">group_findings</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">group_by</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">CallOptions</span><span class="p">(</span><span class="n">page_token</span><span class="o">=</span><span class="n">INITIAL_PAGE</span><span class="p">)):</span>
+<span class="gp">... </span>    <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">page</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="c1"># process element</span>
+<span class="gp">... </span>        <span class="k">pass</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Name of the source to groupBy. Its format is
+“organizations/[organization_id]/sources/[source_id]”. To groupBy across
+all sources provide a source_id of <code class="docutils literal notranslate"><span class="pre">-</span></code>. For example:
+organizations/123/sources/-</li>
+<li><strong>group_by</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Expression that defines what assets fields to use for grouping (including
+<code class="docutils literal notranslate"><span class="pre">state</span></code>). The string value should follow SQL syntax: comma separated list
+of fields. For example:
+“parent,resource_name”.</p>
+<p>The following fields are supported:</p>
+<ul>
+<li>resource_name</li>
+<li>category</li>
+<li>state</li>
+<li>parent</li>
+</ul>
+</li>
+<li><strong>filter</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Expression that defines the filter to apply across findings.
+The expression is a list of one or more restrictions combined via logical
+operators <code class="docutils literal notranslate"><span class="pre">AND</span></code> and <code class="docutils literal notranslate"><span class="pre">OR</span></code>.
+Parentheses are not supported, and <code class="docutils literal notranslate"><span class="pre">OR</span></code> has higher precedence than <code class="docutils literal notranslate"><span class="pre">AND</span></code>.</p>
+<p>Restrictions have the form <code class="docutils literal notranslate"><span class="pre">&lt;field&gt;</span> <span class="pre">&lt;operator&gt;</span> <span class="pre">&lt;value&gt;</span></code> and may have a <code class="docutils literal notranslate"><span class="pre">-</span></code>
+character in front of them to indicate negation. Examples include:</p>
+<blockquote>
+<div><ul>
+<li>name</li>
+<li>source_properties.a_property</li>
+<li>security_marks.marks.marka</li>
+</ul>
+</div></blockquote>
+<p>The supported operators are:</p>
+<ul>
+<li><code class="docutils literal notranslate"><span class="pre">=</span></code> for all value types.</li>
+<li><code class="docutils literal notranslate"><span class="pre">&gt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&gt;=</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;=</span></code> for integer values.</li>
+<li><code class="docutils literal notranslate"><span class="pre">:</span></code>, meaning substring matching, for strings.</li>
+</ul>
+<p>The supported value types are:</p>
+<ul>
+<li>string literals in quotes.</li>
+<li>integer literals without quotes.</li>
+<li>boolean literals <code class="docutils literal notranslate"><span class="pre">true</span></code> and <code class="docutils literal notranslate"><span class="pre">false</span></code> without quotes.</li>
+</ul>
+<p>For example, <code class="docutils literal notranslate"><span class="pre">source_properties.size</span> <span class="pre">=</span> <span class="pre">100</span></code> is a valid filter string.</p>
+</li>
+<li><strong>read_time</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.securitycenter_v1beta1.types.Timestamp" title="google.cloud.securitycenter_v1beta1.types.Timestamp"><em>Timestamp</em></a><em>]</em>) – Time used as a reference point when filtering findings. The filter is
+limited to findings existing at the supplied time and their values are
+those at that specific time. Absence of this field will default to the
+API’s version of NOW.
+If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.securitycenter_v1beta1.types.Timestamp" title="google.cloud.securitycenter_v1beta1.types.Timestamp"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timestamp</span></code></a></li>
+<li><strong>page_size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – The maximum number of resources contained in the
+underlying API response. If page streaming is performed per-
+resource, this parameter does not affect the return value. If page
+streaming is performed per-page, this determines the maximum number
+of resources in a page.</li>
+<li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
+be retried.</li>
+<li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
+for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
+specified, the timeout applies to each individual attempt.</li>
+<li><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
+that is provided to the method.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.html#google.gax.PageIterator" title="(in google-gax v0.16.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">PageIterator</span></code></a> instance. By default, this
+is an iterable of <a class="reference internal" href="types.html#google.cloud.securitycenter_v1beta1.types.GroupResult" title="google.cloud.securitycenter_v1beta1.types.GroupResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">GroupResult</span></code></a> instances.
+This object can also be configured to iterate over the pages
+of the response through the <cite>options</cite> parameter.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
+failed for any reason.</li>
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
+to a retryable error and retry attempts failed.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.securitycenter_v1beta1.SecurityCenterClient.list_assets">
+<code class="descname">list_assets</code><span class="sig-paren">(</span><em>parent</em>, <em>filter_=None</em>, <em>order_by=None</em>, <em>read_time=None</em>, <em>compare_duration=None</em>, <em>field_mask=None</em>, <em>page_size=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/securitycenter_v1beta1/gapic/security_center_client.html#SecurityCenterClient.list_assets"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.SecurityCenterClient.list_assets" title="Permalink to this definition">#</a></dt>
+<dd><p>Lists an organization’s assets.</p>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">securitycenter_v1beta1</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">securitycenter_v1beta1</span><span class="o">.</span><span class="n">SecurityCenterClient</span><span class="p">()</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">parent</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">organization_path</span><span class="p">(</span><span class="s1">&#39;[ORGANIZATION]&#39;</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Iterate over all results</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_assets</span><span class="p">(</span><span class="n">parent</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="c1"># process element</span>
+<span class="gp">... </span>    <span class="k">pass</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Alternatively:</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Iterate over results one page at a time</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_assets</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">CallOptions</span><span class="p">(</span><span class="n">page_token</span><span class="o">=</span><span class="n">INITIAL_PAGE</span><span class="p">)):</span>
+<span class="gp">... </span>    <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">page</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="c1"># process element</span>
+<span class="gp">... </span>        <span class="k">pass</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Name of the organization assets should belong to. Its format is
+“organizations/[organization_id]”.</li>
+<li><strong>filter</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Expression that defines the filter to apply across assets.
+The expression is a list of zero or more restrictions combined via logical
+operators <code class="docutils literal notranslate"><span class="pre">AND</span></code> and <code class="docutils literal notranslate"><span class="pre">OR</span></code>.
+Parentheses are not supported, and <code class="docutils literal notranslate"><span class="pre">OR</span></code> has higher precedence than <code class="docutils literal notranslate"><span class="pre">AND</span></code>.</p>
+<p>Restrictions have the form <code class="docutils literal notranslate"><span class="pre">&lt;field&gt;</span> <span class="pre">&lt;operator&gt;</span> <span class="pre">&lt;value&gt;</span></code> and may have a <code class="docutils literal notranslate"><span class="pre">-</span></code>
+character in front of them to indicate negation. The fields map to those
+defined in the Asset resource. Examples include:</p>
+<ul>
+<li>name</li>
+<li>security_center_properties.resource_name</li>
+<li>resource_properties.a_property</li>
+<li>security_marks.marks.marka</li>
+</ul>
+<p>The supported operators are:</p>
+<ul>
+<li><code class="docutils literal notranslate"><span class="pre">=</span></code> for all value types.</li>
+<li><code class="docutils literal notranslate"><span class="pre">&gt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&gt;=</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;=</span></code> for integer values.</li>
+<li><code class="docutils literal notranslate"><span class="pre">:</span></code>, meaning substring matching, for strings.</li>
+</ul>
+<p>The supported value types are:</p>
+<ul>
+<li>string literals in quotes.</li>
+<li>integer literals without quotes.</li>
+<li>boolean literals <code class="docutils literal notranslate"><span class="pre">true</span></code> and <code class="docutils literal notranslate"><span class="pre">false</span></code> without quotes.</li>
+</ul>
+<p>For example, <code class="docutils literal notranslate"><span class="pre">resource_properties.size</span> <span class="pre">=</span> <span class="pre">100</span></code> is a valid filter string.</p>
+</li>
+<li><strong>order_by</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Expression that defines what fields and order to use for sorting. The
+string value should follow SQL syntax: comma separated list of fields. For
+example: “name,resource_properties.a_property”. The default sorting order
+is ascending. To specify descending order for a field, a suffix ” desc”
+should be appended to the field name. For example: “name
+desc,resource_properties.a_property”. Redundant space characters in the
+syntax are insignificant. “name desc,resource_properties.a_property” and ”
+name     desc  ,   resource_properties.a_property  ” are equivalent.</li>
+<li><strong>read_time</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.securitycenter_v1beta1.types.Timestamp" title="google.cloud.securitycenter_v1beta1.types.Timestamp"><em>Timestamp</em></a><em>]</em>) – Time used as a reference point when filtering assets. The filter is limited
+to assets existing at the supplied time and their values are those at that
+specific time. Absence of this field will default to the API’s version of
+NOW.
+If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.securitycenter_v1beta1.types.Timestamp" title="google.cloud.securitycenter_v1beta1.types.Timestamp"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timestamp</span></code></a></li>
+<li><strong>compare_duration</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.securitycenter_v1beta1.types.Duration" title="google.cloud.securitycenter_v1beta1.types.Duration"><em>Duration</em></a><em>]</em>) – <p>When compare_duration is set, the ListAssetResult’s “state” attribute is
+updated to indicate whether the asset was added, removed, or remained
+present during the compare_duration period of time that precedes the
+read_time. This is the time between (read_time -
+compare_duration) and read_time.</p>
+<p>The state value is derived based on the presence of the asset at the two
+points in time. Intermediate state changes between the two times don’t
+affect the result. For example, the results aren’t affected if the asset is
+removed and re-created again.</p>
+<p>Possible “state” values when compare_duration is specified:</p>
+<ul>
+<li>”ADDED”: indicates that the asset was not present before
+compare_duration, but present at read_time.</li>
+<li>”REMOVED”: indicates that the asset was present at the start of
+compare_duration, but not present at read_time.</li>
+<li>”ACTIVE”: indicates that the asset was present at both the
+start and the end of the time period defined by
+compare_duration and read_time.</li>
+</ul>
+<p>If compare_duration is not specified, then the only possible state is
+“UNUSED”, which indicates that the asset is present at read_time.
+If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.securitycenter_v1beta1.types.Duration" title="google.cloud.securitycenter_v1beta1.types.Duration"><code class="xref py py-class docutils literal notranslate"><span class="pre">Duration</span></code></a></p>
+</li>
+<li><strong>field_mask</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.securitycenter_v1beta1.types.FieldMask" title="google.cloud.securitycenter_v1beta1.types.FieldMask"><em>FieldMask</em></a><em>]</em>) – <p>Optional.</p>
+<p>A field mask to specify the ListAssetsResult fields to be listed in the
+response.
+An empty field mask will list all fields.
+If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.securitycenter_v1beta1.types.FieldMask" title="google.cloud.securitycenter_v1beta1.types.FieldMask"><code class="xref py py-class docutils literal notranslate"><span class="pre">FieldMask</span></code></a></p>
+</li>
+<li><strong>page_size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – The maximum number of resources contained in the
+underlying API response. If page streaming is performed per-
+resource, this parameter does not affect the return value. If page
+streaming is performed per-page, this determines the maximum number
+of resources in a page.</li>
+<li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
+be retried.</li>
+<li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
+for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
+specified, the timeout applies to each individual attempt.</li>
+<li><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
+that is provided to the method.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.html#google.gax.PageIterator" title="(in google-gax v0.16.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">PageIterator</span></code></a> instance. By default, this
+is an iterable of <code class="xref py py-class docutils literal notranslate"><span class="pre">ListAssetsResult</span></code> instances.
+This object can also be configured to iterate over the pages
+of the response through the <cite>options</cite> parameter.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
+failed for any reason.</li>
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
+to a retryable error and retry attempts failed.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.securitycenter_v1beta1.SecurityCenterClient.list_findings">
+<code class="descname">list_findings</code><span class="sig-paren">(</span><em>parent</em>, <em>filter_=None</em>, <em>order_by=None</em>, <em>read_time=None</em>, <em>field_mask=None</em>, <em>page_size=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/securitycenter_v1beta1/gapic/security_center_client.html#SecurityCenterClient.list_findings"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.SecurityCenterClient.list_findings" title="Permalink to this definition">#</a></dt>
+<dd><p>Lists an organization or source’s assets.</p>
+<p>To list across all sources provide a <code class="docutils literal notranslate"><span class="pre">-</span></code> as the source id.
+Example: /v1beta1/organizations/123/sources/-/findings</p>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">securitycenter_v1beta1</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">securitycenter_v1beta1</span><span class="o">.</span><span class="n">SecurityCenterClient</span><span class="p">()</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">parent</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">source_path</span><span class="p">(</span><span class="s1">&#39;[ORGANIZATION]&#39;</span><span class="p">,</span> <span class="s1">&#39;[SOURCE]&#39;</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Iterate over all results</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_findings</span><span class="p">(</span><span class="n">parent</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="c1"># process element</span>
+<span class="gp">... </span>    <span class="k">pass</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Alternatively:</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Iterate over results one page at a time</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_findings</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">CallOptions</span><span class="p">(</span><span class="n">page_token</span><span class="o">=</span><span class="n">INITIAL_PAGE</span><span class="p">)):</span>
+<span class="gp">... </span>    <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">page</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="c1"># process element</span>
+<span class="gp">... </span>        <span class="k">pass</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Name of the source the findings belong to. Its format is
+“organizations/[organization_id]/sources/[source_id]”. To list across all
+sources provide a source_id of <code class="docutils literal notranslate"><span class="pre">-</span></code>. For example:
+organizations/123/sources/-</li>
+<li><strong>filter</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Expression that defines the filter to apply across findings.
+The expression is a list of one or more restrictions combined via logical
+operators <code class="docutils literal notranslate"><span class="pre">AND</span></code> and <code class="docutils literal notranslate"><span class="pre">OR</span></code>.
+Parentheses are not supported, and <code class="docutils literal notranslate"><span class="pre">OR</span></code> has higher precedence than <code class="docutils literal notranslate"><span class="pre">AND</span></code>.</p>
+<p>Restrictions have the form <code class="docutils literal notranslate"><span class="pre">&lt;field&gt;</span> <span class="pre">&lt;operator&gt;</span> <span class="pre">&lt;value&gt;</span></code> and may have a <code class="docutils literal notranslate"><span class="pre">-</span></code>
+character in front of them to indicate negation. Examples include:</p>
+<blockquote>
+<div><ul>
+<li>name</li>
+<li>source_properties.a_property</li>
+<li>security_marks.marks.marka</li>
+</ul>
+</div></blockquote>
+<p>The supported operators are:</p>
+<ul>
+<li><code class="docutils literal notranslate"><span class="pre">=</span></code> for all value types.</li>
+<li><code class="docutils literal notranslate"><span class="pre">&gt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&gt;=</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;=</span></code> for integer values.</li>
+<li><code class="docutils literal notranslate"><span class="pre">:</span></code>, meaning substring matching, for strings.</li>
+</ul>
+<p>The supported value types are:</p>
+<ul>
+<li>string literals in quotes.</li>
+<li>integer literals without quotes.</li>
+<li>boolean literals <code class="docutils literal notranslate"><span class="pre">true</span></code> and <code class="docutils literal notranslate"><span class="pre">false</span></code> without quotes.</li>
+</ul>
+<p>For example, <code class="docutils literal notranslate"><span class="pre">source_properties.size</span> <span class="pre">=</span> <span class="pre">100</span></code> is a valid filter string.</p>
+</li>
+<li><strong>order_by</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Expression that defines what fields and order to use for sorting. The
+string value should follow SQL syntax: comma separated list of fields. For
+example: “name,resource_properties.a_property”. The default sorting order
+is ascending. To specify descending order for a field, a suffix ” desc”
+should be appended to the field name. For example: “name
+desc,source_properties.a_property”. Redundant space characters in the
+syntax are insignificant. “name desc,source_properties.a_property” and ”
+name     desc  ,   source_properties.a_property  ” are equivalent.</li>
+<li><strong>read_time</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.securitycenter_v1beta1.types.Timestamp" title="google.cloud.securitycenter_v1beta1.types.Timestamp"><em>Timestamp</em></a><em>]</em>) – Time used as a reference point when filtering findings. The filter is
+limited to findings existing at the supplied time and their values are
+those at that specific time. Absence of this field will default to the
+API’s version of NOW.
+If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.securitycenter_v1beta1.types.Timestamp" title="google.cloud.securitycenter_v1beta1.types.Timestamp"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timestamp</span></code></a></li>
+<li><strong>field_mask</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.securitycenter_v1beta1.types.FieldMask" title="google.cloud.securitycenter_v1beta1.types.FieldMask"><em>FieldMask</em></a><em>]</em>) – <p>Optional.</p>
+<p>A field mask to specify the Finding fields to be listed in the response.
+An empty field mask will list all fields.
+If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.securitycenter_v1beta1.types.FieldMask" title="google.cloud.securitycenter_v1beta1.types.FieldMask"><code class="xref py py-class docutils literal notranslate"><span class="pre">FieldMask</span></code></a></p>
+</li>
+<li><strong>page_size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – The maximum number of resources contained in the
+underlying API response. If page streaming is performed per-
+resource, this parameter does not affect the return value. If page
+streaming is performed per-page, this determines the maximum number
+of resources in a page.</li>
+<li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
+be retried.</li>
+<li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
+for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
+specified, the timeout applies to each individual attempt.</li>
+<li><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
+that is provided to the method.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.html#google.gax.PageIterator" title="(in google-gax v0.16.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">PageIterator</span></code></a> instance. By default, this
+is an iterable of <a class="reference internal" href="types.html#google.cloud.securitycenter_v1beta1.types.Finding" title="google.cloud.securitycenter_v1beta1.types.Finding"><code class="xref py py-class docutils literal notranslate"><span class="pre">Finding</span></code></a> instances.
+This object can also be configured to iterate over the pages
+of the response through the <cite>options</cite> parameter.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
+failed for any reason.</li>
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
+to a retryable error and retry attempts failed.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.securitycenter_v1beta1.SecurityCenterClient.list_sources">
+<code class="descname">list_sources</code><span class="sig-paren">(</span><em>parent</em>, <em>page_size=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/securitycenter_v1beta1/gapic/security_center_client.html#SecurityCenterClient.list_sources"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.SecurityCenterClient.list_sources" title="Permalink to this definition">#</a></dt>
+<dd><p>Lists all sources belonging to an organization.</p>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">securitycenter_v1beta1</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">securitycenter_v1beta1</span><span class="o">.</span><span class="n">SecurityCenterClient</span><span class="p">()</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">parent</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">organization_path</span><span class="p">(</span><span class="s1">&#39;[ORGANIZATION]&#39;</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Iterate over all results</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_sources</span><span class="p">(</span><span class="n">parent</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="c1"># process element</span>
+<span class="gp">... </span>    <span class="k">pass</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Alternatively:</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Iterate over results one page at a time</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_sources</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">CallOptions</span><span class="p">(</span><span class="n">page_token</span><span class="o">=</span><span class="n">INITIAL_PAGE</span><span class="p">)):</span>
+<span class="gp">... </span>    <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">page</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="c1"># process element</span>
+<span class="gp">... </span>        <span class="k">pass</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Resource name of the parent of sources to list. Its format should be
+“organizations/[organization_id]”.</li>
+<li><strong>page_size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – The maximum number of resources contained in the
+underlying API response. If page streaming is performed per-
+resource, this parameter does not affect the return value. If page
+streaming is performed per-page, this determines the maximum number
+of resources in a page.</li>
+<li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
+be retried.</li>
+<li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
+for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
+specified, the timeout applies to each individual attempt.</li>
+<li><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
+that is provided to the method.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.html#google.gax.PageIterator" title="(in google-gax v0.16.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">PageIterator</span></code></a> instance. By default, this
+is an iterable of <a class="reference internal" href="types.html#google.cloud.securitycenter_v1beta1.types.Source" title="google.cloud.securitycenter_v1beta1.types.Source"><code class="xref py py-class docutils literal notranslate"><span class="pre">Source</span></code></a> instances.
+This object can also be configured to iterate over the pages
+of the response through the <cite>options</cite> parameter.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
+failed for any reason.</li>
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
+to a retryable error and retry attempts failed.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="google.cloud.securitycenter_v1beta1.SecurityCenterClient.organization_path">
+<em class="property">classmethod </em><code class="descname">organization_path</code><span class="sig-paren">(</span><em>organization</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/securitycenter_v1beta1/gapic/security_center_client.html#SecurityCenterClient.organization_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.SecurityCenterClient.organization_path" title="Permalink to this definition">#</a></dt>
+<dd><p>Return a fully-qualified organization string.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="google.cloud.securitycenter_v1beta1.SecurityCenterClient.organization_settings_path">
+<em class="property">classmethod </em><code class="descname">organization_settings_path</code><span class="sig-paren">(</span><em>organization</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/securitycenter_v1beta1/gapic/security_center_client.html#SecurityCenterClient.organization_settings_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.SecurityCenterClient.organization_settings_path" title="Permalink to this definition">#</a></dt>
+<dd><p>Return a fully-qualified organization_settings string.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.securitycenter_v1beta1.SecurityCenterClient.run_asset_discovery">
+<code class="descname">run_asset_discovery</code><span class="sig-paren">(</span><em>parent</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/securitycenter_v1beta1/gapic/security_center_client.html#SecurityCenterClient.run_asset_discovery"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.SecurityCenterClient.run_asset_discovery" title="Permalink to this definition">#</a></dt>
+<dd><p>Runs asset discovery. The discovery is tracked with a long-running
+operation.</p>
+<p>This API can only be called with limited frequency for an organization. If
+it is called too frequently the caller will receive a TOO_MANY_REQUESTS
+error.</p>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">securitycenter_v1beta1</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">securitycenter_v1beta1</span><span class="o">.</span><span class="n">SecurityCenterClient</span><span class="p">()</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">parent</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">organization_path</span><span class="p">(</span><span class="s1">&#39;[ORGANIZATION]&#39;</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">run_asset_discovery</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">callback</span><span class="p">(</span><span class="n">operation_future</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="c1"># Handle result.</span>
+<span class="gp">... </span>    <span class="n">result</span> <span class="o">=</span> <span class="n">operation_future</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">response</span><span class="o">.</span><span class="n">add_done_callback</span><span class="p">(</span><span class="n">callback</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Handle metadata.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">metadata</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">metadata</span><span class="p">()</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Name of the organization to run asset discovery for. Its format is
+“organizations/[organization_id]”.</li>
+<li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
+be retried.</li>
+<li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
+for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
+specified, the timeout applies to each individual attempt.</li>
+<li><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
+that is provided to the method.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <code class="xref py py-class docutils literal notranslate"><span class="pre">_OperationFuture</span></code> instance.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
+failed for any reason.</li>
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
+to a retryable error and retry attempts failed.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.securitycenter_v1beta1.SecurityCenterClient.set_finding_state">
+<code class="descname">set_finding_state</code><span class="sig-paren">(</span><em>name</em>, <em>state</em>, <em>start_time</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/securitycenter_v1beta1/gapic/security_center_client.html#SecurityCenterClient.set_finding_state"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.SecurityCenterClient.set_finding_state" title="Permalink to this definition">#</a></dt>
+<dd><p>Updates the state of a finding.</p>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">securitycenter_v1beta1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud.securitycenter_v1beta1</span> <span class="k">import</span> <span class="n">enums</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">securitycenter_v1beta1</span><span class="o">.</span><span class="n">SecurityCenterClient</span><span class="p">()</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">name</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">finding_path</span><span class="p">(</span><span class="s1">&#39;[ORGANIZATION]&#39;</span><span class="p">,</span> <span class="s1">&#39;[SOURCE]&#39;</span><span class="p">,</span> <span class="s1">&#39;[FINDING]&#39;</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``state``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">state</span> <span class="o">=</span> <span class="n">enums</span><span class="o">.</span><span class="n">Finding</span><span class="o">.</span><span class="n">State</span><span class="o">.</span><span class="n">STATE_UNSPECIFIED</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``start_time``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">start_time</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">set_finding_state</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">start_time</span><span class="p">)</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The relative resource name of the finding. See:
+<a class="reference external" href="https://cloud.google.com/apis/design/resource_names#relative_resource_name">https://cloud.google.com/apis/design/resource_names#relative_resource_name</a>
+Example:
+“organizations/123/sources/456/finding/789”.</li>
+<li><strong>state</strong> (<em>State</em>) – The desired State of the finding.</li>
+<li><strong>start_time</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.securitycenter_v1beta1.types.Timestamp" title="google.cloud.securitycenter_v1beta1.types.Timestamp"><em>Timestamp</em></a><em>]</em>) – The time at which the updated state takes effect.
+If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.securitycenter_v1beta1.types.Timestamp" title="google.cloud.securitycenter_v1beta1.types.Timestamp"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timestamp</span></code></a></li>
+<li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
+be retried.</li>
+<li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
+for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
+specified, the timeout applies to each individual attempt.</li>
+<li><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
+that is provided to the method.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="types.html#google.cloud.securitycenter_v1beta1.types.Finding" title="google.cloud.securitycenter_v1beta1.types.Finding"><code class="xref py py-class docutils literal notranslate"><span class="pre">Finding</span></code></a> instance.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
+failed for any reason.</li>
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
+to a retryable error and retry attempts failed.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.securitycenter_v1beta1.SecurityCenterClient.set_iam_policy">
+<code class="descname">set_iam_policy</code><span class="sig-paren">(</span><em>resource</em>, <em>policy</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/securitycenter_v1beta1/gapic/security_center_client.html#SecurityCenterClient.set_iam_policy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.SecurityCenterClient.set_iam_policy" title="Permalink to this definition">#</a></dt>
+<dd><p>Sets the access control policy on the specified Source.</p>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">securitycenter_v1beta1</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">securitycenter_v1beta1</span><span class="o">.</span><span class="n">SecurityCenterClient</span><span class="p">()</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">resource</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">source_path</span><span class="p">(</span><span class="s1">&#39;[ORGANIZATION]&#39;</span><span class="p">,</span> <span class="s1">&#39;[SOURCE]&#39;</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``policy``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">policy</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">set_iam_policy</span><span class="p">(</span><span class="n">resource</span><span class="p">,</span> <span class="n">policy</span><span class="p">)</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>resource</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – REQUIRED: The resource for which the policy is being specified.
+<code class="docutils literal notranslate"><span class="pre">resource</span></code> is usually specified as a path. For example, a Project
+resource is specified as <code class="docutils literal notranslate"><span class="pre">projects/{project}</span></code>.</li>
+<li><strong>policy</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.securitycenter_v1beta1.types.Policy" title="google.cloud.securitycenter_v1beta1.types.Policy"><em>Policy</em></a><em>]</em>) – REQUIRED: The complete policy to be applied to the <code class="docutils literal notranslate"><span class="pre">resource</span></code>. The size of
+the policy is limited to a few 10s of KB. An empty policy is a
+valid policy but certain Cloud Platform services (such as Projects)
+might reject them.
+If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.securitycenter_v1beta1.types.Policy" title="google.cloud.securitycenter_v1beta1.types.Policy"><code class="xref py py-class docutils literal notranslate"><span class="pre">Policy</span></code></a></li>
+<li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
+be retried.</li>
+<li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
+for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
+specified, the timeout applies to each individual attempt.</li>
+<li><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
+that is provided to the method.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="types.html#google.cloud.securitycenter_v1beta1.types.Policy" title="google.cloud.securitycenter_v1beta1.types.Policy"><code class="xref py py-class docutils literal notranslate"><span class="pre">Policy</span></code></a> instance.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
+failed for any reason.</li>
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
+to a retryable error and retry attempts failed.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="google.cloud.securitycenter_v1beta1.SecurityCenterClient.source_path">
+<em class="property">classmethod </em><code class="descname">source_path</code><span class="sig-paren">(</span><em>organization</em>, <em>source</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/securitycenter_v1beta1/gapic/security_center_client.html#SecurityCenterClient.source_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.SecurityCenterClient.source_path" title="Permalink to this definition">#</a></dt>
+<dd><p>Return a fully-qualified source string.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.securitycenter_v1beta1.SecurityCenterClient.test_iam_permissions">
+<code class="descname">test_iam_permissions</code><span class="sig-paren">(</span><em>resource</em>, <em>permissions</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/securitycenter_v1beta1/gapic/security_center_client.html#SecurityCenterClient.test_iam_permissions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.SecurityCenterClient.test_iam_permissions" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns the permissions that a caller has on the specified source.</p>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">securitycenter_v1beta1</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">securitycenter_v1beta1</span><span class="o">.</span><span class="n">SecurityCenterClient</span><span class="p">()</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">resource</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">source_path</span><span class="p">(</span><span class="s1">&#39;[ORGANIZATION]&#39;</span><span class="p">,</span> <span class="s1">&#39;[SOURCE]&#39;</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``permissions``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">permissions</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">test_iam_permissions</span><span class="p">(</span><span class="n">resource</span><span class="p">,</span> <span class="n">permissions</span><span class="p">)</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>resource</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – REQUIRED: The resource for which the policy detail is being requested.
+<code class="docutils literal notranslate"><span class="pre">resource</span></code> is usually specified as a path. For example, a Project
+resource is specified as <code class="docutils literal notranslate"><span class="pre">projects/{project}</span></code>.</li>
+<li><strong>permissions</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em>) – The set of permissions to check for the <code class="docutils literal notranslate"><span class="pre">resource</span></code>. Permissions with
+wildcards (such as ‘*’ or ‘storage.*’) are not allowed. For more
+information see
+<a class="reference external" href="https://cloud.google.com/iam/docs/overview#permissions">IAM Overview</a>.</li>
+<li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
+be retried.</li>
+<li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
+for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
+specified, the timeout applies to each individual attempt.</li>
+<li><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
+that is provided to the method.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="types.html#google.cloud.securitycenter_v1beta1.types.TestIamPermissionsResponse" title="google.cloud.securitycenter_v1beta1.types.TestIamPermissionsResponse"><code class="xref py py-class docutils literal notranslate"><span class="pre">TestIamPermissionsResponse</span></code></a> instance.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
+failed for any reason.</li>
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
+to a retryable error and retry attempts failed.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.securitycenter_v1beta1.SecurityCenterClient.update_finding">
+<code class="descname">update_finding</code><span class="sig-paren">(</span><em>finding</em>, <em>update_mask=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/securitycenter_v1beta1/gapic/security_center_client.html#SecurityCenterClient.update_finding"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.SecurityCenterClient.update_finding" title="Permalink to this definition">#</a></dt>
+<dd><p>Creates or updates a finding. The corresponding source must exist for a
+finding creation to succeed.</p>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">securitycenter_v1beta1</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">securitycenter_v1beta1</span><span class="o">.</span><span class="n">SecurityCenterClient</span><span class="p">()</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``finding``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">finding</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">update_finding</span><span class="p">(</span><span class="n">finding</span><span class="p">)</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>finding</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.securitycenter_v1beta1.types.Finding" title="google.cloud.securitycenter_v1beta1.types.Finding"><em>Finding</em></a><em>]</em>) – <p>The finding resource to update or create if it does not already exist.
+parent, security_marks, and update_time will be ignored.</p>
+<p>In the case of creation, the finding id portion of the name must
+alphanumeric and less than or equal to 32 characters and greater than 0
+characters in length.
+If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.securitycenter_v1beta1.types.Finding" title="google.cloud.securitycenter_v1beta1.types.Finding"><code class="xref py py-class docutils literal notranslate"><span class="pre">Finding</span></code></a></p>
+</li>
+<li><strong>update_mask</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.securitycenter_v1beta1.types.FieldMask" title="google.cloud.securitycenter_v1beta1.types.FieldMask"><em>FieldMask</em></a><em>]</em>) – The FieldMask to use when updating the finding resource. This field is
+ignored if the finding does not already exist and the finding is created.
+If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.securitycenter_v1beta1.types.FieldMask" title="google.cloud.securitycenter_v1beta1.types.FieldMask"><code class="xref py py-class docutils literal notranslate"><span class="pre">FieldMask</span></code></a></li>
+<li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
+be retried.</li>
+<li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
+for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
+specified, the timeout applies to each individual attempt.</li>
+<li><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
+that is provided to the method.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="types.html#google.cloud.securitycenter_v1beta1.types.Finding" title="google.cloud.securitycenter_v1beta1.types.Finding"><code class="xref py py-class docutils literal notranslate"><span class="pre">Finding</span></code></a> instance.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
+failed for any reason.</li>
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
+to a retryable error and retry attempts failed.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.securitycenter_v1beta1.SecurityCenterClient.update_organization_settings">
+<code class="descname">update_organization_settings</code><span class="sig-paren">(</span><em>organization_settings</em>, <em>update_mask=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/securitycenter_v1beta1/gapic/security_center_client.html#SecurityCenterClient.update_organization_settings"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.SecurityCenterClient.update_organization_settings" title="Permalink to this definition">#</a></dt>
+<dd><p>Updates an organization’s settings.</p>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">securitycenter_v1beta1</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">securitycenter_v1beta1</span><span class="o">.</span><span class="n">SecurityCenterClient</span><span class="p">()</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``organization_settings``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">organization_settings</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">update_organization_settings</span><span class="p">(</span><span class="n">organization_settings</span><span class="p">)</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>organization_settings</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.securitycenter_v1beta1.types.OrganizationSettings" title="google.cloud.securitycenter_v1beta1.types.OrganizationSettings"><em>OrganizationSettings</em></a><em>]</em>) – The organization settings resource to update.
+If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.securitycenter_v1beta1.types.OrganizationSettings" title="google.cloud.securitycenter_v1beta1.types.OrganizationSettings"><code class="xref py py-class docutils literal notranslate"><span class="pre">OrganizationSettings</span></code></a></li>
+<li><strong>update_mask</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.securitycenter_v1beta1.types.FieldMask" title="google.cloud.securitycenter_v1beta1.types.FieldMask"><em>FieldMask</em></a><em>]</em>) – The FieldMask to use when updating the settings resource.
+If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.securitycenter_v1beta1.types.FieldMask" title="google.cloud.securitycenter_v1beta1.types.FieldMask"><code class="xref py py-class docutils literal notranslate"><span class="pre">FieldMask</span></code></a></li>
+<li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
+be retried.</li>
+<li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
+for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
+specified, the timeout applies to each individual attempt.</li>
+<li><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
+that is provided to the method.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="types.html#google.cloud.securitycenter_v1beta1.types.OrganizationSettings" title="google.cloud.securitycenter_v1beta1.types.OrganizationSettings"><code class="xref py py-class docutils literal notranslate"><span class="pre">OrganizationSettings</span></code></a> instance.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
+failed for any reason.</li>
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
+to a retryable error and retry attempts failed.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.securitycenter_v1beta1.SecurityCenterClient.update_security_marks">
+<code class="descname">update_security_marks</code><span class="sig-paren">(</span><em>security_marks</em>, <em>update_mask=None</em>, <em>start_time=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/securitycenter_v1beta1/gapic/security_center_client.html#SecurityCenterClient.update_security_marks"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.SecurityCenterClient.update_security_marks" title="Permalink to this definition">#</a></dt>
+<dd><p>Updates security marks.</p>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">securitycenter_v1beta1</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">securitycenter_v1beta1</span><span class="o">.</span><span class="n">SecurityCenterClient</span><span class="p">()</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``security_marks``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">security_marks</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">update_security_marks</span><span class="p">(</span><span class="n">security_marks</span><span class="p">)</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>security_marks</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.securitycenter_v1beta1.types.SecurityMarks" title="google.cloud.securitycenter_v1beta1.types.SecurityMarks"><em>SecurityMarks</em></a><em>]</em>) – The security marks resource to update.
+If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.securitycenter_v1beta1.types.SecurityMarks" title="google.cloud.securitycenter_v1beta1.types.SecurityMarks"><code class="xref py py-class docutils literal notranslate"><span class="pre">SecurityMarks</span></code></a></li>
+<li><strong>update_mask</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.securitycenter_v1beta1.types.FieldMask" title="google.cloud.securitycenter_v1beta1.types.FieldMask"><em>FieldMask</em></a><em>]</em>) – The FieldMask to use when updating the security marks resource.
+If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.securitycenter_v1beta1.types.FieldMask" title="google.cloud.securitycenter_v1beta1.types.FieldMask"><code class="xref py py-class docutils literal notranslate"><span class="pre">FieldMask</span></code></a></li>
+<li><strong>start_time</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.securitycenter_v1beta1.types.Timestamp" title="google.cloud.securitycenter_v1beta1.types.Timestamp"><em>Timestamp</em></a><em>]</em>) – The time at which the updated SecurityMarks take effect.
+If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.securitycenter_v1beta1.types.Timestamp" title="google.cloud.securitycenter_v1beta1.types.Timestamp"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timestamp</span></code></a></li>
+<li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
+be retried.</li>
+<li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
+for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
+specified, the timeout applies to each individual attempt.</li>
+<li><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
+that is provided to the method.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="types.html#google.cloud.securitycenter_v1beta1.types.SecurityMarks" title="google.cloud.securitycenter_v1beta1.types.SecurityMarks"><code class="xref py py-class docutils literal notranslate"><span class="pre">SecurityMarks</span></code></a> instance.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
+failed for any reason.</li>
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
+to a retryable error and retry attempts failed.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.securitycenter_v1beta1.SecurityCenterClient.update_source">
+<code class="descname">update_source</code><span class="sig-paren">(</span><em>source</em>, <em>update_mask=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/securitycenter_v1beta1/gapic/security_center_client.html#SecurityCenterClient.update_source"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.SecurityCenterClient.update_source" title="Permalink to this definition">#</a></dt>
+<dd><p>Updates a source.</p>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">securitycenter_v1beta1</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">securitycenter_v1beta1</span><span class="o">.</span><span class="n">SecurityCenterClient</span><span class="p">()</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``source``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">source</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">update_source</span><span class="p">(</span><span class="n">source</span><span class="p">)</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>source</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.securitycenter_v1beta1.types.Source" title="google.cloud.securitycenter_v1beta1.types.Source"><em>Source</em></a><em>]</em>) – The source resource to update.
+If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.securitycenter_v1beta1.types.Source" title="google.cloud.securitycenter_v1beta1.types.Source"><code class="xref py py-class docutils literal notranslate"><span class="pre">Source</span></code></a></li>
+<li><strong>update_mask</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.securitycenter_v1beta1.types.FieldMask" title="google.cloud.securitycenter_v1beta1.types.FieldMask"><em>FieldMask</em></a><em>]</em>) – The FieldMask to use when updating the source resource.
+If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.securitycenter_v1beta1.types.FieldMask" title="google.cloud.securitycenter_v1beta1.types.FieldMask"><code class="xref py py-class docutils literal notranslate"><span class="pre">FieldMask</span></code></a></li>
+<li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
+be retried.</li>
+<li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
+for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
+specified, the timeout applies to each individual attempt.</li>
+<li><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
+that is provided to the method.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="types.html#google.cloud.securitycenter_v1beta1.types.Source" title="google.cloud.securitycenter_v1beta1.types.Source"><code class="xref py py-class docutils literal notranslate"><span class="pre">Source</span></code></a> instance.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
+failed for any reason.</li>
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
+to a retryable error and retry attempts failed.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">google-cloud</a></h1>
+
+
+
+<p class="blurb">Google Cloud Client Libraries for Python</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=GoogleCloudPlatform&repo=google-cloud-python&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../core/index.html">Core Libraries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../asset/index.html">Asset Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../automl/index.html">AutoML</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../bigquery/index.html">BigQuery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../bigquery_datatransfer/index.html">BigQuery Data-Transfer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../bigtable/index.html">Bigtable</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../container/index.html">Container</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dataproc/index.html">Dataproc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../datastore/index.html">Datastore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dlp/index.html">Data Loss Prevention</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dns/index.html">DNS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../firestore/index.html">Firestore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../iot/index.html">IoT</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../kms/index.html">Key Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../language/index.html">Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pubsub/index.html">PubSub</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../oslogin/index.html">OSLogin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../redis/index.html">Redis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../resource-manager/index.html">Resource Manager</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../runtimeconfig/index.html">Python Client for Google Cloud RuntimeConfig</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../runtimeconfig/index.html#api-reference">API Reference</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Security Center</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../websecurityscanner/index.html">Security Scanner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../spanner/index.html">Spanner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../speech/index.html">Speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../storage/index.html">Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tasks/index.html">Tasks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../texttospeech/index.html">Text-to-Speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../translate/index.html">Translate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../vision/index.html">Vision</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../videointelligence/index.html">Video Intelligence</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../error-reporting/index.html">Stackdriver Error Reporting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../logging/index.html">Stackdriver Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../monitoring/index.html">Stackdriver Monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../trace/index.html">Stackdriver Trace</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../releases.html">Release History</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Python Client for Cloud Security Command Center API (Alpha)</a><ul>
+      <li>Previous: <a href="../../index.html" title="previous chapter">Python Client for Cloud Security Command Center API (Alpha)</a></li>
+      <li>Next: <a href="types.html" title="next chapter">Types for Cloud Security Command Center API Client</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2014-2017, Google.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../../../_sources/securitycenter/gapic/v1beta1/api.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/GoogleCloudPlatform/google-cloud-python" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

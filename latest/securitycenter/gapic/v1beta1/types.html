@@ -1,0 +1,1685 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Types for Cloud Security Command Center API Client &#8212; google-cloud bebbb07 documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Python Client for Web Security Scanner API" href="../../../websecurityscanner/index.html" />
+    <link rel="prev" title="Client for Cloud Security Command Center API" href="api.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="module-google.cloud.securitycenter_v1beta1.types">
+<span id="types-for-cloud-security-command-center-api-client"></span><h1>Types for Cloud Security Command Center API Client<a class="headerlink" href="#module-google.cloud.securitycenter_v1beta1.types" title="Permalink to this headline">#</a></h1>
+<dl class="class">
+<dt id="google.cloud.securitycenter_v1beta1.types.Any">
+<em class="property">class </em><code class="descclassname">google.cloud.securitycenter_v1beta1.types.</code><code class="descname">Any</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.Any" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.securitycenter_v1beta1.types.Asset">
+<em class="property">class </em><code class="descclassname">google.cloud.securitycenter_v1beta1.types.</code><code class="descname">Asset</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.Asset" title="Permalink to this definition">#</a></dt>
+<dd><p>Security Center’s representation of a Google Cloud Platform resource.</p>
+<p>The Asset is a resource of Security Center that is meant to capture
+information regarding a single Google Cloud Platform resource. All
+modifications to an Asset are only within the context of Security Center
+and do not effect the referenced Google Cloud Platform resource.</p>
+<dl class="attribute">
+<dt id="google.cloud.securitycenter_v1beta1.types.Asset.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.Asset.name" title="Permalink to this definition">#</a></dt>
+<dd><p>The relative resource name of this asset. See: <a class="reference external" href="https://cloud.g">https://cloud.g</a>
+oogle.com/apis/design/resource_names#relative_resource_name
+Example: “organizations/123/assets/456”.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.securitycenter_v1beta1.types.Asset.security_center_properties">
+<code class="descname">security_center_properties</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.Asset.security_center_properties" title="Permalink to this definition">#</a></dt>
+<dd><p>Security Center managed properties. These properties are
+managed by Security Center and cannot be modified by the user.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.securitycenter_v1beta1.types.Asset.resource_properties">
+<code class="descname">resource_properties</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.Asset.resource_properties" title="Permalink to this definition">#</a></dt>
+<dd><p>Resource managed properties. These properties are managed and
+defined by the Google Cloud Platform resource and cannot be
+modified by the user.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.securitycenter_v1beta1.types.Asset.security_marks">
+<code class="descname">security_marks</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.Asset.security_marks" title="Permalink to this definition">#</a></dt>
+<dd><p>User specified security marks. These marks are entirely
+managed by the user and come from the SecurityMarks resource
+belonging to the asset.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.securitycenter_v1beta1.types.Asset.create_time">
+<code class="descname">create_time</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.Asset.create_time" title="Permalink to this definition">#</a></dt>
+<dd><p>The time at which the asset was created in Security Center.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.securitycenter_v1beta1.types.Asset.update_time">
+<code class="descname">update_time</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.Asset.update_time" title="Permalink to this definition">#</a></dt>
+<dd><p>The time at which the asset was last updated, added, or
+deleted in Security Center.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.securitycenter_v1beta1.types.Asset.ResourcePropertiesEntry">
+<em class="property">class </em><code class="descname">ResourcePropertiesEntry</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.Asset.ResourcePropertiesEntry" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.securitycenter_v1beta1.types.Asset.SecurityCenterProperties">
+<em class="property">class </em><code class="descname">SecurityCenterProperties</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.Asset.SecurityCenterProperties" title="Permalink to this definition">#</a></dt>
+<dd><p>Security Center managed properties. These properties are managed by
+Security Center and cannot be modified by the user.</p>
+<dl class="attribute">
+<dt id="google.cloud.securitycenter_v1beta1.types.Asset.SecurityCenterProperties.resource_name">
+<code class="descname">resource_name</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.Asset.SecurityCenterProperties.resource_name" title="Permalink to this definition">#</a></dt>
+<dd><p>The full resource name of the Google Cloud Platform resource
+this asset represents. This field is immutable after create
+time. See: <a class="reference external" href="https://cloud.google.com/apis/design/resource_name">https://cloud.google.com/apis/design/resource_name</a>
+s#full_resource_name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.securitycenter_v1beta1.types.Asset.SecurityCenterProperties.resource_type">
+<code class="descname">resource_type</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.Asset.SecurityCenterProperties.resource_type" title="Permalink to this definition">#</a></dt>
+<dd><p>The type of the Google Cloud resource. Examples include:
+APPLICATION, PROJECT, and ORGANIZATION. This is a case
+insensitive field defined by Security Center and/or the
+producer of the resource and is immutable after create time.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.securitycenter_v1beta1.types.Asset.SecurityCenterProperties.resource_parent">
+<code class="descname">resource_parent</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.Asset.SecurityCenterProperties.resource_parent" title="Permalink to this definition">#</a></dt>
+<dd><p>The full resource name of the immediate parent of the
+resource. See: <a class="reference external" href="https://cloud.google.com/apis/design/resource_">https://cloud.google.com/apis/design/resource_</a>
+names#full_resource_name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.securitycenter_v1beta1.types.Asset.SecurityCenterProperties.resource_project">
+<code class="descname">resource_project</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.Asset.SecurityCenterProperties.resource_project" title="Permalink to this definition">#</a></dt>
+<dd><p>The full resource name of the project the resource belongs to.
+See: <a class="reference external" href="https://cloud.google.com/apis/design/resource_names#full">https://cloud.google.com/apis/design/resource_names#full</a>
+_resource_name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.securitycenter_v1beta1.types.Asset.SecurityCenterProperties.resource_owners">
+<code class="descname">resource_owners</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.Asset.SecurityCenterProperties.resource_owners" title="Permalink to this definition">#</a></dt>
+<dd><p>Owners of the Google Cloud resource.</p>
+</dd></dl>
+
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.securitycenter_v1beta1.types.Binding">
+<em class="property">class </em><code class="descclassname">google.cloud.securitycenter_v1beta1.types.</code><code class="descname">Binding</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.Binding" title="Permalink to this definition">#</a></dt>
+<dd><p>Associates <code class="docutils literal notranslate"><span class="pre">members</span></code> with a <code class="docutils literal notranslate"><span class="pre">role</span></code>.</p>
+<dl class="attribute">
+<dt id="google.cloud.securitycenter_v1beta1.types.Binding.role">
+<code class="descname">role</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.Binding.role" title="Permalink to this definition">#</a></dt>
+<dd><p>Role that is assigned to <code class="docutils literal notranslate"><span class="pre">members</span></code>. For example,
+<code class="docutils literal notranslate"><span class="pre">roles/viewer</span></code>, <code class="docutils literal notranslate"><span class="pre">roles/editor</span></code>, or <code class="docutils literal notranslate"><span class="pre">roles/owner</span></code>.
+Required</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.securitycenter_v1beta1.types.Binding.members">
+<code class="descname">members</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.Binding.members" title="Permalink to this definition">#</a></dt>
+<dd><p>Specifies the identities requesting access for a Cloud
+Platform resource. <code class="docutils literal notranslate"><span class="pre">members</span></code> can have the following values:
+-  <code class="docutils literal notranslate"><span class="pre">allUsers</span></code>: A special identifier that represents anyone
+who is on    the internet; with or without a Google account.
+-  <code class="docutils literal notranslate"><span class="pre">allAuthenticatedUsers</span></code>: A special identifier that
+represents    anyone who is authenticated with a Google
+account or a service    account.  -  <code class="docutils literal notranslate"><span class="pre">user:{emailid}</span></code>: An
+email address that represents a specific    Google account.
+For example, <code class="docutils literal notranslate"><span class="pre">alice&#64;gmail.com</span></code> or    <code class="docutils literal notranslate"><span class="pre">joe&#64;example.com</span></code>.  -
+<code class="docutils literal notranslate"><span class="pre">serviceAccount:{emailid}</span></code>: An email address that represents
+a    service account. For example,    <code class="docutils literal notranslate"><span class="pre">my-other-</span>
+<span class="pre">app&#64;appspot.gserviceaccount.com</span></code>.  -  <code class="docutils literal notranslate"><span class="pre">group:{emailid}</span></code>: An
+email address that represents a Google group.    For example,
+<code class="docutils literal notranslate"><span class="pre">admins&#64;example.com</span></code>.  -  <code class="docutils literal notranslate"><span class="pre">domain:{domain}</span></code>: A Google Apps
+domain name that represents all    the users of that domain.
+For example, <code class="docutils literal notranslate"><span class="pre">google.com</span></code> or    <code class="docutils literal notranslate"><span class="pre">example.com</span></code>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.securitycenter_v1beta1.types.BindingDelta">
+<em class="property">class </em><code class="descclassname">google.cloud.securitycenter_v1beta1.types.</code><code class="descname">BindingDelta</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.BindingDelta" title="Permalink to this definition">#</a></dt>
+<dd><p>One delta entry for Binding. Each individual change (only one member in
+each entry) to a binding will be a separate entry.</p>
+<dl class="attribute">
+<dt id="google.cloud.securitycenter_v1beta1.types.BindingDelta.action">
+<code class="descname">action</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.BindingDelta.action" title="Permalink to this definition">#</a></dt>
+<dd><p>The action that was performed on a Binding. Required</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.securitycenter_v1beta1.types.BindingDelta.role">
+<code class="descname">role</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.BindingDelta.role" title="Permalink to this definition">#</a></dt>
+<dd><p>Role that is assigned to <code class="docutils literal notranslate"><span class="pre">members</span></code>. For example,
+<code class="docutils literal notranslate"><span class="pre">roles/viewer</span></code>, <code class="docutils literal notranslate"><span class="pre">roles/editor</span></code>, or <code class="docutils literal notranslate"><span class="pre">roles/owner</span></code>.
+Required</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.securitycenter_v1beta1.types.BindingDelta.member">
+<code class="descname">member</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.BindingDelta.member" title="Permalink to this definition">#</a></dt>
+<dd><p>A single identity requesting access for a Cloud Platform
+resource. Follows the same format of Binding.members. Required</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.securitycenter_v1beta1.types.CancelOperationRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.securitycenter_v1beta1.types.</code><code class="descname">CancelOperationRequest</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.CancelOperationRequest" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.securitycenter_v1beta1.types.CreateFindingRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.securitycenter_v1beta1.types.</code><code class="descname">CreateFindingRequest</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.CreateFindingRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request message for creating a finding.</p>
+<dl class="attribute">
+<dt id="google.cloud.securitycenter_v1beta1.types.CreateFindingRequest.parent">
+<code class="descname">parent</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.CreateFindingRequest.parent" title="Permalink to this definition">#</a></dt>
+<dd><p>Resource name of the new finding’s parent. Its format should
+be “organizations/[organization_id]/sources/[source_id]”.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.securitycenter_v1beta1.types.CreateFindingRequest.finding_id">
+<code class="descname">finding_id</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.CreateFindingRequest.finding_id" title="Permalink to this definition">#</a></dt>
+<dd><p>Unique identifier provided by the client within the parent
+scope. It must be alphanumeric and less than or equal to 32
+characters and greater than 0 characters in length.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.securitycenter_v1beta1.types.CreateFindingRequest.finding">
+<code class="descname">finding</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.CreateFindingRequest.finding" title="Permalink to this definition">#</a></dt>
+<dd><p>The Finding being created. The name and security_marks will
+be ignored as they are both output only fields on this
+resource.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.securitycenter_v1beta1.types.CreateSourceRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.securitycenter_v1beta1.types.</code><code class="descname">CreateSourceRequest</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.CreateSourceRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request message for creating a source.</p>
+<dl class="attribute">
+<dt id="google.cloud.securitycenter_v1beta1.types.CreateSourceRequest.parent">
+<code class="descname">parent</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.CreateSourceRequest.parent" title="Permalink to this definition">#</a></dt>
+<dd><p>Resource name of the new source’s parent. Its format should be
+“organizations/[organization_id]”.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.securitycenter_v1beta1.types.CreateSourceRequest.source">
+<code class="descname">source</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.CreateSourceRequest.source" title="Permalink to this definition">#</a></dt>
+<dd><p>The Source being created, only the display_name and
+description will be used. All other fields will be ignored.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.securitycenter_v1beta1.types.CustomHttpPattern">
+<em class="property">class </em><code class="descclassname">google.cloud.securitycenter_v1beta1.types.</code><code class="descname">CustomHttpPattern</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.CustomHttpPattern" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.securitycenter_v1beta1.types.DeleteOperationRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.securitycenter_v1beta1.types.</code><code class="descname">DeleteOperationRequest</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.DeleteOperationRequest" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.securitycenter_v1beta1.types.DescriptorProto">
+<em class="property">class </em><code class="descclassname">google.cloud.securitycenter_v1beta1.types.</code><code class="descname">DescriptorProto</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.DescriptorProto" title="Permalink to this definition">#</a></dt>
+<dd><dl class="class">
+<dt id="google.cloud.securitycenter_v1beta1.types.DescriptorProto.ExtensionRange">
+<em class="property">class </em><code class="descname">ExtensionRange</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.DescriptorProto.ExtensionRange" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.securitycenter_v1beta1.types.DescriptorProto.ReservedRange">
+<em class="property">class </em><code class="descname">ReservedRange</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.DescriptorProto.ReservedRange" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.securitycenter_v1beta1.types.Duration">
+<em class="property">class </em><code class="descclassname">google.cloud.securitycenter_v1beta1.types.</code><code class="descname">Duration</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.Duration" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.securitycenter_v1beta1.types.Empty">
+<em class="property">class </em><code class="descclassname">google.cloud.securitycenter_v1beta1.types.</code><code class="descname">Empty</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.Empty" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.securitycenter_v1beta1.types.EnumDescriptorProto">
+<em class="property">class </em><code class="descclassname">google.cloud.securitycenter_v1beta1.types.</code><code class="descname">EnumDescriptorProto</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.EnumDescriptorProto" title="Permalink to this definition">#</a></dt>
+<dd><dl class="class">
+<dt id="google.cloud.securitycenter_v1beta1.types.EnumDescriptorProto.EnumReservedRange">
+<em class="property">class </em><code class="descname">EnumReservedRange</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.EnumDescriptorProto.EnumReservedRange" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.securitycenter_v1beta1.types.EnumOptions">
+<em class="property">class </em><code class="descclassname">google.cloud.securitycenter_v1beta1.types.</code><code class="descname">EnumOptions</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.EnumOptions" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.securitycenter_v1beta1.types.EnumValueDescriptorProto">
+<em class="property">class </em><code class="descclassname">google.cloud.securitycenter_v1beta1.types.</code><code class="descname">EnumValueDescriptorProto</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.EnumValueDescriptorProto" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.securitycenter_v1beta1.types.EnumValueOptions">
+<em class="property">class </em><code class="descclassname">google.cloud.securitycenter_v1beta1.types.</code><code class="descname">EnumValueOptions</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.EnumValueOptions" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.securitycenter_v1beta1.types.ExtensionRangeOptions">
+<em class="property">class </em><code class="descclassname">google.cloud.securitycenter_v1beta1.types.</code><code class="descname">ExtensionRangeOptions</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.ExtensionRangeOptions" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.securitycenter_v1beta1.types.FieldDescriptorProto">
+<em class="property">class </em><code class="descclassname">google.cloud.securitycenter_v1beta1.types.</code><code class="descname">FieldDescriptorProto</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.FieldDescriptorProto" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.securitycenter_v1beta1.types.FieldMask">
+<em class="property">class </em><code class="descclassname">google.cloud.securitycenter_v1beta1.types.</code><code class="descname">FieldMask</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.FieldMask" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.securitycenter_v1beta1.types.FieldOptions">
+<em class="property">class </em><code class="descclassname">google.cloud.securitycenter_v1beta1.types.</code><code class="descname">FieldOptions</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.FieldOptions" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.securitycenter_v1beta1.types.FileDescriptorProto">
+<em class="property">class </em><code class="descclassname">google.cloud.securitycenter_v1beta1.types.</code><code class="descname">FileDescriptorProto</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.FileDescriptorProto" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.securitycenter_v1beta1.types.FileDescriptorSet">
+<em class="property">class </em><code class="descclassname">google.cloud.securitycenter_v1beta1.types.</code><code class="descname">FileDescriptorSet</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.FileDescriptorSet" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.securitycenter_v1beta1.types.FileOptions">
+<em class="property">class </em><code class="descclassname">google.cloud.securitycenter_v1beta1.types.</code><code class="descname">FileOptions</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.FileOptions" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.securitycenter_v1beta1.types.Finding">
+<em class="property">class </em><code class="descclassname">google.cloud.securitycenter_v1beta1.types.</code><code class="descname">Finding</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.Finding" title="Permalink to this definition">#</a></dt>
+<dd><p>Security Center’s finding.</p>
+<p>A finding is a record of assessment data (security, risk, health or
+privacy) ingested into Security Center for presentation, notification,
+analysis, policy testing and enforcement. For example, an XSS
+vulnerability in an AppEngine application is a finding.</p>
+<dl class="attribute">
+<dt id="google.cloud.securitycenter_v1beta1.types.Finding.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.Finding.name" title="Permalink to this definition">#</a></dt>
+<dd><p>The relative resource name of this finding. See: <a class="reference external" href="https://cloud">https://cloud</a>
+.google.com/apis/design/resource_names#relative_resource_na
+me Example: “organizations/123/sources/456/findings/789”</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.securitycenter_v1beta1.types.Finding.parent">
+<code class="descname">parent</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.Finding.parent" title="Permalink to this definition">#</a></dt>
+<dd><p>The relative resource name of the source the finding belongs
+to. See: <a class="reference external" href="https://cloud.google.com/apis/design/resource">https://cloud.google.com/apis/design/resource</a>_names#
+relative_resource_name This field is immutable after
+creation time. For example: “organizations/123/sources/456”</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.securitycenter_v1beta1.types.Finding.resource_name">
+<code class="descname">resource_name</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.Finding.resource_name" title="Permalink to this definition">#</a></dt>
+<dd><p>The full resource name of the Google Cloud Platform resource
+this finding is for. See: <a class="reference external" href="https://cloud.google.com/apis/design">https://cloud.google.com/apis/design</a>
+/resource_names#full_resource_name This field is immutable
+after creation time.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.securitycenter_v1beta1.types.Finding.state">
+<code class="descname">state</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.Finding.state" title="Permalink to this definition">#</a></dt>
+<dd><p>The state of the finding.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.securitycenter_v1beta1.types.Finding.category">
+<code class="descname">category</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.Finding.category" title="Permalink to this definition">#</a></dt>
+<dd><p>The additional taxonomy group within findings from a give
+source. This field is immutable after creation time. Example:
+“XSS_FLASH_INJECTION”</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.securitycenter_v1beta1.types.Finding.external_uri">
+<code class="descname">external_uri</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.Finding.external_uri" title="Permalink to this definition">#</a></dt>
+<dd><p>The URI that, if available, points to a web page outside of
+Security Center where additional information about the finding
+can be found. This field is guaranteed to be either empty or a
+well formed url.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.securitycenter_v1beta1.types.Finding.source_properties">
+<code class="descname">source_properties</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.Finding.source_properties" title="Permalink to this definition">#</a></dt>
+<dd><p>Source specific properties. These properties are managed by
+the source writing the finding.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.securitycenter_v1beta1.types.Finding.security_marks">
+<code class="descname">security_marks</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.Finding.security_marks" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. User specified security marks. These marks are
+entirely managed by the user and come from the SecurityMarks
+resource belonging to the finding.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.securitycenter_v1beta1.types.Finding.event_time">
+<code class="descname">event_time</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.Finding.event_time" title="Permalink to this definition">#</a></dt>
+<dd><p>The time at which the event took place. For example, if the
+finding represents an open firewall it would capture the time
+the open firewall was detected.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.securitycenter_v1beta1.types.Finding.create_time">
+<code class="descname">create_time</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.Finding.create_time" title="Permalink to this definition">#</a></dt>
+<dd><p>The time at which the finding was created in Security Center.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.securitycenter_v1beta1.types.Finding.SourcePropertiesEntry">
+<em class="property">class </em><code class="descname">SourcePropertiesEntry</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.Finding.SourcePropertiesEntry" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.securitycenter_v1beta1.types.GeneratedCodeInfo">
+<em class="property">class </em><code class="descclassname">google.cloud.securitycenter_v1beta1.types.</code><code class="descname">GeneratedCodeInfo</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.GeneratedCodeInfo" title="Permalink to this definition">#</a></dt>
+<dd><dl class="class">
+<dt id="google.cloud.securitycenter_v1beta1.types.GeneratedCodeInfo.Annotation">
+<em class="property">class </em><code class="descname">Annotation</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.GeneratedCodeInfo.Annotation" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.securitycenter_v1beta1.types.GetIamPolicyRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.securitycenter_v1beta1.types.</code><code class="descname">GetIamPolicyRequest</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.GetIamPolicyRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request message for <code class="docutils literal notranslate"><span class="pre">GetIamPolicy</span></code> method.</p>
+<dl class="attribute">
+<dt id="google.cloud.securitycenter_v1beta1.types.GetIamPolicyRequest.resource">
+<code class="descname">resource</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.GetIamPolicyRequest.resource" title="Permalink to this definition">#</a></dt>
+<dd><p>REQUIRED: The resource for which the policy is being
+requested. <code class="docutils literal notranslate"><span class="pre">resource</span></code> is usually specified as a path. For
+example, a Project resource is specified as
+<code class="docutils literal notranslate"><span class="pre">projects/{project}</span></code>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.securitycenter_v1beta1.types.GetOperationRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.securitycenter_v1beta1.types.</code><code class="descname">GetOperationRequest</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.GetOperationRequest" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.securitycenter_v1beta1.types.GetOrganizationSettingsRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.securitycenter_v1beta1.types.</code><code class="descname">GetOrganizationSettingsRequest</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.GetOrganizationSettingsRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request message for getting organization settings.</p>
+<dl class="attribute">
+<dt id="google.cloud.securitycenter_v1beta1.types.GetOrganizationSettingsRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.GetOrganizationSettingsRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Name of the organization to get organization settings for. Its
+format is
+“organizations/[organization_id]/organizationSettings”.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.securitycenter_v1beta1.types.GetSourceRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.securitycenter_v1beta1.types.</code><code class="descname">GetSourceRequest</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.GetSourceRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request message for getting a source.</p>
+<dl class="attribute">
+<dt id="google.cloud.securitycenter_v1beta1.types.GetSourceRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.GetSourceRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Relative resource name of the source. Its format is
+“organizations/[organization_id]/source/[source_id]”.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.securitycenter_v1beta1.types.GroupAssetsRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.securitycenter_v1beta1.types.</code><code class="descname">GroupAssetsRequest</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.GroupAssetsRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request message for grouping by assets.</p>
+<dl class="attribute">
+<dt id="google.cloud.securitycenter_v1beta1.types.GroupAssetsRequest.parent">
+<code class="descname">parent</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.GroupAssetsRequest.parent" title="Permalink to this definition">#</a></dt>
+<dd><p>Name of the organization to groupBy. Its format is
+“organizations/[organization_id]”.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.securitycenter_v1beta1.types.GroupAssetsRequest.filter">
+<code class="descname">filter</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.GroupAssetsRequest.filter" title="Permalink to this definition">#</a></dt>
+<dd><p>Expression that defines the filter to apply across assets. The
+expression is a list of zero or more restrictions combined via
+logical operators <code class="docutils literal notranslate"><span class="pre">AND</span></code> and <code class="docutils literal notranslate"><span class="pre">OR</span></code>. Parentheses are not
+supported, and <code class="docutils literal notranslate"><span class="pre">OR</span></code> has higher precedence than <code class="docutils literal notranslate"><span class="pre">AND</span></code>.
+Restrictions have the form <code class="docutils literal notranslate"><span class="pre">&lt;field&gt;</span> <span class="pre">&lt;operator&gt;</span> <span class="pre">&lt;value&gt;</span></code> and
+may have a <code class="docutils literal notranslate"><span class="pre">-</span></code> character in front of them to indicate
+negation. The fields map to those defined in the Asset
+resource. Examples include:  -  name -
+security_center_properties.resource_name -
+resource_properties.a_property -
+security_marks.marks.marka  The supported operators are:  -
+<code class="docutils literal notranslate"><span class="pre">=</span></code> for all value types. -  <code class="docutils literal notranslate"><span class="pre">&gt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&gt;=</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;=</span></code> for
+integer values. -  <code class="docutils literal notranslate"><span class="pre">:</span></code>, meaning substring matching, for
+strings.  The supported value types are:  -  string literals
+in quotes. -  integer literals without quotes. -  boolean
+literals <code class="docutils literal notranslate"><span class="pre">true</span></code> and <code class="docutils literal notranslate"><span class="pre">false</span></code> without quotes.  For example,
+<code class="docutils literal notranslate"><span class="pre">resource_properties.size</span> <span class="pre">=</span> <span class="pre">100</span></code> is a valid filter string.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.securitycenter_v1beta1.types.GroupAssetsRequest.group_by">
+<code class="descname">group_by</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.GroupAssetsRequest.group_by" title="Permalink to this definition">#</a></dt>
+<dd><p>Expression that defines what assets fields to use for
+grouping. The string value should follow SQL syntax: comma
+separated list of fields. For example: “security_center_prop
+erties.resource_project,security_center_properties.project”
+.  The following fields are supported when compare_duration
+is not set:  -  security_center_properties.resource_name -
+security_center_properties.resource_project -
+security_center_properties.resource_type -
+security_center_properties.resource_parent  The following
+fields are supported when compare_duration is set:  -
+security_center_properties.resource_type</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.securitycenter_v1beta1.types.GroupAssetsRequest.compare_duration">
+<code class="descname">compare_duration</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.GroupAssetsRequest.compare_duration" title="Permalink to this definition">#</a></dt>
+<dd><p>When compare_duration is set, the Asset’s “state” property is
+updated to indicate whether the asset was added, removed, or
+remained present during the compare_duration period of time
+that precedes the read_time. This is the time between
+(read_time - compare_duration) and read_time.  The state
+value is derived based on the presence of the asset at the two
+points in time. Intermediate state changes between the two
+times don’t affect the result. For example, the results aren’t
+affected if the asset is removed and re-created again.
+Possible “state” values when compare_duration is specified:
+-  “ADDED”: indicates that the asset was not present before
+compare_duration, but present at reference_time. -
+“REMOVED”: indicates that the asset was present at the start
+of    compare_duration, but not present at reference_time. -
+“ACTIVE_AT_BOTH”: indicates that the asset was present at
+both the    start and the end of the time period defined by
+compare_duration and    reference_time.  This field is
+ignored if <code class="docutils literal notranslate"><span class="pre">state</span></code> is not a field in <code class="docutils literal notranslate"><span class="pre">group_by</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.securitycenter_v1beta1.types.GroupAssetsRequest.read_time">
+<code class="descname">read_time</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.GroupAssetsRequest.read_time" title="Permalink to this definition">#</a></dt>
+<dd><p>Time used as a reference point when filtering assets. The
+filter is limited to assets existing at the supplied time and
+their values are those at that specific time. Absence of this
+field will default to the API’s version of NOW.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.securitycenter_v1beta1.types.GroupAssetsRequest.page_token">
+<code class="descname">page_token</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.GroupAssetsRequest.page_token" title="Permalink to this definition">#</a></dt>
+<dd><p>The value returned by the last <code class="docutils literal notranslate"><span class="pre">GroupAssetsResponse</span></code>;
+indicates that this is a continuation of a prior
+<code class="docutils literal notranslate"><span class="pre">GroupAssets</span></code> call, and that the system should return the
+next page of data.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.securitycenter_v1beta1.types.GroupAssetsRequest.page_size">
+<code class="descname">page_size</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.GroupAssetsRequest.page_size" title="Permalink to this definition">#</a></dt>
+<dd><p>The maximum number of results to return in a single response.
+Default is 10, minimum is 1, maximum is 1000.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.securitycenter_v1beta1.types.GroupAssetsResponse">
+<em class="property">class </em><code class="descclassname">google.cloud.securitycenter_v1beta1.types.</code><code class="descname">GroupAssetsResponse</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.GroupAssetsResponse" title="Permalink to this definition">#</a></dt>
+<dd><p>Response message for grouping by assets.</p>
+<dl class="attribute">
+<dt id="google.cloud.securitycenter_v1beta1.types.GroupAssetsResponse.group_by_results">
+<code class="descname">group_by_results</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.GroupAssetsResponse.group_by_results" title="Permalink to this definition">#</a></dt>
+<dd><p>Group results. There exists an element for each existing
+unique combination of property/values. The element contains a
+count for the number of times those specific property/values
+appear.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.securitycenter_v1beta1.types.GroupAssetsResponse.read_time">
+<code class="descname">read_time</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.GroupAssetsResponse.read_time" title="Permalink to this definition">#</a></dt>
+<dd><p>Time used for executing the groupBy request.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.securitycenter_v1beta1.types.GroupAssetsResponse.next_page_token">
+<code class="descname">next_page_token</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.GroupAssetsResponse.next_page_token" title="Permalink to this definition">#</a></dt>
+<dd><p>Token to retrieve the next page of results, or empty if there
+are no more results.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.securitycenter_v1beta1.types.GroupFindingsRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.securitycenter_v1beta1.types.</code><code class="descname">GroupFindingsRequest</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.GroupFindingsRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request message for grouping by findings.</p>
+<dl class="attribute">
+<dt id="google.cloud.securitycenter_v1beta1.types.GroupFindingsRequest.parent">
+<code class="descname">parent</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.GroupFindingsRequest.parent" title="Permalink to this definition">#</a></dt>
+<dd><p>Name of the source to groupBy. Its format is
+“organizations/[organization_id]/sources/[source_id]”. To
+groupBy across all sources provide a source_id of <code class="docutils literal notranslate"><span class="pre">-</span></code>. For
+example: organizations/123/sources/-</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.securitycenter_v1beta1.types.GroupFindingsRequest.filter">
+<code class="descname">filter</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.GroupFindingsRequest.filter" title="Permalink to this definition">#</a></dt>
+<dd><p>Expression that defines the filter to apply across findings.
+The expression is a list of one or more restrictions combined
+via logical operators <code class="docutils literal notranslate"><span class="pre">AND</span></code> and <code class="docutils literal notranslate"><span class="pre">OR</span></code>. Parentheses are not
+supported, and <code class="docutils literal notranslate"><span class="pre">OR</span></code> has higher precedence than <code class="docutils literal notranslate"><span class="pre">AND</span></code>.
+Restrictions have the form <code class="docutils literal notranslate"><span class="pre">&lt;field&gt;</span> <span class="pre">&lt;operator&gt;</span> <span class="pre">&lt;value&gt;</span></code> and
+may have a <code class="docutils literal notranslate"><span class="pre">-</span></code> character in front of them to indicate
+negation. Examples include:  -  name -
+source_properties.a_property -  security_marks.marks.marka
+The supported operators are:  -  <code class="docutils literal notranslate"><span class="pre">=</span></code> for all value types. -
+<code class="docutils literal notranslate"><span class="pre">&gt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&gt;=</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;=</span></code> for integer values. -  <code class="docutils literal notranslate"><span class="pre">:</span></code>,
+meaning substring matching, for strings.  The supported value
+types are:  -  string literals in quotes. -  integer literals
+without quotes. -  boolean literals <code class="docutils literal notranslate"><span class="pre">true</span></code> and <code class="docutils literal notranslate"><span class="pre">false</span></code>
+without quotes.  For example, <code class="docutils literal notranslate"><span class="pre">source_properties.size</span> <span class="pre">=</span> <span class="pre">100</span></code>
+is a valid filter string.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.securitycenter_v1beta1.types.GroupFindingsRequest.group_by">
+<code class="descname">group_by</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.GroupFindingsRequest.group_by" title="Permalink to this definition">#</a></dt>
+<dd><p>Expression that defines what assets fields to use for grouping
+(including <code class="docutils literal notranslate"><span class="pre">state</span></code>). The string value should follow SQL
+syntax: comma separated list of fields. For example:
+“parent,resource_name”.  The following fields are supported:
+-  resource_name -  category -  state -  parent</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.securitycenter_v1beta1.types.GroupFindingsRequest.read_time">
+<code class="descname">read_time</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.GroupFindingsRequest.read_time" title="Permalink to this definition">#</a></dt>
+<dd><p>Time used as a reference point when filtering findings. The
+filter is limited to findings existing at the supplied time
+and their values are those at that specific time. Absence of
+this field will default to the API’s version of NOW.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.securitycenter_v1beta1.types.GroupFindingsRequest.page_token">
+<code class="descname">page_token</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.GroupFindingsRequest.page_token" title="Permalink to this definition">#</a></dt>
+<dd><p>The value returned by the last <code class="docutils literal notranslate"><span class="pre">GroupFindingsResponse</span></code>;
+indicates that this is a continuation of a prior
+<code class="docutils literal notranslate"><span class="pre">GroupFindings</span></code> call, and that the system should return the
+next page of data.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.securitycenter_v1beta1.types.GroupFindingsRequest.page_size">
+<code class="descname">page_size</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.GroupFindingsRequest.page_size" title="Permalink to this definition">#</a></dt>
+<dd><p>The maximum number of results to return in a single response.
+Default is 10, minimum is 1, maximum is 1000.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.securitycenter_v1beta1.types.GroupFindingsResponse">
+<em class="property">class </em><code class="descclassname">google.cloud.securitycenter_v1beta1.types.</code><code class="descname">GroupFindingsResponse</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.GroupFindingsResponse" title="Permalink to this definition">#</a></dt>
+<dd><p>Response message for group by findings.</p>
+<dl class="attribute">
+<dt id="google.cloud.securitycenter_v1beta1.types.GroupFindingsResponse.group_by_results">
+<code class="descname">group_by_results</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.GroupFindingsResponse.group_by_results" title="Permalink to this definition">#</a></dt>
+<dd><p>Group results. There exists an element for each existing
+unique combination of property/values. The element contains a
+count for the number of times those specific property/values
+appear.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.securitycenter_v1beta1.types.GroupFindingsResponse.read_time">
+<code class="descname">read_time</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.GroupFindingsResponse.read_time" title="Permalink to this definition">#</a></dt>
+<dd><p>Time used for executing the groupBy request.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.securitycenter_v1beta1.types.GroupFindingsResponse.next_page_token">
+<code class="descname">next_page_token</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.GroupFindingsResponse.next_page_token" title="Permalink to this definition">#</a></dt>
+<dd><p>Token to retrieve the next page of results, or empty if there
+are no more results.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.securitycenter_v1beta1.types.GroupResult">
+<em class="property">class </em><code class="descclassname">google.cloud.securitycenter_v1beta1.types.</code><code class="descname">GroupResult</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.GroupResult" title="Permalink to this definition">#</a></dt>
+<dd><p>Result containing the properties and count of a groupBy request.</p>
+<dl class="attribute">
+<dt id="google.cloud.securitycenter_v1beta1.types.GroupResult.properties">
+<code class="descname">properties</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.GroupResult.properties" title="Permalink to this definition">#</a></dt>
+<dd><p>Properties matching the groupBy fields in the request.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.securitycenter_v1beta1.types.GroupResult.count">
+<code class="descname">count</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.GroupResult.count" title="Permalink to this definition">#</a></dt>
+<dd><p>Total count of resources for the given properties.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.securitycenter_v1beta1.types.GroupResult.PropertiesEntry">
+<em class="property">class </em><code class="descname">PropertiesEntry</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.GroupResult.PropertiesEntry" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.securitycenter_v1beta1.types.Http">
+<em class="property">class </em><code class="descclassname">google.cloud.securitycenter_v1beta1.types.</code><code class="descname">Http</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.Http" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.securitycenter_v1beta1.types.HttpRule">
+<em class="property">class </em><code class="descclassname">google.cloud.securitycenter_v1beta1.types.</code><code class="descname">HttpRule</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.HttpRule" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.securitycenter_v1beta1.types.ListAssetsRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.securitycenter_v1beta1.types.</code><code class="descname">ListAssetsRequest</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.ListAssetsRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request message for listing assets.</p>
+<dl class="attribute">
+<dt id="google.cloud.securitycenter_v1beta1.types.ListAssetsRequest.parent">
+<code class="descname">parent</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.ListAssetsRequest.parent" title="Permalink to this definition">#</a></dt>
+<dd><p>Name of the organization assets should belong to. Its format
+is “organizations/[organization_id]”.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.securitycenter_v1beta1.types.ListAssetsRequest.filter">
+<code class="descname">filter</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.ListAssetsRequest.filter" title="Permalink to this definition">#</a></dt>
+<dd><p>Expression that defines the filter to apply across assets. The
+expression is a list of zero or more restrictions combined via
+logical operators <code class="docutils literal notranslate"><span class="pre">AND</span></code> and <code class="docutils literal notranslate"><span class="pre">OR</span></code>. Parentheses are not
+supported, and <code class="docutils literal notranslate"><span class="pre">OR</span></code> has higher precedence than <code class="docutils literal notranslate"><span class="pre">AND</span></code>.
+Restrictions have the form <code class="docutils literal notranslate"><span class="pre">&lt;field&gt;</span> <span class="pre">&lt;operator&gt;</span> <span class="pre">&lt;value&gt;</span></code> and
+may have a <code class="docutils literal notranslate"><span class="pre">-</span></code> character in front of them to indicate
+negation. The fields map to those defined in the Asset
+resource. Examples include:  -  name -
+security_center_properties.resource_name -
+resource_properties.a_property -
+security_marks.marks.marka  The supported operators are:  -
+<code class="docutils literal notranslate"><span class="pre">=</span></code> for all value types. -  <code class="docutils literal notranslate"><span class="pre">&gt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&gt;=</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;=</span></code> for
+integer values. -  <code class="docutils literal notranslate"><span class="pre">:</span></code>, meaning substring matching, for
+strings.  The supported value types are:  -  string literals
+in quotes. -  integer literals without quotes. -  boolean
+literals <code class="docutils literal notranslate"><span class="pre">true</span></code> and <code class="docutils literal notranslate"><span class="pre">false</span></code> without quotes.  For example,
+<code class="docutils literal notranslate"><span class="pre">resource_properties.size</span> <span class="pre">=</span> <span class="pre">100</span></code> is a valid filter string.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.securitycenter_v1beta1.types.ListAssetsRequest.order_by">
+<code class="descname">order_by</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.ListAssetsRequest.order_by" title="Permalink to this definition">#</a></dt>
+<dd><p>Expression that defines what fields and order to use for
+sorting. The string value should follow SQL syntax: comma
+separated list of fields. For example:
+“name,resource_properties.a_property”. The default sorting
+order is ascending. To specify descending order for a field, a
+suffix ” desc” should be appended to the field name. For
+example: “name desc,resource_properties.a_property”.
+Redundant space characters in the syntax are insignificant.
+“name desc,resource_properties.a_property” and ” name desc ,
+resource_properties.a_property ” are equivalent.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.securitycenter_v1beta1.types.ListAssetsRequest.read_time">
+<code class="descname">read_time</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.ListAssetsRequest.read_time" title="Permalink to this definition">#</a></dt>
+<dd><p>Time used as a reference point when filtering assets. The
+filter is limited to assets existing at the supplied time and
+their values are those at that specific time. Absence of this
+field will default to the API’s version of NOW.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.securitycenter_v1beta1.types.ListAssetsRequest.compare_duration">
+<code class="descname">compare_duration</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.ListAssetsRequest.compare_duration" title="Permalink to this definition">#</a></dt>
+<dd><p>When compare_duration is set, the ListAssetResult’s “state”
+attribute is updated to indicate whether the asset was added,
+removed, or remained present during the compare_duration
+period of time that precedes the read_time. This is the time
+between (read_time - compare_duration) and read_time.  The
+state value is derived based on the presence of the asset at
+the two points in time. Intermediate state changes between the
+two times don’t affect the result. For example, the results
+aren’t affected if the asset is removed and re-created again.
+Possible “state” values when compare_duration is specified:
+-  “ADDED”: indicates that the asset was not present before
+compare_duration, but present at read_time. -  “REMOVED”:
+indicates that the asset was present at the start of
+compare_duration, but not present at read_time. -  “ACTIVE”:
+indicates that the asset was present at both the start and
+the end of the time period defined by compare_duration and
+read_time.  If compare_duration is not specified, then the
+only possible state is “UNUSED”, which indicates that the
+asset is present at read_time.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.securitycenter_v1beta1.types.ListAssetsRequest.field_mask">
+<code class="descname">field_mask</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.ListAssetsRequest.field_mask" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional.  A field mask to specify the ListAssetsResult fields
+to be listed in the response. An empty field mask will list
+all fields.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.securitycenter_v1beta1.types.ListAssetsRequest.page_token">
+<code class="descname">page_token</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.ListAssetsRequest.page_token" title="Permalink to this definition">#</a></dt>
+<dd><p>The value returned by the last <code class="docutils literal notranslate"><span class="pre">ListAssetsResponse</span></code>;
+indicates that this is a continuation of a prior
+<code class="docutils literal notranslate"><span class="pre">ListAssets</span></code> call, and that the system should return the
+next page of data.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.securitycenter_v1beta1.types.ListAssetsRequest.page_size">
+<code class="descname">page_size</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.ListAssetsRequest.page_size" title="Permalink to this definition">#</a></dt>
+<dd><p>The maximum number of results to return in a single response.
+Default is 10, minimum is 1, maximum is 1000.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.securitycenter_v1beta1.types.ListAssetsResponse">
+<em class="property">class </em><code class="descclassname">google.cloud.securitycenter_v1beta1.types.</code><code class="descname">ListAssetsResponse</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.ListAssetsResponse" title="Permalink to this definition">#</a></dt>
+<dd><p>Response message for listing assets.</p>
+<dl class="attribute">
+<dt id="google.cloud.securitycenter_v1beta1.types.ListAssetsResponse.list_assets_results">
+<code class="descname">list_assets_results</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.ListAssetsResponse.list_assets_results" title="Permalink to this definition">#</a></dt>
+<dd><p>Assets matching the list request.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.securitycenter_v1beta1.types.ListAssetsResponse.read_time">
+<code class="descname">read_time</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.ListAssetsResponse.read_time" title="Permalink to this definition">#</a></dt>
+<dd><p>Time used for executing the list request.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.securitycenter_v1beta1.types.ListAssetsResponse.next_page_token">
+<code class="descname">next_page_token</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.ListAssetsResponse.next_page_token" title="Permalink to this definition">#</a></dt>
+<dd><p>Token to retrieve the next page of results, or empty if there
+are no more results.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.securitycenter_v1beta1.types.ListAssetsResponse.total_size">
+<code class="descname">total_size</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.ListAssetsResponse.total_size" title="Permalink to this definition">#</a></dt>
+<dd><p>The total number of assets matching the query.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.securitycenter_v1beta1.types.ListAssetsResponse.ListAssetsResult">
+<em class="property">class </em><code class="descname">ListAssetsResult</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.ListAssetsResponse.ListAssetsResult" title="Permalink to this definition">#</a></dt>
+<dd><p>Result containing the Asset and its State.</p>
+<dl class="attribute">
+<dt id="google.cloud.securitycenter_v1beta1.types.ListAssetsResponse.ListAssetsResult.asset">
+<code class="descname">asset</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.ListAssetsResponse.ListAssetsResult.asset" title="Permalink to this definition">#</a></dt>
+<dd><p>Asset matching the search request.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.securitycenter_v1beta1.types.ListAssetsResponse.ListAssetsResult.state">
+<code class="descname">state</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.ListAssetsResponse.ListAssetsResult.state" title="Permalink to this definition">#</a></dt>
+<dd><p>State of the asset.</p>
+</dd></dl>
+
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.securitycenter_v1beta1.types.ListFindingsRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.securitycenter_v1beta1.types.</code><code class="descname">ListFindingsRequest</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.ListFindingsRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request message for listing findings.</p>
+<dl class="attribute">
+<dt id="google.cloud.securitycenter_v1beta1.types.ListFindingsRequest.parent">
+<code class="descname">parent</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.ListFindingsRequest.parent" title="Permalink to this definition">#</a></dt>
+<dd><p>Name of the source the findings belong to. Its format is
+“organizations/[organization_id]/sources/[source_id]”. To
+list across all sources provide a source_id of <code class="docutils literal notranslate"><span class="pre">-</span></code>. For
+example: organizations/123/sources/-</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.securitycenter_v1beta1.types.ListFindingsRequest.filter">
+<code class="descname">filter</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.ListFindingsRequest.filter" title="Permalink to this definition">#</a></dt>
+<dd><p>Expression that defines the filter to apply across findings.
+The expression is a list of one or more restrictions combined
+via logical operators <code class="docutils literal notranslate"><span class="pre">AND</span></code> and <code class="docutils literal notranslate"><span class="pre">OR</span></code>. Parentheses are not
+supported, and <code class="docutils literal notranslate"><span class="pre">OR</span></code> has higher precedence than <code class="docutils literal notranslate"><span class="pre">AND</span></code>.
+Restrictions have the form <code class="docutils literal notranslate"><span class="pre">&lt;field&gt;</span> <span class="pre">&lt;operator&gt;</span> <span class="pre">&lt;value&gt;</span></code> and
+may have a <code class="docutils literal notranslate"><span class="pre">-</span></code> character in front of them to indicate
+negation. Examples include:  -  name -
+source_properties.a_property -  security_marks.marks.marka
+The supported operators are:  -  <code class="docutils literal notranslate"><span class="pre">=</span></code> for all value types. -
+<code class="docutils literal notranslate"><span class="pre">&gt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&gt;=</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;=</span></code> for integer values. -  <code class="docutils literal notranslate"><span class="pre">:</span></code>,
+meaning substring matching, for strings.  The supported value
+types are:  -  string literals in quotes. -  integer literals
+without quotes. -  boolean literals <code class="docutils literal notranslate"><span class="pre">true</span></code> and <code class="docutils literal notranslate"><span class="pre">false</span></code>
+without quotes.  For example, <code class="docutils literal notranslate"><span class="pre">source_properties.size</span> <span class="pre">=</span> <span class="pre">100</span></code>
+is a valid filter string.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.securitycenter_v1beta1.types.ListFindingsRequest.order_by">
+<code class="descname">order_by</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.ListFindingsRequest.order_by" title="Permalink to this definition">#</a></dt>
+<dd><p>Expression that defines what fields and order to use for
+sorting. The string value should follow SQL syntax: comma
+separated list of fields. For example:
+“name,resource_properties.a_property”. The default sorting
+order is ascending. To specify descending order for a field, a
+suffix ” desc” should be appended to the field name. For
+example: “name desc,source_properties.a_property”. Redundant
+space characters in the syntax are insignificant. “name
+desc,source_properties.a_property” and ” name desc ,
+source_properties.a_property ” are equivalent.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.securitycenter_v1beta1.types.ListFindingsRequest.read_time">
+<code class="descname">read_time</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.ListFindingsRequest.read_time" title="Permalink to this definition">#</a></dt>
+<dd><p>Time used as a reference point when filtering findings. The
+filter is limited to findings existing at the supplied time
+and their values are those at that specific time. Absence of
+this field will default to the API’s version of NOW.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.securitycenter_v1beta1.types.ListFindingsRequest.field_mask">
+<code class="descname">field_mask</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.ListFindingsRequest.field_mask" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional.  A field mask to specify the Finding fields to be
+listed in the response. An empty field mask will list all
+fields.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.securitycenter_v1beta1.types.ListFindingsRequest.page_token">
+<code class="descname">page_token</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.ListFindingsRequest.page_token" title="Permalink to this definition">#</a></dt>
+<dd><p>The value returned by the last <code class="docutils literal notranslate"><span class="pre">ListFindingsResponse</span></code>;
+indicates that this is a continuation of a prior
+<code class="docutils literal notranslate"><span class="pre">ListFindings</span></code> call, and that the system should return the
+next page of data.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.securitycenter_v1beta1.types.ListFindingsRequest.page_size">
+<code class="descname">page_size</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.ListFindingsRequest.page_size" title="Permalink to this definition">#</a></dt>
+<dd><p>The maximum number of results to return in a single response.
+Default is 10, minimum is 1, maximum is 1000.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.securitycenter_v1beta1.types.ListFindingsResponse">
+<em class="property">class </em><code class="descclassname">google.cloud.securitycenter_v1beta1.types.</code><code class="descname">ListFindingsResponse</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.ListFindingsResponse" title="Permalink to this definition">#</a></dt>
+<dd><p>Response message for listing findings.</p>
+<dl class="attribute">
+<dt id="google.cloud.securitycenter_v1beta1.types.ListFindingsResponse.findings">
+<code class="descname">findings</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.ListFindingsResponse.findings" title="Permalink to this definition">#</a></dt>
+<dd><p>Findings matching the list request.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.securitycenter_v1beta1.types.ListFindingsResponse.read_time">
+<code class="descname">read_time</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.ListFindingsResponse.read_time" title="Permalink to this definition">#</a></dt>
+<dd><p>Time used for executing the list request.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.securitycenter_v1beta1.types.ListFindingsResponse.next_page_token">
+<code class="descname">next_page_token</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.ListFindingsResponse.next_page_token" title="Permalink to this definition">#</a></dt>
+<dd><p>Token to retrieve the next page of results, or empty if there
+are no more results.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.securitycenter_v1beta1.types.ListFindingsResponse.total_size">
+<code class="descname">total_size</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.ListFindingsResponse.total_size" title="Permalink to this definition">#</a></dt>
+<dd><p>The total number of findings matching the query.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.securitycenter_v1beta1.types.ListOperationsRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.securitycenter_v1beta1.types.</code><code class="descname">ListOperationsRequest</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.ListOperationsRequest" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.securitycenter_v1beta1.types.ListOperationsResponse">
+<em class="property">class </em><code class="descclassname">google.cloud.securitycenter_v1beta1.types.</code><code class="descname">ListOperationsResponse</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.ListOperationsResponse" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.securitycenter_v1beta1.types.ListSourcesRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.securitycenter_v1beta1.types.</code><code class="descname">ListSourcesRequest</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.ListSourcesRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request message for listing sources.</p>
+<dl class="attribute">
+<dt id="google.cloud.securitycenter_v1beta1.types.ListSourcesRequest.parent">
+<code class="descname">parent</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.ListSourcesRequest.parent" title="Permalink to this definition">#</a></dt>
+<dd><p>Resource name of the parent of sources to list. Its format
+should be “organizations/[organization_id]”.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.securitycenter_v1beta1.types.ListSourcesRequest.page_token">
+<code class="descname">page_token</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.ListSourcesRequest.page_token" title="Permalink to this definition">#</a></dt>
+<dd><p>The value returned by the last <code class="docutils literal notranslate"><span class="pre">ListSourcesResponse</span></code>;
+indicates that this is a continuation of a prior
+<code class="docutils literal notranslate"><span class="pre">ListSources</span></code> call, and that the system should return the
+next page of data.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.securitycenter_v1beta1.types.ListSourcesRequest.page_size">
+<code class="descname">page_size</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.ListSourcesRequest.page_size" title="Permalink to this definition">#</a></dt>
+<dd><p>The maximum number of results to return in a single response.
+Default is 10, minimum is 1, maximum is 1000.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.securitycenter_v1beta1.types.ListSourcesResponse">
+<em class="property">class </em><code class="descclassname">google.cloud.securitycenter_v1beta1.types.</code><code class="descname">ListSourcesResponse</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.ListSourcesResponse" title="Permalink to this definition">#</a></dt>
+<dd><p>Response message for listing sources.</p>
+<dl class="attribute">
+<dt id="google.cloud.securitycenter_v1beta1.types.ListSourcesResponse.sources">
+<code class="descname">sources</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.ListSourcesResponse.sources" title="Permalink to this definition">#</a></dt>
+<dd><p>Sources belonging to the requested parent.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.securitycenter_v1beta1.types.ListSourcesResponse.next_page_token">
+<code class="descname">next_page_token</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.ListSourcesResponse.next_page_token" title="Permalink to this definition">#</a></dt>
+<dd><p>Token to retrieve the next page of results, or empty if there
+are no more results.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.securitycenter_v1beta1.types.ListValue">
+<em class="property">class </em><code class="descclassname">google.cloud.securitycenter_v1beta1.types.</code><code class="descname">ListValue</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.ListValue" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.securitycenter_v1beta1.types.MessageOptions">
+<em class="property">class </em><code class="descclassname">google.cloud.securitycenter_v1beta1.types.</code><code class="descname">MessageOptions</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.MessageOptions" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.securitycenter_v1beta1.types.MethodDescriptorProto">
+<em class="property">class </em><code class="descclassname">google.cloud.securitycenter_v1beta1.types.</code><code class="descname">MethodDescriptorProto</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.MethodDescriptorProto" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.securitycenter_v1beta1.types.MethodOptions">
+<em class="property">class </em><code class="descclassname">google.cloud.securitycenter_v1beta1.types.</code><code class="descname">MethodOptions</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.MethodOptions" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.securitycenter_v1beta1.types.OneofDescriptorProto">
+<em class="property">class </em><code class="descclassname">google.cloud.securitycenter_v1beta1.types.</code><code class="descname">OneofDescriptorProto</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.OneofDescriptorProto" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.securitycenter_v1beta1.types.OneofOptions">
+<em class="property">class </em><code class="descclassname">google.cloud.securitycenter_v1beta1.types.</code><code class="descname">OneofOptions</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.OneofOptions" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.securitycenter_v1beta1.types.Operation">
+<em class="property">class </em><code class="descclassname">google.cloud.securitycenter_v1beta1.types.</code><code class="descname">Operation</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.Operation" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.securitycenter_v1beta1.types.OrganizationSettings">
+<em class="property">class </em><code class="descclassname">google.cloud.securitycenter_v1beta1.types.</code><code class="descname">OrganizationSettings</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.OrganizationSettings" title="Permalink to this definition">#</a></dt>
+<dd><p>User specified settings that are attached to the Security Center
+organization.</p>
+<dl class="attribute">
+<dt id="google.cloud.securitycenter_v1beta1.types.OrganizationSettings.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.OrganizationSettings.name" title="Permalink to this definition">#</a></dt>
+<dd><p>The relative resource name of the settings. See: <a class="reference external" href="https://cloud">https://cloud</a>
+.google.com/apis/design/resource_names#relative_resource_na
+me Example: “organizations/123/organizationSettings”.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.securitycenter_v1beta1.types.OrganizationSettings.enable_asset_discovery">
+<code class="descname">enable_asset_discovery</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.OrganizationSettings.enable_asset_discovery" title="Permalink to this definition">#</a></dt>
+<dd><p>A flag indicating whether Asset Discovery should be enabled.
+If the flag is set to true then discovery of assets will
+occur. If it is set to false all historical assets will remain
+but discovery of future assets will not occur.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.securitycenter_v1beta1.types.OrganizationSettings.asset_discovery_config">
+<code class="descname">asset_discovery_config</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.OrganizationSettings.asset_discovery_config" title="Permalink to this definition">#</a></dt>
+<dd><p>The configuration used for Asset Discovery runs.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.securitycenter_v1beta1.types.OrganizationSettings.AssetDiscoveryConfig">
+<em class="property">class </em><code class="descname">AssetDiscoveryConfig</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.OrganizationSettings.AssetDiscoveryConfig" title="Permalink to this definition">#</a></dt>
+<dd><p>The configuration used for Asset Discovery runs.</p>
+<dl class="attribute">
+<dt id="google.cloud.securitycenter_v1beta1.types.OrganizationSettings.AssetDiscoveryConfig.project_ids">
+<code class="descname">project_ids</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.OrganizationSettings.AssetDiscoveryConfig.project_ids" title="Permalink to this definition">#</a></dt>
+<dd><p>The project ids to use for filtering asset discovery.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.securitycenter_v1beta1.types.OrganizationSettings.AssetDiscoveryConfig.inclusion_mode">
+<code class="descname">inclusion_mode</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.OrganizationSettings.AssetDiscoveryConfig.inclusion_mode" title="Permalink to this definition">#</a></dt>
+<dd><p>The mode to use for filtering asset discovery.</p>
+</dd></dl>
+
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.securitycenter_v1beta1.types.Policy">
+<em class="property">class </em><code class="descclassname">google.cloud.securitycenter_v1beta1.types.</code><code class="descname">Policy</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.Policy" title="Permalink to this definition">#</a></dt>
+<dd><p>Defines an Identity and Access Management (IAM) policy. It is used to
+specify access control policies for Cloud Platform resources.</p>
+<p>A <code class="docutils literal notranslate"><span class="pre">Policy</span></code> consists of a list of <code class="docutils literal notranslate"><span class="pre">bindings</span></code>. A <code class="docutils literal notranslate"><span class="pre">Binding</span></code> binds a
+list of <code class="docutils literal notranslate"><span class="pre">members</span></code> to a <code class="docutils literal notranslate"><span class="pre">role</span></code>, where the members can be user
+accounts, Google groups, Google domains, and service accounts. A
+<code class="docutils literal notranslate"><span class="pre">role</span></code> is a named list of permissions defined by IAM.</p>
+<p><strong>Example</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;bindings&quot;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="p">{</span>
+      <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;roles/owner&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;members&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s2">&quot;user:mike@example.com&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;group:admins@example.com&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;domain:google.com&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;serviceAccount:my-other-app@appspot.gserviceaccount.com&quot;</span><span class="p">,</span>
+      <span class="p">]</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+      <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;roles/viewer&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;members&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;user:sean@example.com&quot;</span><span class="p">]</span>
+    <span class="p">}</span>
+  <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>For a description of IAM and its features, see the <a class="reference external" href="https://cloud.google.com/iam">IAM developer’s
+guide</a>.</p>
+<dl class="attribute">
+<dt id="google.cloud.securitycenter_v1beta1.types.Policy.version">
+<code class="descname">version</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.Policy.version" title="Permalink to this definition">#</a></dt>
+<dd><p>Version of the <code class="docutils literal notranslate"><span class="pre">Policy</span></code>. The default version is 0.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.securitycenter_v1beta1.types.Policy.bindings">
+<code class="descname">bindings</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.Policy.bindings" title="Permalink to this definition">#</a></dt>
+<dd><p>Associates a list of <code class="docutils literal notranslate"><span class="pre">members</span></code> to a <code class="docutils literal notranslate"><span class="pre">role</span></code>. Multiple
+<code class="docutils literal notranslate"><span class="pre">bindings</span></code> must not be specified for the same <code class="docutils literal notranslate"><span class="pre">role</span></code>.
+<code class="docutils literal notranslate"><span class="pre">bindings</span></code> with no members will result in an error.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.securitycenter_v1beta1.types.Policy.etag">
+<code class="descname">etag</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.Policy.etag" title="Permalink to this definition">#</a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">etag</span></code> is used for optimistic concurrency control as a way
+to help prevent simultaneous updates of a policy from
+overwriting each other. It is strongly suggested that systems
+make use of the <code class="docutils literal notranslate"><span class="pre">etag</span></code> in the read-modify-write cycle to
+perform policy updates in order to avoid race conditions: An
+<code class="docutils literal notranslate"><span class="pre">etag</span></code> is returned in the response to <code class="docutils literal notranslate"><span class="pre">getIamPolicy</span></code>, and
+systems are expected to put that etag in the request to
+<code class="docutils literal notranslate"><span class="pre">setIamPolicy</span></code> to ensure that their change will be applied
+to the same version of the policy.  If no <code class="docutils literal notranslate"><span class="pre">etag</span></code> is provided
+in the call to <code class="docutils literal notranslate"><span class="pre">setIamPolicy</span></code>, then the existing policy is
+overwritten blindly.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.securitycenter_v1beta1.types.PolicyDelta">
+<em class="property">class </em><code class="descclassname">google.cloud.securitycenter_v1beta1.types.</code><code class="descname">PolicyDelta</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.PolicyDelta" title="Permalink to this definition">#</a></dt>
+<dd><p>The difference delta between two policies.</p>
+<dl class="attribute">
+<dt id="google.cloud.securitycenter_v1beta1.types.PolicyDelta.binding_deltas">
+<code class="descname">binding_deltas</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.PolicyDelta.binding_deltas" title="Permalink to this definition">#</a></dt>
+<dd><p>The delta for Bindings between two policies.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.securitycenter_v1beta1.types.RunAssetDiscoveryRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.securitycenter_v1beta1.types.</code><code class="descname">RunAssetDiscoveryRequest</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.RunAssetDiscoveryRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request message for running asset discovery for an organization.</p>
+<dl class="attribute">
+<dt id="google.cloud.securitycenter_v1beta1.types.RunAssetDiscoveryRequest.parent">
+<code class="descname">parent</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.RunAssetDiscoveryRequest.parent" title="Permalink to this definition">#</a></dt>
+<dd><p>Name of the organization to run asset discovery for. Its
+format is “organizations/[organization_id]”.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.securitycenter_v1beta1.types.SecurityMarks">
+<em class="property">class </em><code class="descclassname">google.cloud.securitycenter_v1beta1.types.</code><code class="descname">SecurityMarks</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.SecurityMarks" title="Permalink to this definition">#</a></dt>
+<dd><p>User specified security marks that are attached to the parent Security
+Center resource. Security marks are scoped within a Security Center
+organization – they are modifiable and viewable by all with proper
+permissions on the organization.</p>
+<dl class="attribute">
+<dt id="google.cloud.securitycenter_v1beta1.types.SecurityMarks.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.SecurityMarks.name" title="Permalink to this definition">#</a></dt>
+<dd><p>The relative resource name of the SecurityMarks. See: <a class="reference external" href="https://">https://</a>
+cloud.google.com/apis/design/resource_names#relative_resourc
+e_name Examples: “organizations/123/assets/456/securityMarks”
+“organizations/123/sources/456/findings/789/securityMarks”.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.securitycenter_v1beta1.types.SecurityMarks.marks">
+<code class="descname">marks</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.SecurityMarks.marks" title="Permalink to this definition">#</a></dt>
+<dd><p>Mutable user specified security marks belonging to the parent
+resource. Constraints are as follows: - Keys and values are
+treated as case insensitive - Keys must be alphanumeric and
+between 1 - 256 characters (inclusive) - Values have leading
+and trailing whitespace trimmed, remaining characters must be
+between 1 - 4096 characters (inclusive)</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.securitycenter_v1beta1.types.SecurityMarks.MarksEntry">
+<em class="property">class </em><code class="descname">MarksEntry</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.SecurityMarks.MarksEntry" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.securitycenter_v1beta1.types.ServiceDescriptorProto">
+<em class="property">class </em><code class="descclassname">google.cloud.securitycenter_v1beta1.types.</code><code class="descname">ServiceDescriptorProto</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.ServiceDescriptorProto" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.securitycenter_v1beta1.types.ServiceOptions">
+<em class="property">class </em><code class="descclassname">google.cloud.securitycenter_v1beta1.types.</code><code class="descname">ServiceOptions</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.ServiceOptions" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.securitycenter_v1beta1.types.SetFindingStateRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.securitycenter_v1beta1.types.</code><code class="descname">SetFindingStateRequest</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.SetFindingStateRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request message for updating a finding’s state.</p>
+<dl class="attribute">
+<dt id="google.cloud.securitycenter_v1beta1.types.SetFindingStateRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.SetFindingStateRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>The relative resource name of the finding. See: <a class="reference external" href="https://cloud">https://cloud</a>.
+google.com/apis/design/resource_names#relative_resource_nam
+e Example: “organizations/123/sources/456/finding/789”.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.securitycenter_v1beta1.types.SetFindingStateRequest.state">
+<code class="descname">state</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.SetFindingStateRequest.state" title="Permalink to this definition">#</a></dt>
+<dd><p>The desired State of the finding.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.securitycenter_v1beta1.types.SetFindingStateRequest.start_time">
+<code class="descname">start_time</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.SetFindingStateRequest.start_time" title="Permalink to this definition">#</a></dt>
+<dd><p>The time at which the updated state takes effect.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.securitycenter_v1beta1.types.SetIamPolicyRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.securitycenter_v1beta1.types.</code><code class="descname">SetIamPolicyRequest</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.SetIamPolicyRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request message for <code class="docutils literal notranslate"><span class="pre">SetIamPolicy</span></code> method.</p>
+<dl class="attribute">
+<dt id="google.cloud.securitycenter_v1beta1.types.SetIamPolicyRequest.resource">
+<code class="descname">resource</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.SetIamPolicyRequest.resource" title="Permalink to this definition">#</a></dt>
+<dd><p>REQUIRED: The resource for which the policy is being
+specified. <code class="docutils literal notranslate"><span class="pre">resource</span></code> is usually specified as a path. For
+example, a Project resource is specified as
+<code class="docutils literal notranslate"><span class="pre">projects/{project}</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.securitycenter_v1beta1.types.SetIamPolicyRequest.policy">
+<code class="descname">policy</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.SetIamPolicyRequest.policy" title="Permalink to this definition">#</a></dt>
+<dd><p>REQUIRED: The complete policy to be applied to the
+<code class="docutils literal notranslate"><span class="pre">resource</span></code>. The size of the policy is limited to a few 10s
+of KB. An empty policy is a valid policy but certain Cloud
+Platform services (such as Projects) might reject them.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.securitycenter_v1beta1.types.Source">
+<em class="property">class </em><code class="descclassname">google.cloud.securitycenter_v1beta1.types.</code><code class="descname">Source</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.Source" title="Permalink to this definition">#</a></dt>
+<dd><p>Security Center’s finding source. A finding source is an entity or a
+mechanism that can produce a finding. A source can also be thought of as
+a container of findings that come from the same scanner, logger,
+monitor, etc.</p>
+<dl class="attribute">
+<dt id="google.cloud.securitycenter_v1beta1.types.Source.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.Source.name" title="Permalink to this definition">#</a></dt>
+<dd><p>The relative resource name of this source. See: <a class="reference external" href="https://cloud">https://cloud</a>.
+google.com/apis/design/resource_names#relative_resource_nam
+e Example: “organizations/123/sources/456”</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.securitycenter_v1beta1.types.Source.display_name">
+<code class="descname">display_name</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.Source.display_name" title="Permalink to this definition">#</a></dt>
+<dd><p>The source’s display name. A source’s display name must be
+unique amongst its siblings, e.g. no two sources with the same
+parent can share the same display name. The display name must
+start and end with a letter or digit, may contain letters,
+digits, spaces, hyphens and underscores and can be no longer
+than 30 characters. This is captured by the regular
+expression: <cite>:raw-latex:</cite>p{L}`:raw-latex:<cite>p{N}</cite> &lt;%7Bp%7BL%7
+Dp%7BN%7D_-%20%5D%7B0,28%7D%5Bp%7BL%7Dp%7BN%7D%5D&gt;`__?.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.securitycenter_v1beta1.types.Source.description">
+<code class="descname">description</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.Source.description" title="Permalink to this definition">#</a></dt>
+<dd><p>The description of the source (max of 1024 characters).
+Example: “Cloud Security Scanner is a web security scanner for
+common vulnerabilities in Google App Engine applications. It
+can automatically scan and detect four common vulnerabilities,
+including cross-site-scripting (XSS), Flash injection, mixed
+content (HTTP in HTTPS), and outdated/insecure libraries.”</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.securitycenter_v1beta1.types.SourceCodeInfo">
+<em class="property">class </em><code class="descclassname">google.cloud.securitycenter_v1beta1.types.</code><code class="descname">SourceCodeInfo</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.SourceCodeInfo" title="Permalink to this definition">#</a></dt>
+<dd><dl class="class">
+<dt id="google.cloud.securitycenter_v1beta1.types.SourceCodeInfo.Location">
+<em class="property">class </em><code class="descname">Location</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.SourceCodeInfo.Location" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.securitycenter_v1beta1.types.Status">
+<em class="property">class </em><code class="descclassname">google.cloud.securitycenter_v1beta1.types.</code><code class="descname">Status</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.Status" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.securitycenter_v1beta1.types.Struct">
+<em class="property">class </em><code class="descclassname">google.cloud.securitycenter_v1beta1.types.</code><code class="descname">Struct</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.Struct" title="Permalink to this definition">#</a></dt>
+<dd><dl class="class">
+<dt id="google.cloud.securitycenter_v1beta1.types.Struct.FieldsEntry">
+<em class="property">class </em><code class="descname">FieldsEntry</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.Struct.FieldsEntry" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.securitycenter_v1beta1.types.TestIamPermissionsRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.securitycenter_v1beta1.types.</code><code class="descname">TestIamPermissionsRequest</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.TestIamPermissionsRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request message for <code class="docutils literal notranslate"><span class="pre">TestIamPermissions</span></code> method.</p>
+<dl class="attribute">
+<dt id="google.cloud.securitycenter_v1beta1.types.TestIamPermissionsRequest.resource">
+<code class="descname">resource</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.TestIamPermissionsRequest.resource" title="Permalink to this definition">#</a></dt>
+<dd><p>REQUIRED: The resource for which the policy detail is being
+requested. <code class="docutils literal notranslate"><span class="pre">resource</span></code> is usually specified as a path. For
+example, a Project resource is specified as
+<code class="docutils literal notranslate"><span class="pre">projects/{project}</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.securitycenter_v1beta1.types.TestIamPermissionsRequest.permissions">
+<code class="descname">permissions</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.TestIamPermissionsRequest.permissions" title="Permalink to this definition">#</a></dt>
+<dd><p>The set of permissions to check for the <code class="docutils literal notranslate"><span class="pre">resource</span></code>.
+Permissions with wildcards (such as ‘*’ or ‘storage.*’) are
+not allowed. For more information see <a class="reference external" href="https://cloud.google.com/iam/docs/overview#permissions">IAM Overview</a>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.securitycenter_v1beta1.types.TestIamPermissionsResponse">
+<em class="property">class </em><code class="descclassname">google.cloud.securitycenter_v1beta1.types.</code><code class="descname">TestIamPermissionsResponse</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.TestIamPermissionsResponse" title="Permalink to this definition">#</a></dt>
+<dd><p>Response message for <code class="docutils literal notranslate"><span class="pre">TestIamPermissions</span></code> method.</p>
+<dl class="attribute">
+<dt id="google.cloud.securitycenter_v1beta1.types.TestIamPermissionsResponse.permissions">
+<code class="descname">permissions</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.TestIamPermissionsResponse.permissions" title="Permalink to this definition">#</a></dt>
+<dd><p>A subset of <code class="docutils literal notranslate"><span class="pre">TestPermissionsRequest.permissions</span></code> that the
+caller is allowed.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.securitycenter_v1beta1.types.Timestamp">
+<em class="property">class </em><code class="descclassname">google.cloud.securitycenter_v1beta1.types.</code><code class="descname">Timestamp</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.Timestamp" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.securitycenter_v1beta1.types.UninterpretedOption">
+<em class="property">class </em><code class="descclassname">google.cloud.securitycenter_v1beta1.types.</code><code class="descname">UninterpretedOption</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.UninterpretedOption" title="Permalink to this definition">#</a></dt>
+<dd><dl class="class">
+<dt id="google.cloud.securitycenter_v1beta1.types.UninterpretedOption.NamePart">
+<em class="property">class </em><code class="descname">NamePart</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.UninterpretedOption.NamePart" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.securitycenter_v1beta1.types.UpdateFindingRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.securitycenter_v1beta1.types.</code><code class="descname">UpdateFindingRequest</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.UpdateFindingRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request message for updating or creating a finding.</p>
+<dl class="attribute">
+<dt id="google.cloud.securitycenter_v1beta1.types.UpdateFindingRequest.finding">
+<code class="descname">finding</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.UpdateFindingRequest.finding" title="Permalink to this definition">#</a></dt>
+<dd><p>The finding resource to update or create if it does not
+already exist. parent, security_marks, and update_time will
+be ignored.  In the case of creation, the finding id portion
+of the name must alphanumeric and less than or equal to 32
+characters and greater than 0 characters in length.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.securitycenter_v1beta1.types.UpdateFindingRequest.update_mask">
+<code class="descname">update_mask</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.UpdateFindingRequest.update_mask" title="Permalink to this definition">#</a></dt>
+<dd><p>The FieldMask to use when updating the finding resource. This
+field is ignored if the finding does not already exist and the
+finding is created.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.securitycenter_v1beta1.types.UpdateOrganizationSettingsRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.securitycenter_v1beta1.types.</code><code class="descname">UpdateOrganizationSettingsRequest</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.UpdateOrganizationSettingsRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request message for updating an organization’s settings.</p>
+<dl class="attribute">
+<dt id="google.cloud.securitycenter_v1beta1.types.UpdateOrganizationSettingsRequest.organization_settings">
+<code class="descname">organization_settings</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.UpdateOrganizationSettingsRequest.organization_settings" title="Permalink to this definition">#</a></dt>
+<dd><p>The organization settings resource to update.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.securitycenter_v1beta1.types.UpdateOrganizationSettingsRequest.update_mask">
+<code class="descname">update_mask</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.UpdateOrganizationSettingsRequest.update_mask" title="Permalink to this definition">#</a></dt>
+<dd><p>The FieldMask to use when updating the settings resource.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.securitycenter_v1beta1.types.UpdateSecurityMarksRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.securitycenter_v1beta1.types.</code><code class="descname">UpdateSecurityMarksRequest</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.UpdateSecurityMarksRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request message for updating a SecurityMarks resource.</p>
+<dl class="attribute">
+<dt id="google.cloud.securitycenter_v1beta1.types.UpdateSecurityMarksRequest.security_marks">
+<code class="descname">security_marks</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.UpdateSecurityMarksRequest.security_marks" title="Permalink to this definition">#</a></dt>
+<dd><p>The security marks resource to update.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.securitycenter_v1beta1.types.UpdateSecurityMarksRequest.update_mask">
+<code class="descname">update_mask</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.UpdateSecurityMarksRequest.update_mask" title="Permalink to this definition">#</a></dt>
+<dd><p>The FieldMask to use when updating the security marks
+resource.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.securitycenter_v1beta1.types.UpdateSecurityMarksRequest.start_time">
+<code class="descname">start_time</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.UpdateSecurityMarksRequest.start_time" title="Permalink to this definition">#</a></dt>
+<dd><p>The time at which the updated SecurityMarks take effect.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.securitycenter_v1beta1.types.UpdateSourceRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.securitycenter_v1beta1.types.</code><code class="descname">UpdateSourceRequest</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.UpdateSourceRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request message for updating a source.</p>
+<dl class="attribute">
+<dt id="google.cloud.securitycenter_v1beta1.types.UpdateSourceRequest.source">
+<code class="descname">source</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.UpdateSourceRequest.source" title="Permalink to this definition">#</a></dt>
+<dd><p>The source resource to update.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.securitycenter_v1beta1.types.UpdateSourceRequest.update_mask">
+<code class="descname">update_mask</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.UpdateSourceRequest.update_mask" title="Permalink to this definition">#</a></dt>
+<dd><p>The FieldMask to use when updating the source resource.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.securitycenter_v1beta1.types.Value">
+<em class="property">class </em><code class="descclassname">google.cloud.securitycenter_v1beta1.types.</code><code class="descname">Value</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.Value" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">google-cloud</a></h1>
+
+
+
+<p class="blurb">Google Cloud Client Libraries for Python</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=GoogleCloudPlatform&repo=google-cloud-python&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../core/index.html">Core Libraries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../asset/index.html">Asset Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../automl/index.html">AutoML</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../bigquery/index.html">BigQuery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../bigquery_datatransfer/index.html">BigQuery Data-Transfer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../bigtable/index.html">Bigtable</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../container/index.html">Container</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dataproc/index.html">Dataproc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../datastore/index.html">Datastore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dlp/index.html">Data Loss Prevention</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dns/index.html">DNS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../firestore/index.html">Firestore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../iot/index.html">IoT</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../kms/index.html">Key Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../language/index.html">Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pubsub/index.html">PubSub</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../oslogin/index.html">OSLogin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../redis/index.html">Redis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../resource-manager/index.html">Resource Manager</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../runtimeconfig/index.html">Python Client for Google Cloud RuntimeConfig</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../runtimeconfig/index.html#api-reference">API Reference</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Security Center</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../websecurityscanner/index.html">Security Scanner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../spanner/index.html">Spanner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../speech/index.html">Speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../storage/index.html">Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tasks/index.html">Tasks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../texttospeech/index.html">Text-to-Speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../translate/index.html">Translate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../vision/index.html">Vision</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../videointelligence/index.html">Video Intelligence</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../error-reporting/index.html">Stackdriver Error Reporting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../logging/index.html">Stackdriver Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../monitoring/index.html">Stackdriver Monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../trace/index.html">Stackdriver Trace</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../releases.html">Release History</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Python Client for Cloud Security Command Center API (Alpha)</a><ul>
+      <li>Previous: <a href="api.html" title="previous chapter">Client for Cloud Security Command Center API</a></li>
+      <li>Next: <a href="../../../websecurityscanner/index.html" title="next chapter">Python Client for Web Security Scanner API</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2014-2017, Google.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../../../_sources/securitycenter/gapic/v1beta1/types.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/GoogleCloudPlatform/google-cloud-python" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>
