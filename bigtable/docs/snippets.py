@@ -276,10 +276,10 @@ def test_bigtable_update_cluster():
     client = Client(admin=True)
     instance = client.instance(INSTANCE_ID)
     cluster = instance.cluster(CLUSTER_ID)
-    cluster.serve_nodes = 8
+    cluster.serve_nodes = 4
     cluster.update()
     # [END bigtable_update_cluster]
-    assert cluster.serve_nodes is 8
+    assert cluster.serve_nodes is 4
 
 
 def test_bigtable_create_table():
