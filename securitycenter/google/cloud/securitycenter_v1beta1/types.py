@@ -24,7 +24,8 @@ from google.cloud.securitycenter_v1beta1.proto import asset_pb2
 from google.cloud.securitycenter_v1beta1.proto import finding_pb2
 from google.cloud.securitycenter_v1beta1.proto import organization_settings_pb2
 from google.cloud.securitycenter_v1beta1.proto import security_marks_pb2
-from google.cloud.securitycenter_v1beta1.proto import securitycenter_service_pb2
+from google.cloud.securitycenter_v1beta1.proto \
+    import securitycenter_service_pb2
 from google.cloud.securitycenter_v1beta1.proto import source_pb2
 from google.iam.v1 import iam_policy_pb2
 from google.iam.v1 import policy_pb2
