@@ -55,23 +55,6 @@ def unit(session):
     default(session)
 
 
-# @nox.session(python=['2.7', '3.6'])
-# def system(session):
-#     """Run the system test suite."""
-
-#     if not os.environ.get('GOOGLE_APPLICATION_CREDENTIALS', ''):
-#         session.skip('Credentials must be set via environment variable.')
-
-#     # Use pre-release gRPC for system tests.
-#     session.install('--pre', 'grpcio')
-
-#     session.install('pytest')
-#     session.install('-e', '.')
-
-#     session.run('py.test', '--quiet',
-#                 os.path.join('tests', 'system'), *session.posargs)
-
-
 @nox.session(python='3.6')
 def lint(session):
     """Run linters.
