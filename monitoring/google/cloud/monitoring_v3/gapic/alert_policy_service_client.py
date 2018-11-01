@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+#
 # Copyright 2018 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -168,11 +170,12 @@ class AlertPolicyServiceClient(object):
                         'Received both a transport instance and '
                         'credentials; these are mutually exclusive.')
                 self.transport = transport
-        self.transport = alert_policy_service_grpc_transport.AlertPolicyServiceGrpcTransport(
-            address=self.SERVICE_ADDRESS,
-            channel=channel,
-            credentials=credentials,
-        )
+        else:
+            self.transport = alert_policy_service_grpc_transport.AlertPolicyServiceGrpcTransport(
+                address=self.SERVICE_ADDRESS,
+                channel=channel,
+                credentials=credentials,
+            )
 
         if client_info is None:
             client_info = (
@@ -282,10 +285,10 @@ class AlertPolicyServiceClient(object):
             self._inner_api_calls[
                 'list_alert_policies'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.list_alert_policies,
-                    default_retry=self._method_configs[
-                        'ListAlertPolicies'].retry,
-                    default_timeout=self._method_configs['ListAlertPolicies']
-                    .timeout,
+                    default_retry=self._method_configs['ListAlertPolicies'].
+                    retry,
+                    default_timeout=self._method_configs['ListAlertPolicies'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -358,8 +361,8 @@ class AlertPolicyServiceClient(object):
                 'get_alert_policy'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.get_alert_policy,
                     default_retry=self._method_configs['GetAlertPolicy'].retry,
-                    default_timeout=self._method_configs['GetAlertPolicy']
-                    .timeout,
+                    default_timeout=self._method_configs['GetAlertPolicy'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -429,10 +432,10 @@ class AlertPolicyServiceClient(object):
             self._inner_api_calls[
                 'create_alert_policy'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.create_alert_policy,
-                    default_retry=self._method_configs[
-                        'CreateAlertPolicy'].retry,
-                    default_timeout=self._method_configs['CreateAlertPolicy']
-                    .timeout,
+                    default_retry=self._method_configs['CreateAlertPolicy'].
+                    retry,
+                    default_timeout=self._method_configs['CreateAlertPolicy'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -490,10 +493,10 @@ class AlertPolicyServiceClient(object):
             self._inner_api_calls[
                 'delete_alert_policy'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.delete_alert_policy,
-                    default_retry=self._method_configs[
-                        'DeleteAlertPolicy'].retry,
-                    default_timeout=self._method_configs['DeleteAlertPolicy']
-                    .timeout,
+                    default_retry=self._method_configs['DeleteAlertPolicy'].
+                    retry,
+                    default_timeout=self._method_configs['DeleteAlertPolicy'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -581,10 +584,10 @@ class AlertPolicyServiceClient(object):
             self._inner_api_calls[
                 'update_alert_policy'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.update_alert_policy,
-                    default_retry=self._method_configs[
-                        'UpdateAlertPolicy'].retry,
-                    default_timeout=self._method_configs['UpdateAlertPolicy']
-                    .timeout,
+                    default_retry=self._method_configs['UpdateAlertPolicy'].
+                    retry,
+                    default_timeout=self._method_configs['UpdateAlertPolicy'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
