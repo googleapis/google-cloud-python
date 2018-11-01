@@ -1,0 +1,1761 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>google.cloud.vision_v1.gapic.product_search_client &#8212; google-cloud cbb1070 documentation</title>
+    <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../../_static/doctools.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="shortcut icon" href="../../../../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for google.cloud.vision_v1.gapic.product_search_client</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="c1">#</span>
+<span class="c1"># Copyright 2018 Google LLC</span>
+<span class="c1">#</span>
+<span class="c1"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span class="c1"># you may not use this file except in compliance with the License.</span>
+<span class="c1"># You may obtain a copy of the License at</span>
+<span class="c1">#</span>
+<span class="c1">#     https://www.apache.org/licenses/LICENSE-2.0</span>
+<span class="c1">#</span>
+<span class="c1"># Unless required by applicable law or agreed to in writing, software</span>
+<span class="c1"># distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span class="c1"># WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span class="c1"># See the License for the specific language governing permissions and</span>
+<span class="c1"># limitations under the License.</span>
+<span class="sd">&quot;&quot;&quot;Accesses the google.cloud.vision.v1 ProductSearch API.&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">functools</span>
+<span class="kn">import</span> <span class="nn">pkg_resources</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+
+<span class="kn">from</span> <span class="nn">google.oauth2</span> <span class="k">import</span> <span class="n">service_account</span>
+<span class="kn">import</span> <span class="nn">google.api_core.gapic_v1.client_info</span>
+<span class="kn">import</span> <span class="nn">google.api_core.gapic_v1.config</span>
+<span class="kn">import</span> <span class="nn">google.api_core.gapic_v1.method</span>
+<span class="kn">import</span> <span class="nn">google.api_core.grpc_helpers</span>
+<span class="kn">import</span> <span class="nn">google.api_core.operation</span>
+<span class="kn">from</span> <span class="nn">google.api_core</span> <span class="k">import</span> <span class="n">operations_v1</span>
+<span class="kn">import</span> <span class="nn">google.api_core.page_iterator</span>
+<span class="kn">import</span> <span class="nn">google.api_core.path_template</span>
+<span class="kn">import</span> <span class="nn">grpc</span>
+
+<span class="kn">from</span> <span class="nn">google.cloud.vision_v1.gapic</span> <span class="k">import</span> <span class="n">enums</span>
+<span class="kn">from</span> <span class="nn">google.cloud.vision_v1.gapic</span> <span class="k">import</span> <span class="n">product_search_client_config</span>
+<span class="kn">from</span> <span class="nn">google.cloud.vision_v1.gapic.transports</span> <span class="k">import</span> <span class="n">product_search_grpc_transport</span>
+<span class="kn">from</span> <span class="nn">google.cloud.vision_v1.proto</span> <span class="k">import</span> <span class="n">product_search_service_pb2</span>
+<span class="kn">from</span> <span class="nn">google.cloud.vision_v1.proto</span> <span class="k">import</span> <span class="n">product_search_service_pb2_grpc</span>
+<span class="kn">from</span> <span class="nn">google.longrunning</span> <span class="k">import</span> <span class="n">operations_pb2</span>
+<span class="kn">from</span> <span class="nn">google.protobuf</span> <span class="k">import</span> <span class="n">empty_pb2</span>
+<span class="kn">from</span> <span class="nn">google.protobuf</span> <span class="k">import</span> <span class="n">field_mask_pb2</span>
+
+<span class="n">_GAPIC_LIBRARY_VERSION</span> <span class="o">=</span> <span class="n">pkg_resources</span><span class="o">.</span><span class="n">get_distribution</span><span class="p">(</span>
+    <span class="s1">&#39;google-cloud-vision&#39;</span><span class="p">,</span> <span class="p">)</span><span class="o">.</span><span class="n">version</span>
+
+
+<span class="k">class</span> <span class="nc">ProductSearchClient</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Manages Products and ProductSets of reference images for use in product</span>
+<span class="sd">    search. It uses the following resource model:</span>
+
+<span class="sd">    - The API has a collection of ``ProductSet`` resources, named</span>
+<span class="sd">      ``projects/*/locations/*/productSets/*``, which acts as a way to put different</span>
+<span class="sd">      products into groups to limit identification.</span>
+
+<span class="sd">    In parallel,</span>
+
+<span class="sd">    - The API has a collection of ``Product`` resources, named</span>
+<span class="sd">      ``projects/*/locations/*/products/*``</span>
+
+<span class="sd">    - Each ``Product`` has a collection of ``ReferenceImage`` resources, named</span>
+<span class="sd">      ``projects/*/locations/*/products/*/referenceImages/*``</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">SERVICE_ADDRESS</span> <span class="o">=</span> <span class="s1">&#39;vision.googleapis.com:443&#39;</span>
+    <span class="sd">&quot;&quot;&quot;The default address of the service.&quot;&quot;&quot;</span>
+
+    <span class="c1"># The name of the interface for this client. This is the key used to</span>
+    <span class="c1"># find the method configuration in the client_config dictionary.</span>
+    <span class="n">_INTERFACE_NAME</span> <span class="o">=</span> <span class="s1">&#39;google.cloud.vision.v1.ProductSearch&#39;</span>
+
+<div class="viewcode-block" id="ProductSearchClient.from_service_account_file"><a class="viewcode-back" href="../../../../../vision/gapic/v1/api.html#google.cloud.vision_v1.ProductSearchClient.from_service_account_file">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_service_account_file</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Creates an instance of this client using the provided credentials</span>
+<span class="sd">        file.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            filename (str): The path to the service account private key json</span>
+<span class="sd">                file.</span>
+<span class="sd">            args: Additional arguments to pass to the constructor.</span>
+<span class="sd">            kwargs: Additional arguments to pass to the constructor.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            ProductSearchClient: The constructed client.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">credentials</span> <span class="o">=</span> <span class="n">service_account</span><span class="o">.</span><span class="n">Credentials</span><span class="o">.</span><span class="n">from_service_account_file</span><span class="p">(</span>
+            <span class="n">filename</span><span class="p">)</span>
+        <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;credentials&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">credentials</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+    <span class="n">from_service_account_json</span> <span class="o">=</span> <span class="n">from_service_account_file</span>
+
+<div class="viewcode-block" id="ProductSearchClient.location_path"><a class="viewcode-back" href="../../../../../vision/gapic/v1/api.html#google.cloud.vision_v1.ProductSearchClient.location_path">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">location_path</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">project</span><span class="p">,</span> <span class="n">location</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return a fully-qualified location string.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">path_template</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span>
+            <span class="s1">&#39;projects/</span><span class="si">{project}</span><span class="s1">/locations/</span><span class="si">{location}</span><span class="s1">&#39;</span><span class="p">,</span>
+            <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span>
+            <span class="n">location</span><span class="o">=</span><span class="n">location</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="ProductSearchClient.product_path"><a class="viewcode-back" href="../../../../../vision/gapic/v1/api.html#google.cloud.vision_v1.ProductSearchClient.product_path">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">product_path</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">project</span><span class="p">,</span> <span class="n">location</span><span class="p">,</span> <span class="n">product</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return a fully-qualified product string.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">path_template</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span>
+            <span class="s1">&#39;projects/</span><span class="si">{project}</span><span class="s1">/locations/</span><span class="si">{location}</span><span class="s1">/products/</span><span class="si">{product}</span><span class="s1">&#39;</span><span class="p">,</span>
+            <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span>
+            <span class="n">location</span><span class="o">=</span><span class="n">location</span><span class="p">,</span>
+            <span class="n">product</span><span class="o">=</span><span class="n">product</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="ProductSearchClient.product_set_path"><a class="viewcode-back" href="../../../../../vision/gapic/v1/api.html#google.cloud.vision_v1.ProductSearchClient.product_set_path">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">product_set_path</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">project</span><span class="p">,</span> <span class="n">location</span><span class="p">,</span> <span class="n">product_set</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return a fully-qualified product_set string.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">path_template</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span>
+            <span class="s1">&#39;projects/</span><span class="si">{project}</span><span class="s1">/locations/</span><span class="si">{location}</span><span class="s1">/productSets/</span><span class="si">{product_set}</span><span class="s1">&#39;</span><span class="p">,</span>
+            <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span>
+            <span class="n">location</span><span class="o">=</span><span class="n">location</span><span class="p">,</span>
+            <span class="n">product_set</span><span class="o">=</span><span class="n">product_set</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="ProductSearchClient.image_path"><a class="viewcode-back" href="../../../../../vision/gapic/v1/api.html#google.cloud.vision_v1.ProductSearchClient.image_path">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">image_path</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">project</span><span class="p">,</span> <span class="n">location</span><span class="p">,</span> <span class="n">product</span><span class="p">,</span> <span class="n">image</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return a fully-qualified image string.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">path_template</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span>
+            <span class="s1">&#39;projects/</span><span class="si">{project}</span><span class="s1">/locations/</span><span class="si">{location}</span><span class="s1">/products/</span><span class="si">{product}</span><span class="s1">/referenceImages/</span><span class="si">{image}</span><span class="s1">&#39;</span><span class="p">,</span>
+            <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span>
+            <span class="n">location</span><span class="o">=</span><span class="n">location</span><span class="p">,</span>
+            <span class="n">product</span><span class="o">=</span><span class="n">product</span><span class="p">,</span>
+            <span class="n">image</span><span class="o">=</span><span class="n">image</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">transport</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">channel</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">credentials</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">client_config</span><span class="o">=</span><span class="n">product_search_client_config</span><span class="o">.</span><span class="n">config</span><span class="p">,</span>
+                 <span class="n">client_info</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Constructor.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            transport (Union[~.ProductSearchGrpcTransport,</span>
+<span class="sd">                    Callable[[~.Credentials, type], ~.ProductSearchGrpcTransport]): A transport</span>
+<span class="sd">                instance, responsible for actually making the API calls.</span>
+<span class="sd">                The default transport uses the gRPC protocol.</span>
+<span class="sd">                This argument may also be a callable which returns a</span>
+<span class="sd">                transport instance. Callables will be sent the credentials</span>
+<span class="sd">                as the first argument and the default transport class as</span>
+<span class="sd">                the second argument.</span>
+<span class="sd">            channel (grpc.Channel): DEPRECATED. A ``Channel`` instance</span>
+<span class="sd">                through which to make calls. This argument is mutually exclusive</span>
+<span class="sd">                with ``credentials``; providing both will raise an exception.</span>
+<span class="sd">            credentials (google.auth.credentials.Credentials): The</span>
+<span class="sd">                authorization credentials to attach to requests. These</span>
+<span class="sd">                credentials identify this application to the service. If none</span>
+<span class="sd">                are specified, the client will attempt to ascertain the</span>
+<span class="sd">                credentials from the environment.</span>
+<span class="sd">                This argument is mutually exclusive with providing a</span>
+<span class="sd">                transport instance to ``transport``; doing so will raise</span>
+<span class="sd">                an exception.</span>
+<span class="sd">            client_config (dict): DEPRECATED. A dictionary of call options for</span>
+<span class="sd">                each method. If not specified, the default configuration is used.</span>
+<span class="sd">            client_info (google.api_core.gapic_v1.client_info.ClientInfo):</span>
+<span class="sd">                The client info used to send a user-agent string along with</span>
+<span class="sd">                API requests. If ``None``, then default info will be used.</span>
+<span class="sd">                Generally, you only need to set this if you&#39;re developing</span>
+<span class="sd">                your own client library.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Raise deprecation warnings for things we want to go away.</span>
+        <span class="k">if</span> <span class="n">client_config</span><span class="p">:</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;The `client_config` argument is deprecated.&#39;</span><span class="p">,</span>
+                          <span class="ne">PendingDeprecationWarning</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">channel</span><span class="p">:</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+                <span class="s1">&#39;The `channel` argument is deprecated; use &#39;</span>
+                <span class="s1">&#39;`transport` instead.&#39;</span><span class="p">,</span> <span class="ne">PendingDeprecationWarning</span><span class="p">)</span>
+
+        <span class="c1"># Instantiate the transport.</span>
+        <span class="c1"># The transport is responsible for handling serialization and</span>
+        <span class="c1"># deserialization and actually sending data to the service.</span>
+        <span class="k">if</span> <span class="n">transport</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">callable</span><span class="p">(</span><span class="n">transport</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">transport</span> <span class="o">=</span> <span class="n">transport</span><span class="p">(</span>
+                    <span class="n">credentials</span><span class="o">=</span><span class="n">credentials</span><span class="p">,</span>
+                    <span class="n">default_class</span><span class="o">=</span><span class="n">product_search_grpc_transport</span><span class="o">.</span>
+                    <span class="n">ProductSearchGrpcTransport</span><span class="p">,</span>
+                <span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">credentials</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                        <span class="s1">&#39;Received both a transport instance and &#39;</span>
+                        <span class="s1">&#39;credentials; these are mutually exclusive.&#39;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">transport</span> <span class="o">=</span> <span class="n">transport</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">transport</span> <span class="o">=</span> <span class="n">product_search_grpc_transport</span><span class="o">.</span><span class="n">ProductSearchGrpcTransport</span><span class="p">(</span>
+                <span class="n">address</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">SERVICE_ADDRESS</span><span class="p">,</span>
+                <span class="n">channel</span><span class="o">=</span><span class="n">channel</span><span class="p">,</span>
+                <span class="n">credentials</span><span class="o">=</span><span class="n">credentials</span><span class="p">,</span>
+            <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">client_info</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">client_info</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">client_info</span><span class="o">.</span><span class="n">DEFAULT_CLIENT_INFO</span><span class="p">)</span>
+        <span class="n">client_info</span><span class="o">.</span><span class="n">gapic_version</span> <span class="o">=</span> <span class="n">_GAPIC_LIBRARY_VERSION</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_client_info</span> <span class="o">=</span> <span class="n">client_info</span>
+
+        <span class="c1"># Parse out the default settings for retry and timeout for each RPC</span>
+        <span class="c1"># from the client configuration.</span>
+        <span class="c1"># (Ordinarily, these are the defaults specified in the `*_config.py`</span>
+        <span class="c1"># file next to this one.)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">parse_method_configs</span><span class="p">(</span>
+            <span class="n">client_config</span><span class="p">[</span><span class="s1">&#39;interfaces&#39;</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">_INTERFACE_NAME</span><span class="p">],</span> <span class="p">)</span>
+
+        <span class="c1"># Save a dictionary of cached API call functions.</span>
+        <span class="c1"># These are the actual callables which invoke the proper</span>
+        <span class="c1"># transport methods, wrapped with `wrap_method` to add retry,</span>
+        <span class="c1"># timeout, and the like.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="c1"># Service calls</span>
+<div class="viewcode-block" id="ProductSearchClient.create_product"><a class="viewcode-back" href="../../../../../vision/gapic/v1/api.html#google.cloud.vision_v1.ProductSearchClient.create_product">[docs]</a>    <span class="k">def</span> <span class="nf">create_product</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                       <span class="n">parent</span><span class="p">,</span>
+                       <span class="n">product</span><span class="p">,</span>
+                       <span class="n">product_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                       <span class="n">retry</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+                       <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+                       <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Creates and returns a new product resource.</span>
+
+<span class="sd">        Possible errors:</span>
+
+<span class="sd">        * Returns INVALID_ARGUMENT if display_name is missing or longer than 4096</span>
+<span class="sd">          characters.</span>
+<span class="sd">        * Returns INVALID_ARGUMENT if description is longer than 4096 characters.</span>
+<span class="sd">        * Returns INVALID_ARGUMENT if product_category is missing or invalid.</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">            &gt;&gt;&gt; from google.cloud import vision_v1</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; client = vision_v1.ProductSearchClient()</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; parent = client.location_path(&#39;[PROJECT]&#39;, &#39;[LOCATION]&#39;)</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``product``:</span>
+<span class="sd">            &gt;&gt;&gt; product = {}</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; response = client.create_product(parent, product)</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            parent (str): The project in which the Product should be created.</span>
+
+<span class="sd">                Format is</span>
+<span class="sd">                ``projects/PROJECT_ID/locations/LOC_ID``.</span>
+<span class="sd">            product (Union[dict, ~google.cloud.vision_v1.types.Product]): The product to create.</span>
+<span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
+<span class="sd">                message :class:`~google.cloud.vision_v1.types.Product`</span>
+<span class="sd">            product_id (str): A user-supplied resource id for this Product. If set, the server will</span>
+<span class="sd">                attempt to use this value as the resource id. If it is already in use, an</span>
+<span class="sd">                error is returned with code ALREADY_EXISTS. Must be at most 128 characters</span>
+<span class="sd">                long. It cannot contain the character ``/``.</span>
+<span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
+<span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
+<span class="sd">                be retried.</span>
+<span class="sd">            timeout (Optional[float]): The amount of time, in seconds, to wait</span>
+<span class="sd">                for the request to complete. Note that if ``retry`` is</span>
+<span class="sd">                specified, the timeout applies to each individual attempt.</span>
+<span class="sd">            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata</span>
+<span class="sd">                that is provided to the method.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A :class:`~google.cloud.vision_v1.types.Product` instance.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            google.api_core.exceptions.GoogleAPICallError: If the request</span>
+<span class="sd">                    failed for any reason.</span>
+<span class="sd">            google.api_core.exceptions.RetryError: If the request failed due</span>
+<span class="sd">                    to a retryable error and retry attempts failed.</span>
+<span class="sd">            ValueError: If the parameters are invalid.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Wrap the transport method to add retry and timeout logic.</span>
+        <span class="k">if</span> <span class="s1">&#39;create_product&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span>
+                <span class="s1">&#39;create_product&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">wrap_method</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">create_product</span><span class="p">,</span>
+                    <span class="n">default_retry</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span><span class="s1">&#39;CreateProduct&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">retry</span><span class="p">,</span>
+                    <span class="n">default_timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span><span class="s1">&#39;CreateProduct&#39;</span><span class="p">]</span><span class="o">.</span>
+                    <span class="n">timeout</span><span class="p">,</span>
+                    <span class="n">client_info</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client_info</span><span class="p">,</span>
+                <span class="p">)</span>
+
+        <span class="n">request</span> <span class="o">=</span> <span class="n">product_search_service_pb2</span><span class="o">.</span><span class="n">CreateProductRequest</span><span class="p">(</span>
+            <span class="n">parent</span><span class="o">=</span><span class="n">parent</span><span class="p">,</span>
+            <span class="n">product</span><span class="o">=</span><span class="n">product</span><span class="p">,</span>
+            <span class="n">product_id</span><span class="o">=</span><span class="n">product_id</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span><span class="s1">&#39;create_product&#39;</span><span class="p">](</span>
+            <span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ProductSearchClient.list_products"><a class="viewcode-back" href="../../../../../vision/gapic/v1/api.html#google.cloud.vision_v1.ProductSearchClient.list_products">[docs]</a>    <span class="k">def</span> <span class="nf">list_products</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                      <span class="n">parent</span><span class="p">,</span>
+                      <span class="n">page_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                      <span class="n">retry</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+                      <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+                      <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Lists products in an unspecified order.</span>
+
+<span class="sd">        Possible errors:</span>
+
+<span class="sd">        * Returns INVALID_ARGUMENT if page_size is greater than 100 or less than 1.</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">            &gt;&gt;&gt; from google.cloud import vision_v1</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; client = vision_v1.ProductSearchClient()</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; parent = client.location_path(&#39;[PROJECT]&#39;, &#39;[LOCATION]&#39;)</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; # Iterate over all results</span>
+<span class="sd">            &gt;&gt;&gt; for element in client.list_products(parent):</span>
+<span class="sd">            ...     # process element</span>
+<span class="sd">            ...     pass</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; # Alternatively:</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; # Iterate over results one page at a time</span>
+<span class="sd">            &gt;&gt;&gt; for page in client.list_products(parent, options=CallOptions(page_token=INITIAL_PAGE)):</span>
+<span class="sd">            ...     for element in page:</span>
+<span class="sd">            ...         # process element</span>
+<span class="sd">            ...         pass</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            parent (str): The project OR ProductSet from which Products should be listed.</span>
+
+<span class="sd">                Format:</span>
+<span class="sd">                ``projects/PROJECT_ID/locations/LOC_ID``</span>
+<span class="sd">            page_size (int): The maximum number of resources contained in the</span>
+<span class="sd">                underlying API response. If page streaming is performed per-</span>
+<span class="sd">                resource, this parameter does not affect the return value. If page</span>
+<span class="sd">                streaming is performed per-page, this determines the maximum number</span>
+<span class="sd">                of resources in a page.</span>
+<span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
+<span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
+<span class="sd">                be retried.</span>
+<span class="sd">            timeout (Optional[float]): The amount of time, in seconds, to wait</span>
+<span class="sd">                for the request to complete. Note that if ``retry`` is</span>
+<span class="sd">                specified, the timeout applies to each individual attempt.</span>
+<span class="sd">            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata</span>
+<span class="sd">                that is provided to the method.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A :class:`~google.gax.PageIterator` instance. By default, this</span>
+<span class="sd">            is an iterable of :class:`~google.cloud.vision_v1.types.Product` instances.</span>
+<span class="sd">            This object can also be configured to iterate over the pages</span>
+<span class="sd">            of the response through the `options` parameter.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            google.api_core.exceptions.GoogleAPICallError: If the request</span>
+<span class="sd">                    failed for any reason.</span>
+<span class="sd">            google.api_core.exceptions.RetryError: If the request failed due</span>
+<span class="sd">                    to a retryable error and retry attempts failed.</span>
+<span class="sd">            ValueError: If the parameters are invalid.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Wrap the transport method to add retry and timeout logic.</span>
+        <span class="k">if</span> <span class="s1">&#39;list_products&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span>
+                <span class="s1">&#39;list_products&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">wrap_method</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">list_products</span><span class="p">,</span>
+                    <span class="n">default_retry</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span><span class="s1">&#39;ListProducts&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">retry</span><span class="p">,</span>
+                    <span class="n">default_timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span><span class="s1">&#39;ListProducts&#39;</span><span class="p">]</span><span class="o">.</span>
+                    <span class="n">timeout</span><span class="p">,</span>
+                    <span class="n">client_info</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client_info</span><span class="p">,</span>
+                <span class="p">)</span>
+
+        <span class="n">request</span> <span class="o">=</span> <span class="n">product_search_service_pb2</span><span class="o">.</span><span class="n">ListProductsRequest</span><span class="p">(</span>
+            <span class="n">parent</span><span class="o">=</span><span class="n">parent</span><span class="p">,</span>
+            <span class="n">page_size</span><span class="o">=</span><span class="n">page_size</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">iterator</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">page_iterator</span><span class="o">.</span><span class="n">GRPCIterator</span><span class="p">(</span>
+            <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">method</span><span class="o">=</span><span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span><span class="s1">&#39;list_products&#39;</span><span class="p">],</span>
+                <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span>
+                <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span>
+                <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">),</span>
+            <span class="n">request</span><span class="o">=</span><span class="n">request</span><span class="p">,</span>
+            <span class="n">items_field</span><span class="o">=</span><span class="s1">&#39;products&#39;</span><span class="p">,</span>
+            <span class="n">request_token_field</span><span class="o">=</span><span class="s1">&#39;page_token&#39;</span><span class="p">,</span>
+            <span class="n">response_token_field</span><span class="o">=</span><span class="s1">&#39;next_page_token&#39;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">iterator</span></div>
+
+<div class="viewcode-block" id="ProductSearchClient.get_product"><a class="viewcode-back" href="../../../../../vision/gapic/v1/api.html#google.cloud.vision_v1.ProductSearchClient.get_product">[docs]</a>    <span class="k">def</span> <span class="nf">get_product</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                    <span class="n">name</span><span class="p">,</span>
+                    <span class="n">retry</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+                    <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+                    <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Gets information associated with a Product.</span>
+
+<span class="sd">        Possible errors:</span>
+
+<span class="sd">        * Returns NOT_FOUND if the Product does not exist.</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">            &gt;&gt;&gt; from google.cloud import vision_v1</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; client = vision_v1.ProductSearchClient()</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; name = client.product_path(&#39;[PROJECT]&#39;, &#39;[LOCATION]&#39;, &#39;[PRODUCT]&#39;)</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; response = client.get_product(name)</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            name (str): Resource name of the Product to get.</span>
+
+<span class="sd">                Format is:</span>
+<span class="sd">                ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID``</span>
+<span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
+<span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
+<span class="sd">                be retried.</span>
+<span class="sd">            timeout (Optional[float]): The amount of time, in seconds, to wait</span>
+<span class="sd">                for the request to complete. Note that if ``retry`` is</span>
+<span class="sd">                specified, the timeout applies to each individual attempt.</span>
+<span class="sd">            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata</span>
+<span class="sd">                that is provided to the method.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A :class:`~google.cloud.vision_v1.types.Product` instance.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            google.api_core.exceptions.GoogleAPICallError: If the request</span>
+<span class="sd">                    failed for any reason.</span>
+<span class="sd">            google.api_core.exceptions.RetryError: If the request failed due</span>
+<span class="sd">                    to a retryable error and retry attempts failed.</span>
+<span class="sd">            ValueError: If the parameters are invalid.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Wrap the transport method to add retry and timeout logic.</span>
+        <span class="k">if</span> <span class="s1">&#39;get_product&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span>
+                <span class="s1">&#39;get_product&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">wrap_method</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">get_product</span><span class="p">,</span>
+                    <span class="n">default_retry</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span><span class="s1">&#39;GetProduct&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">retry</span><span class="p">,</span>
+                    <span class="n">default_timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span><span class="s1">&#39;GetProduct&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">timeout</span><span class="p">,</span>
+                    <span class="n">client_info</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client_info</span><span class="p">,</span>
+                <span class="p">)</span>
+
+        <span class="n">request</span> <span class="o">=</span> <span class="n">product_search_service_pb2</span><span class="o">.</span><span class="n">GetProductRequest</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span><span class="s1">&#39;get_product&#39;</span><span class="p">](</span>
+            <span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ProductSearchClient.update_product"><a class="viewcode-back" href="../../../../../vision/gapic/v1/api.html#google.cloud.vision_v1.ProductSearchClient.update_product">[docs]</a>    <span class="k">def</span> <span class="nf">update_product</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                       <span class="n">product</span><span class="p">,</span>
+                       <span class="n">update_mask</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                       <span class="n">retry</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+                       <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+                       <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Makes changes to a Product resource.</span>
+<span class="sd">        Only the ``display_name``, ``description``, and ``labels`` fields can be updated</span>
+<span class="sd">        right now.</span>
+
+<span class="sd">        If labels are updated, the change will not be reflected in queries until</span>
+<span class="sd">        the next index time.</span>
+
+<span class="sd">        Possible errors:</span>
+
+<span class="sd">        * Returns NOT_FOUND if the Product does not exist.</span>
+<span class="sd">        * Returns INVALID_ARGUMENT if display_name is present in update_mask but is</span>
+<span class="sd">          missing from the request or longer than 4096 characters.</span>
+<span class="sd">        * Returns INVALID_ARGUMENT if description is present in update_mask but is</span>
+<span class="sd">          longer than 4096 characters.</span>
+<span class="sd">        * Returns INVALID_ARGUMENT if product_category is present in update_mask.</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">            &gt;&gt;&gt; from google.cloud import vision_v1</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; client = vision_v1.ProductSearchClient()</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``product``:</span>
+<span class="sd">            &gt;&gt;&gt; product = {}</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; response = client.update_product(product)</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            product (Union[dict, ~google.cloud.vision_v1.types.Product]): The Product resource which replaces the one on the server.</span>
+<span class="sd">                product.name is immutable.</span>
+<span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
+<span class="sd">                message :class:`~google.cloud.vision_v1.types.Product`</span>
+<span class="sd">            update_mask (Union[dict, ~google.cloud.vision_v1.types.FieldMask]): The ``FieldMask`` that specifies which fields</span>
+<span class="sd">                to update.</span>
+<span class="sd">                If update_mask isn&#39;t specified, all mutable fields are to be updated.</span>
+<span class="sd">                Valid mask paths include ``product_labels``, ``display_name``, and</span>
+<span class="sd">                ``description``.</span>
+<span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
+<span class="sd">                message :class:`~google.cloud.vision_v1.types.FieldMask`</span>
+<span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
+<span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
+<span class="sd">                be retried.</span>
+<span class="sd">            timeout (Optional[float]): The amount of time, in seconds, to wait</span>
+<span class="sd">                for the request to complete. Note that if ``retry`` is</span>
+<span class="sd">                specified, the timeout applies to each individual attempt.</span>
+<span class="sd">            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata</span>
+<span class="sd">                that is provided to the method.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A :class:`~google.cloud.vision_v1.types.Product` instance.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            google.api_core.exceptions.GoogleAPICallError: If the request</span>
+<span class="sd">                    failed for any reason.</span>
+<span class="sd">            google.api_core.exceptions.RetryError: If the request failed due</span>
+<span class="sd">                    to a retryable error and retry attempts failed.</span>
+<span class="sd">            ValueError: If the parameters are invalid.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Wrap the transport method to add retry and timeout logic.</span>
+        <span class="k">if</span> <span class="s1">&#39;update_product&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span>
+                <span class="s1">&#39;update_product&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">wrap_method</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">update_product</span><span class="p">,</span>
+                    <span class="n">default_retry</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span><span class="s1">&#39;UpdateProduct&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">retry</span><span class="p">,</span>
+                    <span class="n">default_timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span><span class="s1">&#39;UpdateProduct&#39;</span><span class="p">]</span><span class="o">.</span>
+                    <span class="n">timeout</span><span class="p">,</span>
+                    <span class="n">client_info</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client_info</span><span class="p">,</span>
+                <span class="p">)</span>
+
+        <span class="n">request</span> <span class="o">=</span> <span class="n">product_search_service_pb2</span><span class="o">.</span><span class="n">UpdateProductRequest</span><span class="p">(</span>
+            <span class="n">product</span><span class="o">=</span><span class="n">product</span><span class="p">,</span>
+            <span class="n">update_mask</span><span class="o">=</span><span class="n">update_mask</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span><span class="s1">&#39;update_product&#39;</span><span class="p">](</span>
+            <span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ProductSearchClient.delete_product"><a class="viewcode-back" href="../../../../../vision/gapic/v1/api.html#google.cloud.vision_v1.ProductSearchClient.delete_product">[docs]</a>    <span class="k">def</span> <span class="nf">delete_product</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                       <span class="n">name</span><span class="p">,</span>
+                       <span class="n">retry</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+                       <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+                       <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Permanently deletes a product and its reference images.</span>
+
+<span class="sd">        Metadata of the product and all its images will be deleted right away, but</span>
+<span class="sd">        search queries against ProductSets containing the product may still work</span>
+<span class="sd">        until all related caches are refreshed.</span>
+
+<span class="sd">        Possible errors:</span>
+
+<span class="sd">        * Returns NOT_FOUND if the product does not exist.</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">            &gt;&gt;&gt; from google.cloud import vision_v1</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; client = vision_v1.ProductSearchClient()</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; name = client.product_path(&#39;[PROJECT]&#39;, &#39;[LOCATION]&#39;, &#39;[PRODUCT]&#39;)</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; client.delete_product(name)</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            name (str): Resource name of product to delete.</span>
+
+<span class="sd">                Format is:</span>
+<span class="sd">                ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID``</span>
+<span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
+<span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
+<span class="sd">                be retried.</span>
+<span class="sd">            timeout (Optional[float]): The amount of time, in seconds, to wait</span>
+<span class="sd">                for the request to complete. Note that if ``retry`` is</span>
+<span class="sd">                specified, the timeout applies to each individual attempt.</span>
+<span class="sd">            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata</span>
+<span class="sd">                that is provided to the method.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            google.api_core.exceptions.GoogleAPICallError: If the request</span>
+<span class="sd">                    failed for any reason.</span>
+<span class="sd">            google.api_core.exceptions.RetryError: If the request failed due</span>
+<span class="sd">                    to a retryable error and retry attempts failed.</span>
+<span class="sd">            ValueError: If the parameters are invalid.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Wrap the transport method to add retry and timeout logic.</span>
+        <span class="k">if</span> <span class="s1">&#39;delete_product&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span>
+                <span class="s1">&#39;delete_product&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">wrap_method</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">delete_product</span><span class="p">,</span>
+                    <span class="n">default_retry</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span><span class="s1">&#39;DeleteProduct&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">retry</span><span class="p">,</span>
+                    <span class="n">default_timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span><span class="s1">&#39;DeleteProduct&#39;</span><span class="p">]</span><span class="o">.</span>
+                    <span class="n">timeout</span><span class="p">,</span>
+                    <span class="n">client_info</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client_info</span><span class="p">,</span>
+                <span class="p">)</span>
+
+        <span class="n">request</span> <span class="o">=</span> <span class="n">product_search_service_pb2</span><span class="o">.</span><span class="n">DeleteProductRequest</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span><span class="s1">&#39;delete_product&#39;</span><span class="p">](</span>
+            <span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ProductSearchClient.list_reference_images"><a class="viewcode-back" href="../../../../../vision/gapic/v1/api.html#google.cloud.vision_v1.ProductSearchClient.list_reference_images">[docs]</a>    <span class="k">def</span> <span class="nf">list_reference_images</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                              <span class="n">parent</span><span class="p">,</span>
+                              <span class="n">page_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                              <span class="n">retry</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+                              <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+                              <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Lists reference images.</span>
+
+<span class="sd">        Possible errors:</span>
+
+<span class="sd">        * Returns NOT_FOUND if the parent product does not exist.</span>
+<span class="sd">        * Returns INVALID_ARGUMENT if the page_size is greater than 100, or less</span>
+<span class="sd">          than 1.</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">            &gt;&gt;&gt; from google.cloud import vision_v1</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; client = vision_v1.ProductSearchClient()</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; parent = client.product_path(&#39;[PROJECT]&#39;, &#39;[LOCATION]&#39;, &#39;[PRODUCT]&#39;)</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; # Iterate over all results</span>
+<span class="sd">            &gt;&gt;&gt; for element in client.list_reference_images(parent):</span>
+<span class="sd">            ...     # process element</span>
+<span class="sd">            ...     pass</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; # Alternatively:</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; # Iterate over results one page at a time</span>
+<span class="sd">            &gt;&gt;&gt; for page in client.list_reference_images(parent, options=CallOptions(page_token=INITIAL_PAGE)):</span>
+<span class="sd">            ...     for element in page:</span>
+<span class="sd">            ...         # process element</span>
+<span class="sd">            ...         pass</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            parent (str): Resource name of the product containing the reference images.</span>
+
+<span class="sd">                Format is</span>
+<span class="sd">                ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID``.</span>
+<span class="sd">            page_size (int): The maximum number of resources contained in the</span>
+<span class="sd">                underlying API response. If page streaming is performed per-</span>
+<span class="sd">                resource, this parameter does not affect the return value. If page</span>
+<span class="sd">                streaming is performed per-page, this determines the maximum number</span>
+<span class="sd">                of resources in a page.</span>
+<span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
+<span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
+<span class="sd">                be retried.</span>
+<span class="sd">            timeout (Optional[float]): The amount of time, in seconds, to wait</span>
+<span class="sd">                for the request to complete. Note that if ``retry`` is</span>
+<span class="sd">                specified, the timeout applies to each individual attempt.</span>
+<span class="sd">            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata</span>
+<span class="sd">                that is provided to the method.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A :class:`~google.gax.PageIterator` instance. By default, this</span>
+<span class="sd">            is an iterable of :class:`~google.cloud.vision_v1.types.ReferenceImage` instances.</span>
+<span class="sd">            This object can also be configured to iterate over the pages</span>
+<span class="sd">            of the response through the `options` parameter.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            google.api_core.exceptions.GoogleAPICallError: If the request</span>
+<span class="sd">                    failed for any reason.</span>
+<span class="sd">            google.api_core.exceptions.RetryError: If the request failed due</span>
+<span class="sd">                    to a retryable error and retry attempts failed.</span>
+<span class="sd">            ValueError: If the parameters are invalid.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Wrap the transport method to add retry and timeout logic.</span>
+        <span class="k">if</span> <span class="s1">&#39;list_reference_images&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span>
+                <span class="s1">&#39;list_reference_images&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">wrap_method</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">list_reference_images</span><span class="p">,</span>
+                    <span class="n">default_retry</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span><span class="s1">&#39;ListReferenceImages&#39;</span><span class="p">]</span><span class="o">.</span>
+                    <span class="n">retry</span><span class="p">,</span>
+                    <span class="n">default_timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span>
+                    <span class="n">_method_configs</span><span class="p">[</span><span class="s1">&#39;ListReferenceImages&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">timeout</span><span class="p">,</span>
+                    <span class="n">client_info</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client_info</span><span class="p">,</span>
+                <span class="p">)</span>
+
+        <span class="n">request</span> <span class="o">=</span> <span class="n">product_search_service_pb2</span><span class="o">.</span><span class="n">ListReferenceImagesRequest</span><span class="p">(</span>
+            <span class="n">parent</span><span class="o">=</span><span class="n">parent</span><span class="p">,</span>
+            <span class="n">page_size</span><span class="o">=</span><span class="n">page_size</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">iterator</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">page_iterator</span><span class="o">.</span><span class="n">GRPCIterator</span><span class="p">(</span>
+            <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">method</span><span class="o">=</span><span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span><span class="s1">&#39;list_reference_images&#39;</span><span class="p">],</span>
+                <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span>
+                <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span>
+                <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">),</span>
+            <span class="n">request</span><span class="o">=</span><span class="n">request</span><span class="p">,</span>
+            <span class="n">items_field</span><span class="o">=</span><span class="s1">&#39;reference_images&#39;</span><span class="p">,</span>
+            <span class="n">request_token_field</span><span class="o">=</span><span class="s1">&#39;page_token&#39;</span><span class="p">,</span>
+            <span class="n">response_token_field</span><span class="o">=</span><span class="s1">&#39;next_page_token&#39;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">iterator</span></div>
+
+<div class="viewcode-block" id="ProductSearchClient.get_reference_image"><a class="viewcode-back" href="../../../../../vision/gapic/v1/api.html#google.cloud.vision_v1.ProductSearchClient.get_reference_image">[docs]</a>    <span class="k">def</span> <span class="nf">get_reference_image</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                            <span class="n">name</span><span class="p">,</span>
+                            <span class="n">retry</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+                            <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+                            <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Gets information associated with a ReferenceImage.</span>
+
+<span class="sd">        Possible errors:</span>
+
+<span class="sd">        * Returns NOT_FOUND if the specified image does not exist.</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">            &gt;&gt;&gt; from google.cloud import vision_v1</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; client = vision_v1.ProductSearchClient()</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; name = client.image_path(&#39;[PROJECT]&#39;, &#39;[LOCATION]&#39;, &#39;[PRODUCT]&#39;, &#39;[IMAGE]&#39;)</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; response = client.get_reference_image(name)</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            name (str): The resource name of the ReferenceImage to get.</span>
+
+<span class="sd">                Format is:</span>
+
+<span class="sd">                ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID/referenceImages/IMAGE_ID``.</span>
+<span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
+<span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
+<span class="sd">                be retried.</span>
+<span class="sd">            timeout (Optional[float]): The amount of time, in seconds, to wait</span>
+<span class="sd">                for the request to complete. Note that if ``retry`` is</span>
+<span class="sd">                specified, the timeout applies to each individual attempt.</span>
+<span class="sd">            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata</span>
+<span class="sd">                that is provided to the method.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A :class:`~google.cloud.vision_v1.types.ReferenceImage` instance.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            google.api_core.exceptions.GoogleAPICallError: If the request</span>
+<span class="sd">                    failed for any reason.</span>
+<span class="sd">            google.api_core.exceptions.RetryError: If the request failed due</span>
+<span class="sd">                    to a retryable error and retry attempts failed.</span>
+<span class="sd">            ValueError: If the parameters are invalid.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Wrap the transport method to add retry and timeout logic.</span>
+        <span class="k">if</span> <span class="s1">&#39;get_reference_image&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span>
+                <span class="s1">&#39;get_reference_image&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">wrap_method</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">get_reference_image</span><span class="p">,</span>
+                    <span class="n">default_retry</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span><span class="s1">&#39;GetReferenceImage&#39;</span><span class="p">]</span><span class="o">.</span>
+                    <span class="n">retry</span><span class="p">,</span>
+                    <span class="n">default_timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span><span class="s1">&#39;GetReferenceImage&#39;</span><span class="p">]</span><span class="o">.</span>
+                    <span class="n">timeout</span><span class="p">,</span>
+                    <span class="n">client_info</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client_info</span><span class="p">,</span>
+                <span class="p">)</span>
+
+        <span class="n">request</span> <span class="o">=</span> <span class="n">product_search_service_pb2</span><span class="o">.</span><span class="n">GetReferenceImageRequest</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span><span class="s1">&#39;get_reference_image&#39;</span><span class="p">](</span>
+            <span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ProductSearchClient.delete_reference_image"><a class="viewcode-back" href="../../../../../vision/gapic/v1/api.html#google.cloud.vision_v1.ProductSearchClient.delete_reference_image">[docs]</a>    <span class="k">def</span> <span class="nf">delete_reference_image</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                               <span class="n">name</span><span class="p">,</span>
+                               <span class="n">retry</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+                               <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+                               <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Permanently deletes a reference image.</span>
+
+<span class="sd">        The image metadata will be deleted right away, but search queries</span>
+<span class="sd">        against ProductSets containing the image may still work until all related</span>
+<span class="sd">        caches are refreshed.</span>
+
+<span class="sd">        The actual image files are not deleted from Google Cloud Storage.</span>
+
+<span class="sd">        Possible errors:</span>
+
+<span class="sd">        * Returns NOT_FOUND if the reference image does not exist.</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">            &gt;&gt;&gt; from google.cloud import vision_v1</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; client = vision_v1.ProductSearchClient()</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; name = client.image_path(&#39;[PROJECT]&#39;, &#39;[LOCATION]&#39;, &#39;[PRODUCT]&#39;, &#39;[IMAGE]&#39;)</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; client.delete_reference_image(name)</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            name (str): The resource name of the reference image to delete.</span>
+
+<span class="sd">                Format is:</span>
+
+<span class="sd">                ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID/referenceImages/IMAGE_ID``</span>
+<span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
+<span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
+<span class="sd">                be retried.</span>
+<span class="sd">            timeout (Optional[float]): The amount of time, in seconds, to wait</span>
+<span class="sd">                for the request to complete. Note that if ``retry`` is</span>
+<span class="sd">                specified, the timeout applies to each individual attempt.</span>
+<span class="sd">            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata</span>
+<span class="sd">                that is provided to the method.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            google.api_core.exceptions.GoogleAPICallError: If the request</span>
+<span class="sd">                    failed for any reason.</span>
+<span class="sd">            google.api_core.exceptions.RetryError: If the request failed due</span>
+<span class="sd">                    to a retryable error and retry attempts failed.</span>
+<span class="sd">            ValueError: If the parameters are invalid.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Wrap the transport method to add retry and timeout logic.</span>
+        <span class="k">if</span> <span class="s1">&#39;delete_reference_image&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span>
+                <span class="s1">&#39;delete_reference_image&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">wrap_method</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">delete_reference_image</span><span class="p">,</span>
+                    <span class="n">default_retry</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span><span class="s1">&#39;DeleteReferenceImage&#39;</span><span class="p">]</span><span class="o">.</span>
+                    <span class="n">retry</span><span class="p">,</span>
+                    <span class="n">default_timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span>
+                    <span class="n">_method_configs</span><span class="p">[</span><span class="s1">&#39;DeleteReferenceImage&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">timeout</span><span class="p">,</span>
+                    <span class="n">client_info</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client_info</span><span class="p">,</span>
+                <span class="p">)</span>
+
+        <span class="n">request</span> <span class="o">=</span> <span class="n">product_search_service_pb2</span><span class="o">.</span><span class="n">DeleteReferenceImageRequest</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span><span class="s1">&#39;delete_reference_image&#39;</span><span class="p">](</span>
+            <span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ProductSearchClient.create_reference_image"><a class="viewcode-back" href="../../../../../vision/gapic/v1/api.html#google.cloud.vision_v1.ProductSearchClient.create_reference_image">[docs]</a>    <span class="k">def</span> <span class="nf">create_reference_image</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                               <span class="n">parent</span><span class="p">,</span>
+                               <span class="n">reference_image</span><span class="p">,</span>
+                               <span class="n">reference_image_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                               <span class="n">retry</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+                               <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+                               <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Creates and returns a new ReferenceImage resource.</span>
+
+<span class="sd">        The ``bounding_poly`` field is optional. If ``bounding_poly`` is not specified,</span>
+<span class="sd">        the system will try to detect regions of interest in the image that are</span>
+<span class="sd">        compatible with the product_category on the parent product. If it is</span>
+<span class="sd">        specified, detection is ALWAYS skipped. The system converts polygons into</span>
+<span class="sd">        non-rotated rectangles.</span>
+
+<span class="sd">        Note that the pipeline will resize the image if the image resolution is too</span>
+<span class="sd">        large to process (above 50MP).</span>
+
+<span class="sd">        Possible errors:</span>
+
+<span class="sd">        * Returns INVALID_ARGUMENT if the image_uri is missing or longer than 4096</span>
+<span class="sd">          characters.</span>
+<span class="sd">        * Returns INVALID_ARGUMENT if the product does not exist.</span>
+<span class="sd">        * Returns INVALID_ARGUMENT if bounding_poly is not provided, and nothing</span>
+<span class="sd">          compatible with the parent product&#39;s product_category is detected.</span>
+<span class="sd">        * Returns INVALID_ARGUMENT if bounding_poly contains more than 10 polygons.</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">            &gt;&gt;&gt; from google.cloud import vision_v1</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; client = vision_v1.ProductSearchClient()</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; parent = client.product_path(&#39;[PROJECT]&#39;, &#39;[LOCATION]&#39;, &#39;[PRODUCT]&#39;)</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``reference_image``:</span>
+<span class="sd">            &gt;&gt;&gt; reference_image = {}</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; response = client.create_reference_image(parent, reference_image)</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            parent (str): Resource name of the product in which to create the reference image.</span>
+
+<span class="sd">                Format is</span>
+<span class="sd">                ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID``.</span>
+<span class="sd">            reference_image (Union[dict, ~google.cloud.vision_v1.types.ReferenceImage]): The reference image to create.</span>
+<span class="sd">                If an image ID is specified, it is ignored.</span>
+<span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
+<span class="sd">                message :class:`~google.cloud.vision_v1.types.ReferenceImage`</span>
+<span class="sd">            reference_image_id (str): A user-supplied resource id for the ReferenceImage to be added. If set,</span>
+<span class="sd">                the server will attempt to use this value as the resource id. If it is</span>
+<span class="sd">                already in use, an error is returned with code ALREADY_EXISTS. Must be at</span>
+<span class="sd">                most 128 characters long. It cannot contain the character ``/``.</span>
+<span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
+<span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
+<span class="sd">                be retried.</span>
+<span class="sd">            timeout (Optional[float]): The amount of time, in seconds, to wait</span>
+<span class="sd">                for the request to complete. Note that if ``retry`` is</span>
+<span class="sd">                specified, the timeout applies to each individual attempt.</span>
+<span class="sd">            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata</span>
+<span class="sd">                that is provided to the method.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A :class:`~google.cloud.vision_v1.types.ReferenceImage` instance.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            google.api_core.exceptions.GoogleAPICallError: If the request</span>
+<span class="sd">                    failed for any reason.</span>
+<span class="sd">            google.api_core.exceptions.RetryError: If the request failed due</span>
+<span class="sd">                    to a retryable error and retry attempts failed.</span>
+<span class="sd">            ValueError: If the parameters are invalid.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Wrap the transport method to add retry and timeout logic.</span>
+        <span class="k">if</span> <span class="s1">&#39;create_reference_image&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span>
+                <span class="s1">&#39;create_reference_image&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">wrap_method</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">create_reference_image</span><span class="p">,</span>
+                    <span class="n">default_retry</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span><span class="s1">&#39;CreateReferenceImage&#39;</span><span class="p">]</span><span class="o">.</span>
+                    <span class="n">retry</span><span class="p">,</span>
+                    <span class="n">default_timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span>
+                    <span class="n">_method_configs</span><span class="p">[</span><span class="s1">&#39;CreateReferenceImage&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">timeout</span><span class="p">,</span>
+                    <span class="n">client_info</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client_info</span><span class="p">,</span>
+                <span class="p">)</span>
+
+        <span class="n">request</span> <span class="o">=</span> <span class="n">product_search_service_pb2</span><span class="o">.</span><span class="n">CreateReferenceImageRequest</span><span class="p">(</span>
+            <span class="n">parent</span><span class="o">=</span><span class="n">parent</span><span class="p">,</span>
+            <span class="n">reference_image</span><span class="o">=</span><span class="n">reference_image</span><span class="p">,</span>
+            <span class="n">reference_image_id</span><span class="o">=</span><span class="n">reference_image_id</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span><span class="s1">&#39;create_reference_image&#39;</span><span class="p">](</span>
+            <span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ProductSearchClient.create_product_set"><a class="viewcode-back" href="../../../../../vision/gapic/v1/api.html#google.cloud.vision_v1.ProductSearchClient.create_product_set">[docs]</a>    <span class="k">def</span> <span class="nf">create_product_set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                           <span class="n">parent</span><span class="p">,</span>
+                           <span class="n">product_set</span><span class="p">,</span>
+                           <span class="n">product_set_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                           <span class="n">retry</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+                           <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+                           <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Creates and returns a new ProductSet resource.</span>
+
+<span class="sd">        Possible errors:</span>
+
+<span class="sd">        * Returns INVALID_ARGUMENT if display_name is missing, or is longer than</span>
+<span class="sd">          4096 characters.</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">            &gt;&gt;&gt; from google.cloud import vision_v1</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; client = vision_v1.ProductSearchClient()</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; parent = client.location_path(&#39;[PROJECT]&#39;, &#39;[LOCATION]&#39;)</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``product_set``:</span>
+<span class="sd">            &gt;&gt;&gt; product_set = {}</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; response = client.create_product_set(parent, product_set)</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            parent (str): The project in which the ProductSet should be created.</span>
+
+<span class="sd">                Format is ``projects/PROJECT_ID/locations/LOC_ID``.</span>
+<span class="sd">            product_set (Union[dict, ~google.cloud.vision_v1.types.ProductSet]): The ProductSet to create.</span>
+<span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
+<span class="sd">                message :class:`~google.cloud.vision_v1.types.ProductSet`</span>
+<span class="sd">            product_set_id (str): A user-supplied resource id for this ProductSet. If set, the server will</span>
+<span class="sd">                attempt to use this value as the resource id. If it is already in use, an</span>
+<span class="sd">                error is returned with code ALREADY_EXISTS. Must be at most 128 characters</span>
+<span class="sd">                long. It cannot contain the character ``/``.</span>
+<span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
+<span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
+<span class="sd">                be retried.</span>
+<span class="sd">            timeout (Optional[float]): The amount of time, in seconds, to wait</span>
+<span class="sd">                for the request to complete. Note that if ``retry`` is</span>
+<span class="sd">                specified, the timeout applies to each individual attempt.</span>
+<span class="sd">            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata</span>
+<span class="sd">                that is provided to the method.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A :class:`~google.cloud.vision_v1.types.ProductSet` instance.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            google.api_core.exceptions.GoogleAPICallError: If the request</span>
+<span class="sd">                    failed for any reason.</span>
+<span class="sd">            google.api_core.exceptions.RetryError: If the request failed due</span>
+<span class="sd">                    to a retryable error and retry attempts failed.</span>
+<span class="sd">            ValueError: If the parameters are invalid.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Wrap the transport method to add retry and timeout logic.</span>
+        <span class="k">if</span> <span class="s1">&#39;create_product_set&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span>
+                <span class="s1">&#39;create_product_set&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">wrap_method</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">create_product_set</span><span class="p">,</span>
+                    <span class="n">default_retry</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span><span class="s1">&#39;CreateProductSet&#39;</span><span class="p">]</span><span class="o">.</span>
+                    <span class="n">retry</span><span class="p">,</span>
+                    <span class="n">default_timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span><span class="s1">&#39;CreateProductSet&#39;</span><span class="p">]</span><span class="o">.</span>
+                    <span class="n">timeout</span><span class="p">,</span>
+                    <span class="n">client_info</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client_info</span><span class="p">,</span>
+                <span class="p">)</span>
+
+        <span class="n">request</span> <span class="o">=</span> <span class="n">product_search_service_pb2</span><span class="o">.</span><span class="n">CreateProductSetRequest</span><span class="p">(</span>
+            <span class="n">parent</span><span class="o">=</span><span class="n">parent</span><span class="p">,</span>
+            <span class="n">product_set</span><span class="o">=</span><span class="n">product_set</span><span class="p">,</span>
+            <span class="n">product_set_id</span><span class="o">=</span><span class="n">product_set_id</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span><span class="s1">&#39;create_product_set&#39;</span><span class="p">](</span>
+            <span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ProductSearchClient.list_product_sets"><a class="viewcode-back" href="../../../../../vision/gapic/v1/api.html#google.cloud.vision_v1.ProductSearchClient.list_product_sets">[docs]</a>    <span class="k">def</span> <span class="nf">list_product_sets</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                          <span class="n">parent</span><span class="p">,</span>
+                          <span class="n">page_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                          <span class="n">retry</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+                          <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+                          <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Lists ProductSets in an unspecified order.</span>
+
+<span class="sd">        Possible errors:</span>
+
+<span class="sd">        * Returns INVALID_ARGUMENT if page_size is greater than 100, or less</span>
+<span class="sd">          than 1.</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">            &gt;&gt;&gt; from google.cloud import vision_v1</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; client = vision_v1.ProductSearchClient()</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; parent = client.location_path(&#39;[PROJECT]&#39;, &#39;[LOCATION]&#39;)</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; # Iterate over all results</span>
+<span class="sd">            &gt;&gt;&gt; for element in client.list_product_sets(parent):</span>
+<span class="sd">            ...     # process element</span>
+<span class="sd">            ...     pass</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; # Alternatively:</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; # Iterate over results one page at a time</span>
+<span class="sd">            &gt;&gt;&gt; for page in client.list_product_sets(parent, options=CallOptions(page_token=INITIAL_PAGE)):</span>
+<span class="sd">            ...     for element in page:</span>
+<span class="sd">            ...         # process element</span>
+<span class="sd">            ...         pass</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            parent (str): The project from which ProductSets should be listed.</span>
+
+<span class="sd">                Format is ``projects/PROJECT_ID/locations/LOC_ID``.</span>
+<span class="sd">            page_size (int): The maximum number of resources contained in the</span>
+<span class="sd">                underlying API response. If page streaming is performed per-</span>
+<span class="sd">                resource, this parameter does not affect the return value. If page</span>
+<span class="sd">                streaming is performed per-page, this determines the maximum number</span>
+<span class="sd">                of resources in a page.</span>
+<span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
+<span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
+<span class="sd">                be retried.</span>
+<span class="sd">            timeout (Optional[float]): The amount of time, in seconds, to wait</span>
+<span class="sd">                for the request to complete. Note that if ``retry`` is</span>
+<span class="sd">                specified, the timeout applies to each individual attempt.</span>
+<span class="sd">            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata</span>
+<span class="sd">                that is provided to the method.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A :class:`~google.gax.PageIterator` instance. By default, this</span>
+<span class="sd">            is an iterable of :class:`~google.cloud.vision_v1.types.ProductSet` instances.</span>
+<span class="sd">            This object can also be configured to iterate over the pages</span>
+<span class="sd">            of the response through the `options` parameter.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            google.api_core.exceptions.GoogleAPICallError: If the request</span>
+<span class="sd">                    failed for any reason.</span>
+<span class="sd">            google.api_core.exceptions.RetryError: If the request failed due</span>
+<span class="sd">                    to a retryable error and retry attempts failed.</span>
+<span class="sd">            ValueError: If the parameters are invalid.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Wrap the transport method to add retry and timeout logic.</span>
+        <span class="k">if</span> <span class="s1">&#39;list_product_sets&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span>
+                <span class="s1">&#39;list_product_sets&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">wrap_method</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">list_product_sets</span><span class="p">,</span>
+                    <span class="n">default_retry</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span><span class="s1">&#39;ListProductSets&#39;</span><span class="p">]</span><span class="o">.</span>
+                    <span class="n">retry</span><span class="p">,</span>
+                    <span class="n">default_timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span><span class="s1">&#39;ListProductSets&#39;</span><span class="p">]</span><span class="o">.</span>
+                    <span class="n">timeout</span><span class="p">,</span>
+                    <span class="n">client_info</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client_info</span><span class="p">,</span>
+                <span class="p">)</span>
+
+        <span class="n">request</span> <span class="o">=</span> <span class="n">product_search_service_pb2</span><span class="o">.</span><span class="n">ListProductSetsRequest</span><span class="p">(</span>
+            <span class="n">parent</span><span class="o">=</span><span class="n">parent</span><span class="p">,</span>
+            <span class="n">page_size</span><span class="o">=</span><span class="n">page_size</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">iterator</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">page_iterator</span><span class="o">.</span><span class="n">GRPCIterator</span><span class="p">(</span>
+            <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">method</span><span class="o">=</span><span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span><span class="s1">&#39;list_product_sets&#39;</span><span class="p">],</span>
+                <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span>
+                <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span>
+                <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">),</span>
+            <span class="n">request</span><span class="o">=</span><span class="n">request</span><span class="p">,</span>
+            <span class="n">items_field</span><span class="o">=</span><span class="s1">&#39;product_sets&#39;</span><span class="p">,</span>
+            <span class="n">request_token_field</span><span class="o">=</span><span class="s1">&#39;page_token&#39;</span><span class="p">,</span>
+            <span class="n">response_token_field</span><span class="o">=</span><span class="s1">&#39;next_page_token&#39;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">iterator</span></div>
+
+<div class="viewcode-block" id="ProductSearchClient.get_product_set"><a class="viewcode-back" href="../../../../../vision/gapic/v1/api.html#google.cloud.vision_v1.ProductSearchClient.get_product_set">[docs]</a>    <span class="k">def</span> <span class="nf">get_product_set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                        <span class="n">name</span><span class="p">,</span>
+                        <span class="n">retry</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+                        <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+                        <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Gets information associated with a ProductSet.</span>
+
+<span class="sd">        Possible errors:</span>
+
+<span class="sd">        * Returns NOT_FOUND if the ProductSet does not exist.</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">            &gt;&gt;&gt; from google.cloud import vision_v1</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; client = vision_v1.ProductSearchClient()</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; name = client.product_set_path(&#39;[PROJECT]&#39;, &#39;[LOCATION]&#39;, &#39;[PRODUCT_SET]&#39;)</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; response = client.get_product_set(name)</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            name (str): Resource name of the ProductSet to get.</span>
+
+<span class="sd">                Format is:</span>
+<span class="sd">                ``projects/PROJECT_ID/locations/LOG_ID/productSets/PRODUCT_SET_ID``</span>
+<span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
+<span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
+<span class="sd">                be retried.</span>
+<span class="sd">            timeout (Optional[float]): The amount of time, in seconds, to wait</span>
+<span class="sd">                for the request to complete. Note that if ``retry`` is</span>
+<span class="sd">                specified, the timeout applies to each individual attempt.</span>
+<span class="sd">            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata</span>
+<span class="sd">                that is provided to the method.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A :class:`~google.cloud.vision_v1.types.ProductSet` instance.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            google.api_core.exceptions.GoogleAPICallError: If the request</span>
+<span class="sd">                    failed for any reason.</span>
+<span class="sd">            google.api_core.exceptions.RetryError: If the request failed due</span>
+<span class="sd">                    to a retryable error and retry attempts failed.</span>
+<span class="sd">            ValueError: If the parameters are invalid.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Wrap the transport method to add retry and timeout logic.</span>
+        <span class="k">if</span> <span class="s1">&#39;get_product_set&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span>
+                <span class="s1">&#39;get_product_set&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">wrap_method</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">get_product_set</span><span class="p">,</span>
+                    <span class="n">default_retry</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span><span class="s1">&#39;GetProductSet&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">retry</span><span class="p">,</span>
+                    <span class="n">default_timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span><span class="s1">&#39;GetProductSet&#39;</span><span class="p">]</span><span class="o">.</span>
+                    <span class="n">timeout</span><span class="p">,</span>
+                    <span class="n">client_info</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client_info</span><span class="p">,</span>
+                <span class="p">)</span>
+
+        <span class="n">request</span> <span class="o">=</span> <span class="n">product_search_service_pb2</span><span class="o">.</span><span class="n">GetProductSetRequest</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span><span class="s1">&#39;get_product_set&#39;</span><span class="p">](</span>
+            <span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ProductSearchClient.update_product_set"><a class="viewcode-back" href="../../../../../vision/gapic/v1/api.html#google.cloud.vision_v1.ProductSearchClient.update_product_set">[docs]</a>    <span class="k">def</span> <span class="nf">update_product_set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                           <span class="n">product_set</span><span class="p">,</span>
+                           <span class="n">update_mask</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                           <span class="n">retry</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+                           <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+                           <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Makes changes to a ProductSet resource.</span>
+<span class="sd">        Only display_name can be updated currently.</span>
+
+<span class="sd">        Possible errors:</span>
+
+<span class="sd">        * Returns NOT_FOUND if the ProductSet does not exist.</span>
+<span class="sd">        * Returns INVALID_ARGUMENT if display_name is present in update_mask but</span>
+<span class="sd">          missing from the request or longer than 4096 characters.</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">            &gt;&gt;&gt; from google.cloud import vision_v1</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; client = vision_v1.ProductSearchClient()</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``product_set``:</span>
+<span class="sd">            &gt;&gt;&gt; product_set = {}</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; response = client.update_product_set(product_set)</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            product_set (Union[dict, ~google.cloud.vision_v1.types.ProductSet]): The ProductSet resource which replaces the one on the server.</span>
+<span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
+<span class="sd">                message :class:`~google.cloud.vision_v1.types.ProductSet`</span>
+<span class="sd">            update_mask (Union[dict, ~google.cloud.vision_v1.types.FieldMask]): The ``FieldMask`` that specifies which fields to</span>
+<span class="sd">                update.</span>
+<span class="sd">                If update_mask isn&#39;t specified, all mutable fields are to be updated.</span>
+<span class="sd">                Valid mask path is ``display_name``.</span>
+<span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
+<span class="sd">                message :class:`~google.cloud.vision_v1.types.FieldMask`</span>
+<span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
+<span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
+<span class="sd">                be retried.</span>
+<span class="sd">            timeout (Optional[float]): The amount of time, in seconds, to wait</span>
+<span class="sd">                for the request to complete. Note that if ``retry`` is</span>
+<span class="sd">                specified, the timeout applies to each individual attempt.</span>
+<span class="sd">            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata</span>
+<span class="sd">                that is provided to the method.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A :class:`~google.cloud.vision_v1.types.ProductSet` instance.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            google.api_core.exceptions.GoogleAPICallError: If the request</span>
+<span class="sd">                    failed for any reason.</span>
+<span class="sd">            google.api_core.exceptions.RetryError: If the request failed due</span>
+<span class="sd">                    to a retryable error and retry attempts failed.</span>
+<span class="sd">            ValueError: If the parameters are invalid.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Wrap the transport method to add retry and timeout logic.</span>
+        <span class="k">if</span> <span class="s1">&#39;update_product_set&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span>
+                <span class="s1">&#39;update_product_set&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">wrap_method</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">update_product_set</span><span class="p">,</span>
+                    <span class="n">default_retry</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span><span class="s1">&#39;UpdateProductSet&#39;</span><span class="p">]</span><span class="o">.</span>
+                    <span class="n">retry</span><span class="p">,</span>
+                    <span class="n">default_timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span><span class="s1">&#39;UpdateProductSet&#39;</span><span class="p">]</span><span class="o">.</span>
+                    <span class="n">timeout</span><span class="p">,</span>
+                    <span class="n">client_info</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client_info</span><span class="p">,</span>
+                <span class="p">)</span>
+
+        <span class="n">request</span> <span class="o">=</span> <span class="n">product_search_service_pb2</span><span class="o">.</span><span class="n">UpdateProductSetRequest</span><span class="p">(</span>
+            <span class="n">product_set</span><span class="o">=</span><span class="n">product_set</span><span class="p">,</span>
+            <span class="n">update_mask</span><span class="o">=</span><span class="n">update_mask</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span><span class="s1">&#39;update_product_set&#39;</span><span class="p">](</span>
+            <span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ProductSearchClient.delete_product_set"><a class="viewcode-back" href="../../../../../vision/gapic/v1/api.html#google.cloud.vision_v1.ProductSearchClient.delete_product_set">[docs]</a>    <span class="k">def</span> <span class="nf">delete_product_set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                           <span class="n">name</span><span class="p">,</span>
+                           <span class="n">retry</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+                           <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+                           <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Permanently deletes a ProductSet. All Products and ReferenceImages in the</span>
+<span class="sd">        ProductSet will be deleted.</span>
+
+<span class="sd">        The actual image files are not deleted from Google Cloud Storage.</span>
+
+<span class="sd">        Possible errors:</span>
+
+<span class="sd">        * Returns NOT_FOUND if the ProductSet does not exist.</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">            &gt;&gt;&gt; from google.cloud import vision_v1</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; client = vision_v1.ProductSearchClient()</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; name = client.product_set_path(&#39;[PROJECT]&#39;, &#39;[LOCATION]&#39;, &#39;[PRODUCT_SET]&#39;)</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; client.delete_product_set(name)</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            name (str): Resource name of the ProductSet to delete.</span>
+
+<span class="sd">                Format is:</span>
+<span class="sd">                ``projects/PROJECT_ID/locations/LOC_ID/productSets/PRODUCT_SET_ID``</span>
+<span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
+<span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
+<span class="sd">                be retried.</span>
+<span class="sd">            timeout (Optional[float]): The amount of time, in seconds, to wait</span>
+<span class="sd">                for the request to complete. Note that if ``retry`` is</span>
+<span class="sd">                specified, the timeout applies to each individual attempt.</span>
+<span class="sd">            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata</span>
+<span class="sd">                that is provided to the method.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            google.api_core.exceptions.GoogleAPICallError: If the request</span>
+<span class="sd">                    failed for any reason.</span>
+<span class="sd">            google.api_core.exceptions.RetryError: If the request failed due</span>
+<span class="sd">                    to a retryable error and retry attempts failed.</span>
+<span class="sd">            ValueError: If the parameters are invalid.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Wrap the transport method to add retry and timeout logic.</span>
+        <span class="k">if</span> <span class="s1">&#39;delete_product_set&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span>
+                <span class="s1">&#39;delete_product_set&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">wrap_method</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">delete_product_set</span><span class="p">,</span>
+                    <span class="n">default_retry</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span><span class="s1">&#39;DeleteProductSet&#39;</span><span class="p">]</span><span class="o">.</span>
+                    <span class="n">retry</span><span class="p">,</span>
+                    <span class="n">default_timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span><span class="s1">&#39;DeleteProductSet&#39;</span><span class="p">]</span><span class="o">.</span>
+                    <span class="n">timeout</span><span class="p">,</span>
+                    <span class="n">client_info</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client_info</span><span class="p">,</span>
+                <span class="p">)</span>
+
+        <span class="n">request</span> <span class="o">=</span> <span class="n">product_search_service_pb2</span><span class="o">.</span><span class="n">DeleteProductSetRequest</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span><span class="s1">&#39;delete_product_set&#39;</span><span class="p">](</span>
+            <span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ProductSearchClient.add_product_to_product_set"><a class="viewcode-back" href="../../../../../vision/gapic/v1/api.html#google.cloud.vision_v1.ProductSearchClient.add_product_to_product_set">[docs]</a>    <span class="k">def</span> <span class="nf">add_product_to_product_set</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">name</span><span class="p">,</span>
+            <span class="n">product</span><span class="p">,</span>
+            <span class="n">retry</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+            <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+            <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Adds a Product to the specified ProductSet. If the Product is already</span>
+<span class="sd">        present, no change is made.</span>
+
+<span class="sd">        One Product can be added to at most 100 ProductSets.</span>
+
+<span class="sd">        Possible errors:</span>
+
+<span class="sd">        * Returns NOT_FOUND if the Product or the ProductSet doesn&#39;t exist.</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">            &gt;&gt;&gt; from google.cloud import vision_v1</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; client = vision_v1.ProductSearchClient()</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; name = client.product_set_path(&#39;[PROJECT]&#39;, &#39;[LOCATION]&#39;, &#39;[PRODUCT_SET]&#39;)</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``product``:</span>
+<span class="sd">            &gt;&gt;&gt; product = &#39;&#39;</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; client.add_product_to_product_set(name, product)</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            name (str): The resource name for the ProductSet to modify.</span>
+
+<span class="sd">                Format is:</span>
+<span class="sd">                ``projects/PROJECT_ID/locations/LOC_ID/productSets/PRODUCT_SET_ID``</span>
+<span class="sd">            product (str): The resource name for the Product to be added to this ProductSet.</span>
+
+<span class="sd">                Format is:</span>
+<span class="sd">                ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID``</span>
+<span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
+<span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
+<span class="sd">                be retried.</span>
+<span class="sd">            timeout (Optional[float]): The amount of time, in seconds, to wait</span>
+<span class="sd">                for the request to complete. Note that if ``retry`` is</span>
+<span class="sd">                specified, the timeout applies to each individual attempt.</span>
+<span class="sd">            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata</span>
+<span class="sd">                that is provided to the method.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            google.api_core.exceptions.GoogleAPICallError: If the request</span>
+<span class="sd">                    failed for any reason.</span>
+<span class="sd">            google.api_core.exceptions.RetryError: If the request failed due</span>
+<span class="sd">                    to a retryable error and retry attempts failed.</span>
+<span class="sd">            ValueError: If the parameters are invalid.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Wrap the transport method to add retry and timeout logic.</span>
+        <span class="k">if</span> <span class="s1">&#39;add_product_to_product_set&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span>
+                <span class="s1">&#39;add_product_to_product_set&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">wrap_method</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">add_product_to_product_set</span><span class="p">,</span>
+                    <span class="n">default_retry</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span>
+                    <span class="n">_method_configs</span><span class="p">[</span><span class="s1">&#39;AddProductToProductSet&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">retry</span><span class="p">,</span>
+                    <span class="n">default_timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span>
+                    <span class="n">_method_configs</span><span class="p">[</span><span class="s1">&#39;AddProductToProductSet&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">timeout</span><span class="p">,</span>
+                    <span class="n">client_info</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client_info</span><span class="p">,</span>
+                <span class="p">)</span>
+
+        <span class="n">request</span> <span class="o">=</span> <span class="n">product_search_service_pb2</span><span class="o">.</span><span class="n">AddProductToProductSetRequest</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">product</span><span class="o">=</span><span class="n">product</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span><span class="s1">&#39;add_product_to_product_set&#39;</span><span class="p">](</span>
+            <span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ProductSearchClient.remove_product_from_product_set"><a class="viewcode-back" href="../../../../../vision/gapic/v1/api.html#google.cloud.vision_v1.ProductSearchClient.remove_product_from_product_set">[docs]</a>    <span class="k">def</span> <span class="nf">remove_product_from_product_set</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">name</span><span class="p">,</span>
+            <span class="n">product</span><span class="p">,</span>
+            <span class="n">retry</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+            <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+            <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Removes a Product from the specified ProductSet.</span>
+
+<span class="sd">        Possible errors:</span>
+
+<span class="sd">        * Returns NOT_FOUND If the Product is not found under the ProductSet.</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">            &gt;&gt;&gt; from google.cloud import vision_v1</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; client = vision_v1.ProductSearchClient()</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; name = client.product_set_path(&#39;[PROJECT]&#39;, &#39;[LOCATION]&#39;, &#39;[PRODUCT_SET]&#39;)</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``product``:</span>
+<span class="sd">            &gt;&gt;&gt; product = &#39;&#39;</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; client.remove_product_from_product_set(name, product)</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            name (str): The resource name for the ProductSet to modify.</span>
+
+<span class="sd">                Format is:</span>
+<span class="sd">                ``projects/PROJECT_ID/locations/LOC_ID/productSets/PRODUCT_SET_ID``</span>
+<span class="sd">            product (str): The resource name for the Product to be removed from this ProductSet.</span>
+
+<span class="sd">                Format is:</span>
+<span class="sd">                ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID``</span>
+<span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
+<span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
+<span class="sd">                be retried.</span>
+<span class="sd">            timeout (Optional[float]): The amount of time, in seconds, to wait</span>
+<span class="sd">                for the request to complete. Note that if ``retry`` is</span>
+<span class="sd">                specified, the timeout applies to each individual attempt.</span>
+<span class="sd">            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata</span>
+<span class="sd">                that is provided to the method.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            google.api_core.exceptions.GoogleAPICallError: If the request</span>
+<span class="sd">                    failed for any reason.</span>
+<span class="sd">            google.api_core.exceptions.RetryError: If the request failed due</span>
+<span class="sd">                    to a retryable error and retry attempts failed.</span>
+<span class="sd">            ValueError: If the parameters are invalid.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Wrap the transport method to add retry and timeout logic.</span>
+        <span class="k">if</span> <span class="s1">&#39;remove_product_from_product_set&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span>
+                <span class="s1">&#39;remove_product_from_product_set&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">wrap_method</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">remove_product_from_product_set</span><span class="p">,</span>
+                    <span class="n">default_retry</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span>
+                    <span class="n">_method_configs</span><span class="p">[</span><span class="s1">&#39;RemoveProductFromProductSet&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">retry</span><span class="p">,</span>
+                    <span class="n">default_timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span>
+                    <span class="n">_method_configs</span><span class="p">[</span><span class="s1">&#39;RemoveProductFromProductSet&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">timeout</span><span class="p">,</span>
+                    <span class="n">client_info</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client_info</span><span class="p">,</span>
+                <span class="p">)</span>
+
+        <span class="n">request</span> <span class="o">=</span> <span class="n">product_search_service_pb2</span><span class="o">.</span><span class="n">RemoveProductFromProductSetRequest</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">product</span><span class="o">=</span><span class="n">product</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span><span class="s1">&#39;remove_product_from_product_set&#39;</span><span class="p">](</span>
+            <span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ProductSearchClient.list_products_in_product_set"><a class="viewcode-back" href="../../../../../vision/gapic/v1/api.html#google.cloud.vision_v1.ProductSearchClient.list_products_in_product_set">[docs]</a>    <span class="k">def</span> <span class="nf">list_products_in_product_set</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">name</span><span class="p">,</span>
+            <span class="n">page_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">retry</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+            <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+            <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Lists the Products in a ProductSet, in an unspecified order. If the</span>
+<span class="sd">        ProductSet does not exist, the products field of the response will be</span>
+<span class="sd">        empty.</span>
+
+<span class="sd">        Possible errors:</span>
+
+<span class="sd">        * Returns INVALID_ARGUMENT if page_size is greater than 100 or less than 1.</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">            &gt;&gt;&gt; from google.cloud import vision_v1</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; client = vision_v1.ProductSearchClient()</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; name = client.product_set_path(&#39;[PROJECT]&#39;, &#39;[LOCATION]&#39;, &#39;[PRODUCT_SET]&#39;)</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; # Iterate over all results</span>
+<span class="sd">            &gt;&gt;&gt; for element in client.list_products_in_product_set(name):</span>
+<span class="sd">            ...     # process element</span>
+<span class="sd">            ...     pass</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; # Alternatively:</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; # Iterate over results one page at a time</span>
+<span class="sd">            &gt;&gt;&gt; for page in client.list_products_in_product_set(name, options=CallOptions(page_token=INITIAL_PAGE)):</span>
+<span class="sd">            ...     for element in page:</span>
+<span class="sd">            ...         # process element</span>
+<span class="sd">            ...         pass</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            name (str): The ProductSet resource for which to retrieve Products.</span>
+
+<span class="sd">                Format is:</span>
+<span class="sd">                ``projects/PROJECT_ID/locations/LOC_ID/productSets/PRODUCT_SET_ID``</span>
+<span class="sd">            page_size (int): The maximum number of resources contained in the</span>
+<span class="sd">                underlying API response. If page streaming is performed per-</span>
+<span class="sd">                resource, this parameter does not affect the return value. If page</span>
+<span class="sd">                streaming is performed per-page, this determines the maximum number</span>
+<span class="sd">                of resources in a page.</span>
+<span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
+<span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
+<span class="sd">                be retried.</span>
+<span class="sd">            timeout (Optional[float]): The amount of time, in seconds, to wait</span>
+<span class="sd">                for the request to complete. Note that if ``retry`` is</span>
+<span class="sd">                specified, the timeout applies to each individual attempt.</span>
+<span class="sd">            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata</span>
+<span class="sd">                that is provided to the method.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A :class:`~google.gax.PageIterator` instance. By default, this</span>
+<span class="sd">            is an iterable of :class:`~google.cloud.vision_v1.types.Product` instances.</span>
+<span class="sd">            This object can also be configured to iterate over the pages</span>
+<span class="sd">            of the response through the `options` parameter.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            google.api_core.exceptions.GoogleAPICallError: If the request</span>
+<span class="sd">                    failed for any reason.</span>
+<span class="sd">            google.api_core.exceptions.RetryError: If the request failed due</span>
+<span class="sd">                    to a retryable error and retry attempts failed.</span>
+<span class="sd">            ValueError: If the parameters are invalid.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Wrap the transport method to add retry and timeout logic.</span>
+        <span class="k">if</span> <span class="s1">&#39;list_products_in_product_set&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span>
+                <span class="s1">&#39;list_products_in_product_set&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">wrap_method</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">list_products_in_product_set</span><span class="p">,</span>
+                    <span class="n">default_retry</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span>
+                    <span class="n">_method_configs</span><span class="p">[</span><span class="s1">&#39;ListProductsInProductSet&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">retry</span><span class="p">,</span>
+                    <span class="n">default_timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span>
+                    <span class="n">_method_configs</span><span class="p">[</span><span class="s1">&#39;ListProductsInProductSet&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">timeout</span><span class="p">,</span>
+                    <span class="n">client_info</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client_info</span><span class="p">,</span>
+                <span class="p">)</span>
+
+        <span class="n">request</span> <span class="o">=</span> <span class="n">product_search_service_pb2</span><span class="o">.</span><span class="n">ListProductsInProductSetRequest</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">page_size</span><span class="o">=</span><span class="n">page_size</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">iterator</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">page_iterator</span><span class="o">.</span><span class="n">GRPCIterator</span><span class="p">(</span>
+            <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">method</span><span class="o">=</span><span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span><span class="s1">&#39;list_products_in_product_set&#39;</span><span class="p">],</span>
+                <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span>
+                <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span>
+                <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">),</span>
+            <span class="n">request</span><span class="o">=</span><span class="n">request</span><span class="p">,</span>
+            <span class="n">items_field</span><span class="o">=</span><span class="s1">&#39;products&#39;</span><span class="p">,</span>
+            <span class="n">request_token_field</span><span class="o">=</span><span class="s1">&#39;page_token&#39;</span><span class="p">,</span>
+            <span class="n">response_token_field</span><span class="o">=</span><span class="s1">&#39;next_page_token&#39;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">iterator</span></div>
+
+<div class="viewcode-block" id="ProductSearchClient.import_product_sets"><a class="viewcode-back" href="../../../../../vision/gapic/v1/api.html#google.cloud.vision_v1.ProductSearchClient.import_product_sets">[docs]</a>    <span class="k">def</span> <span class="nf">import_product_sets</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                            <span class="n">parent</span><span class="p">,</span>
+                            <span class="n">input_config</span><span class="p">,</span>
+                            <span class="n">retry</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+                            <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+                            <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Asynchronous API that imports a list of reference images to specified</span>
+<span class="sd">        product sets based on a list of image information.</span>
+
+<span class="sd">        The ``google.longrunning.Operation`` API can be used to keep track of the</span>
+<span class="sd">        progress and results of the request.</span>
+<span class="sd">        ``Operation.metadata`` contains ``BatchOperationMetadata``. (progress)</span>
+<span class="sd">        ``Operation.response`` contains ``ImportProductSetsResponse``. (results)</span>
+
+<span class="sd">        The input source of this method is a csv file on Google Cloud Storage.</span>
+<span class="sd">        For the format of the csv file please see</span>
+<span class="sd">        ``ImportProductSetsGcsSource.csv_file_uri``.</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">            &gt;&gt;&gt; from google.cloud import vision_v1</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; client = vision_v1.ProductSearchClient()</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; parent = client.location_path(&#39;[PROJECT]&#39;, &#39;[LOCATION]&#39;)</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``input_config``:</span>
+<span class="sd">            &gt;&gt;&gt; input_config = {}</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; response = client.import_product_sets(parent, input_config)</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; def callback(operation_future):</span>
+<span class="sd">            ...     # Handle result.</span>
+<span class="sd">            ...     result = operation_future.result()</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; response.add_done_callback(callback)</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; # Handle metadata.</span>
+<span class="sd">            &gt;&gt;&gt; metadata = response.metadata()</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            parent (str): The project in which the ProductSets should be imported.</span>
+
+<span class="sd">                Format is ``projects/PROJECT_ID/locations/LOC_ID``.</span>
+<span class="sd">            input_config (Union[dict, ~google.cloud.vision_v1.types.ImportProductSetsInputConfig]): The input content for the list of requests.</span>
+<span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
+<span class="sd">                message :class:`~google.cloud.vision_v1.types.ImportProductSetsInputConfig`</span>
+<span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
+<span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
+<span class="sd">                be retried.</span>
+<span class="sd">            timeout (Optional[float]): The amount of time, in seconds, to wait</span>
+<span class="sd">                for the request to complete. Note that if ``retry`` is</span>
+<span class="sd">                specified, the timeout applies to each individual attempt.</span>
+<span class="sd">            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata</span>
+<span class="sd">                that is provided to the method.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A :class:`~google.cloud.vision_v1.types._OperationFuture` instance.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            google.api_core.exceptions.GoogleAPICallError: If the request</span>
+<span class="sd">                    failed for any reason.</span>
+<span class="sd">            google.api_core.exceptions.RetryError: If the request failed due</span>
+<span class="sd">                    to a retryable error and retry attempts failed.</span>
+<span class="sd">            ValueError: If the parameters are invalid.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Wrap the transport method to add retry and timeout logic.</span>
+        <span class="k">if</span> <span class="s1">&#39;import_product_sets&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span>
+                <span class="s1">&#39;import_product_sets&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">wrap_method</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">import_product_sets</span><span class="p">,</span>
+                    <span class="n">default_retry</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span><span class="s1">&#39;ImportProductSets&#39;</span><span class="p">]</span><span class="o">.</span>
+                    <span class="n">retry</span><span class="p">,</span>
+                    <span class="n">default_timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span><span class="s1">&#39;ImportProductSets&#39;</span><span class="p">]</span><span class="o">.</span>
+                    <span class="n">timeout</span><span class="p">,</span>
+                    <span class="n">client_info</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client_info</span><span class="p">,</span>
+                <span class="p">)</span>
+
+        <span class="n">request</span> <span class="o">=</span> <span class="n">product_search_service_pb2</span><span class="o">.</span><span class="n">ImportProductSetsRequest</span><span class="p">(</span>
+            <span class="n">parent</span><span class="o">=</span><span class="n">parent</span><span class="p">,</span>
+            <span class="n">input_config</span><span class="o">=</span><span class="n">input_config</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">operation</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span><span class="s1">&#39;import_product_sets&#39;</span><span class="p">](</span>
+            <span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">operation</span><span class="o">.</span><span class="n">from_gapic</span><span class="p">(</span>
+            <span class="n">operation</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">_operations_client</span><span class="p">,</span>
+            <span class="n">product_search_service_pb2</span><span class="o">.</span><span class="n">ImportProductSetsResponse</span><span class="p">,</span>
+            <span class="n">metadata_type</span><span class="o">=</span><span class="n">product_search_service_pb2</span><span class="o">.</span><span class="n">BatchOperationMetadata</span><span class="p">,</span>
+        <span class="p">)</span></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../../index.html">google-cloud</a></h1>
+
+
+
+<p class="blurb">Google Cloud Client Libraries for Python</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=GoogleCloudPlatform&repo=google-cloud-python&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../core/index.html">Core Libraries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../asset/index.html">Asset Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../automl/index.html">AutoML</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../bigquery/index.html">BigQuery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../bigquery_datatransfer/index.html">BigQuery Data-Transfer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../bigtable/index.html">Bigtable</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../container/index.html">Container</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../dataproc/index.html">Dataproc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../datastore/index.html">Datastore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../dlp/index.html">Data Loss Prevention</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../dns/index.html">DNS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../firestore/index.html">Firestore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../iot/index.html">IoT</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../kms/index.html">Key Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../language/index.html">Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pubsub/index.html">PubSub</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../oslogin/index.html">OSLogin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../redis/index.html">Redis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../resource-manager/index.html">Resource Manager</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../runtimeconfig/index.html">Python Client for Google Cloud RuntimeConfig</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../runtimeconfig/index.html#api-reference">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../websecurityscanner/index.html">Security Scanner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../spanner/index.html">Spanner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../speech/index.html">Speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../storage/index.html">Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../tasks/index.html">Tasks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../texttospeech/index.html">Text-to-Speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../translate/index.html">Translate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../vision/index.html">Vision</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../videointelligence/index.html">Video Intelligence</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../error-reporting/index.html">Stackdriver Error Reporting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../logging/index.html">Stackdriver Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../monitoring/index.html">Stackdriver Monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../trace/index.html">Stackdriver Trace</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../releases.html">Release History</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../../index.html">Module code</a><ul>
+  <li><a href="../../vision_v1.html">google.cloud.vision_v1</a><ul>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2014-2017, Google.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+    <a href="https://github.com/GoogleCloudPlatform/google-cloud-python" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Client for Cloud Vision API &#8212; google-cloud 5abdf8d documentation</title>
+    <title>Client for Cloud Vision API &#8212; google-cloud cbb1070 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -37,6 +37,1299 @@
             
   <div class="section" id="module-google.cloud.vision_v1">
 <span id="client-for-cloud-vision-api"></span><h1>Client for Cloud Vision API<a class="headerlink" href="#module-google.cloud.vision_v1" title="Permalink to this headline">#</a></h1>
+<dl class="class">
+<dt id="google.cloud.vision_v1.ProductSearchClient">
+<em class="property">class </em><code class="descclassname">google.cloud.vision_v1.</code><code class="descname">ProductSearchClient</code><span class="sig-paren">(</span><em>transport=None, channel=None, credentials=None, client_config={'interfaces': {'google.cloud.vision.v1.ProductSearch': {'methods': {'AddProductToProductSet': {'retry_codes_name': 'idempotent', 'retry_params_name': 'default', 'timeout_millis': 60000}, 'CreateProduct': {'retry_codes_name': 'non_idempotent', 'retry_params_name': 'default', 'timeout_millis': 60000}, 'CreateProductSet': {'retry_codes_name': 'non_idempotent', 'retry_params_name': 'default', 'timeout_millis': 60000}, 'CreateReferenceImage': {'retry_codes_name': 'non_idempotent', 'retry_params_name': 'default', 'timeout_millis': 60000}, 'DeleteProduct': {'retry_codes_name': 'idempotent', 'retry_params_name': 'default', 'timeout_millis': 60000}, 'DeleteProductSet': {'retry_codes_name': 'idempotent', 'retry_params_name': 'default', 'timeout_millis': 60000}, 'DeleteReferenceImage': {'retry_codes_name': 'idempotent', 'retry_params_name': 'default', 'timeout_millis': 60000}, 'GetProduct': {'retry_codes_name': 'idempotent', 'retry_params_name': 'default', 'timeout_millis': 60000}, 'GetProductSet': {'retry_codes_name': 'idempotent', 'retry_params_name': 'default', 'timeout_millis': 60000}, 'GetReferenceImage': {'retry_codes_name': 'idempotent', 'retry_params_name': 'default', 'timeout_millis': 60000}, 'ImportProductSets': {'retry_codes_name': 'non_idempotent', 'retry_params_name': 'default', 'timeout_millis': 60000}, 'ListProductSets': {'retry_codes_name': 'idempotent', 'retry_params_name': 'default', 'timeout_millis': 60000}, 'ListProducts': {'retry_codes_name': 'idempotent', 'retry_params_name': 'default', 'timeout_millis': 60000}, 'ListProductsInProductSet': {'retry_codes_name': 'idempotent', 'retry_params_name': 'default', 'timeout_millis': 60000}, 'ListReferenceImages': {'retry_codes_name': 'idempotent', 'retry_params_name': 'default', 'timeout_millis': 60000}, 'RemoveProductFromProductSet': {'retry_codes_name': 'idempotent', 'retry_params_name': 'default', 'timeout_millis': 60000}, 'UpdateProduct': {'retry_codes_name': 'idempotent', 'retry_params_name': 'default', 'timeout_millis': 60000}, 'UpdateProductSet': {'retry_codes_name': 'idempotent', 'retry_params_name': 'default', 'timeout_millis': 60000}}, 'retry_codes': {'idempotent': ['DEADLINE_EXCEEDED', 'UNAVAILABLE'], 'non_idempotent': []}, 'retry_params': {'default': {'initial_retry_delay_millis': 100, 'initial_rpc_timeout_millis': 60000, 'max_retry_delay_millis': 60000, 'max_rpc_timeout_millis': 60000, 'retry_delay_multiplier': 1.3, 'rpc_timeout_multiplier': 1.0, 'total_timeout_millis': 600000}}}}}, client_info=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/vision_v1.html#ProductSearchClient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.vision_v1.ProductSearchClient" title="Permalink to this definition">#</a></dt>
+<dd><p>Manages Products and ProductSets of reference images for use in product
+search. It uses the following resource model:</p>
+<ul class="simple">
+<li>The API has a collection of <code class="docutils literal notranslate"><span class="pre">ProductSet</span></code> resources, named
+<code class="docutils literal notranslate"><span class="pre">projects/*/locations/*/productSets/*</span></code>, which acts as a way to put different
+products into groups to limit identification.</li>
+</ul>
+<p>In parallel,</p>
+<ul class="simple">
+<li>The API has a collection of <code class="docutils literal notranslate"><span class="pre">Product</span></code> resources, named
+<code class="docutils literal notranslate"><span class="pre">projects/*/locations/*/products/*</span></code></li>
+<li>Each <code class="docutils literal notranslate"><span class="pre">Product</span></code> has a collection of <code class="docutils literal notranslate"><span class="pre">ReferenceImage</span></code> resources, named
+<code class="docutils literal notranslate"><span class="pre">projects/*/locations/*/products/*/referenceImages/*</span></code></li>
+</ul>
+<p>Constructor.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>(</strong><strong>Union</strong><strong>[</strong><strong>ProductSearchGrpcTransport</strong><strong>,</strong> (<em>transport</em>) – Callable[[~.Credentials, type], ~.ProductSearchGrpcTransport]): A transport
+instance, responsible for actually making the API calls.
+The default transport uses the gRPC protocol.
+This argument may also be a callable which returns a
+transport instance. Callables will be sent the credentials
+as the first argument and the default transport class as
+the second argument.</li>
+<li><strong>channel</strong> (<a class="reference external" href="https://grpc.io/grpc/python/grpc.html#grpc.Channel" title="(in grpcio v1.8.0)"><em>grpc.Channel</em></a>) – DEPRECATED. A <code class="docutils literal notranslate"><span class="pre">Channel</span></code> instance
+through which to make calls. This argument is mutually exclusive
+with <code class="docutils literal notranslate"><span class="pre">credentials</span></code>; providing both will raise an exception.</li>
+<li><strong>credentials</strong> (<a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.credentials.html#google.auth.credentials.Credentials" title="(in google-auth v1.5.1)"><em>google.auth.credentials.Credentials</em></a>) – The
+authorization credentials to attach to requests. These
+credentials identify this application to the service. If none
+are specified, the client will attempt to ascertain the
+credentials from the environment.
+This argument is mutually exclusive with providing a
+transport instance to <code class="docutils literal notranslate"><span class="pre">transport</span></code>; doing so will raise
+an exception.</li>
+<li><strong>client_config</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – DEPRECATED. A dictionary of call options for
+each method. If not specified, the default configuration is used.</li>
+<li><strong>client_info</strong> (<em>google.api_core.gapic_v1.client_info.ClientInfo</em>) – The client info used to send a user-agent string along with
+API requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code>, then default info will be used.
+Generally, you only need to set this if you’re developing
+your own client library.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="google.cloud.vision_v1.ProductSearchClient.add_product_to_product_set">
+<code class="descname">add_product_to_product_set</code><span class="sig-paren">(</span><em>name</em>, <em>product</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/vision_v1/gapic/product_search_client.html#ProductSearchClient.add_product_to_product_set"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.vision_v1.ProductSearchClient.add_product_to_product_set" title="Permalink to this definition">#</a></dt>
+<dd><p>Adds a Product to the specified ProductSet. If the Product is already
+present, no change is made.</p>
+<p>One Product can be added to at most 100 ProductSets.</p>
+<p>Possible errors:</p>
+<ul class="simple">
+<li>Returns NOT_FOUND if the Product or the ProductSet doesn’t exist.</li>
+</ul>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">vision_v1</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">vision_v1</span><span class="o">.</span><span class="n">ProductSearchClient</span><span class="p">()</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">name</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">product_set_path</span><span class="p">(</span><span class="s1">&#39;[PROJECT]&#39;</span><span class="p">,</span> <span class="s1">&#39;[LOCATION]&#39;</span><span class="p">,</span> <span class="s1">&#39;[PRODUCT_SET]&#39;</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``product``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">product</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span><span class="o">.</span><span class="n">add_product_to_product_set</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">product</span><span class="p">)</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>The resource name for the ProductSet to modify.</p>
+<p>Format is:
+<code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/locations/LOC_ID/productSets/PRODUCT_SET_ID</span></code></p>
+</li>
+<li><strong>product</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>The resource name for the Product to be added to this ProductSet.</p>
+<p>Format is:
+<code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID</span></code></p>
+</li>
+<li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
+be retried.</li>
+<li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
+for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
+specified, the timeout applies to each individual attempt.</li>
+<li><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
+that is provided to the method.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
+failed for any reason.</li>
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
+to a retryable error and retry attempts failed.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.vision_v1.ProductSearchClient.create_product">
+<code class="descname">create_product</code><span class="sig-paren">(</span><em>parent</em>, <em>product</em>, <em>product_id=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/vision_v1/gapic/product_search_client.html#ProductSearchClient.create_product"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.vision_v1.ProductSearchClient.create_product" title="Permalink to this definition">#</a></dt>
+<dd><p>Creates and returns a new product resource.</p>
+<p>Possible errors:</p>
+<ul class="simple">
+<li>Returns INVALID_ARGUMENT if display_name is missing or longer than 4096
+characters.</li>
+<li>Returns INVALID_ARGUMENT if description is longer than 4096 characters.</li>
+<li>Returns INVALID_ARGUMENT if product_category is missing or invalid.</li>
+</ul>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">vision_v1</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">vision_v1</span><span class="o">.</span><span class="n">ProductSearchClient</span><span class="p">()</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">parent</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">location_path</span><span class="p">(</span><span class="s1">&#39;[PROJECT]&#39;</span><span class="p">,</span> <span class="s1">&#39;[LOCATION]&#39;</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``product``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">product</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">create_product</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">product</span><span class="p">)</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>The project in which the Product should be created.</p>
+<p>Format is
+<code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/locations/LOC_ID</span></code>.</p>
+</li>
+<li><strong>product</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.vision_v1.types.Product" title="google.cloud.vision_v1.types.Product"><em>Product</em></a><em>]</em>) – The product to create.
+If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.vision_v1.types.Product" title="google.cloud.vision_v1.types.Product"><code class="xref py py-class docutils literal notranslate"><span class="pre">Product</span></code></a></li>
+<li><strong>product_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – A user-supplied resource id for this Product. If set, the server will
+attempt to use this value as the resource id. If it is already in use, an
+error is returned with code ALREADY_EXISTS. Must be at most 128 characters
+long. It cannot contain the character <code class="docutils literal notranslate"><span class="pre">/</span></code>.</li>
+<li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
+be retried.</li>
+<li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
+for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
+specified, the timeout applies to each individual attempt.</li>
+<li><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
+that is provided to the method.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="types.html#google.cloud.vision_v1.types.Product" title="google.cloud.vision_v1.types.Product"><code class="xref py py-class docutils literal notranslate"><span class="pre">Product</span></code></a> instance.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
+failed for any reason.</li>
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
+to a retryable error and retry attempts failed.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.vision_v1.ProductSearchClient.create_product_set">
+<code class="descname">create_product_set</code><span class="sig-paren">(</span><em>parent</em>, <em>product_set</em>, <em>product_set_id=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/vision_v1/gapic/product_search_client.html#ProductSearchClient.create_product_set"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.vision_v1.ProductSearchClient.create_product_set" title="Permalink to this definition">#</a></dt>
+<dd><p>Creates and returns a new ProductSet resource.</p>
+<p>Possible errors:</p>
+<ul class="simple">
+<li>Returns INVALID_ARGUMENT if display_name is missing, or is longer than
+4096 characters.</li>
+</ul>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">vision_v1</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">vision_v1</span><span class="o">.</span><span class="n">ProductSearchClient</span><span class="p">()</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">parent</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">location_path</span><span class="p">(</span><span class="s1">&#39;[PROJECT]&#39;</span><span class="p">,</span> <span class="s1">&#39;[LOCATION]&#39;</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``product_set``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">product_set</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">create_product_set</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">product_set</span><span class="p">)</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>The project in which the ProductSet should be created.</p>
+<p>Format is <code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/locations/LOC_ID</span></code>.</p>
+</li>
+<li><strong>product_set</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.vision_v1.types.ProductSet" title="google.cloud.vision_v1.types.ProductSet"><em>ProductSet</em></a><em>]</em>) – The ProductSet to create.
+If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.vision_v1.types.ProductSet" title="google.cloud.vision_v1.types.ProductSet"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProductSet</span></code></a></li>
+<li><strong>product_set_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – A user-supplied resource id for this ProductSet. If set, the server will
+attempt to use this value as the resource id. If it is already in use, an
+error is returned with code ALREADY_EXISTS. Must be at most 128 characters
+long. It cannot contain the character <code class="docutils literal notranslate"><span class="pre">/</span></code>.</li>
+<li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
+be retried.</li>
+<li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
+for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
+specified, the timeout applies to each individual attempt.</li>
+<li><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
+that is provided to the method.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="types.html#google.cloud.vision_v1.types.ProductSet" title="google.cloud.vision_v1.types.ProductSet"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProductSet</span></code></a> instance.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
+failed for any reason.</li>
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
+to a retryable error and retry attempts failed.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.vision_v1.ProductSearchClient.create_reference_image">
+<code class="descname">create_reference_image</code><span class="sig-paren">(</span><em>parent</em>, <em>reference_image</em>, <em>reference_image_id=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/vision_v1/gapic/product_search_client.html#ProductSearchClient.create_reference_image"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.vision_v1.ProductSearchClient.create_reference_image" title="Permalink to this definition">#</a></dt>
+<dd><p>Creates and returns a new ReferenceImage resource.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">bounding_poly</span></code> field is optional. If <code class="docutils literal notranslate"><span class="pre">bounding_poly</span></code> is not specified,
+the system will try to detect regions of interest in the image that are
+compatible with the product_category on the parent product. If it is
+specified, detection is ALWAYS skipped. The system converts polygons into
+non-rotated rectangles.</p>
+<p>Note that the pipeline will resize the image if the image resolution is too
+large to process (above 50MP).</p>
+<p>Possible errors:</p>
+<ul class="simple">
+<li>Returns INVALID_ARGUMENT if the image_uri is missing or longer than 4096
+characters.</li>
+<li>Returns INVALID_ARGUMENT if the product does not exist.</li>
+<li>Returns INVALID_ARGUMENT if bounding_poly is not provided, and nothing
+compatible with the parent product’s product_category is detected.</li>
+<li>Returns INVALID_ARGUMENT if bounding_poly contains more than 10 polygons.</li>
+</ul>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">vision_v1</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">vision_v1</span><span class="o">.</span><span class="n">ProductSearchClient</span><span class="p">()</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">parent</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">product_path</span><span class="p">(</span><span class="s1">&#39;[PROJECT]&#39;</span><span class="p">,</span> <span class="s1">&#39;[LOCATION]&#39;</span><span class="p">,</span> <span class="s1">&#39;[PRODUCT]&#39;</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``reference_image``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">reference_image</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">create_reference_image</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">reference_image</span><span class="p">)</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Resource name of the product in which to create the reference image.</p>
+<p>Format is
+<code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID</span></code>.</p>
+</li>
+<li><strong>reference_image</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.vision_v1.types.ReferenceImage" title="google.cloud.vision_v1.types.ReferenceImage"><em>ReferenceImage</em></a><em>]</em>) – The reference image to create.
+If an image ID is specified, it is ignored.
+If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.vision_v1.types.ReferenceImage" title="google.cloud.vision_v1.types.ReferenceImage"><code class="xref py py-class docutils literal notranslate"><span class="pre">ReferenceImage</span></code></a></li>
+<li><strong>reference_image_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – A user-supplied resource id for the ReferenceImage to be added. If set,
+the server will attempt to use this value as the resource id. If it is
+already in use, an error is returned with code ALREADY_EXISTS. Must be at
+most 128 characters long. It cannot contain the character <code class="docutils literal notranslate"><span class="pre">/</span></code>.</li>
+<li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
+be retried.</li>
+<li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
+for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
+specified, the timeout applies to each individual attempt.</li>
+<li><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
+that is provided to the method.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="types.html#google.cloud.vision_v1.types.ReferenceImage" title="google.cloud.vision_v1.types.ReferenceImage"><code class="xref py py-class docutils literal notranslate"><span class="pre">ReferenceImage</span></code></a> instance.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
+failed for any reason.</li>
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
+to a retryable error and retry attempts failed.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.vision_v1.ProductSearchClient.delete_product">
+<code class="descname">delete_product</code><span class="sig-paren">(</span><em>name</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/vision_v1/gapic/product_search_client.html#ProductSearchClient.delete_product"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.vision_v1.ProductSearchClient.delete_product" title="Permalink to this definition">#</a></dt>
+<dd><p>Permanently deletes a product and its reference images.</p>
+<p>Metadata of the product and all its images will be deleted right away, but
+search queries against ProductSets containing the product may still work
+until all related caches are refreshed.</p>
+<p>Possible errors:</p>
+<ul class="simple">
+<li>Returns NOT_FOUND if the product does not exist.</li>
+</ul>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">vision_v1</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">vision_v1</span><span class="o">.</span><span class="n">ProductSearchClient</span><span class="p">()</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">name</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">product_path</span><span class="p">(</span><span class="s1">&#39;[PROJECT]&#39;</span><span class="p">,</span> <span class="s1">&#39;[LOCATION]&#39;</span><span class="p">,</span> <span class="s1">&#39;[PRODUCT]&#39;</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span><span class="o">.</span><span class="n">delete_product</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Resource name of product to delete.</p>
+<p>Format is:
+<code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID</span></code></p>
+</li>
+<li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
+be retried.</li>
+<li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
+for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
+specified, the timeout applies to each individual attempt.</li>
+<li><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
+that is provided to the method.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
+failed for any reason.</li>
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
+to a retryable error and retry attempts failed.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.vision_v1.ProductSearchClient.delete_product_set">
+<code class="descname">delete_product_set</code><span class="sig-paren">(</span><em>name</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/vision_v1/gapic/product_search_client.html#ProductSearchClient.delete_product_set"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.vision_v1.ProductSearchClient.delete_product_set" title="Permalink to this definition">#</a></dt>
+<dd><p>Permanently deletes a ProductSet. All Products and ReferenceImages in the
+ProductSet will be deleted.</p>
+<p>The actual image files are not deleted from Google Cloud Storage.</p>
+<p>Possible errors:</p>
+<ul class="simple">
+<li>Returns NOT_FOUND if the ProductSet does not exist.</li>
+</ul>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">vision_v1</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">vision_v1</span><span class="o">.</span><span class="n">ProductSearchClient</span><span class="p">()</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">name</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">product_set_path</span><span class="p">(</span><span class="s1">&#39;[PROJECT]&#39;</span><span class="p">,</span> <span class="s1">&#39;[LOCATION]&#39;</span><span class="p">,</span> <span class="s1">&#39;[PRODUCT_SET]&#39;</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span><span class="o">.</span><span class="n">delete_product_set</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Resource name of the ProductSet to delete.</p>
+<p>Format is:
+<code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/locations/LOC_ID/productSets/PRODUCT_SET_ID</span></code></p>
+</li>
+<li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
+be retried.</li>
+<li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
+for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
+specified, the timeout applies to each individual attempt.</li>
+<li><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
+that is provided to the method.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
+failed for any reason.</li>
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
+to a retryable error and retry attempts failed.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.vision_v1.ProductSearchClient.delete_reference_image">
+<code class="descname">delete_reference_image</code><span class="sig-paren">(</span><em>name</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/vision_v1/gapic/product_search_client.html#ProductSearchClient.delete_reference_image"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.vision_v1.ProductSearchClient.delete_reference_image" title="Permalink to this definition">#</a></dt>
+<dd><p>Permanently deletes a reference image.</p>
+<p>The image metadata will be deleted right away, but search queries
+against ProductSets containing the image may still work until all related
+caches are refreshed.</p>
+<p>The actual image files are not deleted from Google Cloud Storage.</p>
+<p>Possible errors:</p>
+<ul class="simple">
+<li>Returns NOT_FOUND if the reference image does not exist.</li>
+</ul>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">vision_v1</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">vision_v1</span><span class="o">.</span><span class="n">ProductSearchClient</span><span class="p">()</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">name</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">image_path</span><span class="p">(</span><span class="s1">&#39;[PROJECT]&#39;</span><span class="p">,</span> <span class="s1">&#39;[LOCATION]&#39;</span><span class="p">,</span> <span class="s1">&#39;[PRODUCT]&#39;</span><span class="p">,</span> <span class="s1">&#39;[IMAGE]&#39;</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span><span class="o">.</span><span class="n">delete_reference_image</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>The resource name of the reference image to delete.</p>
+<p>Format is:</p>
+<p><code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID/referenceImages/IMAGE_ID</span></code></p>
+</li>
+<li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
+be retried.</li>
+<li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
+for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
+specified, the timeout applies to each individual attempt.</li>
+<li><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
+that is provided to the method.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
+failed for any reason.</li>
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
+to a retryable error and retry attempts failed.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.ProductSearchClient.enums">
+<code class="descname">enums</code><em class="property"> = &lt;module 'google.cloud.vision_v1.gapic.enums' from '/var/code/gcp/vision/google/cloud/vision_v1/gapic/enums.py'&gt;</em><a class="headerlink" href="#google.cloud.vision_v1.ProductSearchClient.enums" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="classmethod">
+<dt id="google.cloud.vision_v1.ProductSearchClient.from_service_account_file">
+<em class="property">classmethod </em><code class="descname">from_service_account_file</code><span class="sig-paren">(</span><em>filename</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/vision_v1/gapic/product_search_client.html#ProductSearchClient.from_service_account_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.vision_v1.ProductSearchClient.from_service_account_file" title="Permalink to this definition">#</a></dt>
+<dd><p>Creates an instance of this client using the provided credentials
+file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The path to the service account private key json
+file.</li>
+<li><strong>args</strong> – Additional arguments to pass to the constructor.</li>
+<li><strong>kwargs</strong> – Additional arguments to pass to the constructor.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The constructed client.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#google.cloud.vision_v1.ProductSearchClient" title="google.cloud.vision_v1.ProductSearchClient">ProductSearchClient</a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="google.cloud.vision_v1.ProductSearchClient.from_service_account_json">
+<em class="property">classmethod </em><code class="descname">from_service_account_json</code><span class="sig-paren">(</span><em>filename</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.vision_v1.ProductSearchClient.from_service_account_json" title="Permalink to this definition">#</a></dt>
+<dd><p>Creates an instance of this client using the provided credentials
+file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The path to the service account private key json
+file.</li>
+<li><strong>args</strong> – Additional arguments to pass to the constructor.</li>
+<li><strong>kwargs</strong> – Additional arguments to pass to the constructor.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The constructed client.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#google.cloud.vision_v1.ProductSearchClient" title="google.cloud.vision_v1.ProductSearchClient">ProductSearchClient</a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.vision_v1.ProductSearchClient.get_product">
+<code class="descname">get_product</code><span class="sig-paren">(</span><em>name</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/vision_v1/gapic/product_search_client.html#ProductSearchClient.get_product"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.vision_v1.ProductSearchClient.get_product" title="Permalink to this definition">#</a></dt>
+<dd><p>Gets information associated with a Product.</p>
+<p>Possible errors:</p>
+<ul class="simple">
+<li>Returns NOT_FOUND if the Product does not exist.</li>
+</ul>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">vision_v1</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">vision_v1</span><span class="o">.</span><span class="n">ProductSearchClient</span><span class="p">()</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">name</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">product_path</span><span class="p">(</span><span class="s1">&#39;[PROJECT]&#39;</span><span class="p">,</span> <span class="s1">&#39;[LOCATION]&#39;</span><span class="p">,</span> <span class="s1">&#39;[PRODUCT]&#39;</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_product</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Resource name of the Product to get.</p>
+<p>Format is:
+<code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID</span></code></p>
+</li>
+<li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
+be retried.</li>
+<li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
+for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
+specified, the timeout applies to each individual attempt.</li>
+<li><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
+that is provided to the method.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="types.html#google.cloud.vision_v1.types.Product" title="google.cloud.vision_v1.types.Product"><code class="xref py py-class docutils literal notranslate"><span class="pre">Product</span></code></a> instance.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
+failed for any reason.</li>
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
+to a retryable error and retry attempts failed.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.vision_v1.ProductSearchClient.get_product_set">
+<code class="descname">get_product_set</code><span class="sig-paren">(</span><em>name</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/vision_v1/gapic/product_search_client.html#ProductSearchClient.get_product_set"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.vision_v1.ProductSearchClient.get_product_set" title="Permalink to this definition">#</a></dt>
+<dd><p>Gets information associated with a ProductSet.</p>
+<p>Possible errors:</p>
+<ul class="simple">
+<li>Returns NOT_FOUND if the ProductSet does not exist.</li>
+</ul>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">vision_v1</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">vision_v1</span><span class="o">.</span><span class="n">ProductSearchClient</span><span class="p">()</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">name</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">product_set_path</span><span class="p">(</span><span class="s1">&#39;[PROJECT]&#39;</span><span class="p">,</span> <span class="s1">&#39;[LOCATION]&#39;</span><span class="p">,</span> <span class="s1">&#39;[PRODUCT_SET]&#39;</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_product_set</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Resource name of the ProductSet to get.</p>
+<p>Format is:
+<code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/locations/LOG_ID/productSets/PRODUCT_SET_ID</span></code></p>
+</li>
+<li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
+be retried.</li>
+<li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
+for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
+specified, the timeout applies to each individual attempt.</li>
+<li><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
+that is provided to the method.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="types.html#google.cloud.vision_v1.types.ProductSet" title="google.cloud.vision_v1.types.ProductSet"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProductSet</span></code></a> instance.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
+failed for any reason.</li>
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
+to a retryable error and retry attempts failed.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.vision_v1.ProductSearchClient.get_reference_image">
+<code class="descname">get_reference_image</code><span class="sig-paren">(</span><em>name</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/vision_v1/gapic/product_search_client.html#ProductSearchClient.get_reference_image"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.vision_v1.ProductSearchClient.get_reference_image" title="Permalink to this definition">#</a></dt>
+<dd><p>Gets information associated with a ReferenceImage.</p>
+<p>Possible errors:</p>
+<ul class="simple">
+<li>Returns NOT_FOUND if the specified image does not exist.</li>
+</ul>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">vision_v1</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">vision_v1</span><span class="o">.</span><span class="n">ProductSearchClient</span><span class="p">()</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">name</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">image_path</span><span class="p">(</span><span class="s1">&#39;[PROJECT]&#39;</span><span class="p">,</span> <span class="s1">&#39;[LOCATION]&#39;</span><span class="p">,</span> <span class="s1">&#39;[PRODUCT]&#39;</span><span class="p">,</span> <span class="s1">&#39;[IMAGE]&#39;</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_reference_image</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>The resource name of the ReferenceImage to get.</p>
+<p>Format is:</p>
+<p><code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID/referenceImages/IMAGE_ID</span></code>.</p>
+</li>
+<li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
+be retried.</li>
+<li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
+for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
+specified, the timeout applies to each individual attempt.</li>
+<li><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
+that is provided to the method.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="types.html#google.cloud.vision_v1.types.ReferenceImage" title="google.cloud.vision_v1.types.ReferenceImage"><code class="xref py py-class docutils literal notranslate"><span class="pre">ReferenceImage</span></code></a> instance.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
+failed for any reason.</li>
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
+to a retryable error and retry attempts failed.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="google.cloud.vision_v1.ProductSearchClient.image_path">
+<em class="property">classmethod </em><code class="descname">image_path</code><span class="sig-paren">(</span><em>project</em>, <em>location</em>, <em>product</em>, <em>image</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/vision_v1/gapic/product_search_client.html#ProductSearchClient.image_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.vision_v1.ProductSearchClient.image_path" title="Permalink to this definition">#</a></dt>
+<dd><p>Return a fully-qualified image string.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.vision_v1.ProductSearchClient.import_product_sets">
+<code class="descname">import_product_sets</code><span class="sig-paren">(</span><em>parent</em>, <em>input_config</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/vision_v1/gapic/product_search_client.html#ProductSearchClient.import_product_sets"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.vision_v1.ProductSearchClient.import_product_sets" title="Permalink to this definition">#</a></dt>
+<dd><p>Asynchronous API that imports a list of reference images to specified
+product sets based on a list of image information.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">google.longrunning.Operation</span></code> API can be used to keep track of the
+progress and results of the request.
+<code class="docutils literal notranslate"><span class="pre">Operation.metadata</span></code> contains <code class="docutils literal notranslate"><span class="pre">BatchOperationMetadata</span></code>. (progress)
+<code class="docutils literal notranslate"><span class="pre">Operation.response</span></code> contains <code class="docutils literal notranslate"><span class="pre">ImportProductSetsResponse</span></code>. (results)</p>
+<p>The input source of this method is a csv file on Google Cloud Storage.
+For the format of the csv file please see
+<code class="docutils literal notranslate"><span class="pre">ImportProductSetsGcsSource.csv_file_uri</span></code>.</p>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">vision_v1</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">vision_v1</span><span class="o">.</span><span class="n">ProductSearchClient</span><span class="p">()</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">parent</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">location_path</span><span class="p">(</span><span class="s1">&#39;[PROJECT]&#39;</span><span class="p">,</span> <span class="s1">&#39;[LOCATION]&#39;</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``input_config``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">input_config</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">import_product_sets</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">input_config</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">callback</span><span class="p">(</span><span class="n">operation_future</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="c1"># Handle result.</span>
+<span class="gp">... </span>    <span class="n">result</span> <span class="o">=</span> <span class="n">operation_future</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">response</span><span class="o">.</span><span class="n">add_done_callback</span><span class="p">(</span><span class="n">callback</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Handle metadata.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">metadata</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">metadata</span><span class="p">()</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>The project in which the ProductSets should be imported.</p>
+<p>Format is <code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/locations/LOC_ID</span></code>.</p>
+</li>
+<li><strong>input_config</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.vision_v1.types.ImportProductSetsInputConfig" title="google.cloud.vision_v1.types.ImportProductSetsInputConfig"><em>ImportProductSetsInputConfig</em></a><em>]</em>) – The input content for the list of requests.
+If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.vision_v1.types.ImportProductSetsInputConfig" title="google.cloud.vision_v1.types.ImportProductSetsInputConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">ImportProductSetsInputConfig</span></code></a></li>
+<li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
+be retried.</li>
+<li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
+for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
+specified, the timeout applies to each individual attempt.</li>
+<li><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
+that is provided to the method.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <code class="xref py py-class docutils literal notranslate"><span class="pre">_OperationFuture</span></code> instance.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
+failed for any reason.</li>
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
+to a retryable error and retry attempts failed.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.vision_v1.ProductSearchClient.list_product_sets">
+<code class="descname">list_product_sets</code><span class="sig-paren">(</span><em>parent</em>, <em>page_size=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/vision_v1/gapic/product_search_client.html#ProductSearchClient.list_product_sets"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.vision_v1.ProductSearchClient.list_product_sets" title="Permalink to this definition">#</a></dt>
+<dd><p>Lists ProductSets in an unspecified order.</p>
+<p>Possible errors:</p>
+<ul class="simple">
+<li>Returns INVALID_ARGUMENT if page_size is greater than 100, or less
+than 1.</li>
+</ul>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">vision_v1</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">vision_v1</span><span class="o">.</span><span class="n">ProductSearchClient</span><span class="p">()</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">parent</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">location_path</span><span class="p">(</span><span class="s1">&#39;[PROJECT]&#39;</span><span class="p">,</span> <span class="s1">&#39;[LOCATION]&#39;</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Iterate over all results</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_product_sets</span><span class="p">(</span><span class="n">parent</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="c1"># process element</span>
+<span class="gp">... </span>    <span class="k">pass</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Alternatively:</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Iterate over results one page at a time</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_product_sets</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">CallOptions</span><span class="p">(</span><span class="n">page_token</span><span class="o">=</span><span class="n">INITIAL_PAGE</span><span class="p">)):</span>
+<span class="gp">... </span>    <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">page</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="c1"># process element</span>
+<span class="gp">... </span>        <span class="k">pass</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>The project from which ProductSets should be listed.</p>
+<p>Format is <code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/locations/LOC_ID</span></code>.</p>
+</li>
+<li><strong>page_size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – The maximum number of resources contained in the
+underlying API response. If page streaming is performed per-
+resource, this parameter does not affect the return value. If page
+streaming is performed per-page, this determines the maximum number
+of resources in a page.</li>
+<li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
+be retried.</li>
+<li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
+for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
+specified, the timeout applies to each individual attempt.</li>
+<li><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
+that is provided to the method.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.html#google.gax.PageIterator" title="(in google-gax v0.16.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">PageIterator</span></code></a> instance. By default, this
+is an iterable of <a class="reference internal" href="types.html#google.cloud.vision_v1.types.ProductSet" title="google.cloud.vision_v1.types.ProductSet"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProductSet</span></code></a> instances.
+This object can also be configured to iterate over the pages
+of the response through the <cite>options</cite> parameter.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
+failed for any reason.</li>
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
+to a retryable error and retry attempts failed.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.vision_v1.ProductSearchClient.list_products">
+<code class="descname">list_products</code><span class="sig-paren">(</span><em>parent</em>, <em>page_size=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/vision_v1/gapic/product_search_client.html#ProductSearchClient.list_products"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.vision_v1.ProductSearchClient.list_products" title="Permalink to this definition">#</a></dt>
+<dd><p>Lists products in an unspecified order.</p>
+<p>Possible errors:</p>
+<ul class="simple">
+<li>Returns INVALID_ARGUMENT if page_size is greater than 100 or less than 1.</li>
+</ul>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">vision_v1</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">vision_v1</span><span class="o">.</span><span class="n">ProductSearchClient</span><span class="p">()</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">parent</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">location_path</span><span class="p">(</span><span class="s1">&#39;[PROJECT]&#39;</span><span class="p">,</span> <span class="s1">&#39;[LOCATION]&#39;</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Iterate over all results</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_products</span><span class="p">(</span><span class="n">parent</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="c1"># process element</span>
+<span class="gp">... </span>    <span class="k">pass</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Alternatively:</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Iterate over results one page at a time</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_products</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">CallOptions</span><span class="p">(</span><span class="n">page_token</span><span class="o">=</span><span class="n">INITIAL_PAGE</span><span class="p">)):</span>
+<span class="gp">... </span>    <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">page</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="c1"># process element</span>
+<span class="gp">... </span>        <span class="k">pass</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>The project OR ProductSet from which Products should be listed.</p>
+<p>Format:
+<code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/locations/LOC_ID</span></code></p>
+</li>
+<li><strong>page_size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – The maximum number of resources contained in the
+underlying API response. If page streaming is performed per-
+resource, this parameter does not affect the return value. If page
+streaming is performed per-page, this determines the maximum number
+of resources in a page.</li>
+<li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
+be retried.</li>
+<li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
+for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
+specified, the timeout applies to each individual attempt.</li>
+<li><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
+that is provided to the method.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.html#google.gax.PageIterator" title="(in google-gax v0.16.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">PageIterator</span></code></a> instance. By default, this
+is an iterable of <a class="reference internal" href="types.html#google.cloud.vision_v1.types.Product" title="google.cloud.vision_v1.types.Product"><code class="xref py py-class docutils literal notranslate"><span class="pre">Product</span></code></a> instances.
+This object can also be configured to iterate over the pages
+of the response through the <cite>options</cite> parameter.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
+failed for any reason.</li>
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
+to a retryable error and retry attempts failed.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.vision_v1.ProductSearchClient.list_products_in_product_set">
+<code class="descname">list_products_in_product_set</code><span class="sig-paren">(</span><em>name</em>, <em>page_size=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/vision_v1/gapic/product_search_client.html#ProductSearchClient.list_products_in_product_set"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.vision_v1.ProductSearchClient.list_products_in_product_set" title="Permalink to this definition">#</a></dt>
+<dd><p>Lists the Products in a ProductSet, in an unspecified order. If the
+ProductSet does not exist, the products field of the response will be
+empty.</p>
+<p>Possible errors:</p>
+<ul class="simple">
+<li>Returns INVALID_ARGUMENT if page_size is greater than 100 or less than 1.</li>
+</ul>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">vision_v1</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">vision_v1</span><span class="o">.</span><span class="n">ProductSearchClient</span><span class="p">()</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">name</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">product_set_path</span><span class="p">(</span><span class="s1">&#39;[PROJECT]&#39;</span><span class="p">,</span> <span class="s1">&#39;[LOCATION]&#39;</span><span class="p">,</span> <span class="s1">&#39;[PRODUCT_SET]&#39;</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Iterate over all results</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_products_in_product_set</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="c1"># process element</span>
+<span class="gp">... </span>    <span class="k">pass</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Alternatively:</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Iterate over results one page at a time</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_products_in_product_set</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">CallOptions</span><span class="p">(</span><span class="n">page_token</span><span class="o">=</span><span class="n">INITIAL_PAGE</span><span class="p">)):</span>
+<span class="gp">... </span>    <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">page</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="c1"># process element</span>
+<span class="gp">... </span>        <span class="k">pass</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>The ProductSet resource for which to retrieve Products.</p>
+<p>Format is:
+<code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/locations/LOC_ID/productSets/PRODUCT_SET_ID</span></code></p>
+</li>
+<li><strong>page_size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – The maximum number of resources contained in the
+underlying API response. If page streaming is performed per-
+resource, this parameter does not affect the return value. If page
+streaming is performed per-page, this determines the maximum number
+of resources in a page.</li>
+<li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
+be retried.</li>
+<li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
+for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
+specified, the timeout applies to each individual attempt.</li>
+<li><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
+that is provided to the method.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.html#google.gax.PageIterator" title="(in google-gax v0.16.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">PageIterator</span></code></a> instance. By default, this
+is an iterable of <a class="reference internal" href="types.html#google.cloud.vision_v1.types.Product" title="google.cloud.vision_v1.types.Product"><code class="xref py py-class docutils literal notranslate"><span class="pre">Product</span></code></a> instances.
+This object can also be configured to iterate over the pages
+of the response through the <cite>options</cite> parameter.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
+failed for any reason.</li>
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
+to a retryable error and retry attempts failed.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.vision_v1.ProductSearchClient.list_reference_images">
+<code class="descname">list_reference_images</code><span class="sig-paren">(</span><em>parent</em>, <em>page_size=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/vision_v1/gapic/product_search_client.html#ProductSearchClient.list_reference_images"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.vision_v1.ProductSearchClient.list_reference_images" title="Permalink to this definition">#</a></dt>
+<dd><p>Lists reference images.</p>
+<p>Possible errors:</p>
+<ul class="simple">
+<li>Returns NOT_FOUND if the parent product does not exist.</li>
+<li>Returns INVALID_ARGUMENT if the page_size is greater than 100, or less
+than 1.</li>
+</ul>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">vision_v1</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">vision_v1</span><span class="o">.</span><span class="n">ProductSearchClient</span><span class="p">()</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">parent</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">product_path</span><span class="p">(</span><span class="s1">&#39;[PROJECT]&#39;</span><span class="p">,</span> <span class="s1">&#39;[LOCATION]&#39;</span><span class="p">,</span> <span class="s1">&#39;[PRODUCT]&#39;</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Iterate over all results</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_reference_images</span><span class="p">(</span><span class="n">parent</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="c1"># process element</span>
+<span class="gp">... </span>    <span class="k">pass</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Alternatively:</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Iterate over results one page at a time</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_reference_images</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">CallOptions</span><span class="p">(</span><span class="n">page_token</span><span class="o">=</span><span class="n">INITIAL_PAGE</span><span class="p">)):</span>
+<span class="gp">... </span>    <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">page</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="c1"># process element</span>
+<span class="gp">... </span>        <span class="k">pass</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Resource name of the product containing the reference images.</p>
+<p>Format is
+<code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID</span></code>.</p>
+</li>
+<li><strong>page_size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – The maximum number of resources contained in the
+underlying API response. If page streaming is performed per-
+resource, this parameter does not affect the return value. If page
+streaming is performed per-page, this determines the maximum number
+of resources in a page.</li>
+<li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
+be retried.</li>
+<li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
+for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
+specified, the timeout applies to each individual attempt.</li>
+<li><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
+that is provided to the method.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.html#google.gax.PageIterator" title="(in google-gax v0.16.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">PageIterator</span></code></a> instance. By default, this
+is an iterable of <a class="reference internal" href="types.html#google.cloud.vision_v1.types.ReferenceImage" title="google.cloud.vision_v1.types.ReferenceImage"><code class="xref py py-class docutils literal notranslate"><span class="pre">ReferenceImage</span></code></a> instances.
+This object can also be configured to iterate over the pages
+of the response through the <cite>options</cite> parameter.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
+failed for any reason.</li>
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
+to a retryable error and retry attempts failed.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="google.cloud.vision_v1.ProductSearchClient.location_path">
+<em class="property">classmethod </em><code class="descname">location_path</code><span class="sig-paren">(</span><em>project</em>, <em>location</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/vision_v1/gapic/product_search_client.html#ProductSearchClient.location_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.vision_v1.ProductSearchClient.location_path" title="Permalink to this definition">#</a></dt>
+<dd><p>Return a fully-qualified location string.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="google.cloud.vision_v1.ProductSearchClient.product_path">
+<em class="property">classmethod </em><code class="descname">product_path</code><span class="sig-paren">(</span><em>project</em>, <em>location</em>, <em>product</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/vision_v1/gapic/product_search_client.html#ProductSearchClient.product_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.vision_v1.ProductSearchClient.product_path" title="Permalink to this definition">#</a></dt>
+<dd><p>Return a fully-qualified product string.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="google.cloud.vision_v1.ProductSearchClient.product_set_path">
+<em class="property">classmethod </em><code class="descname">product_set_path</code><span class="sig-paren">(</span><em>project</em>, <em>location</em>, <em>product_set</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/vision_v1/gapic/product_search_client.html#ProductSearchClient.product_set_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.vision_v1.ProductSearchClient.product_set_path" title="Permalink to this definition">#</a></dt>
+<dd><p>Return a fully-qualified product_set string.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.vision_v1.ProductSearchClient.remove_product_from_product_set">
+<code class="descname">remove_product_from_product_set</code><span class="sig-paren">(</span><em>name</em>, <em>product</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/vision_v1/gapic/product_search_client.html#ProductSearchClient.remove_product_from_product_set"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.vision_v1.ProductSearchClient.remove_product_from_product_set" title="Permalink to this definition">#</a></dt>
+<dd><p>Removes a Product from the specified ProductSet.</p>
+<p>Possible errors:</p>
+<ul class="simple">
+<li>Returns NOT_FOUND If the Product is not found under the ProductSet.</li>
+</ul>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">vision_v1</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">vision_v1</span><span class="o">.</span><span class="n">ProductSearchClient</span><span class="p">()</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">name</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">product_set_path</span><span class="p">(</span><span class="s1">&#39;[PROJECT]&#39;</span><span class="p">,</span> <span class="s1">&#39;[LOCATION]&#39;</span><span class="p">,</span> <span class="s1">&#39;[PRODUCT_SET]&#39;</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``product``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">product</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span><span class="o">.</span><span class="n">remove_product_from_product_set</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">product</span><span class="p">)</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>The resource name for the ProductSet to modify.</p>
+<p>Format is:
+<code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/locations/LOC_ID/productSets/PRODUCT_SET_ID</span></code></p>
+</li>
+<li><strong>product</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>The resource name for the Product to be removed from this ProductSet.</p>
+<p>Format is:
+<code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID</span></code></p>
+</li>
+<li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
+be retried.</li>
+<li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
+for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
+specified, the timeout applies to each individual attempt.</li>
+<li><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
+that is provided to the method.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
+failed for any reason.</li>
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
+to a retryable error and retry attempts failed.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.vision_v1.ProductSearchClient.update_product">
+<code class="descname">update_product</code><span class="sig-paren">(</span><em>product</em>, <em>update_mask=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/vision_v1/gapic/product_search_client.html#ProductSearchClient.update_product"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.vision_v1.ProductSearchClient.update_product" title="Permalink to this definition">#</a></dt>
+<dd><p>Makes changes to a Product resource.
+Only the <code class="docutils literal notranslate"><span class="pre">display_name</span></code>, <code class="docutils literal notranslate"><span class="pre">description</span></code>, and <code class="docutils literal notranslate"><span class="pre">labels</span></code> fields can be updated
+right now.</p>
+<p>If labels are updated, the change will not be reflected in queries until
+the next index time.</p>
+<p>Possible errors:</p>
+<ul class="simple">
+<li>Returns NOT_FOUND if the Product does not exist.</li>
+<li>Returns INVALID_ARGUMENT if display_name is present in update_mask but is
+missing from the request or longer than 4096 characters.</li>
+<li>Returns INVALID_ARGUMENT if description is present in update_mask but is
+longer than 4096 characters.</li>
+<li>Returns INVALID_ARGUMENT if product_category is present in update_mask.</li>
+</ul>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">vision_v1</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">vision_v1</span><span class="o">.</span><span class="n">ProductSearchClient</span><span class="p">()</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``product``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">product</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">update_product</span><span class="p">(</span><span class="n">product</span><span class="p">)</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>product</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.vision_v1.types.Product" title="google.cloud.vision_v1.types.Product"><em>Product</em></a><em>]</em>) – The Product resource which replaces the one on the server.
+product.name is immutable.
+If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.vision_v1.types.Product" title="google.cloud.vision_v1.types.Product"><code class="xref py py-class docutils literal notranslate"><span class="pre">Product</span></code></a></li>
+<li><strong>update_mask</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.vision_v1.types.FieldMask" title="google.cloud.vision_v1.types.FieldMask"><em>FieldMask</em></a><em>]</em>) – The <code class="docutils literal notranslate"><span class="pre">FieldMask</span></code> that specifies which fields
+to update.
+If update_mask isn’t specified, all mutable fields are to be updated.
+Valid mask paths include <code class="docutils literal notranslate"><span class="pre">product_labels</span></code>, <code class="docutils literal notranslate"><span class="pre">display_name</span></code>, and
+<code class="docutils literal notranslate"><span class="pre">description</span></code>.
+If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.vision_v1.types.FieldMask" title="google.cloud.vision_v1.types.FieldMask"><code class="xref py py-class docutils literal notranslate"><span class="pre">FieldMask</span></code></a></li>
+<li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
+be retried.</li>
+<li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
+for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
+specified, the timeout applies to each individual attempt.</li>
+<li><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
+that is provided to the method.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="types.html#google.cloud.vision_v1.types.Product" title="google.cloud.vision_v1.types.Product"><code class="xref py py-class docutils literal notranslate"><span class="pre">Product</span></code></a> instance.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
+failed for any reason.</li>
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
+to a retryable error and retry attempts failed.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.vision_v1.ProductSearchClient.update_product_set">
+<code class="descname">update_product_set</code><span class="sig-paren">(</span><em>product_set</em>, <em>update_mask=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/vision_v1/gapic/product_search_client.html#ProductSearchClient.update_product_set"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.vision_v1.ProductSearchClient.update_product_set" title="Permalink to this definition">#</a></dt>
+<dd><p>Makes changes to a ProductSet resource.
+Only display_name can be updated currently.</p>
+<p>Possible errors:</p>
+<ul class="simple">
+<li>Returns NOT_FOUND if the ProductSet does not exist.</li>
+<li>Returns INVALID_ARGUMENT if display_name is present in update_mask but
+missing from the request or longer than 4096 characters.</li>
+</ul>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">vision_v1</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">vision_v1</span><span class="o">.</span><span class="n">ProductSearchClient</span><span class="p">()</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``product_set``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">product_set</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">update_product_set</span><span class="p">(</span><span class="n">product_set</span><span class="p">)</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>product_set</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.vision_v1.types.ProductSet" title="google.cloud.vision_v1.types.ProductSet"><em>ProductSet</em></a><em>]</em>) – The ProductSet resource which replaces the one on the server.
+If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.vision_v1.types.ProductSet" title="google.cloud.vision_v1.types.ProductSet"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProductSet</span></code></a></li>
+<li><strong>update_mask</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.vision_v1.types.FieldMask" title="google.cloud.vision_v1.types.FieldMask"><em>FieldMask</em></a><em>]</em>) – The <code class="docutils literal notranslate"><span class="pre">FieldMask</span></code> that specifies which fields to
+update.
+If update_mask isn’t specified, all mutable fields are to be updated.
+Valid mask path is <code class="docutils literal notranslate"><span class="pre">display_name</span></code>.
+If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.vision_v1.types.FieldMask" title="google.cloud.vision_v1.types.FieldMask"><code class="xref py py-class docutils literal notranslate"><span class="pre">FieldMask</span></code></a></li>
+<li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
+be retried.</li>
+<li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
+for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
+specified, the timeout applies to each individual attempt.</li>
+<li><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
+that is provided to the method.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="types.html#google.cloud.vision_v1.types.ProductSet" title="google.cloud.vision_v1.types.ProductSet"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProductSet</span></code></a> instance.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
+failed for any reason.</li>
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
+to a retryable error and retry attempts failed.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
 <dl class="class">
 <dt id="google.cloud.vision_v1.ImageAnnotatorClient">
 <em class="property">class </em><code class="descclassname">google.cloud.vision_v1.</code><code class="descname">ImageAnnotatorClient</code><span class="sig-paren">(</span><em>transport=None, channel=None, credentials=None, client_config={'interfaces': {'google.cloud.vision.v1.ImageAnnotator': {'methods': {'AsyncBatchAnnotateFiles': {'retry_codes_name': 'idempotent', 'retry_params_name': 'default', 'timeout_millis': 60000}, 'BatchAnnotateImages': {'retry_codes_name': 'idempotent', 'retry_params_name': 'default', 'timeout_millis': 60000}}, 'retry_codes': {'idempotent': ['DEADLINE_EXCEEDED', 'UNAVAILABLE'], 'non_idempotent': []}, 'retry_params': {'default': {'initial_retry_delay_millis': 100, 'initial_rpc_timeout_millis': 60000, 'max_retry_delay_millis': 60000, 'max_rpc_timeout_millis': 60000, 'retry_delay_multiplier': 1.3, 'rpc_timeout_multiplier': 1.0, 'total_timeout_millis': 600000}}}}}, client_info=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/vision_v1.html#ImageAnnotatorClient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.vision_v1.ImageAnnotatorClient" title="Permalink to this definition">#</a></dt>
@@ -495,6 +1788,35 @@ TEXT_DETECTION, DOCUMENT_TEXT_DETECTION, or CROP_HINTS.</li>
 <dt id="google.cloud.vision_v1.ImageAnnotatorClient.object_localization">
 <code class="descname">object_localization</code><span class="sig-paren">(</span><em>image</em>, <em>max_results=None</em>, <em>retry=None</em>, <em>timeout=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.vision_v1.ImageAnnotatorClient.object_localization" title="Permalink to this definition">#</a></dt>
 <dd><p>Return object localization information.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>image</strong> (<a class="reference internal" href="types.html#google.cloud.vision_v1.types.Image" title="google.cloud.vision_v1.types.Image"><code class="xref py py-class docutils literal notranslate"><span class="pre">Image</span></code></a>) – The image to analyze.</li>
+<li><strong>max_results</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – Number of results to return, does not apply for
+TEXT_DETECTION, DOCUMENT_TEXT_DETECTION, or CROP_HINTS.</li>
+<li><strong>retry</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – Number of retries to do before giving up.</li>
+<li><strong>timeout</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – Number of seconds before timing out.</li>
+<li><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – Additional properties to be set on the
+<a class="reference internal" href="types.html#google.cloud.vision_v1.types.AnnotateImageRequest" title="google.cloud.vision_v1.types.AnnotateImageRequest"><code class="xref py py-class docutils literal notranslate"><span class="pre">AnnotateImageRequest</span></code></a>.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The API response.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="types.html#google.cloud.vision_v1.types.AnnotateImageResponse" title="google.cloud.vision_v1.types.AnnotateImageResponse"><code class="xref py py-class docutils literal notranslate"><span class="pre">AnnotateImageResponse</span></code></a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.vision_v1.ImageAnnotatorClient.product_search">
+<code class="descname">product_search</code><span class="sig-paren">(</span><em>image</em>, <em>max_results=None</em>, <em>retry=None</em>, <em>timeout=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.vision_v1.ImageAnnotatorClient.product_search" title="Permalink to this definition">#</a></dt>
+<dd><p>Return product search information.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />

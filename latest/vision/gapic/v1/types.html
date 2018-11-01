@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Types for Cloud Vision API Client &#8212; google-cloud 5abdf8d documentation</title>
+    <title>Types for Cloud Vision API Client &#8212; google-cloud cbb1070 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -37,6 +37,28 @@
             
   <div class="section" id="module-google.cloud.vision_v1.types">
 <span id="types-for-cloud-vision-api-client"></span><h1>Types for Cloud Vision API Client<a class="headerlink" href="#module-google.cloud.vision_v1.types" title="Permalink to this headline">#</a></h1>
+<dl class="class">
+<dt id="google.cloud.vision_v1.types.AddProductToProductSetRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.vision_v1.types.</code><code class="descname">AddProductToProductSetRequest</code><a class="headerlink" href="#google.cloud.vision_v1.types.AddProductToProductSetRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request message for the <code class="docutils literal notranslate"><span class="pre">AddProductToProductSet</span></code> method.</p>
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.AddProductToProductSetRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.vision_v1.types.AddProductToProductSetRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>The resource name for the ProductSet to modify.  Format is: ``
+projects/PROJECT_ID/locations/LOC_ID/productSets/PRODUCT_SET_I
+D``</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.AddProductToProductSetRequest.product">
+<code class="descname">product</code><a class="headerlink" href="#google.cloud.vision_v1.types.AddProductToProductSetRequest.product" title="Permalink to this definition">#</a></dt>
+<dd><p>The resource name for the Product to be added to this
+ProductSet.  Format is:
+<code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID</span></code></p>
+</dd></dl>
+
+</dd></dl>
+
 <dl class="class">
 <dt id="google.cloud.vision_v1.types.AnnotateFileResponse">
 <em class="property">class </em><code class="descclassname">google.cloud.vision_v1.types.</code><code class="descname">AnnotateFileResponse</code><a class="headerlink" href="#google.cloud.vision_v1.types.AnnotateFileResponse" title="Permalink to this definition">#</a></dt>
@@ -154,6 +176,12 @@ the structural hierarchy for the OCR detected text.</p>
 <dt id="google.cloud.vision_v1.types.AnnotateImageResponse.web_detection">
 <code class="descname">web_detection</code><a class="headerlink" href="#google.cloud.vision_v1.types.AnnotateImageResponse.web_detection" title="Permalink to this definition">#</a></dt>
 <dd><p>If present, web detection has completed successfully.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.AnnotateImageResponse.product_search_results">
+<code class="descname">product_search_results</code><a class="headerlink" href="#google.cloud.vision_v1.types.AnnotateImageResponse.product_search_results" title="Permalink to this definition">#</a></dt>
+<dd><p>If present, product search has completed successfully.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -276,6 +304,35 @@ batch.</p>
 </dd></dl>
 
 <dl class="class">
+<dt id="google.cloud.vision_v1.types.BatchOperationMetadata">
+<em class="property">class </em><code class="descclassname">google.cloud.vision_v1.types.</code><code class="descname">BatchOperationMetadata</code><a class="headerlink" href="#google.cloud.vision_v1.types.BatchOperationMetadata" title="Permalink to this definition">#</a></dt>
+<dd><p>Metadata for the batch operations such as the current state.</p>
+<p>This is included in the <code class="docutils literal notranslate"><span class="pre">metadata</span></code> field of the <code class="docutils literal notranslate"><span class="pre">Operation</span></code> returned
+by the <code class="docutils literal notranslate"><span class="pre">GetOperation</span></code> call of the <code class="docutils literal notranslate"><span class="pre">google::longrunning::Operations</span></code>
+service.</p>
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.BatchOperationMetadata.state">
+<code class="descname">state</code><a class="headerlink" href="#google.cloud.vision_v1.types.BatchOperationMetadata.state" title="Permalink to this definition">#</a></dt>
+<dd><p>The current state of the batch operation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.BatchOperationMetadata.submit_time">
+<code class="descname">submit_time</code><a class="headerlink" href="#google.cloud.vision_v1.types.BatchOperationMetadata.submit_time" title="Permalink to this definition">#</a></dt>
+<dd><p>The time when the batch request was submitted to the server.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.BatchOperationMetadata.end_time">
+<code class="descname">end_time</code><a class="headerlink" href="#google.cloud.vision_v1.types.BatchOperationMetadata.end_time" title="Permalink to this definition">#</a></dt>
+<dd><p>The time when the batch request is finished and [google.longru
+nning.Operation.done][google.longrunning.Operation.done] is
+set to true.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="google.cloud.vision_v1.types.Block">
 <em class="property">class </em><code class="descclassname">google.cloud.vision_v1.types.</code><code class="descname">Block</code><a class="headerlink" href="#google.cloud.vision_v1.types.Block" title="Permalink to this definition">#</a></dt>
 <dd><p>Logical element on the page.</p>
@@ -386,6 +443,95 @@ in range [0, 1].</p>
 </dd></dl>
 
 <dl class="class">
+<dt id="google.cloud.vision_v1.types.CreateProductRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.vision_v1.types.</code><code class="descname">CreateProductRequest</code><a class="headerlink" href="#google.cloud.vision_v1.types.CreateProductRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request message for the <code class="docutils literal notranslate"><span class="pre">CreateProduct</span></code> method.</p>
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.CreateProductRequest.parent">
+<code class="descname">parent</code><a class="headerlink" href="#google.cloud.vision_v1.types.CreateProductRequest.parent" title="Permalink to this definition">#</a></dt>
+<dd><p>The project in which the Product should be created.  Format is
+<code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/locations/LOC_ID</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.CreateProductRequest.product">
+<code class="descname">product</code><a class="headerlink" href="#google.cloud.vision_v1.types.CreateProductRequest.product" title="Permalink to this definition">#</a></dt>
+<dd><p>The product to create.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.CreateProductRequest.product_id">
+<code class="descname">product_id</code><a class="headerlink" href="#google.cloud.vision_v1.types.CreateProductRequest.product_id" title="Permalink to this definition">#</a></dt>
+<dd><p>A user-supplied resource id for this Product. If set, the
+server will attempt to use this value as the resource id. If
+it is already in use, an error is returned with code
+ALREADY_EXISTS. Must be at most 128 characters long. It
+cannot contain the character <code class="docutils literal notranslate"><span class="pre">/</span></code>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.vision_v1.types.CreateProductSetRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.vision_v1.types.</code><code class="descname">CreateProductSetRequest</code><a class="headerlink" href="#google.cloud.vision_v1.types.CreateProductSetRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request message for the <code class="docutils literal notranslate"><span class="pre">CreateProductSet</span></code> method.</p>
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.CreateProductSetRequest.parent">
+<code class="descname">parent</code><a class="headerlink" href="#google.cloud.vision_v1.types.CreateProductSetRequest.parent" title="Permalink to this definition">#</a></dt>
+<dd><p>The project in which the ProductSet should be created.  Format
+is <code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/locations/LOC_ID</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.CreateProductSetRequest.product_set">
+<code class="descname">product_set</code><a class="headerlink" href="#google.cloud.vision_v1.types.CreateProductSetRequest.product_set" title="Permalink to this definition">#</a></dt>
+<dd><p>The ProductSet to create.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.CreateProductSetRequest.product_set_id">
+<code class="descname">product_set_id</code><a class="headerlink" href="#google.cloud.vision_v1.types.CreateProductSetRequest.product_set_id" title="Permalink to this definition">#</a></dt>
+<dd><p>A user-supplied resource id for this ProductSet. If set, the
+server will attempt to use this value as the resource id. If
+it is already in use, an error is returned with code
+ALREADY_EXISTS. Must be at most 128 characters long. It
+cannot contain the character <code class="docutils literal notranslate"><span class="pre">/</span></code>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.vision_v1.types.CreateReferenceImageRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.vision_v1.types.</code><code class="descname">CreateReferenceImageRequest</code><a class="headerlink" href="#google.cloud.vision_v1.types.CreateReferenceImageRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request message for the <code class="docutils literal notranslate"><span class="pre">CreateReferenceImage</span></code> method.</p>
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.CreateReferenceImageRequest.parent">
+<code class="descname">parent</code><a class="headerlink" href="#google.cloud.vision_v1.types.CreateReferenceImageRequest.parent" title="Permalink to this definition">#</a></dt>
+<dd><p>Resource name of the product in which to create the reference
+image.  Format is
+<code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.CreateReferenceImageRequest.reference_image">
+<code class="descname">reference_image</code><a class="headerlink" href="#google.cloud.vision_v1.types.CreateReferenceImageRequest.reference_image" title="Permalink to this definition">#</a></dt>
+<dd><p>The reference image to create. If an image ID is specified, it
+is ignored.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.CreateReferenceImageRequest.reference_image_id">
+<code class="descname">reference_image_id</code><a class="headerlink" href="#google.cloud.vision_v1.types.CreateReferenceImageRequest.reference_image_id" title="Permalink to this definition">#</a></dt>
+<dd><p>A user-supplied resource id for the ReferenceImage to be
+added. If set, the server will attempt to use this value as
+the resource id. If it is already in use, an error is returned
+with code ALREADY_EXISTS. Must be at most 128 characters
+long. It cannot contain the character <code class="docutils literal notranslate"><span class="pre">/</span></code>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="google.cloud.vision_v1.types.CropHint">
 <em class="property">class </em><code class="descclassname">google.cloud.vision_v1.types.</code><code class="descname">CropHint</code><a class="headerlink" href="#google.cloud.vision_v1.types.CropHint" title="Permalink to this definition">#</a></dt>
 <dd><p>Single crop hint that is used to generate a new crop when serving an
@@ -452,6 +598,46 @@ number of provided aspect ratios is limited to a maximum of
 <dt id="google.cloud.vision_v1.types.DeleteOperationRequest">
 <em class="property">class </em><code class="descclassname">google.cloud.vision_v1.types.</code><code class="descname">DeleteOperationRequest</code><a class="headerlink" href="#google.cloud.vision_v1.types.DeleteOperationRequest" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.vision_v1.types.DeleteProductRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.vision_v1.types.</code><code class="descname">DeleteProductRequest</code><a class="headerlink" href="#google.cloud.vision_v1.types.DeleteProductRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request message for the <code class="docutils literal notranslate"><span class="pre">DeleteProduct</span></code> method.</p>
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.DeleteProductRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.vision_v1.types.DeleteProductRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Resource name of product to delete.  Format is:
+<code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID</span></code></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.vision_v1.types.DeleteProductSetRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.vision_v1.types.</code><code class="descname">DeleteProductSetRequest</code><a class="headerlink" href="#google.cloud.vision_v1.types.DeleteProductSetRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request message for the <code class="docutils literal notranslate"><span class="pre">DeleteProductSet</span></code> method.</p>
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.DeleteProductSetRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.vision_v1.types.DeleteProductSetRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Resource name of the ProductSet to delete.  Format is: <code class="docutils literal notranslate"><span class="pre">proje</span>
+<span class="pre">cts/PROJECT_ID/locations/LOC_ID/productSets/PRODUCT_SET_ID</span></code></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.vision_v1.types.DeleteReferenceImageRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.vision_v1.types.</code><code class="descname">DeleteReferenceImageRequest</code><a class="headerlink" href="#google.cloud.vision_v1.types.DeleteReferenceImageRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request message for the <code class="docutils literal notranslate"><span class="pre">DeleteReferenceImage</span></code> method.</p>
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.DeleteReferenceImageRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.vision_v1.types.DeleteReferenceImageRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>The resource name of the reference image to delete.  Format
+is:  <code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_I</span>
+<span class="pre">D/referenceImages/IMAGE_ID</span></code></p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.vision_v1.types.DescriptorProto">
@@ -767,6 +953,11 @@ objects can be specified in the <code class="docutils literal notranslate"><span
 <dd></dd></dl>
 
 <dl class="class">
+<dt id="google.cloud.vision_v1.types.FieldMask">
+<em class="property">class </em><code class="descclassname">google.cloud.vision_v1.types.</code><code class="descname">FieldMask</code><a class="headerlink" href="#google.cloud.vision_v1.types.FieldMask" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
 <dt id="google.cloud.vision_v1.types.FieldOptions">
 <em class="property">class </em><code class="descclassname">google.cloud.vision_v1.types.</code><code class="descname">FieldOptions</code><a class="headerlink" href="#google.cloud.vision_v1.types.FieldOptions" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
@@ -841,6 +1032,46 @@ supported.</p>
 <dt id="google.cloud.vision_v1.types.GetOperationRequest">
 <em class="property">class </em><code class="descclassname">google.cloud.vision_v1.types.</code><code class="descname">GetOperationRequest</code><a class="headerlink" href="#google.cloud.vision_v1.types.GetOperationRequest" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.vision_v1.types.GetProductRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.vision_v1.types.</code><code class="descname">GetProductRequest</code><a class="headerlink" href="#google.cloud.vision_v1.types.GetProductRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request message for the <code class="docutils literal notranslate"><span class="pre">GetProduct</span></code> method.</p>
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.GetProductRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.vision_v1.types.GetProductRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Resource name of the Product to get.  Format is:
+<code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID</span></code></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.vision_v1.types.GetProductSetRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.vision_v1.types.</code><code class="descname">GetProductSetRequest</code><a class="headerlink" href="#google.cloud.vision_v1.types.GetProductSetRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request message for the <code class="docutils literal notranslate"><span class="pre">GetProductSet</span></code> method.</p>
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.GetProductSetRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.vision_v1.types.GetProductSetRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Resource name of the ProductSet to get.  Format is: <code class="docutils literal notranslate"><span class="pre">projects</span>
+<span class="pre">/PROJECT_ID/locations/LOG_ID/productSets/PRODUCT_SET_ID</span></code></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.vision_v1.types.GetReferenceImageRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.vision_v1.types.</code><code class="descname">GetReferenceImageRequest</code><a class="headerlink" href="#google.cloud.vision_v1.types.GetReferenceImageRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request message for the <code class="docutils literal notranslate"><span class="pre">GetReferenceImage</span></code> method.</p>
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.GetReferenceImageRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.vision_v1.types.GetReferenceImageRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>The resource name of the ReferenceImage to get.  Format is:  `
+<cite>projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID/refe
+renceImages/IMAGE_ID`</cite>.</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.vision_v1.types.Http">
@@ -926,6 +1157,12 @@ languages is not one of the <a class="reference external" href="/vision/docs/lan
 </dd></dl>
 
 <dl class="attribute">
+<dt id="google.cloud.vision_v1.types.ImageContext.product_search_params">
+<code class="descname">product_search_params</code><a class="headerlink" href="#google.cloud.vision_v1.types.ImageContext.product_search_params" title="Permalink to this definition">#</a></dt>
+<dd><p>Parameters for product search.</p>
+</dd></dl>
+
+<dl class="attribute">
 <dt id="google.cloud.vision_v1.types.ImageContext.web_detection_params">
 <code class="descname">web_detection_params</code><a class="headerlink" href="#google.cloud.vision_v1.types.ImageContext.web_detection_params" title="Permalink to this definition">#</a></dt>
 <dd><p>Parameters for web detection.</p>
@@ -975,6 +1212,129 @@ throttles requests to the site for abuse prevention. You
 should not depend on externally-hosted images for production
 applications.  When both <code class="docutils literal notranslate"><span class="pre">gcs_image_uri</span></code> and <code class="docutils literal notranslate"><span class="pre">image_uri</span></code>
 are specified, <code class="docutils literal notranslate"><span class="pre">image_uri</span></code> takes precedence.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.vision_v1.types.ImportProductSetsGcsSource">
+<em class="property">class </em><code class="descclassname">google.cloud.vision_v1.types.</code><code class="descname">ImportProductSetsGcsSource</code><a class="headerlink" href="#google.cloud.vision_v1.types.ImportProductSetsGcsSource" title="Permalink to this definition">#</a></dt>
+<dd><p>The Google Cloud Storage location for a csv file which preserves a list
+of ImportProductSetRequests in each line.</p>
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.ImportProductSetsGcsSource.csv_file_uri">
+<code class="descname">csv_file_uri</code><a class="headerlink" href="#google.cloud.vision_v1.types.ImportProductSetsGcsSource.csv_file_uri" title="Permalink to this definition">#</a></dt>
+<dd><p>The Google Cloud Storage URI of the input csv file.  The URI
+must start with <code class="docutils literal notranslate"><span class="pre">gs://</span></code>.  The format of the input csv file
+should be one image per line. In each line, there are 8
+columns.  1. image-uri 2. image-id 3. product-set-id 4.
+product-id 5. product-category 6. product-display-name 7.
+labels 8. bounding-poly  The <code class="docutils literal notranslate"><span class="pre">image-uri</span></code>, <code class="docutils literal notranslate"><span class="pre">product-set-</span>
+<span class="pre">id</span></code>, <code class="docutils literal notranslate"><span class="pre">product-id</span></code>, and <code class="docutils literal notranslate"><span class="pre">product-category</span></code> columns are
+required. All other columns are optional.  If the
+<code class="docutils literal notranslate"><span class="pre">ProductSet</span></code> or <code class="docutils literal notranslate"><span class="pre">Product</span></code> specified by the <code class="docutils literal notranslate"><span class="pre">product-set-</span>
+<span class="pre">id</span></code> and <code class="docutils literal notranslate"><span class="pre">product-id</span></code> values does not exist, then the system
+will create a new <code class="docutils literal notranslate"><span class="pre">ProductSet</span></code> or <code class="docutils literal notranslate"><span class="pre">Product</span></code> for the image.
+In this case, the <code class="docutils literal notranslate"><span class="pre">product-display-name</span></code> column refers to
+[display_name][google.cloud.vision.v1.Product.display_name],
+the <code class="docutils literal notranslate"><span class="pre">product-category</span></code> column refers to [product_category][
+google.cloud.vision.v1.Product.product_category], and the
+<code class="docutils literal notranslate"><span class="pre">labels</span></code> column refers to [product_labels][google.cloud.vis
+ion.v1.Product.product_labels].  The <code class="docutils literal notranslate"><span class="pre">image-id</span></code> column is
+optional but must be unique if provided. If it is empty, the
+system will automatically assign a unique id to the image.
+The <code class="docutils literal notranslate"><span class="pre">product-display-name</span></code> column is optional. If it is
+empty, the system sets the
+[display_name][google.cloud.vision.v1.Product.display_name]
+field for the product to a space (” “). You can update the
+<code class="docutils literal notranslate"><span class="pre">display_name</span></code> later by using the API.  If a <code class="docutils literal notranslate"><span class="pre">Product</span></code>
+with the specified <code class="docutils literal notranslate"><span class="pre">product-id</span></code> already exists, then the
+system ignores the <code class="docutils literal notranslate"><span class="pre">product-display-name</span></code>, <code class="docutils literal notranslate"><span class="pre">product-</span>
+<span class="pre">category</span></code>, and <code class="docutils literal notranslate"><span class="pre">labels</span></code> columns.  The <code class="docutils literal notranslate"><span class="pre">labels</span></code> column
+(optional) is a line containing a list of comma-separated key-
+value pairs, in the following format:  ::
+“key_1=value_1,key_2=value_2,…,key_n=value_n”  The
+<code class="docutils literal notranslate"><span class="pre">bounding-poly</span></code> column (optional) identifies one region of
+interest from the image in the same manner as
+<code class="docutils literal notranslate"><span class="pre">CreateReferenceImage</span></code>. If you do not specify the
+<code class="docutils literal notranslate"><span class="pre">bounding-poly</span></code> column, then the system will try to detect
+regions of interest automatically.  At most one <code class="docutils literal notranslate"><span class="pre">bounding-</span>
+<span class="pre">poly</span></code> column is allowed per line. If the image contains
+multiple regions of interest, add a line to the CSV file that
+includes the same product information, and the <code class="docutils literal notranslate"><span class="pre">bounding-</span>
+<span class="pre">poly</span></code> values for each region of interest.  The <code class="docutils literal notranslate"><span class="pre">bounding-</span>
+<span class="pre">poly</span></code> column must contain an even number of comma-separated
+numbers, in the format
+“p1_x,p1_y,p2_x,p2_y,…,pn_x,pn_y”. Use non-negative
+integers for absolute bounding polygons, and float values in
+[0, 1] for normalized bounding polygons.  The system will
+resize the image if the image resolution is too large to
+process (larger than 20MP).</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.vision_v1.types.ImportProductSetsInputConfig">
+<em class="property">class </em><code class="descclassname">google.cloud.vision_v1.types.</code><code class="descname">ImportProductSetsInputConfig</code><a class="headerlink" href="#google.cloud.vision_v1.types.ImportProductSetsInputConfig" title="Permalink to this definition">#</a></dt>
+<dd><p>The input content for the <code class="docutils literal notranslate"><span class="pre">ImportProductSets</span></code> method.</p>
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.ImportProductSetsInputConfig.source">
+<code class="descname">source</code><a class="headerlink" href="#google.cloud.vision_v1.types.ImportProductSetsInputConfig.source" title="Permalink to this definition">#</a></dt>
+<dd><p>The source of the input.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.ImportProductSetsInputConfig.gcs_source">
+<code class="descname">gcs_source</code><a class="headerlink" href="#google.cloud.vision_v1.types.ImportProductSetsInputConfig.gcs_source" title="Permalink to this definition">#</a></dt>
+<dd><p>The Google Cloud Storage location for a csv file which
+preserves a list of ImportProductSetRequests in each line.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.vision_v1.types.ImportProductSetsRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.vision_v1.types.</code><code class="descname">ImportProductSetsRequest</code><a class="headerlink" href="#google.cloud.vision_v1.types.ImportProductSetsRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request message for the <code class="docutils literal notranslate"><span class="pre">ImportProductSets</span></code> method.</p>
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.ImportProductSetsRequest.parent">
+<code class="descname">parent</code><a class="headerlink" href="#google.cloud.vision_v1.types.ImportProductSetsRequest.parent" title="Permalink to this definition">#</a></dt>
+<dd><p>The project in which the ProductSets should be imported.
+Format is <code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/locations/LOC_ID</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.ImportProductSetsRequest.input_config">
+<code class="descname">input_config</code><a class="headerlink" href="#google.cloud.vision_v1.types.ImportProductSetsRequest.input_config" title="Permalink to this definition">#</a></dt>
+<dd><p>The input content for the list of requests.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.vision_v1.types.ImportProductSetsResponse">
+<em class="property">class </em><code class="descclassname">google.cloud.vision_v1.types.</code><code class="descname">ImportProductSetsResponse</code><a class="headerlink" href="#google.cloud.vision_v1.types.ImportProductSetsResponse" title="Permalink to this definition">#</a></dt>
+<dd><p>Response message for the <code class="docutils literal notranslate"><span class="pre">ImportProductSets</span></code> method.</p>
+<p>This message is returned by the
+[google.longrunning.Operations.GetOperation][google.longrunning.Operations.GetOperation]
+method in the returned
+[google.longrunning.Operation.response][google.longrunning.Operation.response]
+field.</p>
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.ImportProductSetsResponse.reference_images">
+<code class="descname">reference_images</code><a class="headerlink" href="#google.cloud.vision_v1.types.ImportProductSetsResponse.reference_images" title="Permalink to this definition">#</a></dt>
+<dd><p>The list of reference_images that are imported successfully.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.ImportProductSetsResponse.statuses">
+<code class="descname">statuses</code><a class="headerlink" href="#google.cloud.vision_v1.types.ImportProductSetsResponse.statuses" title="Permalink to this definition">#</a></dt>
+<dd><p>The rpc status for each ImportProductSet request, including
+both successes and errors.  The number of statuses here
+matches the number of lines in the csv file, and statuses[i]
+stores the success or failure status of processing the i-th
+line of the csv, starting from line 0.</p>
 </dd></dl>
 
 </dd></dl>
@@ -1040,6 +1400,201 @@ are specified, <code class="docutils literal notranslate"><span class="pre">imag
 <dt id="google.cloud.vision_v1.types.ListOperationsResponse">
 <em class="property">class </em><code class="descclassname">google.cloud.vision_v1.types.</code><code class="descname">ListOperationsResponse</code><a class="headerlink" href="#google.cloud.vision_v1.types.ListOperationsResponse" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.vision_v1.types.ListProductSetsRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.vision_v1.types.</code><code class="descname">ListProductSetsRequest</code><a class="headerlink" href="#google.cloud.vision_v1.types.ListProductSetsRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request message for the <code class="docutils literal notranslate"><span class="pre">ListProductSets</span></code> method.</p>
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.ListProductSetsRequest.parent">
+<code class="descname">parent</code><a class="headerlink" href="#google.cloud.vision_v1.types.ListProductSetsRequest.parent" title="Permalink to this definition">#</a></dt>
+<dd><p>The project from which ProductSets should be listed.  Format
+is <code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/locations/LOC_ID</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.ListProductSetsRequest.page_size">
+<code class="descname">page_size</code><a class="headerlink" href="#google.cloud.vision_v1.types.ListProductSetsRequest.page_size" title="Permalink to this definition">#</a></dt>
+<dd><p>The maximum number of items to return. Default 10, maximum
+100.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.ListProductSetsRequest.page_token">
+<code class="descname">page_token</code><a class="headerlink" href="#google.cloud.vision_v1.types.ListProductSetsRequest.page_token" title="Permalink to this definition">#</a></dt>
+<dd><p>The next_page_token returned from a previous List request,
+if any.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.vision_v1.types.ListProductSetsResponse">
+<em class="property">class </em><code class="descclassname">google.cloud.vision_v1.types.</code><code class="descname">ListProductSetsResponse</code><a class="headerlink" href="#google.cloud.vision_v1.types.ListProductSetsResponse" title="Permalink to this definition">#</a></dt>
+<dd><p>Response message for the <code class="docutils literal notranslate"><span class="pre">ListProductSets</span></code> method.</p>
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.ListProductSetsResponse.product_sets">
+<code class="descname">product_sets</code><a class="headerlink" href="#google.cloud.vision_v1.types.ListProductSetsResponse.product_sets" title="Permalink to this definition">#</a></dt>
+<dd><p>List of ProductSets.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.ListProductSetsResponse.next_page_token">
+<code class="descname">next_page_token</code><a class="headerlink" href="#google.cloud.vision_v1.types.ListProductSetsResponse.next_page_token" title="Permalink to this definition">#</a></dt>
+<dd><p>Token to retrieve the next page of results, or empty if there
+are no more results in the list.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.vision_v1.types.ListProductsInProductSetRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.vision_v1.types.</code><code class="descname">ListProductsInProductSetRequest</code><a class="headerlink" href="#google.cloud.vision_v1.types.ListProductsInProductSetRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request message for the <code class="docutils literal notranslate"><span class="pre">ListProductsInProductSet</span></code> method.</p>
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.ListProductsInProductSetRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.vision_v1.types.ListProductsInProductSetRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>The ProductSet resource for which to retrieve Products.
+Format is: <code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/locations/LOC_ID/productSets/</span>
+<span class="pre">PRODUCT_SET_ID</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.ListProductsInProductSetRequest.page_size">
+<code class="descname">page_size</code><a class="headerlink" href="#google.cloud.vision_v1.types.ListProductsInProductSetRequest.page_size" title="Permalink to this definition">#</a></dt>
+<dd><p>The maximum number of items to return. Default 10, maximum
+100.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.ListProductsInProductSetRequest.page_token">
+<code class="descname">page_token</code><a class="headerlink" href="#google.cloud.vision_v1.types.ListProductsInProductSetRequest.page_token" title="Permalink to this definition">#</a></dt>
+<dd><p>The next_page_token returned from a previous List request,
+if any.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.vision_v1.types.ListProductsInProductSetResponse">
+<em class="property">class </em><code class="descclassname">google.cloud.vision_v1.types.</code><code class="descname">ListProductsInProductSetResponse</code><a class="headerlink" href="#google.cloud.vision_v1.types.ListProductsInProductSetResponse" title="Permalink to this definition">#</a></dt>
+<dd><p>Response message for the <code class="docutils literal notranslate"><span class="pre">ListProductsInProductSet</span></code> method.</p>
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.ListProductsInProductSetResponse.products">
+<code class="descname">products</code><a class="headerlink" href="#google.cloud.vision_v1.types.ListProductsInProductSetResponse.products" title="Permalink to this definition">#</a></dt>
+<dd><p>The list of Products.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.ListProductsInProductSetResponse.next_page_token">
+<code class="descname">next_page_token</code><a class="headerlink" href="#google.cloud.vision_v1.types.ListProductsInProductSetResponse.next_page_token" title="Permalink to this definition">#</a></dt>
+<dd><p>Token to retrieve the next page of results, or empty if there
+are no more results in the list.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.vision_v1.types.ListProductsRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.vision_v1.types.</code><code class="descname">ListProductsRequest</code><a class="headerlink" href="#google.cloud.vision_v1.types.ListProductsRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request message for the <code class="docutils literal notranslate"><span class="pre">ListProducts</span></code> method.</p>
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.ListProductsRequest.parent">
+<code class="descname">parent</code><a class="headerlink" href="#google.cloud.vision_v1.types.ListProductsRequest.parent" title="Permalink to this definition">#</a></dt>
+<dd><p>The project OR ProductSet from which Products should be
+listed.  Format: <code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/locations/LOC_ID</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.ListProductsRequest.page_size">
+<code class="descname">page_size</code><a class="headerlink" href="#google.cloud.vision_v1.types.ListProductsRequest.page_size" title="Permalink to this definition">#</a></dt>
+<dd><p>The maximum number of items to return. Default 10, maximum
+100.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.ListProductsRequest.page_token">
+<code class="descname">page_token</code><a class="headerlink" href="#google.cloud.vision_v1.types.ListProductsRequest.page_token" title="Permalink to this definition">#</a></dt>
+<dd><p>The next_page_token returned from a previous List request,
+if any.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.vision_v1.types.ListProductsResponse">
+<em class="property">class </em><code class="descclassname">google.cloud.vision_v1.types.</code><code class="descname">ListProductsResponse</code><a class="headerlink" href="#google.cloud.vision_v1.types.ListProductsResponse" title="Permalink to this definition">#</a></dt>
+<dd><p>Response message for the <code class="docutils literal notranslate"><span class="pre">ListProducts</span></code> method.</p>
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.ListProductsResponse.products">
+<code class="descname">products</code><a class="headerlink" href="#google.cloud.vision_v1.types.ListProductsResponse.products" title="Permalink to this definition">#</a></dt>
+<dd><p>List of products.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.ListProductsResponse.next_page_token">
+<code class="descname">next_page_token</code><a class="headerlink" href="#google.cloud.vision_v1.types.ListProductsResponse.next_page_token" title="Permalink to this definition">#</a></dt>
+<dd><p>Token to retrieve the next page of results, or empty if there
+are no more results in the list.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.vision_v1.types.ListReferenceImagesRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.vision_v1.types.</code><code class="descname">ListReferenceImagesRequest</code><a class="headerlink" href="#google.cloud.vision_v1.types.ListReferenceImagesRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request message for the <code class="docutils literal notranslate"><span class="pre">ListReferenceImages</span></code> method.</p>
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.ListReferenceImagesRequest.parent">
+<code class="descname">parent</code><a class="headerlink" href="#google.cloud.vision_v1.types.ListReferenceImagesRequest.parent" title="Permalink to this definition">#</a></dt>
+<dd><p>Resource name of the product containing the reference images.
+Format is
+<code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.ListReferenceImagesRequest.page_size">
+<code class="descname">page_size</code><a class="headerlink" href="#google.cloud.vision_v1.types.ListReferenceImagesRequest.page_size" title="Permalink to this definition">#</a></dt>
+<dd><p>The maximum number of items to return. Default 10, maximum
+100.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.ListReferenceImagesRequest.page_token">
+<code class="descname">page_token</code><a class="headerlink" href="#google.cloud.vision_v1.types.ListReferenceImagesRequest.page_token" title="Permalink to this definition">#</a></dt>
+<dd><p>A token identifying a page of results to be returned. This is
+the value of <code class="docutils literal notranslate"><span class="pre">nextPageToken</span></code> returned in a previous
+reference image list request.  Defaults to the first page if
+not specified.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.vision_v1.types.ListReferenceImagesResponse">
+<em class="property">class </em><code class="descclassname">google.cloud.vision_v1.types.</code><code class="descname">ListReferenceImagesResponse</code><a class="headerlink" href="#google.cloud.vision_v1.types.ListReferenceImagesResponse" title="Permalink to this definition">#</a></dt>
+<dd><p>Response message for the <code class="docutils literal notranslate"><span class="pre">ListReferenceImages</span></code> method.</p>
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.ListReferenceImagesResponse.reference_images">
+<code class="descname">reference_images</code><a class="headerlink" href="#google.cloud.vision_v1.types.ListReferenceImagesResponse.reference_images" title="Permalink to this definition">#</a></dt>
+<dd><p>The list of reference images.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.ListReferenceImagesResponse.page_size">
+<code class="descname">page_size</code><a class="headerlink" href="#google.cloud.vision_v1.types.ListReferenceImagesResponse.page_size" title="Permalink to this definition">#</a></dt>
+<dd><p>The maximum number of items to return. Default 10, maximum
+100.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.ListReferenceImagesResponse.next_page_token">
+<code class="descname">next_page_token</code><a class="headerlink" href="#google.cloud.vision_v1.types.ListReferenceImagesResponse.next_page_token" title="Permalink to this definition">#</a></dt>
+<dd><p>The next_page_token returned from a previous List request,
+if any.</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.vision_v1.types.LocalizedObjectAnnotation">
@@ -1287,6 +1842,231 @@ coordinates are in the same scale as the original image.</p>
 </dd></dl>
 
 <dl class="class">
+<dt id="google.cloud.vision_v1.types.Product">
+<em class="property">class </em><code class="descclassname">google.cloud.vision_v1.types.</code><code class="descname">Product</code><a class="headerlink" href="#google.cloud.vision_v1.types.Product" title="Permalink to this definition">#</a></dt>
+<dd><p>A Product contains ReferenceImages.</p>
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.Product.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.vision_v1.types.Product.name" title="Permalink to this definition">#</a></dt>
+<dd><p>The resource name of the product.  Format is:
+<code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID</span></code>.
+This field is ignored when creating a product.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.Product.display_name">
+<code class="descname">display_name</code><a class="headerlink" href="#google.cloud.vision_v1.types.Product.display_name" title="Permalink to this definition">#</a></dt>
+<dd><p>The user-provided name for this Product. Must not be empty.
+Must be at most 4096 characters long.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.Product.description">
+<code class="descname">description</code><a class="headerlink" href="#google.cloud.vision_v1.types.Product.description" title="Permalink to this definition">#</a></dt>
+<dd><p>User-provided metadata to be stored with this product. Must be
+at most 4096 characters long.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.Product.product_category">
+<code class="descname">product_category</code><a class="headerlink" href="#google.cloud.vision_v1.types.Product.product_category" title="Permalink to this definition">#</a></dt>
+<dd><p>The category for the product identified by the reference
+image. This should be either “homegoods”, “apparel”, or
+“toys”.  This field is immutable.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.Product.product_labels">
+<code class="descname">product_labels</code><a class="headerlink" href="#google.cloud.vision_v1.types.Product.product_labels" title="Permalink to this definition">#</a></dt>
+<dd><p>Key-value pairs that can be attached to a product. At query
+time, constraints can be specified based on the
+product_labels.  Note that integer values can be provided as
+strings, e.g. “1199”. Only strings with integer values can
+match a range-based restriction which is to be supported soon.
+Multiple values can be assigned to the same key. One product
+may have up to 100 product_labels.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.vision_v1.types.Product.KeyValue">
+<em class="property">class </em><code class="descname">KeyValue</code><a class="headerlink" href="#google.cloud.vision_v1.types.Product.KeyValue" title="Permalink to this definition">#</a></dt>
+<dd><p>A product label represented as a key-value pair.</p>
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.Product.KeyValue.key">
+<code class="descname">key</code><a class="headerlink" href="#google.cloud.vision_v1.types.Product.KeyValue.key" title="Permalink to this definition">#</a></dt>
+<dd><p>The key of the label attached to the product. Cannot be empty
+and cannot exceed 128 bytes.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.Product.KeyValue.value">
+<code class="descname">value</code><a class="headerlink" href="#google.cloud.vision_v1.types.Product.KeyValue.value" title="Permalink to this definition">#</a></dt>
+<dd><p>The value of the label attached to the product. Cannot be
+empty and cannot exceed 128 bytes.</p>
+</dd></dl>
+
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.vision_v1.types.ProductSearchParams">
+<em class="property">class </em><code class="descclassname">google.cloud.vision_v1.types.</code><code class="descname">ProductSearchParams</code><a class="headerlink" href="#google.cloud.vision_v1.types.ProductSearchParams" title="Permalink to this definition">#</a></dt>
+<dd><p>Parameters for a product search request.</p>
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.ProductSearchParams.bounding_poly">
+<code class="descname">bounding_poly</code><a class="headerlink" href="#google.cloud.vision_v1.types.ProductSearchParams.bounding_poly" title="Permalink to this definition">#</a></dt>
+<dd><p>The bounding polygon around the area of interest in the image.
+Optional. If it is not specified, system discretion will be
+applied.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.ProductSearchParams.product_set">
+<code class="descname">product_set</code><a class="headerlink" href="#google.cloud.vision_v1.types.ProductSearchParams.product_set" title="Permalink to this definition">#</a></dt>
+<dd><p>The resource name of a
+[ProductSet][google.cloud.vision.v1.ProductSet] to be searched
+for similar images.  Format is: <code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/location</span>
+<span class="pre">s/LOC_ID/productSets/PRODUCT_SET_ID</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.ProductSearchParams.product_categories">
+<code class="descname">product_categories</code><a class="headerlink" href="#google.cloud.vision_v1.types.ProductSearchParams.product_categories" title="Permalink to this definition">#</a></dt>
+<dd><p>The list of product categories to search in. Currently, we
+only consider the first category, and either “homegoods”,
+“apparel”, or “toys” should be specified.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.ProductSearchParams.filter">
+<code class="descname">filter</code><a class="headerlink" href="#google.cloud.vision_v1.types.ProductSearchParams.filter" title="Permalink to this definition">#</a></dt>
+<dd><p>The filtering expression. This can be used to restrict search
+results based on Product labels. We currently support an AND
+of OR of key-value expressions, where each expression within
+an OR must have the same key.  For example, “(color = red OR
+color = blue) AND brand = Google” is acceptable, but not
+“(color = red OR brand = Google)” or “color: red”.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.vision_v1.types.ProductSearchResults">
+<em class="property">class </em><code class="descclassname">google.cloud.vision_v1.types.</code><code class="descname">ProductSearchResults</code><a class="headerlink" href="#google.cloud.vision_v1.types.ProductSearchResults" title="Permalink to this definition">#</a></dt>
+<dd><p>Results for a product search request.</p>
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.ProductSearchResults.index_time">
+<code class="descname">index_time</code><a class="headerlink" href="#google.cloud.vision_v1.types.ProductSearchResults.index_time" title="Permalink to this definition">#</a></dt>
+<dd><p>Timestamp of the index which provided these results. Changes
+made after this time are not reflected in the current results.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.ProductSearchResults.results">
+<code class="descname">results</code><a class="headerlink" href="#google.cloud.vision_v1.types.ProductSearchResults.results" title="Permalink to this definition">#</a></dt>
+<dd><p>List of results, one for each product match.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.ProductSearchResults.product_grouped_results">
+<code class="descname">product_grouped_results</code><a class="headerlink" href="#google.cloud.vision_v1.types.ProductSearchResults.product_grouped_results" title="Permalink to this definition">#</a></dt>
+<dd><p>List of results grouped by products detected in the query
+image. Each entry corresponds to one bounding polygon in the
+query image, and contains the matching products specific to
+that region. There may be duplicate product matches in the
+union of all the per-product results.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.vision_v1.types.ProductSearchResults.GroupedResult">
+<em class="property">class </em><code class="descname">GroupedResult</code><a class="headerlink" href="#google.cloud.vision_v1.types.ProductSearchResults.GroupedResult" title="Permalink to this definition">#</a></dt>
+<dd><p>Information about the products similar to a single product in a query
+image.</p>
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.ProductSearchResults.GroupedResult.bounding_poly">
+<code class="descname">bounding_poly</code><a class="headerlink" href="#google.cloud.vision_v1.types.ProductSearchResults.GroupedResult.bounding_poly" title="Permalink to this definition">#</a></dt>
+<dd><p>The bounding polygon around the product detected in the query
+image.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.ProductSearchResults.GroupedResult.results">
+<code class="descname">results</code><a class="headerlink" href="#google.cloud.vision_v1.types.ProductSearchResults.GroupedResult.results" title="Permalink to this definition">#</a></dt>
+<dd><p>List of results, one for each product match.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.vision_v1.types.ProductSearchResults.Result">
+<em class="property">class </em><code class="descname">Result</code><a class="headerlink" href="#google.cloud.vision_v1.types.ProductSearchResults.Result" title="Permalink to this definition">#</a></dt>
+<dd><p>Information about a product.</p>
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.ProductSearchResults.Result.product">
+<code class="descname">product</code><a class="headerlink" href="#google.cloud.vision_v1.types.ProductSearchResults.Result.product" title="Permalink to this definition">#</a></dt>
+<dd><p>The Product.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.ProductSearchResults.Result.score">
+<code class="descname">score</code><a class="headerlink" href="#google.cloud.vision_v1.types.ProductSearchResults.Result.score" title="Permalink to this definition">#</a></dt>
+<dd><p>A confidence level on the match, ranging from 0 (no
+confidence) to 1 (full confidence).</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.ProductSearchResults.Result.image">
+<code class="descname">image</code><a class="headerlink" href="#google.cloud.vision_v1.types.ProductSearchResults.Result.image" title="Permalink to this definition">#</a></dt>
+<dd><p>The resource name of the image from the product that is the
+closest match to the query.</p>
+</dd></dl>
+
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.vision_v1.types.ProductSet">
+<em class="property">class </em><code class="descclassname">google.cloud.vision_v1.types.</code><code class="descname">ProductSet</code><a class="headerlink" href="#google.cloud.vision_v1.types.ProductSet" title="Permalink to this definition">#</a></dt>
+<dd><p>A ProductSet contains Products. A ProductSet can contain a maximum of 1
+million reference images. If the limit is exceeded, periodic indexing
+will fail.</p>
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.ProductSet.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.vision_v1.types.ProductSet.name" title="Permalink to this definition">#</a></dt>
+<dd><p>The resource name of the ProductSet.  Format is: <code class="docutils literal notranslate"><span class="pre">projects/PR</span>
+<span class="pre">OJECT_ID/locations/LOC_ID/productSets/PRODUCT_SET_ID</span></code>.  This
+field is ignored when creating a ProductSet.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.ProductSet.display_name">
+<code class="descname">display_name</code><a class="headerlink" href="#google.cloud.vision_v1.types.ProductSet.display_name" title="Permalink to this definition">#</a></dt>
+<dd><p>The user-provided name for this ProductSet. Must not be empty.
+Must be at most 4096 characters long.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.ProductSet.index_time">
+<code class="descname">index_time</code><a class="headerlink" href="#google.cloud.vision_v1.types.ProductSet.index_time" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. The time at which this ProductSet was last
+indexed. Query results will reflect all updates before this
+time. If this ProductSet has never been indexed, this field is
+0.  This field is ignored when creating a ProductSet.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.ProductSet.index_error">
+<code class="descname">index_error</code><a class="headerlink" href="#google.cloud.vision_v1.types.ProductSet.index_error" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. If there was an error with indexing the product
+set, the field is populated.  This field is ignored when
+creating a ProductSet.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="google.cloud.vision_v1.types.Property">
 <em class="property">class </em><code class="descclassname">google.cloud.vision_v1.types.</code><code class="descname">Property</code><a class="headerlink" href="#google.cloud.vision_v1.types.Property" title="Permalink to this definition">#</a></dt>
 <dd><p>A <code class="docutils literal notranslate"><span class="pre">Property</span></code> consists of a user-supplied name/value pair.</p>
@@ -1306,6 +2086,63 @@ coordinates are in the same scale as the original image.</p>
 <dt id="google.cloud.vision_v1.types.Property.uint64_value">
 <code class="descname">uint64_value</code><a class="headerlink" href="#google.cloud.vision_v1.types.Property.uint64_value" title="Permalink to this definition">#</a></dt>
 <dd><p>Value of numeric properties.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.vision_v1.types.ReferenceImage">
+<em class="property">class </em><code class="descclassname">google.cloud.vision_v1.types.</code><code class="descname">ReferenceImage</code><a class="headerlink" href="#google.cloud.vision_v1.types.ReferenceImage" title="Permalink to this definition">#</a></dt>
+<dd><p>A <code class="docutils literal notranslate"><span class="pre">ReferenceImage</span></code> represents a product image and its associated
+metadata, such as bounding boxes.</p>
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.ReferenceImage.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.vision_v1.types.ReferenceImage.name" title="Permalink to this definition">#</a></dt>
+<dd><p>The resource name of the reference image.  Format is:  <code class="docutils literal notranslate"><span class="pre">proje</span>
+<span class="pre">cts/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID/referenceI</span>
+<span class="pre">mages/IMAGE_ID</span></code>.  This field is ignored when creating a
+reference image.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.ReferenceImage.uri">
+<code class="descname">uri</code><a class="headerlink" href="#google.cloud.vision_v1.types.ReferenceImage.uri" title="Permalink to this definition">#</a></dt>
+<dd><p>The Google Cloud Storage URI of the reference image.  The URI
+must start with <code class="docutils literal notranslate"><span class="pre">gs://</span></code>.  Required.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.ReferenceImage.bounding_polys">
+<code class="descname">bounding_polys</code><a class="headerlink" href="#google.cloud.vision_v1.types.ReferenceImage.bounding_polys" title="Permalink to this definition">#</a></dt>
+<dd><p>Bounding polygons around the areas of interest in the
+reference image. Optional. If this field is empty, the system
+will try to detect regions of interest. At most 10 bounding
+polygons will be used.  The provided shape is converted into a
+non-rotated rectangle. Once converted, the small edge of the
+rectangle must be greater than or equal to 300 pixels. The
+aspect ratio must be 1:4 or less (i.e. 1:3 is ok; 1:5 is not).</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.vision_v1.types.RemoveProductFromProductSetRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.vision_v1.types.</code><code class="descname">RemoveProductFromProductSetRequest</code><a class="headerlink" href="#google.cloud.vision_v1.types.RemoveProductFromProductSetRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request message for the <code class="docutils literal notranslate"><span class="pre">RemoveProductFromProductSet</span></code> method.</p>
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.RemoveProductFromProductSetRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.vision_v1.types.RemoveProductFromProductSetRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>The resource name for the ProductSet to modify.  Format is: ``
+projects/PROJECT_ID/locations/LOC_ID/productSets/PRODUCT_SET_I
+D``</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.RemoveProductFromProductSetRequest.product">
+<code class="descname">product</code><a class="headerlink" href="#google.cloud.vision_v1.types.RemoveProductFromProductSetRequest.product" title="Permalink to this definition">#</a></dt>
+<dd><p>The resource name for the Product to be removed from this
+ProductSet.  Format is:
+<code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID</span></code></p>
 </dd></dl>
 
 </dd></dl>
@@ -1530,6 +2367,49 @@ code_locale_identifier.</p>
 </dd></dl>
 
 <dl class="class">
+<dt id="google.cloud.vision_v1.types.UpdateProductRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.vision_v1.types.</code><code class="descname">UpdateProductRequest</code><a class="headerlink" href="#google.cloud.vision_v1.types.UpdateProductRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request message for the <code class="docutils literal notranslate"><span class="pre">UpdateProduct</span></code> method.</p>
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.UpdateProductRequest.product">
+<code class="descname">product</code><a class="headerlink" href="#google.cloud.vision_v1.types.UpdateProductRequest.product" title="Permalink to this definition">#</a></dt>
+<dd><p>The Product resource which replaces the one on the server.
+product.name is immutable.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.UpdateProductRequest.update_mask">
+<code class="descname">update_mask</code><a class="headerlink" href="#google.cloud.vision_v1.types.UpdateProductRequest.update_mask" title="Permalink to this definition">#</a></dt>
+<dd><p>The [FieldMask][google.protobuf.FieldMask] that specifies
+which fields to update. If update_mask isn’t specified, all
+mutable fields are to be updated. Valid mask paths include
+<code class="docutils literal notranslate"><span class="pre">product_labels</span></code>, <code class="docutils literal notranslate"><span class="pre">display_name</span></code>, and <code class="docutils literal notranslate"><span class="pre">description</span></code>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.vision_v1.types.UpdateProductSetRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.vision_v1.types.</code><code class="descname">UpdateProductSetRequest</code><a class="headerlink" href="#google.cloud.vision_v1.types.UpdateProductSetRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request message for the <code class="docutils literal notranslate"><span class="pre">UpdateProductSet</span></code> method.</p>
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.UpdateProductSetRequest.product_set">
+<code class="descname">product_set</code><a class="headerlink" href="#google.cloud.vision_v1.types.UpdateProductSetRequest.product_set" title="Permalink to this definition">#</a></dt>
+<dd><p>The ProductSet resource which replaces the one on the server.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.UpdateProductSetRequest.update_mask">
+<code class="descname">update_mask</code><a class="headerlink" href="#google.cloud.vision_v1.types.UpdateProductSetRequest.update_mask" title="Permalink to this definition">#</a></dt>
+<dd><p>The [FieldMask][google.protobuf.FieldMask] that specifies
+which fields to update. If update_mask isn’t specified, all
+mutable fields are to be updated. Valid mask path is
+<code class="docutils literal notranslate"><span class="pre">display_name</span></code>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="google.cloud.vision_v1.types.Vertex">
 <em class="property">class </em><code class="descclassname">google.cloud.vision_v1.types.</code><code class="descname">Vertex</code><a class="headerlink" href="#google.cloud.vision_v1.types.Vertex" title="Permalink to this definition">#</a></dt>
 <dd><p>X coordinate.</p>
@@ -1582,7 +2462,8 @@ crops.</p>
 <dl class="attribute">
 <dt id="google.cloud.vision_v1.types.WebDetection.best_guess_labels">
 <code class="descname">best_guess_labels</code><a class="headerlink" href="#google.cloud.vision_v1.types.WebDetection.best_guess_labels" title="Permalink to this definition">#</a></dt>
-<dd><p>Best guess text labels for the request image.</p>
+<dd><p>The service’s best guess as to the topic of the request image.
+Inferred from similar images on the open web.</p>
 </dd></dl>
 
 <dl class="class">
