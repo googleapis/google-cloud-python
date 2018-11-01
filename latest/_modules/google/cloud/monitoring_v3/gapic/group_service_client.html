@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.monitoring_v3.gapic.group_service_client &#8212; google-cloud da9a1b068e documentation</title>
+    <title>google.cloud.monitoring_v3.gapic.group_service_client &#8212; google-cloud 5abdf8d documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -34,7 +34,9 @@
           <div class="body" role="main">
             
   <h1>Source code for google.cloud.monitoring_v3.gapic.group_service_client</h1><div class="highlight"><pre>
-<span></span><span class="c1"># Copyright 2018 Google LLC</span>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="c1">#</span>
+<span class="c1"># Copyright 2018 Google LLC</span>
 <span class="c1">#</span>
 <span class="c1"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
 <span class="c1"># you may not use this file except in compliance with the License.</span>
@@ -83,7 +85,7 @@
 <span class="k">class</span> <span class="nc">GroupServiceClient</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    The Group API lets you inspect and manage your</span>
-<span class="sd">    `groups &lt;https://cloud.google.comgoogle.monitoring.v3.Group&gt;`_.</span>
+<span class="sd">    `groups &lt;https://cloud.google.com#google.monitoring.v3.Group&gt;`_.</span>
 
 <span class="sd">    A group is a named filter that is used to identify</span>
 <span class="sd">    a collection of monitored resources. Groups are typically used to</span>
@@ -202,11 +204,12 @@
                         <span class="s1">&#39;Received both a transport instance and &#39;</span>
                         <span class="s1">&#39;credentials; these are mutually exclusive.&#39;</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">transport</span> <span class="o">=</span> <span class="n">transport</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">transport</span> <span class="o">=</span> <span class="n">group_service_grpc_transport</span><span class="o">.</span><span class="n">GroupServiceGrpcTransport</span><span class="p">(</span>
-            <span class="n">address</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">SERVICE_ADDRESS</span><span class="p">,</span>
-            <span class="n">channel</span><span class="o">=</span><span class="n">channel</span><span class="p">,</span>
-            <span class="n">credentials</span><span class="o">=</span><span class="n">credentials</span><span class="p">,</span>
-        <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">transport</span> <span class="o">=</span> <span class="n">group_service_grpc_transport</span><span class="o">.</span><span class="n">GroupServiceGrpcTransport</span><span class="p">(</span>
+                <span class="n">address</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">SERVICE_ADDRESS</span><span class="p">,</span>
+                <span class="n">channel</span><span class="o">=</span><span class="n">channel</span><span class="p">,</span>
+                <span class="n">credentials</span><span class="o">=</span><span class="n">credentials</span><span class="p">,</span>
+            <span class="p">)</span>
 
         <span class="k">if</span> <span class="n">client_info</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">client_info</span> <span class="o">=</span> <span class="p">(</span>
@@ -459,8 +462,8 @@
                 <span class="s1">&#39;create_group&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">wrap_method</span><span class="p">(</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">create_group</span><span class="p">,</span>
                     <span class="n">default_retry</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span><span class="s1">&#39;CreateGroup&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">retry</span><span class="p">,</span>
-                    <span class="n">default_timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span><span class="s1">&#39;CreateGroup&#39;</span><span class="p">]</span>
-                    <span class="o">.</span><span class="n">timeout</span><span class="p">,</span>
+                    <span class="n">default_timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span><span class="s1">&#39;CreateGroup&#39;</span><span class="p">]</span><span class="o">.</span>
+                    <span class="n">timeout</span><span class="p">,</span>
                     <span class="n">client_info</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client_info</span><span class="p">,</span>
                 <span class="p">)</span>
 
@@ -526,8 +529,8 @@
                 <span class="s1">&#39;update_group&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">wrap_method</span><span class="p">(</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">update_group</span><span class="p">,</span>
                     <span class="n">default_retry</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span><span class="s1">&#39;UpdateGroup&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">retry</span><span class="p">,</span>
-                    <span class="n">default_timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span><span class="s1">&#39;UpdateGroup&#39;</span><span class="p">]</span>
-                    <span class="o">.</span><span class="n">timeout</span><span class="p">,</span>
+                    <span class="n">default_timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span><span class="s1">&#39;UpdateGroup&#39;</span><span class="p">]</span><span class="o">.</span>
+                    <span class="n">timeout</span><span class="p">,</span>
                     <span class="n">client_info</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client_info</span><span class="p">,</span>
                 <span class="p">)</span>
 
@@ -583,8 +586,8 @@
                 <span class="s1">&#39;delete_group&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">wrap_method</span><span class="p">(</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">delete_group</span><span class="p">,</span>
                     <span class="n">default_retry</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span><span class="s1">&#39;DeleteGroup&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">retry</span><span class="p">,</span>
-                    <span class="n">default_timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span><span class="s1">&#39;DeleteGroup&#39;</span><span class="p">]</span>
-                    <span class="o">.</span><span class="n">timeout</span><span class="p">,</span>
+                    <span class="n">default_timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span><span class="s1">&#39;DeleteGroup&#39;</span><span class="p">]</span><span class="o">.</span>
+                    <span class="n">timeout</span><span class="p">,</span>
                     <span class="n">client_info</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client_info</span><span class="p">,</span>
                 <span class="p">)</span>
 
@@ -677,10 +680,10 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span>
                 <span class="s1">&#39;list_group_members&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">wrap_method</span><span class="p">(</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">list_group_members</span><span class="p">,</span>
-                    <span class="n">default_retry</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span>
-                        <span class="s1">&#39;ListGroupMembers&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">retry</span><span class="p">,</span>
-                    <span class="n">default_timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span><span class="s1">&#39;ListGroupMembers&#39;</span><span class="p">]</span>
-                    <span class="o">.</span><span class="n">timeout</span><span class="p">,</span>
+                    <span class="n">default_retry</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span><span class="s1">&#39;ListGroupMembers&#39;</span><span class="p">]</span><span class="o">.</span>
+                    <span class="n">retry</span><span class="p">,</span>
+                    <span class="n">default_timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span><span class="s1">&#39;ListGroupMembers&#39;</span><span class="p">]</span><span class="o">.</span>
+                    <span class="n">timeout</span><span class="p">,</span>
                     <span class="n">client_info</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client_info</span><span class="p">,</span>
                 <span class="p">)</span>
 

@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Types for Stackdriver Monitoring API Client &#8212; google-cloud da9a1b068e documentation</title>
+    <title>Types for Stackdriver Monitoring API Client &#8212; google-cloud 5abdf8d documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -436,15 +436,15 @@ and <code class="docutils literal notranslate"><span class="pre">COMPARISON_GT</
 <code class="descname">duration</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.AlertPolicy.Condition.MetricThreshold.duration" title="Permalink to this definition">#</a></dt>
 <dd><p>The amount of time that a time series must violate the
 threshold to be considered failing. Currently, only values
-that are a multiple of a minute–e.g. 60, 120, or 300 seconds
-–are supported. If an invalid value is given, an error will
-be returned. The <code class="docutils literal notranslate"><span class="pre">Duration.nanos</span></code> field is ignored. When
-choosing a duration, it is useful to keep in mind the
-frequency of the underlying time series data (which may also
-be affected by any alignments specified in the <code class="docutils literal notranslate"><span class="pre">aggregation</span></code>
-field); a good duration is long enough so that a single
-outlier does not generate spurious alerts, but short enough
-that unhealthy states are detected and alerted on quickly.</p>
+that are a multiple of a minute–e.g., 0, 60, 120, or 300
+seconds–are supported. If an invalid value is given, an error
+will be returned. When choosing a duration, it is useful to
+keep in mind the frequency of the underlying time series data
+(which may also be affected by any alignments specified in the
+<code class="docutils literal notranslate"><span class="pre">aggregations</span></code> field); a good duration is long enough so
+that a single outlier does not generate spurious alerts, but
+short enough that unhealthy states are detected and alerted on
+quickly.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -685,8 +685,8 @@ metric and the monitored resource.</p>
 <dl class="attribute">
 <dt id="google.cloud.monitoring_v3.types.CreateUptimeCheckConfigRequest.parent">
 <code class="descname">parent</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.CreateUptimeCheckConfigRequest.parent" title="Permalink to this definition">#</a></dt>
-<dd><p>The project in which to create the uptime check. The format
-is:  <code class="docutils literal notranslate"><span class="pre">projects/[PROJECT_ID]</span></code>.</p>
+<dd><p>The project in which to create the uptime check. The format is
+<code class="docutils literal notranslate"><span class="pre">projects/[PROJECT_ID]</span></code>.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -778,8 +778,8 @@ deleted in a delete operation.</p>
 <dl class="attribute">
 <dt id="google.cloud.monitoring_v3.types.DeleteUptimeCheckConfigRequest.name">
 <code class="descname">name</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.DeleteUptimeCheckConfigRequest.name" title="Permalink to this definition">#</a></dt>
-<dd><p>The uptime check configuration to delete. The format is  <code class="docutils literal notranslate"><span class="pre">pro</span>
-<span class="pre">jects/[PROJECT_ID]/uptimeCheckConfigs/[UPTIME_CHECK_ID]</span></code>.</p>
+<dd><p>The uptime check configuration to delete. The format is <code class="docutils literal notranslate"><span class="pre">proj</span>
+<span class="pre">ects/[PROJECT_ID]/uptimeCheckConfigs/[UPTIME_CHECK_ID]</span></code>.</p>
 </dd></dl>
 
 </dd></dl>
@@ -833,6 +833,36 @@ deleted in a delete operation.</p>
 <dt id="google.cloud.monitoring_v3.types.DoubleValue">
 <em class="property">class </em><code class="descclassname">google.cloud.monitoring_v3.types.</code><code class="descname">DoubleValue</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.DoubleValue" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.DroppedLabels">
+<em class="property">class </em><code class="descclassname">google.cloud.monitoring_v3.types.</code><code class="descname">DroppedLabels</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.DroppedLabels" title="Permalink to this definition">#</a></dt>
+<dd><p>A set of (label, value) pairs which were dropped during aggregation,
+attached to google.api.Distribution.Exemplars in google.api.Distribution
+values during aggregation.</p>
+<p>These values are used in combination with the label values that remain
+on the aggregated Distribution timeseries to construct the full label
+set for the exemplar values. The resulting full label set may be used to
+identify the specific task/job/instance (for example) which may be
+contributing to a long-tail, while allowing the storage savings of only
+storing aggregated distribution values for a large group.</p>
+<p>Note that there are no guarantees on ordering of the labels from
+exemplar-to-exemplar and from distribution-to-distribution in the same
+stream, and there may be duplicates. It is up to clients to resolve any
+ambiguities.</p>
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.DroppedLabels.label">
+<code class="descname">label</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.DroppedLabels.label" title="Permalink to this definition">#</a></dt>
+<dd><p>Map from label to its value, for all labels dropped in any
+aggregation.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.DroppedLabels.LabelEntry">
+<em class="property">class </em><code class="descname">LabelEntry</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.DroppedLabels.LabelEntry" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.monitoring_v3.types.Duration">
@@ -1067,8 +1097,8 @@ the max permitted expiration.</p>
 <dl class="attribute">
 <dt id="google.cloud.monitoring_v3.types.GetUptimeCheckConfigRequest.name">
 <code class="descname">name</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.GetUptimeCheckConfigRequest.name" title="Permalink to this definition">#</a></dt>
-<dd><p>The uptime check configuration to retrieve. The format is  <code class="docutils literal notranslate"><span class="pre">p</span>
-<span class="pre">rojects/[PROJECT_ID]/uptimeCheckConfigs/[UPTIME_CHECK_ID]</span></code>.</p>
+<dd><p>The uptime check configuration to retrieve. The format is <code class="docutils literal notranslate"><span class="pre">pr</span>
+<span class="pre">ojects/[PROJECT_ID]/uptimeCheckConfigs/[UPTIME_CHECK_ID]</span></code>.</p>
 </dd></dl>
 
 </dd></dl>
@@ -1162,6 +1192,45 @@ that are clusters.</p>
 <dt id="google.cloud.monitoring_v3.types.Int64Value">
 <em class="property">class </em><code class="descclassname">google.cloud.monitoring_v3.types.</code><code class="descname">Int64Value</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.Int64Value" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.InternalChecker">
+<em class="property">class </em><code class="descclassname">google.cloud.monitoring_v3.types.</code><code class="descname">InternalChecker</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.InternalChecker" title="Permalink to this definition">#</a></dt>
+<dd><p>Nimbus InternalCheckers.</p>
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.InternalChecker.project_id">
+<code class="descname">project_id</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.InternalChecker.project_id" title="Permalink to this definition">#</a></dt>
+<dd><p>The GCP project ID. Not necessarily the same as the
+project_id for the config.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.InternalChecker.network">
+<code class="descname">network</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.InternalChecker.network" title="Permalink to this definition">#</a></dt>
+<dd><p>The internal network to perform this uptime check on.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.InternalChecker.gcp_zone">
+<code class="descname">gcp_zone</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.InternalChecker.gcp_zone" title="Permalink to this definition">#</a></dt>
+<dd><p>The GCP zone the uptime check should egress from. Only
+respected for internal uptime checks, where internal_network
+is specified.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.InternalChecker.checker_id">
+<code class="descname">checker_id</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.InternalChecker.checker_id" title="Permalink to this definition">#</a></dt>
+<dd><p>The checker ID.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.InternalChecker.display_name">
+<code class="descname">display_name</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.InternalChecker.display_name" title="Permalink to this definition">#</a></dt>
+<dd><p>The checker’s human-readable name.</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.monitoring_v3.types.LabelDescriptor">
@@ -1512,7 +1581,7 @@ additional results from the previous method call.</p>
 <dl class="class">
 <dt id="google.cloud.monitoring_v3.types.ListMonitoredResourceDescriptorsResponse">
 <em class="property">class </em><code class="descclassname">google.cloud.monitoring_v3.types.</code><code class="descname">ListMonitoredResourceDescriptorsResponse</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.ListMonitoredResourceDescriptorsResponse" title="Permalink to this definition">#</a></dt>
-<dd><p>The <code class="docutils literal notranslate"><span class="pre">ListMonitoredResourcDescriptors</span></code> response.</p>
+<dd><p>The <code class="docutils literal notranslate"><span class="pre">ListMonitoredResourceDescriptors</span></code> response.</p>
 <dl class="attribute">
 <dt id="google.cloud.monitoring_v3.types.ListMonitoredResourceDescriptorsResponse.resource_descriptors">
 <code class="descname">resource_descriptors</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.ListMonitoredResourceDescriptorsResponse.resource_descriptors" title="Permalink to this definition">#</a></dt>
@@ -1701,9 +1770,8 @@ the data.</p>
 <dl class="attribute">
 <dt id="google.cloud.monitoring_v3.types.ListTimeSeriesRequest.order_by">
 <code class="descname">order_by</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.ListTimeSeriesRequest.order_by" title="Permalink to this definition">#</a></dt>
-<dd><p>Specifies the order in which the points of the time series
-should be returned. By default, results are not ordered.
-Currently, this field must be left blank.</p>
+<dd><p>Unsupported: must be left blank. The points in each time
+series are returned in reverse time order.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1716,10 +1784,11 @@ Currently, this field must be left blank.</p>
 <dt id="google.cloud.monitoring_v3.types.ListTimeSeriesRequest.page_size">
 <code class="descname">page_size</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.ListTimeSeriesRequest.page_size" title="Permalink to this definition">#</a></dt>
 <dd><p>A positive number that is the maximum number of results to
-return. When <code class="docutils literal notranslate"><span class="pre">view</span></code> field sets to <code class="docutils literal notranslate"><span class="pre">FULL</span></code>, it limits the
-number of <code class="docutils literal notranslate"><span class="pre">Points</span></code> server will return; if <code class="docutils literal notranslate"><span class="pre">view</span></code> field is
-<code class="docutils literal notranslate"><span class="pre">HEADERS</span></code>, it limits the number of <code class="docutils literal notranslate"><span class="pre">TimeSeries</span></code> server
-will return.</p>
+return. If <code class="docutils literal notranslate"><span class="pre">page_size</span></code> is empty or more than 100,000
+results, the effective <code class="docutils literal notranslate"><span class="pre">page_size</span></code> is 100,000 results. If
+<code class="docutils literal notranslate"><span class="pre">view</span></code> is set to <code class="docutils literal notranslate"><span class="pre">FULL</span></code>, this is the maximum number of
+<code class="docutils literal notranslate"><span class="pre">Points</span></code> returned. If <code class="docutils literal notranslate"><span class="pre">view</span></code> is set to <code class="docutils literal notranslate"><span class="pre">HEADERS</span></code>, this
+is the maximum number of <code class="docutils literal notranslate"><span class="pre">TimeSeries</span></code> returned.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1753,6 +1822,13 @@ results, use that value as <code class="docutils literal notranslate"><span clas
 this method.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.ListTimeSeriesResponse.execution_errors">
+<code class="descname">execution_errors</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.ListTimeSeriesResponse.execution_errors" title="Permalink to this definition">#</a></dt>
+<dd><p>Query execution errors that may have caused the time series
+data returned to be incomplete.</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -1763,7 +1839,7 @@ this method.</p>
 <dt id="google.cloud.monitoring_v3.types.ListUptimeCheckConfigsRequest.parent">
 <code class="descname">parent</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.ListUptimeCheckConfigsRequest.parent" title="Permalink to this definition">#</a></dt>
 <dd><p>The project whose uptime check configurations are listed. The
-format is  <code class="docutils literal notranslate"><span class="pre">projects/[PROJECT_ID]</span></code>.</p>
+format is <code class="docutils literal notranslate"><span class="pre">projects/[PROJECT_ID]</span></code>.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1805,6 +1881,13 @@ further results for the request. To retrieve the next page of
 results, the value of the next_page_token is passed to the
 subsequent List method call (in the request message’s
 page_token field).</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.ListUptimeCheckConfigsResponse.total_size">
+<code class="descname">total_size</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.ListUptimeCheckConfigsResponse.total_size" title="Permalink to this definition">#</a></dt>
+<dd><p>The total number of uptime check configurations for the
+project, irrespective of any pagination.</p>
 </dd></dl>
 
 </dd></dl>
@@ -2126,16 +2209,16 @@ service tier must be one of the supported_tiers.</p>
 <dl class="attribute">
 <dt id="google.cloud.monitoring_v3.types.Point.interval">
 <code class="descname">interval</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.Point.interval" title="Permalink to this definition">#</a></dt>
-<dd><p>The time interval to which the data point applies. For GAUGE
-metrics, only the end time of the interval is used. For DELTA
+<dd><p>The time interval to which the data point applies. For
+<code class="docutils literal notranslate"><span class="pre">GAUGE</span></code> metrics, only the end time of the interval is used.
+For <code class="docutils literal notranslate"><span class="pre">DELTA</span></code> metrics, the start and end time should specify a
+non-zero interval, with subsequent points specifying
+contiguous and non-overlapping intervals. For <code class="docutils literal notranslate"><span class="pre">CUMULATIVE</span></code>
 metrics, the start and end time should specify a non-zero
-interval, with subsequent points specifying contiguous and
-non-overlapping intervals. For CUMULATIVE metrics, the start
-and end time should specify a non-zero interval, with
-subsequent points specifying the same start time and
-increasing end times, until an event resets the cumulative
-value to zero and sets a new start time for the following
-points.</p>
+interval, with subsequent points specifying the same start
+time and increasing end times, until an event resets the
+cumulative value to zero and sets a new start time for the
+following points.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -2175,6 +2258,29 @@ points.</p>
 <dt id="google.cloud.monitoring_v3.types.SourceCodeInfo.Location">
 <em class="property">class </em><code class="descname">Location</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.SourceCodeInfo.Location" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.SpanContext">
+<em class="property">class </em><code class="descclassname">google.cloud.monitoring_v3.types.</code><code class="descname">SpanContext</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.SpanContext" title="Permalink to this definition">#</a></dt>
+<dd><p>The context of a span, attached to google.api.Distribution.Exemplars in
+google.api.Distribution values during aggregation.</p>
+<p>It contains the name of a span with format:
+projects/[PROJECT_ID]/traces/[TRACE_ID]/spans/[SPAN_ID]</p>
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.SpanContext.span_name">
+<code class="descname">span_name</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.SpanContext.span_name" title="Permalink to this definition">#</a></dt>
+<dd><dl class="docutils">
+<dt>The resource name of the span in the following format:  ::</dt>
+<dd>projects/[PROJECT_ID]/traces/[TRACE_ID]/spans/[SPAN_ID]
+[TRACE_ID] is a unique identifier for a trace within a
+project; it is a 32-character hexadecimal encoding of a
+16-byte array.  [SPAN_ID] is a unique identifier for a span
+within a trace; it is a 16-character hexadecimal encoding of
+an 8-byte array.</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 
@@ -2237,8 +2343,17 @@ identify the time series.</p>
 <dl class="attribute">
 <dt id="google.cloud.monitoring_v3.types.TimeSeries.resource">
 <code class="descname">resource</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.TimeSeries.resource" title="Permalink to this definition">#</a></dt>
-<dd><p>The associated resource. A fully-specified monitored resource
-used to identify the time series.</p>
+<dd><p>The associated monitored resource. Custom metrics can use only
+certain monitored resource types in their time series data.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.TimeSeries.metadata">
+<code class="descname">metadata</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.TimeSeries.metadata" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. The associated monitored resource metadata. When
+reading a a timeseries, this field will include metadata
+labels that are explicitly named in the reduction. When
+creating a timeseries, this field is ignored.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -2270,13 +2385,13 @@ type of the data in the <code class="docutils literal notranslate"><span class="
 <dt id="google.cloud.monitoring_v3.types.TimeSeries.points">
 <code class="descname">points</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.TimeSeries.points" title="Permalink to this definition">#</a></dt>
 <dd><p>The data points of this time series. When listing time series,
-the order of the points is specified by the list method.  When
-creating a time series, this field must contain exactly one
-point and the point’s type must be the same as the value type
-of the associated metric. If the associated metric’s
-descriptor must be auto-created, then the value type of the
-descriptor is determined by the point’s type, which must be
-<code class="docutils literal notranslate"><span class="pre">BOOL</span></code>, <code class="docutils literal notranslate"><span class="pre">INT64</span></code>, <code class="docutils literal notranslate"><span class="pre">DOUBLE</span></code>, or <code class="docutils literal notranslate"><span class="pre">DISTRIBUTION</span></code>.</p>
+points are returned in reverse time order.  When creating a
+time series, this field must contain exactly one point and the
+point’s type must be the same as the value type of the
+associated metric. If the associated metric’s descriptor must
+be auto-created, then the value type of the descriptor is
+determined by the point’s type, which must be <code class="docutils literal notranslate"><span class="pre">BOOL</span></code>,
+<code class="docutils literal notranslate"><span class="pre">INT64</span></code>, <code class="docutils literal notranslate"><span class="pre">DOUBLE</span></code>, or <code class="docutils literal notranslate"><span class="pre">DISTRIBUTION</span></code>.</p>
 </dd></dl>
 
 </dd></dl>
@@ -2453,10 +2568,13 @@ configuration.</p>
 field gives the values for the set of fields mentioned in the
 <code class="docutils literal notranslate"><span class="pre">&quot;updateMask&quot;</span></code>. If an <code class="docutils literal notranslate"><span class="pre">&quot;updateMask&quot;</span></code> has not been given,
 this uptime check configuration replaces the current
-configuration. If a field is mentioned in <code class="docutils literal notranslate"><span class="pre">&quot;updateMask</span></code>” but
+configuration. If a field is mentioned in <code class="docutils literal notranslate"><span class="pre">&quot;updateMask&quot;</span></code> but
 the corresonding field is omitted in this partial uptime check
 configuration, it has the effect of deleting/clearing the
-field from the configuration on the server.</p>
+field from the configuration on the server.  The following
+fields can be updated: <code class="docutils literal notranslate"><span class="pre">display_name</span></code>, <code class="docutils literal notranslate"><span class="pre">http_check</span></code>,
+<code class="docutils literal notranslate"><span class="pre">tcp_check</span></code>, <code class="docutils literal notranslate"><span class="pre">timeout</span></code>, <code class="docutils literal notranslate"><span class="pre">content_matchers</span></code>, and
+<code class="docutils literal notranslate"><span class="pre">selected_regions</span></code>.</p>
 </dd></dl>
 
 </dd></dl>
@@ -2494,7 +2612,11 @@ not enforced. Required.</p>
 <dl class="attribute">
 <dt id="google.cloud.monitoring_v3.types.UptimeCheckConfig.monitored_resource">
 <code class="descname">monitored_resource</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.UptimeCheckConfig.monitored_resource" title="Permalink to this definition">#</a></dt>
-<dd><p>The monitored resource associated with the configuration.</p>
+<dd><p>The <a class="reference external" href="https://cloud.google.com/monitoring/api/resources">monitored resource</a>
+associated with the configuration. The following monitored
+resource types are supported for uptime checks: uptime_url
+gce_instance gae_app aws_ec2_instance
+aws_elb_load_balancer</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -2524,8 +2646,10 @@ not enforced. Required.</p>
 <dl class="attribute">
 <dt id="google.cloud.monitoring_v3.types.UptimeCheckConfig.period">
 <code class="descname">period</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.UptimeCheckConfig.period" title="Permalink to this definition">#</a></dt>
-<dd><p>How often the uptime check is performed. Currently, only 1, 5,
-10, and 15 minutes are supported. Required.</p>
+<dd><p>How often, in seconds, the uptime check is performed.
+Currently, the only supported values are <code class="docutils literal notranslate"><span class="pre">60s</span></code> (1 minute),
+<code class="docutils literal notranslate"><span class="pre">300s</span></code> (5 minutes), <code class="docutils literal notranslate"><span class="pre">600s</span></code> (10 minutes), and <code class="docutils literal notranslate"><span class="pre">900s</span></code> (15
+minutes). Optional, defaults to <code class="docutils literal notranslate"><span class="pre">300s</span></code>.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -2557,9 +2681,19 @@ from all regions.</p>
 </dd></dl>
 
 <dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.UptimeCheckConfig.is_internal">
+<code class="descname">is_internal</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.UptimeCheckConfig.is_internal" title="Permalink to this definition">#</a></dt>
+<dd><p>Denotes whether this is a check that egresses from
+InternalCheckers.</p>
+</dd></dl>
+
+<dl class="attribute">
 <dt id="google.cloud.monitoring_v3.types.UptimeCheckConfig.internal_checkers">
 <code class="descname">internal_checkers</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.UptimeCheckConfig.internal_checkers" title="Permalink to this definition">#</a></dt>
-<dd><p>The internal checkers that this check will egress from.</p>
+<dd><p>The internal checkers that this check will egress from. If
+<code class="docutils literal notranslate"><span class="pre">is_internal</span></code> is true and this list is empty, the check will
+egress from all InternalCheckers configured for the project
+that owns this CheckConfig.</p>
 </dd></dl>
 
 <dl class="class">
@@ -2571,7 +2705,7 @@ expressions and more complex matching.</p>
 <dl class="attribute">
 <dt id="google.cloud.monitoring_v3.types.UptimeCheckConfig.ContentMatcher.content">
 <code class="descname">content</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.UptimeCheckConfig.ContentMatcher.content" title="Permalink to this definition">#</a></dt>
-<dd><p>String content to match</p>
+<dd><p>String content to match (max 1024 bytes)</p>
 </dd></dl>
 
 </dd></dl>
@@ -2633,7 +2767,8 @@ value being a comma-separated list of all the desired values
 as described at
 <a class="reference external" href="https://www.w3.org/Protocols/rfc2616/rfc2616.txt">https://www.w3.org/Protocols/rfc2616/rfc2616.txt</a> (page 31).
 Entering two separate headers with the same key in a Create
-call will cause the first to be overwritten by the second.</p>
+call will cause the first to be overwritten by the second. The
+maximum number of headers allowed is 100.</p>
 </dd></dl>
 
 <dl class="class">
@@ -2660,45 +2795,6 @@ authentication is supported in Uptime Monitoring.</p>
 <dt id="google.cloud.monitoring_v3.types.UptimeCheckConfig.HttpCheck.HeadersEntry">
 <em class="property">class </em><code class="descname">HeadersEntry</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.UptimeCheckConfig.HttpCheck.HeadersEntry" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="google.cloud.monitoring_v3.types.UptimeCheckConfig.InternalChecker">
-<em class="property">class </em><code class="descname">InternalChecker</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.UptimeCheckConfig.InternalChecker" title="Permalink to this definition">#</a></dt>
-<dd><p>Nimbus InternalCheckers.</p>
-<dl class="attribute">
-<dt id="google.cloud.monitoring_v3.types.UptimeCheckConfig.InternalChecker.project_id">
-<code class="descname">project_id</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.UptimeCheckConfig.InternalChecker.project_id" title="Permalink to this definition">#</a></dt>
-<dd><p>The GCP project ID. Not necessarily the same as the
-project_id for the config.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.cloud.monitoring_v3.types.UptimeCheckConfig.InternalChecker.network">
-<code class="descname">network</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.UptimeCheckConfig.InternalChecker.network" title="Permalink to this definition">#</a></dt>
-<dd><p>The internal network to perform this uptime check on.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.cloud.monitoring_v3.types.UptimeCheckConfig.InternalChecker.gcp_zone">
-<code class="descname">gcp_zone</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.UptimeCheckConfig.InternalChecker.gcp_zone" title="Permalink to this definition">#</a></dt>
-<dd><p>The GCP zone the uptime check should egress from. Only
-respected for internal uptime checks, where internal_network
-is specified.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.cloud.monitoring_v3.types.UptimeCheckConfig.InternalChecker.checker_id">
-<code class="descname">checker_id</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.UptimeCheckConfig.InternalChecker.checker_id" title="Permalink to this definition">#</a></dt>
-<dd><p>The checker ID.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.cloud.monitoring_v3.types.UptimeCheckConfig.InternalChecker.display_name">
-<code class="descname">display_name</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.UptimeCheckConfig.InternalChecker.display_name" title="Permalink to this definition">#</a></dt>
-<dd><p>The checker’s human-readable name.</p>
-</dd></dl>
 
 </dd></dl>
 
