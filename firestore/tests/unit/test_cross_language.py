@@ -38,7 +38,6 @@ _MISSING_FEATURES = [
     'create-arrayunion-noarray-nested.textproto',
     'create-arrayunion-noarray.textproto',
     'create-arrayunion.textproto',
-    'set-26.textproto',
     'set-all-transforms.textproto',
     'set-arrayremove-multi.textproto',
     'set-arrayremove-nested.textproto',
