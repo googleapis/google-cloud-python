@@ -24,7 +24,9 @@ library = gapic.py_library(
 
 s.move(
     library,
-    excludes=['setup.py', 'nox.py', 'README.rst', 'docs/index.rst']
+    excludes=[
+        'setup.py', 'nox.py', 'README.rst', 'docs/index.rst', 'docs/conf.py'
+    ]
 )
 
 # Fix security_center_client.py docstrings.
