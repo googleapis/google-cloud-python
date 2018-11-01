@@ -32,7 +32,11 @@ from google.cloud.vision_v1.gapic import image_annotator_client_config
 from google.cloud.vision_v1.gapic.transports import image_annotator_grpc_transport
 from google.cloud.vision_v1.proto import image_annotator_pb2
 from google.cloud.vision_v1.proto import image_annotator_pb2_grpc
+from google.cloud.vision_v1.proto import product_search_service_pb2
+from google.cloud.vision_v1.proto import product_search_service_pb2_grpc
 from google.longrunning import operations_pb2
+from google.protobuf import empty_pb2
+from google.protobuf import field_mask_pb2
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
     'google-cloud-vision', ).version

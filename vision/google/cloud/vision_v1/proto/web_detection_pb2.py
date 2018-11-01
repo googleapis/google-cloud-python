@@ -389,7 +389,8 @@ WebDetection = _reflection.GeneratedProtocolMessageType('WebDetection', (_messag
       visually_similar_images:
           The visually similar image results.
       best_guess_labels:
-          Best guess text labels for the request image.
+          The service's best guess as to the topic of the request image.
+          Inferred from similar images on the open web.
   """,
   # @@protoc_insertion_point(class_scope:google.cloud.vision.v1.WebDetection)
   ))
