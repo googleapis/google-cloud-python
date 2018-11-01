@@ -320,6 +320,71 @@ class _Client(object):
     data_stub = None
 
 
+class Test_retry_read_rows_exception(unittest.TestCase):
+
+    @staticmethod
+    def _call_fut(exc):
+        from google.cloud.bigtable.row_data import _retry_read_rows_exception
+
+        return _retry_read_rows_exception(exc)
+
+    @staticmethod
+    def _make_grpc_call_error(exception):
+        from grpc import Call
+        from grpc import RpcError
+
+        class TestingException(Call, RpcError):
+            def __init__(self, exception):
+                self.exception = exception
+
+            def code(self):
+                return self.exception.grpc_status_code
+
+            def details(self):
+                return 'Testing'
+
+        return TestingException(exception)
+
+    def test_w_miss(self):
+        from google.api_core.exceptions import Conflict
+
+        exception = Conflict('testing')
+        self.assertFalse(self._call_fut(exception))
+
+    def test_w_service_unavailable(self):
+        from google.api_core.exceptions import ServiceUnavailable
+
+        exception = ServiceUnavailable('testing')
+        self.assertTrue(self._call_fut(exception))
+
+    def test_w_deadline_exceeded(self):
+        from google.api_core.exceptions import DeadlineExceeded
+
+        exception = DeadlineExceeded('testing')
+        self.assertTrue(self._call_fut(exception))
+
+    def test_w_miss_wrapped_in_grpc(self):
+        from google.api_core.exceptions import Conflict
+
+        wrapped = Conflict('testing')
+        exception = self._make_grpc_call_error(wrapped)
+        self.assertFalse(self._call_fut(exception))
+
+    def test_w_service_unavailable_wrapped_in_grpc(self):
+        from google.api_core.exceptions import ServiceUnavailable
+
+        wrapped = ServiceUnavailable('testing')
+        exception = self._make_grpc_call_error(wrapped)
+        self.assertTrue(self._call_fut(exception))
+
+    def test_w_deadline_exceeded_wrapped_in_grpc(self):
+        from google.api_core.exceptions import DeadlineExceeded
+
+        wrapped = DeadlineExceeded('testing')
+        exception = self._make_grpc_call_error(wrapped)
+        self.assertTrue(self._call_fut(exception))
+
+
 class TestPartialRowsData(unittest.TestCase):
     ROW_KEY = b'row-key'
     FAMILY_NAME = u'family'
