@@ -1076,6 +1076,29 @@ class Test_Bucket(unittest.TestCase):
 
         blob.delete.assert_called_once_with(client)
 
+    def test_rename_blob_to_itself(self):
+        BUCKET_NAME = 'BUCKET_NAME'
+        BLOB_NAME = 'blob-name'
+        DATA = {'name': BLOB_NAME}
+        connection = _Connection(DATA)
+        client = _Client(connection)
+        bucket = self._make_one(client=client, name=BUCKET_NAME)
+        blob = self._make_blob(BUCKET_NAME, BLOB_NAME)
+
+        renamed_blob = bucket.rename_blob(blob, BLOB_NAME)
+
+        self.assertIs(renamed_blob.bucket, bucket)
+        self.assertEqual(renamed_blob.name, BLOB_NAME)
+
+        COPY_PATH = '/b/{}/o/{}/copyTo/b/{}/o/{}'.format(
+            BUCKET_NAME, BLOB_NAME, BUCKET_NAME, BLOB_NAME)
+        kw, = connection._requested
+        self.assertEqual(kw['method'], 'POST')
+        self.assertEqual(kw['path'], COPY_PATH)
+        self.assertEqual(kw['query_params'], {})
+
+        blob.delete.assert_not_called()
+
     def test_etag(self):
         ETAG = 'ETAG'
         properties = {'etag': ETAG}
