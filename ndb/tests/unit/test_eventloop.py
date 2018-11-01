@@ -13,8 +13,9 @@
 # limitations under the License.
 
 import collections
-import pytest
 import unittest.mock
+
+import pytest
 
 from google.cloud.ndb import eventloop
 import tests.unit.utils
@@ -51,37 +52,35 @@ class TestEventLoop:
         ev.queue.append('baz')
         ev.rpcs['qux'] = 'quux'
         ev.clear()
-        assert not len(ev.current)
-        assert not len(ev.idlers)
-        assert not len(ev.queue)
-        assert not len(ev.rpcs)
+        assert not ev.current
+        assert not ev.idlers
+        assert not ev.queue
+        assert not ev.rpcs
 
         # idemptotence (branch coverage)
         ev.clear()
-        assert not len(ev.current)
-        assert not len(ev.idlers)
-        assert not len(ev.queue)
-        assert not len(ev.rpcs)
+        assert not ev.current
+        assert not ev.idlers
+        assert not ev.queue
+        assert not ev.rpcs
 
     def test_clear_current(self):
-        """ For branch coverage. """
         ev = self._make_one()
         ev.current.append('foo')
         ev.clear()
-        assert not len(ev.current)
-        assert not len(ev.idlers)
-        assert not len(ev.queue)
-        assert not len(ev.rpcs)
+        assert not ev.current
+        assert not ev.idlers
+        assert not ev.queue
+        assert not ev.rpcs
 
     def test_clear_idlers(self):
-        """ For branch coverage. """
         ev = self._make_one()
         ev.idlers.append('foo')
         ev.clear()
-        assert not len(ev.current)
-        assert not len(ev.idlers)
-        assert not len(ev.queue)
-        assert not len(ev.rpcs)
+        assert not ev.current
+        assert not ev.idlers
+        assert not ev.queue
+        assert not ev.rpcs
 
     def test_insert_event_right_empty_queue(self):
         ev = self._make_one()
@@ -145,14 +144,14 @@ class TestEventLoop:
         assert list(ev.current) == [
             ('foo', ('bar',), {'baz': 'qux'}),
         ]
-        assert not len(ev.queue)
+        assert not ev.queue
 
     @unittest.mock.patch('google.cloud.ndb.eventloop.time')
     def test_queue_call_soon(self, time):
         ev = self._make_one()
         time.time.return_value = 5
         ev.queue_call(5, 'foo', 'bar', baz='qux')
-        assert not len(ev.current)
+        assert not ev.current
         assert ev.queue == [
             _Event(10, 'foo', ('bar',), {'baz': 'qux'}),
         ]
@@ -162,7 +161,7 @@ class TestEventLoop:
         ev = self._make_one()
         time.time.return_value = 5
         ev.queue_call(10e10, 'foo', 'bar', baz='qux')
-        assert not len(ev.current)
+        assert not ev.current
         assert ev.queue == [
             _Event(10e10, 'foo', ('bar',), {'baz': 'qux'}),
         ]
