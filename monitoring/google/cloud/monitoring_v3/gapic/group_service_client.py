@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+#
 # Copyright 2018 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -47,7 +49,7 @@ _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
 class GroupServiceClient(object):
     """
     The Group API lets you inspect and manage your
-    `groups <https://cloud.google.comgoogle.monitoring.v3.Group>`_.
+    `groups <https://cloud.google.com#google.monitoring.v3.Group>`_.
 
     A group is a named filter that is used to identify
     a collection of monitored resources. Groups are typically used to
@@ -166,11 +168,12 @@ class GroupServiceClient(object):
                         'Received both a transport instance and '
                         'credentials; these are mutually exclusive.')
                 self.transport = transport
-        self.transport = group_service_grpc_transport.GroupServiceGrpcTransport(
-            address=self.SERVICE_ADDRESS,
-            channel=channel,
-            credentials=credentials,
-        )
+        else:
+            self.transport = group_service_grpc_transport.GroupServiceGrpcTransport(
+                address=self.SERVICE_ADDRESS,
+                channel=channel,
+                credentials=credentials,
+            )
 
         if client_info is None:
             client_info = (
@@ -423,8 +426,8 @@ class GroupServiceClient(object):
                 'create_group'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.create_group,
                     default_retry=self._method_configs['CreateGroup'].retry,
-                    default_timeout=self._method_configs['CreateGroup']
-                    .timeout,
+                    default_timeout=self._method_configs['CreateGroup'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -490,8 +493,8 @@ class GroupServiceClient(object):
                 'update_group'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.update_group,
                     default_retry=self._method_configs['UpdateGroup'].retry,
-                    default_timeout=self._method_configs['UpdateGroup']
-                    .timeout,
+                    default_timeout=self._method_configs['UpdateGroup'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -547,8 +550,8 @@ class GroupServiceClient(object):
                 'delete_group'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.delete_group,
                     default_retry=self._method_configs['DeleteGroup'].retry,
-                    default_timeout=self._method_configs['DeleteGroup']
-                    .timeout,
+                    default_timeout=self._method_configs['DeleteGroup'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -641,10 +644,10 @@ class GroupServiceClient(object):
             self._inner_api_calls[
                 'list_group_members'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.list_group_members,
-                    default_retry=self._method_configs[
-                        'ListGroupMembers'].retry,
-                    default_timeout=self._method_configs['ListGroupMembers']
-                    .timeout,
+                    default_retry=self._method_configs['ListGroupMembers'].
+                    retry,
+                    default_timeout=self._method_configs['ListGroupMembers'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
