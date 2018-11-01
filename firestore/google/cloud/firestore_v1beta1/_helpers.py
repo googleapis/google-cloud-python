@@ -1068,10 +1068,11 @@ def pbs_for_set(document_path, document_data, merge=False, exists=None):
         create_empty = True
 
     write_pbs = []
+    update_pb = None
 
     if actual_data or create_empty:
 
-        write_pb = write_pb2.Write(
+        update_pb = write_pb2.Write(
             update=document_pb2.Document(
                 name=document_path,
                 fields=encode_dict(actual_data),
@@ -1079,10 +1080,10 @@ def pbs_for_set(document_path, document_data, merge=False, exists=None):
         )
 
         if exists is not None:
-            write_pb.current_document.CopyFrom(
+            update_pb.current_document.CopyFrom(
                 common_pb2.Precondition(exists=exists))
 
-        write_pbs.append(write_pb)
+        write_pbs.append(update_pb)
 
     if transform_paths:
         transform_pb = get_transform_pb(document_path, transform_paths)
@@ -1153,14 +1154,14 @@ def _pbs_for_set_with_merge(document_path, document_data, merge, exists):
         merge = sorted(data_merge + transform_merge)
 
     write_pbs = []
-    write_pb = write_pb2.Write()
+    update_pb = write_pb2.Write()
 
     if actual_data or create_empty:
         update = document_pb2.Document(
             name=document_path,
             fields=encode_dict(actual_data),
         )
-        write_pb.update.CopyFrom(update)
+        update_pb.update.CopyFrom(update)
 
         mask_paths = [
             fp.to_api_repr() for fp in merge if not fp in transform_merge
@@ -1168,12 +1169,12 @@ def _pbs_for_set_with_merge(document_path, document_data, merge, exists):
 
         if mask_paths or create_empty:
             mask = common_pb2.DocumentMask(field_paths=mask_paths)
-            write_pb.update_mask.CopyFrom(mask)
+            update_pb.update_mask.CopyFrom(mask)
 
-        write_pbs.append(write_pb)
+        write_pbs.append(update_pb)
 
     if exists is not None:
-        write_pb.current_document.CopyFrom(
+        update_pb.current_document.CopyFrom(
             common_pb2.Precondition(exists=exists))
 
     new_transform_paths = []
