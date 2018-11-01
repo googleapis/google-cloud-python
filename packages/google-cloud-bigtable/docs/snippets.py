@@ -167,7 +167,7 @@ def test_bigtable_list_instances():
     client = Client(admin=True)
     (instances_list, failed_locations_list) = client.list_instances()
     # [END bigtable_list_instances]
-    assert len(instances_list) is not 0
+    assert len(instances_list) > 0
 
 
 def test_bigtable_list_clusters_on_instance():
@@ -178,7 +178,7 @@ def test_bigtable_list_clusters_on_instance():
     instance = client.instance(INSTANCE_ID)
     (clusters_list, failed_locations_list) = instance.list_clusters()
     # [END bigtable_list_clusters_on_instance]
-    assert len(clusters_list) is not 0
+    assert len(clusters_list) > 0
 
 
 def test_bigtable_list_clusters_in_project():
@@ -188,7 +188,7 @@ def test_bigtable_list_clusters_in_project():
     client = Client(admin=True)
     (clusters_list, failed_locations_list) = client.list_clusters()
     # [END bigtable_list_clusters_in_project]
-    assert len(clusters_list) is not 0
+    assert len(clusters_list) > 0
 
 
 def test_bigtable_list_app_profiles():
@@ -207,7 +207,7 @@ def test_bigtable_list_app_profiles():
     # [START bigtable_list_app_profiles]
     app_profiles_list = instance.list_app_profiles()
     # [END bigtable_list_app_profiles]
-    assert len(app_profiles_list) is not 0
+    assert len(app_profiles_list) > 0
 
 
 def test_bigtable_instance_exists():
@@ -241,7 +241,7 @@ def test_bigtable_reload_instance():
     instance = client.instance(INSTANCE_ID)
     instance.reload()
     # [END bigtable_reload_instance]
-    assert instance.type_ is PRODUCTION.value
+    assert instance.type_ == PRODUCTION.value
 
 
 def test_bigtable_reload_cluster():
@@ -253,7 +253,7 @@ def test_bigtable_reload_cluster():
     cluster = instance.cluster(CLUSTER_ID)
     cluster.reload()
     # [END bigtable_reload_cluster]
-    assert cluster.serve_nodes is SERVER_NODES
+    assert cluster.serve_nodes == SERVER_NODES
 
 
 def test_bigtable_update_instance():
@@ -266,7 +266,7 @@ def test_bigtable_update_instance():
     instance.display_name = display_name
     instance.update()
     # [END bigtable_update_instance]
-    assert instance.display_name is display_name
+    assert instance.display_name == display_name
 
 
 def test_bigtable_update_cluster():
@@ -276,10 +276,10 @@ def test_bigtable_update_cluster():
     client = Client(admin=True)
     instance = client.instance(INSTANCE_ID)
     cluster = instance.cluster(CLUSTER_ID)
-    cluster.serve_nodes = 8
+    cluster.serve_nodes = 4
     cluster.update()
     # [END bigtable_update_cluster]
-    assert cluster.serve_nodes is 8
+    assert cluster.serve_nodes == 4
 
 
 def test_bigtable_create_table():
@@ -305,7 +305,7 @@ def test_bigtable_list_tables():
     instance = client.instance(INSTANCE_ID)
     tables_list = instance.list_tables()
     # [END bigtable_list_tables]
-    assert len(tables_list) is not 0
+    assert len(tables_list) > 0
 
 
 def test_bigtable_delete_cluster():
@@ -396,7 +396,7 @@ def test_bigtable_set_iam_policy_then_get_iam_policy():
     policy_latest = instance.set_iam_policy(new_policy)
     # [END bigtable_set_iam_policy]
 
-    assert len(policy_latest.bigtable_admins) is not 0
+    assert len(policy_latest.bigtable_admins) > 0
 
     # [START bigtable_get_iam_policy]
     from google.cloud.bigtable import Client
@@ -406,7 +406,7 @@ def test_bigtable_set_iam_policy_then_get_iam_policy():
     policy = instance.get_iam_policy()
     # [END bigtable_get_iam_policy]
 
-    assert len(policy.bigtable_admins) is not 0
+    assert len(policy.bigtable_admins) > 0
 
 
 if __name__ == '__main__':
