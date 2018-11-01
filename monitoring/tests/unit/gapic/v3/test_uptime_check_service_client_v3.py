@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+#
 # Copyright 2018 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -64,10 +66,12 @@ class TestUptimeCheckServiceClient(object):
     def test_list_uptime_check_configs(self):
         # Setup Expected Response
         next_page_token = ''
+        total_size = 705419236
         uptime_check_configs_element = {}
         uptime_check_configs = [uptime_check_configs_element]
         expected_response = {
             'next_page_token': next_page_token,
+            'total_size': total_size,
             'uptime_check_configs': uptime_check_configs
         }
         expected_response = uptime_service_pb2.ListUptimeCheckConfigsResponse(
@@ -107,7 +111,12 @@ class TestUptimeCheckServiceClient(object):
         # Setup Expected Response
         name_2 = 'name2-1052831874'
         display_name = 'displayName1615086568'
-        expected_response = {'name': name_2, 'display_name': display_name}
+        is_internal = True
+        expected_response = {
+            'name': name_2,
+            'display_name': display_name,
+            'is_internal': is_internal
+        }
         expected_response = uptime_pb2.UptimeCheckConfig(**expected_response)
 
         # Mock the API response
@@ -143,7 +152,12 @@ class TestUptimeCheckServiceClient(object):
         # Setup Expected Response
         name = 'name3373707'
         display_name = 'displayName1615086568'
-        expected_response = {'name': name, 'display_name': display_name}
+        is_internal = True
+        expected_response = {
+            'name': name,
+            'display_name': display_name,
+            'is_internal': is_internal
+        }
         expected_response = uptime_pb2.UptimeCheckConfig(**expected_response)
 
         # Mock the API response
@@ -180,7 +194,12 @@ class TestUptimeCheckServiceClient(object):
         # Setup Expected Response
         name = 'name3373707'
         display_name = 'displayName1615086568'
-        expected_response = {'name': name, 'display_name': display_name}
+        is_internal = True
+        expected_response = {
+            'name': name,
+            'display_name': display_name,
+            'is_internal': is_internal
+        }
         expected_response = uptime_pb2.UptimeCheckConfig(**expected_response)
 
         # Mock the API response

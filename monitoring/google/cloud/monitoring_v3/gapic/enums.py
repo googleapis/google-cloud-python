@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+#
 # Copyright 2018 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,6 +16,19 @@
 """Wrappers for protocol buffer enum types."""
 
 import enum
+
+
+class NullValue(enum.IntEnum):
+    """
+    ``NullValue`` is a singleton enumeration to represent the null value for the
+    ``Value`` type union.
+
+     The JSON representation for ``NullValue`` is JSON ``null``.
+
+    Attributes:
+      NULL_VALUE (int): Null value.
+    """
+    NULL_VALUE = 0
 
 
 class ComparisonType(enum.IntEnum):
@@ -62,6 +77,48 @@ class ServiceTier(enum.IntEnum):
     SERVICE_TIER_PREMIUM = 2
 
 
+class LaunchStage(enum.IntEnum):
+    """
+    The launch stage as defined by [Google Cloud Platform
+    Launch Stages](http://cloud.google.com/terms/launch-stages).
+
+    Attributes:
+      LAUNCH_STAGE_UNSPECIFIED (int): Do not use this default value.
+      EARLY_ACCESS (int): Early Access features are limited to a closed group of testers. To use
+      these features, you must sign up in advance and sign a Trusted Tester
+      agreement (which includes confidentiality provisions). These features may
+      be unstable, changed in backward-incompatible ways, and are not
+      guaranteed to be released.
+      ALPHA (int): Alpha is a limited availability test for releases before they are cleared
+      for widespread use. By Alpha, all significant design issues are resolved
+      and we are in the process of verifying functionality. Alpha customers
+      need to apply for access, agree to applicable terms, and have their
+      projects whitelisted. Alpha releases don’t have to be feature complete,
+      no SLAs are provided, and there are no technical support obligations, but
+      they will be far enough along that customers can actually use them in
+      test environments or for limited-use tests -- just like they would in
+      normal production cases.
+      BETA (int): Beta is the point at which we are ready to open a release for any
+      customer to use. There are no SLA or technical support obligations in a
+      Beta release. Products will be complete from a feature perspective, but
+      may have some open outstanding issues. Beta releases are suitable for
+      limited production use cases.
+      GA (int): GA features are open to all developers and are considered stable and
+      fully qualified for production use.
+      DEPRECATED (int): Deprecated features are scheduled to be shut down and removed. For more
+      information, see the “Deprecation Policy” section of our [Terms of
+      Service](https://cloud.google.com/terms/)
+      and the [Google Cloud Platform Subject to the Deprecation
+      Policy](https://cloud.google.com/terms/deprecation) documentation.
+    """
+    LAUNCH_STAGE_UNSPECIFIED = 0
+    EARLY_ACCESS = 1
+    ALPHA = 2
+    BETA = 3
+    GA = 4
+    DEPRECATED = 5
+
+
 class UptimeCheckRegion(enum.IntEnum):
     """
     The regions from which an uptime check can be run.
@@ -86,13 +143,16 @@ class UptimeCheckRegion(enum.IntEnum):
 class GroupResourceType(enum.IntEnum):
     """
     The supported resource types that can be used as values of
-    group_resource.resource_type. gae_app and uptime_url are not allowed
-    because group checks on App Engine modules and URLs are not allowed.
+    ``group_resource.resource_type``.
+    ``INSTANCE`` includes ``gce_instance`` and ``aws_ec2_instance`` resource types.
+    The resource types ``gae_app`` and ``uptime_url`` are not valid here because
+    group checks on App Engine modules and URLs are not allowed.
 
     Attributes:
       RESOURCE_TYPE_UNSPECIFIED (int): Default value (not valid).
-      INSTANCE (int): A group of instances (could be either GCE or AWS_EC2).
-      AWS_ELB_LOAD_BALANCER (int): A group of AWS load balancers.
+      INSTANCE (int): A group of instances from Google Cloud Platform (GCP) or
+      Amazon Web Services (AWS).
+      AWS_ELB_LOAD_BALANCER (int): A group of Amazon ELB load balancers.
     """
     RESOURCE_TYPE_UNSPECIFIED = 0
     INSTANCE = 1
@@ -332,56 +392,6 @@ class Aggregation(object):
         REDUCE_PERCENTILE_05 = 12
 
 
-class NotificationChannel(object):
-    class VerificationStatus(enum.IntEnum):
-        """
-        Indicates whether the channel has been verified or not. It is illegal
-        to specify this field in a
-        ````CreateNotificationChannel````
-        or an
-        ````UpdateNotificationChannel````
-        operation.
-
-        Attributes:
-          VERIFICATION_STATUS_UNSPECIFIED (int): Sentinel value used to indicate that the state is unknown, omitted, or
-          is not applicable (as in the case of channels that neither support
-          nor require verification in order to function).
-          UNVERIFIED (int): The channel has yet to be verified and requires verification to function.
-          Note that this state also applies to the case where the verification
-          process has been initiated by sending a verification code but where
-          the verification code has not been submitted to complete the process.
-          VERIFIED (int): It has been proven that notifications can be received on this
-          notification channel and that someone on the project has access
-          to messages that are delivered to that channel.
-        """
-        VERIFICATION_STATUS_UNSPECIFIED = 0
-        UNVERIFIED = 1
-        VERIFIED = 2
-
-
-class AlertPolicy(object):
-    class ConditionCombinerType(enum.IntEnum):
-        """
-        Operators for combining conditions.
-
-        Attributes:
-          COMBINE_UNSPECIFIED (int): An unspecified combiner.
-          AND (int): Combine conditions using the logical ``AND`` operator. An
-          incident is created only if all conditions are met
-          simultaneously. This combiner is satisfied if all conditions are
-          met, even if they are met on completely different resources.
-          OR (int): Combine conditions using the logical ``OR`` operator. An incident
-          is created if any of the listed conditions is met.
-          AND_WITH_MATCHING_RESOURCE (int): Combine conditions using logical ``AND`` operator, but unlike the regular
-          ``AND`` option, an incident is created only if all conditions are met
-          simultaneously on at least one resource.
-        """
-        COMBINE_UNSPECIFIED = 0
-        AND = 1
-        OR = 2
-        AND_WITH_MATCHING_RESOURCE = 3
-
-
 class MetricDescriptor(object):
     class MetricKind(enum.IntEnum):
         """
@@ -424,6 +434,56 @@ class MetricDescriptor(object):
         STRING = 4
         DISTRIBUTION = 5
         MONEY = 6
+
+
+class AlertPolicy(object):
+    class ConditionCombinerType(enum.IntEnum):
+        """
+        Operators for combining conditions.
+
+        Attributes:
+          COMBINE_UNSPECIFIED (int): An unspecified combiner.
+          AND (int): Combine conditions using the logical ``AND`` operator. An
+          incident is created only if all conditions are met
+          simultaneously. This combiner is satisfied if all conditions are
+          met, even if they are met on completely different resources.
+          OR (int): Combine conditions using the logical ``OR`` operator. An incident
+          is created if any of the listed conditions is met.
+          AND_WITH_MATCHING_RESOURCE (int): Combine conditions using logical ``AND`` operator, but unlike the regular
+          ``AND`` option, an incident is created only if all conditions are met
+          simultaneously on at least one resource.
+        """
+        COMBINE_UNSPECIFIED = 0
+        AND = 1
+        OR = 2
+        AND_WITH_MATCHING_RESOURCE = 3
+
+
+class NotificationChannel(object):
+    class VerificationStatus(enum.IntEnum):
+        """
+        Indicates whether the channel has been verified or not. It is illegal
+        to specify this field in a
+        ````CreateNotificationChannel````
+        or an
+        ````UpdateNotificationChannel````
+        operation.
+
+        Attributes:
+          VERIFICATION_STATUS_UNSPECIFIED (int): Sentinel value used to indicate that the state is unknown, omitted, or
+          is not applicable (as in the case of channels that neither support
+          nor require verification in order to function).
+          UNVERIFIED (int): The channel has yet to be verified and requires verification to function.
+          Note that this state also applies to the case where the verification
+          process has been initiated by sending a verification code but where
+          the verification code has not been submitted to complete the process.
+          VERIFIED (int): It has been proven that notifications can be received on this
+          notification channel and that someone on the project has access
+          to messages that are delivered to that channel.
+        """
+        VERIFICATION_STATUS_UNSPECIFIED = 0
+        UNVERIFIED = 1
+        VERIFIED = 2
 
 
 class ListTimeSeriesRequest(object):
