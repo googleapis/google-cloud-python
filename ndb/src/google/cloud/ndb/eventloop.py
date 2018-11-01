@@ -31,11 +31,10 @@ __all__ = [
 ]
 
 
-def _noop(*args, **kw):
-    """Do nothing."""
+def _logging_debug(*args, **kw):
+    """Placeholder.
 
-# TODO: Use utils.logging_debug when implemented
-_logging_debug = _noop
+    See #6360."""
 
 
 _Event = collections.namedtuple('_Event', (
