@@ -84,7 +84,6 @@ def cover(session):
     """
     session.chdir(os.path.dirname(__file__))
     session.install('coverage', 'pytest-cov')
-    # TODO: fail-under should be changed to 100.
-    session.run('coverage', 'report', '--show-missing', '--fail-under=89')
+    session.run('coverage', 'report', '--show-missing', '--fail-under=100')
     session.run('coverage', 'erase')
 
