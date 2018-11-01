@@ -37,8 +37,9 @@ def _logging_debug(*args, **kw):
     See #6360."""
 
 
-_Event = collections.namedtuple('_Event', (
-    'when', 'callback', 'args', 'kwargs'))
+_Event = collections.namedtuple(
+    "_Event", ("when", "callback", "args", "kwargs")
+)
 
 
 class EventLoop:
@@ -60,7 +61,8 @@ class EventLoop:
         rpcs (dict): a map from RPC to (callback, args, kwds). Callback is
             called when the RPC finishes.
     """
-    __slots__ = ('current', 'idlers', 'inactive', 'queue', 'rpcs')
+
+    __slots__ = ("current", "idlers", "inactive", "queue", "rpcs")
 
     def __init__(self):
         self.current = collections.deque()
@@ -76,21 +78,21 @@ class EventLoop:
             idlers = self.idlers
             queue = self.queue
             rpcs = self.rpcs
-            _logging_debug('Clearing stale EventLoop instance...')
+            _logging_debug("Clearing stale EventLoop instance...")
             if current:
-                _logging_debug('  current = %s', current)
+                _logging_debug("  current = %s", current)
             if idlers:
-                _logging_debug('  idlers = %s', idlers)
+                _logging_debug("  idlers = %s", idlers)
             if queue:
-                _logging_debug('  queue = %s', queue)
+                _logging_debug("  queue = %s", queue)
             if rpcs:
-                _logging_debug('  rpcs = %s', rpcs)
+                _logging_debug("  rpcs = %s", rpcs)
             self.__init__()
             current.clear()
             idlers.clear()
             queue[:] = []
             rpcs.clear()
-            _logging_debug('Cleared')
+            _logging_debug("Cleared")
 
     def insort_event_right(self, event):
         """Insert event in queue with sorting.
@@ -179,12 +181,12 @@ class EventLoop:
             return False
         idler = self.idlers.popleft()
         callback, args, kwargs = idler
-        _logging_debug('idler: %s', callback.__name__)
+        _logging_debug("idler: %s", callback.__name__)
         result = callback(*args, **kwargs)
 
         # See add_idle() for meaning of callback return value.
         if result is None:
-            _logging_debug('idler %s removed', callback.__name__)
+            _logging_debug("idler %s removed", callback.__name__)
         else:
             if result:
                 self.inactive = 0
@@ -204,7 +206,7 @@ class EventLoop:
 
         self.inactive = 0
         callback, args, kwargs = self.current.popleft()
-        _logging_debug('nowevent: %s', callback.__name__)
+        _logging_debug("nowevent: %s", callback.__name__)
         callback(*args, **kwargs)
         return True
 
@@ -224,7 +226,7 @@ class EventLoop:
             if delay <= 0:
                 self.inactive = 0
                 _, callback, args, kwargs = self.queue.pop(0)
-                _logging_debug('event: %s', callback.__name__)
+                _logging_debug("event: %s", callback.__name__)
                 callback(*args, **kwargs)
                 return 0
 
