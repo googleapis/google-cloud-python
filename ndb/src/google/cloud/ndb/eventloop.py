@@ -41,23 +41,8 @@ _Event = collections.namedtuple('_Event', (
     'when', 'callback', 'args', 'kwargs'))
 
 
-class _Clock(object):
-    """A clock to determine the current time, in seconds."""
-
-    def now(self):
-        """Returns the number of seconds since epoch."""
-        return time.time()
-
-    def sleep(self, seconds):
-        """Sleeps for the desired number of seconds."""
-        time.sleep(seconds)
-
-
 class EventLoop:
     """Constructor.
-
-    Args:
-      clock: an eventloop._Clock object. Defaults to a time-based clock.
 
     Fields:
       current: a FIFO list of (callback, args, kwds). These callbacks
@@ -71,10 +56,9 @@ class EventLoop:
       rpcs: a map from rpc to (callback, args, kwds). Callback is called
         when the rpc finishes.
     """
-    __slots__ = ('clock', 'current', 'idlers', 'inactive', 'queue', 'rpcs')
+    __slots__ = ('current', 'idlers', 'inactive', 'queue', 'rpcs')
 
-    def __init__(self, clock=None):
-        self.clock = clock if clock else _Clock()
+    def __init__(self):
         self.current = collections.deque()
         self.idlers = collections.deque()
         self.inactive = 0
@@ -97,7 +81,7 @@ class EventLoop:
                 _logging_debug('  queue = %s', queue)
             if rpcs:
                 _logging_debug('  rpcs = %s', rpcs)
-            self.__init__(self.clock)
+            self.__init__()
             current.clear()
             idlers.clear()
             queue[:] = []
@@ -133,7 +117,7 @@ class EventLoop:
             return
 
         # Times over a billion seconds are assumed to be absolute
-        when = self.clock.now() + delay if delay < 1e9 else delay
+        when = time.time() + delay if delay < 1e9 else delay
         event = _Event(when, callback, args, kwargs)
         self.insort_event_right(event)
 
@@ -214,7 +198,7 @@ class EventLoop:
 
         delay = None
         if self.queue:
-            delay = self.queue[0][0] - self.clock.now()
+            delay = self.queue[0][0] - time.time()
             if delay <= 0:
                 self.inactive = 0
                 _, callback, args, kwargs = self.queue.pop(0)
@@ -238,7 +222,7 @@ class EventLoop:
         if delay is None:
             return False
         if delay > 0:
-            self.clock.sleep(delay)
+            time.sleep(delay)
         return True
 
     def run(self):

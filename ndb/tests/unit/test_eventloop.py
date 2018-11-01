@@ -31,21 +31,13 @@ def _Event(when=0, what='foo', args=(), kw={}):
 class TestEventLoop:
     @staticmethod
     def _make_one(**attrs):
-        """Use DummyClock"""
-        ev = eventloop.EventLoop(DummyClock())
+        ev = eventloop.EventLoop()
         for name, value in attrs.items():
             setattr(ev, name, value)
         return ev
 
-    @staticmethod
-    @unittest.mock.patch('google.cloud.ndb.eventloop.time')
-    def test_constructor(time):
-        time.time.return_value = 42
-        ev = eventloop.EventLoop()
-        assert ev.clock.now() == 42
-        ev.clock.sleep(27)
-        time.sleep.assert_called_once_with(27)
-
+    def test_constructor(self):
+        ev = self._make_one()
         assert ev.current == collections.deque()
         assert ev.idlers == collections.deque()
         assert ev.inactive == 0
@@ -54,7 +46,6 @@ class TestEventLoop:
 
     def test_clear_all(self):
         ev = self._make_one()
-        myclock = ev.clock
         ev.current.append('foo')
         ev.idlers.append('bar')
         ev.queue.append('baz')
@@ -64,7 +55,6 @@ class TestEventLoop:
         assert not len(ev.idlers)
         assert not len(ev.queue)
         assert not len(ev.rpcs)
-        assert ev.clock is myclock
 
         # idemptotence (branch coverage)
         ev.clear()
@@ -72,31 +62,26 @@ class TestEventLoop:
         assert not len(ev.idlers)
         assert not len(ev.queue)
         assert not len(ev.rpcs)
-        assert ev.clock is myclock
 
     def test_clear_current(self):
         """ For branch coverage. """
         ev = self._make_one()
-        myclock = ev.clock
         ev.current.append('foo')
         ev.clear()
         assert not len(ev.current)
         assert not len(ev.idlers)
         assert not len(ev.queue)
         assert not len(ev.rpcs)
-        assert ev.clock is myclock
 
     def test_clear_idlers(self):
         """ For branch coverage. """
         ev = self._make_one()
-        myclock = ev.clock
         ev.idlers.append('foo')
         ev.clear()
         assert not len(ev.current)
         assert not len(ev.idlers)
         assert not len(ev.queue)
         assert not len(ev.rpcs)
-        assert ev.clock is myclock
 
     def test_insert_event_right_empty_queue(self):
         ev = self._make_one()
@@ -162,18 +147,20 @@ class TestEventLoop:
         ]
         assert not len(ev.queue)
 
-    def test_queue_call_soon(self):
+    @unittest.mock.patch('google.cloud.ndb.eventloop.time')
+    def test_queue_call_soon(self, time):
         ev = self._make_one()
-        ev.clock.time = 5
+        time.time.return_value = 5
         ev.queue_call(5, 'foo', 'bar', baz='qux')
         assert not len(ev.current)
         assert ev.queue == [
             _Event(10, 'foo', ('bar',), {'baz': 'qux'}),
         ]
 
-    def test_queue_call_absolute(self):
+    @unittest.mock.patch('google.cloud.ndb.eventloop.time')
+    def test_queue_call_absolute(self, time):
         ev = self._make_one()
-        ev.clock.time = 5
+        time.time.return_value = 5
         ev.queue_call(10e10, 'foo', 'bar', baz='qux')
         assert not len(ev.current)
         assert ev.queue == [
@@ -256,7 +243,9 @@ class TestEventLoop:
         assert ev.run0() == 0
         callback.assert_called_once_with('foo', bar='baz')
 
-    def test_run0_next_later(self):
+    @unittest.mock.patch('google.cloud.ndb.eventloop.time')
+    def test_run0_next_later(self, time):
+        time.time.return_value = 0
         callback = unittest.mock.Mock(__name__='callback')
         ev = self._make_one()
         ev.queue_call(5, callback, 'foo', bar='baz')
@@ -266,13 +255,15 @@ class TestEventLoop:
         assert len(ev.queue) == 1
         assert ev.inactive == 88
 
-    def test_run0_next_now(self):
+    @unittest.mock.patch('google.cloud.ndb.eventloop.time')
+    def test_run0_next_now(self, time):
+        time.time.return_value = 0
         callback = unittest.mock.Mock(__name__='callback')
         ev = self._make_one()
         ev.queue_call(6, 'foo')
         ev.queue_call(5, callback, 'foo', bar='baz')
         ev.inactive = 88
-        ev.clock.time = 10
+        time.time.return_value = 10
         assert ev.run0() == 0
         callback.assert_called_once_with('foo', bar='baz')
         assert len(ev.queue) == 1
@@ -288,23 +279,33 @@ class TestEventLoop:
         ev = self._make_one()
         assert ev.run1() is False
 
-    def test_run1_has_work_now(self):
+    @unittest.mock.patch('google.cloud.ndb.eventloop.time')
+    def test_run1_has_work_now(self, time):
         callback = unittest.mock.Mock(__name__='callback')
         ev = self._make_one()
         ev.queue_call(None, callback)
         assert ev.run1() is True
-        assert ev.clock.slept_for == 0
+        time.sleep.assert_not_called()
         callback.assert_called_once_with()
 
-    def test_run1_has_work_later(self):
+    @unittest.mock.patch('google.cloud.ndb.eventloop.time')
+    def test_run1_has_work_later(self, time):
+        time.time.return_value = 0
         callback = unittest.mock.Mock(__name__='callback')
         ev = self._make_one()
         ev.queue_call(5, callback)
         assert ev.run1() is True
-        assert ev.clock.slept_for == 5
+        time.sleep.assert_called_once_with(5)
         callback.assert_not_called()
 
-    def test_run(self):
+    @unittest.mock.patch('google.cloud.ndb.eventloop.time')
+    def test_run(self, time):
+        time.time.return_value = 0
+
+        def mock_sleep(seconds):
+            time.time.return_value += seconds
+
+        time.sleep = mock_sleep
         idler = unittest.mock.Mock(__name__='idler')
         idler.return_value = None
         runnow = unittest.mock.Mock(__name__='runnow')
@@ -352,20 +353,3 @@ def test_run0():
 def test_run1():
     with pytest.raises(NotImplementedError):
         eventloop.run1()
-
-
-class DummyClock:
-    """Fake out clock class without having to actually read system clock or
-    sleep during tests.
-    """
-
-    def __init__(self, time=0):
-        self.time = time
-        self.slept_for = 0
-
-    def now(self):
-        return self.time
-
-    def sleep(self, t):
-        self.time += t
-        self.slept_for += t
