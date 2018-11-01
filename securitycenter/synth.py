@@ -18,16 +18,28 @@ from synthtool import gcp
 
 gapic = gcp.GAPICGenerator()
 
-
-#----------------------------------------------------------------------------
-# Generate security center client
-#----------------------------------------------------------------------------
 library = gapic.py_library(
     'securitycenter',
     'v1beta1')
-    #,
-    #config_path='/google/datastore/artman_datastore.yaml',
-    #artman_output_name='datastore-v1')
 
-s.move(library) #/ 'google/cloud/datastore_v1/proto')
-#s.move(library / 'google/cloud/datastore_v1/gapic')
+s.move(library, excludes=['setup.py', 'nox.py'])
+
+# Fix security_center_client.py docstrings.
+s.replace(
+    "google/cloud/securitycenter_v1beta1/gapic/security_center_client.py",
+    "::\n\n\s+(compare_duration, but present at [a-z]+_time.)",
+    "  \g<1>"
+)
+
+s.replace(
+    "google/cloud/securitycenter_v1beta1/gapic/security_center_client.py",
+    "::\n\n\s+(compare_duration, but not present at [a-z]+_time.)",
+    "  \g<1>"
+)
+
+s.replace(
+    "google/cloud/securitycenter_v1beta1/gapic/security_center_client.py",
+    "(^\s+)::\n\n\s+(start and the end of the time period defined by\n)"
+    "\s+(compare_duration and [a-z]+_time.)",
+    "\g<1>  \g<2>\g<1>  \g<3>"
+)
