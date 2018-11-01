@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+#
 # Copyright 2018 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -170,11 +172,12 @@ class MetricServiceClient(object):
                         'Received both a transport instance and '
                         'credentials; these are mutually exclusive.')
                 self.transport = transport
-        self.transport = metric_service_grpc_transport.MetricServiceGrpcTransport(
-            address=self.SERVICE_ADDRESS,
-            channel=channel,
-            credentials=credentials,
-        )
+        else:
+            self.transport = metric_service_grpc_transport.MetricServiceGrpcTransport(
+                address=self.SERVICE_ADDRESS,
+                channel=channel,
+                credentials=credentials,
+            )
 
         if client_info is None:
             client_info = (
@@ -275,8 +278,8 @@ class MetricServiceClient(object):
             self._inner_api_calls[
                 'list_monitored_resource_descriptors'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.list_monitored_resource_descriptors,
-                    default_retry=self._method_configs[
-                        'ListMonitoredResourceDescriptors'].retry,
+                    default_retry=self.
+                    _method_configs['ListMonitoredResourceDescriptors'].retry,
                     default_timeout=self._method_configs[
                         'ListMonitoredResourceDescriptors'].timeout,
                     client_info=self._client_info,
@@ -351,10 +354,10 @@ class MetricServiceClient(object):
             self._inner_api_calls[
                 'get_monitored_resource_descriptor'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.get_monitored_resource_descriptor,
-                    default_retry=self._method_configs[
-                        'GetMonitoredResourceDescriptor'].retry,
-                    default_timeout=self._method_configs[
-                        'GetMonitoredResourceDescriptor'].timeout,
+                    default_retry=self.
+                    _method_configs['GetMonitoredResourceDescriptor'].retry,
+                    default_timeout=self.
+                    _method_configs['GetMonitoredResourceDescriptor'].timeout,
                     client_info=self._client_info,
                 )
 
@@ -443,10 +446,10 @@ class MetricServiceClient(object):
             self._inner_api_calls[
                 'list_metric_descriptors'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.list_metric_descriptors,
-                    default_retry=self._method_configs['ListMetricDescriptors']
-                    .retry,
-                    default_timeout=self._method_configs[
-                        'ListMetricDescriptors'].timeout,
+                    default_retry=self.
+                    _method_configs['ListMetricDescriptors'].retry,
+                    default_timeout=self.
+                    _method_configs['ListMetricDescriptors'].timeout,
                     client_info=self._client_info,
                 )
 
@@ -518,10 +521,10 @@ class MetricServiceClient(object):
             self._inner_api_calls[
                 'get_metric_descriptor'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.get_metric_descriptor,
-                    default_retry=self._method_configs[
-                        'GetMetricDescriptor'].retry,
-                    default_timeout=self._method_configs['GetMetricDescriptor']
-                    .timeout,
+                    default_retry=self._method_configs['GetMetricDescriptor'].
+                    retry,
+                    default_timeout=self.
+                    _method_configs['GetMetricDescriptor'].timeout,
                     client_info=self._client_info,
                 )
 
@@ -587,10 +590,10 @@ class MetricServiceClient(object):
             self._inner_api_calls[
                 'create_metric_descriptor'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.create_metric_descriptor,
-                    default_retry=self._method_configs[
-                        'CreateMetricDescriptor'].retry,
-                    default_timeout=self._method_configs[
-                        'CreateMetricDescriptor'].timeout,
+                    default_retry=self.
+                    _method_configs['CreateMetricDescriptor'].retry,
+                    default_timeout=self.
+                    _method_configs['CreateMetricDescriptor'].timeout,
                     client_info=self._client_info,
                 )
 
@@ -649,10 +652,10 @@ class MetricServiceClient(object):
             self._inner_api_calls[
                 'delete_metric_descriptor'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.delete_metric_descriptor,
-                    default_retry=self._method_configs[
-                        'DeleteMetricDescriptor'].retry,
-                    default_timeout=self._method_configs[
-                        'DeleteMetricDescriptor'].timeout,
+                    default_retry=self.
+                    _method_configs['DeleteMetricDescriptor'].retry,
+                    default_timeout=self.
+                    _method_configs['DeleteMetricDescriptor'].timeout,
                     client_info=self._client_info,
                 )
 
@@ -728,9 +731,8 @@ class MetricServiceClient(object):
                 views of the data.
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.monitoring_v3.types.Aggregation`
-            order_by (str): Specifies the order in which the points of the time series should
-                be returned.  By default, results are not ordered.  Currently,
-                this field must be left blank.
+            order_by (str): Unsupported: must be left blank. The points in each time series are
+                returned in reverse time order.
             page_size (int): The maximum number of resources contained in the
                 underlying API response. If page streaming is performed per-
                 resource, this parameter does not affect the return value. If page
@@ -767,8 +769,8 @@ class MetricServiceClient(object):
                 'list_time_series'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.list_time_series,
                     default_retry=self._method_configs['ListTimeSeries'].retry,
-                    default_timeout=self._method_configs['ListTimeSeries']
-                    .timeout,
+                    default_timeout=self._method_configs['ListTimeSeries'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -853,10 +855,10 @@ class MetricServiceClient(object):
             self._inner_api_calls[
                 'create_time_series'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.create_time_series,
-                    default_retry=self._method_configs[
-                        'CreateTimeSeries'].retry,
-                    default_timeout=self._method_configs['CreateTimeSeries']
-                    .timeout,
+                    default_retry=self._method_configs['CreateTimeSeries'].
+                    retry,
+                    default_timeout=self._method_configs['CreateTimeSeries'].
+                    timeout,
                     client_info=self._client_info,
                 )
 

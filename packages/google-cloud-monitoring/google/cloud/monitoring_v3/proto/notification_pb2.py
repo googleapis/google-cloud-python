@@ -23,7 +23,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='google/cloud/monitoring_v3/proto/notification.proto',
   package='google.monitoring.v3',
   syntax='proto3',
-  serialized_pb=_b('\n3google/cloud/monitoring_v3/proto/notification.proto\x12\x14google.monitoring.v3\x1a\x1cgoogle/api/annotations.proto\x1a\x16google/api/label.proto\x1a-google/cloud/monitoring_v3/proto/common.proto\x1a\x1egoogle/protobuf/wrappers.proto\"\xcf\x01\n\x1dNotificationChannelDescriptor\x12\x0c\n\x04name\x18\x06 \x01(\t\x12\x0c\n\x04type\x18\x01 \x01(\t\x12\x14\n\x0c\x64isplay_name\x18\x02 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x03 \x01(\t\x12+\n\x06labels\x18\x04 \x03(\x0b\x32\x1b.google.api.LabelDescriptor\x12:\n\x0fsupported_tiers\x18\x05 \x03(\x0e\x32!.google.monitoring.v3.ServiceTier\"\xb6\x04\n\x13NotificationChannel\x12\x0c\n\x04type\x18\x01 \x01(\t\x12\x0c\n\x04name\x18\x06 \x01(\t\x12\x14\n\x0c\x64isplay_name\x18\x03 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x04 \x01(\t\x12\x45\n\x06labels\x18\x05 \x03(\x0b\x32\x35.google.monitoring.v3.NotificationChannel.LabelsEntry\x12N\n\x0buser_labels\x18\x08 \x03(\x0b\x32\x39.google.monitoring.v3.NotificationChannel.UserLabelsEntry\x12Y\n\x13verification_status\x18\t \x01(\x0e\x32<.google.monitoring.v3.NotificationChannel.VerificationStatus\x12+\n\x07\x65nabled\x18\x0b \x01(\x0b\x32\x1a.google.protobuf.BoolValue\x1a-\n\x0bLabelsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x1a\x31\n\x0fUserLabelsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"W\n\x12VerificationStatus\x12#\n\x1fVERIFICATION_STATUS_UNSPECIFIED\x10\x00\x12\x0e\n\nUNVERIFIED\x10\x01\x12\x0c\n\x08VERIFIED\x10\x02\x42\xa9\x01\n\x18\x63om.google.monitoring.v3B\x11NotificationProtoP\x01Z>google.golang.org/genproto/googleapis/monitoring/v3;monitoring\xaa\x02\x1aGoogle.Cloud.Monitoring.V3\xca\x02\x1aGoogle\\Cloud\\Monitoring\\V3b\x06proto3')
+  serialized_pb=_b('\n3google/cloud/monitoring_v3/proto/notification.proto\x12\x14google.monitoring.v3\x1a\x1cgoogle/api/annotations.proto\x1a\x16google/api/label.proto\x1a-google/cloud/monitoring_v3/proto/common.proto\x1a\x1egoogle/protobuf/wrappers.proto\"\xd3\x01\n\x1dNotificationChannelDescriptor\x12\x0c\n\x04name\x18\x06 \x01(\t\x12\x0c\n\x04type\x18\x01 \x01(\t\x12\x14\n\x0c\x64isplay_name\x18\x02 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x03 \x01(\t\x12+\n\x06labels\x18\x04 \x03(\x0b\x32\x1b.google.api.LabelDescriptor\x12>\n\x0fsupported_tiers\x18\x05 \x03(\x0e\x32!.google.monitoring.v3.ServiceTierB\x02\x18\x01\"\xb6\x04\n\x13NotificationChannel\x12\x0c\n\x04type\x18\x01 \x01(\t\x12\x0c\n\x04name\x18\x06 \x01(\t\x12\x14\n\x0c\x64isplay_name\x18\x03 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x04 \x01(\t\x12\x45\n\x06labels\x18\x05 \x03(\x0b\x32\x35.google.monitoring.v3.NotificationChannel.LabelsEntry\x12N\n\x0buser_labels\x18\x08 \x03(\x0b\x32\x39.google.monitoring.v3.NotificationChannel.UserLabelsEntry\x12Y\n\x13verification_status\x18\t \x01(\x0e\x32<.google.monitoring.v3.NotificationChannel.VerificationStatus\x12+\n\x07\x65nabled\x18\x0b \x01(\x0b\x32\x1a.google.protobuf.BoolValue\x1a-\n\x0bLabelsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x1a\x31\n\x0fUserLabelsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"W\n\x12VerificationStatus\x12#\n\x1fVERIFICATION_STATUS_UNSPECIFIED\x10\x00\x12\x0e\n\nUNVERIFIED\x10\x01\x12\x0c\n\x08VERIFIED\x10\x02\x42\xa9\x01\n\x18\x63om.google.monitoring.v3B\x11NotificationProtoP\x01Z>google.golang.org/genproto/googleapis/monitoring/v3;monitoring\xaa\x02\x1aGoogle.Cloud.Monitoring.V3\xca\x02\x1aGoogle\\Cloud\\Monitoring\\V3b\x06proto3')
   ,
   dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR,google_dot_api_dot_label__pb2.DESCRIPTOR,google_dot_cloud_dot_monitoring__v3_dot_proto_dot_common__pb2.DESCRIPTOR,google_dot_protobuf_dot_wrappers__pb2.DESCRIPTOR,])
 
@@ -50,8 +50,8 @@ _NOTIFICATIONCHANNEL_VERIFICATIONSTATUS = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=900,
-  serialized_end=987,
+  serialized_start=904,
+  serialized_end=991,
 )
 _sym_db.RegisterEnumDescriptor(_NOTIFICATIONCHANNEL_VERIFICATIONSTATUS)
 
@@ -104,7 +104,7 @@ _NOTIFICATIONCHANNELDESCRIPTOR = _descriptor.Descriptor(
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
+      options=_descriptor._ParseOptions(descriptor_pb2.FieldOptions(), _b('\030\001')), file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -118,7 +118,7 @@ _NOTIFICATIONCHANNELDESCRIPTOR = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=211,
-  serialized_end=418,
+  serialized_end=422,
 )
 
 
@@ -155,8 +155,8 @@ _NOTIFICATIONCHANNEL_LABELSENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=802,
-  serialized_end=847,
+  serialized_start=806,
+  serialized_end=851,
 )
 
 _NOTIFICATIONCHANNEL_USERLABELSENTRY = _descriptor.Descriptor(
@@ -192,8 +192,8 @@ _NOTIFICATIONCHANNEL_USERLABELSENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=849,
-  serialized_end=898,
+  serialized_start=853,
+  serialized_end=902,
 )
 
 _NOTIFICATIONCHANNEL = _descriptor.Descriptor(
@@ -272,8 +272,8 @@ _NOTIFICATIONCHANNEL = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=421,
-  serialized_end=987,
+  serialized_start=425,
+  serialized_end=991,
 )
 
 _NOTIFICATIONCHANNELDESCRIPTOR.fields_by_name['labels'].message_type = google_dot_api_dot_label__pb2._LABELDESCRIPTOR
@@ -428,6 +428,8 @@ _sym_db.RegisterMessage(NotificationChannel.UserLabelsEntry)
 
 DESCRIPTOR.has_options = True
 DESCRIPTOR._options = _descriptor._ParseOptions(descriptor_pb2.FileOptions(), _b('\n\030com.google.monitoring.v3B\021NotificationProtoP\001Z>google.golang.org/genproto/googleapis/monitoring/v3;monitoring\252\002\032Google.Cloud.Monitoring.V3\312\002\032Google\\Cloud\\Monitoring\\V3'))
+_NOTIFICATIONCHANNELDESCRIPTOR.fields_by_name['supported_tiers'].has_options = True
+_NOTIFICATIONCHANNELDESCRIPTOR.fields_by_name['supported_tiers']._options = _descriptor._ParseOptions(descriptor_pb2.FieldOptions(), _b('\030\001'))
 _NOTIFICATIONCHANNEL_LABELSENTRY.has_options = True
 _NOTIFICATIONCHANNEL_LABELSENTRY._options = _descriptor._ParseOptions(descriptor_pb2.MessageOptions(), _b('8\001'))
 _NOTIFICATIONCHANNEL_USERLABELSENTRY.has_options = True

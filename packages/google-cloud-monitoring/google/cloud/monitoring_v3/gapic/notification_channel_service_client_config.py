@@ -3,6 +3,7 @@ config = {
         "google.monitoring.v3.NotificationChannelService": {
             "retry_codes": {
                 "idempotent": ["DEADLINE_EXCEEDED", "UNAVAILABLE"],
+                "no_retry": [],
                 "non_idempotent": []
             },
             "retry_params": {
