@@ -145,7 +145,6 @@ class EventLoop:
             If the rpc is a MultiRpc, the callback will be called once
             for each sub-RPC.
         """
-        # TODO Integrate with gRPC
         raise NotImplementedError
 
     def add_idle(self, callback, *args, **kwargs):
