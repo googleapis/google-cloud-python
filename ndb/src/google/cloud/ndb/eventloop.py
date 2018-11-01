@@ -42,19 +42,23 @@ _Event = collections.namedtuple('_Event', (
 
 
 class EventLoop:
-    """Constructor.
+    """An event loop.
 
-    Fields:
-      current: a FIFO list of (callback, args, kwds). These callbacks
-        run immediately when the eventloop runs.
-      idlers: a FIFO list of (callback, args, kwds). Thes callbacks
-        run only when no other RPCs need to be fired first.
-        For example, AutoBatcher uses idler to fire a batch RPC even before
-        the batch is full.
-      queue: a sorted list of (absolute time in sec, callback, args, kwds),
-        sorted by time. These callbacks run only after the said time.
-      rpcs: a map from rpc to (callback, args, kwds). Callback is called
-        when the rpc finishes.
+    Instances of ``EventLoop`` are used to coordinate single thraded execution
+    of tasks and RPCs scheduled asynchronously.
+
+    Atrributes:
+        current (deque): a FIFO list of (callback, args, kwds). These callbacks
+            run immediately when the eventloop runs.
+        idlers (deque): a FIFO list of (callback, args, kwds). Thes callbacks
+            run only when no other RPCs need to be fired first.
+            For example, AutoBatcher uses idler to fire a batch RPC even before
+            the batch is full.
+        queue (list): a sorted list of (absolute time in sec, callback, args,
+            kwds), sorted by time. These callbacks run only after the said
+            time.
+        rpcs (dict): a map from RPC to (callback, args, kwds). Callback is
+            called when the RPC finishes.
     """
     __slots__ = ('current', 'idlers', 'inactive', 'queue', 'rpcs')
 
@@ -89,34 +93,43 @@ class EventLoop:
             _logging_debug('Cleared')
 
     def insort_event_right(self, event):
-        """Insert event in queue, and keep it sorted by `event.when` assuming
-        queue is sorted.
+        """Insert event in queue with sorting.
+
+        This function assumes the queue is already sorted by ``event.when`` and
+        inserts ``event`` in the queue, maintaining the sort.
 
         For events with same `event.when`, new events are inserted to the
         right, to keep FIFO order.
 
         Args:
-          event: a (time in sec since unix epoch, callback, args, kwargs)
-          tuple.
+            event (_Event): The event to insert.
         """
         queue = self.queue
-        lo = 0
-        hi = len(queue)
-        while lo < hi:
-            mid = (lo + hi) // 2
+        low = 0
+        high = len(queue)
+        while low < high:
+            mid = (low + high) // 2
             if event.when < queue[mid].when:
-                hi = mid
+                high = mid
             else:
-                lo = mid + 1
-        queue.insert(lo, event)
+                low = mid + 1
+        queue.insert(low, event)
 
     def queue_call(self, delay, callback, *args, **kwargs):
-        """Schedule a function call at a specific time in the future."""
+        """Schedule a function call at a specific time in the future.
+
+        Arguments:
+            delay (number): Time in seconds to delay running the callback.
+                Times over a billion seconds are assumed to be absolute
+                timestamps rather than delays.
+            callback (callable): The function to eventually call.
+            *args: Positional arguments to be passed to callback.
+            **kwargs: Keyword arguments to be passed to callback.
+        """
         if delay is None:
             self.current.append((callback, args, kwargs))
             return
 
-        # Times over a billion seconds are assumed to be absolute
         when = time.time() + delay if delay < 1e9 else delay
         event = _Event(when, callback, args, kwargs)
         self.insort_event_right(event)
@@ -127,14 +140,19 @@ class EventLoop:
         The caller must have previously sent the call to the service.
         The optional callback is called with the remaining arguments.
 
-        NOTE: If the rpc is a MultiRpc, the callback will be called once
-        for each sub-RPC.  TODO: Is this a good idea?
+        .. note::
+
+            If the rpc is a MultiRpc, the callback will be called once
+            for each sub-RPC.
         """
         # TODO Integrate with gRPC
         raise NotImplementedError
 
     def add_idle(self, callback, *args, **kwargs):
         """Add an idle callback.
+
+        An idle callback is a low priority task which is executed when
+        there aren't other events scheduled for immediate execution.
 
         An idle callback can return True, False or None.  These mean:
 
@@ -144,6 +162,11 @@ class EventLoop:
 
         If the callback raises an exception, the traceback is logged and
         the callback is removed.
+
+        Arguments:
+            callback (callable): The function to eventually call.
+            *args: Positional arguments to be passed to callback.
+            **kwargs: Keyword arguments to be passed to callback.
         """
         self.idlers.append((callback, args, kwargs))
 
@@ -151,7 +174,7 @@ class EventLoop:
         """Run one of the idle callbacks.
 
         Returns:
-          True if one was called, False if no idle callback was called.
+            bool: Indicates if an idle calback was called.
         """
         if not self.idlers or self.inactive >= len(self.idlers):
             return False
@@ -175,7 +198,7 @@ class EventLoop:
         """Run one current item.
 
         Returns:
-            True if one was called, False if no callback was called.
+            bool: Indicates if an idle calback was called.
         """
         if not self.current:
             return False
@@ -190,8 +213,8 @@ class EventLoop:
         """Run one item (a callback or an RPC wait_any).
 
         Returns:
-          A time to sleep if something happened (may be 0);
-          None if all queues are empty.
+            number: A time to sleep if something happened (may be 0);
+              None if all queues are empty.
         """
         if self._run_current() or self.run_idle():
             return 0
@@ -204,7 +227,6 @@ class EventLoop:
                 _, callback, args, kwargs = self.queue.pop(0)
                 _logging_debug('event: %s', callback.__name__)
                 callback(*args, **kwargs)
-                # TODO: What if it raises an exception?
                 return 0
 
         if self.rpcs:
@@ -216,7 +238,7 @@ class EventLoop:
         """Run one item (a callback or an RPC wait_any) or sleep.
 
         Returns:
-          True if something happened; False if all queues are empty.
+            bool: True if something happened; False if all queues are empty.
         """
         delay = self.run0()
         if delay is None:
