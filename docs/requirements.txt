@@ -28,7 +28,7 @@ grpcio-gcp >= 0.2.2
 -e oslogin/
 -e redis/
 -e resource_manager/
--e runtimeconfig
+-e runtimeconfig/
 -e securitycenter/
 -e spanner/
 -e speech/
