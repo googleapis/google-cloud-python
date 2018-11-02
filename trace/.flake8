@@ -3,6 +3,7 @@ exclude =
   # Exclude generated code.
   **/proto/**
   **/gapic/**
+  **/types.py
   *_pb2.py
 
   # Standard linting exemptions.
