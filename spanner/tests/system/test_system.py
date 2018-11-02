@@ -1575,126 +1575,7 @@ class TestSessionAPI(unittest.TestCase, _TestData):
             'counters: Expected INT64.')
         self.assertIn(error_msg, str(exc_info.exception))
 
-    def test_execute_sql_w_query_param(self):
-        with self._db.batch() as batch:
-            batch.delete(self.ALL_TYPES_TABLE, self.ALL)
-            batch.insert(
-                self.ALL_TYPES_TABLE,
-                self.ALL_TYPES_COLUMNS,
-                self.ALL_TYPES_ROWDATA)
-
-        self._db.snapshot(
-            read_timestamp=batch.committed, multi_use=True)
-
-        # Cannot equality-test array values.  See below for a test w/
-        # array of IDs.
-
-        self._check_sql_results(
-            self._db,
-            sql='SELECT eye_d FROM all_types WHERE are_you_sure = @sure',
-            params={'sure': True},
-            param_types={'sure': Type(code=BOOL)},
-            expected=[(19,), (99,)],
-        )
-
-        self._check_sql_results(
-            self._db,
-            sql='SELECT eye_d FROM all_types WHERE raw_data = @bytes_1',
-            params={'bytes_1': self.BYTES_1},
-            param_types={'bytes_1': Type(code=BYTES)},
-            expected=[(19,), (99,)],
-        )
-
-        self._check_sql_results(
-            self._db,
-            sql='SELECT eye_d FROM all_types WHERE hwhen = @hwhen',
-            params={'hwhen': self.SOME_DATE},
-            param_types={'hwhen': Type(code=DATE)},
-            expected=[(19,)],
-        )
-
-        self._check_sql_results(
-            self._db,
-            sql='SELECT eye_d FROM all_types WHERE exactly_hwhen = @hwhen',
-            params={'hwhen': self.SOME_TIME},
-            param_types={'hwhen': Type(code=TIMESTAMP)},
-            expected=[(19,)],
-        )
-
-        self._check_sql_results(
-            self._db,
-            sql=('SELECT eye_d FROM all_types WHERE approx_value >= @lower'
-                 ' AND approx_value < @upper '),
-            params={'lower': 0.0, 'upper': 1.0},
-            param_types={
-                'lower': Type(code=FLOAT64), 'upper': Type(code=FLOAT64)},
-            expected=[(None,), (19,)],
-        )
-
-        self._check_sql_results(
-            self._db,
-            sql='SELECT description FROM all_types WHERE eye_d = @my_id',
-            params={'my_id': 19},
-            param_types={'my_id': Type(code=INT64)},
-            expected=[(u'dog',)],
-        )
-
-        self._check_sql_results(
-            self._db,
-            sql='SELECT description FROM all_types WHERE eye_d = @my_id',
-            params={'my_id': None},
-            param_types={'my_id': Type(code=INT64)},
-            expected=[],
-        )
-
-        self._check_sql_results(
-            self._db,
-            sql='SELECT eye_d FROM all_types WHERE description = @description',
-            params={'description': u'dog'},
-            param_types={'description': Type(code=STRING)},
-            expected=[(19,)],
-        )
-
-        self._check_sql_results(
-            self._db,
-            sql='SELECT eye_d FROM all_types WHERE exactly_hwhen = @hwhen',
-            params={'hwhen': self.SOME_TIME},
-            param_types={'hwhen': Type(code=TIMESTAMP)},
-            expected=[(19,)],
-        )
-
-        int_array_type = Type(code=ARRAY, array_element_type=Type(code=INT64))
-
-        self._check_sql_results(
-            self._db,
-            sql=('SELECT description FROM all_types '
-                 'WHERE eye_d in UNNEST(@my_list)'),
-            params={'my_list': [19, 99]},
-            param_types={'my_list': int_array_type},
-            expected=[(u'dog',), (u'cat',)],
-        )
-
-        str_array_type = Type(code=ARRAY, array_element_type=Type(code=STRING))
-
-        self._check_sql_results(
-            self._db,
-            sql=('SELECT eye_d FROM all_types '
-                 'WHERE description in UNNEST(@my_list)'),
-            params={'my_list': []},
-            param_types={'my_list': str_array_type},
-            expected=[],
-        )
-
-        self._check_sql_results(
-            self._db,
-            sql=('SELECT eye_d FROM all_types '
-                 'WHERE description in UNNEST(@my_list)'),
-            params={'my_list': [u'dog', u'cat']},
-            param_types={'my_list': str_array_type},
-            expected=[(19,), (99,)],
-        )
-
-    def test_execute_sql_w_query_param_no_table(self):
+    def test_execute_sql_select_1(self):
 
         self._db.snapshot(multi_use=True)
 
@@ -1786,6 +1667,28 @@ class TestSessionAPI(unittest.TestCase, _TestData):
     def test_execute_sql_w_float64_bindings(self):
         self._bind_test_helper(FLOAT64, 42.3, [12.3, 456.0, 7.89])
 
+    def test_execute_sql_w_float_bindings_transfinite(self):
+
+        # Find -inf
+        self._check_sql_results(
+            self._db,
+            sql='SELECT @neg_inf',
+            params={'neg_inf': NEG_INF},
+            param_types={'neg_inf': Type(code=FLOAT64)},
+            expected=[(NEG_INF,)],
+            order=False,
+        )
+
+        # Find +inf
+        self._check_sql_results(
+            self._db,
+            sql='SELECT @pos_inf',
+            params={'pos_inf': POS_INF},
+            param_types={'pos_inf': Type(code=FLOAT64)},
+            expected=[(POS_INF,)],
+            order=False,
+        )
+
     def test_execute_sql_w_bytes_bindings(self):
         self._bind_test_helper(BYTES, b'DEADBEEF', [b'FACEDACE', b'DEADBEEF'])
 
@@ -1812,67 +1715,10 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         import datetime
 
         dates = [
-            self.SOME_DATE,
-            self.SOME_DATE + datetime.timedelta(days=1),
+            SOME_DATE,
+            SOME_DATE + datetime.timedelta(days=1),
         ]
-        self._bind_test_helper(DATE, self.SOME_DATE, dates)
-
-    def test_execute_sql_w_query_param_transfinite(self):
-        with self._db.batch() as batch:
-            batch.delete(self.ALL_TYPES_TABLE, self.ALL)
-            batch.insert(
-                self.ALL_TYPES_TABLE,
-                self.ALL_TYPES_COLUMNS,
-                self.ALL_TYPES_ROWDATA)
-
-        # Find -inf
-        self._check_sql_results(
-            self._db,
-            sql='SELECT eye_d FROM all_types WHERE approx_value = @neg_inf',
-            params={'neg_inf': float('-inf')},
-            param_types={'neg_inf': Type(code=FLOAT64)},
-            expected=[(207,)],
-        )
-
-        # Find +inf
-        self._check_sql_results(
-            self._db,
-            sql='SELECT eye_d FROM all_types WHERE approx_value = @pos_inf',
-            params={'pos_inf': float('+inf')},
-            param_types={'pos_inf': Type(code=FLOAT64)},
-            expected=[(107,)],
-        )
-
-        # Query returning -inf, +inf, NaN as column values
-        with self._db.snapshot(
-                read_timestamp=batch.committed,
-                multi_use=True) as snapshot:
-            rows = list(snapshot.execute_sql(
-                'SELECT '
-                'CAST("-inf" AS FLOAT64), '
-                'CAST("+inf" AS FLOAT64), '
-                'CAST("NaN" AS FLOAT64)'))
-            self.assertEqual(len(rows), 1)
-            self.assertEqual(rows[0][0], float('-inf'))
-            self.assertEqual(rows[0][1], float('+inf'))
-            # NaNs cannot be compared by equality.
-            self.assertTrue(math.isnan(rows[0][2]))
-
-        # Query returning array of -inf, +inf, NaN as one column
-        with self._db.snapshot(
-                read_timestamp=batch.committed,
-                multi_use=True) as snapshot:
-            rows = list(snapshot.execute_sql(
-                'SELECT'
-                ' [CAST("-inf" AS FLOAT64),'
-                ' CAST("+inf" AS FLOAT64),'
-                ' CAST("NaN" AS FLOAT64)]'))
-            self.assertEqual(len(rows), 1)
-            float_array, = rows[0]
-            self.assertEqual(float_array[0], float('-inf'))
-            self.assertEqual(float_array[1], float('+inf'))
-            # NaNs cannot be searched for by equality.
-            self.assertTrue(math.isnan(float_array[2]))
+        self._bind_test_helper(DATE, SOME_DATE, dates)
 
     def test_execute_sql_w_query_param_struct(self):
         NAME = 'Phred'
@@ -2063,6 +1909,34 @@ class TestSessionAPI(unittest.TestCase, _TestData):
             expected=[([['hello', 1]],)],
             order=False,
         )
+
+    def test_execute_sql_returning_transfinite_floats(self):
+
+        with self._db.snapshot(multi_use=True) as snapshot:
+            # Query returning -inf, +inf, NaN as column values
+            rows = list(snapshot.execute_sql(
+                'SELECT '
+                'CAST("-inf" AS FLOAT64), '
+                'CAST("+inf" AS FLOAT64), '
+                'CAST("NaN" AS FLOAT64)'))
+            self.assertEqual(len(rows), 1)
+            self.assertEqual(rows[0][0], float('-inf'))
+            self.assertEqual(rows[0][1], float('+inf'))
+            # NaNs cannot be compared by equality.
+            self.assertTrue(math.isnan(rows[0][2]))
+
+            # Query returning array of -inf, +inf, NaN as one column
+            rows = list(snapshot.execute_sql(
+                'SELECT'
+                ' [CAST("-inf" AS FLOAT64),'
+                ' CAST("+inf" AS FLOAT64),'
+                ' CAST("NaN" AS FLOAT64)]'))
+            self.assertEqual(len(rows), 1)
+            float_array, = rows[0]
+            self.assertEqual(float_array[0], float('-inf'))
+            self.assertEqual(float_array[1], float('+inf'))
+            # NaNs cannot be searched for by equality.
+            self.assertTrue(math.isnan(float_array[2]))
 
     def test_partition_query(self):
         row_count = 40
