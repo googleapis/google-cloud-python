@@ -23,8 +23,6 @@ In the hierarchy of API concepts
 * a :class:`~.firestore_v1beta1.client.Client` owns a
   :class:`~.firestore_v1beta1.document.DocumentReference`
 """
-import six
-
 from google.cloud.client import ClientWithProject
 
 from google.cloud.firestore_v1beta1 import _helpers
@@ -34,9 +32,6 @@ from google.cloud.firestore_v1beta1.collection import CollectionReference
 from google.cloud.firestore_v1beta1.document import DocumentReference
 from google.cloud.firestore_v1beta1.document import DocumentSnapshot
 from google.cloud.firestore_v1beta1.gapic import firestore_client
-from google.cloud.firestore_v1beta1.proto import common_pb2
-from google.cloud.firestore_v1beta1.proto import document_pb2
-from google.cloud.firestore_v1beta1.proto import write_pb2
 from google.cloud.firestore_v1beta1.transaction import Transaction
 
 

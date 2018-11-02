@@ -26,7 +26,8 @@ from google.cloud.firestore_v1beta1.proto import test_pb2
 from google.cloud.firestore_v1beta1.proto import write_pb2
 
 _MISSING_FEATURES = [
-    # tests having to do with the ArrayUnion, ArrayRemove, and Delete transforms
+    #  tests having to do with the ArrayUnion, ArrayRemove, and Delete
+    # transforms
     'create-all-transforms.textproto',
     'create-arrayremove-multi.textproto',
     'create-arrayremove-nested.textproto',
@@ -215,6 +216,7 @@ def test_update_testprotos(test_proto):
 def test_update_paths_testprotos(test_proto):
     pass
 
+
 @pytest.mark.parametrize('test_proto', _DELETE_TESTPROTOS)
 def test_delete_testprotos(test_proto):
     testcase = test_proto.delete
@@ -262,6 +264,7 @@ def convert_set_option(option):
         return fields
     else:
         return False
+
 
 def convert_precondition(precond):
     from google.cloud.firestore_v1beta1 import Client

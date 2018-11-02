@@ -660,6 +660,7 @@ def _get_document_path(client, path):
     parts = (client._database_string, 'documents') + path
     return _helpers.DOCUMENT_PATH_DELIMITER.join(parts)
 
+
 def _consume_single_get(response_iterator):
     """Consume a gRPC stream that should contain a single response.
 
