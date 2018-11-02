@@ -161,7 +161,7 @@ class ClusterManagerGrpcTransport(object):
     def update_node_pool(self):
         """Return the gRPC stub for {$apiMethod.name}.
 
-        Updates the version and/or image type of a specific node pool.
+        Updates the version and/or image type for a specific node pool.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -174,7 +174,7 @@ class ClusterManagerGrpcTransport(object):
     def set_node_pool_autoscaling(self):
         """Return the gRPC stub for {$apiMethod.name}.
 
-        Sets the autoscaling settings of a specific node pool.
+        Sets the autoscaling settings for a specific node pool.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -187,7 +187,7 @@ class ClusterManagerGrpcTransport(object):
     def set_logging_service(self):
         """Return the gRPC stub for {$apiMethod.name}.
 
-        Sets the logging service of a specific cluster.
+        Sets the logging service for a specific cluster.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -200,7 +200,7 @@ class ClusterManagerGrpcTransport(object):
     def set_monitoring_service(self):
         """Return the gRPC stub for {$apiMethod.name}.
 
-        Sets the monitoring service of a specific cluster.
+        Sets the monitoring service for a specific cluster.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -213,7 +213,7 @@ class ClusterManagerGrpcTransport(object):
     def set_addons_config(self):
         """Return the gRPC stub for {$apiMethod.name}.
 
-        Sets the addons of a specific cluster.
+        Sets the addons for a specific cluster.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -226,7 +226,7 @@ class ClusterManagerGrpcTransport(object):
     def set_locations(self):
         """Return the gRPC stub for {$apiMethod.name}.
 
-        Sets the locations of a specific cluster.
+        Sets the locations for a specific cluster.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -239,7 +239,7 @@ class ClusterManagerGrpcTransport(object):
     def update_master(self):
         """Return the gRPC stub for {$apiMethod.name}.
 
-        Updates the master of a specific cluster.
+        Updates the master for a specific cluster.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -253,7 +253,7 @@ class ClusterManagerGrpcTransport(object):
         """Return the gRPC stub for {$apiMethod.name}.
 
         Used to set master auth materials. Currently supports :-
-        Changing the admin password of a specific cluster.
+        Changing the admin password for a specific cluster.
         This can be either via password generation or explicitly set the password.
 
         Returns:
@@ -327,7 +327,7 @@ class ClusterManagerGrpcTransport(object):
     def get_server_config(self):
         """Return the gRPC stub for {$apiMethod.name}.
 
-        Returns configuration info about the Container Engine service.
+        Returns configuration info about the Kubernetes Engine service.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -471,7 +471,7 @@ class ClusterManagerGrpcTransport(object):
     def set_node_pool_size(self):
         """Return the gRPC stub for {$apiMethod.name}.
 
-        Sets the size of a specific node pool.
+        Sets the size for a specific node pool.
 
         Returns:
             Callable: A callable which accepts the appropriate
