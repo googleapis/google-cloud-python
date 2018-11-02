@@ -98,6 +98,9 @@ class WriteBatch(object):
                write option to make assertions / preconditions on the server
                state of the document before applying changes.
         """
+        if option.__class__.__name__ == 'ExistsOption':
+            raise ValueError('you must not pass an explicit write option to '
+                             'update.')
         write_pbs = _helpers.pbs_for_update(
             self._client, reference._document_path, field_updates, option)
         self._add_write_pbs(write_pbs)
