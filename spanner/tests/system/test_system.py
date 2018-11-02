@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import collections
 import datetime
 import math
 import operator
@@ -198,6 +199,8 @@ class _TestData(object):
     ALL = KeySet(all_=True)
     SQL = 'SELECT * FROM contacts ORDER BY contact_id'
 
+    _recurse_into_lists = True
+
     def _assert_timestamp(self, value, nano_value):
         self.assertIsInstance(value, datetime.datetime)
         self.assertIsNone(value.tzinfo)
@@ -226,12 +229,19 @@ class _TestData(object):
     def _check_row_data(self, row_data, expected):
         self.assertEqual(len(row_data), len(expected))
         for found_cell, expected_cell in zip(row_data, expected):
-            if isinstance(found_cell, DatetimeWithNanoseconds):
-                self._assert_timestamp(expected_cell, found_cell)
-            elif isinstance(found_cell, float) and math.isnan(found_cell):
-                self.assertTrue(math.isnan(expected_cell))
-            else:
-                self.assertEqual(found_cell, expected_cell)
+            self._check_cell_data(found_cell, expected_cell)
+
+    def _check_cell_data(self, found_cell, expected_cell):
+        if isinstance(found_cell, DatetimeWithNanoseconds):
+            self._assert_timestamp(expected_cell, found_cell)
+        elif isinstance(found_cell, float) and math.isnan(found_cell):
+            self.assertTrue(math.isnan(expected_cell))
+        elif isinstance(found_cell, list) and self._recurse_into_lists:
+            self.assertEqual(len(found_cell), len(expected_cell))
+            for found_item, expected_item in zip(found_cell, expected_cell):
+                self._check_cell_data(found_item, expected_item)
+        else:
+            self.assertEqual(found_cell, expected_cell)
 
 
 class TestDatabaseAPI(unittest.TestCase, _TestData):
@@ -403,35 +413,69 @@ class TestDatabaseAPI(unittest.TestCase, _TestData):
         self.assertEqual(len(rows), 2)
 
 
+SOME_DATE = datetime.date(2011, 1, 17)
+SOME_TIME = datetime.datetime(1989, 1, 17, 17, 59, 12, 345612)
+NANO_TIME = DatetimeWithNanoseconds(1995, 8, 31, nanosecond=987654321)
+POS_INF = float('+inf')
+NEG_INF = float('-inf')
+OTHER_NAN, = struct.unpack('<d', b'\x01\x00\x01\x00\x00\x00\xf8\xff')
+BYTES_1 = b'Ymlu'
+BYTES_2 = b'Ym9vdHM='
+ALL_TYPES_TABLE = 'all_types'
+ALL_TYPES_COLUMNS = (
+    'pkey',
+    'int_value',
+    'int_array',
+    'bool_value',
+    'bool_array',
+    'bytes_value',
+    'bytes_array',
+    'date_value',
+    'date_array',
+    'float_value',
+    'float_array',
+    'string_value',
+    'string_array',
+    'timestamp_value',
+    'timestamp_array',
+)
+AllTypesRowData = collections.namedtuple('AllTypesRowData', ALL_TYPES_COLUMNS)
+AllTypesRowData.__new__.__defaults__ = tuple(
+    [None for colum in ALL_TYPES_COLUMNS])
+
+ALL_TYPES_ROWDATA = (
+    # all nulls
+    AllTypesRowData(pkey=0),
+    # Non-null values
+    AllTypesRowData(pkey=101, int_value=123),
+    AllTypesRowData(pkey=102, bool_value=False),
+    AllTypesRowData(pkey=103, bytes_value=BYTES_1),
+    AllTypesRowData(pkey=104, date_value=SOME_DATE),
+    AllTypesRowData(pkey=105, float_value=1.4142136),
+    AllTypesRowData(pkey=106, string_value=u'VALUE'),
+    AllTypesRowData(pkey=107, timestamp_value=SOME_TIME),
+    AllTypesRowData(pkey=108, timestamp_value=NANO_TIME),
+    # empty array values
+    AllTypesRowData(pkey=201, int_array=[]),
+    AllTypesRowData(pkey=202, bool_array=[]),
+    AllTypesRowData(pkey=203, bytes_array=[]),
+    AllTypesRowData(pkey=204, date_array=[]),
+    AllTypesRowData(pkey=205, float_array=[]),
+    AllTypesRowData(pkey=206, string_array=[]),
+    AllTypesRowData(pkey=207, timestamp_array=[]),
+    # non-empty array values, including nulls
+    AllTypesRowData(pkey=301, int_array=[123, 456, None]),
+    AllTypesRowData(pkey=302, bool_array=[True, False, None]),
+    AllTypesRowData(pkey=303, bytes_array=[BYTES_1, BYTES_2, None]),
+    AllTypesRowData(pkey=304, date_array=[SOME_DATE, None]),
+    AllTypesRowData(pkey=305, float_array=[3.1415926, 2.71828, None]),
+    AllTypesRowData(pkey=306, string_array=[u'One', u'Two', None]),
+    AllTypesRowData(pkey=307, timestamp_array=[SOME_TIME, NANO_TIME, None]),
+)
+
+
 class TestSessionAPI(unittest.TestCase, _TestData):
     DATABASE_NAME = 'test_sessions' + unique_resource_id('_')
-    ALL_TYPES_TABLE = 'all_types'
-    ALL_TYPES_COLUMNS = (
-        'list_goes_on',
-        'are_you_sure',
-        'raw_data',
-        'hwhen',
-        'approx_value',
-        'eye_d',
-        'description',
-        'exactly_hwhen',
-    )
-    SOME_DATE = datetime.date(2011, 1, 17)
-    SOME_TIME = datetime.datetime(1989, 1, 17, 17, 59, 12, 345612)
-    NANO_TIME = DatetimeWithNanoseconds(1995, 8, 31, nanosecond=987654321)
-    OTHER_NAN, = struct.unpack('<d', b'\x01\x00\x01\x00\x00\x00\xf8\xff')
-    BYTES_1 = b'Ymlu'
-    BYTES_2 = b'Ym9vdHM='
-    ALL_TYPES_ROWDATA = (
-        ([], False, None, None, 0.0, None, None, None),
-        ([1], True, BYTES_1, SOME_DATE, 0.0, 19, u'dog', SOME_TIME),
-        ([5, 10], True, BYTES_1, None, 1.25, 99, u'cat', None),
-        ([], False, BYTES_2, None, float('inf'), 107, u'frog', None),
-        ([3, None, 9], False, None, None, float('-inf'), 207, u'bat', None),
-        ([], False, None, None, float('nan'), 1207, u'owl', None),
-        ([], False, None, None, OTHER_NAN, 2000, u'virus', NANO_TIME),
-        (None, None, None, None, None, 5432, u'algae', None),
-    )
 
     @classmethod
     def setUpClass(cls):
@@ -499,16 +543,16 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         retry(self._db.reload)()
 
         with self._db.batch() as batch:
-            batch.delete(self.ALL_TYPES_TABLE, self.ALL)
+            batch.delete(ALL_TYPES_TABLE, self.ALL)
             batch.insert(
-                self.ALL_TYPES_TABLE,
-                self.ALL_TYPES_COLUMNS,
-                self.ALL_TYPES_ROWDATA)
+                ALL_TYPES_TABLE,
+                ALL_TYPES_COLUMNS,
+                ALL_TYPES_ROWDATA)
 
         with self._db.snapshot(read_timestamp=batch.committed) as snapshot:
             rows = list(snapshot.read(
-                self.ALL_TYPES_TABLE, self.ALL_TYPES_COLUMNS, self.ALL))
-        self._check_rows_data(rows, expected=self.ALL_TYPES_ROWDATA)
+                ALL_TYPES_TABLE, ALL_TYPES_COLUMNS, self.ALL))
+        self._check_rows_data(rows, expected=ALL_TYPES_ROWDATA)
 
     def test_batch_insert_or_update_then_query(self):
         retry = RetryInstanceState(_has_all_ddl)
@@ -1498,7 +1542,7 @@ class TestSessionAPI(unittest.TestCase, _TestData):
     def _check_sql_results(
             self, database, sql, params, param_types, expected, order=True):
         if order and 'ORDER' not in sql:
-            sql += ' ORDER BY eye_d'
+            sql += ' ORDER BY pkey'
         with database.snapshot() as snapshot:
             rows = list(snapshot.execute_sql(
                 sql, params=params, param_types=param_types))
@@ -1708,6 +1752,7 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         expected_timestamps = [
             timestamp.replace(tzinfo=pytz.UTC) for timestamp in timestamps]
 
+        self._recurse_into_lists = False
         self._bind_test_helper(
             TIMESTAMP, timestamp_1, timestamps, expected_timestamps)
 
