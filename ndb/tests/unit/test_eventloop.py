@@ -32,87 +32,87 @@ def _Event(when=0, what="foo", args=(), kw={}):
 class TestEventLoop:
     @staticmethod
     def _make_one(**attrs):
-        ev = eventloop.EventLoop()
+        loop = eventloop.EventLoop()
         for name, value in attrs.items():
-            setattr(ev, name, value)
-        return ev
+            setattr(loop, name, value)
+        return loop
 
     def test_constructor(self):
-        ev = self._make_one()
-        assert ev.current == collections.deque()
-        assert ev.idlers == collections.deque()
-        assert ev.inactive == 0
-        assert ev.queue == []
-        assert ev.rpcs == {}
+        loop = self._make_one()
+        assert loop.current == collections.deque()
+        assert loop.idlers == collections.deque()
+        assert loop.inactive == 0
+        assert loop.queue == []
+        assert loop.rpcs == {}
 
     def test_clear_all(self):
-        ev = self._make_one()
-        ev.current.append("foo")
-        ev.idlers.append("bar")
-        ev.queue.append("baz")
-        ev.rpcs["qux"] = "quux"
-        ev.clear()
-        assert not ev.current
-        assert not ev.idlers
-        assert not ev.queue
-        assert not ev.rpcs
+        loop = self._make_one()
+        loop.current.append("foo")
+        loop.idlers.append("bar")
+        loop.queue.append("baz")
+        loop.rpcs["qux"] = "quux"
+        loop.clear()
+        assert not loop.current
+        assert not loop.idlers
+        assert not loop.queue
+        assert not loop.rpcs
 
         # idemptotence (branch coverage)
-        ev.clear()
-        assert not ev.current
-        assert not ev.idlers
-        assert not ev.queue
-        assert not ev.rpcs
+        loop.clear()
+        assert not loop.current
+        assert not loop.idlers
+        assert not loop.queue
+        assert not loop.rpcs
 
     def test_clear_current(self):
-        ev = self._make_one()
-        ev.current.append("foo")
-        ev.clear()
-        assert not ev.current
-        assert not ev.idlers
-        assert not ev.queue
-        assert not ev.rpcs
+        loop = self._make_one()
+        loop.current.append("foo")
+        loop.clear()
+        assert not loop.current
+        assert not loop.idlers
+        assert not loop.queue
+        assert not loop.rpcs
 
     def test_clear_idlers(self):
-        ev = self._make_one()
-        ev.idlers.append("foo")
-        ev.clear()
-        assert not ev.current
-        assert not ev.idlers
-        assert not ev.queue
-        assert not ev.rpcs
+        loop = self._make_one()
+        loop.idlers.append("foo")
+        loop.clear()
+        assert not loop.current
+        assert not loop.idlers
+        assert not loop.queue
+        assert not loop.rpcs
 
     def test_insert_event_right_empty_queue(self):
-        ev = self._make_one()
+        loop = self._make_one()
         event = _Event()
-        ev.insort_event_right(event)
-        assert ev.queue == [event]
+        loop.insort_event_right(event)
+        assert loop.queue == [event]
 
     def test_insert_event_right_head(self):
-        ev = self._make_one(queue=[_Event(1, "bar")])
-        ev.insort_event_right(_Event(0, "foo"))
-        assert ev.queue == [_Event(0, "foo"), _Event(1, "bar")]
+        loop = self._make_one(queue=[_Event(1, "bar")])
+        loop.insort_event_right(_Event(0, "foo"))
+        assert loop.queue == [_Event(0, "foo"), _Event(1, "bar")]
 
     def test_insert_event_right_tail(self):
-        ev = self._make_one(queue=[_Event(0, "foo")])
-        ev.insort_event_right(_Event(1, "bar"))
-        assert ev.queue == [_Event(0, "foo"), _Event(1, "bar")]
+        loop = self._make_one(queue=[_Event(0, "foo")])
+        loop.insort_event_right(_Event(1, "bar"))
+        assert loop.queue == [_Event(0, "foo"), _Event(1, "bar")]
 
     def test_insert_event_right_middle(self):
-        ev = self._make_one(queue=[_Event(0, "foo"), _Event(2, "baz")])
-        ev.insort_event_right(_Event(1, "bar"))
-        assert ev.queue == [
+        loop = self._make_one(queue=[_Event(0, "foo"), _Event(2, "baz")])
+        loop.insort_event_right(_Event(1, "bar"))
+        assert loop.queue == [
             _Event(0, "foo"),
             _Event(1, "bar"),
             _Event(2, "baz"),
         ]
 
     def test_insert_event_right_collision(self):
-        ev = self._make_one(
+        loop = self._make_one(
             queue=[_Event(0, "foo"), _Event(1, "bar"), _Event(2, "baz")]
         )
-        ev.insort_event_right(_Event(1, "barbar"))
-        assert ev.queue == [
+        loop.insort_event_right(_Event(1, "barbar"))
+        assert loop.queue == [
             _Event(0, "foo"),
             _Event(1, "bar"),
             _Event(1, "barbar"),
@@ -120,145 +120,145 @@ class TestEventLoop:
         ]
 
     def test_queue_call_now(self):
-        ev = self._make_one()
-        ev.queue_call(None, "foo", "bar", baz="qux")
-        assert list(ev.current) == [("foo", ("bar",), {"baz": "qux"})]
-        assert not ev.queue
+        loop = self._make_one()
+        loop.queue_call(None, "foo", "bar", baz="qux")
+        assert list(loop.current) == [("foo", ("bar",), {"baz": "qux"})]
+        assert not loop.queue
 
     @unittest.mock.patch("google.cloud.ndb.eventloop.time")
     def test_queue_call_soon(self, time):
-        ev = self._make_one()
+        loop = self._make_one()
         time.time.return_value = 5
-        ev.queue_call(5, "foo", "bar", baz="qux")
-        assert not ev.current
-        assert ev.queue == [_Event(10, "foo", ("bar",), {"baz": "qux"})]
+        loop.queue_call(5, "foo", "bar", baz="qux")
+        assert not loop.current
+        assert loop.queue == [_Event(10, "foo", ("bar",), {"baz": "qux"})]
 
     @unittest.mock.patch("google.cloud.ndb.eventloop.time")
     def test_queue_call_absolute(self, time):
-        ev = self._make_one()
+        loop = self._make_one()
         time.time.return_value = 5
-        ev.queue_call(10e10, "foo", "bar", baz="qux")
-        assert not ev.current
-        assert ev.queue == [_Event(10e10, "foo", ("bar",), {"baz": "qux"})]
+        loop.queue_call(10e10, "foo", "bar", baz="qux")
+        assert not loop.current
+        assert loop.queue == [_Event(10e10, "foo", ("bar",), {"baz": "qux"})]
 
     def test_queue_rpc(self):
-        ev = self._make_one()
+        loop = self._make_one()
         with pytest.raises(NotImplementedError):
-            ev.queue_rpc("rpc")
+            loop.queue_rpc("rpc")
 
     def test_add_idle(self):
-        ev = self._make_one()
-        ev.add_idle("foo", "bar", baz="qux")
-        assert list(ev.idlers) == [("foo", ("bar",), {"baz": "qux"})]
+        loop = self._make_one()
+        loop.add_idle("foo", "bar", baz="qux")
+        assert list(loop.idlers) == [("foo", ("bar",), {"baz": "qux"})]
 
     def test_run_idle_no_idlers(self):
-        ev = self._make_one()
-        assert ev.run_idle() is False
+        loop = self._make_one()
+        assert loop.run_idle() is False
 
     def test_run_idle_all_inactive(self):
-        ev = self._make_one()
-        ev.add_idle("foo")
-        ev.inactive = 1
-        assert ev.run_idle() is False
+        loop = self._make_one()
+        loop.add_idle("foo")
+        loop.inactive = 1
+        assert loop.run_idle() is False
 
     def test_run_idle_remove_callback(self):
         callback = unittest.mock.Mock(__name__="callback")
         callback.return_value = None
-        ev = self._make_one()
-        ev.add_idle(callback, "foo", bar="baz")
-        ev.add_idle("foo")
-        assert ev.run_idle() is True
+        loop = self._make_one()
+        loop.add_idle(callback, "foo", bar="baz")
+        loop.add_idle("foo")
+        assert loop.run_idle() is True
         callback.assert_called_once_with("foo", bar="baz")
-        assert len(ev.idlers) == 1
-        assert ev.inactive == 0
+        assert len(loop.idlers) == 1
+        assert loop.inactive == 0
 
     def test_run_idle_did_work(self):
         callback = unittest.mock.Mock(__name__="callback")
         callback.return_value = True
-        ev = self._make_one()
-        ev.add_idle(callback, "foo", bar="baz")
-        ev.add_idle("foo")
-        ev.inactive = 1
-        assert ev.run_idle() is True
+        loop = self._make_one()
+        loop.add_idle(callback, "foo", bar="baz")
+        loop.add_idle("foo")
+        loop.inactive = 1
+        assert loop.run_idle() is True
         callback.assert_called_once_with("foo", bar="baz")
-        assert len(ev.idlers) == 2
-        assert ev.inactive == 0
+        assert len(loop.idlers) == 2
+        assert loop.inactive == 0
 
     def test_run_idle_did_no_work(self):
         callback = unittest.mock.Mock(__name__="callback")
         callback.return_value = False
-        ev = self._make_one()
-        ev.add_idle(callback, "foo", bar="baz")
-        ev.add_idle("foo")
-        ev.inactive = 1
-        assert ev.run_idle() is True
+        loop = self._make_one()
+        loop.add_idle(callback, "foo", bar="baz")
+        loop.add_idle("foo")
+        loop.inactive = 1
+        assert loop.run_idle() is True
         callback.assert_called_once_with("foo", bar="baz")
-        assert len(ev.idlers) == 2
-        assert ev.inactive == 2
+        assert len(loop.idlers) == 2
+        assert loop.inactive == 2
 
     def test_run0_nothing_to_do(self):
-        ev = self._make_one()
-        assert ev.run0() is None
+        loop = self._make_one()
+        assert loop.run0() is None
 
     def test_run0_current(self):
         callback = unittest.mock.Mock(__name__="callback")
-        ev = self._make_one()
-        ev.queue_call(None, callback, "foo", bar="baz")
-        ev.inactive = 88
-        assert ev.run0() == 0
+        loop = self._make_one()
+        loop.queue_call(None, callback, "foo", bar="baz")
+        loop.inactive = 88
+        assert loop.run0() == 0
         callback.assert_called_once_with("foo", bar="baz")
-        assert len(ev.current) == 0
-        assert ev.inactive == 0
+        assert len(loop.current) == 0
+        assert loop.inactive == 0
 
     def test_run0_idler(self):
         callback = unittest.mock.Mock(__name__="callback")
-        ev = self._make_one()
-        ev.add_idle(callback, "foo", bar="baz")
-        assert ev.run0() == 0
+        loop = self._make_one()
+        loop.add_idle(callback, "foo", bar="baz")
+        assert loop.run0() == 0
         callback.assert_called_once_with("foo", bar="baz")
 
     @unittest.mock.patch("google.cloud.ndb.eventloop.time")
     def test_run0_next_later(self, time):
         time.time.return_value = 0
         callback = unittest.mock.Mock(__name__="callback")
-        ev = self._make_one()
-        ev.queue_call(5, callback, "foo", bar="baz")
-        ev.inactive = 88
-        assert ev.run0() == 5
+        loop = self._make_one()
+        loop.queue_call(5, callback, "foo", bar="baz")
+        loop.inactive = 88
+        assert loop.run0() == 5
         callback.assert_not_called()
-        assert len(ev.queue) == 1
-        assert ev.inactive == 88
+        assert len(loop.queue) == 1
+        assert loop.inactive == 88
 
     @unittest.mock.patch("google.cloud.ndb.eventloop.time")
     def test_run0_next_now(self, time):
         time.time.return_value = 0
         callback = unittest.mock.Mock(__name__="callback")
-        ev = self._make_one()
-        ev.queue_call(6, "foo")
-        ev.queue_call(5, callback, "foo", bar="baz")
-        ev.inactive = 88
+        loop = self._make_one()
+        loop.queue_call(6, "foo")
+        loop.queue_call(5, callback, "foo", bar="baz")
+        loop.inactive = 88
         time.time.return_value = 10
-        assert ev.run0() == 0
+        assert loop.run0() == 0
         callback.assert_called_once_with("foo", bar="baz")
-        assert len(ev.queue) == 1
-        assert ev.inactive == 0
+        assert len(loop.queue) == 1
+        assert loop.inactive == 0
 
     def test_run0_rpc(self):
-        ev = self._make_one()
-        ev.rpcs["foo"] = "bar"
+        loop = self._make_one()
+        loop.rpcs["foo"] = "bar"
         with pytest.raises(NotImplementedError):
-            ev.run0()
+            loop.run0()
 
     def test_run1_nothing_to_do(self):
-        ev = self._make_one()
-        assert ev.run1() is False
+        loop = self._make_one()
+        assert loop.run1() is False
 
     @unittest.mock.patch("google.cloud.ndb.eventloop.time")
     def test_run1_has_work_now(self, time):
         callback = unittest.mock.Mock(__name__="callback")
-        ev = self._make_one()
-        ev.queue_call(None, callback)
-        assert ev.run1() is True
+        loop = self._make_one()
+        loop.queue_call(None, callback)
+        assert loop.run1() is True
         time.sleep.assert_not_called()
         callback.assert_called_once_with()
 
@@ -266,9 +266,9 @@ class TestEventLoop:
     def test_run1_has_work_later(self, time):
         time.time.return_value = 0
         callback = unittest.mock.Mock(__name__="callback")
-        ev = self._make_one()
-        ev.queue_call(5, callback)
-        assert ev.run1() is True
+        loop = self._make_one()
+        loop.queue_call(5, callback)
+        assert loop.run1() is True
         time.sleep.assert_called_once_with(5)
         callback.assert_not_called()
 
@@ -284,11 +284,11 @@ class TestEventLoop:
         idler.return_value = None
         runnow = unittest.mock.Mock(__name__="runnow")
         runlater = unittest.mock.Mock(__name__="runlater")
-        ev = self._make_one()
-        ev.add_idle(idler)
-        ev.queue_call(None, runnow)
-        ev.queue_call(5, runlater)
-        ev.run()
+        loop = self._make_one()
+        loop.add_idle(idler)
+        loop.queue_call(None, runnow)
+        loop.queue_call(5, runlater)
+        loop.run()
         idler.assert_called_once_with()
         runnow.assert_called_once_with()
         runlater.assert_called_once_with()
