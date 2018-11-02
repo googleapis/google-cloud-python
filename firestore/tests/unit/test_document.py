@@ -385,7 +385,8 @@ class TestDocumentReference(unittest.TestCase):
         self._update_helper()
 
     def test_update_with_exists(self):
-        self._update_helper(exists=True)
+        with self.assertRaises(ValueError):
+            self._update_helper(exists=True)
 
     def test_empty_update(self):
         # Create a minimal fake GAPIC with a dummy response.
