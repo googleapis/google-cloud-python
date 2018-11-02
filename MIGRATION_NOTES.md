@@ -133,7 +133,10 @@ The primary differences come from:
 - There is a giant web of module interdependency, so runtime imports (to avoid
   import cycles) are very common. For example `model.Property` depends on
   `query` but `query` depends on `model`.
+- Will need to sort out dependencies on old RPC implementations and port to
+  modern gRPC. ([Issue #6363][4])
 
 [1]: https://github.com/GoogleCloudPlatform/datastore-ndb-python/issues/175
 [2]: https://github.com/googleapis/google-cloud-python/issues/6317
 [3]: https://github.com/googleapis/googleapis/blob/3afba2fd062df0c89ecd62d97f912192b8e0e0ae/google/datastore/v1/entity.proto#L203
+[4]: https://github.com/googleapis/google-cloud-python/issues/6363
