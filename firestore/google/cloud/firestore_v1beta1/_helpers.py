@@ -1062,10 +1062,7 @@ def pbs_for_set(document_path, document_data, merge=False, exists=None):
     transform_paths, actual_data, field_paths = process_server_timestamp(
         document_data, False)
 
-    create_empty = False
-    if (document_data and not actual_data) or (not document_data):
-        # produce an empty set op
-        create_empty = True
+    create_empty = (document_data and not actual_data) or (not document_data)
 
     write_pbs = []
     update_pb = None
@@ -1095,9 +1092,7 @@ def _pbs_for_set_with_merge(document_path, document_data, merge, exists):
     data_merge = []
     transform_merge = []
 
-    create_empty = False
-    if not document_data:
-        create_empty = True
+    create_empty = not document_data
 
     transform_paths, actual_data, field_paths = process_server_timestamp(
         document_data, False)
