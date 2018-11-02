@@ -55,6 +55,9 @@ class EventLoop:
             run only when no other RPCs need to be fired first.
             For example, AutoBatcher uses idler to fire a batch RPC even before
             the batch is full.
+        inactive (int): Number of consecutive idlers that were noops. Reset
+            to 0 whenever work is done by any callback, not necessarily by an
+            idler.
         queue (list): a sorted list of (absolute time in sec, callback, args,
             kwds), sorted by time. These callbacks run only after the said
             time.
@@ -121,7 +124,7 @@ class EventLoop:
         """Schedule a function call at a specific time in the future.
 
         Arguments:
-            delay (number): Time in seconds to delay running the callback.
+            delay (float): Time in seconds to delay running the callback.
                 Times over a billion seconds are assumed to be absolute
                 timestamps rather than delays.
             callback (callable): The function to eventually call.
@@ -214,7 +217,7 @@ class EventLoop:
         """Run one item (a callback or an RPC wait_any).
 
         Returns:
-            number: A time to sleep if something happened (may be 0);
+            float: A time to sleep if something happened (may be 0);
               None if all queues are empty.
         """
         if self._run_current() or self.run_idle():
