@@ -173,6 +173,10 @@ class FieldPath(object):
     def eq_or_parent(self, other):
         return self.parts[:len(other.parts)] == other.parts[:len(self.parts)]
 
+    def is_parent(self, other):
+        if self.eq_or_parent(other) and not self.parts == other.parts:
+            return True
+
     def __hash__(self):
         return hash(self.to_api_repr())
 
@@ -1213,14 +1217,25 @@ def pbs_for_update(client, document_path, field_updates, option):
     if not (transform_paths or actual_updates):
         raise ValueError('There are only ServerTimeStamp objects or is empty.')
     update_values, field_paths = FieldPathHelper.to_field_paths(actual_updates)
+    update_paths = field_paths[:]
+
+    # for whatever reason, the conformance tests want to see the parent
+    # of nested transform paths in the update mask
+    for transform_path in transform_paths:
+        if len(transform_path.parts) > 1:
+            parent_fp = FieldPath(*transform_path.parts[:-1])
+            if not parent_fp in update_paths:
+                update_paths.append(parent_fp)
+
     field_paths = canonicalize_field_paths(field_paths)
+    update_paths = canonicalize_field_paths(update_paths)
 
     update_pb = write_pb2.Write(
         update=document_pb2.Document(
             name=document_path,
             fields=encode_dict(update_values),
         ),
-        update_mask=common_pb2.DocumentMask(field_paths=field_paths),
+        update_mask=common_pb2.DocumentMask(field_paths=update_paths),
     )
     # Due to the default, we don't have to check if ``None``.
     option.modify_write(update_pb, field_paths=field_paths)
