@@ -17,7 +17,7 @@ import unittest.mock
 
 import pytest
 
-from google.cloud.ndb import eventloop
+from google.cloud.ndb import _eventloop as eventloop
 import tests.unit.utils
 
 
@@ -125,7 +125,7 @@ class TestEventLoop:
         assert list(loop.current) == [("foo", ("bar",), {"baz": "qux"})]
         assert not loop.queue
 
-    @unittest.mock.patch("google.cloud.ndb.eventloop.time")
+    @unittest.mock.patch("google.cloud.ndb._eventloop.time")
     def test_queue_call_soon(self, time):
         loop = self._make_one()
         time.time.return_value = 5
@@ -133,7 +133,7 @@ class TestEventLoop:
         assert not loop.current
         assert loop.queue == [_Event(10, "foo", ("bar",), {"baz": "qux"})]
 
-    @unittest.mock.patch("google.cloud.ndb.eventloop.time")
+    @unittest.mock.patch("google.cloud.ndb._eventloop.time")
     def test_queue_call_absolute(self, time):
         loop = self._make_one()
         time.time.return_value = 5
@@ -217,7 +217,7 @@ class TestEventLoop:
         assert loop.run0() == 0
         callback.assert_called_once_with("foo", bar="baz")
 
-    @unittest.mock.patch("google.cloud.ndb.eventloop.time")
+    @unittest.mock.patch("google.cloud.ndb._eventloop.time")
     def test_run0_next_later(self, time):
         time.time.return_value = 0
         callback = unittest.mock.Mock(__name__="callback")
@@ -229,7 +229,7 @@ class TestEventLoop:
         assert len(loop.queue) == 1
         assert loop.inactive == 88
 
-    @unittest.mock.patch("google.cloud.ndb.eventloop.time")
+    @unittest.mock.patch("google.cloud.ndb._eventloop.time")
     def test_run0_next_now(self, time):
         time.time.return_value = 0
         callback = unittest.mock.Mock(__name__="callback")
@@ -253,7 +253,7 @@ class TestEventLoop:
         loop = self._make_one()
         assert loop.run1() is False
 
-    @unittest.mock.patch("google.cloud.ndb.eventloop.time")
+    @unittest.mock.patch("google.cloud.ndb._eventloop.time")
     def test_run1_has_work_now(self, time):
         callback = unittest.mock.Mock(__name__="callback")
         loop = self._make_one()
@@ -262,7 +262,7 @@ class TestEventLoop:
         time.sleep.assert_not_called()
         callback.assert_called_once_with()
 
-    @unittest.mock.patch("google.cloud.ndb.eventloop.time")
+    @unittest.mock.patch("google.cloud.ndb._eventloop.time")
     def test_run1_has_work_later(self, time):
         time.time.return_value = 0
         callback = unittest.mock.Mock(__name__="callback")
@@ -272,7 +272,7 @@ class TestEventLoop:
         time.sleep.assert_called_once_with(5)
         callback.assert_not_called()
 
-    @unittest.mock.patch("google.cloud.ndb.eventloop.time")
+    @unittest.mock.patch("google.cloud.ndb._eventloop.time")
     def test_run(self, time):
         time.time.return_value = 0
 
