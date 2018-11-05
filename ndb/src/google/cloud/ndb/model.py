@@ -1440,13 +1440,14 @@ class IntegerProperty(Property):
             :data:`False`) or ``1`` (for :data:`True`).
 
         Args:
-            value (int): The value to check.
+            value (Union[int, bool]): The value to check.
 
         Returns:
             int: The passed-in ``value``.
 
         Raises:
-            .BadValueError: If ``value`` is not a :class:`bool`.
+            .BadValueError: If ``value`` is not an :class:`int` or convertible
+                to one.
         """
         if not isinstance(value, int):
             raise exceptions.BadValueError(
