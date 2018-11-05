@@ -17,6 +17,9 @@
 
 import inspect
 
+from google.cloud.datastore_v1.gapic import enums
+from google.cloud.datastore_v1.proto import entity_pb2
+
 from google.cloud.ndb import exceptions
 from google.cloud.ndb import key as key_module
 
@@ -80,6 +83,7 @@ __all__ = [
 ]
 
 
+_EMPTY_LIST_MEANING = 24
 Key = key_module.Key
 BlobKey = NotImplemented  # From `google.appengine.api.datastore_types`
 GeoPt = NotImplemented  # From `google.appengine.api.datastore_types`
@@ -1269,6 +1273,41 @@ class Property(ModelAttribute):
             entity (Model): An entity to delete a value from.
         """
         self._delete_value(entity)
+
+    def _serialize(
+        self, entity, pb, prefix="", parent_repeated=False, projection=None
+    ):
+        """Serialize this property to a protocol buffer.
+
+        Some subclasses may override this method.
+
+        Args:
+            entity (Model): The entity that owns this property.
+            pb (google.cloud.datastore_v1.proto.entity_pb2.Entity): An existing
+                entity protobuf instance that we'll add a value to.
+            prefix (Optional[str]): Name prefix used for
+                :class:`StructuredProperty` (if present, must end in ``.``).
+            parent_repeated (Optional[bool]): Indicates if the parent (or an
+                earlier ancestor) is a repeated property.
+            projection (Optional[Union[list, tuple]]): An iterable of strings
+                representing the projection for the model instance, or
+                :data:`None` if the instance is not a projection.
+        """
+        raise NotImplementedError
+
+    def _deserialize(self, entity, p, unused_depth=1):
+        """Deserialize this property to a protocol buffer.
+
+        Some subclasses may override this method.
+
+        Args:
+            entity (Model): The entity that owns this property.
+            p (google.cloud.datastore_v1.proto.entity_pb2.Value): A property
+                value protobuf to be deserialized.
+            depth (int): Optional nesting depth, default 1 (unused here, but
+                used by some subclasses that override this method).
+        """
+        raise NotImplementedError
 
     def _prepare_for_put(self, entity):
         """Allow this property to define a pre-put hook.
