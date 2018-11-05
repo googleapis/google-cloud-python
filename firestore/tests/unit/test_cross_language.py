@@ -25,7 +25,7 @@ from google.cloud.firestore_v1beta1.proto import firestore_pb2
 from google.cloud.firestore_v1beta1.proto import test_pb2
 from google.cloud.firestore_v1beta1.proto import write_pb2
 
-_MISSING_FEATURES = [
+_UNIMPLEMENTED_FEATURES = [
     #  tests having to do with the ArrayUnion, ArrayRemove, and Delete
     # transforms
     'create-all-transforms.textproto',
@@ -82,38 +82,44 @@ def _load_testproto(filename):
     return test_proto
 
 
-_ALL_TESTPROTOS = [
+_UNIMPLEMENTED_FEATURE_TESTPROTOS = [
     _load_testproto(filename) for filename in sorted(
         glob.glob('tests/unit/testdata/*.textproto'))
-    if not os.path.split(filename)[-1] in _MISSING_FEATURES
+    if os.path.split(filename)[-1] in _UNIMPLEMENTED_FEATURES
+]
+
+IMPLEMENTED_FEATURE_TESTPROTOS = [
+    _load_testproto(filename) for filename in sorted(
+        glob.glob('tests/unit/testdata/*.textproto'))
+    if not os.path.split(filename)[-1] in _UNIMPLEMENTED_FEATURES
 ]
 
 _CREATE_TESTPROTOS = [
-    test_proto for test_proto in _ALL_TESTPROTOS
+    test_proto for test_proto in IMPLEMENTED_FEATURE_TESTPROTOS
     if test_proto.WhichOneof('test') == 'create']
 
 _GET_TESTPROTOS = [
-    test_proto for test_proto in _ALL_TESTPROTOS
+    test_proto for test_proto in IMPLEMENTED_FEATURE_TESTPROTOS
     if test_proto.WhichOneof('test') == 'get']
 
 _SET_TESTPROTOS = [
-    test_proto for test_proto in _ALL_TESTPROTOS
+    test_proto for test_proto in IMPLEMENTED_FEATURE_TESTPROTOS
     if test_proto.WhichOneof('test') == 'set']
 
 _UPDATE_TESTPROTOS = [
-    test_proto for test_proto in _ALL_TESTPROTOS
+    test_proto for test_proto in IMPLEMENTED_FEATURE_TESTPROTOS
     if test_proto.WhichOneof('test') == 'update']
 
 _UPDATE_PATHS_TESTPROTOS = [
-    test_proto for test_proto in _ALL_TESTPROTOS
+    test_proto for test_proto in IMPLEMENTED_FEATURE_TESTPROTOS
     if test_proto.WhichOneof('test') == 'update_paths']
 
 _DELETE_TESTPROTOS = [
-    test_proto for test_proto in _ALL_TESTPROTOS
+    test_proto for test_proto in IMPLEMENTED_FEATURE_TESTPROTOS
     if test_proto.WhichOneof('test') == 'delete']
 
 _LISTEN_TESTPROTOS = [
-    test_proto for test_proto in _ALL_TESTPROTOS
+    test_proto for test_proto in IMPLEMENTED_FEATURE_TESTPROTOS
     if test_proto.WhichOneof('test') == 'listen']
 
 
@@ -233,6 +239,12 @@ def test_delete_testprotos(test_proto):
 @pytest.mark.skip(reason="Watch aka listen not yet implemented in Python.")
 @pytest.mark.parametrize('test_proto', _LISTEN_TESTPROTOS)
 def test_listen_paths_testprotos(test_proto):
+    pass
+
+
+@pytest.mark.skip(reason="Feature not yet implemented in Python.")
+@pytest.mark.parametrize('test_proto', _UNIMPLEMENTED_FEATURE_TESTPROTOS)
+def test_unimplemented_features_testprotos(test_proto):
     pass
 
 
