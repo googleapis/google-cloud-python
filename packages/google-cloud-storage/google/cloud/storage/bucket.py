@@ -1352,8 +1352,9 @@ class Bucket(_PropertyMixin):
         """
         policy = self._properties.setdefault('retentionPolicy', {})
         if value is not None:
-            value = str(value)
-        policy['retentionPeriod'] = value
+            policy['retentionPeriod'] = str(value)
+        else:
+            policy = None
         self._patch_property('retentionPolicy', policy)
 
     @property
