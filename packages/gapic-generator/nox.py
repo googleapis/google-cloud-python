@@ -51,6 +51,9 @@ def showcase(session):
         session.log('-' * 70)
         session.run('netstat', '-plnt', '|', 'grep', ':7469', silent=True)
 
+    # Use the Python implementation of protocol buffers.
+    session.env['PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION'] = 'python'
+
     # Install pytest and gapic-generator-python
     session.install('pytest')
     session.install('-e', '.')

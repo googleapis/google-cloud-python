@@ -1,6 +1,7 @@
 [run]
 branch = True
 omit =
+  gapic/cli/*.py
   *_pb2.py
 
 [report]
