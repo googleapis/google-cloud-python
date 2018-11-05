@@ -648,7 +648,7 @@ class TestProperty:
     @staticmethod
     def test__set_value(property_clean_cache):
         entity = unittest.mock.Mock(
-            _projection=False, _values={}, spec=("_projection", "_values")
+            _projection=None, _values={}, spec=("_projection", "_values")
         )
         prop = model.Property(name="foo", repeated=False)
         prop._set_value(entity, 19)
@@ -657,7 +657,7 @@ class TestProperty:
     @staticmethod
     def test__set_value_none():
         entity = unittest.mock.Mock(
-            _projection=False, _values={}, spec=("_projection", "_values")
+            _projection=None, _values={}, spec=("_projection", "_values")
         )
         prop = model.Property(name="foo", repeated=False)
         prop._set_value(entity, None)
@@ -668,7 +668,7 @@ class TestProperty:
     @staticmethod
     def test__set_value_repeated(property_clean_cache):
         entity = unittest.mock.Mock(
-            _projection=False, _values={}, spec=("_projection", "_values")
+            _projection=None, _values={}, spec=("_projection", "_values")
         )
         prop = model.Property(name="foo", repeated=True)
         prop._set_value(entity, (11, 12, 13))
@@ -677,7 +677,7 @@ class TestProperty:
     @staticmethod
     def test__set_value_repeated_bad_container():
         entity = unittest.mock.Mock(
-            _projection=False, _values={}, spec=("_projection", "_values")
+            _projection=None, _values={}, spec=("_projection", "_values")
         )
         prop = model.Property(name="foo", repeated=True)
         with pytest.raises(exceptions.BadValueError):
@@ -687,7 +687,9 @@ class TestProperty:
 
     @staticmethod
     def test__set_value_projection():
-        entity = unittest.mock.Mock(_projection=True, spec=("_projection",))
+        entity = unittest.mock.Mock(
+            _projection=("a", "b"), spec=("_projection",)
+        )
         prop = model.Property(name="foo", repeated=True)
         with pytest.raises(model.ReadonlyPropertyError):
             prop._set_value(entity, None)
@@ -1239,6 +1241,18 @@ class TestProperty:
             prop2 = prop
 
         assert Model.prop2 is prop
+
+    @staticmethod
+    def test__serialize():
+        prop = model.Property(name="prop")
+        with pytest.raises(NotImplementedError):
+            prop._serialize(None, None)
+
+    @staticmethod
+    def test__deserialize():
+        prop = model.Property(name="prop")
+        with pytest.raises(NotImplementedError):
+            prop._deserialize(None, None)
 
     @staticmethod
     def test__prepare_for_put():
