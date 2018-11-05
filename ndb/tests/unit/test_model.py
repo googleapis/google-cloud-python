@@ -1397,6 +1397,20 @@ class TestBlobProperty:
         with pytest.raises(NotImplementedError):
             model.BlobProperty(name="foo", compressed=True, indexed=True)
 
+    @staticmethod
+    def test__value_to_repr():
+        prop = model.BlobProperty(name="blob")
+        as_repr = prop._value_to_repr(b"abc")
+        assert as_repr == "b'abc'"
+
+    @staticmethod
+    def test__value_to_repr_truncated():
+        prop = model.BlobProperty(name="blob")
+        value = bytes(range(256)) * 5
+        as_repr = prop._value_to_repr(value)
+        expected = repr(value)[:model._MAX_STRING_LENGTH] + "...'"
+        assert as_repr == expected
+
 
 class TestTextProperty:
     @staticmethod

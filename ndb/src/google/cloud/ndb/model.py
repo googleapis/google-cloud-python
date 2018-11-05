@@ -80,6 +80,7 @@ __all__ = [
 ]
 
 
+_MAX_STRING_LENGTH = 1500
 Key = key_module.Key
 BlobKey = NotImplemented  # From `google.appengine.api.datastore_types`
 GeoPt = NotImplemented  # From `google.appengine.api.datastore_types`
@@ -1540,6 +1541,27 @@ class BlobProperty(Property):
                 "BlobProperty {} cannot be compressed and "
                 "indexed at the same time.".format(self._name)
             )
+
+    def _value_to_repr(self, value):
+        """Turn the value into a user friendly representation.
+
+        .. note::
+
+            This will truncate the value based on the "visual" length, e.g.
+            if it contains many ``\\xXX`` or ``\\uUUUU`` sequences, those
+            will count against the length as more than one character.
+
+        Args:
+            value (Any): The value to convert to a pretty-print ``repr``.
+
+        Returns:
+            str: The ``repr`` of the "true" value.
+        """
+        long_repr = super(BlobProperty, self)._value_to_repr(value)
+        if len(long_repr) > _MAX_STRING_LENGTH + 4:
+            # Truncate, assuming the final character is the closing quote.
+            long_repr = long_repr[:_MAX_STRING_LENGTH] + "..." + long_repr[-1]
+        return long_repr
 
 
 class TextProperty(BlobProperty):
