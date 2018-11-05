@@ -1412,6 +1412,26 @@ class TestBlobProperty:
         assert as_repr == expected
 
     @staticmethod
+    def test__validate():
+        prop = model.BlobProperty(name="blob")
+        assert prop._validate(b"abc") is None
+
+    @staticmethod
+    def test__validate_wrong_type():
+        prop = model.BlobProperty(name="blob")
+        values = ("non-bytes", 48, {"a": "c"})
+        for value in values:
+            with pytest.raises(exceptions.BadValueError):
+                prop._validate(value)
+
+    @staticmethod
+    def test__validate_indexed_too_long():
+        prop = model.BlobProperty(name="blob", indexed=True)
+        value = b"\x00" * 2000
+        with pytest.raises(exceptions.BadValueError):
+            prop._validate(value)
+
+    @staticmethod
     def test__db_set_value():
         prop = model.BlobProperty(name="blob")
         with pytest.raises(NotImplementedError):

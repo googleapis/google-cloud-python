@@ -467,11 +467,11 @@ class Property(ModelAttribute):
         ``value + "$"`` is not.
 
         Args:
-            validator (Callable[[.Property, Any], bool]): A callable that can
+            validator (Callable[[Property, Any], bool]): A callable that can
                 validate a property value.
 
         Returns:
-            Callable[[.Property, Any], bool]: The ``validator``.
+            Callable[[Property, Any], bool]: The ``validator``.
 
         Raises:
             TypeError: If ``validator`` is not callable. This is determined by
@@ -1486,6 +1486,11 @@ class FloatProperty(Property):
 class BlobProperty(Property):
     """A property that contains values that are byte strings.
 
+    .. note::
+
+        Unlike most property types, a :class:`BlobProperty` is **not**
+        indexed by default.
+
     Args:
         name (str): The name of the property.
         compressed (bool): Indicates if the value should be compressed (via
@@ -1498,7 +1503,8 @@ class BlobProperty(Property):
         default (bytes): The default value for this property.
         choices (Iterable[bytes]): A container of allowed values for this
             property.
-        validator (Callable): A validator to be used to check values.
+        validator (Callable[[Property, Any], bool]): A validator to be used
+            to check values.
         verbose_name (str): A longer, user-friendly name for this property.
         write_empty_list (bool): Indicates if an empty list should be written
             to the datastore.
@@ -1562,6 +1568,32 @@ class BlobProperty(Property):
             # Truncate, assuming the final character is the closing quote.
             long_repr = long_repr[:_MAX_STRING_LENGTH] + "..." + long_repr[-1]
         return long_repr
+
+    def _validate(self, value):
+        """Validate a ``value`` before setting it.
+
+        Args:
+            value (bytes): The value to check.
+
+        Raises:
+            .BadValueError: If ``value`` is not a :class:`bytes`.
+            .BadValueError: If the current property is indexed but the value
+                exceeds the maximum length (1500 bytes).
+        """
+        if not isinstance(value, bytes):
+            raise exceptions.BadValueError(
+                "Expected bytes, got {!r}".format(value)
+            )
+
+        if (
+            self._indexed
+            and not isinstance(self, TextProperty)
+            and len(value) > _MAX_STRING_LENGTH
+        ):
+            raise exceptions.BadValueError(
+                "Indexed value {} must be at most {:d} "
+                "bytes".format(self._name, _MAX_STRING_LENGTH)
+            )
 
     def _db_set_value(self, v, unused_p, value):
         """Helper for :meth:`_serialize`.
