@@ -1292,6 +1292,9 @@ class Property(ModelAttribute):
             projection (Optional[Union[list, tuple]]): An iterable of strings
                 representing the projection for the model instance, or
                 :data:`None` if the instance is not a projection.
+
+        Raises:
+            NotImplementedError: Always. This method is virtual.
         """
         raise NotImplementedError
 
@@ -1306,6 +1309,9 @@ class Property(ModelAttribute):
                 value protobuf to be deserialized.
             depth (int): Optional nesting depth, default 1 (unused here, but
                 used by some subclasses that override this method).
+
+        Raises:
+            NotImplementedError: Always. This method is virtual.
         """
         raise NotImplementedError
 
