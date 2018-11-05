@@ -938,26 +938,33 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(kw[1]['method'], 'DELETE')
         self.assertEqual(kw[1]['path'], '/b/%s/o/%s' % (NAME, NONESUCH))
 
+    @staticmethod
+    def _make_blob(bucket_name, blob_name):
+        from google.cloud.storage.blob import Blob
+
+        blob = mock.create_autospec(Blob)
+        blob.name = blob_name
+        blob.path = '/b/{}/o/{}'.format(bucket_name, blob_name)
+        return blob
+
     def test_copy_blobs_wo_name(self):
         SOURCE = 'source'
         DEST = 'dest'
         BLOB_NAME = 'blob-name'
-
-        class _Blob(object):
-            name = BLOB_NAME
-            path = '/b/%s/o/%s' % (SOURCE, BLOB_NAME)
-
         connection = _Connection({})
         client = _Client(connection)
         source = self._make_one(client=client, name=SOURCE)
         dest = self._make_one(client=client, name=DEST)
-        blob = _Blob()
+        blob = self._make_blob(SOURCE, BLOB_NAME)
+
         new_blob = source.copy_blob(blob, dest)
+
         self.assertIs(new_blob.bucket, dest)
         self.assertEqual(new_blob.name, BLOB_NAME)
+
         kw, = connection._requested
-        COPY_PATH = '/b/%s/o/%s/copyTo/b/%s/o/%s' % (SOURCE, BLOB_NAME,
-                                                     DEST, BLOB_NAME)
+        COPY_PATH = '/b/{}/o/{}/copyTo/b/{}/o/{}'.format(
+            SOURCE, BLOB_NAME, DEST, BLOB_NAME)
         self.assertEqual(kw['method'], 'POST')
         self.assertEqual(kw['path'], COPY_PATH)
         self.assertEqual(kw['query_params'], {})
@@ -968,21 +975,20 @@ class Test_Bucket(unittest.TestCase):
         BLOB_NAME = 'blob-name'
         GENERATION = 1512565576797178
 
-        class _Blob(object):
-            name = BLOB_NAME
-            path = '/b/%s/o/%s' % (SOURCE, BLOB_NAME)
-
         connection = _Connection({})
         client = _Client(connection)
         source = self._make_one(client=client, name=SOURCE)
         dest = self._make_one(client=client, name=DEST)
-        blob = _Blob()
+        blob = self._make_blob(SOURCE, BLOB_NAME)
+
         new_blob = source.copy_blob(blob, dest, source_generation=GENERATION)
+
         self.assertIs(new_blob.bucket, dest)
         self.assertEqual(new_blob.name, BLOB_NAME)
+
         kw, = connection._requested
-        COPY_PATH = '/b/%s/o/%s/copyTo/b/%s/o/%s' % (SOURCE, BLOB_NAME,
-                                                     DEST, BLOB_NAME)
+        COPY_PATH = '/b/{}/o/{}/copyTo/b/{}/o/{}'.format(
+            SOURCE, BLOB_NAME, DEST, BLOB_NAME)
         self.assertEqual(kw['method'], 'POST')
         self.assertEqual(kw['path'], COPY_PATH)
         self.assertEqual(kw['query_params'], {'sourceGeneration': GENERATION})
@@ -994,33 +1000,32 @@ class Test_Bucket(unittest.TestCase):
         DEST = 'dest'
         BLOB_NAME = 'blob-name'
         NEW_NAME = 'new_name'
-        BLOB_PATH = '/b/%s/o/%s' % (SOURCE, BLOB_NAME)
-        NEW_BLOB_PATH = '/b/%s/o/%s' % (DEST, NEW_NAME)
-        COPY_PATH = '/b/%s/o/%s/copyTo/b/%s/o/%s' % (SOURCE, BLOB_NAME,
-                                                     DEST, NEW_NAME)
-
-        class _Blob(object):
-            name = BLOB_NAME
-            path = BLOB_PATH
 
         connection = _Connection({}, {})
         client = _Client(connection)
         source = self._make_one(client=client, name=SOURCE)
         dest = self._make_one(client=client, name=DEST)
-        blob = _Blob()
-        new_blob = source.copy_blob(blob, dest, NEW_NAME, client=client,
-                                    preserve_acl=False)
+        blob = self._make_blob(SOURCE, BLOB_NAME)
+
+        new_blob = source.copy_blob(
+            blob, dest, NEW_NAME, client=client, preserve_acl=False)
+
         self.assertIs(new_blob.bucket, dest)
         self.assertEqual(new_blob.name, NEW_NAME)
         self.assertIsInstance(new_blob.acl, ObjectACL)
-        kw = connection._requested
-        self.assertEqual(len(kw), 2)
-        self.assertEqual(kw[0]['method'], 'POST')
-        self.assertEqual(kw[0]['path'], COPY_PATH)
-        self.assertEqual(kw[0]['query_params'], {})
-        self.assertEqual(kw[1]['method'], 'PATCH')
-        self.assertEqual(kw[1]['path'], NEW_BLOB_PATH)
-        self.assertEqual(kw[1]['query_params'], {'projection': 'full'})
+
+        kw1, kw2 = connection._requested
+        COPY_PATH = '/b/{}/o/{}/copyTo/b/{}/o/{}'.format(
+            SOURCE, BLOB_NAME, DEST, NEW_NAME)
+        NEW_BLOB_PATH = '/b/{}/o/{}'.format(DEST, NEW_NAME)
+
+        self.assertEqual(kw1['method'], 'POST')
+        self.assertEqual(kw1['path'], COPY_PATH)
+        self.assertEqual(kw1['query_params'], {})
+
+        self.assertEqual(kw2['method'], 'PATCH')
+        self.assertEqual(kw2['path'], NEW_BLOB_PATH)
+        self.assertEqual(kw2['query_params'], {'projection': 'full'})
 
     def test_copy_blobs_w_name_and_user_project(self):
         SOURCE = 'source'
@@ -1028,23 +1033,21 @@ class Test_Bucket(unittest.TestCase):
         BLOB_NAME = 'blob-name'
         NEW_NAME = 'new_name'
         USER_PROJECT = 'user-project-123'
-
-        class _Blob(object):
-            name = BLOB_NAME
-            path = '/b/%s/o/%s' % (SOURCE, BLOB_NAME)
-
         connection = _Connection({})
         client = _Client(connection)
         source = self._make_one(
             client=client, name=SOURCE, user_project=USER_PROJECT)
         dest = self._make_one(client=client, name=DEST)
-        blob = _Blob()
+        blob = self._make_blob(SOURCE, BLOB_NAME)
+
         new_blob = source.copy_blob(blob, dest, NEW_NAME)
+
         self.assertIs(new_blob.bucket, dest)
         self.assertEqual(new_blob.name, NEW_NAME)
+
+        COPY_PATH = '/b/{}/o/{}/copyTo/b/{}/o/{}'.format(
+            SOURCE, BLOB_NAME, DEST, NEW_NAME)
         kw, = connection._requested
-        COPY_PATH = '/b/%s/o/%s/copyTo/b/%s/o/%s' % (SOURCE, BLOB_NAME,
-                                                     DEST, NEW_NAME)
         self.assertEqual(kw['method'], 'POST')
         self.assertEqual(kw['path'], COPY_PATH)
         self.assertEqual(kw['query_params'], {'userProject': USER_PROJECT})
@@ -1053,27 +1056,48 @@ class Test_Bucket(unittest.TestCase):
         BUCKET_NAME = 'BUCKET_NAME'
         BLOB_NAME = 'blob-name'
         NEW_BLOB_NAME = 'new-blob-name'
-
         DATA = {'name': NEW_BLOB_NAME}
         connection = _Connection(DATA)
         client = _Client(connection)
         bucket = self._make_one(client=client, name=BUCKET_NAME)
+        blob = self._make_blob(BUCKET_NAME, BLOB_NAME)
 
-        class _Blob(object):
-
-            def __init__(self, name, bucket_name):
-                self.name = name
-                self.path = '/b/%s/o/%s' % (bucket_name, name)
-                self._deleted = []
-
-            def delete(self, client=None):
-                self._deleted.append(client)
-
-        blob = _Blob(BLOB_NAME, BUCKET_NAME)
         renamed_blob = bucket.rename_blob(blob, NEW_BLOB_NAME, client=client)
+
         self.assertIs(renamed_blob.bucket, bucket)
         self.assertEqual(renamed_blob.name, NEW_BLOB_NAME)
-        self.assertEqual(blob._deleted, [client])
+
+        COPY_PATH = '/b/{}/o/{}/copyTo/b/{}/o/{}'.format(
+            BUCKET_NAME, BLOB_NAME, BUCKET_NAME, NEW_BLOB_NAME)
+        kw, = connection._requested
+        self.assertEqual(kw['method'], 'POST')
+        self.assertEqual(kw['path'], COPY_PATH)
+        self.assertEqual(kw['query_params'], {})
+
+        blob.delete.assert_called_once_with(client)
+
+    def test_rename_blob_to_itself(self):
+        BUCKET_NAME = 'BUCKET_NAME'
+        BLOB_NAME = 'blob-name'
+        DATA = {'name': BLOB_NAME}
+        connection = _Connection(DATA)
+        client = _Client(connection)
+        bucket = self._make_one(client=client, name=BUCKET_NAME)
+        blob = self._make_blob(BUCKET_NAME, BLOB_NAME)
+
+        renamed_blob = bucket.rename_blob(blob, BLOB_NAME)
+
+        self.assertIs(renamed_blob.bucket, bucket)
+        self.assertEqual(renamed_blob.name, BLOB_NAME)
+
+        COPY_PATH = '/b/{}/o/{}/copyTo/b/{}/o/{}'.format(
+            BUCKET_NAME, BLOB_NAME, BUCKET_NAME, BLOB_NAME)
+        kw, = connection._requested
+        self.assertEqual(kw['method'], 'POST')
+        self.assertEqual(kw['path'], COPY_PATH)
+        self.assertEqual(kw['query_params'], {})
+
+        blob.delete.assert_not_called()
 
     def test_etag(self):
         ETAG = 'ETAG'
