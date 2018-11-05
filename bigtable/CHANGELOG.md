@@ -9,25 +9,23 @@
 11-02-2018 08:13 PDT
 
 ### Implementation Changes
-- Bigtable: fix instance IAM methods ([#6343](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6343))
-- Bigtable: Support DirectRow without a table ([#6336](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6336))
-- Bigtable: Add retry parameter to 'Table.read_rows()'. ([#6281](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6281))
-- Bigtable: Fix ConditionalRow interaction with check_and_mutate_row ([#6296](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6296))
-- Bigtable: deprecate 'channel' arg to 'Client' ([#6279](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6279))
-
-### New Features
+- Support DirectRow without a table ([#6336](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6336))
+- Add retry parameter to 'Table.read_rows()'. ([#6281](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6281))
+- Fix ConditionalRow interaction with check_and_mutate_row ([#6296](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6296))
+- Deprecate 'channel' arg to 'Client' ([#6279](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6279))
 
 ### Dependencies
 - Update IAM version in dependencies ([#6362](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6362))
 
 ### Documentation
-- Bigtable: add 'docs/snippets.py' and test ([#6012](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6012))
+- Add 'docs/snippets.py' and test ([#6012](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6012))
+- Normalize use of support level badges ([#6159](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6159))
 
 ### Internal / Testing Changes
-- Bigtable: fix flaky systests / snippets ([#6367](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6367))
-- Add explicit coverage for 'row_data._retry_read_rows_exception'. ([#6364](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6364))
+- Fix flaky systests / snippets ([#6367](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6367))
+- Add explicit coverage for `row_data._retry_read_rows_exception`. ([#6364](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6364))
+- Fix instance IAM test methods ([#6343](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6343))
 - Fix error from new flake8 version. ([#6309](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6309))
-- Docs: normalize use of support level badges ([#6159](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6159))
 - Use new Nox ([#6175](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6175))
 
 ## 0.31.0
