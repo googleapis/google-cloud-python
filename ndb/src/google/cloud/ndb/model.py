@@ -1563,6 +1563,38 @@ class BlobProperty(Property):
             long_repr = long_repr[:_MAX_STRING_LENGTH] + "..." + long_repr[-1]
         return long_repr
 
+    def _db_set_value(self, v, unused_p, value):
+        """Helper for :meth:`_serialize`.
+
+        Raises:
+            NotImplementedError: Always. This method is virtual.
+        """
+        raise NotImplementedError
+
+    def _db_set_compressed_meaning(self, p):
+        """Helper for :meth:`_db_set_value`.
+
+        Raises:
+            NotImplementedError: Always. This method is virtual.
+        """
+        raise NotImplementedError
+
+    def _db_set_uncompressed_meaning(self, p):
+        """Helper for :meth:`_db_set_value`.
+
+        Raises:
+            NotImplementedError: Always. This method is virtual.
+        """
+        raise NotImplementedError
+
+    def _db_get_value(self, v, unused_p):
+        """Helper for :meth:`_deserialize`.
+
+        Raises:
+            NotImplementedError: Always. This method is virtual.
+        """
+        raise NotImplementedError
+
 
 class TextProperty(BlobProperty):
     __slots__ = ()

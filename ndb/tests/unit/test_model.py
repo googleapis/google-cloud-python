@@ -1408,8 +1408,32 @@ class TestBlobProperty:
         prop = model.BlobProperty(name="blob")
         value = bytes(range(256)) * 5
         as_repr = prop._value_to_repr(value)
-        expected = repr(value)[:model._MAX_STRING_LENGTH] + "...'"
+        expected = repr(value)[: model._MAX_STRING_LENGTH] + "...'"
         assert as_repr == expected
+
+    @staticmethod
+    def test__db_set_value():
+        prop = model.BlobProperty(name="blob")
+        with pytest.raises(NotImplementedError):
+            prop._db_set_value(None, None, None)
+
+    @staticmethod
+    def test__db_set_compressed_meaning():
+        prop = model.BlobProperty(name="blob")
+        with pytest.raises(NotImplementedError):
+            prop._db_set_compressed_meaning(None)
+
+    @staticmethod
+    def test__db_set_uncompressed_meaning():
+        prop = model.BlobProperty(name="blob")
+        with pytest.raises(NotImplementedError):
+            prop._db_set_uncompressed_meaning(None)
+
+    @staticmethod
+    def test__db_get_value():
+        prop = model.BlobProperty(name="blob")
+        with pytest.raises(NotImplementedError):
+            prop._db_get_value(None, None)
 
 
 class TestTextProperty:
