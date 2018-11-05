@@ -61,6 +61,61 @@ READ_ONLY_SCOPE = 'https://www.googleapis.com/auth/bigtable.data.readonly'
 """Scope for reading table data."""
 
 
+def _get_table_data_client(client):
+    """Return the gRPC stub used for the Table Data API.
+
+    It also checks if bigtable emulator environment is set,
+    if yes, returns the appropriate gRPC stub.
+
+    :rtype: :class:`.bigtable_v2.BigtableClient`
+    :returns: A BigtableClient object.
+    """
+    if client._emulator_host is None:
+        return bigtable_v2.BigtableClient(credentials=client._credentials,
+                                          client_info=_CLIENT_INFO)
+    else:
+        return bigtable_v2.BigtableClient(channel=client._emulator_channel,
+                                          client_info=_CLIENT_INFO)
+
+
+def _get_table_admin_client(client):
+    """Return the gRPC stub used for the Table Admin API.
+
+    It also checks if bigtable emulator environment is set,
+    if yes, returns the appropriate gRPC stub.
+
+    :rtype: :class:`.bigtable_admin_pb2.BigtableTableAdmin`
+    :returns: A BigtableTableAdmin instance.
+    """
+    if client._emulator_host is None:
+        return bigtable_admin_v2.BigtableTableAdminClient(
+            credentials=client._credentials,
+            client_info=_CLIENT_INFO)
+    else:
+        return bigtable_admin_v2.BigtableTableAdminClient(
+            channel=client._emulator_channel,
+            client_info=_CLIENT_INFO)
+
+
+def _get_instance_admin_client(client):
+    """Return the gRPC stub used for the Instance Admin API.
+
+    It also checks if bigtable emulator environment is set,
+    if yes, returns the appropriate gRPC stub.
+
+    :rtype: :class:`.bigtable_admin_pb2.BigtableInstanceAdmin`
+    :returns: A BigtableInstanceAdmin instance.
+    """
+    if client._emulator_host is None:
+        return bigtable_admin_v2.BigtableInstanceAdminClient(
+            credentials=client._credentials,
+            client_info=_CLIENT_INFO)
+    else:
+        return bigtable_admin_v2.BigtableInstanceAdminClient(
+            channel=client._emulator_channel,
+            client_info=_CLIENT_INFO)
+
+
 class Client(ClientWithProject):
     """Client for interacting with Google Cloud Bigtable API.
 
@@ -113,7 +168,8 @@ class Client(ClientWithProject):
         self._read_only = bool(read_only)
         self._admin = bool(admin)
         self._emulator_host = os.getenv(BIGTABLE_EMULATOR)
-        
+        self._emulator_channel = None
+
         if self._emulator_host is not None:
             self._emulator_channel = grpc.insecure_channel(self._emulator_host)
 
@@ -168,15 +224,7 @@ class Client(ClientWithProject):
         :returns: A BigtableClient object.
         """
         if self._table_data_client is None:
-            if self._emulator_host is None:
-                self._table_data_client = (
-                    bigtable_v2.BigtableClient(credentials=self._credentials,
-                                               client_info=_CLIENT_INFO))
-            else:
-                self._table_data_client = (
-                    bigtable_v2.BigtableClient(channel=self._emulator_channel,
-                                               client_info=_CLIENT_INFO))
-
+            self._table_data_client = _get_table_data_client(self)
         return self._table_data_client
 
     @property
@@ -192,18 +240,7 @@ class Client(ClientWithProject):
         if self._table_admin_client is None:
             if not self._admin:
                 raise ValueError('Client is not an admin client.')
-            
-            if self._emulator_host is None:
-                self._table_admin_client = (
-                    bigtable_admin_v2.BigtableTableAdminClient(
-                        credentials=self._credentials,
-                        client_info=_CLIENT_INFO))
-            else:
-                self._table_admin_client = (
-                    bigtable_admin_v2.BigtableTableAdminClient(
-                        channel=self._emulator_channel,
-                        client_info=_CLIENT_INFO))
-
+            self._table_admin_client = _get_table_admin_client(self)
         return self._table_admin_client
 
     @property
@@ -219,17 +256,7 @@ class Client(ClientWithProject):
         if self._instance_admin_client is None:
             if not self._admin:
                 raise ValueError('Client is not an admin client.')
-            
-            if self._emulator_host is None:
-                self._instance_admin_client = (
-                    bigtable_admin_v2.BigtableInstanceAdminClient(
-                        credentials=self._credentials,
-                        client_info=_CLIENT_INFO))
-            else:
-                self._instance_admin_client = (
-                    bigtable_admin_v2.BigtableInstanceAdminClient(
-                        channel=self._emulator_channel,
-                        client_info=_CLIENT_INFO))
+            self._instance_admin_client = _get_instance_admin_client(self)
         return self._instance_admin_client
 
     def instance(self, instance_id, display_name=None,

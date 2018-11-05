@@ -20,6 +20,130 @@ import mock
 from ._testing import _make_credentials
 
 
+class Test__get_table_data_client(unittest.TestCase):
+
+    def _call_fut(self, client):
+        from google.cloud.bigtable.client import _get_table_data_client
+
+        return _get_table_data_client(client)
+
+    @mock.patch('google.cloud.bigtable_v2.BigtableClient',
+                return_value=mock.sentinel.stub)
+    def test_without_emulator(self, data_client):
+        from google.cloud.bigtable import client as MUT
+
+        credentials = _make_credentials()
+        client = _Client(credentials)
+
+        result = self._call_fut(client)
+        self.assertIs(result, mock.sentinel.stub)
+        data_client.assert_called_once_with(
+            credentials=client._credentials,
+            client_info=MUT._CLIENT_INFO)
+
+    @mock.patch('google.cloud.bigtable_v2.BigtableClient',
+                return_value=mock.sentinel.stub)
+    def test_with_emulator(self, data_client):
+        from google.cloud.bigtable import client as MUT
+
+        emulator_host = emulator_channel = object()
+        credentials = _make_credentials()
+        client = _Client(credentials, emulator_host=emulator_host,
+                         emulator_channel=emulator_channel)
+
+        result = self._call_fut(client)
+        self.assertIs(result, mock.sentinel.stub)
+        data_client.assert_called_once_with(
+            channel=client._emulator_channel,
+            client_info=MUT._CLIENT_INFO)
+
+
+class Test__get_table_admin_client(unittest.TestCase):
+
+    def _call_fut(self, client):
+        from google.cloud.bigtable.client import _get_table_admin_client
+
+        return _get_table_admin_client(client)
+
+    @mock.patch('google.cloud.bigtable_admin_v2.BigtableTableAdminClient',
+                return_value=mock.sentinel.stub)
+    def test_without_emulator(self, table_admin_client):
+        from google.cloud.bigtable import client as MUT
+
+        credentials = _make_credentials()
+        client = _Client(credentials)
+
+        result = self._call_fut(client)
+        self.assertIs(result, mock.sentinel.stub)
+        table_admin_client.assert_called_once_with(
+            credentials=client._credentials,
+            client_info=MUT._CLIENT_INFO)
+
+    @mock.patch('google.cloud.bigtable_admin_v2.BigtableTableAdminClient',
+                return_value=mock.sentinel.stub)
+    def test_with_emulator(self, table_admin_client):
+        from google.cloud.bigtable import client as MUT
+
+        emulator_host = emulator_channel = object()
+        credentials = _make_credentials()
+        client = _Client(credentials, emulator_host=emulator_host,
+                         emulator_channel=emulator_channel)
+
+        result = self._call_fut(client)
+        self.assertIs(result, mock.sentinel.stub)
+        table_admin_client.assert_called_once_with(
+            channel=client._emulator_channel,
+            client_info=MUT._CLIENT_INFO)
+
+
+class Test__get_instance_admin_client(unittest.TestCase):
+
+    def _call_fut(self, client):
+        from google.cloud.bigtable.client import _get_instance_admin_client
+
+        return _get_instance_admin_client(client)
+
+    @mock.patch('google.cloud.bigtable_admin_v2.BigtableInstanceAdminClient',
+                return_value=mock.sentinel.stub)
+    def test_without_emulator(self, instance_admin_client):
+
+        from google.cloud.bigtable import client as MUT
+
+        credentials = _make_credentials()
+        client = _Client(credentials)
+
+        result = self._call_fut(client)
+        self.assertIs(result, mock.sentinel.stub)
+        instance_admin_client.assert_called_once_with(
+            credentials=client._credentials,
+            client_info=MUT._CLIENT_INFO)
+
+    @mock.patch('google.cloud.bigtable_admin_v2.BigtableInstanceAdminClient',
+                return_value=mock.sentinel.stub)
+    def test_with_emulator(self, instance_admin_client):
+        from google.cloud.bigtable import client as MUT
+
+        emulator_host = emulator_channel = object()
+        credentials = _make_credentials()
+        client = _Client(credentials, emulator_host=emulator_host,
+                         emulator_channel=emulator_channel)
+
+        result = self._call_fut(client)
+        self.assertIs(result, mock.sentinel.stub)
+        instance_admin_client.assert_called_once_with(
+            channel=client._emulator_channel,
+            client_info=MUT._CLIENT_INFO)
+
+
+class _Client(object):
+
+    def __init__(self, credentials, emulator_host=None,
+                 emulator_channel=None):
+        self._credentials = credentials
+        self._emulator_host = emulator_host
+        self._emulator_channel = emulator_channel
+
+
 class TestClient(unittest.TestCase):
 
     PROJECT = 'PROJECT'
@@ -51,6 +175,8 @@ class TestClient(unittest.TestCase):
         self.assertFalse(client._read_only)
         self.assertFalse(client._admin)
         self.assertIsNone(client._channel)
+        self.assertIsNone(client._emulator_host)
+        self.assertIsNone(client._emulator_channel)
         self.assertEqual(client.SCOPE, (DATA_SCOPE,))
 
     def test_constructor_explicit(self):
@@ -85,6 +211,19 @@ class TestClient(unittest.TestCase):
             self._make_one(
                 project=self.PROJECT, credentials=credentials,
                 admin=True, read_only=True)
+
+    def test_constructor_with_emulator_host(self):
+        import grpc
+        credentials = _make_credentials()
+        emulator_host = "localhost:8081"
+        with mock.patch('os.getenv') as mocked:
+            mocked.return_value = emulator_host
+            client = self._make_one(project=self.PROJECT,
+                                    credentials=credentials)
+
+        self.assertEqual(client._emulator_host, emulator_host)
+        self.assertIsInstance(client._emulator_channel,
+                              grpc._channel.Channel)
 
     def test__get_scopes_default(self):
         from google.cloud.bigtable.client import DATA_SCOPE
