@@ -1483,10 +1483,63 @@ class FloatProperty(Property):
 
 
 class BlobProperty(Property):
-    __slots__ = ()
+    """A property that contains values that are byte strings.
 
-    def __init__(self, *args, **kwargs):
-        raise NotImplementedError
+    Args:
+        name (str): The name of the property.
+        compressed (bool): Indicates if the value should be compressed (via
+            ``zlib``).
+        indexed (bool): Indicates if the value should be indexed.
+        repeated (bool): Indicates if this property is repeated, i.e. contains
+            multiple values.
+        required (bool): Indicates if this property is required on the given
+            model type.
+        default (bytes): The default value for this property.
+        choices (Iterable[bytes]): A container of allowed values for this
+            property.
+        validator (Callable): A validator to be used to check values.
+        verbose_name (str): A longer, user-friendly name for this property.
+        write_empty_list (bool): Indicates if an empty list should be written
+            to the datastore.
+
+    Raises:
+        NotImplementedError: If the property is both compressed and indexed.
+    """
+
+    _indexed = False
+    _compressed = False
+
+    def __init__(
+        self,
+        name=None,
+        compressed=False,
+        *,
+        indexed=None,
+        repeated=None,
+        required=None,
+        default=None,
+        choices=None,
+        validator=None,
+        verbose_name=None,
+        write_empty_list=None
+    ):
+        super(BlobProperty, self).__init__(
+            name=name,
+            indexed=indexed,
+            repeated=repeated,
+            required=required,
+            default=default,
+            choices=choices,
+            validator=validator,
+            verbose_name=verbose_name,
+            write_empty_list=write_empty_list,
+        )
+        self._compressed = compressed
+        if compressed and self._indexed:
+            raise NotImplementedError(
+                "BlobProperty {} cannot be compressed and "
+                "indexed at the same time.".format(self._name)
+            )
 
 
 class TextProperty(BlobProperty):

@@ -1363,9 +1363,39 @@ class TestFloatProperty:
 
 class TestBlobProperty:
     @staticmethod
-    def test_constructor():
+    def test_constructor_defaults():
+        prop = model.BlobProperty()
+        # Check that only one of the constructor defaults was used.
+        assert prop.__dict__ == {"_compressed": False}
+
+    @staticmethod
+    def test_constructor_explicit():
+        prop = model.BlobProperty(
+            name="blob_val",
+            compressed=True,
+            indexed=False,
+            repeated=False,
+            required=True,
+            default=b"eleven\x11",
+            choices=(b"a", b"b", b"c", b"eleven\x11"),
+            validator=TestProperty._example_validator,
+            verbose_name="VALUE FOR READING",
+            write_empty_list=False,
+        )
+        assert prop._name == b"blob_val" and prop._name != "blob_val"
+        assert not prop._indexed
+        assert not prop._repeated
+        assert prop._required
+        assert prop._default == b"eleven\x11"
+        assert prop._choices == frozenset((b"a", b"b", b"c", b"eleven\x11"))
+        assert prop._validator is TestProperty._example_validator
+        assert prop._verbose_name == "VALUE FOR READING"
+        assert not prop._write_empty_list
+
+    @staticmethod
+    def test_constructor_compressed_and_indexed():
         with pytest.raises(NotImplementedError):
-            model.BlobProperty()
+            model.BlobProperty(name="foo", compressed=True, indexed=True)
 
 
 class TestTextProperty:
