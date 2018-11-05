@@ -14,6 +14,7 @@
 
 import types
 import unittest.mock
+import zlib
 
 import pytest
 
@@ -1359,6 +1360,57 @@ class TestFloatProperty:
     def test_constructor():
         with pytest.raises(NotImplementedError):
             model.FloatProperty()
+
+
+class Test_CompressedValue:
+    @staticmethod
+    def test_constructor():
+        value = b"abc" * 1000
+        z_val = zlib.compress(value)
+        compressed_value = model._CompressedValue(z_val)
+
+        assert compressed_value.z_val == z_val
+
+    @staticmethod
+    def test_constructor_invalid():
+        with pytest.raises(TypeError):
+            model._CompressedValue(None)
+
+    @staticmethod
+    def test___repr__():
+        z_val = zlib.compress(b"12345678901234567890")
+        compressed_value = model._CompressedValue(z_val)
+        expected = "_CompressedValue(" + repr(z_val) + ")"
+        assert repr(compressed_value) == expected
+
+    @staticmethod
+    def test___eq__():
+        z_val1 = zlib.compress(b"12345678901234567890")
+        compressed_value1 = model._CompressedValue(z_val1)
+        z_val2 = zlib.compress(b"12345678901234567890abcde\x00")
+        compressed_value2 = model._CompressedValue(z_val2)
+        compressed_value3 = unittest.mock.sentinel.compressed_value
+        assert compressed_value1 == compressed_value1
+        assert not compressed_value1 == compressed_value2
+        assert not compressed_value1 == compressed_value3
+
+    @staticmethod
+    def test___ne__():
+        z_val1 = zlib.compress(b"12345678901234567890")
+        compressed_value1 = model._CompressedValue(z_val1)
+        z_val2 = zlib.compress(b"12345678901234567890abcde\x00")
+        compressed_value2 = model._CompressedValue(z_val2)
+        compressed_value3 = unittest.mock.sentinel.compressed_value
+        assert not compressed_value1 != compressed_value1
+        assert compressed_value1 != compressed_value2
+        assert compressed_value1 != compressed_value3
+
+    @staticmethod
+    def test___hash__():
+        z_val = zlib.compress(b"12345678901234567890")
+        compressed_value = model._CompressedValue(z_val)
+        with pytest.raises(TypeError):
+            hash(compressed_value)
 
 
 class TestBlobProperty:

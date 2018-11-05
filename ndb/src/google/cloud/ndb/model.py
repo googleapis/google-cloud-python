@@ -249,7 +249,7 @@ class IndexState:
         )
 
     def __eq__(self, other):
-        """Compare two indexes."""
+        """Compare two index states."""
         if not isinstance(other, IndexState):
             return NotImplemented
 
@@ -1481,6 +1481,39 @@ class FloatProperty(Property):
 
     def __init__(self, *args, **kwargs):
         raise NotImplementedError
+
+
+class _CompressedValue:
+    """A marker object wrapping compressed values.
+
+    Args:
+        z_val (bytes): A return value of ``zlib.compress``.
+    """
+
+    __slots__ = ("z_val",)
+
+    def __init__(self, z_val):
+        if not isinstance(z_val, bytes):
+            raise TypeError("Only bytes accepted", z_val)
+
+        self.z_val = z_val
+
+    def __repr__(self):
+        return "_CompressedValue({!r})".format(self.z_val)
+
+    def __eq__(self, other):
+        """Compare two compressed values."""
+        if not isinstance(other, _CompressedValue):
+            return NotImplemented
+
+        return self.z_val == other.z_val
+
+    def __ne__(self, other):
+        """Inequality comparison operation."""
+        return not self == other
+
+    def __hash__(self):
+        raise TypeError("_CompressedValue is not immutable")
 
 
 class BlobProperty(Property):
