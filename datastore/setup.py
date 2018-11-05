@@ -30,7 +30,7 @@ version = '1.7.1'
 release_status = 'Development Status :: 5 - Production/Stable'
 dependencies = [
     'google-cloud-core<0.29dev,>=0.28.0',
-    'google-api-core[grpc]<2.0.0dev,>=1.0.0',
+    'google-api-core[grpc]<2.0.0dev,>=1.4.1',
 ]
 extras = {
 }
