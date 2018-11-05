@@ -83,6 +83,9 @@ The primary differences come from:
   Now `Property._FIND_METHODS_CACHE` is set to `{}` when the `Property` class
   is created and there is another level of keys (based on fully-qualified
   class name) in the cache.
+- `eventloop` has been renamed to `_eventloop`. It is believed that `eventloop`
+  was previously a *de facto* private module, so we've just made that
+  explicit.
 
 ## Comments
 
