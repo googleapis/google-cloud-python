@@ -1623,9 +1623,49 @@ class IntegerProperty(Property):
 
 
 class FloatProperty(Property):
+    """A property that contains values of type float."""
+
     __slots__ = ()
 
-    def __init__(self, *args, **kwargs):
+    def _validate(self, value):
+        """Validate a ``value`` before setting it.
+
+        .. note::
+
+            If ``value`` is a :class:`bool` or :class:`int`, it will be
+            converted to a floating point value.
+
+        Args:
+            value (Union[float, int, bool]): The value to check.
+
+        Returns:
+            float: The passed-in ``value``, possibly converted to a
+            :class:`float`.
+
+        Raises:
+            .BadValueError: If ``value`` is not a :class:`float` or convertible
+                to one.
+        """
+        if not isinstance(value, (float, int)):
+            raise exceptions.BadValueError(
+                "Expected float, got {!r}".format(value)
+            )
+        return float(value)
+
+    def _db_set_value(self, v, unused_p, value):
+        """Helper for :meth:`_serialize`.
+
+        Raises:
+            NotImplementedError: Always. This method is virtual.
+        """
+        raise NotImplementedError
+
+    def _db_get_value(self, v, unused_p):
+        """Helper for :meth:`_deserialize`.
+
+        Raises:
+            NotImplementedError: Always. This method is virtual.
+        """
         raise NotImplementedError
 
 
