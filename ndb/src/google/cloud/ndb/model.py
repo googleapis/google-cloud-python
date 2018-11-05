@@ -17,9 +17,6 @@
 
 import inspect
 
-from google.cloud.datastore_v1.gapic import enums
-from google.cloud.datastore_v1.proto import entity_pb2
-
 from google.cloud.ndb import exceptions
 from google.cloud.ndb import key as key_module
 
@@ -83,7 +80,6 @@ __all__ = [
 ]
 
 
-_EMPTY_LIST_MEANING = 24
 Key = key_module.Key
 BlobKey = NotImplemented  # From `google.appengine.api.datastore_types`
 GeoPt = NotImplemented  # From `google.appengine.api.datastore_types`
