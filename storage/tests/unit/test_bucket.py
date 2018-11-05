@@ -1573,13 +1573,14 @@ class Test_Bucket(unittest.TestCase):
     def test_retention_period_setter_w_none(self):
         period = 86400 * 100  # 100 days
         bucket = self._make_one()
-        policy = bucket._properties['retentionPolicy'] = {}
-        policy['retentionPeriod'] = period
+        policy = bucket._properties['retentionPolicy'] = {
+            'retentionPeriod': period,
+        }
 
         bucket.retention_period = None
 
         self.assertIsNone(
-            bucket._properties['retentionPolicy']['retentionPeriod'])
+            bucket._properties['retentionPolicy'])
 
     def test_retention_period_setter_w_int(self):
         period = 86400 * 100  # 100 days
