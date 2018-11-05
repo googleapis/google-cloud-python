@@ -12,7 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Model classes for datastore objects and properties for models."""
+"""Model classes for datastore objects and properties for models.
+
+.. autoclass:: _BaseValue
+"""
 
 
 import inspect
@@ -336,6 +339,124 @@ class _BaseValue:
 
 
 class Property(ModelAttribute):
+    """A class describing a typed, persisted attribute of an entity.
+
+    .. warning::
+
+        This is not to be confused with Python's ``@property`` built-in.
+
+    .. note::
+
+        This is just a base class; there are specific subclasses that
+        describe properties of various types (and :class:`GenericProperty`
+        which describes a dynamically typed property).
+
+    All special property attributes, even those considered "public",
+    have names starting with an underscore, because :class:`StructuredProperty`
+    uses the non-underscore attribute namespace to refer to nested
+    property names; this is essential for specifying queries on
+    subproperties.
+
+    The :class:`Property` class and its predefined subclasses allow easy
+    subclassing using composable (or stackable) validation and
+    conversion APIs. These require some terminology definitions:
+
+    * A **user value** is a value such as would be set and accessed by the
+      application code using standard attributes on the entity.
+    * A **base value** is a value such as would be serialized to
+      and deserialized from Cloud Datastore.
+
+    A property will be a member of a :class:`Model` and will be used to help
+    store values in an ``entity`` (i.e. instance of a model subclass). The
+    value(s) for a given property ``name`` will be stored in
+    ``entity._values[name]`` and accessed by :meth:`_store_value` and
+    :meth:`_retrieve_value`. For these methods, the values can be either user
+    values or base values. To retrieve user values, use
+    :meth:`_get_user_value`. To retrieve base values, use
+    :meth:`_get_base_value`. In particular, :meth:`_get_value` calls
+    :meth:`_get_user_value`, and :meth:`_serialize` effectively calls
+    :meth:`_get_base_value`.
+
+    To store a user value, just call :meth:`_store_value`. To store a
+    base value, wrap the value in a :class:`_BaseValue` and then
+    call :meth:`_store_value`.
+
+    A :class:`Property` subclass that wants to implement a specific
+    transformation between user values and serialiazble values should
+    implement two methods, ``_to_base_type()`` and ``_from_base_type()``.
+    These should **not** call their ``super()`` method; super calls are taken
+    care of by :meth:`_call_to_base_type` and :meth:`_call_from_base_type`.
+    This is what is meant by composable (or stackable) APIs.
+
+    The API supports "stacking" classes with ever more sophisticated
+    user <-> base conversions: the user -> base conversion goes from more
+    sophisticated to less sophisticated, while the base -> user conversion goes
+    from less sophisticated to more sophisticated. For example, see the
+    relationship between :class:`BlobProperty`, :class:`TextProperty` and
+    :class:`StringProperty`.
+
+    In addition to ``_to_base_type()`` and ``_from_base_type()``, the
+    ``_validate()`` method is also a composable API.
+
+    The validation API distinguishes between "lax" and "strict" user values.
+    The set of lax values is a superset of the set of strict values. The
+    ``_validate()`` method takes a lax value and if necessary converts it to
+    a strict value. This means that when setting the property value, lax values
+    are accepted, while when getting the property value, only strict values
+    will be returned. If no conversion is needed, ``_validate()`` may return
+    :data`None`. If the argument is outside the set of accepted lax values,
+    ``_validate()`` should raise an exception, preferably :exc:`TypeError` or
+    :exc:`.BadValueError`.
+
+    Example/boilerplate:
+
+    .. code-block:: python
+
+        def _validate(self, value):
+            # Lax user value to strict user value.
+            if not isinstance(value, <top type>):
+                raise TypeError(...)  # Or datastore_errors.BadValueError(...).
+
+        def _to_base_type(self, value):
+            # (Strict) user value to base value.
+            if isinstance(value, SomeUserType):
+                return SomeBaseType(value)
+
+        def _from_base_type(self, value):
+            # Base value to (strict) user value.'
+            if not isinstance(value, SomeBaseType):
+                return SomeUserType(value)
+
+    Things that ``_validate()``, ``_to_base_type()`` and
+    ``_from_base_type()`` do **not** need to handle:
+
+    * :data:`None`: They will not be called with :data:`None` (and if they
+      return :data:`None`, this means that the value does not need conversion).
+    * Repeated values: The infrastructure (:meth:`_get_user_value` and
+      :meth:`_get_base_value`) takes care of calling ``_from_base_type()`` or
+      ``_to_base_type()`` for each list item in a repeated value.
+    * Wrapping values in :class:`_BaseValue`: The wrapping and unwrapping is
+      taken care of by the infrastructure that calls the composable APIs.
+    * Comparisons: The comparison operations call ``_to_base_type()`` on
+      their operand.
+    * Distinguishing between user and base values: the infrastructure
+      guarantees that ``_from_base_type()`` will be called with an
+      (unwrapped) base value, and that ``_to_base_type()`` will be called
+      with a user value.
+    * Returning the original value: if any of these return :data:`None`, the
+      original value is kept. (Returning a different value not equal to
+      :data:`None` will substitute the different value.)
+
+    .. automethod:: _store_value
+    .. automethod:: _retrieve_value
+    .. automethod:: _get_user_value
+    .. automethod:: _get_base_value
+    .. automethod:: _get_value
+    .. automethod:: _serialize
+    .. automethod:: _call_to_base_type
+    .. automethod:: _call_from_base_type
+    """
+
     # Instance default fallbacks provided by class.
     _code_name = None
     _name = None
@@ -693,7 +814,7 @@ class Property(ModelAttribute):
         This transforms the ``value`` via:
 
         * Calling the derived ``_validate()`` method(s) (on subclasses that
-          don't define ``_to_base_type``),
+          don't define ``_to_base_type()``),
         * Calling the custom validator function
 
         After transforming, it checks if the transformed value is in
@@ -752,7 +873,7 @@ class Property(ModelAttribute):
         which the current property is assigned (a.k.a. the code name). Note
         that this means that each property instance must be assigned to (at
         most) one class attribute. E.g. to declare three strings, you must
-        call create three :class`StringProperty` instances:
+        call create three :class:`StringProperty` instances:
 
         .. code-block:: python
 
@@ -905,7 +1026,7 @@ class Property(ModelAttribute):
             return [wrapped.b_val]
 
     def _opt_call_from_base_type(self, value):
-        """Call :meth:`_from_base_type` if necessary.
+        """Call ``_from_base_type()`` if necessary.
 
         If ``value`` is a :class:`_BaseValue`, unwrap it and call all
         :math:`_from_base_type` methods. Otherwise, return the value
@@ -942,10 +1063,10 @@ class Property(ModelAttribute):
         return repr(val)
 
     def _opt_call_to_base_type(self, value):
-        """Call :meth:`_to_base_type` if necessary.
+        """Call ``_to_base_type()`` if necessary.
 
         If ``value`` is a :class:`_BaseValue`, return it unchanged.
-        Otherwise, call all :meth:`_validate` and :meth:`_to_base_type` methods
+        Otherwise, call all ``_validate()`` and ``_to_base_type()`` methods
         and wrap it in a :class:`_BaseValue`.
 
         Args:
@@ -1055,7 +1176,7 @@ class Property(ModelAttribute):
         * ``A._to_base_type()``
 
         whereas the full list of methods (in order) called here stops once
-        a ``_to_base_type`` method is encountered:
+        a ``_to_base_type()`` method is encountered:
 
         * ``C._validate()``
         * ``B._validate()``
@@ -1068,7 +1189,7 @@ class Property(ModelAttribute):
         """
         methods = []
         for method in self._find_methods("_validate", "_to_base_type"):
-            # Stop if ``_to_base_type`` is encountered.
+            # Stop if ``_to_base_type()`` is encountered.
             if method.__name__ != "_validate":
                 break
             methods.append(method)

@@ -36,7 +36,18 @@ version = ".".join(release.split(".")[:2])
 # needs_sphinx = '1.0'
 nitpicky = True
 nitpick_ignore = [
-    ("py:obj", "google.cloud.datastore._app_engine_key_pb2.Reference")
+    ("py:obj", "google.cloud.datastore._app_engine_key_pb2.Reference"),
+    ("py:class", "google.cloud.datastore._app_engine_key_pb2.Reference"),
+    ("py:class", "google.cloud.datastore_v1.proto.entity_pb2.Entity"),
+    ("py:class", ".."),
+    ("py:class", "Any"),
+    ("py:class", "Callable"),
+    ("py:class", "Dict"),
+    ("py:class", "Iterable"),
+    ("py:class", "List"),
+    ("py:class", "Optional"),
+    ("py:class", "Tuple"),
+    ("py:class", "Union"),
 ]
 
 # Add any Sphinx extension module names here, as strings. They can be
@@ -50,7 +61,6 @@ extensions = [
     "sphinx.ext.coverage",
     "sphinx.ext.napoleon",
     "sphinx.ext.viewcode",
-    "sphinx_docstring_typing",
 ]
 
 # autodoc/autosummary flags
