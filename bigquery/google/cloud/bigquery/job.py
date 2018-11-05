@@ -719,9 +719,11 @@ class _JobConfig(object):
         job_type (str): The key to use for the job configuration.
     """
 
-    def __init__(self, job_type):
+    def __init__(self, job_type, properties={}):
         self._job_type = job_type
         self._properties = {job_type: {}}
+        for prop, val in properties.items():
+            setattr(self, prop, val)
 
     @property
     def labels(self):
@@ -793,7 +795,7 @@ class _JobConfig(object):
         _helpers._set_sub_prop(self._properties, [self._job_type, key], value)
 
     def _del_sub_prop(self, key):
-        """Reove ``key`` from the ``self._properties[self._job_type]`` dict.
+        """Remove ``key`` from the ``self._properties[self._job_type]`` dict.
 
         Most job properties are inside the dictionary related to the job type
         (e.g. 'copy', 'extract', 'load', 'query'). Use this method to clear
@@ -878,8 +880,8 @@ class LoadJobConfig(_JobConfig):
     server defaults.
     """
 
-    def __init__(self):
-        super(LoadJobConfig, self).__init__('load')
+    def __init__(self, **properties):
+        super(LoadJobConfig, self).__init__('load', properties)
 
     @property
     def allow_jagged_rows(self):
@@ -1473,8 +1475,8 @@ class CopyJobConfig(_JobConfig):
     server defaults.
     """
 
-    def __init__(self):
-        super(CopyJobConfig, self).__init__('copy')
+    def __init__(self, **properties):
+        super(CopyJobConfig, self).__init__('copy', properties)
 
     @property
     def create_disposition(self):
@@ -1666,8 +1668,8 @@ class ExtractJobConfig(_JobConfig):
     server defaults.
     """
 
-    def __init__(self):
-        super(ExtractJobConfig, self).__init__('extract')
+    def __init__(self, **properties):
+        super(ExtractJobConfig, self).__init__('extract', properties)
 
     @property
     def compression(self):
@@ -1910,8 +1912,8 @@ class QueryJobConfig(_JobConfig):
     server defaults.
     """
 
-    def __init__(self):
-        super(QueryJobConfig, self).__init__('query')
+    def __init__(self, **properties):
+        super(QueryJobConfig, self).__init__('query', properties)
 
     @property
     def destination_encryption_configuration(self):
