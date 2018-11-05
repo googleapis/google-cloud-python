@@ -132,5 +132,5 @@ def snippets(session):
         'py.test',
         '--quiet',
         os.path.join('docs', 'snippets.py'),
-        *session.posargs,
+        *session.posargs
     )

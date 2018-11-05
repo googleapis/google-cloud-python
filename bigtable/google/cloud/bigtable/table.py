@@ -131,6 +131,12 @@ class Table(object):
     def column_family(self, column_family_id, gc_rule=None):
         """Factory to create a column family associated with this table.
 
+        For example:
+
+        .. literalinclude:: snippets.py
+            :start-after: [START bigtable_create_column_family]
+            :end-before: [END bigtable_create_column_family]
+
         :type column_family_id: str
         :param column_family_id: The ID of the column family. Must be of the
                                  form ``[_a-zA-Z0-9][-_.a-zA-Z0-9]*``.
@@ -189,6 +195,12 @@ class Table(object):
     def create(self, initial_split_keys=[], column_families={}):
         """Creates this table.
 
+        For example:
+
+        .. literalinclude:: snippets.py
+            :start-after: [START bigtable_create_table]
+            :end-before: [END bigtable_create_table]
+
         .. note::
 
             A create request returns a
@@ -221,6 +233,12 @@ class Table(object):
     def exists(self):
         """Check whether the table exists.
 
+        For example:
+
+        .. literalinclude:: snippets.py
+            :start-after: [START bigtable_check_table_exists]
+            :end-before: [END bigtable_check_table_exists]
+
         :rtype: bool
         :returns: True if the table exists, else False.
         """
@@ -232,12 +250,26 @@ class Table(object):
             return False
 
     def delete(self):
-        """Delete this table."""
+        """Delete this table.
+
+        For example:
+
+        .. literalinclude:: snippets.py
+            :start-after: [START bigtable_delete_table]
+            :end-before: [END bigtable_delete_table]
+
+        """
         table_client = self._instance._client.table_admin_client
         table_client.delete_table(name=self.name)
 
     def list_column_families(self):
         """List the column families owned by this table.
+
+        For example:
+
+        .. literalinclude:: snippets.py
+            :start-after: [START bigtable_list_column_family]
+            :end-before: [END bigtable_list_column_family]
 
         :rtype: dict
         :returns: Dictionary of column families attached to this table. Keys
@@ -260,6 +292,12 @@ class Table(object):
 
     def get_cluster_states(self):
         """List the cluster states owned by this table.
+
+        For example:
+
+        .. literalinclude:: snippets.py
+            :start-after: [START bigtable_get_cluster_states]
+            :end-before: [END bigtable_get_cluster_states]
 
         :rtype: dict
         :returns: Dictionary of cluster states for this table.
