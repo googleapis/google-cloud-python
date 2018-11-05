@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.storage.bucket &#8212; google-cloud 36ffa923c7 documentation</title>
+    <title>google.cloud.storage.bucket &#8212; google-cloud c09ebab documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -962,8 +962,13 @@
 <span class="sd">        :rtype: :class:`Blob`</span>
 <span class="sd">        :returns: The newly-renamed blob.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">same_name</span> <span class="o">=</span> <span class="n">blob</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">new_name</span>
+
         <span class="n">new_blob</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">copy_blob</span><span class="p">(</span><span class="n">blob</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">new_name</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">)</span>
-        <span class="n">blob</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">same_name</span><span class="p">:</span>
+            <span class="n">blob</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">)</span>
+
         <span class="k">return</span> <span class="n">new_blob</span></div>
 
     <span class="nd">@property</span>
