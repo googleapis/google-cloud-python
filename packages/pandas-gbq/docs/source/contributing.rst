@@ -105,10 +105,10 @@ want to clone your fork to your machine::
 This creates the directory `pandas-gbq-yourname` and connects your repository to
 the upstream (main project) *pandas-gbq* repository.
 
-The testing suite will run automatically on Travis-CI once your pull request is submitted.
+The testing suite will run automatically on CircleCI once your pull request is submitted.
 However, if you wish to run the test suite on a branch prior to submitting the pull request,
-then Travis-CI needs to be hooked up to your GitHub repository.  Instructions for doing so
-are `here <http://about.travis-ci.org/docs/user/getting-started/>`__.
+then CircleCI needs to be hooked up to your GitHub repository.  Instructions for doing so
+are `here <https://circleci.com/docs/2.0/getting-started/>`__.
 
 Creating a branch
 -----------------
@@ -214,11 +214,13 @@ the more common ``PEP8`` issues:
   - we restrict line-length to 79 characters to promote readability
   - passing arguments should have spaces after commas, e.g. ``foo(arg1, arg2, kw1='bar')``
 
-Travis-CI will run the `flake8 <http://pypi.python.org/pypi/flake8>`_ tool
-and report any stylistic errors in your code. Therefore, it is helpful before
-submitting code to run the check yourself on the diff::
+CircleCI will run the `'black' code formatting tool
+<https://black.readthedocs.io/>`_ and report any stylistic errors in your
+code. Therefore, it is helpful before submitting code to run the formatter
+yourself::
 
-   git diff master | flake8 --diff
+    pip install black
+    black .
 
 Backwards Compatibility
 ~~~~~~~~~~~~~~~~~~~~~~~
@@ -287,10 +289,12 @@ directory.
 Running Google BigQuery Integration Tests
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-You will need to create a Google BigQuery private key in JSON format in
-order to run Google BigQuery integration tests on your local machine and
-on Travis-CI. The first step is to create a `service account
-<https://console.cloud.google.com/iam-admin/serviceaccounts/>`__.
+You will need to create a Google BigQuery private key in JSON format in order
+to run Google BigQuery integration tests on your local machine and on
+CircleCI. The first step is to create a `service account
+<https://console.cloud.google.com/iam-admin/serviceaccounts/>`__. Grant the
+service account permissions to run BigQuery queries and to create datasets
+and tables.
 
 To run the integration tests locally, set the following environment variables
 before running ``pytest``:
@@ -301,30 +305,30 @@ before running ``pytest``:
 
 Integration tests are skipped in pull requests because the credentials that
 are required for running Google BigQuery integration tests are
-`encrypted <https://docs.travis-ci.com/user/encrypting-files/>`__
-on Travis-CI and are only accessible from the pydata/pandas-gbq repository. The
-credentials won't be available on forks of pandas-gbq. Here are the steps to run
-gbq integration tests on a forked repository:
+`configured in the CircleCI web interface
+<https://circleci.com/docs/2.0/env-vars/#setting-an-environment-variable-in-a-project>`_
+and are only accessible from the pydata/pandas-gbq repository. The
+credentials won't be available on forks of pandas-gbq. Here are the steps to
+run gbq integration tests on a forked repository:
 
-#. Go to `Travis CI <https://travis-ci.org/>`__ and sign in with your GitHub
-   account.
-#. Click on the ``+`` icon next to the ``My Repositories`` list and enable
-   Travis builds for your fork.
-#. Click on the gear icon to edit your travis build, and add two environment
+#. Go to `CircleCI <https://circleci.com/dashboard>`__ and sign in with your
+   GitHub account.
+#. Switch to your personal account in the top-left organization switcher.
+#. Use the "Add projects" tab to enable CircleCI for your fork.
+#. Click on the gear icon to edit your CircleCI build, and add two environment
    variables:
 
    - ``GBQ_PROJECT_ID`` with the value being the ID of your BigQuery project.
 
-   - ``SERVICE_ACCOUNT_KEY`` with the value being the *contents* of the JSON
-     key that you downloaded for your service account. Use single quotes around
-     your JSON key to ensure that it is treated as a string.
+   - ``SERVICE_ACCOUNT_KEY`` with the value being the base64-encoded
+   *contents* of the JSON key that you downloaded for your service account.
 
-   For both environment variables, keep the "Display value in build log" option
-   DISABLED. These variables contain sensitive data and you do not want their
-   contents being exposed in build logs.
+   Keep the contents of these variables confidential. These variables contain
+   sensitive data and you do not want their contents being exposed in build
+   logs.
 #. Your branch should be tested automatically once it is pushed. You can check
    the status by visiting your Travis branches page which exists at the
-   following location: https://travis-ci.org/your-user-name/pandas-gbq/branches .
+   following location: https://circleci.com/gh/your-username/pandas-gbq .
    Click on a build job for your branch.
 
 Documenting your code

@@ -90,7 +90,7 @@ def test_get_application_default_credentials_returns_credentials():
 
 
 @pytest.mark.local_auth
-def test_get_user_account_credentials_bad_file_returns_credentials():
+def test_get_user_account_credentials_bad_file_returns_user_credentials():
     from google.auth.credentials import Credentials
 
     with mock.patch("__main__.open", side_effect=IOError()):

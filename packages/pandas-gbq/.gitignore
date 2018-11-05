@@ -89,3 +89,4 @@ Thumbs.db
 # Credentials #
 ###############
 bigquery_credentials.dat
+ci/service_account.json

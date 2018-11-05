@@ -1,0 +1,75 @@
+version: 2
+jobs:
+  # Pip
+  "pip-2.7-0.19.2":
+    docker:
+      - image: python:2.7
+    environment:
+      PYTHON: "2.7"
+      PANDAS: "0.19.2"
+    steps:
+      - checkout
+      - run: ci/config_auth.sh
+      - run: ci/run_pip.sh
+  "pip-3.5-0.18.1":
+    docker:
+      - image: python:3.5
+    environment:
+      PYTHON: "3.5"
+      PANDAS: "0.18.1"
+    steps:
+      - checkout
+      - run: ci/config_auth.sh
+      - run: ci/run_pip.sh
+  "pip-3.6-MASTER":
+    docker:
+      - image: python:3.6
+    environment:
+      PYTHON: "3.6"
+      PANDAS: "MASTER"
+    steps:
+      - checkout
+      - run: ci/config_auth.sh
+      - run: ci/run_pip.sh
+      # Coverage
+      - run: codecov
+  "pip-3.7-0.23.4":
+    docker:
+      - image: python:3.7
+    environment:
+      PYTHON: "3.7"
+      PANDAS: "0.23.4"
+    steps:
+      - checkout
+      - run: ci/config_auth.sh
+      - run: ci/run_pip.sh
+
+  # Conda
+  "conda-3.6-0.20.1":
+    docker:
+      - image: continuumio/miniconda3
+    environment:
+      PYTHON: "3.6"
+      PANDAS: "0.20.1"
+    steps:
+      - checkout
+      - run: ci/config_auth.sh
+      - run: ci/run_conda.sh
+
+  lint:
+    docker:
+      - image: python:3.6
+    steps:
+      - checkout
+      - run: pip install nox
+      - run: nox -s lint
+workflows:
+  version: 2
+  build:
+    jobs:
+      - "pip-2.7-0.19.2"
+      - "pip-3.5-0.18.1"
+      - "pip-3.6-MASTER"
+      - "pip-3.7-0.23.4"
+      - "conda-3.6-0.20.1"
+      - lint
