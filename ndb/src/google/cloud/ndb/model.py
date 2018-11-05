@@ -1427,9 +1427,47 @@ class BooleanProperty(Property):
 
 
 class IntegerProperty(Property):
+    """A property that contains values of type integer."""
+
     __slots__ = ()
 
-    def __init__(self, *args, **kwargs):
+    def _validate(self, value):
+        """Validate a ``value`` before setting it.
+
+        .. note::
+
+            If ``value`` is a :class:`bool`, it will be treated as ``0`` (for
+            :data:`False`) or ``1`` (for :data:`True`).
+
+        Args:
+            value (int): The value to check.
+
+        Returns:
+            int: The passed-in ``value``.
+
+        Raises:
+            .BadValueError: If ``value`` is not a :class:`bool`.
+        """
+        if not isinstance(value, int):
+            raise exceptions.BadValueError(
+                "Expected integer, got {!r}".format(value)
+            )
+        return int(value)
+
+    def _db_set_value(self, v, unused_p, value):
+        """Helper for :meth:`_serialize`.
+
+        Raises:
+            NotImplementedError: Always. This method is virtual.
+        """
+        raise NotImplementedError
+
+    def _db_get_value(self, v, unused_p):
+        """Helper for :meth:`_deserialize`.
+
+        Raises:
+            NotImplementedError: Always. This method is virtual.
+        """
         raise NotImplementedError
 
 
