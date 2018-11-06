@@ -191,10 +191,10 @@ class DataTransferServiceGrpcTransport(object):
     def schedule_transfer_runs(self):
         """Return the gRPC stub for {$apiMethod.name}.
 
-        Creates transfer runs for a time range [start_time, end_time].
-        For each date - or whatever granularity the data source supports - in the
-        range, one transfer run is created.
-        Note that runs are created per UTC time in the time range.
+        Creates transfer runs for a time range [start\_time, end\_time]. For
+        each date - or whatever granularity the data source supports - in the
+        range, one transfer run is created. Note that runs are created per UTC
+        time in the time range.
 
         Returns:
             Callable: A callable which accepts the appropriate
