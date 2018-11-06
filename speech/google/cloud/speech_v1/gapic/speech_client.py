@@ -138,9 +138,10 @@ class SpeechClient(object):
             )
 
         if client_info is None:
-            client_info = (
-                google.api_core.gapic_v1.client_info.DEFAULT_CLIENT_INFO)
-        client_info.gapic_version = _GAPIC_LIBRARY_VERSION
+            client_info = google.api_core.gapic_v1.client_info.ClientInfo(
+                gapic_version=_GAPIC_LIBRARY_VERSION, )
+        else:
+            client_info.gapic_version = _GAPIC_LIBRARY_VERSION
         self._client_info = client_info
 
         # Parse out the default settings for retry and timeout for each RPC
@@ -185,9 +186,11 @@ class SpeechClient(object):
         Args:
             config (Union[dict, ~google.cloud.speech_v1.types.RecognitionConfig]): *Required* Provides information to the recognizer that specifies how to
                 process the request.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.speech_v1.types.RecognitionConfig`
             audio (Union[dict, ~google.cloud.speech_v1.types.RecognitionAudio]): *Required* The audio data to be recognized.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.speech_v1.types.RecognitionAudio`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -235,8 +238,8 @@ class SpeechClient(object):
         """
         Performs asynchronous speech recognition: receive results via the
         google.longrunning.Operations interface. Returns either an
-        ``Operation.error`` or an ``Operation.response`` which contains
-        a ``LongRunningRecognizeResponse`` message.
+        ``Operation.error`` or an ``Operation.response`` which contains a
+        ``LongRunningRecognizeResponse`` message.
 
         Example:
             >>> from google.cloud import speech_v1
@@ -265,9 +268,11 @@ class SpeechClient(object):
         Args:
             config (Union[dict, ~google.cloud.speech_v1.types.RecognitionConfig]): *Required* Provides information to the recognizer that specifies how to
                 process the request.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.speech_v1.types.RecognitionConfig`
             audio (Union[dict, ~google.cloud.speech_v1.types.RecognitionAudio]): *Required* The audio data to be recognized.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.speech_v1.types.RecognitionAudio`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
