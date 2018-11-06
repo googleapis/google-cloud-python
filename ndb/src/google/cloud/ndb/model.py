@@ -16,6 +16,7 @@
 
 
 import inspect
+import zlib
 
 from google.cloud.ndb import exceptions
 from google.cloud.ndb import key as key_module
@@ -1627,6 +1628,37 @@ class BlobProperty(Property):
                 "Indexed value {} must be at most {:d} "
                 "bytes".format(self._name, _MAX_STRING_LENGTH)
             )
+
+    def _to_base_type(self, value):
+        """Convert a value to the "base" value type for this property.
+
+        Args:
+            value (bytes): The value to be converted.
+
+        Returns:
+            Optional[bytes]: The converted value. If the current property is
+            compressed, this will return a wrapped version of the compressed
+            value. Otherwise, it will return :data:`None` to indicate that
+            the value didn't need to be converted.
+        """
+        if self._compressed:
+            return _CompressedValue(zlib.compress(value))
+
+    def _from_base_type(self, value):
+        """Convert a value from the "base" value type for this property.
+
+        Args:
+            value (bytes): The value to be converted.
+
+        Returns:
+            Optional[bytes]: The converted value. If the current property is
+            a (wrapped) compressed value, this will unwrap the value and return
+            the decompressed form. Otherwise, it will return :data:`None` to
+            indicate that the value didn't need to be unwrapped and
+            decompressed.
+        """
+        if isinstance(value, _CompressedValue):
+            return zlib.decompress(value.z_val)
 
     def _db_set_value(self, v, unused_p, value):
         """Helper for :meth:`_serialize`.

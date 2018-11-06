@@ -1484,6 +1484,38 @@ class TestBlobProperty:
             prop._validate(value)
 
     @staticmethod
+    def test__to_base_type():
+        prop = model.BlobProperty(name="blob", compressed=True)
+        value = b"abc" * 10
+        converted = prop._to_base_type(value)
+
+        assert isinstance(converted, model._CompressedValue)
+        assert converted.z_val == zlib.compress(value)
+
+    @staticmethod
+    def test__to_base_type_no_convert():
+        prop = model.BlobProperty(name="blob", compressed=False)
+        value = b"abc" * 10
+        converted = prop._to_base_type(value)
+        assert converted is None
+
+    @staticmethod
+    def test__from_base_type():
+        prop = model.BlobProperty(name="blob")
+        original = b"abc" * 10
+        z_val = zlib.compress(original)
+        value = model._CompressedValue(z_val)
+        converted = prop._from_base_type(value)
+
+        assert converted == original
+
+    @staticmethod
+    def test__from_base_type_no_convert():
+        prop = model.BlobProperty(name="blob")
+        converted = prop._from_base_type(b"abc")
+        assert converted is None
+
+    @staticmethod
     def test__db_set_value():
         prop = model.BlobProperty(name="blob")
         with pytest.raises(NotImplementedError):
