@@ -390,7 +390,7 @@ class Property(ModelAttribute):
 
         class SingleDigit(Positive):
             def _validate(self, value):
-                if value > 10:
+                if value > 9:
                     raise ndb.exceptions.BadValueError("Multi-digit", value)
 
     neither ``_validate()`` method calls ``super()``. Instead, when a
@@ -402,11 +402,15 @@ class Property(ModelAttribute):
     * ``IntegerProperty._validate``
 
     The API supports "stacking" classes with ever more sophisticated
-    user <-> base conversions: the user -> base conversion goes from more
-    sophisticated to less sophisticated, while the base -> user conversion goes
-    from less sophisticated to more sophisticated. For example, see the
-    relationship between :class:`BlobProperty`, :class:`TextProperty` and
-    :class:`StringProperty`.
+    user / base conversions:
+
+    * the user to base conversion goes from more sophisticated to less
+      sophisticated
+    * the base to user conversion goes from less sophisticated to more
+      sophisticated
+
+    For example, see the relationship between :class:`BlobProperty`,
+    :class:`TextProperty` and :class:`StringProperty`.
 
     The validation API distinguishes between "lax" and "strict" user values.
     The set of lax values is a superset of the set of strict values. The
@@ -433,7 +437,7 @@ class Property(ModelAttribute):
             def _to_base_type(self, value):
                 # (Strict) user value to base value.
                 if isinstance(value, Widget):
-                    return _WidgetInternal.to_value()
+                    return value.to_internal()
 
             def _from_base_type(self, value):
                 # Base value to (strict) user value.'
