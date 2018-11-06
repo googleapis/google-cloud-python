@@ -18,17 +18,17 @@ config = {
             },
             "methods": {
                 "Recognize": {
-                    "timeout_millis": 1000000,
+                    "timeout_millis": 200000,
                     "retry_codes_name": "idempotent",
                     "retry_params_name": "default"
                 },
                 "LongRunningRecognize": {
-                    "timeout_millis": 60000,
+                    "timeout_millis": 200000,
                     "retry_codes_name": "non_idempotent",
                     "retry_params_name": "default"
                 },
                 "StreamingRecognize": {
-                    "timeout_millis": 1000000,
+                    "timeout_millis": 200000,
                     "retry_codes_name": "idempotent",
                     "retry_params_name": "default"
                 }
