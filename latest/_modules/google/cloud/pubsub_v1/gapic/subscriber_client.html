@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.pubsub_v1.gapic.subscriber_client &#8212; google-cloud ea16a5a documentation</title>
+    <title>google.cloud.pubsub_v1.gapic.subscriber_client &#8212; google-cloud a861334 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -225,9 +225,10 @@
             <span class="p">)</span>
 
         <span class="k">if</span> <span class="n">client_info</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">client_info</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">client_info</span><span class="o">.</span><span class="n">DEFAULT_CLIENT_INFO</span><span class="p">)</span>
-        <span class="n">client_info</span><span class="o">.</span><span class="n">gapic_version</span> <span class="o">=</span> <span class="n">_GAPIC_LIBRARY_VERSION</span>
+            <span class="n">client_info</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">client_info</span><span class="o">.</span><span class="n">ClientInfo</span><span class="p">(</span>
+                <span class="n">gapic_version</span><span class="o">=</span><span class="n">_GAPIC_LIBRARY_VERSION</span><span class="p">,</span> <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">client_info</span><span class="o">.</span><span class="n">gapic_version</span> <span class="o">=</span> <span class="n">_GAPIC_LIBRARY_VERSION</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_client_info</span> <span class="o">=</span> <span class="n">client_info</span>
 
         <span class="c1"># Parse out the default settings for retry and timeout for each RPC</span>
@@ -257,17 +258,16 @@
                             <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
                             <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Creates a subscription to a given topic. See the</span>
-<span class="sd">        &lt;a href=\&quot;/pubsub/docs/admin#resource_names\&quot;&gt; resource name rules&lt;/a&gt;.</span>
-<span class="sd">        If the subscription already exists, returns ``ALREADY_EXISTS``.</span>
-<span class="sd">        If the corresponding topic doesn&#39;t exist, returns ``NOT_FOUND``.</span>
+<span class="sd">        Creates a subscription to a given topic. See the resource name rules. If</span>
+<span class="sd">        the subscription already exists, returns ``ALREADY_EXISTS``. If the</span>
+<span class="sd">        corresponding topic doesn&#39;t exist, returns ``NOT_FOUND``.</span>
 
-<span class="sd">        If the name is not provided in the request, the server will assign a random</span>
-<span class="sd">        name for this subscription on the same project as the topic, conforming</span>
-<span class="sd">        to the</span>
-<span class="sd">        `resource name format &lt;https://cloud.google.com/pubsub/docs/overview#names&gt;`_.</span>
-<span class="sd">        The generated name is populated in the returned Subscription object.</span>
-<span class="sd">        Note that for REST API requests, you must specify a name in the request.</span>
+<span class="sd">        If the name is not provided in the request, the server will assign a</span>
+<span class="sd">        random name for this subscription on the same project as the topic,</span>
+<span class="sd">        conforming to the `resource name</span>
+<span class="sd">        format &lt;https://cloud.google.com/pubsub/docs/overview#names&gt;`__. The</span>
+<span class="sd">        generated name is populated in the returned Subscription object. Note</span>
+<span class="sd">        that for REST API requests, you must specify a name in the request.</span>
 
 <span class="sd">        Example:</span>
 <span class="sd">            &gt;&gt;&gt; from google.cloud import pubsub_v1</span>
@@ -281,18 +281,18 @@
 
 <span class="sd">        Args:</span>
 <span class="sd">            name (str): The name of the subscription. It must have the format</span>
-<span class="sd">                ``\&quot;projects/{project}/subscriptions/{subscription}\&quot;``. ``{subscription}`` must</span>
-<span class="sd">                start with a letter, and contain only letters (``[A-Za-z]``), numbers</span>
-<span class="sd">                (``[0-9]``), dashes (``-``), underscores (``_``), periods (``.``), tildes (``~``),</span>
-<span class="sd">                plus (``+``) or percent signs (``%``). It must be between 3 and 255 characters</span>
-<span class="sd">                in length, and it must not start with ``\&quot;goog\&quot;``</span>
-<span class="sd">            topic (str): The name of the topic from which this subscription is receiving messages.</span>
-<span class="sd">                Format is ``projects/{project}/topics/{topic}``.</span>
-<span class="sd">                The value of this field will be ``_deleted-topic_`` if the topic has been</span>
-<span class="sd">                deleted.</span>
-<span class="sd">            push_config (Union[dict, ~google.cloud.pubsub_v1.types.PushConfig]): If push delivery is used with this subscription, this field is</span>
-<span class="sd">                used to configure it. An empty ``pushConfig`` signifies that the subscriber</span>
-<span class="sd">                will pull and ack messages using API methods.</span>
+<span class="sd">                `&quot;projects/{project}/subscriptions/{subscription}&quot;`. `{subscription}` must</span>
+<span class="sd">                start with a letter, and contain only letters (`[A-Za-z]`), numbers</span>
+<span class="sd">                (`[0-9]`), dashes (`-`), underscores (`_`), periods (`.`), tildes (`~`),</span>
+<span class="sd">                plus (`+`) or percent signs (`%`). It must be between 3 and 255 characters</span>
+<span class="sd">                in length, and it must not start with `&quot;goog&quot;`</span>
+<span class="sd">            topic (str): The name of the topic from which this subscription is receiving</span>
+<span class="sd">                messages. Format is ``projects/{project}/topics/{topic}``. The value of</span>
+<span class="sd">                this field will be ``_deleted-topic_`` if the topic has been deleted.</span>
+<span class="sd">            push_config (Union[dict, ~google.cloud.pubsub_v1.types.PushConfig]): If push delivery is used with this subscription, this field is used to</span>
+<span class="sd">                configure it. An empty ``pushConfig`` signifies that the subscriber will</span>
+<span class="sd">                pull and ack messages using API methods.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.pubsub_v1.types.PushConfig`</span>
 <span class="sd">            ack_deadline_seconds (int): This value is the maximum time after a subscriber receives a message</span>
@@ -301,48 +301,50 @@
 <span class="sd">                acknowledged, it is an outstanding message and will not be delivered</span>
 <span class="sd">                again during that time (on a best-effort basis).</span>
 
-<span class="sd">                For pull subscriptions, this value is used as the initial value for the ack</span>
-<span class="sd">                deadline. To override this value for a given message, call</span>
+<span class="sd">                For pull subscriptions, this value is used as the initial value for the</span>
+<span class="sd">                ack deadline. To override this value for a given message, call</span>
 <span class="sd">                ``ModifyAckDeadline`` with the corresponding ``ack_id`` if using</span>
 <span class="sd">                non-streaming pull or send the ``ack_id`` in a</span>
-<span class="sd">                ``StreamingModifyAckDeadlineRequest`` if using streaming pull.</span>
-<span class="sd">                The minimum custom deadline you can specify is 10 seconds.</span>
-<span class="sd">                The maximum custom deadline you can specify is 600 seconds (10 minutes).</span>
-<span class="sd">                If this parameter is 0, a default value of 10 seconds is used.</span>
+<span class="sd">                ``StreamingModifyAckDeadlineRequest`` if using streaming pull. The</span>
+<span class="sd">                minimum custom deadline you can specify is 10 seconds. The maximum</span>
+<span class="sd">                custom deadline you can specify is 600 seconds (10 minutes). If this</span>
+<span class="sd">                parameter is 0, a default value of 10 seconds is used.</span>
 
-<span class="sd">                For push delivery, this value is also used to set the request timeout for</span>
-<span class="sd">                the call to the push endpoint.</span>
+<span class="sd">                For push delivery, this value is also used to set the request timeout</span>
+<span class="sd">                for the call to the push endpoint.</span>
 
-<span class="sd">                If the subscriber never acknowledges the message, the Pub/Sub</span>
-<span class="sd">                system will eventually redeliver the message.</span>
+<span class="sd">                If the subscriber never acknowledges the message, the Pub/Sub system</span>
+<span class="sd">                will eventually redeliver the message.</span>
 <span class="sd">            retain_acked_messages (bool): Indicates whether to retain acknowledged messages. If true, then</span>
-<span class="sd">                messages are not expunged from the subscription&#39;s backlog, even if they are</span>
-<span class="sd">                acknowledged, until they fall out of the ``message_retention_duration``</span>
-<span class="sd">                window.&lt;br&gt;&lt;br&gt;</span>
-<span class="sd">                &lt;b&gt;ALPHA:&lt;/b&gt; This feature is part of an alpha release. This API might be</span>
-<span class="sd">                changed in backward-incompatible ways and is not recommended for production</span>
-<span class="sd">                use. It is not subject to any SLA or deprecation policy.</span>
-<span class="sd">            message_retention_duration (Union[dict, ~google.cloud.pubsub_v1.types.Duration]): How long to retain unacknowledged messages in the subscription&#39;s backlog,</span>
-<span class="sd">                from the moment a message is published.</span>
-<span class="sd">                If ``retain_acked_messages`` is true, then this also configures the retention</span>
-<span class="sd">                of acknowledged messages, and thus configures how far back in time a ``Seek``</span>
-<span class="sd">                can be done. Defaults to 7 days. Cannot be more than 7 days or less than 10</span>
-<span class="sd">                minutes.&lt;br&gt;&lt;br&gt;</span>
-<span class="sd">                &lt;b&gt;ALPHA:&lt;/b&gt; This feature is part of an alpha release. This API might be</span>
-<span class="sd">                changed in backward-incompatible ways and is not recommended for production</span>
-<span class="sd">                use. It is not subject to any SLA or deprecation policy.</span>
+<span class="sd">                messages are not expunged from the subscription&#39;s backlog, even if they</span>
+<span class="sd">                are acknowledged, until they fall out of the</span>
+<span class="sd">                ``message_retention_duration`` window. ALPHA: This feature is part of an</span>
+<span class="sd">                alpha release. This API might be changed in backward-incompatible ways</span>
+<span class="sd">                and is not recommended for production use. It is not subject to any SLA</span>
+<span class="sd">                or deprecation policy.</span>
+<span class="sd">            message_retention_duration (Union[dict, ~google.cloud.pubsub_v1.types.Duration]): How long to retain unacknowledged messages in the subscription&#39;s</span>
+<span class="sd">                backlog, from the moment a message is published. If</span>
+<span class="sd">                ``retain_acked_messages`` is true, then this also configures the</span>
+<span class="sd">                retention of acknowledged messages, and thus configures how far back in</span>
+<span class="sd">                time a ``Seek`` can be done. Defaults to 7 days. Cannot be more than 7</span>
+<span class="sd">                days or less than 10 minutes. ALPHA: This feature is part of an alpha</span>
+<span class="sd">                release. This API might be changed in backward-incompatible ways and is</span>
+<span class="sd">                not recommended for production use. It is not subject to any SLA or</span>
+<span class="sd">                deprecation policy.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.pubsub_v1.types.Duration`</span>
-<span class="sd">            labels (dict[str -&gt; str]): See &lt;a href=\&quot;/pubsub/docs/labels\&quot;&gt; Creating and managing labels&lt;/a&gt;.</span>
-<span class="sd">            expiration_policy (Union[dict, ~google.cloud.pubsub_v1.types.ExpirationPolicy]): A policy that specifies the conditions for this subscription&#39;s expiration.</span>
-<span class="sd">                A subscription is considered active as long as any connected subscriber is</span>
-<span class="sd">                successfully consuming messages from the subscription or is issuing</span>
-<span class="sd">                operations on the subscription. If ``expiration_policy`` is not set, a</span>
-<span class="sd">                *default policy* with ``ttl`` of 31 days will be used. The minimum allowed</span>
-<span class="sd">                value for ``expiration_policy.ttl`` is 1 day.</span>
-<span class="sd">                &lt;b&gt;BETA:&lt;/b&gt; This feature is part of a beta release. This API might be</span>
-<span class="sd">                changed in backward-incompatible ways and is not recommended for production</span>
-<span class="sd">                use. It is not subject to any SLA or deprecation policy.</span>
+<span class="sd">            labels (dict[str -&gt; str]): See &lt;a href=&quot;/pubsub/docs/labels&quot;&gt; Creating and managing labels&lt;/a&gt;.</span>
+<span class="sd">            expiration_policy (Union[dict, ~google.cloud.pubsub_v1.types.ExpirationPolicy]): A policy that specifies the conditions for this subscription&#39;s</span>
+<span class="sd">                expiration. A subscription is considered active as long as any connected</span>
+<span class="sd">                subscriber is successfully consuming messages from the subscription or</span>
+<span class="sd">                is issuing operations on the subscription. If ``expiration_policy`` is</span>
+<span class="sd">                not set, a *default policy* with ``ttl`` of 31 days will be used. The</span>
+<span class="sd">                minimum allowed value for ``expiration_policy.ttl`` is 1 day. BETA: This</span>
+<span class="sd">                feature is part of a beta release. This API might be changed in</span>
+<span class="sd">                backward-incompatible ways and is not recommended for production use. It</span>
+<span class="sd">                is not subject to any SLA or deprecation policy.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.pubsub_v1.types.ExpirationPolicy`</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
@@ -407,8 +409,8 @@
 <span class="sd">            &gt;&gt;&gt; response = client.get_subscription(subscription)</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            subscription (str): The name of the subscription to get.</span>
-<span class="sd">                Format is ``projects/{project}/subscriptions/{sub}``.</span>
+<span class="sd">            subscription (str): The name of the subscription to get. Format is</span>
+<span class="sd">                ``projects/{project}/subscriptions/{sub}``.</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
 <span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
 <span class="sd">                be retried.</span>
@@ -470,10 +472,12 @@
 
 <span class="sd">        Args:</span>
 <span class="sd">            subscription (Union[dict, ~google.cloud.pubsub_v1.types.Subscription]): The updated subscription object.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.pubsub_v1.types.Subscription`</span>
 <span class="sd">            update_mask (Union[dict, ~google.cloud.pubsub_v1.types.FieldMask]): Indicates which fields in the provided subscription to update.</span>
 <span class="sd">                Must be specified and non-empty.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.pubsub_v1.types.FieldMask`</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
@@ -539,14 +543,14 @@
 <span class="sd">            &gt;&gt;&gt; # Alternatively:</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; # Iterate over results one page at a time</span>
-<span class="sd">            &gt;&gt;&gt; for page in client.list_subscriptions(project, options=CallOptions(page_token=INITIAL_PAGE)):</span>
+<span class="sd">            &gt;&gt;&gt; for page in client.list_subscriptions(project).pages:</span>
 <span class="sd">            ...     for element in page:</span>
 <span class="sd">            ...         # process element</span>
 <span class="sd">            ...         pass</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            project (str): The name of the project in which to list subscriptions.</span>
-<span class="sd">                Format is ``projects/{project-id}``.</span>
+<span class="sd">            project (str): The name of the project in which to list subscriptions. Format is</span>
+<span class="sd">                ``projects/{project-id}``.</span>
 <span class="sd">            page_size (int): The maximum number of resources contained in the</span>
 <span class="sd">                underlying API response. If page streaming is performed per-</span>
 <span class="sd">                resource, this parameter does not affect the return value. If page</span>
@@ -610,11 +614,12 @@
                             <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
                             <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Deletes an existing subscription. All messages retained in the subscription</span>
-<span class="sd">        are immediately dropped. Calls to ``Pull`` after deletion will return</span>
-<span class="sd">        ``NOT_FOUND``. After a subscription is deleted, a new one may be created with</span>
-<span class="sd">        the same name, but the new one has no association with the old</span>
-<span class="sd">        subscription or its topic unless the same topic is specified.</span>
+<span class="sd">        Deletes an existing subscription. All messages retained in the</span>
+<span class="sd">        subscription are immediately dropped. Calls to ``Pull`` after deletion</span>
+<span class="sd">        will return ``NOT_FOUND``. After a subscription is deleted, a new one</span>
+<span class="sd">        may be created with the same name, but the new one has no association</span>
+<span class="sd">        with the old subscription or its topic unless the same topic is</span>
+<span class="sd">        specified.</span>
 
 <span class="sd">        Example:</span>
 <span class="sd">            &gt;&gt;&gt; from google.cloud import pubsub_v1</span>
@@ -626,8 +631,8 @@
 <span class="sd">            &gt;&gt;&gt; client.delete_subscription(subscription)</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            subscription (str): The subscription to delete.</span>
-<span class="sd">                Format is ``projects/{project}/subscriptions/{sub}``.</span>
+<span class="sd">            subscription (str): The subscription to delete. Format is</span>
+<span class="sd">                ``projects/{project}/subscriptions/{sub}``.</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
 <span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
 <span class="sd">                be retried.</span>
@@ -682,24 +687,23 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; subscription = client.subscription_path(&#39;[PROJECT]&#39;, &#39;[SUBSCRIPTION]&#39;)</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``ack_ids``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `ack_ids`:</span>
 <span class="sd">            &gt;&gt;&gt; ack_ids = []</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``ack_deadline_seconds``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `ack_deadline_seconds`:</span>
 <span class="sd">            &gt;&gt;&gt; ack_deadline_seconds = 0</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; client.modify_ack_deadline(subscription, ack_ids, ack_deadline_seconds)</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            subscription (str): The name of the subscription.</span>
-<span class="sd">                Format is ``projects/{project}/subscriptions/{sub}``.</span>
+<span class="sd">            subscription (str): The name of the subscription. Format is</span>
+<span class="sd">                ``projects/{project}/subscriptions/{sub}``.</span>
 <span class="sd">            ack_ids (list[str]): List of acknowledgment IDs.</span>
 <span class="sd">            ack_deadline_seconds (int): The new ack deadline with respect to the time this request was sent to</span>
-<span class="sd">                the Pub/Sub system. For example, if the value is 10, the new</span>
-<span class="sd">                ack deadline will expire 10 seconds after the ``ModifyAckDeadline`` call</span>
-<span class="sd">                was made. Specifying zero may immediately make the message available for</span>
-<span class="sd">                another pull request.</span>
-<span class="sd">                The minimum deadline you can specify is 0 seconds.</span>
+<span class="sd">                the Pub/Sub system. For example, if the value is 10, the new ack</span>
+<span class="sd">                deadline will expire 10 seconds after the ``ModifyAckDeadline`` call was</span>
+<span class="sd">                made. Specifying zero may immediately make the message available for</span>
+<span class="sd">                another pull request. The minimum deadline you can specify is 0 seconds.</span>
 <span class="sd">                The maximum deadline you can specify is 600 seconds (10 minutes).</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
 <span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
@@ -745,11 +749,11 @@
                     <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Acknowledges the messages associated with the ``ack_ids`` in the</span>
-<span class="sd">        ``AcknowledgeRequest``. The Pub/Sub system can remove the relevant messages</span>
-<span class="sd">        from the subscription.</span>
+<span class="sd">        ``AcknowledgeRequest``. The Pub/Sub system can remove the relevant</span>
+<span class="sd">        messages from the subscription.</span>
 
-<span class="sd">        Acknowledging a message whose ack deadline has expired may succeed,</span>
-<span class="sd">        but such a message may be redelivered later. Acknowledging a message more</span>
+<span class="sd">        Acknowledging a message whose ack deadline has expired may succeed, but</span>
+<span class="sd">        such a message may be redelivered later. Acknowledging a message more</span>
 <span class="sd">        than once will not result in an error.</span>
 
 <span class="sd">        Example:</span>
@@ -759,16 +763,17 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; subscription = client.subscription_path(&#39;[PROJECT]&#39;, &#39;[SUBSCRIPTION]&#39;)</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``ack_ids``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `ack_ids`:</span>
 <span class="sd">            &gt;&gt;&gt; ack_ids = []</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; client.acknowledge(subscription, ack_ids)</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            subscription (str): The subscription whose message is being acknowledged.</span>
-<span class="sd">                Format is ``projects/{project}/subscriptions/{sub}``.</span>
-<span class="sd">            ack_ids (list[str]): The acknowledgment ID for the messages being acknowledged that was returned</span>
-<span class="sd">                by the Pub/Sub system in the ``Pull`` response. Must not be empty.</span>
+<span class="sd">            subscription (str): The subscription whose message is being acknowledged. Format is</span>
+<span class="sd">                ``projects/{project}/subscriptions/{sub}``.</span>
+<span class="sd">            ack_ids (list[str]): The acknowledgment ID for the messages being acknowledged that was</span>
+<span class="sd">                returned by the Pub/Sub system in the ``Pull`` response. Must not be</span>
+<span class="sd">                empty.</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
 <span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
 <span class="sd">                be retried.</span>
@@ -822,14 +827,14 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; subscription = client.subscription_path(&#39;[PROJECT]&#39;, &#39;[SUBSCRIPTION]&#39;)</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``max_messages``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `max_messages`:</span>
 <span class="sd">            &gt;&gt;&gt; max_messages = 0</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; response = client.pull(subscription, max_messages)</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            subscription (str): The subscription from which messages should be pulled.</span>
-<span class="sd">                Format is ``projects/{project}/subscriptions/{sub}``.</span>
+<span class="sd">            subscription (str): The subscription from which messages should be pulled. Format is</span>
+<span class="sd">                ``projects/{project}/subscriptions/{sub}``.</span>
 <span class="sd">            max_messages (int): The maximum number of messages returned for this request. The Pub/Sub</span>
 <span class="sd">                system may return fewer than the number specified.</span>
 <span class="sd">            return_immediately (bool): If this field set to true, the system will respond immediately even if</span>
@@ -880,12 +885,12 @@
                        <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Establishes a stream with the server, which sends messages down to the</span>
-<span class="sd">        client. The client streams acknowledgements and ack deadline modifications</span>
-<span class="sd">        back to the server. The server will close the stream and return the status</span>
-<span class="sd">        on any error. The server may close the stream with status ``UNAVAILABLE`` to</span>
-<span class="sd">        reassign server-side resources, in which case, the client should</span>
-<span class="sd">        re-establish the stream. Flow control can be achieved by configuring the</span>
-<span class="sd">        underlying RPC channel.</span>
+<span class="sd">        client. The client streams acknowledgements and ack deadline</span>
+<span class="sd">        modifications back to the server. The server will close the stream and</span>
+<span class="sd">        return the status on any error. The server may close the stream with</span>
+<span class="sd">        status ``UNAVAILABLE`` to reassign server-side resources, in which case,</span>
+<span class="sd">        the client should re-establish the stream. Flow control can be achieved</span>
+<span class="sd">        by configuring the underlying RPC channel.</span>
 
 <span class="sd">        EXPERIMENTAL: This method interface might change in the future.</span>
 
@@ -896,7 +901,7 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; subscription = client.subscription_path(&#39;[PROJECT]&#39;, &#39;[SUBSCRIPTION]&#39;)</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``stream_ack_deadline_seconds``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `stream_ack_deadline_seconds`:</span>
 <span class="sd">            &gt;&gt;&gt; stream_ack_deadline_seconds = 0</span>
 <span class="sd">            &gt;&gt;&gt; request = {&#39;subscription&#39;: subscription, &#39;stream_ack_deadline_seconds&#39;: stream_ack_deadline_seconds}</span>
 <span class="sd">            &gt;&gt;&gt;</span>
@@ -950,10 +955,11 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Modifies the ``PushConfig`` for a specified subscription.</span>
 
-<span class="sd">        This may be used to change a push subscription to a pull one (signified by</span>
-<span class="sd">        an empty ``PushConfig``) or vice versa, or change the endpoint URL and other</span>
-<span class="sd">        attributes of a push subscription. Messages will accumulate for delivery</span>
-<span class="sd">        continuously through the call regardless of changes to the ``PushConfig``.</span>
+<span class="sd">        This may be used to change a push subscription to a pull one (signified</span>
+<span class="sd">        by an empty ``PushConfig``) or vice versa, or change the endpoint URL</span>
+<span class="sd">        and other attributes of a push subscription. Messages will accumulate</span>
+<span class="sd">        for delivery continuously through the call regardless of changes to the</span>
+<span class="sd">        ``PushConfig``.</span>
 
 <span class="sd">        Example:</span>
 <span class="sd">            &gt;&gt;&gt; from google.cloud import pubsub_v1</span>
@@ -962,20 +968,21 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; subscription = client.subscription_path(&#39;[PROJECT]&#39;, &#39;[SUBSCRIPTION]&#39;)</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``push_config``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `push_config`:</span>
 <span class="sd">            &gt;&gt;&gt; push_config = {}</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; client.modify_push_config(subscription, push_config)</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            subscription (str): The name of the subscription.</span>
-<span class="sd">                Format is ``projects/{project}/subscriptions/{sub}``.</span>
+<span class="sd">            subscription (str): The name of the subscription. Format is</span>
+<span class="sd">                ``projects/{project}/subscriptions/{sub}``.</span>
 <span class="sd">            push_config (Union[dict, ~google.cloud.pubsub_v1.types.PushConfig]): The push configuration for future deliveries.</span>
 
-<span class="sd">                An empty ``pushConfig`` indicates that the Pub/Sub system should</span>
-<span class="sd">                stop pushing messages from the given subscription and allow</span>
-<span class="sd">                messages to be pulled and acknowledged - effectively pausing</span>
-<span class="sd">                the subscription if ``Pull`` or ``StreamingPull`` is not called.</span>
+<span class="sd">                An empty ``pushConfig`` indicates that the Pub/Sub system should stop</span>
+<span class="sd">                pushing messages from the given subscription and allow messages to be</span>
+<span class="sd">                pulled and acknowledged - effectively pausing the subscription if</span>
+<span class="sd">                ``Pull`` or ``StreamingPull`` is not called.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.pubsub_v1.types.PushConfig`</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
@@ -1041,14 +1048,14 @@
 <span class="sd">            &gt;&gt;&gt; # Alternatively:</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; # Iterate over results one page at a time</span>
-<span class="sd">            &gt;&gt;&gt; for page in client.list_snapshots(project, options=CallOptions(page_token=INITIAL_PAGE)):</span>
+<span class="sd">            &gt;&gt;&gt; for page in client.list_snapshots(project).pages:</span>
 <span class="sd">            ...     for element in page:</span>
 <span class="sd">            ...         # process element</span>
 <span class="sd">            ...         pass</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            project (str): The name of the project in which to list snapshots.</span>
-<span class="sd">                Format is ``projects/{project-id}``.</span>
+<span class="sd">            project (str): The name of the project in which to list snapshots. Format is</span>
+<span class="sd">                ``projects/{project-id}``.</span>
 <span class="sd">            page_size (int): The maximum number of resources contained in the</span>
 <span class="sd">                underlying API response. If page streaming is performed per-</span>
 <span class="sd">                resource, this parameter does not affect the return value. If page</span>
@@ -1113,21 +1120,20 @@
                         <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
                         <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Creates a snapshot from the requested subscription.&lt;br&gt;&lt;br&gt;</span>
-<span class="sd">        &lt;b&gt;ALPHA:&lt;/b&gt; This feature is part of an alpha release. This API might be</span>
-<span class="sd">        changed in backward-incompatible ways and is not recommended for production</span>
-<span class="sd">        use. It is not subject to any SLA or deprecation policy.&lt;br&gt;&lt;br&gt;</span>
-<span class="sd">        If the snapshot already exists, returns ``ALREADY_EXISTS``.</span>
-<span class="sd">        If the requested subscription doesn&#39;t exist, returns ``NOT_FOUND``.</span>
-<span class="sd">        If the backlog in the subscription is too old -- and the resulting snapshot</span>
-<span class="sd">        would expire in less than 1 hour -- then ``FAILED_PRECONDITION`` is returned.</span>
-<span class="sd">        See also the ``Snapshot.expire_time`` field. If the name is not provided in</span>
-<span class="sd">        the request, the server will assign a random</span>
-<span class="sd">        name for this snapshot on the same project as the subscription, conforming</span>
-<span class="sd">        to the `resource name format &lt;https://cloud.google.com/pubsub/docs/overview#names&gt;`_.</span>
-<span class="sd">        The generated</span>
-<span class="sd">        name is populated in the returned Snapshot object. Note that for REST API</span>
-<span class="sd">        requests, you must specify a name in the request.</span>
+<span class="sd">        Creates a snapshot from the requested subscription. ALPHA: This feature</span>
+<span class="sd">        is part of an alpha release. This API might be changed in</span>
+<span class="sd">        backward-incompatible ways and is not recommended for production use. It</span>
+<span class="sd">        is not subject to any SLA or deprecation policy. If the snapshot already</span>
+<span class="sd">        exists, returns ``ALREADY_EXISTS``. If the requested subscription</span>
+<span class="sd">        doesn&#39;t exist, returns ``NOT_FOUND``. If the backlog in the subscription</span>
+<span class="sd">        is too old -- and the resulting snapshot would expire in less than 1</span>
+<span class="sd">        hour -- then ``FAILED_PRECONDITION`` is returned. See also the</span>
+<span class="sd">        ``Snapshot.expire_time`` field. If the name is not provided in the</span>
+<span class="sd">        request, the server will assign a random name for this snapshot on the</span>
+<span class="sd">        same project as the subscription, conforming to the `resource name</span>
+<span class="sd">        format &lt;https://cloud.google.com/pubsub/docs/overview#names&gt;`__. The</span>
+<span class="sd">        generated name is populated in the returned Snapshot object. Note that</span>
+<span class="sd">        for REST API requests, you must specify a name in the request.</span>
 
 <span class="sd">        Example:</span>
 <span class="sd">            &gt;&gt;&gt; from google.cloud import pubsub_v1</span>
@@ -1140,23 +1146,20 @@
 <span class="sd">            &gt;&gt;&gt; response = client.create_snapshot(name, subscription)</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            name (str): Optional user-provided name for this snapshot.</span>
-<span class="sd">                If the name is not provided in the request, the server will assign a random</span>
-<span class="sd">                name for this snapshot on the same project as the subscription.</span>
-<span class="sd">                Note that for REST API requests, you must specify a name.  See the</span>
-<span class="sd">                &lt;a href=\&quot;/pubsub/docs/admin#resource_names\&quot;&gt;resource name rules&lt;/a&gt;.</span>
-<span class="sd">                Format is ``projects/{project}/snapshots/{snap}``.</span>
-<span class="sd">            subscription (str): The subscription whose backlog the snapshot retains.</span>
-<span class="sd">                Specifically, the created snapshot is guaranteed to retain: \</span>
-<span class="sd">                 (a) The existing backlog on the subscription. More precisely, this is \</span>
-<span class="sd">                     defined as the messages in the subscription&#39;s backlog that are \</span>
-<span class="sd">                     unacknowledged upon the successful completion of the \</span>
-<span class="sd">                     `CreateSnapshot` request; as well as: \</span>
-<span class="sd">                 (b) Any messages published to the subscription&#39;s topic following the \</span>
-<span class="sd">                     successful completion of the CreateSnapshot request. \</span>
-
-<span class="sd">                Format is ``projects/{project}/subscriptions/{sub}``.</span>
-<span class="sd">            labels (dict[str -&gt; str]): See &lt;a href=\&quot;/pubsub/docs/labels\&quot;&gt; Creating and managing labels&lt;/a&gt;.</span>
+<span class="sd">            name (str): Optional user-provided name for this snapshot. If the name is not</span>
+<span class="sd">                provided in the request, the server will assign a random name for this</span>
+<span class="sd">                snapshot on the same project as the subscription. Note that for REST API</span>
+<span class="sd">                requests, you must specify a name. See the resource name rules. Format</span>
+<span class="sd">                is ``projects/{project}/snapshots/{snap}``.</span>
+<span class="sd">            subscription (str): The subscription whose backlog the snapshot retains. Specifically, the</span>
+<span class="sd">                created snapshot is guaranteed to retain: (a) The existing backlog on</span>
+<span class="sd">                the subscription. More precisely, this is defined as the messages in the</span>
+<span class="sd">                subscription&#39;s backlog that are unacknowledged upon the successful</span>
+<span class="sd">                completion of the ``CreateSnapshot`` request; as well as: (b) Any</span>
+<span class="sd">                messages published to the subscription&#39;s topic following the successful</span>
+<span class="sd">                completion of the CreateSnapshot request. Format is</span>
+<span class="sd">                ``projects/{project}/subscriptions/{sub}``.</span>
+<span class="sd">            labels (dict[str -&gt; str]): See &lt;a href=&quot;/pubsub/docs/labels&quot;&gt; Creating and managing labels&lt;/a&gt;.</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
 <span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
 <span class="sd">                be retried.</span>
@@ -1224,10 +1227,12 @@
 
 <span class="sd">        Args:</span>
 <span class="sd">            snapshot (Union[dict, ~google.cloud.pubsub_v1.types.Snapshot]): The updated snapshot object.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.pubsub_v1.types.Snapshot`</span>
 <span class="sd">            update_mask (Union[dict, ~google.cloud.pubsub_v1.types.FieldMask]): Indicates which fields in the provided snapshot to update.</span>
 <span class="sd">                Must be specified and non-empty.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.pubsub_v1.types.FieldMask`</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
@@ -1292,8 +1297,8 @@
 <span class="sd">            &gt;&gt;&gt; client.delete_snapshot(snapshot)</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            snapshot (str): The name of the snapshot to delete.</span>
-<span class="sd">                Format is ``projects/{project}/snapshots/{snap}``.</span>
+<span class="sd">            snapshot (str): The name of the snapshot to delete. Format is</span>
+<span class="sd">                ``projects/{project}/snapshots/{snap}``.</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
 <span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
 <span class="sd">                be retried.</span>
@@ -1350,22 +1355,22 @@
 
 <span class="sd">        Args:</span>
 <span class="sd">            subscription (str): The subscription to affect.</span>
-<span class="sd">            time (Union[dict, ~google.cloud.pubsub_v1.types.Timestamp]): The time to seek to.</span>
-<span class="sd">                Messages retained in the subscription that were published before this</span>
-<span class="sd">                time are marked as acknowledged, and messages retained in the</span>
-<span class="sd">                subscription that were published after this time are marked as</span>
-<span class="sd">                unacknowledged. Note that this operation affects only those messages</span>
-<span class="sd">                retained in the subscription (configured by the combination of</span>
-<span class="sd">                ``message_retention_duration`` and ``retain_acked_messages``). For example,</span>
-<span class="sd">                if ``time`` corresponds to a point before the message retention</span>
+<span class="sd">            time (Union[dict, ~google.cloud.pubsub_v1.types.Timestamp]): The time to seek to. Messages retained in the subscription that were</span>
+<span class="sd">                published before this time are marked as acknowledged, and messages</span>
+<span class="sd">                retained in the subscription that were published after this time are</span>
+<span class="sd">                marked as unacknowledged. Note that this operation affects only those</span>
+<span class="sd">                messages retained in the subscription (configured by the combination of</span>
+<span class="sd">                ``message_retention_duration`` and ``retain_acked_messages``). For</span>
+<span class="sd">                example, if ``time`` corresponds to a point before the message retention</span>
 <span class="sd">                window (or to a point before the system&#39;s notion of the subscription</span>
 <span class="sd">                creation time), only retained messages will be marked as unacknowledged,</span>
 <span class="sd">                and already-expunged messages will not be restored.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.pubsub_v1.types.Timestamp`</span>
-<span class="sd">            snapshot (str): The snapshot to seek to. The snapshot&#39;s topic must be the same as that of</span>
-<span class="sd">                the provided subscription.</span>
-<span class="sd">                Format is ``projects/{project}/snapshots/{snap}``.</span>
+<span class="sd">            snapshot (str): The snapshot to seek to. The snapshot&#39;s topic must be the same as that</span>
+<span class="sd">                of the provided subscription. Format is</span>
+<span class="sd">                ``projects/{project}/snapshots/{snap}``.</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
 <span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
 <span class="sd">                be retried.</span>
@@ -1427,7 +1432,7 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; resource = client.subscription_path(&#39;[PROJECT]&#39;, &#39;[SUBSCRIPTION]&#39;)</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``policy``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `policy`:</span>
 <span class="sd">            &gt;&gt;&gt; policy = {}</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; response = client.set_iam_policy(resource, policy)</span>
@@ -1436,10 +1441,11 @@
 <span class="sd">            resource (str): REQUIRED: The resource for which the policy is being specified.</span>
 <span class="sd">                ``resource`` is usually specified as a path. For example, a Project</span>
 <span class="sd">                resource is specified as ``projects/{project}``.</span>
-<span class="sd">            policy (Union[dict, ~google.cloud.pubsub_v1.types.Policy]): REQUIRED: The complete policy to be applied to the ``resource``. The size of</span>
-<span class="sd">                the policy is limited to a few 10s of KB. An empty policy is a</span>
+<span class="sd">            policy (Union[dict, ~google.cloud.pubsub_v1.types.Policy]): REQUIRED: The complete policy to be applied to the ``resource``. The</span>
+<span class="sd">                size of the policy is limited to a few 10s of KB. An empty policy is a</span>
 <span class="sd">                valid policy but certain Cloud Platform services (such as Projects)</span>
 <span class="sd">                might reject them.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.pubsub_v1.types.Policy`</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
@@ -1543,9 +1549,9 @@
                              <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
                              <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns permissions that a caller has on the specified resource.</span>
-<span class="sd">        If the resource does not exist, this will return an empty set of</span>
-<span class="sd">        permissions, not a NOT_FOUND error.</span>
+<span class="sd">        Returns permissions that a caller has on the specified resource. If the</span>
+<span class="sd">        resource does not exist, this will return an empty set of permissions,</span>
+<span class="sd">        not a NOT\_FOUND error.</span>
 
 <span class="sd">        Example:</span>
 <span class="sd">            &gt;&gt;&gt; from google.cloud import pubsub_v1</span>
@@ -1554,7 +1560,7 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; resource = client.subscription_path(&#39;[PROJECT]&#39;, &#39;[SUBSCRIPTION]&#39;)</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``permissions``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `permissions`:</span>
 <span class="sd">            &gt;&gt;&gt; permissions = []</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; response = client.test_iam_permissions(resource, permissions)</span>
@@ -1565,8 +1571,8 @@
 <span class="sd">                resource is specified as ``projects/{project}``.</span>
 <span class="sd">            permissions (list[str]): The set of permissions to check for the ``resource``. Permissions with</span>
 <span class="sd">                wildcards (such as &#39;*&#39; or &#39;storage.*&#39;) are not allowed. For more</span>
-<span class="sd">                information see</span>
-<span class="sd">                `IAM Overview &lt;https://cloud.google.com/iam/docs/overview#permissions&gt;`_.</span>
+<span class="sd">                information see `IAM</span>
+<span class="sd">                Overview &lt;https://cloud.google.com/iam/docs/overview#permissions&gt;`__.</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
 <span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
 <span class="sd">                be retried.</span>

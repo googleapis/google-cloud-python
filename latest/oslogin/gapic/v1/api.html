@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Client for Google Cloud OS Login API &#8212; google-cloud ea16a5a documentation</title>
+    <title>Client for Google Cloud OS Login API &#8212; google-cloud a861334 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -97,9 +97,9 @@ your own client library.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – A reference to the POSIX account to update. POSIX accounts are identified
-by the project ID they are associated with. A reference to the POSIX
-account is in format <code class="docutils literal notranslate"><span class="pre">users/{user}/projects/{project}</span></code>.</li>
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – A reference to the POSIX account to update. POSIX accounts are
+identified by the project ID they are associated with. A reference to
+the POSIX account is in format <code class="docutils literal notranslate"><span class="pre">users/{user}/projects/{project}</span></code>.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
@@ -143,9 +143,9 @@ to a retryable error and retry attempts failed.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The fingerprint of the public key to update. Public keys are identified by
-their SHA-256 fingerprint. The fingerprint of the public key is in format
-<code class="docutils literal notranslate"><span class="pre">users/{user}/sshPublicKeys/{fingerprint}</span></code>.</li>
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The fingerprint of the public key to update. Public keys are identified
+by their SHA-256 fingerprint. The fingerprint of the public key is in
+format <code class="docutils literal notranslate"><span class="pre">users/{user}/sshPublicKeys/{fingerprint}</span></code>.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
@@ -297,9 +297,9 @@ to a retryable error and retry attempts failed.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The fingerprint of the public key to retrieve. Public keys are identified
-by their SHA-256 fingerprint. The fingerprint of the public key is in
-format <code class="docutils literal notranslate"><span class="pre">users/{user}/sshPublicKeys/{fingerprint}</span></code>.</li>
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The fingerprint of the public key to retrieve. Public keys are
+identified by their SHA-256 fingerprint. The fingerprint of the public
+key is in format <code class="docutils literal notranslate"><span class="pre">users/{user}/sshPublicKeys/{fingerprint}</span></code>.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
@@ -340,7 +340,7 @@ login profile.</p>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">parent</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">user_path</span><span class="p">(</span><span class="s1">&#39;[USER]&#39;</span><span class="p">)</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``ssh_public_key``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `ssh_public_key`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">ssh_public_key</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">import_ssh_public_key</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">ssh_public_key</span><span class="p">)</span>
@@ -352,9 +352,10 @@ login profile.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The unique ID for the user in format <code class="docutils literal notranslate"><span class="pre">users/{user}</span></code>.</li>
-<li><strong>ssh_public_key</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.oslogin_v1.types.SshPublicKey" title="google.cloud.oslogin_v1.types.SshPublicKey"><em>SshPublicKey</em></a><em>]</em>) – The SSH public key and expiration time.
-If a dict is provided, it must be of the same form as the protobuf
-message <a class="reference internal" href="types.html#google.cloud.oslogin_v1.types.SshPublicKey" title="google.cloud.oslogin_v1.types.SshPublicKey"><code class="xref py py-class docutils literal notranslate"><span class="pre">SshPublicKey</span></code></a></li>
+<li><strong>ssh_public_key</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.oslogin_v1.types.SshPublicKey" title="google.cloud.oslogin_v1.types.SshPublicKey"><em>SshPublicKey</em></a><em>]</em>) – <p>The SSH public key and expiration time.</p>
+<p>If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.oslogin_v1.types.SshPublicKey" title="google.cloud.oslogin_v1.types.SshPublicKey"><code class="xref py py-class docutils literal notranslate"><span class="pre">SshPublicKey</span></code></a></p>
+</li>
 <li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The project ID of the Google Cloud Platform project.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
@@ -401,7 +402,7 @@ supports patch semantics.</p>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">name</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">fingerprint_path</span><span class="p">(</span><span class="s1">&#39;[USER]&#39;</span><span class="p">,</span> <span class="s1">&#39;[FINGERPRINT]&#39;</span><span class="p">)</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``ssh_public_key``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `ssh_public_key`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">ssh_public_key</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">update_ssh_public_key</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">ssh_public_key</span><span class="p">)</span>
@@ -412,15 +413,17 @@ supports patch semantics.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The fingerprint of the public key to update. Public keys are identified by
-their SHA-256 fingerprint. The fingerprint of the public key is in format
-<code class="docutils literal notranslate"><span class="pre">users/{user}/sshPublicKeys/{fingerprint}</span></code>.</li>
-<li><strong>ssh_public_key</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.oslogin_v1.types.SshPublicKey" title="google.cloud.oslogin_v1.types.SshPublicKey"><em>SshPublicKey</em></a><em>]</em>) – The SSH public key and expiration time.
-If a dict is provided, it must be of the same form as the protobuf
-message <a class="reference internal" href="types.html#google.cloud.oslogin_v1.types.SshPublicKey" title="google.cloud.oslogin_v1.types.SshPublicKey"><code class="xref py py-class docutils literal notranslate"><span class="pre">SshPublicKey</span></code></a></li>
-<li><strong>update_mask</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.oslogin_v1.types.FieldMask" title="google.cloud.oslogin_v1.types.FieldMask"><em>FieldMask</em></a><em>]</em>) – Mask to control which fields get updated. Updates all if not present.
-If a dict is provided, it must be of the same form as the protobuf
-message <a class="reference internal" href="types.html#google.cloud.oslogin_v1.types.FieldMask" title="google.cloud.oslogin_v1.types.FieldMask"><code class="xref py py-class docutils literal notranslate"><span class="pre">FieldMask</span></code></a></li>
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The fingerprint of the public key to update. Public keys are identified
+by their SHA-256 fingerprint. The fingerprint of the public key is in
+format <code class="docutils literal notranslate"><span class="pre">users/{user}/sshPublicKeys/{fingerprint}</span></code>.</li>
+<li><strong>ssh_public_key</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.oslogin_v1.types.SshPublicKey" title="google.cloud.oslogin_v1.types.SshPublicKey"><em>SshPublicKey</em></a><em>]</em>) – <p>The SSH public key and expiration time.</p>
+<p>If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.oslogin_v1.types.SshPublicKey" title="google.cloud.oslogin_v1.types.SshPublicKey"><code class="xref py py-class docutils literal notranslate"><span class="pre">SshPublicKey</span></code></a></p>
+</li>
+<li><strong>update_mask</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.oslogin_v1.types.FieldMask" title="google.cloud.oslogin_v1.types.FieldMask"><em>FieldMask</em></a><em>]</em>) – <p>Mask to control which fields get updated. Updates all if not present.</p>
+<p>If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.oslogin_v1.types.FieldMask" title="google.cloud.oslogin_v1.types.FieldMask"><code class="xref py py-class docutils literal notranslate"><span class="pre">FieldMask</span></code></a></p>
+</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>

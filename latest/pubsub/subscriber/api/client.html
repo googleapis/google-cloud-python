@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Subscriber Client API &#8212; google-cloud ea16a5a documentation</title>
+    <title>Subscriber Client API &#8212; google-cloud a861334 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -60,10 +60,10 @@ arguments.</td>
 <dt id="google.cloud.pubsub_v1.subscriber.client.Client.acknowledge">
 <code class="descname">acknowledge</code><span class="sig-paren">(</span><em>subscription</em>, <em>ack_ids</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.client.Client.acknowledge" title="Permalink to this definition">#</a></dt>
 <dd><p>Acknowledges the messages associated with the <code class="docutils literal notranslate"><span class="pre">ack_ids</span></code> in the
-<code class="docutils literal notranslate"><span class="pre">AcknowledgeRequest</span></code>. The Pub/Sub system can remove the relevant messages
-from the subscription.</p>
-<p>Acknowledging a message whose ack deadline has expired may succeed,
-but such a message may be redelivered later. Acknowledging a message more
+<code class="docutils literal notranslate"><span class="pre">AcknowledgeRequest</span></code>. The Pub/Sub system can remove the relevant
+messages from the subscription.</p>
+<p>Acknowledging a message whose ack deadline has expired may succeed, but
+such a message may be redelivered later. Acknowledging a message more
 than once will not result in an error.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">pubsub_v1</span>
@@ -72,7 +72,7 @@ than once will not result in an error.</p>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">subscription</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">subscription_path</span><span class="p">(</span><span class="s1">&#39;[PROJECT]&#39;</span><span class="p">,</span> <span class="s1">&#39;[SUBSCRIPTION]&#39;</span><span class="p">)</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``ack_ids``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `ack_ids`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">ack_ids</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span><span class="o">.</span><span class="n">acknowledge</span><span class="p">(</span><span class="n">subscription</span><span class="p">,</span> <span class="n">ack_ids</span><span class="p">)</span>
@@ -83,10 +83,11 @@ than once will not result in an error.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>subscription</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The subscription whose message is being acknowledged.
-Format is <code class="docutils literal notranslate"><span class="pre">projects/{project}/subscriptions/{sub}</span></code>.</li>
-<li><strong>ack_ids</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em>) – The acknowledgment ID for the messages being acknowledged that was returned
-by the Pub/Sub system in the <code class="docutils literal notranslate"><span class="pre">Pull</span></code> response. Must not be empty.</li>
+<li><strong>subscription</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The subscription whose message is being acknowledged. Format is
+<code class="docutils literal notranslate"><span class="pre">projects/{project}/subscriptions/{sub}</span></code>.</li>
+<li><strong>ack_ids</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em>) – The acknowledgment ID for the messages being acknowledged that was
+returned by the Pub/Sub system in the <code class="docutils literal notranslate"><span class="pre">Pull</span></code> response. Must not be
+empty.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
@@ -120,21 +121,20 @@ to a retryable error and retry attempts failed.</li>
 <dl class="method">
 <dt id="google.cloud.pubsub_v1.subscriber.client.Client.create_snapshot">
 <code class="descname">create_snapshot</code><span class="sig-paren">(</span><em>name</em>, <em>subscription</em>, <em>labels=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.client.Client.create_snapshot" title="Permalink to this definition">#</a></dt>
-<dd><p>Creates a snapshot from the requested subscription.&lt;br&gt;&lt;br&gt;
-&lt;b&gt;ALPHA:&lt;/b&gt; This feature is part of an alpha release. This API might be
-changed in backward-incompatible ways and is not recommended for production
-use. It is not subject to any SLA or deprecation policy.&lt;br&gt;&lt;br&gt;
-If the snapshot already exists, returns <code class="docutils literal notranslate"><span class="pre">ALREADY_EXISTS</span></code>.
-If the requested subscription doesn’t exist, returns <code class="docutils literal notranslate"><span class="pre">NOT_FOUND</span></code>.
-If the backlog in the subscription is too old – and the resulting snapshot
-would expire in less than 1 hour – then <code class="docutils literal notranslate"><span class="pre">FAILED_PRECONDITION</span></code> is returned.
-See also the <code class="docutils literal notranslate"><span class="pre">Snapshot.expire_time</span></code> field. If the name is not provided in
-the request, the server will assign a random
-name for this snapshot on the same project as the subscription, conforming
-to the <a class="reference external" href="https://cloud.google.com/pubsub/docs/overview#names">resource name format</a>.
-The generated
-name is populated in the returned Snapshot object. Note that for REST API
-requests, you must specify a name in the request.</p>
+<dd><p>Creates a snapshot from the requested subscription. ALPHA: This feature
+is part of an alpha release. This API might be changed in
+backward-incompatible ways and is not recommended for production use. It
+is not subject to any SLA or deprecation policy. If the snapshot already
+exists, returns <code class="docutils literal notranslate"><span class="pre">ALREADY_EXISTS</span></code>. If the requested subscription
+doesn’t exist, returns <code class="docutils literal notranslate"><span class="pre">NOT_FOUND</span></code>. If the backlog in the subscription
+is too old – and the resulting snapshot would expire in less than 1
+hour – then <code class="docutils literal notranslate"><span class="pre">FAILED_PRECONDITION</span></code> is returned. See also the
+<code class="docutils literal notranslate"><span class="pre">Snapshot.expire_time</span></code> field. If the name is not provided in the
+request, the server will assign a random name for this snapshot on the
+same project as the subscription, conforming to the <a class="reference external" href="https://cloud.google.com/pubsub/docs/overview#names">resource name
+format</a>. The
+generated name is populated in the returned Snapshot object. Note that
+for REST API requests, you must specify a name in the request.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">pubsub_v1</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -151,15 +151,19 @@ requests, you must specify a name in the request.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Optional user-provided name for this snapshot.
-If the name is not provided in the request, the server will assign a random
-name for this snapshot on the same project as the subscription.
-Note that for REST API requests, you must specify a name.  See the
-&lt;a href=”/pubsub/docs/admin#resource_names”&gt;resource name rules&lt;/a&gt;.
-Format is <code class="docutils literal notranslate"><span class="pre">projects/{project}/snapshots/{snap}</span></code>.</li>
-<li><strong>subscription</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The subscription whose backlog the snapshot retains.
-Specifically, the created snapshot is guaranteed to retain:                  (a) The existing backlog on the subscription. More precisely, this is                      defined as the messages in the subscription’s backlog that are                      unacknowledged upon the successful completion of the                      <cite>CreateSnapshot</cite> request; as well as:                  (b) Any messages published to the subscription’s topic following the                      successful completion of the CreateSnapshot request.
-Format is <code class="docutils literal notranslate"><span class="pre">projects/{project}/subscriptions/{sub}</span></code>.</li>
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Optional user-provided name for this snapshot. If the name is not
+provided in the request, the server will assign a random name for this
+snapshot on the same project as the subscription. Note that for REST API
+requests, you must specify a name. See the resource name rules. Format
+is <code class="docutils literal notranslate"><span class="pre">projects/{project}/snapshots/{snap}</span></code>.</li>
+<li><strong>subscription</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The subscription whose backlog the snapshot retains. Specifically, the
+created snapshot is guaranteed to retain: (a) The existing backlog on
+the subscription. More precisely, this is defined as the messages in the
+subscription’s backlog that are unacknowledged upon the successful
+completion of the <code class="docutils literal notranslate"><span class="pre">CreateSnapshot</span></code> request; as well as: (b) Any
+messages published to the subscription’s topic following the successful
+completion of the CreateSnapshot request. Format is
+<code class="docutils literal notranslate"><span class="pre">projects/{project}/subscriptions/{sub}</span></code>.</li>
 <li><strong>labels</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>[</em><em>str -&gt; str</em><em>]</em>) – See &lt;a href=”/pubsub/docs/labels”&gt; Creating and managing labels&lt;/a&gt;.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
@@ -191,16 +195,15 @@ to a retryable error and retry attempts failed.</li>
 <dl class="method">
 <dt id="google.cloud.pubsub_v1.subscriber.client.Client.create_subscription">
 <code class="descname">create_subscription</code><span class="sig-paren">(</span><em>name</em>, <em>topic</em>, <em>push_config=None</em>, <em>ack_deadline_seconds=None</em>, <em>retain_acked_messages=None</em>, <em>message_retention_duration=None</em>, <em>labels=None</em>, <em>expiration_policy=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.client.Client.create_subscription" title="Permalink to this definition">#</a></dt>
-<dd><p>Creates a subscription to a given topic. See the
-&lt;a href=”/pubsub/docs/admin#resource_names”&gt; resource name rules&lt;/a&gt;.
-If the subscription already exists, returns <code class="docutils literal notranslate"><span class="pre">ALREADY_EXISTS</span></code>.
-If the corresponding topic doesn’t exist, returns <code class="docutils literal notranslate"><span class="pre">NOT_FOUND</span></code>.</p>
-<p>If the name is not provided in the request, the server will assign a random
-name for this subscription on the same project as the topic, conforming
-to the
-<a class="reference external" href="https://cloud.google.com/pubsub/docs/overview#names">resource name format</a>.
-The generated name is populated in the returned Subscription object.
-Note that for REST API requests, you must specify a name in the request.</p>
+<dd><p>Creates a subscription to a given topic. See the resource name rules. If
+the subscription already exists, returns <code class="docutils literal notranslate"><span class="pre">ALREADY_EXISTS</span></code>. If the
+corresponding topic doesn’t exist, returns <code class="docutils literal notranslate"><span class="pre">NOT_FOUND</span></code>.</p>
+<p>If the name is not provided in the request, the server will assign a
+random name for this subscription on the same project as the topic,
+conforming to the <a class="reference external" href="https://cloud.google.com/pubsub/docs/overview#names">resource name
+format</a>. The
+generated name is populated in the returned Subscription object. Note
+that for REST API requests, you must specify a name in the request.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">pubsub_v1</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -218,68 +221,70 @@ Note that for REST API requests, you must specify a name in the request.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the subscription. It must have the format
-<code class="docutils literal notranslate"><span class="pre">&quot;projects/{project}/subscriptions/{subscription}&quot;</span></code>. <code class="docutils literal notranslate"><span class="pre">{subscription}</span></code> must
-start with a letter, and contain only letters (<code class="docutils literal notranslate"><span class="pre">[A-Za-z]</span></code>), numbers
-(<code class="docutils literal notranslate"><span class="pre">[0-9]</span></code>), dashes (<code class="docutils literal notranslate"><span class="pre">-</span></code>), underscores (<code class="docutils literal notranslate"><span class="pre">_</span></code>), periods (<code class="docutils literal notranslate"><span class="pre">.</span></code>), tildes (<code class="docutils literal notranslate"><span class="pre">~</span></code>),
-plus (<code class="docutils literal notranslate"><span class="pre">+</span></code>) or percent signs (<code class="docutils literal notranslate"><span class="pre">%</span></code>). It must be between 3 and 255 characters
-in length, and it must not start with <code class="docutils literal notranslate"><span class="pre">&quot;goog&quot;</span></code></li>
-<li><strong>topic</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the topic from which this subscription is receiving messages.
-Format is <code class="docutils literal notranslate"><span class="pre">projects/{project}/topics/{topic}</span></code>.
-The value of this field will be <code class="docutils literal notranslate"><span class="pre">_deleted-topic_</span></code> if the topic has been
-deleted.</li>
-<li><strong>push_config</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="../../types.html#google.cloud.pubsub_v1.types.PushConfig" title="google.cloud.pubsub_v1.types.PushConfig"><em>PushConfig</em></a><em>]</em>) – If push delivery is used with this subscription, this field is
-used to configure it. An empty <code class="docutils literal notranslate"><span class="pre">pushConfig</span></code> signifies that the subscriber
-will pull and ack messages using API methods.
-If a dict is provided, it must be of the same form as the protobuf
-message <a class="reference internal" href="../../types.html#google.cloud.pubsub_v1.types.PushConfig" title="google.cloud.pubsub_v1.types.PushConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">PushConfig</span></code></a></li>
+<cite>“projects/{project}/subscriptions/{subscription}”</cite>. <cite>{subscription}</cite> must
+start with a letter, and contain only letters (<cite>[A-Za-z]</cite>), numbers
+(<cite>[0-9]</cite>), dashes (<cite>-</cite>), underscores (<cite>_</cite>), periods (<cite>.</cite>), tildes (<cite>~</cite>),
+plus (<cite>+</cite>) or percent signs (<cite>%</cite>). It must be between 3 and 255 characters
+in length, and it must not start with <cite>“goog”</cite></li>
+<li><strong>topic</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the topic from which this subscription is receiving
+messages. Format is <code class="docutils literal notranslate"><span class="pre">projects/{project}/topics/{topic}</span></code>. The value of
+this field will be <code class="docutils literal notranslate"><span class="pre">_deleted-topic_</span></code> if the topic has been deleted.</li>
+<li><strong>push_config</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="../../types.html#google.cloud.pubsub_v1.types.PushConfig" title="google.cloud.pubsub_v1.types.PushConfig"><em>PushConfig</em></a><em>]</em>) – <p>If push delivery is used with this subscription, this field is used to
+configure it. An empty <code class="docutils literal notranslate"><span class="pre">pushConfig</span></code> signifies that the subscriber will
+pull and ack messages using API methods.</p>
+<p>If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="../../types.html#google.cloud.pubsub_v1.types.PushConfig" title="google.cloud.pubsub_v1.types.PushConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">PushConfig</span></code></a></p>
+</li>
 <li><strong>ack_deadline_seconds</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – <p>This value is the maximum time after a subscriber receives a message
 before the subscriber should acknowledge the message. After message
 delivery but before the ack deadline expires and before the message is
 acknowledged, it is an outstanding message and will not be delivered
 again during that time (on a best-effort basis).</p>
-<p>For pull subscriptions, this value is used as the initial value for the ack
-deadline. To override this value for a given message, call
+<p>For pull subscriptions, this value is used as the initial value for the
+ack deadline. To override this value for a given message, call
 <code class="docutils literal notranslate"><span class="pre">ModifyAckDeadline</span></code> with the corresponding <code class="docutils literal notranslate"><span class="pre">ack_id</span></code> if using
 non-streaming pull or send the <code class="docutils literal notranslate"><span class="pre">ack_id</span></code> in a
-<code class="docutils literal notranslate"><span class="pre">StreamingModifyAckDeadlineRequest</span></code> if using streaming pull.
-The minimum custom deadline you can specify is 10 seconds.
-The maximum custom deadline you can specify is 600 seconds (10 minutes).
-If this parameter is 0, a default value of 10 seconds is used.</p>
-<p>For push delivery, this value is also used to set the request timeout for
-the call to the push endpoint.</p>
-<p>If the subscriber never acknowledges the message, the Pub/Sub
-system will eventually redeliver the message.</p>
+<code class="docutils literal notranslate"><span class="pre">StreamingModifyAckDeadlineRequest</span></code> if using streaming pull. The
+minimum custom deadline you can specify is 10 seconds. The maximum
+custom deadline you can specify is 600 seconds (10 minutes). If this
+parameter is 0, a default value of 10 seconds is used.</p>
+<p>For push delivery, this value is also used to set the request timeout
+for the call to the push endpoint.</p>
+<p>If the subscriber never acknowledges the message, the Pub/Sub system
+will eventually redeliver the message.</p>
 </li>
 <li><strong>retain_acked_messages</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – Indicates whether to retain acknowledged messages. If true, then
-messages are not expunged from the subscription’s backlog, even if they are
-acknowledged, until they fall out of the <code class="docutils literal notranslate"><span class="pre">message_retention_duration</span></code>
-window.&lt;br&gt;&lt;br&gt;
-&lt;b&gt;ALPHA:&lt;/b&gt; This feature is part of an alpha release. This API might be
-changed in backward-incompatible ways and is not recommended for production
-use. It is not subject to any SLA or deprecation policy.</li>
-<li><strong>message_retention_duration</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="../../types.html#google.cloud.pubsub_v1.types.Duration" title="google.cloud.pubsub_v1.types.Duration"><em>Duration</em></a><em>]</em>) – How long to retain unacknowledged messages in the subscription’s backlog,
-from the moment a message is published.
-If <code class="docutils literal notranslate"><span class="pre">retain_acked_messages</span></code> is true, then this also configures the retention
-of acknowledged messages, and thus configures how far back in time a <code class="docutils literal notranslate"><span class="pre">Seek</span></code>
-can be done. Defaults to 7 days. Cannot be more than 7 days or less than 10
-minutes.&lt;br&gt;&lt;br&gt;
-&lt;b&gt;ALPHA:&lt;/b&gt; This feature is part of an alpha release. This API might be
-changed in backward-incompatible ways and is not recommended for production
-use. It is not subject to any SLA or deprecation policy.
-If a dict is provided, it must be of the same form as the protobuf
-message <a class="reference internal" href="../../types.html#google.cloud.pubsub_v1.types.Duration" title="google.cloud.pubsub_v1.types.Duration"><code class="xref py py-class docutils literal notranslate"><span class="pre">Duration</span></code></a></li>
+messages are not expunged from the subscription’s backlog, even if they
+are acknowledged, until they fall out of the
+<code class="docutils literal notranslate"><span class="pre">message_retention_duration</span></code> window. ALPHA: This feature is part of an
+alpha release. This API might be changed in backward-incompatible ways
+and is not recommended for production use. It is not subject to any SLA
+or deprecation policy.</li>
+<li><strong>message_retention_duration</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="../../types.html#google.cloud.pubsub_v1.types.Duration" title="google.cloud.pubsub_v1.types.Duration"><em>Duration</em></a><em>]</em>) – <p>How long to retain unacknowledged messages in the subscription’s
+backlog, from the moment a message is published. If
+<code class="docutils literal notranslate"><span class="pre">retain_acked_messages</span></code> is true, then this also configures the
+retention of acknowledged messages, and thus configures how far back in
+time a <code class="docutils literal notranslate"><span class="pre">Seek</span></code> can be done. Defaults to 7 days. Cannot be more than 7
+days or less than 10 minutes. ALPHA: This feature is part of an alpha
+release. This API might be changed in backward-incompatible ways and is
+not recommended for production use. It is not subject to any SLA or
+deprecation policy.</p>
+<p>If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="../../types.html#google.cloud.pubsub_v1.types.Duration" title="google.cloud.pubsub_v1.types.Duration"><code class="xref py py-class docutils literal notranslate"><span class="pre">Duration</span></code></a></p>
+</li>
 <li><strong>labels</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>[</em><em>str -&gt; str</em><em>]</em>) – See &lt;a href=”/pubsub/docs/labels”&gt; Creating and managing labels&lt;/a&gt;.</li>
-<li><strong>expiration_policy</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="../../types.html#google.cloud.pubsub_v1.types.ExpirationPolicy" title="google.cloud.pubsub_v1.types.ExpirationPolicy"><em>ExpirationPolicy</em></a><em>]</em>) – A policy that specifies the conditions for this subscription’s expiration.
-A subscription is considered active as long as any connected subscriber is
-successfully consuming messages from the subscription or is issuing
-operations on the subscription. If <code class="docutils literal notranslate"><span class="pre">expiration_policy</span></code> is not set, a
-<em>default policy</em> with <code class="docutils literal notranslate"><span class="pre">ttl</span></code> of 31 days will be used. The minimum allowed
-value for <code class="docutils literal notranslate"><span class="pre">expiration_policy.ttl</span></code> is 1 day.
-&lt;b&gt;BETA:&lt;/b&gt; This feature is part of a beta release. This API might be
-changed in backward-incompatible ways and is not recommended for production
-use. It is not subject to any SLA or deprecation policy.
-If a dict is provided, it must be of the same form as the protobuf
-message <a class="reference internal" href="../../types.html#google.cloud.pubsub_v1.types.ExpirationPolicy" title="google.cloud.pubsub_v1.types.ExpirationPolicy"><code class="xref py py-class docutils literal notranslate"><span class="pre">ExpirationPolicy</span></code></a></li>
+<li><strong>expiration_policy</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="../../types.html#google.cloud.pubsub_v1.types.ExpirationPolicy" title="google.cloud.pubsub_v1.types.ExpirationPolicy"><em>ExpirationPolicy</em></a><em>]</em>) – <p>A policy that specifies the conditions for this subscription’s
+expiration. A subscription is considered active as long as any connected
+subscriber is successfully consuming messages from the subscription or
+is issuing operations on the subscription. If <code class="docutils literal notranslate"><span class="pre">expiration_policy</span></code> is
+not set, a <em>default policy</em> with <code class="docutils literal notranslate"><span class="pre">ttl</span></code> of 31 days will be used. The
+minimum allowed value for <code class="docutils literal notranslate"><span class="pre">expiration_policy.ttl</span></code> is 1 day. BETA: This
+feature is part of a beta release. This API might be changed in
+backward-incompatible ways and is not recommended for production use. It
+is not subject to any SLA or deprecation policy.</p>
+<p>If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="../../types.html#google.cloud.pubsub_v1.types.ExpirationPolicy" title="google.cloud.pubsub_v1.types.ExpirationPolicy"><code class="xref py py-class docutils literal notranslate"><span class="pre">ExpirationPolicy</span></code></a></p>
+</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
@@ -333,8 +338,8 @@ snapshot or its subscription, unless the same subscription is specified.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>snapshot</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the snapshot to delete.
-Format is <code class="docutils literal notranslate"><span class="pre">projects/{project}/snapshots/{snap}</span></code>.</li>
+<li><strong>snapshot</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the snapshot to delete. Format is
+<code class="docutils literal notranslate"><span class="pre">projects/{project}/snapshots/{snap}</span></code>.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
@@ -362,11 +367,12 @@ to a retryable error and retry attempts failed.</li>
 <dl class="method">
 <dt id="google.cloud.pubsub_v1.subscriber.client.Client.delete_subscription">
 <code class="descname">delete_subscription</code><span class="sig-paren">(</span><em>subscription</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.client.Client.delete_subscription" title="Permalink to this definition">#</a></dt>
-<dd><p>Deletes an existing subscription. All messages retained in the subscription
-are immediately dropped. Calls to <code class="docutils literal notranslate"><span class="pre">Pull</span></code> after deletion will return
-<code class="docutils literal notranslate"><span class="pre">NOT_FOUND</span></code>. After a subscription is deleted, a new one may be created with
-the same name, but the new one has no association with the old
-subscription or its topic unless the same topic is specified.</p>
+<dd><p>Deletes an existing subscription. All messages retained in the
+subscription are immediately dropped. Calls to <code class="docutils literal notranslate"><span class="pre">Pull</span></code> after deletion
+will return <code class="docutils literal notranslate"><span class="pre">NOT_FOUND</span></code>. After a subscription is deleted, a new one
+may be created with the same name, but the new one has no association
+with the old subscription or its topic unless the same topic is
+specified.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">pubsub_v1</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -382,8 +388,8 @@ subscription or its topic unless the same topic is specified.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>subscription</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The subscription to delete.
-Format is <code class="docutils literal notranslate"><span class="pre">projects/{project}/subscriptions/{sub}</span></code>.</li>
+<li><strong>subscription</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The subscription to delete. Format is
+<code class="docutils literal notranslate"><span class="pre">projects/{project}/subscriptions/{sub}</span></code>.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
@@ -532,8 +538,8 @@ to a retryable error and retry attempts failed.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>subscription</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the subscription to get.
-Format is <code class="docutils literal notranslate"><span class="pre">projects/{project}/subscriptions/{sub}</span></code>.</li>
+<li><strong>subscription</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the subscription to get. Format is
+<code class="docutils literal notranslate"><span class="pre">projects/{project}/subscriptions/{sub}</span></code>.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
@@ -584,7 +590,7 @@ use. It is not subject to any SLA or deprecation policy.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Alternatively:</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Iterate over results one page at a time</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_snapshots</span><span class="p">(</span><span class="n">project</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">CallOptions</span><span class="p">(</span><span class="n">page_token</span><span class="o">=</span><span class="n">INITIAL_PAGE</span><span class="p">)):</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_snapshots</span><span class="p">(</span><span class="n">project</span><span class="p">)</span><span class="o">.</span><span class="n">pages</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">page</span><span class="p">:</span>
 <span class="gp">... </span>        <span class="c1"># process element</span>
 <span class="gp">... </span>        <span class="k">pass</span>
@@ -595,8 +601,8 @@ use. It is not subject to any SLA or deprecation policy.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>project</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the project in which to list snapshots.
-Format is <code class="docutils literal notranslate"><span class="pre">projects/{project-id}</span></code>.</li>
+<li><strong>project</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the project in which to list snapshots. Format is
+<code class="docutils literal notranslate"><span class="pre">projects/{project-id}</span></code>.</li>
 <li><strong>page_size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – The maximum number of resources contained in the
 underlying API response. If page streaming is performed per-
 resource, this parameter does not affect the return value. If page
@@ -652,7 +658,7 @@ to a retryable error and retry attempts failed.</li>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Alternatively:</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Iterate over results one page at a time</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_subscriptions</span><span class="p">(</span><span class="n">project</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">CallOptions</span><span class="p">(</span><span class="n">page_token</span><span class="o">=</span><span class="n">INITIAL_PAGE</span><span class="p">)):</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_subscriptions</span><span class="p">(</span><span class="n">project</span><span class="p">)</span><span class="o">.</span><span class="n">pages</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">page</span><span class="p">:</span>
 <span class="gp">... </span>        <span class="c1"># process element</span>
 <span class="gp">... </span>        <span class="k">pass</span>
@@ -663,8 +669,8 @@ to a retryable error and retry attempts failed.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>project</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the project in which to list subscriptions.
-Format is <code class="docutils literal notranslate"><span class="pre">projects/{project-id}</span></code>.</li>
+<li><strong>project</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the project in which to list subscriptions. Format is
+<code class="docutils literal notranslate"><span class="pre">projects/{project-id}</span></code>.</li>
 <li><strong>page_size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – The maximum number of resources contained in the
 underlying API response. If page streaming is performed per-
 resource, this parameter does not affect the return value. If page
@@ -715,10 +721,10 @@ subscription-level <code class="docutils literal notranslate"><span class="pre">
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">subscription</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">subscription_path</span><span class="p">(</span><span class="s1">&#39;[PROJECT]&#39;</span><span class="p">,</span> <span class="s1">&#39;[SUBSCRIPTION]&#39;</span><span class="p">)</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``ack_ids``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `ack_ids`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">ack_ids</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``ack_deadline_seconds``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `ack_deadline_seconds`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">ack_deadline_seconds</span> <span class="o">=</span> <span class="mi">0</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span><span class="o">.</span><span class="n">modify_ack_deadline</span><span class="p">(</span><span class="n">subscription</span><span class="p">,</span> <span class="n">ack_ids</span><span class="p">,</span> <span class="n">ack_deadline_seconds</span><span class="p">)</span>
@@ -729,15 +735,14 @@ subscription-level <code class="docutils literal notranslate"><span class="pre">
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>subscription</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the subscription.
-Format is <code class="docutils literal notranslate"><span class="pre">projects/{project}/subscriptions/{sub}</span></code>.</li>
+<li><strong>subscription</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the subscription. Format is
+<code class="docutils literal notranslate"><span class="pre">projects/{project}/subscriptions/{sub}</span></code>.</li>
 <li><strong>ack_ids</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em>) – List of acknowledgment IDs.</li>
 <li><strong>ack_deadline_seconds</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – The new ack deadline with respect to the time this request was sent to
-the Pub/Sub system. For example, if the value is 10, the new
-ack deadline will expire 10 seconds after the <code class="docutils literal notranslate"><span class="pre">ModifyAckDeadline</span></code> call
-was made. Specifying zero may immediately make the message available for
-another pull request.
-The minimum deadline you can specify is 0 seconds.
+the Pub/Sub system. For example, if the value is 10, the new ack
+deadline will expire 10 seconds after the <code class="docutils literal notranslate"><span class="pre">ModifyAckDeadline</span></code> call was
+made. Specifying zero may immediately make the message available for
+another pull request. The minimum deadline you can specify is 0 seconds.
 The maximum deadline you can specify is 600 seconds (10 minutes).</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
@@ -767,10 +772,11 @@ to a retryable error and retry attempts failed.</li>
 <dt id="google.cloud.pubsub_v1.subscriber.client.Client.modify_push_config">
 <code class="descname">modify_push_config</code><span class="sig-paren">(</span><em>subscription</em>, <em>push_config</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.client.Client.modify_push_config" title="Permalink to this definition">#</a></dt>
 <dd><p>Modifies the <code class="docutils literal notranslate"><span class="pre">PushConfig</span></code> for a specified subscription.</p>
-<p>This may be used to change a push subscription to a pull one (signified by
-an empty <code class="docutils literal notranslate"><span class="pre">PushConfig</span></code>) or vice versa, or change the endpoint URL and other
-attributes of a push subscription. Messages will accumulate for delivery
-continuously through the call regardless of changes to the <code class="docutils literal notranslate"><span class="pre">PushConfig</span></code>.</p>
+<p>This may be used to change a push subscription to a pull one (signified
+by an empty <code class="docutils literal notranslate"><span class="pre">PushConfig</span></code>) or vice versa, or change the endpoint URL
+and other attributes of a push subscription. Messages will accumulate
+for delivery continuously through the call regardless of changes to the
+<code class="docutils literal notranslate"><span class="pre">PushConfig</span></code>.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">pubsub_v1</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -778,7 +784,7 @@ continuously through the call regardless of changes to the <code class="docutils
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">subscription</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">subscription_path</span><span class="p">(</span><span class="s1">&#39;[PROJECT]&#39;</span><span class="p">,</span> <span class="s1">&#39;[SUBSCRIPTION]&#39;</span><span class="p">)</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``push_config``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `push_config`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">push_config</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span><span class="o">.</span><span class="n">modify_push_config</span><span class="p">(</span><span class="n">subscription</span><span class="p">,</span> <span class="n">push_config</span><span class="p">)</span>
@@ -789,14 +795,14 @@ continuously through the call regardless of changes to the <code class="docutils
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>subscription</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the subscription.
-Format is <code class="docutils literal notranslate"><span class="pre">projects/{project}/subscriptions/{sub}</span></code>.</li>
+<li><strong>subscription</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the subscription. Format is
+<code class="docutils literal notranslate"><span class="pre">projects/{project}/subscriptions/{sub}</span></code>.</li>
 <li><strong>push_config</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="../../types.html#google.cloud.pubsub_v1.types.PushConfig" title="google.cloud.pubsub_v1.types.PushConfig"><em>PushConfig</em></a><em>]</em>) – <p>The push configuration for future deliveries.</p>
-<p>An empty <code class="docutils literal notranslate"><span class="pre">pushConfig</span></code> indicates that the Pub/Sub system should
-stop pushing messages from the given subscription and allow
-messages to be pulled and acknowledged - effectively pausing
-the subscription if <code class="docutils literal notranslate"><span class="pre">Pull</span></code> or <code class="docutils literal notranslate"><span class="pre">StreamingPull</span></code> is not called.
-If a dict is provided, it must be of the same form as the protobuf
+<p>An empty <code class="docutils literal notranslate"><span class="pre">pushConfig</span></code> indicates that the Pub/Sub system should stop
+pushing messages from the given subscription and allow messages to be
+pulled and acknowledged - effectively pausing the subscription if
+<code class="docutils literal notranslate"><span class="pre">Pull</span></code> or <code class="docutils literal notranslate"><span class="pre">StreamingPull</span></code> is not called.</p>
+<p>If a dict is provided, it must be of the same form as the protobuf
 message <a class="reference internal" href="../../types.html#google.cloud.pubsub_v1.types.PushConfig" title="google.cloud.pubsub_v1.types.PushConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">PushConfig</span></code></a></p>
 </li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
@@ -842,7 +848,7 @@ subscription.</p>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">subscription</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">subscription_path</span><span class="p">(</span><span class="s1">&#39;[PROJECT]&#39;</span><span class="p">,</span> <span class="s1">&#39;[SUBSCRIPTION]&#39;</span><span class="p">)</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``max_messages``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `max_messages`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">max_messages</span> <span class="o">=</span> <span class="mi">0</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">pull</span><span class="p">(</span><span class="n">subscription</span><span class="p">,</span> <span class="n">max_messages</span><span class="p">)</span>
@@ -853,8 +859,8 @@ subscription.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>subscription</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The subscription from which messages should be pulled.
-Format is <code class="docutils literal notranslate"><span class="pre">projects/{project}/subscriptions/{sub}</span></code>.</li>
+<li><strong>subscription</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The subscription from which messages should be pulled. Format is
+<code class="docutils literal notranslate"><span class="pre">projects/{project}/subscriptions/{sub}</span></code>.</li>
 <li><strong>max_messages</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – The maximum number of messages returned for this request. The Pub/Sub
 system may return fewer than the number specified.</li>
 <li><strong>return_immediately</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – If this field set to true, the system will respond immediately even if
@@ -912,22 +918,22 @@ use. It is not subject to any SLA or deprecation policy.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>subscription</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The subscription to affect.</li>
-<li><strong>time</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="../../types.html#google.cloud.pubsub_v1.types.Timestamp" title="google.cloud.pubsub_v1.types.Timestamp"><em>Timestamp</em></a><em>]</em>) – The time to seek to.
-Messages retained in the subscription that were published before this
-time are marked as acknowledged, and messages retained in the
-subscription that were published after this time are marked as
-unacknowledged. Note that this operation affects only those messages
-retained in the subscription (configured by the combination of
-<code class="docutils literal notranslate"><span class="pre">message_retention_duration</span></code> and <code class="docutils literal notranslate"><span class="pre">retain_acked_messages</span></code>). For example,
-if <code class="docutils literal notranslate"><span class="pre">time</span></code> corresponds to a point before the message retention
+<li><strong>time</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="../../types.html#google.cloud.pubsub_v1.types.Timestamp" title="google.cloud.pubsub_v1.types.Timestamp"><em>Timestamp</em></a><em>]</em>) – <p>The time to seek to. Messages retained in the subscription that were
+published before this time are marked as acknowledged, and messages
+retained in the subscription that were published after this time are
+marked as unacknowledged. Note that this operation affects only those
+messages retained in the subscription (configured by the combination of
+<code class="docutils literal notranslate"><span class="pre">message_retention_duration</span></code> and <code class="docutils literal notranslate"><span class="pre">retain_acked_messages</span></code>). For
+example, if <code class="docutils literal notranslate"><span class="pre">time</span></code> corresponds to a point before the message retention
 window (or to a point before the system’s notion of the subscription
 creation time), only retained messages will be marked as unacknowledged,
-and already-expunged messages will not be restored.
-If a dict is provided, it must be of the same form as the protobuf
-message <a class="reference internal" href="../../types.html#google.cloud.pubsub_v1.types.Timestamp" title="google.cloud.pubsub_v1.types.Timestamp"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timestamp</span></code></a></li>
-<li><strong>snapshot</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The snapshot to seek to. The snapshot’s topic must be the same as that of
-the provided subscription.
-Format is <code class="docutils literal notranslate"><span class="pre">projects/{project}/snapshots/{snap}</span></code>.</li>
+and already-expunged messages will not be restored.</p>
+<p>If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="../../types.html#google.cloud.pubsub_v1.types.Timestamp" title="google.cloud.pubsub_v1.types.Timestamp"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timestamp</span></code></a></p>
+</li>
+<li><strong>snapshot</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The snapshot to seek to. The snapshot’s topic must be the same as that
+of the provided subscription. Format is
+<code class="docutils literal notranslate"><span class="pre">projects/{project}/snapshots/{snap}</span></code>.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
@@ -967,7 +973,7 @@ existing policy.</p>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">resource</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">subscription_path</span><span class="p">(</span><span class="s1">&#39;[PROJECT]&#39;</span><span class="p">,</span> <span class="s1">&#39;[SUBSCRIPTION]&#39;</span><span class="p">)</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``policy``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `policy`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">policy</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">set_iam_policy</span><span class="p">(</span><span class="n">resource</span><span class="p">,</span> <span class="n">policy</span><span class="p">)</span>
@@ -981,12 +987,13 @@ existing policy.</p>
 <li><strong>resource</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – REQUIRED: The resource for which the policy is being specified.
 <code class="docutils literal notranslate"><span class="pre">resource</span></code> is usually specified as a path. For example, a Project
 resource is specified as <code class="docutils literal notranslate"><span class="pre">projects/{project}</span></code>.</li>
-<li><strong>policy</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="../../types.html#google.cloud.pubsub_v1.types.Policy" title="google.cloud.pubsub_v1.types.Policy"><em>Policy</em></a><em>]</em>) – REQUIRED: The complete policy to be applied to the <code class="docutils literal notranslate"><span class="pre">resource</span></code>. The size of
-the policy is limited to a few 10s of KB. An empty policy is a
+<li><strong>policy</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="../../types.html#google.cloud.pubsub_v1.types.Policy" title="google.cloud.pubsub_v1.types.Policy"><em>Policy</em></a><em>]</em>) – <p>REQUIRED: The complete policy to be applied to the <code class="docutils literal notranslate"><span class="pre">resource</span></code>. The
+size of the policy is limited to a few 10s of KB. An empty policy is a
 valid policy but certain Cloud Platform services (such as Projects)
-might reject them.
-If a dict is provided, it must be of the same form as the protobuf
-message <a class="reference internal" href="../../types.html#google.cloud.pubsub_v1.types.Policy" title="google.cloud.pubsub_v1.types.Policy"><code class="xref py py-class docutils literal notranslate"><span class="pre">Policy</span></code></a></li>
+might reject them.</p>
+<p>If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="../../types.html#google.cloud.pubsub_v1.types.Policy" title="google.cloud.pubsub_v1.types.Policy"><code class="xref py py-class docutils literal notranslate"><span class="pre">Policy</span></code></a></p>
+</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
@@ -1135,9 +1142,9 @@ how callbacks are executed concurrently.</li>
 <dl class="method">
 <dt id="google.cloud.pubsub_v1.subscriber.client.Client.test_iam_permissions">
 <code class="descname">test_iam_permissions</code><span class="sig-paren">(</span><em>resource</em>, <em>permissions</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.client.Client.test_iam_permissions" title="Permalink to this definition">#</a></dt>
-<dd><p>Returns permissions that a caller has on the specified resource.
-If the resource does not exist, this will return an empty set of
-permissions, not a NOT_FOUND error.</p>
+<dd><p>Returns permissions that a caller has on the specified resource. If the
+resource does not exist, this will return an empty set of permissions,
+not a NOT_FOUND error.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">pubsub_v1</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -1145,7 +1152,7 @@ permissions, not a NOT_FOUND error.</p>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">resource</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">subscription_path</span><span class="p">(</span><span class="s1">&#39;[PROJECT]&#39;</span><span class="p">,</span> <span class="s1">&#39;[SUBSCRIPTION]&#39;</span><span class="p">)</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``permissions``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `permissions`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">permissions</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">test_iam_permissions</span><span class="p">(</span><span class="n">resource</span><span class="p">,</span> <span class="n">permissions</span><span class="p">)</span>
@@ -1161,8 +1168,8 @@ permissions, not a NOT_FOUND error.</p>
 resource is specified as <code class="docutils literal notranslate"><span class="pre">projects/{project}</span></code>.</li>
 <li><strong>permissions</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em>) – The set of permissions to check for the <code class="docutils literal notranslate"><span class="pre">resource</span></code>. Permissions with
 wildcards (such as ‘*’ or ‘storage.*’) are not allowed. For more
-information see
-<a class="reference external" href="https://cloud.google.com/iam/docs/overview#permissions">IAM Overview</a>.</li>
+information see <a class="reference external" href="https://cloud.google.com/iam/docs/overview#permissions">IAM
+Overview</a>.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
@@ -1224,13 +1231,15 @@ Note that certain properties of a snapshot are not modifiable.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>snapshot</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="../../types.html#google.cloud.pubsub_v1.types.Snapshot" title="google.cloud.pubsub_v1.types.Snapshot"><em>Snapshot</em></a><em>]</em>) – The updated snapshot object.
-If a dict is provided, it must be of the same form as the protobuf
-message <a class="reference internal" href="../../types.html#google.cloud.pubsub_v1.types.Snapshot" title="google.cloud.pubsub_v1.types.Snapshot"><code class="xref py py-class docutils literal notranslate"><span class="pre">Snapshot</span></code></a></li>
-<li><strong>update_mask</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="../../types.html#google.cloud.pubsub_v1.types.FieldMask" title="google.cloud.pubsub_v1.types.FieldMask"><em>FieldMask</em></a><em>]</em>) – Indicates which fields in the provided snapshot to update.
-Must be specified and non-empty.
-If a dict is provided, it must be of the same form as the protobuf
-message <a class="reference internal" href="../../types.html#google.cloud.pubsub_v1.types.FieldMask" title="google.cloud.pubsub_v1.types.FieldMask"><code class="xref py py-class docutils literal notranslate"><span class="pre">FieldMask</span></code></a></li>
+<li><strong>snapshot</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="../../types.html#google.cloud.pubsub_v1.types.Snapshot" title="google.cloud.pubsub_v1.types.Snapshot"><em>Snapshot</em></a><em>]</em>) – <p>The updated snapshot object.</p>
+<p>If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="../../types.html#google.cloud.pubsub_v1.types.Snapshot" title="google.cloud.pubsub_v1.types.Snapshot"><code class="xref py py-class docutils literal notranslate"><span class="pre">Snapshot</span></code></a></p>
+</li>
+<li><strong>update_mask</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="../../types.html#google.cloud.pubsub_v1.types.FieldMask" title="google.cloud.pubsub_v1.types.FieldMask"><em>FieldMask</em></a><em>]</em>) – <p>Indicates which fields in the provided snapshot to update.
+Must be specified and non-empty.</p>
+<p>If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="../../types.html#google.cloud.pubsub_v1.types.FieldMask" title="google.cloud.pubsub_v1.types.FieldMask"><code class="xref py py-class docutils literal notranslate"><span class="pre">FieldMask</span></code></a></p>
+</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
@@ -1282,13 +1291,15 @@ subscription, such as its topic, are not modifiable.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>subscription</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="../../types.html#google.cloud.pubsub_v1.types.Subscription" title="google.cloud.pubsub_v1.types.Subscription"><em>Subscription</em></a><em>]</em>) – The updated subscription object.
-If a dict is provided, it must be of the same form as the protobuf
-message <a class="reference internal" href="../../types.html#google.cloud.pubsub_v1.types.Subscription" title="google.cloud.pubsub_v1.types.Subscription"><code class="xref py py-class docutils literal notranslate"><span class="pre">Subscription</span></code></a></li>
-<li><strong>update_mask</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="../../types.html#google.cloud.pubsub_v1.types.FieldMask" title="google.cloud.pubsub_v1.types.FieldMask"><em>FieldMask</em></a><em>]</em>) – Indicates which fields in the provided subscription to update.
-Must be specified and non-empty.
-If a dict is provided, it must be of the same form as the protobuf
-message <a class="reference internal" href="../../types.html#google.cloud.pubsub_v1.types.FieldMask" title="google.cloud.pubsub_v1.types.FieldMask"><code class="xref py py-class docutils literal notranslate"><span class="pre">FieldMask</span></code></a></li>
+<li><strong>subscription</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="../../types.html#google.cloud.pubsub_v1.types.Subscription" title="google.cloud.pubsub_v1.types.Subscription"><em>Subscription</em></a><em>]</em>) – <p>The updated subscription object.</p>
+<p>If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="../../types.html#google.cloud.pubsub_v1.types.Subscription" title="google.cloud.pubsub_v1.types.Subscription"><code class="xref py py-class docutils literal notranslate"><span class="pre">Subscription</span></code></a></p>
+</li>
+<li><strong>update_mask</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="../../types.html#google.cloud.pubsub_v1.types.FieldMask" title="google.cloud.pubsub_v1.types.FieldMask"><em>FieldMask</em></a><em>]</em>) – <p>Indicates which fields in the provided subscription to update.
+Must be specified and non-empty.</p>
+<p>If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="../../types.html#google.cloud.pubsub_v1.types.FieldMask" title="google.cloud.pubsub_v1.types.FieldMask"><code class="xref py py-class docutils literal notranslate"><span class="pre">FieldMask</span></code></a></p>
+</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>

@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.pubsub_v1.gapic.publisher_client &#8212; google-cloud ea16a5a documentation</title>
+    <title>google.cloud.pubsub_v1.gapic.publisher_client &#8212; google-cloud a861334 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -204,9 +204,10 @@
             <span class="p">)</span>
 
         <span class="k">if</span> <span class="n">client_info</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">client_info</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">client_info</span><span class="o">.</span><span class="n">DEFAULT_CLIENT_INFO</span><span class="p">)</span>
-        <span class="n">client_info</span><span class="o">.</span><span class="n">gapic_version</span> <span class="o">=</span> <span class="n">_GAPIC_LIBRARY_VERSION</span>
+            <span class="n">client_info</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">client_info</span><span class="o">.</span><span class="n">ClientInfo</span><span class="p">(</span>
+                <span class="n">gapic_version</span><span class="o">=</span><span class="n">_GAPIC_LIBRARY_VERSION</span><span class="p">,</span> <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">client_info</span><span class="o">.</span><span class="n">gapic_version</span> <span class="o">=</span> <span class="n">_GAPIC_LIBRARY_VERSION</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_client_info</span> <span class="o">=</span> <span class="n">client_info</span>
 
         <span class="c1"># Parse out the default settings for retry and timeout for each RPC</span>
@@ -231,8 +232,8 @@
                      <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
                      <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Creates the given topic with the given name. See the</span>
-<span class="sd">        &lt;a href=\&quot;/pubsub/docs/admin#resource_names\&quot;&gt; resource name rules&lt;/a&gt;.</span>
+<span class="sd">        Creates the given topic with the given name. See the resource name</span>
+<span class="sd">        rules.</span>
 
 <span class="sd">        Example:</span>
 <span class="sd">            &gt;&gt;&gt; from google.cloud import pubsub_v1</span>
@@ -245,18 +246,19 @@
 
 <span class="sd">        Args:</span>
 <span class="sd">            name (str): The name of the topic. It must have the format</span>
-<span class="sd">                ``\&quot;projects/{project}/topics/{topic}\&quot;``. ``{topic}`` must start with a letter,</span>
-<span class="sd">                and contain only letters (``[A-Za-z]``), numbers (``[0-9]``), dashes (``-``),</span>
-<span class="sd">                underscores (``_``), periods (``.``), tildes (``~``), plus (``+``) or percent</span>
-<span class="sd">                signs (``%``). It must be between 3 and 255 characters in length, and it</span>
-<span class="sd">                must not start with ``\&quot;goog\&quot;``.</span>
-<span class="sd">            labels (dict[str -&gt; str]): See &lt;a href=\&quot;/pubsub/docs/labels\&quot;&gt; Creating and managing labels&lt;/a&gt;.</span>
+<span class="sd">                `&quot;projects/{project}/topics/{topic}&quot;`. `{topic}` must start with a letter,</span>
+<span class="sd">                and contain only letters (`[A-Za-z]`), numbers (`[0-9]`), dashes (`-`),</span>
+<span class="sd">                underscores (`_`), periods (`.`), tildes (`~`), plus (`+`) or percent</span>
+<span class="sd">                signs (`%`). It must be between 3 and 255 characters in length, and it</span>
+<span class="sd">                must not start with `&quot;goog&quot;`.</span>
+<span class="sd">            labels (dict[str -&gt; str]): See &lt;a href=&quot;/pubsub/docs/labels&quot;&gt; Creating and managing labels&lt;/a&gt;.</span>
 <span class="sd">            message_storage_policy (Union[dict, ~google.cloud.pubsub_v1.types.MessageStoragePolicy]): Policy constraining how messages published to the topic may be stored. It</span>
 <span class="sd">                is determined when the topic is created based on the policy configured at</span>
 <span class="sd">                the project level. It must not be set by the caller in the request to</span>
 <span class="sd">                CreateTopic or to UpdateTopic. This field will be populated in the</span>
 <span class="sd">                responses for GetTopic, CreateTopic, and UpdateTopic: if not present in the</span>
 <span class="sd">                response, then no constraints are in effect.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.pubsub_v1.types.MessageStoragePolicy`</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
@@ -312,23 +314,26 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; client = pubsub_v1.PublisherClient()</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``topic``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `topic`:</span>
 <span class="sd">            &gt;&gt;&gt; topic = {}</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``update_mask``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `update_mask`:</span>
 <span class="sd">            &gt;&gt;&gt; update_mask = {}</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; response = client.update_topic(topic, update_mask)</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            topic (Union[dict, ~google.cloud.pubsub_v1.types.Topic]): The updated topic object.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.pubsub_v1.types.Topic`</span>
-<span class="sd">            update_mask (Union[dict, ~google.cloud.pubsub_v1.types.FieldMask]): Indicates which fields in the provided topic to update. Must be specified</span>
-<span class="sd">                and non-empty. Note that if ``update_mask`` contains</span>
-<span class="sd">                \&quot;message_storage_policy\&quot; then the new value will be determined based on the</span>
-<span class="sd">                policy configured at the project or organization level. The</span>
-<span class="sd">                ``message_storage_policy`` must not be set in the ``topic`` provided above.</span>
+<span class="sd">            update_mask (Union[dict, ~google.cloud.pubsub_v1.types.FieldMask]): Indicates which fields in the provided topic to update. Must be</span>
+<span class="sd">                specified and non-empty. Note that if ``update_mask`` contains</span>
+<span class="sd">                &quot;message\_storage\_policy&quot; then the new value will be determined based</span>
+<span class="sd">                on the policy configured at the project or organization level. The</span>
+<span class="sd">                ``message_storage_policy`` must not be set in the ``topic`` provided</span>
+<span class="sd">                above.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.pubsub_v1.types.FieldMask`</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
@@ -375,8 +380,8 @@
                 <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
                 <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Adds one or more messages to the topic. Returns ``NOT_FOUND`` if the topic</span>
-<span class="sd">        does not exist.</span>
+<span class="sd">        Adds one or more messages to the topic. Returns ``NOT_FOUND`` if the</span>
+<span class="sd">        topic does not exist.</span>
 
 <span class="sd">        Example:</span>
 <span class="sd">            &gt;&gt;&gt; from google.cloud import pubsub_v1</span>
@@ -391,9 +396,10 @@
 <span class="sd">            &gt;&gt;&gt; response = client.publish(topic, messages)</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            topic (str): The messages in the request will be published on this topic.</span>
-<span class="sd">                Format is ``projects/{project}/topics/{topic}``.</span>
+<span class="sd">            topic (str): The messages in the request will be published on this topic. Format is</span>
+<span class="sd">                ``projects/{project}/topics/{topic}``.</span>
 <span class="sd">            messages (list[Union[dict, ~google.cloud.pubsub_v1.types.PubsubMessage]]): The messages to publish.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.pubsub_v1.types.PubsubMessage`</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
@@ -450,8 +456,8 @@
 <span class="sd">            &gt;&gt;&gt; response = client.get_topic(topic)</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            topic (str): The name of the topic to get.</span>
-<span class="sd">                Format is ``projects/{project}/topics/{topic}``.</span>
+<span class="sd">            topic (str): The name of the topic to get. Format is</span>
+<span class="sd">                ``projects/{project}/topics/{topic}``.</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
 <span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
 <span class="sd">                be retried.</span>
@@ -510,14 +516,14 @@
 <span class="sd">            &gt;&gt;&gt; # Alternatively:</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; # Iterate over results one page at a time</span>
-<span class="sd">            &gt;&gt;&gt; for page in client.list_topics(project, options=CallOptions(page_token=INITIAL_PAGE)):</span>
+<span class="sd">            &gt;&gt;&gt; for page in client.list_topics(project).pages:</span>
 <span class="sd">            ...     for element in page:</span>
 <span class="sd">            ...         # process element</span>
 <span class="sd">            ...         pass</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            project (str): The name of the project in which to list topics.</span>
-<span class="sd">                Format is ``projects/{project-id}``.</span>
+<span class="sd">            project (str): The name of the project in which to list topics. Format is</span>
+<span class="sd">                ``projects/{project-id}``.</span>
 <span class="sd">            page_size (int): The maximum number of resources contained in the</span>
 <span class="sd">                underlying API response. If page streaming is performed per-</span>
 <span class="sd">                resource, this parameter does not affect the return value. If page</span>
@@ -599,14 +605,14 @@
 <span class="sd">            &gt;&gt;&gt; # Alternatively:</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; # Iterate over results one page at a time</span>
-<span class="sd">            &gt;&gt;&gt; for page in client.list_topic_subscriptions(topic, options=CallOptions(page_token=INITIAL_PAGE)):</span>
+<span class="sd">            &gt;&gt;&gt; for page in client.list_topic_subscriptions(topic).pages:</span>
 <span class="sd">            ...     for element in page:</span>
 <span class="sd">            ...         # process element</span>
 <span class="sd">            ...         pass</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            topic (str): The name of the topic that subscriptions are attached to.</span>
-<span class="sd">                Format is ``projects/{project}/topics/{topic}``.</span>
+<span class="sd">            topic (str): The name of the topic that subscriptions are attached to. Format is</span>
+<span class="sd">                ``projects/{project}/topics/{topic}``.</span>
 <span class="sd">            page_size (int): The maximum number of resources contained in the</span>
 <span class="sd">                underlying API response. If page streaming is performed per-</span>
 <span class="sd">                resource, this parameter does not affect the return value. If page</span>
@@ -670,11 +676,12 @@
                      <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
                      <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Deletes the topic with the given name. Returns ``NOT_FOUND`` if the topic</span>
-<span class="sd">        does not exist. After a topic is deleted, a new topic may be created with</span>
-<span class="sd">        the same name; this is an entirely new topic with none of the old</span>
-<span class="sd">        configuration or subscriptions. Existing subscriptions to this topic are</span>
-<span class="sd">        not deleted, but their ``topic`` field is set to ``_deleted-topic_``.</span>
+<span class="sd">        Deletes the topic with the given name. Returns ``NOT_FOUND`` if the</span>
+<span class="sd">        topic does not exist. After a topic is deleted, a new topic may be</span>
+<span class="sd">        created with the same name; this is an entirely new topic with none of</span>
+<span class="sd">        the old configuration or subscriptions. Existing subscriptions to this</span>
+<span class="sd">        topic are not deleted, but their ``topic`` field is set to</span>
+<span class="sd">        ``_deleted-topic_``.</span>
 
 <span class="sd">        Example:</span>
 <span class="sd">            &gt;&gt;&gt; from google.cloud import pubsub_v1</span>
@@ -686,8 +693,8 @@
 <span class="sd">            &gt;&gt;&gt; client.delete_topic(topic)</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            topic (str): Name of the topic to delete.</span>
-<span class="sd">                Format is ``projects/{project}/topics/{topic}``.</span>
+<span class="sd">            topic (str): Name of the topic to delete. Format is</span>
+<span class="sd">                ``projects/{project}/topics/{topic}``.</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
 <span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
 <span class="sd">                be retried.</span>
@@ -736,7 +743,7 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; resource = client.topic_path(&#39;[PROJECT]&#39;, &#39;[TOPIC]&#39;)</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``policy``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `policy`:</span>
 <span class="sd">            &gt;&gt;&gt; policy = {}</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; response = client.set_iam_policy(resource, policy)</span>
@@ -745,10 +752,11 @@
 <span class="sd">            resource (str): REQUIRED: The resource for which the policy is being specified.</span>
 <span class="sd">                ``resource`` is usually specified as a path. For example, a Project</span>
 <span class="sd">                resource is specified as ``projects/{project}``.</span>
-<span class="sd">            policy (Union[dict, ~google.cloud.pubsub_v1.types.Policy]): REQUIRED: The complete policy to be applied to the ``resource``. The size of</span>
-<span class="sd">                the policy is limited to a few 10s of KB. An empty policy is a</span>
+<span class="sd">            policy (Union[dict, ~google.cloud.pubsub_v1.types.Policy]): REQUIRED: The complete policy to be applied to the ``resource``. The</span>
+<span class="sd">                size of the policy is limited to a few 10s of KB. An empty policy is a</span>
 <span class="sd">                valid policy but certain Cloud Platform services (such as Projects)</span>
 <span class="sd">                might reject them.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.pubsub_v1.types.Policy`</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
@@ -852,9 +860,9 @@
                              <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
                              <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns permissions that a caller has on the specified resource.</span>
-<span class="sd">        If the resource does not exist, this will return an empty set of</span>
-<span class="sd">        permissions, not a NOT_FOUND error.</span>
+<span class="sd">        Returns permissions that a caller has on the specified resource. If the</span>
+<span class="sd">        resource does not exist, this will return an empty set of permissions,</span>
+<span class="sd">        not a NOT\_FOUND error.</span>
 
 <span class="sd">        Example:</span>
 <span class="sd">            &gt;&gt;&gt; from google.cloud import pubsub_v1</span>
@@ -863,7 +871,7 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; resource = client.topic_path(&#39;[PROJECT]&#39;, &#39;[TOPIC]&#39;)</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``permissions``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `permissions`:</span>
 <span class="sd">            &gt;&gt;&gt; permissions = []</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; response = client.test_iam_permissions(resource, permissions)</span>
@@ -874,8 +882,8 @@
 <span class="sd">                resource is specified as ``projects/{project}``.</span>
 <span class="sd">            permissions (list[str]): The set of permissions to check for the ``resource``. Permissions with</span>
 <span class="sd">                wildcards (such as &#39;*&#39; or &#39;storage.*&#39;) are not allowed. For more</span>
-<span class="sd">                information see</span>
-<span class="sd">                `IAM Overview &lt;https://cloud.google.com/iam/docs/overview#permissions&gt;`_.</span>
+<span class="sd">                information see `IAM</span>
+<span class="sd">                Overview &lt;https://cloud.google.com/iam/docs/overview#permissions&gt;`__.</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
 <span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
 <span class="sd">                be retried.</span>
