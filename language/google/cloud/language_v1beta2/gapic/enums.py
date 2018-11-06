@@ -21,23 +21,23 @@ import enum
 class EncodingType(enum.IntEnum):
     """
     Represents the text encoding that the caller uses to process the output.
-    Providing an ``EncodingType`` is recommended because the API provides the
-    beginning offsets for various outputs, such as tokens and mentions, and
-    languages that natively use different text encodings may access offsets
-    differently.
+    Providing an ``EncodingType`` is recommended because the API provides
+    the beginning offsets for various outputs, such as tokens and mentions,
+    and languages that natively use different text encodings may access
+    offsets differently.
 
     Attributes:
-      NONE (int): If ``EncodingType`` is not specified, encoding-dependent information (such as
-      ``begin_offset``) will be set at ``-1``.
-      UTF8 (int): Encoding-dependent information (such as ``begin_offset``) is calculated based
-      on the UTF-8 encoding of the input. C++ and Go are examples of languages
-      that use this encoding natively.
-      UTF16 (int): Encoding-dependent information (such as ``begin_offset``) is calculated based
-      on the UTF-16 encoding of the input. Java and Javascript are examples of
+      NONE (int): If ``EncodingType`` is not specified, encoding-dependent information
+      (such as ``begin_offset``) will be set at ``-1``.
+      UTF8 (int): Encoding-dependent information (such as ``begin_offset``) is calculated
+      based on the UTF-8 encoding of the input. C++ and Go are examples of
       languages that use this encoding natively.
-      UTF32 (int): Encoding-dependent information (such as ``begin_offset``) is calculated based
-      on the UTF-32 encoding of the input. Python is an example of a language
-      that uses this encoding natively.
+      UTF16 (int): Encoding-dependent information (such as ``begin_offset``) is calculated
+      based on the UTF-16 encoding of the input. Java and Javascript are
+      examples of languages that use this encoding natively.
+      UTF32 (int): Encoding-dependent information (such as ``begin_offset``) is calculated
+      based on the UTF-32 encoding of the input. Python is an example of a
+      language that uses this encoding natively.
     """
     NONE = 0
     UTF8 = 1
