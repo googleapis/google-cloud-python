@@ -169,9 +169,10 @@ class DatabaseAdminClient(object):
             )
 
         if client_info is None:
-            client_info = (
-                google.api_core.gapic_v1.client_info.DEFAULT_CLIENT_INFO)
-        client_info.gapic_version = _GAPIC_LIBRARY_VERSION
+            client_info = google.api_core.gapic_v1.client_info.ClientInfo(
+                gapic_version=_GAPIC_LIBRARY_VERSION, )
+        else:
+            client_info.gapic_version = _GAPIC_LIBRARY_VERSION
         self._client_info = client_info
 
         # Parse out the default settings for retry and timeout for each RPC
@@ -213,14 +214,14 @@ class DatabaseAdminClient(object):
             >>> # Alternatively:
             >>>
             >>> # Iterate over results one page at a time
-            >>> for page in client.list_databases(parent, options=CallOptions(page_token=INITIAL_PAGE)):
+            >>> for page in client.list_databases(parent).pages:
             ...     for element in page:
             ...         # process element
             ...         pass
 
         Args:
-            parent (str): Required. The instance whose databases should be listed.
-                Values are of the form ``projects/<project>/instances/<instance>``.
+            parent (str): Required. The instance whose databases should be listed. Values are of
+                the form ``projects/<project>/instances/<instance>``.
             page_size (int): The maximum number of resources contained in the
                 underlying API response. If page streaming is performed per-
                 resource, this parameter does not affect the return value. If page
@@ -285,14 +286,12 @@ class DatabaseAdminClient(object):
                         timeout=google.api_core.gapic_v1.method.DEFAULT,
                         metadata=None):
         """
-        Creates a new Cloud Spanner database and starts to prepare it for serving.
-        The returned ``long-running operation`` will
-        have a name of the format ``<database_name>/operations/<operation_id>`` and
-        can be used to track preparation of the database. The
-        ``metadata`` field type is
-        ``CreateDatabaseMetadata``. The
-        ``response`` field type is
-        ``Database``, if successful.
+        Creates a new Cloud Spanner database and starts to prepare it for
+        serving. The returned ``long-running operation`` will have a name of the
+        format ``<database_name>/operations/<operation_id>`` and can be used to
+        track preparation of the database. The ``metadata`` field type is
+        ``CreateDatabaseMetadata``. The ``response`` field type is ``Database``,
+        if successful.
 
         Example:
             >>> from google.cloud import spanner_admin_database_v1
@@ -301,7 +300,7 @@ class DatabaseAdminClient(object):
             >>>
             >>> parent = client.instance_path('[PROJECT]', '[INSTANCE]')
             >>>
-            >>> # TODO: Initialize ``create_statement``:
+            >>> # TODO: Initialize `create_statement`:
             >>> create_statement = ''
             >>>
             >>> response = client.create_database(parent, create_statement)
@@ -319,10 +318,10 @@ class DatabaseAdminClient(object):
             parent (str): Required. The name of the instance that will serve the new database.
                 Values are of the form ``projects/<project>/instances/<instance>``.
             create_statement (str): Required. A ``CREATE DATABASE`` statement, which specifies the ID of the
-                new database.  The database ID must conform to the regular expression
-                ``[a-z][a-z0-9_\-]*[a-z0-9]`` and be between 2 and 30 characters in length.
-                If the database ID is a reserved word or if it contains a hyphen, the
-                database ID must be enclosed in backticks.
+                new database. The database ID must conform to the regular expression
+                ``[a-z][a-z0-9_\-]*[a-z0-9]`` and be between 2 and 30 characters in
+                length. If the database ID is a reserved word or if it contains a
+                hyphen, the database ID must be enclosed in backticks (`````).
             extra_statements (list[str]): An optional list of DDL statements to run inside the newly created
                 database. Statements can create tables, indexes, etc. These
                 statements execute atomically with the creation of the database:
@@ -435,11 +434,10 @@ class DatabaseAdminClient(object):
         """
         Updates the schema of a Cloud Spanner database by
         creating/altering/dropping tables, columns, indexes, etc. The returned
-        ``long-running operation`` will have a name of
-        the format ``<database_name>/operations/<operation_id>`` and can be used to
-        track execution of the schema change(s). The
-        ``metadata`` field type is
-        ``UpdateDatabaseDdlMetadata``.  The operation has no response.
+        ``long-running operation`` will have a name of the format
+        ``<database_name>/operations/<operation_id>`` and can be used to track
+        execution of the schema change(s). The ``metadata`` field type is
+        ``UpdateDatabaseDdlMetadata``. The operation has no response.
 
         Example:
             >>> from google.cloud import spanner_admin_database_v1
@@ -448,7 +446,7 @@ class DatabaseAdminClient(object):
             >>>
             >>> database = client.database_path('[PROJECT]', '[INSTANCE]', '[DATABASE]')
             >>>
-            >>> # TODO: Initialize ``statements``:
+            >>> # TODO: Initialize `statements`:
             >>> statements = []
             >>>
             >>> response = client.update_database_ddl(database, statements)
@@ -465,25 +463,21 @@ class DatabaseAdminClient(object):
         Args:
             database (str): Required. The database to update.
             statements (list[str]): DDL statements to be applied to the database.
-            operation_id (str): If empty, the new update request is assigned an
-                automatically-generated operation ID. Otherwise, ``operation_id``
-                is used to construct the name of the resulting
-                ``Operation``.
+            operation_id (str): If empty, the new update request is assigned an automatically-generated
+                operation ID. Otherwise, ``operation_id`` is used to construct the name
+                of the resulting ``Operation``.
 
-                Specifying an explicit operation ID simplifies determining
-                whether the statements were executed in the event that the
-                ``UpdateDatabaseDdl`` call is replayed,
-                or the return value is otherwise lost: the ``database`` and
-                ``operation_id`` fields can be combined to form the
-                ``name`` of the resulting
-                ``longrunning.Operation``: ``<database>/operations/<operation_id>``.
+                Specifying an explicit operation ID simplifies determining whether the
+                statements were executed in the event that the ``UpdateDatabaseDdl``
+                call is replayed, or the return value is otherwise lost: the
+                ``database`` and ``operation_id`` fields can be combined to form the
+                ``name`` of the resulting ``longrunning.Operation``:
+                ``<database>/operations/<operation_id>``.
 
-                ``operation_id`` should be unique within the database, and must be
-                a valid identifier: ``[a-z][a-z0-9_]*``. Note that
-                automatically-generated operation IDs always begin with an
-                underscore. If the named operation already exists,
-                ``UpdateDatabaseDdl`` returns
-                ``ALREADY_EXISTS``.
+                ``operation_id`` should be unique within the database, and must be a
+                valid identifier: ``[a-z][a-z0-9_]*``. Note that automatically-generated
+                operation IDs always begin with an underscore. If the named operation
+                already exists, ``UpdateDatabaseDdl`` returns ``ALREADY_EXISTS``.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -587,8 +581,8 @@ class DatabaseAdminClient(object):
                          metadata=None):
         """
         Returns the schema of a Cloud Spanner database as a list of formatted
-        DDL statements. This method does not show pending schema updates, those may
-        be queried using the ``Operations`` API.
+        DDL statements. This method does not show pending schema updates, those
+        may be queried using the ``Operations`` API.
 
         Example:
             >>> from google.cloud import spanner_admin_database_v1
@@ -656,7 +650,7 @@ class DatabaseAdminClient(object):
             >>>
             >>> resource = client.database_path('[PROJECT]', '[INSTANCE]', '[DATABASE]')
             >>>
-            >>> # TODO: Initialize ``policy``:
+            >>> # TODO: Initialize `policy`:
             >>> policy = {}
             >>>
             >>> response = client.set_iam_policy(resource, policy)
@@ -665,10 +659,11 @@ class DatabaseAdminClient(object):
             resource (str): REQUIRED: The resource for which the policy is being specified.
                 ``resource`` is usually specified as a path. For example, a Project
                 resource is specified as ``projects/{project}``.
-            policy (Union[dict, ~google.cloud.spanner_admin_database_v1.types.Policy]): REQUIRED: The complete policy to be applied to the ``resource``. The size of
-                the policy is limited to a few 10s of KB. An empty policy is a
+            policy (Union[dict, ~google.cloud.spanner_admin_database_v1.types.Policy]): REQUIRED: The complete policy to be applied to the ``resource``. The
+                size of the policy is limited to a few 10s of KB. An empty policy is a
                 valid policy but certain Cloud Platform services (such as Projects)
                 might reject them.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.spanner_admin_database_v1.types.Policy`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -774,12 +769,13 @@ class DatabaseAdminClient(object):
                              timeout=google.api_core.gapic_v1.method.DEFAULT,
                              metadata=None):
         """
-        Returns permissions that the caller has on the specified database resource.
+        Returns permissions that the caller has on the specified database
+        resource.
 
-        Attempting this RPC on a non-existent Cloud Spanner database will result in
-        a NOT_FOUND error if the user has ``spanner.databases.list`` permission on
-        the containing Cloud Spanner instance. Otherwise returns an empty set of
-        permissions.
+        Attempting this RPC on a non-existent Cloud Spanner database will result
+        in a NOT\_FOUND error if the user has ``spanner.databases.list``
+        permission on the containing Cloud Spanner instance. Otherwise returns
+        an empty set of permissions.
 
         Example:
             >>> from google.cloud import spanner_admin_database_v1
@@ -788,7 +784,7 @@ class DatabaseAdminClient(object):
             >>>
             >>> resource = client.database_path('[PROJECT]', '[INSTANCE]', '[DATABASE]')
             >>>
-            >>> # TODO: Initialize ``permissions``:
+            >>> # TODO: Initialize `permissions`:
             >>> permissions = []
             >>>
             >>> response = client.test_iam_permissions(resource, permissions)
@@ -799,8 +795,8 @@ class DatabaseAdminClient(object):
                 resource is specified as ``projects/{project}``.
             permissions (list[str]): The set of permissions to check for the ``resource``. Permissions with
                 wildcards (such as '*' or 'storage.*') are not allowed. For more
-                information see
-                `IAM Overview <https://cloud.google.com/iam/docs/overview#permissions>`_.
+                information see `IAM
+                Overview <https://cloud.google.com/iam/docs/overview#permissions>`__.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
