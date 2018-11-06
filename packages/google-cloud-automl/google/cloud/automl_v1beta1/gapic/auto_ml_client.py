@@ -54,13 +54,13 @@ class AutoMlClient(object):
     """
     AutoML Server API.
 
-    The resource names are assigned by the server.
-    The server never reuses names that it has created after the resources with
-    those names are deleted.
+    The resource names are assigned by the server. The server never reuses
+    names that it has created after the resources with those names are
+    deleted.
 
     An ID of a resource is the last element of the item's resource name. For
-    ``projects/{project_id}/locations/{location_id}/datasets/{dataset_id}``, then
-    the id for the item is ``{dataset_id}``.
+    ``projects/{project_id}/locations/{location_id}/datasets/{dataset_id}``,
+    then the id for the item is ``{dataset_id}``.
     """
 
     SERVICE_ADDRESS = 'automl.googleapis.com:443'
@@ -199,9 +199,10 @@ class AutoMlClient(object):
             )
 
         if client_info is None:
-            client_info = (
-                google.api_core.gapic_v1.client_info.DEFAULT_CLIENT_INFO)
-        client_info.gapic_version = _GAPIC_LIBRARY_VERSION
+            client_info = google.api_core.gapic_v1.client_info.ClientInfo(
+                gapic_version=_GAPIC_LIBRARY_VERSION, )
+        else:
+            client_info.gapic_version = _GAPIC_LIBRARY_VERSION
         self._client_info = client_info
 
         # Parse out the default settings for retry and timeout for each RPC
@@ -234,7 +235,7 @@ class AutoMlClient(object):
             >>>
             >>> parent = client.location_path('[PROJECT]', '[LOCATION]')
             >>>
-            >>> # TODO: Initialize ``dataset``:
+            >>> # TODO: Initialize `dataset`:
             >>> dataset = {}
             >>>
             >>> response = client.create_dataset(parent, dataset)
@@ -242,6 +243,7 @@ class AutoMlClient(object):
         Args:
             parent (str): The resource name of the project to create the dataset for.
             dataset (Union[dict, ~google.cloud.automl_v1beta1.types.Dataset]): The dataset to create.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.automl_v1beta1.types.Dataset`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -359,7 +361,7 @@ class AutoMlClient(object):
             >>> # Alternatively:
             >>>
             >>> # Iterate over results one page at a time
-            >>> for page in client.list_datasets(parent, options=CallOptions(page_token=INITIAL_PAGE)):
+            >>> for page in client.list_datasets(parent).pages:
             ...     for element in page:
             ...         # process element
             ...         pass
@@ -368,13 +370,12 @@ class AutoMlClient(object):
             parent (str): The resource name of the project from which to list datasets.
             filter_ (str): An expression for filtering the results of the request.
 
-                  * ``dataset_metadata`` - for existence of the case.
+                -  ``dataset_metadata`` - for existence of the case.
 
                 An example of using the filter is:
 
-                  * ``translation_dataset_metadata:*`` --> The dataset has
-                    ::
-                    translation_dataset_metadata.
+                -  ``translation_dataset_metadata:*`` --> The dataset has
+                   translation\_dataset\_metadata.
             page_size (int): The maximum number of resources contained in the
                 underlying API response. If page streaming is performed per-
                 resource, this parameter does not affect the return value. If page
@@ -438,10 +439,8 @@ class AutoMlClient(object):
                        timeout=google.api_core.gapic_v1.method.DEFAULT,
                        metadata=None):
         """
-        Deletes a dataset and all of its contents.
-        Returns empty response in the
-        ``response`` field when it completes,
-        and ``delete_details`` in the
+        Deletes a dataset and all of its contents. Returns empty response in the
+        ``response`` field when it completes, and ``delete_details`` in the
         ``metadata`` field.
 
         Example:
@@ -511,8 +510,7 @@ class AutoMlClient(object):
                     timeout=google.api_core.gapic_v1.method.DEFAULT,
                     metadata=None):
         """
-        Imports data into a dataset.
-        Returns an empty response in the
+        Imports data into a dataset. Returns an empty response in the
         ``response`` field when it completes.
 
         Example:
@@ -522,7 +520,7 @@ class AutoMlClient(object):
             >>>
             >>> name = client.dataset_path('[PROJECT]', '[LOCATION]', '[DATASET]')
             >>>
-            >>> # TODO: Initialize ``input_config``:
+            >>> # TODO: Initialize `input_config`:
             >>> input_config = {}
             >>>
             >>> response = client.import_data(name, input_config)
@@ -540,6 +538,7 @@ class AutoMlClient(object):
             name (str): Required. Dataset name. Dataset must already exist. All imported
                 annotations and examples will be added.
             input_config (Union[dict, ~google.cloud.automl_v1beta1.types.InputConfig]): Required. The desired input location.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.automl_v1beta1.types.InputConfig`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -591,9 +590,8 @@ class AutoMlClient(object):
                     timeout=google.api_core.gapic_v1.method.DEFAULT,
                     metadata=None):
         """
-        Exports dataset's data to a Google Cloud Storage bucket.
-        Returns an empty response in the
-        ``response`` field when it completes.
+        Exports dataset's data to a Google Cloud Storage bucket. Returns an
+        empty response in the ``response`` field when it completes.
 
         Example:
             >>> from google.cloud import automl_v1beta1
@@ -602,7 +600,7 @@ class AutoMlClient(object):
             >>>
             >>> name = client.dataset_path('[PROJECT]', '[LOCATION]', '[DATASET]')
             >>>
-            >>> # TODO: Initialize ``output_config``:
+            >>> # TODO: Initialize `output_config`:
             >>> output_config = {}
             >>>
             >>> response = client.export_data(name, output_config)
@@ -619,6 +617,7 @@ class AutoMlClient(object):
         Args:
             name (str): Required. The resource name of the dataset.
             output_config (Union[dict, ~google.cloud.automl_v1beta1.types.OutputConfig]): Required. The desired output location.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.automl_v1beta1.types.OutputConfig`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -670,11 +669,10 @@ class AutoMlClient(object):
                      timeout=google.api_core.gapic_v1.method.DEFAULT,
                      metadata=None):
         """
-        Creates a model.
-        Returns a Model in the ``response``
-        field when it completes.
-        When you create a model, several model evaluations are created for it:
-        a global evaluation, and one evaluation for each annotation spec.
+        Creates a model. Returns a Model in the ``response`` field when it
+        completes. When you create a model, several model evaluations are
+        created for it: a global evaluation, and one evaluation for each
+        annotation spec.
 
         Example:
             >>> from google.cloud import automl_v1beta1
@@ -683,7 +681,7 @@ class AutoMlClient(object):
             >>>
             >>> parent = client.location_path('[PROJECT]', '[LOCATION]')
             >>>
-            >>> # TODO: Initialize ``model``:
+            >>> # TODO: Initialize `model`:
             >>> model = {}
             >>>
             >>> response = client.create_model(parent, model)
@@ -700,6 +698,7 @@ class AutoMlClient(object):
         Args:
             parent (str): Resource name of the parent project where the model is being created.
             model (Union[dict, ~google.cloud.automl_v1beta1.types.Model]): The model to create.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.automl_v1beta1.types.Model`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -823,7 +822,7 @@ class AutoMlClient(object):
             >>> # Alternatively:
             >>>
             >>> # Iterate over results one page at a time
-            >>> for page in client.list_models(parent, options=CallOptions(page_token=INITIAL_PAGE)):
+            >>> for page in client.list_models(parent).pages:
             ...     for element in page:
             ...         # process element
             ...         pass
@@ -832,17 +831,15 @@ class AutoMlClient(object):
             parent (str): Resource name of the project, from which to list the models.
             filter_ (str): An expression for filtering the results of the request.
 
-                  * ``model_metadata`` - for existence of the case.
-                  * ``dataset_id`` - for = or !=.
+                -  ``model_metadata`` - for existence of the case.
+                -  ``dataset_id`` - for = or !=.
 
                 Some examples of using the filter are:
 
-                  * ``image_classification_model_metadata:*`` --> The model has
-                    ::
-                    image_classification_model_metadata.
-                  * ``dataset_id=5`` --> The model was created from a sibling dataset with
-                    ::
-                    ID 5.
+                -  ``image_classification_model_metadata:*`` --> The model has
+                   image\_classification\_model\_metadata.
+                -  ``dataset_id=5`` --> The model was created from a sibling dataset
+                   with ID 5.
             page_size (int): The maximum number of resources contained in the
                 underlying API response. If page streaming is performed per-
                 resource, this parameter does not affect the return value. If page
@@ -905,13 +902,10 @@ class AutoMlClient(object):
                      timeout=google.api_core.gapic_v1.method.DEFAULT,
                      metadata=None):
         """
-        Deletes a model.
-        If a model is already deployed, this only deletes the model in AutoML BE,
-        and does not change the status of the deployed model in the production
-        environment.
-        Returns ``google.protobuf.Empty`` in the
-        ``response`` field when it completes,
-        and ``delete_details`` in the
+        Deletes a model. If a model is already deployed, this only deletes the
+        model in AutoML BE, and does not change the status of the deployed model
+        in the production environment. Returns ``google.protobuf.Empty`` in the
+        ``response`` field when it completes, and ``delete_details`` in the
         ``metadata`` field.
 
         Example:
@@ -980,9 +974,8 @@ class AutoMlClient(object):
                      timeout=google.api_core.gapic_v1.method.DEFAULT,
                      metadata=None):
         """
-        Deploys model.
-        Returns a ``DeployModelResponse`` in the
-        ``response`` field when it completes.
+        Deploys model. Returns a ``DeployModelResponse`` in the ``response``
+        field when it completes.
 
         Example:
             >>> from google.cloud import automl_v1beta1
@@ -1035,8 +1028,7 @@ class AutoMlClient(object):
                        timeout=google.api_core.gapic_v1.method.DEFAULT,
                        metadata=None):
         """
-        Undeploys model.
-        Returns an ``UndeployModelResponse`` in the
+        Undeploys model. Returns an ``UndeployModelResponse`` in the
         ``response`` field when it completes.
 
         Example:
@@ -1164,29 +1156,26 @@ class AutoMlClient(object):
             >>> # Alternatively:
             >>>
             >>> # Iterate over results one page at a time
-            >>> for page in client.list_model_evaluations(parent, options=CallOptions(page_token=INITIAL_PAGE)):
+            >>> for page in client.list_model_evaluations(parent).pages:
             ...     for element in page:
             ...         # process element
             ...         pass
 
         Args:
             parent (str): Resource name of the model to list the model evaluations for.
-                If modelId is set as \"-\", this will list model evaluations from across all
+                If modelId is set as "-", this will list model evaluations from across all
                 models of the parent location.
             filter_ (str): An expression for filtering the results of the request.
 
-                  * ``annotation_spec_id`` - for =, !=  or existence. See example below for
-                    ::
-                    the last.
+                -  ``annotation_spec_id`` - for =, != or existence. See example below
+                   for the last.
 
                 Some examples of using the filter are:
 
-                  * ``annotation_spec_id!=4`` --> The model evaluation was done for
-                    ::
-                    annotation spec with ID different than 4.
-                  * ``NOT annotation_spec_id:*`` --> The model evaluation was done for
-                    ::
-                    aggregate of all annotation specs.
+                -  ``annotation_spec_id!=4`` --> The model evaluation was done for
+                   annotation spec with ID different than 4.
+                -  ``NOT annotation_spec_id:*`` --> The model evaluation was done for
+                   aggregate of all annotation specs.
             page_size (int): The maximum number of resources contained in the
                 underlying API response. If page streaming is performed per-
                 resource, this parameter does not affect the return value. If page

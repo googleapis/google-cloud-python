@@ -147,9 +147,10 @@ class PredictionServiceClient(object):
             )
 
         if client_info is None:
-            client_info = (
-                google.api_core.gapic_v1.client_info.DEFAULT_CLIENT_INFO)
-        client_info.gapic_version = _GAPIC_LIBRARY_VERSION
+            client_info = google.api_core.gapic_v1.client_info.ClientInfo(
+                gapic_version=_GAPIC_LIBRARY_VERSION, )
+        else:
+            client_info.gapic_version = _GAPIC_LIBRARY_VERSION
         self._client_info = client_info
 
         # Parse out the default settings for retry and timeout for each RPC
@@ -183,7 +184,7 @@ class PredictionServiceClient(object):
             >>>
             >>> name = client.model_path('[PROJECT]', '[LOCATION]', '[MODEL]')
             >>>
-            >>> # TODO: Initialize ``payload``:
+            >>> # TODO: Initialize `payload`:
             >>> payload = {}
             >>>
             >>> response = client.predict(name, payload)
@@ -193,19 +194,17 @@ class PredictionServiceClient(object):
             payload (Union[dict, ~google.cloud.automl_v1beta1.types.ExamplePayload]): Required.
                 Payload to perform a prediction on. The payload must match the
                 problem type that the model was trained to solve.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.automl_v1beta1.types.ExamplePayload`
             params (dict[str -> str]): Additional domain-specific parameters, any string must be up to 25000
                 characters long.
 
-                *  For Image Classification:
+                -  For Image Classification:
 
                    ``score_threshold`` - (float) A value from 0.0 to 1.0. When the model
-
-
-                    makes predictions for an
-                    image, it will only produce results that have at least this confidence
-                    score threshold. The default is 0.5.
+                   makes predictions for an image, it will only produce results that
+                   have at least this confidence score threshold. The default is 0.5.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
