@@ -14,6 +14,7 @@
 
 import types
 import unittest.mock
+import zlib
 
 import pytest
 
@@ -1361,11 +1362,177 @@ class TestFloatProperty:
             model.FloatProperty()
 
 
-class TestBlobProperty:
+class Test_CompressedValue:
     @staticmethod
     def test_constructor():
+        value = b"abc" * 1000
+        z_val = zlib.compress(value)
+        compressed_value = model._CompressedValue(z_val)
+
+        assert compressed_value.z_val == z_val
+
+    @staticmethod
+    def test___repr__():
+        z_val = zlib.compress(b"12345678901234567890")
+        compressed_value = model._CompressedValue(z_val)
+        expected = "_CompressedValue(" + repr(z_val) + ")"
+        assert repr(compressed_value) == expected
+
+    @staticmethod
+    def test___eq__():
+        z_val1 = zlib.compress(b"12345678901234567890")
+        compressed_value1 = model._CompressedValue(z_val1)
+        z_val2 = zlib.compress(b"12345678901234567890abcde\x00")
+        compressed_value2 = model._CompressedValue(z_val2)
+        compressed_value3 = unittest.mock.sentinel.compressed_value
+        assert compressed_value1 == compressed_value1
+        assert not compressed_value1 == compressed_value2
+        assert not compressed_value1 == compressed_value3
+
+    @staticmethod
+    def test___ne__():
+        z_val1 = zlib.compress(b"12345678901234567890")
+        compressed_value1 = model._CompressedValue(z_val1)
+        z_val2 = zlib.compress(b"12345678901234567890abcde\x00")
+        compressed_value2 = model._CompressedValue(z_val2)
+        compressed_value3 = unittest.mock.sentinel.compressed_value
+        assert not compressed_value1 != compressed_value1
+        assert compressed_value1 != compressed_value2
+        assert compressed_value1 != compressed_value3
+
+    @staticmethod
+    def test___hash__():
+        z_val = zlib.compress(b"12345678901234567890")
+        compressed_value = model._CompressedValue(z_val)
+        with pytest.raises(TypeError):
+            hash(compressed_value)
+
+
+class TestBlobProperty:
+    @staticmethod
+    def test_constructor_defaults():
+        prop = model.BlobProperty()
+        # Check that none of the constructor defaults were used.
+        assert prop.__dict__ == {}
+
+    @staticmethod
+    def test_constructor_explicit():
+        prop = model.BlobProperty(
+            name="blob_val",
+            compressed=True,
+            indexed=False,
+            repeated=False,
+            required=True,
+            default=b"eleven\x11",
+            choices=(b"a", b"b", b"c", b"eleven\x11"),
+            validator=TestProperty._example_validator,
+            verbose_name="VALUE FOR READING",
+            write_empty_list=False,
+        )
+        assert prop._name == b"blob_val" and prop._name != "blob_val"
+        assert not prop._indexed
+        assert not prop._repeated
+        assert prop._required
+        assert prop._default == b"eleven\x11"
+        assert prop._choices == frozenset((b"a", b"b", b"c", b"eleven\x11"))
+        assert prop._validator is TestProperty._example_validator
+        assert prop._verbose_name == "VALUE FOR READING"
+        assert not prop._write_empty_list
+
+    @staticmethod
+    def test_constructor_compressed_and_indexed():
         with pytest.raises(NotImplementedError):
-            model.BlobProperty()
+            model.BlobProperty(name="foo", compressed=True, indexed=True)
+
+    @staticmethod
+    def test__value_to_repr():
+        prop = model.BlobProperty(name="blob")
+        as_repr = prop._value_to_repr(b"abc")
+        assert as_repr == "b'abc'"
+
+    @staticmethod
+    def test__value_to_repr_truncated():
+        prop = model.BlobProperty(name="blob")
+        value = bytes(range(256)) * 5
+        as_repr = prop._value_to_repr(value)
+        expected = repr(value)[: model._MAX_STRING_LENGTH] + "...'"
+        assert as_repr == expected
+
+    @staticmethod
+    def test__validate():
+        prop = model.BlobProperty(name="blob")
+        assert prop._validate(b"abc") is None
+
+    @staticmethod
+    def test__validate_wrong_type():
+        prop = model.BlobProperty(name="blob")
+        values = ("non-bytes", 48, {"a": "c"})
+        for value in values:
+            with pytest.raises(exceptions.BadValueError):
+                prop._validate(value)
+
+    @staticmethod
+    def test__validate_indexed_too_long():
+        prop = model.BlobProperty(name="blob", indexed=True)
+        value = b"\x00" * 2000
+        with pytest.raises(exceptions.BadValueError):
+            prop._validate(value)
+
+    @staticmethod
+    def test__to_base_type():
+        prop = model.BlobProperty(name="blob", compressed=True)
+        value = b"abc" * 10
+        converted = prop._to_base_type(value)
+
+        assert isinstance(converted, model._CompressedValue)
+        assert converted.z_val == zlib.compress(value)
+
+    @staticmethod
+    def test__to_base_type_no_convert():
+        prop = model.BlobProperty(name="blob", compressed=False)
+        value = b"abc" * 10
+        converted = prop._to_base_type(value)
+        assert converted is None
+
+    @staticmethod
+    def test__from_base_type():
+        prop = model.BlobProperty(name="blob")
+        original = b"abc" * 10
+        z_val = zlib.compress(original)
+        value = model._CompressedValue(z_val)
+        converted = prop._from_base_type(value)
+
+        assert converted == original
+
+    @staticmethod
+    def test__from_base_type_no_convert():
+        prop = model.BlobProperty(name="blob")
+        converted = prop._from_base_type(b"abc")
+        assert converted is None
+
+    @staticmethod
+    def test__db_set_value():
+        prop = model.BlobProperty(name="blob")
+        with pytest.raises(NotImplementedError):
+            prop._db_set_value(None, None, None)
+
+    @staticmethod
+    def test__db_set_compressed_meaning():
+        prop = model.BlobProperty(name="blob")
+        with pytest.raises(NotImplementedError):
+            prop._db_set_compressed_meaning(None)
+
+    @staticmethod
+    def test__db_set_uncompressed_meaning():
+        prop = model.BlobProperty(name="blob")
+        with pytest.raises(NotImplementedError):
+            prop._db_set_uncompressed_meaning(None)
+
+    @staticmethod
+    def test__db_get_value():
+        prop = model.BlobProperty(name="blob")
+        with pytest.raises(NotImplementedError):
+            prop._db_get_value(None, None)
 
 
 class TestTextProperty:

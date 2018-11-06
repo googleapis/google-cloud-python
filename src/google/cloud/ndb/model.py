@@ -16,6 +16,7 @@
 
 
 import inspect
+import zlib
 
 from google.cloud.ndb import exceptions
 from google.cloud.ndb import key as key_module
@@ -80,6 +81,7 @@ __all__ = [
 ]
 
 
+_MAX_STRING_LENGTH = 1500
 Key = key_module.Key
 BlobKey = NotImplemented  # From `google.appengine.api.datastore_types`
 GeoPt = NotImplemented  # From `google.appengine.api.datastore_types`
@@ -248,7 +250,7 @@ class IndexState:
         )
 
     def __eq__(self, other):
-        """Compare two indexes."""
+        """Compare two index states."""
         if not isinstance(other, IndexState):
             return NotImplemented
 
@@ -611,11 +613,11 @@ class Property(ModelAttribute):
         ``value + "$"`` is not.
 
         Args:
-            validator (Callable[[.Property, Any], bool]): A callable that can
+            validator (Callable[[Property, Any], bool]): A callable that can
                 validate a property value.
 
         Returns:
-            Callable[[.Property, Any], bool]: The ``validator``.
+            Callable[[Property, Any], bool]: The ``validator``.
 
         Raises:
             TypeError: If ``validator`` is not callable. This is determined by
@@ -1627,10 +1629,206 @@ class FloatProperty(Property):
         raise NotImplementedError
 
 
-class BlobProperty(Property):
-    __slots__ = ()
+class _CompressedValue:
+    """A marker object wrapping compressed values.
 
-    def __init__(self, *args, **kwargs):
+    Args:
+        z_val (bytes): A return value of ``zlib.compress``.
+    """
+
+    __slots__ = ("z_val",)
+
+    def __init__(self, z_val):
+        self.z_val = z_val
+
+    def __repr__(self):
+        return "_CompressedValue({!r})".format(self.z_val)
+
+    def __eq__(self, other):
+        """Compare two compressed values."""
+        if not isinstance(other, _CompressedValue):
+            return NotImplemented
+
+        return self.z_val == other.z_val
+
+    def __ne__(self, other):
+        """Inequality comparison operation."""
+        return not self == other
+
+    def __hash__(self):
+        raise TypeError("_CompressedValue is not immutable")
+
+
+class BlobProperty(Property):
+    """A property that contains values that are byte strings.
+
+    .. note::
+
+        Unlike most property types, a :class:`BlobProperty` is **not**
+        indexed by default.
+
+    Args:
+        name (str): The name of the property.
+        compressed (bool): Indicates if the value should be compressed (via
+            ``zlib``).
+        indexed (bool): Indicates if the value should be indexed.
+        repeated (bool): Indicates if this property is repeated, i.e. contains
+            multiple values.
+        required (bool): Indicates if this property is required on the given
+            model type.
+        default (bytes): The default value for this property.
+        choices (Iterable[bytes]): A container of allowed values for this
+            property.
+        validator (Callable[[Property, Any], bool]): A validator to be used
+            to check values.
+        verbose_name (str): A longer, user-friendly name for this property.
+        write_empty_list (bool): Indicates if an empty list should be written
+            to the datastore.
+
+    Raises:
+        NotImplementedError: If the property is both compressed and indexed.
+    """
+
+    _indexed = False
+    _compressed = False
+
+    def __init__(
+        self,
+        name=None,
+        compressed=None,
+        *,
+        indexed=None,
+        repeated=None,
+        required=None,
+        default=None,
+        choices=None,
+        validator=None,
+        verbose_name=None,
+        write_empty_list=None
+    ):
+        super(BlobProperty, self).__init__(
+            name=name,
+            indexed=indexed,
+            repeated=repeated,
+            required=required,
+            default=default,
+            choices=choices,
+            validator=validator,
+            verbose_name=verbose_name,
+            write_empty_list=write_empty_list,
+        )
+        if compressed is not None:
+            self._compressed = compressed
+        if self._compressed and self._indexed:
+            raise NotImplementedError(
+                "BlobProperty {} cannot be compressed and "
+                "indexed at the same time.".format(self._name)
+            )
+
+    def _value_to_repr(self, value):
+        """Turn the value into a user friendly representation.
+
+        .. note::
+
+            This will truncate the value based on the "visual" length, e.g.
+            if it contains many ``\\xXX`` or ``\\uUUUU`` sequences, those
+            will count against the length as more than one character.
+
+        Args:
+            value (Any): The value to convert to a pretty-print ``repr``.
+
+        Returns:
+            str: The ``repr`` of the "true" value.
+        """
+        long_repr = super(BlobProperty, self)._value_to_repr(value)
+        if len(long_repr) > _MAX_STRING_LENGTH + 4:
+            # Truncate, assuming the final character is the closing quote.
+            long_repr = long_repr[:_MAX_STRING_LENGTH] + "..." + long_repr[-1]
+        return long_repr
+
+    def _validate(self, value):
+        """Validate a ``value`` before setting it.
+
+        Args:
+            value (bytes): The value to check.
+
+        Raises:
+            .BadValueError: If ``value`` is not a :class:`bytes`.
+            .BadValueError: If the current property is indexed but the value
+                exceeds the maximum length (1500 bytes).
+        """
+        if not isinstance(value, bytes):
+            raise exceptions.BadValueError(
+                "Expected bytes, got {!r}".format(value)
+            )
+
+        if self._indexed and len(value) > _MAX_STRING_LENGTH:
+            raise exceptions.BadValueError(
+                "Indexed value {} must be at most {:d} "
+                "bytes".format(self._name, _MAX_STRING_LENGTH)
+            )
+
+    def _to_base_type(self, value):
+        """Convert a value to the "base" value type for this property.
+
+        Args:
+            value (bytes): The value to be converted.
+
+        Returns:
+            Optional[bytes]: The converted value. If the current property is
+            compressed, this will return a wrapped version of the compressed
+            value. Otherwise, it will return :data:`None` to indicate that
+            the value didn't need to be converted.
+        """
+        if self._compressed:
+            return _CompressedValue(zlib.compress(value))
+
+    def _from_base_type(self, value):
+        """Convert a value from the "base" value type for this property.
+
+        Args:
+            value (bytes): The value to be converted.
+
+        Returns:
+            Optional[bytes]: The converted value. If the current property is
+            a (wrapped) compressed value, this will unwrap the value and return
+            the decompressed form. Otherwise, it will return :data:`None` to
+            indicate that the value didn't need to be unwrapped and
+            decompressed.
+        """
+        if isinstance(value, _CompressedValue):
+            return zlib.decompress(value.z_val)
+
+    def _db_set_value(self, v, unused_p, value):
+        """Helper for :meth:`_serialize`.
+
+        Raises:
+            NotImplementedError: Always. This method is virtual.
+        """
+        raise NotImplementedError
+
+    def _db_set_compressed_meaning(self, p):
+        """Helper for :meth:`_db_set_value`.
+
+        Raises:
+            NotImplementedError: Always. This method is virtual.
+        """
+        raise NotImplementedError
+
+    def _db_set_uncompressed_meaning(self, p):
+        """Helper for :meth:`_db_set_value`.
+
+        Raises:
+            NotImplementedError: Always. This method is virtual.
+        """
+        raise NotImplementedError
+
+    def _db_get_value(self, v, unused_p):
+        """Helper for :meth:`_deserialize`.
+
+        Raises:
+            NotImplementedError: Always. This method is virtual.
+        """
         raise NotImplementedError
 
 
