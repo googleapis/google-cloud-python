@@ -1,0 +1,38 @@
+import pytest
+
+
+def _call_extend(crc, chunk):
+    import crc32c
+    return crc32c.extend(crc, chunk, len(chunk))
+
+
+def test_extend_w_empty_chunk():
+    assert _call_extend(123, b'') == 123
+
+
+# From: https://tools.ietf.org/html/rfc3720#appendix-B.4
+iscsi_scsi_read_10_command_pdu = [
+    0x01, 0xc0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x00, 0x14, 0x00, 0x00, 0x00, 0x00, 0x00, 0x04, 0x00,
+    0x00, 0x00, 0x00, 0x14, 0x00, 0x00, 0x00, 0x18, 0x28, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+]
+
+_EXPECTED = [
+    (b'', 0x00000000),
+    (b'\x00' * 32, 0x8a9136aa),
+    (b'\xff' * 32, 0x62a8ab43),
+    (bytes(range(32)), 0x46dd794e),
+    (bytes(reversed(range(32))), 0x113fdb5c),
+    (bytes(iscsi_scsi_read_10_command_pdu), 0xd9963a56),
+]
+
+
+def _call_value(chunk):
+    import crc32c
+    return crc32c.value(chunk, len(chunk))
+
+
+@pytest.mark.parametrize("chunk, expected", _EXPECTED)
+def test_value(chunk, expected):
+    assert _call_value(chunk) == expected
