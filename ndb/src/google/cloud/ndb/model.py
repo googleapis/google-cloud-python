@@ -1427,17 +1427,20 @@ class BooleanProperty(Property):
 
 
 class IntegerProperty(Property):
-    """A property that contains values of type integer."""
+    """A property that contains values of type integer.
+
+    .. note::
+
+        If a value is a :class:`bool`, it will be treated as ``0`` (for
+        :data:`False`) or ``1`` (for :data:`True`).
+
+    .. automethod:: _validate
+    """
 
     __slots__ = ()
 
     def _validate(self, value):
         """Validate a ``value`` before setting it.
-
-        .. note::
-
-            If ``value`` is a :class:`bool`, it will be treated as ``0`` (for
-            :data:`False`) or ``1`` (for :data:`True`).
 
         Args:
             value (Union[int, bool]): The value to check.
