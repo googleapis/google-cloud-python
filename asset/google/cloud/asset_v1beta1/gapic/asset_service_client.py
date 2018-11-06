@@ -149,9 +149,10 @@ class AssetServiceClient(object):
             )
 
         if client_info is None:
-            client_info = (
-                google.api_core.gapic_v1.client_info.DEFAULT_CLIENT_INFO)
-        client_info.gapic_version = _GAPIC_LIBRARY_VERSION
+            client_info = google.api_core.gapic_v1.client_info.ClientInfo(
+                gapic_version=_GAPIC_LIBRARY_VERSION, )
+        else:
+            client_info.gapic_version = _GAPIC_LIBRARY_VERSION
         self._client_info = client_info
 
         # Parse out the default settings for retry and timeout for each RPC
@@ -179,9 +180,9 @@ class AssetServiceClient(object):
                       metadata=None):
         """
         Exports assets with time and resource types to a given Cloud Storage
-        location. The output format is newline-delimited JSON.
-        This API implements the ``google.longrunning.Operation`` API allowing you
-        to keep track of the export.
+        location. The output format is newline-delimited JSON. This API
+        implements the ``google.longrunning.Operation`` API allowing you to keep
+        track of the export.
 
         Example:
             >>> from google.cloud import asset_v1beta1
@@ -190,7 +191,7 @@ class AssetServiceClient(object):
             >>>
             >>> parent = client.project_path('[PROJECT]')
             >>>
-            >>> # TODO: Initialize ``output_config``:
+            >>> # TODO: Initialize `output_config`:
             >>> output_config = {}
             >>>
             >>> response = client.export_assets(parent, output_config)
@@ -206,10 +207,11 @@ class AssetServiceClient(object):
 
         Args:
             parent (str): Required. The relative name of the root asset. This can only be an organization
-                number (such as \"organizations/123\"), a project ID (such as
-                \"projects/my-project-id\"), or a project number (such as \"projects/12345\").
+                number (such as "organizations/123"), a project ID (such as
+                "projects/my-project-id"), or a project number (such as "projects/12345").
             output_config (Union[dict, ~google.cloud.asset_v1beta1.types.OutputConfig]): Required. Output configuration indicating where the results will be output
                 to. All results will be in newline delimited JSON format.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.asset_v1beta1.types.OutputConfig`
             read_time (Union[dict, ~google.cloud.asset_v1beta1.types.Timestamp]): Timestamp to take an asset snapshot. This can only be set to a timestamp in
@@ -217,10 +219,11 @@ class AssetServiceClient(object):
                 used. Due to delays in resource data collection and indexing, there is a
                 volatile window during which running the same query may get different
                 results.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.asset_v1beta1.types.Timestamp`
             asset_types (list[str]): A list of asset types of which to take a snapshot for. For example:
-                \"google.compute.disk\". If specified, only matching assets will be returned.
+                "google.compute.disk". If specified, only matching assets will be returned.
             content_type (~google.cloud.asset_v1beta1.types.ContentType): Asset content type. If not specified, no content but the asset name will be
                 returned.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -279,11 +282,11 @@ class AssetServiceClient(object):
             timeout=google.api_core.gapic_v1.method.DEFAULT,
             metadata=None):
         """
-        Batch gets the update history of assets that overlap a time window.
-        For RESOURCE content, this API outputs history with asset in both
-        non-delete or deleted status.
-        For IAM_POLICY content, this API outputs history when the asset and its
-        attached IAM POLICY both exist. This can create gaps in the output history.
+        Batch gets the update history of assets that overlap a time window. For
+        RESOURCE content, this API outputs history with asset in both non-delete
+        or deleted status. For IAM\_POLICY content, this API outputs history
+        when the asset and its attached IAM POLICY both exist. This can create
+        gaps in the output history.
 
         Example:
             >>> from google.cloud import asset_v1beta1
@@ -293,27 +296,29 @@ class AssetServiceClient(object):
             >>>
             >>> parent = client.project_path('[PROJECT]')
             >>>
-            >>> # TODO: Initialize ``content_type``:
+            >>> # TODO: Initialize `content_type`:
             >>> content_type = enums.ContentType.CONTENT_TYPE_UNSPECIFIED
             >>>
-            >>> # TODO: Initialize ``read_time_window``:
+            >>> # TODO: Initialize `read_time_window`:
             >>> read_time_window = {}
             >>>
             >>> response = client.batch_get_assets_history(parent, content_type, read_time_window)
 
         Args:
             parent (str): Required. The relative name of the root asset. It can only be an
-                organization number (such as \"organizations/123\"), a project ID (such as
-                \"projects/my-project-id\")\", or a project number (such as \"projects/12345\").
+                organization number (such as "organizations/123"), a project ID (such as
+                "projects/my-project-id")", or a project number (such as "projects/12345").
             content_type (~google.cloud.asset_v1beta1.types.ContentType): Required. The content type.
             read_time_window (Union[dict, ~google.cloud.asset_v1beta1.types.TimeWindow]): Required. The time window for the asset history. The start time is
                 required. The returned results contain all temporal assets whose time
-                window overlap with read_time_window.
+                window overlap with read\_time\_window.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.asset_v1beta1.types.TimeWindow`
             asset_names (list[str]): A list of the full names of the assets. For example:
                 ``//compute.googleapis.com/projects/my_project_123/zones/zone1/instances/instance1``.
-                See `Resource Names <https://cloud.google.com/apis/design/resource_names#full_resource_name>`_
+                See `Resource
+                Names <https://cloud.google.com/apis/design/resource_names#full_resource_name>`__
                 for more info.
 
                 The request becomes a no-op if the asset name list is empty, and the max
