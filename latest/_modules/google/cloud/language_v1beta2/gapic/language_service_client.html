@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.language_v1beta2.gapic.language_service_client &#8212; google-cloud 6ca19ce documentation</title>
+    <title>google.cloud.language_v1beta2.gapic.language_service_client &#8212; google-cloud 32265bb documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -174,9 +174,10 @@
             <span class="p">)</span>
 
         <span class="k">if</span> <span class="n">client_info</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">client_info</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">client_info</span><span class="o">.</span><span class="n">DEFAULT_CLIENT_INFO</span><span class="p">)</span>
-        <span class="n">client_info</span><span class="o">.</span><span class="n">gapic_version</span> <span class="o">=</span> <span class="n">_GAPIC_LIBRARY_VERSION</span>
+            <span class="n">client_info</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">client_info</span><span class="o">.</span><span class="n">ClientInfo</span><span class="p">(</span>
+                <span class="n">gapic_version</span><span class="o">=</span><span class="n">_GAPIC_LIBRARY_VERSION</span><span class="p">,</span> <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">client_info</span><span class="o">.</span><span class="n">gapic_version</span> <span class="o">=</span> <span class="n">_GAPIC_LIBRARY_VERSION</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_client_info</span> <span class="o">=</span> <span class="n">client_info</span>
 
         <span class="c1"># Parse out the default settings for retry and timeout for each RPC</span>
@@ -207,13 +208,14 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; client = language_v1beta2.LanguageServiceClient()</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``document``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `document`:</span>
 <span class="sd">            &gt;&gt;&gt; document = {}</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; response = client.analyze_sentiment(document)</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            document (Union[dict, ~google.cloud.language_v1beta2.types.Document]): Input document.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.language_v1beta2.types.Document`</span>
 <span class="sd">            encoding_type (~google.cloud.language_v1beta2.types.EncodingType): The encoding type used by the API to calculate sentence offsets for the</span>
@@ -272,13 +274,14 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; client = language_v1beta2.LanguageServiceClient()</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``document``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `document`:</span>
 <span class="sd">            &gt;&gt;&gt; document = {}</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; response = client.analyze_entities(document)</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            document (Union[dict, ~google.cloud.language_v1beta2.types.Document]): Input document.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.language_v1beta2.types.Document`</span>
 <span class="sd">            encoding_type (~google.cloud.language_v1beta2.types.EncodingType): The encoding type used by the API to calculate offsets.</span>
@@ -336,13 +339,14 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; client = language_v1beta2.LanguageServiceClient()</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``document``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `document`:</span>
 <span class="sd">            &gt;&gt;&gt; document = {}</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; response = client.analyze_entity_sentiment(document)</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            document (Union[dict, ~google.cloud.language_v1beta2.types.Document]): Input document.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.language_v1beta2.types.Document`</span>
 <span class="sd">            encoding_type (~google.cloud.language_v1beta2.types.EncodingType): The encoding type used by the API to calculate offsets.</span>
@@ -400,13 +404,14 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; client = language_v1beta2.LanguageServiceClient()</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``document``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `document`:</span>
 <span class="sd">            &gt;&gt;&gt; document = {}</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; response = client.analyze_syntax(document)</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            document (Union[dict, ~google.cloud.language_v1beta2.types.Document]): Input document.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.language_v1beta2.types.Document`</span>
 <span class="sd">            encoding_type (~google.cloud.language_v1beta2.types.EncodingType): The encoding type used by the API to calculate offsets.</span>
@@ -460,13 +465,14 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; client = language_v1beta2.LanguageServiceClient()</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``document``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `document`:</span>
 <span class="sd">            &gt;&gt;&gt; document = {}</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; response = client.classify_text(document)</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            document (Union[dict, ~google.cloud.language_v1beta2.types.Document]): Input document.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.language_v1beta2.types.Document`</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
@@ -519,19 +525,21 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; client = language_v1beta2.LanguageServiceClient()</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``document``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `document`:</span>
 <span class="sd">            &gt;&gt;&gt; document = {}</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``features``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `features`:</span>
 <span class="sd">            &gt;&gt;&gt; features = {}</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; response = client.annotate_text(document, features)</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            document (Union[dict, ~google.cloud.language_v1beta2.types.Document]): Input document.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.language_v1beta2.types.Document`</span>
 <span class="sd">            features (Union[dict, ~google.cloud.language_v1beta2.types.Features]): The enabled features.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.language_v1beta2.types.Features`</span>
 <span class="sd">            encoding_type (~google.cloud.language_v1beta2.types.EncodingType): The encoding type used by the API to calculate offsets.</span>

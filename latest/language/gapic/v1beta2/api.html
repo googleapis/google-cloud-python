@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Natural Language Beta Client API &#8212; google-cloud 6ca19ce documentation</title>
+    <title>Natural Language Beta Client API &#8212; google-cloud 32265bb documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -88,7 +88,7 @@ other properties.</p>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">language_v1beta2</span><span class="o">.</span><span class="n">LanguageServiceClient</span><span class="p">()</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``document``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `document`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">document</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">analyze_entities</span><span class="p">(</span><span class="n">document</span><span class="p">)</span>
@@ -99,9 +99,10 @@ other properties.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>document</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.language_v1beta2.types.Document" title="google.cloud.language_v1beta2.types.Document"><em>Document</em></a><em>]</em>) – Input document.
-If a dict is provided, it must be of the same form as the protobuf
-message <a class="reference internal" href="types.html#google.cloud.language_v1beta2.types.Document" title="google.cloud.language_v1beta2.types.Document"><code class="xref py py-class docutils literal notranslate"><span class="pre">Document</span></code></a></li>
+<li><strong>document</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.language_v1beta2.types.Document" title="google.cloud.language_v1beta2.types.Document"><em>Document</em></a><em>]</em>) – <p>Input document.</p>
+<p>If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.language_v1beta2.types.Document" title="google.cloud.language_v1beta2.types.Document"><code class="xref py py-class docutils literal notranslate"><span class="pre">Document</span></code></a></p>
+</li>
 <li><strong>encoding_type</strong> (<em>EncodingType</em>) – The encoding type used by the API to calculate offsets.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
@@ -140,7 +141,7 @@ sentiment associated with each entity and its mentions.</p>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">language_v1beta2</span><span class="o">.</span><span class="n">LanguageServiceClient</span><span class="p">()</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``document``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `document`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">document</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">analyze_entity_sentiment</span><span class="p">(</span><span class="n">document</span><span class="p">)</span>
@@ -151,9 +152,10 @@ sentiment associated with each entity and its mentions.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>document</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.language_v1beta2.types.Document" title="google.cloud.language_v1beta2.types.Document"><em>Document</em></a><em>]</em>) – Input document.
-If a dict is provided, it must be of the same form as the protobuf
-message <a class="reference internal" href="types.html#google.cloud.language_v1beta2.types.Document" title="google.cloud.language_v1beta2.types.Document"><code class="xref py py-class docutils literal notranslate"><span class="pre">Document</span></code></a></li>
+<li><strong>document</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.language_v1beta2.types.Document" title="google.cloud.language_v1beta2.types.Document"><em>Document</em></a><em>]</em>) – <p>Input document.</p>
+<p>If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.language_v1beta2.types.Document" title="google.cloud.language_v1beta2.types.Document"><code class="xref py py-class docutils literal notranslate"><span class="pre">Document</span></code></a></p>
+</li>
 <li><strong>encoding_type</strong> (<em>EncodingType</em>) – The encoding type used by the API to calculate offsets.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
@@ -191,7 +193,7 @@ to a retryable error and retry attempts failed.</li>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">language_v1beta2</span><span class="o">.</span><span class="n">LanguageServiceClient</span><span class="p">()</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``document``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `document`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">document</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">analyze_sentiment</span><span class="p">(</span><span class="n">document</span><span class="p">)</span>
@@ -202,9 +204,10 @@ to a retryable error and retry attempts failed.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>document</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.language_v1beta2.types.Document" title="google.cloud.language_v1beta2.types.Document"><em>Document</em></a><em>]</em>) – Input document.
-If a dict is provided, it must be of the same form as the protobuf
-message <a class="reference internal" href="types.html#google.cloud.language_v1beta2.types.Document" title="google.cloud.language_v1beta2.types.Document"><code class="xref py py-class docutils literal notranslate"><span class="pre">Document</span></code></a></li>
+<li><strong>document</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.language_v1beta2.types.Document" title="google.cloud.language_v1beta2.types.Document"><em>Document</em></a><em>]</em>) – <p>Input document.</p>
+<p>If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.language_v1beta2.types.Document" title="google.cloud.language_v1beta2.types.Document"><code class="xref py py-class docutils literal notranslate"><span class="pre">Document</span></code></a></p>
+</li>
 <li><strong>encoding_type</strong> (<em>EncodingType</em>) – The encoding type used by the API to calculate sentence offsets for the
 sentence sentiment.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
@@ -245,7 +248,7 @@ properties.</p>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">language_v1beta2</span><span class="o">.</span><span class="n">LanguageServiceClient</span><span class="p">()</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``document``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `document`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">document</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">analyze_syntax</span><span class="p">(</span><span class="n">document</span><span class="p">)</span>
@@ -256,9 +259,10 @@ properties.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>document</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.language_v1beta2.types.Document" title="google.cloud.language_v1beta2.types.Document"><em>Document</em></a><em>]</em>) – Input document.
-If a dict is provided, it must be of the same form as the protobuf
-message <a class="reference internal" href="types.html#google.cloud.language_v1beta2.types.Document" title="google.cloud.language_v1beta2.types.Document"><code class="xref py py-class docutils literal notranslate"><span class="pre">Document</span></code></a></li>
+<li><strong>document</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.language_v1beta2.types.Document" title="google.cloud.language_v1beta2.types.Document"><em>Document</em></a><em>]</em>) – <p>Input document.</p>
+<p>If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.language_v1beta2.types.Document" title="google.cloud.language_v1beta2.types.Document"><code class="xref py py-class docutils literal notranslate"><span class="pre">Document</span></code></a></p>
+</li>
 <li><strong>encoding_type</strong> (<em>EncodingType</em>) – The encoding type used by the API to calculate offsets.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
@@ -297,10 +301,10 @@ classification features in one call.</p>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">language_v1beta2</span><span class="o">.</span><span class="n">LanguageServiceClient</span><span class="p">()</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``document``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `document`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">document</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``features``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `features`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">features</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">annotate_text</span><span class="p">(</span><span class="n">document</span><span class="p">,</span> <span class="n">features</span><span class="p">)</span>
@@ -311,12 +315,14 @@ classification features in one call.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>document</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.language_v1beta2.types.Document" title="google.cloud.language_v1beta2.types.Document"><em>Document</em></a><em>]</em>) – Input document.
-If a dict is provided, it must be of the same form as the protobuf
-message <a class="reference internal" href="types.html#google.cloud.language_v1beta2.types.Document" title="google.cloud.language_v1beta2.types.Document"><code class="xref py py-class docutils literal notranslate"><span class="pre">Document</span></code></a></li>
-<li><strong>features</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><em>Features</em><em>]</em>) – The enabled features.
-If a dict is provided, it must be of the same form as the protobuf
-message <code class="xref py py-class docutils literal notranslate"><span class="pre">Features</span></code></li>
+<li><strong>document</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.language_v1beta2.types.Document" title="google.cloud.language_v1beta2.types.Document"><em>Document</em></a><em>]</em>) – <p>Input document.</p>
+<p>If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.language_v1beta2.types.Document" title="google.cloud.language_v1beta2.types.Document"><code class="xref py py-class docutils literal notranslate"><span class="pre">Document</span></code></a></p>
+</li>
+<li><strong>features</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><em>Features</em><em>]</em>) – <p>The enabled features.</p>
+<p>If a dict is provided, it must be of the same form as the protobuf
+message <code class="xref py py-class docutils literal notranslate"><span class="pre">Features</span></code></p>
+</li>
 <li><strong>encoding_type</strong> (<em>EncodingType</em>) – The encoding type used by the API to calculate offsets.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
@@ -354,7 +360,7 @@ to a retryable error and retry attempts failed.</li>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">language_v1beta2</span><span class="o">.</span><span class="n">LanguageServiceClient</span><span class="p">()</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``document``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `document`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">document</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">classify_text</span><span class="p">(</span><span class="n">document</span><span class="p">)</span>
@@ -365,9 +371,10 @@ to a retryable error and retry attempts failed.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>document</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.language_v1beta2.types.Document" title="google.cloud.language_v1beta2.types.Document"><em>Document</em></a><em>]</em>) – Input document.
-If a dict is provided, it must be of the same form as the protobuf
-message <a class="reference internal" href="types.html#google.cloud.language_v1beta2.types.Document" title="google.cloud.language_v1beta2.types.Document"><code class="xref py py-class docutils literal notranslate"><span class="pre">Document</span></code></a></li>
+<li><strong>document</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.language_v1beta2.types.Document" title="google.cloud.language_v1beta2.types.Document"><em>Document</em></a><em>]</em>) – <p>Input document.</p>
+<p>If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.language_v1beta2.types.Document" title="google.cloud.language_v1beta2.types.Document"><code class="xref py py-class docutils literal notranslate"><span class="pre">Document</span></code></a></p>
+</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
