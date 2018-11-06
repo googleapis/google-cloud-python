@@ -180,9 +180,10 @@ class MetricServiceClient(object):
             )
 
         if client_info is None:
-            client_info = (
-                google.api_core.gapic_v1.client_info.DEFAULT_CLIENT_INFO)
-        client_info.gapic_version = _GAPIC_LIBRARY_VERSION
+            client_info = google.api_core.gapic_v1.client_info.ClientInfo(
+                gapic_version=_GAPIC_LIBRARY_VERSION, )
+        else:
+            client_info.gapic_version = _GAPIC_LIBRARY_VERSION
         self._client_info = client_info
 
         # Parse out the default settings for retry and timeout for each RPC
@@ -226,23 +227,23 @@ class MetricServiceClient(object):
             >>> # Alternatively:
             >>>
             >>> # Iterate over results one page at a time
-            >>> for page in client.list_monitored_resource_descriptors(name, options=CallOptions(page_token=INITIAL_PAGE)):
+            >>> for page in client.list_monitored_resource_descriptors(name).pages:
             ...     for element in page:
             ...         # process element
             ...         pass
 
         Args:
             name (str): The project on which to execute the request. The format is
-                ``\"projects/{project_id_or_number}\"``.
-            filter_ (str): An optional `filter <https://cloud.google.com/monitoring/api/v3/filters>`_ describing
-                the descriptors to be returned.  The filter can reference
-                the descriptor's type and labels. For example, the
-                following filter returns only Google Compute Engine descriptors
-                that have an ``id`` label:
+                ``"projects/{project_id_or_number}"``.
+            filter_ (str): An optional
+                `filter <https://cloud.google.com/monitoring/api/v3/filters>`__
+                describing the descriptors to be returned. The filter can reference the
+                descriptor's type and labels. For example, the following filter returns
+                only Google Compute Engine descriptors that have an ``id`` label:
 
                 ::
 
-                    resource.type = starts_with(\"gce_\") AND resource.label:id
+                     resource.type = starts_with("gce_") AND resource.label:id
             page_size (int): The maximum number of resources contained in the
                 underlying API response. If page streaming is performed per-
                 resource, this parameter does not affect the return value. If page
@@ -323,8 +324,8 @@ class MetricServiceClient(object):
             >>> response = client.get_monitored_resource_descriptor(name)
 
         Args:
-            name (str): The monitored resource descriptor to get.  The format is
-                ``\"projects/{project_id_or_number}/monitoredResourceDescriptors/{resource_type}\"``.
+            name (str): The monitored resource descriptor to get. The format is
+                ``"projects/{project_id_or_number}/monitoredResourceDescriptors/{resource_type}"``.
                 The ``{resource_type}`` is a predefined type, such as
                 ``cloudsql_database``.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -393,24 +394,24 @@ class MetricServiceClient(object):
             >>> # Alternatively:
             >>>
             >>> # Iterate over results one page at a time
-            >>> for page in client.list_metric_descriptors(name, options=CallOptions(page_token=INITIAL_PAGE)):
+            >>> for page in client.list_metric_descriptors(name).pages:
             ...     for element in page:
             ...         # process element
             ...         pass
 
         Args:
             name (str): The project on which to execute the request. The format is
-                ``\"projects/{project_id_or_number}\"``.
-            filter_ (str): If this field is empty, all custom and
-                system-defined metric descriptors are returned.
-                Otherwise, the `filter <https://cloud.google.com/monitoring/api/v3/filters>`_
-                specifies which metric descriptors are to be
-                returned. For example, the following filter matches all
-                `custom metrics <https://cloud.google.com/monitoring/custom-metrics>`_:
+                ``"projects/{project_id_or_number}"``.
+            filter_ (str): If this field is empty, all custom and system-defined metric descriptors
+                are returned. Otherwise, the
+                `filter <https://cloud.google.com/monitoring/api/v3/filters>`__
+                specifies which metric descriptors are to be returned. For example, the
+                following filter matches all `custom
+                metrics <https://cloud.google.com/monitoring/custom-metrics>`__:
 
                 ::
 
-                    metric.type = starts_with(\"custom.googleapis.com/\")
+                     metric.type = starts_with("custom.googleapis.com/")
             page_size (int): The maximum number of resources contained in the
                 underlying API response. If page streaming is performed per-
                 resource, this parameter does not affect the return value. If page
@@ -491,9 +492,9 @@ class MetricServiceClient(object):
 
         Args:
             name (str): The metric descriptor on which to execute the request. The format is
-                ``\"projects/{project_id_or_number}/metricDescriptors/{metric_id}\"``.
-                An example value of ``{metric_id}`` is
-                ``\"compute.googleapis.com/instance/disk/read_bytes_count\"``.
+                ``"projects/{project_id_or_number}/metricDescriptors/{metric_id}"``. An
+                example value of ``{metric_id}`` is
+                ``"compute.googleapis.com/instance/disk/read_bytes_count"``.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -540,9 +541,8 @@ class MetricServiceClient(object):
             timeout=google.api_core.gapic_v1.method.DEFAULT,
             metadata=None):
         """
-        Creates a new metric descriptor.
-        User-created metric descriptors define
-        `custom metrics <https://cloud.google.com/monitoring/custom-metrics>`_.
+        Creates a new metric descriptor. User-created metric descriptors define
+        `custom metrics <https://cloud.google.com/monitoring/custom-metrics>`__.
 
         Example:
             >>> from google.cloud import monitoring_v3
@@ -551,16 +551,18 @@ class MetricServiceClient(object):
             >>>
             >>> name = client.project_path('[PROJECT]')
             >>>
-            >>> # TODO: Initialize ``metric_descriptor``:
+            >>> # TODO: Initialize `metric_descriptor`:
             >>> metric_descriptor = {}
             >>>
             >>> response = client.create_metric_descriptor(name, metric_descriptor)
 
         Args:
             name (str): The project on which to execute the request. The format is
-                ``\"projects/{project_id_or_number}\"``.
-            metric_descriptor (Union[dict, ~google.cloud.monitoring_v3.types.MetricDescriptor]): The new `custom metric <https://cloud.google.com/monitoring/custom-metrics>`_
+                ``"projects/{project_id_or_number}"``.
+            metric_descriptor (Union[dict, ~google.cloud.monitoring_v3.types.MetricDescriptor]): The new `custom
+                metric <https://cloud.google.com/monitoring/custom-metrics>`__
                 descriptor.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.monitoring_v3.types.MetricDescriptor`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -611,8 +613,9 @@ class MetricServiceClient(object):
             timeout=google.api_core.gapic_v1.method.DEFAULT,
             metadata=None):
         """
-        Deletes a metric descriptor. Only user-created
-        `custom metrics <https://cloud.google.com/monitoring/custom-metrics>`_ can be deleted.
+        Deletes a metric descriptor. Only user-created `custom
+        metrics <https://cloud.google.com/monitoring/custom-metrics>`__ can be
+        deleted.
 
         Example:
             >>> from google.cloud import monitoring_v3
@@ -625,9 +628,9 @@ class MetricServiceClient(object):
 
         Args:
             name (str): The metric descriptor on which to execute the request. The format is
-                ``\"projects/{project_id_or_number}/metricDescriptors/{metric_id}\"``.
-                An example of ``{metric_id}`` is:
-                ``\"custom.googleapis.com/my_test_metric\"``.
+                ``"projects/{project_id_or_number}/metricDescriptors/{metric_id}"``. An
+                example of ``{metric_id}`` is:
+                ``"custom.googleapis.com/my_test_metric"``.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -685,13 +688,13 @@ class MetricServiceClient(object):
             >>>
             >>> name = client.project_path('[PROJECT]')
             >>>
-            >>> # TODO: Initialize ``filter_``:
+            >>> # TODO: Initialize `filter_`:
             >>> filter_ = ''
             >>>
-            >>> # TODO: Initialize ``interval``:
+            >>> # TODO: Initialize `interval`:
             >>> interval = {}
             >>>
-            >>> # TODO: Initialize ``view``:
+            >>> # TODO: Initialize `view`:
             >>> view = enums.ListTimeSeriesRequest.TimeSeriesView.FULL
             >>>
             >>> # Iterate over all results
@@ -703,32 +706,35 @@ class MetricServiceClient(object):
             >>> # Alternatively:
             >>>
             >>> # Iterate over results one page at a time
-            >>> for page in client.list_time_series(name, filter_, interval, view, options=CallOptions(page_token=INITIAL_PAGE)):
+            >>> for page in client.list_time_series(name, filter_, interval, view).pages:
             ...     for element in page:
             ...         # process element
             ...         pass
 
         Args:
             name (str): The project on which to execute the request. The format is
-                \"projects/{project_id_or_number}\".
-            filter_ (str): A `monitoring filter <https://cloud.google.com/monitoring/api/v3/filters>`_ that specifies which time
-                series should be returned.  The filter must specify a single metric type,
-                and can additionally specify metric labels and other information. For
-                example:
+                "projects/{project\_id\_or\_number}".
+            filter_ (str): A `monitoring
+                filter <https://cloud.google.com/monitoring/api/v3/filters>`__ that
+                specifies which time series should be returned. The filter must specify
+                a single metric type, and can additionally specify metric labels and
+                other information. For example:
 
                 ::
 
-                    metric.type = \"compute.googleapis.com/instance/cpu/usage_time\" AND
-                        metric.label.instance_name = \"my-instance-name\"
+                     metric.type = "compute.googleapis.com/instance/cpu/usage_time" AND
+                         metric.label.instance_name = "my-instance-name"
             interval (Union[dict, ~google.cloud.monitoring_v3.types.TimeInterval]): The time interval for which results should be returned. Only time series
                 that contain data points in the specified interval are included
                 in the response.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.monitoring_v3.types.TimeInterval`
             view (~google.cloud.monitoring_v3.types.TimeSeriesView): Specifies which information is returned about the time series.
             aggregation (Union[dict, ~google.cloud.monitoring_v3.types.Aggregation]): By default, the raw time series data is returned.
                 Use this field to combine multiple time series for different
                 views of the data.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.monitoring_v3.types.Aggregation`
             order_by (str): Unsupported: must be left blank. The points in each time series are
@@ -816,19 +822,20 @@ class MetricServiceClient(object):
             >>>
             >>> name = client.project_path('[PROJECT]')
             >>>
-            >>> # TODO: Initialize ``time_series``:
+            >>> # TODO: Initialize `time_series`:
             >>> time_series = []
             >>>
             >>> client.create_time_series(name, time_series)
 
         Args:
             name (str): The project on which to execute the request. The format is
-                ``\"projects/{project_id_or_number}\"``.
-            time_series (list[Union[dict, ~google.cloud.monitoring_v3.types.TimeSeries]]): The new data to be added to a list of time series.
-                Adds at most one data point to each of several time series.  The new data
-                point must be more recent than any other point in its time series.  Each
-                ``TimeSeries`` value must fully specify a unique time series by supplying
-                all label values for the metric and the monitored resource.
+                ``"projects/{project_id_or_number}"``.
+            time_series (list[Union[dict, ~google.cloud.monitoring_v3.types.TimeSeries]]): The new data to be added to a list of time series. Adds at most one data
+                point to each of several time series. The new data point must be more
+                recent than any other point in its time series. Each ``TimeSeries``
+                value must fully specify a unique time series by supplying all label
+                values for the metric and the monitored resource.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.monitoring_v3.types.TimeSeries`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used

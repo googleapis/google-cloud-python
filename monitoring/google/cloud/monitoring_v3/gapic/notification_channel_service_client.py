@@ -183,9 +183,10 @@ class NotificationChannelServiceClient(object):
             )
 
         if client_info is None:
-            client_info = (
-                google.api_core.gapic_v1.client_info.DEFAULT_CLIENT_INFO)
-        client_info.gapic_version = _GAPIC_LIBRARY_VERSION
+            client_info = google.api_core.gapic_v1.client_info.ClientInfo(
+                gapic_version=_GAPIC_LIBRARY_VERSION, )
+        else:
+            client_info.gapic_version = _GAPIC_LIBRARY_VERSION
         self._client_info = client_info
 
         # Parse out the default settings for retry and timeout for each RPC
@@ -229,23 +230,22 @@ class NotificationChannelServiceClient(object):
             >>> # Alternatively:
             >>>
             >>> # Iterate over results one page at a time
-            >>> for page in client.list_notification_channel_descriptors(name, options=CallOptions(page_token=INITIAL_PAGE)):
+            >>> for page in client.list_notification_channel_descriptors(name).pages:
             ...     for element in page:
             ...         # process element
             ...         pass
 
         Args:
-            name (str): The REST resource name of the parent from which to retrieve
-                the notification channel descriptors. The expected syntax is:
+            name (str): The REST resource name of the parent from which to retrieve the
+                notification channel descriptors. The expected syntax is:
 
                 ::
 
-                    projects/[PROJECT_ID]
+                     projects/[PROJECT_ID]
 
                 Note that this names the parent container in which to look for the
                 descriptors; to retrieve a single descriptor by name, use the
-                ``GetNotificationChannelDescriptor``
-                operation, instead.
+                ``GetNotificationChannelDescriptor`` operation, instead.
             page_size (int): The maximum number of resources contained in the
                 underlying API response. If page streaming is performed per-
                 resource, this parameter does not affect the return value. If page
@@ -395,29 +395,28 @@ class NotificationChannelServiceClient(object):
             >>> # Alternatively:
             >>>
             >>> # Iterate over results one page at a time
-            >>> for page in client.list_notification_channels(name, options=CallOptions(page_token=INITIAL_PAGE)):
+            >>> for page in client.list_notification_channels(name).pages:
             ...     for element in page:
             ...         # process element
             ...         pass
 
         Args:
             name (str): The project on which to execute the request. The format is
-                ``projects/[PROJECT_ID]``. That is, this names the container
-                in which to look for the notification channels; it does not name a
-                specific channel. To query a specific channel by REST resource name, use
-                the
-                ````GetNotificationChannel```` operation.
+                ``projects/[PROJECT_ID]``. That is, this names the container in which to
+                look for the notification channels; it does not name a specific channel.
+                To query a specific channel by REST resource name, use the
+                ``GetNotificationChannel`` operation.
             filter_ (str): If provided, this field specifies the criteria that must be met by
                 notification channels to be included in the response.
 
-                For more details, see [sorting and
-                filtering](/monitoring/api/v3/sorting-and-filtering).
+                For more details, see `sorting and
+                filtering <https://cloud.google.com/monitoring/api/v3/sorting-and-filtering>`__.
             order_by (str): A comma-separated list of fields by which to sort the result. Supports
-                the same set of fields as in ``filter``. Entries can be prefixed with
-                a minus sign to sort in descending rather than ascending order.
+                the same set of fields as in ``filter``. Entries can be prefixed with a
+                minus sign to sort in descending rather than ascending order.
 
-                For more details, see [sorting and
-                filtering](/monitoring/api/v3/sorting-and-filtering).
+                For more details, see `sorting and
+                filtering <https://cloud.google.com/monitoring/api/v3/sorting-and-filtering>`__.
             page_size (int): The maximum number of resources contained in the
                 underlying API response. If page streaming is performed per-
                 resource, this parameter does not affect the return value. If page
@@ -562,7 +561,7 @@ class NotificationChannelServiceClient(object):
             >>>
             >>> name = client.project_path('[PROJECT]')
             >>>
-            >>> # TODO: Initialize ``notification_channel``:
+            >>> # TODO: Initialize `notification_channel`:
             >>> notification_channel = {}
             >>>
             >>> response = client.create_notification_channel(name, notification_channel)
@@ -572,13 +571,15 @@ class NotificationChannelServiceClient(object):
 
                 ::
 
-                    projects/[PROJECT_ID]
+                     projects/[PROJECT_ID]
 
                 Note that this names the container into which the channel will be
                 written. This does not name the newly created channel. The resulting
                 channel's name will have a normalized version of this field as a prefix,
-                but will add ``/notificationChannels/[CHANNEL_ID]`` to identify the channel.
+                but will add ``/notificationChannels/[CHANNEL_ID]`` to identify the
+                channel.
             notification_channel (Union[dict, ~google.cloud.monitoring_v3.types.NotificationChannel]): The definition of the ``NotificationChannel`` to create.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.monitoring_v3.types.NotificationChannel`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -638,19 +639,21 @@ class NotificationChannelServiceClient(object):
             >>>
             >>> client = monitoring_v3.NotificationChannelServiceClient()
             >>>
-            >>> # TODO: Initialize ``notification_channel``:
+            >>> # TODO: Initialize `notification_channel`:
             >>> notification_channel = {}
             >>>
             >>> response = client.update_notification_channel(notification_channel)
 
         Args:
-            notification_channel (Union[dict, ~google.cloud.monitoring_v3.types.NotificationChannel]): A description of the changes to be applied to the specified
-                notification channel. The description must provide a definition for
-                fields to be updated; the names of these fields should also be
-                included in the ``update_mask``.
+            notification_channel (Union[dict, ~google.cloud.monitoring_v3.types.NotificationChannel]): A description of the changes to be applied to the specified notification
+                channel. The description must provide a definition for fields to be
+                updated; the names of these fields should also be included in the
+                ``update_mask``.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.monitoring_v3.types.NotificationChannel`
             update_mask (Union[dict, ~google.cloud.monitoring_v3.types.FieldMask]): The fields to update.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.monitoring_v3.types.FieldMask`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used

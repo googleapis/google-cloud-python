@@ -157,10 +157,10 @@ class AlertPolicyServiceGrpcTransport(object):
     def update_alert_policy(self):
         """Return the gRPC stub for {$apiMethod.name}.
 
-        Updates an alerting policy. You can either replace the entire policy with
-        a new one or replace only certain fields in the current alerting policy by
-        specifying the fields to be updated via ``updateMask``. Returns the
-        updated alerting policy.
+        Updates an alerting policy. You can either replace the entire policy
+        with a new one or replace only certain fields in the current alerting
+        policy by specifying the fields to be updated via ``updateMask``.
+        Returns the updated alerting policy.
 
         Returns:
             Callable: A callable which accepts the appropriate
