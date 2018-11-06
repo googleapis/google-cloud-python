@@ -1568,9 +1568,29 @@ class TestBlobProperty:
 
 class TestTextProperty:
     @staticmethod
-    def test_constructor():
-        with pytest.raises(NotImplementedError):
-            model.TextProperty()
+    def test__validate():
+        prop = model.TextProperty(name="text")
+        assert prop._validate("abc") is None
+
+    @staticmethod
+    def test__validate_bad_bytes():
+        prop = model.TextProperty(name="text")
+        value = b"\x80abc"
+        with pytest.raises(exceptions.BadValueError):
+            prop._validate(value)
+
+    @staticmethod
+    def test__validate_bad_type():
+        prop = model.TextProperty(name="text")
+        with pytest.raises(exceptions.BadValueError):
+            prop._validate(None)
+
+    @staticmethod
+    def test__validate_bad_length():
+        prop = model.TextProperty(name="text", indexed=True)
+        value = b"1" * 2000
+        with pytest.raises(exceptions.BadValueError):
+            prop._validate(value)
 
 
 class TestStringProperty:

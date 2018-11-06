@@ -1883,10 +1883,52 @@ class BlobProperty(Property):
 
 
 class TextProperty(BlobProperty):
+    """A property that contains text values unlimited length.
+
+    .. note::
+
+        Unlike most property types, a :class:`TextProperty` is **not**
+        indexed by default.
+
+    .. automethod:: _validate
+    """
+
     __slots__ = ()
 
-    def __init__(self, *args, **kwargs):
-        raise NotImplementedError
+    def _validate(self, value):
+        """Validate a ``value`` before setting it.
+
+        Args:
+            value (Union[bytes, str]): The value to check.
+
+        Raises:
+            .BadValueError: If ``value`` is :class:`bytes`, but is not a valid
+                UTF-8 encoded string.
+            .BadValueError: If ``value`` is neither :class:`bytes` nor
+                :class:`str`.
+            .BadValueError: If the current property is indexed but the UTF-8
+                encoded value exceeds the maximum length (1500 bytes).
+        """
+        if isinstance(value, bytes):
+            try:
+                length = len(value)
+                value = value.decode("utf-8")
+            except UnicodeError:
+                raise exceptions.BadValueError(
+                    "Expected valid UTF-8, got {!r}".format(value)
+                )
+        elif isinstance(value, str):
+            length = len(value.encode("utf-8"))
+        else:
+            raise exceptions.BadValueError(
+                "Expected string, got {!r}".format(value)
+            )
+
+        if self._indexed and length > _MAX_STRING_LENGTH:
+            raise exceptions.BadValueError(
+                "Indexed value %s must be at most %d bytes"
+                % (self._name, _MAX_STRING_LENGTH)
+            )
 
 
 class StringProperty(TextProperty):
