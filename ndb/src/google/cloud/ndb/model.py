@@ -1494,9 +1494,6 @@ class _CompressedValue:
     __slots__ = ("z_val",)
 
     def __init__(self, z_val):
-        if not isinstance(z_val, bytes):
-            raise TypeError("Only bytes accepted", z_val)
-
         self.z_val = z_val
 
     def __repr__(self):

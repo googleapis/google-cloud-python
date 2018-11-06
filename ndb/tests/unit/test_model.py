@@ -1372,11 +1372,6 @@ class Test_CompressedValue:
         assert compressed_value.z_val == z_val
 
     @staticmethod
-    def test_constructor_invalid():
-        with pytest.raises(TypeError):
-            model._CompressedValue(None)
-
-    @staticmethod
     def test___repr__():
         z_val = zlib.compress(b"12345678901234567890")
         compressed_value = model._CompressedValue(z_val)
