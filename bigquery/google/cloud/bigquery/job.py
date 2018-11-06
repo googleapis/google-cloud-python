@@ -719,9 +719,11 @@ class _JobConfig(object):
         job_type (str): The key to use for the job configuration.
     """
 
-    def __init__(self, job_type):
+    def __init__(self, job_type, **kwargs):
         self._job_type = job_type
         self._properties = {job_type: {}}
+        for prop, val in kwargs.items():
+            setattr(self, prop, val)
 
     @property
     def labels(self):
@@ -762,7 +764,7 @@ class _JobConfig(object):
                  ``self._properties[self._job_type]`` dictionary.
             default (object):
                 (Optional) Default value to return if the key is not found.
-                Defaults to ``None``.
+                Defaults to :data:`None`.
 
         Returns:
             object: The value if present or the default.
@@ -793,7 +795,7 @@ class _JobConfig(object):
         _helpers._set_sub_prop(self._properties, [self._job_type, key], value)
 
     def _del_sub_prop(self, key):
-        """Reove ``key`` from the ``self._properties[self._job_type]`` dict.
+        """Remove ``key`` from the ``self._properties[self._job_type]`` dict.
 
         Most job properties are inside the dictionary related to the job type
         (e.g. 'copy', 'extract', 'load', 'query'). Use this method to clear
@@ -874,12 +876,13 @@ class _JobConfig(object):
 class LoadJobConfig(_JobConfig):
     """Configuration options for load jobs.
 
-    All properties in this class are optional. Values which are ``None`` ->
-    server defaults.
+    All properties in this class are optional. Values which are :data:`None` ->
+    server defaults. Set properties on the constructed configuration by using
+    the property name as the name of a keyword argument.
     """
 
-    def __init__(self):
-        super(LoadJobConfig, self).__init__('load')
+    def __init__(self, **kwargs):
+        super(LoadJobConfig, self).__init__('load', **kwargs)
 
     @property
     def allow_jagged_rows(self):
@@ -967,7 +970,7 @@ class LoadJobConfig(_JobConfig):
         """google.cloud.bigquery.table.EncryptionConfiguration: Custom
         encryption configuration for the destination table.
 
-        Custom encryption configuration (e.g., Cloud KMS keys) or ``None``
+        Custom encryption configuration (e.g., Cloud KMS keys) or :data:`None`
         if using default encryption.
 
         See
@@ -1338,7 +1341,7 @@ class LoadJob(_AsyncJob):
         encryption configuration for the destination table.
 
         Custom encryption configuration (e.g., Cloud KMS keys)
-        or ``None`` if using default encryption.
+        or :data:`None` if using default encryption.
 
         See
         :attr:`google.cloud.bigquery.job.LoadJobConfig.destination_encryption_configuration`.
@@ -1469,12 +1472,13 @@ class LoadJob(_AsyncJob):
 class CopyJobConfig(_JobConfig):
     """Configuration options for copy jobs.
 
-    All properties in this class are optional. Values which are ``None`` ->
-    server defaults.
+    All properties in this class are optional. Values which are :data:`None` ->
+    server defaults. Set properties on the constructed configuration by using
+    the property name as the name of a keyword argument.
     """
 
-    def __init__(self):
-        super(CopyJobConfig, self).__init__('copy')
+    def __init__(self, **kwargs):
+        super(CopyJobConfig, self).__init__('copy', **kwargs)
 
     @property
     def create_disposition(self):
@@ -1509,7 +1513,7 @@ class CopyJobConfig(_JobConfig):
         """google.cloud.bigquery.table.EncryptionConfiguration: Custom
         encryption configuration for the destination table.
 
-        Custom encryption configuration (e.g., Cloud KMS keys) or ``None``
+        Custom encryption configuration (e.g., Cloud KMS keys) or :data:`None`
         if using default encryption.
 
         See
@@ -1579,7 +1583,7 @@ class CopyJob(_AsyncJob):
         """google.cloud.bigquery.table.EncryptionConfiguration: Custom
         encryption configuration for the destination table.
 
-        Custom encryption configuration (e.g., Cloud KMS keys) or ``None``
+        Custom encryption configuration (e.g., Cloud KMS keys) or :data:`None`
         if using default encryption.
 
         See
@@ -1662,12 +1666,13 @@ class CopyJob(_AsyncJob):
 class ExtractJobConfig(_JobConfig):
     """Configuration options for extract jobs.
 
-    All properties in this class are optional. Values which are ``None`` ->
-    server defaults.
+    All properties in this class are optional. Values which are :data:`None` ->
+    server defaults. Set properties on the constructed configuration by using
+    the property name as the name of a keyword argument.
     """
 
-    def __init__(self):
-        super(ExtractJobConfig, self).__init__('extract')
+    def __init__(self, **kwargs):
+        super(ExtractJobConfig, self).__init__('extract', **kwargs)
 
     @property
     def compression(self):
@@ -1906,19 +1911,20 @@ def _to_api_repr_table_defs(value):
 class QueryJobConfig(_JobConfig):
     """Configuration options for query jobs.
 
-    All properties in this class are optional. Values which are ``None`` ->
-    server defaults.
+    All properties in this class are optional. Values which are :data:`None` ->
+    server defaults. Set properties on the constructed configuration by using
+    the property name as the name of a keyword argument.
     """
 
-    def __init__(self):
-        super(QueryJobConfig, self).__init__('query')
+    def __init__(self, **kwargs):
+        super(QueryJobConfig, self).__init__('query', **kwargs)
 
     @property
     def destination_encryption_configuration(self):
         """google.cloud.bigquery.table.EncryptionConfiguration: Custom
         encryption configuration for the destination table.
 
-        Custom encryption configuration (e.g., Cloud KMS keys) or ``None``
+        Custom encryption configuration (e.g., Cloud KMS keys) or :data:`None`
         if using default encryption.
 
         See
@@ -1966,7 +1972,8 @@ class QueryJobConfig(_JobConfig):
     @property
     def default_dataset(self):
         """google.cloud.bigquery.dataset.DatasetReference: the default dataset
-        to use for unqualified table names in the query or ``None`` if not set.
+        to use for unqualified table names in the query or :data:`None` if not
+        set.
 
         See
         https://g.co/cloud/bigquery/docs/reference/v2/jobs#configuration.query.defaultDataset
@@ -1986,7 +1993,7 @@ class QueryJobConfig(_JobConfig):
     @property
     def destination(self):
         """google.cloud.bigquery.table.TableReference: table where results are
-        written or ``None`` if not set.
+        written or :data:`None` if not set.
 
         See
         https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs#configuration.query.destinationTable
@@ -2005,7 +2012,8 @@ class QueryJobConfig(_JobConfig):
 
     @property
     def dry_run(self):
-        """bool: ``True`` if this query should be a dry run to estimate costs.
+        """bool: :data:`True` if this query should be a dry run to estimate
+        costs.
 
         See
         https://g.co/cloud/bigquery/docs/reference/v2/jobs#configuration.dryRun
@@ -2045,7 +2053,7 @@ class QueryJobConfig(_JobConfig):
 
     @property
     def maximum_bytes_billed(self):
-        """int: Maximum bytes to be billed for this job or ``None`` if not set.
+        """int: Maximum bytes to be billed for this job or :data:`None` if not set.
 
         See
         https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs#configuration.query.maximumBytesBilled
@@ -2147,7 +2155,7 @@ class QueryJobConfig(_JobConfig):
     @property
     def table_definitions(self):
         """Dict[str, google.cloud.bigquery.external_config.ExternalConfig]:
-        Definitions for external tables or ``None`` if not set.
+        Definitions for external tables or :data:`None` if not set.
 
         See
         https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions
@@ -2305,7 +2313,7 @@ class QueryJob(_AsyncJob):
         """google.cloud.bigquery.table.EncryptionConfiguration: Custom
         encryption configuration for the destination table.
 
-        Custom encryption configuration (e.g., Cloud KMS keys) or ``None``
+        Custom encryption configuration (e.g., Cloud KMS keys) or :data:`None`
         if using default encryption.
 
         See
