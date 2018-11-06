@@ -185,9 +185,10 @@ class DataTransferServiceClient(object):
             )
 
         if client_info is None:
-            client_info = (
-                google.api_core.gapic_v1.client_info.DEFAULT_CLIENT_INFO)
-        client_info.gapic_version = _GAPIC_LIBRARY_VERSION
+            client_info = google.api_core.gapic_v1.client_info.ClientInfo(
+                gapic_version=_GAPIC_LIBRARY_VERSION, )
+        else:
+            client_info.gapic_version = _GAPIC_LIBRARY_VERSION
         self._client_info = client_info
 
         # Parse out the default settings for retry and timeout for each RPC
@@ -297,14 +298,14 @@ class DataTransferServiceClient(object):
             >>> # Alternatively:
             >>>
             >>> # Iterate over results one page at a time
-            >>> for page in client.list_data_sources(parent, options=CallOptions(page_token=INITIAL_PAGE)):
+            >>> for page in client.list_data_sources(parent).pages:
             ...     for element in page:
             ...         # process element
             ...         pass
 
         Args:
-            parent (str): The BigQuery project id for which data sources should be returned.
-                Must be in the form: ``projects/{project_id}``
+            parent (str): The BigQuery project id for which data sources should be returned. Must
+                be in the form: ``projects/{project_id}``
             page_size (int): The maximum number of resources contained in the
                 underlying API response. If page streaming is performed per-
                 resource, this parameter does not affect the return value. If page
@@ -391,35 +392,38 @@ class DataTransferServiceClient(object):
             >>>
             >>> parent = client.project_path('[PROJECT]')
             >>>
-            >>> # TODO: Initialize ``transfer_config``:
+            >>> # TODO: Initialize `transfer_config`:
             >>> transfer_config = {}
             >>>
             >>> response = client.create_transfer_config(parent, transfer_config)
 
         Args:
-            parent (str): The BigQuery project id where the transfer configuration should be created.
-                Must be in the format /projects/{project_id}/locations/{location_id}
-                If specified location and location of the destination bigquery dataset
-                do not match - the request will fail.
+            parent (str): The BigQuery project id where the transfer configuration should be
+                created. Must be in the format
+                /projects/{project\_id}/locations/{location\_id} If specified location
+                and location of the destination bigquery dataset do not match - the
+                request will fail.
             transfer_config (Union[dict, ~google.cloud.bigquery_datatransfer_v1.types.TransferConfig]): Data transfer configuration to create.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.bigquery_datatransfer_v1.types.TransferConfig`
-            authorization_code (str): Optional OAuth2 authorization code to use with this transfer configuration.
-                This is required if new credentials are needed, as indicated by
-                ``CheckValidCreds``.
-                In order to obtain authorization_code, please make a
-                request to
-                https://www.gstatic.com/bigquerydatatransfer/oauthz/auth?client_id=<datatransferapiclientid>&scope=<data_source_scopes>&redirect_uri=<redirect_uri>
+            authorization_code (str): Optional OAuth2 authorization code to use with this transfer
+                configuration. This is required if new credentials are needed, as
+                indicated by ``CheckValidCreds``. In order to obtain
+                authorization\_code, please make a request to
+                https://www.gstatic.com/bigquerydatatransfer/oauthz/auth?client\_id=&scope=&redirect\_uri=
 
-                * client_id should be OAuth client_id of BigQuery DTS API for the given
-                  data source returned by ListDataSources method.
-                * data_source_scopes are the scopes returned by ListDataSources method.
-                * redirect_uri is an optional parameter. If not specified, then
-                  authorization code is posted to the opener of authorization flow window.
-                  Otherwise it will be sent to the redirect uri. A special value of
-                  urn:ietf:wg:oauth:2.0:oob means that authorization code should be
-                  returned in the title bar of the browser, with the page text prompting
-                  the user to copy the code and paste it in the application.
+                -  client\_id should be OAuth client\_id of BigQuery DTS API for the
+                   given data source returned by ListDataSources method.
+                -  data\_source\_scopes are the scopes returned by ListDataSources
+                   method.
+                -  redirect\_uri is an optional parameter. If not specified, then
+                   authorization code is posted to the opener of authorization flow
+                   window. Otherwise it will be sent to the redirect uri. A special
+                   value of urn:ietf:wg:oauth:2.0:oob means that authorization code
+                   should be returned in the title bar of the browser, with the page
+                   text prompting the user to copy the code and paste it in the
+                   application.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -487,37 +491,40 @@ class DataTransferServiceClient(object):
             >>>
             >>> client = bigquery_datatransfer_v1.DataTransferServiceClient()
             >>>
-            >>> # TODO: Initialize ``transfer_config``:
+            >>> # TODO: Initialize `transfer_config`:
             >>> transfer_config = {}
             >>>
-            >>> # TODO: Initialize ``update_mask``:
+            >>> # TODO: Initialize `update_mask`:
             >>> update_mask = {}
             >>>
             >>> response = client.update_transfer_config(transfer_config, update_mask)
 
         Args:
             transfer_config (Union[dict, ~google.cloud.bigquery_datatransfer_v1.types.TransferConfig]): Data transfer configuration to create.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.bigquery_datatransfer_v1.types.TransferConfig`
             update_mask (Union[dict, ~google.cloud.bigquery_datatransfer_v1.types.FieldMask]): Required list of fields to be updated in this request.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.bigquery_datatransfer_v1.types.FieldMask`
-            authorization_code (str): Optional OAuth2 authorization code to use with this transfer configuration.
-                If it is provided, the transfer configuration will be associated with the
-                authorizing user.
-                In order to obtain authorization_code, please make a
-                request to
-                https://www.gstatic.com/bigquerydatatransfer/oauthz/auth?client_id=<datatransferapiclientid>&scope=<data_source_scopes>&redirect_uri=<redirect_uri>
+            authorization_code (str): Optional OAuth2 authorization code to use with this transfer
+                configuration. If it is provided, the transfer configuration will be
+                associated with the authorizing user. In order to obtain
+                authorization\_code, please make a request to
+                https://www.gstatic.com/bigquerydatatransfer/oauthz/auth?client\_id=&scope=&redirect\_uri=
 
-                * client_id should be OAuth client_id of BigQuery DTS API for the given
-                  data source returned by ListDataSources method.
-                * data_source_scopes are the scopes returned by ListDataSources method.
-                * redirect_uri is an optional parameter. If not specified, then
-                  authorization code is posted to the opener of authorization flow window.
-                  Otherwise it will be sent to the redirect uri. A special value of
-                  urn:ietf:wg:oauth:2.0:oob means that authorization code should be
-                  returned in the title bar of the browser, with the page text prompting
-                  the user to copy the code and paste it in the application.
+                -  client\_id should be OAuth client\_id of BigQuery DTS API for the
+                   given data source returned by ListDataSources method.
+                -  data\_source\_scopes are the scopes returned by ListDataSources
+                   method.
+                -  redirect\_uri is an optional parameter. If not specified, then
+                   authorization code is posted to the opener of authorization flow
+                   window. Otherwise it will be sent to the redirect uri. A special
+                   value of urn:ietf:wg:oauth:2.0:oob means that authorization code
+                   should be returned in the title bar of the browser, with the page
+                   text prompting the user to copy the code and paste it in the
+                   application.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -727,14 +734,14 @@ class DataTransferServiceClient(object):
             >>> # Alternatively:
             >>>
             >>> # Iterate over results one page at a time
-            >>> for page in client.list_transfer_configs(parent, options=CallOptions(page_token=INITIAL_PAGE)):
+            >>> for page in client.list_transfer_configs(parent).pages:
             ...     for element in page:
             ...         # process element
             ...         pass
 
         Args:
-            parent (str): The BigQuery project id for which data sources
-                should be returned: ``projects/{project_id}``.
+            parent (str): The BigQuery project id for which data sources should be returned:
+                ``projects/{project_id}``.
             data_source_ids (list[str]): When specified, only configurations of requested data sources are returned.
             page_size (int): The maximum number of resources contained in the
                 underlying API response. If page streaming is performed per-
@@ -814,10 +821,10 @@ class DataTransferServiceClient(object):
                                timeout=google.api_core.gapic_v1.method.DEFAULT,
                                metadata=None):
         """
-        Creates transfer runs for a time range [start_time, end_time].
-        For each date - or whatever granularity the data source supports - in the
-        range, one transfer run is created.
-        Note that runs are created per UTC time in the time range.
+        Creates transfer runs for a time range [start\_time, end\_time]. For
+        each date - or whatever granularity the data source supports - in the
+        range, one transfer run is created. Note that runs are created per UTC
+        time in the time range.
 
         Example:
             >>> from google.cloud import bigquery_datatransfer_v1
@@ -826,10 +833,10 @@ class DataTransferServiceClient(object):
             >>>
             >>> parent = client.project_transfer_config_path('[PROJECT]', '[TRANSFER_CONFIG]')
             >>>
-            >>> # TODO: Initialize ``start_time``:
+            >>> # TODO: Initialize `start_time`:
             >>> start_time = {}
             >>>
-            >>> # TODO: Initialize ``end_time``:
+            >>> # TODO: Initialize `end_time`:
             >>> end_time = {}
             >>>
             >>> response = client.schedule_transfer_runs(parent, start_time, end_time)
@@ -838,11 +845,13 @@ class DataTransferServiceClient(object):
             parent (str): Transfer configuration name in the form:
                 ``projects/{project_id}/transferConfigs/{config_id}``.
             start_time (Union[dict, ~google.cloud.bigquery_datatransfer_v1.types.Timestamp]): Start time of the range of transfer runs. For example,
-                ``\"2017-05-25T00:00:00+00:00\"``.
+                ``"2017-05-25T00:00:00+00:00"``.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.bigquery_datatransfer_v1.types.Timestamp`
             end_time (Union[dict, ~google.cloud.bigquery_datatransfer_v1.types.Timestamp]): End time of the range of transfer runs. For example,
-                ``\"2017-05-30T00:00:00+00:00\"``.
+                ``"2017-05-30T00:00:00+00:00"``.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.bigquery_datatransfer_v1.types.Timestamp`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -1053,14 +1062,14 @@ class DataTransferServiceClient(object):
             >>> # Alternatively:
             >>>
             >>> # Iterate over results one page at a time
-            >>> for page in client.list_transfer_runs(parent, options=CallOptions(page_token=INITIAL_PAGE)):
+            >>> for page in client.list_transfer_runs(parent).pages:
             ...     for element in page:
             ...         # process element
             ...         pass
 
         Args:
-            parent (str): Name of transfer configuration for which transfer runs should be retrieved.
-                Format of transfer configuration resource name is:
+            parent (str): Name of transfer configuration for which transfer runs should be
+                retrieved. Format of transfer configuration resource name is:
                 ``projects/{project_id}/transferConfigs/{config_id}``.
             states (list[~google.cloud.bigquery_datatransfer_v1.types.TransferState]): When specified, only transfer runs with requested states are returned.
             page_size (int): The maximum number of resources contained in the
@@ -1161,7 +1170,7 @@ class DataTransferServiceClient(object):
             >>> # Alternatively:
             >>>
             >>> # Iterate over results one page at a time
-            >>> for page in client.list_transfer_logs(parent, options=CallOptions(page_token=INITIAL_PAGE)):
+            >>> for page in client.list_transfer_logs(parent).pages:
             ...     for element in page:
             ...         # process element
             ...         pass
