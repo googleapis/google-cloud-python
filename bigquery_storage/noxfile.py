@@ -33,7 +33,9 @@ def default(session):
     run the tests.
     """
     # Install all test dependencies, then install this package in-place.
-    session.install('mock', 'pytest', 'pytest-cov', *LOCAL_DEPS)
+    session.install('mock', 'pytest', 'pytest-cov')
+    for local_dep in LOCAL_DEPS:
+        session.install('-e', local_dep)
     session.install('-e', '.')
 
     # Run py.test against the unit tests.
@@ -88,3 +90,22 @@ def cover(session):
     session.install('coverage', 'pytest-cov')
     session.run('coverage', 'report', '--show-missing', '--fail-under=100')
     session.run('coverage', 'erase')
+
+@nox.session(python=['2.7', '3.6'])
+def system(session):
+    """Run the system test suite."""
+
+    # Sanity check: Only run system tests if the environment variable is set.
+    if not os.environ.get('GOOGLE_APPLICATION_CREDENTIALS', ''):
+        session.skip('Credentials must be set via environment variable.')
+
+    # Install all test dependencies, then install this package into the
+    # virtualenv's dist-packages.
+    session.install('pytest')
+    session.install('-e', os.path.join('..', 'test_utils'))
+    for local_dep in LOCAL_DEPS:
+        session.install('-e', local_dep)
+    session.install('.')
+
+    # Run py.test against the system tests.
+    session.run('py.test', '--quiet', 'tests/system/')
