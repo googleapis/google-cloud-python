@@ -144,9 +144,10 @@ class JobControllerClient(object):
             )
 
         if client_info is None:
-            client_info = (
-                google.api_core.gapic_v1.client_info.DEFAULT_CLIENT_INFO)
-        client_info.gapic_version = _GAPIC_LIBRARY_VERSION
+            client_info = google.api_core.gapic_v1.client_info.ClientInfo(
+                gapic_version=_GAPIC_LIBRARY_VERSION, )
+        else:
+            client_info.gapic_version = _GAPIC_LIBRARY_VERSION
         self._client_info = client_info
 
         # Parse out the default settings for retry and timeout for each RPC
@@ -179,13 +180,13 @@ class JobControllerClient(object):
             >>>
             >>> client = dataproc_v1beta2.JobControllerClient()
             >>>
-            >>> # TODO: Initialize ``project_id``:
+            >>> # TODO: Initialize `project_id`:
             >>> project_id = ''
             >>>
-            >>> # TODO: Initialize ``region``:
+            >>> # TODO: Initialize `region`:
             >>> region = ''
             >>>
-            >>> # TODO: Initialize ``job``:
+            >>> # TODO: Initialize `job`:
             >>> job = {}
             >>>
             >>> response = client.submit_job(project_id, region, job)
@@ -195,19 +196,19 @@ class JobControllerClient(object):
                 belongs to.
             region (str): Required. The Cloud Dataproc region in which to handle the request.
             job (Union[dict, ~google.cloud.dataproc_v1beta2.types.Job]): Required. The job resource.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.dataproc_v1beta2.types.Job`
             request_id (str): Optional. A unique id used to identify the request. If the server
-                receives two ``SubmitJobRequest`` requests  with the same
-                id, then the second request will be ignored and the
-                first ``Job`` created and stored in the backend
-                is returned.
+                receives two ``SubmitJobRequest`` requests with the same id, then the
+                second request will be ignored and the first ``Job`` created and stored
+                in the backend is returned.
 
                 It is recommended to always set this value to a
-                `UUID <https://en.wikipedia.org/wiki/Universally_unique_identifier>`_.
+                `UUID <https://en.wikipedia.org/wiki/Universally_unique_identifier>`__.
 
-                The id must contain only letters (a-z, A-Z), numbers (0-9),
-                underscores (_), and hyphens (-). The maximum length is 40 characters.
+                The id must contain only letters (a-z, A-Z), numbers (0-9), underscores
+                (\_), and hyphens (-). The maximum length is 40 characters.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -261,13 +262,13 @@ class JobControllerClient(object):
             >>>
             >>> client = dataproc_v1beta2.JobControllerClient()
             >>>
-            >>> # TODO: Initialize ``project_id``:
+            >>> # TODO: Initialize `project_id`:
             >>> project_id = ''
             >>>
-            >>> # TODO: Initialize ``region``:
+            >>> # TODO: Initialize `region`:
             >>> region = ''
             >>>
-            >>> # TODO: Initialize ``job_id``:
+            >>> # TODO: Initialize `job_id`:
             >>> job_id = ''
             >>>
             >>> response = client.get_job(project_id, region, job_id)
@@ -332,10 +333,10 @@ class JobControllerClient(object):
             >>>
             >>> client = dataproc_v1beta2.JobControllerClient()
             >>>
-            >>> # TODO: Initialize ``project_id``:
+            >>> # TODO: Initialize `project_id`:
             >>> project_id = ''
             >>>
-            >>> # TODO: Initialize ``region``:
+            >>> # TODO: Initialize `region`:
             >>> region = ''
             >>>
             >>> # Iterate over all results
@@ -347,7 +348,7 @@ class JobControllerClient(object):
             >>> # Alternatively:
             >>>
             >>> # Iterate over results one page at a time
-            >>> for page in client.list_jobs(project_id, region, options=CallOptions(page_token=INITIAL_PAGE)):
+            >>> for page in client.list_jobs(project_id, region).pages:
             ...     for element in page:
             ...         # process element
             ...         pass
@@ -363,8 +364,8 @@ class JobControllerClient(object):
                 of resources in a page.
             cluster_name (str): Optional. If set, the returned jobs list includes only jobs that were
                 submitted to the named cluster.
-            job_state_matcher (~google.cloud.dataproc_v1beta2.types.JobStateMatcher): Optional. Specifies enumerated categories of jobs to list.
-                (default = match ALL jobs).
+            job_state_matcher (~google.cloud.dataproc_v1beta2.types.JobStateMatcher): Optional. Specifies enumerated categories of jobs to list. (default =
+                match ALL jobs).
 
                 If ``filter`` is provided, ``jobStateMatcher`` will be ignored.
             filter_ (str): Optional. A filter constraining the jobs to list. Filters are
@@ -372,15 +373,15 @@ class JobControllerClient(object):
 
                 [field = value] AND [field [= value]] ...
 
-                where **field** is ``status.state`` or ``labels.[KEY]``, and ``[KEY]`` is a label
-                key. **value** can be ``*`` to match all values.
-                ``status.state`` can be either ``ACTIVE`` or ``NON_ACTIVE``.
-                Only the logical ``AND`` operator is supported; space-separated items are
-                treated as having an implicit ``AND`` operator.
+                where **field** is ``status.state`` or ``labels.[KEY]``, and ``[KEY]``
+                is a label key. **value** can be ``*`` to match all values.
+                ``status.state`` can be either ``ACTIVE`` or ``NON_ACTIVE``. Only the
+                logical ``AND`` operator is supported; space-separated items are treated
+                as having an implicit ``AND`` operator.
 
                 Example filter:
 
-                status.state = ACTIVE AND labels.env = staging AND labels.starred = *
+                status.state = ACTIVE AND labels.env = staging AND labels.starred = \*
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -452,19 +453,19 @@ class JobControllerClient(object):
             >>>
             >>> client = dataproc_v1beta2.JobControllerClient()
             >>>
-            >>> # TODO: Initialize ``project_id``:
+            >>> # TODO: Initialize `project_id`:
             >>> project_id = ''
             >>>
-            >>> # TODO: Initialize ``region``:
+            >>> # TODO: Initialize `region`:
             >>> region = ''
             >>>
-            >>> # TODO: Initialize ``job_id``:
+            >>> # TODO: Initialize `job_id`:
             >>> job_id = ''
             >>>
-            >>> # TODO: Initialize ``job``:
+            >>> # TODO: Initialize `job`:
             >>> job = {}
             >>>
-            >>> # TODO: Initialize ``update_mask``:
+            >>> # TODO: Initialize `update_mask`:
             >>> update_mask = {}
             >>>
             >>> response = client.update_job(project_id, region, job_id, job, update_mask)
@@ -475,14 +476,15 @@ class JobControllerClient(object):
             region (str): Required. The Cloud Dataproc region in which to handle the request.
             job_id (str): Required. The job ID.
             job (Union[dict, ~google.cloud.dataproc_v1beta2.types.Job]): Required. The changes to the job.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.dataproc_v1beta2.types.Job`
-            update_mask (Union[dict, ~google.cloud.dataproc_v1beta2.types.FieldMask]): Required. Specifies the path, relative to <code>Job</code>, of
-                the field to update. For example, to update the labels of a Job the
-                <code>update_mask</code> parameter would be specified as
-                <code>labels</code>, and the ``PATCH`` request body would specify the new
-                value. <strong>Note:</strong> Currently, <code>labels</code> is the only
-                field that can be updated.
+            update_mask (Union[dict, ~google.cloud.dataproc_v1beta2.types.FieldMask]): Required. Specifies the path, relative to Job, of the field to update.
+                For example, to update the labels of a Job the update\_mask parameter
+                would be specified as labels, and the ``PATCH`` request body would
+                specify the new value. Note: Currently, labels is the only field that
+                can be updated.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.dataproc_v1beta2.types.FieldMask`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -532,23 +534,24 @@ class JobControllerClient(object):
                    timeout=google.api_core.gapic_v1.method.DEFAULT,
                    metadata=None):
         """
-        Starts a job cancellation request. To access the job resource
-        after cancellation, call
-        `regions/{region}/jobs.list <https://cloud.google.com/dataproc/docs/reference/rest/v1beta2/projects.regions.jobs/list>`_ or
-        `regions/{region}/jobs.get <https://cloud.google.com/dataproc/docs/reference/rest/v1beta2/projects.regions.jobs/get>`_.
+        Starts a job cancellation request. To access the job resource after
+        cancellation, call
+        `regions/{region}/jobs.list <https://cloud.google.com/dataproc/docs/reference/rest/v1beta2/projects.regions.jobs/list>`__
+        or
+        `regions/{region}/jobs.get <https://cloud.google.com/dataproc/docs/reference/rest/v1beta2/projects.regions.jobs/get>`__.
 
         Example:
             >>> from google.cloud import dataproc_v1beta2
             >>>
             >>> client = dataproc_v1beta2.JobControllerClient()
             >>>
-            >>> # TODO: Initialize ``project_id``:
+            >>> # TODO: Initialize `project_id`:
             >>> project_id = ''
             >>>
-            >>> # TODO: Initialize ``region``:
+            >>> # TODO: Initialize `region`:
             >>> region = ''
             >>>
-            >>> # TODO: Initialize ``job_id``:
+            >>> # TODO: Initialize `job_id`:
             >>> job_id = ''
             >>>
             >>> response = client.cancel_job(project_id, region, job_id)
@@ -603,21 +606,21 @@ class JobControllerClient(object):
                    timeout=google.api_core.gapic_v1.method.DEFAULT,
                    metadata=None):
         """
-        Deletes the job from the project. If the job is active, the delete fails,
-        and the response returns ``FAILED_PRECONDITION``.
+        Deletes the job from the project. If the job is active, the delete
+        fails, and the response returns ``FAILED_PRECONDITION``.
 
         Example:
             >>> from google.cloud import dataproc_v1beta2
             >>>
             >>> client = dataproc_v1beta2.JobControllerClient()
             >>>
-            >>> # TODO: Initialize ``project_id``:
+            >>> # TODO: Initialize `project_id`:
             >>> project_id = ''
             >>>
-            >>> # TODO: Initialize ``region``:
+            >>> # TODO: Initialize `region`:
             >>> region = ''
             >>>
-            >>> # TODO: Initialize ``job_id``:
+            >>> # TODO: Initialize `job_id`:
             >>> job_id = ''
             >>>
             >>> client.delete_job(project_id, region, job_id)
