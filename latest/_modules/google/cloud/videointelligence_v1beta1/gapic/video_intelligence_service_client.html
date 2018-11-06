@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.videointelligence_v1beta1.gapic.video_intelligence_service_client &#8212; google-cloud 60e4a23 documentation</title>
+    <title>google.cloud.videointelligence_v1beta1.gapic.video_intelligence_service_client &#8212; google-cloud db52346 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -174,9 +174,10 @@
             <span class="p">)</span>
 
         <span class="k">if</span> <span class="n">client_info</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">client_info</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">client_info</span><span class="o">.</span><span class="n">DEFAULT_CLIENT_INFO</span><span class="p">)</span>
-        <span class="n">client_info</span><span class="o">.</span><span class="n">gapic_version</span> <span class="o">=</span> <span class="n">_GAPIC_LIBRARY_VERSION</span>
+            <span class="n">client_info</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">client_info</span><span class="o">.</span><span class="n">ClientInfo</span><span class="p">(</span>
+                <span class="n">gapic_version</span><span class="o">=</span><span class="n">_GAPIC_LIBRARY_VERSION</span><span class="p">,</span> <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">client_info</span><span class="o">.</span><span class="n">gapic_version</span> <span class="o">=</span> <span class="n">_GAPIC_LIBRARY_VERSION</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_client_info</span> <span class="o">=</span> <span class="n">client_info</span>
 
         <span class="c1"># Parse out the default settings for retry and timeout for each RPC</span>
@@ -231,31 +232,35 @@
 <span class="sd">            &gt;&gt;&gt; metadata = response.metadata()</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            input_uri (str): Input video location. Currently, only</span>
-<span class="sd">                `Google Cloud Storage &lt;https://cloud.google.com/storage/&gt;`_ URIs are</span>
-<span class="sd">                supported, which must be specified in the following format:</span>
-<span class="sd">                ``gs://bucket-id/object-id`` (other URI formats return</span>
-<span class="sd">                ``google.rpc.Code.INVALID_ARGUMENT``). For more information, see</span>
-<span class="sd">                `Request URIs &lt;https://cloud.google.com/storage/docs/reference-uris&gt;`_.</span>
-<span class="sd">                A video URI may include wildcards in ``object-id``, and thus identify</span>
-<span class="sd">                multiple videos. Supported wildcards: &#39;*&#39; to match 0 or more characters;</span>
-<span class="sd">                &#39;?&#39; to match 1 character. If unset, the input video should be embedded</span>
-<span class="sd">                in the request as ``input_content``. If set, ``input_content`` should be unset.</span>
+<span class="sd">            input_uri (str): Input video location. Currently, only `Google Cloud</span>
+<span class="sd">                Storage &lt;https://cloud.google.com/storage/&gt;`__ URIs are supported, which</span>
+<span class="sd">                must be specified in the following format: ``gs://bucket-id/object-id``</span>
+<span class="sd">                (other URI formats return ``google.rpc.Code.INVALID_ARGUMENT``). For</span>
+<span class="sd">                more information, see `Request</span>
+<span class="sd">                URIs &lt;https://cloud.google.com/storage/docs/reference-uris&gt;`__. A video</span>
+<span class="sd">                URI may include wildcards in ``object-id``, and thus identify multiple</span>
+<span class="sd">                videos. Supported wildcards: &#39;\*&#39; to match 0 or more characters; &#39;?&#39; to</span>
+<span class="sd">                match 1 character. If unset, the input video should be embedded in the</span>
+<span class="sd">                request as ``input_content``. If set, ``input_content`` should be unset.</span>
 <span class="sd">            features (list[~google.cloud.videointelligence_v1beta1.types.Feature]): Requested video annotation features.</span>
 <span class="sd">            input_content (str): The video data bytes. Encoding: base64. If unset, the input video(s)</span>
-<span class="sd">                should be specified via ``input_uri``. If set, ``input_uri`` should be unset.</span>
+<span class="sd">                should be specified via ``input_uri``. If set, ``input_uri`` should be</span>
+<span class="sd">                unset.</span>
 <span class="sd">            video_context (Union[dict, ~google.cloud.videointelligence_v1beta1.types.VideoContext]): Additional video context and/or feature-specific parameters.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.videointelligence_v1beta1.types.VideoContext`</span>
 <span class="sd">            output_uri (str): Optional location where the output (in JSON format) should be stored.</span>
-<span class="sd">                Currently, only `Google Cloud Storage &lt;https://cloud.google.com/storage/&gt;`_</span>
-<span class="sd">                URIs are supported, which must be specified in the following format:</span>
-<span class="sd">                ``gs://bucket-id/object-id`` (other URI formats return</span>
-<span class="sd">                ``google.rpc.Code.INVALID_ARGUMENT``). For more information, see</span>
-<span class="sd">                `Request URIs &lt;https://cloud.google.com/storage/docs/reference-uris&gt;`_.</span>
-<span class="sd">            location_id (str): Optional cloud region where annotation should take place. Supported cloud</span>
-<span class="sd">                regions: ``us-east1``, ``us-west1``, ``europe-west1``, ``asia-east1``. If no region</span>
-<span class="sd">                is specified, a region will be determined based on video file location.</span>
+<span class="sd">                Currently, only `Google Cloud</span>
+<span class="sd">                Storage &lt;https://cloud.google.com/storage/&gt;`__ URIs are supported, which</span>
+<span class="sd">                must be specified in the following format: ``gs://bucket-id/object-id``</span>
+<span class="sd">                (other URI formats return ``google.rpc.Code.INVALID_ARGUMENT``). For</span>
+<span class="sd">                more information, see `Request</span>
+<span class="sd">                URIs &lt;https://cloud.google.com/storage/docs/reference-uris&gt;`__.</span>
+<span class="sd">            location_id (str): Optional cloud region where annotation should take place. Supported</span>
+<span class="sd">                cloud regions: ``us-east1``, ``us-west1``, ``europe-west1``,</span>
+<span class="sd">                ``asia-east1``. If no region is specified, a region will be determined</span>
+<span class="sd">                based on video file location.</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
 <span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
 <span class="sd">                be retried.</span>
