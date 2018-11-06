@@ -138,9 +138,10 @@ class LanguageServiceClient(object):
             )
 
         if client_info is None:
-            client_info = (
-                google.api_core.gapic_v1.client_info.DEFAULT_CLIENT_INFO)
-        client_info.gapic_version = _GAPIC_LIBRARY_VERSION
+            client_info = google.api_core.gapic_v1.client_info.ClientInfo(
+                gapic_version=_GAPIC_LIBRARY_VERSION, )
+        else:
+            client_info.gapic_version = _GAPIC_LIBRARY_VERSION
         self._client_info = client_info
 
         # Parse out the default settings for retry and timeout for each RPC
@@ -171,13 +172,14 @@ class LanguageServiceClient(object):
             >>>
             >>> client = language_v1beta2.LanguageServiceClient()
             >>>
-            >>> # TODO: Initialize ``document``:
+            >>> # TODO: Initialize `document`:
             >>> document = {}
             >>>
             >>> response = client.analyze_sentiment(document)
 
         Args:
             document (Union[dict, ~google.cloud.language_v1beta2.types.Document]): Input document.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.language_v1beta2.types.Document`
             encoding_type (~google.cloud.language_v1beta2.types.EncodingType): The encoding type used by the API to calculate sentence offsets for the
@@ -236,13 +238,14 @@ class LanguageServiceClient(object):
             >>>
             >>> client = language_v1beta2.LanguageServiceClient()
             >>>
-            >>> # TODO: Initialize ``document``:
+            >>> # TODO: Initialize `document`:
             >>> document = {}
             >>>
             >>> response = client.analyze_entities(document)
 
         Args:
             document (Union[dict, ~google.cloud.language_v1beta2.types.Document]): Input document.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.language_v1beta2.types.Document`
             encoding_type (~google.cloud.language_v1beta2.types.EncodingType): The encoding type used by the API to calculate offsets.
@@ -300,13 +303,14 @@ class LanguageServiceClient(object):
             >>>
             >>> client = language_v1beta2.LanguageServiceClient()
             >>>
-            >>> # TODO: Initialize ``document``:
+            >>> # TODO: Initialize `document`:
             >>> document = {}
             >>>
             >>> response = client.analyze_entity_sentiment(document)
 
         Args:
             document (Union[dict, ~google.cloud.language_v1beta2.types.Document]): Input document.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.language_v1beta2.types.Document`
             encoding_type (~google.cloud.language_v1beta2.types.EncodingType): The encoding type used by the API to calculate offsets.
@@ -364,13 +368,14 @@ class LanguageServiceClient(object):
             >>>
             >>> client = language_v1beta2.LanguageServiceClient()
             >>>
-            >>> # TODO: Initialize ``document``:
+            >>> # TODO: Initialize `document`:
             >>> document = {}
             >>>
             >>> response = client.analyze_syntax(document)
 
         Args:
             document (Union[dict, ~google.cloud.language_v1beta2.types.Document]): Input document.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.language_v1beta2.types.Document`
             encoding_type (~google.cloud.language_v1beta2.types.EncodingType): The encoding type used by the API to calculate offsets.
@@ -424,13 +429,14 @@ class LanguageServiceClient(object):
             >>>
             >>> client = language_v1beta2.LanguageServiceClient()
             >>>
-            >>> # TODO: Initialize ``document``:
+            >>> # TODO: Initialize `document`:
             >>> document = {}
             >>>
             >>> response = client.classify_text(document)
 
         Args:
             document (Union[dict, ~google.cloud.language_v1beta2.types.Document]): Input document.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.language_v1beta2.types.Document`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -483,19 +489,21 @@ class LanguageServiceClient(object):
             >>>
             >>> client = language_v1beta2.LanguageServiceClient()
             >>>
-            >>> # TODO: Initialize ``document``:
+            >>> # TODO: Initialize `document`:
             >>> document = {}
             >>>
-            >>> # TODO: Initialize ``features``:
+            >>> # TODO: Initialize `features`:
             >>> features = {}
             >>>
             >>> response = client.annotate_text(document, features)
 
         Args:
             document (Union[dict, ~google.cloud.language_v1beta2.types.Document]): Input document.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.language_v1beta2.types.Document`
             features (Union[dict, ~google.cloud.language_v1beta2.types.Features]): The enabled features.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.language_v1beta2.types.Features`
             encoding_type (~google.cloud.language_v1beta2.types.EncodingType): The encoding type used by the API to calculate offsets.
