@@ -1592,6 +1592,34 @@ class TestTextProperty:
         with pytest.raises(exceptions.BadValueError):
             prop._validate(value)
 
+    @staticmethod
+    def test__to_base_type():
+        prop = model.TextProperty(name="text")
+        assert prop._to_base_type(b"abc") is None
+
+    @staticmethod
+    def test__to_base_type_converted():
+        prop = model.TextProperty(name="text")
+        value = "\N{snowman}"
+        assert prop._to_base_type(value) == b"\xe2\x98\x83"
+
+    @staticmethod
+    def test__from_base_type():
+        prop = model.TextProperty(name="text")
+        assert prop._from_base_type("abc") is None
+
+    @staticmethod
+    def test__from_base_type_converted():
+        prop = model.TextProperty(name="text")
+        value = b"\xe2\x98\x83"
+        assert prop._from_base_type(value) == "\N{snowman}"
+
+    @staticmethod
+    def test__from_base_type_cannot_convert():
+        prop = model.TextProperty(name="text")
+        value = b"\x80abc"
+        assert prop._from_base_type(value) is None
+
 
 class TestStringProperty:
     @staticmethod

@@ -1890,6 +1890,8 @@ class TextProperty(BlobProperty):
         Unlike most property types, a :class:`TextProperty` is **not**
         indexed by default.
 
+    .. automethod:: _to_base_type
+    .. automethod:: _from_base_type
     .. automethod:: _validate
     """
 
@@ -1929,6 +1931,46 @@ class TextProperty(BlobProperty):
                 "Indexed value %s must be at most %d bytes"
                 % (self._name, _MAX_STRING_LENGTH)
             )
+
+    def _to_base_type(self, value):
+        """Convert a value to the "base" value type for this property.
+
+        Args:
+            value (Union[bytes, str]): The value to be converted.
+
+        Returns:
+            Optional[bytes]: The converted value. If ``value`` is a
+            :class:`str`, this will return the UTF-8 encoded bytes for it.
+            Otherwise, it will return :data:`None`.
+        """
+        if isinstance(value, str):
+            return value.encode("utf-8")
+
+    def _from_base_type(self, value):
+        """Convert a value from the "base" value type for this property.
+
+        .. note::
+
+            Older versions of ``ndb`` could write non-UTF-8 ``TEXT``
+            properties. This means that if ``value`` is :class:`bytes`, but is
+            not a valid UTF-8 encoded string, it can't (necessarily) be
+            rejected. But, :meth:`_validate` now rejects such values, so it's
+            not possible to write new non-UTF-8 ``TEXT`` properties.
+
+        Args:
+            value (Union[bytes, str]): The value to be converted.
+
+        Returns:
+            Optional[str]: The converted value. If ``value`` is a a valid UTF-8
+            encoded :class:`bytes` string, this will return the decoded
+            :class:`str` corresponding to it. Otherwise, it will return
+            :data:`None`.
+        """
+        if isinstance(value, bytes):
+            try:
+                return value.decode("utf-8")
+            except UnicodeError:
+                pass
 
 
 class StringProperty(TextProperty):
