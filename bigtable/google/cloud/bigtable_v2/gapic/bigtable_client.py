@@ -147,9 +147,10 @@ class BigtableClient(object):
             )
 
         if client_info is None:
-            client_info = (
-                google.api_core.gapic_v1.client_info.DEFAULT_CLIENT_INFO)
-        client_info.gapic_version = _GAPIC_LIBRARY_VERSION
+            client_info = google.api_core.gapic_v1.client_info.ClientInfo(
+                gapic_version=_GAPIC_LIBRARY_VERSION, )
+        else:
+            client_info.gapic_version = _GAPIC_LIBRARY_VERSION
         self._client_info = client_info
 
         # Parse out the default settings for retry and timeout for each RPC
@@ -194,16 +195,17 @@ class BigtableClient(object):
             ...     pass
 
         Args:
-            table_name (str): The unique name of the table from which to read.
-                Values are of the form
+            table_name (str): The unique name of the table from which to read. Values are of the form
                 ``projects/<project>/instances/<instance>/tables/<table>``.
             app_profile_id (str): This value specifies routing for replication. If not specified, the
-                \"default\" application profile will be used.
+                "default" application profile will be used.
             rows (Union[dict, ~google.cloud.bigtable_v2.types.RowSet]): The row keys and/or ranges to read. If not specified, reads from all rows.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.bigtable_v2.types.RowSet`
             filter_ (Union[dict, ~google.cloud.bigtable_v2.types.RowFilter]): The filter to apply to the contents of the specified row(s). If unset,
                 reads the entirety of each row.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.bigtable_v2.types.RowFilter`
             rows_limit (long): The read will terminate after committing to N rows' worth of results. The
@@ -283,11 +285,10 @@ class BigtableClient(object):
             ...     pass
 
         Args:
-            table_name (str): The unique name of the table from which to sample row keys.
-                Values are of the form
-                ``projects/<project>/instances/<instance>/tables/<table>``.
+            table_name (str): The unique name of the table from which to sample row keys. Values are
+                of the form ``projects/<project>/instances/<instance>/tables/<table>``.
             app_profile_id (str): This value specifies routing for replication. If not specified, the
-                \"default\" application profile will be used.
+                "default" application profile will be used.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -356,10 +357,10 @@ class BigtableClient(object):
             >>>
             >>> table_name = client.table_path('[PROJECT]', '[INSTANCE]', '[TABLE]')
             >>>
-            >>> # TODO: Initialize ``row_key``:
+            >>> # TODO: Initialize `row_key`:
             >>> row_key = b''
             >>>
-            >>> # TODO: Initialize ``mutations``:
+            >>> # TODO: Initialize `mutations`:
             >>> mutations = []
             >>>
             >>> response = client.mutate_row(table_name, row_key, mutations)
@@ -372,10 +373,11 @@ class BigtableClient(object):
             mutations (list[Union[dict, ~google.cloud.bigtable_v2.types.Mutation]]): Changes to be atomically applied to the specified row. Entries are applied
                 in order, meaning that earlier mutations can be masked by later ones.
                 Must contain at least one entry and at most 100000.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.bigtable_v2.types.Mutation`
             app_profile_id (str): This value specifies routing for replication. If not specified, the
-                \"default\" application profile will be used.
+                "default" application profile will be used.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -445,7 +447,7 @@ class BigtableClient(object):
             >>>
             >>> table_name = client.table_path('[PROJECT]', '[INSTANCE]', '[TABLE]')
             >>>
-            >>> # TODO: Initialize ``entries``:
+            >>> # TODO: Initialize `entries`:
             >>> entries = []
             >>>
             >>> for element in client.mutate_rows(table_name, entries):
@@ -459,10 +461,11 @@ class BigtableClient(object):
                 applied in arbitrary order (even between entries for the same row).
                 At least one entry must be specified, and in total the entries can
                 contain at most 100000 mutations.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.bigtable_v2.types.Entry`
             app_profile_id (str): This value specifies routing for replication. If not specified, the
-                \"default\" application profile will be used.
+                "default" application profile will be used.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -532,37 +535,39 @@ class BigtableClient(object):
             >>>
             >>> table_name = client.table_path('[PROJECT]', '[INSTANCE]', '[TABLE]')
             >>>
-            >>> # TODO: Initialize ``row_key``:
+            >>> # TODO: Initialize `row_key`:
             >>> row_key = b''
             >>>
             >>> response = client.check_and_mutate_row(table_name, row_key)
 
         Args:
             table_name (str): The unique name of the table to which the conditional mutation should be
-                applied.
-                Values are of the form
+                applied. Values are of the form
                 ``projects/<project>/instances/<instance>/tables/<table>``.
             row_key (bytes): The key of the row to which the conditional mutation should be applied.
             app_profile_id (str): This value specifies routing for replication. If not specified, the
-                \"default\" application profile will be used.
+                "default" application profile will be used.
             predicate_filter (Union[dict, ~google.cloud.bigtable_v2.types.RowFilter]): The filter to be applied to the contents of the specified row. Depending
                 on whether or not any results are yielded, either ``true_mutations`` or
-                ``false_mutations`` will be executed. If unset, checks that the row contains
-                any values at all.
+                ``false_mutations`` will be executed. If unset, checks that the row
+                contains any values at all.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.bigtable_v2.types.RowFilter`
-            true_mutations (list[Union[dict, ~google.cloud.bigtable_v2.types.Mutation]]): Changes to be atomically applied to the specified row if ``predicate_filter``
-                yields at least one cell when applied to ``row_key``. Entries are applied in
-                order, meaning that earlier mutations can be masked by later ones.
-                Must contain at least one entry if ``false_mutations`` is empty, and at most
-                100000.
+            true_mutations (list[Union[dict, ~google.cloud.bigtable_v2.types.Mutation]]): Changes to be atomically applied to the specified row if
+                ``predicate_filter`` yields at least one cell when applied to
+                ``row_key``. Entries are applied in order, meaning that earlier
+                mutations can be masked by later ones. Must contain at least one entry
+                if ``false_mutations`` is empty, and at most 100000.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.bigtable_v2.types.Mutation`
-            false_mutations (list[Union[dict, ~google.cloud.bigtable_v2.types.Mutation]]): Changes to be atomically applied to the specified row if ``predicate_filter``
-                does not yield any cells when applied to ``row_key``. Entries are applied in
-                order, meaning that earlier mutations can be masked by later ones.
-                Must contain at least one entry if ``true_mutations`` is empty, and at most
-                100000.
+            false_mutations (list[Union[dict, ~google.cloud.bigtable_v2.types.Mutation]]): Changes to be atomically applied to the specified row if
+                ``predicate_filter`` does not yield any cells when applied to
+                ``row_key``. Entries are applied in order, meaning that earlier
+                mutations can be masked by later ones. Must contain at least one entry
+                if ``true_mutations`` is empty, and at most 100000.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.bigtable_v2.types.Mutation`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -641,27 +646,27 @@ class BigtableClient(object):
             >>>
             >>> table_name = client.table_path('[PROJECT]', '[INSTANCE]', '[TABLE]')
             >>>
-            >>> # TODO: Initialize ``row_key``:
+            >>> # TODO: Initialize `row_key`:
             >>> row_key = b''
             >>>
-            >>> # TODO: Initialize ``rules``:
+            >>> # TODO: Initialize `rules`:
             >>> rules = []
             >>>
             >>> response = client.read_modify_write_row(table_name, row_key, rules)
 
         Args:
-            table_name (str): The unique name of the table to which the read/modify/write rules should be
-                applied.
-                Values are of the form
+            table_name (str): The unique name of the table to which the read/modify/write rules should
+                be applied. Values are of the form
                 ``projects/<project>/instances/<instance>/tables/<table>``.
             row_key (bytes): The key of the row to which the read/modify/write rules should be applied.
             rules (list[Union[dict, ~google.cloud.bigtable_v2.types.ReadModifyWriteRule]]): Rules specifying how the specified row's contents are to be transformed
                 into writes. Entries are applied in order, meaning that earlier rules will
                 affect the results of later ones.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.bigtable_v2.types.ReadModifyWriteRule`
             app_profile_id (str): This value specifies routing for replication. If not specified, the
-                \"default\" application profile will be used.
+                "default" application profile will be used.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
