@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.tasks_v2beta2.gapic.cloud_tasks_client &#8212; google-cloud 3964ad2 documentation</title>
+    <title>google.cloud.tasks_v2beta2.gapic.cloud_tasks_client &#8212; google-cloud 15f2c36 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -224,9 +224,10 @@
             <span class="p">)</span>
 
         <span class="k">if</span> <span class="n">client_info</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">client_info</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">client_info</span><span class="o">.</span><span class="n">DEFAULT_CLIENT_INFO</span><span class="p">)</span>
-        <span class="n">client_info</span><span class="o">.</span><span class="n">gapic_version</span> <span class="o">=</span> <span class="n">_GAPIC_LIBRARY_VERSION</span>
+            <span class="n">client_info</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">client_info</span><span class="o">.</span><span class="n">ClientInfo</span><span class="p">(</span>
+                <span class="n">gapic_version</span><span class="o">=</span><span class="n">_GAPIC_LIBRARY_VERSION</span><span class="p">,</span> <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">client_info</span><span class="o">.</span><span class="n">gapic_version</span> <span class="o">=</span> <span class="n">_GAPIC_LIBRARY_VERSION</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_client_info</span> <span class="o">=</span> <span class="n">client_info</span>
 
         <span class="c1"># Parse out the default settings for retry and timeout for each RPC</span>
@@ -271,7 +272,7 @@
 <span class="sd">            &gt;&gt;&gt; # Alternatively:</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; # Iterate over results one page at a time</span>
-<span class="sd">            &gt;&gt;&gt; for page in client.list_queues(parent, options=CallOptions(page_token=INITIAL_PAGE)):</span>
+<span class="sd">            &gt;&gt;&gt; for page in client.list_queues(parent).pages:</span>
 <span class="sd">            ...     for element in page:</span>
 <span class="sd">            ...         # process element</span>
 <span class="sd">            ...         pass</span>
@@ -279,18 +280,18 @@
 <span class="sd">        Args:</span>
 <span class="sd">            parent (str): Required.</span>
 
-<span class="sd">                The location name.</span>
-<span class="sd">                For example: ``projects/PROJECT_ID/locations/LOCATION_ID``</span>
+<span class="sd">                The location name. For example:</span>
+<span class="sd">                ``projects/PROJECT_ID/locations/LOCATION_ID``</span>
 <span class="sd">            filter_ (str): ``filter`` can be used to specify a subset of queues. Any ``Queue``</span>
-<span class="sd">                field can be used as a filter and several operators as supported.</span>
-<span class="sd">                For example: ``&lt;=, &lt;, &gt;=, &gt;, !=, =, :``. The filter syntax is the same as</span>
-<span class="sd">                described in</span>
-<span class="sd">                `Stackdriver&#39;s Advanced Logs Filters &lt;https://cloud.google.com/logging/docs/view/advanced_filters&gt;`_.</span>
+<span class="sd">                field can be used as a filter and several operators as supported. For</span>
+<span class="sd">                example: ``&lt;=, &lt;, &gt;=, &gt;, !=, =, :``. The filter syntax is the same as</span>
+<span class="sd">                described in `Stackdriver&#39;s Advanced Logs</span>
+<span class="sd">                Filters &lt;https://cloud.google.com/logging/docs/view/advanced_filters&gt;`__.</span>
 
-<span class="sd">                Sample filter \&quot;app_engine_http_target: \*\&quot;.</span>
+<span class="sd">                Sample filter &quot;app\_engine\_http\_target: \*&quot;.</span>
 
 <span class="sd">                Note that using filters might cause fewer queues than the</span>
-<span class="sd">                requested_page size to be returned.</span>
+<span class="sd">                requested\_page size to be returned.</span>
 <span class="sd">            page_size (int): The maximum number of resources contained in the</span>
 <span class="sd">                underlying API response. If page streaming is performed per-</span>
 <span class="sd">                resource, this parameter does not affect the return value. If page</span>
@@ -436,14 +437,14 @@
 <span class="sd">        Creates a queue.</span>
 
 <span class="sd">        Queues created with this method allow tasks to live for a maximum of 31</span>
-<span class="sd">        days. After a task is 31 days old, the task will be deleted regardless of whether</span>
-<span class="sd">        it was dispatched or not.</span>
+<span class="sd">        days. After a task is 31 days old, the task will be deleted regardless</span>
+<span class="sd">        of whether it was dispatched or not.</span>
 
 <span class="sd">        WARNING: Using this method may have unintended side effects if you are</span>
-<span class="sd">        using an App Engine ``queue.yaml`` or ``queue.xml`` file to manage your queues.</span>
-<span class="sd">        Read</span>
-<span class="sd">        `Overview of Queue Management and queue.yaml &lt;https://cloud.google.com/tasks/docs/queue-yaml&gt;`_</span>
-<span class="sd">        before using this method.</span>
+<span class="sd">        using an App Engine ``queue.yaml`` or ``queue.xml`` file to manage your</span>
+<span class="sd">        queues. Read `Overview of Queue Management and</span>
+<span class="sd">        queue.yaml &lt;https://cloud.google.com/tasks/docs/queue-yaml&gt;`__ before</span>
+<span class="sd">        using this method.</span>
 
 <span class="sd">        Example:</span>
 <span class="sd">            &gt;&gt;&gt; from google.cloud import tasks_v2beta2</span>
@@ -452,7 +453,7 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; parent = client.location_path(&#39;[PROJECT]&#39;, &#39;[LOCATION]&#39;)</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``queue``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `queue`:</span>
 <span class="sd">            &gt;&gt;&gt; queue = {}</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; response = client.create_queue(parent, queue)</span>
@@ -460,17 +461,17 @@
 <span class="sd">        Args:</span>
 <span class="sd">            parent (str): Required.</span>
 
-<span class="sd">                The location name in which the queue will be created.</span>
-<span class="sd">                For example: ``projects/PROJECT_ID/locations/LOCATION_ID``</span>
+<span class="sd">                The location name in which the queue will be created. For example:</span>
+<span class="sd">                ``projects/PROJECT_ID/locations/LOCATION_ID``</span>
 
-<span class="sd">                The list of allowed locations can be obtained by calling Cloud</span>
-<span class="sd">                Tasks&#39; implementation of</span>
-<span class="sd">                ``ListLocations``.</span>
+<span class="sd">                The list of allowed locations can be obtained by calling Cloud Tasks&#39;</span>
+<span class="sd">                implementation of ``ListLocations``.</span>
 <span class="sd">            queue (Union[dict, ~google.cloud.tasks_v2beta2.types.Queue]): Required.</span>
 
 <span class="sd">                The queue to create.</span>
 
 <span class="sd">                ``Queue&#39;s name`` cannot be the same as an existing queue.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.tasks_v2beta2.types.Queue`</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
@@ -531,25 +532,25 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Updates a queue.</span>
 
-<span class="sd">        This method creates the queue if it does not exist and updates</span>
-<span class="sd">        the queue if it does exist.</span>
+<span class="sd">        This method creates the queue if it does not exist and updates the queue</span>
+<span class="sd">        if it does exist.</span>
 
 <span class="sd">        Queues created with this method allow tasks to live for a maximum of 31</span>
-<span class="sd">        days. After a task is 31 days old, the task will be deleted regardless of whether</span>
-<span class="sd">        it was dispatched or not.</span>
+<span class="sd">        days. After a task is 31 days old, the task will be deleted regardless</span>
+<span class="sd">        of whether it was dispatched or not.</span>
 
 <span class="sd">        WARNING: Using this method may have unintended side effects if you are</span>
-<span class="sd">        using an App Engine ``queue.yaml`` or ``queue.xml`` file to manage your queues.</span>
-<span class="sd">        Read</span>
-<span class="sd">        `Overview of Queue Management and queue.yaml &lt;https://cloud.google.com/tasks/docs/queue-yaml&gt;`_</span>
-<span class="sd">        before using this method.</span>
+<span class="sd">        using an App Engine ``queue.yaml`` or ``queue.xml`` file to manage your</span>
+<span class="sd">        queues. Read `Overview of Queue Management and</span>
+<span class="sd">        queue.yaml &lt;https://cloud.google.com/tasks/docs/queue-yaml&gt;`__ before</span>
+<span class="sd">        using this method.</span>
 
 <span class="sd">        Example:</span>
 <span class="sd">            &gt;&gt;&gt; from google.cloud import tasks_v2beta2</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; client = tasks_v2beta2.CloudTasksClient()</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``queue``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `queue`:</span>
 <span class="sd">            &gt;&gt;&gt; queue = {}</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; response = client.update_queue(queue)</span>
@@ -561,14 +562,16 @@
 
 <span class="sd">                The queue&#39;s ``name`` must be specified.</span>
 
-<span class="sd">                Output only fields cannot be modified using UpdateQueue.</span>
-<span class="sd">                Any value specified for an output only field will be ignored.</span>
-<span class="sd">                The queue&#39;s ``name`` cannot be changed.</span>
+<span class="sd">                Output only fields cannot be modified using UpdateQueue. Any value</span>
+<span class="sd">                specified for an output only field will be ignored. The queue&#39;s ``name``</span>
+<span class="sd">                cannot be changed.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.tasks_v2beta2.types.Queue`</span>
 <span class="sd">            update_mask (Union[dict, ~google.cloud.tasks_v2beta2.types.FieldMask]): A mask used to specify which fields of the queue are being updated.</span>
 
 <span class="sd">                If empty, then all fields will be updated.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.tasks_v2beta2.types.FieldMask`</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
@@ -634,10 +637,10 @@
 <span class="sd">        for 7 days.</span>
 
 <span class="sd">        WARNING: Using this method may have unintended side effects if you are</span>
-<span class="sd">        using an App Engine ``queue.yaml`` or ``queue.xml`` file to manage your queues.</span>
-<span class="sd">        Read</span>
-<span class="sd">        `Overview of Queue Management and queue.yaml &lt;https://cloud.google.com/tasks/docs/queue-yaml&gt;`_</span>
-<span class="sd">        before using this method.</span>
+<span class="sd">        using an App Engine ``queue.yaml`` or ``queue.xml`` file to manage your</span>
+<span class="sd">        queues. Read `Overview of Queue Management and</span>
+<span class="sd">        queue.yaml &lt;https://cloud.google.com/tasks/docs/queue-yaml&gt;`__ before</span>
+<span class="sd">        using this method.</span>
 
 <span class="sd">        Example:</span>
 <span class="sd">            &gt;&gt;&gt; from google.cloud import tasks_v2beta2</span>
@@ -776,11 +779,9 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Pauses the queue.</span>
 
-<span class="sd">        If a queue is paused then the system will stop dispatching tasks</span>
-<span class="sd">        until the queue is resumed via</span>
-<span class="sd">        ``ResumeQueue``. Tasks can still be added</span>
-<span class="sd">        when the queue is paused. A queue is paused if its</span>
-<span class="sd">        ``state`` is ``PAUSED``.</span>
+<span class="sd">        If a queue is paused then the system will stop dispatching tasks until</span>
+<span class="sd">        the queue is resumed via ``ResumeQueue``. Tasks can still be added when</span>
+<span class="sd">        the queue is paused. A queue is paused if its ``state`` is ``PAUSED``.</span>
 
 <span class="sd">        Example:</span>
 <span class="sd">            &gt;&gt;&gt; from google.cloud import tasks_v2beta2</span>
@@ -849,16 +850,14 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Resume a queue.</span>
 
-<span class="sd">        This method resumes a queue after it has been</span>
-<span class="sd">        ``PAUSED`` or</span>
-<span class="sd">        ``DISABLED``. The state of a queue is stored</span>
-<span class="sd">        in the queue&#39;s ``state``; after calling this method it</span>
-<span class="sd">        will be set to ``RUNNING``.</span>
+<span class="sd">        This method resumes a queue after it has been ``PAUSED`` or</span>
+<span class="sd">        ``DISABLED``. The state of a queue is stored in the queue&#39;s ``state``;</span>
+<span class="sd">        after calling this method it will be set to ``RUNNING``.</span>
 
-<span class="sd">        WARNING: Resuming many high-QPS queues at the same time can</span>
-<span class="sd">        lead to target overloading. If you are resuming high-QPS</span>
-<span class="sd">        queues, follow the 500/50/5 pattern described in</span>
-<span class="sd">        `Managing Cloud Tasks Scaling Risks &lt;https://cloud.google.com/tasks/docs/manage-cloud-task-scaling&gt;`_.</span>
+<span class="sd">        WARNING: Resuming many high-QPS queues at the same time can lead to</span>
+<span class="sd">        target overloading. If you are resuming high-QPS queues, follow the</span>
+<span class="sd">        500/50/5 pattern described in `Managing Cloud Tasks Scaling</span>
+<span class="sd">        Risks &lt;https://cloud.google.com/tasks/docs/manage-cloud-task-scaling&gt;`__.</span>
 
 <span class="sd">        Example:</span>
 <span class="sd">            &gt;&gt;&gt; from google.cloud import tasks_v2beta2</span>
@@ -926,15 +925,14 @@
                        <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
                        <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Gets the access control policy for a ``Queue``.</span>
-<span class="sd">        Returns an empty policy if the resource exists and does not have a policy</span>
-<span class="sd">        set.</span>
+<span class="sd">        Gets the access control policy for a ``Queue``. Returns an empty policy</span>
+<span class="sd">        if the resource exists and does not have a policy set.</span>
 
-<span class="sd">        Authorization requires the following</span>
-<span class="sd">        `Google IAM &lt;https://cloud.google.com/iam&gt;`__ permission on the specified</span>
+<span class="sd">        Authorization requires the following `Google</span>
+<span class="sd">        IAM &lt;https://cloud.google.com/iam&gt;`__ permission on the specified</span>
 <span class="sd">        resource parent:</span>
 
-<span class="sd">        * ``cloudtasks.queues.getIamPolicy``</span>
+<span class="sd">        -  ``cloudtasks.queues.getIamPolicy``</span>
 
 <span class="sd">        Example:</span>
 <span class="sd">            &gt;&gt;&gt; from google.cloud import tasks_v2beta2</span>
@@ -1008,11 +1006,11 @@
 <span class="sd">        Note: The Cloud Console does not check queue-level IAM permissions yet.</span>
 <span class="sd">        Project-level permissions are required to use the Cloud Console.</span>
 
-<span class="sd">        Authorization requires the following</span>
-<span class="sd">        `Google IAM &lt;https://cloud.google.com/iam&gt;`__ permission on the specified</span>
+<span class="sd">        Authorization requires the following `Google</span>
+<span class="sd">        IAM &lt;https://cloud.google.com/iam&gt;`__ permission on the specified</span>
 <span class="sd">        resource parent:</span>
 
-<span class="sd">        * ``cloudtasks.queues.setIamPolicy``</span>
+<span class="sd">        -  ``cloudtasks.queues.setIamPolicy``</span>
 
 <span class="sd">        Example:</span>
 <span class="sd">            &gt;&gt;&gt; from google.cloud import tasks_v2beta2</span>
@@ -1021,7 +1019,7 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; resource = client.queue_path(&#39;[PROJECT]&#39;, &#39;[LOCATION]&#39;, &#39;[QUEUE]&#39;)</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``policy``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `policy`:</span>
 <span class="sd">            &gt;&gt;&gt; policy = {}</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; response = client.set_iam_policy(resource, policy)</span>
@@ -1030,10 +1028,11 @@
 <span class="sd">            resource (str): REQUIRED: The resource for which the policy is being specified.</span>
 <span class="sd">                ``resource`` is usually specified as a path. For example, a Project</span>
 <span class="sd">                resource is specified as ``projects/{project}``.</span>
-<span class="sd">            policy (Union[dict, ~google.cloud.tasks_v2beta2.types.Policy]): REQUIRED: The complete policy to be applied to the ``resource``. The size of</span>
-<span class="sd">                the policy is limited to a few 10s of KB. An empty policy is a</span>
+<span class="sd">            policy (Union[dict, ~google.cloud.tasks_v2beta2.types.Policy]): REQUIRED: The complete policy to be applied to the ``resource``. The</span>
+<span class="sd">                size of the policy is limited to a few 10s of KB. An empty policy is a</span>
 <span class="sd">                valid policy but certain Cloud Platform services (such as Projects)</span>
 <span class="sd">                might reject them.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.tasks_v2beta2.types.Policy`</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
@@ -1092,13 +1091,13 @@
                              <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
                              <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns permissions that a caller has on a ``Queue``.</span>
-<span class="sd">        If the resource does not exist, this will return an empty set of</span>
-<span class="sd">        permissions, not a ``NOT_FOUND`` error.</span>
+<span class="sd">        Returns permissions that a caller has on a ``Queue``. If the resource</span>
+<span class="sd">        does not exist, this will return an empty set of permissions, not a</span>
+<span class="sd">        ``NOT_FOUND`` error.</span>
 
-<span class="sd">        Note: This operation is designed to be used for building permission-aware</span>
-<span class="sd">        UIs and command-line tools, not for authorization checking. This operation</span>
-<span class="sd">        may \&quot;fail open\&quot; without warning.</span>
+<span class="sd">        Note: This operation is designed to be used for building</span>
+<span class="sd">        permission-aware UIs and command-line tools, not for authorization</span>
+<span class="sd">        checking. This operation may &quot;fail open&quot; without warning.</span>
 
 <span class="sd">        Example:</span>
 <span class="sd">            &gt;&gt;&gt; from google.cloud import tasks_v2beta2</span>
@@ -1107,7 +1106,7 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; resource = client.queue_path(&#39;[PROJECT]&#39;, &#39;[LOCATION]&#39;, &#39;[QUEUE]&#39;)</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``permissions``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `permissions`:</span>
 <span class="sd">            &gt;&gt;&gt; permissions = []</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; response = client.test_iam_permissions(resource, permissions)</span>
@@ -1118,8 +1117,8 @@
 <span class="sd">                resource is specified as ``projects/{project}``.</span>
 <span class="sd">            permissions (list[str]): The set of permissions to check for the ``resource``. Permissions with</span>
 <span class="sd">                wildcards (such as &#39;*&#39; or &#39;storage.*&#39;) are not allowed. For more</span>
-<span class="sd">                information see</span>
-<span class="sd">                `IAM Overview &lt;https://cloud.google.com/iam/docs/overview#permissions&gt;`_.</span>
+<span class="sd">                information see `IAM</span>
+<span class="sd">                Overview &lt;https://cloud.google.com/iam/docs/overview#permissions&gt;`__.</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
 <span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
 <span class="sd">                be retried.</span>
@@ -1180,10 +1179,9 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Lists the tasks in a queue.</span>
 
-<span class="sd">        By default, only the ``BASIC`` view is retrieved</span>
-<span class="sd">        due to performance considerations;</span>
-<span class="sd">        ``response_view`` controls the</span>
-<span class="sd">        subset of information which is returned.</span>
+<span class="sd">        By default, only the ``BASIC`` view is retrieved due to performance</span>
+<span class="sd">        considerations; ``response_view`` controls the subset of information</span>
+<span class="sd">        which is returned.</span>
 
 <span class="sd">        The tasks may be returned in any order. The ordering may change at any</span>
 <span class="sd">        time.</span>
@@ -1204,7 +1202,7 @@
 <span class="sd">            &gt;&gt;&gt; # Alternatively:</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; # Iterate over results one page at a time</span>
-<span class="sd">            &gt;&gt;&gt; for page in client.list_tasks(parent, options=CallOptions(page_token=INITIAL_PAGE)):</span>
+<span class="sd">            &gt;&gt;&gt; for page in client.list_tasks(parent).pages:</span>
 <span class="sd">            ...     for element in page:</span>
 <span class="sd">            ...         # process element</span>
 <span class="sd">            ...         pass</span>
@@ -1214,18 +1212,17 @@
 
 <span class="sd">                The queue name. For example:</span>
 <span class="sd">                ``projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID``</span>
-<span class="sd">            response_view (~google.cloud.tasks_v2beta2.types.View): The response_view specifies which subset of the ``Task`` will be</span>
+<span class="sd">            response_view (~google.cloud.tasks_v2beta2.types.View): The response\_view specifies which subset of the ``Task`` will be</span>
 <span class="sd">                returned.</span>
 
-<span class="sd">                By default response_view is ``BASIC``; not all</span>
-<span class="sd">                information is retrieved by default because some data, such as</span>
-<span class="sd">                payloads, might be desirable to return only when needed because</span>
-<span class="sd">                of its large size or because of the sensitivity of data that it</span>
-<span class="sd">                contains.</span>
+<span class="sd">                By default response\_view is ``BASIC``; not all information is retrieved</span>
+<span class="sd">                by default because some data, such as payloads, might be desirable to</span>
+<span class="sd">                return only when needed because of its large size or because of the</span>
+<span class="sd">                sensitivity of data that it contains.</span>
 
-<span class="sd">                Authorization for ``FULL`` requires</span>
-<span class="sd">                ``cloudtasks.tasks.fullView`` `Google IAM &lt;https://cloud.google.com/iam/&gt;`_</span>
-<span class="sd">                permission on the ``Task`` resource.</span>
+<span class="sd">                Authorization for ``FULL`` requires ``cloudtasks.tasks.fullView``</span>
+<span class="sd">                `Google IAM &lt;https://cloud.google.com/iam/&gt;`___ permission on the</span>
+<span class="sd">                ``Task`` resource.</span>
 <span class="sd">            page_size (int): The maximum number of resources contained in the</span>
 <span class="sd">                underlying API response. If page streaming is performed per-</span>
 <span class="sd">                resource, this parameter does not affect the return value. If page</span>
@@ -1317,18 +1314,17 @@
 
 <span class="sd">                The task name. For example:</span>
 <span class="sd">                ``projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID/tasks/TASK_ID``</span>
-<span class="sd">            response_view (~google.cloud.tasks_v2beta2.types.View): The response_view specifies which subset of the ``Task`` will be</span>
+<span class="sd">            response_view (~google.cloud.tasks_v2beta2.types.View): The response\_view specifies which subset of the ``Task`` will be</span>
 <span class="sd">                returned.</span>
 
-<span class="sd">                By default response_view is ``BASIC``; not all</span>
-<span class="sd">                information is retrieved by default because some data, such as</span>
-<span class="sd">                payloads, might be desirable to return only when needed because</span>
-<span class="sd">                of its large size or because of the sensitivity of data that it</span>
-<span class="sd">                contains.</span>
+<span class="sd">                By default response\_view is ``BASIC``; not all information is retrieved</span>
+<span class="sd">                by default because some data, such as payloads, might be desirable to</span>
+<span class="sd">                return only when needed because of its large size or because of the</span>
+<span class="sd">                sensitivity of data that it contains.</span>
 
-<span class="sd">                Authorization for ``FULL`` requires</span>
-<span class="sd">                ``cloudtasks.tasks.fullView`` `Google IAM &lt;https://cloud.google.com/iam/&gt;`_</span>
-<span class="sd">                permission on the ``Task`` resource.</span>
+<span class="sd">                Authorization for ``FULL`` requires ``cloudtasks.tasks.fullView``</span>
+<span class="sd">                `Google IAM &lt;https://cloud.google.com/iam/&gt;`___ permission on the</span>
+<span class="sd">                ``Task`` resource.</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
 <span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
 <span class="sd">                be retried.</span>
@@ -1389,9 +1385,8 @@
 
 <span class="sd">        Tasks cannot be updated after creation; there is no UpdateTask command.</span>
 
-<span class="sd">        * For ``App Engine queues``, the maximum task size is</span>
-<span class="sd">          100KB.</span>
-<span class="sd">        * For ``pull queues``, the maximum task size is 1MB.</span>
+<span class="sd">        -  For ``App Engine queues``, the maximum task size is 100KB.</span>
+<span class="sd">        -  For ``pull queues``, the maximum task size is 1MB.</span>
 
 <span class="sd">        Example:</span>
 <span class="sd">            &gt;&gt;&gt; from google.cloud import tasks_v2beta2</span>
@@ -1400,7 +1395,7 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; parent = client.queue_path(&#39;[PROJECT]&#39;, &#39;[LOCATION]&#39;, &#39;[QUEUE]&#39;)</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``task``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `task`:</span>
 <span class="sd">            &gt;&gt;&gt; task = {}</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; response = client.create_task(parent, task)</span>
@@ -1418,49 +1413,46 @@
 
 <span class="sd">                Task names have the following format:</span>
 <span class="sd">                ``projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID/tasks/TASK_ID``.</span>
-<span class="sd">                The user can optionally specify a task ``name``. If a</span>
-<span class="sd">                name is not specified then the system will generate a random</span>
-<span class="sd">                unique task id, which will be set in the task returned in the</span>
-<span class="sd">                ``response``.</span>
+<span class="sd">                The user can optionally specify a task ``name``. If a name is not</span>
+<span class="sd">                specified then the system will generate a random unique task id, which</span>
+<span class="sd">                will be set in the task returned in the ``response``.</span>
 
-<span class="sd">                If ``schedule_time`` is not set or is in the</span>
-<span class="sd">                past then Cloud Tasks will set it to the current time.</span>
+<span class="sd">                If ``schedule_time`` is not set or is in the past then Cloud Tasks will</span>
+<span class="sd">                set it to the current time.</span>
 
 <span class="sd">                Task De-duplication:</span>
 
-<span class="sd">                Explicitly specifying a task ID enables task de-duplication.  If</span>
-<span class="sd">                a task&#39;s ID is identical to that of an existing task or a task</span>
-<span class="sd">                that was deleted or completed recently then the call will fail</span>
-<span class="sd">                with ``ALREADY_EXISTS``.</span>
-<span class="sd">                If the task&#39;s queue was created using Cloud Tasks, then another task with</span>
-<span class="sd">                the same name can&#39;t be created for ~1hour after the original task was</span>
-<span class="sd">                deleted or completed. If the task&#39;s queue was created using queue.yaml or</span>
-<span class="sd">                queue.xml, then another task with the same name can&#39;t be created</span>
-<span class="sd">                for ~9days after the original task was deleted or completed.</span>
+<span class="sd">                Explicitly specifying a task ID enables task de-duplication. If a task&#39;s</span>
+<span class="sd">                ID is identical to that of an existing task or a task that was deleted</span>
+<span class="sd">                or completed recently then the call will fail with ``ALREADY_EXISTS``.</span>
+<span class="sd">                If the task&#39;s queue was created using Cloud Tasks, then another task</span>
+<span class="sd">                with the same name can&#39;t be created for ~1hour after the original task</span>
+<span class="sd">                was deleted or completed. If the task&#39;s queue was created using</span>
+<span class="sd">                queue.yaml or queue.xml, then another task with the same name can&#39;t be</span>
+<span class="sd">                created for ~9days after the original task was deleted or completed.</span>
 
-<span class="sd">                Because there is an extra lookup cost to identify duplicate task</span>
-<span class="sd">                names, these ``CreateTask`` calls have significantly</span>
-<span class="sd">                increased latency. Using hashed strings for the task id or for</span>
-<span class="sd">                the prefix of the task id is recommended. Choosing task ids that</span>
-<span class="sd">                are sequential or have sequential prefixes, for example using a</span>
-<span class="sd">                timestamp, causes an increase in latency and error rates in all</span>
-<span class="sd">                task commands. The infrastructure relies on an approximately</span>
-<span class="sd">                uniform distribution of task ids to store and serve tasks</span>
+<span class="sd">                Because there is an extra lookup cost to identify duplicate task names,</span>
+<span class="sd">                these ``CreateTask`` calls have significantly increased latency. Using</span>
+<span class="sd">                hashed strings for the task id or for the prefix of the task id is</span>
+<span class="sd">                recommended. Choosing task ids that are sequential or have sequential</span>
+<span class="sd">                prefixes, for example using a timestamp, causes an increase in latency</span>
+<span class="sd">                and error rates in all task commands. The infrastructure relies on an</span>
+<span class="sd">                approximately uniform distribution of task ids to store and serve tasks</span>
 <span class="sd">                efficiently.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.tasks_v2beta2.types.Task`</span>
-<span class="sd">            response_view (~google.cloud.tasks_v2beta2.types.View): The response_view specifies which subset of the ``Task`` will be</span>
+<span class="sd">            response_view (~google.cloud.tasks_v2beta2.types.View): The response\_view specifies which subset of the ``Task`` will be</span>
 <span class="sd">                returned.</span>
 
-<span class="sd">                By default response_view is ``BASIC``; not all</span>
-<span class="sd">                information is retrieved by default because some data, such as</span>
-<span class="sd">                payloads, might be desirable to return only when needed because</span>
-<span class="sd">                of its large size or because of the sensitivity of data that it</span>
-<span class="sd">                contains.</span>
+<span class="sd">                By default response\_view is ``BASIC``; not all information is retrieved</span>
+<span class="sd">                by default because some data, such as payloads, might be desirable to</span>
+<span class="sd">                return only when needed because of its large size or because of the</span>
+<span class="sd">                sensitivity of data that it contains.</span>
 
-<span class="sd">                Authorization for ``FULL`` requires</span>
-<span class="sd">                ``cloudtasks.tasks.fullView`` `Google IAM &lt;https://cloud.google.com/iam/&gt;`_</span>
-<span class="sd">                permission on the ``Task`` resource.</span>
+<span class="sd">                Authorization for ``FULL`` requires ``cloudtasks.tasks.fullView``</span>
+<span class="sd">                `Google IAM &lt;https://cloud.google.com/iam/&gt;`___ permission on the</span>
+<span class="sd">                ``Task`` resource.</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
 <span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
 <span class="sd">                be retried.</span>
@@ -1588,28 +1580,20 @@
                     <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
                     <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Leases tasks from a pull queue for</span>
-<span class="sd">        ``lease_duration``.</span>
+<span class="sd">        Leases tasks from a pull queue for ``lease_duration``.</span>
 
-<span class="sd">        This method is invoked by the worker to obtain a lease. The</span>
-<span class="sd">        worker must acknowledge the task via</span>
-<span class="sd">        ``AcknowledgeTask`` after they have</span>
-<span class="sd">        performed the work associated with the task.</span>
+<span class="sd">        This method is invoked by the worker to obtain a lease. The worker must</span>
+<span class="sd">        acknowledge the task via ``AcknowledgeTask`` after they have performed</span>
+<span class="sd">        the work associated with the task.</span>
 
-<span class="sd">        The ``payload`` is intended to store data that</span>
-<span class="sd">        the worker needs to perform the work associated with the task. To</span>
-<span class="sd">        return the payloads in the ``response``, set</span>
-<span class="sd">        ``response_view`` to</span>
-<span class="sd">        ``FULL``.</span>
+<span class="sd">        The ``payload`` is intended to store data that the worker needs to</span>
+<span class="sd">        perform the work associated with the task. To return the payloads in the</span>
+<span class="sd">        ``response``, set ``response_view`` to ``FULL``.</span>
 
-<span class="sd">        A maximum of 10 qps of ``LeaseTasks``</span>
-<span class="sd">        requests are allowed per</span>
-<span class="sd">        queue. ``RESOURCE_EXHAUSTED``</span>
-<span class="sd">        is returned when this limit is</span>
-<span class="sd">        exceeded. ``RESOURCE_EXHAUSTED``</span>
-<span class="sd">        is also returned when</span>
-<span class="sd">        ``max_tasks_dispatched_per_second``</span>
-<span class="sd">        is exceeded.</span>
+<span class="sd">        A maximum of 10 qps of ``LeaseTasks`` requests are allowed per queue.</span>
+<span class="sd">        ``RESOURCE_EXHAUSTED`` is returned when this limit is exceeded.</span>
+<span class="sd">        ``RESOURCE_EXHAUSTED`` is also returned when</span>
+<span class="sd">        ``max_tasks_dispatched_per_second`` is exceeded.</span>
 
 <span class="sd">        Example:</span>
 <span class="sd">            &gt;&gt;&gt; from google.cloud import tasks_v2beta2</span>
@@ -1618,7 +1602,7 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; parent = client.queue_path(&#39;[PROJECT]&#39;, &#39;[LOCATION]&#39;, &#39;[QUEUE]&#39;)</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``lease_duration``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `lease_duration`:</span>
 <span class="sd">            &gt;&gt;&gt; lease_duration = {}</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; response = client.lease_tasks(parent, lease_duration)</span>
@@ -1628,15 +1612,14 @@
 
 <span class="sd">                The queue name. For example:</span>
 <span class="sd">                ``projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID``</span>
-<span class="sd">            lease_duration (Union[dict, ~google.cloud.tasks_v2beta2.types.Duration]): After the worker has successfully finished the work associated</span>
-<span class="sd">                with the task, the worker must call via</span>
-<span class="sd">                ``AcknowledgeTask`` before the</span>
-<span class="sd">                ``schedule_time``. Otherwise the task will be</span>
-<span class="sd">                returned to a later ``LeaseTasks`` call so</span>
-<span class="sd">                that another worker can retry it.</span>
+<span class="sd">            lease_duration (Union[dict, ~google.cloud.tasks_v2beta2.types.Duration]): After the worker has successfully finished the work associated with the</span>
+<span class="sd">                task, the worker must call via ``AcknowledgeTask`` before the</span>
+<span class="sd">                ``schedule_time``. Otherwise the task will be returned to a later</span>
+<span class="sd">                ``LeaseTasks`` call so that another worker can retry it.</span>
 
-<span class="sd">                The maximum lease duration is 1 week.</span>
-<span class="sd">                ``lease_duration`` will be truncated to the nearest second.</span>
+<span class="sd">                The maximum lease duration is 1 week. ``lease_duration`` will be</span>
+<span class="sd">                truncated to the nearest second.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.tasks_v2beta2.types.Duration`</span>
 <span class="sd">            max_tasks (int): The maximum number of tasks to lease.</span>
@@ -1645,47 +1628,43 @@
 <span class="sd">                ``max_tasks`` as possible.</span>
 
 <span class="sd">                The largest that ``max_tasks`` can be is 1000.</span>
-<span class="sd">            response_view (~google.cloud.tasks_v2beta2.types.View): The response_view specifies which subset of the ``Task`` will be</span>
+<span class="sd">            response_view (~google.cloud.tasks_v2beta2.types.View): The response\_view specifies which subset of the ``Task`` will be</span>
 <span class="sd">                returned.</span>
 
-<span class="sd">                By default response_view is ``BASIC``; not all</span>
-<span class="sd">                information is retrieved by default because some data, such as</span>
-<span class="sd">                payloads, might be desirable to return only when needed because</span>
-<span class="sd">                of its large size or because of the sensitivity of data that it</span>
-<span class="sd">                contains.</span>
+<span class="sd">                By default response\_view is ``BASIC``; not all information is retrieved</span>
+<span class="sd">                by default because some data, such as payloads, might be desirable to</span>
+<span class="sd">                return only when needed because of its large size or because of the</span>
+<span class="sd">                sensitivity of data that it contains.</span>
 
-<span class="sd">                Authorization for ``FULL`` requires</span>
-<span class="sd">                ``cloudtasks.tasks.fullView`` `Google IAM &lt;https://cloud.google.com/iam/&gt;`_</span>
-<span class="sd">                permission on the ``Task`` resource.</span>
+<span class="sd">                Authorization for ``FULL`` requires ``cloudtasks.tasks.fullView``</span>
+<span class="sd">                `Google IAM &lt;https://cloud.google.com/iam/&gt;`___ permission on the</span>
+<span class="sd">                ``Task`` resource.</span>
 <span class="sd">            filter_ (str): ``filter`` can be used to specify a subset of tasks to lease.</span>
 
-<span class="sd">                When ``filter`` is set to ``tag=&lt;my-tag&gt;`` then the</span>
-<span class="sd">                ``response`` will contain only tasks whose</span>
-<span class="sd">                ``tag`` is equal to ``&lt;my-tag&gt;``. ``&lt;my-tag&gt;`` must be</span>
-<span class="sd">                less than 500 characters.</span>
+<span class="sd">                When ``filter`` is set to ``tag=&lt;my-tag&gt;`` then the ``response`` will</span>
+<span class="sd">                contain only tasks whose ``tag`` is equal to ``&lt;my-tag&gt;``. ``&lt;my-tag&gt;``</span>
+<span class="sd">                must be less than 500 characters.</span>
 
-<span class="sd">                When ``filter`` is set to ``tag_function=oldest_tag()``, only tasks which have</span>
-<span class="sd">                the same tag as the task with the oldest</span>
-<span class="sd">                ``schedule_time`` will be returned.</span>
+<span class="sd">                When ``filter`` is set to ``tag_function=oldest_tag()``, only tasks</span>
+<span class="sd">                which have the same tag as the task with the oldest ``schedule_time``</span>
+<span class="sd">                will be returned.</span>
 
 <span class="sd">                Grammar Syntax:</span>
 
-<span class="sd">                * ``filter = \&quot;tag=\&quot; tag | \&quot;tag_function=\&quot; function``</span>
+<span class="sd">                -  ``filter = &quot;tag=&quot; tag | &quot;tag_function=&quot; function``</span>
 
-<span class="sd">                * ``tag = string``</span>
+<span class="sd">                -  ``tag = string``</span>
 
-<span class="sd">                * ``function = \&quot;oldest_tag()\&quot;``</span>
+<span class="sd">                -  ``function = &quot;oldest_tag()&quot;``</span>
 
-<span class="sd">                The ``oldest_tag()`` function returns tasks which have the same tag as the</span>
-<span class="sd">                oldest task (ordered by schedule time).</span>
+<span class="sd">                The ``oldest_tag()`` function returns tasks which have the same tag as</span>
+<span class="sd">                the oldest task (ordered by schedule time).</span>
 
-<span class="sd">                SDK compatibility: Although the SDK allows tags to be either</span>
-<span class="sd">                string or</span>
-<span class="sd">                `bytes &lt;https://cloud.google.com/appengine/docs/standard/java/javadoc/com/google/appengine/api/taskqueue/TaskOptions.html#tag-byte:A-&gt;`_,</span>
-<span class="sd">                only UTF-8 encoded tags can be used in Cloud Tasks. Tag which</span>
-<span class="sd">                aren&#39;t UTF-8 encoded can&#39;t be used in the</span>
-<span class="sd">                ``filter`` and the task&#39;s</span>
-<span class="sd">                ``tag`` will be displayed as empty in Cloud Tasks.</span>
+<span class="sd">                SDK compatibility: Although the SDK allows tags to be either string or</span>
+<span class="sd">                `bytes &lt;https://cloud.google.com/appengine/docs/standard/java/javadoc/com/google/appengine/api/taskqueue/TaskOptions.html#tag-byte:A-&gt;`__,</span>
+<span class="sd">                only UTF-8 encoded tags can be used in Cloud Tasks. Tag which aren&#39;t</span>
+<span class="sd">                UTF-8 encoded can&#39;t be used in the ``filter`` and the task&#39;s ``tag``</span>
+<span class="sd">                will be displayed as empty in Cloud Tasks.</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
 <span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
 <span class="sd">                be retried.</span>
@@ -1746,17 +1725,13 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Acknowledges a pull task.</span>
 
-<span class="sd">        The worker, that is, the entity that</span>
-<span class="sd">        ``leased`` this task must call this method</span>
-<span class="sd">        to indicate that the work associated with the task has finished.</span>
+<span class="sd">        The worker, that is, the entity that ``leased`` this task must call this</span>
+<span class="sd">        method to indicate that the work associated with the task has finished.</span>
 
-<span class="sd">        The worker must acknowledge a task within the</span>
-<span class="sd">        ``lease_duration`` or the lease</span>
-<span class="sd">        will expire and the task will become available to be leased</span>
-<span class="sd">        again. After the task is acknowledged, it will not be returned</span>
-<span class="sd">        by a later ``LeaseTasks``,</span>
-<span class="sd">        ``GetTask``, or</span>
-<span class="sd">        ``ListTasks``.</span>
+<span class="sd">        The worker must acknowledge a task within the ``lease_duration`` or the</span>
+<span class="sd">        lease will expire and the task will become available to be leased again.</span>
+<span class="sd">        After the task is acknowledged, it will not be returned by a later</span>
+<span class="sd">        ``LeaseTasks``, ``GetTask``, or ``ListTasks``.</span>
 
 <span class="sd">        Example:</span>
 <span class="sd">            &gt;&gt;&gt; from google.cloud import tasks_v2beta2</span>
@@ -1765,7 +1740,7 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; name = client.task_path(&#39;[PROJECT]&#39;, &#39;[LOCATION]&#39;, &#39;[QUEUE]&#39;, &#39;[TASK]&#39;)</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``schedule_time``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `schedule_time`:</span>
 <span class="sd">            &gt;&gt;&gt; schedule_time = {}</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; client.acknowledge_task(name, schedule_time)</span>
@@ -1777,11 +1752,10 @@
 <span class="sd">                ``projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID/tasks/TASK_ID``</span>
 <span class="sd">            schedule_time (Union[dict, ~google.cloud.tasks_v2beta2.types.Timestamp]): Required.</span>
 
-<span class="sd">                The task&#39;s current schedule time, available in the</span>
-<span class="sd">                ``schedule_time`` returned by</span>
-<span class="sd">                ``LeaseTasks`` response or</span>
-<span class="sd">                ``RenewLease`` response. This restriction is</span>
-<span class="sd">                to ensure that your worker currently holds the lease.</span>
+<span class="sd">                The task&#39;s current schedule time, available in the ``schedule_time``</span>
+<span class="sd">                returned by ``LeaseTasks`` response or ``RenewLease`` response. This</span>
+<span class="sd">                restriction is to ensure that your worker currently holds the lease.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.tasks_v2beta2.types.Timestamp`</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
@@ -1842,9 +1816,9 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Renew the current lease of a pull task.</span>
 
-<span class="sd">        The worker can use this method to extend the lease by a new</span>
-<span class="sd">        duration, starting from now. The new task lease will be</span>
-<span class="sd">        returned in the task&#39;s ``schedule_time``.</span>
+<span class="sd">        The worker can use this method to extend the lease by a new duration,</span>
+<span class="sd">        starting from now. The new task lease will be returned in the task&#39;s</span>
+<span class="sd">        ``schedule_time``.</span>
 
 <span class="sd">        Example:</span>
 <span class="sd">            &gt;&gt;&gt; from google.cloud import tasks_v2beta2</span>
@@ -1853,10 +1827,10 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; name = client.task_path(&#39;[PROJECT]&#39;, &#39;[LOCATION]&#39;, &#39;[QUEUE]&#39;, &#39;[TASK]&#39;)</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``schedule_time``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `schedule_time`:</span>
 <span class="sd">            &gt;&gt;&gt; schedule_time = {}</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``lease_duration``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `lease_duration`:</span>
 <span class="sd">            &gt;&gt;&gt; lease_duration = {}</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; response = client.renew_lease(name, schedule_time, lease_duration)</span>
@@ -1868,34 +1842,32 @@
 <span class="sd">                ``projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID/tasks/TASK_ID``</span>
 <span class="sd">            schedule_time (Union[dict, ~google.cloud.tasks_v2beta2.types.Timestamp]): Required.</span>
 
-<span class="sd">                The task&#39;s current schedule time, available in the</span>
-<span class="sd">                ``schedule_time`` returned by</span>
-<span class="sd">                ``LeaseTasks`` response or</span>
-<span class="sd">                ``RenewLease`` response. This restriction is</span>
-<span class="sd">                to ensure that your worker currently holds the lease.</span>
+<span class="sd">                The task&#39;s current schedule time, available in the ``schedule_time``</span>
+<span class="sd">                returned by ``LeaseTasks`` response or ``RenewLease`` response. This</span>
+<span class="sd">                restriction is to ensure that your worker currently holds the lease.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.tasks_v2beta2.types.Timestamp`</span>
 <span class="sd">            lease_duration (Union[dict, ~google.cloud.tasks_v2beta2.types.Duration]): Required.</span>
 
 <span class="sd">                The desired new lease duration, starting from now.</span>
 
+<span class="sd">                The maximum lease duration is 1 week. ``lease_duration`` will be</span>
+<span class="sd">                truncated to the nearest second.</span>
 
-<span class="sd">                The maximum lease duration is 1 week.</span>
-<span class="sd">                ``lease_duration`` will be truncated to the nearest second.</span>
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.tasks_v2beta2.types.Duration`</span>
-<span class="sd">            response_view (~google.cloud.tasks_v2beta2.types.View): The response_view specifies which subset of the ``Task`` will be</span>
+<span class="sd">            response_view (~google.cloud.tasks_v2beta2.types.View): The response\_view specifies which subset of the ``Task`` will be</span>
 <span class="sd">                returned.</span>
 
-<span class="sd">                By default response_view is ``BASIC``; not all</span>
-<span class="sd">                information is retrieved by default because some data, such as</span>
-<span class="sd">                payloads, might be desirable to return only when needed because</span>
-<span class="sd">                of its large size or because of the sensitivity of data that it</span>
-<span class="sd">                contains.</span>
+<span class="sd">                By default response\_view is ``BASIC``; not all information is retrieved</span>
+<span class="sd">                by default because some data, such as payloads, might be desirable to</span>
+<span class="sd">                return only when needed because of its large size or because of the</span>
+<span class="sd">                sensitivity of data that it contains.</span>
 
-<span class="sd">                Authorization for ``FULL`` requires</span>
-<span class="sd">                ``cloudtasks.tasks.fullView`` `Google IAM &lt;https://cloud.google.com/iam/&gt;`_</span>
-<span class="sd">                permission on the ``Task`` resource.</span>
+<span class="sd">                Authorization for ``FULL`` requires ``cloudtasks.tasks.fullView``</span>
+<span class="sd">                `Google IAM &lt;https://cloud.google.com/iam/&gt;`___ permission on the</span>
+<span class="sd">                ``Task`` resource.</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
 <span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
 <span class="sd">                be retried.</span>
@@ -1956,10 +1928,9 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Cancel a pull task&#39;s lease.</span>
 
-<span class="sd">        The worker can use this method to cancel a task&#39;s lease by</span>
-<span class="sd">        setting its ``schedule_time`` to now. This will</span>
-<span class="sd">        make the task available to be leased to the next caller of</span>
-<span class="sd">        ``LeaseTasks``.</span>
+<span class="sd">        The worker can use this method to cancel a task&#39;s lease by setting its</span>
+<span class="sd">        ``schedule_time`` to now. This will make the task available to be leased</span>
+<span class="sd">        to the next caller of ``LeaseTasks``.</span>
 
 <span class="sd">        Example:</span>
 <span class="sd">            &gt;&gt;&gt; from google.cloud import tasks_v2beta2</span>
@@ -1968,7 +1939,7 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; name = client.task_path(&#39;[PROJECT]&#39;, &#39;[LOCATION]&#39;, &#39;[QUEUE]&#39;, &#39;[TASK]&#39;)</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``schedule_time``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `schedule_time`:</span>
 <span class="sd">            &gt;&gt;&gt; schedule_time = {}</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; response = client.cancel_lease(name, schedule_time)</span>
@@ -1980,25 +1951,23 @@
 <span class="sd">                ``projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID/tasks/TASK_ID``</span>
 <span class="sd">            schedule_time (Union[dict, ~google.cloud.tasks_v2beta2.types.Timestamp]): Required.</span>
 
-<span class="sd">                The task&#39;s current schedule time, available in the</span>
-<span class="sd">                ``schedule_time`` returned by</span>
-<span class="sd">                ``LeaseTasks`` response or</span>
-<span class="sd">                ``RenewLease`` response. This restriction is</span>
-<span class="sd">                to ensure that your worker currently holds the lease.</span>
+<span class="sd">                The task&#39;s current schedule time, available in the ``schedule_time``</span>
+<span class="sd">                returned by ``LeaseTasks`` response or ``RenewLease`` response. This</span>
+<span class="sd">                restriction is to ensure that your worker currently holds the lease.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.tasks_v2beta2.types.Timestamp`</span>
-<span class="sd">            response_view (~google.cloud.tasks_v2beta2.types.View): The response_view specifies which subset of the ``Task`` will be</span>
+<span class="sd">            response_view (~google.cloud.tasks_v2beta2.types.View): The response\_view specifies which subset of the ``Task`` will be</span>
 <span class="sd">                returned.</span>
 
-<span class="sd">                By default response_view is ``BASIC``; not all</span>
-<span class="sd">                information is retrieved by default because some data, such as</span>
-<span class="sd">                payloads, might be desirable to return only when needed because</span>
-<span class="sd">                of its large size or because of the sensitivity of data that it</span>
-<span class="sd">                contains.</span>
+<span class="sd">                By default response\_view is ``BASIC``; not all information is retrieved</span>
+<span class="sd">                by default because some data, such as payloads, might be desirable to</span>
+<span class="sd">                return only when needed because of its large size or because of the</span>
+<span class="sd">                sensitivity of data that it contains.</span>
 
-<span class="sd">                Authorization for ``FULL`` requires</span>
-<span class="sd">                ``cloudtasks.tasks.fullView`` `Google IAM &lt;https://cloud.google.com/iam/&gt;`_</span>
-<span class="sd">                permission on the ``Task`` resource.</span>
+<span class="sd">                Authorization for ``FULL`` requires ``cloudtasks.tasks.fullView``</span>
+<span class="sd">                `Google IAM &lt;https://cloud.google.com/iam/&gt;`___ permission on the</span>
+<span class="sd">                ``Task`` resource.</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
 <span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
 <span class="sd">                be retried.</span>
@@ -2062,27 +2031,23 @@
 <span class="sd">        the task is already running, the queue has reached its ``RateLimits`` or</span>
 <span class="sd">        is ``PAUSED``.</span>
 
-<span class="sd">        This command is meant to be used for manual debugging. For</span>
-<span class="sd">        example, ``RunTask`` can be used to retry a failed</span>
-<span class="sd">        task after a fix has been made or to manually force a task to be</span>
-<span class="sd">        dispatched now.</span>
+<span class="sd">        This command is meant to be used for manual debugging. For example,</span>
+<span class="sd">        ``RunTask`` can be used to retry a failed task after a fix has been made</span>
+<span class="sd">        or to manually force a task to be dispatched now.</span>
 
 <span class="sd">        The dispatched task is returned. That is, the task that is returned</span>
-<span class="sd">        contains the ``status`` after the task is dispatched but</span>
-<span class="sd">        before the task is received by its target.</span>
+<span class="sd">        contains the ``status`` after the task is dispatched but before the task</span>
+<span class="sd">        is received by its target.</span>
 
-<span class="sd">        If Cloud Tasks receives a successful response from the task&#39;s</span>
-<span class="sd">        target, then the task will be deleted; otherwise the task&#39;s</span>
-<span class="sd">        ``schedule_time`` will be reset to the time that</span>
-<span class="sd">        ``RunTask`` was called plus the retry delay specified</span>
-<span class="sd">        in the queue&#39;s ``RetryConfig``.</span>
+<span class="sd">        If Cloud Tasks receives a successful response from the task&#39;s target,</span>
+<span class="sd">        then the task will be deleted; otherwise the task&#39;s ``schedule_time``</span>
+<span class="sd">        will be reset to the time that ``RunTask`` was called plus the retry</span>
+<span class="sd">        delay specified in the queue&#39;s ``RetryConfig``.</span>
 
-<span class="sd">        ``RunTask`` returns</span>
-<span class="sd">        ``NOT_FOUND`` when it is called on a</span>
-<span class="sd">        task that has already succeeded or permanently failed.</span>
+<span class="sd">        ``RunTask`` returns ``NOT_FOUND`` when it is called on a task that has</span>
+<span class="sd">        already succeeded or permanently failed.</span>
 
-<span class="sd">        ``RunTask`` cannot be called on a</span>
-<span class="sd">        ``pull task``.</span>
+<span class="sd">        ``RunTask`` cannot be called on a ``pull task``.</span>
 
 <span class="sd">        Example:</span>
 <span class="sd">            &gt;&gt;&gt; from google.cloud import tasks_v2beta2</span>
@@ -2098,18 +2063,17 @@
 
 <span class="sd">                The task name. For example:</span>
 <span class="sd">                ``projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID/tasks/TASK_ID``</span>
-<span class="sd">            response_view (~google.cloud.tasks_v2beta2.types.View): The response_view specifies which subset of the ``Task`` will be</span>
+<span class="sd">            response_view (~google.cloud.tasks_v2beta2.types.View): The response\_view specifies which subset of the ``Task`` will be</span>
 <span class="sd">                returned.</span>
 
-<span class="sd">                By default response_view is ``BASIC``; not all</span>
-<span class="sd">                information is retrieved by default because some data, such as</span>
-<span class="sd">                payloads, might be desirable to return only when needed because</span>
-<span class="sd">                of its large size or because of the sensitivity of data that it</span>
-<span class="sd">                contains.</span>
+<span class="sd">                By default response\_view is ``BASIC``; not all information is retrieved</span>
+<span class="sd">                by default because some data, such as payloads, might be desirable to</span>
+<span class="sd">                return only when needed because of its large size or because of the</span>
+<span class="sd">                sensitivity of data that it contains.</span>
 
-<span class="sd">                Authorization for ``FULL`` requires</span>
-<span class="sd">                ``cloudtasks.tasks.fullView`` `Google IAM &lt;https://cloud.google.com/iam/&gt;`_</span>
-<span class="sd">                permission on the ``Task`` resource.</span>
+<span class="sd">                Authorization for ``FULL`` requires ``cloudtasks.tasks.fullView``</span>
+<span class="sd">                `Google IAM &lt;https://cloud.google.com/iam/&gt;`___ permission on the</span>
+<span class="sd">                ``Task`` resource.</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
 <span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
 <span class="sd">                be retried.</span>

@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Client for Cloud Tasks API &#8212; google-cloud 3964ad2 documentation</title>
+    <title>Client for Cloud Tasks API &#8212; google-cloud 15f2c36 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -39,7 +39,7 @@
 <span id="client-for-cloud-tasks-api"></span><h1>Client for Cloud Tasks API<a class="headerlink" href="#module-google.cloud.tasks_v2beta2" title="Permalink to this headline">#</a></h1>
 <dl class="class">
 <dt id="google.cloud.tasks_v2beta2.CloudTasksClient">
-<em class="property">class </em><code class="descclassname">google.cloud.tasks_v2beta2.</code><code class="descname">CloudTasksClient</code><span class="sig-paren">(</span><em>transport=None, channel=None, credentials=None, client_config={'interfaces': {'google.cloud.tasks.v2beta2.CloudTasks': {'methods': {'AcknowledgeTask': {'retry_codes_name': 'non_idempotent', 'retry_params_name': 'default', 'timeout_millis': 10000}, 'CancelLease': {'retry_codes_name': 'non_idempotent', 'retry_params_name': 'default', 'timeout_millis': 10000}, 'CreateQueue': {'retry_codes_name': 'non_idempotent', 'retry_params_name': 'default', 'timeout_millis': 10000}, 'CreateTask': {'retry_codes_name': 'non_idempotent', 'retry_params_name': 'default', 'timeout_millis': 10000}, 'DeleteQueue': {'retry_codes_name': 'idempotent', 'retry_params_name': 'default', 'timeout_millis': 10000}, 'DeleteTask': {'retry_codes_name': 'idempotent', 'retry_params_name': 'default', 'timeout_millis': 10000}, 'GetIamPolicy': {'retry_codes_name': 'idempotent', 'retry_params_name': 'default', 'timeout_millis': 10000}, 'GetQueue': {'retry_codes_name': 'idempotent', 'retry_params_name': 'default', 'timeout_millis': 10000}, 'GetTask': {'retry_codes_name': 'idempotent', 'retry_params_name': 'default', 'timeout_millis': 10000}, 'LeaseTasks': {'retry_codes_name': 'non_idempotent', 'retry_params_name': 'default', 'timeout_millis': 10000}, 'ListQueues': {'retry_codes_name': 'idempotent', 'retry_params_name': 'default', 'timeout_millis': 10000}, 'ListTasks': {'retry_codes_name': 'idempotent', 'retry_params_name': 'default', 'timeout_millis': 10000}, 'PauseQueue': {'retry_codes_name': 'non_idempotent', 'retry_params_name': 'default', 'timeout_millis': 10000}, 'PurgeQueue': {'retry_codes_name': 'non_idempotent', 'retry_params_name': 'default', 'timeout_millis': 10000}, 'RenewLease': {'retry_codes_name': 'non_idempotent', 'retry_params_name': 'default', 'timeout_millis': 10000}, 'ResumeQueue': {'retry_codes_name': 'non_idempotent', 'retry_params_name': 'default', 'timeout_millis': 10000}, 'RunTask': {'retry_codes_name': 'non_idempotent', 'retry_params_name': 'default', 'timeout_millis': 10000}, 'SetIamPolicy': {'retry_codes_name': 'non_idempotent', 'retry_params_name': 'default', 'timeout_millis': 10000}, 'TestIamPermissions': {'retry_codes_name': 'idempotent', 'retry_params_name': 'default', 'timeout_millis': 10000}, 'UpdateQueue': {'retry_codes_name': 'non_idempotent', 'retry_params_name': 'default', 'timeout_millis': 10000}}, 'retry_codes': {'idempotent': ['DEADLINE_EXCEEDED', 'UNAVAILABLE'], 'non_idempotent': []}, 'retry_params': {'default': {'initial_retry_delay_millis': 100, 'initial_rpc_timeout_millis': 20000, 'max_retry_delay_millis': 60000, 'max_rpc_timeout_millis': 20000, 'retry_delay_multiplier': 1.3, 'rpc_timeout_multiplier': 1.0, 'total_timeout_millis': 600000}}}}}, client_info=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/tasks_v2beta2.html#CloudTasksClient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.tasks_v2beta2.CloudTasksClient" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="descclassname">google.cloud.tasks_v2beta2.</code><code class="descname">CloudTasksClient</code><span class="sig-paren">(</span><em>transport=None, channel=None, credentials=None, client_config={'interfaces': {'google.cloud.tasks.v2beta2.CloudTasks': {'methods': {'AcknowledgeTask': {'retry_codes_name': 'non_idempotent', 'retry_params_name': 'default', 'timeout_millis': 10000}, 'CancelLease': {'retry_codes_name': 'non_idempotent', 'retry_params_name': 'default', 'timeout_millis': 10000}, 'CreateQueue': {'retry_codes_name': 'non_idempotent', 'retry_params_name': 'default', 'timeout_millis': 10000}, 'CreateTask': {'retry_codes_name': 'non_idempotent', 'retry_params_name': 'default', 'timeout_millis': 10000}, 'DeleteQueue': {'retry_codes_name': 'idempotent', 'retry_params_name': 'default', 'timeout_millis': 10000}, 'DeleteTask': {'retry_codes_name': 'idempotent', 'retry_params_name': 'default', 'timeout_millis': 10000}, 'GetIamPolicy': {'retry_codes_name': 'idempotent', 'retry_params_name': 'default', 'timeout_millis': 10000}, 'GetQueue': {'retry_codes_name': 'idempotent', 'retry_params_name': 'default', 'timeout_millis': 10000}, 'GetTask': {'retry_codes_name': 'idempotent', 'retry_params_name': 'default', 'timeout_millis': 10000}, 'LeaseTasks': {'retry_codes_name': 'non_idempotent', 'retry_params_name': 'default', 'timeout_millis': 10000}, 'ListQueues': {'retry_codes_name': 'idempotent', 'retry_params_name': 'default', 'timeout_millis': 15000}, 'ListTasks': {'retry_codes_name': 'idempotent', 'retry_params_name': 'default', 'timeout_millis': 10000}, 'PauseQueue': {'retry_codes_name': 'non_idempotent', 'retry_params_name': 'default', 'timeout_millis': 10000}, 'PurgeQueue': {'retry_codes_name': 'non_idempotent', 'retry_params_name': 'default', 'timeout_millis': 10000}, 'RenewLease': {'retry_codes_name': 'non_idempotent', 'retry_params_name': 'default', 'timeout_millis': 10000}, 'ResumeQueue': {'retry_codes_name': 'non_idempotent', 'retry_params_name': 'default', 'timeout_millis': 10000}, 'RunTask': {'retry_codes_name': 'non_idempotent', 'retry_params_name': 'default', 'timeout_millis': 10000}, 'SetIamPolicy': {'retry_codes_name': 'non_idempotent', 'retry_params_name': 'default', 'timeout_millis': 10000}, 'TestIamPermissions': {'retry_codes_name': 'idempotent', 'retry_params_name': 'default', 'timeout_millis': 10000}, 'UpdateQueue': {'retry_codes_name': 'non_idempotent', 'retry_params_name': 'default', 'timeout_millis': 10000}}, 'retry_codes': {'idempotent': ['DEADLINE_EXCEEDED', 'UNAVAILABLE'], 'non_idempotent': []}, 'retry_params': {'default': {'initial_retry_delay_millis': 100, 'initial_rpc_timeout_millis': 20000, 'max_retry_delay_millis': 60000, 'max_rpc_timeout_millis': 20000, 'retry_delay_multiplier': 1.3, 'rpc_timeout_multiplier': 1.0, 'total_timeout_millis': 600000}}}}}, client_info=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/tasks_v2beta2.html#CloudTasksClient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.tasks_v2beta2.CloudTasksClient" title="Permalink to this definition">#</a></dt>
 <dd><p>Cloud Tasks allows developers to manage the execution of background
 work in their applications.</p>
 <p>Constructor.</p>
@@ -81,16 +81,12 @@ your own client library.</li>
 <dt id="google.cloud.tasks_v2beta2.CloudTasksClient.acknowledge_task">
 <code class="descname">acknowledge_task</code><span class="sig-paren">(</span><em>name</em>, <em>schedule_time</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/tasks_v2beta2/gapic/cloud_tasks_client.html#CloudTasksClient.acknowledge_task"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.tasks_v2beta2.CloudTasksClient.acknowledge_task" title="Permalink to this definition">#</a></dt>
 <dd><p>Acknowledges a pull task.</p>
-<p>The worker, that is, the entity that
-<code class="docutils literal notranslate"><span class="pre">leased</span></code> this task must call this method
-to indicate that the work associated with the task has finished.</p>
-<p>The worker must acknowledge a task within the
-<code class="docutils literal notranslate"><span class="pre">lease_duration</span></code> or the lease
-will expire and the task will become available to be leased
-again. After the task is acknowledged, it will not be returned
-by a later <code class="docutils literal notranslate"><span class="pre">LeaseTasks</span></code>,
-<code class="docutils literal notranslate"><span class="pre">GetTask</span></code>, or
-<code class="docutils literal notranslate"><span class="pre">ListTasks</span></code>.</p>
+<p>The worker, that is, the entity that <code class="docutils literal notranslate"><span class="pre">leased</span></code> this task must call this
+method to indicate that the work associated with the task has finished.</p>
+<p>The worker must acknowledge a task within the <code class="docutils literal notranslate"><span class="pre">lease_duration</span></code> or the
+lease will expire and the task will become available to be leased again.
+After the task is acknowledged, it will not be returned by a later
+<code class="docutils literal notranslate"><span class="pre">LeaseTasks</span></code>, <code class="docutils literal notranslate"><span class="pre">GetTask</span></code>, or <code class="docutils literal notranslate"><span class="pre">ListTasks</span></code>.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">tasks_v2beta2</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -98,7 +94,7 @@ by a later <code class="docutils literal notranslate"><span class="pre">LeaseTas
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">name</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">task_path</span><span class="p">(</span><span class="s1">&#39;[PROJECT]&#39;</span><span class="p">,</span> <span class="s1">&#39;[LOCATION]&#39;</span><span class="p">,</span> <span class="s1">&#39;[QUEUE]&#39;</span><span class="p">,</span> <span class="s1">&#39;[TASK]&#39;</span><span class="p">)</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``schedule_time``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `schedule_time`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">schedule_time</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span><span class="o">.</span><span class="n">acknowledge_task</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">schedule_time</span><span class="p">)</span>
@@ -114,12 +110,10 @@ by a later <code class="docutils literal notranslate"><span class="pre">LeaseTas
 <code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID/tasks/TASK_ID</span></code></p>
 </li>
 <li><strong>schedule_time</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.tasks_v2beta2.types.Timestamp" title="google.cloud.tasks_v2beta2.types.Timestamp"><em>Timestamp</em></a><em>]</em>) – <p>Required.</p>
-<p>The task’s current schedule time, available in the
-<code class="docutils literal notranslate"><span class="pre">schedule_time</span></code> returned by
-<code class="docutils literal notranslate"><span class="pre">LeaseTasks</span></code> response or
-<code class="docutils literal notranslate"><span class="pre">RenewLease</span></code> response. This restriction is
-to ensure that your worker currently holds the lease.
-If a dict is provided, it must be of the same form as the protobuf
+<p>The task’s current schedule time, available in the <code class="docutils literal notranslate"><span class="pre">schedule_time</span></code>
+returned by <code class="docutils literal notranslate"><span class="pre">LeaseTasks</span></code> response or <code class="docutils literal notranslate"><span class="pre">RenewLease</span></code> response. This
+restriction is to ensure that your worker currently holds the lease.</p>
+<p>If a dict is provided, it must be of the same form as the protobuf
 message <a class="reference internal" href="types.html#google.cloud.tasks_v2beta2.types.Timestamp" title="google.cloud.tasks_v2beta2.types.Timestamp"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timestamp</span></code></a></p>
 </li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
@@ -150,10 +144,9 @@ to a retryable error and retry attempts failed.</li>
 <dt id="google.cloud.tasks_v2beta2.CloudTasksClient.cancel_lease">
 <code class="descname">cancel_lease</code><span class="sig-paren">(</span><em>name</em>, <em>schedule_time</em>, <em>response_view=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/tasks_v2beta2/gapic/cloud_tasks_client.html#CloudTasksClient.cancel_lease"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.tasks_v2beta2.CloudTasksClient.cancel_lease" title="Permalink to this definition">#</a></dt>
 <dd><p>Cancel a pull task’s lease.</p>
-<p>The worker can use this method to cancel a task’s lease by
-setting its <code class="docutils literal notranslate"><span class="pre">schedule_time</span></code> to now. This will
-make the task available to be leased to the next caller of
-<code class="docutils literal notranslate"><span class="pre">LeaseTasks</span></code>.</p>
+<p>The worker can use this method to cancel a task’s lease by setting its
+<code class="docutils literal notranslate"><span class="pre">schedule_time</span></code> to now. This will make the task available to be leased
+to the next caller of <code class="docutils literal notranslate"><span class="pre">LeaseTasks</span></code>.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">tasks_v2beta2</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -161,7 +154,7 @@ make the task available to be leased to the next caller of
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">name</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">task_path</span><span class="p">(</span><span class="s1">&#39;[PROJECT]&#39;</span><span class="p">,</span> <span class="s1">&#39;[LOCATION]&#39;</span><span class="p">,</span> <span class="s1">&#39;[QUEUE]&#39;</span><span class="p">,</span> <span class="s1">&#39;[TASK]&#39;</span><span class="p">)</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``schedule_time``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `schedule_time`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">schedule_time</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">cancel_lease</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">schedule_time</span><span class="p">)</span>
@@ -177,24 +170,21 @@ make the task available to be leased to the next caller of
 <code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID/tasks/TASK_ID</span></code></p>
 </li>
 <li><strong>schedule_time</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.tasks_v2beta2.types.Timestamp" title="google.cloud.tasks_v2beta2.types.Timestamp"><em>Timestamp</em></a><em>]</em>) – <p>Required.</p>
-<p>The task’s current schedule time, available in the
-<code class="docutils literal notranslate"><span class="pre">schedule_time</span></code> returned by
-<code class="docutils literal notranslate"><span class="pre">LeaseTasks</span></code> response or
-<code class="docutils literal notranslate"><span class="pre">RenewLease</span></code> response. This restriction is
-to ensure that your worker currently holds the lease.
-If a dict is provided, it must be of the same form as the protobuf
+<p>The task’s current schedule time, available in the <code class="docutils literal notranslate"><span class="pre">schedule_time</span></code>
+returned by <code class="docutils literal notranslate"><span class="pre">LeaseTasks</span></code> response or <code class="docutils literal notranslate"><span class="pre">RenewLease</span></code> response. This
+restriction is to ensure that your worker currently holds the lease.</p>
+<p>If a dict is provided, it must be of the same form as the protobuf
 message <a class="reference internal" href="types.html#google.cloud.tasks_v2beta2.types.Timestamp" title="google.cloud.tasks_v2beta2.types.Timestamp"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timestamp</span></code></a></p>
 </li>
 <li><strong>response_view</strong> (<em>View</em>) – <p>The response_view specifies which subset of the <code class="docutils literal notranslate"><span class="pre">Task</span></code> will be
 returned.</p>
-<p>By default response_view is <code class="docutils literal notranslate"><span class="pre">BASIC</span></code>; not all
-information is retrieved by default because some data, such as
-payloads, might be desirable to return only when needed because
-of its large size or because of the sensitivity of data that it
-contains.</p>
-<p>Authorization for <code class="docutils literal notranslate"><span class="pre">FULL</span></code> requires
-<code class="docutils literal notranslate"><span class="pre">cloudtasks.tasks.fullView</span></code> <a class="reference external" href="https://cloud.google.com/iam/">Google IAM</a>
-permission on the <code class="docutils literal notranslate"><span class="pre">Task</span></code> resource.</p>
+<p>By default response_view is <code class="docutils literal notranslate"><span class="pre">BASIC</span></code>; not all information is retrieved
+by default because some data, such as payloads, might be desirable to
+return only when needed because of its large size or because of the
+sensitivity of data that it contains.</p>
+<p>Authorization for <code class="docutils literal notranslate"><span class="pre">FULL</span></code> requires <code class="docutils literal notranslate"><span class="pre">cloudtasks.tasks.fullView</span></code>
+<cite>Google IAM &lt;https://cloud.google.com/iam/&gt;`___ permission on the
+``Task`</cite> resource.</p>
 </li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
@@ -228,13 +218,13 @@ to a retryable error and retry attempts failed.</li>
 <code class="descname">create_queue</code><span class="sig-paren">(</span><em>parent</em>, <em>queue</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/tasks_v2beta2/gapic/cloud_tasks_client.html#CloudTasksClient.create_queue"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.tasks_v2beta2.CloudTasksClient.create_queue" title="Permalink to this definition">#</a></dt>
 <dd><p>Creates a queue.</p>
 <p>Queues created with this method allow tasks to live for a maximum of 31
-days. After a task is 31 days old, the task will be deleted regardless of whether
-it was dispatched or not.</p>
+days. After a task is 31 days old, the task will be deleted regardless
+of whether it was dispatched or not.</p>
 <p>WARNING: Using this method may have unintended side effects if you are
-using an App Engine <code class="docutils literal notranslate"><span class="pre">queue.yaml</span></code> or <code class="docutils literal notranslate"><span class="pre">queue.xml</span></code> file to manage your queues.
-Read
-<a class="reference external" href="https://cloud.google.com/tasks/docs/queue-yaml">Overview of Queue Management and queue.yaml</a>
-before using this method.</p>
+using an App Engine <code class="docutils literal notranslate"><span class="pre">queue.yaml</span></code> or <code class="docutils literal notranslate"><span class="pre">queue.xml</span></code> file to manage your
+queues. Read <a class="reference external" href="https://cloud.google.com/tasks/docs/queue-yaml">Overview of Queue Management and
+queue.yaml</a> before
+using this method.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">tasks_v2beta2</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -242,7 +232,7 @@ before using this method.</p>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">parent</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">location_path</span><span class="p">(</span><span class="s1">&#39;[PROJECT]&#39;</span><span class="p">,</span> <span class="s1">&#39;[LOCATION]&#39;</span><span class="p">)</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``queue``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `queue`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">queue</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">create_queue</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">queue</span><span class="p">)</span>
@@ -254,16 +244,15 @@ before using this method.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Required.</p>
-<p>The location name in which the queue will be created.
-For example: <code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/locations/LOCATION_ID</span></code></p>
-<p>The list of allowed locations can be obtained by calling Cloud
-Tasks’ implementation of
-<code class="docutils literal notranslate"><span class="pre">ListLocations</span></code>.</p>
+<p>The location name in which the queue will be created. For example:
+<code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/locations/LOCATION_ID</span></code></p>
+<p>The list of allowed locations can be obtained by calling Cloud Tasks’
+implementation of <code class="docutils literal notranslate"><span class="pre">ListLocations</span></code>.</p>
 </li>
 <li><strong>queue</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.tasks_v2beta2.types.Queue" title="google.cloud.tasks_v2beta2.types.Queue"><em>Queue</em></a><em>]</em>) – <p>Required.</p>
 <p>The queue to create.</p>
-<p><code class="docutils literal notranslate"><span class="pre">Queue's</span> <span class="pre">name</span></code> cannot be the same as an existing queue.
-If a dict is provided, it must be of the same form as the protobuf
+<p><code class="docutils literal notranslate"><span class="pre">Queue's</span> <span class="pre">name</span></code> cannot be the same as an existing queue.</p>
+<p>If a dict is provided, it must be of the same form as the protobuf
 message <a class="reference internal" href="types.html#google.cloud.tasks_v2beta2.types.Queue" title="google.cloud.tasks_v2beta2.types.Queue"><code class="xref py py-class docutils literal notranslate"><span class="pre">Queue</span></code></a></p>
 </li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
@@ -299,8 +288,7 @@ to a retryable error and retry attempts failed.</li>
 <dd><p>Creates a task and adds it to a queue.</p>
 <p>Tasks cannot be updated after creation; there is no UpdateTask command.</p>
 <ul class="simple">
-<li>For <code class="docutils literal notranslate"><span class="pre">App</span> <span class="pre">Engine</span> <span class="pre">queues</span></code>, the maximum task size is
-100KB.</li>
+<li>For <code class="docutils literal notranslate"><span class="pre">App</span> <span class="pre">Engine</span> <span class="pre">queues</span></code>, the maximum task size is 100KB.</li>
 <li>For <code class="docutils literal notranslate"><span class="pre">pull</span> <span class="pre">queues</span></code>, the maximum task size is 1MB.</li>
 </ul>
 <p class="rubric">Example</p>
@@ -310,7 +298,7 @@ to a retryable error and retry attempts failed.</li>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">parent</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">queue_path</span><span class="p">(</span><span class="s1">&#39;[PROJECT]&#39;</span><span class="p">,</span> <span class="s1">&#39;[LOCATION]&#39;</span><span class="p">,</span> <span class="s1">&#39;[QUEUE]&#39;</span><span class="p">)</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``task``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `task`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">task</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">create_task</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">task</span><span class="p">)</span>
@@ -330,44 +318,40 @@ to a retryable error and retry attempts failed.</li>
 <p>The task to add.</p>
 <p>Task names have the following format:
 <code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID/tasks/TASK_ID</span></code>.
-The user can optionally specify a task <code class="docutils literal notranslate"><span class="pre">name</span></code>. If a
-name is not specified then the system will generate a random
-unique task id, which will be set in the task returned in the
-<code class="docutils literal notranslate"><span class="pre">response</span></code>.</p>
-<p>If <code class="docutils literal notranslate"><span class="pre">schedule_time</span></code> is not set or is in the
-past then Cloud Tasks will set it to the current time.</p>
+The user can optionally specify a task <code class="docutils literal notranslate"><span class="pre">name</span></code>. If a name is not
+specified then the system will generate a random unique task id, which
+will be set in the task returned in the <code class="docutils literal notranslate"><span class="pre">response</span></code>.</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">schedule_time</span></code> is not set or is in the past then Cloud Tasks will
+set it to the current time.</p>
 <p>Task De-duplication:</p>
-<p>Explicitly specifying a task ID enables task de-duplication.  If
-a task’s ID is identical to that of an existing task or a task
-that was deleted or completed recently then the call will fail
-with <code class="docutils literal notranslate"><span class="pre">ALREADY_EXISTS</span></code>.
-If the task’s queue was created using Cloud Tasks, then another task with
-the same name can’t be created for ~1hour after the original task was
-deleted or completed. If the task’s queue was created using queue.yaml or
-queue.xml, then another task with the same name can’t be created
-for ~9days after the original task was deleted or completed.</p>
-<p>Because there is an extra lookup cost to identify duplicate task
-names, these <code class="docutils literal notranslate"><span class="pre">CreateTask</span></code> calls have significantly
-increased latency. Using hashed strings for the task id or for
-the prefix of the task id is recommended. Choosing task ids that
-are sequential or have sequential prefixes, for example using a
-timestamp, causes an increase in latency and error rates in all
-task commands. The infrastructure relies on an approximately
-uniform distribution of task ids to store and serve tasks
-efficiently.
-If a dict is provided, it must be of the same form as the protobuf
+<p>Explicitly specifying a task ID enables task de-duplication. If a task’s
+ID is identical to that of an existing task or a task that was deleted
+or completed recently then the call will fail with <code class="docutils literal notranslate"><span class="pre">ALREADY_EXISTS</span></code>.
+If the task’s queue was created using Cloud Tasks, then another task
+with the same name can’t be created for ~1hour after the original task
+was deleted or completed. If the task’s queue was created using
+queue.yaml or queue.xml, then another task with the same name can’t be
+created for ~9days after the original task was deleted or completed.</p>
+<p>Because there is an extra lookup cost to identify duplicate task names,
+these <code class="docutils literal notranslate"><span class="pre">CreateTask</span></code> calls have significantly increased latency. Using
+hashed strings for the task id or for the prefix of the task id is
+recommended. Choosing task ids that are sequential or have sequential
+prefixes, for example using a timestamp, causes an increase in latency
+and error rates in all task commands. The infrastructure relies on an
+approximately uniform distribution of task ids to store and serve tasks
+efficiently.</p>
+<p>If a dict is provided, it must be of the same form as the protobuf
 message <a class="reference internal" href="types.html#google.cloud.tasks_v2beta2.types.Task" title="google.cloud.tasks_v2beta2.types.Task"><code class="xref py py-class docutils literal notranslate"><span class="pre">Task</span></code></a></p>
 </li>
 <li><strong>response_view</strong> (<em>View</em>) – <p>The response_view specifies which subset of the <code class="docutils literal notranslate"><span class="pre">Task</span></code> will be
 returned.</p>
-<p>By default response_view is <code class="docutils literal notranslate"><span class="pre">BASIC</span></code>; not all
-information is retrieved by default because some data, such as
-payloads, might be desirable to return only when needed because
-of its large size or because of the sensitivity of data that it
-contains.</p>
-<p>Authorization for <code class="docutils literal notranslate"><span class="pre">FULL</span></code> requires
-<code class="docutils literal notranslate"><span class="pre">cloudtasks.tasks.fullView</span></code> <a class="reference external" href="https://cloud.google.com/iam/">Google IAM</a>
-permission on the <code class="docutils literal notranslate"><span class="pre">Task</span></code> resource.</p>
+<p>By default response_view is <code class="docutils literal notranslate"><span class="pre">BASIC</span></code>; not all information is retrieved
+by default because some data, such as payloads, might be desirable to
+return only when needed because of its large size or because of the
+sensitivity of data that it contains.</p>
+<p>Authorization for <code class="docutils literal notranslate"><span class="pre">FULL</span></code> requires <code class="docutils literal notranslate"><span class="pre">cloudtasks.tasks.fullView</span></code>
+<cite>Google IAM &lt;https://cloud.google.com/iam/&gt;`___ permission on the
+``Task`</cite> resource.</p>
 </li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
@@ -404,10 +388,10 @@ to a retryable error and retry attempts failed.</li>
 <p>Note: If you delete a queue, a queue with the same name can’t be created
 for 7 days.</p>
 <p>WARNING: Using this method may have unintended side effects if you are
-using an App Engine <code class="docutils literal notranslate"><span class="pre">queue.yaml</span></code> or <code class="docutils literal notranslate"><span class="pre">queue.xml</span></code> file to manage your queues.
-Read
-<a class="reference external" href="https://cloud.google.com/tasks/docs/queue-yaml">Overview of Queue Management and queue.yaml</a>
-before using this method.</p>
+using an App Engine <code class="docutils literal notranslate"><span class="pre">queue.yaml</span></code> or <code class="docutils literal notranslate"><span class="pre">queue.xml</span></code> file to manage your
+queues. Read <a class="reference external" href="https://cloud.google.com/tasks/docs/queue-yaml">Overview of Queue Management and
+queue.yaml</a> before
+using this method.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">tasks_v2beta2</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -563,11 +547,10 @@ file.</li>
 <dl class="method">
 <dt id="google.cloud.tasks_v2beta2.CloudTasksClient.get_iam_policy">
 <code class="descname">get_iam_policy</code><span class="sig-paren">(</span><em>resource</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/tasks_v2beta2/gapic/cloud_tasks_client.html#CloudTasksClient.get_iam_policy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.tasks_v2beta2.CloudTasksClient.get_iam_policy" title="Permalink to this definition">#</a></dt>
-<dd><p>Gets the access control policy for a <code class="docutils literal notranslate"><span class="pre">Queue</span></code>.
-Returns an empty policy if the resource exists and does not have a policy
-set.</p>
-<p>Authorization requires the following
-<a class="reference external" href="https://cloud.google.com/iam">Google IAM</a> permission on the specified
+<dd><p>Gets the access control policy for a <code class="docutils literal notranslate"><span class="pre">Queue</span></code>. Returns an empty policy
+if the resource exists and does not have a policy set.</p>
+<p>Authorization requires the following <a class="reference external" href="https://cloud.google.com/iam">Google
+IAM</a> permission on the specified
 resource parent:</p>
 <ul class="simple">
 <li><code class="docutils literal notranslate"><span class="pre">cloudtasks.queues.getIamPolicy</span></code></li>
@@ -692,14 +675,13 @@ to a retryable error and retry attempts failed.</li>
 </li>
 <li><strong>response_view</strong> (<em>View</em>) – <p>The response_view specifies which subset of the <code class="docutils literal notranslate"><span class="pre">Task</span></code> will be
 returned.</p>
-<p>By default response_view is <code class="docutils literal notranslate"><span class="pre">BASIC</span></code>; not all
-information is retrieved by default because some data, such as
-payloads, might be desirable to return only when needed because
-of its large size or because of the sensitivity of data that it
-contains.</p>
-<p>Authorization for <code class="docutils literal notranslate"><span class="pre">FULL</span></code> requires
-<code class="docutils literal notranslate"><span class="pre">cloudtasks.tasks.fullView</span></code> <a class="reference external" href="https://cloud.google.com/iam/">Google IAM</a>
-permission on the <code class="docutils literal notranslate"><span class="pre">Task</span></code> resource.</p>
+<p>By default response_view is <code class="docutils literal notranslate"><span class="pre">BASIC</span></code>; not all information is retrieved
+by default because some data, such as payloads, might be desirable to
+return only when needed because of its large size or because of the
+sensitivity of data that it contains.</p>
+<p>Authorization for <code class="docutils literal notranslate"><span class="pre">FULL</span></code> requires <code class="docutils literal notranslate"><span class="pre">cloudtasks.tasks.fullView</span></code>
+<cite>Google IAM &lt;https://cloud.google.com/iam/&gt;`___ permission on the
+``Task`</cite> resource.</p>
 </li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
@@ -731,25 +713,17 @@ to a retryable error and retry attempts failed.</li>
 <dl class="method">
 <dt id="google.cloud.tasks_v2beta2.CloudTasksClient.lease_tasks">
 <code class="descname">lease_tasks</code><span class="sig-paren">(</span><em>parent</em>, <em>lease_duration</em>, <em>max_tasks=None</em>, <em>response_view=None</em>, <em>filter_=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/tasks_v2beta2/gapic/cloud_tasks_client.html#CloudTasksClient.lease_tasks"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.tasks_v2beta2.CloudTasksClient.lease_tasks" title="Permalink to this definition">#</a></dt>
-<dd><p>Leases tasks from a pull queue for
-<code class="docutils literal notranslate"><span class="pre">lease_duration</span></code>.</p>
-<p>This method is invoked by the worker to obtain a lease. The
-worker must acknowledge the task via
-<code class="docutils literal notranslate"><span class="pre">AcknowledgeTask</span></code> after they have
-performed the work associated with the task.</p>
-<p>The <code class="docutils literal notranslate"><span class="pre">payload</span></code> is intended to store data that
-the worker needs to perform the work associated with the task. To
-return the payloads in the <code class="docutils literal notranslate"><span class="pre">response</span></code>, set
-<code class="docutils literal notranslate"><span class="pre">response_view</span></code> to
-<code class="docutils literal notranslate"><span class="pre">FULL</span></code>.</p>
-<p>A maximum of 10 qps of <code class="docutils literal notranslate"><span class="pre">LeaseTasks</span></code>
-requests are allowed per
-queue. <code class="docutils literal notranslate"><span class="pre">RESOURCE_EXHAUSTED</span></code>
-is returned when this limit is
-exceeded. <code class="docutils literal notranslate"><span class="pre">RESOURCE_EXHAUSTED</span></code>
-is also returned when
-<code class="docutils literal notranslate"><span class="pre">max_tasks_dispatched_per_second</span></code>
-is exceeded.</p>
+<dd><p>Leases tasks from a pull queue for <code class="docutils literal notranslate"><span class="pre">lease_duration</span></code>.</p>
+<p>This method is invoked by the worker to obtain a lease. The worker must
+acknowledge the task via <code class="docutils literal notranslate"><span class="pre">AcknowledgeTask</span></code> after they have performed
+the work associated with the task.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">payload</span></code> is intended to store data that the worker needs to
+perform the work associated with the task. To return the payloads in the
+<code class="docutils literal notranslate"><span class="pre">response</span></code>, set <code class="docutils literal notranslate"><span class="pre">response_view</span></code> to <code class="docutils literal notranslate"><span class="pre">FULL</span></code>.</p>
+<p>A maximum of 10 qps of <code class="docutils literal notranslate"><span class="pre">LeaseTasks</span></code> requests are allowed per queue.
+<code class="docutils literal notranslate"><span class="pre">RESOURCE_EXHAUSTED</span></code> is returned when this limit is exceeded.
+<code class="docutils literal notranslate"><span class="pre">RESOURCE_EXHAUSTED</span></code> is also returned when
+<code class="docutils literal notranslate"><span class="pre">max_tasks_dispatched_per_second</span></code> is exceeded.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">tasks_v2beta2</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -757,7 +731,7 @@ is exceeded.</p>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">parent</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">queue_path</span><span class="p">(</span><span class="s1">&#39;[PROJECT]&#39;</span><span class="p">,</span> <span class="s1">&#39;[LOCATION]&#39;</span><span class="p">,</span> <span class="s1">&#39;[QUEUE]&#39;</span><span class="p">)</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``lease_duration``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `lease_duration`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">lease_duration</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">lease_tasks</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">lease_duration</span><span class="p">)</span>
@@ -772,15 +746,13 @@ is exceeded.</p>
 <p>The queue name. For example:
 <code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID</span></code></p>
 </li>
-<li><strong>lease_duration</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.tasks_v2beta2.types.Duration" title="google.cloud.tasks_v2beta2.types.Duration"><em>Duration</em></a><em>]</em>) – <p>After the worker has successfully finished the work associated
-with the task, the worker must call via
-<code class="docutils literal notranslate"><span class="pre">AcknowledgeTask</span></code> before the
-<code class="docutils literal notranslate"><span class="pre">schedule_time</span></code>. Otherwise the task will be
-returned to a later <code class="docutils literal notranslate"><span class="pre">LeaseTasks</span></code> call so
-that another worker can retry it.</p>
-<p>The maximum lease duration is 1 week.
-<code class="docutils literal notranslate"><span class="pre">lease_duration</span></code> will be truncated to the nearest second.
-If a dict is provided, it must be of the same form as the protobuf
+<li><strong>lease_duration</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.tasks_v2beta2.types.Duration" title="google.cloud.tasks_v2beta2.types.Duration"><em>Duration</em></a><em>]</em>) – <p>After the worker has successfully finished the work associated with the
+task, the worker must call via <code class="docutils literal notranslate"><span class="pre">AcknowledgeTask</span></code> before the
+<code class="docutils literal notranslate"><span class="pre">schedule_time</span></code>. Otherwise the task will be returned to a later
+<code class="docutils literal notranslate"><span class="pre">LeaseTasks</span></code> call so that another worker can retry it.</p>
+<p>The maximum lease duration is 1 week. <code class="docutils literal notranslate"><span class="pre">lease_duration</span></code> will be
+truncated to the nearest second.</p>
+<p>If a dict is provided, it must be of the same form as the protobuf
 message <a class="reference internal" href="types.html#google.cloud.tasks_v2beta2.types.Duration" title="google.cloud.tasks_v2beta2.types.Duration"><code class="xref py py-class docutils literal notranslate"><span class="pre">Duration</span></code></a></p>
 </li>
 <li><strong>max_tasks</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – <p>The maximum number of tasks to lease.</p>
@@ -790,38 +762,34 @@ message <a class="reference internal" href="types.html#google.cloud.tasks_v2beta
 </li>
 <li><strong>response_view</strong> (<em>View</em>) – <p>The response_view specifies which subset of the <code class="docutils literal notranslate"><span class="pre">Task</span></code> will be
 returned.</p>
-<p>By default response_view is <code class="docutils literal notranslate"><span class="pre">BASIC</span></code>; not all
-information is retrieved by default because some data, such as
-payloads, might be desirable to return only when needed because
-of its large size or because of the sensitivity of data that it
-contains.</p>
-<p>Authorization for <code class="docutils literal notranslate"><span class="pre">FULL</span></code> requires
-<code class="docutils literal notranslate"><span class="pre">cloudtasks.tasks.fullView</span></code> <a class="reference external" href="https://cloud.google.com/iam/">Google IAM</a>
-permission on the <code class="docutils literal notranslate"><span class="pre">Task</span></code> resource.</p>
+<p>By default response_view is <code class="docutils literal notranslate"><span class="pre">BASIC</span></code>; not all information is retrieved
+by default because some data, such as payloads, might be desirable to
+return only when needed because of its large size or because of the
+sensitivity of data that it contains.</p>
+<p>Authorization for <code class="docutils literal notranslate"><span class="pre">FULL</span></code> requires <code class="docutils literal notranslate"><span class="pre">cloudtasks.tasks.fullView</span></code>
+<cite>Google IAM &lt;https://cloud.google.com/iam/&gt;`___ permission on the
+``Task`</cite> resource.</p>
 </li>
 <li><strong>filter</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p><code class="docutils literal notranslate"><span class="pre">filter</span></code> can be used to specify a subset of tasks to lease.</p>
-<p>When <code class="docutils literal notranslate"><span class="pre">filter</span></code> is set to <code class="docutils literal notranslate"><span class="pre">tag=&lt;my-tag&gt;</span></code> then the
-<code class="docutils literal notranslate"><span class="pre">response</span></code> will contain only tasks whose
-<code class="docutils literal notranslate"><span class="pre">tag</span></code> is equal to <code class="docutils literal notranslate"><span class="pre">&lt;my-tag&gt;</span></code>. <code class="docutils literal notranslate"><span class="pre">&lt;my-tag&gt;</span></code> must be
-less than 500 characters.</p>
-<p>When <code class="docutils literal notranslate"><span class="pre">filter</span></code> is set to <code class="docutils literal notranslate"><span class="pre">tag_function=oldest_tag()</span></code>, only tasks which have
-the same tag as the task with the oldest
-<code class="docutils literal notranslate"><span class="pre">schedule_time</span></code> will be returned.</p>
+<p>When <code class="docutils literal notranslate"><span class="pre">filter</span></code> is set to <code class="docutils literal notranslate"><span class="pre">tag=&lt;my-tag&gt;</span></code> then the <code class="docutils literal notranslate"><span class="pre">response</span></code> will
+contain only tasks whose <code class="docutils literal notranslate"><span class="pre">tag</span></code> is equal to <code class="docutils literal notranslate"><span class="pre">&lt;my-tag&gt;</span></code>. <code class="docutils literal notranslate"><span class="pre">&lt;my-tag&gt;</span></code>
+must be less than 500 characters.</p>
+<p>When <code class="docutils literal notranslate"><span class="pre">filter</span></code> is set to <code class="docutils literal notranslate"><span class="pre">tag_function=oldest_tag()</span></code>, only tasks
+which have the same tag as the task with the oldest <code class="docutils literal notranslate"><span class="pre">schedule_time</span></code>
+will be returned.</p>
 <p>Grammar Syntax:</p>
 <ul>
 <li><code class="docutils literal notranslate"><span class="pre">filter</span> <span class="pre">=</span> <span class="pre">&quot;tag=&quot;</span> <span class="pre">tag</span> <span class="pre">|</span> <span class="pre">&quot;tag_function=&quot;</span> <span class="pre">function</span></code></li>
 <li><code class="docutils literal notranslate"><span class="pre">tag</span> <span class="pre">=</span> <span class="pre">string</span></code></li>
 <li><code class="docutils literal notranslate"><span class="pre">function</span> <span class="pre">=</span> <span class="pre">&quot;oldest_tag()&quot;</span></code></li>
 </ul>
-<p>The <code class="docutils literal notranslate"><span class="pre">oldest_tag()</span></code> function returns tasks which have the same tag as the
-oldest task (ordered by schedule time).</p>
-<p>SDK compatibility: Although the SDK allows tags to be either
-string or
+<p>The <code class="docutils literal notranslate"><span class="pre">oldest_tag()</span></code> function returns tasks which have the same tag as
+the oldest task (ordered by schedule time).</p>
+<p>SDK compatibility: Although the SDK allows tags to be either string or
 <a class="reference external" href="https://cloud.google.com/appengine/docs/standard/java/javadoc/com/google/appengine/api/taskqueue/TaskOptions.html#tag-byte:A-">bytes</a>,
-only UTF-8 encoded tags can be used in Cloud Tasks. Tag which
-aren’t UTF-8 encoded can’t be used in the
-<code class="docutils literal notranslate"><span class="pre">filter</span></code> and the task’s
-<code class="docutils literal notranslate"><span class="pre">tag</span></code> will be displayed as empty in Cloud Tasks.</p>
+only UTF-8 encoded tags can be used in Cloud Tasks. Tag which aren’t
+UTF-8 encoded can’t be used in the <code class="docutils literal notranslate"><span class="pre">filter</span></code> and the task’s <code class="docutils literal notranslate"><span class="pre">tag</span></code>
+will be displayed as empty in Cloud Tasks.</p>
 </li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
@@ -871,7 +839,7 @@ to a retryable error and retry attempts failed.</li>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Alternatively:</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Iterate over results one page at a time</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_queues</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">CallOptions</span><span class="p">(</span><span class="n">page_token</span><span class="o">=</span><span class="n">INITIAL_PAGE</span><span class="p">)):</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_queues</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span><span class="o">.</span><span class="n">pages</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">page</span><span class="p">:</span>
 <span class="gp">... </span>        <span class="c1"># process element</span>
 <span class="gp">... </span>        <span class="k">pass</span>
@@ -883,14 +851,14 @@ to a retryable error and retry attempts failed.</li>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Required.</p>
-<p>The location name.
-For example: <code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/locations/LOCATION_ID</span></code></p>
+<p>The location name. For example:
+<code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/locations/LOCATION_ID</span></code></p>
 </li>
 <li><strong>filter</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p><code class="docutils literal notranslate"><span class="pre">filter</span></code> can be used to specify a subset of queues. Any <code class="docutils literal notranslate"><span class="pre">Queue</span></code>
-field can be used as a filter and several operators as supported.
-For example: <code class="docutils literal notranslate"><span class="pre">&lt;=,</span> <span class="pre">&lt;,</span> <span class="pre">&gt;=,</span> <span class="pre">&gt;,</span> <span class="pre">!=,</span> <span class="pre">=,</span> <span class="pre">:</span></code>. The filter syntax is the same as
-described in
-<a class="reference external" href="https://cloud.google.com/logging/docs/view/advanced_filters">Stackdriver’s Advanced Logs Filters</a>.</p>
+field can be used as a filter and several operators as supported. For
+example: <code class="docutils literal notranslate"><span class="pre">&lt;=,</span> <span class="pre">&lt;,</span> <span class="pre">&gt;=,</span> <span class="pre">&gt;,</span> <span class="pre">!=,</span> <span class="pre">=,</span> <span class="pre">:</span></code>. The filter syntax is the same as
+described in <a class="reference external" href="https://cloud.google.com/logging/docs/view/advanced_filters">Stackdriver’s Advanced Logs
+Filters</a>.</p>
 <p>Sample filter “app_engine_http_target: *”.</p>
 <p>Note that using filters might cause fewer queues than the
 requested_page size to be returned.</p>
@@ -934,10 +902,9 @@ to a retryable error and retry attempts failed.</li>
 <dt id="google.cloud.tasks_v2beta2.CloudTasksClient.list_tasks">
 <code class="descname">list_tasks</code><span class="sig-paren">(</span><em>parent</em>, <em>response_view=None</em>, <em>page_size=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/tasks_v2beta2/gapic/cloud_tasks_client.html#CloudTasksClient.list_tasks"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.tasks_v2beta2.CloudTasksClient.list_tasks" title="Permalink to this definition">#</a></dt>
 <dd><p>Lists the tasks in a queue.</p>
-<p>By default, only the <code class="docutils literal notranslate"><span class="pre">BASIC</span></code> view is retrieved
-due to performance considerations;
-<code class="docutils literal notranslate"><span class="pre">response_view</span></code> controls the
-subset of information which is returned.</p>
+<p>By default, only the <code class="docutils literal notranslate"><span class="pre">BASIC</span></code> view is retrieved due to performance
+considerations; <code class="docutils literal notranslate"><span class="pre">response_view</span></code> controls the subset of information
+which is returned.</p>
 <p>The tasks may be returned in any order. The ordering may change at any
 time.</p>
 <p class="rubric">Example</p>
@@ -956,7 +923,7 @@ time.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Alternatively:</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Iterate over results one page at a time</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_tasks</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">CallOptions</span><span class="p">(</span><span class="n">page_token</span><span class="o">=</span><span class="n">INITIAL_PAGE</span><span class="p">)):</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_tasks</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span><span class="o">.</span><span class="n">pages</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">page</span><span class="p">:</span>
 <span class="gp">... </span>        <span class="c1"># process element</span>
 <span class="gp">... </span>        <span class="k">pass</span>
@@ -973,14 +940,13 @@ time.</p>
 </li>
 <li><strong>response_view</strong> (<em>View</em>) – <p>The response_view specifies which subset of the <code class="docutils literal notranslate"><span class="pre">Task</span></code> will be
 returned.</p>
-<p>By default response_view is <code class="docutils literal notranslate"><span class="pre">BASIC</span></code>; not all
-information is retrieved by default because some data, such as
-payloads, might be desirable to return only when needed because
-of its large size or because of the sensitivity of data that it
-contains.</p>
-<p>Authorization for <code class="docutils literal notranslate"><span class="pre">FULL</span></code> requires
-<code class="docutils literal notranslate"><span class="pre">cloudtasks.tasks.fullView</span></code> <a class="reference external" href="https://cloud.google.com/iam/">Google IAM</a>
-permission on the <code class="docutils literal notranslate"><span class="pre">Task</span></code> resource.</p>
+<p>By default response_view is <code class="docutils literal notranslate"><span class="pre">BASIC</span></code>; not all information is retrieved
+by default because some data, such as payloads, might be desirable to
+return only when needed because of its large size or because of the
+sensitivity of data that it contains.</p>
+<p>Authorization for <code class="docutils literal notranslate"><span class="pre">FULL</span></code> requires <code class="docutils literal notranslate"><span class="pre">cloudtasks.tasks.fullView</span></code>
+<cite>Google IAM &lt;https://cloud.google.com/iam/&gt;`___ permission on the
+``Task`</cite> resource.</p>
 </li>
 <li><strong>page_size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – The maximum number of resources contained in the
 underlying API response. If page streaming is performed per-
@@ -1027,11 +993,9 @@ to a retryable error and retry attempts failed.</li>
 <dt id="google.cloud.tasks_v2beta2.CloudTasksClient.pause_queue">
 <code class="descname">pause_queue</code><span class="sig-paren">(</span><em>name</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/tasks_v2beta2/gapic/cloud_tasks_client.html#CloudTasksClient.pause_queue"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.tasks_v2beta2.CloudTasksClient.pause_queue" title="Permalink to this definition">#</a></dt>
 <dd><p>Pauses the queue.</p>
-<p>If a queue is paused then the system will stop dispatching tasks
-until the queue is resumed via
-<code class="docutils literal notranslate"><span class="pre">ResumeQueue</span></code>. Tasks can still be added
-when the queue is paused. A queue is paused if its
-<code class="docutils literal notranslate"><span class="pre">state</span></code> is <code class="docutils literal notranslate"><span class="pre">PAUSED</span></code>.</p>
+<p>If a queue is paused then the system will stop dispatching tasks until
+the queue is resumed via <code class="docutils literal notranslate"><span class="pre">ResumeQueue</span></code>. Tasks can still be added when
+the queue is paused. A queue is paused if its <code class="docutils literal notranslate"><span class="pre">state</span></code> is <code class="docutils literal notranslate"><span class="pre">PAUSED</span></code>.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">tasks_v2beta2</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -1147,9 +1111,9 @@ to a retryable error and retry attempts failed.</li>
 <dt id="google.cloud.tasks_v2beta2.CloudTasksClient.renew_lease">
 <code class="descname">renew_lease</code><span class="sig-paren">(</span><em>name</em>, <em>schedule_time</em>, <em>lease_duration</em>, <em>response_view=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/tasks_v2beta2/gapic/cloud_tasks_client.html#CloudTasksClient.renew_lease"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.tasks_v2beta2.CloudTasksClient.renew_lease" title="Permalink to this definition">#</a></dt>
 <dd><p>Renew the current lease of a pull task.</p>
-<p>The worker can use this method to extend the lease by a new
-duration, starting from now. The new task lease will be
-returned in the task’s <code class="docutils literal notranslate"><span class="pre">schedule_time</span></code>.</p>
+<p>The worker can use this method to extend the lease by a new duration,
+starting from now. The new task lease will be returned in the task’s
+<code class="docutils literal notranslate"><span class="pre">schedule_time</span></code>.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">tasks_v2beta2</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -1157,10 +1121,10 @@ returned in the task’s <code class="docutils literal notranslate"><span class=
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">name</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">task_path</span><span class="p">(</span><span class="s1">&#39;[PROJECT]&#39;</span><span class="p">,</span> <span class="s1">&#39;[LOCATION]&#39;</span><span class="p">,</span> <span class="s1">&#39;[QUEUE]&#39;</span><span class="p">,</span> <span class="s1">&#39;[TASK]&#39;</span><span class="p">)</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``schedule_time``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `schedule_time`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">schedule_time</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``lease_duration``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `lease_duration`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">lease_duration</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">renew_lease</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">schedule_time</span><span class="p">,</span> <span class="n">lease_duration</span><span class="p">)</span>
@@ -1176,31 +1140,28 @@ returned in the task’s <code class="docutils literal notranslate"><span class=
 <code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID/tasks/TASK_ID</span></code></p>
 </li>
 <li><strong>schedule_time</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.tasks_v2beta2.types.Timestamp" title="google.cloud.tasks_v2beta2.types.Timestamp"><em>Timestamp</em></a><em>]</em>) – <p>Required.</p>
-<p>The task’s current schedule time, available in the
-<code class="docutils literal notranslate"><span class="pre">schedule_time</span></code> returned by
-<code class="docutils literal notranslate"><span class="pre">LeaseTasks</span></code> response or
-<code class="docutils literal notranslate"><span class="pre">RenewLease</span></code> response. This restriction is
-to ensure that your worker currently holds the lease.
-If a dict is provided, it must be of the same form as the protobuf
+<p>The task’s current schedule time, available in the <code class="docutils literal notranslate"><span class="pre">schedule_time</span></code>
+returned by <code class="docutils literal notranslate"><span class="pre">LeaseTasks</span></code> response or <code class="docutils literal notranslate"><span class="pre">RenewLease</span></code> response. This
+restriction is to ensure that your worker currently holds the lease.</p>
+<p>If a dict is provided, it must be of the same form as the protobuf
 message <a class="reference internal" href="types.html#google.cloud.tasks_v2beta2.types.Timestamp" title="google.cloud.tasks_v2beta2.types.Timestamp"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timestamp</span></code></a></p>
 </li>
 <li><strong>lease_duration</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.tasks_v2beta2.types.Duration" title="google.cloud.tasks_v2beta2.types.Duration"><em>Duration</em></a><em>]</em>) – <p>Required.</p>
 <p>The desired new lease duration, starting from now.</p>
-<p>The maximum lease duration is 1 week.
-<code class="docutils literal notranslate"><span class="pre">lease_duration</span></code> will be truncated to the nearest second.
-If a dict is provided, it must be of the same form as the protobuf
+<p>The maximum lease duration is 1 week. <code class="docutils literal notranslate"><span class="pre">lease_duration</span></code> will be
+truncated to the nearest second.</p>
+<p>If a dict is provided, it must be of the same form as the protobuf
 message <a class="reference internal" href="types.html#google.cloud.tasks_v2beta2.types.Duration" title="google.cloud.tasks_v2beta2.types.Duration"><code class="xref py py-class docutils literal notranslate"><span class="pre">Duration</span></code></a></p>
 </li>
 <li><strong>response_view</strong> (<em>View</em>) – <p>The response_view specifies which subset of the <code class="docutils literal notranslate"><span class="pre">Task</span></code> will be
 returned.</p>
-<p>By default response_view is <code class="docutils literal notranslate"><span class="pre">BASIC</span></code>; not all
-information is retrieved by default because some data, such as
-payloads, might be desirable to return only when needed because
-of its large size or because of the sensitivity of data that it
-contains.</p>
-<p>Authorization for <code class="docutils literal notranslate"><span class="pre">FULL</span></code> requires
-<code class="docutils literal notranslate"><span class="pre">cloudtasks.tasks.fullView</span></code> <a class="reference external" href="https://cloud.google.com/iam/">Google IAM</a>
-permission on the <code class="docutils literal notranslate"><span class="pre">Task</span></code> resource.</p>
+<p>By default response_view is <code class="docutils literal notranslate"><span class="pre">BASIC</span></code>; not all information is retrieved
+by default because some data, such as payloads, might be desirable to
+return only when needed because of its large size or because of the
+sensitivity of data that it contains.</p>
+<p>Authorization for <code class="docutils literal notranslate"><span class="pre">FULL</span></code> requires <code class="docutils literal notranslate"><span class="pre">cloudtasks.tasks.fullView</span></code>
+<cite>Google IAM &lt;https://cloud.google.com/iam/&gt;`___ permission on the
+``Task`</cite> resource.</p>
 </li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
@@ -1233,15 +1194,13 @@ to a retryable error and retry attempts failed.</li>
 <dt id="google.cloud.tasks_v2beta2.CloudTasksClient.resume_queue">
 <code class="descname">resume_queue</code><span class="sig-paren">(</span><em>name</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/tasks_v2beta2/gapic/cloud_tasks_client.html#CloudTasksClient.resume_queue"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.tasks_v2beta2.CloudTasksClient.resume_queue" title="Permalink to this definition">#</a></dt>
 <dd><p>Resume a queue.</p>
-<p>This method resumes a queue after it has been
-<code class="docutils literal notranslate"><span class="pre">PAUSED</span></code> or
-<code class="docutils literal notranslate"><span class="pre">DISABLED</span></code>. The state of a queue is stored
-in the queue’s <code class="docutils literal notranslate"><span class="pre">state</span></code>; after calling this method it
-will be set to <code class="docutils literal notranslate"><span class="pre">RUNNING</span></code>.</p>
-<p>WARNING: Resuming many high-QPS queues at the same time can
-lead to target overloading. If you are resuming high-QPS
-queues, follow the 500/50/5 pattern described in
-<a class="reference external" href="https://cloud.google.com/tasks/docs/manage-cloud-task-scaling">Managing Cloud Tasks Scaling Risks</a>.</p>
+<p>This method resumes a queue after it has been <code class="docutils literal notranslate"><span class="pre">PAUSED</span></code> or
+<code class="docutils literal notranslate"><span class="pre">DISABLED</span></code>. The state of a queue is stored in the queue’s <code class="docutils literal notranslate"><span class="pre">state</span></code>;
+after calling this method it will be set to <code class="docutils literal notranslate"><span class="pre">RUNNING</span></code>.</p>
+<p>WARNING: Resuming many high-QPS queues at the same time can lead to
+target overloading. If you are resuming high-QPS queues, follow the
+500/50/5 pattern described in <a class="reference external" href="https://cloud.google.com/tasks/docs/manage-cloud-task-scaling">Managing Cloud Tasks Scaling
+Risks</a>.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">tasks_v2beta2</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -1295,23 +1254,19 @@ to a retryable error and retry attempts failed.</li>
 <p>When this method is called, Cloud Tasks will dispatch the task, even if
 the task is already running, the queue has reached its <code class="docutils literal notranslate"><span class="pre">RateLimits</span></code> or
 is <code class="docutils literal notranslate"><span class="pre">PAUSED</span></code>.</p>
-<p>This command is meant to be used for manual debugging. For
-example, <code class="docutils literal notranslate"><span class="pre">RunTask</span></code> can be used to retry a failed
-task after a fix has been made or to manually force a task to be
-dispatched now.</p>
+<p>This command is meant to be used for manual debugging. For example,
+<code class="docutils literal notranslate"><span class="pre">RunTask</span></code> can be used to retry a failed task after a fix has been made
+or to manually force a task to be dispatched now.</p>
 <p>The dispatched task is returned. That is, the task that is returned
-contains the <code class="docutils literal notranslate"><span class="pre">status</span></code> after the task is dispatched but
-before the task is received by its target.</p>
-<p>If Cloud Tasks receives a successful response from the task’s
-target, then the task will be deleted; otherwise the task’s
-<code class="docutils literal notranslate"><span class="pre">schedule_time</span></code> will be reset to the time that
-<code class="docutils literal notranslate"><span class="pre">RunTask</span></code> was called plus the retry delay specified
-in the queue’s <code class="docutils literal notranslate"><span class="pre">RetryConfig</span></code>.</p>
-<p><code class="docutils literal notranslate"><span class="pre">RunTask</span></code> returns
-<code class="docutils literal notranslate"><span class="pre">NOT_FOUND</span></code> when it is called on a
-task that has already succeeded or permanently failed.</p>
-<p><code class="docutils literal notranslate"><span class="pre">RunTask</span></code> cannot be called on a
-<code class="docutils literal notranslate"><span class="pre">pull</span> <span class="pre">task</span></code>.</p>
+contains the <code class="docutils literal notranslate"><span class="pre">status</span></code> after the task is dispatched but before the task
+is received by its target.</p>
+<p>If Cloud Tasks receives a successful response from the task’s target,
+then the task will be deleted; otherwise the task’s <code class="docutils literal notranslate"><span class="pre">schedule_time</span></code>
+will be reset to the time that <code class="docutils literal notranslate"><span class="pre">RunTask</span></code> was called plus the retry
+delay specified in the queue’s <code class="docutils literal notranslate"><span class="pre">RetryConfig</span></code>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">RunTask</span></code> returns <code class="docutils literal notranslate"><span class="pre">NOT_FOUND</span></code> when it is called on a task that has
+already succeeded or permanently failed.</p>
+<p><code class="docutils literal notranslate"><span class="pre">RunTask</span></code> cannot be called on a <code class="docutils literal notranslate"><span class="pre">pull</span> <span class="pre">task</span></code>.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">tasks_v2beta2</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -1333,14 +1288,13 @@ task that has already succeeded or permanently failed.</p>
 </li>
 <li><strong>response_view</strong> (<em>View</em>) – <p>The response_view specifies which subset of the <code class="docutils literal notranslate"><span class="pre">Task</span></code> will be
 returned.</p>
-<p>By default response_view is <code class="docutils literal notranslate"><span class="pre">BASIC</span></code>; not all
-information is retrieved by default because some data, such as
-payloads, might be desirable to return only when needed because
-of its large size or because of the sensitivity of data that it
-contains.</p>
-<p>Authorization for <code class="docutils literal notranslate"><span class="pre">FULL</span></code> requires
-<code class="docutils literal notranslate"><span class="pre">cloudtasks.tasks.fullView</span></code> <a class="reference external" href="https://cloud.google.com/iam/">Google IAM</a>
-permission on the <code class="docutils literal notranslate"><span class="pre">Task</span></code> resource.</p>
+<p>By default response_view is <code class="docutils literal notranslate"><span class="pre">BASIC</span></code>; not all information is retrieved
+by default because some data, such as payloads, might be desirable to
+return only when needed because of its large size or because of the
+sensitivity of data that it contains.</p>
+<p>Authorization for <code class="docutils literal notranslate"><span class="pre">FULL</span></code> requires <code class="docutils literal notranslate"><span class="pre">cloudtasks.tasks.fullView</span></code>
+<cite>Google IAM &lt;https://cloud.google.com/iam/&gt;`___ permission on the
+``Task`</cite> resource.</p>
 </li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
@@ -1376,8 +1330,8 @@ to a retryable error and retry attempts failed.</li>
 policy.</p>
 <p>Note: The Cloud Console does not check queue-level IAM permissions yet.
 Project-level permissions are required to use the Cloud Console.</p>
-<p>Authorization requires the following
-<a class="reference external" href="https://cloud.google.com/iam">Google IAM</a> permission on the specified
+<p>Authorization requires the following <a class="reference external" href="https://cloud.google.com/iam">Google
+IAM</a> permission on the specified
 resource parent:</p>
 <ul class="simple">
 <li><code class="docutils literal notranslate"><span class="pre">cloudtasks.queues.setIamPolicy</span></code></li>
@@ -1389,7 +1343,7 @@ resource parent:</p>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">resource</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">queue_path</span><span class="p">(</span><span class="s1">&#39;[PROJECT]&#39;</span><span class="p">,</span> <span class="s1">&#39;[LOCATION]&#39;</span><span class="p">,</span> <span class="s1">&#39;[QUEUE]&#39;</span><span class="p">)</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``policy``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `policy`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">policy</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">set_iam_policy</span><span class="p">(</span><span class="n">resource</span><span class="p">,</span> <span class="n">policy</span><span class="p">)</span>
@@ -1403,12 +1357,13 @@ resource parent:</p>
 <li><strong>resource</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – REQUIRED: The resource for which the policy is being specified.
 <code class="docutils literal notranslate"><span class="pre">resource</span></code> is usually specified as a path. For example, a Project
 resource is specified as <code class="docutils literal notranslate"><span class="pre">projects/{project}</span></code>.</li>
-<li><strong>policy</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.tasks_v2beta2.types.Policy" title="google.cloud.tasks_v2beta2.types.Policy"><em>Policy</em></a><em>]</em>) – REQUIRED: The complete policy to be applied to the <code class="docutils literal notranslate"><span class="pre">resource</span></code>. The size of
-the policy is limited to a few 10s of KB. An empty policy is a
+<li><strong>policy</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.tasks_v2beta2.types.Policy" title="google.cloud.tasks_v2beta2.types.Policy"><em>Policy</em></a><em>]</em>) – <p>REQUIRED: The complete policy to be applied to the <code class="docutils literal notranslate"><span class="pre">resource</span></code>. The
+size of the policy is limited to a few 10s of KB. An empty policy is a
 valid policy but certain Cloud Platform services (such as Projects)
-might reject them.
-If a dict is provided, it must be of the same form as the protobuf
-message <a class="reference internal" href="types.html#google.cloud.tasks_v2beta2.types.Policy" title="google.cloud.tasks_v2beta2.types.Policy"><code class="xref py py-class docutils literal notranslate"><span class="pre">Policy</span></code></a></li>
+might reject them.</p>
+<p>If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.tasks_v2beta2.types.Policy" title="google.cloud.tasks_v2beta2.types.Policy"><code class="xref py py-class docutils literal notranslate"><span class="pre">Policy</span></code></a></p>
+</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
@@ -1445,12 +1400,12 @@ to a retryable error and retry attempts failed.</li>
 <dl class="method">
 <dt id="google.cloud.tasks_v2beta2.CloudTasksClient.test_iam_permissions">
 <code class="descname">test_iam_permissions</code><span class="sig-paren">(</span><em>resource</em>, <em>permissions</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/tasks_v2beta2/gapic/cloud_tasks_client.html#CloudTasksClient.test_iam_permissions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.tasks_v2beta2.CloudTasksClient.test_iam_permissions" title="Permalink to this definition">#</a></dt>
-<dd><p>Returns permissions that a caller has on a <code class="docutils literal notranslate"><span class="pre">Queue</span></code>.
-If the resource does not exist, this will return an empty set of
-permissions, not a <code class="docutils literal notranslate"><span class="pre">NOT_FOUND</span></code> error.</p>
-<p>Note: This operation is designed to be used for building permission-aware
-UIs and command-line tools, not for authorization checking. This operation
-may “fail open” without warning.</p>
+<dd><p>Returns permissions that a caller has on a <code class="docutils literal notranslate"><span class="pre">Queue</span></code>. If the resource
+does not exist, this will return an empty set of permissions, not a
+<code class="docutils literal notranslate"><span class="pre">NOT_FOUND</span></code> error.</p>
+<p>Note: This operation is designed to be used for building
+permission-aware UIs and command-line tools, not for authorization
+checking. This operation may “fail open” without warning.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">tasks_v2beta2</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -1458,7 +1413,7 @@ may “fail open” without warning.</p>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">resource</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">queue_path</span><span class="p">(</span><span class="s1">&#39;[PROJECT]&#39;</span><span class="p">,</span> <span class="s1">&#39;[LOCATION]&#39;</span><span class="p">,</span> <span class="s1">&#39;[QUEUE]&#39;</span><span class="p">)</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``permissions``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `permissions`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">permissions</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">test_iam_permissions</span><span class="p">(</span><span class="n">resource</span><span class="p">,</span> <span class="n">permissions</span><span class="p">)</span>
@@ -1474,8 +1429,8 @@ may “fail open” without warning.</p>
 resource is specified as <code class="docutils literal notranslate"><span class="pre">projects/{project}</span></code>.</li>
 <li><strong>permissions</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em>) – The set of permissions to check for the <code class="docutils literal notranslate"><span class="pre">resource</span></code>. Permissions with
 wildcards (such as ‘*’ or ‘storage.*’) are not allowed. For more
-information see
-<a class="reference external" href="https://cloud.google.com/iam/docs/overview#permissions">IAM Overview</a>.</li>
+information see <a class="reference external" href="https://cloud.google.com/iam/docs/overview#permissions">IAM
+Overview</a>.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
@@ -1507,22 +1462,22 @@ to a retryable error and retry attempts failed.</li>
 <dt id="google.cloud.tasks_v2beta2.CloudTasksClient.update_queue">
 <code class="descname">update_queue</code><span class="sig-paren">(</span><em>queue</em>, <em>update_mask=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/tasks_v2beta2/gapic/cloud_tasks_client.html#CloudTasksClient.update_queue"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.tasks_v2beta2.CloudTasksClient.update_queue" title="Permalink to this definition">#</a></dt>
 <dd><p>Updates a queue.</p>
-<p>This method creates the queue if it does not exist and updates
-the queue if it does exist.</p>
+<p>This method creates the queue if it does not exist and updates the queue
+if it does exist.</p>
 <p>Queues created with this method allow tasks to live for a maximum of 31
-days. After a task is 31 days old, the task will be deleted regardless of whether
-it was dispatched or not.</p>
+days. After a task is 31 days old, the task will be deleted regardless
+of whether it was dispatched or not.</p>
 <p>WARNING: Using this method may have unintended side effects if you are
-using an App Engine <code class="docutils literal notranslate"><span class="pre">queue.yaml</span></code> or <code class="docutils literal notranslate"><span class="pre">queue.xml</span></code> file to manage your queues.
-Read
-<a class="reference external" href="https://cloud.google.com/tasks/docs/queue-yaml">Overview of Queue Management and queue.yaml</a>
-before using this method.</p>
+using an App Engine <code class="docutils literal notranslate"><span class="pre">queue.yaml</span></code> or <code class="docutils literal notranslate"><span class="pre">queue.xml</span></code> file to manage your
+queues. Read <a class="reference external" href="https://cloud.google.com/tasks/docs/queue-yaml">Overview of Queue Management and
+queue.yaml</a> before
+using this method.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">tasks_v2beta2</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">tasks_v2beta2</span><span class="o">.</span><span class="n">CloudTasksClient</span><span class="p">()</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``queue``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `queue`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">queue</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">update_queue</span><span class="p">(</span><span class="n">queue</span><span class="p">)</span>
@@ -1536,15 +1491,15 @@ before using this method.</p>
 <li><strong>queue</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.tasks_v2beta2.types.Queue" title="google.cloud.tasks_v2beta2.types.Queue"><em>Queue</em></a><em>]</em>) – <p>Required.</p>
 <p>The queue to create or update.</p>
 <p>The queue’s <code class="docutils literal notranslate"><span class="pre">name</span></code> must be specified.</p>
-<p>Output only fields cannot be modified using UpdateQueue.
-Any value specified for an output only field will be ignored.
-The queue’s <code class="docutils literal notranslate"><span class="pre">name</span></code> cannot be changed.
-If a dict is provided, it must be of the same form as the protobuf
+<p>Output only fields cannot be modified using UpdateQueue. Any value
+specified for an output only field will be ignored. The queue’s <code class="docutils literal notranslate"><span class="pre">name</span></code>
+cannot be changed.</p>
+<p>If a dict is provided, it must be of the same form as the protobuf
 message <a class="reference internal" href="types.html#google.cloud.tasks_v2beta2.types.Queue" title="google.cloud.tasks_v2beta2.types.Queue"><code class="xref py py-class docutils literal notranslate"><span class="pre">Queue</span></code></a></p>
 </li>
 <li><strong>update_mask</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.tasks_v2beta2.types.FieldMask" title="google.cloud.tasks_v2beta2.types.FieldMask"><em>FieldMask</em></a><em>]</em>) – <p>A mask used to specify which fields of the queue are being updated.</p>
-<p>If empty, then all fields will be updated.
-If a dict is provided, it must be of the same form as the protobuf
+<p>If empty, then all fields will be updated.</p>
+<p>If a dict is provided, it must be of the same form as the protobuf
 message <a class="reference internal" href="types.html#google.cloud.tasks_v2beta2.types.FieldMask" title="google.cloud.tasks_v2beta2.types.FieldMask"><code class="xref py py-class docutils literal notranslate"><span class="pre">FieldMask</span></code></a></p>
 </li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
