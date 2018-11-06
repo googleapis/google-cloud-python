@@ -177,9 +177,10 @@ class DeviceManagerClient(object):
             )
 
         if client_info is None:
-            client_info = (
-                google.api_core.gapic_v1.client_info.DEFAULT_CLIENT_INFO)
-        client_info.gapic_version = _GAPIC_LIBRARY_VERSION
+            client_info = google.api_core.gapic_v1.client_info.ClientInfo(
+                gapic_version=_GAPIC_LIBRARY_VERSION, )
+        else:
+            client_info.gapic_version = _GAPIC_LIBRARY_VERSION
         self._client_info = client_info
 
         # Parse out the default settings for retry and timeout for each RPC
@@ -212,7 +213,7 @@ class DeviceManagerClient(object):
             >>>
             >>> parent = client.location_path('[PROJECT]', '[LOCATION]')
             >>>
-            >>> # TODO: Initialize ``device_registry``:
+            >>> # TODO: Initialize `device_registry`:
             >>> device_registry = {}
             >>>
             >>> response = client.create_device_registry(parent, device_registry)
@@ -223,6 +224,7 @@ class DeviceManagerClient(object):
             device_registry (Union[dict, ~google.cloud.iot_v1.types.DeviceRegistry]): The device registry. The field ``name`` must be empty. The server will
                 generate that field from the device registry ``id`` provided and the
                 ``parent`` field.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.iot_v1.types.DeviceRegistry`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -356,25 +358,28 @@ class DeviceManagerClient(object):
             >>>
             >>> client = iot_v1.DeviceManagerClient()
             >>>
-            >>> # TODO: Initialize ``device_registry``:
+            >>> # TODO: Initialize `device_registry`:
             >>> device_registry = {}
             >>>
-            >>> # TODO: Initialize ``update_mask``:
+            >>> # TODO: Initialize `update_mask`:
             >>> update_mask = {}
             >>>
             >>> response = client.update_device_registry(device_registry, update_mask)
 
         Args:
-            device_registry (Union[dict, ~google.cloud.iot_v1.types.DeviceRegistry]): The new values for the device registry. The ``id`` field must be empty, and
-                the ``name`` field must indicate the path of the resource. For example,
+            device_registry (Union[dict, ~google.cloud.iot_v1.types.DeviceRegistry]): The new values for the device registry. The ``id`` field must be empty,
+                and the ``name`` field must indicate the path of the resource. For
+                example,
                 ``projects/example-project/locations/us-central1/registries/my-registry``.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.iot_v1.types.DeviceRegistry`
-            update_mask (Union[dict, ~google.cloud.iot_v1.types.FieldMask]): Only updates the ``device_registry`` fields indicated by this mask.
-                The field mask must not be empty, and it must not contain fields that
-                are immutable or only set by the server.
-                Mutable top-level fields: ``event_notification_config``, ``http_config``,
-                ``mqtt_config``, and ``state_notification_config``.
+            update_mask (Union[dict, ~google.cloud.iot_v1.types.FieldMask]): Only updates the ``device_registry`` fields indicated by this mask. The
+                field mask must not be empty, and it must not contain fields that are
+                immutable or only set by the server. Mutable top-level fields:
+                ``event_notification_config``, ``http_config``, ``mqtt_config``, and
+                ``state_notification_config``.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.iot_v1.types.FieldMask`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -516,7 +521,7 @@ class DeviceManagerClient(object):
             >>> # Alternatively:
             >>>
             >>> # Iterate over results one page at a time
-            >>> for page in client.list_device_registries(parent, options=CallOptions(page_token=INITIAL_PAGE)):
+            >>> for page in client.list_device_registries(parent).pages:
             ...     for element in page:
             ...         # process element
             ...         pass
@@ -609,18 +614,19 @@ class DeviceManagerClient(object):
             >>>
             >>> parent = client.registry_path('[PROJECT]', '[LOCATION]', '[REGISTRY]')
             >>>
-            >>> # TODO: Initialize ``device``:
+            >>> # TODO: Initialize `device`:
             >>> device = {}
             >>>
             >>> response = client.create_device(parent, device)
 
         Args:
-            parent (str): The name of the device registry where this device should be created.
-                For example,
+            parent (str): The name of the device registry where this device should be created. For
+                example,
                 ``projects/example-project/locations/us-central1/registries/my-registry``.
-            device (Union[dict, ~google.cloud.iot_v1.types.Device]): The device registration details. The field ``name`` must be empty. The server
-                will generate that field from the device registry ``id`` provided and the
-                ``parent`` field.
+            device (Union[dict, ~google.cloud.iot_v1.types.Device]): The device registration details. The field ``name`` must be empty. The
+                server will generate that field from the device registry ``id`` provided
+                and the ``parent`` field.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.iot_v1.types.Device`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -692,10 +698,12 @@ class DeviceManagerClient(object):
 
         Args:
             name (str): The name of the device. For example,
-                ``projects/p0/locations/us-central1/registries/registry0/devices/device0`` or
+                ``projects/p0/locations/us-central1/registries/registry0/devices/device0``
+                or
                 ``projects/p0/locations/us-central1/registries/registry0/devices/{num_id}``.
-            field_mask (Union[dict, ~google.cloud.iot_v1.types.FieldMask]): The fields of the ``Device`` resource to be returned in the response. If the
-                field mask is unset or empty, all fields are returned.
+            field_mask (Union[dict, ~google.cloud.iot_v1.types.FieldMask]): The fields of the ``Device`` resource to be returned in the response. If
+                the field mask is unset or empty, all fields are returned.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.iot_v1.types.FieldMask`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -760,25 +768,28 @@ class DeviceManagerClient(object):
             >>>
             >>> client = iot_v1.DeviceManagerClient()
             >>>
-            >>> # TODO: Initialize ``device``:
+            >>> # TODO: Initialize `device`:
             >>> device = {}
             >>>
-            >>> # TODO: Initialize ``update_mask``:
+            >>> # TODO: Initialize `update_mask`:
             >>> update_mask = {}
             >>>
             >>> response = client.update_device(device, update_mask)
 
         Args:
-            device (Union[dict, ~google.cloud.iot_v1.types.Device]): The new values for the device registry. The ``id`` and ``num_id`` fields must
-                be empty, and the field ``name`` must specify the name path. For example,
-                ``projects/p0/locations/us-central1/registries/registry0/devices/device0``or
+            device (Union[dict, ~google.cloud.iot_v1.types.Device]): The new values for the device registry. The ``id`` and ``num_id`` fields
+                must be empty, and the field ``name`` must specify the name path. For
+                example,
+                ``projects/p0/locations/us-central1/registries/registry0/devices/device0``\ or
                 ``projects/p0/locations/us-central1/registries/registry0/devices/{num_id}``.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.iot_v1.types.Device`
-            update_mask (Union[dict, ~google.cloud.iot_v1.types.FieldMask]): Only updates the ``device`` fields indicated by this mask.
-                The field mask must not be empty, and it must not contain fields that
-                are immutable or only set by the server.
-                Mutable top-level fields: ``credentials``, ``blocked``, and ``metadata``
+            update_mask (Union[dict, ~google.cloud.iot_v1.types.FieldMask]): Only updates the ``device`` fields indicated by this mask. The field
+                mask must not be empty, and it must not contain fields that are
+                immutable or only set by the server. Mutable top-level fields:
+                ``credentials``, ``blocked``, and ``metadata``
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.iot_v1.types.FieldMask`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -849,7 +860,8 @@ class DeviceManagerClient(object):
 
         Args:
             name (str): The name of the device. For example,
-                ``projects/p0/locations/us-central1/registries/registry0/devices/device0`` or
+                ``projects/p0/locations/us-central1/registries/registry0/devices/device0``
+                or
                 ``projects/p0/locations/us-central1/registries/registry0/devices/{num_id}``.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
@@ -922,7 +934,7 @@ class DeviceManagerClient(object):
             >>> # Alternatively:
             >>>
             >>> # Iterate over results one page at a time
-            >>> for page in client.list_devices(parent, options=CallOptions(page_token=INITIAL_PAGE)):
+            >>> for page in client.list_devices(parent).pages:
             ...     for element in page:
             ...         # process element
             ...         pass
@@ -932,12 +944,13 @@ class DeviceManagerClient(object):
                 ``projects/my-project/locations/us-central1/registries/my-registry``.
             device_num_ids (list[long]): A list of device numerical ids. If empty, it will ignore this field. This
                 field cannot hold more than 10,000 entries.
-            device_ids (list[str]): A list of device string identifiers. If empty, it will ignore this field.
-                For example, ``['device0', 'device12']``. This field cannot hold more than
-                10,000 entries.
-            field_mask (Union[dict, ~google.cloud.iot_v1.types.FieldMask]): The fields of the ``Device`` resource to be returned in the response. The
-                fields ``id``, and ``num_id`` are always returned by default, along with any
-                other fields specified.
+            device_ids (list[str]): A list of device string identifiers. If empty, it will ignore this
+                field. For example, ``['device0', 'device12']``. This field cannot hold
+                more than 10,000 entries.
+            field_mask (Union[dict, ~google.cloud.iot_v1.types.FieldMask]): The fields of the ``Device`` resource to be returned in the response.
+                The fields ``id``, and ``num_id`` are always returned by default, along
+                with any other fields specified.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.iot_v1.types.FieldMask`
             page_size (int): The maximum number of resources contained in the
@@ -1031,14 +1044,15 @@ class DeviceManagerClient(object):
             >>>
             >>> name = client.device_path('[PROJECT]', '[LOCATION]', '[REGISTRY]', '[DEVICE]')
             >>>
-            >>> # TODO: Initialize ``binary_data``:
+            >>> # TODO: Initialize `binary_data`:
             >>> binary_data = b''
             >>>
             >>> response = client.modify_cloud_to_device_config(name, binary_data)
 
         Args:
             name (str): The name of the device. For example,
-                ``projects/p0/locations/us-central1/registries/registry0/devices/device0`` or
+                ``projects/p0/locations/us-central1/registries/registry0/devices/device0``
+                or
                 ``projects/p0/locations/us-central1/registries/registry0/devices/{num_id}``.
             binary_data (bytes): The configuration data for the device.
             version_to_update (long): The version number to update. If this value is zero, it will not check the
@@ -1119,7 +1133,8 @@ class DeviceManagerClient(object):
 
         Args:
             name (str): The name of the device. For example,
-                ``projects/p0/locations/us-central1/registries/registry0/devices/device0`` or
+                ``projects/p0/locations/us-central1/registries/registry0/devices/device0``
+                or
                 ``projects/p0/locations/us-central1/registries/registry0/devices/{num_id}``.
             num_versions (int): The number of versions to list. Versions are listed in decreasing order of
                 the version number. The maximum number of versions retained is 10. If this
@@ -1195,7 +1210,8 @@ class DeviceManagerClient(object):
 
         Args:
             name (str): The name of the device. For example,
-                ``projects/p0/locations/us-central1/registries/registry0/devices/device0`` or
+                ``projects/p0/locations/us-central1/registries/registry0/devices/device0``
+                or
                 ``projects/p0/locations/us-central1/registries/registry0/devices/{num_id}``.
             num_states (int): The number of states to list. States are listed in descending order of
                 update time. The maximum number of states retained is 10. If this
@@ -1267,7 +1283,7 @@ class DeviceManagerClient(object):
             >>>
             >>> resource = client.registry_path('[PROJECT]', '[LOCATION]', '[REGISTRY]')
             >>>
-            >>> # TODO: Initialize ``policy``:
+            >>> # TODO: Initialize `policy`:
             >>> policy = {}
             >>>
             >>> response = client.set_iam_policy(resource, policy)
@@ -1276,10 +1292,11 @@ class DeviceManagerClient(object):
             resource (str): REQUIRED: The resource for which the policy is being specified.
                 ``resource`` is usually specified as a path. For example, a Project
                 resource is specified as ``projects/{project}``.
-            policy (Union[dict, ~google.cloud.iot_v1.types.Policy]): REQUIRED: The complete policy to be applied to the ``resource``. The size of
-                the policy is limited to a few 10s of KB. An empty policy is a
+            policy (Union[dict, ~google.cloud.iot_v1.types.Policy]): REQUIRED: The complete policy to be applied to the ``resource``. The
+                size of the policy is limited to a few 10s of KB. An empty policy is a
                 valid policy but certain Cloud Platform services (such as Projects)
                 might reject them.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.iot_v1.types.Policy`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -1407,9 +1424,9 @@ class DeviceManagerClient(object):
                              timeout=google.api_core.gapic_v1.method.DEFAULT,
                              metadata=None):
         """
-        Returns permissions that a caller has on the specified resource.
-        If the resource does not exist, this will return an empty set of
-        permissions, not a NOT_FOUND error.
+        Returns permissions that a caller has on the specified resource. If the
+        resource does not exist, this will return an empty set of permissions,
+        not a NOT\_FOUND error.
 
         Example:
             >>> from google.cloud import iot_v1
@@ -1418,7 +1435,7 @@ class DeviceManagerClient(object):
             >>>
             >>> resource = client.registry_path('[PROJECT]', '[LOCATION]', '[REGISTRY]')
             >>>
-            >>> # TODO: Initialize ``permissions``:
+            >>> # TODO: Initialize `permissions`:
             >>> permissions = []
             >>>
             >>> response = client.test_iam_permissions(resource, permissions)
@@ -1429,8 +1446,8 @@ class DeviceManagerClient(object):
                 resource is specified as ``projects/{project}``.
             permissions (list[str]): The set of permissions to check for the ``resource``. Permissions with
                 wildcards (such as '*' or 'storage.*') are not allowed. For more
-                information see
-                `IAM Overview <https://cloud.google.com/iam/docs/overview#permissions>`_.
+                information see `IAM
+                Overview <https://cloud.google.com/iam/docs/overview#permissions>`__.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
